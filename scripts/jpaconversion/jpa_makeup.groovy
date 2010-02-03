@@ -94,20 +94,42 @@ def removeAnnotatonLine(files){
 			//scan file by line or convert file to list of lines....
 			javaFile.eachLine{
 				line->
+				
 				def cur = line.toString().trim();
+				
 				if(skip.equals("true"))
-					cur = "@" + cur;	
+				{
+					cur = "@" + cur;
+					println("checking this line:\t" + cur + "\t");
+				}
 				if(!cur.startsWith("@")){
 					if(!skip.equals("true")){
-						println("******get this line*****\t" + line)
+						//println("******get this line*****\t" + line)
 						text = text + "\n" + line.toString();
+						}
+					else{
+						println("******skip this line by skip*****\t" + line);
 						}
 					skip = "false"
 					}
 				else{
-					if(!cur.endsWith(")")|| cur.endsWith(","))//!Character.isLetter(cur.charAt(cur.length() - 1)))
-					{skip = "true"}
-					else skip = "false"
+					println("******skip this line by @*****\t" + line);
+					if(cur.startsWith("@Override") || cur.startsWith("public"))
+					{
+						//need make a condition builder method to evaluate all exceptions from a list
+						text = text + "\n" + line.toString();
+						skip = "false"		
+						}
+					else if(cur.startsWith("@Transient"))
+					{
+						skip = "false"
+						}
+					
+					else if(cur.endsWith(","))
+					{
+						skip = "true"
+					}
+					else {skip = "false"}
 					}
 			}
 			generateFile(file, text);
@@ -180,6 +202,7 @@ findExistingBOs(srcHome, classes, files )
 
 if("CLEAN".equals(args[0]))
 	removeAnnotatonLine(files)
+	
 else if("TRANSIENT".equals(args[0]))
 	addTransient(files)
 

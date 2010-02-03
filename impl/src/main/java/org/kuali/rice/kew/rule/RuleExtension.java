@@ -32,6 +32,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
@@ -88,6 +90,7 @@ public class RuleExtension implements WorkflowPersistable {
 	private RuleTemplateAttribute ruleTemplateAttribute;
 
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="extension")
+	@Fetch(value = FetchMode.SUBSELECT)
 	private List<RuleExtensionValue> extensionValues;
 
 	public RuleExtension() {

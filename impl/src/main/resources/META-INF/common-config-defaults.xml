@@ -128,7 +128,7 @@
 	<param name="rice.kew.enableKENNotification" override="false">true</param>
 
 	<!-- KEW-specific JPA parameters -->
-	<param name="rice.kew.jpa.enabled" override="false">false</param>
+	<param name="rice.kew.jpa.enabled" override="false">true</param>
 	<param name="rice.kew.jpa.PersistenceXmlLocation" override="false">/META-INF/kew-persistence.xml</param>
 	<param name="rice.kew.jpa.PersistenceUnitName" override="false">kew-unit</param>
 	<param name="rice.kew.jpa.GenerateDdl" override="false">true</param>

@@ -185,6 +185,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     private List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
     
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
     
     /**
@@ -216,7 +217,8 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
 
     /* New Workflow 2.1 Field */
     @ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
-    @JoinTable(name = "KREW_INIT_RTE_NODE_INSTN_T", joinColumns = @JoinColumn(name = "DOC_HDR_ID"), inverseJoinColumns = @JoinColumn(name = "RTE_NODE_INSTN_ID"))    
+    @JoinTable(name = "KREW_INIT_RTE_NODE_INSTN_T", joinColumns = @JoinColumn(name = "DOC_HDR_ID"), inverseJoinColumns = @JoinColumn(name = "RTE_NODE_INSTN_ID")) 
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<RouteNodeInstance> initialRouteNodeInstances = new ArrayList<RouteNodeInstance>();
 
     static {

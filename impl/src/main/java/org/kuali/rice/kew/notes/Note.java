@@ -37,6 +37,8 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
@@ -85,6 +87,7 @@ public class Note implements WorkflowPersistable {
     
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
     	targetEntity=org.kuali.rice.kew.notes.Attachment.class, mappedBy="note")
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Attachment> attachments = new ArrayList<Attachment>();
 
     //additional data not in database

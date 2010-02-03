@@ -64,7 +64,7 @@
     <class>org.kuali.rice.kew.edl.bo.EDocLiteStyle</class>
     <class>org.kuali.rice.kew.edl.bo.EDocLiteDefinition</class>
     <class>org.kuali.rice.kew.edl.bo.EDocLiteAssociation</class>
-    <class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>
+    <!--<class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>-->
     <!-- 
     <class>org.kuali.rice.kew.role.QualifiedRole</class>
     <class>org.kuali.rice.kew.role.QualifiedRoleMember</class>

@@ -33,6 +33,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
+import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.Person;
@@ -618,10 +619,24 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         populateXmlDocumentContentsFromMaintainables();
     }
     
-    protected void populateAttachmentForBO() {
-        if(attachment == null) {
+    /**
+     * The attachment BO is proxied in OJB.  For some reason when an attachment does not yet
+     * exist, refreshReferenceObject is not returning null and the proxy cannot be materialized.
+     * So, this method exists to properly handle the proxied attachment BO.  This is a hack
+     * and should be removed post JPA migration.
+     */
+    private void refreshAttachment() {
+    	if (ObjectUtils.isNull(attachment)) {
             this.refreshReferenceObject("attachment");
+            final boolean isProxy = attachment != null && ProxyHelper.isProxy(attachment);
+            if (isProxy && ProxyHelper.getRealObject(attachment) == null) {
+            	attachment = null;
+            }
         }
+    }
+    
+    protected void populateAttachmentForBO() {
+    	refreshAttachment();
         
         PersistableAttachment boAttachment = (PersistableAttachment) newMaintainableObject.getBusinessObject();
         
@@ -638,9 +653,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
     
     public void populateDocumentAttachment() {
-        if(attachment == null) {
-            this.refreshReferenceObject("attachment");
-        }
+    	refreshAttachment();
         
         if(fileAttachment != null && StringUtils.isNotEmpty(fileAttachment.getFileName())) {
             //Populate DocumentAttachment BO

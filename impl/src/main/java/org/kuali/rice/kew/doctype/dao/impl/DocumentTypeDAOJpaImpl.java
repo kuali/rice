@@ -152,7 +152,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 			}
 		}
 
-		documentType.setPolicies(docPolicies);
+		documentType.setPolicies(new ArrayList<DocumentTypePolicy>(docPolicies));
 	}
 
 	public List findByRouteHeaderId(Long routeHeaderId) {

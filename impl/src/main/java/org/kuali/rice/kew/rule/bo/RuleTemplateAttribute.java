@@ -31,7 +31,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
@@ -69,10 +68,8 @@ public class RuleTemplateAttribute extends KewPersistableBusinessObjectBase impl
 	private Long ruleTemplateId;
     @Column(name="RULE_ATTR_ID", insertable=false, updatable=false)
 	private Long ruleAttributeId;
-    @Type(type="yes_no")
     @Column(name="REQ_IND")
 	private Boolean required;
-    @Type(type="yes_no")
     @Column(name="ACTV_IND")
 	private Boolean active;
     @Column(name="DSPL_ORD")

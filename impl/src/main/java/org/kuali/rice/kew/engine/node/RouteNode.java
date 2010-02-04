@@ -45,7 +45,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -91,10 +90,8 @@ public class RouteNode implements Serializable {
 	private String routeNodeName;
     @Column(name="RTE_MTHD_NM")
 	private String routeMethodName;
-    @Type(type="yes_no")
     @Column(name="FNL_APRVR_IND")
 	private Boolean finalApprovalInd;
-    @Type(type="yes_no")
     @Column(name="MNDTRY_RTE_IND")
 	private Boolean mandatoryRouteInd;
     @Column(name="GRP_ID")

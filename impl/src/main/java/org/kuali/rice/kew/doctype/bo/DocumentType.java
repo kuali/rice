@@ -32,6 +32,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -45,7 +46,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -104,6 +104,12 @@ import org.kuali.rice.kns.web.format.FormatException;
             "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
             "ORDER BY UPPER(dt.label)")
 })
+/*@TypeDefs({
+	@TypeDef(
+			name="numericBool",
+			typeClass=DocumentType.class
+	)
+})*/
 public class DocumentType extends KewPersistableBusinessObjectBase implements Inactivateable, DocumentTypeEBO {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
 
@@ -123,10 +129,8 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 	private String name;
     @Column(name="DOC_TYP_VER_NBR")
     private Integer version = new Integer(0);
-    @Type(type="yes_no")
     @Column(name="ACTV_IND")
 	private Boolean active;
-    @Type(type="yes_no")
     @Column(name="CUR_IND")
 	private Boolean currentInd;
     @Column(name="DOC_TYP_DESC")
@@ -177,7 +181,8 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     @Transient
     private Group defaultExceptionWorkgroup;
 
-    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
+    //@JoinColumn(name="DOC_TYP_ID")
     @Fetch(value=FetchMode.SUBSELECT)
     private Collection<DocumentTypePolicy> policies;
     
@@ -186,8 +191,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
      * values may be assigned as the status.  If not valid values are defined, the status may
      * be set to any value by the client.
      */
-    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
-    		mappedBy="documentTypeId")
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentTypeId")
     @Fetch(value=FetchMode.SUBSELECT)
     private List<ApplicationDocumentStatus> validApplicationStatuses;
     

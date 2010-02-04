@@ -43,7 +43,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -141,7 +140,6 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private Integer jrfVerNbr;
     @Column(name="PRNCPL_ID")
 	private String principalId;
-    @Type(type="yes_no")
     @Column(name="FRC_ACTN")
 	private Boolean forceAction;
     @Column(name="PARNT_ID", insertable=false, updatable=false)
@@ -177,7 +175,6 @@ public class ActionRequestValue implements WorkflowPersistable {
     @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(fetch=FetchType.LAZY,mappedBy="actionRequestId")
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
-    @Type(type="yes_no")
     @Column(name="CUR_IND")
     private Boolean currentIndicator = new Boolean(true);
     @Transient

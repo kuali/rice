@@ -37,7 +37,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -102,7 +101,6 @@ public class ActionTakenValue implements WorkflowPersistable {
     private DocumentRouteHeaderValue routeHeader;
     @OneToMany(mappedBy="actionTaken")
 	private Collection<ActionRequestValue> actionRequests;
-    @Type(type="yes_no")
     @Column(name="CUR_IND")
     private Boolean currentIndicator = new Boolean(true);
     @Transient

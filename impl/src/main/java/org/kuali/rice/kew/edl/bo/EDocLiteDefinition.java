@@ -29,7 +29,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 
 /**
@@ -68,7 +67,6 @@ public class EDocLiteDefinition  extends KewPersistableBusinessObjectBase {
     /**
      * edoclt_def_actv_ind
      */
-    @Type(type="yes_no")
     @Column(name="ACTV_IND")
 	private Boolean activeInd;
 

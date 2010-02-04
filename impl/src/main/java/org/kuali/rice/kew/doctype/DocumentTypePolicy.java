@@ -20,13 +20,16 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.util.KEWConstants;
 
 
@@ -47,7 +50,6 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
     @Id
 	@Column(name="DOC_PLCY_NM",insertable=false,updatable=false)
 	private String policyName;
-    @Type(type="yes_no")
     @Column(name="PLCY_NM")
 	private Boolean policyValue;
     @Column(name="PLCY_VAL")
@@ -55,9 +57,9 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
     @Transient
     private Boolean inheritedFlag;
 
-//    @ManyToOne(fetch=FetchType.EAGER)
-//	@JoinColumn(name="DOC_TYP_ID",updatable=false,insertable=false)
-//	private DocumentType documentType;
+    @ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="DOC_TYP_ID",updatable=false,insertable=false)
+	private DocumentType documentType;
 
     public DocumentTypePolicy() {
     }
@@ -160,13 +162,13 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
         return clone;
     }
 
-//    public DocumentType getDocumentType() {
-//        return documentType;
-//    }
-//
-//    public void setDocumentType(DocumentType documentType) {
-//        this.documentType = documentType;
-//    }
+    public DocumentType getDocumentType() {
+        return documentType;
+    }
+
+    public void setDocumentType(DocumentType documentType) {
+        this.documentType = documentType;
+    }
 
     /**
      * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()

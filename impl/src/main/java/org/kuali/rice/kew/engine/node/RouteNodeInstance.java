@@ -43,7 +43,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -88,13 +87,10 @@ public class RouteNodeInstance implements Serializable {
     @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_ID")
     private RouteNode routeNode;
-    @Type(type="yes_no")
     @Column(name="ACTV_IND")
     private boolean active = false;
-    @Type(type="yes_no")
     @Column(name="CMPLT_IND")
     private boolean complete = false;
-    @Type(type="yes_no")
     @Column(name="INIT_IND")
     private boolean initial = true;
     @OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.MERGE})

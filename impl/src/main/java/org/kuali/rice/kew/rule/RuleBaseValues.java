@@ -42,7 +42,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -91,7 +90,6 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 	private Long ruleTemplateId;
     @Column(name="PREV_RULE_VER_NBR")
 	private Long previousVersionId;
-    @Type(type="yes_no")
     @Column(name="ACTV_IND")
 	private Boolean activeInd;
     @Column(name="RULE_BASE_VAL_DESC")
@@ -102,16 +100,14 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 	private Long routeHeaderId;
 	@Column(name="FRM_DT")
 	private Timestamp fromDate;
-	@Column(name="TO_DT", nullable=false)
+	@Column(name="TO_DT")
 	private Timestamp toDate;
 	@Column(name="DACTVN_DT")
 	private Timestamp deactivationDate;
-	@Type(type="yes_no")
     @Column(name="CUR_IND")
 	private Boolean currentInd;
     @Column(name="RULE_VER_NBR")
 	private Integer versionNbr;
-    @Type(type="yes_no")
     @Column(name="FRC_ACTN")
 	private Boolean forceAction;
     @Fetch(value = FetchMode.SUBSELECT)
@@ -130,14 +126,12 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
     private RuleBaseValues previousVersion;
     @Column(name="ACTVN_DT")
 	private Timestamp activationDate;
-    @Type(type="yes_no")
     @Column(name="DLGN_IND")
     private Boolean delegateRule = Boolean.FALSE;
     /**
      * Indicator that signifies that this rule is a defaults/template rule which contains
      * template-defined rule defaults for other rules which use the associated template
      */
-    @Type(type="yes_no")
     @Column(name="TMPL_RULE_IND")
     private Boolean templateRuleInd = Boolean.FALSE;
 

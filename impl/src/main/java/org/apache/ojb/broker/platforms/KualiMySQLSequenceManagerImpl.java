@@ -40,27 +40,31 @@ public class KualiMySQLSequenceManagerImpl extends AbstractSequenceManager {
 
 		Statement stmt = null;
 		Long seqNumber = null;
+		final String sequenceName = arg0.getSequenceName();
+
 		try {
+			//FIXME: should we be closing this connection in a finally block?
 			Connection c = broker.serviceConnectionManager().getConnection();
 			stmt = c.createStatement();
-			String sql = "INSERT INTO " + arg0.getSequenceName() + " VALUES (NULL);";
+			String sql = "INSERT INTO " + sequenceName + " VALUES (NULL);";
 			stmt.executeUpdate(sql);
 			sql = "SELECT LAST_INSERT_ID()";
+			
+			//FIXME: should we be closing this result set in a finally block?
 			ResultSet rs = stmt.executeQuery(sql);
 			if (rs != null) {
 				rs.first();
 				seqNumber = rs.getLong(1);
 			}
 		} catch (Exception e) {
-			throw new RuntimeException("Unable to execute: " + e.getMessage());
+			throw new RuntimeException("Unable to execute for sequence name: " + sequenceName, e);
 		} finally {
 			try {
 				if (stmt != null) {
 					stmt.close();
 				}
 			} catch (Exception e) {
-				throw new RuntimeException("Unable to close connection: "
-						+ e.getMessage());
+				throw new RuntimeException("Unable to close statement for sequence name: " + sequenceName, e);
 			}
 		}
 

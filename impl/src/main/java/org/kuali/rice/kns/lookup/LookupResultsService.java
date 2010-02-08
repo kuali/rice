@@ -21,7 +21,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.SelectedObjectIds;
 import org.kuali.rice.kns.web.ui.ResultRow;
 
 public interface LookupResultsService extends Serializable {
@@ -74,7 +75,7 @@ public interface LookupResultsService extends Serializable {
      * @return A list of BOs corresponding to the 
      * @throws Exception many reasons, including if the user id parameter does not match the user used to persist the results
      */
-    public Collection<PersistableBusinessObject> retrieveSelectedResultBOs(String lookupResultsSequenceNumber, Class boClass, String personId) throws Exception;
+    public <T extends BusinessObject> Collection<T> retrieveSelectedResultBOs(String lookupResultsSequenceNumber, Class<T> boClass, String personId) throws Exception;
     
     /**
      * Returns whether a user is allowed to view the lookup results of the given sequence number
@@ -127,5 +128,13 @@ public interface LookupResultsService extends Serializable {
      * will be removed
      */
     public void deleteOldSelectedObjectIds(Timestamp expirationDate);
+    
+    /**
+     * Determines the lookup id for a given business object
+     * 
+     * @param businessObject the business object to get a lookup id for
+     * @return the lookup id
+     */
+    public abstract String getLookupId(BusinessObject businessObject);
 }
 

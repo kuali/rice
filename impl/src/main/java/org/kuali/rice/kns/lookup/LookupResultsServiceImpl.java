@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.LookupResults;
 import org.kuali.rice.kns.bo.MultipleValueLookupMetadata;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -40,6 +41,8 @@ import org.kuali.rice.kns.web.ui.ResultRow;
 public class LookupResultsServiceImpl implements LookupResultsService {
     private BusinessObjectService businessObjectService;
     private PersistedLookupMetadataDao persistedLookupMetadataDao;
+    private LookupResultsSupportStrategyService persistableBusinessObjectSupportStrategy;
+    private LookupResultsSupportStrategyService dataDictionarySupportStrategy;
     
     /**
      * @see org.kuali.rice.kns.lookup.LookupResultsService#persistResultsTable(java.lang.String, java.util.List, java.lang.String)
@@ -168,15 +171,17 @@ public class LookupResultsServiceImpl implements LookupResultsService {
     }
 
     /**
-     * Returns a list of BOs that were selected.
-     * 
-     * This implementation makes an attempt to retrieve all BOs with the given object IDs, unless they have been deleted or the object ID changed.
-     * Since data may have changed since the search, the returned BOs may not match the criteria used to search.
+     * Figures out which support strategy to defer to and uses that service to retrieve the results; if the bo class doesn't qualify with any support strategy, an exception is thrown.  A nasty one, too.
      * 
      * @see org.kuali.rice.kns.lookup.LookupResultsService#retrieveSelectedResultBOs(java.lang.String, java.lang.Class, java.lang.String)
      */
-    public Collection<PersistableBusinessObject> retrieveSelectedResultBOs(String lookupResultsSequenceNumber, Class boClass, String personId) throws Exception {
-        SelectedObjectIds selectedObjectIds = retrieveSelectedObjectIds(lookupResultsSequenceNumber);
+    public <T extends BusinessObject> Collection<T> retrieveSelectedResultBOs(String lookupResultsSequenceNumber, Class<T> boClass, String personId) throws Exception {
+    	final LookupResultsSupportStrategyService supportService = getQualifingSupportStrategy(boClass);
+    	if (supportService == null) {
+    		throw new RuntimeException("BusinessObject class "+boClass.getName()+" cannot be used within a multiple value lookup; it either needs to be a PersistableBusinessObject or have both its primary keys and a lookupable defined in its data dictionary entry");
+    	}
+    	
+    	SelectedObjectIds selectedObjectIds = retrieveSelectedObjectIds(lookupResultsSequenceNumber);
         
         if (!isAuthorizedToAccessSelectedObjectIds(selectedObjectIds, personId)) {
             // TODO: use the other identifier
@@ -187,11 +192,25 @@ public class LookupResultsServiceImpl implements LookupResultsService {
         
         if (setOfSelectedObjIds.isEmpty()) {
             // OJB throws exception if querying on empty set
-            return new ArrayList<PersistableBusinessObject>();
+            return new ArrayList<T>();
         }
-        Map<String, Collection<String>> queryCriteria = new HashMap<String, Collection<String>>();
-        queryCriteria.put(KNSPropertyConstants.OBJECT_ID, setOfSelectedObjIds);
-        return businessObjectService.findMatching(boClass, queryCriteria);
+    	
+    	return supportService.retrieveSelectedResultBOs(boClass, setOfSelectedObjIds);
+    }
+    
+    /**
+     * Given the business object class, determines the best qualifying LookupResultsSupportStrategyService to use
+     * 
+     * @param boClass a business object class
+     * @return an LookupResultsSupportStrategyService implementation, or null if no qualifying strategies could be found
+     */
+    protected LookupResultsSupportStrategyService getQualifingSupportStrategy(Class boClass) {
+    	if (getPersistableBusinessObjectSupportStrategy().qualifiesForStrategy(boClass)) {
+    		return getPersistableBusinessObjectSupportStrategy();
+    	} else if (getDataDictionarySupportStrategy().qualifiesForStrategy(boClass)) {
+    		return getDataDictionarySupportStrategy();
+    	}
+    	return null;
     }
     
     /**
@@ -213,8 +232,20 @@ public class LookupResultsServiceImpl implements LookupResultsService {
             businessObjectService.delete(selectedObjectIds);
         }
     }
+    
+    /**
+	 * Figures out which LookupResultsServiceSupportStrategy to defer to, and uses that to get the lookup id
+	 * @see org.kuali.rice.kns.lookup.LookupResultsService#getLookupId(org.kuali.rice.kns.bo.BusinessObject)
+	 */
+	public String getLookupId(BusinessObject businessObject) {
+		final LookupResultsSupportStrategyService supportService = getQualifingSupportStrategy(businessObject.getClass());
+		if (supportService == null) {
+			return null; // this may happen quite often, so let's just return null - no exception here
+		}
+		return supportService.getLookupIdForBusinessObject(businessObject);
+	}
 
-    public BusinessObjectService getBusinessObjectService() {
+	public BusinessObjectService getBusinessObjectService() {
         return businessObjectService;
     }
 
@@ -249,5 +280,36 @@ public class LookupResultsServiceImpl implements LookupResultsService {
     public void setPersistedLookupMetadataDao(PersistedLookupMetadataDao persistedLookupMetadataDao) {
         this.persistedLookupMetadataDao = persistedLookupMetadataDao;
     }
+
+	/**
+	 * @return the persistableBusinessObjectSupportStrategy
+	 */
+	public LookupResultsSupportStrategyService getPersistableBusinessObjectSupportStrategy() {
+		return this.persistableBusinessObjectSupportStrategy;
+	}
+
+	/**
+	 * @return the dataDictionarySupportStrategy
+	 */
+	public LookupResultsSupportStrategyService getDataDictionarySupportStrategy() {
+		return this.dataDictionarySupportStrategy;
+	}
+
+	/**
+	 * @param persistableBusinessObjectSupportStrategy the persistableBusinessObjectSupportStrategy to set
+	 */
+	public void setPersistableBusinessObjectSupportStrategy(
+			LookupResultsSupportStrategyService persistableBusinessObjectSupportStrategy) {
+		this.persistableBusinessObjectSupportStrategy = persistableBusinessObjectSupportStrategy;
+	}
+
+	/**
+	 * @param dataDictionarySupportStrategy the dataDictionarySupportStrategy to set
+	 */
+	public void setDataDictionarySupportStrategy(
+			LookupResultsSupportStrategyService dataDictionarySupportStrategy) {
+		this.dataDictionarySupportStrategy = dataDictionarySupportStrategy;
+	}
+    
 }
 

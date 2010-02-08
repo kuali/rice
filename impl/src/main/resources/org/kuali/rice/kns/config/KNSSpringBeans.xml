@@ -551,6 +551,24 @@
 		<property name="persistedLookupMetadataDao">
 			<ref bean="persistedLookupMetadataDao" />
 		</property>
+		<property name="dataDictionarySupportStrategy">
+			<ref bean="dataDictionaryLookupResultsSupportStrategyService" />
+		</property>
+		<property name="persistableBusinessObjectSupportStrategy">
+			<ref bean="persistableBusinessObjectLookupResultsSupportStrategyService" />
+		</property>
+	</bean>
+	
+	<bean id="dataDictionaryLookupResultsSupportStrategyService" class="org.kuali.rice.kns.lookup.DataDictionaryLookupResultsSupportStrategy">
+		<property name="dataDictionaryService">
+			<ref bean="dataDictionaryService" />
+		</property>
+	</bean>
+	
+	<bean id="persistableBusinessObjectLookupResultsSupportStrategyService" class="org.kuali.rice.kns.lookup.PersistableBusinessObjectLookupResultsSupportStrategyImpl">
+		<property name="businessObjectService">
+			<ref bean="businessObjectService" />
+		</property>
 	</bean>
 
 	<bean id="postalCodeService" class="org.kuali.rice.kns.service.impl.PostalCodeServiceImpl">

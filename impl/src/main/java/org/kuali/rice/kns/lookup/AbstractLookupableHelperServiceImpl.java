@@ -1091,8 +1091,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 // iterate through result list and wrap rows with return url and action urls
 		 for (Iterator iter = displayList.iterator(); iter.hasNext();) {
 			 BusinessObject element = (BusinessObject) iter.next();
-			 if(element instanceof PersistableBusinessObject){
-				 lookupForm.setLookupObjectId(((PersistableBusinessObject)element).getObjectId());
+			 
+			 final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(element);
+			 if(lookupId != null){
+				 lookupForm.setLookupObjectId(lookupId);
 			 }
 
 			 BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
@@ -1173,8 +1175,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 			 if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
 				 row.setBusinessObject(element);
 			 }
-			 if(element instanceof PersistableBusinessObject){
-				 row.setObjectId((((PersistableBusinessObject)element).getObjectId()));
+			 if(lookupId != null){
+				 row.setObjectId(lookupId);
 			 }
 
 

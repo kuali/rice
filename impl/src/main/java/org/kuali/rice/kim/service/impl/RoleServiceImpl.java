@@ -29,44 +29,28 @@ import java.util.Set;
 
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import javax.xml.namespace.QName;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
-import org.kuali.rice.kim.service.IdentityManagementNotificationService;
-import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.ResponsibilityInternalService;
 import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.RoleUpdateService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -75,13 +59,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -90,70 +68,24 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  *
  */
 @WebService(endpointInterface = KIMWebServiceConstants.RoleService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.RoleService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.RoleService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
-public class RoleServiceImpl implements RoleService, RoleUpdateService {
-	protected static final String ROLE_IMPL_CACHE_PREFIX = "RoleImpl-ID-";
-	protected static final String ROLE_IMPL_BY_NAME_CACHE_PREFIX = "RoleImpl-Name-";
-	protected static final String ROLE_IMPL_CACHE_GROUP = "RoleImpl";
+public class RoleServiceImpl extends RoleServiceBase implements RoleService {
+	
 
 	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );
 
-	private BusinessObjectService businessObjectService;
-	private SequenceAccessorService sequenceAccessorService;
-	private IdentityManagementService identityManagementService;
-	private ResponsibilityInternalService responsibilityInternalService;
 	private KimRoleDao roleDao;
-	private LookupService lookupService;
-	private RiceCacheAdministrator cacheAdministrator;
-
-    private Map<String,KimRoleTypeService> roleTypeServiceCache = Collections.synchronizedMap( new HashMap<String,KimRoleTypeService>() );
-    private Map<String,KimDelegationTypeService> delegationTypeServiceCache = Collections.synchronizedMap( new HashMap<String,KimDelegationTypeService>() );
-    private Map<String,Boolean> applicationRoleTypeCache = Collections.synchronizedMap( new HashMap<String,Boolean>() );
-
+	
     // --------------------
     // Role Data
     // --------------------
 
-    protected String getRoleCacheKey( String roleId ) {
-    	return ROLE_IMPL_CACHE_PREFIX + roleId;
-    }
-
-    protected String getRoleByNameCacheKey( String namespaceCode, String roleName ) {
-    	return ROLE_IMPL_BY_NAME_CACHE_PREFIX + namespaceCode + "-" + roleName;
-    	}
-
-    protected void addRoleImplToCache( RoleImpl role ) {
-    	if (role != null) {
-	    	getCacheAdministrator().putInCache(getRoleCacheKey(role.getRoleId()), role, ROLE_IMPL_CACHE_GROUP);
-	    	getCacheAdministrator().putInCache(getRoleByNameCacheKey(role.getNamespaceCode(),role.getRoleName()), role, ROLE_IMPL_CACHE_GROUP);
-    		}
-    	}
-
-    protected RoleImpl getRoleFromCache( String roleId ) {
-    	return (RoleImpl)getCacheAdministrator().getFromCache(getRoleCacheKey(roleId));
-    }
-
-    protected RoleImpl getRoleFromCache( String namespaceCode, String roleName ) {
-    	return (RoleImpl)getCacheAdministrator().getFromCache(getRoleByNameCacheKey(namespaceCode,roleName));
-    }
+    
 
     public void flushInternalRoleCache() {
     	getCacheAdministrator().flushGroup(ROLE_IMPL_CACHE_GROUP);
     	}
 
-	protected RoleImpl getRoleImpl(String roleId) {
-		if ( StringUtils.isBlank( roleId ) ) {
-			return null;
-		}
-		// check for a non-null result in the cache, return it if found
-		RoleImpl cachedResult = getRoleFromCache( roleId );
-		if ( cachedResult != null ) {
-			return cachedResult;
-		}
-		// otherwise, run the query
-		RoleImpl result = (RoleImpl)getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, roleId);
-		addRoleImplToCache( result );
-		return result;
-	}
+	
 
 	/**
 	 * @see org.kuali.rice.kim.service.RoleService#getRole(java.lang.String)
@@ -188,25 +120,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		return null;
 	}
 
-	protected RoleImpl getRoleImplByName( String namespaceCode, String roleName ) {
-		if ( StringUtils.isBlank( namespaceCode )
-				|| StringUtils.isBlank( roleName ) ) {
-			return null;
-		}
-		// check for a non-null result in the cache, return it if found
-		RoleImpl cachedResult = getRoleFromCache( namespaceCode, roleName );
-		if ( cachedResult != null ) {
-			return cachedResult;
-		}
-		AttributeSet criteria = new AttributeSet();
-		criteria.put(KimConstants.UniqueKeyConstants.NAMESPACE_CODE, namespaceCode);
-		criteria.put(KimConstants.UniqueKeyConstants.ROLE_NAME, roleName);
-		criteria.put(KNSPropertyConstants.ACTIVE, "Y");
-		// while this is not actually the primary key - there will be at most one row with these criteria
-		RoleImpl result = (RoleImpl)getBusinessObjectService().findByPrimaryKey(RoleImpl.class, criteria);
-		addRoleImplToCache( result );
-		return result;
-	}
+	
 
 	protected Map<String,RoleImpl> getRoleImplMap(Collection<String> roleIds) {
 		Map<String,RoleImpl> result = null;
@@ -393,11 +307,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	return getRoleMembers(roleIds, qualification, true);
     }
 
-    protected RoleMemberImpl getRoleMemberImpl( String roleMemberId ) {
-    	return (RoleMemberImpl)getBusinessObjectService().findByPrimaryKey(
-    			RoleMemberImpl.class,
-    			Collections.singletonMap(KIMPropertyConstants.RoleMember.ROLE_MEMBER_ID, roleMemberId) );
-    }
+    
 
 	public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification) {
 		Set<String> principalIds = new HashSet<String>();
@@ -618,7 +528,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     }
 
     protected boolean isApplicationRoleType( String roleTypeId, KimRoleTypeService service ) {
-    	Boolean result = applicationRoleTypeCache.get( roleTypeId );
+    	Boolean result = getApplicationRoleTypeCache().get( roleTypeId );
     	if ( result == null ) {
     		if ( service != null ) {
     			result = service.isApplicationRoleType();
@@ -636,14 +546,14 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
      * @return the Role Type Service
      */
     protected KimRoleTypeService getRoleTypeService( String roleId ) {
-        KimRoleTypeService service = roleTypeServiceCache.get( roleId );
-    	if ( service == null && !roleTypeServiceCache.containsKey( roleId ) ) {
+        KimRoleTypeService service = getRoleTypeServiceCache().get( roleId );
+    	if ( service == null && !getRoleTypeServiceCache().containsKey( roleId ) ) {
     		RoleImpl role = getRoleImpl( roleId );
     		KimTypeInfo roleType = role.getKimRoleType();
     		if ( roleType != null ) {
         		service = getRoleTypeService(roleType);
     		}
-			roleTypeServiceCache.put(roleId, service);
+    		getRoleTypeServiceCache().put(roleId, service);
     	}
     	return service;
     }
@@ -668,8 +578,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     }
 
     protected KimDelegationTypeService getDelegationTypeService( String delegationId ) {
-    	KimDelegationTypeService service = delegationTypeServiceCache.get( delegationId );
-    	if ( service == null && !delegationTypeServiceCache.containsKey( delegationId ) ) {
+    	KimDelegationTypeService service = getDelegationTypeServiceCache().get( delegationId );
+    	if ( service == null && !getDelegationTypeServiceCache().containsKey( delegationId ) ) {
     		Map<String,String> pk = new HashMap<String,String>(1);
     		pk.put( KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId );
     		KimDelegationImpl delegation = (KimDelegationImpl)getBusinessObjectService().findByPrimaryKey( KimDelegationImpl.class, pk );
@@ -687,7 +597,7 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     				service = (KimDelegationTypeService)roleTypeService;
     			}
     		}
-    		delegationTypeServiceCache.put(delegationId, service);
+    		getDelegationTypeServiceCache().put(delegationId, service);
     	}
     	return service;
     }
@@ -1114,198 +1024,10 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	return false;
     }
 
-    // --------------------
-    // Persistence Methods
-    // --------------------
-
-	// TODO: pulling attribute IDs repeadedly is inefficient - consider caching the entire list as a map
-
-	@SuppressWarnings("unchecked")
-	protected String getKimAttributeId( String attributeName ) {
-		Map<String,Object> critieria = new HashMap<String,Object>( 1 );
-		critieria.put( "attributeName", attributeName );
-		Collection<KimAttributeImpl> defs = getBusinessObjectService().findMatching( KimAttributeImpl.class, critieria );
-		return defs.iterator().next().getKimAttributeId();
-	}
-
-	protected void addMemberAttributeData( RoleMemberImpl roleMember, AttributeSet qualifier, String kimTypeId ) {
-		List<RoleMemberAttributeDataImpl> attributes = new ArrayList<RoleMemberAttributeDataImpl>();
-		for ( String attributeName : qualifier.keySet() ) {
-			RoleMemberAttributeDataImpl a = new RoleMemberAttributeDataImpl();
-			a.setAttributeValue( qualifier.get( attributeName ) );
-			a.setKimTypeId( kimTypeId );
-			a.setRoleMemberId( roleMember.getRoleMemberId() );
-			// look up the attribute ID
-			a.setKimAttributeId( getKimAttributeId( attributeName ) );
-			
-	    	Map<String, String> criteria = new HashMap<String, String>();
-	    	criteria.put(KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, a.getKimAttributeId());
-	    	criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMember.getRoleMemberId());
-			List<RoleMemberAttributeDataImpl> origRoleMemberAttributes = 
-	    		(List<RoleMemberAttributeDataImpl>)getBusinessObjectService().findMatching(RoleMemberAttributeDataImpl.class, criteria);
-			RoleMemberAttributeDataImpl origRoleMemberAttribute = 
-	    		(origRoleMemberAttributes!=null && origRoleMemberAttributes.size()>0) ? origRoleMemberAttributes.get(0) : null;
-	    	if(origRoleMemberAttribute!=null){
-	    		a.setAttributeDataId(origRoleMemberAttribute.getAttributeDataId());
-	    		a.setVersionNumber(origRoleMemberAttribute.getVersionNumber());
-	    	} else{
-				// pull the next sequence number for the data ID
-				a.setAttributeDataId(getNewAttributeDataId());
-	    	}
-			attributes.add( a );
-		}
-		roleMember.setAttributes( attributes );
-	}
-
-	private void deleteNullMemberAttributeData(List<RoleMemberAttributeDataImpl> attributes) {
-		List<RoleMemberAttributeDataImpl> attributesToDelete = new ArrayList<RoleMemberAttributeDataImpl>();
-		for(RoleMemberAttributeDataImpl attribute: attributes){
-			if(attribute.getAttributeValue()==null){
-				attributesToDelete.add(attribute);
-			}
-		}
-		getBusinessObjectService().delete(attributesToDelete);
-	}
-	
-	protected boolean doesMemberMatch( RoleMemberImpl roleMember, String memberId, String memberTypeCode, AttributeSet qualifier ) {
-		if ( roleMember.getMemberId().equals( memberId ) && roleMember.getMemberTypeCode().equals( memberTypeCode ) ) {
-			// member ID/type match
-    		AttributeSet roleQualifier = roleMember.getQualifier();
-    		if ( (qualifier == null || qualifier.isEmpty())
-    				&& (roleQualifier == null || roleQualifier.isEmpty()) ) {
-    			return true; // blank qualifier match
-    		} else {
-    			if ( qualifier != null && roleQualifier != null && qualifier.equals( roleQualifier ) ) {
-    				return true; // qualifier match
-    			}
-    		}
-		}
-		return false;
-	}
-
-	protected boolean doAnyMemberRecordsMatch( List<RoleMemberImpl> roleMembers, String memberId, String memberTypeCode, AttributeSet qualifier ) {
-		for ( RoleMemberImpl rm : roleMembers ) {
-			if ( doesMemberMatch( rm, memberId, memberTypeCode, qualifier ) ) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-    public void assignPrincipalToRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifier) {
-    	// look up the role
-    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
-    	role.refreshReferenceObject("members");
-    	
-    	// check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatch( role.getMembers(), principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
-    		return;
-    	}
-    	// create the new role member object
-    	RoleMemberImpl newRoleMember = new RoleMemberImpl();
-    	// get a new ID from the sequence
-    	SequenceAccessorService sas = getSequenceAccessorService();
-    	Long nextSeq = sas.getNextAvailableSequenceNumber( 
-    			KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberImpl.class );    	
-    	newRoleMember.setRoleMemberId( nextSeq.toString() );
-
-    	newRoleMember.setRoleId( role.getRoleId() );
-    	newRoleMember.setMemberId( principalId );
-    	newRoleMember.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
-
-    	// build role member attribute objects from the given AttributeSet
-    	addMemberAttributeData( newRoleMember, qualifier, role.getKimTypeId() );
-
-    	// add row to member table
-    	// When members are added to roles, clients must be notified.
-    	getResponsibilityInternalService().saveRoleMember(newRoleMember);
-    	getIdentityManagementNotificationService().roleUpdated();
-    }
-
-    public void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
-    	// look up the role
-    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
-    	// check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatch( role.getMembers(), groupId, Role.GROUP_MEMBER_TYPE, qualifier ) ) {
-    		return;
-    	}
-    	// create the new role member object
-    	RoleMemberImpl newRoleMember = new RoleMemberImpl();
-    	// get a new ID from the sequence
-    	SequenceAccessorService sas = getSequenceAccessorService();
-    	Long nextSeq = sas.getNextAvailableSequenceNumber(
-    			KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberImpl.class);
-    	newRoleMember.setRoleMemberId( nextSeq.toString() );
-
-    	newRoleMember.setRoleId( role.getRoleId() );
-    	newRoleMember.setMemberId( groupId );
-    	newRoleMember.setMemberTypeCode( Role.GROUP_MEMBER_TYPE );
-
-    	// build role member attribute objects from the given AttributeSet
-    	addMemberAttributeData( newRoleMember, qualifier, role.getKimTypeId() );
-
-    	// When members are added to roles, clients must be notified.
-    	getResponsibilityInternalService().saveRoleMember(newRoleMember);
-    	getIdentityManagementNotificationService().roleUpdated();
-    }
-
-    public void removePrincipalFromRole(String principalId, String namespaceCode, String roleName, AttributeSet qualifier ) {
-    	// look up the role
-    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
-    	// pull all the principal members
-    	role.refreshReferenceObject("members");
-    	// look for an exact qualifier match
-		for ( RoleMemberImpl rm : role.getMembers() ) {
-			if ( doesMemberMatch( rm, principalId, Role.PRINCIPAL_MEMBER_TYPE, qualifier ) ) {
-		    	// if found, remove
-				// When members are removed from roles, clients must be notified.
-		    	getResponsibilityInternalService().removeRoleMember(rm);
-			}
-		}
-		getIdentityManagementNotificationService().roleUpdated();
-    }
-
-    public void removeGroupFromRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
-    	// look up the role
-    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
-    	// pull all the group role members
-    	// look for an exact qualifier match
-		for ( RoleMemberImpl rm : role.getMembers() ) {
-			if ( doesMemberMatch( rm, groupId, Role.GROUP_MEMBER_TYPE, qualifier ) ) {
-		    	// if found, remove
-				// When members are removed from roles, clients must be notified.
-		    	getResponsibilityInternalService().removeRoleMember(rm);
-			}
-		}
-		getIdentityManagementNotificationService().roleUpdated();
-    }
-
+    
     // --------------------
     // Support Methods
     // --------------------
-
-	protected BusinessObjectService getBusinessObjectService() {
-		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
-	}
-
-
-	protected IdentityManagementService getIdentityManagementService() {
-		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
-		}
-
-		return identityManagementService;
-	}
-
-	protected SequenceAccessorService getSequenceAccessorService() {
-		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-		}
-		return sequenceAccessorService;
-	}
 
 	/**
 	 * @return the roleDao
@@ -1507,130 +1229,6 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     public List<RoleMembershipInfo> findRoleMembers(Map<String,String> fieldValues){
     	return roleDao.getRoleMembers(fieldValues);
     }
-
-	protected RoleMemberImpl matchingMemberRecord( List<RoleMemberImpl> roleMembers, String memberId, String memberTypeCode, AttributeSet qualifier ) {
-		for ( RoleMemberImpl rm : roleMembers ) {
-			if ( doesMemberMatch( rm, memberId, memberTypeCode, qualifier ) ) {
-				return rm;
-			}
-		}
-		return null;
-	}
-	
-
-
-    public void assignRoleToRole(String roleId, String namespaceCode, String roleName, AttributeSet qualifier) {
-    	// look up the role
-    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
-    	// check that identical member does not already exist
-    	if ( doAnyMemberRecordsMatch( role.getMembers(), roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
-    		return;
-    	}
-    	// create the new role member object
-    	RoleMemberImpl newRoleMember = new RoleMemberImpl();
-    	// get a new ID from the sequence
-    	SequenceAccessorService sas = getSequenceAccessorService();
-    	Long nextSeq = sas.getNextAvailableSequenceNumber(
-    			KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberImpl.class);
-    	newRoleMember.setRoleMemberId( nextSeq.toString() );
-
-    	newRoleMember.setRoleId( role.getRoleId() );
-    	newRoleMember.setMemberId( roleId );
-    	newRoleMember.setMemberTypeCode( Role.ROLE_MEMBER_TYPE );
-    	// build role member attribute objects from the given AttributeSet
-    	addMemberAttributeData( newRoleMember, qualifier, role.getKimTypeId() );
-
-    	// When members are added to roles, clients must be notified.
-    	getResponsibilityInternalService().saveRoleMember(newRoleMember);
-    	getIdentityManagementNotificationService().roleUpdated();
-    }
-    
-    public RoleMemberCompleteInfo saveRoleMemberForRole(String roleMemberId, String memberId, String memberTypeCode, String roleId, 
-    		AttributeSet qualifications, Date activeFromDate, Date activeToDate) throws UnsupportedOperationException{
-    	if(StringUtils.isEmpty(roleMemberId) && StringUtils.isEmpty(memberId) && StringUtils.isEmpty(roleId)){
-    		throw new IllegalArgumentException("Either Role member ID or a combination of member ID and role ID must be passed in.");
-    	}
-    	RoleMemberImpl origRoleMember = null;
-    	RoleImpl role;
-    	// create the new role member object
-    	RoleMemberImpl newRoleMember = new RoleMemberImpl();
-    	if(StringUtils.isEmpty(roleMemberId)){
-	    	// look up the role
-	    	role = getRoleImpl(roleId);
-	    	// check that identical member does not already exist
-	    	origRoleMember = matchingMemberRecord( role.getMembers(), memberId, memberTypeCode, qualifications );
-    	} else{
-    		origRoleMember = getRoleMemberImpl(roleMemberId);
-    		role = getRoleImpl(origRoleMember.getRoleId());
-    	}
-    	
-    	if(origRoleMember !=null){
-    		newRoleMember.setRoleMemberId(origRoleMember.getRoleMemberId());
-    		newRoleMember.setVersionNumber(origRoleMember.getVersionNumber());
-    	} else {
-	    	// get a new ID from the sequence
-	    	SequenceAccessorService sas = getSequenceAccessorService();
-	    	Long nextSeq = sas.getNextAvailableSequenceNumber(
-	    			KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleMemberImpl.class);
-	    	newRoleMember.setRoleMemberId( nextSeq.toString() );
-    	}
-    	newRoleMember.setRoleId(role.getRoleId());
-    	newRoleMember.setMemberId( memberId );
-    	newRoleMember.setMemberTypeCode( memberTypeCode );
-    	newRoleMember.setActiveFromDate(activeFromDate);
-    	newRoleMember.setActiveToDate(activeToDate);
-    	// build role member attribute objects from the given AttributeSet
-    	addMemberAttributeData( newRoleMember, qualifications, role.getKimTypeId() );
-
-    	// When members are added to roles, clients must be notified.
-    	getResponsibilityInternalService().saveRoleMember(newRoleMember);
-    	deleteNullMemberAttributeData(newRoleMember.getAttributes());    
-    	getIdentityManagementNotificationService().roleUpdated();
-    	
-    	return findRoleMemberCompleteInfo(newRoleMember.getRoleMemberId());
-    }
-
-
-
-    public void removeRoleFromRole(String roleId, String namespaceCode, String roleName, AttributeSet qualifier) {
-    	// look up the role
-    	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
-    	// pull all the group role members
-    	// look for an exact qualifier match
-		for ( RoleMemberImpl rm : role.getMembers() ) {
-			if ( doesMemberMatch( rm, roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
-		    	// if found, remove
-				// When members are removed from roles, clients must be notified.
-		    	getResponsibilityInternalService().removeRoleMember(rm);
-			}
-		}
-		getIdentityManagementNotificationService().roleUpdated();
-    }
-    
-    public RoleMemberCompleteInfo findRoleMemberCompleteInfo(String roleMemberId){
-    	Map<String, String> fieldValues = new HashMap<String, String>();
-    	fieldValues.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
-    	List<RoleMemberCompleteInfo> roleMemberInfos = findRoleMembersCompleteInfo(fieldValues);
-    	if(roleMemberInfos!=null && roleMemberInfos.size()>0)
-    		return roleMemberInfos.get(0);
-    	return null;
-    }
-
-    public List<RoleMemberCompleteInfo> findRoleMembersCompleteInfo(Map<String, String> fieldValues){
-    	List<RoleMemberCompleteInfo> roleMembersCompleteInfos = new ArrayList<RoleMemberCompleteInfo>();
-    	RoleMemberCompleteInfo roleMembersCompleteInfo;
-    	List<RoleMemberImpl> roleMembers = (List<RoleMemberImpl>)getLookupService().findCollectionBySearchHelper(
-				RoleMemberImpl.class, fieldValues, true);
-    	for(RoleMemberImpl roleMember: roleMembers){
-    		roleMembersCompleteInfo = roleMember.toSimpleInfo();
-			BusinessObject member = getMember(roleMembersCompleteInfo.getMemberTypeCode(), roleMembersCompleteInfo.getMemberId());
-			roleMembersCompleteInfo.setMemberName(getMemberName(roleMembersCompleteInfo.getMemberTypeCode(), member));
-			roleMembersCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(roleMembersCompleteInfo.getMemberTypeCode(), member));
-			roleMembersCompleteInfo.setRoleRspActions(getRoleMemberResponsibilityActionInfo(roleMember.getRoleMemberId()));
-			roleMembersCompleteInfos.add(roleMembersCompleteInfo);
-    	}
-    	return roleMembersCompleteInfos;
-    }
     
     public List<DelegateMemberCompleteInfo> findDelegateMembersCompleteInfo(final Map<String, String> fieldValues){
     	List<DelegateMemberCompleteInfo> delegateMembersCompleteInfo = new ArrayList<DelegateMemberCompleteInfo>();
@@ -1669,126 +1267,6 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
     	}
     	return delegateMembersCompleteInfo;
     }
-    
-    private KimDelegationImpl getDelegationImpl(List<KimDelegationImpl> delegations, String delegationId){
-    	if(StringUtils.isEmpty(delegationId) || delegations==null)
-    		return null;
-    	for(KimDelegationImpl delegation: delegations){
-    		if(StringUtils.equals(delegation.getDelegationId(), delegationId))
-    			return delegation;
-    	}
-    	return null;
-    }
-    /**
-     * 
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kim.service.RoleUpdateService#assignRoleAsDelegationMemberToRole(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-     */
-    public void saveDelegationMemberForRole(String delegationMemberId,
-    			String roleMemberId, String memberId, String memberTypeCode, String delegationTypeCode, 
-    			String roleId, AttributeSet qualifications, Date activeFromDate, Date activeToDate) throws UnsupportedOperationException{
-    	if(StringUtils.isEmpty(delegationMemberId) && StringUtils.isEmpty(memberId) && StringUtils.isEmpty(roleId)){
-    		throw new IllegalArgumentException("Either Delegation member ID or a combination of member ID and role ID must be passed in.");
-    	}
-    	// look up the role
-    	RoleImpl role = getRoleImpl(roleId);
-    	KimDelegationImpl delegation = getDelegationOfType(role.getRoleId(), delegationTypeCode);
-    	// create the new role member object
-    	KimDelegationMemberImpl newDelegationMember = new KimDelegationMemberImpl();
-
-    	Map<String, String> criteria = new HashMap<String, String>();
-    	KimDelegationMemberImpl origDelegationMember = null;
-    	if(StringUtils.isNotEmpty(delegationMemberId)){
-    		criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMemberId);
-	    	origDelegationMember = (KimDelegationMemberImpl)getBusinessObjectService().findByPrimaryKey(KimDelegationMemberImpl.class, criteria);
-    	} else{
-	    	criteria.put(KimConstants.PrimaryKeyConstants.MEMBER_ID, memberId);
-	    	criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegation.getDelegationId());
-	    	List<KimDelegationMemberImpl> origDelegationMembers = (List<KimDelegationMemberImpl>)getBusinessObjectService().findMatching(KimDelegationMemberImpl.class, criteria);
-	    	origDelegationMember = 
-	    		(origDelegationMembers!=null && origDelegationMembers.size()>0) ? origDelegationMembers.get(0) : null;
-    	}
-    	if(origDelegationMember!=null){
-    		newDelegationMember.setDelegationMemberId(origDelegationMember.getDelegationMemberId());
-    		newDelegationMember.setVersionNumber(origDelegationMember.getVersionNumber());
-    	} else{
-    		newDelegationMember.setDelegationMemberId(getNewDelegationMemberId());
-    	}
-    	newDelegationMember.setMemberId(memberId);
-    	newDelegationMember.setDelegationId(delegation.getDelegationId());
-    	newDelegationMember.setRoleMemberId(roleMemberId);
-    	newDelegationMember.setMemberTypeCode(memberTypeCode);
-    	newDelegationMember.setActiveFromDate(activeFromDate);
-    	newDelegationMember.setActiveToDate(activeToDate);
-
-    	// build role member attribute objects from the given AttributeSet
-    	addDelegationMemberAttributeData( newDelegationMember, qualifications, role.getKimTypeId() );
-
-    	List<KimDelegationMemberImpl> delegationMembers = new ArrayList<KimDelegationMemberImpl>();
-    	delegationMembers.add(newDelegationMember);
-    	delegation.setMembers(delegationMembers);
-
-    	getBusinessObjectService().save(delegation);
-    	for(KimDelegationMemberImpl delegationMember: delegation.getMembers()){
-    		deleteNullDelegationMemberAttributeData(delegationMember.getAttributes());
-    	}
-    	getIdentityManagementNotificationService().roleUpdated();
-    }
-
-	protected void addDelegationMemberAttributeData( KimDelegationMemberImpl delegationMember, AttributeSet qualifier, String kimTypeId ) {
-		List<KimDelegationMemberAttributeDataImpl> attributes = new ArrayList<KimDelegationMemberAttributeDataImpl>();
-		for ( String attributeName : qualifier.keySet() ) {
-			KimDelegationMemberAttributeDataImpl a = new KimDelegationMemberAttributeDataImpl();
-			a.setAttributeValue( qualifier.get( attributeName ) );
-			a.setKimTypeId( kimTypeId );
-			a.setDelegationMemberId( delegationMember.getDelegationMemberId() );
-			// look up the attribute ID
-			a.setKimAttributeId( getKimAttributeId( attributeName ) );
-	    	Map<String, String> criteria = new HashMap<String, String>();
-	    	criteria.put(KimConstants.PrimaryKeyConstants.KIM_ATTRIBUTE_ID, a.getKimAttributeId());
-	    	criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMember.getDelegationMemberId());
-			List<KimDelegationMemberAttributeDataImpl> origDelegationMemberAttributes = 
-	    		(List<KimDelegationMemberAttributeDataImpl>)getBusinessObjectService().findMatching(KimDelegationMemberAttributeDataImpl.class, criteria);
-			KimDelegationMemberAttributeDataImpl origDelegationMemberAttribute = 
-	    		(origDelegationMemberAttributes!=null && origDelegationMemberAttributes.size()>0) ? origDelegationMemberAttributes.get(0) : null;
-	    	if(origDelegationMemberAttribute!=null){
-	    		a.setAttributeDataId(origDelegationMemberAttribute.getAttributeDataId());
-	    		a.setVersionNumber(origDelegationMemberAttribute.getVersionNumber());
-	    	} else{
-				// pull the next sequence number for the data ID
-				a.setAttributeDataId(getNewAttributeDataId());
-	    	}
-			attributes.add( a );
-		}
-		delegationMember.setAttributes( attributes );
-	}
-
-	private void deleteNullDelegationMemberAttributeData(List<KimDelegationMemberAttributeDataImpl> attributes) {
-		List<KimDelegationMemberAttributeDataImpl> attributesToDelete = new ArrayList<KimDelegationMemberAttributeDataImpl>();
-		for(KimDelegationMemberAttributeDataImpl attribute: attributes){
-			if(attribute.getAttributeValue()==null){
-				attributesToDelete.add(attribute);
-			}
-		}
-		getBusinessObjectService().delete(attributesToDelete);
-	}
-
-	private List<KimDelegationImpl> getRoleDelegations(String roleId){
-		if(roleId==null)
-			return new ArrayList<KimDelegationImpl>();
-		Map<String,String> criteria = new HashMap<String,String>(1);
-		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
-		return (List<KimDelegationImpl>)getBusinessObjectService().findMatching(KimDelegationImpl.class, criteria);
-	}
-
-    private KimDelegationImpl getDelegationOfType(String roleId, String delegationTypeCode){
-    	List<KimDelegationImpl> roleDelegations = getRoleDelegations(roleId);
-        if(isDelegationPrimary(delegationTypeCode))
-            return getPrimaryDelegation(roleId, roleDelegations);
-        else
-            return getSecondaryDelegation(roleId, roleDelegations);
-    }
 
     public DelegateTypeInfo getDelegateTypeInfo(String roleId, String delegationTypeCode){
     	KimDelegationImpl delegation = getDelegationOfType(roleId, delegationTypeCode);
@@ -1803,72 +1281,6 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		KimDelegationImpl delegation = (KimDelegationImpl)getBusinessObjectService().findByPrimaryKey(KimDelegationImpl.class, criteria);
     	if(delegation==null) return null;
         return delegation.toSimpleInfo();
-    }
-    
-    protected KimDelegationImpl getPrimaryDelegation(String roleId, List<KimDelegationImpl> roleDelegations){
-        KimDelegationImpl primaryDelegation = null;
-        RoleImpl roleImpl = getRoleImpl(roleId);
-        for(KimDelegationImpl delegation: roleDelegations){
-            if(isDelegationPrimary(delegation.getDelegationTypeCode()))
-                primaryDelegation = delegation;
-        }
-        if(primaryDelegation==null){
-            primaryDelegation = new KimDelegationImpl();
-            primaryDelegation.setRoleId(roleId);
-            primaryDelegation.setDelegationId(getNewDelegationId());
-            primaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_PRIMARY);
-            primaryDelegation.setKimTypeId(roleImpl.getKimTypeId());
-        }
-        return primaryDelegation;
-    }
-
-    protected String getNewDelegationId(){
-    	SequenceAccessorService sas = getSequenceAccessorService();
-    	Long nextSeq = sas.getNextAvailableSequenceNumber(
-                KimConstants.SequenceNames.KRIM_DLGN_ID_S,
-                KimDelegationImpl.class);
-        return nextSeq.toString();
-    }
-
-    protected String getNewAttributeDataId(){
-		SequenceAccessorService sas = getSequenceAccessorService();		
-		Long nextSeq = sas.getNextAvailableSequenceNumber(
-				KimConstants.SequenceNames.KRIM_ATTR_DATA_ID_S, 
-				RoleMemberAttributeDataImpl.class );
-		return nextSeq.toString();
-    }
-    
-    protected String getNewDelegationMemberId(){
-    	SequenceAccessorService sas = getSequenceAccessorService();
-    	Long nextSeq = sas.getNextAvailableSequenceNumber(
-                KimConstants.SequenceNames.KRIM_DLGN_MBR_ID_S,
-                KimDelegationImpl.class);
-        return nextSeq.toString();
-    }
-    
-    protected boolean isDelegationPrimary(String delegationTypeCode){
-        return KEWConstants.DELEGATION_PRIMARY.equals(delegationTypeCode);
-    }
-
-    protected boolean isDelegationSecondary(String delegationTypeCode){
-        return KEWConstants.DELEGATION_SECONDARY.equals(delegationTypeCode);
-    }
-
-    private KimDelegationImpl getSecondaryDelegation(String roleId, List<KimDelegationImpl> roleDelegations){
-        KimDelegationImpl secondaryDelegation = null;
-        RoleImpl roleImpl = getRoleImpl(roleId);
-        for(KimDelegationImpl delegation: roleDelegations){
-            if(isDelegationSecondary(delegation.getDelegationTypeCode()))
-                secondaryDelegation = delegation;
-        }
-        if(secondaryDelegation==null){
-            secondaryDelegation = new KimDelegationImpl();
-            secondaryDelegation.setRoleId(roleId);
-            secondaryDelegation.setDelegationId(getNewDelegationId());
-            secondaryDelegation.setDelegationTypeCode(KEWConstants.DELEGATION_SECONDARY);
-            secondaryDelegation.setKimTypeId(roleImpl.getKimTypeId());
-        }
-        return secondaryDelegation;
     }
 
 	public List<DelegateMemberCompleteInfo> getDelegationMembersByDelegationId(String delegationId){
@@ -1929,21 +1341,6 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		return delegateMemberCompleteInfo;
 	}
 
-	public List<RoleResponsibilityActionInfo> getRoleMemberResponsibilityActionInfo(String roleMemberId){
-		Map<String, String> criteria = new HashMap<String, String>(1);		
-		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
-		List<RoleResponsibilityActionImpl> responsibilityImpls = (List<RoleResponsibilityActionImpl>)
-			getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
-		List<RoleResponsibilityActionInfo> roleResponsibilityActionInfos = new ArrayList<RoleResponsibilityActionInfo>();
-		RoleResponsibilityActionInfo roleResponsibilityActionInfo;
-		for(RoleResponsibilityActionImpl responsibilityActionImpl: responsibilityImpls){
-			roleResponsibilityActionInfo = new RoleResponsibilityActionInfo();
-			KimCommonUtils.copyProperties(roleResponsibilityActionInfo, responsibilityActionImpl);
-			roleResponsibilityActionInfos.add(roleResponsibilityActionInfo);
-		}
-		return roleResponsibilityActionInfos;
-	}
-
 	public List<RoleResponsibilityInfo> getRoleResponsibilities(String roleId){
 		Map<String, String> criteria = new HashMap<String, String>(1);		
 		criteria.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
@@ -1959,119 +1356,8 @@ public class RoleServiceImpl implements RoleService, RoleUpdateService {
 		return roleResponsibilities;
 	}
 
-	public void saveRoleRspActions(String roleResponsibilityActionId, String roleId, String roleResponsibilityId, String roleMemberId, 
-			String actionTypeCode, String actionPolicyCode, Integer priorityNumber, Boolean forceAction){
-		RoleResponsibilityActionImpl newRoleRspAction = new RoleResponsibilityActionImpl();
-		newRoleRspAction.setActionPolicyCode(actionPolicyCode);
-		newRoleRspAction.setActionTypeCode(actionTypeCode);
-		newRoleRspAction.setPriorityNumber(priorityNumber);
-		newRoleRspAction.setForceAction(forceAction);
-		newRoleRspAction.setRoleMemberId(roleMemberId);
-		newRoleRspAction.setRoleResponsibilityId(roleResponsibilityId);
-		if(StringUtils.isEmpty(roleResponsibilityActionId)){
-			//If there is an existing one
-			Map<String, String> criteria = new HashMap<String, String>(1);		
-			criteria.put(KimConstants.PrimaryKeyConstants.ROLE_RESPONSIBILITY_ID, roleResponsibilityId);
-			criteria.put(KimConstants.PrimaryKeyConstants.ROLE_MEMBER_ID, roleMemberId);
-			List<RoleResponsibilityActionImpl> roleResponsibilityActionImpls = (List<RoleResponsibilityActionImpl>)
-				getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
-			if(roleResponsibilityActionImpls!=null && roleResponsibilityActionImpls.size()>0){
-				newRoleRspAction.setRoleResponsibilityActionId(roleResponsibilityActionImpls.get(0).getRoleResponsibilityActionId());
-				newRoleRspAction.setVersionNumber(roleResponsibilityActionImpls.get(0).getVersionNumber());
-			} else{
-	//			 get a new ID from the sequence
-		    	SequenceAccessorService sas = getSequenceAccessorService();
-		    	Long nextSeq = sas.getNextAvailableSequenceNumber(
-		    			KimConstants.SequenceNames.KRIM_ROLE_RSP_ACTN_ID_S, RoleResponsibilityActionImpl.class);
-		    	newRoleRspAction.setRoleResponsibilityActionId(nextSeq.toString());
-			}
-		} else{
-			Map<String, String> criteria = new HashMap<String, String>(1);		
-			criteria.put(KimConstants.PrimaryKeyConstants.ROLE_RESPONSIBILITY_ACTION_ID, roleResponsibilityActionId);
-			List<RoleResponsibilityActionImpl> roleResponsibilityActionImpls = (List<RoleResponsibilityActionImpl>)
-				getBusinessObjectService().findMatching(RoleResponsibilityActionImpl.class, criteria);
-			if(CollectionUtils.isNotEmpty(roleResponsibilityActionImpls) && roleResponsibilityActionImpls.size()>0){
-				newRoleRspAction.setRoleResponsibilityActionId(roleResponsibilityActionImpls.get(0).getRoleResponsibilityActionId());
-				newRoleRspAction.setVersionNumber(roleResponsibilityActionImpls.get(0).getVersionNumber());
-			}
-		}
-		getBusinessObjectService().save(newRoleRspAction);
-		getIdentityManagementNotificationService().roleUpdated();
-	}
-	
-    private BusinessObject getMember(String memberTypeCode, String memberId){
-        Class<? extends BusinessObject> roleMemberTypeClass = null;
-        String roleMemberIdName = "";
-        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-            roleMemberTypeClass = KimPrincipalImpl.class;
-            roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-            roleMemberTypeClass = GroupImpl.class;
-            roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-            roleMemberTypeClass = RoleImpl.class;
-            roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
-        }
-        Map<String, String> criteria = new HashMap<String, String>();
-        criteria.put(roleMemberIdName, memberId);
-        return KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(roleMemberTypeClass, criteria);
-    }
-
-    private String getMemberName(String memberTypeCode, BusinessObject member){
-        String roleMemberName = "";
-        if(member==null) return roleMemberName;
-        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-            roleMemberName = ((KimPrincipalImpl)member).getPrincipalName();
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-            roleMemberName = ((GroupImpl)member).getGroupName();
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-            roleMemberName = ((RoleImpl)member).getRoleName();
-        }
-        return roleMemberName;
-    }
-
-    private String getMemberNamespaceCode(String memberTypeCode, BusinessObject member){
-        String roleMemberNamespaceCode = "";
-        if(member==null) return roleMemberNamespaceCode;
-        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-            roleMemberNamespaceCode = "";
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-            roleMemberNamespaceCode = ((GroupImpl)member).getNamespaceCode();
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-            roleMemberNamespaceCode = ((RoleImpl)member).getNamespaceCode();
-        }
-        return roleMemberNamespaceCode;
-    }
-
     public void applicationRoleMembershipChanged( String roleId ) {
     	getResponsibilityInternalService().updateActionRequestsForRoleChange(roleId);
     }
-    
-	/**
-	 * @return the lookupService
-	 */
-    protected LookupService getLookupService() {
-		if(lookupService == null) {
-			lookupService = KNSServiceLocator.getLookupService();
-		}
-		return lookupService;
-	}
 
-	protected ResponsibilityInternalService getResponsibilityInternalService() {
-		if ( responsibilityInternalService == null ) {
-			responsibilityInternalService = KIMServiceLocator.getResponsibilityInternalService();
-		}
-		return responsibilityInternalService;
-	}
-	
-	protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
-        return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
-    }
-	
-	protected RiceCacheAdministrator getCacheAdministrator() {
-		if ( cacheAdministrator == null ) {
-			cacheAdministrator = KEWServiceLocator.getCacheAdministrator();
-		}
-		return cacheAdministrator;
-    }
 }

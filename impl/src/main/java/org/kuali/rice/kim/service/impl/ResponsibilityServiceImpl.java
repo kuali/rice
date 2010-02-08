@@ -63,19 +63,12 @@ import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class ResponsibilityServiceImpl implements ResponsibilityService, ResponsibilityUpdateService {
-	protected static final String RESPONSIBILITY_IMPL_CACHE_PREFIX = "ResponsibilityImpl-Template-";
-	protected static final String RESPONSIBILITY_IMPL_CACHE_GROUP = "ResponsibilityImpl";
-	private static final String DEFAULT_RESPONSIBILITY_TYPE_SERVICE = "defaultResponsibilityTypeService";
+public class ResponsibilityServiceImpl extends ResponsibilityServiceBase implements ResponsibilityService {
 	private static final Logger LOG = Logger.getLogger( ResponsibilityServiceImpl.class );
-	private static final Integer DEFAULT_PRIORITY_NUMBER = Integer.valueOf(1);
-
-	private BusinessObjectService businessObjectService;
 	private RoleService roleService;
 	private KimResponsibilityDao responsibilityDao;   
 	private KimResponsibilityTypeService responsibilityTypeService;
-	private SequenceAccessorService sequenceAccessorService;
-	private RiceCacheAdministrator cacheAdministrator;
+	
 
 	// --------------------------
     // Responsibility Methods
@@ -180,9 +173,7 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     	return result;
     }
     
-    protected String getResponsibilityImplByTemplateNameCacheKey( String namespaceCode, String responsibilityTemplateName ) {
-    	return RESPONSIBILITY_IMPL_CACHE_PREFIX + namespaceCode + "-" + responsibilityTemplateName;
-    }
+    
     
     /**
      * @see org.kuali.rice.kim.service.ResponsibilityService#hasResponsibility(java.lang.String, String, java.lang.String, AttributeSet, AttributeSet)
@@ -436,87 +427,17 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
     	
     }
 
-    // --------------------
-    // ResponsibilityUpdateService methods
-    // --------------------
-
-    public void saveResponsibility(String responsibilityId,
-    		String responsibilityTemplateId, String namespaceCode, String name,
-    		String description, boolean active, AttributeSet responsibilityDetails ) {
-    	// look for an existing responsibility of the given type
-    	try {
-	    	KimResponsibilityImpl resp = getBusinessObjectService().findBySinglePrimaryKey(KimResponsibilityImpl.class, responsibilityId);
-	    	if ( resp == null ) {
-	    		resp = new KimResponsibilityImpl();
-	    		resp.setResponsibilityId(responsibilityId);
-	    	}
-	    	resp.setTemplateId(responsibilityTemplateId);
-	    	resp.refreshReferenceObject( "template" );
-	    	resp.setNamespaceCode(namespaceCode);
-	    	resp.setName(name);
-	    	resp.setDescription(description);
-	    	resp.setActive(active);
-	    	AttributeSet attributesToAdd = new AttributeSet( responsibilityDetails );
-	    	List<ResponsibilityAttributeDataImpl> details = resp.getDetailObjects();
-	    	Iterator<ResponsibilityAttributeDataImpl> detailIter = details.iterator();
-	    	while ( detailIter.hasNext() ) {
-	    		ResponsibilityAttributeDataImpl detail = detailIter.next();
-	    		String attrName = detail.getKimAttribute().getAttributeName();
-	    		String attrValue = attributesToAdd.get(attrName);
-	    		// if not present in the list or is blank, remove from the list
-	    		if ( StringUtils.isBlank(attrValue) ) {
-	    			detailIter.remove();
-	    		} else {
-	    			detail.setAttributeValue(attrValue);
-	    		}
-	    		// remove from detail map - used to add new ones later
-	    		attributesToAdd.remove(attrName);
-	    	}
-	    	for ( Entry<String,String> attrEntry : attributesToAdd.entrySet() ) {
-	    		KimTypeAttributeInfo attr = resp.getTemplate().getKimType().getAttributeDefinitionByName(attrEntry.getKey());
-	    		if (attr != null) {
-	    			ResponsibilityAttributeDataImpl newDetail = new ResponsibilityAttributeDataImpl();
-	    			newDetail.setAttributeDataId(getNewAttributeDataId());
-	    			newDetail.setKimAttributeId(attr.getKimAttributeId());
-	    			newDetail.setKimTypeId(resp.getTemplate().getKimTypeId());
-	    			newDetail.setResponsibilityId(responsibilityId);
-	    			newDetail.setAttributeValue(attrEntry.getValue());
-	    			details.add(newDetail);
-	    		}
-	    	}
-	    	getBusinessObjectService().save(resp);
-	    	// flush the IdM service caches
-	    	KIMServiceLocator.getIdentityManagementService().flushResponsibilityCaches();
-	    	// flush the local implementation class cache
-	    	flushResponsibilityImplCache();
-    	} catch ( RuntimeException ex ) {
-    		LOG.error( "Exception in saveResponsibility: ", ex );
-    		throw ex;
-    	}
-    }
+ 
     
-    public void flushResponsibilityImplCache() {
-    	getCacheAdministrator().flushGroup(RESPONSIBILITY_IMPL_CACHE_GROUP);
-    }
+    
 
-    protected String getNewAttributeDataId(){
-		SequenceAccessorService sas = getSequenceAccessorService();		
-		Long nextSeq = sas.getNextAvailableSequenceNumber(
-				KimConstants.SequenceNames.KRIM_ATTR_DATA_ID_S, 
-				RoleMemberAttributeDataImpl.class );
-		return nextSeq.toString();
-    }
+    
     
     // --------------------
     // Support Methods
     // --------------------
 	
-	protected BusinessObjectService getBusinessObjectService() {
-		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
-	}
+	
 
 	protected RoleService getRoleService() {
 		if ( roleService == null ) {
@@ -546,18 +467,6 @@ public class ResponsibilityServiceImpl implements ResponsibilityService, Respons
 	}
 
 
-	protected SequenceAccessorService getSequenceAccessorService() {
-		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-		}
-		return sequenceAccessorService;
-	}
 	
-	protected RiceCacheAdministrator getCacheAdministrator() {
-		if ( cacheAdministrator == null ) {
-			cacheAdministrator = KEWServiceLocator.getCacheAdministrator();
-		}
-		return cacheAdministrator;
-	}
 	
 }

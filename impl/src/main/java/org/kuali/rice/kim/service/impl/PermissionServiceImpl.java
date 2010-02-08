@@ -69,29 +69,14 @@ import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
  *
  */
 @WebService(endpointInterface = KIMWebServiceConstants.PermissionService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.PermissionService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.PermissionService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
-public class PermissionServiceImpl implements PermissionService, PermissionUpdateService {
-	protected static final String PERMISSION_IMPL_CACHE_PREFIX = "PermissionImpl-Template-";
-	protected static final String PERMISSION_IMPL_NAME_CACHE_PREFIX = "PermissionImpl-Name-";
-	protected static final String PERMISSION_IMPL_ID_CACHE_PREFIX = "PermissionImpl-Id-";
-	protected static final String PERMISSION_IMPL_CACHE_GROUP = "PermissionImpl";
-
-	private static final String DEFAULT_PERMISSION_TYPE_SERVICE = "defaultPermissionTypeService";
+public class PermissionServiceImpl extends PermissionServiceBase implements PermissionService {
 	private static final Logger LOG = Logger.getLogger( PermissionServiceImpl.class );
-	
-	private BusinessObjectService businessObjectService;
+
 	private RoleService roleService;
 	private KimPermissionDao permissionDao;
     private KimPermissionTypeService defaultPermissionTypeService;
-	private SequenceAccessorService sequenceAccessorService;
+	
 	private List<KimPermissionTemplateInfo> allTemplates;
-	private RiceCacheAdministrator cacheAdministrator;
-
-    private static final long CACHE_MAX_AGE_SECONDS = 60L;
-
-    private Map<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>> permissionToRoleCache = Collections.synchronizedMap( new HashMap<List<KimPermissionInfo>,MaxAgeSoftReference<List<String>>>() );
-
-    // Not ThreadLocal or time limited- should not change during the life of the system
-	private Map<String,KimPermissionTypeService> permissionTypeServiceByNameCache = Collections.synchronizedMap( new HashMap<String, KimPermissionTypeService>() );
 	
     // --------------------
     // Authorization Checks
@@ -115,7 +100,7 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 			cacheKey.append( permissionId );
 		}
 		String key = cacheKey.toString();
-		KimPermissionTypeService service = permissionTypeServiceByNameCache.get(key);
+		KimPermissionTypeService service = getPermissionTypeServiceByNameCache().get(key);
 		if ( service == null ) {
 			KimPermissionTemplateImpl permTemplate = null;
 			if ( permissionTemplateName != null ) {
@@ -135,7 +120,7 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 				}
 			}
 			service = getPermissionTypeService( permTemplate );
-    		permissionTypeServiceByNameCache.put(key, service);
+			getPermissionTypeServiceByNameCache().put(key, service);
 		}
 		return service;
 	}
@@ -358,19 +343,6 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     	// now, filter the full list by the detail passed
     	return !getMatchingPermissions( permissions, permissionDetails ).isEmpty();   
     }
-
-	protected List<String> getRolesForPermissionsFromCache( List<KimPermissionInfo> key ) {
-    	List<String> roleIds = null; 
-    	MaxAgeSoftReference<List<String>> cacheRef = permissionToRoleCache.get( key );
-    	if ( cacheRef != null ) {
-    		roleIds = cacheRef.get();
-    	}
-    	return roleIds;
-    }
-
-    protected void addRolesForPermissionsToCache( List<KimPermissionInfo> key, List<String> roleIds ) {
-    	permissionToRoleCache.put( key, new MaxAgeSoftReference<List<String>>( CACHE_MAX_AGE_SECONDS, roleIds ) );
-    }
  
     public List<String> getRoleIdsForPermission( String namespaceCode, String permissionName, AttributeSet permissionDetails) {
     	// get all the permission objects whose name match that requested
@@ -492,27 +464,13 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
     	return permissions;
     }
 
-    protected String getPermissionImplByTemplateNameCacheKey( String namespaceCode, String permissionTemplateName ) {
-    	return PERMISSION_IMPL_CACHE_PREFIX + namespaceCode + "-" + permissionTemplateName;
-    }
-    protected String getPermissionImplByNameCacheKey( String namespaceCode, String permissionName ) {
-    	return PERMISSION_IMPL_NAME_CACHE_PREFIX + namespaceCode + "-" + permissionName;
-    }
-    protected String getPermissionImplByIdCacheKey( String permissionId ) {
-    	return PERMISSION_IMPL_ID_CACHE_PREFIX + permissionId;
-    }
+    
     
     // --------------------
     // Support Methods
     // --------------------
 	
-	protected BusinessObjectService getBusinessObjectService() {
-		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
-	}
-   
+	
 	protected RoleService getRoleService() {
 		if ( roleService == null ) {
 			roleService = KIMServiceLocator.getRoleManagementService();		
@@ -535,22 +493,23 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 
 	@SuppressWarnings("unchecked")
 	public List<KimPermissionInfo> lookupPermissions(Map<String, String> searchCriteria, boolean unbounded ){
-		Collection baseResults = null; 
-		Lookupable permissionLookupable = KNSServiceLocator.getLookupable(
-				KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
-				);
-		permissionLookupable.setBusinessObjectClass(PermissionImpl.class);
-		if ( unbounded ) {
-			baseResults = permissionLookupable.getSearchResultsUnbounded( searchCriteria );
-		} else {
-			baseResults = permissionLookupable.getSearchResults(searchCriteria);
-		}
+		Collection<KimPermissionImpl> baseResults = null; 
+		//Lookupable permissionLookupable = KNSServiceLocator.getLookupable(
+		//		KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
+		//		);
+		//permissionLookupable.setBusinessObjectClass(PermissionImpl.class);
+		//if ( unbounded ) {
+		//    baseResults = permissionLookupable.getSearchResultsUnbounded( searchCriteria );
+		    baseResults = (Collection<KimPermissionImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchHelper(KimPermissionImpl.class, searchCriteria, unbounded);
+		//} else {
+		//	baseResults = permissionLookupable.getSearchResults(searchCriteria);
+		//}
 		List<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>( baseResults.size() );
-		for ( PermissionImpl resp : (Collection<PermissionImpl>)baseResults ) {
+		for ( KimPermissionImpl resp : (Collection<KimPermissionImpl>)baseResults ) {
 			results.add( resp.toSimpleInfo() );
 		}
 		if ( baseResults instanceof CollectionIncomplete ) {
-			results = new CollectionIncomplete<KimPermissionInfo>( results, ((CollectionIncomplete<KimPermissionInfo>)baseResults).getActualSizeIfTruncated() ); 
+			results = new CollectionIncomplete<KimPermissionInfo>( results, ((CollectionIncomplete<KimPermissionImpl>)baseResults).getActualSizeIfTruncated() ); 
 		}		
 		return results;
 	}
@@ -632,78 +591,8 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 		}
 		return allTemplates;
 	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kim.service.PermissionUpdateService#savePermission(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, boolean, org.kuali.rice.kim.bo.types.dto.AttributeSet)
-	 */
-	public void savePermission(String permissionId, String permissionTemplateId,
-			String namespaceCode, String name, String description, boolean active,
-			AttributeSet permissionDetails) {
-    	// look for an existing permission of the given type
-    	try {
-	    	KimPermissionImpl perm = getBusinessObjectService().findBySinglePrimaryKey(KimPermissionImpl.class, permissionId);
-	    	if ( perm == null ) {
-	    		perm = new KimPermissionImpl();
-	    		perm.setPermissionId(permissionId);
-	    	}
-	    	perm.setTemplateId(permissionTemplateId);
-	    	perm.refreshReferenceObject( "template" );
-	    	perm.setNamespaceCode(namespaceCode);
-	    	perm.setName(name);
-	    	perm.setDescription(description);
-	    	perm.setActive(active);
-	    	AttributeSet attributesToAdd = new AttributeSet( permissionDetails );
-	    	List<PermissionAttributeDataImpl> details = perm.getDetailObjects();
-	    	Iterator<PermissionAttributeDataImpl> detailIter = details.iterator();
-	    	while ( detailIter.hasNext() ) {
-	    		PermissionAttributeDataImpl detail = detailIter.next();
-	    		String attrName = detail.getKimAttribute().getAttributeName();
-	    		String attrValue = attributesToAdd.get(attrName);
-	    		// if not present in the list or is blank, remove from the list
-	    		if ( StringUtils.isBlank(attrValue) ) {
-	    			detailIter.remove();
-	    		} else {
-	    			detail.setAttributeValue(attrValue);
-	    		}
-	    		// remove from detail map - used to add new ones later
-	    		attributesToAdd.remove(attrName);
-	    	}
-	    	for ( String attrName : attributesToAdd.keySet() ) {
-	    		KimTypeAttributeInfo attr = perm.getTemplate().getKimType().getAttributeDefinitionByName(attrName);
-	    		if ( attr != null ) {
-		    		PermissionAttributeDataImpl newDetail = new PermissionAttributeDataImpl();
-		    		newDetail.setAttributeDataId(getNewAttributeDataId());
-		    		newDetail.setKimAttributeId(attr.getKimAttributeId());
-		    		newDetail.setKimTypeId(perm.getTemplate().getKimTypeId());
-		    		newDetail.setPermissionId(permissionId);
-		    		newDetail.setAttributeValue(attributesToAdd.get(attrName));
-		    		details.add(newDetail);
-	    		} else {
-	    			LOG.error( "Unknown attribute name saving permission: '" + attrName + "'" );
-	    		}
-	    	}
-	    	getBusinessObjectService().save(perm);
-	    	KIMServiceLocator.getIdentityManagementService().flushPermissionCaches();
-	    	flushPermissionImplCache();
-    	} catch ( RuntimeException ex ) {
-    		LOG.error( "Exception in savePermission: ", ex );
-    		throw ex;
-    	}
-	}
 
-    public void flushPermissionImplCache() {
-    	getCacheAdministrator().flushGroup(PERMISSION_IMPL_CACHE_GROUP);
-    }
-	
-    protected String getNewAttributeDataId(){
-		SequenceAccessorService sas = getSequenceAccessorService();		
-		Long nextSeq = sas.getNextAvailableSequenceNumber(
-				KimConstants.SequenceNames.KRIM_ATTR_DATA_ID_S, 
-				RoleMemberAttributeDataImpl.class );
-		return nextSeq.toString();
-    }
+    
 	
 	private DataDictionaryService dataDictionaryService;
 	protected DataDictionaryService getDataDictionaryService() {
@@ -712,18 +601,8 @@ public class PermissionServiceImpl implements PermissionService, PermissionUpdat
 		}
 		return dataDictionaryService;
 	}
-	protected SequenceAccessorService getSequenceAccessorService() {
-		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
-		}
-		return sequenceAccessorService;
-	}
 	
-	protected RiceCacheAdministrator getCacheAdministrator() {
-		if ( cacheAdministrator == null ) {
-			cacheAdministrator = KEWServiceLocator.getCacheAdministrator();
-		}
-		return cacheAdministrator;
-	}
+	
+	
 	
 }

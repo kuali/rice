@@ -183,5 +183,7 @@ public class RiceKeyConstants {
     
     public static final String ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD = "error.wildcards.and.operators.not.allowed.on.field";
     public static final String INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY = "info.wildcards.and.operators.treated.literally";
+    
+    public static final String ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE = "error.document.identityManagementPerson.qualifier.valueNotUnique";
 }
 

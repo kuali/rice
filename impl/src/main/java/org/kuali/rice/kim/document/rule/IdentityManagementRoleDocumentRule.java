@@ -17,21 +17,28 @@ package org.kuali.rice.kim.document.rule;
 
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
+import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
+import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationEvent;
@@ -55,6 +62,7 @@ import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -274,10 +282,14 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		AttributeSet validationErrors = new AttributeSet();
 
 		int memberCounter = 0;
+		int roleMemberCount = 0;
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
+        final AttributeDefinitionMap attributeDefinitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
+        final Set<String> uniqueAttributeNames = figureOutUniqueQualificationSet(roleMembers, attributeDefinitions);
+        
 		for(KimDocumentRoleMember roleMember: roleMembers) {
 			errorsTemp = new AttributeSet();
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());
@@ -287,6 +299,11 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 						attributeValidationHelper.convertErrorsForMappedFields("document.members["+memberCounter+"]", errorsTemp) );
 		        memberCounter++;
 			}
+			if (uniqueAttributeNames.size() > 0) {
+				validateUniquePersonRoleQualifiersUniqueForRoleMembership(roleMember, roleMemberCount, roleMembers, uniqueAttributeNames, validationErrors);
+			}
+			
+			roleMemberCount += 1;
     	}
 
 		GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
@@ -297,6 +314,104 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
     		return false;
     	}
+    }
+    
+    /**
+     * Finds the names of the unique qualification attributes which this role should be checking against
+     * 
+     * @param memberships the memberships (we take the qualification from the first)
+     * @param attributeDefinitions information about the attributeDefinitions
+     * @return a Set of unique attribute ids (with their indices, for error reporting)
+     */
+    protected Set<String> figureOutUniqueQualificationSet(List<KimDocumentRoleMember> memberships, AttributeDefinitionMap attributeDefinitions) {
+    	Set<String> uniqueAttributeIds = new HashSet<String>();
+    	
+    	if (memberships != null && memberships.size() > 1) { // if there aren't two or more members, doing this whole check is kinda silly
+    		KimDocumentRoleMember membership = memberships.get(0);
+    		
+    		for (KimDocumentRoleQualifier qualifier : membership.getQualifiers()) {
+        		if (qualifier != null && qualifier.getKimAttribute() != null && !StringUtils.isBlank(qualifier.getKimAttribute().getAttributeName())) {
+    	    		final AttributeDefinition relatedDefinition = attributeDefinitions.getByAttributeName(qualifier.getKimAttribute().getAttributeName());
+    	    		
+    	    		if (relatedDefinition.getUnique() != null && relatedDefinition.getUnique().booleanValue()) {
+    	    			uniqueAttributeIds.add(qualifier.getKimAttrDefnId()); // it's unique - add it to the Set
+    	    		}
+        		}
+    		}
+    	}
+    	
+    	return uniqueAttributeIds;
+    }
+    
+    /**
+     * Checks all the qualifiers for the given membership, so that all qualifiers which should be unique are guaranteed to be unique
+     * 
+     * @param membership the membership to check
+     * @param attributeDefinitions the Map of attribute definitions used by the role
+     * @param memberIndex the index of the person's membership in the role (for error reporting purposes)
+     * @param validationErrors AttributeSet of errors to report
+     * @return true if all unique values are indeed unique, false otherwise
+     */
+    protected boolean validateUniquePersonRoleQualifiersUniqueForRoleMembership(KimDocumentRoleMember membershipToCheck, int membershipToCheckIndex, List<KimDocumentRoleMember> memberships, Set<String> uniqueQualifierIds, AttributeSet validationErrors) {
+    	boolean foundError = false;
+    	int count = 0;
+    	
+    	for (KimDocumentRoleMember membership : memberships) {
+    		if (membershipToCheckIndex != count) {
+    			if (sameMembership(membershipToCheck, membership)) {
+    				if (sameUniqueMembershipQualifications(membershipToCheck, membership, uniqueQualifierIds)) {
+    					foundError = true;
+    					// add error to each qualifier which is supposed to be unique
+    					int qualifierCount = 0;
+    					
+    					for (KimDocumentRoleQualifier qualifier : membership.getQualifiers()) {
+    						if (qualifier != null && uniqueQualifierIds.contains(qualifier.getKimAttrDefnId())) {
+    							validationErrors.put("document.members["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal());
+    						}
+    						qualifierCount += 1;
+    					}
+    				}
+    			}
+    		}
+    		count += 1;
+    	}
+    	
+    	return foundError;
+    }
+    
+    /**
+     * Determines if two memberships represent the same member being added: that is, the two memberships have the same type code and id
+     * 
+     * @param membershipA the first membership to check
+     * @param membershipB the second membership to check
+     * @return true if the two memberships represent the same member; false if they do not, or if it could not be profitably determined if the members were the same
+     */
+    protected boolean sameMembership(KimDocumentRoleMember membershipA, KimDocumentRoleMember membershipB) {
+    	if (!StringUtils.isBlank(membershipA.getMemberTypeCode()) && !StringUtils.isBlank(membershipB.getMemberTypeCode()) && !StringUtils.isBlank(membershipA.getMemberId()) && !StringUtils.isBlank(membershipB.getMemberId())) {
+    		return membershipA.getMemberTypeCode().equals(membershipB.getMemberTypeCode()) && membershipA.getMemberId().equals(membershipB.getMemberId());
+    	}
+    	return false;
+    }
+    
+    /**
+     * Given two memberships which represent the same member, do they share qualifications?
+     * 
+     * @param membershipA the first membership to check
+     * @param membershipB the second membership to check
+     * @param uniqueAttributeIds the Set of attribute definition ids which should be unique
+     * @return
+     */
+    protected boolean sameUniqueMembershipQualifications(KimDocumentRoleMember membershipA, KimDocumentRoleMember membershipB, Set<String> uniqueAttributeIds) {
+    	boolean equalSoFar = true;
+    	for (String kimAttributeDefinitionId : uniqueAttributeIds) {
+    		final KimDocumentRoleQualifier qualifierA = membershipA.getQualifier(kimAttributeDefinitionId);
+    		final KimDocumentRoleQualifier qualifierB = membershipB.getQualifier(kimAttributeDefinitionId);
+    		
+    		if (qualifierA != null && qualifierB != null) {
+    			equalSoFar &= (qualifierA.getAttrVal() == null && qualifierB.getAttrVal() == null) || (qualifierA.getAttrVal() == null || qualifierA.getAttrVal().equals(qualifierB.getAttrVal()));
+    		}
+    	}
+    	return equalSoFar;
     }
     
     protected KimDocumentRoleMember getRoleMemberForDelegation(
@@ -320,6 +435,9 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         KimDocumentRoleMember roleMember;
         String errorPath;
+        final AttributeDefinitionMap attributeDefinitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
+        final Set<String> uniqueQualifierAttributes = figureOutUniqueQualificationSetForDelegation(delegationMembers, attributeDefinitions);
+        
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
 			errorPath = "delegationMembers["+memberCounter+"]";
 			errorsTemp = new AttributeSet();
@@ -341,6 +459,9 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 				validationErrors.putAll(
 						attributeValidationHelper.convertErrorsForMappedFields(errorPath, errorsTemp) );
 			}
+			if (uniqueQualifierAttributes.size() > 0) {
+				validateUniquePersonRoleQualifiersUniqueForRoleDelegation(delegationMember, memberCounter, delegationMembers, uniqueQualifierAttributes, validationErrors);
+			}
 	        memberCounter++;
     	}
 		GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
@@ -351,6 +472,104 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     		valid = false;
     	}
     	return valid;
+    }
+    
+    /**
+     * Finds the names of the unique qualification attributes which this role should be checking against
+     * 
+     * @param memberships the memberships (we take the qualification from the first)
+     * @param attributeDefinitions information about the attributeDefinitions
+     * @return a Set of unique attribute ids (with their indices, for error reporting)
+     */
+    protected Set<String> figureOutUniqueQualificationSetForDelegation(List<RoleDocumentDelegationMember> memberships, AttributeDefinitionMap attributeDefinitions) {
+    	Set<String> uniqueAttributeIds = new HashSet<String>();
+    	
+    	if (memberships != null && memberships.size() > 1) { // if there aren't two or more members, doing this whole check is kinda silly
+    		RoleDocumentDelegationMember membership = memberships.get(0);
+    		
+    		for (RoleDocumentDelegationMemberQualifier qualifier : membership.getQualifiers()) {
+        		if (qualifier != null && qualifier.getKimAttribute() != null && !StringUtils.isBlank(qualifier.getKimAttribute().getAttributeName())) {
+    	    		final AttributeDefinition relatedDefinition = attributeDefinitions.getByAttributeName(qualifier.getKimAttribute().getAttributeName());
+    	    		
+    	    		if (relatedDefinition.getUnique() != null && relatedDefinition.getUnique().booleanValue()) {
+    	    			uniqueAttributeIds.add(qualifier.getKimAttrDefnId()); // it's unique - add it to the Set
+    	    		}
+        		}
+    		}
+    	}
+    	
+    	return uniqueAttributeIds;
+    }
+    
+    /**
+     * Checks all the qualifiers for the given membership, so that all qualifiers which should be unique are guaranteed to be unique
+     * 
+     * @param membership the membership to check
+     * @param attributeDefinitions the Map of attribute definitions used by the role
+     * @param memberIndex the index of the person's membership in the role (for error reporting purposes)
+     * @param validationErrors AttributeSet of errors to report
+     * @return true if all unique values are indeed unique, false otherwise
+     */
+    protected boolean validateUniquePersonRoleQualifiersUniqueForRoleDelegation(RoleDocumentDelegationMember delegationMembershipToCheck, int membershipToCheckIndex, List<RoleDocumentDelegationMember> delegationMemberships, Set<String> uniqueQualifierIds, AttributeSet validationErrors) {
+    	boolean foundError = false;
+    	int count = 0;
+    	
+    	for (RoleDocumentDelegationMember delegationMembership : delegationMemberships) {
+    		if (membershipToCheckIndex != count) {
+    			if (sameDelegationMembership(delegationMembershipToCheck, delegationMembership)) {
+    				if (sameUniqueDelegationMembershipQualifications(delegationMembershipToCheck, delegationMembership, uniqueQualifierIds)) {
+    					foundError = true;
+    					// add error to each qualifier which is supposed to be unique
+    					int qualifierCount = 0;
+    					
+    					for (RoleDocumentDelegationMemberQualifier qualifier : delegationMembership.getQualifiers()) {
+    						if (qualifier != null && uniqueQualifierIds.contains(qualifier.getKimAttrDefnId())) {
+    							validationErrors.put("document.delegationMembers["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal());
+    						}
+    						qualifierCount += 1;
+    					}
+    				}
+    			}
+    		}
+    		count += 1;
+    	}
+    	
+    	return foundError;
+    }
+    
+    /**
+     * Determines if two memberships represent the same member being added: that is, the two memberships have the same type code and id
+     * 
+     * @param membershipA the first membership to check
+     * @param membershipB the second membership to check
+     * @return true if the two memberships represent the same member; false if they do not, or if it could not be profitably determined if the members were the same
+     */
+    protected boolean sameDelegationMembership(RoleDocumentDelegationMember membershipA, RoleDocumentDelegationMember membershipB) {
+    	if (!StringUtils.isBlank(membershipA.getMemberTypeCode()) && !StringUtils.isBlank(membershipB.getMemberTypeCode()) && !StringUtils.isBlank(membershipA.getMemberId()) && !StringUtils.isBlank(membershipB.getMemberId())) {
+    		return membershipA.getMemberTypeCode().equals(membershipB.getMemberTypeCode()) && membershipA.getMemberId().equals(membershipB.getMemberId());
+    	}
+    	return false;
+    }
+    
+    /**
+     * Given two memberships which represent the same member, do they share qualifications?
+     * 
+     * @param membershipA the first membership to check
+     * @param membershipB the second membership to check
+     * @param uniqueAttributeIds the Set of attribute definition ids which should be unique
+     * @return
+     */
+    protected boolean sameUniqueDelegationMembershipQualifications(RoleDocumentDelegationMember membershipA, RoleDocumentDelegationMember membershipB, Set<String> uniqueAttributeIds) {
+    	boolean equalSoFar = true;
+    	for (String kimAttributeDefinitionId : uniqueAttributeIds) {
+    		final RoleDocumentDelegationMemberQualifier qualifierA = membershipA.getQualifier(kimAttributeDefinitionId);
+    		final RoleDocumentDelegationMemberQualifier qualifierB = membershipB.getQualifier(kimAttributeDefinitionId);
+    		
+    		if (qualifierA != null && qualifierB != null) {
+    			equalSoFar &= (qualifierA.getAttrVal() == null && qualifierB.getAttrVal() == null) || (qualifierA.getAttrVal() == null || qualifierA.getAttrVal().equals(qualifierB.getAttrVal()));
+    		}
+    	}
+    	return equalSoFar;
     }
     
 	protected boolean validateActiveDate(String errorPath, Date activeFromDate, Date activeToDate) {

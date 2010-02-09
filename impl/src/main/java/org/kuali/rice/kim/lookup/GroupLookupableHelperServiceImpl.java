@@ -34,9 +34,7 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
@@ -117,35 +115,12 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 
     @Override
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
-    	//List<GroupImpl> groups = groupDao.getGroups(fieldValues);
+    	List<GroupImpl> groups = groupDao.getGroups(fieldValues);
 
-    	List<GroupInfo> groupInfos = (List<GroupInfo>) KIMServiceLocator.getGroupService().lookupGroups(fieldValues);
-    	String principalName = fieldValues.get(KimConstants.UniqueKeyConstants.PRINCIPAL_NAME);
-    	HashMap<String, Object> personFieldValues = new HashMap<String, Object>();
-    	personFieldValues.put(KimConstants.UniqueKeyConstants.PRINCIPAL_NAME, principalName);
-    	
-    	List<PersonImpl> persons = new ArrayList<PersonImpl>();
-    	if (!StringUtils.isEmpty(principalName)) {
-    	    persons = KIMServiceLocator.getPersonService().findPeople(personFieldValues);
-    	}
-    	List<GroupImpl> groups = new ArrayList<GroupImpl>(groupInfos.size());
-    	for (GroupInfo groupInfo : groupInfos) {
-            GroupImpl group = toGroupImpl(groupInfo);
-            
-            boolean addGroup = true;
-            if (!persons.isEmpty()) {
-                addGroup = false;
-                for (PersonImpl person : persons) {
-                    if (KIMServiceLocator.getGroupService().isMemberOfGroup(person.getPrincipalId(), group.getGroupId())) {
-                        addGroup = true;
-                        break;
-                    }
-                }
-            }
-            
-            if (addGroup) {
-                groups.add(group);
-            }
+        for (GroupImpl group : groups) {
+        	if (!group.getGroupAttributes().isEmpty()) {
+                sort(group.getGroupAttributes(), new KimAttributeDataComparator());
+        	}
         }
 
         return groups;
@@ -543,18 +518,4 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
         this.attrRows = new ArrayList<Row>();
     }
 
-    private GroupImpl toGroupImpl(GroupInfo groupInfo) {
-        GroupImpl group = new GroupImpl();
-        
-        if (groupInfo != null) {
-            group.setGroupDescription(groupInfo.getGroupDescription());
-            group.setGroupId(groupInfo.getGroupId());
-            group.setGroupName(groupInfo.getGroupName());
-            group.setNamespaceCode(groupInfo.getNamespaceCode());
-            group.setKimTypeId(groupInfo.getKimTypeId());
-            group.setActive(groupInfo.isActive());
-            group.setAttributes(groupInfo.getAttributes());
-        }
-        return group;
-    }
 }

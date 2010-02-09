@@ -27,12 +27,9 @@ import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
@@ -122,13 +119,13 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		} else if(!permissionCriteriaEmpty && roleCriteriaEmpty){
 			permissionSearchResultsCopy = getPermissionsWithPermissionSearchCriteria(permissionSearchCriteria, unbounded);
 		} else if(permissionCriteriaEmpty && roleCriteriaEmpty){
-			return getAllPermissions(searchCriteria, unbounded);
+			return getAllPermissions(unbounded);
 		}
 		return permissionSearchResultsCopy;
 	}
 	
-	private List<PermissionImpl> getAllPermissions(Map<String, String> searchCriteria, boolean unbounded){
-		List<PermissionImpl> permissions = searchPermissions(searchCriteria, unbounded);
+	private List<PermissionImpl> getAllPermissions(boolean unbounded){
+		List<PermissionImpl> permissions = searchPermissions(new HashMap<String, String>(), unbounded);
 		for(PermissionImpl permission: permissions)
 			populateAssignedToRoles(permission);
 		return permissions;
@@ -155,9 +152,8 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	
 	@SuppressWarnings("unchecked")
 	private List<PermissionImpl> searchPermissions(Map<String, String> permissionSearchCriteria, boolean unbounded){
-		//return getPermissionsSearchResultsCopy((List<KimPermissionImpl>)getLookupService().findCollectionBySearchHelper(
-		//		KimPermissionImpl.class, permissionSearchCriteria, unbounded));	
-		return getPermissionsSearchResultsCopy(KIMServiceLocator.getPermissionService().lookupPermissions(permissionSearchCriteria, unbounded));
+		return getPermissionsSearchResultsCopy((List<KimPermissionImpl>)getLookupService().findCollectionBySearchHelper(
+				KimPermissionImpl.class, permissionSearchCriteria, unbounded));	
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -240,12 +236,17 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		return filteredPermissions;
 	}
 	
-	private List<PermissionImpl> getPermissionsSearchResultsCopy(List<KimPermissionInfo> permissionSearchResults){
+	private List<PermissionImpl> getPermissionsSearchResultsCopy(List<KimPermissionImpl> permissionSearchResults){
 		List<PermissionImpl> permissionSearchResultsCopy = new CollectionIncomplete<PermissionImpl>(
 			new ArrayList<PermissionImpl>(), getActualSizeIfTruncated(permissionSearchResults));
-		for(KimPermissionInfo permissionInfo: permissionSearchResults){
+		for(KimPermissionImpl permissionImpl: permissionSearchResults){
 			PermissionImpl permissionCopy = new PermissionImpl();
-		    permissionCopy = convertToPermissionImpl(permissionInfo);
+			try{
+				PropertyUtils.copyProperties(permissionCopy, permissionImpl);
+			} catch(Exception ex){
+				LOG.error( "Unable to copy properties from KimPermissionImpl to PermissionImpl, skipping.", ex );
+				continue;
+			}
 			permissionSearchResultsCopy.add(permissionCopy);
 		}
 		return permissionSearchResultsCopy;
@@ -261,63 +262,5 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		return lookupService;
 	}
 
-	private KimPermissionImpl convertToKimPermissionImpl(KimPermissionInfo permInfo) {
-        KimPermissionImpl permission = new KimPermissionImpl();
-        permission.setPermissionId( permInfo.getPermissionId() );
-        permission.setNamespaceCode( permInfo.getNamespaceCode() );
-        permission.setName( permInfo.getName() );
-        permission.setDescription( permInfo.getDescription() );
-        permission.setActive( permInfo.isActive() );
-        
-        // convert Kim Permission Template
-        KimPermissionTemplateImpl permTmpltImpl = new KimPermissionTemplateImpl();
-        permTmpltImpl.setPermissionTemplateId(permInfo.getTemplate().getPermissionTemplateId());
-        permTmpltImpl.setNamespaceCode(permInfo.getTemplate().getNamespaceCode());
-        permTmpltImpl.setName(permInfo.getTemplate().getName());
-        permTmpltImpl.setKimTypeId(permInfo.getTemplate().getKimTypeId());
-        permTmpltImpl.setDescription(permInfo.getTemplate().getDescription());
-        permTmpltImpl.setActive(permInfo.getTemplate().isActive());
-        
-        permission.setTemplate( permTmpltImpl);
-        permission.setTemplateId( permInfo.getTemplateId() );
-        
-        
-        //permission.setDetails( permInfo.getDetails() );
-        
-        //for (String key : permInfo.getDetails().keySet()) {
-            
-        //}
-        
-        return permission;
-    }
-	
-	private PermissionImpl convertToPermissionImpl(KimPermissionInfo permInfo) {
-        PermissionImpl permission = new PermissionImpl();
-        permission.setPermissionId( permInfo.getPermissionId() );
-        permission.setNamespaceCode( permInfo.getNamespaceCode() );
-        permission.setName( permInfo.getName() );
-        permission.setDescription( permInfo.getDescription() );
-        permission.setActive( permInfo.isActive() );
-        
-        // convert Kim Permission Template
-        KimPermissionTemplateImpl permTmpltImpl = new KimPermissionTemplateImpl();
-        permTmpltImpl.setPermissionTemplateId(permInfo.getTemplate().getPermissionTemplateId());
-        permTmpltImpl.setNamespaceCode(permInfo.getTemplate().getNamespaceCode());
-        permTmpltImpl.setName(permInfo.getTemplate().getName());
-        permTmpltImpl.setKimTypeId(permInfo.getTemplate().getKimTypeId());
-        permTmpltImpl.setDescription(permInfo.getTemplate().getDescription());
-        permTmpltImpl.setActive(permInfo.getTemplate().isActive());
-        
-        permission.setTemplate( permTmpltImpl);
-        permission.setTemplateId( permInfo.getTemplateId() );
-        
-        
-        //permission.setDetails( permInfo.getDetails() );
-        
-        //for (String key : permInfo.getDetails().keySet()) {
-            
-        //}
-        
-        return permission;
-    }
+
 }

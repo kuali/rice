@@ -29,7 +29,6 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
-import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimRoleDao;
@@ -44,7 +43,6 @@ import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -113,8 +111,6 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
 //    	String principalName = fieldValues.get("principalName");
 //    	fieldValues.put("principalName","");
-        fieldValues.remove(KNSConstants.BACK_LOCATION);
-        fieldValues.remove(KNSConstants.DOC_FORM_KEY);
         String kimTypeId = null;
         for (Map.Entry<String,String> entry : fieldValues.entrySet()) {
         	if (entry.getKey().equals(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID)) {
@@ -123,18 +119,9 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         	}
         }
   //  	List<RoleImpl> roles = roleDao.getRoles(fieldValues, kimTypeId);
-  //      List<RoleImpl> baseLookup = (List<RoleImpl>)super.getSearchResults(fieldValues);
-        
-        //List<KimRoleInfo> roleLookup = (List<KimRoleInfo>)KIMServiceLocator.getRoleService().getRolesSearchResults(fieldValues);
-        //List<RoleImpl> roleImpls = new ArrayList(roleLookup.size());
-        List<RoleImpl> roleImpls = (List<RoleImpl>)KIMServiceLocator.getRoleService().getRolesSearchResults(fieldValues);
-        //for (KimRoleInfo roleInfo : roleLookup) {
-        //    RoleImpl roleImpl = convertToKimRoleImpl(roleInfo);
-        //    
-        //    roleImpls.add(roleImpl);
-        //}
-        
-        return roleImpls;
+        List<RoleImpl> baseLookup = (List<RoleImpl>)super.getSearchResults(fieldValues);
+
+        return baseLookup;
     }
 
 	private List<KeyLabelPair> getRoleTypeOptions() {
@@ -379,16 +366,4 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 		return UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+docTypeAction, parameters)+hrefPart;
 	}
 
-	public RoleImpl convertToKimRoleImpl(KimRoleInfo roleInfo) {
-        RoleImpl roleImpl = new RoleImpl();
-        
-        roleImpl.setRoleId( roleInfo.getRoleId() );
-        roleImpl.setRoleName( roleInfo.getRoleName() );
-        roleImpl.setNamespaceCode( roleInfo.getNamespaceCode() );
-        roleImpl.setRoleDescription( roleInfo.getRoleDescription() );
-        roleImpl.setKimTypeId( roleInfo.getKimTypeId() );
-        roleImpl.setActive( roleInfo.isActive() );
-        
-        return roleImpl;
-    }
 } 

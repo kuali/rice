@@ -127,7 +127,7 @@ public class DataDictionaryLookupResultsSupportStrategy implements
 	protected Map<String, String> convertLookupIdToPKFieldMap(String lookupId, Class<? extends BusinessObject> businessObjectClass) {
 		Map<String, String> pkFields = new HashMap<String, String>();
 		if (!StringUtils.isBlank(lookupId)) {
-			final String[] pkValues = lookupId.split("|");
+			final String[] pkValues = lookupId.split("\\|");
 			for (String pkValue : pkValues) {
 				if (!StringUtils.isBlank(pkValue)) {
 					final String[] pkPieces = pkValue.split("-");
@@ -169,7 +169,7 @@ public class DataDictionaryLookupResultsSupportStrategy implements
 				throw new RuntimeException("Could not retrieve pk field value "+pkFieldName+" from business object "+businessObject.getClass().getName(), nsme);
 			}
 		}
-		return lookupId.substring(0, lookupId.length() - 2); // kill the last "|"
+		return lookupId.substring(0, lookupId.length() - 1); // kill the last "|"
 	}
 	
 	/**
@@ -194,7 +194,7 @@ public class DataDictionaryLookupResultsSupportStrategy implements
 				}
 			}
 			if (formatterClass == null) {
-				final java.lang.reflect.Field propertyField = boClass.getField(propertyName);
+				final java.lang.reflect.Field propertyField = boClass.getDeclaredField(propertyName);
 				if (propertyField != null) {
 					formatterClass = Formatter.findFormatter(propertyField.getType());
 				}

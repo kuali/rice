@@ -56,7 +56,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
     private List<String> fileLocs = new ArrayList<String>();
 
-    private Map<String, Object> paramMap = new LinkedHashMap<String, Object>();
+    private Map<String, Object> objects = new LinkedHashMap<String, Object>();
     private Properties properties = new Properties();
 
     // compile pattern for regex once
@@ -77,20 +77,20 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
     public JAXBConfigImpl(String fileLoc, Properties properties) {
         this.fileLocs.add(fileLoc);
-        addProperties(properties);
+        this.properties.putAll(properties);
     }
 
     public JAXBConfigImpl(List<String> fileLocs, Properties properties) {
         this.fileLocs.addAll(fileLocs);
-        addProperties(properties);
+        this.properties.putAll(properties);
     }
 
     public Object getObject(String key) {
-        return paramMap.get(key);
+        return objects.get(key);
     }
 
     public Map<String, Object> getObjects() {
-        return paramMap;
+        return objects;
     }
 
     public Properties getProperties() {
@@ -113,15 +113,17 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             value = parseValue(value, keySet);
         }
         
-        paramMap.put(name, value);
         properties.put(name, value);
     }
 
-    protected void addProperties(Properties properties) {
+    public void addProperties(Properties properties) {
         if (properties != null) {
             this.properties.putAll(properties);
-            for (Entry<Object, Object> e : properties.entrySet()) {
-                paramMap.put((String) e.getKey(), e.getValue());
+            
+            if(!runtimeResolution) {
+                for (Object o : properties.keySet()) {
+                    properties.put((String)o, resolve((String)o));
+                }
             }
         }
     }
@@ -161,13 +163,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             // if runtimeResolution is not enabled.  This will also replace properties
             // defined in the files with system properties if systemOverride==true.
             if(!runtimeResolution) {
-                for (String s : paramMap.keySet()) {
-                    paramMap.put(s, resolve(s));
+                for (Object o : properties.keySet()) {
+                    properties.put((String)o, resolve((String)o));
                 }
             }
-
-            // load the properties object with the paramMap
-            properties.putAll(paramMap);
 
             if (LOG.isInfoEnabled()) {
                 LOG.info("");
@@ -179,9 +178,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 LOG.info("####################################");
                 LOG.info("");
 
-                SortedSet<String> sorted = new TreeSet<String>(paramMap.keySet());
+                SortedSet<String> sorted = new TreeSet<String>(properties.stringPropertyNames());
                 for (String s : sorted) {
-                    LOG.info("Using config Prop " + s + "=[" + ConfigLogger.getDisplaySafeValue(s, (String) paramMap.get(s)) + "]");
+                    LOG.info("Using config Prop " + s + "=[" + ConfigLogger.getDisplaySafeValue(s, (String) properties.get(s)) + "]");
                 }
             }
 
@@ -226,10 +225,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 if (name.equals(IMPORT_NAME)) {
                     String configLocation = parseValue(p.getValue(), new HashSet<String>());
                     parseConfig(configLocation, unmarshaller, depth + 1);
-                } else if (p.isOverride() || !paramMap.containsKey(name)) {
+                } else if (p.isOverride() || !properties.containsKey(name)) {
 
                     if (p.isRandom()) {
-                        paramMap.put(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
+                        properties.put(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
                     } else if (p.isSystem()) {
                         // resolve and set system params immediately so they can override
                         // existing system params. Add to paramMap resolved as well to
@@ -238,9 +237,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                         set.add(p.getName());
                         String value = parseValue(p.getValue(), set);
                         System.setProperty(name, value);
-                        paramMap.put(name, value);
+                        properties.put(name, value);
                     } else {
-                        paramMap.put(p.getName(), p.getValue());
+                        properties.put(p.getName(), p.getValue());
                     }
                 }
             }
@@ -250,7 +249,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
 
     protected String resolve(String key) {
-        String value = (String) paramMap.get(key);
+        String value = (String) properties.get(key);
 
         if (systemOverride && System.getProperties().containsKey(key)) {
             value = System.getProperty(key);
@@ -286,8 +285,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
             if (systemOverride && System.getProperties().containsKey(resolved)) {
                 resolved = System.getProperty(resolved);
-            } else if (paramMap.containsKey(resolved)) {
-                resolved = (String) paramMap.get(resolved);
+            } else if (properties.containsKey(resolved)) {
+                resolved = (String) properties.get(resolved);
             } else if (!systemOverride && System.getProperties().containsKey(resolved)) {
                 resolved = System.getProperty(resolved);
             } else {
@@ -311,8 +310,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * Configures built-in properties.
      */
     protected void configureBuiltIns() {
-        paramMap.put("host.ip", RiceUtilities.getIpNumber());
-        paramMap.put("host.name", RiceUtilities.getHostName());
+        properties.put("host.ip", RiceUtilities.getIpNumber());
+        properties.put("host.name", RiceUtilities.getHostName());
     }
 
     /**

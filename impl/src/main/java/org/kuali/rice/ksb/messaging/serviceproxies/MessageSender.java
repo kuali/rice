@@ -32,20 +32,20 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 public class MessageSender {
 
     public static void sendMessage(PersistedMessage message) throws Exception {
-	if (!new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF))) {
+        if (!new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF))) {
 
-	    if (ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null
-		    || ConfigContext.getCurrentContextConfig().getObject(RiceConstants.TRANSACTION_MANAGER_OBJ) != null) {
-		if (TransactionSynchronizationManager.isSynchronizationActive()) {
-		    TransactionSynchronizationManager.registerSynchronization(new MessageSendingTransactionSynchronization(
-			    message));
-		} else {
-		    KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
-		}
-	    } else {
-		KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
-	    }
-	}
+            if (ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null
+                    || ConfigContext.getCurrentContextConfig().getObject(RiceConstants.TRANSACTION_MANAGER_OBJ) != null) {
+                if (TransactionSynchronizationManager.isSynchronizationActive()) {
+                    TransactionSynchronizationManager.registerSynchronization(new MessageSendingTransactionSynchronization(
+                            message));
+                } else {
+                    KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
+                }
+            } else {
+                KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
+            }
+        }
     }
 
 }

@@ -31,90 +31,90 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
 import org.kuali.rice.ksb.messaging.service.MessageQueueService;
 import org.kuali.rice.ksb.util.KSBConstants;
-
+import org.springframework.transaction.annotation.Transactional;
 
 public class MessageQueueServiceImpl implements MessageQueueService {
 
-    
-    	private static final Logger LOG = Logger.getLogger(MessageQueueServiceImpl.class);
+
+    private static final Logger LOG = Logger.getLogger(MessageQueueServiceImpl.class);
     private MessageQueueDAO messageQueueDAO;
 
     public void delete(PersistedMessage routeQueue) {
-	    if (new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
-		if (LOG.isDebugEnabled()) {
-		    LOG.debug("Message Persistence is on.  Deleting stored message" + routeQueue);
-		}
-	this.getMessageQueueDAO().remove(routeQueue);
+        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Message Persistence is on.  Deleting stored message" + routeQueue);
+            }
+            this.getMessageQueueDAO().remove(routeQueue);
+        }
     }
-	}
 
     public void save(PersistedMessage routeQueue) {
-	    if (new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
-		if (LOG.isDebugEnabled()) {
-			LOG.debug("Persisting Message " + routeQueue);
-		}
-	this.getMessageQueueDAO().save(routeQueue);
+        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Persisting Message " + routeQueue);
+            }
+            this.getMessageQueueDAO().save(routeQueue);
+        }
     }
-	}
 
     public List<PersistedMessage> findAll() {
-	return this.getMessageQueueDAO().findAll();
+        return this.getMessageQueueDAO().findAll();
     }
 
     public List<PersistedMessage> findAll(int maxRows) {
-	return this.getMessageQueueDAO().findAll(maxRows);
+        return this.getMessageQueueDAO().findAll(maxRows);
     }
 
     public PersistedMessage findByRouteQueueId(Long routeQueueId) {
-	return getMessageQueueDAO().findByRouteQueueId(routeQueueId);
+        return getMessageQueueDAO().findByRouteQueueId(routeQueueId);
     }
-    
+
     public PersistedMessagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId) {
-	return messageQueueDAO.findByPersistedMessageByRouteQueueId(routeQueueId);
+        return messageQueueDAO.findByPersistedMessageByRouteQueueId(routeQueueId);
     }
 
     public List<PersistedMessage> getNextDocuments(Integer maxDocuments) {
-	return this.getMessageQueueDAO().getNextDocuments(maxDocuments);
+        return this.getMessageQueueDAO().getNextDocuments(maxDocuments);
     }
 
     public MessageQueueDAO getMessageQueueDAO() {
-	return this.messageQueueDAO;
+        return this.messageQueueDAO;
     }
 
     public void setMessageQueueDAO(MessageQueueDAO queueDAO) {
-	this.messageQueueDAO = queueDAO;
+        this.messageQueueDAO = queueDAO;
     }
 
     public List<PersistedMessage> findByServiceName(QName serviceName, String methodName) {
-	return getMessageQueueDAO().findByServiceName(serviceName, methodName);
+        return getMessageQueueDAO().findByServiceName(serviceName, methodName);
     }
 
     public List<PersistedMessage> findByValues(Map<String, String> criteriaValues, int maxRows) {
-	return getMessageQueueDAO().findByValues(criteriaValues, maxRows);
+        return getMessageQueueDAO().findByValues(criteriaValues, maxRows);
     }
 
     public Integer getMaxRetryAttempts() {
-	return new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
+        return new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
     }
 
     public PersistedMessage getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall) {
-	PersistedMessage message = new PersistedMessage();
-	message.setPayload(new PersistedMessagePayload(methodCall, message));
-	message.setIpNumber(RiceUtilities.getIpNumber());
-	message.setServiceName(serviceInfo.getQname().toString());
-	    message.setQueueDate(new Timestamp(System.currentTimeMillis()));
-	if (serviceInfo.getServiceDefinition().getPriority() == null) {
-	    message.setQueuePriority(KSBConstants.ROUTE_QUEUE_DEFAULT_PRIORITY);
-	} else {
-	    message.setQueuePriority(serviceInfo.getServiceDefinition().getPriority());
-	}
-	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_QUEUED);
-	message.setRetryCount(0);
-	if (serviceInfo.getServiceDefinition().getMillisToLive() > 0) {
-			message.setExpirationDate(new Timestamp(System.currentTimeMillis() + serviceInfo.getServiceDefinition().getMillisToLive()));
-	}
-	message.setServiceNamespace(ConfigContext.getCurrentContextConfig().getServiceNamespace());
-	message.setMethodName(methodCall.getMethodName());
-	return message;
+        PersistedMessage message = new PersistedMessage();
+        message.setPayload(new PersistedMessagePayload(methodCall, message));
+        message.setIpNumber(RiceUtilities.getIpNumber());
+        message.setServiceName(serviceInfo.getQname().toString());
+        message.setQueueDate(new Timestamp(System.currentTimeMillis()));
+        if (serviceInfo.getServiceDefinition().getPriority() == null) {
+            message.setQueuePriority(KSBConstants.ROUTE_QUEUE_DEFAULT_PRIORITY);
+        } else {
+            message.setQueuePriority(serviceInfo.getServiceDefinition().getPriority());
+        }
+        message.setQueueStatus(KSBConstants.ROUTE_QUEUE_QUEUED);
+        message.setRetryCount(0);
+        if (serviceInfo.getServiceDefinition().getMillisToLive() > 0) {
+            message.setExpirationDate(new Timestamp(System.currentTimeMillis() + serviceInfo.getServiceDefinition().getMillisToLive()));
+        }
+        message.setServiceNamespace(ConfigContext.getCurrentContextConfig().getServiceNamespace());
+        message.setMethodName(methodCall.getMethodName());
+        return message;
     }
 }

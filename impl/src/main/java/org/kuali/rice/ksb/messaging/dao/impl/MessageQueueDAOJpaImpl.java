@@ -27,7 +27,6 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
@@ -123,11 +122,9 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
             throw new RiceRuntimeException("can't delete a PersistedMessage with no id");
         }
         
-//        routeQueue = entityManager.merge(routeQueue);
-//        entityManager.remove(routeQueue);
-        // doing it this way to avoid optimistic lock exceptions.  But I'm not happy about it.
-        entityManager.createQuery("delete from " + routeQueue.getClass().getSimpleName() + 
-                " where routeQueueId = ?1").setParameter(1, routeQueue.getRouteQueueId()).executeUpdate();
+        routeQueue = entityManager.merge(routeQueue);
+        entityManager.remove(routeQueue);
+
         if (routeQueue.getPayload() != null) {
             PersistedMessagePayload payload =  entityManager.merge(routeQueue.getPayload());
             entityManager.remove(payload);

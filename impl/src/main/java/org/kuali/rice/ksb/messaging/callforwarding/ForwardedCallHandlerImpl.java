@@ -52,7 +52,7 @@ public class ForwardedCallHandlerImpl implements ForwardedCallHandler {
 		copy.setPayload(new PersistedMessagePayload(methodCall, copy));
 		copy.setServiceName(message.getServiceName());
 		message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
-		KSBServiceLocator.getRouteQueueService().save(message);
-		MessageSender.sendMessage(message);
+		KSBServiceLocator.getRouteQueueService().save(copy);
+		MessageSender.sendMessage(copy);
 	}
 }

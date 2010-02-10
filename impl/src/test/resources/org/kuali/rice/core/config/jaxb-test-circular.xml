@@ -1,0 +1,7 @@
+<config>
+    <param name="foo">${bar}-${circle}</param>
+    <param name="bar">${baz}</param>
+    <param name="baz">someText</param>
+    <param name="circle">${loop}</param>
+    <param name="loop">${foo}</param>
+</config>

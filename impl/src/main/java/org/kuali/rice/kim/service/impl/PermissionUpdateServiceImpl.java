@@ -29,6 +29,8 @@ import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * 
@@ -97,5 +99,16 @@ public class PermissionUpdateServiceImpl extends PermissionServiceBase implement
     		throw ex;
     	}
 	}
+	
+	public String getNextAvailablePermissionId() throws UnsupportedOperationException {
+        Long nextSeq = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PERM_ID_S, KimPermissionImpl.class);
+
+        if (nextSeq == null) {
+            LOG.error("Unable to get new permission id from sequence " + KimConstants.SequenceNames.KRIM_PERM_ID_S);
+            throw new RuntimeException("Unable to get new permission id from sequence " + KimConstants.SequenceNames.KRIM_PERM_ID_S);
+        }
+
+        return nextSeq.toString();
+    }
 
 }

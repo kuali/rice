@@ -599,7 +599,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 	    Person workflowUser = null;
 	    String id = "";
 	    if (note != null && note.getNoteAuthorWorkflowId() != null && ! "".equalsIgnoreCase(note.getNoteAuthorWorkflowId())) {
-	        workflowUser = KIMServiceLocator.getPersonService().getPersonByPrincipalName(note.getNoteAuthorWorkflowId());
+	        workflowUser = KIMServiceLocator.getPersonService().getPerson(note.getNoteAuthorWorkflowId());
 	        id = note.getNoteAuthorWorkflowId();
 	    }
 	    if (workflowUser != null) {

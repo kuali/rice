@@ -315,13 +315,16 @@ in order to package the various Rice datasets.
 	<target name="dist-impex" depends="init, check-dist-database-properties" description="Prepares a distribution of the impex tool">
 		<echo>Cleaning the impex project at ${impex.home.directory}</echo> 
 				
-		<ant dir="${impex.home.directory}" inheritall="false" target="clean"/>
-				
+		<ant dir="${impex.home.directory}" inheritall="false" target="clean" />
+			
+		<echo>End of clean target</echo>
 		<echo>Copying the impex tool for packaging at ${dist.impex.dir}</echo> 
 				
 		<copy todir="${dist.impex.dir}">
 			<fileset dir="${impex.home.directory}"/>
 		</copy>
+		<copy tofile="${dist.impex.dir}/impex-build.properties.sample" flatten="true" overwrite="true" file="scripts/dataset/dist-impex-build.properties"/>
+		<copy tofile="${dist.impex.dir}/build.properties" flatten="true" overwrite="true" file="scripts/dataset/dist-build.properties"/>
 	</target>
 	
 	<target name="dist-server-datasets" depends="init, check-dist-database-properties" unless="dist.server.datasets.exist" description="Creates distributions of the Rice server datasets and the Impex tool">

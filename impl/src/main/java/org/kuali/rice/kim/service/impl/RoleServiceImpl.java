@@ -48,7 +48,6 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
@@ -59,7 +58,6 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -69,11 +67,9 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 @WebService(endpointInterface = KIMWebServiceConstants.RoleService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.RoleService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.RoleService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class RoleServiceImpl extends RoleServiceBase implements RoleService {
-	
-
 	private static final Logger LOG = Logger.getLogger( RoleServiceImpl.class );
 
-	private KimRoleDao roleDao;
+	
 	
     // --------------------
     // Role Data
@@ -81,11 +77,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     
 
-    public void flushInternalRoleCache() {
-    	getCacheAdministrator().flushGroup(ROLE_IMPL_CACHE_GROUP);
-    	}
-
-	
+    
 
 	/**
 	 * @see org.kuali.rice.kim.service.RoleService#getRole(java.lang.String)
@@ -186,7 +178,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     	// get the person's groups
     	List<String> groupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
-    	List<RoleMemberImpl> rms = roleDao.getRoleMembersForRoleIdsWithFilters(roleIds, principalId, groupIds);
+    	List<RoleMemberImpl> rms = getStoredRoleMembersForRoleIdsWithFilters(roleIds, principalId, groupIds);
 
     	Map<String,List<RoleMembershipInfo>> roleIdToMembershipMap = new HashMap<String,List<RoleMembershipInfo>>();
     	for ( RoleMemberImpl rm : rms ) {
@@ -252,7 +244,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     	// TODO: ? get groups for principal and get those as well?
     	// this implementation may be incomplete, as groups and sub-roles are not considered
-    	List<RoleMemberImpl> rms = roleDao.getRoleMembersForRoleIdsWithFilters(roleIds, principalId, null);
+    	List<RoleMemberImpl> rms = getStoredRoleMembersForRoleIdsWithFilters(roleIds, principalId, null);
 
     	Map<String,List<RoleMembershipInfo>> roleIdToMembershipMap = new HashMap<String,List<RoleMembershipInfo>>();
     	for ( RoleMemberImpl rm : rms ) {
@@ -358,7 +350,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	// for efficiency, retrieve all roles and store in a map
     	Map<String,RoleImpl> roles = getRoleImplMap(allRoleIds);
 
-    	List<RoleMemberImpl> rms = roleDao.getRoleMembersForRoleIds( allRoleIds, null );
+    	List<RoleMemberImpl> rms = getStoredRoleMembersForRoleIds( allRoleIds, null );
     	// build a map of role ID to membership information
     	// this will be used for later qualification checks
     	Map<String,List<RoleMembershipInfo>> roleIdToMembershipMap = new HashMap<String,List<RoleMembershipInfo>>();
@@ -472,7 +464,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	if ( followDelegations && !matchingRoleIds.isEmpty() ) {
 	    	// we have a list of RoleMembershipInfo objects
 	    	// need to get delegations for distinct list of roles in that list
-	    	Map<String,KimDelegationImpl> delegations = roleDao.getDelegationImplMapFromRoleIds( matchingRoleIds );
+	    	Map<String,KimDelegationImpl> delegations = getStoredDelegationImplMapFromRoleIds(matchingRoleIds);
 
 	    	matchDelegationsToRoleMembers( results, delegations.values() );
 	    	resolveDelegationMembers( results, qualification );
@@ -580,9 +572,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     protected KimDelegationTypeService getDelegationTypeService( String delegationId ) {
     	KimDelegationTypeService service = getDelegationTypeServiceCache().get( delegationId );
     	if ( service == null && !getDelegationTypeServiceCache().containsKey( delegationId ) ) {
-    		Map<String,String> pk = new HashMap<String,String>(1);
-    		pk.put( KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId );
-    		KimDelegationImpl delegation = (KimDelegationImpl)getBusinessObjectService().findByPrimaryKey( KimDelegationImpl.class, pk );
+    		KimDelegationImpl delegation = getKimDelegationImpl(delegationId);
     		KimTypeInfo delegationType = delegation.getKimType();
     		if ( delegationType != null ) {
     			KimTypeService tempService = KimCommonUtils.getKimTypeService(delegationType);
@@ -789,7 +779,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	// for efficiency, retrieve all roles and store in a map
     	Map<String,RoleImpl> roles = getRoleImplMap(allRoleIds);
     	// get all roles to which the principal is assigned
-    	List<RoleMemberImpl> rps = roleDao.getRolePrincipalsForPrincipalIdAndRoleIds(allRoleIds, principalId);
+    	List<RoleMemberImpl> rps = getStoredRolePrincipalsForPrincipalIdAndRoleIds(allRoleIds, principalId);
 
     	// if the qualification is null and the role list is not, then any role in the list will match
     	// so since the role ID list is not blank, we can return true at this point
@@ -822,7 +812,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	List<String> principalGroupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
     	// find the role/group associations
     	if ( !principalGroupIds.isEmpty() ) {
-	    	List<RoleMemberImpl> rgs = roleDao.getRoleGroupsForGroupIdsAndRoleIds( allRoleIds, principalGroupIds);
+	    	List<RoleMemberImpl> rgs = getStoredRoleGroupsForGroupIdsAndRoleIds(allRoleIds, principalGroupIds);
 			roleIdToMembershipMap.clear(); // clear the role/member map for further use
 	    	if ( getRoleIdToMembershipMap( roleIdToMembershipMap, rgs ) ) {
 	    		return true;
@@ -844,7 +834,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	// check member roles
     	// first, check that the qualifiers on the role membership match
     	// then, perform a principalHasRole on the embedded role
-    	List<RoleMemberImpl> rrs = roleDao.getRoleMembersForRoleIds( roleIds, Role.ROLE_MEMBER_TYPE );
+    	List<RoleMemberImpl> rrs = getStoredRoleMembersForRoleIds( roleIds, Role.ROLE_MEMBER_TYPE );
     	for ( RoleMemberImpl rr : rrs ) {
     		KimRoleTypeService roleTypeService = getRoleTypeService( rr.getRoleId() );
     		if ( roleTypeService != null ) {
@@ -936,7 +926,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
      */
     protected boolean matchesOnDelegation( Set<String> allRoleIds, String principalId, List<String> principalGroupIds, AttributeSet qualification ) {
     	// get the list of delegations for the roles
-    	Map<String,KimDelegationImpl> delegations = roleDao.getDelegationImplMapFromRoleIds(allRoleIds);
+    	Map<String,KimDelegationImpl> delegations = getStoredDelegationImplMapFromRoleIds(allRoleIds);
     	// loop over the delegations - determine those which need to be inspected more directly
     	for ( KimDelegationImpl delegation : delegations.values() ) {
         	// check if each one matches via the original role type service
@@ -976,7 +966,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     					continue; // no match - skip to next record
     				}
     			} catch (Exception ex) {
-    				LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + delegation.getRoleId(), ex);
+    				LOG.warn("Unable to call doesRoleQualifierMatchQualification on role type service for role Id: " + delegation.getRoleId() + " / " + qualification + " / " + dmi.getQualifier(), ex);
     				continue;
     			}
     			
@@ -1005,22 +995,22 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
        					//it is possible that the the roleTypeService is coming from a remote application 
        	                // and therefore it can't be guaranteed that it is up and working, so using a try/catch to catch this possibility.
        					try {
-       						if (roleTypeService == null || !roleTypeService.doesRoleQualifierMatchQualification(qualification, roleQualifier) ) {
+       						if (roleTypeService != null && !roleTypeService.doesRoleQualifierMatchQualification(qualification, roleQualifier) ) {
        							continue;
        						}
        					} catch (Exception ex) {
-       						LOG.warn("Not able to retrieve RoleTypeService from remote system for role Id: " + delegation.getRoleId(), ex);
-        						continue;
-        					}
-        				} else {
-        					LOG.warn( "Unknown role member ID cited in the delegation member table:" );
-        					LOG.warn( "       delegationMemberId: " + dmi.getDelegationMemberId() + " / roleMemberId: " + dmi.getRoleMemberId() );
+       						LOG.warn("Unable to call doesRoleQualifierMatchQualification on role type service for role Id: " + delegation.getRoleId() + " / " + qualification + " / " + roleQualifier, ex);
+        					continue;
         				}
+        			} else {
+        				LOG.warn( "Unknown role member ID cited in the delegation member table:" );
+        				LOG.warn( "       delegationMemberId: " + dmi.getDelegationMemberId() + " / roleMemberId: " + dmi.getRoleMemberId() );
         			}
-        			// all tests passed, return true
-        			return true;
-    			}
+        		}
+        		// all tests passed, return true
+        		return true;
     		}
+    	}
     	return false;
     }
 
@@ -1029,22 +1019,10 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     // Support Methods
     // --------------------
 
-	/**
-	 * @return the roleDao
-	 */
-	public KimRoleDao getRoleDao() {
-		return this.roleDao;
-	}
-
-	/**
-	 * @param roleDao the roleDao to set
-	 */
-	public void setRoleDao(KimRoleDao roleDao) {
-		this.roleDao = roleDao;
-	}
+	
 
     public List<RoleImpl> getRolesSearchResults(java.util.Map<String,String> fieldValues) {
-    	return roleDao.getRoles(fieldValues);
+    	return getRoleDao().getRoles(fieldValues);
     }
 
     /**
@@ -1060,23 +1038,25 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
     
     private void inactivateRoleMemberships(List<String> roleIds, Timestamp yesterday){
-    	List<RoleMemberImpl> roleMembers = roleDao.getRoleMembersForRoleIds(roleIds, null);
+    	List<RoleMemberImpl> roleMembers = getStoredRoleMembersForRoleIds(roleIds, null);
     	for(RoleMemberImpl rm: roleMembers){
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
     	}
     	getBusinessObjectService().save(roleMembers);
+    	getIdentityManagementNotificationService().roleUpdated();
     }
 
     private void inactivateMembershipsForRoleAsMember(List<String> roleIds, Timestamp yesterday){
-    	List<RoleMemberImpl> roleMembers = roleDao.getRoleMembershipsForRoleIdsAsMembers(roleIds);
+    	List<RoleMemberImpl> roleMembers = getStoredRoleMembershipsForRoleIdsAsMembers(roleIds);
     	for(RoleMemberImpl rm: roleMembers){
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
     	}
     	getBusinessObjectService().save(roleMembers);
+    	getIdentityManagementNotificationService().roleUpdated();
     }
 
     private void inactivateRoleDelegations(List<String> roleIds, Timestamp yesterday){
-    	List<KimDelegationImpl> delegations = roleDao.getDelegationImplsForRoleIds(roleIds);
+    	List<KimDelegationImpl> delegations = getStoredDelegationImplsForRoleIds(roleIds);
     	for(KimDelegationImpl delegation: delegations){
     		delegation.setActive(false);
     		for(KimDelegationMemberImpl delegationMember: delegation.getMembers()){
@@ -1084,6 +1064,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     		}
     	}
     	getBusinessObjectService().save(delegations);
+    	getIdentityManagementNotificationService().delegationUpdated();
     }
     
     /**
@@ -1127,7 +1108,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     
     protected void inactivatePrincipalRoleMemberships(String principalId, Timestamp yesterday){
     	// go through all roles and post-date them
-    	List<RoleMemberImpl> roleMembers = roleDao.getRolePrincipalsForPrincipalIdAndRoleIds(null, principalId);
+    	List<RoleMemberImpl> roleMembers = getStoredRolePrincipalsForPrincipalIdAndRoleIds(null, principalId);
     	Set<String> roleIds = new HashSet<String>( roleMembers.size() );
     	for ( RoleMemberImpl rm : roleMembers ) {
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
@@ -1146,10 +1127,11 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     			LOG.error( "Problem notifying role type service of principal inactivation: " + role.getKimRoleType().getKimTypeServiceName(), ex );
     		}
     	}
+    	getIdentityManagementNotificationService().roleUpdated();
     }
     
     protected void inactivatePrincipalGroupMemberships(String principalId, Timestamp yesterday){
-        List<GroupMembershipInfo> groupMemberInfos = roleDao.getGroupPrincipalsForPrincipalIdAndGroupIds(null, principalId);
+        List<GroupMembershipInfo> groupMemberInfos = getRoleDao().getGroupPrincipalsForPrincipalIdAndGroupIds(null, principalId);
         List<GroupMemberImpl> groupMembers = new ArrayList<GroupMemberImpl>(groupMemberInfos.size());
         for ( GroupMembershipInfo rm : groupMemberInfos ) {
             rm.setActiveToDate( new Date(yesterday.getTime()) );
@@ -1160,15 +1142,16 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     protected void inactivatePrincipalDelegations(String principalId, Timestamp yesterday){
-    	List<KimDelegationMemberImpl> delegationMembers = roleDao.getDelegationPrincipalsForPrincipalIdAndDelegationIds(null, principalId);
+    	List<KimDelegationMemberImpl> delegationMembers = getStoredDelegationPrincipalsForPrincipalIdAndDelegationIds(null, principalId);
     	for ( KimDelegationMemberImpl rm : delegationMembers ) {
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
     	}
     	getBusinessObjectService().save(delegationMembers);
+    	getIdentityManagementNotificationService().delegationUpdated();
     }
 
     public List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds){
-    	List<RoleMemberImpl> rms = roleDao.getRoleMembersForRoleIds(roleIds, null );
+    	List<RoleMemberImpl> rms = getStoredRoleMembersForRoleIds(roleIds, null);
     	List<RoleMembershipInfo> roleMembershipInfoList = new ArrayList<RoleMembershipInfo>();
     	for ( RoleMemberImpl rm : rms ) {
     		roleMembershipInfoList.add(new RoleMembershipInfo( rm.getRoleId(), rm.getRoleMemberId(), rm.getMemberId(), rm.getMemberTypeCode(), rm.getQualifier()));
@@ -1192,7 +1175,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
     
     protected void inactivatePrincipalGroupMemberships(List<String> groupIds, Timestamp yesterday){
-        List<GroupMembershipInfo> groupMemberInfos = roleDao.getGroupMembers(groupIds);
+        List<GroupMembershipInfo> groupMemberInfos = getRoleDao().getGroupMembers(groupIds);
         List<GroupMemberImpl> groupMembers = new ArrayList<GroupMemberImpl>(groupMemberInfos.size());
         for ( GroupMembershipInfo rm : groupMemberInfos ) {
             rm.setActiveToDate( new Date(yesterday.getTime()) );
@@ -1202,11 +1185,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     protected void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday){
-    	List<RoleMemberImpl> roleMembersOfGroupType = roleDao.getRoleGroupsForGroupIdsAndRoleIds(null, groupIds);
+    	List<RoleMemberImpl> roleMembersOfGroupType = getStoredRoleGroupsForGroupIdsAndRoleIds(null, groupIds);
     	for(RoleMemberImpl rm: roleMembersOfGroupType){
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
     	}
     	getBusinessObjectService().save(roleMembersOfGroupType);
+    	getIdentityManagementNotificationService().roleUpdated();
     }
     
     protected GroupMemberImpl toGroupMemberImpl(GroupMembershipInfo kimGroupMember) {
@@ -1227,7 +1211,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     public List<RoleMembershipInfo> findRoleMembers(Map<String,String> fieldValues){
-    	return roleDao.getRoleMembers(fieldValues);
+    	return getRoleDao().getRoleMembers(fieldValues);
     }
     
     public List<DelegateMemberCompleteInfo> findDelegateMembersCompleteInfo(final Map<String, String> fieldValues){
@@ -1276,48 +1260,30 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     public DelegateTypeInfo getDelegateTypeInfoById(String delegationId){
 		if(delegationId==null) return null;
-		Map<String,String> criteria = new HashMap<String,String>(1);
-		criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId);
-		KimDelegationImpl delegation = (KimDelegationImpl)getBusinessObjectService().findByPrimaryKey(KimDelegationImpl.class, criteria);
+		KimDelegationImpl delegation = getKimDelegationImpl(delegationId);
     	if(delegation==null) return null;
         return delegation.toSimpleInfo();
     }
 
 	public List<DelegateMemberCompleteInfo> getDelegationMembersByDelegationId(String delegationId){
-		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId);
-        KimDelegationImpl delegation = (KimDelegationImpl)
-        	KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimDelegationImpl.class, criteria);
+		KimDelegationImpl delegation = getKimDelegationImpl(delegationId);
         if(delegation==null) return null;
         
         return getDelegationInfoForDelegation(delegation);
 	}
 	
 	public DelegateMemberCompleteInfo getDelegationMemberByDelegationAndMemberId(String delegationId, String delegationMemberId){
-		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationId);
-        KimDelegationImpl delegation = (KimDelegationImpl)
-        	KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimDelegationImpl.class, criteria);
+		KimDelegationImpl delegation = getKimDelegationImpl(delegationId);
+        KimDelegationMemberImpl delegationMember = getKimDelegationMemberImplByDelegationAndId(delegationId, delegationMemberId);
 
-        criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMemberId);
-        List<KimDelegationMemberImpl> delegationMembers = (List<KimDelegationMemberImpl>)
-        	KNSServiceLocator.getBusinessObjectService().findMatching(KimDelegationMemberImpl.class, criteria);
-        if(delegationMembers==null || delegationMembers.isEmpty()) return null;
-        
-        return getDelegateCompleteInfo(delegation, delegationMembers.get(0));
+        return getDelegateCompleteInfo(delegation, delegationMember);
 	}
 	
 	public DelegateMemberCompleteInfo getDelegationMemberById(@WebParam(name="delegationMemberId") String delegationMemberId){
-		Map<String, String> criteria = new HashMap<String, String>();
-		criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMemberId);
-        KimDelegationMemberImpl delegationMember = (KimDelegationMemberImpl)
-        	KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimDelegationMemberImpl.class, criteria);
+		KimDelegationMemberImpl delegationMember = getKimDelegationMemberImpl(delegationMemberId);
         if(delegationMember==null) return null;
         
-        criteria = new HashMap<String, String>();
-        criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegationMember.getDelegationId());
-        KimDelegationImpl delegation = (KimDelegationImpl)
-    		KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimDelegationImpl.class, criteria);
+        KimDelegationImpl delegation = getKimDelegationImpl(delegationMember.getDelegationId());
 
         return getDelegateCompleteInfo(delegation, delegationMember);
 	}

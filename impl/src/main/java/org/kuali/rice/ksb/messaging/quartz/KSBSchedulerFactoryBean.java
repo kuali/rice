@@ -80,9 +80,9 @@ public class KSBSchedulerFactoryBean extends SchedulerFactoryBean {
             	dataSource = KSBServiceLocator.getMessageDataSource();
             }
             super.setDataSource(dataSource);
-        }
-        if (transactionManagerSet && nonTransactionalDataSourceNull) {
-            throw new ConfigurationException("A valid transaction manager was set but no non-transactional data source was found");
+            if (transactionManagerSet && nonTransactionalDataSourceNull) {
+                throw new ConfigurationException("A valid transaction manager was set but no non-transactional data source was found");
+            }
         }
         super.afterPropertiesSet();
     }

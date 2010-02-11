@@ -147,7 +147,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			searchCriteria.put("detailCriteria",
 					KimAttributes.DOCUMENT_TYPE_NAME+"="+docType.getName()
 					);
-			List<KimPermissionInfo> perms = getPermissionService().lookupPermissions( searchCriteria, false );
+			List<KimPermissionInfo> perms = getPermissionService().lookupPermissions( searchCriteria, true );
 			for ( KimPermissionInfo perm : perms ) {
 				List<String> roleIds = getPermissionService().getRoleIdsForPermissions(Collections.singletonList(perm));
 				permRoles.put( perm.getPermissionId(), getRoleService().getRoles(roleIds) );
@@ -193,7 +193,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			searchCriteria.put("detailCriteria",
 					KimAttributes.DOCUMENT_TYPE_NAME+"="+docType.getName()
 					);		
-			List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
+			List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, true );
 			
 			for ( KimResponsibilityInfo r : resps ) {
 				if ( responsibilities.isEmpty() ) {
@@ -295,7 +295,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 			searchCriteria.put("detailCriteria",
 					KimAttributes.DOCUMENT_TYPE_NAME+"="+docType.getName()
 					);		
-			List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, false );
+			List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, true );
 			
 			for ( KimResponsibilityInfo r : resps ) {
 				String routeNodeName = r.getDetails().get(KimAttributes.ROUTE_NODE_NAME); 

@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.rule;
 
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -23,15 +24,16 @@ import java.util.Map;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
@@ -44,10 +46,10 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
 
 	private static final long serialVersionUID = -8884711461398770563L;
 
-	private static final String DOC_TYPE_NAME_PROPERTY = "doc_type_name";
+	private static final String DOC_TYPE_NAME_PROPERTY = "docTypeFullName";//doc_type_name
     private static final String DOC_TYPE_NAME_KEY = "docTypeFullName";
 
-    private static final String LOOKUPABLE_CLASS = "DocumentTypeLookupableImplService";
+    private static final String LOOKUPABLE_CLASS = "org.kuali.rice.kew.doctype.bo.DocumentType";//DocumentTypeLookupableImplService//org.kuali.rice.kew.doctype.bo.DocumentType
     private static final String DOC_TYPE_NAME_LABEL = "Document type name";
 
     private String doctypeName;
@@ -68,6 +70,7 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
 
         List<Field> fields = new ArrayList<Field>();
         fields.add(new Field(DOC_TYPE_NAME_LABEL, "", Field.TEXT, false, DOC_TYPE_NAME_PROPERTY, "", false, false, null, LOOKUPABLE_CLASS));
+        //fields.add(new Field(DOC_TYPE_NAME_LABEL, "", Field.TEXT, false, DOC_TYPE_NAME_KEY, "", false, false, null, LOOKUPABLE_CLASS));
         rows.add(new Row(fields));
     }
 
@@ -131,16 +134,20 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
 
     public List<RuleRoutingAttribute> parseDocContent(DocumentContent docContent) {
         try {
-            Document doc = XmlHelper.buildJDocument(docContent.getDocument());
-
+            Document doc2 = XmlHelper.buildJDocument(new StringReader(docContent.getDocContent()));
+            
             List<RuleRoutingAttribute> doctypeAttributes = new ArrayList<RuleRoutingAttribute>();
-            List ruleRoutings = XmlHelper.findElements(doc.getRootElement(), "ruleRouting");
+            List ruleRoutings = XmlHelper.findElements(doc2.getRootElement(), "docTypeName");
+            List<String> usedDTs = new ArrayList<String>();
             for (Iterator iter = ruleRoutings.iterator(); iter.hasNext();) {
                 Element ruleRoutingElement = (Element) iter.next();
 
-                Element docTypeElement = ruleRoutingElement.getChild("doctype");
-                if (docTypeElement != null) {
-                    doctypeAttributes.add(new RuleRoutingAttribute(docTypeElement.getText()));
+                //Element docTypeElement = ruleRoutingElement.getChild("doctype");
+                Element docTypeElement = ruleRoutingElement;
+                String elTxt = docTypeElement.getText();
+                if (docTypeElement != null && !usedDTs.contains(elTxt)) {
+                	usedDTs.add(elTxt);
+                    doctypeAttributes.add(new RuleRoutingAttribute(elTxt));
                 }
             }
 

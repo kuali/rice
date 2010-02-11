@@ -163,7 +163,8 @@
     <property name="exportIf" value="kimRoleServiceSOAP.expose"/>
   </bean>
 
-  <bean id="kimRoleUpdateService" class="org.kuali.rice.kim.service.impl.RoleUpdateServiceImpl" />
+  <bean id="kimRoleUpdateService" class="org.kuali.rice.kim.service.impl.RoleUpdateServiceImpl" 
+    p:roleDao-ref="kimRoleDao"/>
   <bean parent="kimLocalServiceExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">

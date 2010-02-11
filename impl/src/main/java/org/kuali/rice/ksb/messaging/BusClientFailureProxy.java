@@ -104,7 +104,7 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 		} else if (throwable instanceof HttpException) {
 			HttpException httpException = (HttpException)throwable;
 			if (serviceRemovalResponseCodes.contains(httpException.getResponseCode())) {
-				LOG.info("Found a Service Removal Exception because of a " + httpException.getResponseCode() + throwable.getClass().getName());
+				LOG.info("Found a Service Removal Exception because of a " + httpException.getResponseCode() + " " + throwable.getClass().getName());
 				return true;
 			}
 		}

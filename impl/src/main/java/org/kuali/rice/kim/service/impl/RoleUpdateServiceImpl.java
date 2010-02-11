@@ -26,6 +26,7 @@ import javax.jws.WebService;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
@@ -34,12 +35,14 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.RoleUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 
 /**
@@ -49,7 +52,8 @@ import org.kuali.rice.kns.service.SequenceAccessorService;
  */
 @WebService(endpointInterface = KIMWebServiceConstants.RoleUpdateService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.RoleUpdateService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.RoleUpdateService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdateService {
-
+	private static final Logger LOG = Logger.getLogger( RoleUpdateServiceImpl.class );
+	
 	public void assignGroupToRole(String groupId, String namespaceCode, String roleName, AttributeSet qualifier) {
     	// look up the role
     	RoleImpl role = getRoleImplByName( namespaceCode, roleName );
@@ -197,15 +201,12 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     	// create the new role member object
     	KimDelegationMemberImpl newDelegationMember = new KimDelegationMemberImpl();
 
-    	Map<String, String> criteria = new HashMap<String, String>();
     	KimDelegationMemberImpl origDelegationMember = null;
     	if(StringUtils.isNotEmpty(delegationMemberId)){
-    		criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_MEMBER_ID, delegationMemberId);
-	    	origDelegationMember = (KimDelegationMemberImpl)getBusinessObjectService().findByPrimaryKey(KimDelegationMemberImpl.class, criteria);
+    		origDelegationMember = getKimDelegationMemberImpl(delegationMemberId);
     	} else{
-	    	criteria.put(KimConstants.PrimaryKeyConstants.MEMBER_ID, memberId);
-	    	criteria.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, delegation.getDelegationId());
-	    	List<KimDelegationMemberImpl> origDelegationMembers = (List<KimDelegationMemberImpl>)getBusinessObjectService().findMatching(KimDelegationMemberImpl.class, criteria);
+    		List<KimDelegationMemberImpl> origDelegationMembers =
+	    		getKimDelegationMemberImplListByMemberAndDelegationId(memberId, delegation.getDelegationId());
 	    	origDelegationMember = 
 	    		(origDelegationMembers!=null && origDelegationMembers.size()>0) ? origDelegationMembers.get(0) : null;
     	}
@@ -412,4 +413,50 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
 		delegationMember.setAttributes( attributes );
 	}
 
+    public void saveRole(String roleId, String roleName, String roleDescription, boolean active, String kimTypeId, String namespaceCode) throws UnsupportedOperationException {
+        // look for existing role
+        RoleImpl role = getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, roleId);
+        if (role == null) {
+            role = new RoleImpl();
+            role.setRoleId(roleId);
+        }
+
+        role.setRoleName(roleName);
+        role.setRoleDescription(roleDescription);
+        role.setActive(active);
+        role.setKimTypeId(kimTypeId);
+        role.setNamespaceCode(namespaceCode);
+
+        getBusinessObjectService().save(role);
+    }
+
+    public String getNextAvailableRoleId() throws UnsupportedOperationException {
+        Long nextSeq = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S, RoleImpl.class);
+
+        if (nextSeq == null) {
+            LOG.error("Unable to get new role id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S);
+            throw new RuntimeException("Unable to get new role id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_MBR_ID_S);
+        }
+
+        return nextSeq.toString();
+    }
+
+    public void assignPermissionToRole(String permissionId, String roleId) throws UnsupportedOperationException {
+        RolePermissionImpl newRolePermission = new RolePermissionImpl();
+
+        Long nextSeq = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S, RolePermissionImpl.class);
+
+        if (nextSeq == null) {
+            LOG.error("Unable to get new role permission id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S);
+            throw new RuntimeException("Unable to get new role permission id from sequence " + KimConstants.SequenceNames.KRIM_ROLE_PERM_ID_S);
+        }
+
+        newRolePermission.setRolePermissionId(nextSeq.toString());
+        newRolePermission.setRoleId(roleId);
+        newRolePermission.setPermissionId(permissionId);
+        newRolePermission.setActive(true);
+
+        getBusinessObjectService().save(newRolePermission);
+        getIdentityManagementNotificationService().roleUpdated();
+    }
 }

@@ -42,6 +42,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -431,8 +432,9 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
 				try {
 				    searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
-				} catch (Exception e) {
+				} catch (RiceRemoteServiceConnectionException e) {
 				    LOG.warn("Unable to connect to load searchable attributes for " + this.getName());
+				    LOG.warn(e.getMessage());
 				    searchableAttribute = null;
 				}
 			} else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
@@ -1072,8 +1074,9 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
         	Object searchGenerator = null;
         	try {
         	    searchGenerator = GlobalResourceLoader.getObject(objDef);
-        	} catch (Exception e) {
+        	} catch (RiceRemoteServiceConnectionException e) {
         	    LOG.warn("Unable to connect to load searchGenerator for " + this.getName()+ ".  Using StandardDocumentSearchGenerator as default.");
+        	    LOG.warn(e.getMessage());
         	    return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
         	}
 

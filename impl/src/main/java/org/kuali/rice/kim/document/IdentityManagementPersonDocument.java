@@ -356,8 +356,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 	
 	@Override
 	public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-		super.beforeUpdate(persistenceBroker);
-        taxId = KimCommonUtils.encryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
+		beforeUpdate();
 	}
 	
 	@Override

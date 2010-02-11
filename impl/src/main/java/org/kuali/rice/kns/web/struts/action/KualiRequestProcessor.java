@@ -694,10 +694,12 @@ public class KualiRequestProcessor extends RequestProcessor {
 	private String getKualiSessionId(HttpServletRequest request, HttpServletResponse response) {
 		String kualiSessionId = null;
 		Cookie[] cookies = (Cookie[]) request.getCookies();
-		for (int i = 0; i < cookies.length; i++) {
-			Cookie cookie = cookies[i];
-			if (KNSConstants.KUALI_SESSION_ID.equals(cookie.getName()))
-				kualiSessionId = cookie.getValue();
+		if (cookies != null) {
+			for (int i = 0; i < cookies.length; i++) {
+				Cookie cookie = cookies[i];
+				if (KNSConstants.KUALI_SESSION_ID.equals(cookie.getName()))
+					kualiSessionId = cookie.getValue();
+			}
 		}
 		return kualiSessionId;
 	}

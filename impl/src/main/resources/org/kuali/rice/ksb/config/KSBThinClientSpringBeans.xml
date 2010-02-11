@@ -5,7 +5,9 @@
 	<!-- <bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DESEncryptionService" lazy-init="true" /> -->
 	<bean id="enEncryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl" lazy-init="true">
 		<property name="secretKey">
-			<value>${encryption.key}</value>
+			<bean class="org.kuali.rice.core.config.spring.ConfigPropertyFactoryBean">
+				<property name="name" value="encryption.key"/>
+			</bean>
 		</property>
 	</bean>
 

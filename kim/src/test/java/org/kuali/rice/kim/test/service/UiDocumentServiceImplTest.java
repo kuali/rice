@@ -94,6 +94,22 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		
 		assertAffiliationTrue(personDoc.getAffiliations().get(0), entity.getAffiliations().get(0));
 		assertEmpInfoTrue(personDoc.getAffiliations().get(0).getEmpInfos().get(0), entity.getEmploymentInformation().get(0));
+	
+		//verify that update doesn't cause external identifier to be encrypted twice
+		// and that update doesn't cause any problems
+		uiDocumentService.saveEntityPerson(personDoc);
+		KimEntityImpl entity2 = ((IdentityServiceImpl)KIMServiceLocator.getService("kimIdentityDelegateService")).getEntityImpl(personDoc.getEntityId());
+        KimEntityEntityTypeImpl entityType2 = entity2.getEntityTypes().get(0);
+        personDoc.getExternalIdentifiers();
+        assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (KimEntityAddressImpl)entityType2.getAddresses().get(0));
+        assertPhoneTrue((PersonDocumentPhone)personDoc.getPhones().get(0), (KimEntityPhoneImpl)entityType2.getPhoneNumbers().get(0));
+        assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), (KimEntityEmailImpl)entityType2.getEmailAddresses().get(0));
+        assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), (KimEntityNameImpl)entity2.getNames().get(0));
+        assertPrincipalTrue(personDoc, entity2.getPrincipals().get(0));
+        assertExtIdTrue(personDoc, entity2.getExternalIdentifiers());
+		
+		
+		
 		//		List<String> groupIds = groupService.getDirectMemberGroupIds("g1");
 //		System.out.println( groupIds );
 //		assertTrue( "g1 must contain group g2", groupIds.contains( "g2" ) );

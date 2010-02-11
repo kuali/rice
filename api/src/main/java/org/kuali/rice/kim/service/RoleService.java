@@ -237,4 +237,19 @@ public interface RoleService {
 	 * Flushes an internal role cache used by the base implementation to prevent repeated database I/O.
 	 */
 	void flushInternalRoleCache();
+	
+	/**
+	 * Flushes an internal role member cache used by the base implementation to prevent repeated database I/O.
+	 */
+	void flushInternalRoleMemberCache();
+	
+	/**
+	 * Flushes an internal delegation cache used by the base implementation to prevent repeated database I/O.
+	 */
+	void flushInternalDelegationCache();
+	
+	/**
+	 * Flushes an internal delegation member cache used by the base implementation to prevent repeated database I/O.
+	 */
+	void flushInternalDelegationMemberCache();
 }

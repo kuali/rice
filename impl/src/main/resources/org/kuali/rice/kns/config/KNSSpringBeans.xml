@@ -486,7 +486,9 @@
 
 	<bean id="encryptionService" class="org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl">
 		<property name="secretKey">
-			<value>${encryption.key}</value>
+			<bean class="org.kuali.rice.core.config.spring.ConfigPropertyFactoryBean">
+				<property name="name" value="encryption.key"/>
+			</bean>
 		</property>
 	</bean>
 

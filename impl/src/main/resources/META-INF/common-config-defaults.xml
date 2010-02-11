@@ -86,7 +86,12 @@
     -->
 
     <param name="transaction.timeout" override="false">30000</param>
+    
+    <!-- 
+    	See KULRICE- regarding the encryption.key property
     <param name="encryption.key" override="false">7IC64w6ksLU</param>
+
+    -->
 
     <param name="mail.transport.protocol" override="false">smtp</param>
     <param name="mail.debug" override="false">false</param>

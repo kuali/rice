@@ -294,4 +294,15 @@ public interface PermissionService {
      * Returns the label of the permission detail for the given permissionId, kimType and attributeName. 
      */
     public String getPermissionDetailLabel( String permissionId, String kimTypeId, String attributeName);
+
+    /**
+     * Get the role IDs for the given permission.
+     */
+    List<String> getRoleIdsForPermissionId(@WebParam(name = "permissionId") String permissionId);
+
+    /**
+     * Return the permission object for the given unique combination of namespace, component and permission name. Inactive
+     * permissions are also returned
+     */
+    List<KimPermissionInfo> getPermissionsByNameIncludingInactive(@WebParam(name = "namespaceCode") String namespaceCode, @WebParam(name = "permissionName") String permissionName);
 }

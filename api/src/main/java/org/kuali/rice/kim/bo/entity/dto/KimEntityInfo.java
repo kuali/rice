@@ -329,7 +329,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
      */
     public KimEntityNameInfo getDefaultName() {
         KimEntityNameInfo result = null;
-        for (KimEntityNameInfo name : names) {
+        for (KimEntityNameInfo name : this.getNames()) {
             if (result == null) {
                 result = name;
             }

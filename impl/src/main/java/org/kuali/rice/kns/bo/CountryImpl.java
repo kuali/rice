@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
@@ -29,7 +30,7 @@ import org.hibernate.annotations.Type;
 @Entity
 @Table(name="KR_COUNTRY_T")
 public class CountryImpl extends PersistableBusinessObjectBase implements Inactivateable, Country{
-
+	@Id
 	@Column(name="POSTAL_CNTRY_CD")
     private String postalCountryCode;
 	@Column(name="POSTAL_CNTRY_NM")

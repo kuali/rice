@@ -18,13 +18,30 @@ package org.kuali.rice.kns.test.document.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
+@Entity
+@Table(name="TRV_ACCT")
 public class Account extends PersistableBusinessObjectBase {
-    
+    @Id
+    @Column(name="acct_num")
 	private String number;
+	@Column(name="acct_name")
     private String name;
+	@Column(name="acct_fo_id")
     private Long amId;
+	
+	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.REFRESH})
+	@JoinColumn(name="acct_fo_id",insertable=false,updatable=false)
     private AccountManager accountManager;    
     
     public String getName() {

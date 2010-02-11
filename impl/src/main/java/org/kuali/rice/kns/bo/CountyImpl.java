@@ -30,7 +30,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 
-@IdClass(org.kuali.rice.kns.bo.CountyImpl.class)
+@IdClass(org.kuali.rice.kns.bo.CountyImplId.class)
 @Entity
 @Table(name="KR_COUNTY_T")
 public class CountyImpl extends PersistableBusinessObjectBase implements Inactivateable, County {
@@ -51,12 +51,12 @@ public class CountyImpl extends PersistableBusinessObjectBase implements Inactiv
 	@Column(name="ACTV_IND")
     private boolean active;
 
-	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",referencedColumnName="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="POSTAL_STATE_CD",referencedColumnName="POSTAL_STATE_CD",insertable=false,updatable=false)})
+	@ManyToOne(targetEntity=org.kuali.rice.kns.bo.StateImpl.class,fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="POSTAL_STATE_CD",insertable=false,updatable=false)})
     private State state;
     
-    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="POSTAL_CNTRY_CD",referencedColumnName="POSTAL_CNTRY_CD",insertable=false,updatable=false)
+    @ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountryImpl.class,fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false)
     private Country country;
 
     public State getState() {

@@ -15,23 +15,34 @@
  */
 package org.kuali.rice.kns.test.document;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
 import org.kuali.rice.kns.workflow.SearchAttributeIndexRequestTest;
 
 /**
- * This is a description of what this class does - jksmith don't forget to fill this in. 
+ * Mock document for testing how document search carries out indexing 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@Entity
+@Table(name="TST_SEARCH_ATTR_INDX_TST_DOC_T")
 public class SearchAttributeIndexTestDocument extends TransactionalDocumentBase {
 	static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchAttributeIndexRequestTest.class);
 	private static final long serialVersionUID = -2290510385815271758L;
+	@Column(name="RTE_LVL_CNT")
 	private int routeLevelCount = 0;
+	@Column(name="CNSTNT_STR")
 	private String constantString;
+	@Column(name="RTD_STR")
 	private String routedString;
+	@Column(name="HLD_RTD_STR")
 	private String heldRoutedString;
+	@Column(name="RD_ACCS_CNT")
 	private int readAccessCount = 0;
 	
 	/**

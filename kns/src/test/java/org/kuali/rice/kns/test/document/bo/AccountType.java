@@ -18,13 +18,22 @@ package org.kuali.rice.kns.test.document.bo;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
-
+@Entity
+@Table(name="TRV_ACCT_TYPE")
 public class AccountType extends PersistableBusinessObjectBase {
     
+	@Id
+	@Column(name="acct_type")
     private String accountTypeCode;
+	@Column(name="acct_type_name")
     private String name;
     
 

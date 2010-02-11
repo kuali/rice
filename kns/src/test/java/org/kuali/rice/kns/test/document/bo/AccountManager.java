@@ -18,19 +18,45 @@ package org.kuali.rice.kns.test.document.bo;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
  * FiscalOfficer
  */
+@Entity
+@Table(name="TRV_ACCT_FO")
 public class AccountManager extends PersistableBusinessObjectBase {
 	
+	@Column(name="acct_fo_user_name")
 	private String userName;
+	@Id
+	@GeneratedValue(generator="TRV_FO_ID_S")
+	@GenericGenerator(name="TRV_FO_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="TRV_FO_ID_S"),
+			@Parameter(name="value_column",value="id")
+	})
+	@Column(name="acct_fo_id")
 	private Long amId;
+	@Transient
 	private String defaultType;
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},mappedBy="amId")
+	@JoinColumn(name="acct_fo_id",insertable=false,updatable=false)
 	private List<Account> accounts;
 
 	public void setUserName(String userId) {

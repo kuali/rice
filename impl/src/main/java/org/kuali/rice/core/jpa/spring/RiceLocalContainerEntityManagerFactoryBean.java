@@ -58,7 +58,7 @@ public class RiceLocalContainerEntityManagerFactoryBean extends LocalContainerEn
 		
 		RicePersistenceUnitPostProcessor postProcessor = new RicePersistenceUnitPostProcessor();
 		postProcessor.setJtaDataSource(datasource);
-		setPersistenceUnitPostProcessors(new RicePersistenceUnitPostProcessor[] { postProcessor });		
+		setPersistenceUnitPostProcessors(new RicePersistenceUnitPostProcessor[] { postProcessor });
 	}
 
 
@@ -67,6 +67,9 @@ public class RiceLocalContainerEntityManagerFactoryBean extends LocalContainerEn
 		persistenceUnitManager.setDefaultDataSource(datasource);
 		persistenceUnitManager.setPersistenceXmlLocations(new String[] {determineConfigProperty(config, prefix, "PersistenceXmlLocation", "META-INF/persistence.xml")});
 		persistenceUnitManager.setDefaultPersistenceUnitRootLocation(determineConfigProperty(config, prefix, "PersistenceUnitRootLocation", "classpath:"));
+		RicePersistenceUnitPostProcessor postProcessor = new RicePersistenceUnitPostProcessor();
+		postProcessor.setJtaDataSource(datasource);
+		persistenceUnitManager.setPersistenceUnitPostProcessors(new RicePersistenceUnitPostProcessor[] { postProcessor });
 		persistenceUnitManager.afterPropertiesSet();
 		return persistenceUnitManager;
 	}

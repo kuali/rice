@@ -277,13 +277,15 @@ public class Criteria {
 	void prepareParameters(Query query, List tokens, Map<String, Object> params) {
 		for (Map.Entry<String, Object> param : params.entrySet()) {
 			Object value = param.getValue();
-			if (value instanceof BigDecimal) {
-				value = new Long(((BigDecimal)value).longValue());
+			if (value != null) {
+				if (value instanceof BigDecimal) {
+					value = new Long(((BigDecimal)value).longValue());
+				}
+				if (value instanceof String) {
+					value = ((String)value).replaceAll("\\*", "%");
+				}
+				query.setParameter(param.getKey(), value);
 			}
-			if (value instanceof String) {
-				value = ((String)value).replaceAll("\\*", "%");
-			}
-			query.setParameter(param.getKey(), value);
 		}
 		for (Iterator iterator = tokens.iterator(); iterator.hasNext();) {
 			Object token = (Object) iterator.next();

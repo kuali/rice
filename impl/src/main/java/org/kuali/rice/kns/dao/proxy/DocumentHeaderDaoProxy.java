@@ -24,7 +24,11 @@ public class DocumentHeaderDaoProxy implements DocumentHeaderDao {
     private DocumentHeaderDao documentHeaderDaoOjb;
 	
     private DocumentHeaderDao getDao(Class clazz) {
-    	return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? documentHeaderDaoJpa : documentHeaderDaoOjb; 
+    	final String TMP_NM = clazz.getName();
+		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
+    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
+				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) ?
+						documentHeaderDaoJpa : documentHeaderDaoOjb; 
     }
     
     public DocumentHeader getByDocumentHeaderId(String id) {    	

@@ -60,7 +60,7 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
                 } else {
                 	
                 	// TODO - temporary until we get the other modules converted
-                	if ("kimDataSource,enWorkflowDataSource".contains(dataSourceName)) {
+                	if ("kimDataSource".contains(dataSourceName)) {
                         //using OJB
                         BusinessObjectDaoOjb boDaoOjb = new BusinessObjectDaoOjb();
                         boDaoOjb.setJcdAlias(dataSourceName);

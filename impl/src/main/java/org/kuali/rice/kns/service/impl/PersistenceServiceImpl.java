@@ -48,7 +48,11 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 	}
 
 	private PersistenceService getService(Class clazz) {
-		return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? persistenceServiceJpa : persistenceServiceOjb;
+		final String TMP_NM = clazz.getName();
+		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
+    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
+				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) ?
+						persistenceServiceJpa : persistenceServiceOjb;
 	}
 
 	// This method is for OJB specfic features. It is now being called directly where needed.

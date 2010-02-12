@@ -82,7 +82,10 @@ public class PersistenceServiceStructureImplBase {
 	@CacheNoCopy
 	public List listPrimaryKeyFieldNames(Class clazz) {
     	// Rice JPA MetadataManager
-		if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
+		final String TMP_NM = clazz.getName();
+		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
+		if (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
+				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) {
 			List fieldNames = new ArrayList();
 	    	EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(clazz);
 	    	for (org.kuali.rice.core.jpa.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
@@ -169,7 +172,10 @@ public class PersistenceServiceStructureImplBase {
 		}
 
     	// Rice JPA MetadataManager
-		if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
+		final String TMP_NM = clazz.getName();
+		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
+		if (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
+				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) {
 			Class attributeClass = null;
 	    	EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(clazz);
 	    	ObjectDescriptor objectDescriptor = descriptor.getObjectDescriptorByName(baseAttributeName);

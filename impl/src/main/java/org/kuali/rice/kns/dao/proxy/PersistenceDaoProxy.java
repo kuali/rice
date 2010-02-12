@@ -62,7 +62,10 @@ public class PersistenceDaoProxy implements PersistenceDao {
                 if (persistenceDaoValues.get(dataSourceName) != null) {
                     return persistenceDaoValues.get(dataSourceName);
                 } else {
-                    if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
+                	final String TMP_NM = clazz.getName();
+            		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
+                	if (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
+            				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) {
                         //return the default JPA values since PersistenceDaoJPA delegates to the BusinessObjectService which should grab the correct datasource
                         persistenceDaoValues.put(dataSourceName, persistenceDaoJpa);
                         return persistenceDaoJpa;
@@ -80,18 +83,21 @@ public class PersistenceDaoProxy implements PersistenceDao {
 
             }
         }
-    	return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? persistenceDaoJpa : persistenceDaoOjb; 
+        final String TMP_NM = clazz.getName();
+		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
+    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
+				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) ? persistenceDaoJpa : persistenceDaoOjb; 
     }
 
 	/**
      * @see org.kuali.rice.kns.dao.PersistenceDao#clearCache()
      */
     public void clearCache() {
-    	if (OrmUtils.isJpaEnabled()) {
+    	//if (OrmUtils.isJpaEnabled()) {
     		persistenceDaoJpa.clearCache();
-    	} else {
+    	//} else {
     		persistenceDaoOjb.clearCache();
-    	}
+    	//}
     }
 
     /**

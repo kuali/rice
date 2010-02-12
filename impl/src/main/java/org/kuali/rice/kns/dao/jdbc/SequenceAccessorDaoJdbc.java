@@ -54,7 +54,10 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
         if ( StringUtils.isEmpty(dataSourceName) ) 
         	throw new ConfigurationException("dataSourceName is not set");       	
         	
-    	if ( OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled() ) {
+        final String TMP_NM = clazz.getName();
+		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
+    	if ( OrmUtils.isJpaAnnotated(clazz) && ( OrmUtils.isJpaEnabled() ||
+				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) {
             if ( entityManager != null ) 
             	return getDbPlatform().getNextValSQL(sequenceName, entityManager);
             else

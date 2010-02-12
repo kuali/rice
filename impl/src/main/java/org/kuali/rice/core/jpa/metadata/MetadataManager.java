@@ -253,7 +253,11 @@ public class MetadataManager {
 					if (field.isAnnotationPresent(JoinColumn.class)) {
 						JoinColumn jc = field.getAnnotation(JoinColumn.class);
 						descriptor.addJoinColumnDescriptor(constructJoinDescriptor(jc));
-						descriptor.addFkField(entityDescriptor.getFieldByColumnName(jc.name()).getName());
+						FieldDescriptor jcFkField = entityDescriptor.getFieldByColumnName(jc.name());
+						if (jcFkField != null) {
+							descriptor.addFkField(jcFkField.getName());
+						}
+						//descriptor.addFkField(entityDescriptor.getFieldByColumnName(jc.name()).getName());
 						descriptor.setInsertable(jc.insertable());
 						descriptor.setUpdateable(jc.updatable());					
 					}
@@ -281,7 +285,8 @@ public class MetadataManager {
 					descriptor.setCascade(relation.cascade());
 					descriptor.setFetch(relation.fetch());
 					descriptor.setMappedBy(relation.mappedBy());
-					EntityDescriptor mappedBy = MetadataManager.getEntityDescriptor(descriptor.getTargetEntity());
+					EntityDescriptor mappedBy = (entityDescriptor.getClazz().equals(descriptor.getTargetEntity())) ?
+							entityDescriptor : MetadataManager.getEntityDescriptor(descriptor.getTargetEntity());
 					ObjectDescriptor od = mappedBy.getObjectDescriptorByName(descriptor.getMappedBy());
 					if (od != null) {
 						for (String fk : od.getForeignKeyFields()) {				
@@ -319,7 +324,12 @@ public class MetadataManager {
 					if (field.isAnnotationPresent(JoinColumn.class)) {
 						JoinColumn jc = field.getAnnotation(JoinColumn.class);
 						descriptor.addJoinColumnDescriptor(constructJoinDescriptor(jc));
-						descriptor.addFkField(entityDescriptor.getFieldByColumnName(jc.name()).getName());
+						FieldDescriptor jcFkField = entityDescriptor.getFieldByColumnName(jc.name());
+						if (jcFkField != null) {
+							descriptor.addFkField(jcFkField.getName());
+						}
+						//descriptor.addFkField(entityDescriptor.getFieldByColumnName(jc.name()).getName());
+						//descriptor.addFkField(entitesByClass.get(field.getType()).getFieldByColumnName(jc.name()).getName());
 						descriptor.setInsertable(jc.insertable());
 						descriptor.setUpdateable(jc.updatable());
 					}

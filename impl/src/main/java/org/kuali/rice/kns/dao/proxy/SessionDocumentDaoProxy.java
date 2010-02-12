@@ -32,7 +32,11 @@ public class SessionDocumentDaoProxy implements SessionDocumentDao {
     private SessionDocumentDao sessionDocumentDaoOjb;
 	
     private SessionDocumentDao getDao(Class clazz) {
-    	return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? sessionDocumentDaoJpa : sessionDocumentDaoOjb; 
+    	final String TMP_NM = clazz.getName();
+		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
+    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
+				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) ?
+						sessionDocumentDaoJpa : sessionDocumentDaoOjb; 
     }
     
 	public void setSessionDocumentDaoJpa(SessionDocumentDao sessionDocumentDaoJpa) {

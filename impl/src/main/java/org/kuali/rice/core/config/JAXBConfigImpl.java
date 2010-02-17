@@ -3,6 +3,8 @@ package org.kuali.rice.core.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.UnmarshallerHandler;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.xsd.Config;
@@ -177,8 +180,12 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 LOG.info("#");
                 LOG.info("####################################");
                 LOG.info("");
-
-                SortedSet<String> sorted = new TreeSet<String>(properties.stringPropertyNames());
+                //commented out to backport to java 5
+                //SortedSet<String> sorted = new TreeSet<String>(properties.stringPropertyNames());
+                
+                SortedSet<String> sorted = new TreeSet<String>();
+                CollectionUtils.addAll(sorted, properties.propertyNames());
+                
                 for (String s : sorted) {
                     LOG.info("Using config Prop " + s + "=[" + ConfigLogger.getDisplaySafeValue(s, (String) properties.get(s)) + "]");
                 }

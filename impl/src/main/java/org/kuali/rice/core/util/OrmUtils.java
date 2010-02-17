@@ -26,8 +26,6 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.MappedSuperclass;
 
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
@@ -44,18 +42,6 @@ public class OrmUtils {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(OrmUtils.class);
 	
 	private static Map<String, Boolean> cache = new HashMap<String, Boolean>();
-	private static final SessionFactory sessionFactory;
-	static {
-        try {
-            // Create the SessionFactory from hibernate.cfg.xml
-            sessionFactory = new Configuration().configure().buildSessionFactory();
-        } catch (Throwable ex) {
-            // Make sure you log the exception, as it might be swallowed
-            System.err.println("Initial SessionFactory creation failed." + ex);
-            throw new ExceptionInInitializerError(ex);
-        }
-    }
-
 
 	public static void populateAutoIncValue(Object entity, Long value) {
     	try {	    		
@@ -169,10 +155,6 @@ public class OrmUtils {
         catch(NoSuchFieldException exception) {
             return getPrivateField(clazz.getSuperclass(), fieldName);
         }
-    }
-
-    public static SessionFactory getSessionFactory() {
-        return sessionFactory;
     }
 
 }

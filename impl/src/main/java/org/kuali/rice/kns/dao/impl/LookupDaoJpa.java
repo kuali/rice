@@ -35,7 +35,6 @@ import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.jpa.metadata.FieldDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
-import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.dao.LookupDao;
@@ -50,8 +49,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+
 /**
  * This class is the OJB implementation of the LookupDao interface.
  */
@@ -231,8 +229,6 @@ public class LookupDaoJpa implements LookupDao {
 			List bos = new ArrayList();
 			bos.addAll(searchResults);
 			searchResults = bos;
-			//entityManager.clear();
-			OrmUtils.getSessionFactory().getCurrentSession().evict(searchResults);
 		} catch (DataIntegrityViolationException e) {
 			throw new RuntimeException("LookupDao encountered exception during executeSearch", e);
 		}
@@ -351,9 +347,7 @@ public class LookupDaoJpa implements LookupDao {
 			}
 		}
 
-		Object object =  new QueryByCriteria(entityManager, jpaCriteria).toQuery().getSingleResult();
-		OrmUtils.getSessionFactory().getCurrentSession().evict(object);
-		return object;
+		return new QueryByCriteria(entityManager, jpaCriteria).toQuery().getSingleResult();
 	}
 
 	private void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Criteria criteria) {

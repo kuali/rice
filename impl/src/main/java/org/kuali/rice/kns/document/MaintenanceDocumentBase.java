@@ -22,8 +22,12 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.xml.parsers.DocumentBuilder;
@@ -82,9 +86,12 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public static final String OLD_MAINTAINABLE_TAG_NAME = "oldMaintainableObject";
     public static final String NEW_MAINTAINABLE_TAG_NAME = "newMaintainableObject";
     public static final String MAINTENANCE_ACTION_TAG_NAME = "maintenanceAction";
+    
     @Transient
     transient private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    @Transient
     transient private static MaintenanceDocumentService maintenanceDocumentService;
+    @Transient
     transient private static DocumentHeaderService documentHeaderService;
     
     @Transient
@@ -104,8 +111,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Transient
     protected String attachmentPropertyName;
 
-    // TODO JPA Annotate the DocumentAttachment class and hook it up to this
-    @Transient
+    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
     protected DocumentAttachment attachment;
     
     public FormFile getFileAttachment() {

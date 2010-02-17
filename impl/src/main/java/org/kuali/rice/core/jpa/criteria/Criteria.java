@@ -194,7 +194,10 @@ public class Criteria {
 		}
 
 		if (queryAttr.length == 0) {
-			queryType += " " + alias;
+			queryType += " ";
+			if (type.equals(QueryByCriteriaType.SELECT)) {
+				queryType += alias;
+			}
 		}
 		else {
 			queryType += " "; // leading space

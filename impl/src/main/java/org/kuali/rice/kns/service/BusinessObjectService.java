@@ -38,7 +38,7 @@ public interface BusinessObjectService {
      * @param bo A BusinessObject instance or descendent that you wish to be stored.
      * 
      */
-    public void save(PersistableBusinessObject bo);
+    public PersistableBusinessObject save(PersistableBusinessObject bo);
 
     /**
      * Saves the businessObjects on the list via the persistence layer.

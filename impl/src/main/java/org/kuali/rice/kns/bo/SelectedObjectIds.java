@@ -15,17 +15,12 @@
  */
 package org.kuali.rice.kns.bo;
 
-import javax.persistence.FetchType;
 import javax.persistence.Basic;
-import javax.persistence.Lob;
-import javax.persistence.Version;
-import javax.persistence.TemporalType;
-import javax.persistence.Temporal;
 import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 
 
 @Entity

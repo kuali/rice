@@ -24,12 +24,15 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -44,6 +47,11 @@ public class Note extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = -7647166354016356770L;
 
     @Id
+    @GeneratedValue(generator="KRNS_NTE_S")
+	@GenericGenerator(name="KRNS_NTE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRNS_NTE_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="NTE_ID")
 	private Long noteIdentifier;
     @Column(name="RMT_OBJ_ID")
@@ -66,11 +74,13 @@ public class Note extends PersistableBusinessObjectBase {
     @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
 	@JoinColumn(name="NTE_TYP_CD", insertable=false, updatable=false)
 	private NoteType noteType;
+    @Transient
     private Person authorUniversal;
+    @Transient
 	private Attachment attachment;
     @Transient
     private AdHocRouteRecipient adHocRouteRecipient;
-    
+    @Transient
     private String attachmentLink;
 
     /**
@@ -79,7 +89,7 @@ public class Note extends PersistableBusinessObjectBase {
     public Note() {
         super();
 
-        this.setNotePostedTimestampToCurrent();
+        //this.setNotePostedTimestampToCurrent();
         this.setNoteText(KNSConstants.EMPTY_STRING);
         // for now just do this
         this.setNoteTypeCode("DH");

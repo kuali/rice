@@ -69,9 +69,9 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * @see org.kuali.rice.kns.service.BusinessObjectService#save(org.kuali.bo.BusinessObject)
      */
     @Transactional
-    public void save(PersistableBusinessObject bo) {
+    public PersistableBusinessObject save(PersistableBusinessObject bo) {
     	validateBusinessObjectForSave(bo);
-        businessObjectDao.save(bo);
+        return businessObjectDao.save(bo);
     }
 
     /**

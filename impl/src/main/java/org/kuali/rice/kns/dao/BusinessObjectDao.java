@@ -32,7 +32,7 @@ public interface BusinessObjectDao {
      * 
      * @param bo
      */
-    public void save(PersistableBusinessObject bo);
+    public PersistableBusinessObject save(PersistableBusinessObject bo);
 
     /**
      * Saves a List of BusinessObjects.

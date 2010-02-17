@@ -113,7 +113,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
      */
     public PessimisticLock generateNewLock(String documentNumber, String lockDescriptor, Person user) {
         PessimisticLock lock = new PessimisticLock(documentNumber, lockDescriptor, user);
-        save(lock);
+        lock = save(lock);
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("Generated new lock: " + lock);
         }
@@ -164,11 +164,11 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
     /**
      * @see org.kuali.rice.kns.service.PessimisticLockService#save(org.kuali.rice.kns.document.authorization.PessimisticLock)
      */
-    public void save(PessimisticLock lock) {
+    public PessimisticLock save(PessimisticLock lock) {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug("Saving lock: " + lock);
     	}
-        getBusinessObjectService().save(lock);
+        return (PessimisticLock)getBusinessObjectService().save(lock);
     }
 
     public BusinessObjectService getBusinessObjectService() {

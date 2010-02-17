@@ -16,6 +16,8 @@
 package org.kuali.rice.kns.util;
 
 import org.junit.Test;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.test.KNSTestCase;
 
 /**
@@ -25,7 +27,7 @@ import org.kuali.test.KNSTestCase;
  *
  */
 public class WebUtilsTest extends KNSTestCase {
-	
+
 	/**
 	 * Tests WebUtils.getButtonImageUrl()
 	 *

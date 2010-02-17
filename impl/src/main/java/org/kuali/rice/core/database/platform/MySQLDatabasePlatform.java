@@ -26,6 +26,7 @@ import java.util.regex.Pattern;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
@@ -89,19 +90,12 @@ public class MySQLDatabasePlatform extends ANSISqlDatabasePlatform {
   	}
     
     public Long getNextValSQL(String sequenceName, EntityManager entityManager) {
-    	EntityTransaction tx = entityManager.getTransaction();
-    	try {
-    	    tx.begin();    	    
-            entityManager.createNativeQuery("INSERT INTO " + sequenceName + " VALUES (NULL);").executeUpdate();
-            Long result = new Long(((BigInteger) entityManager.createNativeQuery("SELECT LAST_INSERT_ID()").getSingleResult()).longValue());               	    
-    	    tx.commit();    	    
-    	    return result;
-    	}
-    	finally {
-    	    if ( tx.isActive() ) {
-    	        tx.rollback();
-    	    }
-    	}
+		Long result = new Long(((BigInteger) entityManager.createNativeQuery("SELECT id FROM " + sequenceName + " for update").getSingleResult()).longValue());
+		entityManager.createNativeQuery("UPDATE " + sequenceName + " SET ID = ? WHERE ID = ? ")
+			.setParameter(1, result + 1)
+			.setParameter(2, result)
+			.executeUpdate();   	    
+	    return result;
     }
 
     public boolean isSITCacheSupported() {

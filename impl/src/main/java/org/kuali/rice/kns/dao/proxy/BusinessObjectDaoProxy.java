@@ -204,8 +204,10 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#save(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
-	public void save(PersistableBusinessObject bo) {
-		getDao(bo.getClass()).save(bo);
+	public PersistableBusinessObject save(PersistableBusinessObject bo) {
+		PersistableBusinessObject savedBo;
+		savedBo = getDao(bo.getClass()).save(bo);
+		return savedBo;
 	}
 
 	/**

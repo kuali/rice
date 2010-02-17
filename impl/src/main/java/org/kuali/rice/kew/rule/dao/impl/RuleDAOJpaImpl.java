@@ -147,6 +147,9 @@ public class RuleDAOJpaImpl implements RuleDAO {
 
     public RuleBaseValues findRuleBaseValuesByName(String name) {
         Criteria crit = new Criteria(RuleBaseValues.class.getName());
+        if (name == null) {
+        	return null;
+        }
         crit.eq("name", name);
         crit.eq("currentInd", Boolean.TRUE);
         try{
@@ -158,6 +161,9 @@ public class RuleDAOJpaImpl implements RuleDAO {
     }
 
 	public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId) {
+		if (ruleBaseValuesId == null) {
+			return null;
+		}
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.eq("ruleBaseValuesId", ruleBaseValuesId);
 		try{

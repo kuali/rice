@@ -88,6 +88,7 @@
 	<!-- JPA-related parameters -->
 	<param name="rice.jpa.DatabasePlatform" override="false">org.hibernate.dialect.OracleDialect</param>
 	<param name="rice.jpa.UseSerialization" override="false">false</param>
+
 	<!-- End JPA-related parameters -->
 
     <param name="transaction.timeout" override="false">30000</param>
@@ -187,16 +188,19 @@
 	<param name="rice.ksb.message.jpa.PersistenceXmlLocation" override="false">META-INF/ksb-persistence.xml</param>
 	<param name="rice.ksb.message.jpa.PersistenceUnitName" override="false">ksb-message-unit</param>
 	<param name="rice.ksb.message.jpa.GenerateDdl" override="false">true</param>
+	
 	<!-- End KSB-specific JPA parameters -->
 
 	<!-- KNS-specific JPA parameters -->
 	<param name="rice.kns.jpa.enabled" override="false">true</param>
 	<param name="rice.kns.application.jpa.PersistenceXmlLocation" override="false">META-INF/kns-persistence.xml</param>
 	<param name="rice.kns.application.jpa.PersistenceUnitName" override="false">kns-application-unit</param>
-	<param name="rice.kns.application.jpa.GenerateDdl" override="false">false</param>
+	<param name="rice.kns.application.jpa.GenerateDdl" override="false">true</param>
+
 	<param name="rice.kns.server.jpa.PersistenceXmlLocation" override="false">META-INF/kns-persistence.xml</param>
 	<param name="rice.kns.server.jpa.PersistenceUnitName" override="false">kns-server-unit</param>
-	<param name="rice.kns.server.jpa.GenerateDdl" override="false">false</param>
+	<param name="rice.kns.server.jpa.GenerateDdl" override="false">true</param>
+
 	<!-- End KNS-specific JPA parameters -->
 
 

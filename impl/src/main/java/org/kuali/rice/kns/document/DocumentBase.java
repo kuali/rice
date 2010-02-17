@@ -26,7 +26,9 @@ import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
@@ -86,8 +88,10 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     protected DocumentHeader documentHeader;
     @Transient
     protected transient PersistableBusinessObject documentBusinessObject; //here for reflection
-    // TODO Nate and David get together and fix this with a ManyToOne reference on the other side of this OneToMany
-    @Transient
+    
+
+    @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
     private List<PessimisticLock> pessimisticLocks;
 
     @Transient
@@ -653,7 +657,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     @Override
     public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
         super.afterLookup(persistenceBroker);
-        refreshPessimisticLocks();
+        //refreshPessimisticLocks();
     }
 
     /**
@@ -665,7 +669,10 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     
     /**
      * @see org.kuali.rice.kns.document.Document#refreshPessimisticLocks()
+     * @deprecated
+     * This is not needed with the relationship set up with JPA annotations
      */
+    @Deprecated 
     public void refreshPessimisticLocks() {
         this.pessimisticLocks.clear();
         this.pessimisticLocks = KNSServiceLocator.getPessimisticLockService().getPessimisticLocksForDocument(this.documentNumber);

@@ -57,6 +57,9 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 *      java.util.Map)
 	 */
 	public PersistableBusinessObject findByPrimaryKey(Class clazz, Map primaryKeys) { 
+		if (primaryKeys == null || primaryKeys.isEmpty()) {
+			return null;
+		}
 		PersistableBusinessObject bo = null;
 		try {
 			bo = (PersistableBusinessObject) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildJpaCriteria(clazz, primaryKeys)).toQuery().getSingleResult();
@@ -170,7 +173,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 * 
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#save(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
-	public void save(PersistableBusinessObject bo) throws DataAccessException {
+	public PersistableBusinessObject save(PersistableBusinessObject bo) throws DataAccessException {
 		/* KC determined this is not needed for JPA
 		// if collections exist on the BO, create a copy and use to process the
 		// collections to ensure
@@ -187,7 +190,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 			}
 		}
 		*/
-		reattachAndSave(bo);
+		return reattachAndSave(bo);
 	}
 	
 		
@@ -256,7 +259,9 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 			String key = (String) e.getKey();
 			Object value = e.getValue();
-			if (value instanceof Collection) {
+			if (value == null) {
+				continue;
+			} else if (value instanceof Collection) {
 				criteria.in(key, (List) value);
 			} else {
 				criteria.eq(key, value);
@@ -313,10 +318,11 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 		this.persistenceStructureService = persistenceStructureService;
 	}
 
-	private void reattachAndSave(PersistableBusinessObject bo) {
+	private PersistableBusinessObject reattachAndSave(PersistableBusinessObject bo) {
 		PersistableBusinessObject attachedBo = findByPrimaryKey(bo.getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(bo));
+		PersistableBusinessObject newBo = attachedBo;
 		if (attachedBo == null) {
-			entityManager.merge(bo);
+			newBo = entityManager.merge(bo);
 			if (bo.getExtension() != null) {
 				entityManager.merge(bo.getExtension());
 			}
@@ -328,8 +334,9 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 				entityManager.merge(attachedBoe);
 			}
 			OrmUtils.reattach(attachedBo, bo);
-			entityManager.merge(attachedBo);
+			newBo = entityManager.merge(attachedBo);
 		}
+		return newBo;
 	}
 
     /**

@@ -117,7 +117,7 @@ public interface PessimisticLockService {
      * This method saves the given lock object
      * 
      */
-    public void save(PessimisticLock lock);
+    public PessimisticLock save(PessimisticLock lock);
     
     /**
      * @param document - the document locks are to be established against or by

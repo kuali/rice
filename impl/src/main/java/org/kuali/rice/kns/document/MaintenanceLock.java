@@ -19,9 +19,12 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -31,11 +34,15 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  * Most maintenance documents have only one lock, but globals have many 
  */
 @Entity
-@Sequence(name="KRNS_MAINT_LOCK_S", property="lockId")
 @Table(name="KRNS_MAINT_LOCK_T")
 public class MaintenanceLock extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 7766326835852387301L;
 	@Id
+	@GeneratedValue(generator="KRNS_MAINT_LOCK_S")
+	@GenericGenerator(name="KRNS_MAINT_LOCK_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRNS_MAINT_LOCK_S"),
+			@Parameter(name="value_column",value="id")
+	})
     @Column(name="MAINT_LOCK_ID")
     private String lockId;
 	@Column(name="MAINT_LOCK_REP_TXT")

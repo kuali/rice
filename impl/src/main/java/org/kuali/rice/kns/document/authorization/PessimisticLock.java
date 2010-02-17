@@ -20,12 +20,14 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -49,6 +51,11 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
     
     // id is sequence number and primary key
     @Id
+    @GeneratedValue(generator="KRNS_LOCK_S")
+	@GenericGenerator(name="KRNS_LOCK_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRNS_LOCK_S"),
+			@Parameter(name="value_column",value="id")
+	})
     @Column(name="PESSIMISTIC_LOCK_ID")
     private Long id;
     

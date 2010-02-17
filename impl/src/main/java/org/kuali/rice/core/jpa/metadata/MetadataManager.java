@@ -81,7 +81,9 @@ public class MetadataManager {
 			try {
 				Field field = getField(object.getClass(), fieldDescriptor.getName());
 				field.setAccessible(true);
-				pks.put(fieldDescriptor.getName(), field.get(object));
+				if (field.get(object) != null) {
+					pks.put(fieldDescriptor.getName(), field.get(object));
+				}
 			} catch (Exception e) {
 				LOG.error(e.getMessage(), e);
 			}

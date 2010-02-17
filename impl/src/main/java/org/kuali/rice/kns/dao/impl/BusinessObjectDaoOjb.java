@@ -190,7 +190,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 	 * 
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#save(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
-	public void save(PersistableBusinessObject bo) throws DataAccessException {
+	public PersistableBusinessObject save(PersistableBusinessObject bo) throws DataAccessException {
 		// if collections exist on the BO, create a copy and use to process the
 		// collections to ensure
 		// that removed elements are deleted from the database
@@ -208,6 +208,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
         }
         
 		getPersistenceBrokerTemplate().store(bo);	
+		return bo;
 	}
     
     /**

@@ -33,6 +33,7 @@ import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.util.Utilities;
 
@@ -283,14 +284,11 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 
     public Long findDocumentTypeIdByDocumentId(Long documentId) {
     	//FIXME: I don't think this does what it's supposed to
-    	Criteria crit = new Criteria(DocumentType.class.getName());
+    	Criteria crit = new Criteria(DocumentRouteHeaderValue.class.getName());
     	crit.eq("routeHeaderId", documentId);
 
-    	List<DocumentType> docTypes = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
-    	for (DocumentType docType:docTypes){
-    	    return docType.getDocumentTypeId();
-    	}
-    	return null;
+    	final DocumentRouteHeaderValue docHeader = (DocumentRouteHeaderValue)new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+    	return (docHeader != null) ? docHeader.getDocumentTypeId() : null;
     }
 
 }

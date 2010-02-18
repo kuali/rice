@@ -283,7 +283,6 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
     }
 
     public Long findDocumentTypeIdByDocumentId(Long documentId) {
-    	//FIXME: I don't think this does what it's supposed to
     	Criteria crit = new Criteria(DocumentRouteHeaderValue.class.getName());
     	crit.eq("routeHeaderId", documentId);
 

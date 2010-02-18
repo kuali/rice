@@ -347,6 +347,10 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         } else {
             searchResults = (List) getLookupService().findCollectionBySearchHelper(getBusinessObjectClass(), nonBlankFieldValues, unbounded);
         }
+        
+        if (searchResults == null) {
+        	searchResults = new ArrayList();
+        }
 
         // sort list if default sort column given
         List defaultSortColumns = getDefaultSortColumns();

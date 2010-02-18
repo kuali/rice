@@ -394,6 +394,7 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         newNodeInstance.setProcess(returnInstance.getProcess());
         newNodeInstance.setComplete(false);
         newNodeInstance.setActive(true);
+        nodeService.save(newNodeInstance);
         for (Iterator iterator = startingNodes.iterator(); iterator.hasNext();) {
             RouteNodeInstance activeNodeInstance = (RouteNodeInstance) iterator.next();
             // TODO what if the activeNodeInstance already has next nodes?

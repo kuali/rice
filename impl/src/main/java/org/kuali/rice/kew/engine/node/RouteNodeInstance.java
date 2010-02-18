@@ -30,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -81,7 +82,7 @@ public class RouteNodeInstance implements Serializable {
 	private Long routeNodeInstanceId;
     @Column(name="DOC_HDR_ID")
 	private Long documentId;
-    @OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="BRCH_ID")
 	private Branch branch;
     @OneToOne(fetch=FetchType.EAGER)
@@ -98,13 +99,13 @@ public class RouteNodeInstance implements Serializable {
 	private RouteNodeInstance process;
     
     @ManyToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"))        
+    @JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"))
     @Fetch(value = FetchMode.SUBSELECT)
     private List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
     
     @ManyToMany(fetch=FetchType.EAGER, mappedBy="nextNodeInstances")
     @Fetch(value = FetchMode.SUBSELECT)
-    @JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"))    
+    //@JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"))
     private List<RouteNodeInstance> previousNodeInstances = new ArrayList<RouteNodeInstance>();
 
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="nodeInstance")    

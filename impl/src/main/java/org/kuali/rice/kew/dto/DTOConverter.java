@@ -723,7 +723,7 @@ public class DTOConverter {
         Long routeHeaderId = actionRequestDTO.getRouteHeaderId();
         if (routeHeaderId != null) {
             actionRequest.setRouteHeaderId(routeHeaderId);
-            actionRequest.setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId));
+            //actionRequest.setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId));
         }
         actionRequest.setRouteLevel(actionRequestDTO.getRouteLevel());
 
@@ -751,7 +751,7 @@ public class DTOConverter {
         actionTaken.setDelegatorGroupId(actionTakenVO.getDelegatorGroupId());
         actionTaken.setDocVersion(actionTakenVO.getDocVersion());
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionTakenVO.getRouteHeaderId());
-        actionTaken.setRouteHeader(routeHeader);
+        //actionTaken.setRouteHeader(routeHeader);
         actionTaken.setRouteHeaderId(actionTaken.getRouteHeaderId());
         return actionTaken;
     }

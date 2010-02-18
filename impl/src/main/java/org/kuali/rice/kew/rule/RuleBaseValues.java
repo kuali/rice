@@ -220,7 +220,7 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
     }
 
     public RuleBaseValues getPreviousVersion() {
-        if (previousVersion == null) {
+        if (previousVersion == null && previousVersionId != null) {
             RuleService ruleService = (RuleService) KEWServiceLocator.getService(KEWServiceLocator.RULE_SERVICE);
             return ruleService.findRuleBaseValuesById(previousVersionId);
         }

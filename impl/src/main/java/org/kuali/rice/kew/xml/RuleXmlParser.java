@@ -305,7 +305,7 @@ public class RuleXmlParser implements XmlConstants {
      */
     private RuleBaseValues createRule(String ruleName) {
     	RuleBaseValues rule = new RuleBaseValues();
-    	RuleBaseValues existingRule = KEWServiceLocator.getRuleService().getRuleByName(ruleName);
+    	RuleBaseValues existingRule = (ruleName != null) ? KEWServiceLocator.getRuleService().getRuleByName(ruleName) : null;
     	if (existingRule != null) {
     		// copy keys and responsibiliities from the existing rule
     		rule.setRuleBaseValuesId(existingRule.getRuleBaseValuesId());

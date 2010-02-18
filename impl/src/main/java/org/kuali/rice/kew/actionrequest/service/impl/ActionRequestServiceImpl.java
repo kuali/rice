@@ -200,10 +200,14 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (actionRequests == null) {
             return;
         }
-        for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
+        List<?> actionRequestList = new ArrayList<Object>(actionRequests);
+        for (int i = 0; i < actionRequestList.size(); i++) {
+        	activateRequestInternal((ActionRequestValue) actionRequestList.get(i), activationContext);
+        }
+        /*for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
             activateRequestInternal(actionRequest, activationContext);
-        }
+        }*/
     }
 
     /**
@@ -317,9 +321,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         FutureRequestDocumentStateManager futureRequestStateMngr = null;
 
         if (actionRequestToActivate.isGroupRequest()) {
-            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getGroup());
+            futureRequestStateMngr = new FutureRequestDocumentStateManager(
+            		KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionRequestToActivate.getRouteHeaderId()), actionRequestToActivate.getGroup());
         } else if (actionRequestToActivate.isUserRequest()) {
-            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getPrincipalId());
+            futureRequestStateMngr = new FutureRequestDocumentStateManager(
+            		KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionRequestToActivate.getRouteHeaderId()), actionRequestToActivate.getPrincipalId());
         } else {
             return false;
         }
@@ -580,6 +586,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         	}
             getActionListService().deleteActionItem(actionItem);
         }
+        actionRequest.getActionItems().clear();
     }
 
 
@@ -728,11 +735,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     // TODO this still won't work in certain cases when checking from the root
     public boolean isDuplicateRequest(ActionRequestValue actionRequest) {
-        List requests = findAllRootActionRequestsByRouteHeaderId(actionRequest.getRouteHeader().getRouteHeaderId());
+        List requests = findAllRootActionRequestsByRouteHeaderId(actionRequest.getRouteHeaderId());
         for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
             ActionRequestValue existingRequest = (ActionRequestValue) iterator.next();
             if (existingRequest.getStatus().equals(KEWConstants.ACTION_REQUEST_DONE_STATE)
-                    && existingRequest.getRouteLevel().equals(actionRequest.getRouteHeader().getDocRouteLevel())
+                    && existingRequest.getRouteLevel().equals(actionRequest.getRouteLevel())
                     && ObjectUtils.equals(existingRequest.getPrincipalId(), actionRequest.getPrincipalId())
                     && ObjectUtils.equals(existingRequest.getGroupId(), actionRequest.getGroupId())
                     && ObjectUtils.equals(existingRequest.getRoleName(), actionRequest.getRoleName())

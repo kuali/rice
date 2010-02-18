@@ -57,7 +57,7 @@ public class RuleDelegation extends KewPersistableBusinessObjectBase {
 	})
 	@Column(name="DLGN_RULE_ID")
 	private Long ruleDelegationId;
-    @Column(name="RSP_ID", insertable=false, updatable=false)
+    @Column(name="RSP_ID")
 	private Long responsibilityId;
     @Column(name="DLGN_RULE_BASE_VAL_ID", insertable=false, updatable=false)
 	private Long delegateRuleId;

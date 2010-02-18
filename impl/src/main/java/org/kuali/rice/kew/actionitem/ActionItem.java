@@ -22,11 +22,8 @@ import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -41,7 +38,6 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -91,7 +87,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 	private String actionRequestCd;
     @Column(name="ACTN_RQST_ID", nullable=false)
 	private Long actionRequestId;
-    @Column(name="DOC_HDR_ID", insertable=false, updatable=false)
+    @Column(name="DOC_HDR_ID")//, insertable=false, updatable=false)
 	private Long routeHeaderId;
     @Column(name="GRP_ID")
 	private String groupId;
@@ -119,9 +115,9 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     @Column(name="RQST_LBL")
     private String requestLabel;
 
-    @ManyToOne(fetch=FetchType.EAGER)
-    @JoinColumn(name="DOC_HDR_ID")
-	private DocumentRouteHeaderValue routeHeader;
+    //@ManyToOne(fetch=FetchType.EAGER)
+    //@JoinColumn(name="DOC_HDR_ID")
+	//private DocumentRouteHeaderValue routeHeader;
 	
     @Transient
     private Timestamp lastApprovedDate;
@@ -212,14 +208,6 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 
     public String getRequestLabel() {
         return this.requestLabel;
-    }
-    
-    /**
-     * @deprecated as of Rice 1.0.1 (KULRICE-1652), Use {@link #getRouteHeaderId()} instead. 
-     */
-    @Deprecated
-    public DocumentRouteHeaderValue getRouteHeader() {
-        return routeHeader;
     }
     
     public Timestamp getLastApprovedDate() {
@@ -321,14 +309,6 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     
     public void setDocName(String docName) {
         this.docName = docName;
-    }
-
-    /**
-     * @deprecated as of Rice 1.0.1 (KULRICE-1652), Use {@link #setRouteHeaderId(Long)} instead. 
-     */
-    @Deprecated
-    public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
-        this.routeHeader = routeHeader;
     }
 
     public void setActionRequestCd(String actionRequestCd) {

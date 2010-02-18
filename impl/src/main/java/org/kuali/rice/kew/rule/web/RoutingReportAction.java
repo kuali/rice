@@ -235,7 +235,10 @@ public class RoutingReportAction extends KewKualiAction {
     				numberOfRules += flexRM.getNumberOfMatchingRules();
 
     				magicCounter = populateActionRequestsWithRouteLevelInformationAndIterateMagicCounter(routeLevel, actionRequests, magicCounter);
-    				routeHeader.getActionRequests().addAll(actionRequests);
+    				for (Object actionRequest : actionRequests) {
+    					KEWServiceLocator.getActionRequestService().saveActionRequest((ActionRequestValue)actionRequest);
+    				}
+    				//routeHeader.getActionRequests().addAll(actionRequests);
 				}
 			} finally {
 				RouteContext.clearCurrentRouteContext();

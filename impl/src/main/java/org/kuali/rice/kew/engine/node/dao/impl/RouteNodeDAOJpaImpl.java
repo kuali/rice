@@ -78,7 +78,6 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     	if (branch.getBranchId() == null){
     		entityManager.persist(branch);
     	} else {
-    		entityManager.merge(branch);
     		OrmUtils.merge(entityManager, branch);
     	}
     }
@@ -153,13 +152,13 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     }
 
     public List findProcessNodeInstances(RouteNodeInstance process) {
-    	Query query = entityManager.createNamedQuery("RouteNode.FindProcessNodeInstances");
+    	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindProcessNodeInstances");
     	query.setParameter(KEWPropertyConstants.PROCESS_ID, process.getRouteNodeInstanceId());
     	return (List) query.getResultList();
     }
 
     public List findRouteNodeInstances(Long documentId) {
-    	Query query = entityManager.createNamedQuery("RouteNode.FindRouteNodeInstances");
+    	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindRouteNodeInstances");
     	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
     	return (List) query.getResultList();
     }

@@ -23,6 +23,7 @@ import javax.persistence.PersistenceContext;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.dao.BranchDAO;
 
 /**
@@ -55,7 +56,6 @@ public class BranchDAOJpaImpl implements BranchDAO {
 	 */
 	public void save(Branch branch) {
 		  if (branch.getBranchId() == null) {
-	        	OrmUtils.populateAutoIncValue(branch, entityManager);
 	            entityManager.persist(branch);
 	        } else {
 	            OrmUtils.merge(entityManager, branch);
@@ -64,10 +64,10 @@ public class BranchDAOJpaImpl implements BranchDAO {
 	}
 	
 	 protected void deleteBranchStatesById(Long stateId){
-	    	Criteria criteria = new Criteria("Branch", "br");
+	    	Criteria criteria = new Criteria("BranchState", "branchState");
 	    	criteria.eq("branchStateId", stateId);	        	        
-	        Branch br = (Branch)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
-	        entityManager.remove(br);
+	        BranchState branchState = (BranchState)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getSingleResult();
+	        entityManager.remove(branchState);
 	    }
 
     public EntityManager getEntityManager() {

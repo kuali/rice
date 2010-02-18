@@ -173,11 +173,10 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 							.getDocumentType()));
 			StringBuffer emailSubject = new StringBuffer();
 			try {
-				CustomEmailAttribute customEmailAttribute = actionItem
-						.getRouteHeader().getCustomEmailAttribute();
+				CustomEmailAttribute customEmailAttribute = document.getCustomEmailAttribute();
 				if (customEmailAttribute != null) {
 					RouteHeaderDTO routeHeaderVO = DTOConverter
-							.convertRouteHeader(actionItem.getRouteHeader(),
+							.convertRouteHeader(document,
 									user.getPrincipalId());
 					ActionRequestValue actionRequest = KEWServiceLocator
 							.getActionRequestService().findByActionRequestId(
@@ -375,8 +374,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	public String buildImmediateReminderBody(Person person,
 			ActionItem actionItem, DocumentType documentType) {
-		String docHandlerUrl = actionItem.getRouteHeader().getDocumentType()
-				.getDocHandlerUrl();
+		String docHandlerUrl = documentType.getDocHandlerUrl();
 		if (StringUtils.isNotBlank(docHandlerUrl)) {
     		if (docHandlerUrl.indexOf("?") == -1) {
     			docHandlerUrl += "?";
@@ -435,7 +433,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         if (StringUtils.isNotBlank(docHandlerUrl)) {
             Object[] args = { actionItem.getRouteHeaderId(), 
                     initiatorUser,
-                    actionItem.getRouteHeader().getDocumentType().getName(),
+                    documentType.getName(),
                     actionItem.getDocTitle(), 
                     docHandlerUrl,
                     getActionListUrl(), 
@@ -449,7 +447,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
         } else {
             Object[] args = { actionItem.getRouteHeaderId(), 
                     initiatorUser,
-                    actionItem.getRouteHeader().getDocumentType().getName(),
+                    documentType.getName(),
                     actionItem.getDocTitle(), 
                     getActionListUrl(), 
                     getPreferencesUrl(),
@@ -539,7 +537,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		Iterator iter = actionItems.iterator();
 
 		while (iter.hasNext()) {
-			String docTypeName = ((ActionItem) iter.next()).getRouteHeader()
+			String docTypeName = KEWServiceLocator.getRouteHeaderService().getRouteHeader(((ActionItem) iter.next()).getRouteHeaderId())
 					.getDocumentType().getName();
 			if (docTypes.containsKey(docTypeName)) {
 				docTypes.put(docTypeName, new Integer(((Integer) docTypes

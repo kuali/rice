@@ -70,7 +70,7 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
      */
     @Override
     public DocumentRouteHeaderValue getRouteHeader(ActionItem actionItem) {
-        if (actionItem.getRouteHeader() != null) {
+        if (actionItem.getRouteHeaderId() != null) {
             return super.getRouteHeader(actionItem);
         }
         DocumentRouteHeaderValue routeHeader = new DocumentRouteHeaderValue();

@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.routeheader.dao.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -29,9 +30,6 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.query.Criteria;
-import org.apache.ojb.broker.query.QueryFactory;
-import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.OrmUtils;
@@ -210,8 +208,13 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         	"') AND RSP_ID IN "+respIds;
 
         LOG.debug("Query to find pending documents for requeue: " + query);
+        
+        List<Long> idList = new ArrayList<Long>();
+        for (Object tempId : entityManager.createNativeQuery(query).getResultList()) {
+        	idList.add(((BigDecimal) tempId).longValueExact());
+        }
 
-        return (List<Long>)entityManager.createNativeQuery(query).getResultList();
+        return idList; //(List<Long>)entityManager.createNativeQuery(query).getResultList();
     }
 
     public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue) {

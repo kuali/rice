@@ -143,7 +143,6 @@ public class ActionListServiceImpl implements ActionListService {
         actionItem.setRoleName(actionRequest.getQualifiedRoleName());
         actionItem.setPrincipalId(actionRequest.getPrincipalId());
         actionItem.setRouteHeaderId(actionRequest.getRouteHeaderId());
-        actionItem.setRouteHeader(routeHeader);
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
         actionItem.setDocHandlerURL(docType.getDocHandlerUrl());
         actionItem.setDocLabel(docType.getLabel());
@@ -328,7 +327,8 @@ public class ActionListServiceImpl implements ActionListService {
             if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId()).isUsingOutbox()
                     && ConfigContext.getCurrentContextConfig().getOutBoxOn()
                     && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getRouteHeaderId(), actionItem.getPrincipalId()) == null
-                    && !actionItem.getRouteHeader().getDocRouteStatus().equals(KEWConstants.ROUTE_HEADER_SAVED_CD)) {
+                    && !KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()).getDocRouteStatus().equals(
+                    		KEWConstants.ROUTE_HEADER_SAVED_CD)) {
                 // only create an outbox item if this user has taken action on the document
                 ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(
                         actionItem.getActionRequestId());

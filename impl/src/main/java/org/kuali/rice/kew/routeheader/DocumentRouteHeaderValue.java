@@ -130,7 +130,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     private static final Logger LOG = Logger.getLogger(DocumentRouteHeaderValue.class);
 
     public static final String CURRENT_ROUTE_NODE_NAME_DELIMITER = ", ";
-
+    
     @Column(name="DOC_TYP_ID")
 	private java.lang.Long documentTypeId;
     @Column(name="DOC_HDR_STAT_CD")
@@ -175,18 +175,18 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
 	@Column(name="DOC_HDR_ID")
 	private java.lang.Long routeHeaderId;
     
-    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
+    //@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
+    //@Fetch(value = FetchMode.SUBSELECT)
+    //private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
     
-    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
-    @OrderBy("actionDate ASC")
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
+    //@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
+    //@OrderBy("actionDate ASC")
+    //@Fetch(value = FetchMode.SUBSELECT)
+    //private List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
     
-    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
-    @Fetch(value = FetchMode.SUBSELECT)
-    private List<ActionItem> actionItems = new ArrayList<ActionItem>();
+    //@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
+    //@Fetch(value = FetchMode.SUBSELECT)
+    //private List<ActionItem> actionItems = new ArrayList<ActionItem>();
     
     /**
      * The appDocStatusHistory keeps a list of Application Document Status transitions
@@ -345,27 +345,15 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     }
 
     public List<ActionItem> getActionItems() {
-        return actionItems;
-    }
-
-    public void setActionItems(List<ActionItem> actionItems) {
-        this.actionItems = actionItems;
+        return (List<ActionItem>) KEWServiceLocator.getActionListService().findByRouteHeaderId(routeHeaderId);
     }
 
     public List<ActionTakenValue> getActionsTaken() {
-        return actionsTaken;
-    }
-
-    public void setActionsTaken(List<ActionTakenValue> actionsTaken) {
-        this.actionsTaken = actionsTaken;
+        return (List<ActionTakenValue>) KEWServiceLocator.getActionTakenService().findByRouteHeaderId(routeHeaderId);
     }
 
     public List<ActionRequestValue> getActionRequests() {
-        return actionRequests;
-    }
-
-    public void setActionRequests(List<ActionRequestValue> actionRequests) {
-        this.actionRequests = actionRequests;
+        return KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId);
     }
 
     public DocumentType getDocumentType() {
@@ -959,6 +947,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     }
 
     public ActionRequestValue getDocActionRequest(int index) {
+    	List<ActionRequestValue> actionRequests = getActionRequests();
         while (actionRequests.size() <= index) {
         	ActionRequestValue actionRequest = new ActionRequestFactory(this).createBlankActionRequest();
         	actionRequest.setNodeInstance(new RouteNodeInstance());
@@ -968,6 +957,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     }
 
     public ActionTakenValue getDocActionTaken(int index) {
+    	List<ActionTakenValue> actionsTaken = getActionsTaken();
         while (actionsTaken.size() <= index) {
             actionsTaken.add(new ActionTakenValue());
         }
@@ -975,6 +965,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     }
 
     public ActionItem getDocActionItem(int index) {
+    	List<ActionItem> actionItems = getActionItems();
         while (actionItems.size() <= index) {
             actionItems.add(new ActionItem());
         }

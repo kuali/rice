@@ -27,6 +27,7 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.mail.service.EmailContentService;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -74,12 +75,10 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
     }
 
     protected static CustomEmailAttribute getCustomEmailAttribute(Person user, ActionItem actionItem) throws WorkflowException {
-	if (actionItem.getRouteHeader() == null) {
-	    actionItem.setRouteHeader(KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()));
-	}
-        CustomEmailAttribute customEmailAttribute = actionItem.getRouteHeader().getCustomEmailAttribute();
+    	DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId());
+        CustomEmailAttribute customEmailAttribute = routeHeader.getCustomEmailAttribute();
         if (customEmailAttribute != null) {
-            RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(actionItem.getRouteHeader(), user.getPrincipalId());
+            RouteHeaderDTO routeHeaderVO = DTOConverter.convertRouteHeader(routeHeader, user.getPrincipalId());
             ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(actionItem.getActionRequestId());
             ActionRequestDTO actionRequestVO = DTOConverter.convertActionRequest(actionRequest);
             customEmailAttribute.setRouteHeaderVO(routeHeaderVO);

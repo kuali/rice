@@ -75,6 +75,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
         crit.eq("routeHeaderId", routeHeaderId);
         crit.eq("currentIndicator", new Boolean(true));
+        crit.orderBy("actionDate", true);
         return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 

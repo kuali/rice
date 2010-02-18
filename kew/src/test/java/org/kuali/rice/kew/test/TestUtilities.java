@@ -323,15 +323,12 @@ public class TestUtilities {
         }
     }
 
-    public static PersistenceBrokerTemplate getPersistenceBrokerTemplate() {
-    	PersistenceBrokerTemplate pbt = new PersistenceBrokerTemplate();
-    	pbt.setPbKey(new PBKey("enWorkflowDataSource"));
-    	pbt.setDataSource(KEWServiceLocator.getDataSource());
-    	pbt.setJcdAlias("enWorkflowDataSource");
-    	pbt.afterPropertiesSet();
-    	return pbt;
+    public static JdbcTemplate getJdbcTemplate() {
+    	JdbcTemplate jdbcTemplate = new JdbcTemplate(KEWServiceLocator.getDataSource());
+    	jdbcTemplate.afterPropertiesSet();
+    	return jdbcTemplate;
     }
-
+    
     /**
      * Waits "indefinately" for the exception routing thread to terminate.
      *

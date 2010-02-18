@@ -30,6 +30,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.mail.EmailContent;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
@@ -53,7 +54,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
     // ---- EmailContentService interface implementation
 
     public EmailContent generateImmediateReminder(Person person, ActionItem actionItem, DocumentType documentType) {
-        String docHandlerUrl = actionItem.getRouteHeader().getDocumentType().getDocHandlerUrl();
+        String docHandlerUrl = documentType.getDocHandlerUrl();
         if (StringUtils.isNotBlank(docHandlerUrl)) {
             if (docHandlerUrl.indexOf("?") == -1) {
                 docHandlerUrl += "?";
@@ -76,7 +77,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
             LOG.error("Error retrieving initiator for action item " + actionItem.getRouteHeaderId());
             emailBody.append("\n");
         }
-        emailBody.append("Type:\t\t" + "Add/Modify " + actionItem.getRouteHeader().getDocumentType().getName() + "\n");
+        emailBody.append("Type:\t\t" + "Add/Modify " + documentType.getName() + "\n");
         emailBody.append("Title:\t\t" + actionItem.getDocTitle() + "\n");
         emailBody.append("\n\n");
         if (StringUtils.isNotBlank(docHandlerUrl)) {
@@ -219,7 +220,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         Iterator iter = actionItems.iterator();
 
         while (iter.hasNext()) {
-            String docTypeName = ((ActionItem) iter.next()).getRouteHeader()
+            String docTypeName = KEWServiceLocator.getRouteHeaderService().getRouteHeader(((ActionItem) iter.next()).getRouteHeaderId())
                     .getDocumentType().getName();
             if (docTypes.containsKey(docTypeName)) {
                 docTypes.put(docTypeName, new Integer(((Integer) docTypes

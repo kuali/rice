@@ -522,7 +522,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
 			}
 		}
 
-		val.setRouteHeader(routeHeader);
+		//val.setRouteHeader(routeHeader);
 		val.setCurrentIndicator(Boolean.TRUE);
 		return val;
     }

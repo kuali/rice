@@ -19,7 +19,6 @@ package org.kuali.rice.kew.mail.service.impl;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
 import org.kuali.rice.kew.mail.service.ActionListImmediateEmailReminderService;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 
@@ -35,12 +34,7 @@ public class ActionListImmediateProcessorImpl implements ActionListImmediateEmai
 
 	public void sendReminder(ActionItem actionItem, boolean doNotSendApproveNotificationEmails) {
 		if (actionItem != null) {
-		    if (actionItem.getRouteHeader() == null && actionItem.getRouteHeaderId() != null) {
-			// materialize the document
-			DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId());
-			actionItem.setRouteHeader(document);
-		    }
-            if (! actionItem.getActionRequestCd().equals(KEWConstants.ACTION_REQUEST_APPROVE_REQ) ||
+		    if (! actionItem.getActionRequestCd().equals(KEWConstants.ACTION_REQUEST_APPROVE_REQ) ||
             			! doNotSendApproveNotificationEmails) {
             	if (LOG.isDebugEnabled()) {
             		LOG.debug("sending immediate reminder to " + actionItem.getPrincipalId());

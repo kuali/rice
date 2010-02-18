@@ -174,14 +174,6 @@ public class BlanketApproveTest extends KEWTestCase {
         RouteNodeInstance doc2Instance = (RouteNodeInstance)nodeInstances.iterator().next();
         assertEquals("At wrong node.", SequentialSetup.WORKFLOW_DOCUMENT_2_NODE, doc2Instance.getRouteNode().getRouteNodeName());
         
-        document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), SequentialSetup.DOCUMENT_TYPE_NAME);
-        document.blanketApprove("", new Integer(2));
-        assertTrue("Document should be enroute.", document.stateIsEnroute());
-        nodeInstances = getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
-        assertEquals("Should be one active node.", 1, nodeInstances.size());
-        doc2Instance = (RouteNodeInstance)nodeInstances.iterator().next();
-        assertEquals("At wrong node.", SequentialSetup.WORKFLOW_DOCUMENT_2_NODE, doc2Instance.getRouteNode().getRouteNodeName());
-        
     }
     
     @Test public void testBlanketApproveSequentialErrors() throws Exception {

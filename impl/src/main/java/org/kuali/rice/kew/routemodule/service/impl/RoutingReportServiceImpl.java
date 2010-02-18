@@ -16,12 +16,14 @@
  */
 package org.kuali.rice.kew.routemodule.service.impl;
 
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.engine.simulation.SimulationEngine;
 import org.kuali.rice.kew.engine.simulation.SimulationResults;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routemodule.service.RoutingReportService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 
 public class RoutingReportServiceImpl implements RoutingReportService {
@@ -44,7 +46,10 @@ public class RoutingReportServiceImpl implements RoutingReportService {
      */
     private DocumentRouteHeaderValue materializeDocument(SimulationResults results) {
     	DocumentRouteHeaderValue document = results.getDocument();
-		document.getActionRequests().addAll(results.getSimulatedActionRequests());
+		//document.getActionRequests().addAll(results.getSimulatedActionRequests());
+    	for (Object actionRequest : results.getSimulatedActionRequests()) {
+    		KEWServiceLocator.getActionRequestService().saveActionRequest((ActionRequestValue)actionRequest);
+    	}
         return document;
 
     }

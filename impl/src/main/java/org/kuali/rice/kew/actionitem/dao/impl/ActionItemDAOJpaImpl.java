@@ -13,8 +13,10 @@
  */
 package org.kuali.rice.kew.actionitem.dao.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -66,7 +68,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
 
     public void deleteByRouteHeaderIdWorkflowUserId(Long routeHeaderId, String workflowUserId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
-        crit.eq("routeHeader.routeHeaderId", routeHeaderId);
+        crit.eq("routeHeaderId", routeHeaderId);
         crit.eq("principalId", workflowUserId);
         for(Object actionItem: new QueryByCriteria(entityManager,crit).toQuery().getResultList()){
             if( ! (actionItem instanceof OutboxItemActionListExtension)) {
@@ -77,7 +79,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
 
     public void deleteByRouteHeaderId(Long routeHeaderId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
-        crit.eq("routeHeader.routeHeaderId", routeHeaderId);
+        crit.eq("routeHeaderId", routeHeaderId);
         for(Object actionItem: new QueryByCriteria(entityManager,crit).toQuery().getResultList()){
             if( ! (actionItem instanceof OutboxItemActionListExtension)) {
                 entityManager.remove(actionItem);
@@ -93,7 +95,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
 	public Collection<ActionItem> findByPrincipalId(String principalId) {
 		Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("principalId", principalId);
-        crit.orderBy("routeHeader.routeHeaderId", true);
+        crit.orderBy("routeHeaderId", true);
         List<ActionItem> results = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
         
         return removeOutBoxItems(results);
@@ -102,7 +104,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     public Collection<ActionItem> findByWorkflowUserRouteHeaderId(String workflowId, Long routeHeaderId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("principalId", workflowId);
-        crit.eq("routeHeader.routeHeaderId", routeHeaderId);
+        crit.eq("routeHeaderId", routeHeaderId);
         List<ActionItem> results = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
         
         return removeOutBoxItems(results);
@@ -131,7 +133,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     
     public Collection<ActionItem> findByRouteHeaderId(Long routeHeaderId) {
         Criteria crit = new Criteria(ActionItem.class.getName());
-        crit.eq("routeHeader.routeHeaderId", routeHeaderId);
+        crit.eq("routeHeaderId", routeHeaderId);
         List<ActionItem> results = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
         
         return removeOutBoxItems(results);
@@ -146,6 +148,10 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     public void saveActionItem(ActionItem actionItem) {
+    	if (actionItem.getDateAssigned() == null) {
+            actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
+        }
+    	
     	if(actionItem.getActionItemId()==null){
         	entityManager.persist(actionItem);
     	}else{

@@ -250,7 +250,7 @@ public abstract class ActionTakenEvent {
 		} else if (delegator instanceof KimGroupRecipient) {
 			val.setDelegatorGroupId(((KimGroupRecipient) delegator).getGroupId());
 		}
-		val.setRouteHeader(routeHeader);
+		//val.setRouteHeader(routeHeader);
 		val.setCurrentIndicator(currentInd);
 		KEWServiceLocator.getActionTakenService().saveActionTaken(val);
 		return val;

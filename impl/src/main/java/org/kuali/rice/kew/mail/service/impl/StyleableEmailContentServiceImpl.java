@@ -43,6 +43,7 @@ import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.EmailStyleHelper;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -215,7 +216,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     }
 
     public DocumentRouteHeaderValue getRouteHeader(ActionItem actionItem) {
-        return actionItem.getRouteHeader();
+        return KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId());
     }
 
     protected static String transform(Templates style, Document doc) {
@@ -368,7 +369,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
                 LOG.error("Error when checking for custom email body and subject.", e);
             }
             Person person = actionItem.getPerson();
-            DocumentRouteHeaderValue header = actionItem.getRouteHeader();
+            DocumentRouteHeaderValue header = getRouteHeader(actionItem);
             // keep adding stuff until we have all the xml we need to formulate the message :/
             addObjectXML(doc, actionItem, root, "actionItem");
             addObjectXML(doc, person, root, "actionItemPerson");

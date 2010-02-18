@@ -125,8 +125,6 @@ public interface KualiWorkflowDocument {
 
     public abstract void blanketApprove(String annotation) throws WorkflowException;
 
-    public abstract void blanketApprove(String annotation, Integer routeLevel) throws WorkflowException;
-
     public abstract void saveRoutingData() throws WorkflowException;
 
     public abstract void acknowledge(String annotation) throws WorkflowException;

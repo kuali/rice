@@ -51,7 +51,6 @@ import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -87,7 +86,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
   @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocIdAtOrBelowRouteLevel", query="select arv from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.status <> :status and routeLevel <= :routeLevel"),
   @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocIdAtRouteLevel", query="select arv from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.status <> :status and routeLevel = :routeLevel"),
   @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocIdAtRouteNode", query="select arv from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId and (arv.status = '" + KEWConstants.ACTION_REQUEST_INITIALIZED + "' or arv.status = '" + KEWConstants.ACTION_REQUEST_ACTIVATED + "')"),
-  @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocumentType", query="select arv from ActionRequestValue arv where arv.routeHeader.documentTypeId = :documentTypeId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and (arv.status = '" + KEWConstants.ACTION_REQUEST_INITIALIZED + "' or arv.status = '" + KEWConstants.ACTION_REQUEST_ACTIVATED + "')"),
+  @NamedQuery(name="ActionRequestValue.FindPendingRootRequestsByDocumentType", query="select arv from ActionRequestValue arv where arv.routeHeaderId in (select drhv.routeHeaderId from DocumentRouteHeaderValue drhv where drhv.documentTypeId = :documentTypeId) and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and (arv.status = '" + KEWConstants.ACTION_REQUEST_INITIALIZED + "' or arv.status = '" + KEWConstants.ACTION_REQUEST_ACTIVATED + "')"),
   @NamedQuery(name="ActionRequestValue.FindRootRequestsByDocIdAtRouteNode", query="select arv from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator and arv.parentActionRequest is null and arv.nodeInstance.routeNodeInstanceId = :routeNodeInstanceId"),
   @NamedQuery(name="ActionRequestValue.GetRequestGroupIds", query="select arv.groupId from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator and arv.recipientTypeCd = :recipientTypeCd"),
   @NamedQuery(name="ActionRequestValue.FindByStatusAndGroupId", query="select arv from ActionRequestValue arv where arv.groupId = :groupId and arv.currentIndicator = :currentIndicator and arv.status = :status")
@@ -112,7 +111,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private Long actionRequestId;
     @Column(name="ACTN_RQST_CD")
 	private String actionRequested;
-    @Column(name="DOC_HDR_ID", insertable=false, updatable=false)
+    @Column(name="DOC_HDR_ID")//, insertable=false, updatable=false)
 	private Long routeHeaderId;
     @Column(name="STAT_CD")
 	private String status;
@@ -169,10 +168,6 @@ public class ActionRequestValue implements WorkflowPersistable {
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="ACTN_TKN_ID")
 	private ActionTakenValue actionTaken;
-    @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="DOC_HDR_ID")
-	private DocumentRouteHeaderValue routeHeader;
-    @Fetch(value = FetchMode.SUBSELECT)
     @OneToMany(fetch=FetchType.LAZY,mappedBy="actionRequestId")
     private List<ActionItem> actionItems = new ArrayList<ActionItem>();
     @Column(name="CUR_IND")
@@ -184,7 +179,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     /* New Workflow 2.1 Field */
     // The node instance at which this request was generated
-    @ManyToOne(fetch=FetchType.EAGER/*, cascade={CascadeType.PERSIST}*/)
+    @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="RTE_NODE_INSTN_ID")
 	private RouteNodeInstance nodeInstance;
 
@@ -219,7 +214,7 @@ public class ActionRequestValue implements WorkflowPersistable {
                 return "Exception";
             }
 
-            List routeLevelNodes = CompatUtils.getRouteLevelCompatibleNodeList(routeHeader.getDocumentType());
+            List routeLevelNodes = CompatUtils.getRouteLevelCompatibleNodeList(KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId).getDocumentType());
             if (!(routeLevelInt < routeLevelNodes.size())) {
                 return "Not Found";
             }
@@ -272,10 +267,6 @@ public class ActionRequestValue implements WorkflowPersistable {
         return KEWConstants.ACTION_REQUEST_INITIALIZED.equals(getStatus()) || KEWConstants.ACTION_REQUEST_ACTIVATED.equals(getStatus());
     }
 
-    public DocumentRouteHeaderValue getRouteHeader() {
-        return routeHeader;
-    }
-
     public String getStatusLabel() {
         return CodeTranslator.getActionRequestStatusLabel(getStatus());
     }
@@ -285,14 +276,6 @@ public class ActionRequestValue implements WorkflowPersistable {
     		return getRequestLabel();
     	}
     	return CodeTranslator.getActionRequestLabel(getActionRequested());
-    }
-
-    /**
-     * @param routeHeader
-     *            The routeHeader to set.
-     */
-    public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
-        this.routeHeader = routeHeader;
     }
 
     /**
@@ -936,7 +919,6 @@ public class ActionRequestValue implements WorkflowPersistable {
             .append("approvePolicy", approvePolicy)
             .append("childrenRequests", childrenRequests == null ? null : childrenRequests.size())
             .append("actionTaken", actionTaken)
-            .append("routeHeader", routeHeader)
             .append("actionItems", actionItems == null ? null : actionItems.size())
             .append("currentIndicator", currentIndicator)
             .append("createDateString", createDateString)

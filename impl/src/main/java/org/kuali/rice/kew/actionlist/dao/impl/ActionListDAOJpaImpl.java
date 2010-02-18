@@ -108,7 +108,9 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 		actionItemExt.setDelegatorGroupId(actionItem.getDelegatorGroupId());
 		actionItemExt.setDelegationType(actionItem.getDelegationType());
 		actionItemExt.setLockVerNbr(actionItem.getLockVerNbr());
-		actionItemExt.setRouteHeader(toDocumentRouteHeaderValueActionListExtension(actionItem.getRouteHeader()));
+		actionItemExt.setRouteHeaderId(actionItem.getRouteHeaderId());
+		actionItemExt.setRequestLabel(actionItem.getRequestLabel());
+		//actionItemExt.setRouteHeader(toDocumentRouteHeaderValueActionListExtension(actionItem.getRouteHeader()));
 		
 		// These properties are not mapped in OJB-repository-kew.xml
 		// actionItemExt.setActionItemIndex(actionItem.getActionItemIndex());
@@ -163,7 +165,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
 	public Collection<ActionItem> getActionListForSingleDocument(Long routeHeaderId) {
         LOG.debug("getting action list for route header id " + routeHeaderId);
         Criteria crit = new Criteria(ActionItem.class.getName());
-        crit.eq("routeHeader.routeHeaderId", routeHeaderId);
+        crit.eq("routeHeaderId", routeHeaderId);
         Collection<ActionItem> collection = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
         LOG.debug("found " + collection.size() + " action items for route header id " + routeHeaderId);
         return toActionItemActionListExtensions(createActionListForRouteHeader(collection));
@@ -545,7 +547,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
      */
     public OutboxItemActionListExtension getOutboxByDocumentId(Long documentId) {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());
-        crit.eq("routeHeader.routeHeaderId", documentId);
+        crit.eq("routeHeaderId", documentId);
         return (OutboxItemActionListExtension) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
     
@@ -556,7 +558,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
      */
     public OutboxItemActionListExtension getOutboxByDocumentIdUserId(Long documentId, String userId) {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());
-        crit.eq("routeHeader.routeHeaderId", documentId);
+        crit.eq("routeHeaderId", documentId);
         crit.eq("principalId", userId);
         try{
         	return (OutboxItemActionListExtension) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();

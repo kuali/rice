@@ -55,8 +55,8 @@ public class StatsDaoJpaImpl implements StatsDAO {
     public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException {
         Query query = entityManager.createQuery("select count(*) as count, drhv.docRouteStatus from DocumentRouteHeaderValue drhv where drhv.createDate between :beginDate and :endDate group by docRouteStatus");
 //        Query query = entityManager.createNamedQuery("Stats.DocumentsRoutedReport");
-        query.setParameter("beginDate", begDate.getTime());
-        query.setParameter("endDate", endDate.getTime());
+        query.setParameter("beginDate", new Timestamp(begDate.getTime()));
+        query.setParameter("endDate", new Timestamp(endDate.getTime()));
         
         @SuppressWarnings("unchecked")
         List<Object[]> resultList = query.getResultList();
@@ -87,12 +87,12 @@ public class StatsDaoJpaImpl implements StatsDAO {
     }
 
     public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
-        stats.setNumActionItems(entityManager.createNamedQuery("select count(*) from ActionItem ai").getSingleResult().toString());
+        stats.setNumActionItems(entityManager.createQuery("select count(*) from ActionItem ai").getSingleResult().toString());
 //        stats.setNumActionItems(entityManager.createNamedQuery("Stats.NumActiveItemsReport").getSingleResult().toString());
     }
 
     public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException, LookupException {
-        Query query = entityManager.createNamedQuery("select count(*), dt.name from DocumentRouteHeaderValue drhv, DocumentType dt where drhv.createDate > :createDate and drhv.documentTypeId = dt.documentTypeId group by dt.name");
+        Query query = entityManager.createQuery("select count(*), dt.name from DocumentRouteHeaderValue drhv, DocumentType dt where drhv.createDate > :createDate and drhv.documentTypeId = dt.documentTypeId group by dt.name");
 //        Query query = entityManager.createNamedQuery("Stats.NumInitiatedDocsByDocTypeReport");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -29);
@@ -114,12 +114,12 @@ public class StatsDaoJpaImpl implements StatsDAO {
     }
 
     public void NumUsersReport(Stats stats) throws SQLException, LookupException {
-        stats.setNumUsers(entityManager.createNamedQuery("select count(distinct workflowId) from UserOptions uo").getSingleResult().toString());
+        stats.setNumUsers(entityManager.createQuery("select count(distinct uo.workflowId) from UserOptions uo").getSingleResult().toString());
 //        stats.setNumUsers(entityManager.createNamedQuery("Stats.NumUsersReport").getSingleResult().toString());
     }
 
     public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException {
-        stats.setNumDocTypes(entityManager.createNamedQuery("select count(*) from DocumentType dt where dt.currentInd = true").getSingleResult().toString());
+        stats.setNumDocTypes(entityManager.createQuery("select count(*) from DocumentType dt where dt.currentInd = true").getSingleResult().toString());
 //        stats.setNumDocTypes(entityManager.createNamedQuery("Stats.NumberOfDocTypesReport").getSingleResult().toString());
     }
 

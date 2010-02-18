@@ -230,7 +230,7 @@ public class DocumentOperationAction extends KewKualiAction {
 				try {
 					actionRequest.setCreateDate(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(createDateParamName)).getTime()));
 					actionRequest.setCreateDateString(RiceConstants.getDefaultDateFormat().format(actionRequest.getCreateDate()));
-					actionRequest.setRouteHeader(docForm.getRouteHeader());
+					actionRequest.setRouteHeaderId(docForm.getRouteHeader().getRouteHeaderId());
 					actionRequest.setParentActionRequest(getActionRequestService().findByActionRequestId(actionRequest.getParentActionRequestId()));
 					actionRequest.setActionTaken(getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId()));
 					if (actionRequest.getNodeInstance() != null && actionRequest.getNodeInstance().getRouteNodeInstanceId() == null) {
@@ -293,7 +293,7 @@ public class DocumentOperationAction extends KewKualiAction {
 				try {
 					actionItem.setDateAssigned(new Timestamp(RiceConstants.getDefaultDateFormat().parse(request.getParameter(dateAssignedParamName)).getTime()));
 					actionItem.setDateAssignedString(RiceConstants.getDefaultDateFormat().format(actionItem.getDateAssigned()));
-					actionItem.setRouteHeader(docForm.getRouteHeader());
+					actionItem.setRouteHeaderId(docForm.getRouteHeader().getRouteHeaderId());
 					// getActionItemService().validateActionItem(actionItem);
 					getActionListService().saveActionItem(actionItem);
 					change = true;

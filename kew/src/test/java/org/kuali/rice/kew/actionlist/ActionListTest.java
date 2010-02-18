@@ -20,6 +20,7 @@ package org.kuali.rice.kew.actionlist;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +28,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.ojb.broker.PersistenceBroker;
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -45,10 +45,10 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 
 
 /**
@@ -62,7 +62,7 @@ public class ActionListTest extends KEWTestCase {
     private DocumentRouteHeaderValue routeHeader1;
     private DocumentRouteHeaderValue routeHeader2;
     private DocumentRouteHeaderValue routeHeader3;
-    private List actionItems = new ArrayList();
+    private List<ActionItem> actionItems = new ArrayList<ActionItem>();
 
     protected void loadTestData() throws Exception {
         loadXmlFile("ActionListConfig.xml");
@@ -70,33 +70,32 @@ public class ActionListTest extends KEWTestCase {
 
     private void setUpOldSchool() throws Exception {
         super.setUpAfterDataLoad();
+        List<ActionItem> actionItems1 = new ArrayList<ActionItem>();
+        List<ActionItem> actionItems2 = new ArrayList<ActionItem>();
+        List<ActionItem> actionItems3 = new ArrayList<ActionItem>();
         routeHeader1 = generateDocRouteHeader();
-        routeHeader1.setActionItems(new ArrayList());
         routeHeader2 = generateDocRouteHeader();
-        routeHeader2.setActionItems(new ArrayList());
-        for (int i = 0; i < AUTHENTICATION_IDS.length; i++) {
-            routeHeader1.getActionItems().add(generateActionItem(routeHeader1, "K", AUTHENTICATION_IDS[i], null));
-            routeHeader2.getActionItems().add(generateActionItem(routeHeader2, "A", AUTHENTICATION_IDS[i], null));
-        }
         routeHeader3 = generateDocRouteHeader();
-        routeHeader3.setActionItems(new ArrayList());
-        for (int i = 0; i < WORKGROUP_IDS.length; i++) {
-            routeHeader3.getActionItems().add(generateActionItem(routeHeader3, "A", AUTHENTICATION_IDS[i], WORKGROUP_IDS[i]));
-        }
-
+        
         getRouteHeaderService().saveRouteHeader(routeHeader1);
         getRouteHeaderService().saveRouteHeader(routeHeader2);
         getRouteHeaderService().saveRouteHeader(routeHeader3);
 
-        actionItems.addAll(routeHeader1.getActionItems());
-        actionItems.addAll(routeHeader2.getActionItems());
-        actionItems.addAll(routeHeader3.getActionItems());
-        for (Iterator iterator = actionItems.iterator(); iterator.hasNext();) {
-            ActionItem actionItem = (ActionItem) iterator.next();
+        for (int i = 0; i < AUTHENTICATION_IDS.length; i++) {
+            actionItems1.add(generateActionItem(routeHeader1, "K", AUTHENTICATION_IDS[i], null));
+            actionItems2.add(generateActionItem(routeHeader2, "A", AUTHENTICATION_IDS[i], null));
+        }
+        for (int i = 0; i < WORKGROUP_IDS.length; i++) {
+            actionItems3.add(generateActionItem(routeHeader3, "A", AUTHENTICATION_IDS[i], WORKGROUP_IDS[i]));
+        }
+        
+        actionItems.addAll(actionItems1);
+        actionItems.addAll(actionItems2);
+        actionItems.addAll(actionItems3);
+        for (Iterator<ActionItem> iterator = actionItems.iterator(); iterator.hasNext();) {
+            ActionItem actionItem = iterator.next();
             getActionListService().saveActionItem(actionItem);
         }
-
-
     }
 
     @Test public void testRouteHeaderDelete() throws Exception {
@@ -115,10 +114,10 @@ public class ActionListTest extends KEWTestCase {
         TransactionTemplate transactionTemplate = getTransactionTemplate();
         transactionTemplate.execute(new TransactionCallback() {
             public Object doInTransaction(TransactionStatus status) {
-                return TestUtilities.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
-                    public Object doInPersistenceBroker(PersistenceBroker pb) {
+            	return TestUtilities.getJdbcTemplate().execute(new StatementCallback() {
+            		public Object doInStatement(Statement stmt) {
                         try {
-                            Connection conn = pb.serviceConnectionManager().getConnection();
+                            Connection conn = stmt.getConnection();
                             PreparedStatement ps = conn.prepareStatement("select distinct PRNCPL_ID from krew_actn_itm_t");
                             ResultSet rs = ps.executeQuery();
                             int emplIdCnt = 0;
@@ -439,7 +438,6 @@ public class ActionListTest extends KEWTestCase {
         actionItem.setActionRequestId(new Long(1));
         actionItem.setPrincipalId(getPrincipalIdForName(authenticationId));
         actionItem.setRouteHeaderId(routeHeader.getRouteHeaderId());
-        actionItem.setRouteHeader(routeHeader);
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
         actionItem.setDocHandlerURL("Unit testing");
         actionItem.setDocLabel("unit testing");

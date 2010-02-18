@@ -216,16 +216,6 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         workflowDocument.blanketApprove(annotation);
     }
 
-    /**
-     * 
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#blanketApprove(java.lang.String, java.lang.Integer)
-     * @deprecated
-     */
-    @SuppressWarnings("deprecation")
-    public void blanketApprove(String annotation, Integer routeLevel) throws WorkflowException {
-        workflowDocument.blanketApprove(annotation, routeLevel);
-    }
-
     public void saveRoutingData() throws WorkflowException {
         workflowDocument.saveRoutingData();
     }

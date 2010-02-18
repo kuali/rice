@@ -296,7 +296,6 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
  	 	ActionTakenValue val = new ActionTakenValue();
  	 	val.setActionTaken(KEWConstants.ACTION_TAKEN_SAVED_CD);
  	 	val.setRouteHeaderId(routeHeader.getRouteHeaderId());
- 	 	val.setRouteHeader(routeHeader);
  	 	PostProcessor postProcessor = routeHeader.getDocumentType().getPostProcessor();
  	 	try {
  	 		postProcessor.doActionTaken(new org.kuali.rice.kew.postprocessor.ActionTakenEvent(routeHeader.getRouteHeaderId(), routeHeader.getAppDocId(), val));
@@ -433,7 +432,8 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 				continue;
 			}
 			KEWServiceLocator.getActionListService().deleteActionItem(actionItem, true);
-			ActionInvocationService actionInvocService = MessageServiceNames.getActionInvocationProcessorService(actionItem.getRouteHeader());
+			ActionInvocationService actionInvocService = MessageServiceNames.getActionInvocationProcessorService(
+					KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId()));
 			actionInvocService.invokeAction(principalId, actionItem.getRouteHeaderId(), invocation);
 //			ActionInvocationProcessor.queueActionInvocation(user, actionItem.getRouteHeaderId(), invocation);
 		}

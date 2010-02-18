@@ -24,15 +24,14 @@ import mocks.MockEmailNotificationService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionrequest.ActionRequestScenariosTest;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actionrequest.service.impl.DocumentRequeuerImpl;
-import org.kuali.rice.kew.actionrequest.service.impl.NotificationSuppression;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
@@ -202,8 +201,12 @@ public class NotificationSuppressionTest extends KEWTestCase {
 		getMockEmailService().resetReminderCounts();
 
 		// now if we requeue, nobody should get notified
-		new DocumentRequeuerImpl().requeueDocument(document.getRouteHeaderId());
-
+		MockDocumentRequeuerImpl.clearRequeuedDocumentIds();
+		String serviceNamespace = KEWServiceLocator.getRouteHeaderService().getServiceNamespaceByDocumentId(document.getRouteHeaderId());
+		MessageServiceNames.getDocumentRequeuerService((serviceNamespace != null) ? serviceNamespace : ConfigContext.getCurrentContextConfig().getServiceNamespace(),
+				document.getRouteHeaderId(), 0).requeueDocument(document.getRouteHeaderId());
+		//new DocumentRequeuerImpl().requeueDocument(document.getRouteHeaderId());
+		
 		assertTrue("nobody should have been notified", 
 				0 == getMockEmailService().immediateReminderEmailsSent("user2", document.getRouteHeaderId(), 
 				KEWConstants.ACTION_REQUEST_COMPLETE_REQ));

@@ -43,7 +43,7 @@ public class RuleDelegationDAOJpaImpl implements RuleDelegationDAO {
     }
 
     public void save(RuleDelegation ruleDelegation) {
-    	if(ruleDelegation.getDelegateRuleId()==null){
+    	if(ruleDelegation.getRuleDelegationId()==null){
     		entityManager.persist(ruleDelegation);
     	}else{
     		OrmUtils.merge(entityManager, ruleDelegation);

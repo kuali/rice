@@ -28,6 +28,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -61,7 +62,7 @@ public class Branch implements Serializable {
 	})
 	@Column(name="RTE_BRCH_ID")
 	private Long branchId;
-	@OneToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST)
 	@JoinColumn(name="PARNT_ID")
 	private Branch parentBranch;
 	@Column(name="NM")
@@ -80,13 +81,17 @@ public class Branch implements Serializable {
     @OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST})
 	@JoinColumn(name="INIT_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance initialNode;
-    @OneToOne(fetch=FetchType.EAGER)
+    @ManyToOne(fetch=FetchType.EAGER,cascade=CascadeType.PERSIST)
 	@JoinColumn(name="SPLT_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance splitNode;
-	@OneToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE})
+	@ManyToOne(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE})
 	@JoinColumn(name="JOIN_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance joinNode;
 		
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="parentBranch")
+	@Fetch(value=FetchMode.SUBSELECT)
+	private List<Branch> childBranches = new ArrayList<Branch>();
+	
 	@Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
@@ -172,7 +177,15 @@ public class Branch implements Serializable {
                       "]";
     }
     
-    //@PrePersist
+    public List<Branch> getChildBranches() {
+		return this.childBranches;
+	}
+
+	public void setChildBranches(List<Branch> childBranches) {
+		this.childBranches = childBranches;
+	}
+
+	//@PrePersist
     public void beforeInsert(){
     	OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }    

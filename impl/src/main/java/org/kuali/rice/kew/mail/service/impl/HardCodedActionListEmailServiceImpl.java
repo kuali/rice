@@ -89,11 +89,10 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 							.getDocumentType()));
 			StringBuffer emailSubject = new StringBuffer();
 			try {
-				CustomEmailAttribute customEmailAttribute = actionItem
-						.getRouteHeader().getCustomEmailAttribute();
+				CustomEmailAttribute customEmailAttribute = document.getCustomEmailAttribute();
 				if (customEmailAttribute != null) {
 					RouteHeaderDTO routeHeaderVO = DTOConverter
-							.convertRouteHeader(actionItem.getRouteHeader(),
+							.convertRouteHeader(document,
 									user.getPrincipalId());
 					ActionRequestValue actionRequest = KEWServiceLocator
 							.getActionRequestService().findByActionRequestId(
@@ -183,8 +182,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 
 	public String buildImmediateReminderBody(Person person,
 			ActionItem actionItem, DocumentType documentType) {
-		String docHandlerUrl = actionItem.getRouteHeader().getDocumentType()
-				.getDocHandlerUrl();
+		String docHandlerUrl = documentType.getDocHandlerUrl();
 		if (StringUtils.isNotBlank(docHandlerUrl)) {
     		if (docHandlerUrl.indexOf("?") == -1) {
     			docHandlerUrl += "?";
@@ -210,7 +208,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 			sf.append("\n");
 		}
 		sf.append("Type:\t\t" + "Add/Modify "
-				+ actionItem.getRouteHeader().getDocumentType().getName()
+				+ documentType.getName()
 				+ "\n");
 		sf.append("Title:\t\t" + actionItem.getDocTitle() + "\n");
 		sf.append("\n\n");
@@ -308,7 +306,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		Iterator iter = actionItems.iterator();
 
 		while (iter.hasNext()) {
-			String docTypeName = ((ActionItem) iter.next()).getRouteHeader()
+			String docTypeName = KEWServiceLocator.getRouteHeaderService().getRouteHeader(((ActionItem) iter.next()).getRouteHeaderId())
 					.getDocumentType().getName();
 			if (docTypes.containsKey(docTypeName)) {
 				docTypes.put(docTypeName, new Integer(((Integer) docTypes

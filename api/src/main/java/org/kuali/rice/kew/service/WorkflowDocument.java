@@ -1191,15 +1191,6 @@ public class WorkflowDocument implements java.io.Serializable {
     // DEPRECATED: as of Workflow 2.1
 
     /**
-     * @deprecated use blanketApprove(String annotation, String nodeName) instead
-     */
-    public void blanketApprove(String annotation, Integer routeLevel) throws WorkflowException {
-    	createDocumentIfNeccessary();
-    	routeHeader = getWorkflowDocumentActions().blanketApproval(principalId, getRouteHeader(), annotation, routeLevel);
-    	documentContentDirty = true;
-    }
-
-    /**
      * @deprecated use getNodeNames() instead
      */
     public Integer getDocRouteLevel() {

@@ -23,7 +23,6 @@ import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.help.dao.HelpDAO;
 
@@ -35,7 +34,6 @@ public class HelpDaoJpaImpl implements HelpDAO {
     
     public void save(HelpEntry helpEntry) {
         if (helpEntry.getHelpId() == null) {
-        	OrmUtils.populateAutoIncValue(helpEntry, entityManager);
             entityManager.persist(helpEntry);
         } else {
             entityManager.merge(helpEntry);

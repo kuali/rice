@@ -46,7 +46,7 @@ public class BasicJoinEngine implements JoinEngine {
         for (Iterator iter = splitNode.getNextNodeInstances().iterator(); iter.hasNext();) {
             RouteNodeInstance splitNodeNextNode = (RouteNodeInstance) iter.next();
             splitNodeNextNode.getBranch().setJoinNode(joinInstance);
-            saveBranch(context, splitNodeNextNode.getBranch());
+            //saveBranch(context, splitNodeNextNode.getBranch());
             addExpectedJoiner(joinInstance, splitNodeNextNode.getBranch());
         }
         joinInstance.setBranch(splitNode.getBranch());

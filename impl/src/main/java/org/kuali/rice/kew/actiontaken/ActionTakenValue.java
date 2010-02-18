@@ -77,7 +77,7 @@ public class ActionTakenValue implements WorkflowPersistable {
 	})
 	@Column(name="ACTN_TKN_ID")
     private Long actionTakenId;
-    @Column(name="DOC_HDR_ID",insertable=false, updatable=false)
+    @Column(name="DOC_HDR_ID")//,insertable=false, updatable=false)
 	private Long routeHeaderId;
     @Column(name="ACTN_CD")
 	private String actionTaken;
@@ -96,9 +96,9 @@ public class ActionTakenValue implements WorkflowPersistable {
 	private String delegatorPrincipalId;
     @Column(name="DLGTR_GRP_ID")
 	private String delegatorGroupId;
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-    @JoinColumn(name="DOC_HDR_ID")
-    private DocumentRouteHeaderValue routeHeader;
+    //@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    //@JoinColumn(name="DOC_HDR_ID")
+    //private DocumentRouteHeaderValue routeHeader;
     @OneToMany(mappedBy="actionTaken")
 	private Collection<ActionRequestValue> actionRequests;
     @Column(name="CUR_IND")
@@ -182,13 +182,13 @@ public class ActionTakenValue implements WorkflowPersistable {
         this.actionRequests = actionRequests;
     }
 
-    public DocumentRouteHeaderValue getRouteHeader() {
-        return routeHeader;
-    }
+    //public DocumentRouteHeaderValue getRouteHeader() {
+    //    return routeHeader;
+    //}
 
-    public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
-        this.routeHeader = routeHeader;
-    }
+    //public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
+    //    this.routeHeader = routeHeader;
+    //}
 
     public Timestamp getActionDate() {
         return actionDate;

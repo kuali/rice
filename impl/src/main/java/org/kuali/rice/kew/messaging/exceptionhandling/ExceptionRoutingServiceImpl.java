@@ -111,6 +111,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             if (exceptionRequests.isEmpty()) {
             	throw new RiceRuntimeException("Failed to generate exception requests for exception routing!");
             }
+            KEWServiceLocator.getRouteNodeService().save(nodeInstance);
             activateExceptionRequests(routeContext, exceptionRequests, errorMessage);
             KSBServiceLocator.getRouteQueueService().delete(persistedMessage);
         } finally {

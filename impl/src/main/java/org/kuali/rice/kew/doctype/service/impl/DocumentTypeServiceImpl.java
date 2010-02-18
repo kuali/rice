@@ -235,9 +235,11 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     public void clearCacheForAttributeUpdate(RuleAttribute ruleAttribute) {
-    	List documentTypeAttributes = this.documentTypeDAO.findDocumentTypeAttributes(ruleAttribute);
-    	if (documentTypeAttributes.size() != 0) {
-    		flushCache();
+    	if (ruleAttribute.getRuleAttributeId() != null) {
+    		List documentTypeAttributes = this.documentTypeDAO.findDocumentTypeAttributes(ruleAttribute);
+    		if (documentTypeAttributes.size() != 0) {
+    			flushCache();
+    		}
     	}
     }
 

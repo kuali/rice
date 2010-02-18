@@ -40,13 +40,13 @@ HibernateImmutableValueUserType {
 	@Override
 	public Object nullSafeGet(ResultSet rs, String[] names, Object source)
 	throws HibernateException, SQLException {
-		Object converted = source;
+		BigDecimal objectToConvert = rs.getBigDecimal(names[0]);
 
-		if (source instanceof BigDecimal) {
-			converted = new KualiDecimal((BigDecimal) source);
+		if (objectToConvert != null) {
+			return new KualiDecimal(objectToConvert);
 		}
 
-		return converted;
+		return null;
 	}
 
 	/**

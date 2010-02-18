@@ -222,7 +222,9 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     }
     
     private void retrieveBoNotes() {
-        boNotes = getNoteService().getByRemoteObjectId(objectId);
+    	if (!StringUtils.isBlank(objectId)) {
+    		boNotes = getNoteService().getByRemoteObjectId(objectId);
+    	}
     }
 
     /**

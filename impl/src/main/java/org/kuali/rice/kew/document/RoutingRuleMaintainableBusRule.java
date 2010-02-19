@@ -20,12 +20,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.GroupRuleResponsibility;
 import org.kuali.rice.kew.rule.PersonRuleResponsibility;
 import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
@@ -61,8 +61,12 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 
 		boolean isValid = true;
 
-		RuleBaseValues ruleBaseValues = getRuleBaseValues(document);
-
+		RuleBaseValues ruleBaseValues = this.getRuleBaseValues(document);
+		RuleBaseValues oldRuleBaseValues = this.getOldRuleBaseValues(document);
+		
+		if (oldRuleBaseValues != null) {
+			ruleBaseValues.setPreviousVersionId(oldRuleBaseValues.getRuleBaseValuesId());
+        }
 		isValid &= this.populateErrorMap(ruleBaseValues);
 
 
@@ -72,6 +76,11 @@ public class RoutingRuleMaintainableBusRule extends MaintenanceDocumentRuleBase 
 	protected RuleBaseValues getRuleBaseValues(MaintenanceDocument document){
 		return (RuleBaseValues)document.getNewMaintainableObject().getBusinessObject();
 	}
+	
+	protected RuleBaseValues getOldRuleBaseValues(MaintenanceDocument document){
+		return (RuleBaseValues)document.getOldMaintainableObject().getBusinessObject();
+	}
+	
 
 	protected void populateErrorMap(Map<String,String> errorMap){
 		for(Map.Entry<String, String> entry : errorMap.entrySet()){

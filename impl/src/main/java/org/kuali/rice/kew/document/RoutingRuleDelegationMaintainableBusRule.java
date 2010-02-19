@@ -45,6 +45,19 @@ public class RoutingRuleDelegationMaintainableBusRule extends RoutingRuleMaintai
 	protected RuleDelegation getBusObject(MaintenanceDocument document){
 		return (RuleDelegation)document.getNewMaintainableObject().getBusinessObject();
 	}
+	
+	/**
+	 * Returns the old RuleBaseValues business object. Overrides the base
+	 * class method.  This business object has a different location
+	 * of the RuleBaseValues.
+	 */
+	protected RuleBaseValues getOldRuleBaseValues(MaintenanceDocument document) {
+		return this.getOldBusObject(document).getDelegationRuleBaseValues();
+	}
+
+	protected RuleDelegation getOldBusObject(MaintenanceDocument document){
+		return (RuleDelegation)document.getOldMaintainableObject().getBusinessObject();
+	}
 
 	/**
 	 * This overridden method returns the person section name for the delegation doc

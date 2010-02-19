@@ -28,7 +28,7 @@ import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
- * Hibernate UserType to encrypt and decript data on its way to the database 
+ * This class calls core service to hash values going to the database
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -39,12 +39,15 @@ public class HibernateKualiHashType extends HibernateImmutableValueUserType impl
 	 * 
 	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
-	public Object nullSafeGet(ResultSet rs, String[] names, Object source) throws HibernateException, SQLException {
+	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
 
-		if ( source == null ) {
+		String value = rs.getString(names[0]);
+		String converted = null;
+		
+		if ( value == null ) {
 			return "";
 		}
-		return source.toString() + EncryptionService.HASH_POST_PREFIX;
+		return value + EncryptionService.HASH_POST_PREFIX;
 	}
 
 	/**

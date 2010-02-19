@@ -16,19 +16,17 @@
 package org.kuali.rice.kns.util;
 
 import java.math.BigDecimal;
-import java.security.GeneralSecurityException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import org.apache.commons.lang.StringUtils;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
-import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+
 /**
- * This is a description of what this class does - g1zhang don't forget to fill this in. 
+ *  map between kualidecimal percentage format and numeric field from db 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -37,18 +35,19 @@ public class HibernateKualiDecimalPercentageFieldType extends HibernateKualiDeci
 
 	private static BigDecimal oneHundred = new BigDecimal(100.0000);
 
-	/* Retrieves a value from the given ResultSet and decrypts it
+	/* Retrieves a value from the given ResultSet and convert it to big decimal percentage formal
 	 * 
 	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
-	public Object nullSafeGet(ResultSet rs, String[] names, Object source) throws HibernateException, SQLException {
+	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
 
+		BigDecimal source = (BigDecimal)Hibernate.BIG_DECIMAL.nullSafeGet(rs, names[0]);	
 		// Do conversion if our type is correct (BigDecimal).
 		if (source != null && source instanceof BigDecimal) {
 			BigDecimal converted = (BigDecimal) source;
 
 			// Once we have converted, we need to do the super conversion to KualiDecimal.
-			return super.nullSafeGet(rs, names, converted.multiply(oneHundred));
+			return super.getConvertedToKualiDecimal(converted.multiply(oneHundred));
 		}
 		else {
 			return null;
@@ -63,10 +62,9 @@ public class HibernateKualiDecimalPercentageFieldType extends HibernateKualiDeci
 	public void nullSafeSet(PreparedStatement st, Object value,  int index) throws HibernateException, SQLException {
 
 		// Convert to BigDecimal using existing conversion.
-
-		Object source = super.getConverted(value);
-
+		Object source = super.getConvertedToBigDecimal(value);
 		BigDecimal converted = null;
+		
 		// Check for null, and verify object type.
 		// Do conversion if our type is correct (BigDecimal).
 		if (source != null && source instanceof BigDecimal) {
@@ -78,7 +76,6 @@ public class HibernateKualiDecimalPercentageFieldType extends HibernateKualiDeci
 		} else {
 			st.setBigDecimal(index, converted);
 		}
-
 	}
 
 	public Object getConvertedPercentage(Object source){

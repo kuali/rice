@@ -21,12 +21,11 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.hibernate.HibernateException;
-
 import org.kuali.rice.kns.bo.KualiCodeBase;
 
 /**
- * This is a description of what this class does - g1zhang don't forget to fill this in. 
- * 
+  * This class crudely maps KualiCode to/from a String. It is intended as a temporary placeholder until a general technique for
+ *   managing codes is decided upon.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -38,12 +37,15 @@ public class HibernateKualiCodeType extends HibernateImmutableValueUserType {
 	 * @see org.kuali.rice.kns.util.HibernateImmutableValueUserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
 	@Override
-	public Object nullSafeGet(ResultSet rs, String[] names, Object source)
-	throws HibernateException, SQLException {
-		if (source instanceof String) {
-			return new KualiCodeBase((String) source);
+	public Object nullSafeGet(ResultSet rs, String[] names, Object owner)throws HibernateException, SQLException {
+		
+		String value = rs.getString(names[0]);
+		String converted = null;
+		
+		if (value != null) {
+			return new KualiCodeBase((String) value);
 		}
-		return source;
+		return value;
 	}
 
 	/**

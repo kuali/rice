@@ -78,7 +78,6 @@ HibernateImmutableValueUserType {
 		return source;
 	}
 
-
 	/**
 	 * Returns String.class
 	 * 
@@ -95,6 +94,23 @@ HibernateImmutableValueUserType {
 	 */
 	public int[] sqlTypes() {
 		return new int[] { Types.DECIMAL };
+	}
+	
+	//for sub types
+	public Object getConvertedToKualiDecimal(Object value){
+		Object converted = null;
+		if (value instanceof BigDecimal) 
+			converted = new KualiDecimal((BigDecimal) value);
+		return converted;
+	}
+	public Object getConvertedToBigDecimal(Object value){
+
+		Object converted = null;
+
+		if (value instanceof KualiDecimal) {
+			converted = ((KualiDecimal) value).bigDecimalValue();
+		}
+		return converted;
 	}
 
 }

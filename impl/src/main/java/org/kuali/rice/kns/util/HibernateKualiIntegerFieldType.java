@@ -15,22 +15,21 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
 /**
- * This is a description of what this class does - g1zhang don't forget to fill this in. 
+ *  KualiInteger Type converter 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class HibernateKualiIntegerFieldType extends
-		HibernateImmutableValueUserType {
+public class HibernateKualiIntegerFieldType extends	HibernateImmutableValueUserType {
 
 	/**
 	 * This overridden method ...
@@ -38,17 +37,15 @@ public class HibernateKualiIntegerFieldType extends
 	 * @see org.kuali.rice.kns.util.HibernateImmutableValueUserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
 	@Override
-	public Object nullSafeGet(ResultSet rs, String[] names, Object source)
+	public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
 			throws HibernateException, SQLException {
-        Object converted = source;
-
-        if (source instanceof Long) {
+		
+        Object source = Hibernate.LONG.nullSafeGet(rs, names[0]);
+		Object converted = null;
+        
+        if ((Long)source instanceof Long) {
             converted = new KualiInteger(((Long) source).longValue());
         }
-        else if (source instanceof BigInteger) {
-            converted = new KualiInteger((BigInteger) source);
-        }
-
         return converted;
     }
 
@@ -64,7 +61,7 @@ public class HibernateKualiIntegerFieldType extends
         Object converted = source;
 
         if (source instanceof KualiInteger) {
-            converted = new Long(((KualiInteger) source).longValue());
+            converted = Long.valueOf(((KualiInteger)source).longValue());
         }
         
         if (converted == null) {

@@ -16,21 +16,17 @@
 package org.kuali.rice.kns.util;
 
 import java.math.BigDecimal;
-import java.security.GeneralSecurityException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
+import org.hibernate.Hibernate;
 import org.hibernate.usertype.UserType;
-import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.kns.bo.KualiCodeBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
- * This is a description of what this class does - g1zhang don't forget to fill this in. 
+ * Creates a KualiPercent object from the data field. Field is stored as a percentage
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -45,8 +41,11 @@ public class HibernateKualiDecimalPercentFieldType extends HibernateKualiDecimal
 	 * @see org.kuali.rice.kns.util.HibernateImmutableValueUserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
 	@Override
-	public Object nullSafeGet(ResultSet rs, String[] names, Object source)
+	public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
 	throws HibernateException, SQLException {
+
+		BigDecimal source = (BigDecimal)Hibernate.BIG_DECIMAL.nullSafeGet(rs, names[0]);
+
 		// Check for null, and verify object type.
 		// Do conversion if our type is correct (BigDecimal).
 		if (source != null && source instanceof BigDecimal) {
@@ -70,28 +69,18 @@ public class HibernateKualiDecimalPercentFieldType extends HibernateKualiDecimal
 	 */
 	@Override
 	public void nullSafeSet(PreparedStatement st, Object value, int index)throws HibernateException, SQLException
-	{
-		Object source = value;
-		if (value instanceof KualiDecimal) {
-			source = ((KualiDecimal) value).bigDecimalValue();
+	{	
+		Object converted = value;
+		
+		if (value instanceof KualiPercent) {
+			converted = ((KualiPercent) value).bigDecimalValue();
 		}
-		// Check for null, and verify object type.
-		// Do conversion if our type is correct (BigDecimal).
 
-		BigDecimal converted = (BigDecimal)source;
-
-		if (source != null && source instanceof BigDecimal) {
-			converted = (BigDecimal) source;
-		}
-		else {
-			converted = null;
-		}
 		if (converted == null) {
 			st.setNull(index, Types.DECIMAL);
 		} else {
-			st.setBigDecimal(index, converted);
+			st.setBigDecimal(index, (BigDecimal)converted);
 		}
-
 	}
 
 	/**

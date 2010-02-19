@@ -22,24 +22,26 @@ import java.sql.Types;
 
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
+import org.hibernate.Hibernate;
 
 
 /**
- * This is a description of what this class does - g1zhang don't forget to fill this in. 
+ *  This class converts the "A" or "I" value from the database into a true or false in Java. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class HibernateKualiCharBooleanAIType extends HibernateImmutableValueUserType implements UserType
-{/**
- * Retrieves a value from the given ResultSet
- * 
- * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
- */
+{
+	/**
+	 * Retrieves a value from the given ResultSet
+	 * 
+	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
+	 */
 	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
-		String value = rs.getString(names[0]);
+		
+		String value = (String)Hibernate.STRING.nullSafeGet(rs, names[0]);
 		Boolean converted = null;
-
 		if (value != null) {
 			try {
 				if(value.equalsIgnoreCase("A"))
@@ -55,7 +57,6 @@ public class HibernateKualiCharBooleanAIType extends HibernateImmutableValueUser
 				throw new RuntimeException("Unable to get status value from db: ");
 			}
 		}
-
 		return converted;
 	}
 
@@ -64,6 +65,7 @@ public class HibernateKualiCharBooleanAIType extends HibernateImmutableValueUser
 	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
 	 */
 	public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
+		
 		String converted = null;
 
 		if (value != null) {
@@ -75,6 +77,7 @@ public class HibernateKualiCharBooleanAIType extends HibernateImmutableValueUser
 			}
 		}
 
+		//Hibernate.STRING.nullSafeSet(st, converted, index);
 		if (converted == null) {
 			st.setNull(index, Types.VARCHAR); 
 		} else {

@@ -24,13 +24,12 @@ import java.sql.Types;
 import org.hibernate.HibernateException;
 
 /**
- * This is a description of what this class does - g1zhang don't forget to fill this in. 
+ * Creates a KualiPercent object from the data field. Field is stored as a percentage.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class HibernateKualiPercentFieldType extends
-		HibernateImmutableValueUserType {
+public class HibernateKualiPercentFieldType extends HibernateImmutableValueUserType {
 
 	/**
 	 * This overridden method ...
@@ -38,8 +37,11 @@ public class HibernateKualiPercentFieldType extends
 	 * @see org.kuali.rice.kns.util.HibernateImmutableValueUserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
 	@Override
-	public Object nullSafeGet(ResultSet rs, String[] names, Object source)
+	public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
 			throws HibernateException, SQLException {
+		
+		BigDecimal source = rs.getBigDecimal(names[0]);
+		
         // Check for null, and verify object type.
         // Do conversion if our type is correct (BigDecimal).
         if (source != null && source instanceof BigDecimal) {
@@ -83,7 +85,7 @@ public class HibernateKualiPercentFieldType extends
 	 * @see org.kuali.rice.kns.util.HibernateImmutableValueUserType#returnedClass()
 	 */
 	public Class returnedClass() {
-		return String.class;
+		return BigDecimal.class;
 	}
 
 	/**

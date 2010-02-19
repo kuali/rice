@@ -16,15 +16,17 @@
 package org.kuali.rice.kns.util;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 
 /**
- * This is a description of what this class does - g1zhang don't forget to fill this in. 
+ * Kuali integer percentage type converteger
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -37,10 +39,13 @@ public class HibernateKualiIntegerPercentageFieldType extends HibernateKualiDeci
 	 * @see org.kuali.rice.kns.util.HibernateImmutableValueUserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
 	@Override
-	public Object nullSafeGet(ResultSet rs, String[] names, Object source)
+	public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
 	throws HibernateException, SQLException {
+		
+		Object source = Hibernate.BIG_DECIMAL.nullSafeGet(rs, names[0]);
+		
 		if (source != null && source instanceof BigDecimal) {
-			return new KualiInteger(((KualiDecimal) (super.nullSafeGet(rs, names, source))).bigDecimalValue());
+			return new KualiInteger(((KualiDecimal) (super.getConvertedToKualiDecimal(source))).bigDecimalValue());
 		} else {
 			return null;
 		}
@@ -59,6 +64,12 @@ public class HibernateKualiIntegerPercentageFieldType extends HibernateKualiDeci
 		if (source != null && source instanceof BigDecimal) {
 			converted = new KualiInteger(((KualiDecimal) (super.getConvertedPercentage(source))).bigDecimalValue());
 		} 
+		
+        if (converted == null) {
+        	st.setNull(index, Types.BIGINT); 
+        } else {
+        	st.setLong(index, ((Long)converted).longValue()); 
+        }
 	}
 
 	/**
@@ -67,7 +78,7 @@ public class HibernateKualiIntegerPercentageFieldType extends HibernateKualiDeci
 	 * @see org.hibernate.usertype.UserType#returnedClass()
 	 */
 	public Class returnedClass() {
-		return Integer.class;
+		return BigInteger.class;
 	}
 
 	/**
@@ -76,7 +87,7 @@ public class HibernateKualiIntegerPercentageFieldType extends HibernateKualiDeci
 	 * @see org.hibernate.usertype.UserType#sqlTypes()
 	 */
 	public int[] sqlTypes() {
-		return new int[] { Types.INTEGER};
+		return new int[] { Types.BIGINT};
 	}
 
 

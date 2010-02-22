@@ -131,7 +131,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	 * KUALRice 3070 Calls setupMaintenance for delete action.
 	 */
 	public ActionForward delete(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		
+		if (isFormRepresentingLockObject((KualiDocumentFormBase)form)) {
+			 return super.delete(mapping, form, request, response);
+		}
 		GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_DELETE);
 		return setupMaintenance(mapping, form, request, response, KNSConstants.MAINTENANCE_DELETE_ACTION);
 	}

@@ -17,7 +17,6 @@ package org.kuali.rice.core.jpa.spring;
 
 import javax.sql.DataSource;
 
-import org.mortbay.log.Log;
 import org.springframework.orm.jpa.persistenceunit.MutablePersistenceUnitInfo;
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 

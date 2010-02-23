@@ -125,7 +125,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             
             if(!runtimeResolution) {
                 for (Object o : properties.keySet()) {
-                    properties.put((String)o, resolve((String)o));
+                    this.properties.put((String)o, resolve((String)o));
                 }
             }
         }

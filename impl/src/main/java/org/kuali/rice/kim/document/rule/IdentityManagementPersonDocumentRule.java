@@ -128,8 +128,8 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 
         // all failed at this point.
-        valid &= checkUnassignableRoles(personDoc);
-        valid &= checkUnpopulatableGroups(personDoc);
+//        valid &= checkUnassignableRoles(personDoc);
+//        valid &= checkUnpopulatableGroups(personDoc);
         
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 

@@ -36,13 +36,10 @@ import org.hibernate.annotations.Type;
 public class CountyImpl extends PersistableBusinessObjectBase implements Inactivateable, County {
 
 	@Id
-	@Column(name="POSTAL_CNTRY_CD")
     private String postalCountryCode;
 	@Id
-	@Column(name="COUNTY_CD")
     private String countyCode;
 	@Id
-	@Column(name="POSTAL_STATE_CD")
     private String stateCode;
 	@Id
 	@Column(name="COUNTY_NM")

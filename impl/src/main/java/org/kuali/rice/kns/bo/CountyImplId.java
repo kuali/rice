@@ -26,13 +26,13 @@ import javax.persistence.Id;
  */
 public class CountyImplId extends CompositePrimaryKeyBase {
 	@Id
-	//@Column(name="POSTAL_CNTRY_CD")
+	@Column(name="POSTAL_CNTRY_CD")
     private String postalCountryCode;
 	@Id
-	//@Column(name="COUNTY_CD")
+	@Column(name="COUNTY_CD")
     private String countyCode;
 	@Id
-	//@Column(name="POSTAL_STATE_CD")
+	@Column(name="POSTAL_STATE_CD")
     private String stateCode;
 	/**
 	 * @return the postalCountryCode

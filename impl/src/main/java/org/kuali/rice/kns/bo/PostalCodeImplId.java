@@ -26,10 +26,10 @@ import javax.persistence.Id;
  */
 public class PostalCodeImplId extends CompositePrimaryKeyBase {
 	@Id
-	//@Column(name="POSTAL_CNTRY_CD")
+	@Column(name="POSTAL_CNTRY_CD")
     private String postalCountryCode;
 	@Id
-	//@Column(name="POSTAL_CD")
+	@Column(name="POSTAL_CD")
     private String postalCode;
 	/**
 	 * @return the postalCountryCode

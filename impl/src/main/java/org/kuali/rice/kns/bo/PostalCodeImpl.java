@@ -41,10 +41,8 @@ import org.hibernate.annotations.Type;
 public class PostalCodeImpl extends PersistableBusinessObjectBase implements Inactivateable, PostalCode {
 
 	@Id
-	@Column(name="POSTAL_CNTRY_CD")
     private String postalCountryCode;
 	@Id
-	@Column(name="POSTAL_CD")
     private String postalCode;
 	@Column(name="POSTAL_STATE_CD")
     private String postalStateCode;

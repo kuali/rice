@@ -39,10 +39,8 @@ import org.hibernate.annotations.Type;
 public class StateImpl extends PersistableBusinessObjectBase implements Inactivateable, State {
 
 	@Id
-	@Column(name="POSTAL_CNTRY_CD")
     private String postalCountryCode;
 	@Id
-	@Column(name="POSTAL_STATE_CD")
     private String postalStateCode;
 	@Column(name="POSTAL_STATE_NM")
     private String postalStateName;

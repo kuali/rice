@@ -37,6 +37,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.hibernate.collection.PersistentBag;
+import org.hibernate.proxy.HibernateProxy;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -772,6 +773,60 @@ public class ObjectUtils {
      */
     public static boolean isNotNull(Object object) {
         return !ObjectUtils.isNull(object);
+    }
+    
+    /**
+     * Materializes a potentially proxied object
+     * 
+     * @param object potentially proxied object
+     * @return the real object underneath
+     */
+    public static Object materializeObject(Object object) {
+    	// let's dump the easy case quick
+    	if (object == null) {
+    		return null;
+    	}
+    	
+    	// JPA using Hibernate
+    	if (object instanceof HibernateProxy) {
+        	try {
+	        	final Object realObject = ((HibernateProxy) object).getHibernateLazyInitializer().getImplementation();
+	        	return realObject;
+        	} catch (EntityNotFoundException enfe) {
+        		return null;
+        	}
+        }
+    	
+    	// OJB
+    	if (ProxyHelper.isProxy(object) || ProxyHelper.isCollectionProxy(object)) {
+            return ProxyHelper.getRealObject(object);
+        }
+    	
+    	// umm...we don't know...here's your object back!
+    	return object;
+    }
+    
+    /**
+     * Attempts to find the Class for the given potentially proxied object
+     * 
+     * @param object the potentially proxied object to find the Class of
+     * @return the best Class which could be found for the given object
+     */
+    public static Class materializeClassForProxiedObject(Object object) {
+    	if (object == null) {
+    		return null;
+    	}
+    	
+    	if (object instanceof HibernateProxy) {
+    		final Class realClass = ((HibernateProxy) object).getHibernateLazyInitializer().getPersistentClass();
+    		return realClass;
+        }
+    	
+    	if (ProxyHelper.isProxy(object) || ProxyHelper.isCollectionProxy(object)) {
+            return ProxyHelper.getRealClass(object);
+        }
+    	
+    	return object.getClass();
     }
 
     /**

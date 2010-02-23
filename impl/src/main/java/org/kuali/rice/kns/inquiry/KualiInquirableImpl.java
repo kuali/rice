@@ -171,8 +171,9 @@ public class KualiInquirableImpl implements Inquirable {
         boolean doesNestedReferenceHaveOwnPrimitiveReference = false;
         BusinessObject nestedBusinessObject = null;
 
-        if (attributeName.equals(getBusinessObjectDictionaryService().getTitleAttribute(businessObject.getClass()))) {
-            inquiryBusinessObjectClass = businessObject.getClass();
+        Class businessObjectClass = ObjectUtils.materializeClassForProxiedObject(businessObject);
+        if (attributeName.equals(getBusinessObjectDictionaryService().getTitleAttribute(businessObjectClass))) {
+        	inquiryBusinessObjectClass = businessObjectClass;
             isPkReference = true;
         }
         else {
@@ -189,10 +190,11 @@ public class KualiInquirableImpl implements Inquirable {
                 if (ObjectUtils.isNotNull(nestedReferenceObject) && nestedReferenceObject instanceof BusinessObject) {
                     nestedBusinessObject = (BusinessObject) nestedReferenceObject;
                     String nestedAttributePrimitive = ObjectUtils.getNestedAttributePrimitive(attributeName);
+                    Class nestedBusinessObjectClass = ObjectUtils.materializeClassForProxiedObject(nestedBusinessObject);
 
-                    if (nestedAttributePrimitive.equals(getBusinessObjectDictionaryService().getTitleAttribute(nestedBusinessObject.getClass()))) {
+                    if (nestedAttributePrimitive.equals(getBusinessObjectDictionaryService().getTitleAttribute(nestedBusinessObjectClass))) {
                     	// we are going to inquiry the record that contains the attribute we're rendering an inquiry URL for
-                    	inquiryBusinessObjectClass = nestedBusinessObject.getClass();
+                    	inquiryBusinessObjectClass = nestedBusinessObjectClass;
                         // I know it's already set to false, just to show how this variable is set
                         doesNestedReferenceHaveOwnPrimitiveReference = false;
                     }
@@ -205,7 +207,7 @@ public class KualiInquirableImpl implements Inquirable {
 	                    }
 	                    else {
 	                    	// we are going to inquiry the record that contains the attribute we're rendering an inquiry URL for
-	                		inquiryBusinessObjectClass = nestedBusinessObject.getClass();
+	                		inquiryBusinessObjectClass = ObjectUtils.materializeClassForProxiedObject(nestedBusinessObject);
 	                        // I know it's already set to false, just to show how this variable is set
 	                        doesNestedReferenceHaveOwnPrimitiveReference = false;
 	                    }

@@ -73,7 +73,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                            temp = temp[0 .. temp.indexOf(' ')].trim()
 	                            def temp2 = f.name[0].toUpperCase() + f.name[1 .. -1]
 								cpkConstructorArgs += "${temp} ${temp2}," 
-								cpkConstructorBody += "${f.name} = ${temp2};"
+								cpkConstructorBody += "${f.name} = ${temp2};\n"
 	                            cpkGetterText += "    public ${temp} get${temp2}() { return ${f.name}; }\n\n"
 	                        }
 	                    }   
@@ -228,22 +228,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	
 	        text = cleanText(text)
 	        
-	        if (c.compoundPrimaryKey) {
-				//handle_pkClass_constructor(cpkFieldText, cpkClassName)
-				//handle_pkClass_constructor(cpkClassName, cpkConstructorArgs, cpkConstructorBody)
-				//handle_pkClass_defaultConstructor(cpkClassName, cpkFieldText, cpkGetterText)
-				
-//				c.pkClassIdText += handle_pkClass_defaultConstructor(cpkClassName, cpkFieldText, cpkGetterText)
-//				c.pkClassIdText += handle_pkClass_constructor(cpkClassName, cpkConstructorArgs, cpkConstructorBody)
-	
-//	            c.pkClassIdText += """
-//${cpkFieldText}
-//    public ${cpkClassName}() {}
-//
-//${cpkGetterText} 
-//
-//}
-//"""
+	        if (c.compoundPrimaryKey) {	
 				c.pkClassIdText += handle_pkClass(cpkClassName, cpkFieldText, cpkGetterText, cpkConstructorArgs, cpkConstructorBody)
 				
 	        }
@@ -314,6 +299,7 @@ Given a reference descriptor or a class descriptor, return a JPA fetch types.
 def determineFetchType(descriptor) {
     def ret = "FetchType.EAGER"
     if (['true'].contains(descriptor.proxy)) ret = "FetchType.LAZY" 
+	else ret = ['true', null, ''].contains(descriptor.autoRetrieve)? "FetchType.EAGER":"FetchType.LAZY" 
     "fetch=${ret}"
 }
 
@@ -321,10 +307,13 @@ def determineFetchType(descriptor) {
 Given a reference descriptor or a class descriptor, return a comma separated list of JPA cascade types.
 */
 def determineCascadeTypes(descriptor) {
+	def DEFAULTS = "CascadeType.REFRESH, CascadeType.DETACH"
     def ret = []
-    if (['true', null, ''].contains(descriptor.autoRetrieve)) ret.add("CascadeType.PERSIST")
-    if (['true', 'link', 'object'].contains(descriptor.autoDelete)) ret.add("CascadeType.REMOVE")
-    if (['true', 'link', 'object'].contains(descriptor.autoUpdate)) ret.add("CascadeType.MERGE")
+	ret.add(DEFAULTS);
+	
+    //if (['true', null, ''].contains(descriptor.autoRetrieve)) ret.add("CascadeType.PERSIST")
+    if (['true', 'object'].contains(descriptor.autoDelete)) ret.add("CascadeType.REMOVE")
+    if (['true', 'object'].contains(descriptor.autoUpdate)) ret.add("CascadeType.MERGE, CascadeType.PERSIST")
     ret.size > 0 ? ("cascade={${ret.join(', ')}}") : null
 }
 
@@ -445,10 +434,9 @@ def handle_pkClass(cpkClassName, cpkFieldText, cpkGetterText, cpkConstructorArgs
 	
 	def ret = """
 	${cpkFieldText}
-		    public ${cpkClassName}() {}
-		    ${handle_pkClass_constructor(cpkClassName, cpkConstructorArgs, cpkConstructorBody)}
+    public ${cpkClassName}() {}
+	${handle_pkClass_constructor(cpkClassName, cpkConstructorArgs, cpkConstructorBody)}
 	${cpkGetterText} 
-	
 	}
 	"""
 	
@@ -473,9 +461,10 @@ def handle_pkClass_constructor(cpkClassName, cpkConstructorArgs, cpkConstructorB
 	def args = cpkConstructorArgs.substring(0, cpkConstructorArgs.length() - 1 );
 	
 	def ret = """ public ${cpkClassName}(${args})
-	{${cpkConstructorBody}}
+	{\n${cpkConstructorBody}}
 	"""
 	
 	println("result**********\n" + ret);
+	
 	ret
 }

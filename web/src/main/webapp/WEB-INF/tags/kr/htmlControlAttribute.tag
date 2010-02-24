@@ -19,6 +19,8 @@
 <%@ attribute name="onblur" required="false" %>
 <%@ attribute name="readOnly" required="false" %>
 <%@ attribute name="datePicker" required="false" %>
+<%@ attribute name="expandedTextArea" required="false" description="whether to render an expanded textarea control.  Only applicable for textareas. "%>
+<%@ attribute name="htmlFormAction" required="false" description="some html controls create popups.  This attribute specifies the form action the popup should use."%>
 <%@ attribute name="disabled" required="false" %>
 <%@ attribute name="onchange" required="false" %>
 <%@ attribute name="onclick" required="false" %>
@@ -46,7 +48,7 @@
         if present"%>
 <%@ attribute name="forceRequired" required="false" %>
 <%@ attribute name="kimTypeId" required="false" %>
-<!-- Do not remove session check in this tag file since it is used by other type of files (not MD or TD) -->
+<%-- Do not remove session check in this tag file since it is used by other type of files (not MD or TD) --%>
 <c:set var="sessionDocument" value="${requestScope['sessionDoc']}" />
 <c:if test="${empty readOnly}">
     <c:set var="readOnly" value="false"/>
@@ -239,23 +241,34 @@
                            styleClass="${styleClass}" />
     </c:when>
   </c:choose>
-  <!-- error icon -->
+  <%-- error icon --%>
   <c:if test="${hasErrors}">
 	 		<kul:fieldShowErrorIcon />
   </c:if>
-  <!-- datePicker icon -->
-  	<c:if test="${attributeEntry.control.text == true && datePicker==true}">
+  <%-- datePicker icon --%>
+  	<c:if test="${attributeEntry.control.text == true && (datePicker == true || (attributeEntry.control.datePicker == true && datePicker != false))}">
         <img src="${ConfigProperties.kr.externalizable.images.url}cal.gif" id="${property}_datepicker" style="cursor: pointer;"
              title="Date selector" alt="Date selector"
              onmouseover="this.style.backgroundColor='red';" onmouseout="this.style.backgroundColor='transparent';" />
              <script type="text/javascript">
+             	//<![CDATA[
              	Calendar.setup(
                           {
                             inputField : "${property}", // ID of the input field
                             ifFormat : "%m/%d/%Y", // the date format
                             button : "${property}_datepicker" // ID of the button
                           }
-                  );
+                );
+                //]]>
               </script>
     </c:if>
+</c:if>
+<%-- always display even when readOnly --%>
+<%-- expanded textarea icon --%>
+<c:if test="${attributeEntry.control.textarea == true && (expandedTextArea == true || (attributeEntry.control.expandedTextArea == true && expandedTextArea != false))}">
+	<%-- so that the JS can grab the value from the opener...got to be a better way to do this...--%>
+	<c:if test="${readOnly}">
+		<html:hidden property="${property}" write="false" styleId="${property}" />
+	</c:if>
+	<kul:expandedTextArea textAreaFieldName="${property}" action="${htmlFormAction}" textAreaLabel="${attributeEntry.label}" disabled="${disabled}" title="${attributeEntry.label}" readOnly="${readOnly}" maxLength="${attributeEntry.maxLength}"/>
 </c:if>

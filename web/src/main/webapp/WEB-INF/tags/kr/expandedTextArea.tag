@@ -22,6 +22,7 @@
 <%@ attribute name="sessionDocument" required="false" %>
 <%@ attribute name="title" required="false" %>
 <%@ attribute name="readOnly" required="false" %>
+<%@ attribute name="maxLength" required="false" %>
 
 <c:if test="${empty formKey}">
   <c:set var="formKey" value="88888888" />
@@ -47,9 +48,9 @@
 	   		</c:otherwise>
 	  	</c:choose>
     
-       <html:image property="methodToCall.updateTextArea.((#${textAreaFieldName}:${action}:${textAreaLabel}:${readOnly}#))"
+       <html:image property="methodToCall.updateTextArea.((#${textAreaFieldName}:${action}:${textAreaLabel}:${readOnly}:${maxLength}#))"
                    src="${srcImage}"
-                   onclick="javascript: textAreaPop('${textAreaFieldName}','${action}','${textAreaLabel}','${formKey}','${readOnly}');return false"
+                   onclick="javascript: textAreaPop('${textAreaFieldName}','${action}','${textAreaLabel}','${formKey}','${readOnly}','${maxLength}');return false"
                    styleClass="tinybutton"
                    title="${title}"
                    alt="${altMsg}"/>

@@ -934,6 +934,11 @@ public abstract class KualiAction extends DispatchAction {
     public static final String TEXT_AREA_FIELD_ANCHOR="textAreaFieldAnchor";
     /**
      * Constant defined to match with TextArea.jsp and updateTextArea function in core.js
+     * <p>Value is textAreaFieldAnchor
+    */
+    public static final String TEXT_AREA_MAX_LENGTH="textAreaMaxLength";
+    /**
+     * Constant defined to match with TextArea.jsp and updateTextArea function in core.js
      * <p>Value is htmlFormAction
     */
     public static final String FORM_ACTION="htmlFormAction";
@@ -989,6 +994,7 @@ public abstract class KualiAction extends DispatchAction {
         request.setAttribute(FORM_ACTION,keyValue[1]);
         request.setAttribute(TEXT_AREA_FIELD_LABEL,keyValue[2]);
         request.setAttribute(TEXT_AREA_READ_ONLY,keyValue[3]);
+        request.setAttribute(TEXT_AREA_MAX_LENGTH,keyValue[4]);
         if (form instanceof KualiForm && StringUtils.isNotEmpty(((KualiForm) form).getAnchor())) {
             request.setAttribute(TEXT_AREA_FIELD_ANCHOR,((KualiForm) form).getAnchor());
         }
@@ -998,10 +1004,7 @@ public abstract class KualiAction extends DispatchAction {
         if (docWebScope != null && docWebScope.trim().length() >= 0) {
             request.setAttribute(KNSConstants.DOCUMENT_WEB_SCOPE, docWebScope);
         }
-        //String docFormKey=(String)request.getAttribute(KNSConstants.DOC_FORM_KEY);
-        //if (docFormKey != null && docFormKey.trim().length() >= 0) {
-        //    request.setAttribute(KNSConstants.DOC_FORM_KEY, docFormKey);
-        //}
+
         request.setAttribute(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
         
         ActionForward forward=mapping.findForward(FORWARD_TEXT_AREA_UPDATE);
@@ -1023,6 +1026,7 @@ public abstract class KualiAction extends DispatchAction {
      * <li>{@link #FORM_ACTION}</li>
      * <li>{@link #TEXT_AREA_FIELD_LABEL}</li>
      * <li>{@link #TEXT_AREA_READ_ONLY}</li>
+     * <li>{@link #TEXT_AREA_MAX_LENGTH}</li>
      * </ol>
      * 
      * @param request the request to retrieve the textarea parameters
@@ -1056,6 +1060,7 @@ public abstract class KualiAction extends DispatchAction {
                     LOG.debug( "keyValue[1]: " + keyValue[1] );
                     LOG.debug( "keyValue[2]: " + keyValue[2] );
                     LOG.debug( "keyValue[3]: " + keyValue[3] );
+                    LOG.debug( "keyValue[4]: " + keyValue[4] );
                 }
             }
         }

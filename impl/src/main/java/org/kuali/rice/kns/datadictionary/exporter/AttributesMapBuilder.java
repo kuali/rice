@@ -172,11 +172,13 @@ public class AttributesMapBuilder {
         else if (control.isText()) {
             controlMap.set("text", "true");
             controlMap.set("size", control.getSize().toString());
+            controlMap.set("datePicker", Boolean.valueOf(control.isDatePicker()).toString());
         }
         else if (control.isTextarea()) {
             controlMap.set("textarea", "true");
             controlMap.set("rows", control.getRows().toString());
             controlMap.set("cols", control.getCols().toString());
+            controlMap.set("expandedTextArea", Boolean.valueOf(control.isExpandedTextArea()).toString());
         }
         else if (control.isCurrency()) {
             controlMap.set("currency", "true");

@@ -4,7 +4,7 @@ def handleTypes(conversion, annotation, text){
 		text = addOtherImport(text, "org.hibernate.annotations.Type")
 	} else if (conversion.contains("OjbCharBooleanFieldTFConversion")) {
 		annotation += "@Type(type=\"true_false\")\n\t"
-		text = addOtherImport(text, "org.hibernateorg.kuali.rice.kns.util.HibernateKualiHashType.annotations.Type")
+		text = addOtherImport(text, "org.hibernate.annotations.Type")
 	} else if (conversion.contains("OjbCharBooleanFieldAIConversion")) {
 		annotation += "@Type(type=\"rice_active_inactive\")\n\t"
 		text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiCharBooleanAIType")

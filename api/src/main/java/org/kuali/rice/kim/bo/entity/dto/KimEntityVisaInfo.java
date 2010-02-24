@@ -15,12 +15,10 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import org.kuali.rice.kim.bo.entity.KimEntityVisa;
 
 /**
- * This is a description of what this class does - jimt don't forget to fill this in. 
+ * DTO for visa information associated with a KIM entity
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
@@ -29,11 +27,11 @@ public class KimEntityVisaInfo extends KimInfoBase implements KimEntityVisa {
 
 	private static final long serialVersionUID = 469708778377293171L;
 
-	private String id = "";
-	private String entityId = "";
-	private String visaTypeKey = "";
-	private String visaEntry = "";
-	private String visaId = "";
+	private String id;
+	private String entityId;
+	private String visaTypeKey;
+	private String visaEntry;
+	private String visaId;
 
 	public KimEntityVisaInfo() {
 		super();
@@ -42,47 +40,52 @@ public class KimEntityVisaInfo extends KimInfoBase implements KimEntityVisa {
 	public KimEntityVisaInfo(KimEntityVisa kimEntityVisa) {
 		this();
 		if ( kimEntityVisa != null ) {
-			id = unNullify(kimEntityVisa.getId());
-			entityId = unNullify(kimEntityVisa.getEntityId());
-			visaTypeKey = unNullify(kimEntityVisa.getVisaTypeKey());
-			visaEntry = unNullify(kimEntityVisa.getVisaEntry());
-			visaId = unNullify(kimEntityVisa.getVisaId());
+			id = kimEntityVisa.getId();
+			entityId = kimEntityVisa.getEntityId();
+			visaTypeKey = kimEntityVisa.getVisaTypeKey();
+			visaEntry = kimEntityVisa.getVisaEntry();
+			visaId = kimEntityVisa.getVisaId();
 		}
 	}
 
 	/**
+	 * {@inheritDoc} 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getId()
 	 */
 	public String getId() {
-		return unNullify( id);
+		return id;
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getEntityId()
 	 */
 	public String getEntityId() {
-		return unNullify( entityId);
+		return entityId;
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getVisaEntry()
 	 */
 	public String getVisaEntry() {
-		return unNullify( visaEntry);
+		return visaEntry;
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getVisaId()
 	 */
 	public String getVisaId() {
-		return unNullify( visaId);
+		return visaId;
 	}
 
 	/**
+	 * {@inheritDoc}
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityVisa#getVisaTypeKey()
 	 */
 	public String getVisaTypeKey() {
-		return unNullify( visaTypeKey);
+		return visaTypeKey;
 	}
 
 	/**

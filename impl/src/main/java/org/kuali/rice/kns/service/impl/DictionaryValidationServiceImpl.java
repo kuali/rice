@@ -195,7 +195,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     			}
 
     			if (!(listObj instanceof List)) {
-    				LOG.error("The reference named " + collectionName + " of BO class " + businessObject.getClass().getName() + " should be of type java.util.List to be validated properly.");
+			if ( LOG.isInfoEnabled() ) {
+				LOG.info("The reference named " + collectionName + " of BO class " + businessObject.getClass().getName() + " should be of type java.util.List to be validated properly.");
+			}
     				continue;
     			}
 
@@ -357,11 +359,12 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * objectClassName is the docTypeName
      */
 	public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String attributeDataType, String errorKey) {
-        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
         boolean checkDateBounds = false; // this is used so we can check date bounds
         Class<?> formatterClass = null;
 
+        if ( LOG.isDebugEnabled() ) {
         LOG.debug("(bo, attributeName, attributeValue) = (" + objectClassName + "," + attributeName + "," + attributeInValue + ")");
+        }
 
         /*
          *  This will return a list of searchable attributes. so if the value is
@@ -377,12 +380,15 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         if (StringUtils.isNotBlank(attributeValue)) {
             Integer maxLength = getDataDictionaryService().getAttributeMaxLength(objectClassName, attributeName);
             if ((maxLength != null) && (maxLength.intValue() < attributeValue.length())) {
+	                String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
                 GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_MAX_LENGTH, new String[] { errorLabel, maxLength.toString() });
                 return;
             }
             Pattern validationExpression = getDataDictionaryService().getAttributeValidatingExpression(objectClassName, attributeName);
             if (validationExpression != null && !validationExpression.pattern().equals(".*")) {
+	            	if ( LOG.isDebugEnabled() ) {
                 LOG.debug("(bo, attributeName, validationExpression) = (" + objectClassName + "," + attributeName + "," + validationExpression + ")");
+	            	}
 
             	if (!validationExpression.matcher(attributeValue).matches()) {
             		// Retrieving formatter class
@@ -418,7 +424,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
                         		}
                         		valuesAreValid &= !isError;
                     		} catch (Exception e) {
+                    			if ( LOG.isDebugEnabled() ) {
                     			LOG.debug(e.getMessage(), e);
+                    			}
                     			isError =true;
                     			valuesAreValid = false;
                     		}
@@ -441,6 +449,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (exclusiveMin != null) {
                 try {
                     if (exclusiveMin.compareTo(new BigDecimal(attributeValue)) >= 0) {
+	                        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
                         GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_EXCLUSIVE_MIN,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, exclusiveMin.toString() });
@@ -455,6 +464,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             if (inclusiveMax != null) {
                 try {
                     if (inclusiveMax.compareTo(new BigDecimal(attributeValue)) < 0) {
+	                        String errorLabel = getDataDictionaryService().getAttributeErrorLabel(objectClassName, attributeName);
                         GlobalVariables.getMessageMap().putError(errorKey, RiceKeyConstants.ERROR_INCLUSIVE_MAX,
                         // todo: Formatter for currency?
                                 new String[] { errorLabel, inclusiveMax.toString() });

@@ -1109,6 +1109,10 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
         paramMap.clear();
         paramMap.put(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "001/5/08");
         validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
+        assertEquals("Validation should not have returned an error.", 0, validationErrors.size());
+        paramMap.clear();
+        paramMap.put(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "41/5/08");
+        validationErrors = searchAttribute.validateUserSearchInputs(paramMap, context);
         assertEquals("Validation should return a single error message.", 1, validationErrors.size());
         error = (WorkflowAttributeValidationError) validationErrors.get(0);
         assertTrue("Validation error is incorrect", error.getMessage().endsWith("does not conform to standard validation for field type."));

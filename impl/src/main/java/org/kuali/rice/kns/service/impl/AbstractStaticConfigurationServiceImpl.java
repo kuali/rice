@@ -43,7 +43,7 @@ public abstract class AbstractStaticConfigurationServiceImpl {
         // create default KualiPropertyMessageResources
         KualiPropertyMessageResources messageResources = (KualiPropertyMessageResources)propertyMessageFactory.createResources("");;
                 
-        //Add Kuali Properies to property holder
+        //Add Kuali Properties to property holder
         this.propertyHolder.getHeldProperties().putAll(messageResources.getKualiProperties(null));
     }
     

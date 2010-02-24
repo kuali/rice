@@ -23,6 +23,7 @@ import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.impl.GroupServiceImpl;
+import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 /**
@@ -34,10 +35,12 @@ import org.kuali.rice.kim.test.KIMTestCase;
 public class GroupServiceImplTest extends KIMTestCase {
 
 	private GroupServiceImpl groupService;
+	private GroupUpdateServiceImpl groupUpdateService;
 
 	public void setUp() throws Exception {
 		super.setUp();
 		groupService = (GroupServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupService"));
+		groupUpdateService = (GroupUpdateServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupUpdateService"));
 	}
 
 	@Test
@@ -80,7 +83,7 @@ public class GroupServiceImplTest extends KIMTestCase {
 		// re-activate group 4
 		GroupInfo g4Info = groupService.getGroupInfo("g4");
 		g4Info.setActive(true);
-		groupService.updateGroup("g4", g4Info);
+		groupUpdateService.updateGroup("g4", g4Info);
 
 		assertTrue( "p4 should be reported as a member of g2 (now that g4 is active)", groupService.isMemberOfGroup("p4", "g2") );
 		

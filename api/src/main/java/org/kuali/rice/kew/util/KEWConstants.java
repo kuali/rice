@@ -214,6 +214,8 @@ public class KEWConstants extends JSTLConstants {
     }
 
     public static final String ALL_CODE = "All";
+    public static final String ALL_SECONDARY_DELEGATIONS = "All Secondary Delegations";
+    public static final String ALL_PRIMARY_DELEGATES = "All Primary Delegates";
     public static final String NO_FILTERING = "No Filtering";
     public static final String DELEGATION_DEFAULT = "Choose Secondary Delegation";
     public static final String PRIMARY_DELEGATION_DEFAULT = "Choose Primary Delegate";

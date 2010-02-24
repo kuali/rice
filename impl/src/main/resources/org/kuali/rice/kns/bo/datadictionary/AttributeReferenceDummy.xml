@@ -85,7 +85,7 @@
   <bean id="AttributeReferenceDummy-genericSystemId-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="GenericSysId"/>
-    <property name="maxLength" value="12"/>
+    <property name="maxLength" value="40"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern"/>
     </property>

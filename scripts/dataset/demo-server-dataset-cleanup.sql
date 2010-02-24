@@ -1,4 +1,4 @@
--- 
+--
 -- Copyright 2009 The Kuali Foundation
 -- 
 -- Licensed under the Educational Community License, Version 2.0 (the "License");
@@ -156,8 +156,11 @@ delete from krew_rmv_rplc_rule_t
 
 -- Service Registry - table should be emptied, will be re-populated on startup 
 
+delete from krsb_flt_svc_def_t
+/
 delete from krsb_svc_def_t
 /
+
 
 -- ##############
 -- # KNS Tables #

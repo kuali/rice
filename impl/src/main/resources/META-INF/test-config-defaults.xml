@@ -11,6 +11,8 @@
     <param name="rice.ken.testMode">true</param>
     <param name="rice.kcb.testmode">true</param>
 
+	<param name="encryption.key" override="false">7IC64w6ksLU</param>
+
     <!-- Default to the single test keystore. -->
     <param name="keystore.alias">rice</param>
     <param name="keystore.password">r1c3pw</param>

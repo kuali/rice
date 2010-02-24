@@ -22,46 +22,75 @@ import javax.xml.bind.annotation.XmlElement;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
+ * entity type default info for a KIM entity
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * 
  */
 public class KimEntityEntityTypeDefaultInfo implements Serializable {
-	private static final long serialVersionUID = -6585360231364528118L;
-	protected String entityTypeCode;
-	@XmlElement
-	protected KimEntityAddressInfo defaultAddress;
-	@XmlElement
-	protected KimEntityPhoneInfo defaultPhoneNumber;
-	@XmlElement
-	protected KimEntityEmailInfo defaultEmailAddress;
-	
-	public String getEntityTypeCode() {
-		return unNullify( this.entityTypeCode);
-	}
-	public void setEntityTypeCode(String entityTypeCode) {
-		this.entityTypeCode = entityTypeCode;
-	}
-	public KimEntityAddressInfo getDefaultAddress() {
-		return unNullify( this.defaultAddress, KimEntityAddressInfo.class);
-	}
-	public void setDefaultAddress(KimEntityAddress defaultAddress) {
-		this.defaultAddress = new KimEntityAddressInfo(defaultAddress);
-	}
-	public KimEntityPhoneInfo getDefaultPhoneNumber() {
-		return unNullify( this.defaultPhoneNumber, KimEntityPhoneInfo.class);
-	}
-	public void setDefaultPhoneNumber(KimEntityPhone defaultPhoneNumber) {
-		this.defaultPhoneNumber = new KimEntityPhoneInfo(defaultPhoneNumber);
-	}
-	public KimEntityEmailInfo getDefaultEmailAddress() {
-		return unNullify( this.defaultEmailAddress, KimEntityEmailInfo.class);
-	}
-	public void setDefaultEmailAddress(KimEntityEmail defaultEmailAddress) {
-		this.defaultEmailAddress = new KimEntityEmailInfo(defaultEmailAddress);
-	}
+    private static final long serialVersionUID = -6585360231364528118L;
+    
+    protected String entityTypeCode;
+    @XmlElement
+    protected KimEntityAddressInfo defaultAddress;
+    @XmlElement
+    protected KimEntityPhoneInfo defaultPhoneNumber;
+    @XmlElement
+    protected KimEntityEmailInfo defaultEmailAddress;
+
+    /**
+     * Gets this {@link KimEntityEntityTypeDefaultInfo}'s entity type code.
+     * @return the entity type code for this {@link KimEntityEntityTypeDefaultInfo}, or null if none has been assigned.
+     */
+    public String getEntityTypeCode() {
+        return entityTypeCode;
+    }
+
+    public void setEntityTypeCode(String entityTypeCode) {
+        this.entityTypeCode = entityTypeCode;
+    }
+
+    /**
+     * Gets this {@link KimEntityEntityTypeDefaultInfo}'s default address.
+     * @return the default address for this {@link KimEntityEntityTypeDefaultInfo}, or null if none has been assigned.
+     */
+    public KimEntityAddressInfo getDefaultAddress() {
+        return defaultAddress;
+    }
+
+    public void setDefaultAddress(KimEntityAddress defaultAddress) {
+        if (defaultAddress != null) {
+            this.defaultAddress = new KimEntityAddressInfo(defaultAddress);
+        }
+    }
+
+    /**
+     * Gets this {@link KimEntityEntityTypeDefaultInfo}'s default phone number.
+     * @return the default phone number for this {@link KimEntityEntityTypeDefaultInfo}, or null if none has been assigned.
+     */
+    public KimEntityPhoneInfo getDefaultPhoneNumber() {
+        return defaultPhoneNumber;
+    }
+
+    public void setDefaultPhoneNumber(KimEntityPhone defaultPhoneNumber) {
+        if (defaultPhoneNumber != null) {
+            this.defaultPhoneNumber = new KimEntityPhoneInfo(defaultPhoneNumber);
+        }
+    }
+
+    /**
+     * Gets this {@link KimEntityEntityTypeDefaultInfo}'s default email address.
+     * @return the default email address for this {@link KimEntityEntityTypeDefaultInfo}, or null if none has been assigned.
+     */
+    public KimEntityEmailInfo getDefaultEmailAddress() {
+        return defaultEmailAddress;
+    }
+
+    public void setDefaultEmailAddress(KimEntityEmail defaultEmailAddress) {
+        if (defaultEmailAddress != null) {
+            this.defaultEmailAddress = new KimEntityEmailInfo(defaultEmailAddress);
+        }
+    }
 }

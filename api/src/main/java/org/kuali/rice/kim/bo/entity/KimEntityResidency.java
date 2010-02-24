@@ -17,15 +17,34 @@ package org.kuali.rice.kim.bo.entity;
 
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * residency info for a KIM entity
  * 
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  *
  */
 public interface KimEntityResidency {
 
+    /**
+     * Gets this {@link KimEntityResidency}'s id.
+     * @return the id for this {@link KimEntityResidency}, or null if none has been assigned.
+     */
 	String getId();
+	
+	/**
+     * Gets this {@link KimEntityResidency}'s entity id.
+     * @return the entity id for this {@link KimEntityResidency}, or null if none has been assigned.
+     */
 	String getEntityId();
+	
+	/**
+     * Gets this {@link KimEntityResidency}'s determination method.
+     * @return the determination method for this {@link KimEntityResidency}, or null if none has been assigned.
+     */
 	String getDeterminationMethod();
+	
+	/**
+     * Gets the state this {@link KimEntityResidency} is in.
+     * @return the state this {@link KimEntityResidency} is in, or null if none has been assigned.
+     */
 	String getInState();
 }

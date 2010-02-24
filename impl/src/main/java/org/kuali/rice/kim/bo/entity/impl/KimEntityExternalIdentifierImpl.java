@@ -148,8 +148,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	
 	@Override
 	public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-		super.beforeUpdate(persistenceBroker);
-		encryptExternalId();
+	    beforeUpdate();
 	}
 	
 	@Override

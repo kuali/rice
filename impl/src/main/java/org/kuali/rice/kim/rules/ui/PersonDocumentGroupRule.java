@@ -78,7 +78,7 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
         additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, newGroup.getNamespaceCode());
         additionalPermissionDetails.put(KimAttributes.GROUP_NAME, newGroup.getGroupName());
 		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-				document, KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
+				document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
 				GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){
     		GlobalVariables.getMessageMap().putError(GROUP_ID_ERROR_PATH, 
     				RiceKeyConstants.ERROR_ASSIGN_GROUP, 

@@ -61,6 +61,8 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
     }
 
     public String encrypt(Object valueToHide) throws GeneralSecurityException {
+    	checkEnabled();
+    	
         if (valueToHide == null) {
             return "";
         }
@@ -84,6 +86,8 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
     }
 
     public String decrypt(String ciphertext) throws GeneralSecurityException {
+    	checkEnabled();
+    	
         if (StringUtils.isBlank(ciphertext)) {
             return "";
         }
@@ -105,6 +109,8 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
     }
 
     public byte[] encryptBytes(byte[] valueToHide) throws GeneralSecurityException {
+    	checkEnabled();
+    	
         if (valueToHide == null) {
             return new byte[0];
         }
@@ -123,6 +129,8 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
     }
 
     public byte[] decryptBytes(byte[] ciphertext) throws GeneralSecurityException {
+    	checkEnabled();
+    	
         if (ciphertext == null) {
             return new byte[0];
         }
@@ -188,11 +196,13 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
      * @throws Exception
      */
     public void setSecretKey(String secretKey) throws Exception {
-        desKey = this.unwrapEncodedKey(secretKey);
-        isEnabled = true;
-        // Create the cipher
-        Cipher cipher = Cipher.getInstance(ALGORITHM);
-        cipher.init((Cipher.WRAP_MODE), desKey);
+    	if (!StringUtils.isEmpty(secretKey)) {
+    		desKey = this.unwrapEncodedKey(secretKey);
+    		isEnabled = true;
+    		// Create the cipher
+    		Cipher cipher = Cipher.getInstance(ALGORITHM);
+    		cipher.init((Cipher.WRAP_MODE), desKey);
+    	}
     }
 
     /** Hash the value by converting to a string, running the hash algorithm, and then base64'ng the results.
@@ -211,6 +221,16 @@ public class DemonstrationGradeEncryptionServiceImpl implements EncryptionServic
             // should never happen
         }
         return "";
+    }
+    
+    /**
+     * Performs a check to see if the encryption service is enabled.  If it is not then an
+     * IllegalStateException will be thrown.
+     */
+    protected void checkEnabled() {
+    	if (!isEnabled()) {
+    		throw new IllegalStateException("Illegal use of encryption service.  Ecryption service is disabled, to enable please configure 'encryption.key'.");
+    	}
     }
 
     

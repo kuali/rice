@@ -29,6 +29,8 @@ import java.util.Set;
 import javax.jws.WebParam;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.core.util.RiceDebugUtils;
@@ -87,6 +89,9 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	
 	public void flushRoleCaches() {
 		flushInternalRoleCache();
+		flushInternalRoleMemberCache();
+		flushInternalDelegationCache();
+		flushInternalDelegationMemberCache();
 		roleByIdCache.clear();
 		roleByNameCache.clear();
 		roleMembersWithDelegationCache.clear();
@@ -94,6 +99,23 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		principalHasRoleCache.clear();
 		memberPrincipalIdsCache.clear();
 		shouldCacheRoleCache.clear();
+	}
+	
+	public void flushRoleMemberCaches() {
+		flushInternalRoleMemberCache();
+		roleMembersWithDelegationCache.clear();
+		memberPrincipalIdsCache.clear();
+	}
+	
+	public void flushDelegationCaches() {
+		flushInternalDelegationCache();
+		flushInternalDelegationMemberCache();
+		roleMembersWithDelegationCache.clear();
+	}
+	
+	public void flushDelegationMemberCaches() {
+		flushInternalDelegationMemberCache();
+		roleMembersWithDelegationCache.clear();
 	}
 	
 	// Caching helper methods
@@ -357,7 +379,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			key = cacheKey.toString();
 			hasRole = getPrincipalHasRoleCacheCache(key);
 		}
-		if (hasRole == null) {
+		if (hasRole == null || !hasRole.booleanValue()) {
 			if (!cacheRoles.isEmpty()) {
 				hasRole = getRoleService().principalHasRole(principalId, cacheRoles, qualification);
 				addPrincipalHasRoleToCache(key, hasRole);
@@ -389,8 +411,14 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			final KimRoleTypeService roleType = getRoleTypeService(roleId);
 			final KimRoleInfo roleInfo = this.getRole(roleId);
 			if (roleType != null && roleInfo != null) {
-				shouldCacheRoleAnswer = new Boolean(roleType.shouldCacheRoleMembershipResults(roleInfo.getNamespaceCode(), roleInfo.getRoleName()));
-				shouldCacheRoleCache.put(roleId, shouldCacheRoleAnswer);
+			    try {
+			        shouldCacheRoleAnswer = new Boolean(roleType.shouldCacheRoleMembershipResults(roleInfo.getNamespaceCode(), roleInfo.getRoleName()));
+			        shouldCacheRoleCache.put(roleId, shouldCacheRoleAnswer);
+			    } catch (RiceRemoteServiceConnectionException e) {
+			        LOG.warn("Unable to connect to remote service for roleType " + roleInfo.getNamespaceCode() + "-" + roleInfo.getRoleName());
+                    LOG.warn(e.getMessage());
+			        return Boolean.FALSE;
+			    }
 			} else {
 				shouldCacheRoleAnswer = Boolean.TRUE; // no type?  that means we get to do the default - cache
 				shouldCacheRoleCache.put(roleId, shouldCacheRoleAnswer);
@@ -800,4 +828,28 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	public void flushInternalRoleCache() {
 		getRoleService().flushInternalRoleCache();
 	}
+	
+	public void flushInternalRoleMemberCache() {
+		getRoleService().flushInternalRoleMemberCache();
+	}
+	
+	public void flushInternalDelegationCache() {
+		getRoleService().flushInternalDelegationCache();
+	}
+	
+	public void flushInternalDelegationMemberCache() {
+		getRoleService().flushInternalDelegationMemberCache();
+	}
+
+    public void assignPermissionToRole(String permissionId, String roleId) throws UnsupportedOperationException {
+        getRoleUpdateService().assignPermissionToRole(permissionId, roleId);
+    }
+
+    public String getNextAvailableRoleId() throws UnsupportedOperationException {
+        return getRoleUpdateService().getNextAvailableRoleId();
+    }
+
+    public void saveRole(String roleId, String roleName, String roleDescription, boolean active, String kimTypeId, String namespaceCode) throws UnsupportedOperationException {
+        getRoleUpdateService().saveRole(roleId, roleName, roleDescription, active, kimTypeId, namespaceCode);
+    }
 }

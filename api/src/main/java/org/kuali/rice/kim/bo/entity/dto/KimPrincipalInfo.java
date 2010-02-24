@@ -15,21 +15,20 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 /**
+ * DTO for a principal associated with a KIM entity 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincipal {
 
 	private static final long serialVersionUID = 4480581610252159266L;
 
-	private String principalId = "";
-	private String principalName = "";
-	private String entityId = "";
-	private String password = "";
+	private String principalId;
+	private String principalName;
+	private String entityId;
+	private String password;
 	
 	/**
 	 * 
@@ -45,40 +44,56 @@ public class KimPrincipalInfo extends KimInactivatableInfo implements KimPrincip
 	public KimPrincipalInfo( KimPrincipal p ) {
 		this();
 		if ( p != null ) {
-			principalId = unNullify( p.getPrincipalId() );
-			entityId = unNullify( p.getEntityId() );
-			principalName = unNullify( p.getPrincipalName() );
-			password = unNullify( p.getPassword() );
+			principalId = p.getPrincipalId();
+			entityId = p.getEntityId();
+			principalName = p.getPrincipalName();
+			password = p.getPassword();
 			active = p.isActive();
 		}
 	}
 	
+	/**
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimPrincipal#getPrincipalId()
+	 */
 	public String getPrincipalId() {
-		return unNullify( this.principalId);
+		return principalId;
 	}
 
 	public void setPrincipalId(String principalId) {
 		this.principalId = principalId;
 	}
 
+	/**
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimPrincipal#getPrincipalName()
+	 */
 	public String getPrincipalName() {
-		return unNullify( this.principalName);
+		return principalName;
 	}
 
 	public void setPrincipalName(String principalName) {
 		this.principalName = principalName;
 	}
 
+	/**
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimPrincipal#getEntityId()
+	 */
 	public String getEntityId() {
-		return unNullify( this.entityId);
+		return entityId;
 	}
 
 	public void setEntityId(String entityId) {
 		this.entityId = entityId;
 	}
 
+	/**
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimPrincipal#getPassword()
+	 */
 	public String getPassword() {
-		return unNullify( this.password);
+		return password;
 	}
 
 	public void setPassword(String password) {

@@ -19,22 +19,60 @@ import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
- * This is a description of what this class does - jonathan don't forget to fill this in. 
+ * employment information for a KIM entity
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public interface KimEntityEmploymentInformation extends Inactivateable {
 
+    /**
+     * Gets this {@link KimEntityEmploymentInformation}'s id.
+     * @return the id for this {@link KimEntityEmploymentInformation}, or null if none has been assigned.
+     */
 	String getEntityEmploymentId();
 	
+	/**
+     * Gets this {@link KimEntityEmploymentInformation}'s entity affiliation id.
+     * @return the entity affiliation id for this {@link KimEntityEmploymentInformation}, or null if none has been assigned.
+     */
 	String getEntityAffiliationId();
+	
+	/**
+     * Gets this {@link KimEntityEmploymentInformation}'s employee status code.
+     * @return the employee status code for this {@link KimEntityEmploymentInformation}, or null if none has been assigned.
+     */
 	String getEmployeeStatusCode();
+	
+	/**
+     * Gets this {@link KimEntityEmploymentInformation}'s employee type code.
+     * @return the employee type code for this {@link KimEntityEmploymentInformation}, or null if none has been assigned.
+     */
 	String getEmployeeTypeCode();
+	
+	/**
+     * Gets this {@link KimEntityEmploymentInformation}'s primary department code.
+     * @return the primary department code for this {@link KimEntityEmploymentInformation}, or null if none has been assigned.
+     */
 	String getPrimaryDepartmentCode();
+	
+	/**
+     * Gets this {@link KimEntityEmploymentInformation}'s employee id.
+     * @return the employee id for this {@link KimEntityEmploymentInformation}, or null if none has been assigned.
+     */
 	String getEmployeeId();
+	
+	/**
+     * Gets this {@link KimEntityEmploymentInformation}'s employment record id.
+     * @return the employment record id for this {@link KimEntityEmploymentInformation}, or null if none has been assigned.
+     */
 	String getEmploymentRecordId();
+	
+	/**
+     * Gets this {@link KimEntityEmploymentInformation}'s base salary amount.
+     * @return the base salary amount for this {@link KimEntityEmploymentInformation}, or null if none has been assigned.
+     */
 	KualiDecimal getBaseSalaryAmount();
+	
 	boolean isPrimary();
 
 }

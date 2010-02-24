@@ -31,6 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoaderContainer;
@@ -83,7 +84,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 			}
 			if (clientProxies.isEmpty()) {
 				List<RemotedServiceHolder> removedList = this.getClients().remove(serviceName);
-				if (!removedList.isEmpty()) {
+				if (removedList.isEmpty()) {
 					LOG.warn("No client proxy was removed for the given service " + serviceName);
 				}
 			}
@@ -114,10 +115,10 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		}
 		if (! servicesToRemove.isEmpty()) {
 		    for (ServiceHolder serviceToRemove : servicesToRemove) {
-			serviceToRemove.getServiceInfo().setAlive(false);
-			List<ServiceInfo> serviceInfos = new ArrayList<ServiceInfo>();
-			serviceInfos.add(serviceToRemove.getServiceInfo());
-			KSBServiceLocator.getIPTableService().markServicesDead(serviceInfos);
+    			serviceToRemove.getServiceInfo().setAlive(false);
+    			List<ServiceInfo> serviceInfos = new ArrayList<ServiceInfo>();
+    			serviceInfos.add(serviceToRemove.getServiceInfo());
+    			KSBServiceLocator.getIPTableService().markServicesDead(serviceInfos);
 		    }
 		    return serviceList.removeAll(servicesToRemove);
 		}
@@ -212,7 +213,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 						}
 					}
 				}
-				throw new RiceRuntimeException("No remote services available for client access when attempting to lookup '" + qName + "'");
+				throw new RiceRemoteServiceConnectionException("No remote services available for client access when attempting to lookup '" + qName + "'");
 			}
 		}
 		return clientProxies;

@@ -98,7 +98,7 @@
 		<wss4j.version>1.5.1</wss4j.version>
 		<xalan.version>2.7.0</xalan.version>
 		<xapool.version>1.5.0-patch3</xapool.version>
-		<xercesImpl.version>2.6.2</xercesImpl.version>
+		<xercesImpl.version>2.9.1</xercesImpl.version>
 		<xml-apis.version>1.0.b2</xml-apis.version>
 		<xstream.version>1.2.2</xstream.version>
 	</properties>
@@ -764,11 +764,23 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-databinding-aegis</artifactId>
 				<version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                    </exclusion>
+                </exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-databinding-jaxb</artifactId>
 				<version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                    </exclusion>
+                </exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.groovy</groupId>

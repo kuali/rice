@@ -21,6 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -47,6 +48,7 @@ import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -111,7 +113,12 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
         if (Utilities.isEmpty(value)) {
             return null;
         } else {
-            Timestamp t = DocSearchUtils.convertStringDateToTimestamp(value);
+            Timestamp t;
+            try {
+            	t = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(value);
+            } catch (ParseException e) {
+            	t = null;
+            }
             if (t == null) {
                 String errorMsg = "Error converting timestamp value '" + value + "' to valid timestamp object.";
                 LOG.error("setupAttributeValue() " + errorMsg);

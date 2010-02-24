@@ -73,10 +73,10 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>
-    <property name="summary" value="campusTypeCode"/>
+    <property name="summary" value="Lock Id"/>
     <property name="name" value="id"/>
     <property name="label" value="Lock Id"/>
-    <property name="description" value="campusTypeCode description..."/>
+    <property name="description" value="Pessimistic Lock Description"/>
   </bean>
   <bean id="PessimisticLock-ownedByPrincipalIdentifier" parent="PessimisticLock-ownedByPrincipalIdentifier-parentBean"/>
 
@@ -128,10 +128,10 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="30"/>
     </property>
-    <property name="summary" value="campusTypeCode"/>
+    <property name="summary" value="Lock Descriptor"/>
     <property name="name" value="lockDescriptor"/>
     <property name="label" value="Lock Descriptor"/>
-    <property name="description" value="campusTypeCode description..."/>
+    <property name="description" value="Lock Descriptor description"/>
   </bean>
   <bean id="PessimisticLock-documentNumber" parent="PessimisticLock-documentNumber-parentBean"/>
 
@@ -203,6 +203,7 @@
     </property>
     <property name="resultFields">
       <list>
+        <bean parent="FieldDefinition" p:attributeName="id"/>
         <bean parent="FieldDefinition" p:attributeName="ownedByUser.principalName"/>
         <bean parent="FieldDefinition" p:attributeName="lockDescriptor"/>
         <bean parent="FieldDefinition" p:attributeName="generatedTimestamp"/>

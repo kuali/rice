@@ -20,13 +20,39 @@ import java.util.Date;
 import org.kuali.rice.kns.bo.Inactivateable;
 
 /**
+ * citizenship information for a KIM entity
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface KimEntityCitizenship extends Inactivateable {
 
+    /**
+     * Gets this {@link KimEntityCitizenship}'s id.
+     * @return the id for this {@link KimEntityCitizenship}, or null if none has been assigned.
+     */
 	String getEntityCitizenshipId();
+	
+	/**
+     * Gets this {@link KimEntityCitizenship}'s citizenship status code.
+     * @return the citizenship status code for this {@link KimEntityCitizenship}, or null if none has been assigned.
+     */
 	String getCitizenshipStatusCode();
+	
+	/**
+     * Gets this {@link KimEntityCitizenship}'s country code.
+     * @return the country code for this {@link KimEntityCitizenship}, or null if none has been assigned.
+     */
 	String getCountryCode();
+	
+	/**
+     * Gets this {@link KimEntityCitizenship}'s start date.
+     * @return the start date for this {@link KimEntityCitizenship}, or null if none has been assigned.
+     */
 	Date getStartDate();
+	
+	/**
+     * Gets this {@link KimEntityCitizenship}'s end date.
+     * @return the end date for this {@link KimEntityCitizenship}, or null if none has been assigned.
+     */
 	Date getEndDate();
 }

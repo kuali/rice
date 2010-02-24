@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <param name="datasource.pool.minSize" override="false">0</param>
+    <param name="datasource.pool.maxSize" override="false">5</param>
+    <param name="datasource.pool.size" override="false">5</param>
+    <param name="datasource.pool.maxWait" override="false">30000</param>
+    <param name="datasource.pool.validationQuery" override="false">select 1 from dual</param>
+    
+    <param name="datasource.ojb.platform" override="false">Oracle</param>
+    
+    <param name="datasource.driver.name.Oracle" override="false">oracle.jdbc.driver.OracleDriver</param>
+    <param name="datasource.platform.Oracle" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+    <param name="datasource.ojb.sequenceManager.Oracle" override="false"></param>
+    <param name="datasource.ojb.sequenceManager.className.Oracle" override="false"></param>
+    
+    <param name="datasource.driver.name.Oracle9i" override="false">oracle.jdbc.driver.OracleDriver</param>
+    <param name="datasource.platform.Oracle9i" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+    <param name="datasource.ojb.sequenceManager.Oracle9i" override="false"></param>
+    <param name="datasource.ojb.sequenceManager.className.Oracle9i" override="false"></param>
+    
+    <param name="datasource.driver.name.MySQL" override="false">com.mysql.jdbc.Driver</param>
+    <param name="datasource.platform.MySQL" override="false">org.kuali.rice.core.database.platform.MySQLDatabasePlatform</param>
+    <param name="datasource.ojb.sequenceManager.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
+    <param name="datasource.ojb.sequenceManager.className.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
+    
+    <param name="datasource.driver.name.Derby" override="false">org.apache.derby.jdbc.EmbeddedDriver</param>
+    <param name="datasource.platform.Derby" override="false">org.kuali.rice.core.database.platform.DerbyDatabasePlatform</param>
+    <param name="datasource.ojb.sequenceManager.Derby" override="false">** NEEDS IMPLEMENTED **</param>
+    <param name="datasource.ojb.sequenceManager.className.Derby" override="false">** NEEDS IMPLEMENTED **</param>
+    
+    <param name="datasource.driver.name.McKoi" override="false">com.mckoi.JDBCDriver</param>
+    <param name="datasource.platform.McKoi" override="false">org.kuali.rice.core.database.platform.MckoiDatabasePlatform</param>
+    <param name="datasource.ojb.sequenceManager.McKoi" override="false">org.apache.ojb.broker.platforms.PlatformMckoiImpl</param>
+    <param name="datasource.ojb.sequenceManager.className.McKoi" override="false">org.apache.ojb.broker.platforms.PlatformMckoiImpl</param>
+    
+    <param name="datasource.driver.name" override="false">${datasource.driver.name.${datasource.ojb.platform}}</param>
+    <param name="datasource.platform" override="false">${datasource.platform.${datasource.ojb.platform}}</param>
+    <param name="datasource.ojb.sequenceManager" override="false">${datasource.ojb.sequenceManager.${datasource.ojb.platform}}</param>
+    <param name="datasource.ojb.sequenceManager.className" override="false">${datasource.ojb.sequenceManager.className.${datasource.ojb.platform}}</param>
+    
+    <param name="actionlist.outbox.default.preference.on" override="false">true</param>
+    <param name="actionlist.outbox" override="false">true</param>
+    
+</config>

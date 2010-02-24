@@ -18,11 +18,8 @@ package org.kuali.rice.core.resourceloader;
 
 import javax.xml.namespace.QName;
 
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.reflect.ObjectDefinition;
-import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.kuali.rice.core.resourceloader.ServiceLocator;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 
 /**

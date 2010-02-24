@@ -30,9 +30,87 @@
 			<principalName>principal4</principalName>
 			<givenName>Principal</givenName>
 			<lastName>Four</lastName>
-		</user>				
+		</user>
+		<user>
+			<principalId>p5</principalId>
+			<emplId>p5emplId</emplId>
+			<principalName>principal5</principalName>
+			<givenName>Principal</givenName>
+			<lastName>Five</lastName>
+		</user>
+		<user>
+			<principalId>p6</principalId>
+			<emplId>p6emplId</emplId>
+			<principalName>principal6</principalName>
+			<givenName>Principal</givenName>
+			<lastName>Six</lastName>
+		</user>
+		<user>
+			<principalId>p7</principalId>
+			<emplId>p7emplId</emplId>
+			<principalName>principal7</principalName>
+			<givenName>Principal</givenName>
+			<lastName>Seven</lastName>
+		</user>
+		<user>
+			<principalId>p8</principalId>
+			<emplId>p8emplId</emplId>
+			<principalName>principal8</principalName>
+			<givenName>Principal</givenName>
+			<lastName>Eight</lastName>
+		</user>
+		<user>
+			<principalId>p9</principalId>
+			<emplId>p9emplId</emplId>
+			<principalName>principal9</principalName>
+			<givenName>Principal</givenName>
+			<lastName>Nine</lastName>
+		</user>
+		<user>
+			<principalId>p10</principalId>
+			<emplId>p10emplId</emplId>
+			<principalName>principal10</principalName>
+			<givenName>Principal</givenName>
+			<lastName>Ten</lastName>
+		</user>
 	</users>
 	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
+		<group>
+			<id>g8</id>
+			<name>GroupEight</name>
+			<namespace>KUALI</namespace>
+			<description>Group Eight</description>
+			<members>
+				<principalName>principal10</principalName>
+			</members>
+		</group>
+		<group>
+			<id>g7</id>
+			<name>GroupSeven</name>
+			<namespace>KUALI</namespace>
+			<description>Group Seven</description>
+			<members>
+				<principalName>principal10</principalName>
+			</members>
+		</group>
+		<group>
+			<id>g6</id>
+			<name>GroupSix</name>
+			<namespace>KUALI</namespace>
+			<description>Group Six</description>
+			<members>
+				<principalName>principal9</principalName>
+			</members>
+		</group>
+		<group>
+			<id>g5</id>
+			<name>GroupFive</name>
+			<namespace>KUALI</namespace>
+			<description>Group Five</description>
+			<members>
+				<principalName>principal8</principalName>
+			</members>
+		</group>
 		<group>
 		    <id>g4</id>
 			<name>GroupFour</name>

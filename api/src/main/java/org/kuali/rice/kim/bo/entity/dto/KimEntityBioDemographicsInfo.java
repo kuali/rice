@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import java.io.Serializable;
 import java.util.Date;
 
@@ -31,27 +29,27 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 
 	private static final long serialVersionUID = 1L;
 	
-	protected String entityId = "";
+	protected String entityId;
 	protected Date birthDate;
 	protected Date deceasedDate;
-	protected String genderCode = "";
-	protected String maritalStatusCode = "";
-	protected String primaryLanguageCode = "";
-	protected String secondaryLanguageCode = "";
-	protected String countryOfBirthCode = "";
-	protected String birthStateCode = "";
-	protected String cityOfBirth = "";
-	protected String geographicOrigin = "";
+	protected String genderCode;
+	protected String maritalStatusCode;
+	protected String primaryLanguageCode;
+	protected String secondaryLanguageCode;
+	protected String countryOfBirthCode;
+	protected String birthStateCode;
+	protected String cityOfBirth;
+	protected String geographicOrigin;
 	protected Date birthDateUnmasked;
-	protected String genderCodeUnmasked = "";
-	protected String genderCodeUnmaskedUnmasked = "";
-	protected String maritalStatusCodeUnmasked = "";
-	protected String primaryLanguageCodeUnmasked = "";
-	protected String secondaryLanguageCodeUnmasked = "";
-	protected String countryOfBirthCodeUnmasked = "";
-	protected String birthStateCodeUnmasked = "";
-	protected String cityOfBirthUnmasked = "";
-	protected String geographicOriginUnmasked = "";
+	protected String genderCodeUnmasked;
+	protected String genderCodeUnmaskedUnmasked;
+	protected String maritalStatusCodeUnmasked;
+	protected String primaryLanguageCodeUnmasked;
+	protected String secondaryLanguageCodeUnmasked;
+	protected String countryOfBirthCodeUnmasked;
+	protected String birthStateCodeUnmasked;
+	protected String cityOfBirthUnmasked;
+	protected String geographicOriginUnmasked;
 
 	private boolean suppressPersonal = false;
 	
@@ -62,38 +60,39 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	public KimEntityBioDemographicsInfo( KimEntityBioDemographics kimEntityBioDemographics ) {
 		this();
 		if ( kimEntityBioDemographics != null ) {
-			entityId = unNullify(kimEntityBioDemographics.getEntityId());
-			birthDate = unNullify(kimEntityBioDemographics.getBirthDate());
-			deceasedDate = unNullify(kimEntityBioDemographics.getDeceasedDate());
-			genderCode = unNullify(kimEntityBioDemographics.getGenderCode());
-			maritalStatusCode = unNullify(kimEntityBioDemographics.getMaritalStatusCode());
-			primaryLanguageCode = unNullify(kimEntityBioDemographics.getPrimaryLanguageCode());
-			secondaryLanguageCode = unNullify(kimEntityBioDemographics.getSecondaryLanguageCode());
-			countryOfBirthCode = unNullify(kimEntityBioDemographics.getCountryOfBirthCode());
-			birthStateCode = unNullify(kimEntityBioDemographics.getBirthStateCode());
-			cityOfBirth = unNullify(kimEntityBioDemographics.getCityOfBirth());
-			geographicOrigin = unNullify(kimEntityBioDemographics.getGeographicOrigin());
+			entityId = kimEntityBioDemographics.getEntityId();
+			birthDate = kimEntityBioDemographics.getBirthDate();
+			deceasedDate = kimEntityBioDemographics.getDeceasedDate();
+			genderCode = kimEntityBioDemographics.getGenderCode();
+			maritalStatusCode = kimEntityBioDemographics.getMaritalStatusCode();
+			primaryLanguageCode = kimEntityBioDemographics.getPrimaryLanguageCode();
+			secondaryLanguageCode = kimEntityBioDemographics.getSecondaryLanguageCode();
+			countryOfBirthCode = kimEntityBioDemographics.getCountryOfBirthCode();
+			birthStateCode = kimEntityBioDemographics.getBirthStateCode();
+			cityOfBirth = kimEntityBioDemographics.getCityOfBirth();
+			geographicOrigin = kimEntityBioDemographics.getGeographicOrigin();
 
-			birthDateUnmasked = unNullify(kimEntityBioDemographics.getBirthDateUnmasked());
-			genderCodeUnmaskedUnmasked = unNullify(kimEntityBioDemographics.getGenderCodeUnmasked());
-			genderCodeUnmasked = unNullify(kimEntityBioDemographics.getGenderCodeUnmasked());
-			maritalStatusCodeUnmasked = unNullify(kimEntityBioDemographics.getMaritalStatusCodeUnmasked());
-			primaryLanguageCodeUnmasked = unNullify(kimEntityBioDemographics.getPrimaryLanguageCodeUnmasked());
-			secondaryLanguageCodeUnmasked = unNullify(kimEntityBioDemographics.getSecondaryLanguageCodeUnmasked());
-			countryOfBirthCodeUnmasked = unNullify(kimEntityBioDemographics.getCountryOfBirthCodeUnmasked());
-			birthStateCodeUnmasked = unNullify(kimEntityBioDemographics.getBirthStateCodeUnmasked());
-			cityOfBirthUnmasked = unNullify(kimEntityBioDemographics.getCityOfBirthUnmasked());
-			geographicOriginUnmasked = unNullify(kimEntityBioDemographics.getGeographicOriginUnmasked());
+			birthDateUnmasked = kimEntityBioDemographics.getBirthDateUnmasked();
+			genderCodeUnmaskedUnmasked = kimEntityBioDemographics.getGenderCodeUnmasked();
+			genderCodeUnmasked = kimEntityBioDemographics.getGenderCodeUnmasked();
+			maritalStatusCodeUnmasked = kimEntityBioDemographics.getMaritalStatusCodeUnmasked();
+			primaryLanguageCodeUnmasked = kimEntityBioDemographics.getPrimaryLanguageCodeUnmasked();
+			secondaryLanguageCodeUnmasked = kimEntityBioDemographics.getSecondaryLanguageCodeUnmasked();
+			countryOfBirthCodeUnmasked = kimEntityBioDemographics.getCountryOfBirthCodeUnmasked();
+			birthStateCodeUnmasked = kimEntityBioDemographics.getBirthStateCodeUnmasked();
+			cityOfBirthUnmasked = kimEntityBioDemographics.getCityOfBirthUnmasked();
+			geographicOriginUnmasked = kimEntityBioDemographics.getGeographicOriginUnmasked();
 			
 			suppressPersonal = kimEntityBioDemographics.isSuppressPersonal();
 		}
 	}
 
 	/**
-	 * @return the entityId
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getEntityId()
 	 */
 	public String getEntityId() {
-		return unNullify(this.entityId);
+		return entityId;
 	}
 
 	/**
@@ -104,10 +103,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the birthDate
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getBirthDate()
 	 */
 	public Date getBirthDate() {
-		return unNullify(this.birthDate);
+		return this.birthDate;
 	}
 
 	/**
@@ -118,10 +118,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the deceasedDate
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getDeceasedDate()
 	 */
 	public Date getDeceasedDate() {
-		return unNullify(this.deceasedDate);
+		return this.deceasedDate;
 	}
 
 	/**
@@ -132,10 +133,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the genderCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getGenderCode()
 	 */
 	public String getGenderCode() {
-		return unNullify(this.genderCode);
+		return this.genderCode;
 	}
 
 	/**
@@ -146,10 +148,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the maritalStatusCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getMaritalStatusCode()
 	 */
 	public String getMaritalStatusCode() {
-		return unNullify(this.maritalStatusCode);
+		return maritalStatusCode;
 	}
 
 	/**
@@ -160,10 +163,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the primaryLanguageCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getPrimaryLanguageCode()
 	 */
 	public String getPrimaryLanguageCode() {
-		return unNullify(this.primaryLanguageCode);
+		return primaryLanguageCode;
 	}
 
 	/**
@@ -174,10 +178,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the secondaryLanguageCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getSecondaryLanguageCode()
 	 */
 	public String getSecondaryLanguageCode() {
-		return unNullify(this.secondaryLanguageCode);
+		return secondaryLanguageCode;
 	}
 
 	/**
@@ -188,10 +193,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the countryOfBirthCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getCountryOfBirthCode()
 	 */
 	public String getCountryOfBirthCode() {
-		return unNullify(this.countryOfBirthCode);
+		return countryOfBirthCode;
 	}
 
 	/**
@@ -202,10 +208,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the birthStateCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getBirthStateCode()
 	 */
 	public String getBirthStateCode() {
-		return unNullify(this.birthStateCode);
+		return birthStateCode;
 	}
 
 	/**
@@ -216,10 +223,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the cityOfBirth
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getCityOfBirth()
 	 */
 	public String getCityOfBirth() {
-		return unNullify(this.cityOfBirth);
+		return cityOfBirth;
 	}
 
 	/**
@@ -230,10 +238,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the geographicOrigin
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getGeographicOrigin()
 	 */
 	public String getGeographicOrigin() {
-		return unNullify(this.geographicOrigin);
+		return geographicOrigin;
 	}
 
 	/**
@@ -244,10 +253,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the genderCodeUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getGenderCodeUnmasked()
 	 */
 	public String getGenderCodeUnmasked() {
-		return unNullify(this.genderCodeUnmasked);
+		return genderCodeUnmasked;
 	}
 
 	/**
@@ -261,7 +271,7 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	 * @return the genderCodeUnmaskedUnmasked
 	 */
 	public String getGenderCodeUnmaskedUnmasked() {
-		return unNullify(this.genderCodeUnmaskedUnmasked);
+		return genderCodeUnmaskedUnmasked;
 	}
 
 	/**
@@ -272,10 +282,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the maritalStatusCodeUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getMaritalStatusCodeUnmasked()
 	 */
 	public String getMaritalStatusCodeUnmasked() {
-		return unNullify(this.maritalStatusCodeUnmasked);
+		return maritalStatusCodeUnmasked;
 	}
 
 	/**
@@ -286,10 +297,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the primaryLanguageCodeUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getPrimaryLanguageCodeUnmasked()
 	 */
 	public String getPrimaryLanguageCodeUnmasked() {
-		return unNullify(this.primaryLanguageCodeUnmasked);
+		return primaryLanguageCodeUnmasked;
 	}
 
 	/**
@@ -300,10 +312,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the secondaryLanguageCodeUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getSecondaryLanguageCodeUnmasked()
 	 */
 	public String getSecondaryLanguageCodeUnmasked() {
-		return unNullify(this.secondaryLanguageCodeUnmasked);
+		return secondaryLanguageCodeUnmasked;
 	}
 
 	/**
@@ -315,10 +328,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the countryOfBirthCodeUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getCountryOfBirthCodeUnmasked()
 	 */
 	public String getCountryOfBirthCodeUnmasked() {
-		return unNullify(this.countryOfBirthCodeUnmasked);
+		return countryOfBirthCodeUnmasked;
 	}
 
 	/**
@@ -329,10 +343,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the birthStateCodeUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getBirthStateCodeUnmasked()
 	 */
 	public String getBirthStateCodeUnmasked() {
-		return unNullify(this.birthStateCodeUnmasked);
+		return birthStateCodeUnmasked;
 	}
 
 	/**
@@ -343,10 +358,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the cityOfBirthUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getCityOfBirthUnmasked()
 	 */
 	public String getCityOfBirthUnmasked() {
-		return unNullify(this.cityOfBirthUnmasked);
+		return cityOfBirthUnmasked;
 	}
 
 	/**
@@ -357,10 +373,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * @return the geographicOriginUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getGeographicOriginUnmasked()
 	 */
 	public String getGeographicOriginUnmasked() {
-		return unNullify(this.geographicOriginUnmasked);
+		return geographicOriginUnmasked;
 	}
 
 	/**
@@ -385,12 +402,11 @@ public class KimEntityBioDemographicsInfo extends KimInfoBase implements KimEnti
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
+	 * {@inheritDoc} 
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityBioDemographics#getBirthDateUnmasked()
 	 */
-	public Date getBirthDateUnmasked() {
-		return unNullify(this.birthDateUnmasked);
+    public Date getBirthDateUnmasked() {
+		return this.birthDateUnmasked;
 	}
 	
 	public void setBirthDateUnmasked(Date birthDateUnmasked){

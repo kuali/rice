@@ -480,39 +480,41 @@ public class BusinessObjectAuthorizationServiceImpl implements
 				try {
 					MaintainableCollectionDefinition maintainableCollectionDefinition = (MaintainableCollectionDefinition) maintainableItemDefinition;
 					
-					Collection<BusinessObject> collection = (Collection<BusinessObject>) PropertyUtils
-							.getProperty(businessObject,
+					Collection<BusinessObject> collection = (Collection<BusinessObject>) ObjectUtils
+							.getNestedValue(businessObject,
 									maintainableItemDefinition.getName());
 					BusinessObjectEntry collectionBusinessObjectEntry = getDataDictionaryService()
 							.getDataDictionary().getBusinessObjectEntry(
 									maintainableCollectionDefinition.getBusinessObjectClass().getName());
-					int i = 0;
-					for (Iterator<BusinessObject> iterator = collection.iterator(); iterator
+					if (collection != null) {
+				    	int i = 0;
+			     		for (Iterator<BusinessObject> iterator = collection.iterator(); iterator
 							.hasNext();) {
-						String newPropertyPrefix = propertyPrefix + maintainableItemDefinition.getName() + "[" + i + "].";
-						BusinessObject collectionBusinessObject = iterator.next();
-						considerBusinessObjectFieldUnmaskAuthorization(
+			     			String newPropertyPrefix = propertyPrefix + maintainableItemDefinition.getName() + "[" + i + "].";
+					    	BusinessObject collectionBusinessObject = iterator.next();
+					    	considerBusinessObjectFieldUnmaskAuthorization(
 								collectionBusinessObject, user, restrictions,
 								newPropertyPrefix, maintenanceDocument);
-						considerBusinessObjectFieldViewAuthorization(
+					    	considerBusinessObjectFieldViewAuthorization(
 								collectionBusinessObjectEntry, maintenanceDocument, collectionBusinessObject, user,
 								authorizer, restrictions, newPropertyPrefix);
-						considerBusinessObjectFieldModifyAuthorization(
+					    	considerBusinessObjectFieldModifyAuthorization(
 								collectionBusinessObjectEntry, maintenanceDocument, collectionBusinessObject, user,
 								authorizer, restrictions, newPropertyPrefix);
-						addMaintainableItemRestrictions(
+					    	addMaintainableItemRestrictions(
 								((MaintainableCollectionDefinition) maintainableItemDefinition)
 										.getMaintainableCollections(),
 								authorizer, restrictions, maintenanceDocument,
 								collectionBusinessObject, newPropertyPrefix,
 								user);
-						addMaintainableItemRestrictions(
+				     		addMaintainableItemRestrictions(
 								((MaintainableCollectionDefinition) maintainableItemDefinition)
 										.getMaintainableFields(), authorizer,
 								restrictions, maintenanceDocument,
 								collectionBusinessObject, newPropertyPrefix,
 								user);
-						i++;
+					    	i++;
+				    	}
 					}
 				} catch (Exception e) {
 					throw new RuntimeException(

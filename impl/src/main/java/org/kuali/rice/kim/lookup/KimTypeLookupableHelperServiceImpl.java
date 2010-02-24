@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -130,7 +131,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 		try {
 		    if(hasRoleTypeService(kimType, kimTypeService))
 		        hasDerivedRoleTypeService = (kimType.getKimTypeServiceName()!=null && ((KimRoleTypeService)kimTypeService).isApplicationRoleType());
-		} catch (Exception ex) {
+		} catch (RiceRemoteServiceConnectionException ex) {
 			LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), ex);
 		    return hasDerivedRoleTypeService;
 		}

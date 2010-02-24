@@ -175,7 +175,8 @@
     <property name="exportIf" value="kimRoleServiceSOAP.expose"/>
   </bean>
 
-  <alias alias="kimRoleUpdateService" name="kimRoleService" />
+  <bean id="kimRoleUpdateService" class="org.kuali.rice.kim.service.impl.RoleUpdateServiceImpl" 
+    p:roleDao-ref="kimRoleDao"/>
   <bean parent="kimLocalServiceExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -221,7 +222,7 @@
     <property name="exportIf" value="kimGroupServiceSOAP.expose"/>
   </bean>
 
-  <alias alias="kimGroupUpdateService" name="kimGroupService" />
+  <bean id="kimGroupUpdateService" class="org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl"/>
   <bean parent="kimLocalServiceExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -269,8 +270,7 @@
     <property name="exportIf" value="kimPermissionServiceSOAP.expose"/>
   </bean>
 
-  <alias alias="kimPermissionUpdateService" name="kimPermissionService" />
-
+  <bean id="kimPermissionUpdateService" class="org.kuali.rice.kim.service.impl.PermissionUpdateServiceImpl" />
   <bean parent="kimLocalServiceExporter">
   <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
@@ -326,8 +326,7 @@
     <property name="exportIf" value="kimResponsibilityServiceSOAP.expose"/>
   </bean>
 
-  <alias alias="kimResponsibilityUpdateService" name="kimResponsibilityService" />
-
+  <bean id="kimResponsibilityUpdateService" class="org.kuali.rice.kim.service.impl.ResponsibilityUpdateServiceImpl" />
   <bean parent="kimLocalServiceExporter">
   <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">

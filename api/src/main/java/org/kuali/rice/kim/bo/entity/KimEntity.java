@@ -17,7 +17,6 @@ package org.kuali.rice.kim.bo.entity;
 
 import java.util.List;
 
-import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 
 
@@ -27,73 +26,133 @@ import org.kuali.rice.kns.bo.Inactivateable;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface KimEntity extends Inactivateable, ExternalizableBusinessObject {
+public interface KimEntity extends Inactivateable {
 	
+    /**
+     * Gets this {@link KimEntity}'s entity id.
+     * @return the id for this {@link KimEntity}, or null if none has been assigned.
+     */
 	String getEntityId();
 	
+	/**
+	 * Gets this {@link KimEntity}'s entity types
+	 * @return the List of {@link KimEntityEntityType}S for this {@link KimEntity}.
+	 * The returned List will never be null, an empty List will be assigned and returned if needed. 
+	 */
 	List<? extends KimEntityEntityType> getEntityTypes();
+	
+    /**
+     * Gets this {@link KimEntity}'s principals
+     * @return the List of {@link KimPrincipal}S for this {@link KimEntity}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
 	List<? extends KimPrincipal> getPrincipals();
 	
+    /**
+     * Gets this {@link KimEntity}'s external identifiers
+     * @return the List of {@link KimEntityExternalIdentifier}S for this {@link KimEntity}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
 	List<? extends KimEntityExternalIdentifier> getExternalIdentifiers();
+
+    /**
+     * Gets this {@link KimEntity}'s affiliations
+     * @return the List of {@link KimEntityAffiliation}S for this {@link KimEntity}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
 	List<? extends KimEntityAffiliation> getAffiliations();
 
 	/**
-	 * Return the list of EntityName objects associated with this EntityType.
-	 * 
-	 * The returned list will never be null, the implementation will generate an
-	 * empty list as needed.
+	 * Gets this {@link KimEntity}'s names
+	 * @return the List of {@link KimEntityName}S for this {@link KimEntity}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
 	 */
 	List<? extends KimEntityName> getNames();
 	
 	
-	/**
-	 * Returns the employment information object for this Entity.
-	 * 
-	 * Implementations will create an object if necessary before returning.  
-	 * This method shall not return null.
-	 * 
-	 */
+    /**
+     * Gets this {@link KimEntity}'s employment information List
+     * @return the List of {@link KimEntityEmploymentInformation}S for this {@link KimEntity}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
 	List<? extends KimEntityEmploymentInformation> getEmploymentInformation();
 
-	/**
-	 * Returns the privacy preferences object for this Entity.
-	 * 
-	 * Implementations will create an object if necessary before returning.  
-	 * This method shall not return null.
-	 * 
-	 */
+    /**
+     * Gets this {@link KimEntity}'s privacy preferences
+     * @return the {@link KimEntityPrivacyPreferences} for this {@link KimEntity}, 
+     * or null if none has been assigned.
+     */	
 	KimEntityPrivacyPreferences getPrivacyPreferences();
 	
 	/**
-	 * Returns the demographic information for this Entity.
-	 * 
-	 * Implementations will create an object if necessary before returning.  
-	 * This method shall not return null.
-	 * 
+	 * Gets this {@link KimEntity}'s demographic information
+	 * @return the {@link KimEntityBioDemographics} for this {@link KimEntity}, 
+	 * or null if none has been assigned.
 	 */
 	KimEntityBioDemographics getBioDemographics();
 	
+    /**
+     * Gets this {@link KimEntity}'s citizenship information
+     * @return the List of {@link KimEntityCitizenship}S for this {@link KimEntity}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
 	List<? extends KimEntityCitizenship> getCitizenships();
 	
 	/**
-	 * Returns the EntityEntityType object corresponding to the given code or null if this
+	 * Gets this {@link KimEntity}'s entity type for the given type code
+	 * @param entityTypeCode the type code
+	 * @return the EntityEntityType object corresponding to the given code or null if this
 	 * entity does not have data for that type.
 	 */
 	KimEntityEntityType getEntityType( String entityTypeCode );
 	
+	/**
+	 * Gets this {@link KimEntity}'s employment information
+	 * @return the primary {@link KimEntityEmploymentInformation} for this {@link KimEntity}, 
+	 * or null if none has been assigned.
+	 */
 	KimEntityEmploymentInformation getPrimaryEmployment();
+
+	/**
+	 * Gets this {@link KimEntity}'s default affiliation
+     * @return the default {@link KimEntityAffiliation} for the entity.  If no default is defined, then
+     * it returns the first one found.  If none are defined, it returns null.
+     */
 	KimEntityAffiliation getDefaultAffiliation();
+	
+	/**
+	 * Gets this {@link KimEntity}'s external identifier for the given type code
+	 * @param externalIdentifierTypeCode the type code
+     * @return the {@link KimEntityExternalIdentifier} for this {@link KimEntity}, or null if none has been assigned.
+     */
 	KimEntityExternalIdentifier getEntityExternalIdentifier( String externalIdentifierTypeCode );
 	
-	/** Returns the default name record for the entity.  If no default is defined, then
+	/** 
+	 * Gets this {@link KimEntity}'s default name
+	 * @return the default {@link KimEntityName} record for the entity.  If no default is defined, then
 	 * it returns the first one found.  If none are defined, it returns null.
 	 */
 	KimEntityName getDefaultName();
 
+    /**
+     * Gets this {@link KimEntity}'s ethnicities
+     * @return the List of {@link KimEntityEthnicity}S for this {@link KimEntity}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
 	public List<? extends KimEntityEthnicity> getEthnicities();
 
+    /**
+     * Gets this {@link KimEntity}'s residencies
+     * @return the List of {@link KimEntityResidency}S for this {@link KimEntity}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
 	public List<? extends KimEntityResidency> getResidencies();
 
+    /**
+     * Gets this {@link KimEntity}'s visas
+     * @return the List of {@link KimEntityVisa}S for this {@link KimEntity}.
+     * The returned List will never be null, an empty List will be assigned and returned if needed. 
+     */
 	public List<? extends KimEntityVisa> getVisas();
 
 }

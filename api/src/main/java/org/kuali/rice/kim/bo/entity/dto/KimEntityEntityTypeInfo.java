@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,47 +50,48 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	public KimEntityEntityTypeInfo(KimEntityEntityType kimEntityEntityType) {
 		this();
 		if ( kimEntityEntityType != null ) {
-			this.active = kimEntityEntityType.isActive();
-			this.entityTypeCode = unNullify(kimEntityEntityType.getEntityTypeCode());
-			this.entityType = unNullify(new EntityTypeInfo(kimEntityEntityType.getEntityType()), EntityTypeInfo.class);
-			if (kimEntityEntityType.getAddresses() == null) {
-				this.addresses = new ArrayList<KimEntityAddressInfo>();
+			active = kimEntityEntityType.isActive();
+			entityTypeCode = kimEntityEntityType.getEntityTypeCode();
+			if (kimEntityEntityType.getEntityType() != null) {
+			    entityType = new EntityTypeInfo(kimEntityEntityType.getEntityType());
 			}
-			else {
-				this.addresses = new ArrayList<KimEntityAddressInfo>( kimEntityEntityType.getAddresses().size() );
-				for ( KimEntityAddress p : kimEntityEntityType.getAddresses() ) {
-					this.addresses.add( new KimEntityAddressInfo( p ) );
+			if (kimEntityEntityType.getAddresses() != null) {
+				addresses = new ArrayList<KimEntityAddressInfo>( kimEntityEntityType.getAddresses().size() );
+				for ( KimEntityAddress p : kimEntityEntityType.getAddresses() ) if (p != null) {
+					addresses.add( new KimEntityAddressInfo( p ) );
 				}
 			}
-			this.defaultAddress = unNullify(new KimEntityAddressInfo(kimEntityEntityType.getDefaultAddress()), KimEntityAddressInfo.class);
-			if (kimEntityEntityType.getEmailAddresses() == null) {
-				this.emailAddresses = new ArrayList<KimEntityEmailInfo>();
+			if (kimEntityEntityType.getDefaultAddress() != null) {
+			    defaultAddress = new KimEntityAddressInfo(kimEntityEntityType.getDefaultAddress());
 			}
-			else {
-				this.emailAddresses = new ArrayList<KimEntityEmailInfo>( kimEntityEntityType.getEmailAddresses().size() );
-				for ( KimEntityEmail p : kimEntityEntityType.getEmailAddresses() ) {
-					this.emailAddresses.add( new KimEntityEmailInfo( p ) );
+			if (kimEntityEntityType.getEmailAddresses() != null) {
+				emailAddresses = new ArrayList<KimEntityEmailInfo>( kimEntityEntityType.getEmailAddresses().size() );
+				for ( KimEntityEmail p : kimEntityEntityType.getEmailAddresses() ) if (p != null) {
+					emailAddresses.add( new KimEntityEmailInfo( p ) );
 				}
 			}
-			this.defaultEmailAddress = unNullify(new KimEntityEmailInfo(kimEntityEntityType.getDefaultEmailAddress()), KimEntityEmailInfo.class);
-			if (kimEntityEntityType.getPhoneNumbers() == null) {
-				this.phoneNumbers = new ArrayList<KimEntityPhoneInfo>();
+			if (kimEntityEntityType.getDefaultEmailAddress() != null) {
+			    defaultEmailAddress = new KimEntityEmailInfo(kimEntityEntityType.getDefaultEmailAddress());
 			}
-			else {
-				this.phoneNumbers = new ArrayList<KimEntityPhoneInfo>( kimEntityEntityType.getPhoneNumbers().size() );
-				for ( KimEntityPhone p : kimEntityEntityType.getPhoneNumbers() ) {
-					this.phoneNumbers.add( new KimEntityPhoneInfo( p ) );
+			if (kimEntityEntityType.getPhoneNumbers() != null) {
+				phoneNumbers = new ArrayList<KimEntityPhoneInfo>( kimEntityEntityType.getPhoneNumbers().size() );
+				for ( KimEntityPhone p : kimEntityEntityType.getPhoneNumbers() ) if (p != null) {
+					phoneNumbers.add( new KimEntityPhoneInfo( p ) );
 				}
 			}
-			this.defaultPhoneNumber = unNullify(new KimEntityPhoneInfo(kimEntityEntityType.getDefaultPhoneNumber()), KimEntityPhoneInfo.class);
+			if (kimEntityEntityType.getDefaultPhoneNumber() != null) {
+			    defaultPhoneNumber = new KimEntityPhoneInfo(kimEntityEntityType.getDefaultPhoneNumber());
+			}
 		}
 	}
 
 	/**
-	 * @return the addresses
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getAddresses()
 	 */
 	public List<KimEntityAddressInfo> getAddresses() {
-		return unNullify(this.addresses);
+	    // assign and return an empty collection if our reference is null.
+		return (addresses != null) ? addresses : (addresses = new ArrayList<KimEntityAddressInfo>());
 	}
 
 	/**
@@ -103,10 +102,11 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	}
 
 	/**
-	 * @return the defaultAddress
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getDefaultAddress()
 	 */
 	public KimEntityAddressInfo getDefaultAddress() {
-		return unNullify(this.defaultAddress, KimEntityAddressInfo.class);
+		return defaultAddress;
 	}
 
 	/**
@@ -117,10 +117,11 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	}
 
 	/**
-	 * @return the emailAddresses
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getEmailAddresses()
 	 */
 	public List<KimEntityEmailInfo> getEmailAddresses() {
-		return unNullify(this.emailAddresses);
+		return emailAddresses;
 	}
 
 	/**
@@ -131,10 +132,11 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	}
 
 	/**
-	 * @return the defaultEmailAddress
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getDefaultEmailAddress()
 	 */
 	public KimEntityEmailInfo getDefaultEmailAddress() {
-		return unNullify(this.defaultEmailAddress, KimEntityEmailInfo.class);
+		return defaultEmailAddress;
 	}
 
 	/**
@@ -145,10 +147,11 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	}
 
 	/**
-	 * @return the entityType
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getEntityType()
 	 */
 	public EntityTypeInfo getEntityType() {
-		return unNullify(this.entityType, EntityTypeInfo.class);
+		return entityType;
 	}
 
 	/**
@@ -159,10 +162,11 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	}
 
 	/**
-	 * @return the entityTypeCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getEntityTypeCode()
 	 */
 	public String getEntityTypeCode() {
-		return unNullify(this.entityTypeCode);
+		return entityTypeCode;
 	}
 
 	/**
@@ -173,10 +177,12 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	}
 
 	/**
-	 * @return the phoneNumbers
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getPhoneNumbers()
 	 */
 	public List<KimEntityPhoneInfo> getPhoneNumbers() {
-		return unNullify(this.phoneNumbers);
+	    // assign and return an empty collection if our reference is null.
+        return (phoneNumbers != null) ? phoneNumbers : (phoneNumbers = new ArrayList<KimEntityPhoneInfo>());
 	}
 
 	/**
@@ -187,10 +193,11 @@ public class KimEntityEntityTypeInfo extends KimInactivatableInfo implements Kim
 	}
 
 	/**
-	 * @return the defaultPhoneNumber
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getDefaultPhoneNumber()
 	 */
 	public KimEntityPhoneInfo getDefaultPhoneNumber() {
-		return unNullify(this.defaultPhoneNumber, KimEntityPhoneInfo.class);
+		return defaultPhoneNumber;
 	}
 
 	/**

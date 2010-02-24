@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import java.util.Date;
 
 import org.kuali.rice.kim.bo.entity.KimEntityCitizenship;
@@ -45,19 +43,20 @@ public class KimEntityCitizenshipInfo extends KimInactivatableInfo implements Ki
 	public KimEntityCitizenshipInfo(KimEntityCitizenship kimEntityCitizenship) {
 		this();
 		if ( kimEntityCitizenship != null ) {
-			citizenshipStatusCode = unNullify(kimEntityCitizenship.getCitizenshipStatusCode());
-			countryCode = unNullify(kimEntityCitizenship.getCountryCode());
-			endDate = unNullify(kimEntityCitizenship.getEndDate());
-			startDate = unNullify(kimEntityCitizenship.getStartDate());
-			entityCitizenshipId = unNullify(kimEntityCitizenship.getEntityCitizenshipId());
+			citizenshipStatusCode = kimEntityCitizenship.getCitizenshipStatusCode();
+			countryCode = kimEntityCitizenship.getCountryCode();
+			endDate = kimEntityCitizenship.getEndDate();
+			startDate = kimEntityCitizenship.getStartDate();
+			entityCitizenshipId = kimEntityCitizenship.getEntityCitizenshipId();
 		}
 	}
 
 	/**
-	 * @return the citizenshipStatusCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#getCitizenshipStatusCode()
 	 */
 	public String getCitizenshipStatusCode() {
-		return unNullify(this.citizenshipStatusCode);
+		return citizenshipStatusCode;
 	}
 
 	/**
@@ -68,10 +67,11 @@ public class KimEntityCitizenshipInfo extends KimInactivatableInfo implements Ki
 	}
 
 	/**
-	 * @return the countryCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#getCountryCode()
 	 */
 	public String getCountryCode() {
-		return unNullify(this.countryCode);
+		return countryCode;
 	}
 
 	/**
@@ -82,10 +82,11 @@ public class KimEntityCitizenshipInfo extends KimInactivatableInfo implements Ki
 	}
 
 	/**
-	 * @return the endDate
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#getEndDate()
 	 */
 	public Date getEndDate() {
-		return unNullify(this.endDate);
+		return this.endDate;
 	}
 
 	/**
@@ -96,10 +97,11 @@ public class KimEntityCitizenshipInfo extends KimInactivatableInfo implements Ki
 	}
 
 	/**
-	 * @return the startDate
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#getStartDate()
 	 */
 	public Date getStartDate() {
-		return unNullify(this.startDate);
+		return this.startDate;
 	}
 
 	/**
@@ -110,10 +112,11 @@ public class KimEntityCitizenshipInfo extends KimInactivatableInfo implements Ki
 	}
 
 	/**
-	 * @return the entityCitizenshipId
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityCitizenship#getEntityCitizenshipId()
 	 */
 	public String getEntityCitizenshipId() {
-		return unNullify( this.entityCitizenshipId);
+		return entityCitizenshipId;
 	}
 
 	/**

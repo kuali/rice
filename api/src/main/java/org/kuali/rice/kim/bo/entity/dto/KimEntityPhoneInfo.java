@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.dto;
 
-import static org.kuali.rice.kim.bo.entity.dto.DtoUtils.unNullify;
-
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 
 /**
@@ -26,12 +24,12 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	
 	private static final long serialVersionUID = 1L;
 
-	protected String entityPhoneId = "";
-	protected String entityTypeCode = "";
-	protected String phoneTypeCode = "";
-	protected String phoneNumber = "";
-	protected String extensionNumber = "";
-	protected String countryCode = "";
+	protected String entityPhoneId;
+	protected String entityTypeCode;
+	protected String phoneTypeCode;
+	protected String phoneNumber;
+	protected String extensionNumber;
+	protected String countryCode;
 	
 	protected String phoneNumberUnmasked;
     protected String extensionNumberUnmasked;
@@ -44,7 +42,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	
 
 	/**
-	 * 
+	 * constructs an empty KimEntityPhoneInfo
 	 */
 	public KimEntityPhoneInfo() {
 		super();
@@ -52,34 +50,35 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 	
 	/**
-	 * 
+	 * constructs a {@link KimEntityPhoneInfo} derived from the given {@link KimEntityPhone}
 	 */
 	public KimEntityPhoneInfo( KimEntityPhone phone ) {
 		this();
 		if ( phone != null ) {
-		    this.entityPhoneId = unNullify( phone.getEntityPhoneId() );
-		    this.entityTypeCode = unNullify( phone.getEntityTypeCode() );
-		    this.phoneTypeCode = unNullify( phone.getPhoneTypeCode() );
-		    this.phoneNumber = unNullify( phone.getPhoneNumber() );
-		    this.extensionNumber = unNullify( phone.getExtensionNumber() );
-		    this.countryCode = unNullify( phone.getCountryCodeUnmasked() );
+		    this.entityPhoneId = phone.getEntityPhoneId();
+		    this.entityTypeCode = phone.getEntityTypeCode();
+		    this.phoneTypeCode = phone.getPhoneTypeCode();
+		    this.phoneNumber = phone.getPhoneNumber();
+		    this.extensionNumber = phone.getExtensionNumber();
+		    this.countryCode = phone.getCountryCodeUnmasked();
 		    this.dflt = phone.isDefault();
 		    this.active = phone.isActive();
 		    this.suppressPhone = phone.isSuppressPhone();
 		    
-		    this.phoneNumberUnmasked = unNullify(phone.getPhoneNumberUnmasked());
-		    this.extensionNumberUnmasked = unNullify(phone.getExtensionNumberUnmasked());
-		    this.countryCodeUnmasked = unNullify(phone.getCountryCodeUnmasked());
-		    this.formattedPhoneNumber = unNullify(phone.getFormattedPhoneNumber());
-		    this.formattedPhoneNumberUnmasked = unNullify(phone.getFormattedPhoneNumberUnmasked());
+		    this.phoneNumberUnmasked = phone.getPhoneNumberUnmasked();
+		    this.extensionNumberUnmasked = phone.getExtensionNumberUnmasked();
+		    this.countryCodeUnmasked = phone.getCountryCodeUnmasked();
+		    this.formattedPhoneNumber = phone.getFormattedPhoneNumber();
+		    this.formattedPhoneNumberUnmasked = phone.getFormattedPhoneNumberUnmasked();
 		}
 	}
 
 	/**
-	 * @return the entityPhoneId
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getEntityPhoneId()
 	 */
 	public String getEntityPhoneId() {
-		return unNullify(this.entityPhoneId);
+		return entityPhoneId;
 	}
 
 	/**
@@ -90,10 +89,11 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 
 	/**
-	 * @return the entityTypeCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimDefaultableEntityTypeData#getEntityTypeCode()
 	 */
 	public String getEntityTypeCode() {
-		return unNullify(this.entityTypeCode);
+		return entityTypeCode;
 	}
 
 	/**
@@ -104,10 +104,11 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 
 	/**
-	 * @return the phoneTypeCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneTypeCode()
 	 */
 	public String getPhoneTypeCode() {
-		return unNullify(this.phoneTypeCode);
+		return phoneTypeCode;
 	}
 
 	/**
@@ -118,10 +119,11 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 
 	/**
-	 * @return the phoneNumber
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneNumber()
 	 */
 	public String getPhoneNumber() {
-		return unNullify(this.phoneNumber);
+		return phoneNumber;
 	}
 
 	/**
@@ -132,10 +134,11 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 
 	/**
-	 * @return the extensionNumber
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getExtensionNumber()
 	 */
 	public String getExtensionNumber() {
-		return unNullify(this.extensionNumber);
+		return extensionNumber;
 	}
 
 	/**
@@ -146,10 +149,11 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 
 	/**
-	 * @return the countryCode
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCode()
 	 */
 	public String getCountryCode() {
-		return unNullify(this.countryCode);
+		return countryCode;
 	}
 
 	/**
@@ -160,10 +164,11 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 
 	/**
-	 * @return the phoneNumberUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getPhoneNumberUnmasked()
 	 */
 	public String getPhoneNumberUnmasked() {
-		return unNullify(this.phoneNumberUnmasked);
+		return phoneNumberUnmasked;
 	}
 
 	/**
@@ -174,10 +179,11 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 
 	/**
-	 * @return the extensionNumberUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getExtensionNumberUnmasked()
 	 */
 	public String getExtensionNumberUnmasked() {
-		return unNullify(this.extensionNumberUnmasked);
+		return extensionNumberUnmasked;
 	}
 
 	/**
@@ -188,10 +194,11 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 
 	/**
-	 * @return the countryCodeUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getCountryCodeUnmasked()
 	 */
 	public String getCountryCodeUnmasked() {
-		return unNullify(this.countryCodeUnmasked);
+		return countryCodeUnmasked;
 	}
 
 	/**
@@ -202,10 +209,11 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 
 	/**
-	 * @return the formattedPhoneNumber
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getFormattedPhoneNumber()
 	 */
 	public String getFormattedPhoneNumber() {
-		return unNullify(this.formattedPhoneNumber);
+		return formattedPhoneNumber;
 	}
 
 	/**
@@ -216,10 +224,11 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 
 	/**
-	 * @return the formattedPhoneNumberUnmasked
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#getFormattedPhoneNumberUnmasked()
 	 */
 	public String getFormattedPhoneNumberUnmasked() {
-		return unNullify(this.formattedPhoneNumberUnmasked);
+		return formattedPhoneNumberUnmasked;
 	}
 
 	/**
@@ -230,7 +239,8 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 	}
 
 	/**
-	 * @return the suppressPhone
+	 * {@inheritDoc} 
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityPhone#isSuppressPhone()
 	 */
 	public boolean isSuppressPhone() {
 		return this.suppressPhone;

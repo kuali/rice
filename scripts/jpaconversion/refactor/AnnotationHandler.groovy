@@ -44,7 +44,6 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	            text = addImport(text, "IdClass")
 	            logger.log "Please check generated compound primary key class [${c.className}Id.java]"
 				c.pkClassIdText += handle_pkClass_Info(packageName, cpkClassName)
-				//cpkConstructorText += cpkClassName
 	        }
 	        
 	        classAnnotation += "@Entity\n@Table(name=\"${c.tableName}\")"
@@ -64,7 +63,6 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                        def temp = new String(text).trim()
 	                        temp = temp.replaceFirst("(private|protected).*(\\b${f.name})(\\s)*;", "ABCD1\$0ABCD2")
 	                        if (temp.indexOf('ABCD1') > -1 && temp.indexOf('ABCD2') > -1) {
-								println("**********************working here\n" );
 	                            temp = temp[temp.indexOf('ABCD1') + 5 .. -1]
 	                            temp = temp[0 .. temp.indexOf('ABCD2') - 1]
                                 cpkFieldText += "    @Column(name=\"${f.column}\")\n"
@@ -77,7 +75,17 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                            cpkGetterText += "    public ${temp} get${temp2}() { return ${f.name}; }\n\n"
 	                        }
 	                    }   
-						println("*****************text \n" + cpkFieldText)
+						//println("*****************text \n" + cpkFieldText)
+	                }
+	                if(f.sequenceName){
+						annotation += "@GeneratedValue(generator=\"${f.sequenceName}\")\n\t"
+						annotation += "@GenericGenerator(name=\"${f.sequenceName}\", strategy=\"org.hibernate.id.enhanced.SequenceStyleGenerator\", " + 
+								"\n\t\t parameters={@Parameter(name=\"sequence_name\",value=\"${f.sequenceName}\"), "  +
+								"\n\t\t\t\t @Parameter(name=\"value_column\",value=\"id\"))\n\t"
+						text = addImport(text,"GeneratedValue")
+						text = addImportHibernate(text,"GenericGenerator")
+						text = addImportHibernate(text,"Parameter")
+						
 	                }
 	                if (f.locking) {
 	                    annotation += "@Version\n\t"
@@ -293,6 +301,14 @@ def addImport(javaText, importText) {
     javaText 
 }
 
+def addImportHibernate(javaText, importText) {
+	importText = "import org.hibernate.annotations.${importText};"
+	if (!javaText.contains(importText)) {
+		javaText = javaText.replaceFirst("package.*;", "\$0\n" + importText)
+	}
+	javaText 
+}
+
 /*
 Given a reference descriptor or a class descriptor, return a JPA fetch types.
 */
@@ -468,3 +484,6 @@ def handle_pkClass_constructor(cpkClassName, cpkConstructorArgs, cpkConstructorB
 	
 	ret
 }
+
+def handle_generatedSeq(){
+	}

@@ -8,7 +8,7 @@
 import java.util.ArrayList;
 
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
-def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken'
+def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns'
 def srcHome = '/java/projects/play/rice-1.1.0/impl/src/main/java'
 def sourceDirectories = []
 def repositories = []

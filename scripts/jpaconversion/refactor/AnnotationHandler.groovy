@@ -53,7 +53,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	        text = annotate(text, "public class", classAnnotation)
 	        c.fields.values().each {
 	            f ->
-					println("**********************PK\t" + f.name + f.primarykey);
+					//println("**********************PK\t" + f.name + f.primarykey);
 	                def annotation = ""
 	                def nullable = '' 
 	                if (f.primarykey) {
@@ -65,14 +65,14 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                        if (temp.indexOf('ABCD1') > -1 && temp.indexOf('ABCD2') > -1) {
 	                            temp = temp[temp.indexOf('ABCD1') + 5 .. -1]
 	                            temp = temp[0 .. temp.indexOf('ABCD2') - 1]
-                                cpkFieldText += "    @Column(name=\"${f.column}\")\n"
-	                            cpkFieldText += "    ${temp.trim()}\n"
+                                cpkFieldText += "\t@Column(name=\"${f.column}\")\n"
+	                            cpkFieldText += "\t\t${temp.trim()}\n\t"
 	                            temp = temp[temp.indexOf(' ') .. -1].trim()
 	                            temp = temp[0 .. temp.indexOf(' ')].trim()
 	                            def temp2 = f.name[0].toUpperCase() + f.name[1 .. -1]
 								cpkConstructorArgs += "${temp} ${temp2}," 
-								cpkConstructorBody += "${f.name} = ${temp2};\n"
-	                            cpkGetterText += "    public ${temp} get${temp2}() { return ${f.name}; }\n\n"
+								cpkConstructorBody += "${f.name} = ${temp2};\n\t\t"
+	                            cpkGetterText += "\tpublic ${temp} get${temp2}() { return ${f.name}; }\n\t"
 	                        }
 	                    }   
 						//println("*****************text \n" + cpkFieldText)
@@ -97,16 +97,6 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    text = addImport(text, "Basic")
 	                    text = addImport(text, "FetchType")
 	                }
-//	                if (f.jdbcType?.equalsIgnoreCase("date")) {
-//	                    annotation += "@Temporal(TemporalType.DATE)\n\t"
-//	                    text = addImport(text, "Temporal")                    
-//	                    text = addImport(text, "TemporalType")
-//	                }
-	                //if (f.jdbcType?.equalsIgnoreCase("timestamp")) {
-	                //    annotation += "@Temporal(TemporalType.TIMESTAMP)\n\t"
-	                //    text = addImport(text, "Temporal")                    
-	                //    text = addImport(text, "TemporalType")
-	                //}
 	                if (f.conversion?.toString()?.size() > 0){
 	                	GlobalVariables.type_handler.handleTypes(f.conversion, annotation, text)
 	                }
@@ -118,6 +108,8 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 			try{
 	        c.referenceDescriptors.values().each {
 	            rd ->
+					//if(rd != null)
+					//	print "\n***********CLASSREFS************\t" + rd.classRef
 	                def annotation = ""
 	                annotation += determineOneOrManyToOne(classes, c, rd, logger)
 	                text = addImport(text, annotation[1..-1])
@@ -133,11 +125,19 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    annotation += "@JoinColumns({"
 	                    text = addImport(text, "JoinColumns")
 	                }
+					//def class_ref = rd.classRef
 	                rd.foreignKeys.eachWithIndex {
 	                    fk, i ->
+	                    println "\n***********CLASSREFS************\t" + rd.classRef + "\treferencing ----\t" + fk.fieldRef
 	                        def fkColumn
 	                        fk.fieldRef ? (fkColumn = c.fields[fk.fieldRef].column) : (fkColumn = findFieldIdRef(c.fields, fk.fieldIdRef).column)
-	                        annotation += "@JoinColumn(name=\"${fkColumn}\""
+							if(size > 1)
+							{
+								def ref_colmn = findReferencedColumnName(classes, rd.classRef.toString(), fk.fieldRef.toString())
+								annotation += "@JoinColumn(name=\"${fkColumn}\", referencedColumnName=\"${fkColumn}\""
+							}
+							else
+								annotation += "@JoinColumn(name=\"${fkColumn}\""
 	                        if (matchColumn(fkColumn, c.fields)) annotation += readOnlyFK
 	                        annotation += ")"
 	                        text = addImport(text, "JoinColumn")
@@ -450,7 +450,7 @@ def handle_pkClass(cpkClassName, cpkFieldText, cpkGetterText, cpkConstructorArgs
 	
 	def ret = """
 	${cpkFieldText}
-    public ${cpkClassName}() {}
+		public ${cpkClassName}() {}
 	${handle_pkClass_constructor(cpkClassName, cpkConstructorArgs, cpkConstructorBody)}
 	${cpkGetterText} 
 	}
@@ -474,16 +474,32 @@ def handle_pkClass_defaultConstructor(cpkClassName, cpkFieldText, cpkGetterText)
 }
 def handle_pkClass_constructor(cpkClassName, cpkConstructorArgs, cpkConstructorBody){
 	
-	def args = cpkConstructorArgs.substring(0, cpkConstructorArgs.length() - 1 );
-	
-	def ret = """ public ${cpkClassName}(${args})
-	{\n${cpkConstructorBody}}
-	"""
-	
-	println("result**********\n" + ret);
-	
+	def ret = ""
+	if(cpkConstructorArgs.length() > 0){
+		def args = cpkConstructorArgs.substring(0, cpkConstructorArgs.length() - 1 );
+		ret += "\tpublic ${cpkClassName}(${args})\n\t\t{\n\t\t${cpkConstructorBody}}"
+	}
+	//println("result**********\n" + ret);
 	ret
 }
 
-def handle_generatedSeq(){
+def findReferencedColumnName(java.util.LinkedHashMap classes, String classRef, String fieldRef){
+	println "***********looking for ref column**************\t" + classRef + "\t" + fieldRef
+	def ret = ""
+	try{
+		classes.values().each {
+			this_class -> 
+			if(this_class.className.equals(classRef)){
+				Field fd = this_class.fields.get(fieldRef)
+				if(fd != null)
+					ret = fd.column	
+			}
+		}
 	}
+	catch(Exception e){
+		println("exception------------" + e.getMessage())
+	}
+	println "***********got ref column**************\t" + ret
+	
+	ret
+}

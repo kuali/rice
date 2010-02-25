@@ -112,7 +112,7 @@ if (textAreaFieldLabel == null) {
 			    	</c:when>
 			    	<c:otherwise>
 					    <kul:htmlControlAttribute property="${textAreaFieldName}"
-					    	attributeEntry="${attributeEntry}" readOnly="false" />
+					    	attributeEntry="${attributeEntry}" readOnly="false" expandedTextArea="false" />
 					    
 					    <c:choose>
 					    	<c:when test="${empty textAreaMaxLength}">

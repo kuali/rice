@@ -270,5 +270,5 @@
 		<html:hidden property="${property}" write="false" styleId="${property}" />
 	</c:if>
 
-	<kul:expandedTextArea textAreaFieldName="${property}" action="${fn:substring(requestScope['org.apache.struts.taglib.html.FORM'].action, 1, -1)}" textAreaLabel="${attributeEntry.label}" disabled="${disabled}" title="${attributeEntry.label}" readOnly="${readOnly}" maxLength="${attributeEntry.maxLength}"/>
+	<kul:expandedTextArea textAreaFieldName="${property}" action="${fn:substringBefore(fn:substring(requestScope['org.apache.struts.taglib.html.FORM'].action, 1, -1),'.do')}" textAreaLabel="${attributeEntry.label}" disabled="${disabled}" title="${attributeEntry.label}" readOnly="${readOnly}" maxLength="${attributeEntry.maxLength}"/>
 </c:if>

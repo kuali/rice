@@ -251,12 +251,7 @@ function textAreaPop(textAreaName, htmlFormAction, textAreaLabel, docFormKey, te
 	}
 	
 	var documentWebScope="session"
-	url=window.location.href
-	pathname=window.location.pathname
-	idx1=url.indexOf(pathname);
-	idx2=url.indexOf("/",idx1+1);
-	baseUrl=url.substr(0,idx2)
-	window.open(baseUrl+"/updateTextArea.do?textAreaFieldName="+textAreaName+"&htmlFormAction="+htmlFormAction+"&textAreaFieldLabel="+textAreaLabel+"&docFormKey="+docFormKey+"&documentWebScope="+documentWebScope+"&textAreaReadOnly="+textAreaReadOnly+"&textAreaMaxLength="+textAreaMaxLength, "_blank", "width=650, height=650, scrollbars=yes");
+	window.open("updateTextArea.do?textAreaFieldName="+textAreaName+"&htmlFormAction="+htmlFormAction+"&textAreaFieldLabel="+textAreaLabel+"&docFormKey="+docFormKey+"&documentWebScope="+documentWebScope+"&textAreaReadOnly="+textAreaReadOnly+"&textAreaMaxLength="+textAreaMaxLength, "_blank", "width=650, height=650, scrollbars=yes");
 }
 
 function setTextArea(textAreaName) {

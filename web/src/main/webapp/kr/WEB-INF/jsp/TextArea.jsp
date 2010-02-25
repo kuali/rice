@@ -103,42 +103,23 @@ if (textAreaFieldLabel == null) {
 			<td>
 			  <div>
 			    <c:set var="attributeEntry" value="${textAreaAttributes.extendedTextArea}"/>
+			    <%-- cannot use struts tags here b/c some id values will not be valid properties --%>
 			    <c:choose>
 			    	<c:when test="${textAreaReadOnly == 'true'}" >
-		            	<html:textarea property="${textAreaFieldName}" tabindex="0" 
-		                           rows="${attributeEntry.control.rows}" cols="${attributeEntry.control.cols}" 
-		                           styleId="${textAreaFieldName}" 
-		                           readonly="true"/> 
+			            <textarea id="${textAreaFieldName}" name="${textAreaFieldName}"
+                        	rows="${attributeEntry.control.rows}"
+                            cols="${attributeEntry.control.cols}"
+                            readonly="readonly"
+                            ></textarea>
 			    	</c:when>
 			    	<c:otherwise>
-					    <kul:htmlControlAttribute property="${textAreaFieldName}"
-					    	attributeEntry="${attributeEntry}" readOnly="false" expandedTextArea="false" />
-					    
-					    <c:choose>
-					    	<c:when test="${empty textAreaMaxLength}">
-					    		<script type="text/javascript">
-							    	//<![CDATA[
-					    			element.onkeyup = null;
-					    			//]]>
-						    	</script>
-					    	</c:when>
-					    	<c:otherwise>
-						    	<script type="text/javascript">
-							    	//<![CDATA[
-							    	var element = document.getElementById('${textAreaFieldName}');
-							    	if (element !== null && element !== undefined) {
-							    		<%--
-							    		  replacing maxlength limiting event listener b/c
-							    		  the one added by htmlControlAttribute tag will be incorrect  
-							    		--%>
-							    		element.onkeyup = function () {
-											textLimit(element, ${textAreaMaxLength});
-										}
-									}
-									//]]>
-						    	</script>	
-					    	</c:otherwise>
-					    </c:choose>
+			    		${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
+			            <textarea id="${textAreaFieldName}" name="${textAreaFieldName}"
+                        	rows="${attributeEntry.control.rows}"
+                            cols="${attributeEntry.control.cols}"
+                            maxlength="${textAreaMaxLength}"
+                            onkeyup="textLimit(this, ${textAreaMaxLength});"
+                            ></textarea>
 					</c:otherwise>
 				</c:choose>
 			  </div>

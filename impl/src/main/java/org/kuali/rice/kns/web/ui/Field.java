@@ -172,6 +172,7 @@ public class Field implements java.io.Serializable {
     private String containerElementName;
     private List<Field> containerDisplayFields;
     private boolean isDatePicker;
+    private boolean expandedTextArea;
     private String referencesToRefresh;
     private int numberOfColumnsForCollection;
     public String cellAlign;
@@ -388,6 +389,14 @@ public class Field implements java.io.Serializable {
 
     public void setDatePicker(boolean isDatePicker) {
         this.isDatePicker = isDatePicker;
+    }
+    
+    public boolean isExpandedTextArea() {
+        return expandedTextArea;
+    }
+
+    public void setExpandedTextArea(boolean expandedTextArea) {
+        this.expandedTextArea = expandedTextArea;
     }
 
     /**

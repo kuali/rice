@@ -2,12 +2,13 @@ import java.util.regex.Matcher
 import java.io.File;
 import java.util.regex.Pattern
 
+
 /* Begin User Configurable Fields */
 
 /* run option properties */
 def persistenceXml = false
 def mysql = false
-def pkClasses = true
+def pkClasses = false
 def clean = false
 def dry = false
 def verbose = false
@@ -146,6 +147,7 @@ class Logger {
         lineNumber++
     }
 }
+
 
 /* 
 Below are the class definitions responsible for holding the OJB metedata. 

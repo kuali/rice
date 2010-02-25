@@ -17,12 +17,8 @@ package org.kuali.rice.core.jpa.spring;
 
 import java.util.Map;
 
-import javax.persistence.Cache;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnitUtil;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.metamodel.Metamodel;
 
 /**
  * Null EntityManagerFactory that enables SharedEntityManagerBean to create a proxy when jpa is not enabled. 
@@ -63,36 +59,36 @@ public class NullEntityManagerFactory implements EntityManagerFactory {
     /**
      * @see javax.persistence.EntityManagerFactory#getCache()
      */
-    public Cache getCache() {
+    /*public Cache getCache() {
         throw new UnsupportedOperationException("JPA is not enabled, this should not be called.");
-    }
+    }*/
 
     /**
      * @see javax.persistence.EntityManagerFactory#getCriteriaBuilder()
      */
-    public CriteriaBuilder getCriteriaBuilder() {
+    /*public CriteriaBuilder getCriteriaBuilder() {
         throw new UnsupportedOperationException("JPA is not enabled, this should not be called.");
-    }
+    }*/
 
     /**
      * @see javax.persistence.EntityManagerFactory#getMetamodel()
      */
-    public Metamodel getMetamodel() {
+    /*public Metamodel getMetamodel() {
         throw new UnsupportedOperationException("JPA is not enabled, this should not be called.");
-    }
+    }*/
 
     /**
      * @see javax.persistence.EntityManagerFactory#getPersistenceUnitUtil()
      */
-    public PersistenceUnitUtil getPersistenceUnitUtil() {
+    /*public PersistenceUnitUtil getPersistenceUnitUtil() {
         throw new UnsupportedOperationException("JPA is not enabled, this should not be called.");
-    }
+    }*/
 
     /**
      * @see javax.persistence.EntityManagerFactory#getProperties()
      */
-    public Map<String, Object> getProperties() {
+    /*public Map<String, Object> getProperties() {
         throw new UnsupportedOperationException("JPA is not enabled, this should not be called.");
-    }
+    }*/
 
 }

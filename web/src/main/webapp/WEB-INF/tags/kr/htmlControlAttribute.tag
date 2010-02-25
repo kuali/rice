@@ -20,7 +20,6 @@
 <%@ attribute name="readOnly" required="false" %>
 <%@ attribute name="datePicker" required="false" %>
 <%@ attribute name="expandedTextArea" required="false" description="whether to render an expanded textarea control.  Only applicable for textareas. "%>
-<%@ attribute name="htmlFormAction" required="false" description="some html controls create popups.  This attribute specifies the form action the popup should use."%>
 <%@ attribute name="disabled" required="false" %>
 <%@ attribute name="onchange" required="false" %>
 <%@ attribute name="onclick" required="false" %>
@@ -270,5 +269,6 @@
 	<c:if test="${readOnly}">
 		<html:hidden property="${property}" write="false" styleId="${property}" />
 	</c:if>
-	<kul:expandedTextArea textAreaFieldName="${property}" action="${htmlFormAction}" textAreaLabel="${attributeEntry.label}" disabled="${disabled}" title="${attributeEntry.label}" readOnly="${readOnly}" maxLength="${attributeEntry.maxLength}"/>
+
+	<kul:expandedTextArea textAreaFieldName="${property}" action="${fn:substring(requestScope['org.apache.struts.taglib.html.FORM'].action, 1, -1)}" textAreaLabel="${attributeEntry.label}" disabled="${disabled}" title="${attributeEntry.label}" readOnly="${readOnly}" maxLength="${attributeEntry.maxLength}"/>
 </c:if>

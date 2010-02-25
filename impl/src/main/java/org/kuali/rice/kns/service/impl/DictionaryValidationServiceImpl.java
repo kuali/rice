@@ -50,7 +50,6 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
@@ -85,7 +84,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
     private TransactionalDocumentDictionaryService transactionalDocumentDictionaryService;
     private PersistenceService persistenceService;
-    private KualiConfigurationService configService;
     private WorkflowAttributePropertyResolutionService workflowAttributePropertyResolutionService;
 
     private PersistenceStructureService persistenceStructureService;
@@ -195,23 +193,28 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     			}
 
     			if (!(listObj instanceof List)) {
-			if ( LOG.isInfoEnabled() ) {
-				LOG.info("The reference named " + collectionName + " of BO class " + businessObject.getClass().getName() + " should be of type java.util.List to be validated properly.");
-			}
+					if ( LOG.isInfoEnabled() ) {
+						LOG.info("The reference named " + collectionName + " of BO class " + businessObject.getClass().getName() + " should be of type java.util.List to be validated properly.");
+					}
     				continue;
     			}
 
     			List list = (List) listObj;
+    			
+    			//should we materialize the proxied collection or just skip validation here assuming an unmaterialized objects are valid?
+    			ObjectUtils.materializeObjects(list);
+    			
     			for (int i = 0; i < list.size(); i++) {
-    				if (ObjectUtils.isNotNull(list.get(i)) && list.get(i) instanceof PersistableBusinessObject) {
-    					String errorPathAddition;
+    				final Object o = list.get(i);
+    				if (ObjectUtils.isNotNull(o) && o instanceof PersistableBusinessObject) {
+    					final BusinessObject element = (BusinessObject) o;
+    					
+    					final String errorPathAddition;
     					if (chompLastLetterSFromCollectionName) {
     						errorPathAddition = StringUtils.chomp(collectionName, "s") + "[" + Integer.toString(i) + "]";
-    					}
-    					else {
+    					} else {
     						errorPathAddition = collectionName + "[" + Integer.toString(i) + "]";
     					}
-    					BusinessObject element = (BusinessObject) list.get(i);
 
     					GlobalVariables.getMessageMap().addToErrorPath(errorPathAddition);
     					validateBusinessObject(element, validateRequired);
@@ -304,7 +307,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#isBusinessObjectValid(org.kuali.rice.kns.bo.BusinessObject, String)
      */
     public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix) {
-        boolean retval = false;
         final MessageMap errorMap = GlobalVariables.getMessageMap();
         int originalErrorCount = errorMap.getErrorCount();
 
@@ -373,8 +375,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
         List<String> attributeValues = SqlBuilder.getCleanedSearchableValues(attributeInValue, attributeDataType);
 
-        if(attributeValues == null || attributeValues.isEmpty())
-        	return;
+        if(attributeValues == null || attributeValues.isEmpty()) {
+			return;
+		}
 
         for(String attributeValue : attributeValues){
         if (StringUtils.isNotBlank(attributeValue)) {
@@ -526,9 +529,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @param propertyDescriptors
      */
     private void validateBusinessObjectsFromDescriptors(Object object, PropertyDescriptor[] propertyDescriptors, int depth) {
-        for (int i = 0; i < propertyDescriptors.length; i++) {
-            PropertyDescriptor propertyDescriptor = propertyDescriptors[i];
-
+        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
             // validate the properties that are descended from BusinessObject
             if (propertyDescriptor.getPropertyType() != null && PersistableBusinessObject.class.isAssignableFrom(propertyDescriptor.getPropertyType()) && ObjectUtils.getPropertyValue(object, propertyDescriptor.getName()) != null) {
                 BusinessObject bo = (BusinessObject) ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
@@ -574,9 +575,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @param errorPrefix
      */
     private void validatePrimitivesFromDescriptors(String entryName, Object object, PropertyDescriptor[] propertyDescriptors, String errorPrefix, boolean validateRequired) {
-        for (int i = 0; i < propertyDescriptors.length; i++) {
-            PropertyDescriptor propertyDescriptor = propertyDescriptors[i];
-
+        for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
             validatePrimitiveFromDescriptor(entryName, object, propertyDescriptor, errorPrefix, validateRequired);
         }
     }
@@ -988,16 +987,6 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     public void setPersistenceService(PersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
-
-    /**
-     * Sets the configService attribute value
-     * 
-     * @param configService the configService to set
-     */
-    public void setConfigService(KualiConfigurationService configService) {
-        this.configService = configService;
-    }
-
 
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;

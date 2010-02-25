@@ -2,7 +2,6 @@ import java.util.regex.Matcher
 import java.io.File;
 import java.util.regex.Pattern
 
-
 /* Begin User Configurable Fields */
 
 /* run option properties */
@@ -23,7 +22,7 @@ def metaInf = 'META-INF/'
 def schemaName = "RICE110DEV"
 
 def repositories = [
-		'/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns-test.xml'
+		'/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml'
 		]
 
 def sourceDirectories = [
@@ -147,7 +146,6 @@ class Logger {
         lineNumber++
     }
 }
-
 
 /* 
 Below are the class definitions responsible for holding the OJB metedata. 

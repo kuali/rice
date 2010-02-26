@@ -96,6 +96,8 @@
 	</target>
 
 	<target name="coverage-init" description="init cobertura" depends="init">
+		<path id="cobertura.classpath"/>
+		
 		<artifact:dependencies pathId="cobertura.classpath">
 			<dependency groupId="net.sourceforge.cobertura" artifactId="cobertura" version="1.9.2" />
 		</artifact:dependencies>

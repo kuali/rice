@@ -165,7 +165,7 @@ def addTransient(files){
 				}
 				text = text + "\n" + line; 
 				}
-			generateFile(file, text);
+			GlobalRes.conversion_util.generateFile(file, text);
 		}
 	}
 	

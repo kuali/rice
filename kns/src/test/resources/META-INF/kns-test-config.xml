@@ -18,4 +18,8 @@
 	<param name="config.location">${alt.config.location}</param>
 	
 	<param name="kns.test.port">9916</param>
+	
+	<param name="rice.kns.application.jpa.PersistenceUnitName">kns-application-unit</param>
+	<param name="rice.kns.application.jpa.GenerateDdl">false</param>
+	<param name="rice.kns.application.jpa.PersistenceXmlLocation">classpath:META-INF/kns-test-persistence.xml</param>
 </config>

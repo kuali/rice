@@ -38,34 +38,6 @@
     <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
     <class>org.kuali.rice.kns.bo.CampusImpl</class>
     <class>org.kuali.rice.kns.bo.CampusTypeImpl</class>
-    <class>org.kuali.rice.kns.test.document.bo.Account</class>
-    <class>org.kuali.rice.kns.test.document.bo.AccountExtension</class>
-    <class>org.kuali.rice.kns.test.document.bo.AccountType</class>
-    <class>org.kuali.rice.kns.test.document.bo.AccountManager</class>
-    <class>org.kuali.rice.kns.test.document.SearchAttributeIndexTestDocument</class>
-    <class>org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument</class>
-    
-   <!-- <class>org.kuali.rice.kns.bo.user.KualiModuleUserProperty</class>
-    <class>org.kuali.rice.kns.document.MaintenanceDocumentBase</class>
-    <class>org.kuali.rice.kns.document.MaintenanceLock</class>
-    <class>org.kuali.rice.kns.bo.DocumentHeader</class>
-    <class>org.kuali.rice.kns.bo.Note</class>
-    <class>org.kuali.rice.kns.bo.NoteType</class>
-    <class>org.kuali.rice.kns.bo.Attachment</class>
-    <class>org.kuali.rice.kns.bo.Namespace</class>
-    <class>org.kuali.rice.kns.bo.ParameterType</class>
-    <class>org.kuali.rice.kns.bo.ParameterDetailType</class>
-    <class>org.kuali.rice.kns.bo.Parameter</class>
-    <class>org.kuali.rice.kns.bo.AdHocRouteRecipient</class>
-    <class>org.kuali.rice.kns.bo.AdHocRoutePerson</class>
-    <class>org.kuali.rice.kns.bo.AdHocRouteWorkgroup</class>
-    <class>org.kuali.rice.kns.bo.LookupResults</class>
-    <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
-    <class>org.kuali.rice.kns.bo.EmployeeType</class>
-    <class>org.kuali.rice.kns.bo.EmployeeStatus</class>
-    <class>org.kuali.rice.kns.bo.Campus</class>
-    <class>org.kuali.rice.kns.bo.CampusTypeImpl</class>
-    <class>org.kuali.core.bo.DocumentHeader</class> -->
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
         <property name="hibernate.show_sql" value="true" />
@@ -91,29 +63,6 @@
     <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
     <class>org.kuali.rice.kns.bo.CampusImpl</class>
     <class>org.kuali.rice.kns.bo.CampusTypeImpl</class>
-    <class>org.kuali.rice.kns.test.document.bo.Account</class>
-    <class>org.kuali.rice.kns.test.document.bo.AccountExtension</class>
-    <class>org.kuali.rice.kns.test.document.bo.AccountType</class>
-    <class>org.kuali.rice.kns.test.document.bo.AccountManager</class>
-    <class>org.kuali.rice.kns.test.document.SearchAttributeIndexTestDocument</class>
-    <class>org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument</class>
-    
-   <!-- <class>org.kuali.rice.kns.bo.user.KualiModuleUserProperty</class>
-    <class>org.kuali.rice.kns.document.MaintenanceDocumentBase</class>
-    <class>org.kuali.rice.kns.document.MaintenanceLock</class>
-    <class>org.kuali.rice.kns.bo.DocumentHeader</class>
-    
-    <class>org.kuali.rice.kns.bo.Attachment</class>
-    <class>org.kuali.rice.kns.bo.AdHocRouteRecipient</class>
-    <class>org.kuali.rice.kns.bo.AdHocRoutePerson</class>
-    <class>org.kuali.rice.kns.bo.AdHocRouteWorkgroup</class>
-    <class>org.kuali.rice.kns.bo.LookupResults</class>
-    <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
-    <class>org.kuali.rice.kns.bo.EmployeeType</class>
-    <class>org.kuali.rice.kns.bo.EmployeeStatus</class>
-    <class>org.kuali.rice.kns.bo.Campus</class>
-    <class>org.kuali.rice.kns.bo.CampusTypeImpl</class>
-    <class>org.kuali.core.bo.DocumentHeader</class> -->
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
         <property name="hibernate.show_sql" value="true" />

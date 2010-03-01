@@ -858,10 +858,24 @@
 	</bean>
 
   <!-- START JPA CONFIGURATION -->
+  
+	<bean id="abstractKnsApplicationPersistenceUnitManager" class="org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager" abstract="true">
+  		<property name="persistenceXmlLocations">
+    		<list>
+     			<value>META-INF/kns-persistence.xml</value>
+    		</list>
+  		</property>
+		<property name="defaultDataSource" ref="knsApplicationDataSource"/>
+		<property name="persistenceUnitPostProcessors">
+  			<list>
+  				<bean class="org.kuali.rice.core.jpa.spring.RicePersistenceUnitPostProcessor" />
+  			</list>
+  		</property>
+	</bean>
 
   <bean id="knsApplicationEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceLocalContainerEntityManagerFactoryBean">    
     <constructor-arg value="rice.kns.application"/>
-    <constructor-arg ref="knsApplicationDataSource"/>
+    <constructor-arg ref="knsApplicationDataSource" />
   </bean>
 
   <bean id="knsServerEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceLocalContainerEntityManagerFactoryBean">    

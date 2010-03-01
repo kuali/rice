@@ -45,7 +45,6 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 	protected String documentNumber;
 	@Id
 	protected String sessionId;
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="LAST_UPDT_DT")
 	protected Timestamp lastUpdatedDate;
 	@Lob

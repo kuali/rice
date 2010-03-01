@@ -26,16 +26,16 @@ import javax.persistence.Id;
  */
 public class SessionDocumentId extends CompositePrimaryKeyBase {
 	@Id
-	//@Column(name="DOC_HDR_ID")
+	@Column(name="DOC_HDR_ID")
 	protected String documentNumber;
 	@Id
-	//@Column(name="SESN_DOC_ID")
+	@Column(name="SESN_DOC_ID")
 	protected String sessionId;
 	@Id
-	//@Column(name="PRNCPL_ID")
+	@Column(name="PRNCPL_ID")
 	protected String principalId;
 	@Id
-	//@Column(name="IP_ADDR")
+	@Column(name="IP_ADDR")
 	protected String ipAddress;
 	/**
 	 * @return the documentNumber

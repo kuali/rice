@@ -42,10 +42,8 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 	private static final long serialVersionUID = 2866566562262830639L;
 	
 	@Id
-	@Column(name="DOC_HDR_ID")
 	protected String documentNumber;
 	@Id
-	@Column(name="SESN_DOC_ID")
 	protected String sessionId;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="LAST_UPDT_DT")
@@ -56,10 +54,8 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 	//private KualiDocumentFormBase serializedDocumentForm;
 	protected boolean encrypted = false;
 	@Id
-	@Column(name="PRNCPL_ID")
 	protected String principalId;
 	@Id
-	@Column(name="IP_ADDR")
 	protected String ipAddress;
 	
 	

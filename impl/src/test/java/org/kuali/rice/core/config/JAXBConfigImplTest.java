@@ -134,7 +134,7 @@ public class JAXBConfigImplTest {
         config.parseConfig();
     }
     
-    @Test
+    @Ignore
     public void testPropertiesParams() throws Exception {
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
         config.setLoadDefaults(false);

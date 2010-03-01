@@ -7,9 +7,14 @@
 
 import java.util.ArrayList;
 
-def ojbMappingPattern = ~/.*OJB.*repository.*xml/
-def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken'
-def srcHome = '/java/projects/play/rice-1.1.0/impl/src/main/java'
+//def ojbMappingPattern = ~/.*OJB.*repository.*xml/
+def ojbMappingPattern = ~/.*OJB|ojb.*-.*xml/
+//def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken'
+//def srcHome = '/java/projects/play/rice-1.1.0/impl/src/main/java'
+//For KFS test
+def resourceHome = '/java/projects/kfs-jpa-ref/work/src/org/kuali/kfs/coa/'
+def srcHome = '/java/projects/kfs-jpa-ref/work/src'
+
 def sourceDirectories = []
 def repositories = []
 def classes = []

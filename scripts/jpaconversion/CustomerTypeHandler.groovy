@@ -33,7 +33,7 @@ def handleTypes(conversion, annotation, text){
 		annotation += "@Type(type=\"rice_integer_percentage\")\n\t"
 		text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiIntegerPercentageFieldType")
 	} else {
-		println "UNHANDLED CONVERSION FOUND "+f.column
+		println "UNHANDLED CONVERSION FOUND "//+f.column
 		println "conversion="+conversion
 		//println "name="+f.name
 	}

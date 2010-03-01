@@ -105,12 +105,12 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                text = addImport(text, "Column")                    
 	                text = annotate(text, "(private|protected).*(\\b${f.name})((\\s)*|(\\s)+.*);", annotation)
 	        }
+			//handle referenced objects
 			try{
-	        c.referenceDescriptors.values().each {
-	            rd ->
-					//if(rd != null)
+				c.referenceDescriptors.values().each {
+					rd ->
 					//	print "\n***********CLASSREFS************\t" + rd.classRef
-	                def annotation = ""
+					def annotation = ""
 	                annotation += determineOneOrManyToOne(classes, c, rd, logger)
 	                text = addImport(text, annotation[1..-1])
 	                def cascade = determineCascadeTypes(rd)
@@ -125,10 +125,10 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    annotation += "@JoinColumns({"
 	                    text = addImport(text, "JoinColumns")
 	                }
-					//def class_ref = rd.classRef
+					//checking each foreign keys
 	                rd.foreignKeys.eachWithIndex {
 	                    fk, i ->
-	                    println "\n***********CLASSREFS************\t" + rd.classRef + "\treferencing ----\t" + fk.fieldRef
+	                    println "\n***********CLASSREFS************\t" + rd.classRef + "\treferencing field----\t" + fk.fieldRef
 	                        def fkColumn
 	                        fk.fieldRef ? (fkColumn = c.fields[fk.fieldRef].column) : (fkColumn = findFieldIdRef(c.fields, fk.fieldIdRef).column)
 							if(size > 1)
@@ -145,14 +145,11 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                }
 	                if (size > 1) annotation += "})"
 	                text = annotate(text, "(private|protected).*(\\b${rd.name})(\\s)*;", annotation)
-	        }
 				}
-
-		catch(Exception e){
-			
-			println(e.getMessage());
-		}
-	        c.collectionDescriptors.values().each {
+			}
+		catch(Exception e){ println(e.getMessage());}
+		
+		c.collectionDescriptors.values().each {
 	            cd ->
 	                def annotation = ""
 	                def error
@@ -237,8 +234,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	        text = cleanText(text)
 	        
 	        if (c.compoundPrimaryKey) {	
-				c.pkClassIdText += handle_pkClass(cpkClassName, cpkFieldText, cpkGetterText, cpkConstructorArgs, cpkConstructorBody)
-				
+				c.pkClassIdText += handle_pkClass(cpkClassName, cpkFieldText, cpkGetterText, cpkConstructorArgs, cpkConstructorBody)		
 	        }
 	        
 	        if (!dry) {            
@@ -345,9 +341,9 @@ def determineOneOrManyToMany(classes, parent, cd) {
 }
 
 /*
-This function will look find the class that the given reference descriptor references.    Then, it will iterate
+This function will look find the class that the given reference descriptor references. Then, it will iterate
 over all of its collection descriptors and determine if any of their inverse foreign key set exactly matches
-the foreign key set of the given reference descriptor.    If true, the relationship is 'many to one' otherwise it
+the foreign key set of the given reference descriptor. If true, the relationship is 'many to one' otherwise it
 is 'one to one'.
 */
 def determineOneOrManyToOne(classes, parent, rd, logger) {

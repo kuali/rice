@@ -15,22 +15,31 @@ def createBOs = true
 def scanForConfigFiles = false
 
 /* File Path Properties */
-def projHome = '/java/projects/play/rice-1.1.0'
-def srcRootDir = '/impl/src/main/java/'
-def resourceDir = '/impl/src/main/resources/'
+def projHome = '/java/projects/kfs-jpa-ref'
+def srcRootDir = '/work/src/'
+def resourceDir = '/work/src/'
+//def projHome = '/java/projects/play/rice-1.1.0'
+//def srcRootDir = '/impl/src/main/java/'
+//def resourceDir = '/impl/src/main/resources/'
 def metaInf = 'META-INF/'
 def schemaName = "RICE110DEV"
 
 def repositories = [
-		'/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns-test.xml'
+        //for KFS
+        '/java/projects/kfs-jpa-ref/work/src/org/kuali/kfs/coa/ojb-coa.xml'
+        //for rice
+		//'/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml'
 		]
 
 def sourceDirectories = [
-		'/impl/src/main/java/'
+       //for KFS
+       '/work/src/'           
+    //for rice                     
+	//'/impl/src/main/java/'
 		]
 
 /* persistence detail properties */
-def ojbMappingPattern = ~/.*OJB.*repository.*xml/
+def ojbMappingPattern = ~/.*OJB|ojb.*-.*xml/
 def persistenceUnitName = "rice"
 def persistenceXmlFilename = 'persistence.xml'	
 def mysqlScriptFile = '/scripts/upgrades/mysqlSequenceFix.sql'

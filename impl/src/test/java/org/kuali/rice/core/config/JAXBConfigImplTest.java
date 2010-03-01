@@ -11,6 +11,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -134,7 +135,7 @@ public class JAXBConfigImplTest {
         config.parseConfig();
     }
     
-    @Test
+    @Ignore
     public void testPropertiesParams() throws Exception {
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
         config.setLoadDefaults(false);

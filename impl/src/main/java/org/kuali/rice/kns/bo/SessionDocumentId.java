@@ -61,4 +61,29 @@ public class SessionDocumentId extends CompositePrimaryKeyBase {
 	public String getIpAddress() {
 		return this.ipAddress;
 	}
+	/**
+	 * @param documentNumber the documentNumber to set
+	 */
+	public void setDocumentNumber(String documentNumber) {
+		this.documentNumber = documentNumber;
+	}
+	/**
+	 * @param sessionId the sessionId to set
+	 */
+	public void setSessionId(String sessionId) {
+		this.sessionId = sessionId;
+	}
+	/**
+	 * @param principalId the principalId to set
+	 */
+	public void setPrincipalId(String principalId) {
+		this.principalId = principalId;
+	}
+	/**
+	 * @param ipAddress the ipAddress to set
+	 */
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+	
 }

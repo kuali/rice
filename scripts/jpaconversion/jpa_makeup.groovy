@@ -8,7 +8,7 @@
 import java.util.ArrayList;
 
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
-def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns'
+def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken'
 def srcHome = '/java/projects/play/rice-1.1.0/impl/src/main/java'
 def sourceDirectories = []
 def repositories = []
@@ -18,8 +18,6 @@ def files = []
 class GlobalRes{
 	public static conversion_util = new ConversionUtils();
 }
-
-
 if(args.size() == 0)
 {println("USAGE:\t>groovy ~/jpaconversion/jpa_makeup.groovy [CLEAN | TRANSIENT]");
 	System.exit(0)
@@ -40,7 +38,6 @@ if("CLEAN".equals(args[0]))
 
 else if("TRANSIENT".equals(args[0]))
 	addTransient(files)
-
 
 class ClassDescriptor {
 	def compoundPrimaryKey = false
@@ -68,8 +65,7 @@ def loadClasses(repositories, classes){
 			println("********get class:\t" + cd.'@class')
 			classes.add(cd.'@class')
 		}
-	}
-		
+	}	
 }
 
 def findExistingBOs(srcHome, classes, files){
@@ -111,12 +107,12 @@ def removeAnnotatonLine(files){
 						text = text + "\n" + line.toString();
 						}
 					else{
-						println("******skip this line by skip*****\t" + line);
+						println("******skip this line by skip marker*****\t" + line);
 						}
 					skip = "false"
 					}
 				else{
-					println("******skip this line by @*****\t" + line);
+					println("****** possible to skip this line by @*****\t" + line);
 					if(cur.startsWith("@Override") || cur.startsWith("public"))
 					{
 						//need make a condition builder method to evaluate all exceptions from a list
@@ -125,8 +121,10 @@ def removeAnnotatonLine(files){
 						}
 					else if(cur.startsWith("@Transient"))
 					{
+						if(cur.length() > "@Transient".length() )
+							text = text + "\n" + cur.substring("@Transient".length());
 						skip = "false"
-						}
+					}
 					
 					else if(cur.endsWith(","))
 					{
@@ -154,26 +152,19 @@ def addTransient(files){
 			def text = ""
 			
 			lines.each{line->
-				println(line.toString())
+				//println(line.toString())
 				def cur = line.toString().trim()
-				if((cur.endsWith(";") )&&(cur.startsWith("private") || cur.startsWith("protected")))
+				if((cur.endsWith(";")) && (cur.startsWith("private") || cur.startsWith("protected")))
 				{
 					def pre = (lines.get(lines.indexOf(line) - 1)).toString().trim();
 					if(!pre.startsWith("@") && !pre.endsWith(")") && !pre.endsWith(",")){
 						text = text + "\n" + "@Transient";
-						}
+						println("adding annotation @Transient to**********\n\t " + cur);
+					}
 				}
 				text = text + "\n" + line; 
 				}
 			GlobalRes.conversion_util.generateFile(file, text);
 		}
 	}
-	
-	}
-
-
-
-
-
-
-
+}

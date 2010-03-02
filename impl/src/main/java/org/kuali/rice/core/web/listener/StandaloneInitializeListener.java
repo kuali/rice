@@ -121,8 +121,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
             if (StringUtils.isEmpty(additionalConfigLocations)) {
                 baseProps.setProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
             }  
-            JAXBConfigImpl config = new JAXBConfigImpl(baseProps);
-            config.putProperties(baseProps);
+            JAXBConfigImpl config = new JAXBConfigImpl(baseProps);            
             config.parseConfig();
             ConfigContext.init(config);
             

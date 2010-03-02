@@ -179,6 +179,12 @@
 
 		<echo message="(COVERAGE): Finished! Report was generated in ${coverage.report}" />
 	</target>
+	
+	<target name="copy-coverage-report" description="copy cobertura report to an already published directory" depends="coverage-report" if="${hudson.workspace}">
+		<copy todir="${tomcat.webapps}" overwrite="true">
+			<fileset dir="${hudson.workspace}/target/site/cobertura_all"/> 
+		</copy>
+	</target>
 
 	<target name="package-test-files" depends="init" description="Updates Eclipse classpath">
 		<maven goals="test-compile" />

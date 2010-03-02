@@ -20,7 +20,6 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
@@ -35,19 +34,17 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
+import org.hibernate.proxy.HibernateProxy;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.XmlObjectSerializerService;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
 import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
 import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
 
@@ -146,7 +143,7 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
                 Object value = null;
                 try {
                     value = field.get(object);
-                    if (value != null && ProxyHelper.isProxy(value)) {
+                    if (value != null && (ProxyHelper.isProxy(value) || value instanceof HibernateProxy)) {
                         value = getPersistenceService().resolveProxy(value);
                     }
                 } catch (IllegalArgumentException e) {

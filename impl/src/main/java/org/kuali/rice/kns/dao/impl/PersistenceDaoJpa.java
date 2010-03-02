@@ -21,8 +21,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 
+import org.hibernate.proxy.HibernateProxy;
 import org.kuali.rice.core.jpa.metadata.CollectionDescriptor;
 import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
@@ -42,6 +44,14 @@ public class PersistenceDaoJpa implements PersistenceDao {
 	 * @see org.kuali.rice.kns.dao.PersistenceDao#resolveProxy(java.lang.Object)
 	 */
 	public Object resolveProxy(Object o) {
+		if (o instanceof HibernateProxy) {
+        	try {
+	        	final Object realObject = ((HibernateProxy) o).getHibernateLazyInitializer().getImplementation();
+	        	return realObject;
+        	} catch (EntityNotFoundException enfe) {
+        		return null;
+        	}
+        }
 		return o;
 	}
 

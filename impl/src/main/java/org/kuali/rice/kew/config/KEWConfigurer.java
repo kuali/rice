@@ -28,8 +28,6 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.config.ModuleConfigurer;
-import org.kuali.rice.core.config.SimpleConfig;
-import org.kuali.rice.core.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
@@ -157,25 +155,10 @@ public class KEWConfigurer extends ModuleConfigurer {
 		defaultConfigLocations.add(KEWConstants.DEFAULT_GLOBAL_CONFIG_LOCATION);
 		defaultConfigLocations.add(KEWConstants.DEFAULT_APPLICATION_CONFIG_LOCATION);
 		
-		// TEST REMOVE ME
-		if(parentConfig.getProperties().containsKey(Config.SERVICE_NAMESPACE)){
-			System.out.println("Incoming Value of SERVICE_NAMESPACE: " + parentConfig.getProperty(Config.SERVICE_NAMESPACE));
-		}
-		
 		Config kewConfig = new JAXBConfigImpl(defaultConfigLocations, parentConfig.getProperties());
 		
 		kewConfig.parseConfig();
-		// TEST REMOVE ME
-		if(kewConfig.getProperties().containsKey(Config.SERVICE_NAMESPACE)){
-			System.out.println("kewConfig Value of SERVICE_NAMESPACE: " + kewConfig.getProperty(Config.SERVICE_NAMESPACE));
-		}
-		
 		mergeDefaultsIntoParentConfig(parentConfig, kewConfig);
-		
-		// TEST REMOVE ME
-		if(parentConfig.getProperties().containsKey(Config.SERVICE_NAMESPACE)){
-			System.out.println("After Merge Value of SERVICE_NAMESPACE: " + parentConfig.getProperty(Config.SERVICE_NAMESPACE));
-		}
 		return parentConfig;
 	}
 

@@ -29,6 +29,6 @@ public class KSBTestContextLoaderListener extends ContextLoaderListener {
 		super.contextInitialized(event);
 		String testClientName = event.getServletContext().getInitParameter("test.client.spring.context.name");
 		ApplicationContext appContext = WebApplicationContextUtils.getWebApplicationContext(event.getServletContext());
-		ConfigContext.getCurrentContextConfig().getObjects().put(testClientName, appContext);
+		ConfigContext.getCurrentContextConfig().putObject(testClientName, appContext);
 	}
 }

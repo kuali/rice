@@ -90,7 +90,7 @@ public class ZipFilePluginLoaderTest extends KEWTestCase {
 	if (config == null) {
 	    // because of previously running tests, the config might already be initialized
 	    config = new SimpleConfig();
-	    config.getProperties().put(Config.SERVICE_NAMESPACE, "KEW");
+	    config.putProperty(Config.SERVICE_NAMESPACE, "KEW");
 	    ConfigContext.init(config);
 	}
 

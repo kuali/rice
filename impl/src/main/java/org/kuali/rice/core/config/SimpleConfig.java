@@ -75,5 +75,5 @@ public class SimpleConfig extends BaseConfig {
 		}
 		return this.baseProperties;
 	}
-
+	
 }

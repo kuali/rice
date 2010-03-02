@@ -238,7 +238,7 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 		// append current root config to existing core config if config has already been initialized
 		Config currentRootConfig = ConfigContext.getRootConfig();
 		if (currentRootConfig != null) {
-			currentRootConfig.addProperties(this.rootConfig.getProperties());
+			currentRootConfig.putProperties(this.rootConfig.getProperties());
 			this.rootConfig = currentRootConfig;
 		} else {
 			ConfigContext.init(this.rootConfig);
@@ -251,13 +251,14 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 			// merge the configs
 			// TODO with a refactoring of the config system, should we move toward a CompositeConfig?  THat way we can preserve the info about where this config was
 			// loaded from instead of just copying the properties?
-			this.rootConfig.addProperties(config.getProperties());
-			this.rootConfig.getObjects().putAll(config.getObjects());
+			this.rootConfig.putProperties(config.getProperties());
+			this.rootConfig.putObjects(config.getObjects());
 		} else if (this.properties != null) {
-		    this.rootConfig.addProperties(this.properties);
+		    this.rootConfig.putProperties(this.properties);
 		}
 		// add the RiceConfigurer into the root ConfigContext for access later by the application
-		this.rootConfig.getObjects().put( RiceConstants.RICE_CONFIGURER_CONFIG_NAME, this );
+		
+		this.rootConfig.putObject( RiceConstants.RICE_CONFIGURER_CONFIG_NAME, this );
 		return this.rootConfig;
 	}
 
@@ -266,21 +267,21 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 			// TODO should there be a hierarchy here?
 			Config moduleConfig = module.loadConfig(rootConfig);
 			if (moduleConfig != null) {
-				rootConfig.addProperties(moduleConfig.getProperties());
-				rootConfig.getObjects().putAll(moduleConfig.getObjects());
+				rootConfig.putProperties(moduleConfig.getProperties());
+				rootConfig.putObjects(moduleConfig.getObjects());
 			}
 		}
 	}
 
 	protected void configureEnvironment(Config config) {
 		if (!StringUtils.isBlank(this.environment)) {
-			config.addProperty(Config.ENVIRONMENT, this.environment);		
+			config.putProperty(Config.ENVIRONMENT, this.environment);		
 		}
 	}
 	
 	protected void configureServiceNamespace(Config config) {
 		if (!StringUtils.isBlank(this.serviceNamespace)) {
-			config.getProperties().put(Config.SERVICE_NAMESPACE, this.serviceNamespace);
+			config.putProperty(Config.SERVICE_NAMESPACE, this.serviceNamespace);
 		}
 	}
 

@@ -131,7 +131,7 @@ public class RiceConfigurer extends RiceConfigurerBase {
 
 	protected void configureCredentialsSourceFactory(final Config rootConfig) {
 		if (credentialsSourceFactory != null) {
-			rootConfig.getObjects().put(Config.CREDENTIALS_SOURCE_FACTORY, this.credentialsSourceFactory);
+			rootConfig.putObject(Config.CREDENTIALS_SOURCE_FACTORY, this.credentialsSourceFactory);
 		}
 		
 	}
@@ -146,19 +146,19 @@ public class RiceConfigurer extends RiceConfigurerBase {
  
 	protected void configureDataSource(Config config) {
 		if (this.dataSource != null) {
-			config.getObjects().put(RiceConstants.DATASOURCE_OBJ, this.dataSource);
+			config.putObject(RiceConstants.DATASOURCE_OBJ, this.dataSource);
 		} else if (!StringUtils.isBlank(this.dataSourceJndiLocation)) {
-			config.getProperties().put(RiceConstants.DATASOURCE_JNDI, this.dataSourceJndiLocation);
+			config.putProperty(RiceConstants.DATASOURCE_JNDI, this.dataSourceJndiLocation);
 		}
         if (this.nonTransactionalDataSource != null) {
-            config.getObjects().put(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ, this.nonTransactionalDataSource);
+            config.putObject(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ, this.nonTransactionalDataSource);
         } else if (!StringUtils.isBlank(this.nonTransactionalDataSourceJndiLocation)) {
-            config.getProperties().put(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_JNDI, this.nonTransactionalDataSourceJndiLocation);
+            config.putProperty(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_JNDI, this.nonTransactionalDataSourceJndiLocation);
         }
         if (this.serverDataSource != null) {
-        	config.getObjects().put(RiceConstants.SERVER_DATASOURCE_OBJ, this.serverDataSource);
+        	config.putObject(RiceConstants.SERVER_DATASOURCE_OBJ, this.serverDataSource);
         }  else if (!StringUtils.isBlank(this.serverDataSourceJndiLocation)) {
-        	config.getProperties().put(RiceConstants.SERVER_DATASOURCE_JNDI, this.serverDataSourceJndiLocation);
+        	config.putProperty(RiceConstants.SERVER_DATASOURCE_JNDI, this.serverDataSourceJndiLocation);
         }
 	}
 
@@ -169,16 +169,16 @@ public class RiceConfigurer extends RiceConfigurerBase {
 	 */
 	protected void configureJta(Config config) {
 		if (this.userTransaction != null) {
-			config.getObjects().put(RiceConstants.USER_TRANSACTION_OBJ, this.userTransaction);
+			config.putObject(RiceConstants.USER_TRANSACTION_OBJ, this.userTransaction);
 		}
 		if (this.transactionManager != null) {
-			config.getObjects().put(RiceConstants.TRANSACTION_MANAGER_OBJ, this.transactionManager);
+			config.putObject(RiceConstants.TRANSACTION_MANAGER_OBJ, this.transactionManager);
 		}
 		if (!StringUtils.isEmpty(this.userTransactionJndiLocation)) {
-			config.getProperties().put(RiceConstants.USER_TRANSACTION_JNDI, this.userTransactionJndiLocation);
+			config.putProperty(RiceConstants.USER_TRANSACTION_JNDI, this.userTransactionJndiLocation);
 		}
 		if (!StringUtils.isEmpty(this.transactionManagerJndiLocation)) {
-			config.getProperties().put(RiceConstants.TRANSACTION_MANAGER_JNDI, this.transactionManagerJndiLocation);
+			config.putProperty(RiceConstants.TRANSACTION_MANAGER_JNDI, this.transactionManagerJndiLocation);
 		}
 		boolean userTransactionConfigured = this.userTransaction != null || !StringUtils.isEmpty(this.userTransactionJndiLocation);
 		boolean transactionManagerConfigured = this.transactionManager != null || !StringUtils.isEmpty(this.transactionManagerJndiLocation);

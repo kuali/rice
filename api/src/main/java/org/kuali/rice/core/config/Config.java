@@ -277,6 +277,10 @@ public interface Config {
 	public Boolean getStoreAndForward();
 	public Boolean getOutBoxOn();
 	public Boolean getOutBoxDefaultPreferenceOn();
-	public void addProperties(Properties properties);
-	public void addProperty(Object key, Object value);
+	public void putProperties(Properties properties);
+	public void putProperty(Object key, Object value);
+	public void removeProperty(String key);
+	public void putObjects(Map<String, Object> objects);
+	public void putObject(String key, Object value);
+	public void removeObject(String key);	
 }

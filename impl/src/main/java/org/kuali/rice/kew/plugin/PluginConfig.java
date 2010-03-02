@@ -78,5 +78,5 @@ public class PluginConfig extends BaseConfig {
 
     public String toString() {
         return "[PluginConfig: resourceLoaderClassname: " + getResourceLoaderClassname() + "]";
-    }
+    }    
 }

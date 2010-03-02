@@ -223,7 +223,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 		LOG.debug("Configuring services for Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
 		List<ServiceDefinition> serviceDefinitions = (List<ServiceDefinition>) config.getObject(key);
 		if (serviceDefinitions == null) {
-			config.getObjects().put(key, services);
+			config.putObject(key, services);
 		} else if (services != null) {
 			LOG.debug("Services already exist.  Adding additional services");
 			serviceDefinitions.addAll(services);
@@ -232,7 +232,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 		// if it's empty, then we want to be able to inherit it from the parent
 		// configuration
 		if (!StringUtils.isEmpty(this.serviceServletUrl)) {
-			config.getObjects().put(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
+			config.putObject(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
 			config.overrideProperty(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
 		}
 	}
@@ -240,19 +240,19 @@ public class KSBConfigurer extends ModuleConfigurer {
 	protected void configureScheduler(Config config) {
 		if (this.getExceptionMessagingScheduler() != null) {
 			LOG.info("Configuring injected exception messaging Scheduler");
-			config.getObjects().put(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY, this.getExceptionMessagingScheduler());
+			config.putObject(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY, this.getExceptionMessagingScheduler());
 		}
 	}
 
 	protected void configureKeystore(Config config) {
 		if (!StringUtils.isEmpty(this.keystoreAlias)) {
-			config.getProperties().put(Config.KEYSTORE_ALIAS, this.keystoreAlias);
+			config.putProperty(Config.KEYSTORE_ALIAS, this.keystoreAlias);
 		}
 		if (!StringUtils.isEmpty(this.keystorePassword)) {
-			config.getProperties().put(Config.KEYSTORE_PASSWORD, this.keystorePassword);
+			config.putProperty(Config.KEYSTORE_PASSWORD, this.keystorePassword);
 		}
 		if (!StringUtils.isEmpty(this.keystoreFile)) {
-			config.getProperties().put(Config.KEYSTORE_FILE, this.keystoreFile);
+			config.putProperty(Config.KEYSTORE_FILE, this.keystoreFile);
 		}
 	}
 
@@ -265,19 +265,19 @@ public class KSBConfigurer extends ModuleConfigurer {
         }
 
         if (getMessageDataSource() != null) {
-            config.getObjects().put(KSBConstants.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
+            config.putObject(KSBConstants.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
         } else if (!StringUtils.isBlank(getMessageDataSourceJndiName())) {
-            config.getProperties().put(KSBConstants.KSB_MESSAGE_DATASOURCE_JNDI, getMessageDataSourceJndiName());
+            config.putProperty(KSBConstants.KSB_MESSAGE_DATASOURCE_JNDI, getMessageDataSourceJndiName());
         }
         if (getNonTransactionalMessageDataSource() != null) {
-            config.getObjects().put(KSBConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE, getNonTransactionalMessageDataSource());
+            config.putObject(KSBConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE, getNonTransactionalMessageDataSource());
         } else if (!StringUtils.isBlank(getMessageDataSourceJndiName())) {
-            config.getProperties().put(KSBConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI, getNonTransactionalMessageDataSourceJndiName());
+            config.putProperty(KSBConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI, getNonTransactionalMessageDataSourceJndiName());
         }
         if (getRegistryDataSource() != null) {
-            config.getObjects().put(KSBConstants.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
+            config.putObject(KSBConstants.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
         } else if (!StringUtils.isBlank(getRegistryDataSourceJndiName())) {
-            config.getProperties().put(KSBConstants.KSB_REGISTRY_DATASOURCE_JNDI, getRegistryDataSourceJndiName());
+            config.putProperty(KSBConstants.KSB_REGISTRY_DATASOURCE_JNDI, getRegistryDataSourceJndiName());
         }
     }
 
@@ -285,12 +285,12 @@ public class KSBConfigurer extends ModuleConfigurer {
 		if (getPlatformTransactionManager() == null) {
 			return;
 		}
-		config.getObjects().put(RiceConstants.SPRING_TRANSACTION_MANAGER, getPlatformTransactionManager());
+		config.putObject(RiceConstants.SPRING_TRANSACTION_MANAGER, getPlatformTransactionManager());
 	}
 	
 	protected void configureAlternateEndpoints(Config config) {
-		config.getObjects().put(KSBConstants.KSB_ALTERNATE_ENDPOINT_LOCATIONS, getAlternateEndpointLocations());
-		config.getObjects().put(KSBConstants.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
+		config.putObject(KSBConstants.KSB_ALTERNATE_ENDPOINT_LOCATIONS, getAlternateEndpointLocations());
+		config.putObject(KSBConstants.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
 	}
 	
 	public void stop() throws Exception {
@@ -306,8 +306,8 @@ public class KSBConfigurer extends ModuleConfigurer {
      *
      */
     protected void cleanUpConfiguration() {
-        ConfigContext.getCurrentContextConfig().getObjects().remove(Config.BUS_DEPLOYED_SERVICES);
-        ConfigContext.getCurrentContextConfig().getObjects().remove(KSBConstants.KSB_ALTERNATE_ENDPOINTS);
+        ConfigContext.getCurrentContextConfig().removeObject(Config.BUS_DEPLOYED_SERVICES);
+        ConfigContext.getCurrentContextConfig().removeObject(KSBConstants.KSB_ALTERNATE_ENDPOINTS);
     }
 
 	public boolean isStarted() {

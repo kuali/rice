@@ -143,8 +143,8 @@ public class JettyServerLifecycle implements Lifecycle {
         } else if (ConfigMode.MERGE == configMode) {
             Config curCtxConfig = ConfigContext.getCurrentContextConfig();
             if (webappConfig != null) {
-                curCtxConfig.getProperties().putAll(webappConfig.getProperties());
-                curCtxConfig.getObjects().putAll(webappConfig.getObjects());
+                curCtxConfig.putProperties(webappConfig.getProperties());
+                curCtxConfig.putObjects(webappConfig.getObjects());
             }
         }
 

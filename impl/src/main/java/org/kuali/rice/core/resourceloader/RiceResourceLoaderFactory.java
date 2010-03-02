@@ -72,7 +72,7 @@ public class RiceResourceLoaderFactory {
 	}
 
 	public static void setRootResourceLoaderName(QName name) {
-		ConfigContext.getCurrentContextConfig().getObjects().put(RICE_ROOT_RESOURCE_LOADER_NAME, name);
+		ConfigContext.getCurrentContextConfig().putObject(RICE_ROOT_RESOURCE_LOADER_NAME, name);
 	}
 
 	public static QName getSpringResourceLoaderName() {
@@ -80,7 +80,7 @@ public class RiceResourceLoaderFactory {
 	}
 
 	public static void setSpringResourceLoaderName(QName ksbRsourceLoaderName) {
-		ConfigContext.getCurrentContextConfig().getObjects().put(RICE_SPRING_RESOURCE_LOADER_NAME, ksbRsourceLoaderName);
+		ConfigContext.getCurrentContextConfig().putObject(RICE_SPRING_RESOURCE_LOADER_NAME, ksbRsourceLoaderName);
 	}
 
 }

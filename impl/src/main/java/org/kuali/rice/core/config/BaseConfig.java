@@ -460,14 +460,30 @@ public abstract class BaseConfig implements Config {
     }
     
     
-	public void addProperties(Properties properties) {
+	public void putProperties(Properties properties) {
 		if (properties != null) {
             getProperties().putAll(properties);
 		}		
 	}
 	
-	public void addProperty(Object key, Object value) {
+	public void putProperty(Object key, Object value) {
 		this.getProperties().put(key, value);		
 	}
 	
+	public void putObject(String key, Object value) {
+		this.objects.put(key, value);	
+	}
+	
+	public void putObjects(Map<String, Object> objects) {
+		this.objects.putAll(objects);
+		
+	}
+	
+	public void removeObject(String key){
+		this.objects.remove(key);
+	}
+	
+	public void removeProperty(String key){
+		this.getProperties().remove(key);
+	}
 }

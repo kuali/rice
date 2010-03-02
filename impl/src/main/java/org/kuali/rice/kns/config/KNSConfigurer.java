@@ -117,14 +117,14 @@ public class KNSConfigurer extends ModuleConfigurer {
         }
 
         if (getApplicationDataSource() != null) {
-            config.getObjects().put(KNSConstants.KNS_APPLICATION_DATASOURCE, getApplicationDataSource());
+            config.putObject(KNSConstants.KNS_APPLICATION_DATASOURCE, getApplicationDataSource());
         } else if (!StringUtils.isBlank(getApplicationDataSourceJndiName())) {
-            config.getProperties().put(KNSConstants.KNS_APPLICATION_DATASOURCE_JNDI, getApplicationDataSourceJndiName());
+            config.putProperty(KNSConstants.KNS_APPLICATION_DATASOURCE_JNDI, getApplicationDataSourceJndiName());
         }
         if (getServerDataSource() != null) {
-            config.getObjects().put(KNSConstants.KNS_SERVER_DATASOURCE, getServerDataSource());
+            config.putObject(KNSConstants.KNS_SERVER_DATASOURCE, getServerDataSource());
         } else if (!StringUtils.isBlank(getServerDataSourceJndiName())) {
-            config.getProperties().put(KNSConstants.KNS_SERVER_DATASOURCE_JNDI, getServerDataSourceJndiName());
+            config.putProperty(KNSConstants.KNS_SERVER_DATASOURCE_JNDI, getServerDataSourceJndiName());
         }
     }
 

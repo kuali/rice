@@ -66,9 +66,9 @@ public class BusAdminServiceImpl extends BaseLifecycle implements BusAdminServic
 	String originalValue = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
 	LOG.info("Changing config property '" + propertyName + "' from " + originalValue + " to " + propertyValue);
 	if (propertyValue == null) {
-	    ConfigContext.getCurrentContextConfig().getProperties().remove(propertyName);
+	    ConfigContext.getCurrentContextConfig().removeProperty(propertyName);
 	} else {
-	    ConfigContext.getCurrentContextConfig().getProperties().put(propertyName, propertyValue);
+	    ConfigContext.getCurrentContextConfig().putProperty(propertyName, propertyValue);
 	}
     }
 

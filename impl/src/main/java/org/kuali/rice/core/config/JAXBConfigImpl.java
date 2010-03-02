@@ -32,6 +32,8 @@ import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.helpers.XMLFilterImpl;
 
+import edu.emory.mathcs.backport.java.util.Collections;
+
 /**
  * This implementation of the Config interface uses JAXB to parse the config file and
  * does not resolve variables in the property values until after all the files have been
@@ -128,7 +130,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
 
     public Map<String, Object> getObjects() {
-        return objects;
+    	return Collections.unmodifiableMap(objects);
+        //return objects;
     }
 
     public Properties getProperties() {
@@ -155,7 +158,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         properties.put(name, value);
     }
    
-	public void addProperty(Object key, Object value) {
+	public void putProperty(Object key, Object value) {
 		if(key != null){
 			
 			// TEST Remove this
@@ -171,7 +174,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 		}		
 	}
 
-	public void addProperties(Properties properties) {
+	public void putProperties(Properties properties) {
         if (properties != null) {
         	
         	 //TEST REMOVE ME
@@ -508,4 +511,21 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             super.endElement(uri, localName, qName);
         }
     }
+
+	
+	public void putObject(String key, Object value) {
+		this.objects.put(key, value);		
+	}
+	
+	public void putObjects(Map<String, Object> objects) {
+		this.objects.putAll(objects);	
+	}
+	
+	public void removeObject(String key){
+		this.objects.remove(key);
+	}
+	public void removeProperty(String key){
+		this.properties.remove(key);
+	}
+    
 }

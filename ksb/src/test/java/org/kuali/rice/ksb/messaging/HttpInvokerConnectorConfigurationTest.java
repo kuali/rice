@@ -77,11 +77,11 @@ public class HttpInvokerConnectorConfigurationTest extends TestCase {
 		
 		// re-init the core with some of these paramters changed
 		Config config = getConfigObject(configType);		
-		config.addProperty("http.connection-manager.max-total", "500");
-		config.addProperty("http.connection-manager.timeout", "5000");
-		config.addProperty("http.connection.timeout", "15000");
-		config.addProperty("http.somerandomproperty", "thisismyproperty");
-		config.addProperty("http.authentication.preemptive", "false");
+		config.putProperty("http.connection-manager.max-total", "500");
+		config.putProperty("http.connection-manager.timeout", "5000");
+		config.putProperty("http.connection.timeout", "15000");
+		config.putProperty("http.somerandomproperty", "thisismyproperty");
+		config.putProperty("http.authentication.preemptive", "false");
 		ConfigContext.init(config);
 		
 		httpConnector = new HttpInvokerConnector(new ServiceInfo());
@@ -99,7 +99,7 @@ public class HttpInvokerConnectorConfigurationTest extends TestCase {
 		
 		// do another one that checks that booleans are working properly
 		config = getConfigObject(configType);		
-		config.addProperty("http.authentication.preemptive", "true");
+		config.putProperty("http.authentication.preemptive", "true");
 		ConfigContext.init(config);
 		
 		httpConnector = new HttpInvokerConnector(new ServiceInfo());
@@ -109,7 +109,7 @@ public class HttpInvokerConnectorConfigurationTest extends TestCase {
 		
 		// check setting the classname of the connection manager
 		config = getConfigObject(configType);		
-		config.addProperty("http.connection-manager.class", MyHttpConnectionManager.class.getName());
+		config.putProperty("http.connection-manager.class", MyHttpConnectionManager.class.getName());
 		ConfigContext.init(config);
 		
 		httpConnector = new HttpInvokerConnector(new ServiceInfo());
@@ -122,7 +122,7 @@ public class HttpInvokerConnectorConfigurationTest extends TestCase {
 		// String-based configuration.  This is an illegal parameter to configure and we should
 		// recieve a WorkflowRuntimeException
 		config = getConfigObject(configType);		
-		config.addProperty("http.method.retry-handler", "badparm");
+		config.putProperty("http.method.retry-handler", "badparm");
 		ConfigContext.init(config);
 		
 		try {

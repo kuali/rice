@@ -122,7 +122,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
                 baseProps.setProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
             }  
             JAXBConfigImpl config = new JAXBConfigImpl(baseProps);
-            config.addProperties(baseProps);
+            config.putProperties(baseProps);
             config.parseConfig();
             ConfigContext.init(config);
             

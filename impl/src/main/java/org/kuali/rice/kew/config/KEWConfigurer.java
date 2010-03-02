@@ -188,7 +188,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 		for (Object keyObj : defaultConfig.getProperties().keySet()) {
 			String key = (String)keyObj;
 			if (!parentConfig.getProperties().containsKey(key)) {
-				parentConfig.addProperty(key, defaultConfig.getProperty(key));
+				parentConfig.putProperty(key, defaultConfig.getProperty(key));
 			}
 		}
 	}
@@ -220,14 +220,14 @@ public class KEWConfigurer extends ModuleConfigurer {
 		if (!KEWConstants.CLIENT_PROTOCOLS.contains(clientProtocol)) {
 			throw new ConfigurationException("Invalid client protocol specified '" + clientProtocol + "'.");
 		}
-		config.addProperty(Config.CLIENT_PROTOCOL, clientProtocol);
+		config.putProperty(Config.CLIENT_PROTOCOL, clientProtocol);
 	}
 
 	protected void configureDataSource(Config config) {
 		if (getDataSource() != null) {
-			config.getObjects().put(KEW_DATASOURCE_OBJ, getDataSource());
+			config.putObject(KEW_DATASOURCE_OBJ, getDataSource());
 		} else if (!StringUtils.isBlank(getDataSourceJndiName())) {
-			config.getProperties().put(KEW_DATASOURCE_JNDI, getDataSourceJndiName());
+			config.putProperty(KEW_DATASOURCE_JNDI, getDataSourceJndiName());
 		}
 	}
 

@@ -122,7 +122,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 				setWebModuleConfigurationFiles( config.getProperty( "rice." + getModuleName().toLowerCase() + ".struts.config.files" ) );
 			}
 		}
-		config.getProperties().put( "rice." + getModuleName().toLowerCase() + ".struts.config.files", getWebModuleConfigurationFiles() );
+		config.addProperty( "rice." + getModuleName().toLowerCase() + ".struts.config.files", getWebModuleConfigurationFiles() );
 		if ( StringUtils.isBlank( getWebModuleBaseUrl() ) ) {
 			if ( StringUtils.isBlank( config.getProperty( getModuleName().toLowerCase() + ".url" ) ) ) {
 				setWebModuleBaseUrl( config.getProperty( "application.url" ) + "/" + getModuleName().toLowerCase() );
@@ -130,7 +130,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 				setWebModuleBaseUrl( config.getProperty( getModuleName().toLowerCase() + ".url" ) );
 			}
 		}
-		config.getProperties().put( getModuleName().toLowerCase() + ".url", getWebModuleBaseUrl() );
+		config.addProperty( getModuleName().toLowerCase() + ".url", getWebModuleBaseUrl() );
 		if ( StringUtils.isEmpty( getSpringFileLocations() ) ) {
 			setSpringFileLocations( getDefaultSpringBeansPath(getDefaultConfigPackagePath() ) );
 		}
@@ -141,7 +141,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	 */
 	protected void configureRunMode(Config config) {
 		String propertyName = getModuleName().toLowerCase() + ".mode";
-		config.getProperties().setProperty(propertyName, getRunMode());
+		config.addProperty(propertyName, getRunMode());
 	}
 	
 	/**

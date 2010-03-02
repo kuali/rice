@@ -458,4 +458,16 @@ public abstract class BaseConfig implements Config {
     public String toString() {
         return new ToStringBuilder(this).append("fileLocs", fileLocs).toString();
     }
+    
+    
+	public void addProperties(Properties properties) {
+		if (properties != null) {
+            getProperties().putAll(properties);
+		}		
+	}
+	
+	public void addProperty(Object key, Object value) {
+		this.getProperties().put(key, value);		
+	}
+	
 }

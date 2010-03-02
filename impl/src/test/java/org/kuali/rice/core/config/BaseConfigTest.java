@@ -36,7 +36,7 @@ public class BaseConfigTest extends TestCase {
         base.setProperty("boo", "base:boo");
         List<String> configs = new ArrayList<String>(1);
         configs.add("classpath:org/kuali/rice/core/config/config-1.xml");
-        SimpleConfig sc = new SimpleConfig(configs, base);
+        Config sc = new JAXBConfigImpl(configs, base);
         sc.parseConfig();
         assertEquals("base:boo", sc.getProperty("boo"));
         assertEquals("config-1:foo base:boo", sc.getProperty("foo"));

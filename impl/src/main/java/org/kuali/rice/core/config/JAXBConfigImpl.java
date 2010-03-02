@@ -3,8 +3,6 @@ package org.kuali.rice.core.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,7 +11,6 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.SortedSet;
 import java.util.TreeSet;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.xsd.Config;
 import org.kuali.rice.core.config.xsd.Param;
+import org.kuali.rice.core.util.ImmutableProperties;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -70,21 +68,58 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     private boolean runtimeResolution = false;
     private boolean systemOverride = false;
 
+    
+    private String callingClass = null;
+    
+    public JAXBConfigImpl(){}
+    
+    
     public JAXBConfigImpl(String fileLoc) {
+    
+    	callingClass = Thread.currentThread().getStackTrace()[1].getClassName();
         this.fileLocs.add(fileLoc);
     }
 
     public JAXBConfigImpl(List<String> fileLocs) {
+    	callingClass =Thread.currentThread().getStackTrace()[1].getClassName();
         this.fileLocs.addAll(fileLocs);
     }
 
+    public JAXBConfigImpl(Properties properties) {
+    	callingClass = Thread.currentThread().getStackTrace()[1].getClassName();
+    	
+    	//TEST REMOVE ME
+        if(properties.containsKey(SERVICE_NAMESPACE)){
+			System.out.println("Incoming Value of SERVICE_NAMESPACE: " + properties.getProperty(SERVICE_NAMESPACE));
+			System.out.println("Existing Value of SERVICE_NAMESPACE: " + this.properties.getProperty(SERVICE_NAMESPACE));
+		}
+    	
+    	this.properties.putAll(properties);
+    }
+    
     public JAXBConfigImpl(String fileLoc, Properties properties) {
+    	callingClass = Thread.currentThread().getStackTrace()[1].getClassName();
         this.fileLocs.add(fileLoc);
+        
+      //TEST REMOVE ME
+        if(properties.containsKey(SERVICE_NAMESPACE)){
+			System.out.println("Incoming Value of SERVICE_NAMESPACE: " + properties.getProperty(SERVICE_NAMESPACE));
+			System.out.println("Existing Value of SERVICE_NAMESPACE: " + this.properties.getProperty(SERVICE_NAMESPACE));
+		}
+        
         this.properties.putAll(properties);
     }
 
     public JAXBConfigImpl(List<String> fileLocs, Properties properties) {
+    	callingClass = Thread.currentThread().getStackTrace()[1].getClassName();
         this.fileLocs.addAll(fileLocs);
+        
+      //TEST REMOVE ME
+        if(properties.containsKey(SERVICE_NAMESPACE)){
+			System.out.println("Incoming Value of SERVICE_NAMESPACE: " + properties.getProperty(SERVICE_NAMESPACE));
+			System.out.println("Existing Value of SERVICE_NAMESPACE: " + this.properties.getProperty(SERVICE_NAMESPACE));
+		}
+        
         this.properties.putAll(properties);
     }
 
@@ -97,7 +132,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
 
     public Properties getProperties() {
-        return properties;
+    	return new ImmutableProperties(properties);
+        //return properties;
     }
 
     public String getProperty(String key) {
@@ -118,9 +154,32 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         
         properties.put(name, value);
     }
+   
+	public void addProperty(Object key, Object value) {
+		if(key != null){
+			
+			// TEST Remove this
+			if(SERVICE_NAMESPACE.equals(key)){
+				System.out.println("here");
+			}
+			
+			this.properties.put(key, value);
+			
+			if(!runtimeResolution) {                
+                    this.properties.put((String)key, resolve((String)key));                
+            }		
+		}		
+	}
 
-    public void addProperties(Properties properties) {
+	public void addProperties(Properties properties) {
         if (properties != null) {
+        	
+        	 //TEST REMOVE ME
+            if(properties.containsKey(SERVICE_NAMESPACE)){
+				System.out.println("Incoming Value of SERVICE_NAMESPACE: " + properties.getProperty(SERVICE_NAMESPACE));
+				System.out.println("Existing Value of SERVICE_NAMESPACE: " + this.properties.getProperty(SERVICE_NAMESPACE));
+			}
+        	
             this.properties.putAll(properties);
             
             if(!runtimeResolution) {
@@ -228,6 +287,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             for (Param p : config.getParamList()) {
 
                 String name = p.getName();
+                //TEST REMOVE ME
+                if(SERVICE_NAMESPACE.equals(name)){
+    				System.out.println(p.getValue());
+    			}
 
                 if (name.equals(IMPORT_NAME)) {
                     String configLocation = parseValue(p.getValue(), new HashSet<String>());
@@ -256,7 +319,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
 
     protected String resolve(String key) {
-        String value = (String) properties.get(key);
+        String value = (String) this.properties.get(key);
 
         if (systemOverride && System.getProperties().containsKey(key)) {
             value = System.getProperty(key);

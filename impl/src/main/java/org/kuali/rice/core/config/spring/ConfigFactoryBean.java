@@ -21,7 +21,7 @@ import java.util.Properties;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.config.SimpleConfig;
+import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.springframework.beans.factory.FactoryBean;
 
 public class ConfigFactoryBean implements FactoryBean {
@@ -38,11 +38,12 @@ public class ConfigFactoryBean implements FactoryBean {
 		if (ConfigContext.getCurrentContextConfig() != null) {
 			baseProperties = ConfigContext.getCurrentContextConfig().getProperties();
 		}
-		SimpleConfig config = null;
+		//SimpleConfig config = null;
+		JAXBConfigImpl config = null;
 		if (CONFIG_OVERRIDE_LOCATION != null) {
-			config = new SimpleConfig(CONFIG_OVERRIDE_LOCATION, baseProperties);
+			config = new JAXBConfigImpl(CONFIG_OVERRIDE_LOCATION, baseProperties);		
 		} else {
-			config = new SimpleConfig(getConfigLocations(), baseProperties);
+			config = new JAXBConfigImpl(getConfigLocations(), baseProperties);
 		}
 
 		config.parseConfig();

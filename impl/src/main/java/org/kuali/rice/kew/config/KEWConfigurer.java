@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.config.logging.Log4jLifeCycle;
@@ -155,9 +156,26 @@ public class KEWConfigurer extends ModuleConfigurer {
 		List<String> defaultConfigLocations = new ArrayList<String>();
 		defaultConfigLocations.add(KEWConstants.DEFAULT_GLOBAL_CONFIG_LOCATION);
 		defaultConfigLocations.add(KEWConstants.DEFAULT_APPLICATION_CONFIG_LOCATION);
-		Config kewConfig = new SimpleConfig(defaultConfigLocations, parentConfig.getProperties());
+		
+		// TEST REMOVE ME
+		if(parentConfig.getProperties().containsKey(Config.SERVICE_NAMESPACE)){
+			System.out.println("Incoming Value of SERVICE_NAMESPACE: " + parentConfig.getProperty(Config.SERVICE_NAMESPACE));
+		}
+		
+		Config kewConfig = new JAXBConfigImpl(defaultConfigLocations, parentConfig.getProperties());
+		
 		kewConfig.parseConfig();
+		// TEST REMOVE ME
+		if(kewConfig.getProperties().containsKey(Config.SERVICE_NAMESPACE)){
+			System.out.println("kewConfig Value of SERVICE_NAMESPACE: " + kewConfig.getProperty(Config.SERVICE_NAMESPACE));
+		}
+		
 		mergeDefaultsIntoParentConfig(parentConfig, kewConfig);
+		
+		// TEST REMOVE ME
+		if(parentConfig.getProperties().containsKey(Config.SERVICE_NAMESPACE)){
+			System.out.println("After Merge Value of SERVICE_NAMESPACE: " + parentConfig.getProperty(Config.SERVICE_NAMESPACE));
+		}
 		return parentConfig;
 	}
 
@@ -170,7 +188,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 		for (Object keyObj : defaultConfig.getProperties().keySet()) {
 			String key = (String)keyObj;
 			if (!parentConfig.getProperties().containsKey(key)) {
-				parentConfig.getProperties().put(key, defaultConfig.getProperty(key));
+				parentConfig.addProperty(key, defaultConfig.getProperty(key));
 			}
 		}
 	}
@@ -202,7 +220,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 		if (!KEWConstants.CLIENT_PROTOCOLS.contains(clientProtocol)) {
 			throw new ConfigurationException("Invalid client protocol specified '" + clientProtocol + "'.");
 		}
-		config.getProperties().put(Config.CLIENT_PROTOCOL, clientProtocol);
+		config.addProperty(Config.CLIENT_PROTOCOL, clientProtocol);
 	}
 
 	protected void configureDataSource(Config config) {

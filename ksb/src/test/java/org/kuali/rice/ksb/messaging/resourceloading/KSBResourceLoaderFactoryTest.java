@@ -24,6 +24,7 @@ import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.ksb.messaging.config.ServiceHolder;
@@ -32,12 +33,30 @@ import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 
 public class KSBResourceLoaderFactoryTest extends TestCase {
 
+	private static String simpleConfig = "SIMPLE_CONFIG";
+	private static String jaxbConfig = "JAXB_CONFIG";
+	
+	
+	// We want to test with both impls
+	protected Config getConfigObject(String configType, Properties p){
+		Config cRet = null;
+		if(simpleConfig.equals(configType)){
+			cRet = new SimpleConfig(p);
+		}else if(jaxbConfig.equals(configType)){
+			cRet = new JAXBConfigImpl(p);
+		}
+		return cRet;
+	}
 	
 	@Test public void testCreateKSBResourceLoader() throws Exception {
+		createKSBResourceLoaderImpl(simpleConfig);
+		createKSBResourceLoaderImpl(jaxbConfig);
+	}
+	protected void createKSBResourceLoaderImpl(String configType) throws Exception {
 		String me = "TestME";
 		Properties props = new Properties();
 		props.put(Config.SERVICE_NAMESPACE, me);
-		Config config = new SimpleConfig(props);
+		Config config = getConfigObject(configType, props);
 		config.parseConfig();
 		ConfigContext.init(config);
 		
@@ -46,9 +65,15 @@ public class KSBResourceLoaderFactoryTest extends TestCase {
 	}
 	
 	@Test public void testCreateKSBResourceLoaderNoserviceNamespace() throws Exception {
+		createKSBResourceLoaderNoserviceNamespaceImpl(simpleConfig);
+		createKSBResourceLoaderNoserviceNamespaceImpl(jaxbConfig);
+		
+	}
+	
+	protected void createKSBResourceLoaderNoserviceNamespaceImpl(String configType) throws Exception {
 		
 		Properties props = new Properties();
-		Config config = new SimpleConfig(props);
+		Config config = getConfigObject(configType,props);
 		config.parseConfig();
 		ConfigContext.init(config);
 		

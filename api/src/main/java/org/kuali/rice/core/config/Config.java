@@ -277,5 +277,6 @@ public interface Config {
 	public Boolean getStoreAndForward();
 	public Boolean getOutBoxOn();
 	public Boolean getOutBoxDefaultPreferenceOn();
-	
+	public void addProperties(Properties properties);
+	public void addProperty(Object key, Object value);
 }

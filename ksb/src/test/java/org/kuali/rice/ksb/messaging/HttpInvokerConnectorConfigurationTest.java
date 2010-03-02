@@ -16,8 +16,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.util.Properties;
-
 import junit.framework.TestCase;
 
 import org.apache.commons.httpclient.HttpClient;
@@ -26,9 +24,10 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.SimpleHttpConnectionManager;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.junit.Test;
+import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.config.SimpleConfig;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;
 
 
@@ -39,14 +38,31 @@ import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;
  */
 public class HttpInvokerConnectorConfigurationTest extends TestCase {
 
+	private static String simpleConfig = "SIMPLE_CONFIG";
+	private static String jaxbConfig = "JAXB_CONFIG";
+	
+	// We want to test with both impls
+	protected Config getConfigObject(String configType){
+		Config cRet = null;
+		if(simpleConfig.equals(configType)){
+			cRet = new SimpleConfig();
+		}else if(jaxbConfig.equals(configType)){
+			cRet = new JAXBConfigImpl();
+		}
+		return cRet;
+	}
 	
 	/**
 	 * Tests the configuration and initialization of the HttpClient which is
 	 * used for the invocation of remote service calls.
 	 */
 	@Test public void testHttpClientConfiguration() throws Exception {
+		testHttpClientConfigurationImpl(simpleConfig);
+		testHttpClientConfigurationImpl(jaxbConfig);
+	}
+	protected void testHttpClientConfigurationImpl(String configType) throws Exception {
 		// test the default configuration
-		ConfigContext.init(new SimpleConfig());
+		ConfigContext.init(getConfigObject(configType));
 		HttpInvokerConnector httpConnector = new HttpInvokerConnector(new ServiceInfo());
 		HttpClient httpClient = httpConnector.getHttpClient();
 		
@@ -60,13 +76,12 @@ public class HttpInvokerConnectorConfigurationTest extends TestCase {
 		assertEquals(CookiePolicy.RFC_2109, httpClient.getParams().getCookiePolicy());
 		
 		// re-init the core with some of these paramters changed
-		SimpleConfig config = new SimpleConfig();
-		Properties properties = config.getProperties();
-		properties.put("http.connection-manager.max-total", "500");
-		properties.put("http.connection-manager.timeout", "5000");
-		properties.put("http.connection.timeout", "15000");
-		properties.put("http.somerandomproperty", "thisismyproperty");
-		properties.put("http.authentication.preemptive", "false");
+		Config config = getConfigObject(configType);		
+		config.addProperty("http.connection-manager.max-total", "500");
+		config.addProperty("http.connection-manager.timeout", "5000");
+		config.addProperty("http.connection.timeout", "15000");
+		config.addProperty("http.somerandomproperty", "thisismyproperty");
+		config.addProperty("http.authentication.preemptive", "false");
 		ConfigContext.init(config);
 		
 		httpConnector = new HttpInvokerConnector(new ServiceInfo());
@@ -83,9 +98,8 @@ public class HttpInvokerConnectorConfigurationTest extends TestCase {
 		assertFalse(httpClient.getParams().isAuthenticationPreemptive());
 		
 		// do another one that checks that booleans are working properly
-		config = new SimpleConfig();
-		properties = config.getProperties();
-		properties.put("http.authentication.preemptive", "true");
+		config = getConfigObject(configType);		
+		config.addProperty("http.authentication.preemptive", "true");
 		ConfigContext.init(config);
 		
 		httpConnector = new HttpInvokerConnector(new ServiceInfo());
@@ -94,9 +108,8 @@ public class HttpInvokerConnectorConfigurationTest extends TestCase {
 		assertTrue(httpClient.getParams().isAuthenticationPreemptive());
 		
 		// check setting the classname of the connection manager
-		config = new SimpleConfig();
-		properties = config.getProperties();
-		properties.put("http.connection-manager.class", MyHttpConnectionManager.class.getName());
+		config = getConfigObject(configType);		
+		config.addProperty("http.connection-manager.class", MyHttpConnectionManager.class.getName());
 		ConfigContext.init(config);
 		
 		httpConnector = new HttpInvokerConnector(new ServiceInfo());
@@ -108,9 +121,8 @@ public class HttpInvokerConnectorConfigurationTest extends TestCase {
 		// now try setting the retry handler which expects an object that we can't pipe through our
 		// String-based configuration.  This is an illegal parameter to configure and we should
 		// recieve a WorkflowRuntimeException
-		config = new SimpleConfig();
-		properties = config.getProperties();
-		properties.put("http.method.retry-handler", "badparm");
+		config = getConfigObject(configType);		
+		config.addProperty("http.method.retry-handler", "badparm");
 		ConfigContext.init(config);
 		
 		try {

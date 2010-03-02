@@ -6,8 +6,8 @@
 	${varname}
 	${institution}
 -->
+<?xml version="1.0" encoding="UTF-8"?>
 <config>
-
     <param name="config.location">classpath:META-INF/standalone-config-defaults.xml</param>
 
     <!-- default config files -->

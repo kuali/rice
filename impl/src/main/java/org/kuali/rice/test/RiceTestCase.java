@@ -30,15 +30,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.SimpleConfig;
+import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.test.data.PerSuiteUnitTestData;
-import org.kuali.rice.test.data.PerTestUnitTestData;
-import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.lifecycles.PerSuiteDataLoaderLifecycle;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -377,7 +374,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     }
 
     protected Config getTestHarnessConfig() throws Exception {
-        Config config = new SimpleConfig(getConfigLocations(), System.getProperties());
+        Config config = new JAXBConfigImpl(getConfigLocations(), System.getProperties());
         config.parseConfig();
         return config;
     }

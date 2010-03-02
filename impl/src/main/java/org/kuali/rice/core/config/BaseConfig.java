@@ -466,7 +466,7 @@ public abstract class BaseConfig implements Config {
 		}		
 	}
 	
-	public void putProperty(Object key, Object value) {
+	public void putProperty(String key, Object value) {
 		this.getProperties().put(key, value);		
 	}
 	

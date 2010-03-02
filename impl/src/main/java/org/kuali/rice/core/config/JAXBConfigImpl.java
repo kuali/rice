@@ -137,7 +137,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         properties.put(name, value);
     }
    
-	public void putProperty(Object key, Object value) {
+	public void putProperty(String key, Object value) {
 		if(key != null){									
 			this.properties.put(key, value);
 			

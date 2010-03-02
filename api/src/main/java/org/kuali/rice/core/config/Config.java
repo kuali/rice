@@ -278,7 +278,7 @@ public interface Config {
 	public Boolean getOutBoxOn();
 	public Boolean getOutBoxDefaultPreferenceOn();
 	public void putProperties(Properties properties);
-	public void putProperty(Object key, Object value);
+	public void putProperty(String key, Object value);
 	public void removeProperty(String key);
 	public void putObjects(Map<String, Object> objects);
 	public void putObject(String key, Object value);

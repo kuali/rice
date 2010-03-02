@@ -245,9 +245,11 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	public PersistableBusinessObject retrieve(PersistableBusinessObject object) {
 		PersistableBusinessObject pbo = null;
 		Map primaryKeys = MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(object);
-		pbo = (PersistableBusinessObject) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildJpaCriteria(object.getClass(), primaryKeys)).toQuery().getSingleResult();
-		if (pbo != null && pbo.getExtension() != null) {
-			pbo.setExtension((PersistableBusinessObjectExtension) findByPrimaryKey(pbo.getExtension().getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(pbo)));
+		if (!primaryKeys.isEmpty()) {
+			pbo = (PersistableBusinessObject) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildJpaCriteria(object.getClass(), primaryKeys)).toQuery().getSingleResult();
+			if (pbo != null && pbo.getExtension() != null) {
+				pbo.setExtension((PersistableBusinessObjectExtension) findByPrimaryKey(pbo.getExtension().getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(pbo)));
+			}
 		}
 		return pbo;
 	}

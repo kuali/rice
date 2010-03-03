@@ -109,7 +109,7 @@ public class PersistenceDaoJpa implements PersistenceDao {
 				}
 			} else {
 				PersistableBusinessObject pbo = (PersistableBusinessObject) Class.forName(field.getType().getCanonicalName()).newInstance();
-	            Map<String, Object> keys = MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(pbo);
+	            Map<String, Object> keys = MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(o);
 				Field field3 = getField(pbo.getClass(), keys.keySet().iterator().next());
 				field3.setAccessible(true);
 				field3.set(pbo, fkFieldValue);

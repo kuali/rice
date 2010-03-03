@@ -41,7 +41,8 @@ public class MaintenanceLock extends PersistableBusinessObjectBase {
 	@GeneratedValue(generator="KRNS_MAINT_LOCK_S")
 	@GenericGenerator(name="KRNS_MAINT_LOCK_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRNS_MAINT_LOCK_S"),
-			@Parameter(name="value_column",value="id")
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
 	})
     @Column(name="MAINT_LOCK_ID")
     private String lockId;

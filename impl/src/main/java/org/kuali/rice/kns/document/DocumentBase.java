@@ -83,14 +83,14 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     @Id
     @Column(name="DOC_HDR_ID")
     protected String documentNumber;
-    @OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
     protected DocumentHeader documentHeader;
     @Transient
     protected transient PersistableBusinessObject documentBusinessObject; //here for reflection
     
 
-    @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+    @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
     private List<PessimisticLock> pessimisticLocks;
 

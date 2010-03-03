@@ -58,6 +58,7 @@ public class DocumentDaoJpa implements DocumentDao {
     public void save(Document document) throws DataAccessException {
 		Document attachedDoc = findByDocumentHeaderId(document.getClass(),document.getDocumentNumber());
 		if (attachedDoc == null) {
+			entityManager.persist(document.getDocumentHeader());
 			entityManager.persist(document);
 		} else {
 			OrmUtils.reattach(attachedDoc, document);
@@ -73,15 +74,7 @@ public class DocumentDaoJpa implements DocumentDao {
      * @return Document with given id
      */
     public Document findByDocumentHeaderId(Class clazz, String id) throws DataAccessException {
-        List idList = new ArrayList();
-        idList.add(id);
-
-        List documentList = findByDocumentHeaderIds(clazz, idList);
-
-        Document document = null;
-        if ((null != documentList) && (documentList.size() > 0)) {
-            document = (Document) documentList.get(0);
-        }
+        Document document = (Document)entityManager.find(clazz, id);
 
         return document;
     }

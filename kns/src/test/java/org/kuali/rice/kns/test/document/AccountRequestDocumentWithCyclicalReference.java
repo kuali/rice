@@ -26,6 +26,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -53,8 +54,11 @@ public class AccountRequestDocumentWithCyclicalReference extends TransactionalDo
 	@Transient
     private String accountTypeCode;
 
-	
+	@OneToOne(fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
+	@JoinColumn(name="fdoc_nbr",insertable=false,updatable=false)
     private AccountRequestDocumentWithCyclicalReference child;
+	@OneToOne(fetch=FetchType.LAZY,cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
+	@JoinColumn(name="fdoc_nbr",insertable=false,updatable=false)
     private AccountRequestDocumentWithCyclicalReference parent;
     
     @ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})

@@ -5,8 +5,6 @@
  * set the ojbMappingPattern to your project's ojb file name pattern
  **********************************************************************************************/
 
-import java.util.ArrayList;
-
 //def ojbMappingPattern = ~/.*OJB.*repository.*xml/
 def ojbMappingPattern = ~/.*OJB|ojb.*-.*xml/
 //def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken'
@@ -67,7 +65,7 @@ def loadClasses(repositories, classes){
 		classDescriptors.each { 
 			cd -> 
 			//def classDescriptor = new ClassDescriptor()
-			println("********get class:\t" + cd.'@class')
+			//println("********get class:\t" + cd.'@class')
 			classes.add(cd.'@class')
 		}
 	}	
@@ -130,8 +128,11 @@ def removeAnnotatonLine(files){
 							text = text + "\n" + cur.substring("@Transient".length());
 						skip = "false"
 					}
-					
 					else if(cur.endsWith(","))
+					{
+						skip = "true"
+					}
+					else if(cur.contains("@AttributeOverride")) //&& !cur.endsWith("}}"))
 					{
 						skip = "true"
 					}
@@ -147,6 +148,7 @@ def addTransient(files){
 	
 	def javaFile
 	def backupFile
+	def importText = "import javax.persistence.Transient;"
 	
 	files.each{
 		file-> println("************working on file:\t" + file)
@@ -162,13 +164,16 @@ def addTransient(files){
 				if((cur.endsWith(";")) && (cur.startsWith("private") || cur.startsWith("protected")))
 				{
 					def pre = (lines.get(lines.indexOf(line) - 1)).toString().trim();
-					if(!pre.startsWith("@") && !pre.endsWith(")") && !pre.endsWith(",")){
-						text = text + "\n" + "@Transient";
+					if(!pre.startsWith("@") && !pre.endsWith(")") && !pre.endsWith(",") && !cur.contains(" static ")){
+						text = text + "\n\t" + "@Transient";
 						println("adding annotation @Transient to**********\n\t " + cur);
 					}
 				}
 				text = text + "\n" + line; 
-				}
+			}
+			if (!text.contains(importText)) {
+				text = text.replaceFirst("package.*;", "\$0\n" + importText)
+			}
 			GlobalRes.conversion_util.generateFile(file, text);
 		}
 	}

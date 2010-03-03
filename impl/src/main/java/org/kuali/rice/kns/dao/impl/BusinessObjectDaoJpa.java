@@ -32,6 +32,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -215,8 +216,23 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#delete(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
 	public void delete(PersistableBusinessObject bo) {
-		// TODO: Check for an extension object and delete it if exists
-		entityManager.remove(entityManager.merge(bo));		
+		PersistableBusinessObject realPBO = (PersistableBusinessObject)ObjectUtils.materializeObject(bo);
+		if (realPBO != null) {
+			if (realPBO.getExtension() != null) {
+				PersistableBusinessObjectExtension boExtension = realPBO.getExtension();
+				if (!entityManager.contains(boExtension)) {
+					// TODO do find here; why bother removing if it never got saved at all and isn't in the manager now?
+					boExtension = entityManager.merge(boExtension);
+				}
+				entityManager.remove(bo.getExtension());
+			}
+			PersistableBusinessObject mergedBO = realPBO;
+			if (!entityManager.contains(realPBO)) {
+				// TODO do find here; why bother removing if it never got saved at all and isn't in the manager now?
+				mergedBO = entityManager.merge(realPBO);
+			}
+			entityManager.remove(mergedBO);
+		}
 	}
 
 	/**

@@ -67,6 +67,24 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 		} catch (PersistenceException e) {}
 		return bo;
 	}
+	
+	/**
+	 * Retrieves an object, based on its PK object
+	 * 
+	 * @param clazz the class of the object to retrieve
+	 * @param pkObject the value of the primary key
+	 * @return the retrieved PersistableBusinessObject
+	 */
+	public PersistableBusinessObject findByPrimaryKeyUsingKeyObject(Class clazz, Object pkObject) { 
+		if (pkObject == null) {
+			return null;
+		}
+		PersistableBusinessObject bo = null;
+		try {
+			bo = (PersistableBusinessObject) entityManager.find(clazz, pkObject);
+		} catch (PersistenceException e) {}
+		return bo;
+	}
 
 	/**
 	 * Retrieves all of the records for a given class name.
@@ -219,19 +237,16 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 		PersistableBusinessObject realPBO = (PersistableBusinessObject)ObjectUtils.materializeObject(bo);
 		if (realPBO != null) {
 			if (realPBO.getExtension() != null) {
-				PersistableBusinessObjectExtension boExtension = realPBO.getExtension();
-				if (!entityManager.contains(boExtension)) {
-					// TODO do find here; why bother removing if it never got saved at all and isn't in the manager now?
-					boExtension = entityManager.merge(boExtension);
+				delete(realPBO.getExtension());
+			}
+			if (entityManager.contains(realPBO)) {
+				entityManager.remove(realPBO);
+			} else {
+				final PersistableBusinessObject foundBO = (PersistableBusinessObject)entityManager.find(realPBO.getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(realPBO));
+				if (foundBO != null) {
+					entityManager.remove(foundBO);
 				}
-				entityManager.remove(bo.getExtension());
 			}
-			PersistableBusinessObject mergedBO = realPBO;
-			if (!entityManager.contains(realPBO)) {
-				// TODO do find here; why bother removing if it never got saved at all and isn't in the manager now?
-				mergedBO = entityManager.merge(realPBO);
-			}
-			entityManager.remove(mergedBO);
 		}
 	}
 
@@ -240,9 +255,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 */
 	public void delete(List<? extends PersistableBusinessObject> boList) {
 		for (PersistableBusinessObject bo : boList) {
-			// Rice JPA MetadataManager
-			// TODO: Check for an extension object and delete it if exists
-			entityManager.remove(entityManager.merge(bo));
+			delete(bo);
 		}
 	}
 
@@ -260,11 +273,11 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 */
 	public PersistableBusinessObject retrieve(PersistableBusinessObject object) {
 		PersistableBusinessObject pbo = null;
-		Map primaryKeys = MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(object);
-		if (!primaryKeys.isEmpty()) {
-			pbo = (PersistableBusinessObject) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildJpaCriteria(object.getClass(), primaryKeys)).toQuery().getSingleResult();
+		Object pkObject = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(object);
+		if (pkObject != null) {
+			pbo = (PersistableBusinessObject) entityManager.find(object.getClass(), pkObject);
 			if (pbo != null && pbo.getExtension() != null) {
-				pbo.setExtension((PersistableBusinessObjectExtension) findByPrimaryKey(pbo.getExtension().getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(pbo)));
+				pbo.setExtension((PersistableBusinessObjectExtension) entityManager.find(pbo.getExtension().getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyObjectWithValuesForExtension(pbo, pbo.getExtension())));
 			}
 		}
 		return pbo;

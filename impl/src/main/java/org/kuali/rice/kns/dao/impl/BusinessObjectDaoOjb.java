@@ -272,6 +272,14 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     }
 
     /**
+	 * OJB does not support this method
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class, java.lang.Object)
+	 */
+	public PersistableBusinessObject findByPrimaryKeyUsingKeyObject(Class clazz, Object pkObject) {
+		throw new UnsupportedOperationException("OJB does not support this option");
+	}
+
+	/**
      * This method will build out criteria in the key-value paradigm (attribute-value).
      * 
      * @param fieldValues

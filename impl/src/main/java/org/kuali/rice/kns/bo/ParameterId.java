@@ -37,6 +37,8 @@ public class ParameterId implements Serializable {
     private String parameterDetailTypeCode;
     @Column(name="PARM_NM")
     private String parameterName;
+    @Column(name="APPL_NMSPC_CD")
+    private String parameterApplicationNamespaceCode;
 
     public ParameterId() {}
 
@@ -45,17 +47,19 @@ public class ParameterId implements Serializable {
     public String getParameterDetailTypeCode() { return parameterDetailTypeCode; }
 
     public String getParameterName() { return parameterName; }
+    
+    public String getParameterApplicationNamespaceCode() { return parameterApplicationNamespaceCode; }
 
     public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof ParameterId)) return false;
         if (o == null) return false;
         ParameterId pk = (ParameterId) o;
-        return getParameterNamespaceCode() != null && getParameterDetailTypeCode() != null && getParameterNamespaceCode().equals(pk.getParameterNamespaceCode()) && getParameterDetailTypeCode().equals(pk.getParameterDetailTypeCode());        
+        return getParameterNamespaceCode() != null && getParameterDetailTypeCode() != null && getParameterApplicationNamespaceCode() != null && getParameterNamespaceCode().equals(pk.getParameterNamespaceCode()) && getParameterDetailTypeCode().equals(pk.getParameterDetailTypeCode()) && getParameterApplicationNamespaceCode().equals(pk.getParameterApplicationNamespaceCode());        
     }
 
     public int hashCode() {
-    	return new HashCodeBuilder().append(parameterDetailTypeCode).append(parameterNamespaceCode).toHashCode();
+    	return new HashCodeBuilder().append(parameterDetailTypeCode).append(parameterNamespaceCode).append(parameterApplicationNamespaceCode).toHashCode();
 	}
 }
 

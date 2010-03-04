@@ -91,6 +91,154 @@ public class MetadataManager {
 		return pks;
 	}
 	
+	/**
+	 * Retrieves the primary key as an object for the given Object (which is assumed to be a JPA entity).  If the entity has a single field
+	 * primary key, the value of that field is returned.  If a composite key is needed, it will be constructed and populated with the correct
+	 * values.  If a problem occurs, a null will be returned
+	 * 
+	 * @param object the object to get a primary key value from
+	 * @return a primary key value
+	 */
+	public static Object getPersistableBusinessObjectPrimaryKeyObject(Object object) {
+		final EntityDescriptor descriptor = getEntityDescriptor(object.getClass());
+		final Class idClass = descriptor.getIdClass();
+		if (idClass != null) {
+			try {
+				Object pkObject = idClass.newInstance();
+				
+				for (FieldDescriptor fieldDescriptor : descriptor.getPrimaryKeys()) {
+					Field field = getField(object.getClass(), fieldDescriptor.getName());
+					field.setAccessible(true);
+					final Object value = field.get(object);
+					if (value != null) {
+						final Field fieldToSet = getField(pkObject.getClass(), fieldDescriptor.getName());
+						fieldToSet.setAccessible(true);
+						fieldToSet.set(pkObject, value);
+					}
+				}
+				
+				return pkObject;
+			} catch (SecurityException se) {
+				LOG.error(se.getMessage(), se);
+			} catch (InstantiationException ie) {
+				LOG.error(ie.getMessage(), ie);
+			} catch (IllegalAccessException iae) {
+				LOG.error(iae.getMessage(), iae);
+			} catch (NoSuchFieldException nsfe) {
+				LOG.error(nsfe.getMessage(), nsfe);
+			}
+		} else {
+			for (FieldDescriptor fieldDescriptor : descriptor.getPrimaryKeys()) {
+				try {
+					Field field = getField(object.getClass(), fieldDescriptor.getName());
+					field.setAccessible(true);
+					final Object value = field.get(object);
+					return value;  // there's only one value, let's kick out
+				} catch (Exception e) {
+					LOG.error(e.getMessage(), e);
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Retrieves the primary key as an object for the given Object (which is assumed to be a JPA entity), filling it with values from the extension.
+	 * If the entity has a single field primary key, the value of that field from the extension is returned.  If a composite key is needed, it will be 
+	 * constructed (based on the id class for the extension object) and populated with the correct values from the extension.  If a problem occurs, 
+	 * a null will be returned.
+	 * 
+	 * @param owner the object to get values from
+	 * @param extension the object to build a key for
+	 * @return a primary key value
+	 */
+	public static Object getPersistableBusinessObjectPrimaryKeyObjectWithValuesForExtension(Object owner, Object extension) {
+		final EntityDescriptor descriptor = getEntityDescriptor(extension.getClass());
+		final Class idClass = descriptor.getIdClass();
+		if (idClass != null) {
+			try {
+				Object pkObject = idClass.newInstance();
+				
+				for (FieldDescriptor fieldDescriptor : descriptor.getPrimaryKeys()) {
+					Field field = getField(owner.getClass(), fieldDescriptor.getName());
+					field.setAccessible(true);
+					final Object value = field.get(owner);
+					if (value != null) {
+						final Field fieldToSet = getField(pkObject.getClass(), fieldDescriptor.getName());
+						fieldToSet.setAccessible(true);
+						fieldToSet.set(pkObject, value);
+					}
+				}
+				
+				return pkObject;
+			} catch (SecurityException se) {
+				LOG.error(se.getMessage(), se);
+			} catch (InstantiationException ie) {
+				LOG.error(ie.getMessage(), ie);
+			} catch (IllegalAccessException iae) {
+				LOG.error(iae.getMessage(), iae);
+			} catch (NoSuchFieldException nsfe) {
+				LOG.error(nsfe.getMessage(), nsfe);
+			}
+		} else {
+			for (FieldDescriptor fieldDescriptor : descriptor.getPrimaryKeys()) {
+				try {
+					Field field = getField(owner.getClass(), fieldDescriptor.getName());
+					field.setAccessible(true);
+					final Object value = field.get(owner);
+					return value;  // there's only one value, let's kick out
+				} catch (Exception e) {
+					LOG.error(e.getMessage(), e);
+				}
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * This converts a map of primary keys into an object: in the case of a single key, just the value object iself; in the case of a composite key,
+	 * the correct composite key object populated with the values from the map
+	 * @param entityClazz the class of the entity the pkMap was for
+	 * @param pkMap the map of primary key fields and values
+	 * @return the correct primary key object
+	 */
+	public static Object convertPrimaryKeyMapToObject(Class entityClazz, Map<String, Object> pkMap) {
+		if (pkMap.isEmpty()) {
+			return null;
+		}
+		
+		final EntityDescriptor descriptor = getEntityDescriptor(entityClazz);
+		final Class idClass = descriptor.getIdClass();
+		
+		if (idClass == null) {
+			if (pkMap.size() != 1) {
+				throw new IllegalArgumentException("pkMap has a size of "+pkMap.size()+"; but since entityClazz does not have a composite primary key, the size should be 1");
+			}
+			for (String key : pkMap.keySet()) {
+				return pkMap.get(key);
+			}
+		} else {
+			try {
+				Object pkObject = idClass.newInstance();
+				for (String key : pkMap.keySet()) {
+					Field field = getField(idClass, key);
+					field.setAccessible(true);
+					field.set(pkObject, pkMap.get(key));
+				}
+				return pkObject;
+			} catch (InstantiationException ie) {
+				throw new RuntimeException("Could not convert primary key map to composite key object", ie);
+			} catch (IllegalAccessException iae) {
+				throw new RuntimeException("Could not convert primary key map to composite key object", iae);
+			} catch (NoSuchFieldException nsfe) {
+				throw new RuntimeException("Could not convert primary key map to composite key object", nsfe);
+			}
+		}
+		return null;// I don't believe this code is reachable, but...you never know
+	}
+	
 	private static Field getField(Class clazz, String name) throws NoSuchFieldException {
 		if (clazz.equals(Object.class)) {
 			throw new NoSuchFieldException(name);
@@ -140,7 +288,7 @@ public class MetadataManager {
 			entityDescriptor.setTable(defaultName);
 		}
 		if (clazz.isAnnotationPresent(IdClass.class)) {
-			entityDescriptor.setIdClass(clazz.getAnnotation(IdClass.class).getClass());
+			entityDescriptor.setIdClass(((IdClass)clazz.getAnnotation(IdClass.class)).value());
 		}
 		if (clazz.isAnnotationPresent(Sequence.class)) {
 			entityDescriptor.setSequence((Sequence)clazz.getAnnotation(Sequence.class));

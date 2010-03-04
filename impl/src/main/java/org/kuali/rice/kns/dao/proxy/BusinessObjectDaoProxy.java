@@ -202,6 +202,14 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	}
 
 	/**
+	 * Defers to correct DAO for this class
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findByPrimaryKeyUsingKeyObject(java.lang.Class, java.lang.Object)
+	 */
+	public PersistableBusinessObject findByPrimaryKeyUsingKeyObject(Class clazz, Object pkObject) {
+		return getDao(clazz).findByPrimaryKeyUsingKeyObject(clazz, pkObject);
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#save(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
 	public PersistableBusinessObject save(PersistableBusinessObject bo) {

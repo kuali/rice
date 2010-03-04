@@ -60,6 +60,15 @@ public interface BusinessObjectDao {
      * @return
      */
     public PersistableBusinessObject findByPrimaryKey(Class clazz, Map primaryKeys);
+    
+    /**
+	 * Retrieves an object, based on its PK object
+	 * 
+	 * @param clazz the class of the object to retrieve
+	 * @param pkObject the value of the primary key
+	 * @return the retrieved PersistableBusinessObject
+	 */
+	public abstract PersistableBusinessObject findByPrimaryKeyUsingKeyObject(Class clazz, Object pkObject);
 
     /**
      * Retrieves an object instance identified by the class of the given object and the object's primary key values.

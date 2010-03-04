@@ -64,5 +64,39 @@ public class BusinessObjectServiceTest extends KNSTestCase {
 
         businessObjectService.save(am);
     }
+    
+    /**
+     * Checks that a business object can be correctly retrieved through BusinessObjectService#retrieve
+     */
+    @Test
+    public void testRetrieve() {
+    	BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
+    	
+    	AccountManager manager = new AccountManager();
+    	manager.setUserName("mgorilla");
+    	List<Account> accounts = new ArrayList<Account>();
+    	Account account1 = new Account();
+    	account1.setNumber("MG1");
+    	account1.setName("Manilla Gorilla Account");
+    	account1.setAccountManager(manager);
+    	accounts.add(account1);
+    	manager.setAccounts(accounts);
+    	
+    	manager = (AccountManager)businessObjectService.save(manager);
+    	
+    	AccountManager manager2 = (AccountManager)businessObjectService.retrieve(manager);
+    	assertNotNull("manager2 should not be null", manager2);
+    	assertEquals("manager2 should have the same user name as manager", manager.getUserName(), manager2.getUserName());
+    	
+    	AccountManager manager3 = new AccountManager();
+    	manager3.setAmId(manager.getAmId());
+    	manager2 = (AccountManager)businessObjectService.retrieve(manager3);
+    	assertNotNull("manager2 should not be null", manager2);
+    	assertEquals("manager2 should have the same user name as manager", manager.getUserName(), manager2.getUserName());
+    	
+    	manager3.setAmId(-99L);
+    	manager2 = (AccountManager)businessObjectService.retrieve(manager3);
+    	assertNull("manager2 should be null", manager2);
+    }
 
 }

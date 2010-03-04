@@ -20,12 +20,15 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.reference.EmailType;
@@ -59,7 +62,7 @@ public class KimEntityEmailImpl extends KimDefaultableEntityDataBase implements 
 	@Column(name = "EMAIL_ADDR")
 	protected String emailAddress;
 
-	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch=FetchType.LAZY, cascade={})
 	@JoinColumn(name = "EMAIL_TYP_CD", insertable = false, updatable = false)
 	protected EmailType emailType;
 	

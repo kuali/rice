@@ -19,8 +19,12 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 
 /**
@@ -29,6 +33,16 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 @Entity
 @Table(name="KRIM_GRP_ATTR_DATA_T")
 public class GroupAttributeDataImpl extends KimAttributeDataImpl {
+	@Id
+	@GeneratedValue(generator="KRSB_SVC_DEF_S")
+	@GenericGenerator(name="KRSB_SVC_DEF_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRSB_SVC_DEF_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
+	@Column(name="ATTR_DATA_ID")
+	protected String attributeDataId;
+	
     @Column(name="GRP_ID")
     protected String groupId;
 

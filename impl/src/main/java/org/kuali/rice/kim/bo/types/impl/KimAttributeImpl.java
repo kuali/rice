@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -42,6 +43,7 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase {
 	protected String namespaceCode;
 	@Column(name="LBL")
 	protected String attributeLabel;
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active;
 	@Column(name="CMPNT_NM")

@@ -30,6 +30,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -63,6 +64,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	protected String name;
 	@Column(name="DESC_TXT", length=400)
 	protected String description;
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active;
 	
@@ -73,7 +75,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	@Column(name="PERM_TMPL_ID")
 	protected String templateId;
 	
-	@OneToOne(targetEntity=KimPermissionTemplateImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToOne(targetEntity=KimPermissionTemplateImpl.class,cascade={},fetch=FetchType.LAZY)
     @JoinColumn(name="PERM_TMPL_ID", insertable=false, updatable=false)
 	protected KimPermissionTemplateImpl template;
 

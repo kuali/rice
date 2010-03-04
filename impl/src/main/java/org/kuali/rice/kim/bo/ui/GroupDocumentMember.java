@@ -19,11 +19,14 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -32,11 +35,18 @@ import org.kuali.rice.kim.util.KimConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(GroupDocumentMemberId.class)
 @Entity
 @Table(name="KRIM_PND_GRP_MBR_T")
 public class GroupDocumentMember extends KimDocumentBoBase {
 
 	@Id
+	@GeneratedValue(generator="KRIM_PND_GRP_MBR_T")
+	@GenericGenerator(name="KRIM_PND_GRP_MBR_T",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_PND_GRP_MBR_T"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name="GRP_MBR_ID")
 	protected String groupMemberId;
 

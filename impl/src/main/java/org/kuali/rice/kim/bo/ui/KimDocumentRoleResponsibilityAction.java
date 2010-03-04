@@ -17,6 +17,16 @@ package org.kuali.rice.kim.bo.ui;
 
 import java.util.LinkedHashMap;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
@@ -30,16 +40,35 @@ import org.kuali.rice.kns.util.ObjectUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(KimDocumentRoleResponsibilityActionId.class)
+@Entity
+@Table(name="KRIM_PND_ROLE_RSP_ACTN_MT")
 public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	private static final long serialVersionUID = 696663543888096105L;
+	@Id
+	@GeneratedValue(generator="KRIM_ROLE_RSP_ACTN_ID_S")
+	@GenericGenerator(name="KRIM_ROLE_RSP_ACTN_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ROLE_RSP_ACTN_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
+	@Column(name="ROLE_RSP_ACTN_ID")
 	protected String roleResponsibilityActionId;
+	@Column(name="ROLE_RSP_ID")
 	protected String roleResponsibilityId;
+	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
+	@Column(name="ACTN_TYP_CD")
 	protected String actionTypeCode;
+	@Column(name="ACTN_PLCY_CD")
 	protected String actionPolicyCode;
+	@Column(name="PRIORITY_NBR")
 	protected Integer priorityNumber;
+	@Column(name="FRC_ACTN")
 	protected boolean forceAction;
+	@Transient
 	protected KimResponsibilityImpl kimResponsibility;
+	@Transient
 	protected RoleResponsibilityImpl roleResponsibility;
 	
 	/*{

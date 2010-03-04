@@ -26,6 +26,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -46,10 +47,11 @@ public class KimTypeAttributeImpl extends PersistableBusinessObjectBase {
 	protected String kimAttributeId;
 	@Column(name="SORT_CD")
 	protected String sortCode;
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active; 	 
 	
-	@OneToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@OneToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.LAZY, cascade = { })
 	@JoinColumn(name = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
 	protected KimAttributeImpl kimAttribute;
 	

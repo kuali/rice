@@ -16,10 +16,13 @@
 package org.kuali.rice.kim.bo.ui;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 
 /**
@@ -33,6 +36,12 @@ public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoBas
 
 	private static final long serialVersionUID = -1512640359333185819L;
 	@Id
+	@GeneratedValue(generator="KRIM_ATTR_DATA_ID_S")
+	@GenericGenerator(name="KRIM_ATTR_DATA_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ATTR_DATA_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name = "ATTR_DATA_ID")
 	private String attrDataId;
 	@Column(name = "KIM_TYP_ID")
@@ -44,7 +53,7 @@ public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoBas
 	private KimAttributeImpl kimAttribute;
 	@Transient
 	private String qualifierKey;
-
+	@Transient
 	private Boolean unique;
 	
 	/**

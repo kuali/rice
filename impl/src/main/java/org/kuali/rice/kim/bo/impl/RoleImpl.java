@@ -27,6 +27,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -70,16 +71,27 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
 	protected List<RoleMemberImpl> members = new TypedArrayList(RoleMemberImpl.class);
 
+	@Transient
 	protected String principalName;
+	@Transient
 	protected String groupNamespaceCode;
+	@Transient
 	protected String groupName;
+	@Transient
 	protected String permNamespaceCode;
+	@Transient
 	protected String permName;
+	@Transient
 	protected String permTmplNamespaceCode;
+	@Transient
 	protected String permTmplName;
+	@Transient
 	protected String respNamespaceCode;
+	@Transient
 	protected String respName;
+	@Transient
 	protected String respTmplNamespaceCode;
+	@Transient
 	protected String respTmplName;
 	
 	/**

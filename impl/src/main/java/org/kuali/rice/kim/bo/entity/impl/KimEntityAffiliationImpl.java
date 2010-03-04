@@ -20,11 +20,14 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.reference.AffiliationType;
 import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
@@ -51,7 +54,7 @@ public class KimEntityAffiliationImpl extends KimDefaultableEntityDataBase imple
 	@Column(name = "CAMPUS_CD")
 	protected String campusCode;
 
-	@ManyToOne(targetEntity=AffiliationTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=AffiliationTypeImpl.class, fetch=FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "AFLTN_TYP_CD", insertable = false, updatable = false)
 	protected AffiliationType affiliationType;
 

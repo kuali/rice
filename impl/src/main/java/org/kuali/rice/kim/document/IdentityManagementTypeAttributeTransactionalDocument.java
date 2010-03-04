@@ -18,6 +18,8 @@ package org.kuali.rice.kim.document;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
@@ -40,12 +42,15 @@ import org.kuali.rice.kns.service.SequenceAccessorService;
 public class IdentityManagementTypeAttributeTransactionalDocument extends IdentityManagementKimDocument {
 
 	protected static final long serialVersionUID = -9064436454008712125L;
-	
+	@Transient
 	protected transient KimTypeService kimTypeService;
+	@Transient
 	protected KimTypeInfo kimType;
+	@Transient
 	protected List<? extends KimAttributes> attributes;
-	
+	@Transient
 	protected transient AttributeDefinitionMap definitions;
+	@Transient
 	protected transient Map<String,Object> attributeEntry;
 	
 	/**

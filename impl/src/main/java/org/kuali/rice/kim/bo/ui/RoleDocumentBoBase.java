@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
@@ -39,6 +40,7 @@ public class RoleDocumentBoBase  extends PersistableBusinessObjectBase {
 	@Type(type="yes_no")
 	@Column(name="EDIT_FLAG")
     protected boolean edit;
+	@Transient
 	protected IdentityManagementRoleDocument roleDocument;
 
 	/**

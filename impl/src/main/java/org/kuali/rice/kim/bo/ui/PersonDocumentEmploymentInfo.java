@@ -20,17 +20,21 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.reference.EmploymentStatus;
 import org.kuali.rice.kim.bo.reference.EmploymentType;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
@@ -39,10 +43,17 @@ import org.kuali.rice.kns.util.KualiDecimal;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(PersonDocumentEmploymentInfoId.class)
 @Entity
 @Table(name = "KRIM_PND_EMP_INFO_MT")
 public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 	@Id
+	@GeneratedValue(generator="KRIM_ENTITY_EMP_ID_S")
+	@GenericGenerator(name="KRIM_ENTITY_EMP_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ENTITY_EMP_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name = "ENTITY_EMP_ID")
 	protected String entityEmploymentId;
 
@@ -70,14 +81,14 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 	@Column(name="PRMRY_IND")
 	protected boolean primary;
 
-	@ManyToOne(targetEntity=EmploymentTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EmploymentTypeImpl.class, fetch = FetchType.LAZY, cascade = {})
 	@JoinColumn(name = "EMP_TYP_CD", insertable = false, updatable = false)
 	protected EmploymentType employmentType;
 
-	@ManyToOne(targetEntity=EmploymentStatusImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EmploymentStatusImpl.class, fetch = FetchType.LAZY, cascade = {})
 	@JoinColumn(name = "EMP_STAT_CD", insertable = false, updatable = false)
 	protected EmploymentStatus employmentStatus;
-	
+	@Transient
 	protected PersonDocumentAffiliation affiliation;
 	
 	public PersonDocumentEmploymentInfo() {

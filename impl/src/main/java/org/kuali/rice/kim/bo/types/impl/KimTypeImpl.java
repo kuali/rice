@@ -30,6 +30,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -55,6 +56,7 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 	protected String namespaceCode;
 	@Column(name="SRVC_NM")
 	protected String kimTypeServiceName;
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active;
 

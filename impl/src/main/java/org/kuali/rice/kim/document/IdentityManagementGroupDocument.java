@@ -23,15 +23,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -67,6 +67,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	protected String groupNamespace;
 	@Column(name="GRP_NM")
 	protected String groupName;
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active = true;
 
@@ -74,10 +75,12 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	protected boolean editing;
 
 	@OneToMany(targetEntity = GroupDocumentMember.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    @JoinColumn(name="FDOC_NBR")
+    @IndexColumn(name="GRP_MBR_ID")
+	@JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
 	private List<GroupDocumentMember> members = new TypedArrayList(GroupDocumentMember.class);
 	@OneToMany(targetEntity = GroupDocumentQualifier.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@JoinColumn(name="FDOC_NBR")
+	@IndexColumn(name="ATTR_DATA_ID")
+	@JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
 	private List<GroupDocumentQualifier> qualifiers = new TypedArrayList(GroupDocumentQualifier.class);
 
 	public IdentityManagementGroupDocument() {

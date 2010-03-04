@@ -19,10 +19,13 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -38,6 +41,12 @@ public class KimEntityEthnicityImpl extends KimEntityDataBase implements KimEnti
 	private static final long serialVersionUID = 4870141334376945160L;
 
 	@Id
+	@GeneratedValue(generator="KRIM_ENTITY_ETHNIC_ID_S")
+	@GenericGenerator(name="KRIM_ENTITY_ETHNIC_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ENTITY_ETHNIC_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})	
 	@Column(name = "ID")
 	protected String id;
 

@@ -28,6 +28,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.IndexColumn;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
@@ -53,19 +54,23 @@ public class KimEntityEntityTypeImpl extends KimInactivatableEntityDataBase impl
 	@Column(name = "ENT_TYP_CD")
 	protected String entityTypeCode;
 	 
-	@ManyToOne(targetEntity = EntityTypeImpl.class, fetch = FetchType.LAZY, cascade = {})
-	@JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)
+	@ManyToOne(targetEntity = EntityTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@IndexColumn(name="ENT_TYP_CD")
+	//@JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)
 	protected EntityType entityType;
 	
-	@OneToMany(targetEntity = KimEntityEmailImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityEmailImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@IndexColumn(name="ENTITY_EMAIL_ID")
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityEmail> emailAddresses = new TypedArrayList(KimEntityEmailImpl.class);
 	
-	@OneToMany(targetEntity = KimEntityPhoneImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityPhoneImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@IndexColumn(name="ENTITY_PHONE_ID")
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityPhone> phoneNumbers = new TypedArrayList(KimEntityPhoneImpl.class);
 	
-	@OneToMany(targetEntity = KimEntityAddressImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityAddressImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	//@IndexColumn(name="ENTITY_ADDR_ID")
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityAddress> addresses = new TypedArrayList(KimEntityAddressImpl.class);
 	

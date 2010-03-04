@@ -17,10 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.IdClass;
 
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 
@@ -30,20 +27,22 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+/* 
+@IdClass(PersonDocumentExternalIdId.class)
 @Entity
-@Table(name = "KRIM_PND_EXT_ID_MT")
+@Table(name = "KRIM_PND_EXT_ID_MT") */
 public class PersonDocumentExternalId extends KimDocumentBoBase{
 	
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@Column(name = "ENTITY_EXT_ID_ID")
+/*	@Id
+	@Column(name = "ENTITY_EXT_ID_ID") */
 	protected String entityExternalIdentifierId;
 	
-	@Column(name = "EXT_ID_TYP_CD")
+	//@Column(name = "EXT_ID_TYP_CD")
 	protected String externalIdentifierTypeCode;
 
-	@Column(name = "EXT_ID")
+	//@Column(name = "EXT_ID")
 	protected String externalId;
 	
 	protected ExternalIdentifierType externalIdentifierType;

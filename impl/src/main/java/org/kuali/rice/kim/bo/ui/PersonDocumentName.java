@@ -21,11 +21,15 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.reference.EntityNameType;
 import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -36,11 +40,18 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(PersonDocumentNameId.class)
 @Entity
-@Table(name = "KRIM_PND_NM_T")
+@Table(name = "KRIM_PND_NM_MT")
 public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 
 	@Id
+	@GeneratedValue(generator="KRIM_ENTITY_NM_ID_S")
+	@GenericGenerator(name="KRIM_ENTITY_NM_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ENTITY_NM_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name = "ENTITY_NM_ID")
 	protected String entityNameId;
 
@@ -65,7 +76,7 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	@Column(name = "SUFFIX_NM")
 	protected String suffix;
 	
-	@ManyToOne(targetEntity=EntityNameTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EntityNameTypeImpl.class, fetch = FetchType.LAZY, cascade = {})
 	@JoinColumn(name = "NM_TYP_CD", insertable = false, updatable = false)
 	protected EntityNameType entityNameType;
 

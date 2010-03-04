@@ -85,7 +85,7 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	private List<Person> memberPersons;
 	@Transient
 	private List<GroupInfo> memberGroups;
-
+	@Transient
 	protected AttributeSet attributes;
 	
 	/**

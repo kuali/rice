@@ -17,7 +17,6 @@ package org.kuali.rice.kim.bo.role.impl;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,6 +25,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.RoleResponsibility;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -36,7 +36,6 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 @Entity
 @Table(name="KRIM_ROLE_RSP_T")
 public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implements RoleResponsibility {
-
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -46,10 +45,11 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 	protected String roleId;
 	@Column(name="RSP_ID")
 	protected String responsibilityId;
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active;
 	
-	@OneToOne(targetEntity=KimResponsibilityImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToOne(targetEntity=KimResponsibilityImpl.class, fetch = FetchType.LAZY, cascade = { })
 	@JoinColumn(name = "RSP_ID", insertable = false, updatable = false)
 	protected KimResponsibilityImpl kimResponsibility;
 

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import javax.persistence.Column;
 import javax.persistence.Id;
 
 import org.kuali.rice.kns.bo.CompositePrimaryKeyBase;

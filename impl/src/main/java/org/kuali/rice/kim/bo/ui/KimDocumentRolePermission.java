@@ -19,29 +19,41 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@IdClass(KimDocumentRolePermissionId.class)
 @Entity
 @Table(name="KRIM_PND_ROLE_PERM_T")
 public class KimDocumentRolePermission extends KimDocumentBoBase {
 
 	private static final long serialVersionUID = 1L;
 	@Id
+	@GeneratedValue(generator="KRIM_ROLE_PERM_ID_S")
+	@GenericGenerator(name="KRIM_ROLE_PERM_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ROLE_PERM_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name="ROLE_PERM_ID")
 	protected String rolePermissionId;
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	@Column(name="PERM_ID")
 	protected String permissionId;
-	
+	@Transient
 	protected KimPermissionInfo kimPermission;
 	
 	public String getPermissionId() {

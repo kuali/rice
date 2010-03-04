@@ -19,12 +19,25 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
 import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
+import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -33,12 +46,19 @@ import org.kuali.rice.kns.util.ObjectUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(PersonDocumentAffiliationId.class)
 @Entity
 @Table(name = "KRIM_PND_AFLTN_MT")
 public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(generator="KRIM_ENTITY_AFLTN_ID_S")
+	@GenericGenerator(name="KRIM_ENTITY_AFLTN_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ENTITY_AFLTN_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name = "ENTITY_AFLTN_ID")
 	protected String entityAffiliationId;
 
@@ -48,8 +68,16 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	@Column(name = "CAMPUS_CD")
 	protected String campusCode;
 
+	@ManyToOne(targetEntity=AffiliationTypeImpl.class, fetch = FetchType.LAZY, cascade = {})
+	@JoinColumn(name = "AFLTN_TYP_CD", insertable = false, updatable = false)
 	protected AffiliationTypeImpl affiliationType;
+	@Transient
 	protected PersonDocumentEmploymentInfo newEmpInfo;
+	//currently mapped as manyToMany even though it is technically a OneToMany
+	//The reason for this is it is linked with a partial Composite-id, which technically can't 
+	//guarantee uniqueness.
+	@ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE},fetch=FetchType.EAGER)
+	@JoinColumn(name="ENTITY_AFLTN_ID", insertable=false, updatable=false)
 	protected List<PersonDocumentEmploymentInfo> empInfos;
 
 	public PersonDocumentAffiliation() {

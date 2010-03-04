@@ -19,10 +19,15 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -55,8 +60,11 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	
+	@OneToMany(targetEntity=RoleMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+    @JoinColumn(name="ROLE_MBR_ID", insertable=false, updatable=false)
 	protected List<RoleMemberAttributeDataImpl> attributes = new TypedArrayList(RoleMemberAttributeDataImpl.class);
 	
+	@Transient
 	protected List <RoleResponsibilityActionImpl> roleRspActions;
 	
 	public String getRoleMemberId() {

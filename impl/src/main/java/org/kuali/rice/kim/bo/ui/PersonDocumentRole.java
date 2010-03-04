@@ -29,6 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -51,8 +52,9 @@ import org.kuali.rice.kns.util.TypedArrayList;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@IdClass(org.kuali.rice.kim.bo.ui.PersonDocumentRoleId.class)
+
 @Entity
+@IdClass(org.kuali.rice.kim.bo.ui.PersonDocumentRoleId.class)
 @Table(name="KRIM_PND_ROLE_MT")
 public class PersonDocumentRole extends KimDocumentBoBase {
     private static final Logger LOG = Logger.getLogger(PersonDocumentRole.class);
@@ -76,18 +78,22 @@ public class PersonDocumentRole extends KimDocumentBoBase {
 	protected transient AttributeDefinitionMap definitions;
 	@Transient
 	protected transient Map<String,Object> attributeEntry;
-	@OneToMany(targetEntity=KimDocumentRoleMember.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
     @JoinColumns({
-		@JoinColumn(name="role_id",insertable=false,updatable=false),
-		@JoinColumn(name="fdoc_nbr", insertable=false, updatable=false)
+		@JoinColumn(name="ROLE_ID",insertable=false,updatable=false),
+		@JoinColumn(name="FDOC_NBR", insertable=false, updatable=false)
 	})
 	protected List<KimDocumentRoleMember> rolePrncpls;
 	@Transient
     protected KimDocumentRoleMember newRolePrncpl;
-	@OneToMany(targetEntity=RoleResponsibilityImpl.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
-    @JoinColumn(name="role_id",insertable=false,updatable=false)
+	//currently mapped as manyToMany even though it is technically a OneToMany
+	//The reason for this is it is linked with a partial Composite-id, which technically can't 
+	//guarantee uniqueness.  
+	@ManyToMany(fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @JoinColumn(name="ROLE_ID",insertable=false,updatable=false)
 	protected List<RoleResponsibilityImpl> assignedResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 
+	@Transient
     protected boolean isEditable = true;
     
 	public PersonDocumentRole() {

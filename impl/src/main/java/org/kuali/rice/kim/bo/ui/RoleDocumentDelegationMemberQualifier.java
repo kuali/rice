@@ -34,6 +34,7 @@ import javax.persistence.Table;
 public class RoleDocumentDelegationMemberQualifier extends KimDocumentAttributeDataBusinessObjectBase {
 	@Column(name="DLGN_MBR_ID")
 	private String delegationMemberId;
+	
 	public String getDelegationMemberId() {
 		return delegationMemberId;
 	}

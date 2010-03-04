@@ -27,7 +27,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.KimDelegation;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
@@ -55,6 +57,7 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	@Column(name="ROLE_ID")
 	protected String roleId;
 
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active = true;
 
@@ -68,6 +71,7 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
 	protected List<KimDelegationMemberImpl> members = new TypedArrayList(KimDelegationMemberImpl.class);
 
+	@Transient
 	protected KimTypeInfo kimType; 
 	
 	/**

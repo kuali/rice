@@ -455,6 +455,24 @@ public class MetadataManager {
 							descriptor.setUpdateable(jc.updatable());
 							// TODO: Should we add inverse join columns?
 						} 
+					} else {
+						if (field.isAnnotationPresent(JoinColumn.class)) {
+							JoinColumn jc = field.getAnnotation(JoinColumn.class);
+							FieldDescriptor jcFkField = entityDescriptor.getFieldByColumnName(jc.name());
+							if (jcFkField != null) {
+								descriptor.addFkField(jcFkField.getName());
+							}
+							descriptor.setInsertable(jc.insertable());
+							descriptor.setUpdateable(jc.updatable());
+						}
+						if (field.isAnnotationPresent(JoinColumns.class)) {
+							JoinColumns jcs = field.getAnnotation(JoinColumns.class);
+							for (JoinColumn jc : jcs.value()) {
+								descriptor.addFkField(entityDescriptor.getFieldByColumnName(jc.name()).getName());
+								descriptor.setInsertable(jc.insertable());
+								descriptor.setUpdateable(jc.updatable());
+							} 
+						}
 					}
 					entityDescriptor.add(descriptor);
 				}

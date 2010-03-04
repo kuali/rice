@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.KimResponsibilityTemplate;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -48,6 +49,7 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 	protected String kimTypeId;
 	@Column(name="DESC_TXT", length=400)
 	protected String description;
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active;
 	

@@ -20,11 +20,15 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
@@ -34,11 +38,18 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(PersonDocumentGroupId.class) 
 @Entity
 @Table(name="KRIM_PND_GRP_PRNCPL_MT")
 public class PersonDocumentGroup extends KimDocumentBoBase {
 	private static final long serialVersionUID = -1551337026170706411L;
 	@Id
+	@GeneratedValue(generator="KRIM_GRP_MBR_ID_S")
+	@GenericGenerator(name="KRIM_GRP_MBR_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_GRP_MBR_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name="GRP_MBR_ID")
 	protected String groupMemberId;
 	@Column(name="GRP_TYPE")
@@ -50,15 +61,12 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 	protected String groupName;
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
-
+	@Column(name="PRNCPL_ID")
 	protected String principalId;
 	@Transient
 	protected transient KimTypeInfo kimGroupType = new KimTypeInfo();
+	@Transient
 	protected String kimTypeId;
-	@Column(name="ACTV_FRM_DT")
-	protected Date activeFromDate;
-	@Column(name="ACTV_TO_DT")
-	protected Date activeToDate;
 
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
@@ -136,21 +144,6 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 		this.namespaceCode = namespaceCode;
 	}
 
-	public Date getActiveFromDate() {
-		return this.activeFromDate;
-	}
-
-	public void setActiveFromDate(Date activeFromDate) {
-		this.activeFromDate = activeFromDate;
-	}
-
-	public Date getActiveToDate() {
-		return this.activeToDate;
-	}
-
-	public void setActiveToDate(Date activeToDate) {
-		this.activeToDate = activeToDate;
-	}
 	/**
 	 * Returns active if the current time is between the from and to dates.  Null dates are 
 	 * considered to indicate an open range.

@@ -26,6 +26,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.MappedSuperclass;
 
+import org.hibernate.SessionFactory;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
@@ -43,6 +44,7 @@ public class OrmUtils {
 	
 	private static Map<String, Boolean> cache = new HashMap<String, Boolean>();
 
+	
 	public static void populateAutoIncValue(Object entity, Long value) {
     	try {	    		
     		if (entity.getClass().isAnnotationPresent(Sequence.class)) {

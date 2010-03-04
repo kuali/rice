@@ -27,6 +27,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -61,8 +62,9 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	@OneToMany(targetEntity=RoleDocumentDelegation.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
 	protected List<RoleDocumentDelegation> delegations = new TypedArrayList(RoleDocumentDelegation.class);
+	@Transient
 	protected List<RoleDocumentDelegationMember> delegationMembers = new TypedArrayList(RoleDocumentDelegationMember.class);
-
+	@Transient
 	protected transient SequenceAccessorService sequenceAccessorService;
 	
 	protected void addDelegationMemberToDelegation(RoleDocumentDelegationMember delegationMember){

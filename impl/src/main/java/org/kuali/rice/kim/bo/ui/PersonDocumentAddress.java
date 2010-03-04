@@ -20,11 +20,15 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.reference.AddressType;
 import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
 
@@ -34,10 +38,17 @@ import org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(PersonDocumentAddressId.class)
 @Entity
 @Table(name = "KRIM_PND_ADDR_MT")
 public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	@Id
+	@GeneratedValue(generator="KRIM_ENTITY_ADDR_ID_S")
+	@GenericGenerator(name="KRIM_ENTITY_ADDR_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ENTITY_ADDR_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name = "ENTITY_ADDR_ID")
 	protected String entityAddressId;
 

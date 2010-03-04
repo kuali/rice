@@ -56,7 +56,7 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	@Column(name="ATTR_VAL")
 	protected String attributeValue;
 
-	@ManyToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@ManyToOne(targetEntity=KimAttributeImpl.class, fetch = FetchType.LAZY, cascade = { })
 	@JoinColumn(name = "KIM_ATTR_DEFN_ID", insertable = false, updatable = false)
 	protected KimAttributeImpl kimAttribute;
 

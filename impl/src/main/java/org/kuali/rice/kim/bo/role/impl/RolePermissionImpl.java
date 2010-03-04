@@ -26,6 +26,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
@@ -45,11 +46,11 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase implements
 	protected String roleId;
 	@Column(name="PERM_ID")
 	protected String permissionId;
-	
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active;
 
-	@OneToOne(targetEntity=KimPermissionImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToOne(targetEntity=KimPermissionImpl.class, fetch = FetchType.LAZY, cascade = { })
 	@JoinColumn(name = "PERM_ID", insertable = false, updatable = false)
 	protected KimPermissionImpl kimPermission;
 	

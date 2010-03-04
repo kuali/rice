@@ -20,11 +20,15 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.reference.EmailType;
 import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
 
@@ -34,10 +38,17 @@ import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(PersonDocumentEmailId.class)
 @Entity
 @Table(name = "KRIM_PND_EMAIL_MT")
 public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 	@Id
+	@GeneratedValue(generator="KRIM_ENTITY_EMAIL_ID_S")
+	@GenericGenerator(name="KRIM_ENTITY_EMAIL_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ENTITY_EMAIL_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name = "ENTITY_EMAIL_ID")
 	protected String entityEmailId;
 
@@ -50,7 +61,7 @@ public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 	@Column(name = "EMAIL_ADDR")
 	protected String emailAddress;
 
-	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch = FetchType.LAZY, cascade = {})
 	@JoinColumn(name = "EMAIL_TYP_CD", insertable = false, updatable = false)
 	protected EmailType emailType;
 	

@@ -22,6 +22,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
@@ -30,6 +31,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.TypedArrayList;
 
@@ -47,6 +50,12 @@ public class RoleDocumentDelegation extends KimDocumentBoBase {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(generator="KRIM_DLGN_ID_S")
+	@GenericGenerator(name="KRIM_DLGN_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_DLGN_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name="DLGN_ID")
 	protected String delegationId;
 

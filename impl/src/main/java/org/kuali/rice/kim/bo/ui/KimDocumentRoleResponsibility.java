@@ -20,9 +20,14 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
@@ -31,21 +36,28 @@ import org.kuali.rice.kns.util.TypedArrayList;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@IdClass(KimDocumentRoleResponsibilityId.class)
 @Entity
 @Table(name="KRIM_PND_ROLE_RSP_T")
 public class KimDocumentRoleResponsibility extends KimDocumentBoBase {
 	
 	private static final long serialVersionUID = -4465768714850961538L;
 	@Id
+	@GeneratedValue(generator="KRIM_ROLE_RSP_ACTN_ID_S")
+	@GenericGenerator(name="KRIM_ROLE_RSP_ACTN_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ROLE_RSP_ACTN_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name="ROLE_RSP_ID")
 	protected String roleResponsibilityId;
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	@Column(name="RSP_ID")
 	protected String responsibilityId;
-	
+	@Transient
 	protected KimResponsibilityImpl kimResponsibility;
-	
+	@Transient
 	protected List<KimDocumentRoleResponsibilityAction> roleRspActions = new TypedArrayList(KimDocumentRoleResponsibilityAction.class);
 	
 	public String getRoleId() {

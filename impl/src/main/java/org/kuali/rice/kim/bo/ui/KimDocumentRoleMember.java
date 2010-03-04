@@ -21,13 +21,18 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumns;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -40,12 +45,19 @@ import org.kuali.rice.kns.util.TypedArrayList;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(KimDocumentRoleMemberId.class)
 @Entity
 @Table(name="KRIM_PND_ROLE_MBR_MT")
 public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	private static final long serialVersionUID = -2463865643038170979L;
 
 	@Id
+	@GeneratedValue(generator="KRIM_ROLE_MBR_ID_S")
+	@GenericGenerator(name="KRIM_ROLE_MBR_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ROLE_MBR_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;
 	
@@ -62,15 +74,20 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	@Column(name="MBR_NMSPC")
 	protected String memberNamespaceCode;
 
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumns({
 	    @JoinColumn(name="ROLE_MBR_ID"), 
 	    @JoinColumn(name="FDOC_NBR")
 	})
 	protected List <KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
+	@Transient
 	protected String qualifiersToDisplay;
 	
-	@Transient
+	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
+	@JoinColumns({
+	    @JoinColumn(name="ROLE_MBR_ID"), 
+	    @JoinColumn(name="FDOC_NBR")
+	})
 	private List<KimDocumentRoleResponsibilityAction> roleRspActions;
 
 	public KimDocumentRoleMember() {

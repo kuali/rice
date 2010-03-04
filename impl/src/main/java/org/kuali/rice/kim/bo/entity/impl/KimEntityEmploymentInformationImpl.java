@@ -25,10 +25,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.IndexColumn;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
-import org.kuali.rice.kim.bo.reference.EmploymentStatus;
-import org.kuali.rice.kim.bo.reference.EmploymentType;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
 import org.kuali.rice.kns.util.KualiDecimal;
@@ -74,16 +73,19 @@ public class KimEntityEmploymentInformationImpl extends KimInactivatableEntityDa
 	@Column(name="PRMRY_IND")
 	protected boolean primary;
 
-	@ManyToOne(targetEntity=EmploymentTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
-	@JoinColumn(name = "EMP_TYP_CD", insertable = false, updatable = false)
+	@ManyToOne(targetEntity=EmploymentTypeImpl.class, fetch=FetchType.EAGER, cascade = {})
+	@IndexColumn(name="EMP_TYP_CD")
+	//@JoinColumn(name="EMP_TYP_CD", insertable = false, updatable = false)
 	protected EmploymentTypeImpl employmentType;
 
 	@ManyToOne(targetEntity=EmploymentStatusImpl.class, fetch = FetchType.EAGER, cascade = {})
-	@JoinColumn(name = "EMP_STAT_CD", insertable = false, updatable = false)
+	@IndexColumn(name="EMP_STAT_CD")
+	//@JoinColumn(name="EMP_STAT_CD", insertable = false, updatable = false)
 	protected EmploymentStatusImpl employmentStatus;
 	
 	@ManyToOne(targetEntity=KimEntityAffiliationImpl.class, fetch = FetchType.EAGER, cascade = {})
-	@JoinColumn(name = "ENTITY_AFLTN_ID", insertable = false, updatable = false)
+	@IndexColumn(name="ENTITY_AFLTN_ID")
+	//@JoinColumn(name="ENTITY_AFLTN_ID", insertable = false, updatable = false)
 	protected KimEntityAffiliationImpl affiliation = new KimEntityAffiliationImpl();
 	
 	/**

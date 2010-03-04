@@ -20,12 +20,16 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.reference.PhoneType;
 import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
 
@@ -35,10 +39,17 @@ import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(PersonDocumentPhoneId.class)
 @Entity
 @Table(name = "KRIM_PND_PHONE_MT")
 public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 	@Id
+	@GeneratedValue(generator="KRIM_ENTITY_PHONE_ID_S")
+	@GenericGenerator(name="KRIM_ENTITY_PHONE_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ENTITY_PHONE_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name = "ENTITY_PHONE_ID")
 	protected String entityPhoneId;
 		
@@ -57,7 +68,7 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 	@Column(name = "POSTAL_CNTRY_CD")
 	protected String countryCode;
 	
-	@ManyToOne(targetEntity=PhoneTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=PhoneTypeImpl.class, fetch = FetchType.LAZY, cascade = {})
 	@JoinColumn(name = "PHONE_TYP_CD", insertable = false, updatable = false)
 	protected PhoneType phoneType;
 

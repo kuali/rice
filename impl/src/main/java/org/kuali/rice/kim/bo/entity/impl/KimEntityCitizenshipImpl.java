@@ -21,11 +21,14 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.entity.KimEntityCitizenship;
 import org.kuali.rice.kim.bo.reference.CitizenshipStatus;
 import org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl;
@@ -58,7 +61,7 @@ public class KimEntityCitizenshipImpl extends KimInactivatableEntityDataBase imp
 	@Column(name = "end_dt")
 	protected Date endDate;
 
-	@ManyToOne(targetEntity=CitizenshipStatusImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=CitizenshipStatusImpl.class, fetch=FetchType.EAGER, cascade={})
 	@JoinColumn(name = "CTZNSHP_STAT_CD", insertable = false, updatable = false)
 	protected CitizenshipStatus citizenshipType;
 

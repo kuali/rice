@@ -17,6 +17,7 @@ package org.kuali.rice.kim.bo.ui;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
@@ -33,6 +34,7 @@ public class RoleDocumentBoDefaultBase extends KimDocumentBoBase{
 	@Column(name="DFLT_IND")
 	protected boolean dflt;
 
+    @Transient
 	protected IdentityManagementRoleDocument roleDocument;
 	
 	/**

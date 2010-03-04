@@ -30,6 +30,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -61,21 +63,24 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	protected String name;
 	@Column(name="DESC_TXT", length=400)
 	protected String description;
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active;
 
-	@OneToMany(targetEntity=ResponsibilityAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="RSP_ID", insertable=false, updatable=false)
+	@OneToMany(targetEntity=ResponsibilityAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@IndexColumn(name="ATTR_DATA_ID")
+	@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
 	protected List<ResponsibilityAttributeDataImpl> detailObjects = new TypedArrayList(ResponsibilityAttributeDataImpl.class);
 	
 	@Column(name="RSP_TMPL_ID")
 	protected String templateId;
-	@OneToOne(cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToOne(cascade={},fetch=FetchType.LAZY)
     @JoinColumn(name="RSP_TMPL_ID", insertable=false, updatable=false)
 	protected KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
 	
-	@OneToMany(targetEntity=RoleResponsibilityImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-    @JoinColumn(name="RSP_ID", insertable=false, updatable=false)
+	@OneToMany(targetEntity=RoleResponsibilityImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    @IndexColumn(name="ROLE_RSP_ID")
+	@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
 	protected List<RoleResponsibilityImpl> roleResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 	
 	/**

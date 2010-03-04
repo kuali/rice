@@ -20,15 +20,13 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
-import org.kuali.rice.kim.bo.reference.CitizenshipStatus;
-import org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -36,10 +34,17 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@IdClass(PersonDocumentCitizenshipId.class)
 @Entity
 @Table(name = "KRIM_PND_CTZNSHP_MT")
 public class PersonDocumentCitizenship extends KimDocumentBoBase {
 	@Id
+	@GeneratedValue(generator="KRIM_ENTITY_CTZNSHP_ID_S")
+	@GenericGenerator(name="KRIM_ENTITY_CTZNSHP_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ENTITY_CTZNSHP_ID_S"),
+			@Parameter(name="value_column",value="id"),
+			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+		})
 	@Column(name = "ENTITY_CTZNSHP_ID")
 	protected String entityCitizenshipId;
 	

@@ -242,7 +242,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 			if (entityManager.contains(realPBO)) {
 				entityManager.remove(realPBO);
 			} else {
-				final PersistableBusinessObject foundBO = (PersistableBusinessObject)entityManager.find(realPBO.getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(realPBO));
+				final PersistableBusinessObject foundBO = (PersistableBusinessObject)entityManager.find(realPBO.getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(realPBO));
 				if (foundBO != null) {
 					entityManager.remove(foundBO);
 				}

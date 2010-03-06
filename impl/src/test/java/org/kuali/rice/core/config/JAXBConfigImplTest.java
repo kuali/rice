@@ -135,6 +135,13 @@ public class JAXBConfigImplTest {
         config.parseConfig();
     }
     
+    @Test(expected = ConfigurationException.class)
+    public void testCircularReference2() throws Exception {
+        JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-circular2.xml");
+        config.setLoadDefaults(false);
+        config.parseConfig();
+    }
+    
     @Ignore
     public void testPropertiesParams() throws Exception {
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");

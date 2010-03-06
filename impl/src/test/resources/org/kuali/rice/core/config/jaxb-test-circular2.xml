@@ -1,0 +1,5 @@
+<config>
+    <param name="environment">${environment}</param>
+    <param name="base.dir">/fake</param>
+    <param name="config.location">${base.dir}-${environment}</param>
+</config>

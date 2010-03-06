@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Random;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -142,7 +143,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 			this.properties.put(key, value);
 			
 			if(!runtimeResolution) {                
-                    this.properties.put((String)key, resolve((String)key));                
+                this.properties.put(key, resolve(key));                
             }		
 		}		
 	}
@@ -216,7 +217,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 CollectionUtils.addAll(sorted, properties.propertyNames());
                 
                 for (String s : sorted) {
-                    LOG.info("Using config Prop " + s + "=[" + ConfigLogger.getDisplaySafeValue(s, (String) properties.get(s)) + "]");
+                    LOG.info("Using config Prop " + s + "=[" + ConfigLogger.getDisplaySafeValue(s, properties.getProperty(s)) + "]");
                 }
             }
 
@@ -264,7 +265,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 } else if (p.isOverride() || !properties.containsKey(name)) {
 
                     if (p.isRandom()) {
-                        properties.put(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
+                        properties.setProperty(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
                     } else if (p.isSystem()) {
                         // resolve and set system params immediately so they can override
                         // existing system params. Add to paramMap resolved as well to
@@ -273,9 +274,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                         set.add(p.getName());
                         String value = parseValue(p.getValue(), set);
                         System.setProperty(name, value);
-                        properties.put(name, value);
+                        properties.setProperty(name, value);
                     } else {
-                        properties.put(p.getName(), p.getValue());
+                        properties.setProperty(p.getName(), p.getValue());
                     }
                 }
             }
@@ -285,23 +286,42 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
 
     protected String resolve(String key) {
-        String value = (String) this.properties.get(key);
-
-        if (systemOverride && System.getProperties().containsKey(key)) {
+    	return resolve(key, null);
+    }
+    
+    protected String resolve(String key, Set keySet) {
+    	
+        // check if we have already resolved this key and have circular reference
+        if (keySet != null && keySet.contains(key)) {
+            throw new ConfigurationException("Circular reference in config: " + key);
+        }
+        
+        String value = this.properties.getProperty(key);
+        
+        if ((value == null || systemOverride) && System.getProperties().containsKey(key)) {
             value = System.getProperty(key);
         }
         
         if (value != null && value.contains("${")) {
-            HashSet<String> keySet = new HashSet<String>();
+        	if(keySet == null) {
+        		keySet = new HashSet<String>();
+        	}
             keySet.add(key);
 
             value = parseValue(value, keySet);
+            
+            keySet.remove(key);
+        }
+        
+        if(value == null) {
+        	value = "";
+        	LOG.warn("Property key: '" + key + "' is not available and hence set to empty");
         }
 
         return value;
     }
 
-    protected String parseValue(String value, HashSet<String> keySet) {
+    protected String parseValue(String value, Set<String> keySet) {
         String result = value;
 
         Matcher matcher = pattern.matcher(value);
@@ -311,32 +331,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             // get the first, outermost ${} in the string.  removes the ${} as well.
             String key = matcher.group(1);
 
-            // add the key to the hashSet, if the key is already in there
-            // we have a circular reference/infinite loop.
-            if (!keySet.add(key)) {
-                throw new ConfigurationException("Circular reference in config: " + key);
-            }
-
-            String resolved = parseValue(key, keySet);
-
-            if (systemOverride && System.getProperties().containsKey(resolved)) {
-                resolved = System.getProperty(resolved);
-            } else if (properties.containsKey(resolved)) {
-                resolved = (String) properties.get(resolved);
-            } else if (!systemOverride && System.getProperties().containsKey(resolved)) {
-                resolved = System.getProperty(resolved);
-            } else {
-                // implement behavior for missing property here...e.g. return ""
-                // returning null will result in the substitutor not substituting
-                LOG.warn("Property key: '" + resolved + "' is not available and hence set to empty");
-
-                resolved = "";
-            }
+            String resolved = resolve(key, keySet);
 
             result = matcher.replaceFirst(Matcher.quoteReplacement(resolved));
             matcher = matcher.reset(result);
-
-            keySet.remove(key);
         }
 
         return result;
@@ -346,8 +344,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * Configures built-in properties.
      */
     protected void configureBuiltIns() {
-        properties.put("host.ip", RiceUtilities.getIpNumber());
-        properties.put("host.name", RiceUtilities.getHostName());
+        properties.setProperty("host.ip", RiceUtilities.getIpNumber());
+        properties.setProperty("host.name", RiceUtilities.getHostName());
     }
 
     /**

@@ -5,15 +5,18 @@
  * set the ojbMappingPattern to your project's ojb file name pattern
  **********************************************************************************************/
 
-//def ojbMappingPattern = ~/.*OJB.*repository.*xml/
-def ojbMappingPattern = ~/.*OJB|ojb.*-.*xml/
-//def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken'
+//For Rice
+def ojbMappingPattern = ~/.*OJB.*repository.*xml/
+def projHome='/java/projects/play/rice-1.1.0'
+def resourceHome='/impl/src/main/resources/org/kuali/rice/kns'
+def srcHome='/impl/src/main/java'
+//def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns'
 //def srcHome = '/java/projects/play/rice-1.1.0/impl/src/main/java'
 //For KFS test
-def resourceHome = '/java/projects/kfs-jpa-ref/work/src/org/kuali/kfs/coa/'
-def srcHome = '/java/projects/kfs-jpa-ref/work/src'
+//def ojbMappingPattern = ~/.*OJB|ojb.*-.*xml/
+//def resourceHome = '/java/projects/kfs-jpa-ref/work/src/org/kuali/kfs/fp/'
+//def srcHome = '/java/projects/kfs-jpa-ref/work/src'
 
-def sourceDirectories = []
 def repositories = []
 def classes = []
 def files = []
@@ -26,7 +29,7 @@ if(args.size() == 0)
 	System.exit(0)
 }
 
-GlobalRes.conversion_util.getRespositoryFiles(resourceHome, ojbMappingPattern, repositories, sourceDirectories)
+GlobalRes.conversion_util.getOJBConfigFiles(projHome, resourceHome, ojbMappingPattern, repositories)//, sourceDirectories)
 
 println 'Found '+repositories.size().toString()+' OJB mapping files:'
 
@@ -34,7 +37,7 @@ repositories.each {println it}
 
 loadClasses(repositories, classes)
 
-findExistingBOs(srcHome, classes, files )
+findExistingBOs(projHome + srcHome, classes, files)
 
 if("CLEAN".equals(args[0]))
 	removeAnnotatonLine(files)
@@ -71,9 +74,9 @@ def loadClasses(repositories, classes){
 	}	
 }
 
-def findExistingBOs(srcHome, classes, files){
+def findExistingBOs(srcDir, classes, files){
 	classes.each{
-		cls->   def file = srcHome + '/'+ cls.replaceAll("\\.", "/") + ".java"
+		cls->   def file = srcDir + '/'+ cls.replaceAll("\\.", "/") + ".java"
 		
 		println("************find file:\t" + file)
 		

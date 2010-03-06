@@ -1,4 +1,4 @@
-def handleTypes(conversion, annotation, text){
+def handleTypes(conversion, annotation, text, fields){
 	if (conversion.contains("OjbCharBooleanConversion")){
 		annotation += "@Type(type=\"yes_no\")\n\t"
 		text = addOtherImport(text, "org.hibernate.annotations.Type")
@@ -32,10 +32,55 @@ def handleTypes(conversion, annotation, text){
 	} else if (conversion.contains("OjbKualiIntegerPercentageFieldConversion")) {
 		annotation += "@Type(type=\"rice_integer_percentage\")\n\t"
 		text = addOtherImport(text, "org.kuali.rice.kns.util.HibernateKualiIntegerPercentageFieldType")
-	} else {
-		println "UNHANDLED CONVERSION FOUND "//+f.column
+	} 
+	//for KFS
+	else if (conversion.contains("OjbAccountActiveIndicatorConversion")){
+		annotation += "@Type(type=\"yes_no\")\n\t"
+		text = addOtherImport(text, "org.hibernate.annotations.Type")
+	} 
+	else if (conversion.contains("OjbCharBooleanFieldInverseConversion")){
+		annotation += "@Type(type=\"kfs_inverse_boolean\")\n\t"
+		text = addOtherImport(text, "org.kuali.kfs.sys.dataaccess.HibernateKFSCharBoolenFieldInverseType")
+	} 
+	else if (conversion.contains("OjbBCPositionActiveIndicatorConversion")){
+		annotation += "@Type(type=\"kfs_bc_activeindicator\")\n\t"
+		text = addOtherImport(text, "org.kuali.kfs.module.bc.util.HibernateKFSBCPositionActiveIndicatiorType")
+	} 
+	else if (conversion.contains("OjbBudgetConstructionFTEConversion")){
+		annotation += "@Type(type=\"kra_bc_fte\")\n\t"
+		text = addOtherImport(text, "org.kuali.kfs.module.bc.util.HibernateKFSBudgetConstructionFTEType")
+	} 
+	else if (conversion.contains("OjbBudgetConstructionPercentTimeConversion")){
+		annotation += "@Type(type=\"kra_bc_percenttime\")\n\t"
+		text = addOtherImport(text, "org.kuali.kfs.module.bc.util.HibernateKFSConstructionPercentTimeType")
+	} 
+	else if (conversion.contains("OjbPendingBCAppointmentFundingActiveIndicatorConversion")){
+		annotation += "@Type(type=\"kra_bc_pendingfund_activeindictor\")\n\t"
+		text = addOtherImport(text, "org.kuali.kfs.module.bc.util.HibernateKFSPendingBCAppointmentFundingActiveIndictorType")
+	} 
+	
+	//for KRA
+	else if (conversion.contains("UnitContactTypeConverter")){
+		annotation += "@Type(type=\"kra_unit_contact\")\n\t"
+		text = addOtherImport(text, "org.kuali.kra.award.contacts.HibernateKRAUnitContatcTypeType")
+	} 
+	else if (conversion.contains("OjbBudgetDecimalFieldConversion")){
+		annotation += "@Type(type=\"kra_decimal\")\n\t"
+		text = addOtherImport(text, "org.kuali.kra.infrastructure.HibernateKRADecimaFiedType")
+	} 
+	else if (conversion.contains("OjbOnOffCampusFlagFieldConversion")){
+		annotation += "@Type(type=\"kra_campus_flag\")\n\t"
+		text = addOtherImport(text, "org.kuali.kra.infrastructure.HibernateKRAOnOffCampusFlagFieldType")
+	} 
+	else if (conversion.contains("OjbRateDecimalFieldConversion")){
+		annotation += "@Type(type=\"kra_rate_decimal\")\n\t"
+		text = addOtherImport(text, "org.kuali.kra.infrastructure.HibernateKRADecimaFiedType")
+	} 
+
+	else {
+		println "UNHANDLED CONVERSION FOUND "+fields.column
 		println "conversion="+conversion
-		//println "name="+f.name
+		println "name="+fields.name
 	}
 }
 

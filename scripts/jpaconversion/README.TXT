@@ -1,5 +1,10 @@
-The re-factor work break the big scripts into 8 modules, they work fine as scripts, but they have not 
-been converted into groovy(plugin 2.0 style) project yet, so if you import them into a groovy project, it may have errors
+The re-factor work break the big script into 8 modules, they work fine as scripts, but they have not 
+been converted into groovy(plugin 2.0 style) project yet, so if you import them into a groovy project, 
+it may have errors
+
+Pre-request:
+
+install groovy-1.7.0, set GROOVY_HOME to the installed dir(example: /java/tools/groovy/groovy-1.7.0)
 
 List of modules:
 
@@ -73,7 +78,6 @@ verbose = false             /*true means printing debugging message to console*/
 /**********************************************************************************************/
 projHome = '/java/projects/play/rice-1.1.0'      /*project root*/
 ojbMappingPattern = ~/.*OJB|ojb.*-.*xml/         /*OJB config name pattern*/											  
-srcRootDir = '/impl/src/main/java/'              /*java bo source file dir root*/
 resourceDir = '/impl/src/main/resources/'        /*OJB config file root dir*/
 
 /* if you know the path of the OJB config files, it is recommended to put it here, this will save some time 

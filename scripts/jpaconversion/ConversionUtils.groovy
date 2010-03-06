@@ -21,28 +21,6 @@ def generateFile(path, text){
 	persistFile << "\n"
 }
 
-//this is for clean up
-def getRespositoryFiles(String resourcejHome, ojbMappingPattern, ArrayList repositories, ArrayList sourceDirectories){
-	repositories.clear()
-	sourceDirectories.clear()
-	
-	// local helpers
-	def addRepository = { File f -> 
-		repositories.add( f.getPath() );
-		sourceDirectories.add( f.getParent() )
-	}
-	
-	def dir = new File(resourcejHome)
-	
-	println 'directoryName='+dir.getPath()
-	println 'ojbMappingPattern='+ojbMappingPattern
-	
-	dir.eachFileMatch(ojbMappingPattern, addRepository)
-	dir.eachDirRecurse { File myFile ->
-		myFile.eachFileMatch(ojbMappingPattern, addRepository)
-	}
-}
-
 def cleanBackupFiles(classes, sourceDirectories, projHome, backupExtension, logger, verbose){
 	/*
 	 Remove the backup.java files.
@@ -76,10 +54,11 @@ def stripeModuleName(String s){
 	String name = s.substring(s.lastIndexOf("-") + 1, s.lastIndexOf("."));
 	
 	System.out.println(name);
+	
+	name
 }
 
-//this is for main script, should be combinted with the above one later
-def getRespositoryFiles(String projHome, resourceDir, ojbMappingPattern, ArrayList repositories){
+def getOJBConfigFiles(String projHome, resourceDir, ojbMappingPattern, ArrayList repositories){
 	
 	repositories.clear()
 	

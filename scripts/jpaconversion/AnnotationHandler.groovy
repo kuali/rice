@@ -47,6 +47,16 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	        }
 	        
 	        classAnnotation += "@Entity\n@Table(name=\"${c.tableName}\")"
+			
+			def un_overring_fields = [:];
+			if(hasSuperClass(javaFile.text) != null ){
+				if(hasUnOverringFields(javaFile.text, c.fields, un_overring_fields)){
+					//classAnnotation += "\n//Please check Super classes for AttributeOverriding"
+					logger.log("${c.className}:\tPlease check Super classes for AttributeOverriding on ${un_overring_fields.values()}")
+				}	
+			}	
+			//println 'data types**********************\t' + c.fields.getClass();
+			
 	        text = addImport(text, "Entity")
 	        text = addImport(text, "Table")
 	        text = addImport(text, "CascadeType")                    
@@ -98,7 +108,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    text = addImport(text, "FetchType")
 	                }
 	                if (f.conversion?.toString()?.size() > 0){
-	                	GlobalVariables.type_handler.handleTypes(f.conversion, annotation, text)
+	                	GlobalVariables.type_handler.handleTypes(f.conversion, annotation, text, f)
 	                }
 	                if (f.nullable) nullable = ", nullable=${f.nullable}"
 	                annotation += "@Column(name=\"${f.column}\"${nullable})"
@@ -499,3 +509,29 @@ def findReferencedColumnName(java.util.LinkedHashMap classes, String classRef, S
 	
 	ret
 }
+
+def hasSuperClass(javaText){
+	
+	println 'checking super class'
+	javaText.find(/public class (\w+) extends/)
+}
+
+def boolean hasUnOverringFields(javaText,  fields, un_overring_fields){
+	
+	println "***********looking for un_overriding_fields**************\t" 
+	
+	fields.values().each{
+		f-> attName = f.name
+			println 'checking field\t' + attName
+			if(javaText.find(/(private|protected) (\w+) ${attName}/) == null)
+				un_overring_fields.put(attName, f.column)
+		}
+	
+	//println "***********got this **************\t" + un_overring_fields.values()
+	
+	if(un_overring_fields.size() == 0)
+		false
+	
+	true
+	
+	}

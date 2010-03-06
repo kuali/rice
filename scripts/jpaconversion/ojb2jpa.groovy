@@ -1,6 +1,3 @@
-import java.util.regex.Matcher
-import java.io.File;
-import java.util.regex.Pattern
 
 /* Begin User Configurable Fields */
 
@@ -8,40 +5,42 @@ import java.util.regex.Pattern
 def persistenceXml = false
 def mysql = false
 def pkClasses = false
-def clean = false
+def clean = true
 def dry = false
 def verbose = false
 def createBOs = true
 def scanForConfigFiles = false
 
 /* File Path Properties */
-def ojbMappingPattern = ~/.*OJB|ojb.*-.*xml/
-def projHome = '/java/projects/kfs-jpa-ref'
-def srcRootDir = '/work/src/'
-def resourceDir = '/work/src/'
-//def ojbMappingPattern = ~/.*OJB.*repository.*xml/
-//def projHome = '/java/projects/play/rice-1.1.0'
-//def srcRootDir = '/impl/src/main/java/'
-//def resourceDir = '/impl/src/main/resources/'
-def metaInf = 'META-INF/'
+//for KFS
+//def ojbMappingPattern = ~/.*OJB|ojb.*-.*xml/
+//def projHome = '/java/projects/kfs-jpa-ref'
+//def resourceDir = '/work/src/'
+
+//for rice
+def ojbMappingPattern = ~/.*OJB.*repository.*xml/
+def projHome = '/java/projects/play/rice-1.1.0'
+def resourceDir = '/impl/src/main/resources/'
+
 def repositories = [
         //for KFS
-        '/java/projects/kfs-jpa-ref/work/src/org/kuali/kfs/coa/ojb-coa.xml'
+        //'/java/projects/kfs-jpa-ref/work/src/org/kuali/kfs/coa/ojb-coa.xml',
+        //'/java/projects/kfs-jpa-ref/work/src/org/kuali/kfs/fp/ojb-fp.xml'
         //for rice
-		//'/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml'
+		'/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml',
+        '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml'
 		]
 
 def sourceDirectories = [
        //for KFS
-       '/work/src/'           
+       //'/work/src/' 
        //for rice                     
-	   //'/impl/src/main/java/'
+	   '/impl/src/main/java/'
 		]
+def metaInf = 'META-INF/'
 def persistenceXmlFilename = 'persistence.xml'	
-//def mysqlScriptFile = '/scripts/upgrades/mysqlSequenceFix.sql'
-//for KFS
-def mysqlScriptFile = '/work/db/upgrades/mysqlSequenceFix.sql'
-def mysqlOrmFile = 'project-orm.xml'
+def mysqlScriptFile = 'mysqlSequenceFix.sql'
+def mysqlOrmFile = 'orm.xml'
 
 /*  other misc. config properties */
 def persistenceUnitName = "rice"
@@ -53,7 +52,7 @@ def classes = [:]
 //   Search for OJB Mapping Files
 if (scanForConfigFiles){
 	println 'Scanning for files'
-    GlobalVariables.conversion_util.getRespositoryFiles(projHome, resourceDir, ojbMappingPattern, repositories)
+    GlobalVariables.conversion_util.getOJBConfigFiles(projHome, resourceDir, ojbMappingPattern, repositories)
 }
 println 'Found '+repositories.size().toString()+' OJB mapping files:'
 repositories.each {println it}
@@ -107,8 +106,18 @@ if (something.toString().toUpperCase().equals( 'Y'))
 
 	//for handling sequence in mysql
 	if (mysql) {
-		println '\nGenerating MySQL sequence annotations...'
-		GlobalVariables.mysql_handler.generateMySQLSequence(classes, schemaName, projHome, mysqlScriptFile, resourceDir+metaInf+mysqlOrmFile)
+		println '\nGenerating MySQL sequence scripts and orm files...'
+		//GlobalVariables.mysql_handler.generateMySQLSequence(classes, schemaName, projHome, mysqlScriptFile, resourceDir+metaInf+mysqlOrmFile)
+		repositories.each {
+			repository ->
+			    def moduleName = GlobalVariables.conversion_util.stripeModuleName(repository.toString())
+				def filePath = resourceDir+metaInf+moduleName+'-'
+				def this_classes = [:]
+                def this_repository = []
+			    this_repository.add(repository)     
+			    GlobalVariables.metadata_handler.loadMetaData(this_repository, this_classes, logger)
+			    GlobalVariables.mysql_handler.generateMySQLSequence(this_classes, schemaName, projHome, filePath+mysqlScriptFile, filePath+mysqlOrmFile)	
+			}
 	}
 
 	//clean back up
@@ -228,4 +237,6 @@ class GlobalVariables{
 	public static mysql_handler = new MySQLHandler();
 	public static type_handler = new CustomerTypeHandler();
 	public static annotation_handler = new AnnotationHandler();
+	
+	public static info_logger = new Logger("info.log");
 }

@@ -14,16 +14,17 @@
  limitations under the License.
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
-<%@ attribute name="property" required="true" %>
-<%@ attribute name="attributeEntry" required="true" type="java.util.Map" %>
-<%@ attribute name="onblur" required="false" %>
-<%@ attribute name="readOnly" required="false" %>
-<%@ attribute name="datePicker" required="false" %>
+<%@ attribute name="property" required="true" description="The property being rendered." %>
+<%@ attribute name="attributeEntry" required="true" type="java.util.Map" description="The Map of data dictionary attributes about the property to render a control for." %>
+<%@ attribute name="onblur" required="false" description="If set, this will be used as the onblur method on the control." %>
+<%@ attribute name="readOnly" required="false" description="Whether this control should be rendered as read only (ie, not a control but rather text) or not." %>
+<%@ attribute name="datePicker" required="false" description="Whether this control should be rendered with a date picker." %>
 <%@ attribute name="expandedTextArea" required="false" description="whether to render an expanded textarea control.  Only applicable for textareas. "%>
-<%@ attribute name="disabled" required="false" %>
-<%@ attribute name="onchange" required="false" %>
-<%@ attribute name="onclick" required="false" %>
-<%@ attribute name="tabindexOverride" required="false" %>
+<%@ attribute name="htmlFormAction" required="false" description="some html controls create popups.  This attribute specifies the form action the popup should use."%>
+<%@ attribute name="disabled" required="false" description="Whether this control should be rendered as disabled or not." %>
+<%@ attribute name="onchange" required="false" description="If set, this will be used as the onchange method on the control." %>
+<%@ attribute name="onclick" required="false" description="If set, this will be used as the onclick method on the control." %>
+<%@ attribute name="tabindexOverride" required="false" description="If set, this will be used as the text index on the control." %>
 <%@ attribute name="readOnlyBody" required="false"
               description="when readOnly, use the tag body instead of a written hidden field.
               This allows mixing in module-specific inquiries." %>
@@ -45,8 +46,8 @@
 <%@ attribute name="accessibilityHint" required="false"
         description="Use this to attach further information to the title attribute of a field
         if present"%>
-<%@ attribute name="forceRequired" required="false" %>
-<%@ attribute name="kimTypeId" required="false" %>
+<%@ attribute name="forceRequired" required="false" description="Whether this control should be rendered as required, no matter the information from the data dictionary about the required state of the attribute." %>
+<%@ attribute name="kimTypeId" required="false" description="If the rendered attribute is a KIM attribute, the ID of the type of that KIM attribute." %>
 <%-- Do not remove session check in this tag file since it is used by other type of files (not MD or TD) --%>
 <c:set var="sessionDocument" value="${requestScope['sessionDoc']}" />
 <c:if test="${empty readOnly}">
@@ -269,6 +270,5 @@
 	<c:if test="${readOnly}">
 		<html:hidden property="${property}" write="false" styleId="${property}" />
 	</c:if>
-
-	<kul:expandedTextArea textAreaFieldName="${property}" action="${fn:substringBefore(fn:substring(requestScope['org.apache.struts.taglib.html.FORM'].action, 1, -1),'.do')}" textAreaLabel="${attributeEntry.label}" disabled="${disabled}" title="${attributeEntry.label}" readOnly="${readOnly}" maxLength="${attributeEntry.maxLength}"/>
+	<kul:expandedTextArea textAreaFieldName="${property}" action="${htmlFormAction}" textAreaLabel="${attributeEntry.label}" disabled="${disabled}" title="${attributeEntry.label}" readOnly="${readOnly}" maxLength="${attributeEntry.maxLength}"/>
 </c:if>

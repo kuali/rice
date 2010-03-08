@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
@@ -97,6 +98,7 @@ public class LookupResultsServiceTest extends KNSTestCase {
 	 * Tests that PersistableBusinessObjectSearches work
 	 *
 	 */
+	@Ignore
 	@Test public void testDataDictionaryBusinessObjectSearch() {
 		final LookupResultsDDBo ddBo = new LookupResultsDDBo("gorilla");
 		final LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();

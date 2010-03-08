@@ -1075,39 +1075,4 @@
     
     <bean id="campusGroupTypeService" class="org.kuali.rice.kns.service.impl.CampusGroupTypeServiceImpl" />
     
-    <bean id="lookupResultsDDBoLookupableHelperService" class="org.kuali.rice.kns.lookup.LookupResultsDDBoLookupableHelperServiceImpl" scope="prototype">
-		<property name="persistenceStructureService">
-			<ref bean="persistenceStructureService" />
-		</property>
-		<property name="businessObjectDictionaryService">
-			<ref bean="businessObjectDictionaryService" />
-		</property>
-		<property name="dataDictionaryService">
-			<ref bean="dataDictionaryService" />
-		</property>
-		<property name="encryptionService">
-			<ref bean="encryptionService" />
-		</property>
-		<property name="lookupService">
-			<ref bean="lookupService" />
-		</property>
-		<property name="businessObjectMetaDataService">
-			<ref bean="businessObjectMetaDataService" />
-		</property>
-		<property name="sequenceAccessorService">
-			<ref bean="sequenceAccessorService" />
-		</property>
-		<property name="businessObjectService">
-			<ref bean="businessObjectService" />
-		</property>
-		<property name="lookupResultsService">
-			<ref bean="lookupResultsService" />
-		</property>
-	</bean>
-
-	<bean id="lookupResultsDDBoLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
-		<property name="lookupableHelperService">
-			<ref bean="lookupResultsDDBoLookupableHelperService" />
-		</property>
-	</bean>
 </beans>

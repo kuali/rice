@@ -293,7 +293,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 			if (value == null) {
 				continue;
 			} else if (value instanceof Collection) {
-				criteria.in(key, (List) value);
+				criteria.in(key, (Collection)value);
 			} else {
 				criteria.eq(key, value);
 			}

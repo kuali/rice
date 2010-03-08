@@ -50,7 +50,7 @@ public class CampusImpl extends PersistableBusinessObjectBase implements Campus,
 	@Column(name="ACTV_IND")
     protected boolean active;
 
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="CAMPUS_TYP_CD", insertable=false, updatable=false)
 	private CampusTypeImpl campusType;
     

@@ -17,6 +17,7 @@ package org.kuali.rice.core.jpa.criteria;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -142,7 +143,7 @@ public class Criteria {
 		tokens.add(" " + jpql + " ");
 	}
 
-	public void in(String attribute, List values) {
+	public void in(String attribute, Collection values) {
 		String in = "";
 		for (Object object : values) {
 			in += "'"+object + "',";
@@ -153,7 +154,7 @@ public class Criteria {
 		tokens.add(alias + "." + attribute + " IN (" + in + ") ");
 	}
 
-	public void notIn(String attribute, List values) {
+	public void notIn(String attribute, Collection values) {
 		String in = "";
 		for (Object object : values) {
 			in += "'"+object + "',";

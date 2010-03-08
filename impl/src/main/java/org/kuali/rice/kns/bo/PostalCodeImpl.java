@@ -18,7 +18,6 @@ package org.kuali.rice.kns.bo;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -58,17 +57,18 @@ public class PostalCodeImpl extends PersistableBusinessObjectBase implements Ina
     @Column(name="COUNTY_CD")
     private String countyCode;
 
-    @ManyToOne(targetEntity=org.kuali.rice.kns.bo.StateImpl.class,fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+    @ManyToOne(targetEntity=org.kuali.rice.kns.bo.StateImpl.class,fetch=FetchType.LAZY)
 	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="POSTAL_STATE_CD",insertable=false,updatable=false)})
     private State state;
     
-    @ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountryImpl.class,fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+    @ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountryImpl.class,fetch=FetchType.LAZY)
 	@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false)
     private Country country;
     
-    @ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountyImpl.class,fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+    @ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountyImpl.class,fetch=FetchType.LAZY)
 	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="POSTAL_STATE_CD",insertable=false,updatable=false),@JoinColumn(name="COUNTY_CD",insertable=false,updatable=false)})
     private County county;
+    
     /**
      * Default no-arg constructor.
      */

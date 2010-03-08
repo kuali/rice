@@ -48,11 +48,11 @@ public class CountyImpl extends PersistableBusinessObjectBase implements Inactiv
 	@Column(name="ACTV_IND")
     private boolean active;
 
-	@ManyToOne(targetEntity=org.kuali.rice.kns.bo.StateImpl.class,fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@ManyToOne(targetEntity=org.kuali.rice.kns.bo.StateImpl.class,fetch=FetchType.EAGER)
 	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="POSTAL_STATE_CD",insertable=false,updatable=false)})
     private State state;
     
-    @ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountryImpl.class,fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+    @ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountryImpl.class,fetch=FetchType.EAGER)
 	@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false)
     private Country country;
 

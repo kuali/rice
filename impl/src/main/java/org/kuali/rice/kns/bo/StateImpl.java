@@ -18,7 +18,6 @@ package org.kuali.rice.kns.bo;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -48,7 +47,7 @@ public class StateImpl extends PersistableBusinessObjectBase implements Inactiva
 	@Column(name="ACTV_IND")
     private boolean active;
 
-	@ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountryImpl.class,fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountryImpl.class,fetch=FetchType.EAGER)
 	@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false)
     private Country country;
 

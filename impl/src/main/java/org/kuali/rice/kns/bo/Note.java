@@ -71,12 +71,13 @@ public class Note extends PersistableBusinessObjectBase {
     @Transient
     private String attachmentIdentifier;
 
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="NTE_TYP_CD", insertable=false, updatable=false)
 	private NoteType noteType;
     @Transient
     private Person authorUniversal;
-    @Transient
+    @OneToOne(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@JoinColumn(name = "NTE_ID", insertable = false, updatable = false)
 	private Attachment attachment;
     @Transient
     private AdHocRouteRecipient adHocRouteRecipient;

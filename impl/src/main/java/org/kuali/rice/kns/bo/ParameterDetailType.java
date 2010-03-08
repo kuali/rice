@@ -51,7 +51,7 @@ public class ParameterDetailType extends PersistableBusinessObjectBase implement
     @Transient
 	private boolean virtualDetailType;
 	
-	@ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST})
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="NMSPC_CD", insertable=false, updatable=false)
 	private Namespace parameterNamespace;
 

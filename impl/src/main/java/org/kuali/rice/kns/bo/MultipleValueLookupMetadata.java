@@ -34,7 +34,8 @@ public abstract class MultipleValueLookupMetadata extends PersistableBusinessObj
     /**
      * the time the lookup data was persisted, used by a batch purge job
      */
-    @Transient
+    //@Transient
+    @Column(name="LOOKUP_DT")
     private Timestamp lookupDate;
     
     public String getLookupResultsSequenceNumber() {

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -27,7 +25,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * can not change after they have been created.  Also note they require a public no-arg constructor.
  * TODO: Implement the equals() and hashCode() methods. 
  */
-public class ParameterId implements Serializable {
+public class ParameterId extends CompositePrimaryKeyBase {
 
     private static final long serialVersionUID = -8210189691273413060L;
     
@@ -49,17 +47,5 @@ public class ParameterId implements Serializable {
     public String getParameterName() { return parameterName; }
     
     public String getParameterApplicationNamespaceCode() { return parameterApplicationNamespaceCode; }
-
-    public boolean equals(Object o) {
-        if (o == this) return true;
-        if (!(o instanceof ParameterId)) return false;
-        if (o == null) return false;
-        ParameterId pk = (ParameterId) o;
-        return getParameterNamespaceCode() != null && getParameterDetailTypeCode() != null && getParameterApplicationNamespaceCode() != null && getParameterNamespaceCode().equals(pk.getParameterNamespaceCode()) && getParameterDetailTypeCode().equals(pk.getParameterDetailTypeCode()) && getParameterApplicationNamespaceCode().equals(pk.getParameterApplicationNamespaceCode());        
-    }
-
-    public int hashCode() {
-    	return new HashCodeBuilder().append(parameterDetailTypeCode).append(parameterNamespaceCode).append(parameterApplicationNamespaceCode).toHashCode();
-	}
 }
 

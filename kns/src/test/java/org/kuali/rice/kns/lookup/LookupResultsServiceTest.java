@@ -47,6 +47,7 @@ public class LookupResultsServiceTest extends KNSTestCase {
 	 * Tests that lookup ids work
 	 *
 	 */
+	@Ignore
 	@Test public void testLookupIds() {
 		Map<String, String> parameterPK = new HashMap<String, String>();
 		parameterPK.put("parameterNamespaceCode", MOCK_PARAMETER_NMSPC);

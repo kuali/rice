@@ -1,5 +1,7 @@
 <config>
-	
-    <param name="config.location">${user.home}/kuali/test/${environment}/common-test-config.xml</param>    
-    <param name="environment">${environment}</param>
+    <param name="foo">${bar}-${circle}</param>
+    <param name="bar">${baz}</param>
+    <param name="baz">someText</param>
+    <param name="circle">${loop}</param>
+    <param name="loop">${foo}</param>
 </config>

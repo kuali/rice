@@ -45,7 +45,7 @@ public class RuleTarget {
     
     // Added for JPA uni-directional one-to-many (not yet supported by JPA)
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinColumn(name="DOC_HDR_ID")
+    @JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
     private RemoveReplaceDocument removeReplaceDocument;
 
     public Long getDocumentId() {

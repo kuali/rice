@@ -79,4 +79,8 @@ public class RemoteObjectCleanup implements TransactionSynchronization {
 
 	public void suspend() {
 	}
+	
+	@Override
+	public void flush() {
+	}
 }

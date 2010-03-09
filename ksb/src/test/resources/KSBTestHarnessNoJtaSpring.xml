@@ -55,8 +55,6 @@
 		</property>
 	</bean>
 
-	<bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
-
 	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
 		<property name="serviceNamespace" value="KEW" />
 		<property name="dataSource" ref="dataSource" />
@@ -163,6 +161,8 @@
 			</bean>
 		</property>
 	</bean>
+
+    <bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
 
 	<bean id="testHarnessSharedTopic" class="org.kuali.rice.ksb.messaging.remotedservices.TestHarnessSharedTopic" />
 	<bean id="testRepeatMessageQueue" class="org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue" />

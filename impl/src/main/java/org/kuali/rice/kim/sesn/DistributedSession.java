@@ -125,7 +125,7 @@ public class DistributedSession {
         String sql = "select principalID from authnsesn where sesnID=?";
         Object args[] = { DST };
         
-        return jdbcTemplate.queryForList(sql, args);
+        return jdbcTemplate.queryForList(sql, args, String.class);
     }
     
     /**

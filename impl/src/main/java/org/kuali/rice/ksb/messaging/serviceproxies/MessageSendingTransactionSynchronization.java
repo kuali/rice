@@ -68,5 +68,8 @@ public class MessageSendingTransactionSynchronization implements TransactionSync
 
     public void suspend() {
     }
+    
+    public void flush() {
+    }
 
 }

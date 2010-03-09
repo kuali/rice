@@ -18,6 +18,8 @@ package org.kuali.rice.core.jpa.spring;
 import java.io.Serializable;
 
 import org.hibernate.id.IdentifierGenerationException;
+import org.hibernate.id.IntegralDataTypeHolder;
+import org.hibernate.id.IdentifierGeneratorHelper.BigIntegerHolder;
 import org.hibernate.id.enhanced.AccessCallback;
 import org.hibernate.id.enhanced.Optimizer;
 
@@ -31,8 +33,7 @@ import org.hibernate.id.enhanced.Optimizer;
 public class StringHandlingNoOpSequenceOptimizer implements Optimizer {
 	private Class returnClass;
 	private int incrementSize;
-	private long lastSourceValue = -1;
-	
+	private IntegralDataTypeHolder lastSourceValue = null;
 	/**
 	 * Constructs the sequence optimizer
 	 * 
@@ -65,15 +66,15 @@ public class StringHandlingNoOpSequenceOptimizer implements Optimizer {
 	 * @see org.hibernate.id.enhanced.Optimizer#generate(org.hibernate.id.enhanced.AccessCallback)
 	 */
 	public Serializable generate(AccessCallback callback) {
-		if ( lastSourceValue == -1 ) {
-			while( lastSourceValue <= 0 ) {
+		if ( lastSourceValue == null ) {
+			while( lastSourceValue == null || lastSourceValue.lt(1)) {
 				lastSourceValue = callback.getNextValue();
 			}
 		}
 		else {
-			lastSourceValue = callback.getNextValue();
+		    lastSourceValue = callback.getNextValue();
 		}
-		return make( lastSourceValue );
+		return lastSourceValue;
 	}
 
 	/**
@@ -88,7 +89,7 @@ public class StringHandlingNoOpSequenceOptimizer implements Optimizer {
 	 * Returns the lastSourceValue 
 	 * @see org.hibernate.id.enhanced.Optimizer#getLastSourceValue()
 	 */
-	public long getLastSourceValue() {
+	public IntegralDataTypeHolder getLastSourceValue() {
 		return lastSourceValue;
 	}
 

@@ -7,8 +7,9 @@
 
 //For Rice
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
-def projHome='/java/projects/play/rice-1.1.0'
-def resourceHome='/impl/src/main/resources/org/kuali/rice/kns'
+def projHome='/java/projects/rice-1.1.0'
+//def resourceHome='/impl/src/main/resources/ //this will return all ojb config files
+def resourceHome='/impl/src/main/resources/org/kuali/rice/ken'
 def srcHome='/impl/src/main/java'
 //def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns'
 //def srcHome = '/java/projects/play/rice-1.1.0/impl/src/main/java'
@@ -24,6 +25,7 @@ def files = []
 class GlobalRes{
 	public static conversion_util = new ConversionUtils();
 }
+
 if(args.size() == 0)
 {println("USAGE:\t>groovy ~/jpaconversion/jpa_makeup.groovy [CLEAN | TRANSIENT]");
 	System.exit(0)
@@ -44,18 +46,6 @@ if("CLEAN".equals(args[0]))
 
 else if("TRANSIENT".equals(args[0]))
 	addTransient(files)
-
-class ClassDescriptor {
-	def compoundPrimaryKey = false
-	def pkClassIdText = ""
-	def cpkFilename = ""
-	def tableName
-	def className
-	def primaryKeys = []
-	def fields = [:]
-	def referenceDescriptors = [:]
-	def collectionDescriptors = [:]
-}
 
 def loadClasses(repositories, classes){
 	
@@ -181,3 +171,8 @@ def addTransient(files){
 		}
 	}
 }
+
+//need a function to delete the emplty lines before license, between package and import, and after the class impl
+def removeEmptyLines(){
+	
+	}

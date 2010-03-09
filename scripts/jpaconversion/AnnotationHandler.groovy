@@ -2,6 +2,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	/*
 	The second pass iterates over all of the class descriptors found above and generates JPA annotations.
 	*/
+	def type_handler = new CustomerTypeHandler();
 	classes.values().each {
 	    c ->     
 	        println 'Class Name: '+c.className.toString()
@@ -50,7 +51,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 			
 			def un_overring_fields = [:];
 			if(hasSuperClass(javaFile.text) != null ){
-				if(hasUnOverringFields(javaFile.text, c.fields, un_overring_fields)){
+				if(hasUnOverridingFields(javaFile.text, c.fields, un_overring_fields)){
 					//classAnnotation += "\n//Please check Super classes for AttributeOverriding"
 					logger.log("${c.className}:\tPlease check Super classes for AttributeOverriding on ${un_overring_fields.values()}")
 				}	
@@ -91,7 +92,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 						annotation += "@GeneratedValue(generator=\"${f.sequenceName}\")\n\t"
 						annotation += "@GenericGenerator(name=\"${f.sequenceName}\", strategy=\"org.hibernate.id.enhanced.SequenceStyleGenerator\", " + 
 								"\n\t\t parameters={@Parameter(name=\"sequence_name\",value=\"${f.sequenceName}\"), "  +
-								"\n\t\t\t\t @Parameter(name=\"value_column\",value=\"id\"))\n\t"
+								"\n\t\t\t\t @Parameter(name=\"value_column\",value=\"id\")})\n\t"
 						text = addImport(text,"GeneratedValue")
 						text = addImportHibernate(text,"GenericGenerator")
 						text = addImportHibernate(text,"Parameter")
@@ -108,7 +109,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    text = addImport(text, "FetchType")
 	                }
 	                if (f.conversion?.toString()?.size() > 0){
-	                	GlobalVariables.type_handler.handleTypes(f.conversion, annotation, text, f)
+	                	type_handler.handleTypes(f.conversion, annotation, text, f)
 	                }
 	                if (f.nullable) nullable = ", nullable=${f.nullable}"
 	                annotation += "@Column(name=\"${f.column}\"${nullable})"
@@ -125,7 +126,8 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                text = addImport(text, annotation[1..-1])
 	                def cascade = determineCascadeTypes(rd)
                     def readOnlyFK = ", insertable=false, updatable=false"
-	                
+					
+					//print "\n***********reference descriptors************\t" + rd.proxy + "\tauto\t" + rd.autoRetrieve
 	                annotation += "(${determineFetchType(rd)}"
 	                text = addImport(text, "FetchType")
 	                if (cascade) annotation += ", ${cascade}" 
@@ -138,7 +140,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 					//checking each foreign keys
 	                rd.foreignKeys.eachWithIndex {
 	                    fk, i ->
-	                    println "\n***********CLASSREFS************\t" + rd.classRef + "\treferencing field----\t" + fk.fieldRef
+	                    //println "\n***********CLASSREFS************\t" + rd.classRef + "\treferencing field----\t" + fk.fieldRef
 	                        def fkColumn
 	                        fk.fieldRef ? (fkColumn = c.fields[fk.fieldRef].column) : (fkColumn = findFieldIdRef(c.fields, fk.fieldIdRef).column)
 							if(size > 1)
@@ -253,6 +255,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 		            if (javaFile.exists()) {
 		                javaFile.delete()
 		            }
+					println('generating JPA class...')
 		            javaFile << text
 		            javaFile << "\n"
                 } else {
@@ -261,6 +264,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    if (cpkFile.exists()) {
 	                        cpkFile.delete()
 	                    }
+						println('generating id class...')
 	                    cpkFile << c.pkClassIdText
 	                    cpkFile << "\n"
                     }
@@ -516,7 +520,7 @@ def hasSuperClass(javaText){
 	javaText.find(/public class (\w+) extends/)
 }
 
-def boolean hasUnOverringFields(javaText,  fields, un_overring_fields){
+def boolean hasUnOverridingFields(javaText,  fields, un_overring_fields){
 	
 	println "***********looking for un_overriding_fields**************\t" 
 	

@@ -4,8 +4,8 @@
 /* run option properties */
 def persistenceXml = false
 def mysql = false
-def pkClasses = false
-def clean = true
+def pkClasses = true
+def clean = false
 def dry = false
 def verbose = false
 def createBOs = true
@@ -19,7 +19,7 @@ def scanForConfigFiles = false
 
 //for rice
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
-def projHome = '/java/projects/play/rice-1.1.0'
+def projHome = '/java/projects/rice-1.1.0'
 def resourceDir = '/impl/src/main/resources/'
 
 def repositories = [
@@ -27,8 +27,8 @@ def repositories = [
         //'/java/projects/kfs-jpa-ref/work/src/org/kuali/kfs/coa/ojb-coa.xml',
         //'/java/projects/kfs-jpa-ref/work/src/org/kuali/kfs/fp/ojb-fp.xml'
         //for rice
-		'/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml',
-        '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml'
+		'/java/projects/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml'
+        //,'/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml'
 		]
 
 def sourceDirectories = [
@@ -52,7 +52,7 @@ def classes = [:]
 //   Search for OJB Mapping Files
 if (scanForConfigFiles){
 	println 'Scanning for files'
-    GlobalVariables.conversion_util.getOJBConfigFiles(projHome, resourceDir, ojbMappingPattern, repositories)
+    JPAConversionHandlers.conversion_util.getOJBConfigFiles(projHome, resourceDir, ojbMappingPattern, repositories)
 }
 println 'Found '+repositories.size().toString()+' OJB mapping files:'
 repositories.each {println it}
@@ -95,46 +95,46 @@ if (something.toString().toUpperCase().equals( 'Y'))
 	The first pass over the OJB XML captures all of the metadata in groovy datastructures.
 	*/
 
-	GlobalVariables.metadata_handler.loadMetaData(repositories, classes, logger)
+	JPAConversionHandlers.metadata_handler.loadMetaData(repositories, classes, logger)
 	println '\nFirst pass completed, metadata captured.'
 
 	//for persistence.xml
 	if (persistenceXml) {
 		println '\nGenerating persistence.xml...'
-		GlobalVariables.persistence_handler.generatePersistenceXML(classes, persistenceUnitName, persistenceXmlFilename, projHome+resourceDir+metaInf)
+		JPAConversionHandlers.persistence_handler.generatePersistenceXML(classes, persistenceUnitName, persistenceXmlFilename, projHome+resourceDir+metaInf)
 	} 
 
 	//for handling sequence in mysql
 	if (mysql) {
 		println '\nGenerating MySQL sequence scripts and orm files...'
-		//GlobalVariables.mysql_handler.generateMySQLSequence(classes, schemaName, projHome, mysqlScriptFile, resourceDir+metaInf+mysqlOrmFile)
+		//JPAConversionHandlers.mysql_handler.generateMySQLSequence(classes, schemaName, projHome, mysqlScriptFile, resourceDir+metaInf+mysqlOrmFile)
 		repositories.each {
 			repository ->
-			    def moduleName = GlobalVariables.conversion_util.stripeModuleName(repository.toString())
+			    def moduleName = JPAConversionHandlers.conversion_util.stripeModuleName(repository.toString())
 				def filePath = resourceDir+metaInf+moduleName+'-'
 				def this_classes = [:]
                 def this_repository = []
 			    this_repository.add(repository)     
-			    GlobalVariables.metadata_handler.loadMetaData(this_repository, this_classes, logger)
-			    GlobalVariables.mysql_handler.generateMySQLSequence(this_classes, schemaName, projHome, filePath+mysqlScriptFile, filePath+mysqlOrmFile)	
+			    JPAConversionHandlers.metadata_handler.loadMetaData(this_repository, this_classes, logger)
+			    JPAConversionHandlers.mysql_handler.generateMySQLSequence(this_classes, schemaName, projHome, filePath+mysqlScriptFile, filePath+mysqlOrmFile)	
 			}
 	}
 
 	//clean back up
 	if (clean) {
 		println '\nCleaning up backup files...'
-		GlobalVariables.conversion_util.cleanBackupFiles(classes, sourceDirectories, projHome, backupExtension, logger, verbose)
+		JPAConversionHandlers.conversion_util.cleanBackupFiles(classes, sourceDirectories, projHome, backupExtension, logger, verbose)
 	} 
 
 	//generate  sounre code for bo in JPA style
 	if (createBOs)	{
 		println '\nGenerating Business Object POJOs with JPA Annotations...'
-		GlobalVariables.annotation_handler.generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger, false)
+		JPAConversionHandlers.annotation_handler.generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger, false)
 	}
 	// generate composite primary key classes
 	if (pkClasses){
 		println '\nGenerating Composite Primary Key Classes...'
-		GlobalVariables.annotation_handler.generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger, pkClasses)
+		JPAConversionHandlers.annotation_handler.generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger, pkClasses)
 	}
 }
 else
@@ -230,7 +230,7 @@ class ClassDescriptor {
     def collectionDescriptors = [:]
 }
 
-class GlobalVariables{
+public class JPAConversionHandlers{
 	public static conversion_util = new ConversionUtils();
 	public static metadata_handler = new MetaDataHandler();
 	public static persistence_handler = new PersistenceFileHandler();

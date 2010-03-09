@@ -181,6 +181,8 @@
 	</target>
 	
 	<target name="copy-coverage-report" description="copy cobertura report to an already published directory" depends="coverage-report" if="${hudson.workspace}">
+		<echo message="This is tomcat.webapps directory: ${tomcat.webapps}"/>
+		<echo message="This is hudson.workspace: ${hudson.workspace}"/>
 		<copy todir="${tomcat.webapps}" overwrite="true">
 			<fileset dir="${hudson.workspace}/target/site/cobertura_all"/> 
 		</copy>

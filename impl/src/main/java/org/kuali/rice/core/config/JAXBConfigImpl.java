@@ -140,10 +140,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
    
 	public void putProperty(String key, Object value) {
 		if(key != null){									
-			this.properties.put(key, value);
+			setProperty(key, value.toString());
 			
 			if(!runtimeResolution) {                
-                this.properties.put(key, resolve(key));                
+                setProperty(key, resolve(key));                
             }		
 		}		
 	}
@@ -155,7 +155,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             
             if(!runtimeResolution) {
                 for (Object o : properties.keySet()) {
-                    this.properties.put((String)o, resolve((String)o));
+                    setProperty((String)o, resolve((String)o));
                 }
             }
         }
@@ -244,9 +244,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             LOG.warn("###############################");
         } else {
 
-            final String prefix = StringUtils.repeat(INDENT, depth);
-            LOG.info(prefix + "+ Parsing config: " + filename);
-
+            final String prefix = StringUtils.repeat(INDENT, depth);            
+            LOG.info(prefix + "+ Parsing config: " + filename);            
             Config config;
 
             try {
@@ -265,7 +264,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 } else if (p.isOverride() || !properties.containsKey(name)) {
 
                     if (p.isRandom()) {
-                        properties.setProperty(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
+                        setProperty(p.getName(), String.valueOf(generateRandomInteger(p.getValue())), prefix);
                     } else if (p.isSystem()) {
                         // resolve and set system params immediately so they can override
                         // existing system params. Add to paramMap resolved as well to
@@ -274,15 +273,31 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                         set.add(p.getName());
                         String value = parseValue(p.getValue(), set);
                         System.setProperty(name, value);
-                        properties.setProperty(name, value);
+                        setProperty(name, value, prefix);
                     } else {
-                        properties.setProperty(p.getName(), p.getValue());
+                        setProperty(p.getName(), p.getValue(), prefix);
                     }
                 }
             }
 
             LOG.info(prefix + "- Parsed config: " + filename);
         }
+    }
+    
+    /*
+     * This will set the property. No logic checking so what you pass in gets set.
+     */
+    protected void setProperty(String name, String value){
+    	setProperty(name,value,"");
+    }
+    protected void setProperty(String name, String value, String prefix){
+    
+    	String oldVal = properties.getProperty(name);
+    	if(oldVal != null && !"".equals(oldVal)){ // we're overriding something    		
+    		LOG.info(prefix + "+ Overriding ["+ name +"]: " 
+    				+ "["+ ConfigLogger.getDisplaySafeValue(name,oldVal) +"]->["+ ConfigLogger.getDisplaySafeValue(name,value) +"]");
+    	}
+    	properties.setProperty(name, value);
     }
 
     protected String resolve(String key) {
@@ -344,8 +359,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * Configures built-in properties.
      */
     protected void configureBuiltIns() {
-        properties.setProperty("host.ip", RiceUtilities.getIpNumber());
-        properties.setProperty("host.name", RiceUtilities.getHostName());
+        setProperty("host.ip", RiceUtilities.getIpNumber());
+        setProperty("host.name", RiceUtilities.getHostName());
     }
 
     /**

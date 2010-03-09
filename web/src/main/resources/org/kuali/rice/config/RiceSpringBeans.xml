@@ -32,7 +32,7 @@
 		<property name="transactionManager" ref="jtaTransactionManager" />
 		<property name="userTransaction" ref="jtaUserTransaction" />
 		<property name="rootConfig" ref="config" />
-        <param name="environment" override="false">${environment}</param>
+        <property name="environment" value="${environment}"/>
 		<property name="ksbConfigurer">
 			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer"
 				  p:serviceServletUrl="${serviceServletUrl}"

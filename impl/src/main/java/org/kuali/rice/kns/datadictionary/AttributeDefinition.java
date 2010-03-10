@@ -207,6 +207,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
                         * type
                         * allowWhitespace
                         * allowUnderscore
+                        * allowPeriod
                         * validChars
                         * precision
                         * scale
@@ -218,6 +219,7 @@ public class AttributeDefinition extends DataDictionaryDefinitionBase implements
                                         maxLength
                                         allowWhitespace
                                         allowUnderscore
+                                        allowPeriod
 
                         alpha           exactLength
                                         maxLength

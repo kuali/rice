@@ -17,18 +17,31 @@ package org.kuali.rice.kns.datadictionary.validation.charlevel;
 
 import org.kuali.rice.kns.datadictionary.exporter.ExportMap;
 import org.kuali.rice.kns.datadictionary.validation.CharacterLevelValidationPattern;
-import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * Pattern for matching alphanumeric characters
  * 
- * 
+ * Also, allows conditionally whitespace, underscore, or period.
  */
 public class AlphaNumericValidationPattern extends CharacterLevelValidationPattern {
     protected boolean allowWhitespace = false;
     protected boolean allowUnderscore = false;
+    protected boolean allowPeriod = false;
 
+    /**
+     * @return allowPeriod
+     */
+    public boolean getAllowPeriod() {
+        return allowPeriod;
+    }
 
+    /**
+     * @param allowPeriod
+     */
+    public void setAllowPeriod(boolean allowPeriod) {
+        this.allowPeriod = allowPeriod;
+    }
+    
     /**
      * @return allowWhitespace
      */
@@ -63,13 +76,16 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
      * @see org.kuali.rice.kns.datadictionary.validation.ValidationPattern#getRegexString()
      */
     protected String getRegexString() {
-        StringBuffer regexString = new StringBuffer("[A-Za-z0-9");
+    	StringBuilder regexString = new StringBuilder("[A-Za-z0-9");
 
         if (allowWhitespace) {
             regexString.append("\\s");
         }
         if (allowUnderscore) {
             regexString.append("_");
+        }
+        if (allowPeriod) {
+            regexString.append(".");
         }
         regexString.append("]");
 
@@ -89,19 +105,25 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
         if (allowUnderscore) {
             exportMap.set("allowUnderscore", "true");
         }
+        if (allowPeriod) {
+        	exportMap.set("allowPeriod", "true");
+        }
     }
 
 	@Override
 	protected String getValidationErrorMessageKeyOptions() {
-		if (allowWhitespace && allowUnderscore) {
-			return ".allowWhitespace.allowUnderscore";
-		}
+		final StringBuilder opts = new StringBuilder();
+
 		if (allowWhitespace) {
-			return ".allowWhitespace";
+			opts.append(".allowWhitespace");
 		}
 		if (allowUnderscore) {
-			return ".allowUnderscore";
+			opts.append(".allowUnderscore");
 		}
-		return KNSConstants.EMPTY_STRING;
+		if (allowPeriod) {
+			opts.append(".allowPeriod");
+		}
+
+		return opts.toString();
 	}
 }

@@ -103,14 +103,14 @@ if (textAreaFieldLabel == null) {
 			<td>
 			  <div>
 			    <c:set var="attributeEntry" value="${textAreaAttributes.extendedTextArea}"/>
-			    <%-- cannot use struts tags here b/c some id values will not be valid properties --%>
+			    <%-- cannot use struts form tags here b/c some id values will not be valid properties --%>
 			    <c:choose>
 			    	<c:when test="${textAreaReadOnly == 'true'}" >
 			            <textarea id="${textAreaFieldName}" name="${textAreaFieldName}"
                         	rows="${attributeEntry.control.rows}"
                             cols="${attributeEntry.control.cols}"
                             readonly="readonly"
-                            ></textarea>
+                            ><%-- if it's a valid property then get the value...this is kind of hacky --%><c:catch><bean:write name="KualiForm" property="${textAreaFieldName}"/></c:catch></textarea>
 			    	</c:when>
 			    	<c:otherwise>
 			    		${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
@@ -119,7 +119,7 @@ if (textAreaFieldLabel == null) {
                             cols="${attributeEntry.control.cols}"
                             maxlength="${textAreaMaxLength}"
                             onkeyup="textLimit(this, ${textAreaMaxLength});"
-                            ></textarea>
+                            ><%-- if it's a valid property then get the value...this is kind of hacky --%><c:catch><bean:write name="KualiForm" property="${textAreaFieldName}"/></c:catch></textarea>
 					</c:otherwise>
 				</c:choose>
 			  </div>

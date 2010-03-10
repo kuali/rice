@@ -128,6 +128,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
                             DatabaseMetaData metaData = statement.getConnection().getMetaData();
                             Map<String, List<String[]>> exportedKeys = indexExportedKeys(metaData, schemaName);
                             final ResultSet resultSet = metaData.getTables(null, schemaName, null, new String[] { "TABLE" });
+                            final StringBuilder logStatements = new StringBuilder();
                             while (resultSet.next()) {
                                 String tableName = resultSet.getString("TABLE_NAME");
                                 if (shouldTableBeCleared(tableName)) {
@@ -138,7 +139,7 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
                                     			final String fkName = exportedKeyName[0];
                                     			final String fkTableName = exportedKeyName[1];
                                     			final String disableConstraint = "ALTER TABLE " + fkTableName + " DISABLE CONSTRAINT " + fkName;
-                                    			LOG.info("Disabling constraints using statement ->" + disableConstraint + "<-");
+                                    			logStatements.append("Disabling constraints using statement ->" + disableConstraint + "<-\n");
                                     			statement.addBatch(disableConstraint);
                                     			reEnableConstraints.add("ALTER TABLE " + fkTableName + " ENABLE CONSTRAINT " + fkName);
                                     		}
@@ -147,17 +148,19 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
                                     	statement.addBatch("SET FOREIGN_KEY_CHECKS = 0");
                                     }
                                     String deleteStatement = "DELETE FROM " + tableName;
-                                    LOG.info("Clearing contents using statement ->" + deleteStatement + "<-");
+                                    logStatements.append("Clearing contents using statement ->" + deleteStatement + "<-\n");
                                     statement.addBatch(deleteStatement);
                                 }
                             }
                             for (final String constraint : reEnableConstraints) {
-                                LOG.info("Enabling constraints using statement ->" + constraint + "<-");
+                                logStatements.append("Enabling constraints using statement ->" + constraint + "<-\n");
                                 statement.addBatch(constraint);
                             }
                             if (isUsingMySQL(metaData)) {
                             	statement.addBatch("SET FOREIGN_KEY_CHECKS = 1");
                             }
+                            LOG.info(logStatements);
+                            
                             int[] results = statement.executeBatch();
                             for (int index = 0; index < results.length; index++) {
                             	if (results[index] == Statement.EXECUTE_FAILED) {

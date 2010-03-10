@@ -54,18 +54,18 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     private static final String CONFIG_CODED_DEFAULTS = "classpath:org/kuali/rice/core/config-coded-defaults.xml";
     private static final String IMPORT_NAME = "config.location";
     private static final String INDENT = "  ";
+    private static final String PLACEHOLDER_REGEX = "\\$\\{([^{}]+)\\}";
 
     // keep the same random
     private static final Random RANDOM = new Random();
 
-    private List<String> fileLocs = new ArrayList<String>();
+    private final List<String> fileLocs = new ArrayList<String>();
 
-    private Map<String, Object> objects = new LinkedHashMap<String, Object>();
-    private Properties properties = new Properties();
+    private final Map<String, Object> objects = new LinkedHashMap<String, Object>();
+    private final Properties properties = new Properties();
 
     // compile pattern for regex once
-    private String regex = "\\$\\{([^{}]+)\\}";
-    private Pattern pattern = Pattern.compile(regex);
+    private final Pattern pattern = Pattern.compile(PLACEHOLDER_REGEX);
 
     private boolean loadDefaults = true;
     private boolean runtimeResolution = false;
@@ -202,14 +202,14 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             }
 
             if (LOG.isInfoEnabled()) {
-                LOG.info("");
-                LOG.info("####################################");
-                LOG.info("#");
-                LOG.info("# Properties used after config override/replacement");
-                LOG.info("# " + StringUtils.join(fileLocs, ", "));
-                LOG.info("#");
-                LOG.info("####################################");
-                LOG.info("");
+            	final StringBuilder log = new StringBuilder();
+            	log.append("\n");
+            	log.append("####################################\n");
+            	log.append("#\n");
+            	log.append("# Properties used after config override/replacement\n");
+            	log.append("# " + StringUtils.join(fileLocs, ", ") + "\n");
+            	log.append("#\n");
+            	log.append("####################################\n");
                 //commented out to backport to java 5
                 //SortedSet<String> sorted = new TreeSet<String>(properties.stringPropertyNames());
                 
@@ -217,8 +217,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 CollectionUtils.addAll(sorted, properties.propertyNames());
                 
                 for (String s : sorted) {
-                    LOG.info("Using config Prop " + s + "=[" + ConfigLogger.getDisplaySafeValue(s, properties.getProperty(s)) + "]");
+                	log.append("Using config Prop " + s + "=[" + ConfigLogger.getDisplaySafeValue(s, (String) properties.get(s)) + "]\n");
                 }
+                LOG.info(log);
             }
 
         } else {
@@ -237,11 +238,14 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         }
 
         if (in == null) {
-            LOG.warn("###############################");
-            LOG.warn("#");
-            LOG.warn("# Configuration file '" + filename + "' not found!");
-            LOG.warn("#");
-            LOG.warn("###############################");
+        	final StringBuilder log = new StringBuilder();
+        	log.append("\n");
+        	log.append("####################################\n");
+        	log.append("#\n");
+        	log.append("# Configuration file '" + filename + "' not found!\n");
+        	log.append("#\n");
+        	log.append("####################################\n");
+        	LOG.warn(log);
         } else {
 
             final String prefix = StringUtils.repeat(INDENT, depth);            

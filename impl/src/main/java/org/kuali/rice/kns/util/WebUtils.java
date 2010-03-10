@@ -124,26 +124,16 @@ public class WebUtils {
                 String parameterName = (String) i.nextElement();
 
                 // check if the parameter name is a specifying the methodToCall
-                if (parameterName.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER) 
-                		&& endsWithCoordinates(parameterName)) {
-                	if (form instanceof ActionForm && !((KualiForm) form).shouldMethodToCallParameterBeUsed(parameterName, request.getParameter(parameterName), request)) {
-            			throw new RuntimeException("Cannot verify that the methodToCall should be " + parameterName);
-            		}
-                    methodToCall = StringUtils.substringBetween(parameterName, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
-                    request.setAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, parameterName);
-                    // Fix for KRACOEUS-267, KULRICE-1412, KULRICE-1425, and KFSMI-110
-                    // Add this to return the method to call once it is matched
+                if (isMethodToCall(parameterName)) {
+                    methodToCall = getMethodToCallSettingAttribute(form, request, parameterName);
                     break; 
                 } else { 
                     // KULRICE-1218: Check if the parameter's values match (not just the name)
                     for (String value : request.getParameterValues(parameterName)) {
-                        if (value.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER) 
-                        		&& endsWithCoordinates(value)) {
-                        	if (form instanceof ActionForm && !((KualiForm) form).shouldMethodToCallParameterBeUsed(parameterName, value, request)) {
-                        		throw new RuntimeException("Cannot verify that the methodToCall should be " + value);
-                        	}
-                            methodToCall = StringUtils.substringBetween(value, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
-                            request.setAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, value);
+                    	//adding period to startsWith check - don't want to get confused with methodToCallFoobar
+                        if (isMethodToCall(value)) {
+                        	methodToCall = getMethodToCallSettingAttribute(form, request, value);
+                        	//why is there not a break outer loop here?
                         }
                     }
                 }
@@ -152,7 +142,38 @@ public class WebUtils {
         
         return methodToCall;
     }
+    
+    /** 
+     * Checks if a string signifies a methodToCall string
+     * 
+     * @param string the string to check
+     * @return true if is a methodToCall
+     */
+    private static boolean isMethodToCall(String string) {
+    	//adding period to startsWith check - don't want to get confused with methodToCallFoobar
+    	return string.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER  + ".");
+    }
 
+    /**
+     * Parses out the methodToCall command and also sets the request attribute for the methodToCall.
+     * 
+     * @param form the ActionForm
+     * @param request the request to set the attribute on
+     * @param string the methodToCall string
+     * @return the methodToCall command
+     */
+    private static String getMethodToCallSettingAttribute(ActionForm form, HttpServletRequest request, String string) {
+    	final String methodToCall;
+    	
+    	if (form instanceof ActionForm && !((KualiForm) form).shouldMethodToCallParameterBeUsed(string, request.getParameter(string), request)) {
+			throw new RuntimeException("Cannot verify that the methodToCall should be " + string);
+		}
+    	//always adding a coordinate even if not an image
+    	final String attributeValue = endsWithCoordinates(string) ? string : string + IMAGE_COORDINATE_CLICKED_X_EXTENSION;
+        methodToCall = StringUtils.substringBetween(string, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
+        request.setAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, attributeValue);
+        return methodToCall;
+    }
 
     /**
      * Iterates through and logs (at the given level) all attributes and parameters of the given request onto the given Logger

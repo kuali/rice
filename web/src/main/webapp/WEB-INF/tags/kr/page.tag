@@ -337,7 +337,7 @@
                                         <c:otherwise><dt></c:otherwise>
                                     </c:choose>
                                     <span class="tabright ${currentTab ? 'tabcurrent' : ''}">
-                                        <html:submit value="${headerTab.headerTabDisplayName}" property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}.x"  alt="${headerTab.headerTabDisplayName}" disabled="true" />
+                                        <html:submit value="${headerTab.headerTabDisplayName}" property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}"  alt="${headerTab.headerTabDisplayName}" disabled="true" />
                                     </span></dt>
                                 </c:forEach>
                             </c:when>
@@ -346,7 +346,7 @@
                                     <c:set var="currentTab" value="${headerTabActive eq headerTab.headerTabNavigateTo}" /> <!-- ${headerTab.headerTabNavigateTo}; ${headerTabActive}; ${currentTab} -->
                                     <c:choose><c:when test="${currentTab}"><dt class="licurrent"></c:when><c:otherwise><dt></c:otherwise></c:choose>
                                     <span class="tabright ${currentTab ? 'tabcurrent' : ''}">
-                                        <html:submit value="${headerTab.headerTabDisplayName}" property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}.x"  alt="${headerTab.headerTabDisplayName}" disabled="${headerTab.disabled}"  />
+                                        <html:submit value="${headerTab.headerTabDisplayName}" property="methodToCall.headerTab.headerDispatch.${headerDispatch}.navigateTo.${headerTab.headerTabNavigateTo}"  alt="${headerTab.headerTabDisplayName}" disabled="${headerTab.disabled}"  />
                                     </span></dt>
                                 </c:forEach>
                             </c:otherwise>

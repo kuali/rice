@@ -72,7 +72,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	@Column(name = "EXT_ID")
 	protected String externalId;
 	
-	@ManyToOne(targetEntity=KimEntityEntityTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@ManyToOne(targetEntity=ExternalIdentifierTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EXT_ID_TYP_CD", insertable = false, updatable = false)
 	protected ExternalIdentifierType externalIdentifierType;
 

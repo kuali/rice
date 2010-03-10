@@ -60,7 +60,7 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	
-	@OneToMany(targetEntity=RoleMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToMany(targetEntity=RoleMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     @JoinColumn(name="ROLE_MBR_ID", insertable=false, updatable=false)
 	protected List<RoleMemberAttributeDataImpl> attributes = new TypedArrayList(RoleMemberAttributeDataImpl.class);
 	

@@ -17,7 +17,6 @@ package org.kuali.rice.kim.bo.role.impl;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -50,7 +49,7 @@ public class RolePermissionImpl extends PersistableBusinessObjectBase implements
 	@Column(name="ACTV_IND")
 	protected boolean active;
 
-	@OneToOne(targetEntity=KimPermissionImpl.class, fetch = FetchType.LAZY, cascade = { })
+	@OneToOne(targetEntity=KimPermissionImpl.class, fetch = FetchType.EAGER, cascade = { })
 	@JoinColumn(name = "PERM_ID", insertable = false, updatable = false)
 	protected KimPermissionImpl kimPermission;
 	

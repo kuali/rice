@@ -238,7 +238,7 @@
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
     
     <!-- KIM-specific JPA parameters --> 
-	<param name="rice.kim.jpa.enabled" override="false">false</param>
+	<param name="rice.kim.jpa.enabled" override="false">true</param>
 	<param name="rice.kim.jpa.PersistenceXmlLocation" override="false">META-INF/kim-persistence.xml</param>
 	<param name="rice.kim.jpa.PersistenceUnitName" override="false">kim-unit</param>
 	<param name="rice.kim.jpa.GenerateDdl" override="false">true</param>

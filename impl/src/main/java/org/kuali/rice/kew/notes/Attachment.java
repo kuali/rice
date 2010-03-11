@@ -21,6 +21,7 @@ import java.io.InputStream;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -51,6 +52,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 public class Attachment {
 
 	@Id
+	@GeneratedValue(generator="KREW_DOC_NTE_S")
 	@GenericGenerator(name="KREW_DOC_NTE_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KREW_DOC_NTE_S"),
 			@Parameter(name="value_column",value="id")

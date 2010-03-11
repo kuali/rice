@@ -70,12 +70,15 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
      */
     @Override
     public DocumentRouteHeaderValue getRouteHeader(ActionItem actionItem) {
+    	DocumentRouteHeaderValue routeHeader = null;
         if (actionItem.getRouteHeaderId() != null) {
-            return super.getRouteHeader(actionItem);
+            routeHeader = super.getRouteHeader(actionItem);
         }
-        DocumentRouteHeaderValue routeHeader = new DocumentRouteHeaderValue();
-        routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
-        routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
+        if (routeHeader == null) {
+        	routeHeader = new DocumentRouteHeaderValue();
+        	routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
+        	routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
+        }
         return routeHeader;
     }
 

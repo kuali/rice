@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -68,7 +69,11 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	public DocumentType findByDocId(Long docId) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
 		crit.eq("documentTypeId", docId);
-		return (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+		try {
+			return (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+		} catch (javax.persistence.NoResultException e) {
+			return null;
+		}
 	}
 
 	public DocumentType findByName(String name){
@@ -78,7 +83,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	public DocumentType findByName(String name, boolean caseSensitive) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
 		if(!caseSensitive){
-			crit.like("UPPER(name)", ("%" + name.trim() + "%").toUpperCase());
+			crit.like("UPPER(__JPA_ALIAS__.name)", ("%" + name.trim() + "%").toUpperCase());
 
 		}else{
 			crit.eq("name", name);
@@ -128,10 +133,23 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 
 	public void save(DocumentType documentType) {
 		Collection<DocumentTypePolicy> docPolicies = documentType.getPolicies();
+		List<ApplicationDocumentStatus> docStatuses = documentType.getValidApplicationStatuses();
 		documentType.setPolicies(new ArrayList<DocumentTypePolicy>());
 
 		if (documentType.getDocumentTypeId() == null){
+			if (docStatuses != null) {
+				documentType.setValidApplicationStatuses(new ArrayList<ApplicationDocumentStatus>());
+			}
+			
 			entityManager.persist(documentType);
+			
+			if (docStatuses != null) {
+				for (ApplicationDocumentStatus docStatus : docStatuses) {
+					docStatus.setDocumentTypeId(documentType.getDocumentTypeId());
+					entityManager.persist(docStatus);
+				}
+				documentType.setValidApplicationStatuses(docStatuses);
+			}
 		} else {
 			for(org.kuali.rice.kew.engine.node.Process process:(List<org.kuali.rice.kew.engine.node.Process>)documentType.getProcesses()){
 				if(process.getInitialRouteNode().getRouteNodeId()==null){
@@ -139,6 +157,16 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 					entityManager.persist(process.getInitialRouteNode());
 				} else {
 					OrmUtils.merge(entityManager, process.getInitialRouteNode());
+				}
+			}
+			if (docStatuses != null) {
+				for (ApplicationDocumentStatus docStatus : docStatuses) {
+					if (docStatus.getDocumentTypeId() == null) {
+						docStatus.setDocumentTypeId(documentType.getDocumentTypeId());
+						entityManager.persist(docStatus);
+					} else {
+						OrmUtils.merge(entityManager, docStatus);
+					}
 				}
 			}
 			OrmUtils.merge(entityManager, documentType);
@@ -152,7 +180,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 				OrmUtils.merge(entityManager, docTypePolicy);
 			}
 		}
-
+		
 		documentType.setPolicies(new ArrayList<DocumentTypePolicy>(docPolicies));
 	}
 
@@ -169,11 +197,11 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 
 		Criteria crit = new Criteria(DocumentType.class.getName());
 		if (documentType != null && !Utilities.isEmpty(documentType.getLabel())) {
-			crit.like("UPPER(label)", documentType.getLabel().trim().toUpperCase());
+			crit.like("UPPER(__JPA_ALIAS__.label)", documentType.getLabel().trim().toUpperCase());
 		}
 		if (documentType != null && !Utilities.isEmpty(documentType.getName())) {
 			String docTypeName = documentType.getName();
-			crit.like("UPPER(name)", ("%" + docTypeName.trim() + "%").toUpperCase());
+			crit.like("UPPER(__JPA_ALIAS__.name)", ("%" + docTypeName.trim() + "%").toUpperCase());
 		}
 		if (documentType != null && documentType.getActive() != null) {
 			crit.eq("active", documentType.getActive());

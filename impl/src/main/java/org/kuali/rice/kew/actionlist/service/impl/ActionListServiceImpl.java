@@ -133,8 +133,7 @@ public class ActionListServiceImpl implements ActionListService {
     public ActionItem createActionItemForActionRequest(ActionRequestValue actionRequest) {
         ActionItem actionItem = new ActionItem();
 
-        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(
-                actionRequest.getRouteHeaderId());
+        DocumentRouteHeaderValue routeHeader = actionRequest.getRouteHeader();
         DocumentType docType = routeHeader.getDocumentType();
 
         actionItem.setActionRequestCd(actionRequest.getActionRequested());

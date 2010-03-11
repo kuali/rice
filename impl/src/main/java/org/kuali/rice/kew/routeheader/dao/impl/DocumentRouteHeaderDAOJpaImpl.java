@@ -219,7 +219,7 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
 
     public boolean hasSearchableAttributeValue(Long documentId, String searchableAttributeKey, String searchableAttributeValue) {
     	return hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeDateTimeValue.FindByKey")
-    		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeFloatValue.FindByKey")
+    		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeStringValue.FindByKey")
     		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeLongValue.FindByKey")
     		|| hasSearchableAttributeValue(documentId, searchableAttributeKey, searchableAttributeValue, "SearchableAttributeFloatValue.FindByKey");
     }
@@ -283,7 +283,6 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
     	}
     }
 
-    //FIXME might need to convert result lcollection to Longs
 	public Collection findByDocTypeAndAppId(String documentTypeName,
 			String appId) {
     	try {
@@ -301,7 +300,11 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
             Query query = entityManager.createNativeQuery(sql);
             query.setParameter(1, appId);
             query.setParameter(2, documentTypeName);
-            return query.getResultList();
+            Collection<Long> idCollection = new ArrayList<Long>();
+            for (Object tempId : query.getResultList()) {
+            	idCollection.add(((BigDecimal)tempId).longValueExact());
+            }
+            return idCollection;
     	} catch (EntityNotFoundException enfe) {
     		throw new WorkflowRuntimeException(enfe.getMessage());
 		}

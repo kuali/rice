@@ -75,7 +75,8 @@ public interface ActionListService {
 
     public void saveRefreshUserOption(String principalId);
 
-
+    public Collection<ActionItem> findByActionRequestId(Long actionRequestId);
+    
     /**
      *
      * Retrieves {@link OutboxItemActionListExtension} items for the given user

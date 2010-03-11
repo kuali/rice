@@ -137,7 +137,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
 	    crit.eq("routeHeaderId", routeHeaderId);
 	    crit.eq("principalId", workflowId);
 	    crit.eq("currentIndicator", Boolean.TRUE);
-	    int count = (Integer) new QueryByCriteria(entityManager, crit).toCountQuery().getSingleResult();
+	    long count = (Long) new QueryByCriteria(entityManager, crit).toCountQuery().getSingleResult();
         return count > 0;
     }
 

@@ -76,7 +76,7 @@ public class Dump {
 	private Integer lockVerNbr;
 
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},mappedBy="dump")
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     private List<Fields> fields = new ArrayList<Fields>();
 
     //@PrePersist

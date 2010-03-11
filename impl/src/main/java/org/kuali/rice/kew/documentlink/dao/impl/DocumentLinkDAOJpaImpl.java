@@ -18,11 +18,11 @@ package org.kuali.rice.kew.documentlink.dao.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO;
 
@@ -77,7 +77,11 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 		Criteria crit = new Criteria(DocumentLink.class.getName());
 		crit.eq("orgnDocId", link.getOrgnDocId());
 		crit.eq("destDocId", link.getDestDocId());
-		return (DocumentLink) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+		try {
+			return (DocumentLink) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+		} catch (NoResultException e) {
+			return null;
+		}
 	}
 
 	/**

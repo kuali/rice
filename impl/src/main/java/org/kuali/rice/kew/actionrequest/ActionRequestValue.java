@@ -51,6 +51,7 @@ import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -111,7 +112,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	private Long actionRequestId;
     @Column(name="ACTN_RQST_CD")
 	private String actionRequested;
-    @Column(name="DOC_HDR_ID")//, insertable=false, updatable=false)
+    @Column(name="DOC_HDR_ID")
 	private Long routeHeaderId;
     @Column(name="STAT_CD")
 	private String status;
@@ -162,14 +163,14 @@ public class ActionRequestValue implements WorkflowPersistable {
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="PARNT_ID")
 	private ActionRequestValue parentActionRequest;
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     @OneToMany(mappedBy="parentActionRequest",cascade={CascadeType.PERSIST, CascadeType.MERGE},fetch=FetchType.EAGER)
     private List<ActionRequestValue> childrenRequests = new ArrayList<ActionRequestValue>();
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="ACTN_TKN_ID")
 	private ActionTakenValue actionTaken;
-    @OneToMany(fetch=FetchType.LAZY,mappedBy="actionRequestId")
-    private List<ActionItem> actionItems = new ArrayList<ActionItem>();
+    //@OneToMany(fetch=FetchType.LAZY,mappedBy="actionRequestId")
+    //private List<ActionItem> actionItems = new ArrayList<ActionItem>();
     @Column(name="CUR_IND")
     private Boolean currentIndicator = new Boolean(true);
     @Transient
@@ -188,6 +189,10 @@ public class ActionRequestValue implements WorkflowPersistable {
     
     @Transient
     private boolean resolveResponsibility = true;
+    @Transient
+    private DocumentRouteHeaderValue routeHeader;
+    @Transient
+    private List<ActionItem> simulatedActionItems;
     
     public ActionRequestValue() {
         createDate = new Timestamp(System.currentTimeMillis());
@@ -683,14 +688,27 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public List<ActionItem> getActionItems() {
-        return actionItems;
+    	if (this.simulatedActionItems == null || this.simulatedActionItems.isEmpty()) {
+    		return (List<ActionItem>) KEWServiceLocator.getActionListService().findByActionRequestId(actionRequestId);
+    	} else {
+    		List<ActionItem> allActionItems = new ArrayList<ActionItem>(KEWServiceLocator.getActionListService().findByActionRequestId(actionRequestId));
+    		allActionItems.addAll(this.simulatedActionItems);
+    		return allActionItems;
+    	}
     }
 
-    public void setActionItems(List<ActionItem> actionItems) {
-        this.actionItems = actionItems;
-    }
+    public List<ActionItem> getSimulatedActionItems() {
+    	if (this.simulatedActionItems == null) {
+    		this.simulatedActionItems = new ArrayList<ActionItem>();
+    	}
+		return this.simulatedActionItems;
+	}
 
-    public Boolean getCurrentIndicator() {
+	public void setSimulatedActionItems(List<ActionItem> simulatedActionItems) {
+		this.simulatedActionItems = simulatedActionItems;
+	}
+
+	public Boolean getCurrentIndicator() {
         return currentIndicator;
     }
 
@@ -919,7 +937,6 @@ public class ActionRequestValue implements WorkflowPersistable {
             .append("approvePolicy", approvePolicy)
             .append("childrenRequests", childrenRequests == null ? null : childrenRequests.size())
             .append("actionTaken", actionTaken)
-            .append("actionItems", actionItems == null ? null : actionItems.size())
             .append("currentIndicator", currentIndicator)
             .append("createDateString", createDateString)
             .append("nodeInstance", nodeInstance).toString();
@@ -949,6 +966,17 @@ public class ActionRequestValue implements WorkflowPersistable {
 	 */
 	public void setResolveResponsibility(boolean resolveResponsibility) {
 		this.resolveResponsibility = resolveResponsibility;
+	}
+
+	public DocumentRouteHeaderValue getRouteHeader() {
+		if (this.routeHeader == null && this.routeHeaderId != null) {
+			this.routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(this.routeHeaderId);
+		}
+		return this.routeHeader;
+	}
+
+	public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
+		this.routeHeader = routeHeader;
 	}
     
 }

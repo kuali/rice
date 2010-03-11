@@ -85,7 +85,11 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     public RouteNode findRouteNodeById(Long nodeId) {
     	Query query = entityManager.createNamedQuery("RouteNode.FindByRouteNodeId");
     	query.setParameter(KEWPropertyConstants.ROUTE_NODE_ID, nodeId);
+    	try {
     	return (RouteNode) query.getSingleResult();
+    	} catch (NoResultException nre) {
+    		return null;
+    	}
     }
 
     public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId) {

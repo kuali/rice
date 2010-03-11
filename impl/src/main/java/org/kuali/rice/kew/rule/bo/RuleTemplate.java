@@ -97,11 +97,11 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
     @OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DLGN_RULE_TMPL_ID")
 	private RuleTemplate delegationTemplate;
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            mappedBy="ruleTemplate")
 	private List<RuleTemplateAttribute> ruleTemplateAttributes;
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            mappedBy="ruleTemplate")
 	private List<RuleTemplateOption> ruleTemplateOptions;

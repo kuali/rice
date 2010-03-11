@@ -49,7 +49,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 //@Sequence(name="KREW_SRCH_ATTR_S",property="searchableAttributeValueId")
 @NamedQueries({
 	@NamedQuery(name="SearchableAttributeStringValue.FindByRouteHeaderId", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routeHeaderId"),
-	@NamedQuery(name="SearchableAttributeStringtValue.FindByKey", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
+	@NamedQuery(name="SearchableAttributeStringValue.FindByKey", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
 })
 public class SearchableAttributeStringValue implements WorkflowPersistable, SearchableAttributeValue {
 

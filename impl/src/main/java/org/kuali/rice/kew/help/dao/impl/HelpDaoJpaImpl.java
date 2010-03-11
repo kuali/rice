@@ -19,6 +19,7 @@ package org.kuali.rice.kew.help.dao.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.jpa.criteria.Criteria;
@@ -46,7 +47,11 @@ public class HelpDaoJpaImpl implements HelpDAO {
     }
     
     public HelpEntry findById(Long helpId) {
-        return (HelpEntry) entityManager.createNamedQuery("HelpEntry.FindById").setParameter("helpId", helpId).getSingleResult();
+    	try {
+    		return (HelpEntry) entityManager.createNamedQuery("HelpEntry.FindById").setParameter("helpId", helpId).getSingleResult();
+    	} catch (NoResultException e) {
+    		return null;
+    	}
     }
     
     public List search(HelpEntry helpEntry) {
@@ -79,7 +84,11 @@ public class HelpDaoJpaImpl implements HelpDAO {
     }
     
     public HelpEntry findByKey(String helpKey){
-        return (HelpEntry) entityManager.createNamedQuery("HelpEntry.FindByKey").setParameter("helpKey", helpKey).getSingleResult();
+    	try {
+    		return (HelpEntry) entityManager.createNamedQuery("HelpEntry.FindByKey").setParameter("helpKey", helpKey).getSingleResult();
+    	} catch (NoResultException e) {
+    		return null;
+    	}
     }
 
     public EntityManager getEntityManager() {

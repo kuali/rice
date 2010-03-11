@@ -24,6 +24,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -60,7 +62,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 @Entity
-//@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy=InheritanceType.TABLE_PER_CLASS)
 @Table(name="KREW_ACTN_ITM_T")
 //@Sequence(name="KREW_ACTN_ITM_S",property="actionItemId")
 @NamedQueries({

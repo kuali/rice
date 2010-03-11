@@ -100,17 +100,17 @@ public class RouteNodeInstance implements Serializable {
     
     @ManyToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"))
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     private List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
     
     @ManyToMany(fetch=FetchType.EAGER, mappedBy="nextNodeInstances")
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     //@JoinTable(name = "KREW_RTE_NODE_INSTN_LNK_T", joinColumns = @JoinColumn(name = "TO_RTE_NODE_INSTN_ID"), inverseJoinColumns = @JoinColumn(name = "FROM_RTE_NODE_INSTN_ID"))
     private List<RouteNodeInstance> previousNodeInstances = new ArrayList<RouteNodeInstance>();
 
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="nodeInstance")    
     @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     private List<NodeState> state = new ArrayList<NodeState>();
     	
     @Version

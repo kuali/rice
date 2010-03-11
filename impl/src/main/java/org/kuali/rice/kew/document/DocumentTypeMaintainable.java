@@ -123,7 +123,8 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
             docTypeService.versionAndSave(newDocumentType);
         }
         else {
-            DocumentType newDocumentTypeFromDatabase;
+            Boolean applyRetroactively = newDocumentType.getApplyRetroactively();
+        	DocumentType newDocumentTypeFromDatabase;
             DocumentTypeXmlParser parser = new DocumentTypeXmlParser();
             try {
                 newDocumentTypeFromDatabase = parser.generateNewDocumentTypeFromExisting(documentTypeName);
@@ -133,7 +134,7 @@ public class DocumentTypeMaintainable extends KualiMaintainableImpl {
             }
             newDocumentTypeFromDatabase.populateDataDictionaryEditableFields(constructUserInterfaceEditablePropertyNamesList(), newDocumentType);
             docTypeService.versionAndSave(newDocumentTypeFromDatabase);
-            if (ObjectUtils.isNotNull(newDocumentType.getApplyRetroactively()) && newDocumentType.getApplyRetroactively()) {
+            if (ObjectUtils.isNotNull(applyRetroactively) && applyRetroactively.booleanValue()) {
                 // save all previous instances of document type with the same name
                 // fields: label, description, unresolvedHelpDefinitionUrl
                 List<DocumentType> previousDocTypeInstances = docTypeService.findPreviousInstances(documentTypeName);

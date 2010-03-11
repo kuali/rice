@@ -17,8 +17,10 @@
 package org.kuali.rice.kew.messaging.exceptionhandling;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 
@@ -111,7 +113,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             if (exceptionRequests.isEmpty()) {
             	throw new RiceRuntimeException("Failed to generate exception requests for exception routing!");
             }
-            KEWServiceLocator.getRouteNodeService().save(nodeInstance);
+            
             activateExceptionRequests(routeContext, exceptionRequests, errorMessage);
             KSBServiceLocator.getRouteQueueService().delete(persistedMessage);
         } finally {
@@ -138,7 +140,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     
     protected List<ActionRequestValue> generateExceptionGroupRequests(RouteContext routeContext) {
     	RouteNodeInstance nodeInstance = routeContext.getNodeInstance();
-    	ActionRequestFactory arFactory = new ActionRequestFactory(routeContext.getDocument(), nodeInstance);
+    	ActionRequestFactory arFactory = new ActionRequestFactory(routeContext.getDocument(), null);
     	ActionRequestValue exceptionRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ, new Integer(0), new KimGroupRecipient(nodeInstance.getRouteNode().getExceptionWorkgroup()), "Exception Workgroup for route node " + nodeInstance.getName(), KEWConstants.EXCEPTION_REQUEST_RESPONSIBILITY_ID, Boolean.TRUE, "");
     	return Collections.singletonList(exceptionRequest);
     }
@@ -147,7 +149,23 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     	RoleRouteModule roleRouteModule = new RoleRouteModule();
     	roleRouteModule.setNamespace(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
     	roleRouteModule.setResponsibilityTemplateName(KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME);
-    	return roleRouteModule.findActionRequests(routeContext);
+    	
+    	List<ActionRequestValue> exceptionRequests = roleRouteModule.findActionRequests(routeContext);
+    	Deque<Iterator<ActionRequestValue>> childRequestIters = new ArrayDeque<Iterator<ActionRequestValue>>();
+    	Iterator<ActionRequestValue> tempIter = exceptionRequests.iterator();
+    	while (tempIter != null) {
+    		while (tempIter.hasNext()) {
+    			ActionRequestValue childRequest = tempIter.next();
+    			childRequest.setNodeInstance(null);
+    			if (!childRequest.getChildrenRequests().isEmpty()) {
+    				childRequestIters.offerFirst(tempIter);
+    				tempIter = childRequest.getChildrenRequests().iterator();
+    			}
+    		}
+    		tempIter = childRequestIters.pollFirst();
+    	}
+    	
+    	return exceptionRequests;
     }
     
     protected void activateExceptionRequests(RouteContext routeContext, List<ActionRequestValue> exceptionRequests, String exceptionMessage) throws Exception {

@@ -21,6 +21,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
@@ -42,7 +43,10 @@ public class RuleTemplateDAOJpaImpl implements RuleTemplateDAO {
     }
 
     public RuleTemplate findByRuleTemplateName(String ruleTemplateName) {
-        
+        if (StringUtils.isBlank(ruleTemplateName)) {
+        	return null;
+        }
+    	
     	Criteria crit = new Criteria(RuleTemplate.class.getName());
         crit.eq("name", ruleTemplateName);
         crit.orderBy("ruleTemplateId", false);

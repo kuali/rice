@@ -32,6 +32,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -183,7 +184,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
 
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
     //@JoinColumn(name="DOC_TYP_ID")
-    @Fetch(value=FetchMode.SUBSELECT)
+    @Fetch(value=FetchMode.SELECT)
     private Collection<DocumentTypePolicy> policies;
     
     /* This property contains the list of valid ApplicationDocumentStatus values, 
@@ -191,21 +192,22 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
      * values may be assigned as the status.  If not valid values are defined, the status may
      * be set to any value by the client.
      */
-    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentTypeId")
-    @Fetch(value=FetchMode.SUBSELECT)
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinColumn(name="DOC_TYP_ID")
+    @Fetch(value=FetchMode.SELECT)
     private List<ApplicationDocumentStatus> validApplicationStatuses;
     
 	@Transient
     private List routeLevels;
     @Transient
     private Collection childrenDocTypes;
-    @Fetch(value=FetchMode.SUBSELECT)
+    @Fetch(value=FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
     @OrderBy("orderIndex ASC")
 	private List<DocumentTypeAttribute> documentTypeAttributes;
 
     /* New Workflow 2.1 Field */
-    @Fetch(value=FetchMode.SUBSELECT)
+    @Fetch(value=FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
     private List<Process> processes = new ArrayList();
     @Column(name="RTE_VER_NBR")

@@ -99,8 +99,9 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
             //we left the group active from take authority action.  pending havent been normally activated yet
             if (actionRequest.isGroupRequest() && actionRequest.isActive() && actionRequest.getGroupId().equals(groupId)) {
-                if (actionRequest.getActionItems().size() == 1) {
-                    ActionItem actionItem = (ActionItem) actionRequest.getActionItems().get(0);
+            	List<ActionItem> actionItems = actionRequest.getActionItems();
+                if (actionItems.size() == 1) {
+                    ActionItem actionItem = actionItems.get(0);
                     if (! actionItem.getPrincipalId().equals(getPrincipal().getPrincipalId())) {
                         return "User attempting to release workgroup authority did not take it.";
                     } else if (!forValidationOnly) {

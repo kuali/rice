@@ -90,7 +90,7 @@ public class RuleExtension implements WorkflowPersistable {
 	private RuleTemplateAttribute ruleTemplateAttribute;
 
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="extension")
-	@Fetch(value = FetchMode.SUBSELECT)
+	@Fetch(value = FetchMode.SELECT)
 	private List<RuleExtensionValue> extensionValues;
 
 	public RuleExtension() {

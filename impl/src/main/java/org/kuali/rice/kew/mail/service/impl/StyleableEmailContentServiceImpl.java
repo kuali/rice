@@ -43,6 +43,7 @@ import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.mail.EmailStyleHelper;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -75,6 +76,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     protected EmailStyleHelper styleHelper = new EmailStyleHelper();
     protected String globalEmailStyleSheet = KEWConstants.EMAIL_STYLESHEET_NAME;
 
+    protected RouteHeaderService routeHeaderService;
 
     public void setStyleService(StyleService styleService) {
         this.styleService = styleService;
@@ -216,7 +218,10 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     }
 
     public DocumentRouteHeaderValue getRouteHeader(ActionItem actionItem) {
-        return KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionItem.getRouteHeaderId());
+    	if (routeHeaderService == null) {
+    		routeHeaderService = KEWServiceLocator.getRouteHeaderService();
+    	}
+        return routeHeaderService.getRouteHeader(actionItem.getRouteHeaderId());
     }
 
     protected static String transform(Templates style, Document doc) {

@@ -56,7 +56,6 @@ public class ApplicationDocumentStatus extends KewPersistableBusinessObjectBase 
 	@Id
 	@Column(name="DOC_STAT_NM",insertable=false,updatable=false)
 	private String statusName;
- 	
 	
     public Long getDocumentTypeId() {
 		return this.documentTypeId;

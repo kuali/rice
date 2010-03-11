@@ -345,10 +345,10 @@ public class RuleDAOJpaImpl implements RuleDAO {
             crit.eq("activeInd", activeInd);
         }
         if (docTypeName != null) {
-            crit.like("UPPER(docTypeName)", docTypeName.toUpperCase());
+            crit.like("UPPER(__JPA_ALIAS__.docTypeName)", docTypeName.toUpperCase());
         }
         if (ruleDescription != null && !ruleDescription.trim().equals("")) {
-            crit.like("UPPER(description)", ruleDescription.toUpperCase());
+            crit.like("UPPER(__JPA_ALIAS__.description)", ruleDescription.toUpperCase());
         }
         if (ruleTemplateId != null) {
             crit.eq("ruleTemplateId", ruleTemplateId);
@@ -368,7 +368,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 
                     Criteria extensionCrit2 = new Criteria(RuleExtension.class.getName());
                     extensionCrit2.eq("extensionValues.key", entry.getKey());
-                    extensionCrit2.like("UPPER(extensionValues.value)", ("%" + (String) entry.getValue() + "%").toUpperCase());
+                    extensionCrit2.like("UPPER(__JPA_ALIAS__.extensionValues.value)", ("%" + (String) entry.getValue() + "%").toUpperCase());
 
                     // Criteria extensionCrit3 = new Criteria();
                     // extensionCrit3.addEqualTo("extensionValues.key",

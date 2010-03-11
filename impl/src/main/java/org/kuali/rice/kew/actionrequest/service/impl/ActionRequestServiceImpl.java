@@ -268,8 +268,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
             	}
                 getActionListService().saveActionItem(actionItem);
             }
+        } else {
+        	actionRequest.setSimulatedActionItems(actionItems);
         }
-        actionRequest.setActionItems(actionItems);
         return actionItems;
     }
 
@@ -321,11 +322,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         FutureRequestDocumentStateManager futureRequestStateMngr = null;
 
         if (actionRequestToActivate.isGroupRequest()) {
-            futureRequestStateMngr = new FutureRequestDocumentStateManager(
-            		KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionRequestToActivate.getRouteHeaderId()), actionRequestToActivate.getGroup());
+            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getGroup());
         } else if (actionRequestToActivate.isUserRequest()) {
-            futureRequestStateMngr = new FutureRequestDocumentStateManager(
-            		KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionRequestToActivate.getRouteHeaderId()), actionRequestToActivate.getPrincipalId());
+            futureRequestStateMngr = new FutureRequestDocumentStateManager(actionRequestToActivate.getRouteHeader(), actionRequestToActivate.getPrincipalId());
         } else {
             return false;
         }
@@ -577,16 +576,16 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * @param actionRequest the action request whose action items to delete
      */
     private void deleteActionItems(ActionRequestValue actionRequest) {
+    	List<ActionItem> actionItems = actionRequest.getActionItems();
     	if ( LOG.isDebugEnabled() ) {
-    		LOG.debug("deleting " + actionRequest.getActionItems().size() + " action items for action request: " + actionRequest);
+    		LOG.debug("deleting " + actionItems.size() + " action items for action request: " + actionRequest);
     	}
-        for (ActionItem actionItem: actionRequest.getActionItems()) {
+        for (ActionItem actionItem: actionItems) {
         	if ( LOG.isDebugEnabled() ) {
         		LOG.debug("deleting action item: " + actionItem);
         	}
             getActionListService().deleteActionItem(actionItem);
         }
-        actionRequest.getActionItems().clear();
     }
 
 

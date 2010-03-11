@@ -69,7 +69,7 @@ public class Branch implements Serializable {
 	private String name;
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE}, mappedBy="branch")
     @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})    
-    @Fetch(value=FetchMode.SUBSELECT)
+    @Fetch(value=FetchMode.SELECT)
 	private List<BranchState> branchState = new ArrayList<BranchState>();
 //	  apache lazy list commented out due to not being serializable
 //    private List branchState = ListUtils.lazyList(new ArrayList(),
@@ -88,10 +88,6 @@ public class Branch implements Serializable {
 	@JoinColumn(name="JOIN_RTE_NODE_INSTN_ID")
 	private RouteNodeInstance joinNode;
 		
-	@OneToMany(fetch=FetchType.EAGER,mappedBy="parentBranch")
-	@Fetch(value=FetchMode.SUBSELECT)
-	private List<Branch> childBranches = new ArrayList<Branch>();
-	
 	@Version
 	@Column(name="VER_NBR")
 	private Integer lockVerNbr;
@@ -176,14 +172,6 @@ public class Branch implements Serializable {
                       ", parentBranch=" + (parentBranch == null ? "null" : parentBranch.getBranchId()) +
                       "]";
     }
-    
-    public List<Branch> getChildBranches() {
-		return this.childBranches;
-	}
-
-	public void setChildBranches(List<Branch> childBranches) {
-		this.childBranches = childBranches;
-	}
 
 	//@PrePersist
     public void beforeInsert(){

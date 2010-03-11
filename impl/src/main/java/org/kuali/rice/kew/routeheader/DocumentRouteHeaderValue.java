@@ -176,16 +176,16 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
 	private java.lang.Long routeHeaderId;
     
     //@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
-    //@Fetch(value = FetchMode.SUBSELECT)
+    //@Fetch(value = FetchMode.SELECT)
     //private List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
     
     //@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
     //@OrderBy("actionDate ASC")
-    //@Fetch(value = FetchMode.SUBSELECT)
+    //@Fetch(value = FetchMode.SELECT)
     //private List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
     
     //@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE, mappedBy="routeHeader")
-    //@Fetch(value = FetchMode.SUBSELECT)
+    //@Fetch(value = FetchMode.SELECT)
     //private List<ActionItem> actionItems = new ArrayList<ActionItem>();
     
     /**
@@ -196,7 +196,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, mappedBy="routeHeaderId")
     //@JoinColumn(referencedColumnName="DOC_HDR_ID")
     @OrderBy("statusTransitionId ASC")
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     private List<DocumentStatusTransition> appDocStatusHistory = new ArrayList<DocumentStatusTransition>();
     
     @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.REMOVE})
@@ -210,7 +210,9 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     private Collection queueItems = new ArrayList();
     @Transient
     private boolean routingReport = false;
-
+    @Transient
+    private List<ActionRequestValue> simulatedActionRequests;
+    
     private static final boolean FINAL_STATE = true;
     protected static final HashMap<String,String> legalActions;
     protected static final HashMap<String,String> stateTransitionMap;
@@ -218,7 +220,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     /* New Workflow 2.1 Field */
     @ManyToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
     @JoinTable(name = "KREW_INIT_RTE_NODE_INSTN_T", joinColumns = @JoinColumn(name = "DOC_HDR_ID"), inverseJoinColumns = @JoinColumn(name = "RTE_NODE_INSTN_ID")) 
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     private List<RouteNodeInstance> initialRouteNodeInstances = new ArrayList<RouteNodeInstance>();
 
     static {
@@ -353,10 +355,28 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     }
 
     public List<ActionRequestValue> getActionRequests() {
-        return KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId);
+    	if (this.simulatedActionRequests == null || this.simulatedActionRequests.isEmpty()) {
+    		return KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId);
+    	} else {
+    		List<ActionRequestValue> allActionRequests =
+    			new ArrayList<ActionRequestValue>(KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId));
+    		allActionRequests.addAll(this.simulatedActionRequests);
+    		return allActionRequests;
+    	}
     }
 
-    public DocumentType getDocumentType() {
+    public List<ActionRequestValue> getSimulatedActionRequests() {
+    	if (this.simulatedActionRequests == null) {
+    		this.simulatedActionRequests = new ArrayList<ActionRequestValue>();
+    	}
+		return this.simulatedActionRequests;
+	}
+
+	public void setSimulatedActionRequests(List<ActionRequestValue> simulatedActionRequests) {
+		this.simulatedActionRequests = simulatedActionRequests;
+	}
+
+	public DocumentType getDocumentType() {
     	return KEWServiceLocator.getDocumentTypeService().findById(getDocumentTypeId());
     }
 

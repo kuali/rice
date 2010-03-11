@@ -87,7 +87,7 @@ public class Note implements WorkflowPersistable {
     
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
     	targetEntity=org.kuali.rice.kew.notes.Attachment.class, mappedBy="note")
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     private List<Attachment> attachments = new ArrayList<Attachment>();
 
     //additional data not in database

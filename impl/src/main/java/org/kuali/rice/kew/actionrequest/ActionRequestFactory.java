@@ -114,6 +114,7 @@ public class ActionRequestFactory {
         actionRequest.setActionRequested(actionRequested);
         actionRequest.setDocVersion(document.getDocVersion());
         actionRequest.setPriority(priority);
+        actionRequest.setRouteHeader(document);
         actionRequest.setRouteHeaderId(document.getRouteHeaderId());
         actionRequest.setRouteLevel(document.getDocRouteLevel());
     	actionRequest.setNodeInstance(routeNode);
@@ -132,6 +133,7 @@ public class ActionRequestFactory {
 
 	public ActionRequestValue createBlankActionRequest() {
 		ActionRequestValue request = new ActionRequestValue();
+		request.setRouteHeader(document);
 		if (document != null) {
 			request.setRouteHeaderId(document.getRouteHeaderId());
 		}
@@ -231,7 +233,7 @@ public class ActionRequestFactory {
         }
         actionRequest.setJrfVerNbr(new Integer(0));
         actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
-        //actionRequest.setRouteHeader(document);
+        actionRequest.setRouteHeader(document);
         actionRequest.setRouteHeaderId(document.getRouteHeaderId());
     }
 

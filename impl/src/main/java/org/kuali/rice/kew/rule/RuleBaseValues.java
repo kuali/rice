@@ -110,10 +110,10 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
 	private Integer versionNbr;
     @Column(name="FRC_ACTN")
 	private Boolean forceAction;
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
 	private List<RuleResponsibility> responsibilities;
-    @Fetch(value = FetchMode.SUBSELECT)
+    @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},mappedBy="ruleBaseValues")
 	private List<RuleExtension> ruleExtensions;
     @ManyToOne(fetch=FetchType.EAGER)

@@ -59,7 +59,7 @@ public class SimpleConfigFactoryBean implements FactoryBean {
 	}
 
 	/** {@inheritDoc} */
-	public Class getObjectType() {
+	public Class<Config> getObjectType() {
 		return Config.class;
 	}
 

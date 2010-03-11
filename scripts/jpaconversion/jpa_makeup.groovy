@@ -1,3 +1,4 @@
+
 /************************************************************************************************
  * IF WANT TO RUN AGAINT MULTI ojb config file:
  * set resourceHome = '$resource_root' for your project
@@ -9,7 +10,7 @@
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
 def projHome='/java/projects/rice-1.1.0'
 //def resourceHome='/impl/src/main/resources/ //this will return all ojb config files
-def resourceHome='/impl/src/main/resources/org/kuali/rice/ken'
+def resourceHome='/impl/src/main/resources/org/kuali/rice/kns'
 def srcHome='/impl/src/main/java'
 //def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns'
 //def srcHome = '/java/projects/play/rice-1.1.0/impl/src/main/java'
@@ -80,17 +81,23 @@ def removeAnnotatonLine(files){
 	def backupFile
 	
 	files.each{
-		file-> println("************working on file:\t" + file)
+		file-> println("\n************working on file:\t" + file)
 		if (new File(file).exists()) {
 			javaFile = new File(file)
 			backupFile = new File(file + '.backup')		
 			def text = ""
+			def append_next = false
+			def append_text = ""
 			def skip = "false"
 			//scan file by line or convert file to list of lines....
 			javaFile.eachLine{
 				line->
 				
 				def cur = line.toString().trim();
+				
+				if(append_next){
+					cur = append_text + cur
+					}
 				
 				if(skip.equals("true"))
 				{
@@ -125,9 +132,18 @@ def removeAnnotatonLine(files){
 					{
 						skip = "true"
 					}
-					else if(cur.contains("@AttributeOverride")) //&& !cur.endsWith("}}"))
+					else if(cur.contains("@GenericGenerator") || cur.contains("@JoinColumns") || cur.contains("@AttributeOverrides") )
 					{
-						skip = "true"
+						if(!cur.contains("})")){
+							append_next = true;
+							append_text = cur
+							skip = "true"
+						}
+						else{
+							skip = "false"
+							append_next = false
+							append_text = ''
+						}
 					}
 					else {skip = "false"}
 					}

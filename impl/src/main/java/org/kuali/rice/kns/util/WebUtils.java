@@ -163,14 +163,13 @@ public class WebUtils {
      * @return the methodToCall command
      */
     private static String getMethodToCallSettingAttribute(ActionForm form, HttpServletRequest request, String string) {
-    	final String methodToCall;
     	
     	if (form instanceof ActionForm && !((KualiForm) form).shouldMethodToCallParameterBeUsed(string, request.getParameter(string), request)) {
 			throw new RuntimeException("Cannot verify that the methodToCall should be " + string);
 		}
     	//always adding a coordinate even if not an image
     	final String attributeValue = endsWithCoordinates(string) ? string : string + IMAGE_COORDINATE_CLICKED_X_EXTENSION;
-        methodToCall = StringUtils.substringBetween(string, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
+    	final String methodToCall = StringUtils.substringBetween(attributeValue, KNSConstants.DISPATCH_REQUEST_PARAMETER + ".", ".");
         request.setAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, attributeValue);
         return methodToCall;
     }

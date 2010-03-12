@@ -30,6 +30,7 @@ import java.util.Vector;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
 import org.apache.ojb.broker.metadata.ConnectionRepository;
 import org.apache.ojb.broker.metadata.DescriptorRepository;
@@ -464,9 +465,17 @@ public class PersistenceServiceOjbImpl extends PersistenceServiceImplBase implem
 
         return fkValue;
     }
-
     
     /**
+	 * Asks persistenceDao if this represents a proxy
+	 * 
+	 * @see org.kuali.rice.kns.service.PersistenceService#isProxied(java.lang.Object)
+	 */
+	public boolean isProxied(Object object) {
+		return persistenceDao.isProxied(object);
+	}
+
+	/**
      * Sets the persistenceDao attribute value.
 	 * 
 	 * @param persistenceDao

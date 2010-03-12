@@ -24,11 +24,10 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Lob;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
+import org.hibernate.annotations.Type;
 
 
 /*
@@ -51,6 +50,8 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 	@Column(name="SERIALZD_DOC_FRM")
 	protected byte[] serializedDocumentForm;
 	//private KualiDocumentFormBase serializedDocumentForm;
+	@Type(type="yes_no")
+	@Column(name="CONTENT_ENCRYPTED_IND")
 	protected boolean encrypted = false;
 	@Id
 	protected String principalId;

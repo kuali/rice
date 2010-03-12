@@ -20,9 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.PersistenceContext;
 
 import org.hibernate.proxy.HibernateProxy;
 import org.kuali.rice.core.jpa.metadata.CollectionDescriptor;
@@ -134,4 +132,12 @@ public class PersistenceDaoJpa implements PersistenceDao {
 		return field;
 	}
 
+	/**
+	 * True if object is an instance of HibernateProxy, false otherwise
+	 * 
+	 * @see org.kuali.rice.kns.dao.PersistenceDao#isProxied(java.lang.Object)
+	 */
+	public boolean isProxied(Object object) {
+		return (object instanceof HibernateProxy);
+	}
 }

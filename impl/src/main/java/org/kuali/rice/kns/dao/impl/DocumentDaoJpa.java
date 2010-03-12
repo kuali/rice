@@ -61,8 +61,9 @@ public class DocumentDaoJpa implements DocumentDao {
 			entityManager.persist(document.getDocumentHeader());
 			entityManager.persist(document);
 		} else {
-			OrmUtils.reattach(attachedDoc, document);
-			entityManager.merge(attachedDoc);
+			//OrmUtils.reattach(attachedDoc, document);
+			//entityManager.merge(attachedDoc);
+			entityManager.merge(document);
 		}
     }
 

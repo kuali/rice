@@ -21,9 +21,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
+import org.hibernate.proxy.HibernateProxy;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.util.OrmUtils;
@@ -32,7 +34,6 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -234,7 +235,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#delete(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
 	public void delete(PersistableBusinessObject bo) {
-		PersistableBusinessObject realPBO = (PersistableBusinessObject)ObjectUtils.materializeObject(bo);
+		final PersistableBusinessObject realPBO = materialize(bo);
 		if (realPBO != null) {
 			if (realPBO.getExtension() != null) {
 				delete(realPBO.getExtension());
@@ -247,6 +248,23 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 					entityManager.remove(foundBO);
 				}
 			}
+		}
+	}
+	
+	/**
+	 * If the object is a proxy, materializes it
+	 * 
+	 * @param bo the business object, which may be a sneaky proxy
+	 * @return the materialized non-proxied business object
+	 */
+	protected PersistableBusinessObject materialize(PersistableBusinessObject bo) {
+		try {
+			if (bo instanceof HibernateProxy) {
+				return (PersistableBusinessObject)((HibernateProxy)bo).getHibernateLazyInitializer().getImplementation();
+			}
+			return bo;
+		} catch (EntityNotFoundException enfe) {
+			return null;  // could not find the entity - just return null
 		}
 	}
 

@@ -20,11 +20,11 @@ import java.util.HashMap;
 import javax.persistence.EntityManager;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.config.ConfigurationException;
+import org.apache.ojb.broker.core.proxy.ProxyHelper;
+import org.hibernate.proxy.HibernateProxy;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.dao.PersistenceDao;
-import org.kuali.rice.kns.dao.impl.PersistenceDaoJpa;
 import org.kuali.rice.kns.dao.impl.PersistenceDaoOjb;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
@@ -121,7 +121,18 @@ public class PersistenceDaoProxy implements PersistenceDao {
     	getDao(o.getClass()).retrieveReference(o, referenceName);
     }
  
-    private static KualiModuleService getKualiModuleService() {
+    /**
+	 * Asks proper DAO implementation if the object is proxied
+	 * 
+	 * @see org.kuali.rice.kns.dao.PersistenceDao#isProxied(java.lang.Object)
+	 */
+	public boolean isProxied(Object object) {
+		if (object instanceof HibernateProxy) return true;
+		if (ProxyHelper.isProxy(object)) return true;
+		return false;
+	}
+
+	private static KualiModuleService getKualiModuleService() {
         if (kualiModuleService == null) {
             kualiModuleService = KNSServiceLocator.getKualiModuleService();
         }

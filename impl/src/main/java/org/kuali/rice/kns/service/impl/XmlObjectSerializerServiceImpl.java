@@ -33,8 +33,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
-import org.apache.ojb.broker.core.proxy.ProxyHelper;
-import org.hibernate.proxy.HibernateProxy;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.XmlObjectSerializerService;
@@ -143,7 +141,7 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
                 Object value = null;
                 try {
                     value = field.get(object);
-                    if (value != null && (ProxyHelper.isProxy(value) || value instanceof HibernateProxy)) {
+                    if (value != null && getPersistenceService().isProxied(value)) {
                         value = getPersistenceService().resolveProxy(value);
                     }
                 } catch (IllegalArgumentException e) {

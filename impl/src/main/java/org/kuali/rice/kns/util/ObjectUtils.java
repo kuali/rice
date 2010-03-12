@@ -776,37 +776,6 @@ public class ObjectUtils {
     }
     
     /**
-     * Materializes a potentially proxied object
-     * 
-     * @param object potentially proxied object
-     * @return the real object underneath
-     */
-    public static Object materializeObject(Object object) {
-    	// let's dump the easy case quick
-    	if (object == null) {
-    		return null;
-    	}
-    	
-    	// JPA using Hibernate
-    	if (object instanceof HibernateProxy) {
-        	try {
-	        	final Object realObject = ((HibernateProxy) object).getHibernateLazyInitializer().getImplementation();
-	        	return realObject;
-        	} catch (EntityNotFoundException enfe) {
-        		return null;
-        	}
-        }
-    	
-    	// OJB
-    	if (ProxyHelper.isProxy(object) || ProxyHelper.isCollectionProxy(object)) {
-            return ProxyHelper.getRealObject(object);
-        }
-    	
-    	// umm...we don't know...here's your object back!
-    	return object;
-    }
-    
-    /**
      * Attempts to find the Class for the given potentially proxied object
      * 
      * @param object the potentially proxied object to find the Class of

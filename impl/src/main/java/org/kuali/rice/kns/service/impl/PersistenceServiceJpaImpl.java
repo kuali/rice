@@ -332,4 +332,12 @@ public class PersistenceServiceJpaImpl extends PersistenceServiceImplBase implem
         }
     }
     
+    /**
+	 * Asks persistenceDao if this represents a proxy
+	 * 
+	 * @see org.kuali.rice.kns.service.PersistenceService#isProxied(java.lang.Object)
+	 */
+	public boolean isProxied(Object object) {
+		return persistenceDao.isProxied(object);
+	}
 }

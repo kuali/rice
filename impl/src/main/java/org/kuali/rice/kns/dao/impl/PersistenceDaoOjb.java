@@ -18,6 +18,7 @@ package org.kuali.rice.kns.dao.impl;
 import org.apache.ojb.broker.Identity;
 import org.apache.ojb.broker.core.IdentityFactoryImpl;
 import org.apache.ojb.broker.core.proxy.IndirectionHandlerCGLIBImpl;
+import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.kuali.rice.kns.dao.PersistenceDao;
 
 public class PersistenceDaoOjb extends PlatformAwareDaoBaseOjb implements PersistenceDao {
@@ -51,5 +52,14 @@ public class PersistenceDaoOjb extends PlatformAwareDaoBaseOjb implements Persis
     public void retrieveReference(Object o, String referenceName) {
         getPersistenceBroker(true).retrieveReference(o, referenceName);
     }
+
+	/**
+	 * Asks ProxyHelper if the object is proxied
+	 * 
+	 * @see org.kuali.rice.kns.dao.PersistenceDao#isProxied(java.lang.Object)
+	 */
+	public boolean isProxied(Object object) {
+		return ProxyHelper.isProxy(object);
+	}
  
 }

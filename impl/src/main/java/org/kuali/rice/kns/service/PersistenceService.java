@@ -138,4 +138,12 @@ public interface PersistenceService {
      */
     public void refreshAllNonUpdatingReferences(PersistableBusinessObject bo);
 
+    
+    /**
+     * Determines if the given object is proxied by the ORM or not
+     * 
+     * @param object the object to determine if it is a proxy
+     * @return true if the object is an ORM proxy; false otherwise
+     */
+    public abstract boolean isProxied(Object object);
 }

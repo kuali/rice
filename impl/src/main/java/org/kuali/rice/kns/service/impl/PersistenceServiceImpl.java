@@ -155,4 +155,13 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 		getService(bo.getClass()).refreshAllNonUpdatingReferences(bo);
 	}
 
+	/**
+	 * Defers to the service for the given class
+	 * 
+	 * @see org.kuali.rice.kns.service.PersistenceService#isProxied(java.lang.Object)
+	 */
+	public boolean isProxied(Object bo) {
+		return getService(bo.getClass()).isProxied(bo);
+	}
+
 }

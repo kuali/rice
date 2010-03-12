@@ -135,17 +135,18 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             value = parseValue(value, keySet);
         }
         
-        properties.put(name, value);
+        setProperty(name, value);
     }
    
+    /**
+     * 
+     * This overridden method just called the "override property" method. 
+     * They do the same thing, but override was in the API first, but didn't 
+     * 
+     * @see org.kuali.rice.core.config.Config#putProperty(java.lang.String, java.lang.Object)
+     */
 	public void putProperty(String key, Object value) {
-		if(key != null){									
-			setProperty(key, value.toString());
-			
-			if(!runtimeResolution) {                
-                setProperty(key, resolve(key));                
-            }		
-		}		
+		this.overrideProperty(key, value.toString());
 	}
 
 	public void putProperties(Properties properties) {
@@ -197,7 +198,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             // defined in the files with system properties if systemOverride==true.
             if(!runtimeResolution) {
                 for (Object o : properties.keySet()) {
-                    properties.put((String)o, resolve((String)o));
+                    setProperty((String)o, resolve((String)o));
                 }
             }
 
@@ -268,7 +269,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 } else if (p.isOverride() || !properties.containsKey(name)) {
 
                     if (p.isRandom()) {
-                        setProperty(p.getName(), String.valueOf(generateRandomInteger(p.getValue())), prefix);
+                        setProperty(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
                     } else if (p.isSystem()) {
                         // resolve and set system params immediately so they can override
                         // existing system params. Add to paramMap resolved as well to
@@ -277,9 +278,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                         set.add(p.getName());
                         String value = parseValue(p.getValue(), set);
                         System.setProperty(name, value);
-                        setProperty(name, value, prefix);
+                        setProperty(name, value);
                     } else {
-                        setProperty(p.getName(), p.getValue(), prefix);
+                        setProperty(p.getName(), p.getValue());
                     }
                 }
             }
@@ -292,17 +293,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * This will set the property. No logic checking so what you pass in gets set.
      */
     protected void setProperty(String name, String value){
-    	setProperty(name,value,"");
-    }
-    protected void setProperty(String name, String value, String prefix){
-    
-    	String oldVal = properties.getProperty(name);
-    	if(oldVal != null && !"".equals(oldVal)){ // we're overriding something    		
-    		LOG.info(prefix + "+ Overriding ["+ name +"]: " 
-    				+ "["+ ConfigLogger.getDisplaySafeValue(name,oldVal) +"]->["+ ConfigLogger.getDisplaySafeValue(name,value) +"]");
-    	}
     	properties.setProperty(name, value);
-    }
+    }    
 
     protected String resolve(String key) {
     	return resolve(key, null);

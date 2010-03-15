@@ -53,10 +53,9 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 			if(hasSuperClass(javaFile.text) != null ){
 				if(hasUnOverridingFields(javaFile.text, c.fields, un_overring_fields)){
 					//classAnnotation += "\n//Please check Super classes for AttributeOverriding"
-					logger.log("${c.className}:\tPlease check Super classes for AttributeOverriding on ${un_overring_fields.values()}")
+					//logger.log("${c.className}:\tPlease check Super classes for AttributeOverriding on ${un_overring_fields.values()}")
 				}	
 			}	
-			//println 'data types**********************\t' + c.fields.getClass();
 			
 	        text = addImport(text, "Entity")
 	        text = addImport(text, "Table")
@@ -109,7 +108,9 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    text = addImport(text, "FetchType")
 	                }
 	                if (f.conversion?.toString()?.size() > 0){
+	                	logger.log "******************handling customerTypes**********************"
 	                	type_handler.handleTypes(f.conversion, annotation, text, f)
+						
 	                }
 	                if (f.nullable) nullable = ", nullable=${f.nullable}"
 	                annotation += "@Column(name=\"${f.column}\"${nullable})"
@@ -120,14 +121,14 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 			try{
 				c.referenceDescriptors.values().each {
 					rd ->
+					//test find bi-direction
+					findBiDiredtionRelationships(classes, c, rd, logger) 
 					//	print "\n***********CLASSREFS************\t" + rd.classRef
 					def annotation = ""
 	                annotation += determineOneOrManyToOne(classes, c, rd, logger)
 	                text = addImport(text, annotation[1..-1])
 	                def cascade = determineCascadeTypes(rd)
                     def readOnlyFK = ", insertable=false, updatable=false"
-					
-					//print "\n***********reference descriptors************\t" + rd.proxy + "\tauto\t" + rd.autoRetrieve
 	                annotation += "(${determineFetchType(rd)}"
 	                text = addImport(text, "FetchType")
 	                if (cascade) annotation += ", ${cascade}" 
@@ -140,7 +141,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 					//checking each foreign keys
 	                rd.foreignKeys.eachWithIndex {
 	                    fk, i ->
-	                    //println "\n***********CLASSREFS************\t" + rd.classRef + "\treferencing field----\t" + fk.fieldRef
+	                    println "\n***********CLASSREFS************\t" + rd.classRef + "\treferencing field----\t" + fk.fieldRef
 	                        def fkColumn
 	                        fk.fieldRef ? (fkColumn = c.fields[fk.fieldRef].column) : (fkColumn = findFieldIdRef(c.fields, fk.fieldIdRef).column)
 							if(size > 1)
@@ -213,8 +214,12 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 		                    }
 		                    if (!mappedBy) {
 		                        mappedBy = "ERROR: See log"
-		                        error = "Uni-directional one-to-manys not yet supported by JPA.  Please add a reference back to ${cd.name} in ${rdClass.className}"
+		                        //error = "Uni-directional one-to-manys not yet supported by JPA.  Please add a reference back to ${cd.name} in ${rdClass.className}"
+								error = "Found Uni-Directional one-to-manys from ${c.className}.${cd.name} to ${rdClass.className}"
 		                    }
+		                    else{
+								error = "Found Bi-Directional one-to-manys between ${c.className}.${cd.name} and ${rdClass.className}"
+								}
 	                    }
 	                    annotation += annotationName
 	                    def comma = false
@@ -537,5 +542,65 @@ def boolean hasUnOverridingFields(javaText,  fields, un_overring_fields){
 		false
 	
 	true
-	
 	}
+
+def findBiDiredtionRelationships(classes, cls, refcls, logger ){
+	println '*******************start looking for bi-directions between\t '  + cls.className + ' vs ' + refcls.classRef + ' on ' + refcls.name
+	
+	logger.log("***start looking for bi-directions between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
+
+	def keys = []
+	def fkeys = []
+	refcls.foreignKeys.each {
+		fk ->
+		def f
+		fk.fieldRef ? (f = cls.fields[fk.fieldRef]) : (f = findFieldIdRef(cls.fields, fk.fieldIdRef))
+		if (f?.name) keys.add(f.name)
+		fkeys.add(fk.fieldRef)
+	}
+	
+	
+	def rdClass = classes[refcls.classRef];
+	
+	def refMappedBy
+	
+	rdClass.referenceDescriptors.values().each {
+		rd -> 
+		def rdKeys = []
+		rd.foreignKeys.each {
+			fk ->
+			def fkName
+			fk.fieldRef ? (fkName = rdClass.fields[fk.fieldRef]?.name) : (fkName = findFieldIdRef(rdClass.fields, fk.fieldIdRef)?.name)
+			rdKeys.add(fkName)
+		}
+		if (!keys.isEmpty() && keys.containsAll(rdKeys) && rdKeys.containsAll(keys)) {
+			refMappedBy = rd.name
+		} else if (!fkeys.isEmpty() && fkeys.containsAll(rdKeys) && rdKeys.containsAll(fkeys)) {
+			refMappedBy = rd.name	                                
+		}
+	}
+	
+	if(refMappedBy)
+		logger.log( '*********************it is a bi one2one**************');
+	
+//	def cdMappedBy 
+//	
+//	rdClass.collectionDescriptors.values().each {
+//		cd -> 
+//		def cdKeys = []
+//		cd.inverseForeignKeys.each {
+//			fk ->
+//			def fkName
+//			fk.fieldRef ? (fkName = rdClass.fields[fk.fieldRef]?.name) : (fkName = findFieldIdRef(rdClass.fields, fk.fieldIdRef)?.name)
+//			cdKeys.add(fkName)
+//		}
+//		if (!keys.isEmpty() && keys.containsAll(cdKeys) && cdKeys.containsAll(keys)) {
+//			cdMappedBy = cd.name
+//		} else if (!fkeys.isEmpty() && fkeys.containsAll(cdKeys) && cdKeys.containsAll(fkeys)) {
+//			cdMappedBy = cd.name	                                
+//		}
+//	}
+//	
+//	if(cdMappedBy)
+//	   logger.log('*********************it is a bi many2one**************');
+}

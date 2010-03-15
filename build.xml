@@ -155,7 +155,8 @@
 		<echo message="(COVERAGE): instrumenting jars in alt repo" />
 		<cobertura-instrument>
 			<includeClasses regex="org\.kuali\..*" />
-			<excludeClasses regex=".*\.Test.*" />
+			<excludeClasses regex=".*\.[A-Za-z]*Test.*" />
+			<excludeClasses regex=".*\.test\..*" />
 
 			<instrumentationClasspath>
 				<fileset dir="${coverage.m2repo}">

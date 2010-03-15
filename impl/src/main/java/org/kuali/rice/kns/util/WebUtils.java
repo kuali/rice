@@ -456,8 +456,10 @@ public class WebUtils {
 			if (docForm instanceof KualiMaintenanceForm) {
 				KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) docForm;
 				if (dataDictionary != null) {
-					documentEntry = dataDictionary.getDocumentEntry(maintenanceForm.getDocTypeName());
-					dataDictionarySessionDoc = documentEntry.isSessionDocument();
+				    if (maintenanceForm.getDocTypeName() != null) {
+    					documentEntry = dataDictionary.getDocumentEntry(maintenanceForm.getDocTypeName());
+    					dataDictionarySessionDoc = documentEntry.isSessionDocument();
+				    }
 				}
 			} else {
 				if (document!=null && dataDictionary != null) {

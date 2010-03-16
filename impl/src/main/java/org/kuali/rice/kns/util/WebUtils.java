@@ -713,6 +713,13 @@ public class WebUtils {
     }
     
     /**
+     * @return whether the deploy environment is production
+     */
+    public static boolean isProductionEnvironment(){
+    	return getKualiConfigurationService().isProductionEnvironment();
+    }
+    
+    /**
      * @return an implementation of the KualiConfigurationService
      */
     public static KualiConfigurationService getKualiConfigurationService() {

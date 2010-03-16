@@ -545,9 +545,9 @@ def boolean hasUnOverridingFields(javaText,  fields, un_overring_fields){
 	}
 
 def findBiDiredtionRelationships(classes, cls, refcls, logger ){
-	println '*******************start looking for bi-directions between\t '  + cls.className + ' vs ' + refcls.classRef + ' on ' + refcls.name
 	
-	logger.log("***start looking for bi-directions between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
+	//println '*******************start looking for bi-directions between\t '  + cls.className + ' vs ' + refcls.classRef + ' on ' + refcls.name
+	//logger.log("***start looking for bi-directions between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
 
 	def keys = []
 	def fkeys = []
@@ -558,7 +558,6 @@ def findBiDiredtionRelationships(classes, cls, refcls, logger ){
 		if (f?.name) keys.add(f.name)
 		fkeys.add(fk.fieldRef)
 	}
-	
 	
 	def rdClass = classes[refcls.classRef];
 	
@@ -581,7 +580,7 @@ def findBiDiredtionRelationships(classes, cls, refcls, logger ){
 	}
 	
 	if(refMappedBy)
-		logger.log( '*********************it is a bi one2one**************');
+		logger.log( "Found a bi-directional one-to-one mapping between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
 	
 //	def cdMappedBy 
 //	

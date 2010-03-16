@@ -112,7 +112,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Transient
     protected String attachmentPropertyName;
 
-    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,CascadeType.MERGE})
+    @ManyToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
 	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
     protected DocumentAttachment attachment;
     

@@ -398,6 +398,12 @@ public class KNSServiceLocator<T extends Object> {
     public static EntityManagerFactory getEntityManagerFactory() {
     	return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
     }
+    
+    public static final String APPLICATION_ENTITY_MANAGER_FACTORY = "knsApplicationEntityManagerFactory";
+    
+    public static EntityManagerFactory getApplicationEntityManagerFactory() {
+    	return (EntityManagerFactory) getService(APPLICATION_ENTITY_MANAGER_FACTORY);
+    }
 
     public static final String PERSISTENCE_SERVICE_OJB = "persistenceServiceOjb";
     

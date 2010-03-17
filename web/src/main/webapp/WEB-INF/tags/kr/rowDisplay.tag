@@ -590,6 +590,7 @@
                                   userName="${field.personNameValue}"
                                   label="${field.fieldLabel}"
                                   referencesToRefresh="${field.referencesToRefresh}"
+                                  renderOtherFields="true"
                                   fieldConversions="${field.fieldConversions}"
                                   lookupParameters="${field.lookupParameters}"
                                   hasErrors="${hasErrors}"

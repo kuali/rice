@@ -13,7 +13,10 @@
 package org.kuali.rice.kns.web.struts.action;
 
 import java.io.IOException;
+import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -63,6 +66,7 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoForm;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -98,14 +102,14 @@ public class KualiRequestProcessor extends RequestProcessor {
 		}
 
 		try { 
-			super.process(request, response);
+			strutsProcess(request, response);
 		} catch (FileUploadLimitExceededException e) {
 			ActionForward actionForward = processException(request, response, e, e.getActionForm(), e.getActionMapping());
 			processForwardConfig(request, response, actionForward);
 		} finally {
 			GlobalVariables.setKualiForm(null);
 		}
-
+			
 		try {
 			ActionForm form = WebUtils.getKualiForm(request);
 			
@@ -152,6 +156,126 @@ public class KualiRequestProcessor extends RequestProcessor {
 		}
 
 	}
+	
+	/**
+     * <p>Process an <code>HttpServletRequest</code> and create the
+     * corresponding <code>HttpServletResponse</code> or dispatch
+     * to another resource.</p>
+     *
+     * @param request The servlet request we are processing
+     * @param response The servlet response we are creating
+     *
+     * @exception IOException if an input/output error occurs
+     * @exception ServletException if a processing exception occurs
+     */
+    public void strutsProcess(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+
+        // Wrap multipart requests with a special wrapper
+        request = processMultipart(request);
+
+        // Identify the path component we will use to select a mapping
+        String path = processPath(request, response);
+        if (path == null) {
+            return;
+        }
+        
+        if (log.isDebugEnabled()) {
+            log.debug("Processing a '" + request.getMethod() +
+                      "' for path '" + path + "'");
+        }
+
+        // Select a Locale for the current user if requested
+        processLocale(request, response);
+
+        // Set the content type and no-caching headers if requested
+        processContent(request, response);
+        processNoCache(request, response);
+
+        // General purpose preprocessing hook
+        if (!processPreprocess(request, response)) {
+            return;
+        }
+        
+        this.processCachedMessages(request, response);
+
+        // Identify the mapping for this request
+        ActionMapping mapping = processMapping(request, response, path);
+        if (mapping == null) {
+            return;
+        }
+
+        // Check for any role required to perform this action
+        if (!processRoles(request, response, mapping)) {
+            return;
+        }
+
+        processFormActionAndForward(request, response, mapping);
+
+    }
+    
+    public void processFormActionAndForward(final HttpServletRequest request, final HttpServletResponse response, final ActionMapping mapping) throws ServletException, IOException {
+    	TransactionTemplate template = new TransactionTemplate(getTransactionManager());
+    	try {
+			template.execute(new TransactionCallback() {
+				public Object doInTransaction(TransactionStatus status) {
+					try {
+						// Process any ActionForm bean related to this request
+				        ActionForm form = processActionForm(request, response, mapping);
+				        processPopulate(request, response, form, mapping);
+				        
+				        // Validate any fields of the ActionForm bean, if applicable
+				        try {
+				            if (!processValidate(request, response, form, mapping)) {
+				                return null;
+				            }
+				        } catch (InvalidCancelException e) {
+				            ActionForward forward = processException(request, response, e, form, mapping);
+				            processForwardConfig(request, response, forward);
+				            return null;
+				        } catch (IOException e) {
+				            throw e;
+				        } catch (ServletException e) {
+				            throw e;
+				        }
+				            
+				        // Process a forward or include specified by this mapping
+				        if (!processForward(request, response, mapping)) {
+				            return null;
+				        }
+				        
+				        if (!processInclude(request, response, mapping)) {
+				            return null;
+				        }
+
+				        // Create or acquire the Action instance to process this request
+				        Action action = processActionCreate(request, response, mapping);
+				        if (action == null) {
+				            return null;
+				        }
+						
+				    	// Call the Action instance itself
+				        ActionForward forward = processActionPerform(request, response, action, form, mapping);
+				
+				        // Process the returned ActionForward instance
+				        processForwardConfig(request, response, forward);
+					} catch (Exception e) {
+						// the doInTransaction method has no means for
+						// throwing exceptions, so we will wrap the
+						// exception in
+						// a RuntimeException and re-throw. The one caveat
+						// here is that this will always result in
+						// the
+						// transaction being rolled back (since
+						// WrappedRuntimeException is a runtime exception).
+						throw new WrappedRuntimeException(e);
+					}
+					return null;
+				}
+			});
+		} catch (WrappedRuntimeException wre) {
+			throw new RuntimeException(wre.getCause());
+		}
+    }
 
 	/**
 	 * override of the pre process for all struts requests which will ensure
@@ -493,41 +617,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 	@Override
 	protected ActionForward processActionPerform(final HttpServletRequest request, final HttpServletResponse response, final Action action, final ActionForm form, final ActionMapping mapping) throws IOException, ServletException {
 		try {
-			TransactionTemplate template = new TransactionTemplate(getTransactionManager());
-			ActionForward forward = null;
-			try {
-				forward = (ActionForward) template.execute(new TransactionCallback() {
-					public Object doInTransaction(TransactionStatus status) {
-						ActionForward actionForward = null;
-						try {
-							actionForward = action.execute(mapping, form, request, response);
-						} catch (Exception e) {
-							// the doInTransaction method has no means for
-							// throwing exceptions, so we will wrap the
-							// exception in
-							// a RuntimeException and re-throw. The one caveat
-							// here is that this will always result in
-							// the
-							// transaction being rolled back (since
-							// WrappedRuntimeException is a runtime exception).
-							throw new WrappedRuntimeException(e);
-						}
-						if (status.isRollbackOnly()) {
-							// this means that the struts action execution
-							// caused the transaction to rollback, we want to
-							// go ahead
-							// and trigger the rollback by throwing an exception
-							// here but then return the action forward
-							// from this method
-							throw new WrappedActionForwardRuntimeException(actionForward);
-						}
-						return actionForward;
-					}
-				});
-			} catch (WrappedActionForwardRuntimeException e) {
-				forward = e.getActionForward();
-			}
-
+			
+			ActionForward forward = action.execute(mapping, form, request, response);
 
 			publishMessages(request);
 			saveMessages(request);

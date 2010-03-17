@@ -68,8 +68,8 @@ public class DocumentDaoProxy implements DocumentDao {
 	/**
 	 * @see org.kuali.rice.kns.dao.DocumentDao#save(org.kuali.rice.kns.document.Document)
 	 */
-	public void save(Document document) {
-		getDao(document.getClass()).save(document);
+	public Document save(Document document) {
+		return getDao(document.getClass()).save(document);
 	}
 
 	public void setDocumentDaoJpa(DocumentDao documentDaoJpa) {

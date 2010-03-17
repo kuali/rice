@@ -25,7 +25,7 @@ import org.kuali.rice.kns.document.Document;
  */
 public interface DocumentDao {
 
-	void save(Document document);
+	Document save(Document document);
 
 	public Document findByDocumentHeaderId(Class clazz, String id);
 

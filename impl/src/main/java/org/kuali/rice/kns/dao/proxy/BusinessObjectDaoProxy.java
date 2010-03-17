@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.dao.proxy;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,7 @@ import javax.persistence.EntityManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
@@ -88,14 +90,14 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#countMatching(java.lang.Class, java.util.Map)
 	 */
-	public int countMatching(Class clazz, Map fieldValues) {
+	public int countMatching(Class clazz, Map<String, ?> fieldValues) {
 		return getDao(clazz).countMatching(clazz, fieldValues);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#countMatching(java.lang.Class, java.util.Map, java.util.Map)
 	 */
-	public int countMatching(Class clazz, Map positiveFieldValues, Map negativeFieldValues) {
+	public int countMatching(Class clazz, Map<String, ?> positiveFieldValues, Map<String, ?> negativeFieldValues) {
 		return getDao(clazz).countMatching(clazz, positiveFieldValues, negativeFieldValues);
 	}
 
@@ -120,77 +122,77 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#deleteMatching(java.lang.Class, java.util.Map)
 	 */
-	public void deleteMatching(Class clazz, Map fieldValues) {
+	public void deleteMatching(Class clazz, Map<String, ?> fieldValues) {
 		getDao(clazz).deleteMatching(clazz, fieldValues);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAll(java.lang.Class)
 	 */
-	public Collection findAll(Class clazz) {
+	public <T extends BusinessObject> Collection<T> findAll(Class<T> clazz) {
 		return getDao(clazz).findAll(clazz);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllActive(java.lang.Class)
 	 */
-	public Collection findAllActive(Class clazz) {
+	public <T extends BusinessObject> Collection<T> findAllActive(Class<T> clazz) {
 		return getDao(clazz).findAllActive(clazz);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllInactive(java.lang.Class)
 	 */
-	public Collection findAllInactive(Class clazz) {
+	public <T extends BusinessObject> Collection<T> findAllInactive(Class<T> clazz) {
 		return getDao(clazz).findAllInactive(clazz);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllActiveOrderBy(java.lang.Class, java.lang.String, boolean)
 	 */
-	public Collection findAllActiveOrderBy(Class clazz, String sortField, boolean sortAscending) {
+	public <T extends BusinessObject> Collection<T> findAllActiveOrderBy(Class<T> clazz, String sortField, boolean sortAscending) {
 		return getDao(clazz).findAllActiveOrderBy(clazz, sortField, sortAscending);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllOrderBy(java.lang.Class, java.lang.String, boolean)
 	 */
-	public Collection findAllOrderBy(Class clazz, String sortField, boolean sortAscending) {
+	public <T extends BusinessObject> Collection<T> findAllOrderBy(Class<T> clazz, String sortField, boolean sortAscending) {
 		return getDao(clazz).findAllOrderBy(clazz, sortField, sortAscending);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
 	 */
-	public PersistableBusinessObject findBySinglePrimaryKey(Class clazz, Object primaryKey) {
+	public <T extends BusinessObject> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey) {
 		return getDao(clazz).findBySinglePrimaryKey(clazz, primaryKey);
 	}
 	
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class, java.util.Map)
 	 */
-	public PersistableBusinessObject findByPrimaryKey(Class clazz, Map primaryKeys) {
+	public <T extends BusinessObject> T findByPrimaryKey(Class<T> clazz, Map<String, ?> primaryKeys) {
 		return getDao(clazz).findByPrimaryKey(clazz, primaryKeys);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(java.lang.Class, java.util.Map)
 	 */
-	public Collection findMatching(Class clazz, Map fieldValues) {
+	public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues) {
 		return getDao(clazz).findMatching(clazz, fieldValues);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatchingActive(java.lang.Class, java.util.Map)
 	 */
-	public Collection findMatchingActive(Class clazz, Map fieldValues) {
+	public <T extends BusinessObject> Collection<T> findMatchingActive(Class<T> clazz, Map<String, ?> fieldValues) {
 		return getDao(clazz).findMatchingActive(clazz, fieldValues);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatchingOrderBy(java.lang.Class, java.util.Map, java.lang.String, boolean)
 	 */
-	public Collection findMatchingOrderBy(Class clazz, Map fieldValues, String sortField, boolean sortAscending) {
+	public <T extends BusinessObject> Collection<T> findMatchingOrderBy(Class<T> clazz, Map<String, ?> fieldValues, String sortField, boolean sortAscending) {
 		return getDao(clazz).findMatchingOrderBy(clazz, fieldValues, sortField, sortAscending);
 	}
 
@@ -205,7 +207,7 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	 * Defers to correct DAO for this class
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findByPrimaryKeyUsingKeyObject(java.lang.Class, java.lang.Object)
 	 */
-	public PersistableBusinessObject findByPrimaryKeyUsingKeyObject(Class clazz, Object pkObject) {
+	public <T extends BusinessObject> T findByPrimaryKeyUsingKeyObject(Class<T> clazz, Object pkObject) {
 		return getDao(clazz).findByPrimaryKeyUsingKeyObject(clazz, pkObject);
 	}
 
@@ -221,10 +223,11 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#save(java.util.List)
 	 */
-	public void save(List businessObjects) {
+	public List<? extends PersistableBusinessObject> save(List businessObjects) {
 		if (!businessObjects.isEmpty()) {
-			getDao(businessObjects.get(0).getClass()).save(businessObjects);
+			return getDao(businessObjects.get(0).getClass()).save(businessObjects);
 		}
+		return new ArrayList<PersistableBusinessObject>();
 	}
 
     private static KualiModuleService getKualiModuleService() {

@@ -25,6 +25,7 @@ import javax.persistence.EntityNotFoundException;
 import org.hibernate.proxy.HibernateProxy;
 import org.kuali.rice.core.jpa.metadata.CollectionDescriptor;
 import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
+import org.kuali.rice.core.jpa.metadata.FieldDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -75,12 +76,16 @@ public class PersistenceDaoJpa implements PersistenceDao {
 			field.setAccessible(true);
 			
 			String fk = null;
+			String foreignPK = null;
 
 			EntityDescriptor ed = MetadataManager.getEntityDescriptor(o.getClass());
 			CollectionDescriptor cd = ed.getCollectionDescriptorByName(referenceName);
 			if (cd == null) {
 				ObjectDescriptor od = ed.getObjectDescriptorByName(referenceName);
 				fk = od.getForeignKeyFields().get(0);
+				EntityDescriptor foreignEntityDescriptor = MetadataManager.getEntityDescriptor(od.getTargetEntity());
+				FieldDescriptor foreignPKField = foreignEntityDescriptor.getFieldByColumnName(od.getJoinColumnDescriptors().get(0).getName());
+				foreignPK = foreignPKField.getName();
 			} else {
 				fk = cd.getForeignKeyFields().get(0);
 			}
@@ -108,7 +113,7 @@ public class PersistenceDaoJpa implements PersistenceDao {
 			} else {
 				PersistableBusinessObject pbo = (PersistableBusinessObject) Class.forName(field.getType().getCanonicalName()).newInstance();
 	            Map<String, Object> keys = MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(o);
-				Field field3 = getField(pbo.getClass(), keys.keySet().iterator().next());
+				Field field3 = getField(pbo.getClass(), foreignPK);
 				field3.setAccessible(true);
 				field3.set(pbo, fkFieldValue);
 				field.set(o, KNSServiceLocator.getBusinessObjectService().retrieve(pbo));

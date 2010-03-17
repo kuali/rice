@@ -55,15 +55,16 @@ public class DocumentDaoJpa implements DocumentDao {
      *
      * @see org.kuali.dao.DocumentDao#save(null)
      */
-    public void save(Document document) throws DataAccessException {
+    public Document save(Document document) throws DataAccessException {
 		Document attachedDoc = findByDocumentHeaderId(document.getClass(),document.getDocumentNumber());
 		if (attachedDoc == null) {
 			entityManager.persist(document.getDocumentHeader());
 			entityManager.persist(document);
+			return document;
 		} else {
 			//OrmUtils.reattach(attachedDoc, document);
 			//entityManager.merge(attachedDoc);
-			entityManager.merge(document);
+			return entityManager.merge(document);
 		}
     }
 

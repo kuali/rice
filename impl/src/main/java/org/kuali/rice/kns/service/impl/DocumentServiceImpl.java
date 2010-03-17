@@ -122,12 +122,12 @@ public class DocumentServiceImpl implements DocumentService {
 //            throw buildAuthorizationException("save", document);
 //        }
         document.prepareForSave();
-        validateAndPersistDocumentAndSaveAdHocRoutingRecipients(document, generateKualiDocumentEvent(document, kualiDocumentEventClass));
-        prepareWorkflowDocument(document);
-        getWorkflowDocumentService().save(document.getDocumentHeader().getWorkflowDocument(), null);
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        Document savedDocument = validateAndPersistDocumentAndSaveAdHocRoutingRecipients(document, generateKualiDocumentEvent(document, kualiDocumentEventClass));
+        prepareWorkflowDocument(savedDocument);
+        getWorkflowDocumentService().save(savedDocument.getDocumentHeader().getWorkflowDocument(), null);
+        GlobalVariables.getUserSession().setWorkflowDocument(savedDocument.getDocumentHeader().getWorkflowDocument());
 
-        return document;
+        return savedDocument;
     }
 
     private KualiDocumentEvent generateKualiDocumentEvent(Document document, Class eventClass) throws ConfigurationException {
@@ -180,14 +180,12 @@ public class DocumentServiceImpl implements DocumentService {
         //    throw buildAuthorizationException("route", document);
         //}
         document.prepareForSave();
-        validateAndPersistDocument(document, new RouteDocumentEvent(document));
-        prepareWorkflowDocument(document);
-        getWorkflowDocumentService().route(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-        //getBusinessObjectService().delete(document.getAdHocRoutePersons());
-        //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
-        removeAdHocPersonsAndWorkgroups(document);
-        return document;
+        Document savedDocument = validateAndPersistDocument(document, new RouteDocumentEvent(document));
+        prepareWorkflowDocument(savedDocument);
+        getWorkflowDocumentService().route(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        GlobalVariables.getUserSession().setWorkflowDocument(savedDocument.getDocumentHeader().getWorkflowDocument());
+        removeAdHocPersonsAndWorkgroups(savedDocument);
+        return savedDocument;
     }
 
     /**
@@ -200,12 +198,12 @@ public class DocumentServiceImpl implements DocumentService {
         //    throw buildAuthorizationException("approve", document);
         //}
         document.prepareForSave();
-        validateAndPersistDocument(document, new ApproveDocumentEvent(document));
-        prepareWorkflowDocument(document);
-        getWorkflowDocumentService().approve(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-        removeAdHocPersonsAndWorkgroups(document);
-        return document;
+        Document savedDocument = validateAndPersistDocument(document, new ApproveDocumentEvent(document));
+        prepareWorkflowDocument(savedDocument);
+        getWorkflowDocumentService().approve(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        GlobalVariables.getUserSession().setWorkflowDocument(savedDocument.getDocumentHeader().getWorkflowDocument());
+        removeAdHocPersonsAndWorkgroups(savedDocument);
+        return savedDocument;
     }
 
 
@@ -319,12 +317,12 @@ public class DocumentServiceImpl implements DocumentService {
         //    throw buildAuthorizationException("blanket approve", document);
         //}
         document.prepareForSave();
-        validateAndPersistDocument(document, new BlanketApproveDocumentEvent(document));
-        prepareWorkflowDocument(document);
-        getWorkflowDocumentService().blanketApprove(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
-        removeAdHocPersonsAndWorkgroups(document);
-        return document;
+        Document savedDocument = validateAndPersistDocument(document, new BlanketApproveDocumentEvent(document));
+        prepareWorkflowDocument(savedDocument);
+        getWorkflowDocumentService().blanketApprove(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
+        GlobalVariables.getUserSession().setWorkflowDocument(savedDocument.getDocumentHeader().getWorkflowDocument());
+        removeAdHocPersonsAndWorkgroups(savedDocument);
+        return savedDocument;
     }
 
     /**
@@ -352,7 +350,7 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
 
-    private void validateAndPersistDocumentAndSaveAdHocRoutingRecipients(Document document, KualiDocumentEvent event) throws WorkflowException {
+    private Document validateAndPersistDocumentAndSaveAdHocRoutingRecipients(Document document, KualiDocumentEvent event) throws WorkflowException {
         /*
          * Using this method to wrap validateAndPersistDocument to keep everything in one transaction. This avoids modifying the
          * signature on validateAndPersistDocument method
@@ -368,7 +366,7 @@ public class DocumentServiceImpl implements DocumentService {
         getBusinessObjectService().deleteMatching(AdHocRouteRecipient.class, criteria);
 
         getBusinessObjectService().save(adHocRoutingRecipients);
-        validateAndPersistDocument(document, event);
+        return validateAndPersistDocument(document, event);
     }
 
     /**
@@ -675,7 +673,7 @@ public class DocumentServiceImpl implements DocumentService {
      *
      * @see org.kuali.rice.kns.service.DocumentService#validateAndPersistDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
-    public void validateAndPersistDocument(Document document, KualiDocumentEvent event) throws WorkflowException, ValidationException {
+    public Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws WorkflowException, ValidationException {
         if (document == null) {
             LOG.error("document passed to validateAndPersist was null");
             throw new IllegalArgumentException("invalid (null) document");
@@ -688,20 +686,21 @@ public class DocumentServiceImpl implements DocumentService {
         document.prepareForSave(event);
 
         // save the document
+        Document savedDocument = null;
         try {
         	if ( LOG.isInfoEnabled() ) {
         		LOG.info("storing document " + document.getDocumentNumber());
         	}
-            getDocumentDao().save(document);
+            savedDocument = getDocumentDao().save(document);
         }
         catch (OptimisticLockingFailureException e) {
             LOG.error("exception encountered on store of document " + e.getMessage());
             throw e;
         }
 
-        document.postProcessSave(event);
+        savedDocument.postProcessSave(event);
 
-
+        return savedDocument;
     }
 
 
@@ -753,9 +752,9 @@ public class DocumentServiceImpl implements DocumentService {
      * This is to allow for updates of document statuses and other related requirements for updates outside of the initial save and
      * route
      */
-    public void updateDocument(Document document) {
+    public Document updateDocument(Document document) {
         checkForNulls(document);
-        getDocumentDao().save(document);
+        return getDocumentDao().save(document);
     }
 
     /**

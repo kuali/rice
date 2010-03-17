@@ -92,7 +92,7 @@ public interface DocumentService {
      *
      * @param document
      */
-    public void updateDocument(Document document);
+    public Document updateDocument(Document document);
 
     /**
      * This is a helper method that performs the same as the {@link #saveDocument(Document, Class)} method.  The convenience

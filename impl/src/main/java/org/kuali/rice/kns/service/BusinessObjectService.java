@@ -49,7 +49,7 @@ public interface BusinessObjectService {
      * @param businessObjects A List<PersistableBusinessObject> of objects to persist.
      * 
      */
-    public void save(List<? extends PersistableBusinessObject> businessObjects);
+    public List<? extends PersistableBusinessObject> save(List<? extends PersistableBusinessObject> businessObjects);
 
     /**
      * Links up any contained objects, and then Saves the passed in object via the persistence layer.
@@ -60,7 +60,7 @@ public interface BusinessObjectService {
      * @param bo A BusinessObject instance or descendent that you wish to be stored.
      * 
      */
-    public void linkAndSave(PersistableBusinessObject bo);
+    public PersistableBusinessObject linkAndSave(PersistableBusinessObject bo);
 
     /**
      * Links up any contained objects, and Saves the businessObjects on the list via the persistence layer.
@@ -71,7 +71,7 @@ public interface BusinessObjectService {
      * @param businessObjects A List<BusinessObject> of objects to persist.
      * 
      */
-    public void linkAndSave(List<? extends PersistableBusinessObject> businessObjects);
+    public List<? extends PersistableBusinessObject> linkAndSave(List<? extends PersistableBusinessObject> businessObjects);
 
     /**
      * Retrieves an object instance identified by its primary key. For composite keys, use {@link #findByPrimaryKey(Class, Map)}
@@ -80,7 +80,7 @@ public interface BusinessObjectService {
      * @param primaryKey
      * @return
      */
-    public <T> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey);
+    public <T extends BusinessObject> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey);
     
     /**
      * Retrieves an object instance identified by its primary keys and values. This can be done by constructing a map where the key
@@ -91,7 +91,7 @@ public interface BusinessObjectService {
      * @param primaryKeys
      * @return
      */
-    public PersistableBusinessObject findByPrimaryKey(Class clazz, Map primaryKeys);
+    public <T extends BusinessObject> T findByPrimaryKey(Class<T> clazz, Map<String, ?> primaryKeys);
 
     /**
      * Retrieves an object instance identified by the class of the given object and the object's primary key values.
@@ -108,7 +108,7 @@ public interface BusinessObjectService {
      * @param clazz
      * @return
      */
-    public Collection findAll(Class clazz);
+    public <T extends BusinessObject> Collection<T> findAll(Class<T> clazz);
 
     /**
      * Retrieves a collection of business objects populated with data, such that each record in the database populates a new object
@@ -117,7 +117,7 @@ public interface BusinessObjectService {
      * @param clazz
      * @return
      */
-    public <T> Collection<T> findAllOrderBy( Class<T> clazz, String sortField, boolean sortAscending );
+    public <T extends BusinessObject> Collection<T> findAllOrderBy( Class<T> clazz, String sortField, boolean sortAscending );
     
     /**
      * This method retrieves a collection of business objects populated with data, such that each record in the database populates a
@@ -128,7 +128,7 @@ public interface BusinessObjectService {
      * @param fieldValues
      * @return
      */
-    public Collection findMatching(Class clazz, Map fieldValues);
+    public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues);
 
     /**
      * This method retrieves a count of the business objects populated with data which match the criteria in the given Map.
@@ -137,7 +137,7 @@ public interface BusinessObjectService {
      * @param fieldValues
      * @return number of businessObjects of the given class whose fields match the values in the given expected-value Map
      */
-    public int countMatching(Class clazz, Map fieldValues);
+    public int countMatching(Class clazz, Map<String, ?> fieldValues);
 
     /**
      * This method retrieves a count of the business objects populated with data which match both the positive criteria 
@@ -148,7 +148,7 @@ public interface BusinessObjectService {
      * @param negativeFieldValues
      * @return number of businessObjects of the given class whose fields match the values in the given expected-value Maps
      */
-    public int countMatching(Class clazz, Map positiveFieldValues, Map negativeFieldValues);
+    public int countMatching(Class clazz, Map<String, ?> positiveFieldValues, Map<String, ?> negativeFieldValues);
     
     /**
      * This method retrieves a collection of business objects populated with data, such that each record in the database populates a
@@ -159,7 +159,7 @@ public interface BusinessObjectService {
      * @param fieldValues
      * @return
      */
-    public Collection findMatchingOrderBy(Class clazz, Map fieldValues, String sortField, boolean sortAscending);
+    public <T extends BusinessObject> Collection<T> findMatchingOrderBy(Class<T> clazz, Map<String, ?> fieldValues, String sortField, boolean sortAscending);
 
     /**
      * Deletes a business object from the database.
@@ -181,7 +181,7 @@ public interface BusinessObjectService {
      * @param clazz
      * @param fieldValues
      */
-    public void deleteMatching(Class clazz, Map fieldValues);
+    public void deleteMatching(Class clazz, Map<String, ?> fieldValues);
 
     /**
      * 

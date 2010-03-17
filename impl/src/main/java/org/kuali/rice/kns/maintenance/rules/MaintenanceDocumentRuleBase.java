@@ -725,7 +725,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             // DB call that may not be necessary, and we want to minimize these.
 
             // attempt to do a lookup, see if this object already exists by these Primary Keys
-            PersistableBusinessObject testBo = boService.findByPrimaryKey(boClass, newPkFields);
+            PersistableBusinessObject testBo = (PersistableBusinessObject)boService.findByPrimaryKey(boClass, newPkFields);
 
             // if the retrieve was successful, then this object already exists, and we need
             // to complain

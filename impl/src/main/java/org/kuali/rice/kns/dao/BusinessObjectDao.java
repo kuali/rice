@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 
 /**
@@ -39,7 +40,7 @@ public interface BusinessObjectDao {
      * 
      * @param businessObjects
      */
-    public void save(List businessObjects);
+    public List<? extends PersistableBusinessObject> save(List businessObjects);
 
     /**
      * Retrieves an object instance identified by its primary key. For composite keys, use {@link #findByPrimaryKey(Class, Map)}
@@ -48,7 +49,7 @@ public interface BusinessObjectDao {
      * @param primaryKey
      * @return
      */
-    public PersistableBusinessObject findBySinglePrimaryKey(Class clazz, Object primaryKey);
+    public <T extends BusinessObject> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey);
     
     /**
      * Retrieves an object instance identified bys it primary keys and values. This can be done by constructing a map where the key
@@ -59,7 +60,7 @@ public interface BusinessObjectDao {
      * @param primaryKeys
      * @return
      */
-    public PersistableBusinessObject findByPrimaryKey(Class clazz, Map primaryKeys);
+    public <T extends BusinessObject> T findByPrimaryKey(Class<T> clazz, Map<String, ?> primaryKeys);
     
     /**
 	 * Retrieves an object, based on its PK object
@@ -68,7 +69,7 @@ public interface BusinessObjectDao {
 	 * @param pkObject the value of the primary key
 	 * @return the retrieved PersistableBusinessObject
 	 */
-	public abstract PersistableBusinessObject findByPrimaryKeyUsingKeyObject(Class clazz, Object pkObject);
+	public abstract <T  extends BusinessObject> T findByPrimaryKeyUsingKeyObject(Class<T> clazz, Object pkObject);
 
     /**
      * Retrieves an object instance identified by the class of the given object and the object's primary key values.
@@ -85,7 +86,7 @@ public interface BusinessObjectDao {
      * @param clazz
      * @return
      */
-    public Collection findAll(Class clazz);
+    public <T extends BusinessObject> Collection<T> findAll(Class<T> clazz);
     
     /**
      * Retrieves a collection of business objects populated with data, such that each record in the database populates a new object
@@ -96,9 +97,9 @@ public interface BusinessObjectDao {
      * @param clazz
      * @return
      */
-    public Collection findAllActive(Class clazz);
+    public <T extends BusinessObject> Collection<T> findAllActive(Class<T> clazz);
 
-    public Collection findAllInactive(Class clazz);
+    public <T extends BusinessObject> Collection<T> findAllInactive(Class<T> clazz);
     
     /**
      * Retrieves a collection of business objects populated with data, such that each record in the database populates a new object
@@ -107,7 +108,7 @@ public interface BusinessObjectDao {
      * @param clazz
      * @return
      */
-    public Collection findAllOrderBy(Class clazz, String sortField, boolean sortAscending);
+    public <T extends BusinessObject> Collection<T> findAllOrderBy(Class<T> clazz, String sortField, boolean sortAscending);
     
     /**
      * Retrieves a collection of business objects populated with data, such that each record in the database populates a new object
@@ -117,7 +118,7 @@ public interface BusinessObjectDao {
      * @param clazz
      * @return
      */
-    public Collection findAllActiveOrderBy(Class clazz, String sortField, boolean sortAscending);
+    public <T extends BusinessObject> Collection<T> findAllActiveOrderBy(Class<T> clazz, String sortField, boolean sortAscending);
 
     /**
      * This method retrieves a collection of business objects populated with data, such that each record in the database populates a
@@ -128,7 +129,7 @@ public interface BusinessObjectDao {
      * @param fieldValues
      * @return
      */
-    public Collection findMatching(Class clazz, Map fieldValues);
+    public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues);
     
     /**
      * This method retrieves a collection of business objects populated with data, such that each record in the database populates a
@@ -141,14 +142,14 @@ public interface BusinessObjectDao {
      * @param fieldValues
      * @return
      */
-    public Collection findMatchingActive(Class clazz, Map fieldValues);
+    public <T extends BusinessObject> Collection<T> findMatchingActive(Class<T> clazz, Map<String, ?> fieldValues);
 
     /**
      * @param clazz
      * @param fieldValues
      * @return count of BusinessObjects of the given class whose fields match the values in the given Map.
      */
-    public int countMatching(Class clazz, Map fieldValues);
+    public int countMatching(Class clazz, Map<String, ?> fieldValues);
 
     
     /**
@@ -162,7 +163,7 @@ public interface BusinessObjectDao {
      * @param negativeFieldValues  Map of fields and values for negative criteria
      * @return
      */
-    public int countMatching(Class clazz, Map positiveFieldValues, Map negativeFieldValues);
+    public int countMatching(Class clazz, Map<String, ?> positiveFieldValues, Map<String, ?> negativeFieldValues);
     
     /**
      * This method retrieves a collection of business objects populated with data, such that each record in the database populates a
@@ -173,7 +174,7 @@ public interface BusinessObjectDao {
      * @param fieldValues
      * @return
      */
-    public Collection findMatchingOrderBy(Class clazz, Map fieldValues, String sortField, boolean sortAscending);
+    public <T extends BusinessObject> Collection<T> findMatchingOrderBy(Class<T> clazz, Map<String, ?> fieldValues, String sortField, boolean sortAscending);
 
     /**
      * Deletes a business object from the database.
@@ -195,5 +196,5 @@ public interface BusinessObjectDao {
      * @param clazz
      * @param fieldValues
      */
-    public void deleteMatching(Class clazz, Map fieldValues);
+    public void deleteMatching(Class clazz, Map<String, ?> fieldValues);
 }

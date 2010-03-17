@@ -78,9 +78,9 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * @see org.kuali.rice.kns.service.BusinessObjectService#save(java.util.List)
      */
     @Transactional
-    public void save(List<? extends PersistableBusinessObject> businessObjects) {
+    public List<? extends PersistableBusinessObject> save(List<? extends PersistableBusinessObject> businessObjects) {
         validateBusinessObjectForSave(businessObjects);
-        businessObjectDao.save(businessObjects);
+        return businessObjectDao.save(businessObjects);
     }
 
     /**
@@ -88,10 +88,10 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * @see org.kuali.rice.kns.service.BusinessObjectService#linkAndSave(org.kuali.rice.kns.bo.BusinessObject)
      */
     @Transactional
-    public void linkAndSave(PersistableBusinessObject bo) {
+    public PersistableBusinessObject linkAndSave(PersistableBusinessObject bo) {
     	validateBusinessObjectForSave(bo);
         persistenceService.linkObjects(bo);
-        businessObjectDao.save(bo);
+        return businessObjectDao.save(bo);
     }
 
     /**
@@ -99,9 +99,9 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * @see org.kuali.rice.kns.service.BusinessObjectService#linkAndSave(java.util.List)
      */
     @Transactional
-    public void linkAndSave(List<? extends PersistableBusinessObject> businessObjects) {
+    public List<? extends PersistableBusinessObject> linkAndSave(List<? extends PersistableBusinessObject> businessObjects) {
         validateBusinessObjectForSave(businessObjects);
-        businessObjectDao.save(businessObjects);
+        return businessObjectDao.save(businessObjects);
     }
 
     /**
@@ -164,14 +164,14 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * @see org.kuali.rice.kns.service.BusinessObjectService#findByPrimaryKey(java.lang.Class, java.lang.Object)
      */
     @SuppressWarnings("unchecked")
-	public <T> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey) {
+	public <T extends BusinessObject> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey) {
 		return (T)businessObjectDao.findBySinglePrimaryKey(clazz, primaryKey);
 	}
 
 	/**
      * @see org.kuali.rice.kns.service.BusinessObjectService#findByPrimaryKey(java.lang.Class, java.util.Map)
      */
-    public PersistableBusinessObject findByPrimaryKey(Class clazz, Map primaryKeys) {
+    public <T extends BusinessObject> T findByPrimaryKey(Class<T> clazz, Map<String, ?> primaryKeys) {
         return businessObjectDao.findByPrimaryKey(clazz, primaryKeys);
     }
 
@@ -185,40 +185,41 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#findAll(java.lang.Class)
      */
-    public Collection findAll(Class clazz) {
+    public <T extends BusinessObject> Collection<T> findAll(Class<T> clazz) {
         Collection coll = businessObjectDao.findAll(clazz);
-        return new ArrayList(coll);
+        return new ArrayList<T>(coll);
     }
 
-    public <T> Collection<T> findAllOrderBy( Class<T> clazz, String sortField, boolean sortAscending ) {
-    	return (Collection<T>)businessObjectDao.findMatchingOrderBy(clazz, Collections.emptyMap(), sortField, sortAscending );
+    public <T extends BusinessObject> Collection<T> findAllOrderBy( Class<T> clazz, String sortField, boolean sortAscending ) {
+    	final Map<String, ?> emptyParameters = Collections.emptyMap();
+    	return (Collection<T>)businessObjectDao.findMatchingOrderBy(clazz, emptyParameters, sortField, sortAscending );
     }
     
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#findMatching(java.lang.Class, java.util.Map)
      */
-    public Collection findMatching(Class clazz, Map fieldValues) {
+    public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues) {
         return new ArrayList(businessObjectDao.findMatching(clazz, fieldValues));
     }
 
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#countMatching(java.lang.Class, java.util.Map)
      */
-    public int countMatching(Class clazz, Map fieldValues) {
+    public int countMatching(Class clazz, Map<String, ?> fieldValues) {
         return businessObjectDao.countMatching(clazz, fieldValues);
     }
 
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#countMatching(java.lang.Class, java.util.Map, java.util.Map)
      */
-    public int countMatching(Class clazz, Map positiveFieldValues, Map negativeFieldValues) {
+    public int countMatching(Class clazz, Map<String, ?> positiveFieldValues, Map<String, ?> negativeFieldValues) {
         return businessObjectDao.countMatching(clazz, positiveFieldValues, negativeFieldValues);
     }
     
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#findMatchingOrderBy(java.lang.Class, java.util.Map)
      */
-    public Collection findMatchingOrderBy(Class clazz, Map fieldValues, String sortField, boolean sortAscending) {
+    public <T extends BusinessObject> Collection<T> findMatchingOrderBy(Class<T> clazz, Map<String, ?> fieldValues, String sortField, boolean sortAscending) {
         return new ArrayList(businessObjectDao.findMatchingOrderBy(clazz, fieldValues, sortField, sortAscending));
     }
 
@@ -243,7 +244,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      * @see org.kuali.rice.kns.service.BusinessObjectService#deleteMatching(java.lang.Class, java.util.Map)
      */
     @Transactional
-    public void deleteMatching(Class clazz, Map fieldValues) {
+    public void deleteMatching(Class clazz, Map<String, ?> fieldValues) {
         businessObjectDao.deleteMatching(clazz, fieldValues);
     }
 
@@ -252,7 +253,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
      */
     public BusinessObject getReferenceIfExists(BusinessObject bo, String referenceName) {
 
-        PersistableBusinessObject referenceBo = null;
+        BusinessObject referenceBo = null;
         boolean allFkeysHaveValues = true;
 
         // if either argument is null, then we have nothing to do, complain and abort

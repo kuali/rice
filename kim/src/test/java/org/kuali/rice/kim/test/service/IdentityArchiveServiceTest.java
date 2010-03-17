@@ -18,6 +18,7 @@ package org.kuali.rice.kim.test.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -41,7 +42,8 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		KNSServiceLocator.getBusinessObjectService().deleteMatching(KimEntityDefaultInfoCacheImpl.class, Collections.emptyMap());
+		final Map<String, Object> emptyMap = Collections.emptyMap();
+		KNSServiceLocator.getBusinessObjectService().deleteMatching(KimEntityDefaultInfoCacheImpl.class, emptyMap);
 		if (null == identityArchiveService) {
 			identityArchiveService = KIMServiceLocator.getIdentityArchiveService();
 		}

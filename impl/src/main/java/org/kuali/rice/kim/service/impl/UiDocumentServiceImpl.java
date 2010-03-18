@@ -1729,6 +1729,21 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			List<RoleMemberAttributeDataImpl> attributeDataList){
 		List<KimDocumentRoleQualifier> pndMemberRoleQualifiers = new ArrayList<KimDocumentRoleQualifier>();
 		KimDocumentRoleQualifier pndMemberRoleQualifier = new KimDocumentRoleQualifier();
+		
+		// add all attributes from attributeDataList
+		if(attributeDataList!=null){
+			for(RoleMemberAttributeDataImpl memberRoleQualifier: attributeDataList){
+				pndMemberRoleQualifier = new KimDocumentRoleQualifier();
+				pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getAttributeDataId());
+				pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
+				pndMemberRoleQualifier.setRoleMemberId(memberRoleQualifier.getRoleMemberId());
+				pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
+				pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
+				pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
+				pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
+			}
+		}
+		// also add any attributes already in the document that are not in the attributeDataList
 		AttributeDefinitionMap origAttributes = identityManagementRoleDocument.getDefinitions();
 		if ( origAttributes != null ) {
 			for(String key: origAttributes.keySet()) {
@@ -1737,15 +1752,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(attributeDataList!=null){
 					for(RoleMemberAttributeDataImpl memberRoleQualifier: attributeDataList){
 						if(origAttributeId!=null && StringUtils.equals(origAttributeId, memberRoleQualifier.getKimAttribute().getKimAttributeId())){
-							pndMemberRoleQualifier = new KimDocumentRoleQualifier();
-							pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getAttributeDataId());
-							pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
-							pndMemberRoleQualifier.setRoleMemberId(memberRoleQualifier.getRoleMemberId());
-							pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
-							pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
-							pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
-							pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
 							attributePresent = true;
+							break;
 						}
 					}
 				}

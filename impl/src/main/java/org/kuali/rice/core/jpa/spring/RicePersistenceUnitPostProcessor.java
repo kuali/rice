@@ -22,12 +22,18 @@ import org.springframework.orm.jpa.persistenceunit.PersistenceUnitPostProcessor;
 
 public class RicePersistenceUnitPostProcessor implements PersistenceUnitPostProcessor {
 	static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RicePersistenceUnitPostProcessor.class);
+	
+	public static final String KNS_APPLICATION_PERSISTENCE_UNIT_NAME = "kns-application-unit";
+	public static final String KNS_SERVER_PERSISTENCE_UNIT_NAME = "kns-server-unit";
 
 	private DataSource jtaDataSource;
     
     public void postProcessPersistenceUnitInfo(MutablePersistenceUnitInfo mutablePersistenceUnitInfo) {
         mutablePersistenceUnitInfo.setJtaDataSource(getJtaDataSource());
         addKNSManagedClassNames(mutablePersistenceUnitInfo);
+        if (mutablePersistenceUnitInfo.getPersistenceUnitName().equals(KNS_APPLICATION_PERSISTENCE_UNIT_NAME) || mutablePersistenceUnitInfo.getPersistenceUnitName().equals(KNS_SERVER_PERSISTENCE_UNIT_NAME)) {
+        	addRiceManagedClassNamesToKNSPersistenceUnit(mutablePersistenceUnitInfo);
+        }
     }
     
     /**
@@ -54,6 +60,10 @@ public class RicePersistenceUnitPostProcessor implements PersistenceUnitPostProc
     		}
     		mutablePersistenceUnitInfo.addManagedClassName(exposedClassName);
     	}
+    }
+    
+    public void addRiceManagedClassNamesToKNSPersistenceUnit(MutablePersistenceUnitInfo mutablePersistenceUnitInfo) {
+    	addManagedClassNames(mutablePersistenceUnitInfo, new RiceToNervousSystemBusinessObjectClassExposer());
     }
 
     public DataSource getJtaDataSource() {

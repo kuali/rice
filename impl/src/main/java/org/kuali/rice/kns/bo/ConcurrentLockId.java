@@ -37,6 +37,11 @@ public class ConcurrentLockId implements Serializable {
     private String transactionSemaphoreId;
 
     public ConcurrentLockId() {}
+    
+    public ConcurrentLockId(String transactionSemaphoreTypeCode, String transactionSemaphoreId) {
+    	this.transactionSemaphoreTypeCode = transactionSemaphoreTypeCode;
+    	this.transactionSemaphoreId = transactionSemaphoreId;
+    }
 
     public String getTransactionSemaphoreTypeCode() { return transactionSemaphoreTypeCode; }
 

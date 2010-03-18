@@ -23,11 +23,13 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -78,11 +80,12 @@ public class Parameter extends PersistableBusinessObjectBase {
 	@JoinColumn(name="PARM_TYP_CD", insertable=false, updatable=false)
 	private ParameterType parameterType;
 
-	@ManyToOne(fetch=FetchType.LAZY)
+	/*@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumns({
 		@JoinColumn(name="NMSPC_CD", referencedColumnName="NMSPC_CD", insertable=false, updatable=false),
 		@JoinColumn(name="PARM_DTL_TYP_CD", referencedColumnName="PARM_DTL_TYP_CD", insertable=false, updatable=false)
-	})
+	})*/
+	@Transient
 	private ParameterDetailType parameterDetailType;
 
 	public Parameter() {
@@ -192,6 +195,12 @@ public class Parameter extends PersistableBusinessObjectBase {
 	}
 
 	public ParameterDetailType getParameterDetailType() {
+		if (!StringUtils.isBlank(parameterDetailTypeCode) && !StringUtils.isBlank(parameterNamespaceCode) && (parameterDetailType == null || !parameterDetailType.getParameterDetailTypeCode().equals(this.parameterDetailTypeCode))) {
+			ParameterDetailTypeId id = new ParameterDetailTypeId();
+			id.setParameterNamespaceCode(parameterNamespaceCode);
+			id.setParameterDetailTypeCode(parameterDetailTypeCode);
+			parameterDetailType = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ParameterDetailType.class, id);
+		}
 		return parameterDetailType;
 	}
 

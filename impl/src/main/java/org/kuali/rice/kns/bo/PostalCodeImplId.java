@@ -31,6 +31,14 @@ public class PostalCodeImplId extends CompositePrimaryKeyBase {
 	@Id
 	@Column(name="POSTAL_CD")
     private String postalCode;
+	
+	public PostalCodeImplId() {}
+	
+	public PostalCodeImplId(String postalCountryCode, String postalCode) {
+		this.postalCountryCode = postalCountryCode;
+		this.postalCode = postalCode;
+	}
+	
 	/**
 	 * @return the postalCountryCode
 	 */

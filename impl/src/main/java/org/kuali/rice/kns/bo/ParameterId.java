@@ -39,6 +39,13 @@ public class ParameterId extends CompositePrimaryKeyBase {
     private String parameterApplicationNamespaceCode;
 
     public ParameterId() {}
+    
+    public ParameterId(String parameterNamespaceCode, String parameterDetailTypeCode, String parameterName, String parameterApplicationNamespaceCode) {
+    	this.parameterNamespaceCode = parameterNamespaceCode;
+    	this.parameterDetailTypeCode = parameterDetailTypeCode;
+    	this.parameterName = parameterName;
+    	this.parameterApplicationNamespaceCode = parameterApplicationNamespaceCode;
+    }
 
     public String getParameterNamespaceCode() { return parameterNamespaceCode; }
 

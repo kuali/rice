@@ -32,8 +32,17 @@ public class CountyImplId extends CompositePrimaryKeyBase {
 	@Column(name="COUNTY_CD")
     private String countyCode;
 	@Id
-	@Column(name="POSTAL_STATE_CD")
+	@Column(name="STATE_CD")
     private String stateCode;
+	
+	public CountyImplId() {}
+	
+	public CountyImplId(String postalCountryCode, String countyCode, String stateCode) {
+		this.postalCountryCode = postalCountryCode;
+		this.countyCode = countyCode;
+		this.stateCode = stateCode;
+	}
+	
 	/**
 	 * @return the postalCountryCode
 	 */

@@ -55,7 +55,7 @@ public class AccountManager extends PersistableBusinessObjectBase {
 	private Long amId;
 	@Transient
 	private String defaultType;
-	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE},mappedBy="amId")
+	@OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REMOVE})
 	@JoinColumn(name="acct_fo_id",insertable=false,updatable=false)
 	private List<Account> accounts;
 

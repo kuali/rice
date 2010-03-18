@@ -38,12 +38,31 @@ public class ParameterDetailTypeId implements Serializable {
     private String parameterDetailTypeCode;
 
     public ParameterDetailTypeId() {}
+    
+    public ParameterDetailTypeId(String parameterNamespaceCode, String parameterDetailTypeCode) {
+    	this.parameterNamespaceCode = parameterNamespaceCode;
+    	this.parameterDetailTypeCode = parameterDetailTypeCode;
+    }
 
     public String getParameterNamespaceCode() { return parameterNamespaceCode; }
 
     public String getParameterDetailTypeCode() { return parameterDetailTypeCode; }
 
-    public boolean equals(Object o) {
+    /**
+	 * @param parameterNamespaceCode the parameterNamespaceCode to set
+	 */
+	public void setParameterNamespaceCode(String parameterNamespaceCode) {
+		this.parameterNamespaceCode = parameterNamespaceCode;
+	}
+
+	/**
+	 * @param parameterDetailTypeCode the parameterDetailTypeCode to set
+	 */
+	public void setParameterDetailTypeCode(String parameterDetailTypeCode) {
+		this.parameterDetailTypeCode = parameterDetailTypeCode;
+	}
+
+	public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof ParameterDetailTypeId)) return false;
         if (o == null) return false;

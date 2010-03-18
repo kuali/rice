@@ -42,6 +42,12 @@ public class AdHocRoutePersonId implements Serializable {
     private String id;
 
     public AdHocRoutePersonId() {}
+    
+    public AdHocRoutePersonId(Integer type, String actionRequested, String id) {
+    	this.type = type;
+    	this.actionRequested = actionRequested;
+    	this.id = id;
+    }
 
     public Integer getType() {
         return this.type;

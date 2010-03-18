@@ -23,6 +23,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 
 /**
  * 
@@ -36,6 +38,7 @@ public class NoteType extends PersistableBusinessObjectBase {
 	private String noteTypeCode;
 	@Column(name="TYP_DESC_TXT")
 	private String noteTypeDescription;
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	private boolean noteTypeActiveIndicator;
 

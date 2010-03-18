@@ -23,6 +23,8 @@ import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PostPersist;
+import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
@@ -207,10 +209,6 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     
     @PrePersist
     public void beforeInsert() {
-//    	if (!isAutoIncrementSet()) {
-//    		OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
-//    		setAutoIncrementSet(true);
-//    	}
     	setObjectId(new Guid().toString());
     }
 
@@ -218,6 +216,38 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     public void beforeUpdate() {
         if (StringUtils.isEmpty(getObjectId())) {
             setObjectId(new Guid().toString());
+        }
+    }
+    
+    @PostPersist
+    public void afterInsert() {
+    	// no need to attempt to load any notes since this is a new object
+        if (boNotes != null && !boNotes.isEmpty()) {
+        	if (isBoNotesSupport()) {
+                saveNotes();
+
+                // move attachments from pending directory
+                if (hasNoteAttachments() && StringUtils.isNotEmpty(objectId)) {
+                    getAttachmentService().moveAttachmentsWherePending(getBoNotes(), objectId);
+                }
+            }
+        }
+    }
+    
+    @PostUpdate
+    public void afterUpdate() {
+    	// if the bo notes have not been loaded yet, then there is no need to attempt to save them
+    	// also, the saveNotes call never attempts to remove notes removed from the note list
+    	// so, an empty list will have no affect during the save process
+        if (boNotes != null && !boNotes.isEmpty()) {
+        	if (isBoNotesSupport()) {
+                saveNotes();
+
+                // move attachments from pending directory
+                if (hasNoteAttachments() && StringUtils.isNotEmpty(objectId)) {
+                    getAttachmentService().moveAttachmentsWherePending(getBoNotes(), objectId);
+                }
+            }
         }
     }
     

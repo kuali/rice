@@ -31,6 +31,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.Person;
@@ -386,7 +387,7 @@ public class Note extends PersistableBusinessObjectBase {
 	 */
 	public String getAttachmentLink() {
 		//getAttachment() is always return null.     
-		if(KNSServiceLocator.getAttachmentService().getAttachmentByNoteId(this.getNoteIdentifier()) == null){
+		if(getNoteIdentifier() == null || KNSServiceLocator.getAttachmentService().getAttachmentByNoteId(this.getNoteIdentifier()) == null){
 			return "";
 		}else{
 	        Properties params = new Properties();

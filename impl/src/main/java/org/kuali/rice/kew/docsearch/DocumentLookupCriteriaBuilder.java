@@ -165,27 +165,21 @@ public class DocumentLookupCriteriaBuilder  {
 	}
 
 	private static String getValidDocumentTypeName(String docTypeName) {
-    	if (StringUtils.isNotEmpty(docTypeName)) {
-    	    DocumentType dTypeCriteria = new DocumentType();
-    		dTypeCriteria.setName(docTypeName.trim());
-    		dTypeCriteria.setActive(true);
-    		Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
-
-    		String firstDocTypeName = null;
-    		// Return the first valid doc type.
-    		if(docTypeList != null){
-    			for(DocumentType dType: docTypeList){
-    			    if (StringUtils.isEmpty(firstDocTypeName)) {
-    			        firstDocTypeName = dType.getName();
-    			    }
-    			    if (StringUtils.equals(docTypeName.toUpperCase(), dType.getName().toUpperCase())) {
-    			        return dType.getName();
-    			    }
-    			}
-    			return firstDocTypeName;
-    		}
-    	}
-
-    	return null;
-    }
+		if (StringUtils.isNotEmpty(docTypeName)) {
+			DocumentType dTypeCriteria = new DocumentType();
+		    dTypeCriteria.setName(docTypeName.trim());
+		    dTypeCriteria.setActive(true);
+		    Collection<DocumentType> docTypeList = KEWServiceLocator.getDocumentTypeService().find(dTypeCriteria, null, false);
+		    
+		    // Return the valid doc type.
+		    if(docTypeList != null){
+			    for(DocumentType dType: docTypeList){
+			        if (StringUtils.equals(docTypeName.toUpperCase(), dType.getName().toUpperCase())) {
+			            return dType.getName();
+			        }
+			    }
+		    }
+		}
+		return docTypeName;
+	} 
 }

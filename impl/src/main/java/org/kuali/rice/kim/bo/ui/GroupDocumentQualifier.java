@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 
@@ -29,6 +30,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
+@IdClass(KimDocumentAttributeDataBusinessObjectBaseId.class)
 @Table(name="KRIM_PND_GRP_ATTR_DATA_T")
 public class GroupDocumentQualifier extends KimDocumentAttributeDataBusinessObjectBase {
 	private static final long serialVersionUID = -8229585479940487688L;

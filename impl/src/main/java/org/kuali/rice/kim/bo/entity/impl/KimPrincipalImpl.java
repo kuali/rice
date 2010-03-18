@@ -36,7 +36,7 @@ public class KimPrincipalImpl extends PersistableBusinessObjectBase implements K
 	private static final long serialVersionUID = 4480581610252159266L;
 
 	@Id
-	@Column(name="PRNCPL_ID")
+	@Column(name="PRNCPL_ID", columnDefinition="VARCHAR(40)")
 	private String principalId;
 
 	@Column(name="PRNCPL_NM")

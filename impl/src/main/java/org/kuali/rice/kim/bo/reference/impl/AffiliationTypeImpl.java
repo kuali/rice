@@ -20,6 +20,7 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.reference.AffiliationType;
@@ -42,7 +43,8 @@ public class AffiliationTypeImpl extends KimCodeBase implements AffiliationType 
     @Column(name="EMP_AFLTN_TYP_IND")
     protected boolean employmentAffiliationType;
 
-
+    @Transient
+    private String affiliationTypeCode;
 	/**
 	 * @see org.kuali.rice.kim.bo.reference.AffiliationType#getAffiliationTypeCode()
 	 */

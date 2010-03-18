@@ -257,8 +257,8 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 				docEmpInfo.setEmploymentRecordId("1");
 				docEmpInfo.setBaseSalaryAmount(new KualiDecimal(8000));
 				docEmpInfo.setPrimaryDepartmentCode("BL-CHEM");
-				docEmpInfo.setEmployeeStatusCode("A");
-				docEmpInfo.setEmployeeTypeCode("P");
+				docEmpInfo.setEmploymentStatusCode("A");
+				docEmpInfo.setEmploymentTypeCode("P");
 				docEmpInfo.setActive(true);
 				docEmploymentInformations.add(docEmpInfo);
 			docAffiliation.setEmpInfos(docEmploymentInformations);
@@ -383,8 +383,8 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 
 	private void assertEmpInfoTrue(PersonDocumentEmploymentInfo docEmpInfo, KimEntityEmploymentInformation entityEmpInfo) {
 		assertEquals(docEmpInfo.getEmployeeId(), entityEmpInfo.getEmployeeId());
-		assertEquals(docEmpInfo.getEmployeeTypeCode(), entityEmpInfo.getEmployeeTypeCode());
-		assertEquals(docEmpInfo.getEmployeeStatusCode(), entityEmpInfo.getEmployeeStatusCode());
+		assertEquals(docEmpInfo.getEmploymentTypeCode(), entityEmpInfo.getEmployeeTypeCode());
+		assertEquals(docEmpInfo.getEmploymentStatusCode(), entityEmpInfo.getEmployeeStatusCode());
 		assertEquals(docEmpInfo.getEmploymentRecordId(), entityEmpInfo.getEmploymentRecordId());
 		assertEquals(docEmpInfo.getBaseSalaryAmount(), entityEmpInfo.getBaseSalaryAmount());
 	}

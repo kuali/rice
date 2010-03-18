@@ -28,6 +28,7 @@ public class FieldDescriptor implements Comparable, Serializable {
 	
 	private String name;
 	private Class clazz;
+	private Class targetClazz;
 	private String column;
 	private int length = 255;
 	private int scale = 0;
@@ -56,6 +57,14 @@ public class FieldDescriptor implements Comparable, Serializable {
 	
 	public void setClazz(Class clazz) {
 		this.clazz = clazz;
+	}
+	
+	public Class getTargetClazz() {
+		return targetClazz;
+	}
+	
+	public void setTargetClazz(Class targetClazz) {
+		this.targetClazz = targetClazz;
 	}
 	
 	public String getColumn() {
@@ -172,6 +181,7 @@ public class FieldDescriptor implements Comparable, Serializable {
 		sb.append("name:").append(name).append(", ");
 		sb.append("column:").append(column).append(", ");
 		sb.append("class:").append(clazz).append(", ");
+		sb.append("targetClass:").append(targetClazz).append(", ");
 		sb.append("length:").append(length).append(", ");
 		sb.append("scale:").append(scale).append(", ");
 		sb.append("precision:").append(precision).append(", ");

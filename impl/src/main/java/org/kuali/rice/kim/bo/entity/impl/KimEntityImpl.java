@@ -28,7 +28,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.TypedArrayList;
@@ -52,57 +53,67 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	protected String entityId;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@IndexColumn(name="ENTITY_NM_ID" )
+	//@IndexColumn(name="ENTITY_NM_ID", columnDefinition="TEXT")
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityNameImpl> names = new TypedArrayList(KimEntityNameImpl.class);
-		
-	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@IndexColumn(name="ENT_TYP_CD")
-	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityEntityTypeImpl> entityTypes = new TypedArrayList(KimEntityEntityTypeImpl.class);
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@IndexColumn(name="PRNCPL_ID")
+	//@IndexColumn(name="PRNCPL_ID", columnDefinition="TEXT")
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimPrincipalImpl> principals = new TypedArrayList(KimPrincipalImpl.class);
 
 	@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	@IndexColumn(name="ENTITY_EXT_ID_ID")
+	//@IndexColumn(name="ENTITY_EXT_ID_ID")
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityExternalIdentifierImpl> externalIdentifiers = new TypedArrayList(KimEntityExternalIdentifierImpl.class);
 
 	@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	@IndexColumn(name="ENTITY_AFLTN_ID")
+	//@IndexColumn(name="ENTITY_AFLTN_ID")
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityAffiliationImpl> affiliations = new TypedArrayList(KimEntityAffiliationImpl.class);
 
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-	@IndexColumn(name="ENTITY_EMP_ID")
+	//@IndexColumn(name="ENTITY_EMP_ID")
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityEmploymentInformationImpl> employmentInformation = new TypedArrayList(KimEntityEmploymentInformationImpl.class);
 
-	@OneToOne(targetEntity=KimEntityPrivacyPreferencesImpl.class, fetch = FetchType.EAGER, cascade = { })
+	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	//@IndexColumn(name="ENT_TYP_CD")
+	@Fetch(value = FetchMode.SELECT)
+	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+	protected List<KimEntityEntityTypeImpl> entityTypes = new TypedArrayList(KimEntityEntityTypeImpl.class);
+	
+	@OneToOne(targetEntity=KimEntityPrivacyPreferencesImpl.class, fetch = FetchType.LAZY, cascade = { })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected KimEntityPrivacyPreferencesImpl privacyPreferences;
 
-	@OneToOne(targetEntity=KimEntityBioDemographicsImpl.class, fetch = FetchType.EAGER, cascade = { })
+	@OneToOne(targetEntity=KimEntityBioDemographicsImpl.class, fetch = FetchType.LAZY, cascade = { })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected KimEntityBioDemographicsImpl bioDemographics;
 	
 	@OneToMany(targetEntity = KimEntityCitizenshipImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@IndexColumn(name="ENTITY_CTZNSHP_ID")
+	//@IndexColumn(name="ENTITY_CTZNSHP_ID")
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityCitizenshipImpl> citizenships = new TypedArrayList(KimEntityCitizenshipImpl.class);
 
-	@OneToMany(targetEntity = KimEntityEthnicityImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityEthnicityImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityEthnicityImpl> ethnicities = new TypedArrayList(KimEntityEthnicityImpl.class);
 
-	@OneToMany(targetEntity = KimEntityResidencyImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityResidencyImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityResidencyImpl> residencies = new TypedArrayList(KimEntityResidencyImpl.class);
 
-	@OneToMany(targetEntity = KimEntityVisaImpl.class, fetch = FetchType.LAZY, cascade = { CascadeType.ALL })
+	@OneToMany(targetEntity = KimEntityVisaImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityVisaImpl> visas = new TypedArrayList(KimEntityVisaImpl.class);
 

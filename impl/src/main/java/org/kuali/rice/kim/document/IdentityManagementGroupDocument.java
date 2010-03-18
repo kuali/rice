@@ -29,7 +29,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
@@ -75,11 +76,11 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	protected boolean editing;
 
 	@OneToMany(targetEntity = GroupDocumentMember.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    @IndexColumn(name="GRP_MBR_ID")
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
 	private List<GroupDocumentMember> members = new TypedArrayList(GroupDocumentMember.class);
 	@OneToMany(targetEntity = GroupDocumentQualifier.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-	@IndexColumn(name="ATTR_DATA_ID")
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
 	private List<GroupDocumentQualifier> qualifiers = new TypedArrayList(GroupDocumentQualifier.class);
 

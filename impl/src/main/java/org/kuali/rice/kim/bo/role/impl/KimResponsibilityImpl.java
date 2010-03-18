@@ -30,7 +30,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
@@ -68,7 +69,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	protected boolean active;
 
 	@OneToMany(targetEntity=ResponsibilityAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
-	@IndexColumn(name="ATTR_DATA_ID")
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
 	protected List<ResponsibilityAttributeDataImpl> detailObjects = new TypedArrayList(ResponsibilityAttributeDataImpl.class);
 	
@@ -79,7 +80,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	protected KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
 	
 	@OneToMany(targetEntity=RoleResponsibilityImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
-    @IndexColumn(name="ROLE_RSP_ID")
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
 	protected List<RoleResponsibilityImpl> roleResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 	

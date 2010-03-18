@@ -61,10 +61,10 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 	protected String entityAffiliationId;
 
 	@Column(name = "EMP_STAT_CD")
-	protected String employeeStatusCode;
+	protected String employmentStatusCode;
 
 	@Column(name = "EMP_TYP_CD")
-	protected String employeeTypeCode;
+	protected String employmentTypeCode;
 
 	@Column(name = "PRMRY_DEPT_CD")
 	protected String primaryDepartmentCode;
@@ -105,15 +105,15 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeStatusCode()
 	 */
-	public String getEmployeeStatusCode() {
-		return employeeStatusCode;
+	public String getEmploymentStatusCode() {
+		return employmentStatusCode;
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeTypeCode()
 	 */
-	public String getEmployeeTypeCode() {
-		return employeeTypeCode;
+	public String getEmploymentTypeCode() {
+		return employmentTypeCode;
 	}
 
 	/**
@@ -154,15 +154,15 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setEmployeeStatusCode(java.lang.String)
 	 */
-	public void setEmployeeStatusCode(String employeeStatusCode) {
-		this.employeeStatusCode = employeeStatusCode;
+	public void setEmploymentStatusCode(String employmentStatusCode) {
+		this.employmentStatusCode = employmentStatusCode;
 	}
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setEmployeeTypeCode(java.lang.String)
 	 */
-	public void setEmployeeTypeCode(String employeeTypeCode) {
-		this.employeeTypeCode = employeeTypeCode;
+	public void setEmploymentTypeCode(String employmentTypeCode) {
+		this.employmentTypeCode = employmentTypeCode;
 	}
 
 	/**
@@ -180,8 +180,8 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 		LinkedHashMap m = super.toStringMapper();
 		m.put( "entityEmploymentId", entityEmploymentId );
 		m.put( "entityAffiliationId", entityAffiliationId );
-		m.put( "employeeStatusCode", employeeStatusCode );
-		m.put( "employeeTypeCode", employeeTypeCode );
+		m.put( "employeeStatusCode", employmentStatusCode );
+		m.put( "employeeTypeCode", employmentTypeCode );
 		m.put( "baseSalaryAmount", baseSalaryAmount );
 		m.put( "primary", primary );
 		return m;

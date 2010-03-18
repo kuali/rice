@@ -76,8 +76,8 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumns({
-	    @JoinColumn(name="ROLE_MBR_ID"), 
-	    @JoinColumn(name="FDOC_NBR")
+	    @JoinColumn(name="ROLE_MBR_ID", insertable = false, updatable = false), 
+	    @JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
 	})
 	protected List <KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
 	@Transient
@@ -85,8 +85,8 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumns({
-	    @JoinColumn(name="ROLE_MBR_ID"), 
-	    @JoinColumn(name="FDOC_NBR")
+	    @JoinColumn(name="ROLE_MBR_ID", insertable = false, updatable = false), 
+	    @JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
 	})
 	private List<KimDocumentRoleResponsibilityAction> roleRspActions;
 

@@ -21,26 +21,25 @@ import javax.persistence.Id;
 import org.kuali.rice.kns.bo.CompositePrimaryKeyBase;
 
 /**
- * PK for PersonRoleDocument 
+ * This is a description of what this class does - jjhanso don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PersonDocumentEmploymentInfoId extends CompositePrimaryKeyBase {
+public class KimDocumentAttributeDataBusinessObjectBaseId extends CompositePrimaryKeyBase {
 	@Id
     @Column(name="FDOC_NBR")
-    protected String documentNumber;
-    
-    @Id
-    @Column(name = "ENTITY_EMP_ID")
-	protected String entityEmploymentId;
-		
-    
+    protected String documentNumber;;
+	
+	@Id
+	@Column(name = "ATTR_DATA_ID")
+	private String attrDataId;
+	
 	/**
 	 * @return the roleId
 	 */
-	public String getEntityEmploymentId() {
-		return this.entityEmploymentId;
+	public String getAttrDataId() {
+		return this.attrDataId;
 	}
 	/**
 	 * @return the documentNumber
@@ -48,5 +47,4 @@ public class PersonDocumentEmploymentInfoId extends CompositePrimaryKeyBase {
 	public String getDocumentNumber() {
 		return this.documentNumber;
 	}
-	
 }

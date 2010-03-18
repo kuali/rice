@@ -20,6 +20,7 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.reference.EntityType;
 import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
@@ -40,6 +41,9 @@ public class EntityTypeImpl extends KimCodeBase implements EntityType {
 
 	private static final long serialVersionUID = 1L;
 
+	@Transient
+	private String entityTypeCode;
+	
 	/**
 	 * @return the entityTypeCode
 	 */
@@ -57,6 +61,7 @@ public class EntityTypeImpl extends KimCodeBase implements EntityType {
 	/**
 	 * @return the entityTypeName
 	 */
+	@Column(name="NM")
 	public String getEntityTypeName() {
 		return getName();
 	}

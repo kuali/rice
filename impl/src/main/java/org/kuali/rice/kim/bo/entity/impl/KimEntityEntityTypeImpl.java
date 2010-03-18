@@ -23,12 +23,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.IndexColumn;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
@@ -40,38 +43,51 @@ import org.kuali.rice.kns.util.TypedArrayList;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+
 @Entity
+@IdClass(KimEntityEntityTypeId.class)
 @Table(name = "KRIM_ENTITY_ENT_TYP_T")
 public class KimEntityEntityTypeImpl extends KimInactivatableEntityDataBase implements KimEntityEntityType {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "ENTITY_ID")
-	protected String entityId;
-
-	@Id
 	@Column(name = "ENT_TYP_CD")
 	protected String entityTypeCode;
+	
+	@Id
+	@Column(name = "ENTITY_ID")
+	protected String entityId;
 	 
 	@ManyToOne(targetEntity = EntityTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
-	@IndexColumn(name="ENT_TYP_CD")
-	//@JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)
+	@JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)
 	protected EntityType entityType;
 	
-	@ManyToMany(targetEntity = KimEntityEmailImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@IndexColumn(name="ENTITY_EMAIL_ID")
-	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+	@OneToMany(targetEntity = KimEntityEmailImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	//@IndexColumn(name="ENTITY_EMAIL_ID")
+	@Fetch(value = FetchMode.SELECT)
+	@JoinColumns({
+	    @JoinColumn(name="ENTITY_ID", insertable = false, updatable = false), 
+	    @JoinColumn(name="ENT_TYP_CD", insertable = false, updatable = false)
+	})
 	protected List<KimEntityEmail> emailAddresses = new TypedArrayList(KimEntityEmailImpl.class);
 	
-	@ManyToMany(targetEntity = KimEntityPhoneImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@IndexColumn(name="ENTITY_PHONE_ID")
-	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+	@OneToMany(targetEntity = KimEntityPhoneImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	//@IndexColumn(name="ENTITY_PHONE_ID")
+	@Fetch(value = FetchMode.SELECT)
+	@JoinColumns({
+	    @JoinColumn(name="ENTITY_ID", insertable = false, updatable = false), 
+	    @JoinColumn(name="ENT_TYP_CD", insertable = false, updatable = false)
+	})
 	protected List<KimEntityPhone> phoneNumbers = new TypedArrayList(KimEntityPhoneImpl.class);
 	
-	@ManyToMany(targetEntity = KimEntityAddressImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	@IndexColumn(name="ENTITY_ADDR_ID")
-	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
+	@OneToMany(targetEntity = KimEntityAddressImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
+	//@IndexColumn(name="ENTITY_ADDR_ID")
+	@Fetch(value = FetchMode.SELECT)
+	@JoinColumns({
+	    @JoinColumn(name="ENTITY_ID", insertable = false, updatable = false), 
+	    @JoinColumn(name="ENT_TYP_CD", insertable = false, updatable = false)
+	})
 	protected List<KimEntityAddress> addresses = new TypedArrayList(KimEntityAddressImpl.class);
 	
 	/**

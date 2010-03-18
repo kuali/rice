@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.ui;
+package org.kuali.rice.kim.bo.entity.impl;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -21,32 +21,29 @@ import javax.persistence.Id;
 import org.kuali.rice.kns.bo.CompositePrimaryKeyBase;
 
 /**
- * PK for PersonRoleDocument 
+ * This is a description of what this class does - jjhanso don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PersonDocumentEmploymentInfoId extends CompositePrimaryKeyBase {
+public class KimEntityEntityTypeId extends CompositePrimaryKeyBase {
 	@Id
-    @Column(name="FDOC_NBR")
-    protected String documentNumber;
-    
-    @Id
-    @Column(name = "ENTITY_EMP_ID")
-	protected String entityEmploymentId;
-		
-    
+	@Column(name = "ENT_TYP_CD")
+    protected String entityTypeCode;
+	@Id
+	@Column(name = "ENTITY_ID")
+	protected String entityId;
+	
 	/**
 	 * @return the roleId
 	 */
-	public String getEntityEmploymentId() {
-		return this.entityEmploymentId;
+	public String getEntityId() {
+		return this.entityId;
 	}
 	/**
 	 * @return the documentNumber
 	 */
-	public String getDocumentNumber() {
-		return this.documentNumber;
+	public String getEntityTypeCode() {
+		return this.entityTypeCode;
 	}
-	
 }

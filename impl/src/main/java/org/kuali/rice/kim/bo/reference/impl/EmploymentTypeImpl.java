@@ -20,6 +20,7 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.reference.EmploymentType;
 import org.kuali.rice.kim.bo.reference.dto.EmploymentTypeInfo;
@@ -37,6 +38,9 @@ public class EmploymentTypeImpl extends KimCodeBase implements EmploymentType {
 
 	private static final long serialVersionUID = 1L;
 
+	@Transient
+	private String employmentTypeCode;
+	
 	/**
 	 * @see org.kuali.rice.kim.bo.reference.EmploymentType#getEmploymentTypeCode()
 	 */

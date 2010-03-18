@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 
 import org.kuali.rice.kns.bo.CompositePrimaryKeyBase;
@@ -27,11 +28,11 @@ import org.kuali.rice.kns.bo.CompositePrimaryKeyBase;
  */
 public class RoleDocumentDelegationMemberId extends CompositePrimaryKeyBase {
 	@Id
-    //@Column(name="FDOC_NBR")
+    @Column(name="FDOC_NBR")
     protected String documentNumber;
 	
 	@Id
-	//@Column(name="DLGN_MBR_ID")
+	@Column(name="DLGN_MBR_ID")
 	protected String delegationMemberId;
 
 	/**

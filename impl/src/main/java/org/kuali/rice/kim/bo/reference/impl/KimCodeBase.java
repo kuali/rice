@@ -24,7 +24,6 @@ import javax.persistence.MappedSuperclass;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.reference.KimCode;
-import org.kuali.rice.kim.bo.reference.dto.AddressTypeInfo;
 import org.kuali.rice.kns.bo.KualiCodeBase;
 
 /**

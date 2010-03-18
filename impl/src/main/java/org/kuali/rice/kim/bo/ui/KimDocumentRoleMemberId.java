@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 
 import org.kuali.rice.kns.bo.CompositePrimaryKeyBase;
@@ -26,14 +27,17 @@ import org.kuali.rice.kns.bo.CompositePrimaryKeyBase;
  *
  */
 public class KimDocumentRoleMemberId extends CompositePrimaryKeyBase {
+	
 	@Id
-	//@Column(name="ROLE_ID")
-	protected String roleMemberId;
-	@Id
-    //@Column(name="FDOC_NBR")
+    @Column(name="FDOC_NBR")
     protected String documentNumber;
+	
+	@Id
+	@Column(name="ROLE_MBR_ID")
+	protected String roleMemberId;
+	
 	/**
-	 * @return the roleId
+	 * @return the roleMemberId
 	 */
 	public String getRoleMemberId() {
 		return this.roleMemberId;

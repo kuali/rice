@@ -358,6 +358,7 @@ public class MetadataManager {
 				// Basic Fields
 				FieldDescriptor fieldDescriptor = new FieldDescriptor();
 				fieldDescriptor.setClazz(field.getType());
+				fieldDescriptor.setTargetClazz(field.getType());
 				fieldDescriptor.setName(field.getName());
 				if (field.isAnnotationPresent(Id.class)) {
 					fieldDescriptor.setId(true);
@@ -395,7 +396,9 @@ public class MetadataManager {
 						descriptor.setTargetEntity(field.getType());
 					} else {
 						descriptor.setTargetEntity(relation.targetEntity());
+						fieldDescriptor.setTargetClazz(relation.targetEntity());
 					}
+					
 					descriptor.setCascade(relation.cascade());
 					descriptor.setFetch(relation.fetch());
 					descriptor.setMappedBy(relation.mappedBy());
@@ -431,6 +434,7 @@ public class MetadataManager {
 						descriptor.setTargetEntity((Class)((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0]);
 					} else {
 						descriptor.setTargetEntity(relation.targetEntity());
+						fieldDescriptor.setTargetClazz(relation.targetEntity());
 					}
 					descriptor.setCascade(relation.cascade());
 					descriptor.setFetch(relation.fetch());
@@ -485,6 +489,7 @@ public class MetadataManager {
 						descriptor.setTargetEntity(field.getType());
 					} else {
 						descriptor.setTargetEntity(relation.targetEntity());
+						fieldDescriptor.setTargetClazz(relation.targetEntity());
 					}
 					descriptor.setCascade(relation.cascade());
 					descriptor.setFetch(relation.fetch());
@@ -521,6 +526,7 @@ public class MetadataManager {
 						descriptor.setTargetEntity((Class)((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0]);
 					} else {
 						descriptor.setTargetEntity(relation.targetEntity());
+						fieldDescriptor.setTargetClazz(relation.targetEntity());
 					}
 					descriptor.setCascade(relation.cascade());
 					descriptor.setFetch(relation.fetch());
@@ -540,6 +546,24 @@ public class MetadataManager {
 							descriptor.setUpdateable(jc.updatable());
 							// TODO: Should we add inverse join columns?
 						} 
+					} else {
+						if (field.isAnnotationPresent(JoinColumn.class)) {
+							JoinColumn jc = field.getAnnotation(JoinColumn.class);
+							FieldDescriptor jcFkField = entityDescriptor.getFieldByColumnName(jc.name());
+							if (jcFkField != null) {
+								descriptor.addFkField(jcFkField.getName());
+							}
+							descriptor.setInsertable(jc.insertable());
+							descriptor.setUpdateable(jc.updatable());
+						}
+						if (field.isAnnotationPresent(JoinColumns.class)) {
+							JoinColumns jcs = field.getAnnotation(JoinColumns.class);
+							for (JoinColumn jc : jcs.value()) {
+								descriptor.addFkField(entityDescriptor.getFieldByColumnName(jc.name()).getName());
+								descriptor.setInsertable(jc.insertable());
+								descriptor.setUpdateable(jc.updatable());
+							} 
+						}
 					}
 					entityDescriptor.add(descriptor);						
 				}

@@ -832,8 +832,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 								docEmpInfo.setEmploymentRecordId(empInfo.getEmploymentRecordId());
 								docEmpInfo.setBaseSalaryAmount(empInfo.getBaseSalaryAmount());
 								docEmpInfo.setPrimaryDepartmentCode(empInfo.getPrimaryDepartmentCode());
-								docEmpInfo.setEmployeeStatusCode(empInfo.getEmployeeStatusCode());
-								docEmpInfo.setEmployeeTypeCode(empInfo.getEmployeeTypeCode());
+								docEmpInfo.setEmploymentStatusCode(empInfo.getEmployeeStatusCode());
+								docEmpInfo.setEmploymentTypeCode(empInfo.getEmployeeTypeCode());
 								docEmpInfo.setActive(empInfo.isActive());
 								docEmpInfo.setPrimary(empInfo.isPrimary());
 								docEmpInfo.setEntityAffiliationId(empInfo.getEntityAffiliationId());
@@ -986,8 +986,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						entityEmpInfo.setEmploymentRecordId(empInfo.getEmploymentRecordId());
 						entityEmpInfo.setBaseSalaryAmount(empInfo.getBaseSalaryAmount());
 						entityEmpInfo.setPrimaryDepartmentCode(empInfo.getPrimaryDepartmentCode());
-						entityEmpInfo.setEmployeeStatusCode(empInfo.getEmployeeStatusCode());
-						entityEmpInfo.setEmployeeTypeCode(empInfo.getEmployeeTypeCode());
+						entityEmpInfo.setEmployeeStatusCode(empInfo.getEmploymentStatusCode());
+						entityEmpInfo.setEmployeeTypeCode(empInfo.getEmploymentTypeCode());
 						entityEmpInfo.setActive(empInfo.isActive());
 						entityEmpInfo.setPrimary(empInfo.isPrimary());
 						entityEmpInfo.setEntityId(identityManagementPersonDocument.getEntityId());

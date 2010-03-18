@@ -38,6 +38,55 @@
     <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
     <class>org.kuali.rice.kns.bo.CampusImpl</class>
     <class>org.kuali.rice.kns.bo.CampusTypeImpl</class>
+     
+    <class>org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.types.impl.KimTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.types.impl.KimAttributeImpl</class>
+    <class>org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityBioDemographicsImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityCitizenshipImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityVisaImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl</class>
+    <class>org.kuali.rice.kim.bo.impl.GroupImpl</class>
+    <class>org.kuali.rice.kim.bo.group.impl.GroupMemberImpl</class>
+    <class>org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.impl.RoleImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleMemberImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimPermissionImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RolePermissionImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
         <property name="hibernate.show_sql" value="true" />
@@ -63,6 +112,55 @@
     <class>org.kuali.rice.kns.bo.SelectedObjectIds</class>
     <class>org.kuali.rice.kns.bo.CampusImpl</class>
     <class>org.kuali.rice.kns.bo.CampusTypeImpl</class>
+    
+    <class>org.kuali.rice.kim.bo.reference.impl.AddressTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.types.impl.KimTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.types.impl.KimAttributeImpl</class>
+    <class>org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityBioDemographicsImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityCitizenshipImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEthnicityImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityResidencyImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityVisaImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl</class>
+    <class>org.kuali.rice.kim.bo.impl.GroupImpl</class>
+    <class>org.kuali.rice.kim.bo.group.impl.GroupMemberImpl</class>
+    <class>org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.impl.RoleImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleMemberImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimPermissionImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RolePermissionImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl</class>
+    <class>org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl</class>
+    <class>org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
         <property name="hibernate.show_sql" value="true" />

@@ -130,8 +130,8 @@
     -->
 
     <param name="transaction.timeout" override="false">30000</param>
-    
-    <!-- 
+
+    <!--
     	See KULRICE- regarding the encryption.key property
     <param name="encryption.key" override="false">7IC64w6ksLU</param>
 
@@ -142,6 +142,7 @@
     <param name="mail.smtp.host" override="false">localhost</param>
 
     <param name="edl.config.loc" override="false">classpath:META-INF/EDLConfig.xml</param>
+    <param name="edl.style.widgets" override="false">classpath:org/kuali/rice/kew/edl/default-widgets.xml</param>
 
     <!-- KEW XML-related filesystem locations -->
     <!-- These should be overridden, but the defaults are here so they do not have to
@@ -189,7 +190,7 @@
     <param name="attachments.pending.directory" override="false">${java.io.tmpdir}/${environment}/attachments/pending</param>
 
     <param name="rice.kns.illegalBusinessObjectsForSave.applyCheck">true</param>
-    
+
     <param name="kns.editable.properties.history.size">20</param>
 
     <!-- KSB -->

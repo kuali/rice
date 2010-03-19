@@ -50,9 +50,9 @@ public class RouteDocumentMessageService implements KSBXMLService {
 	}
 	
 	public static class RouteMessageXmlElement {
-		public static Long routeHeaderId;
-		public static boolean runPostProcessor = true;
-		public static boolean shouldSearchAttributeIndex = false;
+		public Long routeHeaderId;
+		public boolean runPostProcessor = true;
+		public boolean shouldSearchAttributeIndex = false;
 		public RouteMessageXmlElement(Long routeHeaderId) {
 			this.routeHeaderId = routeHeaderId;
 		}

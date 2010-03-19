@@ -108,9 +108,14 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    text = addImport(text, "FetchType")
 	                }
 	                if (f.conversion?.toString()?.size() > 0){
-	                	logger.log "******************handling customerTypes**********************"
-	                	type_handler.handleTypes(f.conversion, annotation, text, f)
-						
+	                	logger.log "******************handling customerTypes for ${c.className}**********************"
+						text = addImportHibernate(text, "Type")
+						def annotationKey = "ANT_KEY"
+						def annotationMap = [(annotationKey): annotation];
+						type_handler.handleTypes(f.conversion, annotationMap, annotationKey , f)
+						annotation = annotationMap.get(annotationKey);
+						//text = typeMarkers.get(textKey);
+						println '****ojb type:\t' + f.conversion + '\tannotation\t' + annotation 
 	                }
 	                if (f.nullable) nullable = ", nullable=${f.nullable}"
 	                annotation += "@Column(name=\"${f.column}\"${nullable})"
@@ -141,7 +146,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 					//checking each foreign keys
 	                rd.foreignKeys.eachWithIndex {
 	                    fk, i ->
-	                    println "\n***********CLASSREFS************\t" + rd.classRef + "\treferencing field----\t" + fk.fieldRef
+	                    //println "\n***********CLASSREFS************\t" + rd.classRef + "\treferencing field----\t" + fk.fieldRef
 	                        def fkColumn
 	                        fk.fieldRef ? (fkColumn = c.fields[fk.fieldRef].column) : (fkColumn = findFieldIdRef(c.fields, fk.fieldIdRef).column)
 							if(size > 1)
@@ -499,7 +504,7 @@ def handle_pkClass_constructor(cpkClassName, cpkConstructorArgs, cpkConstructorB
 }
 
 def findReferencedColumnName(java.util.LinkedHashMap classes, String classRef, String fieldRef){
-	println "***********looking for ref column**************\t" + classRef + "\t" + fieldRef
+	//println "***********looking for ref column**************\t" + classRef + "\t" + fieldRef
 	def ret = ""
 	try{
 		classes.values().each {
@@ -514,7 +519,7 @@ def findReferencedColumnName(java.util.LinkedHashMap classes, String classRef, S
 	catch(Exception e){
 		println("exception------------" + e.getMessage())
 	}
-	println "***********got ref column**************\t" + ret
+	//println "***********got ref column**************\t" + ret
 	
 	ret
 }
@@ -527,11 +532,11 @@ def hasSuperClass(javaText){
 
 def boolean hasUnOverridingFields(javaText,  fields, un_overring_fields){
 	
-	println "***********looking for un_overriding_fields**************\t" 
+	//println "***********looking for un_overriding_fields**************\t" 
 	
 	fields.values().each{
 		f-> attName = f.name
-			println 'checking field\t' + attName
+			//println 'checking field\t' + attName
 			if(javaText.find(/(private|protected) (\w+) ${attName}/) == null)
 				un_overring_fields.put(attName, f.column)
 		}
@@ -579,8 +584,10 @@ def findBiDiredtionRelationships(classes, cls, refcls, logger ){
 		}
 	}
 	
-	if(refMappedBy)
+	if(refMappedBy){
+		//println "keys\t" + keys + "\tfkeys\t" + fkeys;
 		logger.log( "Found a bi-directional one-to-one mapping between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
+		}
 	
 //	def cdMappedBy 
 //	

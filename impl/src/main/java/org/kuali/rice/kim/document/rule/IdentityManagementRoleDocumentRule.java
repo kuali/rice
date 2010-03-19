@@ -333,7 +333,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         		if (qualifier != null && qualifier.getKimAttribute() != null && !StringUtils.isBlank(qualifier.getKimAttribute().getAttributeName())) {
     	    		final AttributeDefinition relatedDefinition = attributeDefinitions.getByAttributeName(qualifier.getKimAttribute().getAttributeName());
     	    		
-    	    		if (relatedDefinition.getUnique() != null && relatedDefinition.getUnique().booleanValue()) {
+    	    		if (relatedDefinition != null && relatedDefinition.getUnique() != null && relatedDefinition.getUnique().booleanValue()) {
     	    			uniqueAttributeIds.add(qualifier.getKimAttrDefnId()); // it's unique - add it to the Set
     	    		}
         		}

@@ -453,11 +453,12 @@ public class MetadataManager {
 							descriptor.addFkField(entityDescriptor.getFieldByColumnName(jc.name()).getName());
 							descriptor.setInsertable(jc.insertable());
 							descriptor.setUpdateable(jc.updatable());
+							descriptor.addJoinColumnDescriptor(constructJoinDescriptor(jc));
 						} 
 						for (JoinColumn jc : jt.inverseJoinColumns()) {
 							descriptor.setInsertable(jc.insertable());
 							descriptor.setUpdateable(jc.updatable());
-							// TODO: Should we add inverse join columns?
+							descriptor.addInverseJoinColumnDescriptor(constructJoinDescriptor(jc));
 						} 
 					} else {
 						if (field.isAnnotationPresent(JoinColumn.class)) {
@@ -468,6 +469,7 @@ public class MetadataManager {
 							}
 							descriptor.setInsertable(jc.insertable());
 							descriptor.setUpdateable(jc.updatable());
+							descriptor.addJoinColumnDescriptor(constructJoinDescriptor(jc));
 						}
 						if (field.isAnnotationPresent(JoinColumns.class)) {
 							JoinColumns jcs = field.getAnnotation(JoinColumns.class);
@@ -475,6 +477,7 @@ public class MetadataManager {
 								descriptor.addFkField(entityDescriptor.getFieldByColumnName(jc.name()).getName());
 								descriptor.setInsertable(jc.insertable());
 								descriptor.setUpdateable(jc.updatable());
+								descriptor.addJoinColumnDescriptor(constructJoinDescriptor(jc));
 							} 
 						}
 					}
@@ -588,6 +591,7 @@ public class MetadataManager {
 		join.setNullable(jc.nullable());
 		join.setUnique(jc.unique());
 		join.setUpdateable(jc.updatable());
+		join.setReferencedColumName(jc.referencedColumnName());
 		return join;
 	}
 	

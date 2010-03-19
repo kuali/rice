@@ -16,10 +16,13 @@
 package org.kuali.rice.kns.bo;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Comparator;
+
+import javax.persistence.Id;
 
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
@@ -115,5 +118,26 @@ public abstract class CompositePrimaryKeyBase implements Serializable {
         
         return true;
       }
+    
+    public String toString() {
+    	StringBuilder s = new StringBuilder();
+    	
+    	try {
+			for (Field field : this.getClass().getDeclaredFields()) {
+				field.setAccessible(true);
+				
+				if (field.isAnnotationPresent(Id.class)) {
+					s.append(field.getName());
+					s.append(": ");
+					s.append(field.get(this));
+					s.append(", ");
+				}
+			}
+			
+			return s.substring(0, s.length() - 2).toString();
+		} catch (Exception e) {
+			return s.toString();
+		}
+    }
     
 }

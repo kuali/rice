@@ -27,6 +27,7 @@ public class JoinColumnDescriptor implements java.io.Serializable {
 	private boolean nullable = true;
 	private boolean insertable = true;
 	private boolean updateable = true;
+	private String referencedColumName = "";
 	
 	public String getName() {
 		return this.name;
@@ -66,6 +67,20 @@ public class JoinColumnDescriptor implements java.io.Serializable {
 	
 	public void setUpdateable(boolean updateable) {
 		this.updateable = updateable;
+	}
+
+	/**
+	 * @return the referencedColumName
+	 */
+	public String getReferencedColumName() {
+		return this.referencedColumName;
+	}
+
+	/**
+	 * @param referencedColumName the referencedColumName to set
+	 */
+	public void setReferencedColumName(String referencedColumName) {
+		this.referencedColumName = referencedColumName;
 	}
 		
 }

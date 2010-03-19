@@ -29,6 +29,8 @@ public class CollectionDescriptor {
 	protected FetchType fetch = FetchType.LAZY;
 	protected String mappedBy = "";
 	protected List<String> fkFields = new ArrayList<String>();
+	protected List<JoinColumnDescriptor> joinColumnDescriptors = new ArrayList<JoinColumnDescriptor>();
+	protected java.util.List<JoinColumnDescriptor> inverseJoinColumnDescriptors = new ArrayList<JoinColumnDescriptor>();
 	protected boolean insertable;
 	protected boolean updateable;
 	
@@ -95,5 +97,23 @@ public class CollectionDescriptor {
 	public void setAttributeName(String attributeName) {
 		this.attributeName = attributeName;
 	}
+
+	/**
+	 * @return the joinColumnDescriptors
+	 */
+	public List<JoinColumnDescriptor> getJoinColumnDescriptors() {
+		return this.joinColumnDescriptors;
+	}
 	
+	public void addJoinColumnDescriptor(JoinColumnDescriptor jcd) {
+		joinColumnDescriptors.add(jcd);
+	}
+	
+	public void addInverseJoinColumnDescriptor(JoinColumnDescriptor joinColumnDescriptor) {
+		inverseJoinColumnDescriptors.add(joinColumnDescriptor);
+	}
+	
+	public List<JoinColumnDescriptor> getInverseJoinColumnDescriptors() {
+		return inverseJoinColumnDescriptors;
+	}
 }

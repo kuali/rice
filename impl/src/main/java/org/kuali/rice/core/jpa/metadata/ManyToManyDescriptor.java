@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.core.jpa.metadata;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.CascadeType;
 
 import org.apache.commons.lang.StringUtils;
@@ -30,8 +27,6 @@ public class ManyToManyDescriptor extends CollectionDescriptor implements java.i
 	private static final long serialVersionUID = 1170389265194138638L;
 
 	private String joinTableName;
-	private java.util.List<JoinColumnDescriptor> joinColumnDescriptors = new ArrayList<JoinColumnDescriptor>();
-	private java.util.List<JoinColumnDescriptor> inverseJoinColumnDescriptors = new ArrayList<JoinColumnDescriptor>();
 
 	public String getJoinTableName() {
 		return this.joinTableName;
@@ -39,14 +34,6 @@ public class ManyToManyDescriptor extends CollectionDescriptor implements java.i
 
 	public void setJoinTableName(String joinTableName) {
 		this.joinTableName = joinTableName;
-	}
-
-	public void addJoinColumnDescriptor(JoinColumnDescriptor joinColumnDescriptor) {
-		joinColumnDescriptors.add(joinColumnDescriptor);
-	}
-
-	public void addInverseJoinColumnDescriptor(JoinColumnDescriptor joinColumnDescriptor) {
-		inverseJoinColumnDescriptors.add(joinColumnDescriptor);
 	}
 
 	public String toString() {

@@ -17,7 +17,6 @@ package org.kuali.rice.kns.bo;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,7 +40,6 @@ public class CountyImpl extends PersistableBusinessObjectBase implements Inactiv
     private String countyCode;
 	@Id
     private String stateCode;
-	@Id
 	@Column(name="COUNTY_NM")
     private String countyName;
 	@Type(type="yes_no")
@@ -49,7 +47,7 @@ public class CountyImpl extends PersistableBusinessObjectBase implements Inactiv
     private boolean active;
 
 	@ManyToOne(targetEntity=org.kuali.rice.kns.bo.StateImpl.class,fetch=FetchType.EAGER)
-	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="STATE_CD",insertable=false,updatable=false)})
+	@JoinColumns({@JoinColumn(name="POSTAL_CNTRY_CD",referencedColumnName="POSTAL_CNTRY_CD",insertable=false,updatable=false),@JoinColumn(name="STATE_CD",referencedColumnName="POSTAL_STATE_CD",insertable=false,updatable=false)})
     private State state;
     
     @ManyToOne(targetEntity=org.kuali.rice.kns.bo.CountryImpl.class,fetch=FetchType.EAGER)

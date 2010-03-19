@@ -122,7 +122,8 @@ public class StandaloneInitializeListener implements ServletContextListener {
                 baseProps.setProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
             }  
             JAXBConfigImpl config = new JAXBConfigImpl(baseProps);            
-            config.parseConfig();
+            // removing this so that the defaults don't get resolved by default.  
+            //config.parseConfig();
             ConfigContext.init(config);
             
             context = new ClassPathXmlApplicationContext(bootstrapSpringBeans);

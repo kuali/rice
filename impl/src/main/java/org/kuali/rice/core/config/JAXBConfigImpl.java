@@ -165,7 +165,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     public void parseConfig() throws IOException {
 
         // these all have override set to false and come from legacy code
-        if (loadDefaults) {
+        if (loadDefaults && false) {
             fileLocs.add(CONFIG_CODED_DEFAULTS);
         }
 

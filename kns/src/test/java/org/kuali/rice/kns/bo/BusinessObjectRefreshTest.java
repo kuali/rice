@@ -16,8 +16,11 @@
 package org.kuali.rice.kns.bo;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.test.document.bo.Account;
+import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
@@ -32,42 +35,50 @@ public class BusinessObjectRefreshTest extends KNSTestCase {
 
 	@Test
 	public void testLazyRefreshField() {
-		final ParameterId knsParmId = new ParameterId("KR-NS", "All", "STRING_TO_TIMESTAMP_FORMATS", "KUALI");
-		Parameter knsParam = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Parameter.class, knsParmId);
+		final String accountNumber = "a1";
+		Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
 		
-		final Namespace namespace = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Namespace.class, "KR-NS");
-		Assert.assertEquals("Retrieved namespace codes should be equal", namespace.getNamespaceCode(), knsParam.getParameterNamespace().getNamespaceCode());
+		Assert.assertEquals("Retrieved account should have name a1", "a1", account.getName());
+		Assert.assertEquals("Retrieved account should have a account manager with user name fred", "fred", account.getAccountManager().getUserName());
 		
-		knsParam.setParameterDetailTypeCode("Batch");
-		knsParam.setParameterName("ACTIVE_FILE_TYPES");
+		account.setAmId(2L);
+		account.refreshReferenceObject("accountManager");
 		
-		final ParameterDetailTypeId batchParmDetailId = new ParameterDetailTypeId("KR-NS", "Batch");
-		Assert.assertEquals("Parameter detail type codes should be equal", batchParmDetailId.getParameterDetailTypeCode(), knsParam.getParameterDetailType().getParameterDetailTypeCode());
+		Assert.assertEquals("Account Manager should now have user name of fran", "fran", account.getAccountManager().getUserName());
 		
-		knsParam.setParameterDetailTypeCode("All");
-		knsParam.setParameterName("STRING_TO_TIMESTAMP_FORMATS");
-		//knsParam.refreshReferenceObject("parameterDetailType");
-		
-		final ParameterDetailTypeId allKnsParmDetailId = new ParameterDetailTypeId("KR-NS", "All");
-		Assert.assertEquals("Parameter detail type codes should be equal after refresh", allKnsParmDetailId.getParameterDetailTypeCode(), knsParam.getParameterDetailType().getParameterDetailTypeCode());
 	}
 	
 	@Test
 	public void testLazyRefreshWholeObject() {
-		final ParameterId knsParmId = new ParameterId("KR-NS", "All", "STRING_TO_TIMESTAMP_FORMATS", "KUALI");
-		Parameter knsParam = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Parameter.class, knsParmId);
+		final String accountNumber = "a1";
+		Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
 		
-		final Namespace namespace = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Namespace.class, "KR-NS");
-		Assert.assertEquals("Retrieved namespace codes should be equal", namespace.getNamespaceCode(), knsParam.getParameterNamespace().getNamespaceCode());
+		Assert.assertEquals("Retrieved account should have name a1", "a1", account.getName());
+		Assert.assertEquals("Retrieved account should have a account manager with user name fred", "fred", account.getAccountManager().getUserName());
 		
-		//knsParam.refresh();
+		account.setAmId(2L);
+		account.refresh();
 		
-		knsParam.setParameterDetailTypeCode("Batch");
-		knsParam.setParameterName("ACTIVE_FILE_TYPES");
+		Assert.assertEquals("Account Manager should now have user name of fran", "fran", account.getAccountManager().getUserName());
+	}
+	
+	@Ignore // until BO extensions work with JPA
+	@Test
+	public void testLazyCollectionRefresh() {
+		final Long fredManagerId = 1L;
+		AccountManager manager = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(AccountManager.class, new Long(fredManagerId));
 		
-		final ParameterDetailTypeId knsParmDetailId = new ParameterDetailTypeId("KR-NS", "Batch");
-		Assert.assertEquals("Parameter detail type code should not have been reset", "Batch", knsParmDetailId.getParameterDetailTypeCode());
-		Assert.assertEquals("Parameter detail type codes should be equal", knsParmDetailId.getParameterDetailTypeCode(), knsParam.getParameterDetailType().getParameterDetailTypeCode());
+		Assert.assertEquals("Retrieve manager should have a name 'fred'", "fred", manager.getUserName());
+		Assert.assertEquals("Manager should have one account", new Integer(1), new Integer(manager.getAccounts().size()));
+		
+		final String accountNumber = "a2";
+		Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
+
+		account.setAmId(1L);
+		account = (Account)KNSServiceLocator.getBusinessObjectService().save(account);
+		
+		manager.refreshReferenceObject("accounts");
+		Assert.assertEquals("Manager should have one account", new Integer(2), new Integer(manager.getAccounts().size()));
 	}
 	
 	@Test
@@ -78,14 +89,17 @@ public class BusinessObjectRefreshTest extends KNSTestCase {
 		final StateImplId arizonaStateId = new StateImplId("US", "AZ");
 		final State arizonaState = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(StateImpl.class, arizonaStateId);
 		
-		Assert.assertEquals("On retrieval from database, state should be Arizona", arizonaState.getPostalStateCode(), county.getState().getPostalStateCode());
+		Assert.assertEquals("On retrieval from database, state code should be AZ", arizonaState.getPostalStateCode(), county.getState().getPostalStateCode());
+		Assert.assertEquals("On retrieval from database, state name should be ARIZONA", arizonaState.getPostalStateName(), county.getState().getPostalStateName());
 		
 		county.setStateCode("CA");
 		county.setCountyCode("VENTURA");
+		county.refresh();
 		
 		final StateImplId californiaStateId = new StateImplId("US", "CA");
 		final State californiaState = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(StateImpl.class, californiaStateId);
 		
 		Assert.assertEquals("Does eager fetching automatically refresh?", californiaState.getPostalStateCode(), county.getState().getPostalStateCode());
+		Assert.assertEquals("On refresh, state name should be CALIFORNIA", californiaState.getPostalStateName(), county.getState().getPostalStateName());
 	}
 }

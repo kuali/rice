@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2008 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,34 +18,39 @@ package org.kuali.rice.kns.util;
 import javax.servlet.ServletException;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.impl.Log4JLogger;
 import org.apache.log4j.Logger;
 
 /**
  * Adapts Exception.print stack trace to print its output to a Logger.
- * 
- * 
+ *
+ *
  */
 public class ExceptionUtils {
 
     /**
      * Logs the stack trace of the given throwable to the given logger.
-     * 
+     *
      * @param logger
      * @param t
      */
     public static void logStackTrace(Logger logger, Throwable t) {
-        Log log = new Log4JLogger(logger);
-        logStackTrace(log, t);
+        logger.error(buildStackTraceString(t));
     }
 
     /**
      * Logs the stack trace of the given throwable to the given logger.
-     * 
+     *
      * @param log
      * @param t
      */
     public static void logStackTrace(Log log, Throwable t) {
+        log.error(buildStackTraceString(t));
+    }
+
+    /**
+     * This method builds a stack trace String from a Throwable
+     */
+    private static String buildStackTraceString(Throwable t) {
         StackTraceElement[] elements = t.getStackTrace();
 
         StringBuffer trace = new StringBuffer();
@@ -65,8 +70,7 @@ public class ExceptionUtils {
             trace.append(describeStackTraceElement(element));
             trace.append("\n");
         }
-
-        log.error(trace.toString());
+        return trace.toString();
     }
 
     /**
@@ -162,7 +166,7 @@ public class ExceptionUtils {
      * chain ends there. I think Tomcat's exception logging goes beyond this, to follow cause or rootCause depending on the
      * Exception's type and log each one individually instead of using Throwable.printStackTrace(). But that only helps Tomcat's log
      * file.
-     * 
+     *
      * @param t the head of the cause chain to initialize
      */
     public void initServletExceptionCauses(Throwable t) {
@@ -181,4 +185,5 @@ public class ExceptionUtils {
             t = t.getCause();
         }
     }
+
 }

@@ -362,18 +362,25 @@ public class MetadataManager {
 				fieldDescriptor.setName(field.getName());
 				if (field.isAnnotationPresent(Id.class)) {
 					fieldDescriptor.setId(true);
+					
+					if (entityDescriptor.getIdClass() != null) {
+						// pull the column from IdClass
+						try {
+							Field idClassField = entityDescriptor.getIdClass().getDeclaredField(field.getName());
+							idClassField.setAccessible(true);
+							addColumnInformationToFieldDescriptor(fieldDescriptor, idClassField);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
 				}
 				if (field.isAnnotationPresent(Column.class)) {
-					Column column = field.getAnnotation(Column.class);
-					fieldDescriptor.setColumn(column.name());
-					fieldDescriptor.setInsertable(column.insertable());
-					fieldDescriptor.setLength(column.length());
-					fieldDescriptor.setNullable(column.nullable());
-					fieldDescriptor.setPrecision(column.precision());
-					fieldDescriptor.setScale(column.scale());
-					fieldDescriptor.setUnique(column.unique());
-					fieldDescriptor.setUpdateable(column.updatable());
-				} else {
+					
+					if (!field.isAnnotationPresent(Id.class) || entityDescriptor.getIdClass() == null) {
+						// only populate if we haven't populated already
+						addColumnInformationToFieldDescriptor(fieldDescriptor, field);
+					}
+				} else if (!field.isAnnotationPresent(Id.class) || entityDescriptor.getIdClass() == null) {
 					fieldDescriptor.setColumn(field.getName());
 				}
 				if (field.isAnnotationPresent(Version.class)) {
@@ -576,6 +583,24 @@ public class MetadataManager {
 			}
 			clazz = clazz.getSuperclass();
 		} while (clazz != null && !(clazz.equals(Object.class)));
+	}
+	
+	/**
+	 * Populate a FieldDescriptor with Column annotation information
+	 * 
+	 * @param fieldDescriptor the FieldDescriptor to populate
+	 * @param field the field which has the annotation
+	 */
+	private static void addColumnInformationToFieldDescriptor(FieldDescriptor fieldDescriptor, Field field) {
+		Column column = field.getAnnotation(Column.class);
+		fieldDescriptor.setColumn(column.name());
+		fieldDescriptor.setInsertable(column.insertable());
+		fieldDescriptor.setLength(column.length());
+		fieldDescriptor.setNullable(column.nullable());
+		fieldDescriptor.setPrecision(column.precision());
+		fieldDescriptor.setScale(column.scale());
+		fieldDescriptor.setUnique(column.unique());
+		fieldDescriptor.setUpdateable(column.updatable());
 	}
 
 	private static JoinColumnDescriptor constructJoinDescriptor(JoinColumn jc) {

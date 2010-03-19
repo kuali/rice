@@ -18,7 +18,6 @@ package org.kuali.rice.kns.web.struts.action;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +28,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RedirectingActionForward;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -37,7 +35,6 @@ import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.bo.Note;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
@@ -46,11 +43,12 @@ import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.InquiryForm;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 
 /**
  * This class handles actions for inquiries of business objects.
@@ -163,9 +161,7 @@ public class KualiInquiryAction extends KualiAction {
     	}
     	
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-        if (bo == null) {
-        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-        }
+        checkBO(bo);
         
         populateSections(mapping, request, inquiryForm, bo);
         
@@ -183,9 +179,7 @@ public class KualiInquiryAction extends KualiAction {
         }
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-        if (bo == null) {
-        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-        }
+        checkBO(bo);
         
         Inquirable kualiInquirable = inquiryForm.getInquirable();
         //////////////////////////////
@@ -214,9 +208,7 @@ public class KualiInquiryAction extends KualiAction {
         }
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-        if (bo == null) {
-        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-        }
+        checkBO(bo);
         
         populateSections(mapping, request, inquiryForm, bo);
         
@@ -240,9 +232,7 @@ public class KualiInquiryAction extends KualiAction {
         }
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-        if (bo == null) {
-        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-        }
+        checkBO(bo);
         
         populateSections(mapping, request, inquiryForm, bo);
 		
@@ -262,9 +252,7 @@ public class KualiInquiryAction extends KualiAction {
         }
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-        if (bo == null) {
-        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-        }
+        checkBO(bo);
         
         populateSections(mapping, request, inquiryForm, bo);
 		
@@ -278,17 +266,21 @@ public class KualiInquiryAction extends KualiAction {
     	InquiryForm inquiryForm = (InquiryForm) form;
     	if (inquiryForm.isCanExport()) {
     		BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-    		if (bo == null) {
-            	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-    		}        
-    		BusinessObjectEntry businessObjectEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName());
-    		Class<? extends Exporter> exporterClass = businessObjectEntry.getExporterClass();
-    		if (exporterClass != null) {
-    			Exporter exporter = exporterClass.newInstance();
-        		response.setContentType(KNSConstants.XML_MIME_TYPE);
-        		response.setHeader("Content-disposition", "attachment; filename=export.xml");
-        		exporter.export(businessObjectEntry.getBusinessObjectClass(), Collections.singletonList(bo), KNSConstants.XML_FORMAT, response.getOutputStream());
-        	}
+    		checkBO(bo);
+    		if (bo != null) {
+	    		BusinessObjectEntry businessObjectEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName());
+	    		Class<? extends Exporter> exporterClass = businessObjectEntry.getExporterClass();
+	    		if (exporterClass != null) {
+	    			Exporter exporter = exporterClass.newInstance();
+	        		response.setContentType(KNSConstants.XML_MIME_TYPE);
+	        		response.setHeader("Content-disposition", "attachment; filename=export.xml");
+	        		exporter.export(businessObjectEntry.getBusinessObjectClass(), Collections.singletonList(bo), KNSConstants.XML_FORMAT, response.getOutputStream());
+	        	}
+    		} else {
+    			//show the empty section with error
+    			populateSections(mapping, request, inquiryForm, bo);
+    			return mapping.findForward(RiceConstants.MAPPING_BASIC); 
+    		}
         }
         
         return null;
@@ -322,12 +314,44 @@ public class KualiInquiryAction extends KualiAction {
     
     protected void populateSections(ActionMapping mapping, HttpServletRequest request, InquiryForm inquiryForm, BusinessObject bo) {
     	Inquirable kualiInquirable = inquiryForm.getInquirable();
-	
-        // get list of populated sections for display
-        List sections = kualiInquirable.getSections(bo);
-        inquiryForm.setSections(sections);
-        kualiInquirable.addAdditionalSections(sections, bo);
+    	
+    	if (bo != null) {
+    		// get list of populated sections for display
+    		List sections = kualiInquirable.getSections(bo);
+        	inquiryForm.setSections(sections);
+        	kualiInquirable.addAdditionalSections(sections, bo);
+    	} else {
+    		inquiryForm.setSections(getEmptySections(kualiInquirable.getTitle()));
+    	}
+
         request.setAttribute(KNSConstants.INQUIRABLE_ATTRIBUTE_NAME, kualiInquirable);
+    }
+    
+    /**
+     * Returns a section list with one empty section and one row.
+     * 
+     * @return list of sections
+     */
+    private List<Section> getEmptySections(String title) {
+    	final Row row = new Row(Collections.<Field>emptyList());
+    	
+    	final Section section = new Section(Collections.singletonList(row));
+		section.setErrorKey("*");
+		section.setSectionTitle(title != null ? title : "");
+		section.setNumberOfColumns(0);
+		
+		return Collections.singletonList(section);
+    }
+    
+    /**
+     * throws an exception if BO fails the check.
+     * @param bo the BusinessObject to check.
+     * @throws UnsupportedOperationException if BO is null & no messages have been generated.
+     */
+    private void checkBO(BusinessObject bo) {
+        if (bo == null && GlobalVariables.getMessageMap().hasNoMessages()) {
+        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
+        }
     }
     
     protected NoteService getNoteService() {

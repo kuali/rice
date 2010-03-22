@@ -166,12 +166,6 @@
 							<forkMode>once</forkMode>
 							<reportFormat>plain</reportFormat>
 							<argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
-							<systemProperties>
-								<property>
-									<name>alt.log4j.config.location</name>
-									<value>${alt.log4j.config.location}</value>
-								</property>
-							</systemProperties>
 						</configuration>
 					</plugin>
 					<plugin>

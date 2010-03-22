@@ -142,6 +142,14 @@ public class JAXBConfigImplTest {
         config.parseConfig();
     }
     
+    @Test
+    public void testCircularReference3() throws Exception{
+        JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-circular2.xml");
+        config.setLoadDefaults(false);
+        config.setProperty("environment", "test");
+        config.parseConfig();
+    }
+    
     @Ignore
     public void testPropertiesParams() throws Exception {
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");

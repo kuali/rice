@@ -164,11 +164,6 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
     public void parseConfig() throws IOException {
 
-        // these all have override set to false and come from legacy code
-        if (loadDefaults && false) {
-            fileLocs.add(CONFIG_CODED_DEFAULTS);
-        }
-
         if (fileLocs.size() > 0) {
 
             if (LOG.isInfoEnabled()) {
@@ -280,7 +275,22 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                         System.setProperty(name, value);
                         setProperty(name, value);
                     } else {
-                        setProperty(p.getName(), p.getValue());
+                    	
+                    	/*
+                    	 * myProp = dog
+                    	 * We have a case where you might want myProp = ${myProp}:someOtherStuff:${foo}
+                    	 * This would normally overwrite the existing myProp with ${myProp}:someOtherStuff:${foo}
+                    	 * but what we want is:
+                    	 * myProp = dog:someOtherStuff:${foo}
+                    	 * so that we put the existing value of myProp into the new value. Basically how path works.
+                    	 */
+                    	String value = p.getValue();
+                    	String regex = "\\$\\{"+ p.getName() +"\\}";
+                    	if(properties.containsKey(name) && value.indexOf(regex) != 0){
+                    		value = value.replaceAll("\\$\\{"+ p.getName() +"\\}", properties.getProperty(name));                    		
+                    	}                                        
+                    	
+                    	setProperty(p.getName(), value);                    	
                     }
                 }
             }
@@ -331,7 +341,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
         return value;
     }
-
+ 
     protected String parseValue(String value, Set<String> keySet) {
         String result = value;
 
@@ -349,6 +359,12 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         }
 
         return result;
+    }
+    
+    
+    protected String replaceVariable(String baseString, String name, String value){
+    	String pattern = "${"+ name +"}";    	
+    	return baseString.replaceAll(Matcher.quoteReplacement(pattern), value);
     }
 
     /**

@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
@@ -142,6 +143,12 @@ public class JAXBConfigImplTest {
         config.parseConfig();
     }
     
+    /**
+     * 		
+     * This method tests having a variable already set and then doing a circular reference.
+     * 
+     * @throws Exception
+     */
     @Test
     public void testCircularReference3() throws Exception{
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-circular2.xml");
@@ -149,6 +156,7 @@ public class JAXBConfigImplTest {
         config.setProperty("environment", "test");
         config.parseConfig();
     }
+    
     
     @Ignore
     public void testPropertiesParams() throws Exception {

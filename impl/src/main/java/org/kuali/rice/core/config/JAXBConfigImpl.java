@@ -285,9 +285,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                     	 * so that we put the existing value of myProp into the new value. Basically how path works.
                     	 */
                     	String value = p.getValue();
-                    	String regex = "\\$\\{"+ p.getName() +"\\}";
-                    	if(properties.containsKey(name) && value.indexOf(regex) != 0){
-                    		value = value.replaceAll("\\$\\{"+ p.getName() +"\\}", properties.getProperty(name));                    		
+                    	String regex = "(?:\\$\\{"+ p.getName() +"\\})";
+                    	if(properties.containsKey(name) && value.indexOf("\\$\\{"+ p.getName() +"\\}") != 0){                    		                    		
+                    		value = value.replaceAll(regex,  Matcher.quoteReplacement(properties.getProperty(name)));                    		                    		
                     	}                                        
                     	
                     	setProperty(p.getName(), value);                    	

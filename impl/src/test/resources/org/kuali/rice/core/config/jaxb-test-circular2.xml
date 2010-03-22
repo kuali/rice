@@ -1,5 +1,7 @@
 <config>
+	<param name="path">${myPath}</param>
+    <param name="path">${path};/usr/sbin/;${path}</param>
     <param name="environment">${environment}-dev-${base.dir}</param>
     <param name="base.dir">/fake</param>
-    <param name="config.location">${base.dir}-${environment}</param>
+    <param name="config.location">${base.dir}-${environment}</param>    
 </config>

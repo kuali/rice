@@ -85,7 +85,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                            cpkGetterText += "\tpublic ${temp} get${temp2}() { return ${f.name}; }\n\t"
 	                        }
 	                    }   
-						//println("*****************text \n" + cpkFieldText)
+						println("*****************text \n" + cpkFieldText)
 	                }
 	                if(f.sequenceName){
 						annotation += "@GeneratedValue(generator=\"${f.sequenceName}\")\n\t"
@@ -112,16 +112,38 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 						text = addImportHibernate(text, "Type")
 						def annotationKey = "ANT_KEY"
 						def annotationMap = [(annotationKey): annotation];
+						//todo: this function need to be changed to use return value
 						type_handler.handleTypes(f.conversion, annotationMap, annotationKey , f)
 						annotation = annotationMap.get(annotationKey);
 						//text = typeMarkers.get(textKey);
-						println '****ojb type:\t' + f.conversion + '\tannotation\t' + annotation 
+						//println '****ojb type:\t' + f.conversion + '\tannotation\t' + annotation 
 	                }
+					
+	                if (f.jdbcType?.equalsIgnoreCase("date") || f.jdbcType?.equalsIgnoreCase("timestamp")) {
+	                	annotation += "@Temporal(TemporalType.TIMESTAMP)\n\t";
+	                	text = addImport(text, "Temporal") 
+	                	text = addImport(text, "TemporalType")                    
+	                	def type_pattern = ~/((Date|Timestamp|(java\.sql\.Date)|(java\.sql\.Timestamp))(\s+))/
+						def patterns = []					
+						patterns.add(~/(private|protected)\s+(${type_pattern})${f.name}/);
+						patterns.add(~/(public|protected)(\s+)void(\s+)(set(\w+))(\s*)\((\s*)(${type_pattern})(\w+)(\s*)\)(\s+)\{\s+((this\.)*)${f.name}(\s+)\=(\s+)(\w+)(s*)\;(\s+)\}/);
+						patterns.add(~/(public|protected)(\s+)(${type_pattern})(\w+)(\s*)\((\s*)\)(\s*)\{\s*return(\s+)((this\.)*)${f.name}(\s*)\;\s+\}/);
+						
+						patterns.each(){pt->
+						try{
+							 text = setFieldToJavaUtilDate(text, f.name, type_pattern, pt)
+						}
+						catch (Exception e){
+							println('found exception\n' + e.getMessage());
+						}
+						}
+	                }
+					
 	                if (f.nullable) nullable = ", nullable=${f.nullable}"
 	                annotation += "@Column(name=\"${f.column}\"${nullable})"
 	                text = addImport(text, "Column")                    
 	                text = annotate(text, "(private|protected).*(\\b${f.name})((\\s)*|(\\s)+.*);", annotation)
-	        }
+				}
 			//handle referenced objects
 			try{
 				c.referenceDescriptors.values().each {
@@ -329,6 +351,14 @@ def addImportHibernate(javaText, importText) {
 	javaText 
 }
 
+//should use this one to replace the other 2
+def addOtherImport(javaText, importText) {
+	importText = "import ${importText};"
+	if (!javaText.contains(importText)) {
+		javaText = javaText.replaceFirst("package.*;", "\$0\n" + importText)
+	}
+	javaText 
+}
 /*
 Given a reference descriptor or a class descriptor, return a JPA fetch types.
 */
@@ -465,7 +495,6 @@ def handle_pkClass_Info(packageName, cpkClassName){
 	text
 }
 
-
 def handle_pkClass(cpkClassName, cpkFieldText, cpkGetterText, cpkConstructorArgs, cpkConstructorBody){
 	
 	def ret = """
@@ -588,25 +617,21 @@ def findBiDiredtionRelationships(classes, cls, refcls, logger ){
 		//println "keys\t" + keys + "\tfkeys\t" + fkeys;
 		logger.log( "Found a bi-directional one-to-one mapping between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
 		}
-	
-//	def cdMappedBy 
-//	
-//	rdClass.collectionDescriptors.values().each {
-//		cd -> 
-//		def cdKeys = []
-//		cd.inverseForeignKeys.each {
-//			fk ->
-//			def fkName
-//			fk.fieldRef ? (fkName = rdClass.fields[fk.fieldRef]?.name) : (fkName = findFieldIdRef(rdClass.fields, fk.fieldIdRef)?.name)
-//			cdKeys.add(fkName)
-//		}
-//		if (!keys.isEmpty() && keys.containsAll(cdKeys) && cdKeys.containsAll(keys)) {
-//			cdMappedBy = cd.name
-//		} else if (!fkeys.isEmpty() && fkeys.containsAll(cdKeys) && cdKeys.containsAll(fkeys)) {
-//			cdMappedBy = cd.name	                                
-//		}
-//	}
-//	
-//	if(cdMappedBy)
-//	   logger.log('*********************it is a bi many2one**************');
 }
+
+def setFieldToJavaUtilDate(String text, String name, type_pattern, field_pattern) throws Exception{
+	
+		def this_field = text.find(field_pattern);
+	
+		println '*********found java.sql.Date\t' + this_field
+	
+		this_field = this_field.replaceFirst(type_pattern, 'java.util.Date ');
+	
+		println '*********repalcing text with \t' + this_field
+	
+		text = text.replaceFirst(field_pattern, this_field);
+		
+		text
+	}
+
+	

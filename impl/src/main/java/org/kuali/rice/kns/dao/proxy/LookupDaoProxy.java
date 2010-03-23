@@ -36,7 +36,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class LookupDaoProxy implements LookupDao {
-//	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDaoProxy.class);
     
 	private LookupDao lookupDaoJpa;
 	private LookupDao lookupDaoOjb;
@@ -72,6 +71,7 @@ public class LookupDaoProxy implements LookupDao {
                         if (entityManager != null) {
                         	classSpecificLookupDaoJpa.setEntityManager(entityManager);
                         	classSpecificLookupDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                        	classSpecificLookupDaoJpa.setDateTimeService(KNSServiceLocator.getDateTimeService());
                             lookupDaoValues.put(dataSourceName, classSpecificLookupDaoJpa);
                             return classSpecificLookupDaoJpa;
                         } else {
@@ -83,6 +83,8 @@ public class LookupDaoProxy implements LookupDao {
                         LookupDaoOjb classSpecificLookupDaoOjb = new LookupDaoOjb();
                         classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
                         classSpecificLookupDaoOjb.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                        classSpecificLookupDaoOjb.setDateTimeService(KNSServiceLocator.getDateTimeService());
+                        classSpecificLookupDaoOjb.setBusinessObjectDictionaryService(KNSServiceLocator.getBusinessObjectDictionaryService());
                         lookupDaoValues.put(dataSourceName, classSpecificLookupDaoOjb);
                         return classSpecificLookupDaoOjb;
                     }

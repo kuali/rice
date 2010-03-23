@@ -26,6 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.PagingBannerUtils;
 
 /**
  * Form to handle multiple value lookups 
@@ -113,35 +114,16 @@ public class MultipleValueLookupForm extends LookupForm {
         }
         
         if (KNSConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD.equals(getMethodToCall())) {
-            // look for the page number to switch to
-            setSwitchToPageNumber(-1);
-            
-            // the param we're looking for looks like: methodToCall.switchToPage.1.x , where 1 is the page nbr
-            String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD + ".";
-            for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
-                String parameterName = (String) i.nextElement();
-                if (parameterName.startsWith(paramPrefix) && parameterName.endsWith(".x")) {
-                    String switchToPageNumberStr = StringUtils.substringBetween(parameterName, paramPrefix, ".");
-                    setSwitchToPageNumber(Integer.parseInt(switchToPageNumberStr));
-                }
-            }
+            final String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD + ".";
+        	setSwitchToPageNumber(PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
             if (getSwitchToPageNumber() == -1) {
                 throw new RuntimeException("Couldn't find page number");
             }
         }
         
         if (KNSConstants.TableRenderConstants.SORT_METHOD.equals(getMethodToCall())) {
-            setColumnToSortIndex(-1);
-            
-            // the param we're looking for looks like: methodToCall.sort.1.x , where 1 is the column to sort on
-            String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SORT_METHOD + ".";
-            for (Enumeration i = request.getParameterNames(); i.hasMoreElements();) {
-                String parameterName = (String) i.nextElement();
-                if (parameterName.startsWith(paramPrefix) && parameterName.endsWith(".x")) {
-                    String columnToSortStr = StringUtils.substringBetween(parameterName, paramPrefix, ".");
-                    setColumnToSortIndex(Integer.parseInt(columnToSortStr));
-                }
-            }
+            final String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SORT_METHOD + ".";
+            setColumnToSortIndex(PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
             if (getColumnToSortIndex() == -1) {
                 throw new RuntimeException("Couldn't find column to sort");
             }
@@ -156,6 +138,8 @@ public class MultipleValueLookupForm extends LookupForm {
             setPrimaryKeyFieldLabels(getLookupable().getPrimaryKeyFieldLabels());
         }
     }
+    
+
     
     /**
      * This method converts the composite object IDs into a String

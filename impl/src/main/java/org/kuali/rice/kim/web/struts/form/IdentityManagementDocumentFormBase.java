@@ -16,7 +16,6 @@
 package org.kuali.rice.kim.web.struts.form;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +27,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.PagingBannerUtils;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
 import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 
@@ -62,40 +62,12 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
         memberTableMetadata = new KualiTableRenderFormMetadata();
 
         if (KNSConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD.equals(getMethodToCall())) {
-            // look for the page number to switch to
-            memberTableMetadata.setSwitchToPageNumber(-1);
-
-            // the param we're looking for looks like: methodToCall.switchToPage.1.x , where 1 is the page nbr
-            String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD + ".";
-            for (Enumeration<String> i = request.getParameterNames(); i.hasMoreElements();) {
-                String parameterName = i.nextElement();
-                if (parameterName.startsWith(paramPrefix) && parameterName.endsWith(".x")) {
-                    String switchToPageNumberStr = StringUtils.substringBetween(parameterName, paramPrefix, ".");
-                    memberTableMetadata.setSwitchToPageNumber(Integer.parseInt(switchToPageNumberStr));
-                }
-            }
+            final String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SWITCH_TO_PAGE_METHOD + ".";
+            memberTableMetadata.setSwitchToPageNumber(PagingBannerUtils.getNumbericalValueAfterPrefix(paramPrefix, request.getParameterNames()));
             if (memberTableMetadata.getSwitchToPageNumber() == -1) {
                 throw new RuntimeException("Couldn't find page number");
             }
         }
-
-//        if (KNSConstants.TableRenderConstants.SORT_METHOD.equals(getMethodToCall())) {
-//            memberTableMetadata.setColumnToSortIndex(-1);
-//
-//            // the param we're looking for looks like: methodToCall.sort.1.x , where 1 is the column to sort on
-//            String paramPrefix = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TableRenderConstants.SORT_METHOD + ".";
-//            for (Enumeration<String> i = request.getParameterNames(); i.hasMoreElements();) {
-//                String parameterName = i.nextElement();
-//                if (parameterName.startsWith(paramPrefix) && parameterName.endsWith(".x")) {
-//                    String columnToSortStr = StringUtils.substringBetween(parameterName, paramPrefix, ".");
-//                    memberTableMetadata.setColumnToSortIndex(Integer.parseInt(columnToSortStr));
-//                }
-//            }
-//            if (memberTableMetadata.getColumnToSortIndex() == -1) {
-//                throw new RuntimeException("Couldn't find column to sort");
-//            }
-//        }
-
     }
     
     /**

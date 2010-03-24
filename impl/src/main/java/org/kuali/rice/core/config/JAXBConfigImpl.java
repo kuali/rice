@@ -65,8 +65,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
     // compile pattern for regex once
     private final Pattern pattern = Pattern.compile(PLACEHOLDER_REGEX);
-
-    private boolean loadDefaults = true;
+    
     private boolean runtimeResolution = false;
     private boolean systemOverride = false;
     
@@ -274,9 +273,17 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                     	 * so that we put the existing value of myProp into the new value. Basically how path works.
                     	 */
                     	String value = p.getValue();
-                    	String regex = "(?:\\$\\{"+ p.getName() +"\\})";
-                    	if(properties.containsKey(name) && value.indexOf("\\$\\{"+ p.getName() +"\\}") != 0){                    		                    		
-                    		value = value.replaceAll(regex,  Matcher.quoteReplacement(properties.getProperty(name)));                    		                    		
+                    	String regex = "(?:\\$\\{"+ name +"\\})";
+                    	if((properties.containsKey(name)  || System.getProperties().containsKey(name))
+                    			&& value.indexOf("\\$\\{"+ name +"\\}") != 0){                    		                    		
+                    		// This is a special in-line replacement that doesn't call the resolve so system properties
+                    		// haven't been set yet.  Because of this, overwrite any existing value in properties 
+                    		// with the system var, if it exists
+                    		String replacement = properties.getProperty(name);
+                    		if(System.getProperties().containsKey(name)){
+                    			replacement = System.getProperty(name);
+                    		}
+                    		value = value.replaceAll(regex,  Matcher.quoteReplacement(replacement));                    		                    		
                     	}                                        
                     	
                     	setProperty(p.getName(), value);                    	
@@ -391,23 +398,6 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             num = from + RANDOM.nextInt((to - from) + 1);
         }
         return num;
-    }
-
-    public boolean isLoadDefaults() {
-        return loadDefaults;
-    }
-
-    /**
-     * If set to true then default properties taken for the old BaseConfig will
-     * be loaded.  These properties are datasource/ojb related and located in
-     * classpath:org/kuali/rice/core/config-coded-defaults.xml
-     * 
-     * The default is true.
-     * 
-     * @param loadDefaults
-     */
-    public void setLoadDefaults(boolean loadDefaults) {
-        this.loadDefaults = loadDefaults;
     }
     
     public boolean isSystemOverride() {

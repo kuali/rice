@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-import java.util.regex.Matcher;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
@@ -48,7 +47,7 @@ public class JAXBConfigImplTest {
     public void testBasicFunctionality() throws Exception {
         System.setProperty("some.system.property", "sys-value");
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
-        config.setLoadDefaults(false);
+        
         config.parseConfig();
 
         doBasicAssertions(config);
@@ -58,7 +57,7 @@ public class JAXBConfigImplTest {
     public void testRuntimeBasicFunctionality() throws Exception {
         System.setProperty("some.system.property", "sys-value");
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
-        config.setLoadDefaults(false);
+        
         config.setRunitmeResolution(true);
         config.parseConfig();
 
@@ -100,7 +99,7 @@ public class JAXBConfigImplTest {
         System.setProperty("a", "3");
 
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
-        config.setLoadDefaults(false);
+        
         config.setSystemOverride(true);
         config.parseConfig();
         assertEquals("3", config.getProperty("b"));
@@ -113,7 +112,7 @@ public class JAXBConfigImplTest {
         files.add("classpath:org/kuali/rice/core/config/jaxb-test-override.xml");
 
         JAXBConfigImpl config = new JAXBConfigImpl(files);
-        config.setLoadDefaults(false);
+        
         config.parseConfig();
         assertEquals("mysql-user", config.getProperty("username"));
     }
@@ -124,7 +123,7 @@ public class JAXBConfigImplTest {
         files.add("classpath:org/kuali/rice/core/config/jaxb-test-import-config.xml");
 
         JAXBConfigImpl config = new JAXBConfigImpl(files);
-        config.setLoadDefaults(false);
+        
         config.parseConfig();
         assertEquals("mysql-user", config.getProperty("username"));
     }
@@ -132,14 +131,14 @@ public class JAXBConfigImplTest {
     @Test(expected = ConfigurationException.class)
     public void testCircularReference() throws Exception {
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-circular.xml");
-        config.setLoadDefaults(false);
+        
         config.parseConfig();
     }
     
     @Test(expected = ConfigurationException.class)
     public void testCircularReference2() throws Exception {
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-circular2.xml");
-        config.setLoadDefaults(false);
+        
         config.parseConfig();
     }
     
@@ -152,8 +151,13 @@ public class JAXBConfigImplTest {
     @Test
     public void testCircularReference3() throws Exception{
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-circular2.xml");
-        config.setLoadDefaults(false);
-        config.setProperty("environment", "test");
+        // The next line tests 2 things. 1. the inline replace, but with a system var
+        System.setProperty("environment", "test");
+        config.parseConfig();
+        
+        // run the test again, but this time use a standard config var.
+        config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-circular2.xml");   
+        config.putProperty("environment", "test");
         config.parseConfig();
     }
     
@@ -161,7 +165,7 @@ public class JAXBConfigImplTest {
     @Ignore
     public void testPropertiesParams() throws Exception {
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
-        config.setLoadDefaults(false);
+        
         config.parseConfig();
         ConfigContext.init(config);
         

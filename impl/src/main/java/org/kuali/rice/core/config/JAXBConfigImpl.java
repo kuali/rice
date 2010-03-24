@@ -3,6 +3,7 @@ package org.kuali.rice.core.config;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -32,8 +33,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.helpers.XMLFilterImpl;
-
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * This implementation of the Config interface uses JAXB to parse the config file and
@@ -70,37 +69,28 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     private boolean loadDefaults = true;
     private boolean runtimeResolution = false;
     private boolean systemOverride = false;
-
-    
-    private String callingClass = null;
     
     public JAXBConfigImpl(){}
     
     
     public JAXBConfigImpl(String fileLoc) {
-    
-    	callingClass = Thread.currentThread().getStackTrace()[1].getClassName();
         this.fileLocs.add(fileLoc);
     }
 
     public JAXBConfigImpl(List<String> fileLocs) {
-    	callingClass =Thread.currentThread().getStackTrace()[1].getClassName();
         this.fileLocs.addAll(fileLocs);
     }
 
-    public JAXBConfigImpl(Properties properties) {
-    	callingClass = Thread.currentThread().getStackTrace()[1].getClassName();    	    	
+    public JAXBConfigImpl(Properties properties) {    	    	
     	this.properties.putAll(properties);
     }
     
     public JAXBConfigImpl(String fileLoc, Properties properties) {
-    	callingClass = Thread.currentThread().getStackTrace()[1].getClassName();
         this.fileLocs.add(fileLoc);        
         this.properties.putAll(properties);
     }
 
     public JAXBConfigImpl(List<String> fileLocs, Properties properties) {
-    	callingClass = Thread.currentThread().getStackTrace()[1].getClassName();
         this.fileLocs.addAll(fileLocs);        
         this.properties.putAll(properties);
     }
@@ -111,7 +101,6 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
     public Map<String, Object> getObjects() {
     	return Collections.unmodifiableMap(objects);
-        //return objects;
     }
 
     public Properties getProperties() {

@@ -35,6 +35,16 @@ public class CollectionUtils {
 	/**
 	 * Creates an Iterable view of a Iterator.  This allows Iterators to be used in a foreach loop.
 	 * 
+	 * <pre>
+	 * {@code
+	 *   Iterator<String> i ...
+	 * 
+	 *   for(String s : CollectionUtils.toIterable(i)) [
+	 *     System.out.println("i love for each " + s);	
+	 *   }
+	 * }
+	 * </pre>
+	 * 
 	 * @param <T> the type of the Iterable
 	 * @param i the iterator to wrap
 	 * @return the iterable
@@ -45,6 +55,16 @@ public class CollectionUtils {
 	
 	/**
 	 * Creates an Iterable view of a Enumeration. This allows Enumerations to be used in a foreach loop.
+	 * 
+	 * <pre>
+	 * {@code
+	 *   Enumeration<String> e ...
+	 * 
+	 *   for(String s : CollectionUtils.toIterable(e)) [
+	 *     System.out.println("i love for each " + s);	
+	 *   }
+	 * }
+	 * </pre>
 	 * 
 	 * @param <T> the type of the Iterable
 	 * @param e the enumeration to wrap

@@ -50,6 +50,9 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	        classAnnotation += "@Entity\n@Table(name=\"${c.tableName}\")"
 			
 			def un_overring_fields = [:];
+			//todo: need find out how to log this
+			//fields with obj_id, vern_num, anonymous are not counted 
+			//UnOverridingFields function needs to check them and unlog them...
 			if(hasSuperClass(javaFile.text) != null ){
 				if(hasUnOverridingFields(javaFile.text, c.fields, un_overring_fields)){
 					//classAnnotation += "\n//Please check Super classes for AttributeOverriding"
@@ -85,7 +88,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                            cpkGetterText += "\tpublic ${temp} get${temp2}() { return ${f.name}; }\n\t"
 	                        }
 	                    }   
-						println("*****************text \n" + cpkFieldText)
+						//println("*****************text \n" + cpkFieldText)
 	                }
 	                if(f.sequenceName){
 						annotation += "@GeneratedValue(generator=\"${f.sequenceName}\")\n\t"
@@ -414,6 +417,9 @@ def determineOneOrManyToOne(classes, parent, rd, logger) {
             }
     }                
     if (!anonymous) {    
+    	//ret = "@ManyToOne"
+		//logger.log "Found a many-to-one between [${parent.className}] and [${c.className}]"
+		//println 'Found a many-to-one between ' + parent.className + '\t' + c.className
         c.collectionDescriptors.values().each {
             cd ->
                 def keys = []
@@ -430,8 +436,16 @@ def determineOneOrManyToOne(classes, parent, rd, logger) {
                         fk.fieldRef ? (fkName = parent.fields[fk.fieldRef].name) : (fkName = findFieldIdRef(parent.fields, fk.fieldIdRef).name)
                         rdKeys.add(fkName)
                 }                
-                if (keys.containsAll(rdKeys) && rdKeys.containsAll(keys)) ret = "@ManyToOne"
-        }    
+                if (keys.containsAll(rdKeys) && rdKeys.containsAll(keys)) {
+					ret = "@ManyToOne"
+					//println 'Found a many-to-one between ' + parent.className + '\t' + c.className
+					logger.log "Found a many-to-one between [${parent.className}] and [${c.className}]"
+                }
+//			    else{
+//					ret = "@ManyToOne"
+//			    	println 'Found a uni-directional many-to-one between ' + parent.className + '\t' + c.className
+//			    }   
+			} 
     }
     ret
 }

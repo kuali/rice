@@ -1,10 +1,13 @@
 def generatePersistenceXML(classes, persistenceUnitName, persistenceXmlFilename, path) {
 
 	def classesXml = ""
+	def classesProcessed = 0
 	classes.values().each {
 		c ->     
 		classesXml += "    <class>${c.className}</class>\n"
+		classesProcessed++;
 	}
+	println 'Persistence script processed\t' + classesProcessed + '\tclasses'
 	
 	def persistXml = """<?xml version="1.0" encoding="UTF-8"?>
 			

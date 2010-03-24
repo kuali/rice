@@ -5,13 +5,16 @@ def generateMySQLSequence(classes, schemaName, path, file1, file2){
 	def scriptText = ""
 	def ormText = ""
 	def conversion_util = new ConversionUtils()
-
+	
+	def seqProcessed = 0;
+	def ormEntry = 0;
+	
 	  classes.values().each {
 	      c ->     
 	          c.fields.values().each {
 	              f ->
 	                  if (f.autoincrement && !sequences.contains(f.sequenceName)) {
-	
+	                	  seqProcessed++
 	 scriptText += """CREATE TABLE ${f.sequenceName} (
 		a INT NOT NULL AUTO_INCREMENT,
 		PRIMARY KEY (a)
@@ -21,6 +24,7 @@ def generateMySQLSequence(classes, schemaName, path, file1, file2){
 	                      sequences.add(f.sequenceName)
 	                  }
 	                  if (f.autoincrement) {
+						ormEntry++;
 	                      def name = c.className[c.className.lastIndexOf('.')+1 .. -1]
 	orm += """    <entity class=\"${c.className}\" name=\"${name}\">
 	      <attributes>
@@ -35,6 +39,7 @@ def generateMySQLSequence(classes, schemaName, path, file1, file2){
 	          }
 	  }
 	
+	println 'MySql script processed\t' + seqProcessed + '\tsequence'
 	conversion_util.generateFile(path + file1,   scriptText);
 	
 	def orm_text = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
@@ -47,5 +52,6 @@ def generateMySQLSequence(classes, schemaName, path, file1, file2){
 		${orm}</entity-mappings>
 		"""
 	//println (orm_text)
+	println 'MySql script processed\t' + ormEntry + '\tormEntries'
 	conversion_util.generateFile(path + file2,  orm_text);
 }

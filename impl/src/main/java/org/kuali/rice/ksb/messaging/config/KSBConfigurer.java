@@ -111,7 +111,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 		configureScheduler(currentConfig);
 		configurePlatformTransactionManager(currentConfig);
 		if (getServiceServletUrl() != null) {
-			currentConfig.overrideProperty("http.service.url", getServiceServletUrl());
+			currentConfig.putProperty("http.service.url", getServiceServletUrl());
 		}
 		configureAlternateEndpoints(currentConfig);
 		return currentConfig;
@@ -233,7 +233,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 		// configuration
 		if (!StringUtils.isEmpty(this.serviceServletUrl)) {
 			config.putObject(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
-			config.overrideProperty(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
+			config.putProperty(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
 		}
 	}
 

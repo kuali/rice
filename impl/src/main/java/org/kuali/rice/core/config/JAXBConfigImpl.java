@@ -115,26 +115,24 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         return properties.getProperty(key);
     }
 
-    public void overrideProperty(String name, String value) {
-        
-        if(!runtimeResolution) {
-            HashSet<String> keySet = new HashSet<String>();
-            keySet.add(name);
-            value = parseValue(value, keySet);
-        }
-        
-        setProperty(name, value);
+    public void overrideProperty(String name, String value) {        
+        this.putProperty(name, value);
     }
    
     /**
      * 
-     * This overridden method just called the "override property" method. 
-     * They do the same thing, but override was in the API first, but didn't 
+     * This overrided the property. Takes the place of the now depricated overrideProperty
      * 
      * @see org.kuali.rice.core.config.Config#putProperty(java.lang.String, java.lang.Object)
      */
 	public void putProperty(String key, Object value) {
-		this.overrideProperty(key, value.toString());
+		if(!runtimeResolution) {
+            HashSet<String> keySet = new HashSet<String>();
+            keySet.add(key);
+            value = parseValue(value.toString(), keySet);
+        }
+        
+        setProperty(key, value.toString());		
 	}
 
 	public void putProperties(Properties properties) {

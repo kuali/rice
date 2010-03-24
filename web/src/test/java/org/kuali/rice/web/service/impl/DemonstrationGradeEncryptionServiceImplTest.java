@@ -95,7 +95,7 @@ public class DemonstrationGradeEncryptionServiceImplTest extends ServerTestBase 
             config = new JAXBConfigImpl();
             ConfigContext.init(config);
         }
-        config.overrideProperty("encryption.key", key);
+        config.putProperty("encryption.key", key);
 
         final EncryptionService service = new DemonstrationGradeEncryptionServiceImpl();
         List<Thread> threads = new ArrayList<Thread>();
@@ -141,7 +141,7 @@ public class DemonstrationGradeEncryptionServiceImplTest extends ServerTestBase 
             config = new JAXBConfigImpl();
             ConfigContext.init(config);
         }
-        config.overrideProperty("encryption.key", key);
+        config.putProperty("encryption.key", key);
         List<Thread> threads = new ArrayList<Thread>();
         failed = false;
         for (int i = 0; i < 10; i++) {

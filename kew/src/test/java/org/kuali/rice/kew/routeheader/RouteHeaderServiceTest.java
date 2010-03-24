@@ -123,7 +123,7 @@ public class RouteHeaderServiceTest extends KEWTestCase {
         assertTrue("Locker thread should have completed.", locker.isCompleted());
 
         // now configure a lock timeout for 2 seconds
-        ConfigContext.getCurrentContextConfig().overrideProperty(Config.DOCUMENT_LOCK_TIMEOUT, "2");
+        ConfigContext.getCurrentContextConfig().putProperty(Config.DOCUMENT_LOCK_TIMEOUT, "2");
         synchronized (lock) {
             locker = new Locker(documentId);
             locker.start();

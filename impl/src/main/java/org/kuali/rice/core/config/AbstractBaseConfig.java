@@ -176,7 +176,7 @@ public abstract class AbstractBaseConfig implements Config {
             refreshRate = new Integer(ConfigContext.getCurrentContextConfig().getProperty(Config.REFRESH_RATE));
         } catch (NumberFormatException nfe) {
             LOG.error("Couldn't parse property " + Config.REFRESH_RATE + " to set bus refresh rate. Defaulting to 30 seconds.");
-            ConfigContext.getCurrentContextConfig().overrideProperty(Config.REFRESH_RATE, "30");
+            ConfigContext.getCurrentContextConfig().putProperty(Config.REFRESH_RATE, "30");
             return 30;
         }
         return refreshRate;

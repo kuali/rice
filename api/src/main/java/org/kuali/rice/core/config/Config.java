@@ -166,6 +166,7 @@ public interface Config {
 	 * Programmatically override or place a setting in the config properties
 	 * @param name
 	 * @param value
+	 * @deprecated use the putProperty method instead
 	 */
 	public void overrideProperty(String name, String value);
 

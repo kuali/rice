@@ -63,7 +63,7 @@ public class JAXBConfigImplTest {
 
         doBasicAssertions(config);
         
-        config.overrideProperty("db", "mysql");
+        config.putProperty("db", "mysql");
         
         assertEquals("mysql-user", config.getProperty("username"));
         assertEquals("mysql-user+mysql", config.getProperty("multi"));

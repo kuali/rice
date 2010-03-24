@@ -42,17 +42,17 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 	 */
 	@Override
 	public void tearDown() throws Exception {
-        ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "false");
-        ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "false");
+        ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "false");
+        ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "false");
 	    super.tearDown();
 	}
 
 	@Test public void testDailyEmails() throws Exception {
 		// fire daily every 2 seconds
-		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION, "0/2 * * * * ?");
+		ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION, "0/2 * * * * ?");
 		// turn daily on and weekly off
-		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "true");
-		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "false");
+		ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "true");
+		ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "false");
 
 		String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
 		String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
@@ -88,7 +88,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		emailReminderLifecycle.stop();
 
 		// setting cron to empty so job will cease
-		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION, DEFAULT_EMAIL_CRON_DAILY);
+		ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.DAILY_EMAIL_CRON_EXPRESSION, DEFAULT_EMAIL_CRON_DAILY);
 
 		// try restarting to verify rescheduling of tasks
 		emailReminderLifecycle.start();
@@ -97,10 +97,10 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 
 	@Test public void testWeeklyEmails() throws Exception {
 		// fire daily every 2 seconds
-		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION, "0/2 * * * * ?");
+		ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION, "0/2 * * * * ?");
 		// turn weekly on and daily off
-		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "true");
-		ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "false");
+		ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.WEEKLY_EMAIL_ACTIVE, "true");
+		ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.DAILY_EMAIL_ACTIVE, "false");
 
 		String ewestfalPrincipalId = getPrincipalIdForName("ewestfal");
 		String rkirkendPrincipalId = getPrincipalIdForName("rkirkend");
@@ -136,7 +136,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 		emailReminderLifecycle.stop();
 
         // setting cron to empty so job will cease
-        ConfigContext.getCurrentContextConfig().overrideProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION, DEFAULT_EMAIL_CRON_WEEKLY);
+        ConfigContext.getCurrentContextConfig().putProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION, DEFAULT_EMAIL_CRON_WEEKLY);
 
 		// try restarting to verify rescheduling of tasks
 		emailReminderLifecycle.start();

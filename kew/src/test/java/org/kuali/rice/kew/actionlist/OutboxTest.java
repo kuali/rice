@@ -231,7 +231,7 @@ public class OutboxTest extends KEWTestCase {
         Preferences prefs = KEWServiceLocator.getPreferencesService().getPreferences(user1PrincipalId);
         assertTrue("By default the user's pref should be outbox on", prefs.isUsingOutbox());
 
-        ConfigContext.getCurrentContextConfig().overrideProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON, "false");
+        ConfigContext.getCurrentContextConfig().putProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON, "false");
         final String natjohnsPrincipalId = getPrincipalIdForName("natjohns");
         prefs = KEWServiceLocator.getPreferencesService().getPreferences(natjohnsPrincipalId);
         assertFalse("The user's pref should be outbox off", prefs.isUsingOutbox());

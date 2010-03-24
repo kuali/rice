@@ -43,7 +43,7 @@ public class DefaultMessageExceptionHandlerTest extends KSBTestCase {
     }
     
     private void setMaxRetries(String maxRetries) {
-    	ConfigContext.getCurrentContextConfig().overrideProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY, maxRetries);
+    	ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY, maxRetries);
     }
     
     @Test public void testGetGlobalMaxRetryAttempts() throws Exception {

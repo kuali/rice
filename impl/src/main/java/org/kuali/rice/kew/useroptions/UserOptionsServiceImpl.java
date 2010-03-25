@@ -22,17 +22,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.Map.Entry;
 
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.annotation.Transactional;
 
-
 @Transactional
 public class UserOptionsServiceImpl implements UserOptionsService {
 
     private UserOptionsDAO userOptionsDAO;
+    private Random random = new Random();
 
     private static final Properties defaultProperties = new Properties();
 
@@ -118,6 +119,9 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     }
 
     public void saveRefreshUserOption(String principalId) {
+        if (random.nextInt(10) == 0) { // 10% chance of clearing out other RELOAD_ACTION_LIST entries first
+            getUserOptionsDAO().deleteByUserQualified(principalId, KEWConstants.RELOAD_ACTION_LIST + "%");
+        }
         save(principalId, KEWConstants.RELOAD_ACTION_LIST + new Date().getTime() + getNewOptionIdForActionList(), "true");
     }
 
@@ -128,6 +132,5 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     public void setUserOptionsDAO(UserOptionsDAO optionsDAO) {
         userOptionsDAO = optionsDAO;
     }
-
 
 }

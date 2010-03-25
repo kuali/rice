@@ -26,6 +26,8 @@ import java.util.Map;
  */
 public class KimConstants {
 
+	public static final String KIM_MODULE_NAMESPACE = "KIM";
+	
 	public static final String NAMESPACE_CODE = "KR-IDM";
 	public static final String KIM_TYPE_DEFAULT_NAMESPACE = "KUALI";
 	public static final String KIM_TYPE_DEFAULT_NAME = "Default";

@@ -101,6 +101,7 @@ public class KSBConfigurer extends ModuleConfigurer {
         setHasWebInterface(true);
         VALID_RUN_MODES.remove(EMBEDDED_RUN_MODE);
         VALID_RUN_MODES.remove( REMOTE_RUN_MODE );
+        VALID_RUN_MODES.remove( THIN_RUN_MODE );
     }
 	
 	public Config loadConfig(Config parentConfig) throws Exception {

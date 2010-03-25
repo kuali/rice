@@ -19,6 +19,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * Service locator for KIM.
@@ -64,7 +65,7 @@ public final class KIMServiceLocator {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}
-		return GlobalResourceLoader.getResourceLoader().getService(new QName(serviceName));
+		return GlobalResourceLoader.getResourceLoader().getService(new QName(KimConstants.KIM_MODULE_NAMESPACE, serviceName));
 	}
 
     public static IdentityManagementService getIdentityManagementService() {

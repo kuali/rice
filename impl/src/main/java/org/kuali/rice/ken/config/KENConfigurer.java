@@ -25,6 +25,7 @@ public class KENConfigurer extends ModuleConfigurer {
     public KENConfigurer() {
         super();
         setModuleName( "KEN" );
+        VALID_RUN_MODES.remove( THIN_RUN_MODE );
     }
 
 }

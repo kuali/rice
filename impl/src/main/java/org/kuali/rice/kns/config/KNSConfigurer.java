@@ -45,8 +45,9 @@ public class KNSConfigurer extends ModuleConfigurer {
 	    super();
 	    setModuleName( "KR" );
 	    setHasWebInterface(true);
-	    // KNS never runs in a remote mode
+	    // KNS never runs in a remote or thin mode
 	    VALID_RUN_MODES.remove( REMOTE_RUN_MODE );
+	    VALID_RUN_MODES.remove( THIN_RUN_MODE );
     }
 
     public Config loadConfig(Config parentConfig) throws Exception {

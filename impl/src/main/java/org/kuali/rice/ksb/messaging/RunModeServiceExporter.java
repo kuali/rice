@@ -42,6 +42,7 @@ public class RunModeServiceExporter extends PropertyConditionalKSBExporter {
     private String validRunMode;
     private static final List<String> runModeHierarchy = new ArrayList<String>();
     static {
+    	runModeHierarchy.add(ModuleConfigurer.THIN_RUN_MODE);
     	runModeHierarchy.add(ModuleConfigurer.REMOTE_RUN_MODE);
     	runModeHierarchy.add(ModuleConfigurer.EMBEDDED_RUN_MODE);
     	runModeHierarchy.add(ModuleConfigurer.LOCAL_RUN_MODE);

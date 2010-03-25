@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.xml.namespace.QName;
+
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -175,7 +177,8 @@ public class WorkflowDocument implements java.io.Serializable {
      * Retrieves the WorkflowUtility proxy from the locator.  The locator will cache this for us.
      */
     private WorkflowUtility getWorkflowUtility() throws WorkflowException {
-        WorkflowUtility workflowUtility = (WorkflowUtility)GlobalResourceLoader.getService(KEWConstants.WORKFLOW_UTILITY_SERVICE);
+        WorkflowUtility workflowUtility = 
+        	(WorkflowUtility)GlobalResourceLoader.getService(new QName(KEWConstants.KEW_MODULE_NAMESPACE, KEWConstants.WORKFLOW_UTILITY_SERVICE));
     	if (workflowUtility == null) {
     		throw new WorkflowException("Could not locate the WorkflowUtility service.  Please ensure that KEW client is configured properly!");
     	}
@@ -187,7 +190,8 @@ public class WorkflowDocument implements java.io.Serializable {
      * Retrieves the WorkflowDocumentActions proxy from the locator.  The locator will cache this for us.
      */
     private WorkflowDocumentActions getWorkflowDocumentActions() throws WorkflowException {
-    	WorkflowDocumentActions workflowDocumentActions = (WorkflowDocumentActions)GlobalResourceLoader.getService(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
+    	WorkflowDocumentActions workflowDocumentActions = 
+    		(WorkflowDocumentActions)GlobalResourceLoader.getService(new QName(KEWConstants.KEW_MODULE_NAMESPACE, KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE));
     	if (workflowDocumentActions == null) {
     		throw new WorkflowException("Could not locate the WorkflowDocumentActions service.  Please ensure that KEW client is configured properly!");
     	}

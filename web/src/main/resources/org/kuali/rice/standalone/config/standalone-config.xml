@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
 	This is the standalone default settings config file.  It is always loaded to read default settings.
 	Parameter replacement is performed in both config files and their parents (at runtime), and the
@@ -6,7 +7,6 @@
 	${varname}
 	${institution}
 -->
-<?xml version="1.0" encoding="UTF-8"?>
 <config>
     <param name="config.location">classpath:META-INF/standalone-config-defaults.xml</param>
 

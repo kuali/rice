@@ -147,6 +147,7 @@ public class RoutingTableDiffCalculator {
 	private void updateDeployedServiceInfo(ServiceInfo configuredServiceInfo, ServiceInfo deployedServiceInfo) {
 		deployedServiceInfo.setAlive(configuredServiceInfo.getAlive());
 		deployedServiceInfo.setQname(configuredServiceInfo.getQname());
+		deployedServiceInfo.setServiceName(configuredServiceInfo.getQname().toString());
 		deployedServiceInfo.setServiceNamespace(configuredServiceInfo.getServiceNamespace());
 		deployedServiceInfo.setServerIp(configuredServiceInfo.getServerIp());
 		deployedServiceInfo.setServiceDefinition(configuredServiceInfo.getServiceDefinition(getEnMessageHelper()));

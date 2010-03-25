@@ -79,7 +79,8 @@ public class KEWConfigurer extends ModuleConfigurer {
 	@Override
 	public String getSpringFileLocations(){
 		String springFileLocations;
-		if (KEWConfigurer.REMOTE_RUN_MODE.equals(getRunMode()) || KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(ConfigContext.getCurrentContextConfig().getClientProtocol())) {
+		if (KEWConfigurer.REMOTE_RUN_MODE.equals(getRunMode()) || KEWConfigurer.THIN_RUN_MODE.equals(getRunMode()) ||
+				KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(ConfigContext.getCurrentContextConfig().getClientProtocol())) {
 			springFileLocations = "";
 		} else {
 			springFileLocations = getEmbeddedSpringFileLocation();
@@ -117,9 +118,9 @@ public class KEWConfigurer extends ModuleConfigurer {
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		if ( getRunMode().equals( REMOTE_RUN_MODE ) ) {
+		if ( getRunMode().equals( THIN_RUN_MODE ) ) {
 			lifecycles.add(createThinClientLifecycle());
-		} else { // local or embedded
+		} else if ( !getRunMode().equals( REMOTE_RUN_MODE ) ) { // local or embedded
 			lifecycles.add(createEmbeddedLifeCycle());
 		}
 		return lifecycles;
@@ -188,7 +189,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 			clientProtocol = config.getClientProtocol();
 			if (StringUtils.isBlank(clientProtocol)) {
 			    // if not explcitly set, set the protocol based on the run mode
-			    if ( getRunMode().equals( REMOTE_RUN_MODE ) ) {
+			    if ( getRunMode().equals( REMOTE_RUN_MODE ) || getRunMode().equals( THIN_RUN_MODE ) ) {
 			        clientProtocol = KEWConstants.WEBSERVICE_CLIENT_PROTOCOL;
 			    } else {
 			        clientProtocol = KEWConstants.LOCAL_CLIENT_PROTOCOL;

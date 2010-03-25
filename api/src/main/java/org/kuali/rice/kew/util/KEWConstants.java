@@ -32,6 +32,8 @@ public class KEWConstants extends JSTLConstants {
 
     private static final long serialVersionUID = -3897059085433394648L;
 
+    public static final String KEW_MODULE_NAMESPACE = "KEW";
+    
     public static final String WEBAPP_DIRECTORY = "/kew";
 
     /**
@@ -908,9 +910,9 @@ public class KEWConstants extends JSTLConstants {
 
     // service name constants
 
-	public static final String WORKFLOW_UTILITY_SERVICE = "enWorkflowUtilityService";
+	public static final String WORKFLOW_UTILITY_SERVICE = "WorkflowUtilityService";
 
-	public static final String WORKFLOW_DOCUMENT_ACTIONS_SERVICE = "enWorkflowDocumentActionsService";
+	public static final String WORKFLOW_DOCUMENT_ACTIONS_SERVICE = "WorkflowDocumentActionsService";
 
 	public static final String SIMPLE_DATE_FORMAT_FOR_DATE = RiceConstants.SIMPLE_DATE_FORMAT_FOR_DATE;
     public static final String SIMPLE_DATE_FORMAT_FOR_TIME = RiceConstants.SIMPLE_DATE_FORMAT_FOR_TIME;

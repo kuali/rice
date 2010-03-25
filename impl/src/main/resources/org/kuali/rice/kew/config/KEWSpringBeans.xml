@@ -70,8 +70,8 @@
                 <idref local="enActionInvocationService" />
                 <idref local="enImmediateEmailReminderService" />
                 <idref local="enActionListEmailService" />
-                <idref local="enWorkflowUtilityService" />
-                <idref local="enWorkflowDocumentActionsService" />
+                <idref local="WorkflowUtilityService" />
+                <idref local="WorkflowDocumentActionsService" />
                 <idref local="enRemoveReplaceDocumentService"/>
                 <idref local="enQuickLinksService" />
                 <idref local="enDocumentRequeuerService"/>
@@ -381,12 +381,12 @@
     </property>
     <property name="beanNames">
       <list>
-        <idref local="enWorkflowDocumentActionsService" />
+        <idref local="WorkflowDocumentActionsService" />
       </list>
     </property>
   </bean>
 
-  <bean id="enWorkflowDocumentActionsService" class="org.kuali.rice.kew.service.impl.WorkflowDocumentActionsWebServiceImpl"  lazy-init="true"/>
+  <bean id="WorkflowDocumentActionsService" class="org.kuali.rice.kew.service.impl.WorkflowDocumentActionsWebServiceImpl"  lazy-init="true"/>
 
 
   <bean id="enXmlPollerService" class="org.kuali.rice.kew.batch.XmlPollerServiceImpl">
@@ -461,7 +461,7 @@
     </bean>
 
 
-	<bean id="enWorkflowUtilityService" class="org.kuali.rice.kew.service.impl.WorkflowUtilityWebServiceImpl" lazy-init="true" />
+	<bean id="WorkflowUtilityService" class="org.kuali.rice.kew.service.impl.WorkflowUtilityWebServiceImpl" lazy-init="true" />
     <bean id="enDocumentRoutingService" class="org.kuali.rice.kew.messaging.RouteDocumentMessageService"/>
     <bean id="enBlanketApproveProcessor" class="org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessor"/>
     <bean id="enSearchableAttributeProcessor" class="org.kuali.rice.kew.docsearch.service.impl.SearchableAttributeProcessor"/>
@@ -493,9 +493,10 @@
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
-            <ref bean="enWorkflowDocumentActionsService" />
+            <ref bean="WorkflowDocumentActionsService" />
           </property>
           <property name="localServiceName" value="WorkflowDocumentActionsService" />
+          <property name="serviceNameSpaceURI" value="KEW" />
           <property name="priority" value="3" />
           <property name="retryAttempts" value="0" />
           <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
@@ -508,7 +509,7 @@
 		<property name="serviceDefinition">
 			<bean parent="kewSoapService">
           <property name="service">
-            <ref bean="enWorkflowDocumentActionsService" />
+            <ref bean="WorkflowDocumentActionsService" />
           </property>
           <property name="localServiceName" value="WorkflowDocumentActionsServiceSOAP" />
           <property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
@@ -522,9 +523,10 @@
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
-            <ref bean="enWorkflowUtilityService" />
+            <ref bean="WorkflowUtilityService" />
           </property>
           <property name="localServiceName" value="WorkflowUtilityService" />
+          <property name="serviceNameSpaceURI" value="KEW" />
           <property name="priority" value="3" />
           <property name="retryAttempts" value="0" />
           <property name="busSecurity" value="${secure.workflowutility.javaservice.endpoint}"/>
@@ -536,7 +538,7 @@
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
 			<bean parent="kewSoapService">
-          <property name="service" ref="enWorkflowUtilityService" />
+          <property name="service" ref="WorkflowUtilityService" />
           <property name="localServiceName" value="WorkflowUtilityServiceSOAP" />
           <property name="serviceInterface" value="org.kuali.rice.kew.service.WorkflowUtility" />
           <property name="busSecurity" value="${secure.workflowutility.soapservice.endpoint}"/>

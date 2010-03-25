@@ -253,7 +253,7 @@ public final class KEWServiceLocator {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}
-		return GlobalResourceLoader.getResourceLoader().getService(new QName(serviceName));
+		return GlobalResourceLoader.getResourceLoader().getService(new QName(KEWConstants.KEW_MODULE_NAMESPACE, serviceName));
 	}
 
 	public static WorkflowUtility getWorkflowUtilityService() {

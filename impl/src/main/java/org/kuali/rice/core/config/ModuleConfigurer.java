@@ -39,6 +39,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	public static final String LOCAL_RUN_MODE = "local";
 	public static final String EMBEDDED_RUN_MODE = "embedded";
 	public static final String REMOTE_RUN_MODE = "remote";
+	public static final String THIN_RUN_MODE = "thin";
 	protected final List<String> VALID_RUN_MODES = new ArrayList<String>();
 	
 	private String runMode = LOCAL_RUN_MODE;	
@@ -58,6 +59,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 		VALID_RUN_MODES.add( LOCAL_RUN_MODE );
 		VALID_RUN_MODES.add( EMBEDDED_RUN_MODE );
 		VALID_RUN_MODES.add( REMOTE_RUN_MODE );
+		VALID_RUN_MODES.add( THIN_RUN_MODE );
 	}
 	
 	/**

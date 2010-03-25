@@ -10,7 +10,7 @@
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
 def projHome='/java/projects/rice-1.1.0'
 //def resourceHome='/impl/src/main/resources/ //this will return all ojb config files
-def resourceHome='/impl/src/main/resources/org/kuali/rice/kns'
+def resourceHome='/impl/src/main/resources/org/kuali/rice/kew'
 def srcHome='/impl/src/main/java'
 //def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns'
 //def srcHome = '/java/projects/play/rice-1.1.0/impl/src/main/java'
@@ -132,7 +132,8 @@ def removeAnnotatonLine(files){
 					{
 						skip = "true"
 					}
-					else if(cur.contains("@GenericGenerator") || cur.contains("@JoinColumns") || cur.contains("@AttributeOverrides") )
+					else if(cur.contains("@GenericGenerator") || cur.contains("@JoinColumns") 
+							|| cur.contains("@AttributeOverrides") || cur.contains("@NamedQueries"))
 					{
 						if(!cur.contains("})")){
 							append_next = true;

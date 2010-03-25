@@ -2,10 +2,14 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	/*
 	The second pass iterates over all of the class descriptors found above and generates JPA annotations.
 	*/
+	if(pkClassesOnly)
+		logger = JPAConversionHandlers.cpk_log
+		
 	def type_handler = new CustomerTypeHandler();
 	classes.values().each {
 	    c ->     
 	        println 'Class Name: '+c.className.toString()
+			logger.log "Annotating:\t + ${c.className}"
 	        def javaFile
 	        def backupFile
 	        sourceDirectories.each {
@@ -43,7 +47,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	        if (c.compoundPrimaryKey) {
 	            classAnnotation += "@IdClass(${c.className}Id.class)\n"
 	            text = addImport(text, "IdClass")
-	            logger.log "Please check generated compound primary key class [${c.className}Id.java]"
+	            logger.log "\tPlease check generated compound primary key class [${c.className}Id.java]"
 				c.pkClassIdText += handle_pkClass_Info(packageName, cpkClassName)
 	        }
 	        
@@ -56,7 +60,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 			if(hasSuperClass(javaFile.text) != null ){
 				if(hasUnOverridingFields(javaFile.text, c.fields, un_overring_fields)){
 					//classAnnotation += "\n//Please check Super classes for AttributeOverriding"
-					//logger.log("${c.className}:\tPlease check Super classes for AttributeOverriding on ${un_overring_fields.values()}")
+					logger.log("\tPlease check Super classes for AttributeOverriding on ${un_overring_fields.values()}")
 				}	
 			}	
 			
@@ -64,6 +68,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	        text = addImport(text, "Table")
 	        text = addImport(text, "CascadeType")                    
 	        text = annotate(text, "public class", classAnnotation)
+			try{
 	        c.fields.values().each {
 	            f ->
 					//println("**********************PK\t" + f.name + f.primarykey);
@@ -97,8 +102,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 								"\n\t\t\t\t @Parameter(name=\"value_column\",value=\"id\")})\n\t"
 						text = addImport(text,"GeneratedValue")
 						text = addImportHibernate(text,"GenericGenerator")
-						text = addImportHibernate(text,"Parameter")
-						
+						text = addImportHibernate(text,"Parameter")	
 	                }
 	                if (f.locking) {
 	                    annotation += "@Version\n\t"
@@ -111,18 +115,16 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    text = addImport(text, "FetchType")
 	                }
 	                if (f.conversion?.toString()?.size() > 0){
-	                	logger.log "******************handling customerTypes for ${c.className}**********************"
+	                	logger.log "\tHandling customerTypes for ${c.className}.${f.name}"
 						text = addImportHibernate(text, "Type")
 						def annotationKey = "ANT_KEY"
 						def annotationMap = [(annotationKey): annotation];
 						//todo: this function need to be changed to use return value
 						type_handler.handleTypes(f.conversion, annotationMap, annotationKey , f)
 						annotation = annotationMap.get(annotationKey);
-						//text = typeMarkers.get(textKey);
-						//println '****ojb type:\t' + f.conversion + '\tannotation\t' + annotation 
-	                }
-					
+	                }					
 	                if (f.jdbcType?.equalsIgnoreCase("date") || f.jdbcType?.equalsIgnoreCase("timestamp")) {
+						logger.log "\tConverting Date|Timpstamp for ${c.className}.${f.name} if they are from java.sql"
 	                	annotation += "@Temporal(TemporalType.TIMESTAMP)\n\t";
 	                	text = addImport(text, "Temporal") 
 	                	text = addImport(text, "TemporalType")                    
@@ -136,8 +138,8 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 						try{
 							 text = setFieldToJavaUtilDate(text, f.name, type_pattern, pt)
 						}
-						catch (Exception e){
-							println('found exception\n' + e.getMessage());
+						catch (Exception e){JPAConversionHandlers.error_log.log "Found exception in Annotating: ${c.className} converting Date/Timestamp for ${f.name} and its getter/setter, this is very possible from the Date|TimeStamp has already been a java.util.Date\n\t${e.getMessage()}"
+							//println('found exception\n' + e.getMessage());
 						}
 						}
 	                }
@@ -147,6 +149,8 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                text = addImport(text, "Column")                    
 	                text = annotate(text, "(private|protected).*(\\b${f.name})((\\s)*|(\\s)+.*);", annotation)
 				}
+			}
+	        catch(Exception e){JPAConversionHandlers.error_log.log "Found exception in Annotating: ${c.className} fields \n\t${e.getMessage()} " }
 			//handle referenced objects
 			try{
 				c.referenceDescriptors.values().each {
@@ -190,10 +194,11 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                text = annotate(text, "(private|protected).*(\\b${rd.name})(\\s)*;", annotation)
 				}
 			}
-		catch(Exception e){ println(e.getMessage());}
+		catch(Exception e){ JPAConversionHandlers.error_log.log "Found exception in Annotating: ${c.className} refenced objects \n\t${e.getMessage()} " }
 		
-		c.collectionDescriptors.values().each {
-	            cd ->
+		try{
+			c.collectionDescriptors.values().each {
+				cd ->
 	                def annotation = ""
 	                def error
 	                def annotationName = determineOneOrManyToMany(classes, c, cd)
@@ -225,7 +230,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    }
 	                    def rdClass = classes[cd.elementClassRef]
 	                    if (!rdClass) {                         
-	                        error = "When determining mappedBy, class descriptor for [${cd.elementClassRef}] does not have a table defined. Please check it."
+	                    	error = "When determining mappedBy, class descriptor for [${cd.elementClassRef}] does not have a table defined. Please check it."
 	                    } else {
 		                    rdClass.referenceDescriptors.values().each {
 		                        rd -> 
@@ -245,10 +250,10 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 		                    if (!mappedBy) {
 		                        mappedBy = "ERROR: See log"
 		                        //error = "Uni-directional one-to-manys not yet supported by JPA.  Please add a reference back to ${cd.name} in ${rdClass.className}"
-								error = "Found Uni-Directional one-to-manys from ${c.className}.${cd.name} to ${rdClass.className}"
+								error = "\tFound Uni-Directional one-to-manys from ${c.className}.${cd.name} to ${rdClass.className}"
 		                    }
 		                    else{
-								error = "Found Bi-Directional one-to-manys between ${c.className}.${cd.name} and ${rdClass.className}"
+								error = "\tFound Bi-Directional one-to-manys between ${c.className}.${cd.name} and ${rdClass.className}"
 								}
 	                    }
 	                    annotation += annotationName
@@ -275,9 +280,11 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    text = addImport(text, "FetchType")
 	                }
 	                text = annotate(text, "(private|protected).*(\\b${cd.name})(\\s)*;", annotation)
-	                if (error) logger.log error                                
-	        }        
-	
+	                if (error) logger.log error                                	
+			}
+		}
+		catch(Exception e){JPAConversionHandlers.error_log.log "Found exception in Annotating: ${c.className} referenced collections \n\t${e.getMessage()} " }
+		
 	        text = cleanText(text)
 	        
 	        if (c.compoundPrimaryKey) {	
@@ -404,6 +411,9 @@ the foreign key set of the given reference descriptor. If true, the relationship
 is 'one to one'.
 */
 def determineOneOrManyToOne(classes, parent, rd, logger) {
+	
+	println 'startng determineOneOrManyToOne on \t' + parent.className + '\tvs\t' + rd.classRef +'\ton\t' + rd.name
+	
     def ret = "@OneToOne"
     def c = classes[rd.classRef]
     def anonymous = false
@@ -413,13 +423,10 @@ def determineOneOrManyToOne(classes, parent, rd, logger) {
             fk.fieldRef ? (fkfield = parent.fields[fk.fieldRef]) : (fkfield = findFieldIdRef(parent.fields, fk.fieldIdRef))
             if (fkfield.access == 'anonymous') {
                 anonymous = true 
-                logger.log "Found anonymous reference-descriptor... defaulting to One-To-One for [${c.className}]"
+                logger.log "\tFound anonymous reference-descriptor... defaulting to One-To-One for [${c.className}]"
             }
     }                
     if (!anonymous) {    
-    	//ret = "@ManyToOne"
-		//logger.log "Found a many-to-one between [${parent.className}] and [${c.className}]"
-		//println 'Found a many-to-one between ' + parent.className + '\t' + c.className
         c.collectionDescriptors.values().each {
             cd ->
                 def keys = []
@@ -428,6 +435,7 @@ def determineOneOrManyToOne(classes, parent, rd, logger) {
                         def ifkName
                         ifk.fieldRef ? (ifkName = parent.fields[ifk.fieldRef]?.name) : (ifkName = findFieldIdRef(parent.fields, ifk.fieldIdRef)?.name)
                         keys.add(ifkName)
+					println '!!!!!!!!!!!!!!!!!!!  ifkName\t' + ifkName + '\t' + cd.name
                 }                
                 def fkName
                 def rdKeys = []
@@ -435,16 +443,16 @@ def determineOneOrManyToOne(classes, parent, rd, logger) {
                     fk ->
                         fk.fieldRef ? (fkName = parent.fields[fk.fieldRef].name) : (fkName = findFieldIdRef(parent.fields, fk.fieldIdRef).name)
                         rdKeys.add(fkName)
-                }                
+					println '!!!!!!!!!!!!!!!!!!! fkName ' + '\t' + fkName 
+                }               
+//				if(!keys.isEmpty() && !rdkeys.isEmpty())
+//				println 'determineOneOrManyToOne !!!!!!!!!!!!!!!!!!!  keys vs rdkeys\t' + ifkName + '\t' + fkName 
+				
                 if (keys.containsAll(rdKeys) && rdKeys.containsAll(keys)) {
 					ret = "@ManyToOne"
 					//println 'Found a many-to-one between ' + parent.className + '\t' + c.className
-					logger.log "Found a many-to-one between [${parent.className}] and [${c.className}]"
-                }
-//			    else{
-//					ret = "@ManyToOne"
-//			    	println 'Found a uni-directional many-to-one between ' + parent.className + '\t' + c.className
-//			    }   
+					logger.log "\tFound a many-to-one between [${parent.className}] and [${c.className}]"
+                } 
 			} 
     }
     ret
@@ -546,57 +554,50 @@ def handle_pkClass_constructor(cpkClassName, cpkConstructorArgs, cpkConstructorB
 	ret
 }
 
-def findReferencedColumnName(java.util.LinkedHashMap classes, String classRef, String fieldRef){
+def findReferencedColumnName(java.util.LinkedHashMap classes, String classRef, String fieldRef) throws Exception{
 	//println "***********looking for ref column**************\t" + classRef + "\t" + fieldRef
-	def ret = ""
-	try{
-		classes.values().each {
-			this_class -> 
-			if(this_class.className.equals(classRef)){
-				Field fd = this_class.fields.get(fieldRef)
-				if(fd != null)
-					ret = fd.column	
+	def ret = "";
+	classes.values().each {
+		this_class -> 
+		if(this_class.className.equals(classRef)){
+			Field fd = this_class.fields.get(fieldRef)
+			if(fd != null)
+				ret = fd.column	
 			}
-		}
-	}
-	catch(Exception e){
-		println("exception------------" + e.getMessage())
 	}
 	//println "***********got ref column**************\t" + ret
-	
 	ret
 }
 
+
 def hasSuperClass(javaText){
-	
 	println 'checking super class'
 	javaText.find(/public class (\w+) extends/)
 }
 
 def boolean hasUnOverridingFields(javaText,  fields, un_overring_fields){
 	
-	//println "***********looking for un_overriding_fields**************\t" 
+	def ret = false
+	def temp = fields;
 	
-	fields.values().each{
+	temp.remove("objectId");
+    temp.remove("versionNumber")	
+
+	temp.values().each{
 		f-> attName = f.name
 			//println 'checking field\t' + attName
-			if(javaText.find(/(private|protected) (\w+) ${attName}/) == null)
+			if(javaText.find(/(private|protected) (\w+) ${attName}/) == null && !((f.access)!= null && (f.access).equalsIgnoreCase("anonymous")))
 				un_overring_fields.put(attName, f.column)
 		}
-	
-	//println "***********got this **************\t" + un_overring_fields.values()
-	
-	if(un_overring_fields.size() == 0)
-		false
-	
-	true
+	if(un_overring_fields.size() != 0)
+		ret = true
+		
+	ret
 	}
 
-def findBiDiredtionRelationships(classes, cls, refcls, logger ){
+def findBiDiredtionRelationships(classes, cls, refcls, logger ){	
+	println '*******************start looking for bi-directions between\t '  + cls.className + ' vs ' + refcls.classRef + ' on ' + refcls.name
 	
-	//println '*******************start looking for bi-directions between\t '  + cls.className + ' vs ' + refcls.classRef + ' on ' + refcls.name
-	//logger.log("***start looking for bi-directions between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
-
 	def keys = []
 	def fkeys = []
 	refcls.foreignKeys.each {
@@ -607,13 +608,16 @@ def findBiDiredtionRelationships(classes, cls, refcls, logger ){
 		fkeys.add(fk.fieldRef)
 	}
 	
+	println '*******************got keys vs fkeys\t' + keys + ' vs ' + fkeys;
+		
 	def rdClass = classes[refcls.classRef];
 	
-	def refMappedBy
+	def refMappedBy=''
+	def rdKeys = []
 	
 	rdClass.referenceDescriptors.values().each {
 		rd -> 
-		def rdKeys = []
+		rdKeys = []
 		rd.foreignKeys.each {
 			fk ->
 			def fkName
@@ -625,24 +629,22 @@ def findBiDiredtionRelationships(classes, cls, refcls, logger ){
 		} else if (!fkeys.isEmpty() && fkeys.containsAll(rdKeys) && rdKeys.containsAll(fkeys)) {
 			refMappedBy = rd.name	                                
 		}
+		
+		println "------------------rdkeys\t" + refMappedBy + "\twith rd\t" + rd.classRef;
 	}
 	
+	//println "------------------rdkeys\t" + keys + "\tfkeys\t" + fkeys;
+	
 	if(refMappedBy){
-		//println "keys\t" + keys + "\tfkeys\t" + fkeys;
-		logger.log( "Found a bi-directional one-to-one mapping between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
+		println "++++++++++++++++++++++keys\t" + keys + "\tfkeys\t" + fkeys;
+		logger.log( "\tFound a bi-directional one-to-one mapping between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
 		}
 }
 
 def setFieldToJavaUtilDate(String text, String name, type_pattern, field_pattern) throws Exception{
 	
-		def this_field = text.find(field_pattern);
-	
-		println '*********found java.sql.Date\t' + this_field
-	
+		def this_field = text.find(field_pattern);	
 		this_field = this_field.replaceFirst(type_pattern, 'java.util.Date ');
-	
-		println '*********repalcing text with \t' + this_field
-	
 		text = text.replaceFirst(field_pattern, this_field);
 		
 		text

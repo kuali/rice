@@ -2,9 +2,9 @@
 /* Begin User Configurable Fields */
 
 /* run option properties */
-def persistenceXml = false
-def mysql = false
-def pkClasses = true
+def getXML_MYSQL_PerApp = false
+def getXML_MYSQL_PerModule = false
+def pkClasses = false
 def clean = false
 def dry = false
 def verbose = false
@@ -27,7 +27,7 @@ def repositories = [
         //'/java/projects/kfs-jpa-ref/work/src/org/kuali/kfs/coa/ojb-coa.xml',
         //'/java/projects/kfs-jpa-ref/work/src/org/kuali/kfs/fp/ojb-fp.xml'
         //for rice
-		'/java/projects/rice-1.1.0/impl/src/main/resources/org/kuali/rice/ken/config/OJB-repository-ken.xml'
+		'/java/projects/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kew/config/OJB-repository-kew.xml'
         //,'/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns/config/OJB-repository-kns.xml'
 		]
 
@@ -46,11 +46,12 @@ def mysqlOrmFile = 'orm.xml'
 def persistenceUnitName = "rice"
 def schemaName = "RICE110DEV"
 def backupExtension = ".backup"
-def logger = new Logger("errors.log")
+def logger = JPAConversionHandlers.bo_log//new Logger("errors.log")
 def classes = [:]
 
 //   Search for OJB Mapping Files
 if (scanForConfigFiles){
+	repositories = []
 	println 'Scanning for files'
     JPAConversionHandlers.conversion_util.getOJBConfigFiles(projHome, resourceDir, ojbMappingPattern, repositories)
 }
@@ -63,11 +64,11 @@ sourceDirectories.each {println it}
 def actions = 'The script is set to: '
 def something
 if (dry) actions = 'The script will perform a dry run to: '
-if (persistenceXml) {
-	actions+=' Generate persistence.xml files.'
+if (getXML_MYSQL_PerApp) {
+	actions+=' Generate persistence.xml, Mysql sequence script and sequence orm.xml files for the application'
 }
-if (mysql) {
-	actions+=' Generate MySQL sequence annotations.'
+if (getXML_MYSQL_PerModule) {
+	actions+=' Generate persistence.xml, MySQL sequence script and sequence orm.xml files per module.'
 } 
 if (clean) {
 	actions+=' Clean up backup file.'
@@ -99,14 +100,16 @@ if (something.toString().toUpperCase().equals( 'Y'))
 	println '\nFirst pass completed, metadata captured.'
 
 	//for persistence.xml
-	if (persistenceXml) {
-		println '\nGenerating persistence.xml...'
+	if (getXML_MYSQL_PerApp) {
+		println '\nGenerating persistence.xml, mysql sequence script and orm per application'
 		JPAConversionHandlers.persistence_handler.generatePersistenceXML(classes, persistenceUnitName, persistenceXmlFilename, projHome+resourceDir+metaInf)
+		JPAConversionHandlers.mysql_handler.generateMySQLSequence(classes, schemaName, projHome, resourceDir+metaInf+mysqlScriptFile, resourceDir+metaInf+mysqlOrmFile)	
+		
 	} 
 
 	//for handling sequence in mysql
-	if (mysql) {
-		println '\nGenerating MySQL sequence scripts and orm files...'
+	if (getXML_MYSQL_PerModule) {
+		println '\nGenerating MySQL sequence script, orm and persistence file per module...'
 		//JPAConversionHandlers.mysql_handler.generateMySQLSequence(classes, schemaName, projHome, mysqlScriptFile, resourceDir+metaInf+mysqlOrmFile)
 		repositories.each {
 			repository ->
@@ -117,6 +120,8 @@ if (something.toString().toUpperCase().equals( 'Y'))
 			    this_repository.add(repository)     
 			    JPAConversionHandlers.metadata_handler.loadMetaData(this_repository, this_classes, logger)
 			    JPAConversionHandlers.mysql_handler.generateMySQLSequence(this_classes, schemaName, projHome, filePath+mysqlScriptFile, filePath+mysqlOrmFile)	
+			    def fileName=moduleName+'-'+persistenceXmlFilename
+			    JPAConversionHandlers.persistence_handler.generatePersistenceXML(this_classes, persistenceUnitName+'-'+moduleName, fileName, projHome+resourceDir+metaInf)
 			}
 	}
 
@@ -126,7 +131,7 @@ if (something.toString().toUpperCase().equals( 'Y'))
 		JPAConversionHandlers.conversion_util.cleanBackupFiles(classes, sourceDirectories, projHome, backupExtension, logger, verbose)
 	} 
 
-	//generate  sounre code for bo in JPA style
+	//generate sounre code for bo in JPA style
 	if (createBOs)	{
 		println '\nGenerating Business Object POJOs with JPA Annotations...'
 		JPAConversionHandlers.annotation_handler.generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExtension, logger, false)
@@ -238,5 +243,11 @@ public class JPAConversionHandlers{
 	public static type_handler = new CustomerTypeHandler();
 	public static annotation_handler = new AnnotationHandler();
 	
-	public static info_logger = new Logger("info.log");
+	public static info_log = new Logger("jpa_info.log");
+	public static error_log = new Logger("jpa_error.log");
+
+	public static bo_log = new Logger("jpa_bo.log");
+	public static cpk_log = new Logger("jpa_cpk.log");
+	
+	public static SQL_DATE_PATTERN = ~/Date|Timestamp|(java\.sql\.Date)|(java\.sql\.Timestamp)/;
 }

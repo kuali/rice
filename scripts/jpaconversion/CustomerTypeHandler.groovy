@@ -2,7 +2,7 @@ def handleTypes(conversion, annotationMap, annotationKey , /*textKey,*/ fields){
 	try{
 	def annotation = annotationMap.get(annotationKey);
 	//def text = annotationList.get(textKey);
-	println 'ojb type:\t' + conversion + '\tannotation\t' + annotation// + '\ttext\t' + text
+	//println 'ojb type:\t' + conversion + '\tannotation\t' + annotation// + '\ttext\t' + text
 	if (conversion.contains("OjbCharBooleanConversion")){
 		annotation += "@Type(type=\"yes_no\")\n\t"
 		//text = addOtherImport(text, "org.hibernate.annotations.Type")
@@ -87,11 +87,11 @@ def handleTypes(conversion, annotationMap, annotationKey , /*textKey,*/ fields){
 		println "name="+fields.name
 	}
 	
-	println '----ojb type:\t' + conversion + '\tannotation\t' + annotation 
+	//println '----ojb type:\t' + conversion + '\tannotation\t' + annotation 
 	annotationMap.put(annotationKey, annotation);
 	//annotationList.put(textKey, text);
 	
-	println '++++ojb type:\t' + conversion + '\tannotation\t' + annotationMap.get(annotationKey); 
+	//println '++++ojb type:\t' + conversion + '\tannotation\t' + annotationMap.get(annotationKey); 
 	}
 	catch(Exception e){ println(e.getMessage());}
 }

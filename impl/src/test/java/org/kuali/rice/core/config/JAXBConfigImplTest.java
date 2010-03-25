@@ -162,12 +162,22 @@ public class JAXBConfigImplTest {
     }
     
     
-    @Ignore
+    @Test
     public void testPropertiesParams() throws Exception {
-        JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
+    	Config rootConfig = ConfigContext.getCurrentContextConfig();    	
         
+    	JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");        
         config.parseConfig();
-        ConfigContext.init(config);
+
+        // When you run the tests via maven the suite initially sets up the a rootConfig object.
+        // If this is the case then we should just Add our properties to the root config.
+        // If we call the init then we overwrite the existing config in the context, which breaks
+        // other tests in the suite.
+        if(rootConfig != null){
+        	rootConfig.putProperties(config.getProperties());
+        }else{
+        	ConfigContext.init(config); 
+        }
         
         ApplicationContext context = new ClassPathXmlApplicationContext("org/kuali/rice/core/config/jaxb-test-context.xml");
         PropertyHolder holder = (PropertyHolder) context.getBean("jpaProps");

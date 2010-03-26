@@ -27,6 +27,7 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 /**
@@ -148,4 +149,18 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
     	return null;
     }
 
+    /**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.web.struts.form.KualiForm#shouldMethodToCallParameterBeUsed(java.lang.String, java.lang.String, javax.servlet.http.HttpServletRequest)
+	 */
+	@Override
+	public boolean shouldMethodToCallParameterBeUsed(
+			String methodToCallParameterName,
+			String methodToCallParameterValue, HttpServletRequest request) {
+		if (methodToCallParameterName.startsWith(KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.POST_TEXT_AREA_TO_PARENT)) {
+			return true;
+		}
+		return super.shouldMethodToCallParameterBeUsed(methodToCallParameterName, methodToCallParameterValue, request); 
+	}
 }

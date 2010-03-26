@@ -168,6 +168,9 @@ public class AttributesMapBuilder {
             if (control.getIncludeKeyInLabel() != null) {
                 controlMap.set("includeKeyInLabel", control.getIncludeKeyInLabel().toString());
             }
+            if (control.getSize() != null) {
+            	controlMap.set("size", control.getSize().toString());
+            }
         }
         else if (control.isText()) {
             controlMap.set("text", "true");

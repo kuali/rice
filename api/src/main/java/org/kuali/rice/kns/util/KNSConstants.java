@@ -165,6 +165,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String DOC_FORM_KEY = "docFormKey";
     public static final String FORM_KEY = "formKey";
     public static final String NEW_NOTE_NOTE_TYPE_CODE = "newNote.noteTypeCode";
+    public static final String POST_TEXT_AREA_TO_PARENT = "postTextAreaToParent";
     public static final String DOCUMENT_CANCEL_QUESTION = "DocCancel";
 //    public static final String DOCUMENT_DELETE_QUESTION = "DocDelete";
     public static final String DOCUMENT_DISAPPROVE_QUESTION = "DocDisapprove";

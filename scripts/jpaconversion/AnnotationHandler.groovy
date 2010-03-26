@@ -156,8 +156,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 				c.referenceDescriptors.values().each {
 					rd ->
 					//test find bi-direction
-					findBiDiredtionRelationships(classes, c, rd, logger) 
-					//	print "\n***********CLASSREFS************\t" + rd.classRef
+					findBiDiredtionRelationships(classes, c, rd, logger)
 					def annotation = ""
 	                annotation += determineOneOrManyToOne(classes, c, rd, logger)
 	                text = addImport(text, annotation[1..-1])
@@ -253,7 +252,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 								error = "\tFound Uni-Directional one-to-manys from ${c.className}.${cd.name} to ${rdClass.className}"
 		                    }
 		                    else{
-								error = "\tFound Bi-Directional one-to-manys between ${c.className}.${cd.name} and ${rdClass.className}"
+								error = "\tFound Bi-Directional one-to-manys between [${c.className}] and [${rdClass.className}] on [${cd.name}]"
 								}
 	                    }
 	                    annotation += annotationName
@@ -435,7 +434,6 @@ def determineOneOrManyToOne(classes, parent, rd, logger) {
                         def ifkName
                         ifk.fieldRef ? (ifkName = parent.fields[ifk.fieldRef]?.name) : (ifkName = findFieldIdRef(parent.fields, ifk.fieldIdRef)?.name)
                         keys.add(ifkName)
-					println '!!!!!!!!!!!!!!!!!!!  ifkName\t' + ifkName + '\t' + cd.name
                 }                
                 def fkName
                 def rdKeys = []
@@ -443,15 +441,9 @@ def determineOneOrManyToOne(classes, parent, rd, logger) {
                     fk ->
                         fk.fieldRef ? (fkName = parent.fields[fk.fieldRef].name) : (fkName = findFieldIdRef(parent.fields, fk.fieldIdRef).name)
                         rdKeys.add(fkName)
-					println '!!!!!!!!!!!!!!!!!!! fkName ' + '\t' + fkName 
                 }               
-//				if(!keys.isEmpty() && !rdkeys.isEmpty())
-//				println 'determineOneOrManyToOne !!!!!!!!!!!!!!!!!!!  keys vs rdkeys\t' + ifkName + '\t' + fkName 
-				
                 if (keys.containsAll(rdKeys) && rdKeys.containsAll(keys)) {
 					ret = "@ManyToOne"
-					//println 'Found a many-to-one between ' + parent.className + '\t' + c.className
-					logger.log "\tFound a many-to-one between [${parent.className}] and [${c.className}]"
                 } 
 			} 
     }
@@ -595,50 +587,52 @@ def boolean hasUnOverridingFields(javaText,  fields, un_overring_fields){
 	ret
 	}
 
-def findBiDiredtionRelationships(classes, cls, refcls, logger ){	
-	println '*******************start looking for bi-directions between\t '  + cls.className + ' vs ' + refcls.classRef + ' on ' + refcls.name
-	
-	def keys = []
-	def fkeys = []
-	refcls.foreignKeys.each {
-		fk ->
-		def f
-		fk.fieldRef ? (f = cls.fields[fk.fieldRef]) : (f = findFieldIdRef(cls.fields, fk.fieldIdRef))
-		if (f?.name) keys.add(f.name)
-		fkeys.add(fk.fieldRef)
-	}
-	
-	println '*******************got keys vs fkeys\t' + keys + ' vs ' + fkeys;
+def findBiDiredtionRelationships(classes, cls, refcls, logger ) throws Exception{	
+	println '*******************start looking for bi-directions between\t' + 
+		cls.className + ' vs ' + refcls.classRef + ' on ' + refcls.name	
 		
-	def rdClass = classes[refcls.classRef];
+	def ret = 'LOOK'
 	
-	def refMappedBy=''
-	def rdKeys = []
-	
-	rdClass.referenceDescriptors.values().each {
-		rd -> 
-		rdKeys = []
-		rd.foreignKeys.each {
+	if (!determineOneOrManyToOne(classes, cls, refcls, JPAConversionHandlers.info_log).equalsIgnoreCase("@ManyToOne"))
+	{
+		def keys = [];
+		def fkeys = [];
+		refcls.foreignKeys.each {
 			fk ->
-			def fkName
-			fk.fieldRef ? (fkName = rdClass.fields[fk.fieldRef]?.name) : (fkName = findFieldIdRef(rdClass.fields, fk.fieldIdRef)?.name)
-			rdKeys.add(fkName)
-		}
-		if (!keys.isEmpty() && keys.containsAll(rdKeys) && rdKeys.containsAll(keys)) {
-			refMappedBy = rd.name
-		} else if (!fkeys.isEmpty() && fkeys.containsAll(rdKeys) && rdKeys.containsAll(fkeys)) {
-			refMappedBy = rd.name	                                
+			def f
+			fk.fieldRef ? (f = cls.fields[fk.fieldRef]) : (f = findFieldIdRef(cls.fields, fk.fieldIdRef));
+			if (f?.name) keys.add(f.name)
+			fkeys.add(fk.fieldRef)
 		}
 		
-		println "------------------rdkeys\t" + refMappedBy + "\twith rd\t" + rd.classRef;
-	}
+		def rdClass = classes[refcls.classRef];
 	
-	//println "------------------rdkeys\t" + keys + "\tfkeys\t" + fkeys;
+		def refMappedBy=''
+		def rdKeys = []
 	
-	if(refMappedBy){
-		println "++++++++++++++++++++++keys\t" + keys + "\tfkeys\t" + fkeys;
-		logger.log( "\tFound a bi-directional one-to-one mapping between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
+	    rdClass.referenceDescriptors.values().each {
+			rd -> 
+			rdKeys = []
+			rd.foreignKeys.each {
+				fk ->
+				def fkName
+				fk.fieldRef ? (fkName = rdClass.fields[fk.fieldRef]?.name) : (fkName = findFieldIdRef(rdClass.fields, fk.fieldIdRef)?.name)
+			    rdKeys.add(fkName)
+			}
+			if (!keys.isEmpty() && keys.containsAll(rdKeys) && rdKeys.containsAll(keys)) {
+				refMappedBy = rd.name
+			} else if (!fkeys.isEmpty() && fkeys.containsAll(rdKeys) && rdKeys.containsAll(fkeys)) {
+				refMappedBy = rd.name	                                
+			}
 		}
+	
+		if(refMappedBy){
+			ret = 'FOUND'
+			println "++++++++++++++++++++++keys\t" + keys + "\tfkeys\t" + fkeys + "\t" + ret;
+			logger.log( "\tFound a bi-directional one-to-one mapping between ${cls.className} vs ${refcls.classRef} on ${refcls.name}");
+		}
+	}
+	ret
 }
 
 def setFieldToJavaUtilDate(String text, String name, type_pattern, field_pattern) throws Exception{

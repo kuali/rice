@@ -52,7 +52,7 @@ public class SpringBeanFactoryResourceLoader extends BaseResourceLoader implemen
 	public Object getService(QName serviceName) {
 		String resolvedServiceName = resolveServiceName(serviceName);
 		if (this.beanFactory.containsBean(resolvedServiceName)) {
-			Object service = this.beanFactory.getBean(serviceName.toString());
+			Object service = this.beanFactory.getBean(resolvedServiceName);
 			if (service != null) {
 				return postProcessService(serviceName, service);
 			}
@@ -62,11 +62,11 @@ public class SpringBeanFactoryResourceLoader extends BaseResourceLoader implemen
 
 	/**
 	 * Resolves the given QName service name to a String representation which is used
-	 * to lookup the service in Spring.  Default implementation simply calls toString()
+	 * to lookup the service in Spring.  Default implementation simply calls getLocalPart()
 	 * on the QName.
 	 */
 	protected String resolveServiceName(QName serviceName) {
-		return serviceName.toString();
+		return serviceName.getLocalPart();
 	}
 
 

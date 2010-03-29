@@ -896,12 +896,7 @@
 
   <!-- Used for @Transactional so you don't have to wire services up in here-->
   <tx:annotation-driven transaction-manager="transactionManager"/>
-  
-  	<tx:advice id="validationExceptionNoRollbackAdvice" transaction-manager="transactionManager">
-  		<tx:attributes>
-  			<tx:method name="*" rollback-for="java.lang.RuntimeException" no-rollback-for="org.kuali.rice.kns.exception.ValidationException"/>
-  		</tx:attributes>
-	</tx:advice>
+
 
 	<bean id="documentSerializerService" class="org.kuali.rice.kns.service.impl.DocumentSerializerServiceImpl">
 		<property name="persistenceService">

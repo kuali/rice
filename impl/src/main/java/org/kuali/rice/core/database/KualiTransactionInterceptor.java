@@ -15,25 +15,111 @@
  */
 package org.kuali.rice.core.database;
 
+import java.lang.reflect.Method;
+
 import org.apache.log4j.Logger;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
+import org.springframework.transaction.support.DefaultTransactionStatus;
 
 /**
- * This is a description of what this class does - kellerj don't forget to fill this in. 
+ * Transaction interceptor which does logging at various levels 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KualiTransactionInterceptor extends TransactionInterceptor {
-
+	private static final Logger LOG = Logger.getLogger(KualiTransactionInterceptor.class);
+	
 	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.springframework.transaction.interceptor.TransactionAspectSupport#completeTransactionAfterThrowing(org.springframework.transaction.interceptor.TransactionAspectSupport.TransactionInfo, java.lang.Throwable)
-	 */
+     * @see org.springframework.transaction.interceptor.TransactionAspectSupport#createTransactionIfNecessary(java.lang.reflect.Method,
+     *      java.lang.Class)
+     */
 	@Override
-	protected void completeTransactionAfterThrowing(TransactionInfo transInfo, Throwable ex) {
-		Logger.getLogger( KualiTransactionInterceptor.class ).fatal( "Exception caught by Transaction Interceptor, this will cause a rollback at the end of the transaction.", ex );
-		super.completeTransactionAfterThrowing( transInfo, ex );
-	}
+    protected TransactionInfo createTransactionIfNecessary(Method method, Class targetClass) {
+        TransactionInfo txInfo = super.createTransactionIfNecessary(method, targetClass);
+
+        // using INFO level since DEBUG level turns on the (somewhat misleading) log statements of the superclass
+        if (logger.isDebugEnabled()) {
+            if (txInfo != null) {
+                TransactionStatus txStatus = txInfo.getTransactionStatus();
+                if (txStatus != null) {
+                    if (txStatus.isNewTransaction()) {
+                        LOG.debug("creating explicit transaction for " + txInfo.getJoinpointIdentification());
+                    }
+                    else {
+                        if (txStatus instanceof DefaultTransactionStatus) {
+                            DefaultTransactionStatus dtxStatus = (DefaultTransactionStatus) txStatus;
+
+                            if (dtxStatus.isNewSynchronization()) {
+                                LOG.debug("creating implicit transaction for " + txInfo.getJoinpointIdentification());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return txInfo;
+    }
+
+    /**
+     * @see org.springframework.transaction.interceptor.TransactionAspectSupport#doCloseTransactionAfterThrowing(org.springframework.transaction.interceptor.TransactionAspectSupport.TransactionInfo,
+     *      java.lang.Throwable)
+     */
+	@Override
+    protected void completeTransactionAfterThrowing(TransactionInfo txInfo, Throwable ex) {
+		LOG.fatal( "Exception caught by Transaction Interceptor, this will cause a rollback at the end of the transaction.", ex );
+        // using INFO level since DEBUG level turns on the (somewhat misleading) log statements of the superclass
+        if (logger.isDebugEnabled()) {
+            if (txInfo != null) {
+                TransactionStatus txStatus = txInfo.getTransactionStatus();
+                if (txStatus != null) {
+                    if (txStatus.isNewTransaction()) {
+                        LOG.debug("closing explicit transaction for " + txInfo.getJoinpointIdentification());
+                    }
+                    else {
+                        if (txStatus instanceof DefaultTransactionStatus) {
+                            DefaultTransactionStatus dtxStatus = (DefaultTransactionStatus) txStatus;
+
+                            if (dtxStatus.isNewSynchronization()) {
+                                LOG.debug("closing implicit transaction for " + txInfo.getJoinpointIdentification());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        super.completeTransactionAfterThrowing(txInfo, ex);
+    }
+	
+	/**
+     * @see org.springframework.transaction.interceptor.TransactionAspectSupport#doCommitTransactionAfterReturning(org.springframework.transaction.interceptor.TransactionAspectSupport.TransactionInfo)
+     */
+    @Override
+    protected void commitTransactionAfterReturning(TransactionInfo txInfo) {
+        // using INFO level since DEBUG level turns on the (somewhat misleading) log statements of the superclass
+        if (logger.isDebugEnabled()) {
+            if (txInfo != null) {
+                TransactionStatus txStatus = txInfo.getTransactionStatus();
+                if (txStatus != null) {
+                    if (txStatus.isNewTransaction()) {
+                        LOG.debug("committing explicit transaction for " + txInfo.getJoinpointIdentification());
+                    }
+                    else {
+                        if (txStatus instanceof DefaultTransactionStatus) {
+                            DefaultTransactionStatus dtxStatus = (DefaultTransactionStatus) txStatus;
+
+                            if (dtxStatus.isNewSynchronization()) {
+                                LOG.debug("committing implicit transaction for " + txInfo.getJoinpointIdentification());
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        super.commitTransactionAfterReturning(txInfo);
+    }
 }

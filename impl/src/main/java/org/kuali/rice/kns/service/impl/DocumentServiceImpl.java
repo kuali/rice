@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.database.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -68,7 +69,6 @@ import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.dao.OptimisticLockingFailureException;
-import org.springframework.transaction.annotation.Transactional;
 
 
 
@@ -77,7 +77,7 @@ import org.springframework.transaction.annotation.Transactional;
  * calling back into documents for various centralization of functionality. This is the default, Kuali delivered implementation
  * which utilizes Workflow.
  */
-@Transactional
+@TransactionalNoValidationExceptionRollback
 public class DocumentServiceImpl implements DocumentService {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentServiceImpl.class);
 

@@ -196,7 +196,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 CollectionUtils.addAll(sorted, rawProperties.propertyNames());
                 
                 for (String s : sorted) {
-                	log.append("Using config Prop " + s + "=[" + ConfigLogger.getDisplaySafeValue(s, (String) rawProperties.get(s)) + "]\n");
+                	log.append("Using config Prop " + s + "=[" + ConfigLogger.getDisplaySafeValue(s, this.getProperty(s)) + "]\n");
                 }
                 LOG.info(log);
             }

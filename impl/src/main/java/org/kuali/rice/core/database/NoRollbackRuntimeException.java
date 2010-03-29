@@ -15,20 +15,28 @@
  */
 package org.kuali.rice.core.database;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
-import org.springframework.transaction.annotation.Transactional;
-
 /**
- * A meta-annotation which prevents rollback on ValidationException 
+ * Parent exception of runtime exceptions which should not cause KualiRequestProcessor to rollback. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
-@Retention(RetentionPolicy.RUNTIME)
-@Transactional(noRollbackFor={org.kuali.rice.core.database.NoRollbackRuntimeException.class})
-public @interface TransactionalNoValidationExceptionRollback {}
+public class NoRollbackRuntimeException extends RuntimeException {
+
+	public NoRollbackRuntimeException() {
+		super();
+	}
+
+	public NoRollbackRuntimeException(String message, Throwable wrappedThrowable) {
+		super(message, wrappedThrowable);
+	}
+
+	public NoRollbackRuntimeException(String message) {
+		super(message);
+	}
+
+	public NoRollbackRuntimeException(Throwable wrappedThrowable) {
+		super(wrappedThrowable);
+	}
+
+}

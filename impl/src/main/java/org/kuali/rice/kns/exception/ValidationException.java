@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.kns.exception;
 
+import org.kuali.rice.core.database.NoRollbackRuntimeException;
+
 /**
  * ValidationException
  * 
  * 
  */
-public class ValidationException extends RuntimeException {
+public class ValidationException extends NoRollbackRuntimeException {
     private static final long serialVersionUID = 2098470374196729509L;
 
     /**

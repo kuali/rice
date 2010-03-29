@@ -58,7 +58,7 @@ public interface SearchableAttribute extends Serializable {
     public String getSearchContent(DocumentSearchContext documentSearchContext);
 
     /**
-     * this will return the loaded data objects for storage in workflow�s database to be related to the document the
+     * this will return the loaded data objects for storage in workflow database to be related to the document the
      * attributes xml content was loaded with
      *
      * @return

@@ -27,6 +27,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
 import org.hibernate.proxy.HibernateProxy;
+import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.util.OrmUtils;
@@ -120,6 +121,14 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 */
 	public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues) {
 		return (Collection<T>)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildJpaCriteria(clazz, fieldValues)).toQuery().getResultList();
+	}
+
+	/**
+	 * Uses the passed query to form a Rice QueryByCriteria, which then translates to a JPA query and retrieves results
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(org.kuali.rice.core.jpa.criteria.Criteria)
+	 */
+	public <T extends BusinessObject> Collection<T> findMatching(Criteria criteria) {
+		return (List<T>)new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
 	}
 
 	/**

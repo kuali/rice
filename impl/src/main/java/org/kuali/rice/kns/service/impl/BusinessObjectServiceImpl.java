@@ -29,6 +29,7 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
@@ -203,6 +204,14 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     }
 
     /**
+     * Defers to the businessObjectDao to do the query
+	 * @see org.kuali.rice.kns.service.BusinessObjectService#findMatching(org.kuali.rice.core.jpa.criteria.Criteria)
+	 */
+	public <T extends BusinessObject> Collection<T> findMatching(Criteria criteria) {
+		return businessObjectDao.findMatching(criteria);
+	}
+
+	/**
      * @see org.kuali.rice.kns.service.BusinessObjectService#countMatching(java.lang.Class, java.util.Map)
      */
     public int countMatching(Class clazz, Map<String, ?> fieldValues) {

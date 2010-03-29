@@ -389,4 +389,11 @@ public class Criteria {
     public String getAlias() {
         return this.alias;
     }
+    
+    /**
+     * @return the name of the class of Entity this Criteria will search for
+     */
+    public String getEntityName() {
+    	return this.entityName;
+    }
 }

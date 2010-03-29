@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 
@@ -129,6 +130,15 @@ public interface BusinessObjectService {
      * @return
      */
     public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues);
+    
+    /**
+     * Finds all entities matching the passed in Rice JPA criteria
+     * 
+     * @param <T> the type of the entity that will be returned
+     * @param criteria the criteria to form the query with
+     * @return a Collection (most likely a List) of all matching entities 
+     */
+    public abstract <T extends BusinessObject> Collection<T> findMatching(Criteria criteria);
 
     /**
      * This method retrieves a count of the business objects populated with data which match the criteria in the given Map.

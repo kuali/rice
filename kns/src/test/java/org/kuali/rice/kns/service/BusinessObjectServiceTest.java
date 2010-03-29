@@ -16,9 +16,13 @@
 package org.kuali.rice.kns.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.kuali.rice.kns.bo.State;
+import org.kuali.rice.kns.bo.StateImpl;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestCase;
@@ -99,4 +103,25 @@ public class BusinessObjectServiceTest extends KNSTestCase {
     	assertNull("manager2 should be null", manager2);
     }
 
+    @Test
+    public void testFindMatchingByCriteria() {
+    	final BusinessObjectService boService = KNSServiceLocator.getBusinessObjectService();
+    	
+    	final Collection<? extends State> allStates = boService.findAll(StateImpl.class);
+    	
+    	org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(StateImpl.class.getName());
+    	criteria.eq("postalCountryCode", "US");
+    	Collection<State> states = boService.findMatching(criteria);
+    	Assert.assertEquals("There should be "+allStates.size()+" states with country code US", allStates.size(), states.size());
+    	
+    	criteria = new org.kuali.rice.core.jpa.criteria.Criteria(StateImpl.class.getName());
+    	criteria.eq("postalStateCode", "AZ");
+    	states = boService.findMatching(criteria);
+    	Assert.assertEquals("There should be 1 state with state code AZ", 1, states.size());
+    	
+    	criteria = new org.kuali.rice.core.jpa.criteria.Criteria(StateImpl.class.getName());
+    	criteria.eq("postalStateCode", "MZ");
+    	states = boService.findMatching(criteria);
+    	Assert.assertEquals("There should not be any states with state code MZ", 0, states.size());
+    }
 }

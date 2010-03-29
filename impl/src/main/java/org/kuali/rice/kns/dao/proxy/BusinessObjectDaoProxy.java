@@ -25,6 +25,7 @@ import javax.persistence.EntityManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -180,6 +181,20 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	 */
 	public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues) {
 		return getDao(clazz).findMatching(clazz, fieldValues);
+	}
+
+	/**
+	 * Has the proxied DAO handle the criteria
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(org.kuali.rice.core.jpa.criteria.Criteria)
+	 */
+	public <T extends BusinessObject> Collection<T> findMatching(Criteria criteria) {
+		Class clazz = null;
+		try {
+			clazz = Class.forName(criteria.getEntityName());
+		} catch (ClassNotFoundException cnfe) {
+			throw new RuntimeException("Attempted to run JPA Criteria which uses a non-existent class to query against: "+criteria.getEntityName(), cnfe);
+		}
+		return getDao(clazz).findMatching(criteria);
 	}
 
 	/**

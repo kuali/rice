@@ -18,18 +18,18 @@ package org.kuali.rice.kns.service.impl;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.database.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kns.dao.MaintenanceDocumentDao;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * This class is the service implementation for the MaintenanceDocument structure. This is the default implementation, that is
  * delivered with Kuali.
  */
-@Transactional
+@TransactionalNoValidationExceptionRollback
 public class MaintenanceDocumentServiceImpl implements MaintenanceDocumentService {
 
     private MaintenanceDocumentDao maintenanceDocumentDao;

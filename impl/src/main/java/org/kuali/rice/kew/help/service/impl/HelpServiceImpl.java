@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom.Element;
+import org.kuali.rice.core.database.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -32,10 +33,9 @@ import org.kuali.rice.kew.xml.HelpEntryXmlParser;
 import org.kuali.rice.kew.xml.export.HelpEntryXmlExporter;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.springframework.transaction.annotation.Transactional;
 
 
-@Transactional
+@TransactionalNoValidationExceptionRollback
 public class HelpServiceImpl implements HelpService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(HelpServiceImpl.class);
     private HelpDAO helpDAO;

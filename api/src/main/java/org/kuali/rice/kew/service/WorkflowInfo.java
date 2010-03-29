@@ -19,8 +19,6 @@ package org.kuali.rice.kew.service;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.dto.ActionItemDTO;
@@ -62,7 +60,7 @@ public class WorkflowInfo implements java.io.Serializable {
      */
 	private WorkflowUtility getWorkflowUtility() throws WorkflowException {
         WorkflowUtility workflowUtility = 
-        	(WorkflowUtility)GlobalResourceLoader.getService(new QName(KEWConstants.KEW_MODULE_NAMESPACE, KEWConstants.WORKFLOW_UTILITY_SERVICE));
+        	(WorkflowUtility)GlobalResourceLoader.getService(KEWConstants.WORKFLOW_UTILITY_SERVICE);
     	if (workflowUtility == null) {
     		throw new WorkflowException("Could not locate the WorkflowUtility service.  Please ensure that KEW client is configured properly!");
     	}

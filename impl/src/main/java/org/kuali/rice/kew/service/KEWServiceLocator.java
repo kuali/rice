@@ -257,11 +257,17 @@ public final class KEWServiceLocator {
 	}
 
 	public static WorkflowUtility getWorkflowUtilityService() {
-		return (WorkflowUtility) getBean(KEWConstants.WORKFLOW_UTILITY_SERVICE);
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Fetching service " + KEWConstants.WORKFLOW_UTILITY_SERVICE);
+		}
+		return (WorkflowUtility) GlobalResourceLoader.getResourceLoader().getService(new QName(KEWConstants.WORKFLOW_UTILITY_SERVICE));
 	}
 
 	public static WorkflowDocumentActions getWorkflowDocumentActionsService() {
-		return (WorkflowDocumentActions) getBean(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Fetching service " + KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
+		}
+		return (WorkflowDocumentActions) GlobalResourceLoader.getResourceLoader().getService(new QName(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE));
 	}
 
 	public static DocumentTypeService getDocumentTypeService() {

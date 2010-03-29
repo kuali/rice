@@ -61,11 +61,12 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     private final List<String> fileLocs = new ArrayList<String>();
 
     private final Map<String, Object> objects = new LinkedHashMap<String, Object>();
-    private final Properties properties = new Properties();
+    private final Properties rawProperties = new Properties();
+    private final Properties resolvedProperties = new Properties();
 
     // compile pattern for regex once
     private final Pattern pattern = Pattern.compile(PLACEHOLDER_REGEX);
-    
+
     private boolean runtimeResolution = false;
     private boolean systemOverride = false;
     
@@ -81,17 +82,17 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
 
     public JAXBConfigImpl(Properties properties) {    	    	
-    	this.properties.putAll(properties);
+    	this.rawProperties.putAll(properties);
     }
     
     public JAXBConfigImpl(String fileLoc, Properties properties) {
         this.fileLocs.add(fileLoc);        
-        this.properties.putAll(properties);
+        this.rawProperties.putAll(properties);
     }
 
     public JAXBConfigImpl(List<String> fileLocs, Properties properties) {
         this.fileLocs.addAll(fileLocs);        
-        this.properties.putAll(properties);
+        this.rawProperties.putAll(properties);
     }
 
     public Object getObject(String key) {
@@ -103,7 +104,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
 
     public Properties getProperties() {
-    	return new ImmutableProperties(properties);
+    	return new ImmutableProperties(resolvedProperties);
         //return properties;
     }
 
@@ -112,38 +113,36 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             return resolve(key);
         }
         
-        return properties.getProperty(key);
+        return resolvedProperties.getProperty(key);
     }
 
-    public void overrideProperty(String name, String value) {        
-        this.putProperty(name, value);
+    public void overrideProperty(String name, String value) {
+    	this.putProperty(name, value);
     }
    
     /**
      * 
-     * This overrided the property. Takes the place of the now depricated overrideProperty
+     * This overridden method just called the "override property" method. 
+     * They do the same thing, but override was in the API first, but didn't 
      * 
      * @see org.kuali.rice.core.config.Config#putProperty(java.lang.String, java.lang.Object)
      */
 	public void putProperty(String key, Object value) {
-		if(!runtimeResolution) {
-            HashSet<String> keySet = new HashSet<String>();
-            keySet.add(key);
-            value = parseValue(value.toString(), keySet);
-        }
+		rawProperties.setProperty(key, replaceVariable(key, value.toString()));
         
-        setProperty(key, value.toString());		
+        if(!runtimeResolution) {
+        	resolveRawToCache();
+        }
 	}
 
 	public void putProperties(Properties properties) {
         if (properties != null) {
-
-            this.properties.putAll(properties);
+        	for(Object o : properties.keySet()) {
+        		this.rawProperties.setProperty((String)o, replaceVariable((String)o, properties.getProperty((String)o)));
+        	}
             
             if(!runtimeResolution) {
-                for (Object o : properties.keySet()) {
-                    setProperty((String)o, resolve((String)o));
-                }
+            	resolveRawToCache();
             }
         }
     }
@@ -178,9 +177,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             // if runtimeResolution is not enabled.  This will also replace properties
             // defined in the files with system properties if systemOverride==true.
             if(!runtimeResolution) {
-                for (Object o : properties.keySet()) {
-                    setProperty((String)o, resolve((String)o));
-                }
+            	resolveRawToCache();
             }
 
             if (LOG.isInfoEnabled()) {
@@ -196,10 +193,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 //SortedSet<String> sorted = new TreeSet<String>(properties.stringPropertyNames());
                 
                 SortedSet<String> sorted = new TreeSet<String>();
-                CollectionUtils.addAll(sorted, properties.propertyNames());
+                CollectionUtils.addAll(sorted, rawProperties.propertyNames());
                 
                 for (String s : sorted) {
-                	log.append("Using config Prop " + s + "=[" + ConfigLogger.getDisplaySafeValue(s, (String) properties.get(s)) + "]\n");
+                	log.append("Using config Prop " + s + "=[" + ConfigLogger.getDisplaySafeValue(s, (String) rawProperties.get(s)) + "]\n");
                 }
                 LOG.info(log);
             }
@@ -247,10 +244,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 if (name.equals(IMPORT_NAME)) {
                     String configLocation = parseValue(p.getValue(), new HashSet<String>());
                     parseConfig(configLocation, unmarshaller, depth + 1);
-                } else if (p.isOverride() || !properties.containsKey(name)) {
+                } else if (p.isOverride() || !rawProperties.containsKey(name)) {
 
                     if (p.isRandom()) {
-                        setProperty(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
+                        rawProperties.setProperty(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
                     } else if (p.isSystem()) {
                         // resolve and set system params immediately so they can override
                         // existing system params. Add to paramMap resolved as well to
@@ -259,7 +256,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                         set.add(p.getName());
                         String value = parseValue(p.getValue(), set);
                         System.setProperty(name, value);
-                        setProperty(name, value);
+                        rawProperties.setProperty(name, value);
                     } else {
                     	
                     	/*
@@ -270,21 +267,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                     	 * myProp = dog:someOtherStuff:${foo}
                     	 * so that we put the existing value of myProp into the new value. Basically how path works.
                     	 */
-                    	String value = p.getValue();
-                    	String regex = "(?:\\$\\{"+ name +"\\})";
-                    	if((properties.containsKey(name)  || System.getProperties().containsKey(name))
-                    			&& value.indexOf("\\$\\{"+ name +"\\}") != 0){                    		                    		
-                    		// This is a special in-line replacement that doesn't call the resolve so system properties
-                    		// haven't been set yet.  Because of this, overwrite any existing value in properties 
-                    		// with the system var, if it exists
-                    		String replacement = properties.getProperty(name);
-                    		if(System.getProperties().containsKey(name)){
-                    			replacement = System.getProperty(name);
-                    		}
-                    		value = value.replaceAll(regex,  Matcher.quoteReplacement(replacement));                    		                    		
-                    	}                                        
+                    	String value = replaceVariable(name, p.getValue());                       
                     	
-                    	setProperty(p.getName(), value);                    	
+                    	rawProperties.setProperty(name, value);                    	
                     }
                 }
             }
@@ -297,7 +282,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * This will set the property. No logic checking so what you pass in gets set.
      */
     protected void setProperty(String name, String value){
-    	properties.setProperty(name, value);
+    	rawProperties.setProperty(name, value);
     }    
 
     protected String resolve(String key) {
@@ -311,7 +296,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             throw new ConfigurationException("Circular reference in config: " + key);
         }
         
-        String value = this.properties.getProperty(key);
+        String value = this.rawProperties.getProperty(key);
         
         if ((value == null || systemOverride) && System.getProperties().containsKey(key)) {
             value = System.getProperty(key);
@@ -356,17 +341,44 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
     
     
-    protected String replaceVariable(String baseString, String name, String value){
-    	String pattern = "${"+ name +"}";    	
-    	return baseString.replaceAll(Matcher.quoteReplacement(pattern), value);
+    protected String replaceVariable(String name, String value){
+    	String regex = "(?:\\$\\{"+ name +"\\})";
+    	String temporary = null;
+    	
+    	// if a property being read/input contains a reference to itself (env=${env}, then
+    	// replace with the old value if it exists.
+    	// Look for a property in the map first and use that.  If system override is true
+    	// then it will get overridden during the resolve phase.  If the value is null
+    	// we need to check the system now so we don't throw an error.
+    	if(value.indexOf("\\$\\{"+ name +"\\}") != 0) {
+    		if( (temporary = rawProperties.getProperty(name)) == null ) {
+    			temporary = System.getProperty(name);
+    		}
+    		
+    		if(temporary != null) {
+    			return value.replaceAll(regex,  Matcher.quoteReplacement(temporary));
+    		}
+    	}   
+    	
+    	return value;
+    }
+    
+    protected void resolveRawToCache() {
+    	if(rawProperties.size() > 0) {
+    		resolvedProperties.clear();
+    		
+    		for(Object o : rawProperties.keySet()) {
+    			resolvedProperties.setProperty((String)o, resolve((String)o));
+    		}
+    	}
     }
 
     /**
      * Configures built-in properties.
      */
     protected void configureBuiltIns() {
-        setProperty("host.ip", RiceUtilities.getIpNumber());
-        setProperty("host.name", RiceUtilities.getHostName());
+    	rawProperties.setProperty("host.ip", RiceUtilities.getIpNumber());
+    	rawProperties.setProperty("host.name", RiceUtilities.getHostName());
     }
 
     /**
@@ -489,8 +501,13 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 	public void removeObject(String key){
 		this.objects.remove(key);
 	}
+	
 	public void removeProperty(String key){
-		this.properties.remove(key);
+		this.rawProperties.remove(key);
+		
+		if(!runtimeResolution) {
+        	resolveRawToCache();
+        }
 	}
     
 }

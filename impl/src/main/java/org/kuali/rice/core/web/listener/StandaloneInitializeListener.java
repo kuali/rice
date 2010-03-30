@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.JAXBConfigImpl;
-import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.util.KEWConstants;

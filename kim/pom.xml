@@ -27,12 +27,12 @@
 
     <build>
         <plugins>
-            <plugin>
+            <!-- plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
                     <forkMode>pertest</forkMode>
                 </configuration>
-            </plugin>
+            </plugin -->
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>

@@ -81,18 +81,21 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         this.fileLocs.addAll(fileLocs);
     }
 
-    public JAXBConfigImpl(Properties properties) {    	    	
-    	this.rawProperties.putAll(properties);
+    public JAXBConfigImpl(Properties properties) {    	   
+    	this.putProperties(properties);
+    	//this.rawProperties.putAll(properties);
     }
     
     public JAXBConfigImpl(String fileLoc, Properties properties) {
-        this.fileLocs.add(fileLoc);        
-        this.rawProperties.putAll(properties);
+        this.fileLocs.add(fileLoc);    
+        this.putProperties(properties);
+        //this.rawProperties.putAll(properties);
     }
 
     public JAXBConfigImpl(List<String> fileLocs, Properties properties) {
         this.fileLocs.addAll(fileLocs);        
-        this.rawProperties.putAll(properties);
+        this.putProperties(properties);
+        //this.rawProperties.putAll(properties);
     }
 
     public Object getObject(String key) {
@@ -127,7 +130,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * 
      * @see org.kuali.rice.core.config.Config#putProperty(java.lang.String, java.lang.Object)
      */
-	public void putProperty(String key, Object value) {
+	public void putProperty(String key, String value) {
 		rawProperties.setProperty(key, replaceVariable(key, value.toString()));
         
         if(!runtimeResolution) {

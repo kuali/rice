@@ -130,7 +130,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * 
      * @see org.kuali.rice.core.config.Config#putProperty(java.lang.String, java.lang.Object)
      */
-	public void putProperty(String key, String value) {
+	public void putProperty(String key, Object value) {
 		rawProperties.setProperty(key, replaceVariable(key, value.toString()));
         
         if(!runtimeResolution) {

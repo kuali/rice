@@ -28,11 +28,11 @@
     <build>
         <plugins>
 		    <plugin>                                                                                                                                                      
-                <artifactId>maven-surefire-plugin</artifactId>^M                                                                                                                  
-                <configuration>^M                                                                                                                                                 
-                    <forkMode>pertest</forkMode>^M                                                                                                                                
-                </configuration>^M                                                                                                                                                
-            </plugin>^M
+                <artifactId>maven-surefire-plugin</artifactId>                                                                                                   
+                <configuration>
+                    <forkMode>pertest</forkMode>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>

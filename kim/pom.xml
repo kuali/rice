@@ -27,6 +27,12 @@
 
     <build>
         <plugins>
+		    <plugin>                                                                                                                                                      
+                <artifactId>maven-surefire-plugin</artifactId>^M                                                                                                                  
+                <configuration>^M                                                                                                                                                 
+                    <forkMode>pertest</forkMode>^M                                                                                                                                
+                </configuration>^M                                                                                                                                                
+            </plugin>^M
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <configuration>

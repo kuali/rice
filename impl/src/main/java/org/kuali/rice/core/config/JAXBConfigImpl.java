@@ -553,9 +553,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 	
 	public void removeProperty(String key){
 		this.rawProperties.remove(key);
-    	
-    	// not sure what to do here, only bad things can happen if we resolve
-    	//resolveRawToCache();
+    	    	
+    	resolveRawToCache();
 	}
 
 	public void putConfig(Config config) {

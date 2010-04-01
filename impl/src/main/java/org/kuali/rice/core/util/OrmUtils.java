@@ -26,7 +26,6 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.MappedSuperclass;
 
-import org.hibernate.SessionFactory;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
@@ -84,20 +83,20 @@ public class OrmUtils {
 		return value;
 	}
 	
-    public static void reattach(Object attached, Object detached) {
+	public static void reattach(Object detached, Object attached) {
     	if ( LOG.isDebugEnabled() ) {
-    		LOG.debug("Reattaching entity: " + detached.getClass().getName());
+    		LOG.debug("Reattaching entity: " + attached.getClass().getName());
     	}
     	// Don't want to get parent fields if overridden in children since we are walking the tree from child to parent
     	Set<String> cachedFields = new HashSet<String>(); 
-    	Class attachedClass = attached.getClass();
+    	Class attachedClass = detached.getClass();
     	do {
     		for (Field attachedField : attachedClass.getDeclaredFields()) {
     			try {
     				attachedField.setAccessible(true);
     				int mods = attachedField.getModifiers();
     				if (!cachedFields.contains(attachedField.getName()) && !Modifier.isFinal(mods) && !Modifier.isStatic(mods)) {
-    					attachedField.set(attached, attachedField.get(detached));
+    					attachedField.set(detached, attachedField.get(attached));
     					cachedFields.add(attachedField.getName());
     				}
     			} catch (Exception e) {
@@ -113,7 +112,8 @@ public class OrmUtils {
             manager.merge(entity);
         }
         else {
-            OrmUtils.reattach(entity, manager.merge(entity));
+            //OrmUtils.reattach(entity, manager.merge(entity));
+        	OrmUtils.reattach(manager.merge(entity),entity);
         }
     }
     

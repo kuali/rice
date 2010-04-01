@@ -168,8 +168,18 @@
 		<echo message="(COVERAGE): running tests to build coverage data file" />
 		<maven goals="cobertura:cobertura" options="-Dmaven.repo.local=${coverage.m2repo} -Dcobertura.datafile=${coverage.datafile}" />
 
-		<echo message="(COVERAGE): generating all inclusive coverage report (${coverage.datafile} -> ${coverage.report})" />
+		<echo message="(COVERAGE): generating all inclusive HTML coverage report (${coverage.datafile} -> ${coverage.report})" />
 		<cobertura-report format="html" destdir="${coverage.report}" datafile="${coverage.datafile}">
+			<fileset dir="api/src/main/java">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="impl/src/main/java">
+				<include name="**/*.java" />
+			</fileset>
+		</cobertura-report>
+	
+		<echo message="(COVERAGE): generating all inclusive XML coverage report (${coverage.datafile} -> ${coverage.report})" />
+		<cobertura-report format="xml" destdir="${coverage.report}" datafile="${coverage.datafile}">
 			<fileset dir="api/src/main/java">
 				<include name="**/*.java" />
 			</fileset>

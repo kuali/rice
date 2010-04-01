@@ -24,7 +24,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.xsd.Config;
+
 import org.kuali.rice.core.config.xsd.Param;
 import org.kuali.rice.core.util.ImmutableProperties;
 import org.kuali.rice.core.util.RiceUtilities;
@@ -72,6 +72,20 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     
     public JAXBConfigImpl(){}
     
+    public JAXBConfigImpl(org.kuali.rice.core.config.Config config) {
+    	this.copyConfig(config);
+    }
+    
+    public JAXBConfigImpl(String fileLoc, org.kuali.rice.core.config.Config config) {
+    	this.copyConfig(config);
+    	this.fileLocs.add(fileLoc);
+    }
+    
+	public JAXBConfigImpl(List<String> fileLocs, org.kuali.rice.core.config.Config config) {
+    	this.copyConfig(config);
+    	this.fileLocs.addAll(fileLocs);
+    	
+    }
     
     public JAXBConfigImpl(String fileLoc) {
         this.fileLocs.add(fileLoc);
@@ -83,21 +97,33 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
     public JAXBConfigImpl(Properties properties) {    	   
     	this.putProperties(properties);
-    	//this.rawProperties.putAll(properties);
     }
     
     public JAXBConfigImpl(String fileLoc, Properties properties) {
         this.fileLocs.add(fileLoc);    
         this.putProperties(properties);
-        //this.rawProperties.putAll(properties);
     }
 
     public JAXBConfigImpl(List<String> fileLocs, Properties properties) {
         this.fileLocs.addAll(fileLocs);        
         this.putProperties(properties);
-        //this.rawProperties.putAll(properties);
     }
+    
+    /*****************************************************/
 
+    /*
+     * We need the ability to take a config object and copy the raw + cached data into
+     * this config object. 
+     */
+    private void copyConfig(Config config){
+    	if(config instanceof JAXBConfigImpl) {
+    		this.rawProperties.putAll(((JAXBConfigImpl) config).rawProperties);
+    		this.resolvedProperties.putAll(((JAXBConfigImpl) config).resolvedProperties);
+    	}else{
+    		this.putProperties(config.getProperties());
+    	}
+    }
+    
     public Object getObject(String key) {
         return objects.get(key);
     }
@@ -162,7 +188,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             Unmarshaller unmarshaller;
 
             try {
-                jaxbContext = JAXBContext.newInstance(Config.class);
+                jaxbContext = JAXBContext.newInstance(org.kuali.rice.core.config.xsd.Config.class);
                 unmarshaller = jaxbContext.createUnmarshaller();
             } catch (Exception ex) {
                 throw new ConfigurationException("Error initializing JAXB for config", ex);
@@ -232,7 +258,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
             final String prefix = StringUtils.repeat(INDENT, depth);            
             LOG.info(prefix + "+ Parsing config: " + filename);            
-            Config config;
+            org.kuali.rice.core.config.xsd.Config config;
 
             try {
                 config = unmarshal(unmarshaller, in);
@@ -446,7 +472,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         this.runtimeResolution = runtimeResolution;
     }
 
-    protected Config unmarshal(Unmarshaller unmarshaller, InputStream in) throws Exception {
+    protected org.kuali.rice.core.config.xsd.Config unmarshal(Unmarshaller unmarshaller, InputStream in) throws Exception {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
 
@@ -458,7 +484,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
         filter.parse(new InputSource(in));
 
-        return (Config)handler.getResult();
+        return (org.kuali.rice.core.config.xsd.Config)handler.getResult();
     }
 
     /**

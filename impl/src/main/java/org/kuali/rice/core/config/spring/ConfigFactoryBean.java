@@ -31,19 +31,22 @@ public class ConfigFactoryBean implements FactoryBean {
 	public static String CONFIG_OVERRIDE_LOCATION;
 
 	public Object getObject() throws Exception {
+		
+		Config oldConfig = null;
+		
 		if (getConfigLocations() == null) {
 			throw new ConfigurationException("No config locations declared, at least one is required");
 		}
 		Properties baseProperties = new Properties();
 		if (ConfigContext.getCurrentContextConfig() != null) {
-			baseProperties = ConfigContext.getCurrentContextConfig().getProperties();
+			oldConfig = ConfigContext.getCurrentContextConfig();
 		}
 		//SimpleConfig config = null;
 		JAXBConfigImpl config = null;
 		if (CONFIG_OVERRIDE_LOCATION != null) {
-			config = new JAXBConfigImpl(CONFIG_OVERRIDE_LOCATION, baseProperties);		
+			config = new JAXBConfigImpl(CONFIG_OVERRIDE_LOCATION, oldConfig);		
 		} else {
-			config = new JAXBConfigImpl(getConfigLocations(), baseProperties);
+			config = new JAXBConfigImpl(getConfigLocations(), oldConfig);
 		}
 
 		config.parseConfig();

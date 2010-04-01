@@ -1760,6 +1760,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(!attributePresent){
 					pndMemberRoleQualifier = new KimDocumentRoleQualifier();
 					pndMemberRoleQualifier.setKimAttrDefnId(origAttributeId);
+					pndMemberRoleQualifier.refreshReferenceObject("kimAttribute");
 					pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
 				}
 			}
@@ -1860,6 +1861,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(!attributePresent){
 					pndMemberRoleQualifier = new RoleDocumentDelegationMemberQualifier();
 					pndMemberRoleQualifier.setKimAttrDefnId(origAttributeId);
+					pndMemberRoleQualifier.refreshReferenceObject("kimAttribute");
 					pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
 				}
 				attributePresent = false;

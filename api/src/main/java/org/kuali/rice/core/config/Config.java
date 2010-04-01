@@ -161,6 +161,7 @@ public interface Config {
 	public static final String PORTAL_SHOW_SAMPLE_APP = "portal.show.sample.app";
 	
 	public void parseConfig() throws IOException;
+	
 
 	/**
 	 * Programmatically override or place a setting in the config properties
@@ -278,6 +279,16 @@ public interface Config {
 	public Boolean getStoreAndForward();
 	public Boolean getOutBoxOn();
 	public Boolean getOutBoxDefaultPreferenceOn();
+	
+	/**
+	 * 
+	 * This method takes a config object and merges it with the current
+	 * object.  
+	 * 
+	 * @param config
+	 */
+	public void putConfig(Config config);
+	
 	public void putProperties(Properties properties);
 	public void putProperty(String key, String value);
 	public void removeProperty(String key);

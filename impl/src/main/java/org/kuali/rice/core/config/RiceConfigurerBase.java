@@ -236,23 +236,18 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 		    this.rootConfig = new JAXBConfigImpl();
 		}
 		// append current root config to existing core config if config has already been initialized
-		Config currentRootConfig = ConfigContext.getRootConfig();
+		Config currentRootConfig = ConfigContext.getCurrentContextConfig();
 		if (currentRootConfig != null) {
-			currentRootConfig.putProperties(this.rootConfig.getProperties());
+			currentRootConfig.putConfig(rootConfig);
 			this.rootConfig = currentRootConfig;
 		} else {
 			ConfigContext.init(this.rootConfig);
 		}
 		
-		if (this.configLocations != null && !this.configLocations.isEmpty()) {
-			
-			 Config config = new JAXBConfigImpl(this.configLocations, this.properties);
-			config.parseConfig();
-			// merge the configs
-			// TODO with a refactoring of the config system, should we move toward a CompositeConfig?  THat way we can preserve the info about where this config was
-			// loaded from instead of just copying the properties?
-			this.rootConfig.putProperties(config.getProperties());
-			this.rootConfig.putObjects(config.getObjects());
+		if (this.configLocations != null && !this.configLocations.isEmpty()) {			
+			 Config tmpConfig = new JAXBConfigImpl(this.configLocations, this.properties);
+			tmpConfig.parseConfig();			
+			this.rootConfig.putConfig(tmpConfig);			
 		} else if (this.properties != null) {
 		    this.rootConfig.putProperties(this.properties);
 		}
@@ -267,8 +262,7 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 			// TODO should there be a hierarchy here?
 			Config moduleConfig = module.loadConfig(rootConfig);
 			if (moduleConfig != null) {
-				rootConfig.putProperties(moduleConfig.getProperties());
-				rootConfig.putObjects(moduleConfig.getObjects());
+				rootConfig.putConfig(moduleConfig);				
 			}
 		}
 	}

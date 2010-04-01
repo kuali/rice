@@ -475,7 +475,9 @@ public abstract class BaseConfig implements Config {
 	}
 	
 	public void putObjects(Map<String, Object> objects) {
-		this.objects.putAll(objects);
+		if(objects != null){
+			this.objects.putAll(objects);
+		}
 		
 	}
 	
@@ -485,5 +487,10 @@ public abstract class BaseConfig implements Config {
 	
 	public void removeProperty(String key){
 		this.getProperties().remove(key);
+	}
+	
+	public void putConfig(Config config) {
+		putProperties(config.getProperties());
+		putObjects(config.getObjects());
 	}
 }

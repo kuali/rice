@@ -117,9 +117,11 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     	if(config instanceof JAXBConfigImpl) {
     		this.rawProperties.putAll(((JAXBConfigImpl) config).rawProperties);
     		this.resolvedProperties.putAll(((JAXBConfigImpl) config).resolvedProperties);
-    	}else{
+    	}else{    		
     		this.putProperties(config.getProperties());
     	}
+    	if(config.getObjects() != null)
+    		this.objects.putAll(config.getObjects());
     }
     
     public Object getObject(String key) {
@@ -551,5 +553,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     	// not sure what to do here, only bad things can happen if we resolve
     	//resolveRawToCache();
 	}
+
+	public void putConfig(Config config) {
+		this.copyConfig(config);
+	}
+	
     
 }

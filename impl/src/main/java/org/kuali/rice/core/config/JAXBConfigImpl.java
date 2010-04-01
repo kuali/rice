@@ -36,10 +36,9 @@ import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
  * This implementation of the Config interface uses JAXB to parse the config file and
- * does not resolve variables in the property values until after all the files have been
- * parsed.
- * It has settings for runtime resolution which will not resolve variables in property
- * values until they are accessed.
+ * maintains an internal copy of all properties in their "raw" form (without any nested
+ * properties resolved).  This allows properties to be added in stages and still alter
+ * values of properties previously read in.
  * It also has settings for whether system properties should override all properties or
  * only serve as default when the property has not been defined.
  * 
@@ -67,7 +66,6 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     // compile pattern for regex once
     private final Pattern pattern = Pattern.compile(PLACEHOLDER_REGEX);
 
-    private boolean runtimeResolution = false;
     private boolean systemOverride = false;
     
     public JAXBConfigImpl(){}
@@ -134,14 +132,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
     public Properties getProperties() {
     	return new ImmutableProperties(resolvedProperties);
-        //return properties;
     }
 
     public String getProperty(String key) {
-        if(runtimeResolution) {
-            return resolve(key);
-        }
-        
         return resolvedProperties.getProperty(key);
     }
 
@@ -151,28 +144,22 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
    
     /**
      * 
-     * This overridden method just called the "override property" method. 
-     * They do the same thing, but override was in the API first, but didn't 
+     * This overrided the property. Takes the place of the now depricated overrideProperty
      * 
      * @see org.kuali.rice.core.config.Config#putProperty(java.lang.String, java.lang.Object)
      */
 	public void putProperty(String key, String value) {
-		rawProperties.setProperty(key, replaceVariable(key, value));
-        
-        if(!runtimeResolution) {
-        	resolveRawToCache();
-        }
+        rawProperties.setProperty(key, replaceVariable(key, value));
+        resolveRawToCache();
 	}
 
 	public void putProperties(Properties properties) {
         if (properties != null) {
-        	for(Object o : properties.keySet()) {
-        		this.rawProperties.setProperty((String)o, replaceVariable((String)o, properties.getProperty((String)o)));
-        	}
-            
-            if(!runtimeResolution) {
-            	resolveRawToCache();
+            for(Object o : properties.keySet()) {
+        	    this.rawProperties.setProperty((String)o, replaceVariable((String)o, properties.getProperty((String)o)));
             }
+            
+    	    resolveRawToCache();
         }
     }
 
@@ -202,12 +189,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 parseConfig(s, unmarshaller, 0);
             }
 
-            // now that all properties have been loaded, resolve the right hand side
-            // if runtimeResolution is not enabled.  This will also replace properties
+            // now that all properties have been loaded, resolve the right hand side from
+            // the raw properties into the resolved properties.  This will also replace properties
             // defined in the files with system properties if systemOverride==true.
-            if(!runtimeResolution) {
-            	resolveRawToCache();
-            }
+            resolveRawToCache();
 
             if (LOG.isInfoEnabled()) {
             	final StringBuilder log = new StringBuilder();
@@ -279,7 +264,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                         rawProperties.setProperty(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
                     } else if (p.isSystem()) {
                         // resolve and set system params immediately so they can override
-                        // existing system params. Add to paramMap resolved as well to
+                        // existing system params. Add to rawProperties resolved as well to
                         // prevent possible mismatch
                         HashSet<String> set = new HashSet<String>();
                         set.add(p.getName());
@@ -318,6 +303,19 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     	return resolve(key, null);
     }
     
+    /**
+     * This method will determine the value for a property by looking it up in the raw properties.  If the
+     * property value contains a nested property (foo=${nested}) it will start the recursion by
+     * calling parseValue().
+     * It will also check for a system property of the same name and, based on the value of systemOverride,
+     * 'override with' the system property or 'default to' the system property if not found in the raw properties.
+     * This method only determines the resolved value, it does not modify the properties in the resolved or raw
+     * properties objects.
+     * 
+     * @param key they key of the property for which to determine the value
+     * @param keySet contains all keys used so far in this recursion.  used to check for circular references.
+     * @return
+     */
     protected String resolve(String key, Set keySet) {
     	
         // check if we have already resolved this key and have circular reference
@@ -350,6 +348,15 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         return value;
     }
  
+    /**
+     * This method parses the value string to find all nested properties (foo=${nested}) and
+     * replaces them with the value returned from calling resolve().  It does this in a new
+     * string and does not modify the raw or resolved properties objects.
+     * 
+     * @param value the string to search for nest properties
+     * @param keySet contains all keys used so far in this recursion.  used to check for circular references.
+     * @return
+     */
     protected String parseValue(String value, Set<String> keySet) {
         String result = value;
 
@@ -370,12 +377,31 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
     
     
+    /**
+     * This method is used when reading in new properties to check if there is a direct reference to the
+     * key in the value.  This emulates operating system environment variable setting behavior 
+     * and replaces the reference in the value with the current value of the property from the rawProperties.
+     * <pre>
+     * ex:
+     * path=/usr/bin;${someVar}
+     * path=${path};/some/other/path
+     * 
+     * resolves to:
+     * path=/usr/bin;${someVar};/some/other/path
+     * </pre>
+     * 
+     * It does not resolve the the value from rawProperties as it could contain nested properties that might change later.
+     * If the property does not exist in the rawProperties it will check for a default system property now to
+     * prevent a circular reference error.
+     * 
+     * @param name the property name
+     * @param value the value to check for nested property of the same name
+     * @return
+     */
     protected String replaceVariable(String name, String value){
     	String regex = "(?:\\$\\{"+ name +"\\})";
     	String temporary = null;
     	
-    	// if a property being read/input contains a reference to itself (env=${env}, then
-    	// replace with the old value if it exists.
     	// Look for a property in the map first and use that.  If system override is true
     	// then it will get overridden during the resolve phase.  If the value is null
     	// we need to check the system now so we don't throw an error.
@@ -392,6 +418,11 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     	return value;
     }
     
+    /**
+     * This method iterates through the raw properties and stores their resolved values in the
+     * resolved properties map, which acts as a cache so we don't have to run the recursion every
+     * time getProperty() is called.
+     */
     protected void resolveRawToCache() {
     	if(rawProperties.size() > 0) {
     		resolvedProperties.clear();
@@ -453,23 +484,6 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      */
     public void setSystemOverride(boolean systemOverride) {
         this.systemOverride = systemOverride;
-    }
-    
-    public boolean isRuntimeResolution() {
-        return runtimeResolution;
-    }
-    
-    /**
-     * If set to true then properties with values that contain properties will be resolved
-     * on every getProperty() call.  If set to false then the property values will be resolved
-     * and cached at the end of parseConfig().
-     * 
-     * The default is false.
-     * 
-     * @param runtimeResolution
-     */
-    public void setRunitmeResolution(boolean runtimeResolution) {
-        this.runtimeResolution = runtimeResolution;
     }
 
     protected org.kuali.rice.core.config.xsd.Config unmarshal(Unmarshaller unmarshaller, InputStream in) throws Exception {
@@ -533,10 +547,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 	
 	public void removeProperty(String key){
 		this.rawProperties.remove(key);
-		
-		if(!runtimeResolution) {
-        	resolveRawToCache();
-        }
+    	
+    	// not sure what to do here, only bad things can happen if we resolve
+    	//resolveRawToCache();
 	}
     
 }

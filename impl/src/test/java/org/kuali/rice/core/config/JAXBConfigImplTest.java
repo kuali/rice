@@ -11,7 +11,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.PropertyConfigurator;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -51,22 +50,6 @@ public class JAXBConfigImplTest {
         config.parseConfig();
 
         doBasicAssertions(config);
-    }
-    
-    @Test
-    public void testRuntimeBasicFunctionality() throws Exception {
-        System.setProperty("some.system.property", "sys-value");
-        JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
-        
-        config.setRunitmeResolution(true);
-        config.parseConfig();
-
-        doBasicAssertions(config);
-        
-        config.putProperty("db", "mysql");
-        
-        assertEquals("mysql-user", config.getProperty("username"));
-        assertEquals("mysql-user+mysql", config.getProperty("multi"));
     }
 
     protected void doBasicAssertions(Config config) {

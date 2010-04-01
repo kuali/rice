@@ -114,11 +114,15 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * this config object. 
      */
     private void copyConfig(Config config){
+    	if(config == null) return;
+    	
     	if(config instanceof JAXBConfigImpl) {
     		this.rawProperties.putAll(((JAXBConfigImpl) config).rawProperties);
     		this.resolvedProperties.putAll(((JAXBConfigImpl) config).resolvedProperties);
     	}else{    		
+    		
     		this.putProperties(config.getProperties());
+    		
     	}
     	if(config.getObjects() != null)
     		this.objects.putAll(config.getObjects());

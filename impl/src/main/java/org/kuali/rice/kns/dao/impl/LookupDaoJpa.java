@@ -366,8 +366,8 @@ public class LookupDaoJpa implements LookupDao {
 			// DBPlatform function to force strings to upper case
 			if (caseInsensitive) {
 				// TODO: What to do here now that the JPA version does not extend platform aware?
-				//propertyName = getDbPlatform().getUpperCaseFunction() + "(__JPA_ALIAS__." + propertyName + ")";
-				propertyName = "UPPER(__JPA_ALIAS__." + propertyName + ")";
+				//propertyName = getDbPlatform().getUpperCaseFunction() + "(__JPA_ALIAS[[0]]__." + propertyName + ")";
+				propertyName = "UPPER(__JPA_ALIAS[[0]]__." + propertyName + ")";
 				propertyValue = propertyValue.toUpperCase();
 			}
 			if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue,

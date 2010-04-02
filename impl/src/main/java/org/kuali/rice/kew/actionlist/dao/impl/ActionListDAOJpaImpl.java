@@ -166,6 +166,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         LOG.debug("getting action list for route header id " + routeHeaderId);
         Criteria crit = new Criteria(ActionItem.class.getName());
         crit.eq("routeHeaderId", routeHeaderId);
+        crit.eq("TYPE(__JPA_ALIAS[[0]]__)", ActionItem.class);
         Collection<ActionItem> collection = new QueryByCriteria(entityManager, crit).toQuery().getResultList();
         LOG.debug("found " + collection.size() + " action items for route header id " + routeHeaderId);
         return toActionItemActionListExtensions(createActionListForRouteHeader(collection));

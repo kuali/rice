@@ -242,7 +242,8 @@ public class RuleDAOJpaImpl implements RuleDAO {
             crit.eq("ruleBaseValuesId", ruleId);
         }
         if (groupId != null) {
-            crit.in("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(groupId), "ruleBaseValuesId");
+            //crit.in("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(groupId), "ruleBaseValuesId");
+        	addResponsibilityCriteria(crit, groupId);
         }
         Collection<String> kimGroupIds = new HashSet<String>();
         Boolean searchUser = Boolean.FALSE;
@@ -268,73 +269,85 @@ public class RuleDAOJpaImpl implements RuleDAO {
             }
             kimGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
-        Criteria responsibilityCrit = getResponsibilitySubQuery(kimGroupIds, principalId, searchUser, searchUserInWorkgroups);
-        if (responsibilityCrit != null) {
-        	crit.in("responsibilities.ruleBaseValuesId", responsibilityCrit,"ruleBaseValuesId");
-        }
+        addResponsibilityCriteria(crit, kimGroupIds, principalId, searchUser, searchUserInWorkgroups);
+        //if (responsibilityCrit != null) {
+        	//crit.in("responsibilities.ruleBaseValuesId", responsibilityCrit,"ruleBaseValuesId");
+        //}
         crit.distinct(true);
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 
     public List search(String docTypeName, Long ruleTemplateId, String ruleDescription, Collection<String> workgroupIds, String workflowId, Boolean delegateRule, Boolean activeInd, Map extensionValues, Collection actionRequestCodes) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, delegateRule, activeInd, extensionValues);
-        Criteria responsibilityCrit = getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty()));
-        if (responsibilityCrit != null) {
-        	crit.in("responsibilities.ruleBaseValuesId", responsibilityCrit, "ruleBaseValuesId");
-        }
+        addResponsibilityCriteria(crit, workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty()));
+        //if (responsibilityCrit != null) {
+        	//crit.in("responsibilities.ruleBaseValuesId", responsibilityCrit, "ruleBaseValuesId");
+        //}
         return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    private Criteria getResponsibilitySubQuery(Collection<String> kimGroupIds, String principalId, Boolean searchUser, Boolean searchUserInWorkgroups) {
+    private void addResponsibilityCriteria(Criteria parentCrit, Collection<String> kimGroupIds, String principalId, Boolean searchUser, Boolean searchUserInWorkgroups) {
         Collection<String> workgroupIdStrings = new ArrayList<String>();
         for (String workgroupId : kimGroupIds) {
             workgroupIdStrings.add(workgroupId.toString());
         }
-        return getResponsibilitySubQuery(workgroupIdStrings,principalId,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
+        addResponsibilityCriteria(parentCrit, workgroupIdStrings,principalId,new ArrayList<String>(), searchUser, searchUserInWorkgroups);
     }
-    private Criteria getResponsibilitySubQuery(Collection<String> workgroupIds, String workflowId, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
+    
+    private void addResponsibilityCriteria(Criteria parentCrit, Collection<String> workgroupIds, String workflowId, Collection actionRequestCodes, Boolean searchUser, Boolean searchUserInWorkgroups) {
         Criteria responsibilityCrit = null;
 
         Criteria ruleResponsibilityNameCrit = null;
+        
+        if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
+        	responsibilityCrit = new Criteria(RuleBaseValues.class.getName(), false);
+            responsibilityCrit.in("__JPA_ALIAS[['rr']]__.actionRequestedCd", new ArrayList(actionRequestCodes));
+        }
+        
         if (!Utilities.isEmpty(workflowId)) {
             // workflow user id exists
             if (searchUser != null && searchUser) {
                 // searching user wishes to search for rules specific to user
-                ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
-                ruleResponsibilityNameCrit.like("ruleResponsibilityName", workflowId);
-                ruleResponsibilityNameCrit.eq("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
+                ruleResponsibilityNameCrit = new Criteria(RuleBaseValues.class.getName(), false);
+                ruleResponsibilityNameCrit.like("__JPA_ALIAS[['rr']]__.ruleResponsibilityName", workflowId);
+                ruleResponsibilityNameCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
             }
             if ( (searchUserInWorkgroups != null && searchUserInWorkgroups) && (workgroupIds != null) && (!workgroupIds.isEmpty()) ) {
                 // at least one workgroup id exists and user wishes to search on workgroups
                 if (ruleResponsibilityNameCrit == null) {
-                    ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
+                    ruleResponsibilityNameCrit = new Criteria(RuleBaseValues.class.getName(), false);
                 }
-                Criteria workgroupCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
-                workgroupCrit.in("ruleResponsibilityName", new ArrayList<String>(workgroupIds));
-                workgroupCrit.eq("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+                Criteria workgroupCrit = new Criteria(RuleBaseValues.class.getName(), false);
+                workgroupCrit.in("__JPA_ALIAS[['rr']]__.ruleResponsibilityName", new ArrayList<String>(workgroupIds));
+                workgroupCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
                 ruleResponsibilityNameCrit.or(workgroupCrit);
             }
         } else if ( (workgroupIds != null) && (workgroupIds.size() == 1) ) {
             // no user and one workgroup id
-            ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
-            ruleResponsibilityNameCrit.like("ruleResponsibilityName", workgroupIds.iterator().next());
-            ruleResponsibilityNameCrit.eq("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+            ruleResponsibilityNameCrit = new Criteria(RuleBaseValues.class.getName(), false);
+            ruleResponsibilityNameCrit.like("__JPA_ALIAS[['rr']]__.ruleResponsibilityName", workgroupIds.iterator().next());
+            ruleResponsibilityNameCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
         } else if ( (workgroupIds != null) && (workgroupIds.size() > 1) ) {
             // no user and more than one workgroup id
-            ruleResponsibilityNameCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
-            ruleResponsibilityNameCrit.in("ruleResponsibilityName",  new ArrayList<String>(workgroupIds));
-            ruleResponsibilityNameCrit.eq("ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
+            ruleResponsibilityNameCrit = new Criteria(RuleBaseValues.class.getName(), false);
+            ruleResponsibilityNameCrit.in("__JPA_ALIAS[['rr']]__.ruleResponsibilityName",  new ArrayList<String>(workgroupIds));
+            ruleResponsibilityNameCrit.eq("__JPA_ALIAS[['rr']]__.ruleResponsibilityType", KEWConstants.RULE_RESPONSIBILITY_GROUP_ID);
         }
 
         if (ruleResponsibilityNameCrit != null) {
-        	responsibilityCrit = new Criteria(RuleResponsibility.class.getName(), "rr");
-            if ( (actionRequestCodes != null) && (!actionRequestCodes.isEmpty()) ) {
-                responsibilityCrit.in("actionRequestedCd", new ArrayList(actionRequestCodes));
-            }
+        	if (responsibilityCrit == null) {
+        		responsibilityCrit = new Criteria(RuleBaseValues.class.getName(), false);
+        	}
             responsibilityCrit.and(ruleResponsibilityNameCrit);
         }
 
-        return responsibilityCrit;
+        if (responsibilityCrit != null) {
+        	if (parentCrit.getAliasIndex("rr") == -1) {
+    			parentCrit.join("responsibilities", "rr", false, true);
+    		}
+        	parentCrit.and(responsibilityCrit);
+        }
+        //return responsibilityCrit;
     }
 
     private Criteria getSearchCriteria(String docTypeName, Long ruleTemplateId, String ruleDescription, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
@@ -345,10 +358,10 @@ public class RuleDAOJpaImpl implements RuleDAO {
             crit.eq("activeInd", activeInd);
         }
         if (docTypeName != null) {
-            crit.like("UPPER(__JPA_ALIAS__.docTypeName)", docTypeName.toUpperCase());
+            crit.like("UPPER(__JPA_ALIAS[[0]]__.docTypeName)", docTypeName.toUpperCase());
         }
         if (ruleDescription != null && !ruleDescription.trim().equals("")) {
-            crit.like("UPPER(__JPA_ALIAS__.description)", ruleDescription.toUpperCase());
+            crit.like("UPPER(__JPA_ALIAS[[0]]__.description)", ruleDescription.toUpperCase());
         }
         if (ruleTemplateId != null) {
             crit.eq("ruleTemplateId", ruleTemplateId);
@@ -367,8 +380,10 @@ public class RuleDAOJpaImpl implements RuleDAO {
                     // "%"+(String) entry.getValue()+"%");
 
                     Criteria extensionCrit2 = new Criteria(RuleExtension.class.getName());
-                    extensionCrit2.eq("extensionValues.key", entry.getKey());
-                    extensionCrit2.like("UPPER(__JPA_ALIAS__.extensionValues.value)", ("%" + (String) entry.getValue() + "%").toUpperCase());
+                    extensionCrit2.distinct(true);
+                    extensionCrit2.join("extensionValues", "extval", false, true);
+                    extensionCrit2.eq("__JPA_ALIAS[['extval']]__.key", entry.getKey());
+                    extensionCrit2.like("UPPER(__JPA_ALIAS[['extval']]__.value)", ("%" + (String) entry.getValue() + "%").toUpperCase());
 
                     // Criteria extensionCrit3 = new Criteria();
                     // extensionCrit3.addEqualTo("extensionValues.key",
@@ -378,7 +393,8 @@ public class RuleDAOJpaImpl implements RuleDAO {
 
                     // extensionCrit.addOrCriteria(extensionCrit2);
                     // extensionCrit.addOrCriteria(extensionCrit3);
-                    crit.in("ruleExtensions.ruleBaseValuesId", extensionCrit2, "ruleBaseValuesId");
+                    extensionCrit2.memberOf("__JPA_ALIAS[[0]]__", "__JPA_ALIAS[[-1]]__.ruleExtensions");
+                    crit.exists(extensionCrit2);
                 }
             }
         }
@@ -399,12 +415,15 @@ public class RuleDAOJpaImpl implements RuleDAO {
 //        return crit;
 //    }
 
-	private Criteria getResponsibilitySubQuery(String ruleResponsibilityName) {
-		Criteria responsibilityCrit = new Criteria(RuleResponsibility.class.getName());
-		responsibilityCrit.like("ruleResponsibilityName", ruleResponsibilityName);
+	private void addResponsibilityCriteria(Criteria parentCrit, String ruleResponsibilityName) {
+		//Criteria responsibilityCrit = new Criteria(RuleResponsibility.class.getName());
+		if (parentCrit.getAliasIndex("rr") == -1) {
+			parentCrit.join("responsibilities", "rr", false, true);
+		}
+		parentCrit.like("__JPA_ALIAS[['rr']]__.ruleResponsibilityName", ruleResponsibilityName);
 		//ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleResponsibility.class, responsibilityCrit);
 		//query.setAttributes(new String[] { "ruleBaseValuesId" });
-		return responsibilityCrit;
+		//return responsibilityCrit;
 	}
 
 //	private Criteria getWorkgroupResponsibilitySubQuery(Set<Long> workgroupIds) {

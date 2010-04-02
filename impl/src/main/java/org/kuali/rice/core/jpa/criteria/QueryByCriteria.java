@@ -28,7 +28,7 @@ public class QueryByCriteria {
     private Criteria criteria;
     private QueryByCriteriaType type;
     
-    public enum QueryByCriteriaType {SELECT, DELETE}
+    public enum QueryByCriteriaType {SELECT, UPDATE, DELETE}
     
     public QueryByCriteria(EntityManager entityManager, Criteria criteria) {
         this(entityManager, criteria, QueryByCriteriaType.SELECT);

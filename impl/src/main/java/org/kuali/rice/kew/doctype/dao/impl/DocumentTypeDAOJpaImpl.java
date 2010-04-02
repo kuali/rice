@@ -83,7 +83,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	public DocumentType findByName(String name, boolean caseSensitive) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
 		if(!caseSensitive){
-			crit.like("UPPER(__JPA_ALIAS__.name)", ("%" + name.trim() + "%").toUpperCase());
+			crit.like("UPPER(__JPA_ALIAS[[0]]__.name)", ("%" + name.trim() + "%").toUpperCase());
 
 		}else{
 			crit.eq("name", name);
@@ -197,11 +197,11 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 
 		Criteria crit = new Criteria(DocumentType.class.getName());
 		if (documentType != null && !Utilities.isEmpty(documentType.getLabel())) {
-			crit.like("UPPER(__JPA_ALIAS__.label)", documentType.getLabel().trim().toUpperCase());
+			crit.like("UPPER(__JPA_ALIAS[[0]]__.label)", documentType.getLabel().trim().toUpperCase());
 		}
 		if (documentType != null && !Utilities.isEmpty(documentType.getName())) {
 			String docTypeName = documentType.getName();
-			crit.like("UPPER(__JPA_ALIAS__.name)", ("%" + docTypeName.trim() + "%").toUpperCase());
+			crit.like("UPPER(__JPA_ALIAS[[0]]__.name)", ("%" + docTypeName.trim() + "%").toUpperCase());
 		}
 		if (documentType != null && documentType.getActive() != null) {
 			crit.eq("active", documentType.getActive());

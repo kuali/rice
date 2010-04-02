@@ -653,7 +653,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
 
     private String[] getCaseInsensitiveValues(String propertyName, String propertyValue){
     	String[] keyValues = new String[2];
-    	keyValues[0] = propertyName==null?"":"UPPER(__JPA_ALIAS__." + propertyName + ")";
+    	keyValues[0] = propertyName==null?"":"UPPER(__JPA_ALIAS[[0]]__." + propertyName + ")";
     	keyValues[1] = propertyValue==null?"":propertyValue.toUpperCase();
     	return keyValues;
     }

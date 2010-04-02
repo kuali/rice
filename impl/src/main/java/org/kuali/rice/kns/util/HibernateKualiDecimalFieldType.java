@@ -74,6 +74,8 @@ HibernateImmutableValueUserType {
 
 		if (value instanceof KualiDecimal) {
 			source = ((KualiDecimal) value).bigDecimalValue();
+		} else if (value instanceof BigDecimal) {
+			source = value;
 		}
 		return source;
 	}

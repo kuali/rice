@@ -31,6 +31,7 @@
 		<property name="rice.app.code" value="kr"/>
 		<echo>The Kuali Rice version is ${maven.project.version}</echo>
         <!-- echo>${maven.project.dependencyManagement.dependencies}</echo -->
+		<property name="dist.target.dir" value="target"/>
 		<property name="dist.build.dir" value="target/ant-build"/>
 		<property name="dist.server.dir" value="${dist.build.dir}/dist-server"/>
 		<property name="dist.war.dir" value="${dist.build.dir}/dist-war"/>

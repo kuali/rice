@@ -741,6 +741,18 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		    		docRoleQualifiers.add(docRoleQualifier);
 				}
 			}
+			// If all of the qualifiers are empty, return an empty list
+			// This is to prevent dynamic qualifiers from appearing in the 
+			// person maintenance roles tab.  see KULRICE-3989 for more detail
+			int qualCount = 0;
+			for (KimDocumentRoleQualifier qual : docRoleQualifiers){
+				if (StringUtils.isEmpty(qual.getAttrVal())){
+					qualCount++;
+				}
+			}
+			if (qualCount == docRoleQualifiers.size()){
+				return new ArrayList <KimDocumentRoleQualifier>();
+			}				
 		}
     	return docRoleQualifiers;
     }

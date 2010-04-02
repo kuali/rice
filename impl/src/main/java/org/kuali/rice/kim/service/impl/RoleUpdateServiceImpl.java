@@ -326,16 +326,6 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     // Persistence Methods
     // --------------------
 
-	// TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map
-
-	@SuppressWarnings("unchecked")
-	protected String getKimAttributeId( String attributeName ) {
-		Map<String,Object> critieria = new HashMap<String,Object>( 1 );
-		critieria.put( "attributeName", attributeName );
-		Collection<KimAttributeImpl> defs = getBusinessObjectService().findMatching( KimAttributeImpl.class, critieria );
-		return defs.iterator().next().getKimAttributeId();
-	}
-	
 	private void deleteNullMemberAttributeData(List<RoleMemberAttributeDataImpl> attributes) {
 		List<RoleMemberAttributeDataImpl> attributesToDelete = new ArrayList<RoleMemberAttributeDataImpl>();
 		for(RoleMemberAttributeDataImpl attribute: attributes){

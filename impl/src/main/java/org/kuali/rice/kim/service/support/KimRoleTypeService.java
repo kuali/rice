@@ -124,4 +124,6 @@ public interface KimRoleTypeService extends KimTypeService {
      */
     public abstract boolean shouldCacheRoleMembershipResults(String namespaceCode, String roleName);
     
+    public List<String> getQualifiersForExactMatch();
+    
 }

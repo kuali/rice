@@ -172,4 +172,8 @@ public class KimRoleTypeServiceBase extends KimTypeServiceBase implements KimRol
 		return true;
 	}
 
+	public List<String> getQualifiersForExactMatch() {    
+		return new ArrayList<String>(); 
+	}
+	
 }

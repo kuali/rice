@@ -58,6 +58,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.apache.commons.collections.CollectionUtils;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -171,6 +172,37 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 	}
 
 
+	private AttributeSet populateQualifiersForExactMatch(AttributeSet defaultQualification, List<String> attributes) {
+		AttributeSet qualifiersForExactMatch = new AttributeSet();
+		for(String attributeName : attributes) {
+			if(StringUtils.isNotEmpty(defaultQualification.get(attributeName))) {
+				qualifiersForExactMatch.put(attributeName, defaultQualification.get(attributeName));
+			}
+		}
+		
+		return qualifiersForExactMatch;
+	}
+	
+	private List<RoleMemberImpl> getStoredRoleMembersUsingExactMatchOnQualification(String principalId, List<String> groupIds, List<String> roleIds, AttributeSet qualification) {
+    	List<String> copyRoleIds = new ArrayList(roleIds);
+    	List<RoleMemberImpl> rms = new ArrayList<RoleMemberImpl>();
+    	
+    	for(String roleId : roleIds) {
+    		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
+    		if(roleTypeService != null) {
+	    		List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+	    		if(CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+	    			copyRoleIds.remove(roleId);
+	    			rms.addAll(getStoredRoleMembersForRoleIdsWithFilters(Collections.singletonList(roleId), principalId, groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+	    		}
+    		}
+    	}
+    	if(CollectionUtils.isNotEmpty(copyRoleIds)) {
+    		rms.addAll(getStoredRoleMembersForRoleIdsWithFilters(copyRoleIds, principalId, groupIds, null));
+    	}
+    	return rms;
+	}
+	
 	public List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested( String principalId, List<String> roleIds, AttributeSet qualification ) {
 		List<AttributeSet> results = new ArrayList<AttributeSet>();
 
@@ -178,7 +210,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     	// get the person's groups
     	List<String> groupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
-    	List<RoleMemberImpl> rms = getStoredRoleMembersForRoleIdsWithFilters(roleIds, principalId, groupIds);
+    	List<RoleMemberImpl> rms = getStoredRoleMembersUsingExactMatchOnQualification(principalId, groupIds, roleIds, qualification);
 
     	Map<String,List<RoleMembershipInfo>> roleIdToMembershipMap = new HashMap<String,List<RoleMembershipInfo>>();
     	for ( RoleMemberImpl rm : rms ) {
@@ -244,7 +276,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
     	// TODO: ? get groups for principal and get those as well?
     	// this implementation may be incomplete, as groups and sub-roles are not considered
-    	List<RoleMemberImpl> rms = getStoredRoleMembersForRoleIdsWithFilters(roleIds, principalId, null);
+    	List<RoleMemberImpl> rms = getStoredRoleMembersUsingExactMatchOnQualification(principalId, null, roleIds, qualification);
 
     	Map<String,List<RoleMembershipInfo>> roleIdToMembershipMap = new HashMap<String,List<RoleMembershipInfo>>();
     	for ( RoleMemberImpl rm : rms ) {
@@ -350,7 +382,23 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	// for efficiency, retrieve all roles and store in a map
     	Map<String,RoleImpl> roles = getRoleImplMap(allRoleIds);
 
-    	List<RoleMemberImpl> rms = getStoredRoleMembersForRoleIds( allRoleIds, null );
+    	List<String> copyRoleIds = new ArrayList<String>(allRoleIds);
+    	List<RoleMemberImpl> rms = new ArrayList<RoleMemberImpl>();
+    	
+    	for(String roleId : allRoleIds) {
+    		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
+    		if(roleTypeService != null) {
+	    		List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+	    		if(CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+	    			copyRoleIds.remove(roleId);
+	    			rms.addAll(getStoredRoleMembersForRoleIds(Collections.singletonList(roleId), null, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+	    		}  
+    		}
+    	}
+    	if(CollectionUtils.isNotEmpty(copyRoleIds)) {
+    		rms.addAll(getStoredRoleMembersForRoleIds(copyRoleIds, null, null));
+    	}
+    	
     	// build a map of role ID to membership information
     	// this will be used for later qualification checks
     	Map<String,List<RoleMembershipInfo>> roleIdToMembershipMap = new HashMap<String,List<RoleMembershipInfo>>();
@@ -779,7 +827,22 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	// for efficiency, retrieve all roles and store in a map
     	Map<String,RoleImpl> roles = getRoleImplMap(allRoleIds);
     	// get all roles to which the principal is assigned
-    	List<RoleMemberImpl> rps = getStoredRolePrincipalsForPrincipalIdAndRoleIds(allRoleIds, principalId);
+    	List<String> copyRoleIds = new ArrayList(allRoleIds);
+    	List<RoleMemberImpl> rps = new ArrayList<RoleMemberImpl>();
+    	
+    	for(String roleId : allRoleIds) {
+    		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
+    		if(roleTypeService != null) {
+	    		List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+	    		if(CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+	    			copyRoleIds.remove(roleId);
+	    			rps.addAll(getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collections.singletonList(roleId), principalId, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+	    		}  
+    		}
+    	}
+    	if(CollectionUtils.isNotEmpty(copyRoleIds)) {
+    		rps.addAll(getStoredRolePrincipalsForPrincipalIdAndRoleIds(copyRoleIds, principalId, null));
+    	}
 
     	// if the qualification is null and the role list is not, then any role in the list will match
     	// so since the role ID list is not blank, we can return true at this point
@@ -812,7 +875,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	List<String> principalGroupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
     	// find the role/group associations
     	if ( !principalGroupIds.isEmpty() ) {
-	    	List<RoleMemberImpl> rgs = getStoredRoleGroupsForGroupIdsAndRoleIds(allRoleIds, principalGroupIds);
+	    	List<RoleMemberImpl> rgs = getStoredRoleGroupsForGroupIdsAndRoleIds(allRoleIds, principalGroupIds, qualification); 
 			roleIdToMembershipMap.clear(); // clear the role/member map for further use
 	    	if ( getRoleIdToMembershipMap( roleIdToMembershipMap, rgs ) ) {
 	    		return true;
@@ -834,7 +897,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	// check member roles
     	// first, check that the qualifiers on the role membership match
     	// then, perform a principalHasRole on the embedded role
-    	List<RoleMemberImpl> rrs = getStoredRoleMembersForRoleIds( roleIds, Role.ROLE_MEMBER_TYPE );
+    	List<RoleMemberImpl> rrs = getStoredRoleMembersForRoleIds( roleIds, Role.ROLE_MEMBER_TYPE, qualification );
     	for ( RoleMemberImpl rr : rrs ) {
     		KimRoleTypeService roleTypeService = getRoleTypeService( rr.getRoleId() );
     		if ( roleTypeService != null ) {
@@ -1038,7 +1101,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
     
     private void inactivateRoleMemberships(List<String> roleIds, Timestamp yesterday){
-    	List<RoleMemberImpl> roleMembers = getStoredRoleMembersForRoleIds(roleIds, null);
+    	List<RoleMemberImpl> roleMembers = getStoredRoleMembersForRoleIds(roleIds, null, null);
     	for(RoleMemberImpl rm: roleMembers){
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
     	}
@@ -1047,7 +1110,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     private void inactivateMembershipsForRoleAsMember(List<String> roleIds, Timestamp yesterday){
-    	List<RoleMemberImpl> roleMembers = getStoredRoleMembershipsForRoleIdsAsMembers(roleIds);
+    	List<RoleMemberImpl> roleMembers = getStoredRoleMembershipsForRoleIdsAsMembers(roleIds, null);
     	for(RoleMemberImpl rm: roleMembers){
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
     	}
@@ -1108,7 +1171,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     
     protected void inactivatePrincipalRoleMemberships(String principalId, Timestamp yesterday){
     	// go through all roles and post-date them
-    	List<RoleMemberImpl> roleMembers = getStoredRolePrincipalsForPrincipalIdAndRoleIds(null, principalId);
+    	List<RoleMemberImpl> roleMembers = getStoredRolePrincipalsForPrincipalIdAndRoleIds(null, principalId, null);
     	Set<String> roleIds = new HashSet<String>( roleMembers.size() );
     	for ( RoleMemberImpl rm : roleMembers ) {
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
@@ -1151,7 +1214,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     public List<RoleMembershipInfo> getFirstLevelRoleMembers(List<String> roleIds){
-    	List<RoleMemberImpl> rms = getStoredRoleMembersForRoleIds(roleIds, null);
+    	List<RoleMemberImpl> rms = getStoredRoleMembersForRoleIds(roleIds, null, null);
     	List<RoleMembershipInfo> roleMembershipInfoList = new ArrayList<RoleMembershipInfo>();
     	for ( RoleMemberImpl rm : rms ) {
     		roleMembershipInfoList.add(new RoleMembershipInfo( rm.getRoleId(), rm.getRoleMemberId(), rm.getMemberId(), rm.getMemberTypeCode(), rm.getQualifier()));
@@ -1185,7 +1248,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     protected void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday){
-    	List<RoleMemberImpl> roleMembersOfGroupType = getStoredRoleGroupsForGroupIdsAndRoleIds(null, groupIds);
+    	List<RoleMemberImpl> roleMembersOfGroupType = getStoredRoleGroupsForGroupIdsAndRoleIds(null, groupIds, null);
     	for(RoleMemberImpl rm: roleMembersOfGroupType){
     		rm.setActiveToDate( new Date(yesterday.getTime()) );
     	}

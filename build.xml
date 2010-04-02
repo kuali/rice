@@ -169,7 +169,7 @@
 		</cobertura-instrument>
 
 		<echo message="(COVERAGE): running tests to build coverage data file" />
-		<maven goals="cobertura:cobertura" options="-Dmaven.repo.local=${coverage.m2repo} -Dcobertura.datafile=${coverage.datafile}" />
+		<maven goals="cobertura:cobertura" options="-Dmaven.repo.local=${coverage.m2repo} -Dcobertura.datafile=${coverage.datafile} -Dalt.config.location=${alt.config.location} -Dalt.log4j.config.location=${alt.log4j.config.location}" />
 
 		<echo message="(COVERAGE): generating all inclusive HTML coverage report (${coverage.datafile} -> ${coverage.report})" />
 		<cobertura-report format="html" destdir="${coverage.report}" datafile="${coverage.datafile}">
@@ -194,14 +194,6 @@
 		<echo message="(COVERAGE): Finished! Report was generated in ${coverage.report}" />
 	</target>
 	
-	<target name="copy-coverage-report" description="copy cobertura report to an already published directory" depends="coverage-report" if="${hudson.workspace}">
-		<echo message="This is tomcat.webapps directory: ${tomcat.webapps}"/>
-		<echo message="This is hudson.workspace: ${hudson.workspace}"/>
-		<copy todir="${tomcat.webapps}" overwrite="true">
-			<fileset dir="${hudson.workspace}/target/site/cobertura_all"/> 
-		</copy>
-	</target>
-
 	<target name="package-test-files" depends="init" description="Updates Eclipse classpath">
 		<maven goals="test-compile" />
 		<jar destfile="target/kewTests.jar"

@@ -32,7 +32,10 @@
 		<echo>The Kuali Rice version is ${maven.project.version}</echo>
 		<!-- echo>${maven.project.dependencyManagement.dependencies}</echo -->
 		<property name="dist.build.dir" value="target/ant-build"/>
+		<!-- necessary for cobertura taks -->
 		<property name="dist.target.dir" location="target"/>
+		<property name="alt.config.location" location="${basedir}/rice.xml"/>
+		<property name="alt.log4j.config.location" location="${basedir}/log4j.properties"/>
 		<property name="dist.server.dir" value="${dist.build.dir}/dist-server"/>
 		<property name="dist.war.dir" value="${dist.build.dir}/dist-war"/>
 		<property name="dist.war.lib.dir" value="${dist.war.dir}/WEB-INF/lib"/>
@@ -145,7 +148,7 @@
 		-->
 		
 		<echo message="(COVERAGE): installing clean version of rice to maven repo" />
-		<maven goals="clean install" options="-Dmaven.repo.local=${M2_REPO} -DskipTests" />
+		<maven goals="clean install" options="-Dmaven.repo.local=${M2_REPO} -DskipTests -Dalt.config.location=${alt.config.location} -Dalt.log4j.config.location=${alt.log4j.config.location}" />
 
 		<echo message="(COVERAGE): copying repository files into alt repo" />
 		<copy todir="${coverage.m2repo}">

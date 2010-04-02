@@ -1,0 +1,70 @@
+/* contains consolidated and cleaned up sql from 10-02-2009.sql, 10-05-2009.sql, KewApplicationStatus-KULRICE-2805.sql, KULRICE-3794.sql */
+
+alter table KREW_DOC_HDR_T add (APP_DOC_STAT varchar(64), APP_DOC_STAT_MDFN_DT date)
+;
+create index KREW_DOC_HDR_T10 on KREW_DOC_HDR_T (APP_DOC_STAT)
+;
+create index KREW_DOC_HDR_T12 on KREW_DOC_HDR_T (APP_DOC_STAT_MDFN_DT)
+;
+alter table KREW_DOC_TYP_PLCY_RELN_T add PLCY_VAL varchar(64)
+;
+alter table KREW_RTE_NODE_T add NEXT_DOC_STAT varchar(64)
+;
+CREATE TABLE KREW_DOC_TYP_APP_DOC_STAT_T
+(
+      DOC_TYP_ID DECIMAL(19,0)
+        , DOC_STAT_NM varchar(64)
+        , VER_NBR DECIMAL(8,0) default 0
+        , OBJ_ID varchar(36) NOT NULL    
+    , CONSTRAINT KREW_DOC_TYP_APP_DOC_STAT_TP1 PRIMARY KEY(DOC_TYP_ID,DOC_STAT_NM)
+    , CONSTRAINT KREW_DOC_TYP_APP_DOC_STAT_TC0 UNIQUE (OBJ_ID)
+) 
+;
+create index KREW_DOC_TYP_APP_DOC_STAT_T1 on KREW_DOC_TYP_APP_DOC_STAT_T(DOC_TYP_ID)
+;
+
+CREATE TABLE KREW_APP_DOC_STAT_TRAN_T
+(
+      APP_DOC_STAT_TRAN_ID DECIMAL(19,0) PRIMARY KEY,
+      DOC_HDR_ID DECIMAL(14,0),
+      APP_DOC_STAT_FROM varchar(64),
+      APP_DOC_STAT_TO varchar(64),
+      STAT_TRANS_DATE DATE,
+      VER_NBR DECIMAL(8,0) default 0,
+      OBJ_ID varchar(36) NOT NULL,
+      CONSTRAINT KREW_APP_DOC_STAT_TRAN_TC0 UNIQUE (OBJ_ID)
+)
+;
+CREATE INDEX KREW_APP_DOC_STAT_TI1 ON KREW_APP_DOC_STAT_TRAN_T (DOC_HDR_ID, STAT_TRANS_DATE)
+;
+CREATE INDEX KREW_APP_DOC_STAT_TI2 ON KREW_APP_DOC_STAT_TRAN_T (DOC_HDR_ID, APP_DOC_STAT_FROM)
+;
+CREATE INDEX KREW_APP_DOC_STAT_TI3 ON KREW_APP_DOC_STAT_TRAN_T (DOC_HDR_ID, APP_DOC_STAT_TO)
+; 
+
+
+
+CREATE TABLE krew_doc_lnk_s (
+  id bigint(19) NOT NULL auto_increment,
+  PRIMARY KEY  (id)
+)
+;
+insert into krew_doc_lnk_s values (2000)
+;
+
+create table krew_doc_lnk_t(
+
+           DOC_LNK_ID DECIMAL(19,0),
+           ORGN_DOC_ID DECIMAL(14,0) NOT NULL,
+           DEST_DOC_ID DECIMAL(14,0) NOT NULL, 
+           
+           CONSTRAINT KREW_DOC_LNK_TP1 PRIMARY KEY (DOC_LNK_ID)
+)
+;
+create INDEX KREW_DOC_LNK_TI1 on krew_doc_lnk_t(ORGN_DOC_ID)
+;
+
+
+
+delete from KREW_STYLE_T where NM = 'widgets'
+;

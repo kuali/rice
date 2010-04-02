@@ -100,6 +100,103 @@
 	         basedir="kew/target/test-classes" />
 	</target>
 	
+	<target name="coverage-init" description="init cobertura" depends="init">
+		<path id="cobertura.classpath"/>
+		
+		<artifact:dependencies pathId="cobertura.classpath">
+			<dependency groupId="net.sourceforge.cobertura" artifactId="cobertura" version="1.9.2" />
+		</artifact:dependencies>
+
+		<taskdef classpathref="cobertura.classpath" resource="tasks.properties" />
+
+		<condition property="coverage.m2repo" value="${env.coverage.m2repo}">
+			<isset property="env.coverage.m2repo" />
+		</condition>
+		<property name="coverage.m2repo" location="${dist.target.dir}/coverage_m2repo" />
+
+		<condition property="coverage.datafile" value="${env.coverage.datafile}">
+			<isset property="env.coverage.datafile" />
+		</condition>
+		<property name="coverage.datafile" location="${dist.target.dir}/cobertura_all.ser" />
+
+		<condition property="coverage.report" value="${env.coverage.report}">
+			<isset property="env.coverage.report" />
+		</condition>
+		<property name="coverage.report" location="${dist.target.dir}/site/cobertura_all" />
+
+		<condition property="M2_REPO" value="${env.M2_REPO}">
+			<isset property="env.M2_REPO" />
+		</condition>
+		<property name="M2_REPO" value="${user.home}/.m2/repository" />
+
+		<echo message="(COVERAGE): maven's target directory for the rice project:" />
+		<echo message="(COVERAGE):     dist.target.dir=${dist.target.dir}" />
+		<echo message="(COVERAGE): the user's local m2 repository:" />
+		<echo message="(COVERAGE):     M2_REPO=${M2_REPO}" />
+		<echo message="(COVERAGE): the location for the temporary m2 repository:" />
+		<echo message="(COVERAGE):     coverage.m2repo=${coverage.m2repo}" />
+		<echo message="(COVERAGE): the cobertura data file:" />
+		<echo message="(COVERAGE):     coverage.datafile=${coverage.datafile}" />
+		<echo message="(COVERAGE): the coverage report location:" />
+		<echo message="(COVERAGE):     coverage.report=${coverage.report}" />
+
+	</target>
+
+	<target name="coverage-report" description="generate cobertura report" depends="coverage-init">
+
+		<!-- 
+		     see http://cobertura.sourceforge.net/anttaskreference.html for information on
+		     the cobertura ant tasks
+		-->
+		
+		<echo message="(COVERAGE): installing clean version of rice to maven repo" />
+		<maven goals="clean install" options="-Dmaven.repo.local=${M2_REPO} -DskipTests" />
+
+		<echo message="(COVERAGE): copying repository files into alt repo" />
+		<copy todir="${coverage.m2repo}">
+			<fileset dir="${M2_REPO}" />
+		</copy>
+
+		<echo message="(COVERAGE): instrumenting jars in alt repo" />
+		<cobertura-instrument>
+			<includeClasses regex="org\.kuali\..*" />
+			<excludeClasses regex=".*\.[A-Za-z]*Test.*" />
+			<excludeClasses regex=".*\.test\..*" />
+
+			<instrumentationClasspath>
+				<fileset dir="${coverage.m2repo}">
+					<include name="**/rice-*${maven.project.version}.jar" />
+				</fileset>
+			</instrumentationClasspath>
+		</cobertura-instrument>
+
+		<echo message="(COVERAGE): running tests to build coverage data file" />
+		<maven goals="cobertura:cobertura" options="-Dmaven.repo.local=${coverage.m2repo} -Dcobertura.datafile=${coverage.datafile}" />
+
+		<echo message="(COVERAGE): generating all inclusive HTML coverage report (${coverage.datafile} -> ${coverage.report})" />
+		<cobertura-report format="html" destdir="${coverage.report}" datafile="${coverage.datafile}">
+			<fileset dir="api/src/main/java">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="impl/src/main/java">
+				<include name="**/*.java" />
+			</fileset>
+		</cobertura-report>
+	
+		<echo message="(COVERAGE): generating all inclusive XML coverage report (${coverage.datafile} -> ${coverage.report})" />
+		<cobertura-report format="xml" destdir="${coverage.report}" datafile="${coverage.datafile}">
+			<fileset dir="api/src/main/java">
+				<include name="**/*.java" />
+			</fileset>
+			<fileset dir="impl/src/main/java">
+				<include name="**/*.java" />
+			</fileset>
+		</cobertura-report>
+
+		<echo message="(COVERAGE): Finished! Report was generated in ${coverage.report}" />
+	</target>
+	
+
 	<target name="merge-module-classpaths" depends="init">
 		<dirname property="project.dir" file="${ant.file}"/>
 		<java classname="org.codehaus.groovy.tools.GroovyStarter">

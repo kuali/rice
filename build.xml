@@ -31,8 +31,11 @@
 		<property name="rice.app.code" value="kr"/>
 		<echo>The Kuali Rice version is ${maven.project.version}</echo>
         <!-- echo>${maven.project.dependencyManagement.dependencies}</echo -->
-		<property name="dist.target.dir" value="target"/>
 		<property name="dist.build.dir" value="target/ant-build"/>
+		<!-- necessary for cobertura taks -->
+		<property name="dist.target.dir" location="target"/>
+		<property name="alt.config.location" location="${basedir}/rice.xml"/>
+		<property name="alt.log4j.config.location" location="${basedir}/log4j.properties"/>
 		<property name="dist.server.dir" value="${dist.build.dir}/dist-server"/>
 		<property name="dist.war.dir" value="${dist.build.dir}/dist-war"/>
 		<property name="dist.war.lib.dir" value="${dist.war.dir}/WEB-INF/lib"/>
@@ -151,7 +154,7 @@
 		-->
 		
 		<echo message="(COVERAGE): installing clean version of rice to maven repo" />
-		<maven goals="clean install" options="-Dmaven.repo.local=${M2_REPO} -DskipTests" />
+		<maven goals="clean install" options="-Dmaven.repo.local=${M2_REPO} -DskipTests -Dalt.config.location=${env.WORKSPACE}/${alt.config.location} -Dalt.log4j.config.location=${env.WORKSPACE}/${alt.log4j.config.location}"/>
 
 		<echo message="(COVERAGE): copying repository files into alt repo" />
 		<copy todir="${coverage.m2repo}">
@@ -172,7 +175,7 @@
 		</cobertura-instrument>
 
 		<echo message="(COVERAGE): running tests to build coverage data file" />
-		<maven goals="cobertura:cobertura" options="-Dmaven.repo.local=${coverage.m2repo} -Dcobertura.datafile=${coverage.datafile}" />
+		<maven goals="cobertura:cobertura" options="-Dmaven.repo.local=${coverage.m2repo} -Dcobertura.datafile=${coverage.datafile} -Dalt.config.location=${env.WORKSPACE}/${alt.config.location} -Dalt.log4j.config.location=${env.WORKSPACE}/${alt.log4j.config.location}" />
 
 		<echo message="(COVERAGE): generating all inclusive HTML coverage report (${coverage.datafile} -> ${coverage.report})" />
 		<cobertura-report format="html" destdir="${coverage.report}" datafile="${coverage.datafile}">

@@ -10,7 +10,7 @@
 def ojbMappingPattern = ~/.*OJB.*repository.*xml/
 def projHome='/java/projects/rice-1.1.0'
 //def resourceHome='/impl/src/main/resources/ //this will return all ojb config files
-def resourceHome='/impl/src/main/resources/org/kuali/rice/kew'
+def resourceHome='/impl/src/main/resources/org/kuali/rice/'
 def srcHome='/impl/src/main/java'
 //def resourceHome = '/java/projects/play/rice-1.1.0/impl/src/main/resources/org/kuali/rice/kns'
 //def srcHome = '/java/projects/play/rice-1.1.0/impl/src/main/java'
@@ -104,7 +104,7 @@ def removeAnnotatonLine(files){
 					cur = "@" + cur;
 					println("checking this line:\t" + cur + "\t");
 				}
-				if(!cur.startsWith("@")){
+				if(!cur.startsWith("@") && !cur.startsWith("//@")){
 					if(!skip.equals("true")){
 						//println("******get this line*****\t" + line)
 						text = text + "\n" + line.toString();
@@ -115,8 +115,11 @@ def removeAnnotatonLine(files){
 					skip = "false"
 					}
 				else{
-					println("****** possible to skip this line by @*****\t" + line);
-					if(cur.startsWith("@Override") || cur.startsWith("public"))
+					println("****** possible to skip this line by @ and //@*****\t" + line);
+					if(cur.startsWith("@Override") || 
+							cur.startsWith("@SuppressWarnings")|| 
+							cur.startsWith("@Deprecated")||
+							cur.startsWith("public"))
 					{
 						//need make a condition builder method to evaluate all exceptions from a list
 						text = text + "\n" + line.toString();
@@ -171,6 +174,12 @@ def addTransient(files){
 			lines.each{line->
 				//println(line.toString())
 				def cur = line.toString().trim()
+				if(cur.find(~/;\s*\/\/\s*/)){
+					println "+++++++++++++++found at " + cur
+					cur = cur.substring(0, cur.indexOf("//"));
+					cur = cur.trim();
+					println "+++++++++++++++chopped at " + cur
+				}
 				if((cur.endsWith(";")) && (cur.startsWith("private") || cur.startsWith("protected")))
 				{
 					def pre = (lines.get(lines.indexOf(line) - 1)).toString().trim();

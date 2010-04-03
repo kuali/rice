@@ -68,7 +68,7 @@ def loadMetaData(repositories, classes, logger){
 				collectionDescriptor.name = colDesc.'@name'
 				collectionDescriptor.collectionClass = colDesc.'@collection-class'
 				collectionDescriptor.elementClassRef = colDesc.'@element-class-ref'
-				collectionDescriptor.orderBy = colDesc.'@orderBy'
+				collectionDescriptor.orderBy = colDesc.'@orderby'
 				collectionDescriptor.sort = colDesc.'@sort'
 				collectionDescriptor.indirectionTable = colDesc.'@indirection-table'
 				collectionDescriptor.proxy = colDesc.'@proxy'
@@ -86,6 +86,20 @@ def loadMetaData(repositories, classes, logger){
 					key.fieldIdRef = ifk.'@field-id-ref'
 					collectionDescriptor.inverseForeignKeys.add(key)
 				}
+				
+				def orderBys = colDesc['orderby']
+				def ordby = new Order_By()
+				if(collectionDescriptor.orderBy){
+					ordby._name = collectionDescriptor.orderBy
+					ordby._sort = collectionDescriptor.sort
+					collectionDescriptor.orderByElements.add(ordby)
+				}
+				orderBys.each{
+					odb ->
+					ordby._name = odb.@'name'
+					ordby._sort = odb.@'sort'
+					collectionDescriptor.orderByElements.add(ordby)
+					}
 				
 				classDescriptor.collectionDescriptors[collectionDescriptor.name] = collectionDescriptor
 			}                             

@@ -4,12 +4,12 @@
 /* run option properties */
 def getXML_MYSQL_PerApp = false
 def getXML_MYSQL_PerModule = false
-def pkClasses = false
+def pkClasses = true
 def clean = false
 def dry = false
 def verbose = false
 def createBOs = true
-def scanForConfigFiles = false
+def scanForConfigFiles = true
 
 /* File Path Properties */
 //for KFS
@@ -196,6 +196,11 @@ class Key {
     def fieldIdRef
 }
 
+class Order_By{
+	def _name
+	def _sort
+	}
+
 class ReferenceDescriptor {
     def name
     def classRef
@@ -221,6 +226,7 @@ class CollectionDescriptor {
     def fkPointingToElementClassColumn
     def inverseForeignKeys = []    
     def manyToMany
+	def orderByElements = []
 }
 
 class ClassDescriptor {

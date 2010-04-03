@@ -190,7 +190,7 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                        if (i < size - 1) annotation += ", "
 	                }
 	                if (size > 1) annotation += "})"
-	                text = annotate(text, "(private|protected).*(\\b${rd.name})(\\s)*;", annotation)
+	                text = annotate(text, "(private|protected).*(\\b${rd.name})(\\s)*.*;", annotation)
 				}
 			}
 		catch(Exception e){ JPAConversionHandlers.error_log.log "Found exception in Annotating: ${c.className} refenced objects \n\t${e.getMessage()} " }
@@ -278,7 +278,16 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                    annotation += ")"
 	                    text = addImport(text, "FetchType")
 	                }
-	                text = annotate(text, "(private|protected).*(\\b${cd.name})(\\s)*;", annotation)
+						
+					if(!cd.orderByElements.isEmpty()){
+						cd.orderByElements.each{
+							odb ->
+							annotation +="\n\t@OrderBy (\"${odb._name} ${odb._sort}\")"  
+						}
+						text = addImport(text, "OrderBy")
+						}
+					
+	                text = annotate(text, "(private|protected).*(\\b${cd.name})(\\s)*.*;", annotation)
 	                if (error) logger.log error                                	
 			}
 		}
@@ -327,10 +336,16 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 This function add the given annotation before the given java statement in the java source file.
 */
 def annotate(javaText, before, annotation) {
-    def indent = ""
-    if (before != "public class") indent = "\t"
-    javaText = javaText.replaceFirst(before, annotation + "\n${indent}\$0")
-    javaText 
+	
+		def ret = javaText
+		//if(!javaText.find("//" + before))
+		if(!javaText.find("//" + before) || javaText.findAll("//" + before).size() < javaText.findAll(before).size())
+		{	
+			def indent = ""
+			if (before != "public class") indent = "\t"
+		    ret = javaText.replaceFirst(before, annotation + "\n${indent}\$0")
+		}
+		ret
 }
 
 /*

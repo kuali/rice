@@ -122,6 +122,11 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 						//todo: this function need to be changed to use return value
 						type_handler.handleTypes(f.conversion, annotationMap, annotationKey , f)
 						annotation = annotationMap.get(annotationKey);
+						
+						if(f.primarykey){
+							def pkImport = findImportType(text, f.name)
+							c.pkClassIdText = addOtherImport(c.pkClassIdText, pkImport)
+							}
 	                }					
 	                if (f.jdbcType?.equalsIgnoreCase("date") || f.jdbcType?.equalsIgnoreCase("timestamp")) {
 						logger.log "\tConverting Date|Timpstamp for ${c.className}.${f.name} if they are from java.sql"
@@ -658,5 +663,17 @@ def setFieldToJavaUtilDate(String text, String name, type_pattern, field_pattern
 		
 		text
 	}
+def findImportType(_text, _name) throws Exception{
+	
+	def _fieldPattern = ~/(private|protected)\s+\w+\s+${_name}/
+	def _field = _text.find(_fieldPattern)    
+    def _type = (_field.split())[1]
+    def _importPattern = "import.*(${_type})"  
+	def _importStatment = _text.find(_importPattern)
+    def _ret = _importStatment.split()[1];
 
+	println("+++++++++++++++++++++++got type\t" + _type + "\timport\t" +  _importStatment + "\tret\t" + _ret)
+	
+	_ret
+}
 	

@@ -117,15 +117,14 @@ def generateJPABO(classes, sourceDirectories, projHome, dry, verbose, backupExte
 	                if (f.conversion?.toString()?.size() > 0){
 	                	logger.log "\tHandling customerTypes for ${c.className}.${f.name}"
 						text = addImportHibernate(text, "Type")
-						def annotationKey = "ANT_KEY"
-						def annotationMap = [(annotationKey): annotation];
-						//todo: this function need to be changed to use return value
-						type_handler.handleTypes(f.conversion, annotationMap, annotationKey , f)
-						annotation = annotationMap.get(annotationKey);
+						def this_anna = type_handler.handleCustomerTypes(f.conversion, f)
+						annotation += this_anna
 						
 						if(f.primarykey){
+							c.pkClassIdText = addImportHibernate(c.pkClassIdText, "Type")
 							def pkImport = findImportType(text, f.name)
 							c.pkClassIdText = addOtherImport(c.pkClassIdText, pkImport)
+							cpkFieldText = annotate(cpkFieldText, "(private|protected).*(\\b${f.name})((\\s)*|(\\s)+.*);", this_anna)
 							}
 	                }					
 	                if (f.jdbcType?.equalsIgnoreCase("date") || f.jdbcType?.equalsIgnoreCase("timestamp")) {

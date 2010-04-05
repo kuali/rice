@@ -392,11 +392,11 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 		} else {
 			if (bo.getExtension() != null) {
 				PersistableBusinessObject attachedBoe = findByPrimaryKey(bo.getExtension().getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(bo.getExtension()));
-				OrmUtils.reattach(attachedBoe, bo.getExtension());
+				OrmUtils.reattach(bo.getExtension(),attachedBoe);
 				attachedBo.setExtension((PersistableBusinessObjectExtension) attachedBoe);
 				entityManager.merge(attachedBoe);
 			}
-			OrmUtils.reattach(attachedBo, bo);
+			OrmUtils.reattach(bo,attachedBo);
 			newBo = entityManager.merge(attachedBo);
 		}
 		return newBo;

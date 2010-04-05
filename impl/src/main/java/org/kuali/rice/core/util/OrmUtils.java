@@ -112,8 +112,7 @@ public class OrmUtils {
             manager.merge(entity);
         }
         else {
-            //OrmUtils.reattach(entity, manager.merge(entity));
-        	OrmUtils.reattach(manager.merge(entity),entity);
+            OrmUtils.reattach(entity, manager.merge(entity));        	
         }
     }
     

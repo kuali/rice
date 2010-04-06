@@ -1688,6 +1688,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	public String getMemberName(String memberTypeCode, String memberId){
 		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
 		BusinessObject member = getMember(memberTypeCode, memberId);
+		if (member == null) { //not a REAL principal, try to fake the name
+			String fakeName = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId).getPrincipalName();
+			if(fakeName == null || fakeName.equals("")) {	
+				return "";
+			}
+			return fakeName;
+		}
 		return getMemberName(memberTypeCode, member);
 	}
 

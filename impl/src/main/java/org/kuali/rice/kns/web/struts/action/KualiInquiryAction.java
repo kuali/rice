@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -124,6 +127,39 @@ public class KualiInquiryAction extends KualiAction {
 
 		return continueWithInquiry(mapping, form, request, response);
     }
+    
+    
+    public ActionForward downloadCustomBOAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	String fileName = request.getParameter(KNSConstants.BO_ATTACHMENT_FILE_NAME);
+		String contentType = request.getParameter(KNSConstants.BO_ATTACHMENT_FILE_CONTENT_TYPE);
+		String fileContentBoField = request.getParameter(KNSConstants.BO_ATTACHMENT_FILE_CONTENT_FIELD);
+    	//require certain request properties
+    	if (fileName != null
+    			&& contentType != null
+    			&& fileContentBoField != null) {
+    		fileName = StringUtils.replace(fileName, " ", "_");
+    		InquiryForm inquiryForm = (InquiryForm) form;
+        	BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
+    		checkBO(bo);
+    		
+    		Class clazz = (bo.getClass());
+    		Method method = clazz.getMethod("get"+StringUtils.capitalize(fileContentBoField));
+    		byte[] fileContents = (byte[]) method.invoke(bo);
+    		streamToResponse(fileContents, fileName, contentType,response);
+    	} else {
+    		if (fileName == null) {
+    			LOG.error("Request Parameter \""+ KNSConstants.BO_ATTACHMENT_FILE_NAME + "\" not provided.");
+    		}
+    		if (contentType == null) {
+    			LOG.error("Request Parameter \""+ KNSConstants.BO_ATTACHMENT_FILE_CONTENT_TYPE + "\" not provided.");
+    		}
+    		if (fileContentBoField == null) {
+    			LOG.error("Request Parameter \""+ KNSConstants.BO_ATTACHMENT_FILE_CONTENT_FIELD + "\" not provided.");
+    		}
+    	}
+    	return null;
+    }
+    
     
     /**
      * Downloads the selected attachment to the user's browser
@@ -327,6 +363,31 @@ public class KualiInquiryAction extends KualiAction {
         request.setAttribute(KNSConstants.INQUIRABLE_ATTRIBUTE_NAME, kualiInquirable);
     }
     
+    /**
+    *
+    * Handy method to stream the byte array to response object
+    * @param attachmentDataSource
+    * @param response
+    * @throws Exception
+    */
+   protected void streamToResponse(byte[] fileContents, String fileName, String fileContentType,HttpServletResponse response) throws Exception{
+       ByteArrayOutputStream baos = null;
+       try{
+           baos = new ByteArrayOutputStream(fileContents.length);
+           baos.write(fileContents);
+           WebUtils.saveMimeOutputStreamAsFile(response, fileContentType, baos, fileName);
+       }finally{
+           try{
+               if(baos!=null){
+                   baos.close();
+                   baos = null;
+               }
+           }catch(IOException ioEx){
+               LOG.error("Error while downloading attachment");
+               throw new RuntimeException("IOException occurred while downloading attachment", ioEx);
+           }
+       }
+   }
     /**
      * Returns a section list with one empty section and one row.
      * 

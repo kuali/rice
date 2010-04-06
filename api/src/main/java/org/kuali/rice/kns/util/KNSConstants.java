@@ -401,7 +401,12 @@ public class KNSConstants extends JSTLConstants {
     public static final String ACKNOWLEDGE_METHOD = "acknowledge";
 
     public static final String DOWNLOAD_BO_ATTACHMENT_METHOD ="downloadBOAttachment";
+    public static final String DOWNLOAD_CUSTOM_BO_ATTACHMENT_METHOD ="downloadCustomBOAttachment";
     public static final String NOTE_IDENTIFIER = "noteIdentifier";
+    public static final String BO_ATTACHMENT_FILE_NAME = "fileName";
+    public static final String BO_ATTACHMENT_FILE_CONTENT_TYPE = "fileContentType";
+    public static final String BO_ATTACHMENT_FILE_CONTENT_FIELD = "fileContentBOField";
+    
 
     // specialized method 'delete' used only for PessimisticLocks currently
     public static final String DELETE_METHOD = "delete";

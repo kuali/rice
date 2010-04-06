@@ -105,7 +105,7 @@ public class InquiryForm extends KualiForm {
         	inquirable = getInquirable(getBusinessObjectClassName());
 
         	// the following variable is true if the method to call is not start, meaning that we already called start
-        	boolean passedFromPreviousInquiry = !KNSConstants.START_METHOD.equals(getMethodToCall()) && !KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL.equals(getMethodToCall());
+        	boolean passedFromPreviousInquiry = !KNSConstants.START_METHOD.equals(getMethodToCall()) && !KNSConstants.CONTINUE_WITH_INQUIRY_METHOD_TO_CALL.equals(getMethodToCall()) && !KNSConstants.DOWNLOAD_CUSTOM_BO_ATTACHMENT_METHOD.equals(getMethodToCall());
 
         	// There is no requirement that an inquiry screen must display the primary key values.  However, when clicking on hide/show (without javascript) and
         	// hide/show inactive, the PK values are needed to allow the server to properly render results after the user clicks on a hide/show button that results

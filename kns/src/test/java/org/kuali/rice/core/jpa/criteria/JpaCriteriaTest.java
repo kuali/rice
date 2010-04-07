@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.jpa.criteria;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -271,8 +272,8 @@ public class JpaCriteriaTest extends KNSTestCase {
 		// Test number equality along with the OR operator.
 		crit = new Criteria(AccountWithDDAttributesDocument.class.getName());
 		crit2 = new Criteria(AccountWithDDAttributesDocument.class.getName());
-		crit.eq("accountBalance", new KualiDecimal(771.05));
-		crit2.eq("accountBalance", new KualiDecimal(0.0));
+		crit.eq("accountBalance", new BigDecimal("771.05"));
+		crit2.eq("accountBalance", new BigDecimal(0.0));
 		crit.or(crit2);
 		acctDocs = (List<AccountWithDDAttributesDocument>) new QueryByCriteria(em, crit).toQuery().getResultList();
 		assertCorrectDocumentsWereReturned(acctNumSet, new DOCUMENT_FIXTURE[] { DOCUMENT_FIXTURE.TEST_DOC03, DOCUMENT_FIXTURE.TEST_DOC07 }, acctDocs);
@@ -292,12 +293,31 @@ public class JpaCriteriaTest extends KNSTestCase {
 		acctDocs = (List<AccountWithDDAttributesDocument>) new QueryByCriteria(em, crit).toQuery().getResultList();
 		assertCorrectDocumentsWereReturned(acctNumSet, new DOCUMENT_FIXTURE[] { DOCUMENT_FIXTURE.TEST_DOC03, DOCUMENT_FIXTURE.TEST_DOC05 }, acctDocs);
 		
+		// Test "NOT (...)" expressions.
+		crit = new Criteria(AccountWithDDAttributesDocument.class.getName());
+		crit2 = new Criteria(AccountWithDDAttributesDocument.class.getName());
+		crit2.gt("accountNumber", Integer.valueOf(1));
+		crit2.ne("accountOwner", "Anonymous");
+		crit.not(crit2);
+		acctDocs = (List<AccountWithDDAttributesDocument>) new QueryByCriteria(em, crit).toQuery().getResultList();
+		assertCorrectDocumentsWereReturned(acctNumSet, new DOCUMENT_FIXTURE[] { DOCUMENT_FIXTURE.TEST_DOC02, DOCUMENT_FIXTURE.TEST_DOC06, DOCUMENT_FIXTURE.TEST_DOC07 }, acctDocs);
+		
+		// Test "OR NOT (...)" expressions.
+		crit = new Criteria(AccountWithDDAttributesDocument.class.getName());
+		crit2 = new Criteria(AccountWithDDAttributesDocument.class.getName());
+		crit2.lte("accountBalance", new BigDecimal("771.05"));
+		crit2.ne("accountOwner", "John Doe");
+		crit.eq("accountOpenDate", createDate(2012, Calendar.OCTOBER, 19));
+		crit.orNot(crit2);
+		acctDocs = (List<AccountWithDDAttributesDocument>) new QueryByCriteria(em, crit).toQuery().getResultList();
+		assertCorrectDocumentsWereReturned(acctNumSet, new DOCUMENT_FIXTURE[] { DOCUMENT_FIXTURE.TEST_DOC01, DOCUMENT_FIXTURE.TEST_DOC04, DOCUMENT_FIXTURE.TEST_DOC05 }, acctDocs);
+		
 		// Test number inequality.
 		crit = new Criteria(AccountWithDDAttributesDocument.class.getName());
-		crit.ne("accountBalance", new KualiDecimal(501.77));
-		crit.ne("accountBalance", new KualiDecimal(0.0));
-		crit.ne("accountBalance", new KualiDecimal(4.54));
-		crit.ne("accountBalance", new KualiDecimal(771.05));
+		crit.ne("accountBalance", new BigDecimal("501.77"));
+		crit.ne("accountBalance", new BigDecimal(0.0));
+		crit.ne("accountBalance", new BigDecimal("4.54"));
+		crit.ne("accountBalance", new BigDecimal("771.05"));
 		acctDocs = (List<AccountWithDDAttributesDocument>) new QueryByCriteria(em, crit).toQuery().getResultList();
 		assertCorrectDocumentsWereReturned(acctNumSet, new DOCUMENT_FIXTURE[] { DOCUMENT_FIXTURE.TEST_DOC02, DOCUMENT_FIXTURE.TEST_DOC04, DOCUMENT_FIXTURE.TEST_DOC06 }, acctDocs);
 		
@@ -367,7 +387,7 @@ public class JpaCriteriaTest extends KNSTestCase {
 		
 		// Test IN (...) with numbers.
 		crit = new Criteria(AccountWithDDAttributesDocument.class.getName());
-		crit.in("accountBalance", Arrays.asList(new KualiDecimal[] { new KualiDecimal(501.77), new KualiDecimal(10000051.0), new KualiDecimal(771.05) } ));
+		crit.in("accountBalance", Arrays.asList(new BigDecimal[] { new BigDecimal("501.77"), new BigDecimal(10000051.0), new BigDecimal("771.05") } ));
 		acctDocs = (List<AccountWithDDAttributesDocument>) new QueryByCriteria(em, crit).toQuery().getResultList();
 		assertCorrectDocumentsWereReturned(acctNumSet, new DOCUMENT_FIXTURE[] { DOCUMENT_FIXTURE.TEST_DOC01, DOCUMENT_FIXTURE.TEST_DOC04, DOCUMENT_FIXTURE.TEST_DOC07 }, acctDocs);
 		
@@ -379,7 +399,7 @@ public class JpaCriteriaTest extends KNSTestCase {
 		
 		// Test NOT IN (...) with numbers.
 		crit = new Criteria(AccountWithDDAttributesDocument.class.getName());
-		crit.notIn("accountBalance", Arrays.asList(new KualiDecimal[] { new KualiDecimal(501.77), new KualiDecimal(10000051.0), new KualiDecimal(771.05) } ));
+		crit.notIn("accountBalance", Arrays.asList(new BigDecimal[] { new BigDecimal("501.77"), new BigDecimal(10000051.0), new BigDecimal("771.05") } ));
 		acctDocs = (List<AccountWithDDAttributesDocument>) new QueryByCriteria(em, crit).toQuery().getResultList();
 		assertCorrectDocumentsWereReturned(acctNumSet, new DOCUMENT_FIXTURE[] { DOCUMENT_FIXTURE.TEST_DOC02, DOCUMENT_FIXTURE.TEST_DOC03, DOCUMENT_FIXTURE.TEST_DOC05, DOCUMENT_FIXTURE.TEST_DOC06 }, acctDocs);
 		
@@ -450,7 +470,7 @@ public class JpaCriteriaTest extends KNSTestCase {
 		
 		// Test an UPDATE query.
 		crit = new Criteria(AccountWithDDAttributesDocument.class.getName());
-		crit.set("accountBalance", new KualiDecimal(372));
+		crit.set("accountBalance", new BigDecimal(372));
 		crit.like("accountOwner", "%s%");
 		int numUpdates = new QueryByCriteria(em, crit, QueryByCriteriaType.UPDATE).toQuery().executeUpdate();
 		assertEquals("The wrong number of AccountWithDDAttributesDocument entities were updated.", 2, numUpdates);
@@ -464,15 +484,15 @@ public class JpaCriteriaTest extends KNSTestCase {
 		}
 		crit = new Criteria(AccountWithDDAttributesDocument.class.getName());
 		crit2 = new Criteria(AccountWithDDAttributesDocument.class.getName());
-		crit.eq("accountBalance", new KualiDecimal(501));
-		crit2.eq("accountBalance", new KualiDecimal(771.05));
+		crit.eq("accountBalance", new BigDecimal(501));
+		crit2.eq("accountBalance", new BigDecimal("771.05"));
 		crit.or(crit2);
 		acctDocs = (List<AccountWithDDAttributesDocument>) new QueryByCriteria(em, crit).toQuery().getResultList();
 		assertCorrectDocumentsWereReturned(acctNumSet, new DOCUMENT_FIXTURE[0], acctDocs);
 		
 		// Test a DELETE query.
 		crit = new Criteria(AccountWithDDAttributesDocument.class.getName());
-		crit.lt("accountBalance", new KualiDecimal(372));
+		crit.lt("accountBalance", new BigDecimal(372));
 		numUpdates = new QueryByCriteria(em, crit, QueryByCriteriaType.DELETE).toQuery().executeUpdate();
 		assertEquals("The wrong number of AccountWithDDAttributesDocument entities were deleted.", 3, numUpdates);
 		makeNewEntityManager();
@@ -480,7 +500,7 @@ public class JpaCriteriaTest extends KNSTestCase {
 		acctDocs = (List<AccountWithDDAttributesDocument>) new QueryByCriteria(em, crit).toQuery().getResultList();
 		assertCorrectDocumentsWereReturned(acctNumSet, new DOCUMENT_FIXTURE[] { DOCUMENT_FIXTURE.TEST_DOC01, DOCUMENT_FIXTURE.TEST_DOC04, DOCUMENT_FIXTURE.TEST_DOC06, DOCUMENT_FIXTURE.TEST_DOC07 }, acctDocs);
 		crit = new Criteria(AccountWithDDAttributesDocument.class.getName());
-		crit.in("accountBalance", Arrays.asList(new KualiDecimal[] { new KualiDecimal(-100), new KualiDecimal(0.0), new KualiDecimal(4.54) }));
+		crit.in("accountBalance", Arrays.asList(new BigDecimal[] { new BigDecimal(-100), new BigDecimal(0.0), new BigDecimal("4.54") }));
 		acctDocs = (List<AccountWithDDAttributesDocument>) new QueryByCriteria(em, crit).toQuery().getResultList();
 		assertCorrectDocumentsWereReturned(acctNumSet, new DOCUMENT_FIXTURE[0], acctDocs);
 	}

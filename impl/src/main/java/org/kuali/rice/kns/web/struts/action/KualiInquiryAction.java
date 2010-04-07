@@ -137,7 +137,11 @@ public class KualiInquiryAction extends KualiAction {
     	if (fileName != null
     			&& contentType != null
     			&& fileContentBoField != null) {
+    		//make sure user has authorization to download attachment
+    		checkAuthorization(form, findMethodToCall(form, request));
+    		
     		fileName = StringUtils.replace(fileName, " ", "_");
+    		
     		InquiryForm inquiryForm = (InquiryForm) form;
         	BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
     		checkBO(bo);

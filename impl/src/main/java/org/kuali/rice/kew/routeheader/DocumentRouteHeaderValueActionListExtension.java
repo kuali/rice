@@ -16,8 +16,7 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.Person;
@@ -31,8 +30,9 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@Entity
-@Table(name="KREW_DOC_HDR_T")
+//@Entity
+//@Table(name="KREW_DOC_HDR_T")
+@MappedSuperclass
 public class DocumentRouteHeaderValueActionListExtension extends DocumentRouteHeaderValue {
 
 	private static final long serialVersionUID = 8458532812557846684L;

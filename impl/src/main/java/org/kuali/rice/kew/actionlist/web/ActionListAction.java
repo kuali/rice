@@ -437,9 +437,10 @@ public class ActionListAction extends KualiAction {
     		try {
     			actionItem.initialize(preferences);
     			DocumentRouteHeaderValue routeHeader = routeHeaderService.getRouteHeader(actionItem.getRouteHeaderId());
-    			DocumentRouteHeaderValueActionListExtension routeHeaderExtension = (DocumentRouteHeaderValueActionListExtension) routeHeader;
+    			DocumentRouteHeaderValueActionListExtension routeHeaderExtension = toDocumentRouteHeaderValueActionListExtension(routeHeader);
     			routeHeaderExtension.setActionListInitiatorPrincipal(routeHeaderExtension.getInitiatorPrincipal());
     			actionItem.setActionItemIndex(Integer.valueOf(index));
+    			actionItem.setRouteHeader(routeHeaderExtension);
     			//set background colors for document statuses
     			if (KEWConstants.ROUTE_HEADER_APPROVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
     				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorApproved()));
@@ -472,6 +473,36 @@ public class ActionListAction extends KualiAction {
     	generateActionItemErrors(ACTIONITEM_PROP, ACTIONLIST_BAD_ACTION_ITEMS_ERRKEY, actionItemProblemIds);
     }
 
+    private DocumentRouteHeaderValueActionListExtension toDocumentRouteHeaderValueActionListExtension(
+			DocumentRouteHeaderValue routeHeader) {
+
+		if(routeHeader==null){
+			return null;
+		}
+		
+		DocumentRouteHeaderValueActionListExtension extension = new DocumentRouteHeaderValueActionListExtension();
+		
+		extension.setRouteHeaderId(routeHeader.getRouteHeaderId());
+		extension.setDocumentTypeId(routeHeader.getDocumentTypeId());
+		extension.setDocRouteStatus(routeHeader.getDocRouteStatus());
+		extension.setDocRouteLevel(routeHeader.getDocRouteLevel());
+		extension.setStatusModDate(routeHeader.getStatusModDate());
+		extension.setCreateDate(routeHeader.getCreateDate());
+		extension.setApprovedDate(routeHeader.getApprovedDate());
+		extension.setFinalizedDate(routeHeader.getFinalizedDate());
+		extension.setRouteStatusDate(routeHeader.getRouteStatusDate());
+		extension.setRouteLevelDate(routeHeader.getRouteLevelDate());
+		extension.setDocTitle(routeHeader.getDocTitle());
+		extension.setAppDocId(routeHeader.getAppDocId());
+		extension.setDocVersion(routeHeader.getDocVersion());
+		extension.setInitiatorWorkflowId(routeHeader.getInitiatorWorkflowId());
+		extension.setVersionNumber(routeHeader.getVersionNumber());
+		extension.setAppDocStatus(routeHeader.getAppDocStatus());
+		extension.setAppDocStatusDate(routeHeader.getAppDocStatusDate());
+
+		return extension;
+	}
+    
     /**
      * Gets the page size of the Action List.  Uses the user's preferences for page size unless the action list
      * has been throttled by an application constant, in which case it uses the smaller of the two values.

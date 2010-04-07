@@ -22,6 +22,7 @@ import javax.persistence.Transient;
 import org.kuali.rice.kew.actionlist.DisplayParameters;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
@@ -52,6 +53,8 @@ public class ActionItemActionListExtension extends ActionItem {
     private Group delegatorGroup = null;
     @Transient
     private Group group = null;
+    @Transient
+    private DocumentRouteHeaderValue routeHeader;
 
     public Person getDelegatorPerson() {
         return delegatorPerson;
@@ -124,6 +127,14 @@ public class ActionItemActionListExtension extends ActionItem {
 	 */
 	public void setDelegatorGroup(Group delegatorGroup) {
 		this.delegatorGroup = delegatorGroup;
+	}
+
+	public DocumentRouteHeaderValue getRouteHeader() {
+		return this.routeHeader;
+	}
+
+	public void setRouteHeader(DocumentRouteHeaderValue routeHeader) {
+		this.routeHeader = routeHeader;
 	}
 
 }

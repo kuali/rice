@@ -143,7 +143,25 @@ public class JAXBConfigImplTest {
         config.putProperty("environment", "test");
         config.parseConfig();
     }
-    
+
+    /**
+     * 		
+     * This method tests parsing a config file and then altering a variable that is used as a composite for other variables.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testResolutionAfterParse() throws Exception{
+        JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");        
+        config.parseConfig();
+                  
+        config.putProperty("db", "mysql");        
+        
+        assertEquals("mysql-user", config.getProperty("username"));
+        assertEquals("mysql-user+mysql", config.getProperty("multi"));
+        assertEquals("mysql", config.getProperty("db"));
+        
+    }
     
     @Test
     public void testPropertiesParams() throws Exception {

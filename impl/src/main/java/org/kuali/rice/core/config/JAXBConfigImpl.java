@@ -418,7 +418,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     	// Look for a property in the map first and use that.  If system override is true
     	// then it will get overridden during the resolve phase.  If the value is null
     	// we need to check the system now so we don't throw an error.
-    	if(value.indexOf("\\$\\{"+ name +"\\}") != 0) {
+    	if(value.indexOf("${"+ name +"}") != -1) {
     		if( (temporary = rawProperties.getProperty(name)) == null ) {
     			temporary = System.getProperty(name);
     		}
@@ -451,7 +451,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     					String key = (String)o;
     					String unResolved = rawProperties.getProperty(key);
     					
-    					if(unResolved.indexOf("\\$") != 0){
+    					if(unResolved.indexOf("$") != -1 ){
     						LOG.info("Resolved Config Override: " + key + "(" + unResolved +")=[" + oldResolved +"]->[" + resolved +"]");     					
     					}else{
     						LOG.info("Resolved Config Override: " + key + "=[" + oldResolved +"]->[" + resolved +"]"); 

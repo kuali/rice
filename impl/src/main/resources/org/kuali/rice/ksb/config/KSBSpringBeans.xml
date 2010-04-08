@@ -144,10 +144,10 @@
 		<property name="retryAttempts" value="0" />
 	</bean>
 
-	<bean id="ObjectRemoterServiceBean" class="org.kuali.rice.ksb.messaging.objectremoting.ObjectRemoterServiceImpl" lazy-init="true" />
+	<bean id="ObjectRemoterService" class="org.kuali.rice.ksb.messaging.objectremoting.ObjectRemoterServiceImpl" lazy-init="true" />
 	<bean id="ksb.objectRemoterServiceDefinition" class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" lazy-init="true">
 		<property name="service">
-			<ref bean="ObjectRemoterServiceBean" />
+			<ref bean="ObjectRemoterService" />
 		</property>
 		<property name="localServiceName" value="ObjectRemoterService" />
 		<property name="priority" value="3" />

@@ -66,7 +66,7 @@ public class SpringBeanFactoryResourceLoader extends BaseResourceLoader implemen
 	 * on the QName.
 	 */
 	protected String resolveServiceName(QName serviceName) {
-		return serviceName.getLocalPart();
+		return serviceName.toString();
 	}
 
 

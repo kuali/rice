@@ -186,7 +186,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.THREAD_POOL_SERVICE));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.SCHEDULED_THREAD_POOL_SERVICE));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.REPEAT_TOPIC_INVOKING_QUEUE));
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.OBJECT_REMOTER_BEAN));
+		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.OBJECT_REMOTER));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.BUS_ADMIN_SERVICE));
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.REMOTED_SERVICE_REGISTRY));
 		return lifecycles;

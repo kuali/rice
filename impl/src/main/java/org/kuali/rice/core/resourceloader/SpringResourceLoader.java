@@ -56,8 +56,8 @@ public class SpringResourceLoader extends BaseResourceLoader {
 	    	if (!isStarted()) {
 	    	    return null;
 	    	}
-		if (this.getContext().containsBean(serviceName.getLocalPart())) {
-			Object service = this.getContext().getBean(serviceName.getLocalPart());
+		if (this.getContext().containsBean(serviceName.toString())) {
+			Object service = this.getContext().getBean(serviceName.toString());
 			return postProcessService(serviceName, service);
 		}
 		return super.getService(serviceName);

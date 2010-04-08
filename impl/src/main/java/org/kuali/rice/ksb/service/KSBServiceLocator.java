@@ -43,7 +43,6 @@ import org.springframework.transaction.support.TransactionTemplate;
 public class KSBServiceLocator {
 
     public static final String OBJECT_REMOTER = KSBConstants.ServiceNames.OBJECT_REMOTER;
-    public static final String OBJECT_REMOTER_BEAN = KSBConstants.ServiceNames.OBJECT_REMOTER_BEAN;
     public static final String SERVICE_REMOVER_SERVICE = KSBConstants.ServiceNames.SERVICE_REMOVER_SERVICE;
     public static final String THREAD_POOL_SERVICE = KSBConstants.ServiceNames.THREAD_POOL_SERVICE;
     public static final String REMOTED_SERVICE_REGISTRY = KSBConstants.ServiceNames.REMOTED_SERVICE_REGISTRY;

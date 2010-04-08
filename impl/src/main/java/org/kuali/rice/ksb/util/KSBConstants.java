@@ -97,7 +97,6 @@ public class KSBConstants extends JSTLConstants {
     
     public class ServiceNames {
     	public static final String OBJECT_REMOTER = "ObjectRemoterService";
-    	public static final String OBJECT_REMOTER_BEAN = "ObjectRemoterServiceBean";
         public static final String SERVICE_REMOVER_SERVICE = "RemoteClassRemoverService";
         public static final String THREAD_POOL_SERVICE = "enThreadPool";
         public static final String REMOTED_SERVICE_REGISTRY = "enServiceInvoker";

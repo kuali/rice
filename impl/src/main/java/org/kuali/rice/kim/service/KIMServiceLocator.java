@@ -18,6 +18,8 @@ package org.kuali.rice.kim.service;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -31,6 +33,8 @@ public final class KIMServiceLocator {
 
 	private static final Logger LOG = Logger.getLogger(KIMServiceLocator.class);
 
+	public static final String KIM_RUN_MODE_PROPERTY = "kim.mode";
+	
     public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
     public static final String KIM_ROLE_MANAGEMENT_SERVICE = "kimRoleManagementService";
 	public static final String KIM_PERSON_SERVICE = "personService";
@@ -65,11 +69,16 @@ public final class KIMServiceLocator {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}
-		return GlobalResourceLoader.getResourceLoader().getService(new QName(KimConstants.KIM_MODULE_NAMESPACE, serviceName));
+		return GlobalResourceLoader.getResourceLoader().getService(
+				(ModuleConfigurer.REMOTE_RUN_MODE.equals(ConfigContext.getCurrentContextConfig().getProperty(KIM_RUN_MODE_PROPERTY))) ?
+						new QName(KimConstants.KIM_MODULE_NAMESPACE, serviceName) : new QName(serviceName) );
 	}
 
     public static IdentityManagementService getIdentityManagementService() {
-    	return (IdentityManagementService)getService(KIM_IDENTITY_MANAGEMENT_SERVICE);
+    	if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Fetching service " + KIM_IDENTITY_MANAGEMENT_SERVICE);
+		}
+    	return (IdentityManagementService) GlobalResourceLoader.getResourceLoader().getService(new QName(KIM_IDENTITY_MANAGEMENT_SERVICE));
     }
 
     public static IdentityService getIdentityService() {
@@ -101,7 +110,10 @@ public final class KIMServiceLocator {
     }
 
     public static RoleManagementService getRoleManagementService() {
-    	return (RoleManagementService)getService(KIM_ROLE_MANAGEMENT_SERVICE);
+    	if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Fetching service " + KIM_ROLE_MANAGEMENT_SERVICE);
+		}
+    	return (RoleManagementService) GlobalResourceLoader.getResourceLoader().getService(new QName(KIM_ROLE_MANAGEMENT_SERVICE));
     }
 
     public static PermissionService getPermissionService() {
@@ -125,7 +137,10 @@ public final class KIMServiceLocator {
     }
 
     public static AuthenticationService getAuthenticationService() {
-    	return (AuthenticationService)getService(KIM_AUTHENTICATION_SERVICE);
+    	if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Fetching service " + KIM_AUTHENTICATION_SERVICE);
+		}
+    	return (AuthenticationService) GlobalResourceLoader.getResourceLoader().getService(new QName(KIM_AUTHENTICATION_SERVICE));
     }
 
     public static UiDocumentService getUiDocumentService() {
@@ -134,7 +149,10 @@ public final class KIMServiceLocator {
 
     @SuppressWarnings("unchecked")
 	public static PersonService getPersonService() {
-    	return (PersonService)getService(KIM_PERSON_SERVICE);
+    	if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Fetching service " + KIM_PERSON_SERVICE);
+		}
+    	return (PersonService) GlobalResourceLoader.getResourceLoader().getService(new QName(KIM_PERSON_SERVICE));
     }
 
     public static GroupInternalService getGroupInternalService() {

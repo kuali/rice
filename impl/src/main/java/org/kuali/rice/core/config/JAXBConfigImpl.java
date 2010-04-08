@@ -452,9 +452,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     					String unResolved = rawProperties.getProperty(key);
     					
     					if(unResolved.indexOf("\\$") != 0){
-    						LOG.info("Config Override: " + key + "(" + unResolved +")=[" + oldResolved +"]->[" + resolved +"]");     					
+    						LOG.info("Resolved Config Override: " + key + "(" + unResolved +")=[" + oldResolved +"]->[" + resolved +"]");     					
     					}else{
-    						LOG.info("Config Override: " + key + "=[" + oldResolved +"]->[" + resolved +"]"); 
+    						LOG.info("Resolved Config Override: " + key + "=[" + oldResolved +"]->[" + resolved +"]"); 
     					}    					
     				}
     			}    			

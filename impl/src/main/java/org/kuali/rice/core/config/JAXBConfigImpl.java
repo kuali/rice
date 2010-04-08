@@ -155,14 +155,14 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * @see org.kuali.rice.core.config.Config#putProperty(java.lang.String, java.lang.Object)
      */
 	public void putProperty(String key, String value) {
-        rawProperties.setProperty(key, replaceVariable(key, value));
+        this.setProperty(key, replaceVariable(key, value));
         resolveRawToCache();
 	}
 
 	public void putProperties(Properties properties) {
         if (properties != null) {
             for(Object o : properties.keySet()) {
-        	    this.rawProperties.setProperty((String)o, replaceVariable((String)o, properties.getProperty((String)o)));
+        	    this.setProperty((String)o, replaceVariable((String)o, properties.getProperty((String)o)));
             }
             
     	    resolveRawToCache();
@@ -267,7 +267,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 } else if (p.isOverride() || !rawProperties.containsKey(name)) {
 
                     if (p.isRandom()) {
-                        rawProperties.setProperty(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
+                        this.setProperty(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
                     } else if (p.isSystem()) {
                         // resolve and set system params immediately so they can override
                         // existing system params. Add to rawProperties resolved as well to
@@ -276,7 +276,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                         set.add(p.getName());
                         String value = parseValue(p.getValue(), set);
                         System.setProperty(name, value);
-                        rawProperties.setProperty(name, value);
+                        this.setProperty(name, value);
                     } else {
                     	
                     	/*
@@ -289,7 +289,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                     	 */
                     	String value = replaceVariable(name, p.getValue());                       
                     	
-                    	rawProperties.setProperty(name, value);                    	
+                    	this.setProperty(name, value);                    	
                     }
                 }
             }
@@ -300,8 +300,15 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     
     /*
      * This will set the property. No logic checking so what you pass in gets set.
+     * We use this as a focal point for debugging the raw config changes.
      */
     protected void setProperty(String name, String value){
+    	if(LOG.isInfoEnabled()){
+    		String oldProp = rawProperties.getProperty(name);
+    		if(oldProp != null && !oldProp.equals(value)){
+    			LOG.info("Raw Config Override: " + name + "=[" + oldProp +"]->[" + value +"]");
+    		}
+    	}
     	rawProperties.setProperty(name, value);
     }    
 
@@ -431,10 +438,27 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      */
     protected void resolveRawToCache() {
     	if(rawProperties.size() > 0) {
+    		Properties oldProps = new Properties(new ImmutableProperties(resolvedProperties));  
+    		//oldProps.putAll(new ImmutableProperties(resolvedProperties));
     		resolvedProperties.clear();
     		
-    		for(Object o : rawProperties.keySet()) {
-    			resolvedProperties.setProperty((String)o, resolve((String)o));
+    		for(Object o : rawProperties.keySet()) {    			
+    			String resolved = resolve((String)o);
+    			
+    			if(LOG.isInfoEnabled()){
+    				String oldResolved = oldProps.getProperty((String)o);
+    				if(oldResolved != null && !oldResolved.equals(resolved)){
+    					String key = (String)o;
+    					String unResolved = rawProperties.getProperty(key);
+    					
+    					if(unResolved.indexOf("\\$") != 0){
+    						LOG.info("Config Override: " + key + "(" + unResolved +")=[" + oldResolved +"]->[" + resolved +"]");     					
+    					}else{
+    						LOG.info("Config Override: " + key + "=[" + oldResolved +"]->[" + resolved +"]"); 
+    					}    					
+    				}
+    			}    			
+    			resolvedProperties.setProperty((String)o, resolved);
     		}
     	}
     }
@@ -443,8 +467,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * Configures built-in properties.
      */
     protected void configureBuiltIns() {
-    	rawProperties.setProperty("host.ip", RiceUtilities.getIpNumber());
-    	rawProperties.setProperty("host.name", RiceUtilities.getHostName());
+    	this.setProperty("host.ip", RiceUtilities.getIpNumber());
+    	this.setProperty("host.name", RiceUtilities.getHostName());
     }
 
     /**

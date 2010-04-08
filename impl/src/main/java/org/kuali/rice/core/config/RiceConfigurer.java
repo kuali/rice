@@ -139,8 +139,8 @@ public class RiceConfigurer extends RiceConfigurerBase {
 	protected void configurePlatform(Config config) {
 		if (!StringUtils.isBlank(this.platform)) {
 			String platformClassName = "org.kuali.rice.core.database.platform."+this.platform+"DatabasePlatform";
-			config.getProperties().setProperty(Config.DATASOURCE_PLATFORM, platformClassName);
-			config.getProperties().setProperty(Config.OJB_PLATFORM, this.platform);
+			config.putProperty(Config.DATASOURCE_PLATFORM, platformClassName);
+			config.putProperty(Config.OJB_PLATFORM, this.platform);
 		}
 	}
  

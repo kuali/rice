@@ -117,13 +117,23 @@
     </property>
     <property name="beanNames">
       <list>
-        <idref local="enUserOptionsDAO" />
-        <!--
-          <idref local="enHelpDAO" />
-        -->
+        <idref local="enActionListDAO" />
+        <idref local="enActionRequestDAO" />
+        <idref local="enActionTakenDAO" />
         <idref local="enBranchDAO" />
-        <idref local="enRuleAttributeDAO" />
+        <idref local="enDocumentLinkDAO" />
+        <idref local="enDocumentRouteHeaderDAO" />
+        <idref local="enDocumentTypeDAO" />
+        <idref local="enEDocLiteDAO" />
         <idref local="enExtractDAO" />
+        <idref local="enHelpDAO" />
+        <idref local="enNoteDAO" />
+        <idref local="enRemoveReplaceDocumentDAO" />
+        <idref local="enRouteNodeDAO" />
+        <idref local="enRuleAttributeDAO" />
+        <idref local="enRuleDAO" />
+        <idref local="enStatsDAO" />
+        <idref local="enUserOptionsDAO" />
       </list>
     </property>
   </bean>

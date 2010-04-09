@@ -20,6 +20,7 @@ package org.kuali.rice.kew.mail.service.impl;
 import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -192,7 +193,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
      * @param node - the node object to add the actionItem XML to (defaults to the doc variable if null is passed in)
      * @throws Exception
      */
-    protected void addSummarizedActionItem(Document doc, ActionItem actionItem, Person user, Node node) throws Exception {
+    protected void addSummarizedActionItem(Document doc, ActionItem actionItem, Person user, Node node, DocumentRouteHeaderValue routeHeader) throws Exception {
         if (node == null) {
             node = doc;
         }
@@ -204,7 +205,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         addTextElement(doc, root, "docName", actionItem.getDocName());
         addCDataElement(doc, root, "docLabel", actionItem.getDocLabel());
         addCDataElement(doc, root, "docTitle", actionItem.getDocTitle());
-        DocumentRouteHeaderValue routeHeader = getRouteHeader(actionItem);
+        //DocumentRouteHeaderValue routeHeader = getRouteHeader(actionItem);
         addTextElement(doc, root, "docRouteStatus", routeHeader.getDocRouteStatus());
         addCDataElement(doc, root, "routeStatusLabel", routeHeader.getRouteStatusLabel());
         addTextElement(doc, root, "actionRequestCd", actionItem.getActionRequestCd());
@@ -224,6 +225,13 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         return routeHeaderService.getRouteHeader(actionItem.getRouteHeaderId());
     }
 
+    protected Map<Long,DocumentRouteHeaderValue> getRouteHeaders(Collection<ActionItem> actionItems) {
+    	if (routeHeaderService == null) {
+    		routeHeaderService = KEWServiceLocator.getRouteHeaderService();
+    	}
+    	return routeHeaderService.getRouteHeadersForActionItems(actionItems);
+    }
+    
     protected static String transform(Templates style, Document doc) {
         StringWriter writer = new StringWriter();
         StreamResult result = new StreamResult(writer);
@@ -278,6 +286,8 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         DocumentBuilder db = getDocumentBuilder(false);
         Document doc = db.newDocument();
         Element element = doc.createElement(name);
+        Map<Long,DocumentRouteHeaderValue> routeHeaders = getRouteHeaders(actionItems);
+        
         setStandardAttributes(element);
         doc.appendChild(element);
 
@@ -285,7 +295,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             addObjectXML(doc, user, element, "user");
             for (ActionItem actionItem: actionItems) {
                 try {
-                    addSummarizedActionItem(doc, actionItem, user, element);
+                    addSummarizedActionItem(doc, actionItem, user, element, routeHeaders.get(actionItem.getRouteHeaderId()));
                 } catch (Exception e) {
                     String message = "Error generating XML for action item: " + actionItem;
                     LOG.error(message, e);

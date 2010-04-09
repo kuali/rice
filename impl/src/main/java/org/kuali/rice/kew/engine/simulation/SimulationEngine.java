@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.MDC;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
@@ -317,6 +318,13 @@ public class SimulationEngine extends StandardWorkflowEngine {
         if (document == null) {
         	throw new IllegalArgumentException("Workflow simulation engine could not locate document with id "+documentId);
         }
+        for (ActionRequestValue actionRequest : document.getActionRequests()) {
+        	actionRequest = (ActionRequestValue) deepCopy(actionRequest);
+        	document.getSimulatedActionRequests().add(actionRequest);
+        	for (ActionItem actionItem : actionRequest.getActionItems()) {
+        		actionRequest.getSimulatedActionItems().add((ActionItem) deepCopy(actionItem));
+        	}
+        }
         context.setDocument(document);
         installSimulationNodeInstances(context, criteria);
 		return document;
@@ -475,8 +483,11 @@ public class SimulationEngine extends StandardWorkflowEngine {
         // TODO delyea - deep copy below
         List actionRequests = new ArrayList();
         for (Iterator iter = actionRequestService.findPendingByDoc(document.getRouteHeaderId()).iterator(); iter.hasNext();) {
-            ActionRequestValue arv = (ActionRequestValue) iter.next();
-            actionRequests.add((ActionRequestValue)deepCopy(arv));
+            ActionRequestValue arv = (ActionRequestValue) deepCopy( (ActionRequestValue) iter.next() );
+            for (ActionItem actionItem : arv.getActionItems()) {
+        		arv.getSimulatedActionItems().add((ActionItem) deepCopy(actionItem));
+        	}
+            actionRequests.add(arv);//(ActionRequestValue)deepCopy(arv));
         }
 //        actionRequests.addAll(actionRequestService.findPendingByDoc(document.getRouteHeaderId()));
         LOG.debug("Simulate Deactivating all pending action requests");

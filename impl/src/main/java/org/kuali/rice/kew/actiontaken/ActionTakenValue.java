@@ -35,6 +35,8 @@ import javax.persistence.Version;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
@@ -99,7 +101,8 @@ public class ActionTakenValue implements WorkflowPersistable {
     //@ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
     //@JoinColumn(name="DOC_HDR_ID")
     //private DocumentRouteHeaderValue routeHeader;
-    @OneToMany(mappedBy="actionTaken")
+    @OneToMany(fetch=FetchType.EAGER, mappedBy="actionTaken")
+    @Fetch(value = FetchMode.SELECT)
 	private Collection<ActionRequestValue> actionRequests;
     @Column(name="CUR_IND")
     private Boolean currentIndicator = new Boolean(true);

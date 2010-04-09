@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -30,6 +31,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.feedback.web.FeedbackForm;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.mail.EmailContent;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -215,16 +217,15 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
         return sf.toString();
     }
 
-    private HashMap getActionListItemsStat(Collection actionItems) {
-        HashMap docTypes = new LinkedHashMap();
-        Iterator iter = actionItems.iterator();
+    private HashMap<String,Integer> getActionListItemsStat(Collection<ActionItem> actionItems) {
+        HashMap<String,Integer> docTypes = new LinkedHashMap<String,Integer>();
+        Map<Long,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(actionItems);
+        Iterator<ActionItem> iter = actionItems.iterator();
 
         while (iter.hasNext()) {
-            String docTypeName = KEWServiceLocator.getRouteHeaderService().getRouteHeader(((ActionItem) iter.next()).getRouteHeaderId())
-                    .getDocumentType().getName();
+            String docTypeName = routeHeaders.get(iter.next().getRouteHeaderId()).getDocumentType().getName();
             if (docTypes.containsKey(docTypeName)) {
-                docTypes.put(docTypeName, new Integer(((Integer) docTypes
-                        .get(docTypeName)).intValue() + 1));
+                docTypes.put(docTypeName, new Integer(docTypes.get(docTypeName).intValue() + 1));
             } else {
                 docTypes.put(docTypeName, new Integer(1));
             }

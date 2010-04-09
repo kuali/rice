@@ -20,8 +20,10 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -39,6 +41,9 @@ public interface RouteHeaderService {
 
     public DocumentRouteHeaderValue getRouteHeader(Long routeHeaderId);
     public DocumentRouteHeaderValue getRouteHeader(Long routeHeaderId, boolean clearCache);
+    public Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<Long> routeHeaderIds);
+    public Collection<DocumentRouteHeaderValue> getRouteHeaders (Collection<Long> routeHeaderIds, boolean clearCache);
+    public Map<Long,DocumentRouteHeaderValue> getRouteHeadersForActionItems(Collection<ActionItem> actionItems);
     public void lockRouteHeader(Long routeHeaderId, boolean wait);
     public void saveRouteHeader(DocumentRouteHeaderValue routeHeader);
     public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader);

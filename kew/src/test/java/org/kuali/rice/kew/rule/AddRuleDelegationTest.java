@@ -177,7 +177,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		ruleDelegation.setDelegateRuleId(null);
 		for (RuleResponsibility ruleResponsibility : ruleDelegation.getDelegationRuleBaseValues().getResponsibilities()) {
 			ruleResponsibility.setRuleBaseValuesId(null);
-			ruleResponsibility.setRuleBaseValues(null);
+			//ruleResponsibility.setRuleBaseValues(null);
 			ruleResponsibility.setResponsibilityId(null);
 			ruleResponsibility.setRuleResponsibilityKey(null);
 		}

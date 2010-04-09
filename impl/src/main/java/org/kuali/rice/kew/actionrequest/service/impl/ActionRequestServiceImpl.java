@@ -269,7 +269,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
                 getActionListService().saveActionItem(actionItem);
             }
         } else {
-        	actionRequest.setSimulatedActionItems(actionItems);
+        	actionRequest.getSimulatedActionItems().addAll(actionItems);
         }
         return actionItems;
     }

@@ -34,7 +34,6 @@ import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleResponsibility;
@@ -152,12 +151,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
         }
         crit.eq("name", name);
         crit.eq("currentInd", Boolean.TRUE);
-        try{
-        	return (RuleBaseValues) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-        }catch (javax.persistence.NoResultException e){
-        	return null;
-        }
-
+       	return (RuleBaseValues) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
 
 	public RuleBaseValues findRuleBaseValuesById(Long ruleBaseValuesId) {
@@ -166,11 +160,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		}
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.eq("ruleBaseValuesId", ruleBaseValuesId);
-		try{
-			return (RuleBaseValues) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-		}catch(javax.persistence.NoResultException e){
-			return null;
-		}
+		return (RuleBaseValues) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
 	}
 
 	public List findRuleBaseValuesByResponsibilityReviewer(String reviewerName, String type) {

@@ -20,9 +20,12 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.dao.SearchableAttributeDAO;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -54,6 +57,29 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
     	return getRouteHeaderDAO().findRouteHeader(routeHeaderId, clearCache);
     }
 
+    public Collection<DocumentRouteHeaderValue> getRouteHeaders(Collection<Long> routeHeaderIds) {
+    	return getRouteHeaderDAO().findRouteHeaders(routeHeaderIds);
+    }
+    
+    public Collection<DocumentRouteHeaderValue> getRouteHeaders(Collection<Long> routeHeaderIds, boolean clearCache) {
+    	return getRouteHeaderDAO().findRouteHeaders(routeHeaderIds, clearCache);
+    }
+    
+    public Map<Long,DocumentRouteHeaderValue> getRouteHeadersForActionItems(Collection<ActionItem> actionItems) {
+    	Map<Long,DocumentRouteHeaderValue> routeHeaders = new HashMap<Long,DocumentRouteHeaderValue>();
+    	List<Long> routeHeaderIds = new ArrayList<Long>(actionItems.size());
+    	for (ActionItem actionItem : actionItems) {
+    		routeHeaderIds.add(actionItem.getRouteHeaderId());
+    	}
+    	Collection<DocumentRouteHeaderValue> actionItemRouteHeaders = getRouteHeaders(routeHeaderIds);
+    	if (actionItemRouteHeaders != null) {
+    		for (DocumentRouteHeaderValue routeHeader : actionItemRouteHeaders) {
+    			routeHeaders.put(routeHeader.getRouteHeaderId(), routeHeader);
+    		}
+    	}
+    	return routeHeaders;
+    }
+    
     public void lockRouteHeader(Long routeHeaderId, boolean wait) {
         getRouteHeaderDAO().lockRouteHeader(routeHeaderId, wait);
         LOG.debug("Successfully locked document [docId=" + routeHeaderId + "]");

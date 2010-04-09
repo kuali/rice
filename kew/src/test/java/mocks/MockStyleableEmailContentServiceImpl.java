@@ -18,6 +18,7 @@ package mocks;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -82,6 +83,21 @@ public class MockStyleableEmailContentServiceImpl extends StyleableEmailContentS
         return routeHeader;
     }
 
+    @Override
+    public Map<Long,DocumentRouteHeaderValue> getRouteHeaders(Collection<ActionItem> actionItems) {
+    	Map<Long,DocumentRouteHeaderValue> routeHeaders = super.getRouteHeaders(actionItems);
+    	DocumentRouteHeaderValue routeHeader = null;
+    	for (ActionItem actionItem : actionItems) {
+    		if (routeHeaders.get(actionItem.getRouteHeaderId()) == null) {
+    			routeHeader = new DocumentRouteHeaderValue();
+            	routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
+            	routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
+            	routeHeaders.put(actionItem.getRouteHeaderId(), routeHeader);
+    		}
+    	}
+    	return routeHeaders;
+    }
+    
     /**
      * This method returns whether this service is being used
      */

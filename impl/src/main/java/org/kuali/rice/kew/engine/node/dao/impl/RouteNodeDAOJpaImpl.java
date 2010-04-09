@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -85,24 +84,14 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     public RouteNode findRouteNodeById(Long nodeId) {
     	Query query = entityManager.createNamedQuery("RouteNode.FindByRouteNodeId");
     	query.setParameter(KEWPropertyConstants.ROUTE_NODE_ID, nodeId);
-    	try {
     	return (RouteNode) query.getSingleResult();
-    	} catch (NoResultException nre) {
-    		return null;
-    	}
     }
 
     public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId) {
     	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindByRouteNodeInstanceId");
     	query.setParameter(KEWPropertyConstants.ROUTE_NODE_INSTANCE_ID, nodeInstanceId);
 
-		//TODO: Should we make use of the spring interceptor to catch this exception
-    	try {
-    	 	return (RouteNodeInstance) query.getSingleResult(); 		
-    	} catch (NoResultException nre){
-    		return null;
-    	}
-   
+   	 	return (RouteNodeInstance) query.getSingleResult(); 		
     }
 
     public List getActiveNodeInstances(Long documentId) {

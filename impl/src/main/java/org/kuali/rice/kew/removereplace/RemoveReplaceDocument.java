@@ -21,12 +21,16 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * A Remove/Replace document.
@@ -54,9 +58,11 @@ public class RemoveReplaceDocument implements Serializable {
 	private String replacementUserWorkflowId;
     @Column(name="OPRN")
 	private String operation;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="removeReplaceDocument")
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="removeReplaceDocument")
+    @Fetch(value = FetchMode.SELECT)
 	private List<WorkgroupTarget> workgroupTargets;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="removeReplaceDocument")
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE}, mappedBy="removeReplaceDocument")
+    @Fetch(value = FetchMode.SELECT)
 	private List<RuleTarget> ruleTargets;
     @Version
 	@Column(name="VER_NBR")

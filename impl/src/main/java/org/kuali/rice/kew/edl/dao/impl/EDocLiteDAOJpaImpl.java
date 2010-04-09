@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.jpa.criteria.Criteria;
@@ -94,11 +93,7 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
         crit.eq(NAME_CRITERIA, styleName);
         crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
 
-        try {
-            return (EDocLiteStyle) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return (EDocLiteStyle) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
 
     /**
@@ -110,11 +105,7 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
         final Criteria crit = new Criteria(EDocLiteDefinition.class.getName());
         crit.eq(NAME_CRITERIA, defName);
         crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
-        try {
-            return (EDocLiteDefinition) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return (EDocLiteDefinition) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
 
     /**
@@ -126,11 +117,7 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
         final Criteria crit = new Criteria(EDocLiteAssociation.class.getName());
         crit.eq("edlName", docTypeName);
         crit.eq(ACTIVE_IND_CRITERIA, Boolean.TRUE);
-        try {
-            return (EDocLiteAssociation) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return (EDocLiteAssociation) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
 
     /**
@@ -222,11 +209,7 @@ public class EDocLiteDAOJpaImpl implements EDocLiteDAO {
     public EDocLiteAssociation getEDocLiteAssociation(final Long associationId) {
         final Criteria crit = new Criteria(EDocLiteAssociation.class.getName());
         crit.eq("edocLiteAssocId", associationId);
-        try {
-            return (EDocLiteAssociation) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return (EDocLiteAssociation) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
 
     public EntityManager getEntityManager() {

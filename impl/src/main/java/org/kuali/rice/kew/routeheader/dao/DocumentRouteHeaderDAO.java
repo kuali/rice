@@ -37,6 +37,8 @@ public interface DocumentRouteHeaderDAO {
   public void lockRouteHeader(Long routeHeaderId, boolean wait);
   public DocumentRouteHeaderValue findRouteHeader(Long routeHeaderId);
   public DocumentRouteHeaderValue findRouteHeader(Long routeHeaderId, boolean clearCache);
+  public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds);
+  public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds, boolean clearCache);
   public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader);
   public Long getNextRouteHeaderId();
   public Collection findPendingByResponsibilityIds(Set responsibilityIds);

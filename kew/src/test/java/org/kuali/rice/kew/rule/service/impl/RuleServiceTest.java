@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.PersistenceException;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -37,7 +39,6 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
 
 
@@ -643,7 +644,7 @@ public class RuleServiceTest extends KEWTestCase {
         ext.getExtensionValues().add(val);
         rbv.getRuleExtensions().add(ext);
 
-        new AssertThrows(DataIntegrityViolationException.class, "Did not throw constraint violation as expected.  If rule service behavior has changed, update this test.") {
+        new AssertThrows(PersistenceException.class, "Did not throw persistence exception as expected.  If rule service behavior has changed, update this test.") {
             public void test() throws Exception {
                 KEWServiceLocator.getRuleService().save2(rbv);
             }

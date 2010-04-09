@@ -57,7 +57,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
-import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
@@ -424,9 +423,11 @@ public class ActionListAction extends KualiAction {
 
     private void initializeActionList(List actionList, Preferences preferences) throws WorkflowException {
     	List actionItemProblemIds = new ArrayList();
+    	Map<Long,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems((List<ActionItem>)actionList);
+
     	int index = 0;
     	generateActionItemErrors(actionList);
-    	RouteHeaderService routeHeaderService = KEWServiceLocator.getRouteHeaderService();
+    	//RouteHeaderService routeHeaderService = KEWServiceLocator.getRouteHeaderService();
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
     		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)iterator.next();
     		if (actionItem.getRouteHeaderId() == null) {
@@ -436,7 +437,8 @@ public class ActionListAction extends KualiAction {
     		}
     		try {
     			actionItem.initialize(preferences);
-    			DocumentRouteHeaderValue routeHeader = routeHeaderService.getRouteHeader(actionItem.getRouteHeaderId());
+    			DocumentRouteHeaderValue routeHeader = routeHeaders.get(actionItem.getRouteHeaderId());
+    			//DocumentRouteHeaderValue routeHeader = routeHeaderService.getRouteHeader(actionItem.getRouteHeaderId());
     			DocumentRouteHeaderValueActionListExtension routeHeaderExtension = toDocumentRouteHeaderValueActionListExtension(routeHeader);
     			routeHeaderExtension.setActionListInitiatorPrincipal(routeHeaderExtension.getInitiatorPrincipal());
     			actionItem.setActionItemIndex(Integer.valueOf(index));
@@ -526,7 +528,7 @@ public class ActionListAction extends KualiAction {
     	int startIndex = (page.intValue() - 1) * pageSize;
     	int endIndex = startIndex + pageSize;
     	generateActionItemErrors(actionList);
-    	RouteHeaderService routeHeaderService = KEWServiceLocator.getRouteHeaderService();
+    	Map<Long,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems((List<ActionItem>)actionList);
     	for (int index = startIndex; index < endIndex && index < actionList.size(); index++) {
     		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)actionList.get(index);
     		// evaluate custom action list component for mass actions
@@ -537,7 +539,7 @@ public class ActionListAction extends KualiAction {
     			boolean itemHasAcknowledges = false;
     			boolean itemHasFyis = false;
     			boolean itemHasCustomActions = false;
-    			CustomActionListAttribute customActionListAttribute = routeHeaderService.getRouteHeader(actionItem.getRouteHeaderId()).getCustomActionListAttribute();
+    			CustomActionListAttribute customActionListAttribute = routeHeaders.get(actionItem.getRouteHeaderId()).getCustomActionListAttribute();
     			if (customActionListAttribute != null) {
     				Map customActions = new LinkedHashMap();
     				customActions.put("NONE", "NONE");

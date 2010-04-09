@@ -18,6 +18,7 @@ package org.kuali.rice.kew.mail.service.impl;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -301,16 +302,15 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		return sf.toString();
 	}
 
-	private HashMap getActionListItemsStat(Collection actionItems) {
-		HashMap docTypes = new HashMap();
-		Iterator iter = actionItems.iterator();
+	private HashMap<String,Integer> getActionListItemsStat(Collection<ActionItem> actionItems) {
+		HashMap<String,Integer> docTypes = new HashMap<String,Integer>();
+		Map<Long,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(actionItems);
+		Iterator<ActionItem> iter = actionItems.iterator();
 
 		while (iter.hasNext()) {
-			String docTypeName = KEWServiceLocator.getRouteHeaderService().getRouteHeader(((ActionItem) iter.next()).getRouteHeaderId())
-					.getDocumentType().getName();
+			String docTypeName = routeHeaders.get(iter.next().getRouteHeaderId()).getDocumentType().getName();
 			if (docTypes.containsKey(docTypeName)) {
-				docTypes.put(docTypeName, new Integer(((Integer) docTypes
-						.get(docTypeName)).intValue() + 1));
+				docTypes.put(docTypeName, new Integer(docTypes.get(docTypeName).intValue() + 1));
 			} else {
 				docTypes.put(docTypeName, new Integer(1));
 			}

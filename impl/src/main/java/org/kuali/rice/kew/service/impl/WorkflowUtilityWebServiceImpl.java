@@ -680,6 +680,17 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if (requests == null || requests.isEmpty()) {
             return false;
         }
+        
+        // Deep-copy the action requests for the simulation.
+        for (int i = requests.size() - 1; i >= 0; i--) {
+        	ActionRequestValue actionRequest = (ActionRequestValue) ObjectUtils.deepCopy((ActionRequestValue)requests.get(i));
+        	// Deep-copy the action items as well, since they are indirectly retrieved from the action request via service calls.
+        	for (ActionItem actionItem : actionRequest.getActionItems()) {
+        		actionRequest.getSimulatedActionItems().add((ActionItem) ObjectUtils.deepCopy(actionItem));
+        	}
+        	requests.set(i, actionRequest);
+        }
+        
         ActivationContext activationContext = new ActivationContext(ActivationContext.CONTEXT_IS_SIMULATION);
         for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();

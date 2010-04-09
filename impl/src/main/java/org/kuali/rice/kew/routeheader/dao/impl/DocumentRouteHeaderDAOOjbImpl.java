@@ -151,6 +151,13 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         return (DocumentRouteHeaderValue) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentRouteHeaderValue.class, crit));
     }
 
+    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds) {
+    	return findRouteHeaders(routeHeaderIds, false);
+    }
+    
+    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds, boolean clearCache) {
+    	return null; // Not implemented here because we're using the JPA version of the DAO for the 1.1 release anyway.
+    }
 
     public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader) {
     	// need to clear action list cache for users who have this item in their action list

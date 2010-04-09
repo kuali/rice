@@ -358,10 +358,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     	if (this.simulatedActionRequests == null || this.simulatedActionRequests.isEmpty()) {
     		return KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId);
     	} else {
-    		List<ActionRequestValue> allActionRequests =
-    			new ArrayList<ActionRequestValue>(KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(routeHeaderId));
-    		allActionRequests.addAll(this.simulatedActionRequests);
-    		return allActionRequests;
+    		return this.simulatedActionRequests;
     	}
     }
 

@@ -20,7 +20,6 @@ package org.kuali.rice.kew.edl.extract.dao.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.jpa.criteria.Criteria;
@@ -42,11 +41,7 @@ public class ExtractDAOJpaImpl implements ExtractDAO {
         LOG.debug("finding Document Extract by routeHeaderId " + docId);
         Criteria crit = new Criteria(Dump.class.getName());
         crit.eq("docId", docId);
-        try {
-            return (Dump) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
+        return (Dump) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
 
     public List<Fields> getFieldsByRouteHeaderId(Long docId) {

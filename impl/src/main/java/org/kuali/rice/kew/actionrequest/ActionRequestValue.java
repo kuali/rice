@@ -691,9 +691,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     	if (this.simulatedActionItems == null || this.simulatedActionItems.isEmpty()) {
     		return (List<ActionItem>) KEWServiceLocator.getActionListService().findByActionRequestId(actionRequestId);
     	} else {
-    		List<ActionItem> allActionItems = new ArrayList<ActionItem>(KEWServiceLocator.getActionListService().findByActionRequestId(actionRequestId));
-    		allActionItems.addAll(this.simulatedActionItems);
-    		return allActionItems;
+    		return this.simulatedActionItems;
     	}
     }
 

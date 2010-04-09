@@ -18,13 +18,14 @@ package org.kuali.rice.kew.documentlink.dao.impl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO;
+import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 
@@ -65,7 +66,7 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 	 */
 	public void deleteDocumentLink(DocumentLink link) {
 		deleteSingleLinkFromOrgnDoc(link);
-		deleteSingleLinkFromOrgnDoc(DocumentLinkDaoUtil.reverseLink(link));
+		deleteSingleLinkFromOrgnDoc(DocumentLinkDaoUtil.reverseLink((DocumentLink)ObjectUtils.deepCopy(link)));
 	}
 
 	/**
@@ -77,11 +78,7 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 		Criteria crit = new Criteria(DocumentLink.class.getName());
 		crit.eq("orgnDocId", link.getOrgnDocId());
 		crit.eq("destDocId", link.getDestDocId());
-		try {
-			return (DocumentLink) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-		} catch (NoResultException e) {
-			return null;
-		}
+		return (DocumentLink) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
 	}
 
 	/**
@@ -92,7 +89,7 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 	public List<DocumentLink> getLinkedDocumentsByDocId(Long docId) {
 		Criteria crit = new Criteria(DocumentLink.class.getName());
 		crit.eq("orgnDocId", docId);
-		return (List<DocumentLink>) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+		return (List<DocumentLink>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	
 	}
 
@@ -102,12 +99,22 @@ public class DocumentLinkDAOJpaImpl implements DocumentLinkDAO {
 	 * @see org.kuali.rice.kew.documentlink.dao.DocumentLinkDAO#saveDocumentLink(org.kuali.rice.kew.documentlink.DocumentLink)
 	 */
 	public void saveDocumentLink(DocumentLink link) {
-		if(getLinkedDocument(link) == null)
-			entityManager.persist(link);
+		if(getLinkedDocument(link) == null) {
+			if (link.getDocLinkId() == null) {
+				entityManager.persist(link);
+			} else {
+				OrmUtils.merge(entityManager, link);
+			}
+		}
 //		//if we want a 2-way linked pair
-		DocumentLink rLink = DocumentLinkDaoUtil.reverseLink(link);
-		if(getLinkedDocument(rLink) == null)
-			entityManager.persist(link);
+		DocumentLink rLink = DocumentLinkDaoUtil.reverseLink((DocumentLink)ObjectUtils.deepCopy(link));
+		if(getLinkedDocument(rLink) == null) {
+			if (link.getDocLinkId() == null) {
+				entityManager.persist(rLink);
+			} else {
+				OrmUtils.merge(entityManager, rLink);
+			}
+		}
 
 	}
 	

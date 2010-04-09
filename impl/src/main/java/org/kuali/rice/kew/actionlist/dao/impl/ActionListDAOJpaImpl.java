@@ -561,11 +561,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());
         crit.eq("routeHeaderId", documentId);
         crit.eq("principalId", userId);
-        try{
-        	return (OutboxItemActionListExtension) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-        }catch(javax.persistence.NoResultException e){
-        	return null;
-        }
+       	return (OutboxItemActionListExtension) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
     
     private Date beginningOfDay(Date date) {

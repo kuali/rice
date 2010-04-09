@@ -25,12 +25,13 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
+import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
@@ -151,16 +152,30 @@ public class DocumentRouteHeaderDAOJpaImpl implements DocumentRouteHeaderDAO {
         	//this.getPersistenceBrokerTemplate().clearCache();
         }
         
-        try {
-	        DocumentRouteHeaderValue routeHeader = (DocumentRouteHeaderValue) query.getSingleResult(); 
-//	    	routeHeader.setSearchableAttributeValues(findSearchableAttributeValues(routeHeaderId));
-	    	return routeHeader;
-        } catch (NoResultException nre){
-        	return null;
-        }    	        
+	    DocumentRouteHeaderValue routeHeader = (DocumentRouteHeaderValue) query.getSingleResult(); 
+//	    routeHeader.setSearchableAttributeValues(findSearchableAttributeValues(routeHeaderId));
+	    return routeHeader;
     }
 
-
+    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds) {
+    	return findRouteHeaders(routeHeaderIds, false);
+    }
+    
+    public Collection<DocumentRouteHeaderValue> findRouteHeaders(Collection<Long> routeHeaderIds, boolean clearCache) {
+    	if (routeHeaderIds == null || routeHeaderIds.isEmpty()) {
+    		return null;
+    	}
+    	Criteria crit = new Criteria(DocumentRouteHeaderValue.class.getName());
+    	crit.in("routeHeaderId", routeHeaderIds);
+    	
+    	//TODO: What cache do we clear when using JPA
+        if (clearCache) {
+        	//this.getPersistenceBrokerTemplate().clearCache();
+        }
+    	
+    	return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+    }
+    
     public void deleteRouteHeader(DocumentRouteHeaderValue routeHeader) {
     	// need to clear action list cache for users who have this item in their action list
     	ActionListService actionListSrv = KEWServiceLocator.getActionListService();

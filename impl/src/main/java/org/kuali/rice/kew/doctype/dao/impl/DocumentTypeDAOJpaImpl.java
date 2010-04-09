@@ -69,11 +69,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	public DocumentType findByDocId(Long docId) {
 		Criteria crit = new Criteria(DocumentType.class.getName());
 		crit.eq("documentTypeId", docId);
-		try {
 			return (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-		} catch (javax.persistence.NoResultException e) {
-			return null;
-		}
 	}
 
 	public DocumentType findByName(String name){
@@ -89,12 +85,8 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 			crit.eq("name", name);
 		}
 		crit.eq("currentInd", new Boolean(true));
-		try{
-			DocumentType docType = (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
-			return docType;
-		}catch (javax.persistence.NoResultException e){
-		   return null;
-		}
+		DocumentType docType = (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
+		return docType;
 	}
 
 	public Integer getMaxVersionNumber(String docTypeName) {

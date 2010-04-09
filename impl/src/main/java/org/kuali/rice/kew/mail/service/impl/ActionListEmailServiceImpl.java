@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
@@ -44,7 +45,6 @@ import org.kuali.rice.kew.mail.WeeklyEmailJob;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
@@ -535,18 +535,11 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 
 	private HashMap<String,Integer> getActionListItemsStat(Collection<ActionItem> actionItems) {
 		HashMap<String,Integer> docTypes = new LinkedHashMap<String,Integer>();
-		HashMap<Long,DocumentRouteHeaderValue> routeHeaders = new HashMap<Long,DocumentRouteHeaderValue>();
-		RouteHeaderService routeHeaderService = KEWServiceLocator.getRouteHeaderService();
+		Map<Long,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(actionItems);
 		Iterator<ActionItem> iter = actionItems.iterator();
 
 		while (iter.hasNext()) {
-			Long routeHeaderId = iter.next().getRouteHeaderId();
-			DocumentRouteHeaderValue routeHeader = routeHeaders.get(routeHeaderId);
-			if (routeHeader == null) {
-				routeHeader = routeHeaderService.getRouteHeader(routeHeaderId);
-				routeHeaders.put(routeHeaderId, routeHeader);
-			}
-			String docTypeName = routeHeader.getDocumentType().getName();
+			String docTypeName = routeHeaders.get(iter.next().getRouteHeaderId()).getDocumentType().getName();
 			if (docTypes.containsKey(docTypeName)) {
 				docTypes.put(docTypeName, new Integer(docTypes.get(docTypeName).intValue() + 1));
 			} else {

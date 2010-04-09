@@ -58,6 +58,12 @@ import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
  */
 public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao {
 
+	/**
+	 * Adds SubCriteria to the Query Criteria using the role qualification passed in 
+	 * 
+	 * @param c The Query Criteria object to be used 
+	 * @param qualification The role qualification
+	 */
 	private void addSubCriteriaBasedOnRoleQualification(Criteria c, AttributeSet qualification) {
 		if(qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) {
 			for(Map.Entry<String, String> qualifier : qualification.entrySet()) {

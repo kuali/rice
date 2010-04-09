@@ -173,6 +173,12 @@ public class RoleServiceBase {
 		}
 	}
 	
+	/**
+	 * Converts the Qualifier Name/Value Role qualification set into Qualifier AttributeID/Value set
+	 * 
+	 * @param qualification The original role qualification attribute set
+	 * @return Converted attributeSet containing ID/value pairs
+	 */	
 	private AttributeSet convertQualifierKeys(AttributeSet qualification) {
 		AttributeSet convertedQualification = new AttributeSet();
 		if(qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) { 
@@ -193,6 +199,7 @@ public class RoleServiceBase {
 	 * @param principalId The principal ID to filter by; may get ignored depending on the daoActionToTake value.
 	 * @param groupIds The group IDs to filter by; may get ignored depending on the daoActionToTake value.
 	 * @param memberTypeCode The member type code to filter by; may get overridden depending on the daoActionToTake value.
+	 * @param qualification The original role qualification attribute set 
 	 * @return A list of RoleMemberImpl instances based on the provided parameters.
 	 * @throws IllegalArgumentException if daoActionToTake refers to an enumeration constant that is not role-member-related.
 	 */

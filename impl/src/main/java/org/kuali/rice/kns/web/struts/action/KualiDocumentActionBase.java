@@ -1700,7 +1700,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
 	public EntityManagerFactory getEntityManagerFactory() {
     	if ( entityManagerFactory == null ) {
-    		entityManagerFactory = KNSServiceLocator.getEntityManagerFactory();
+    		entityManagerFactory = KNSServiceLocator.getApplicationEntityManagerFactory();
     	}
 		return this.entityManagerFactory;
 	}

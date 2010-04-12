@@ -122,8 +122,13 @@ public interface KimRoleTypeService extends KimTypeService {
      * @param roleName the name of the role to determine caching on
      * @return true if the membership results of the Role should be cached, false otherwise
      */
-    public abstract boolean shouldCacheRoleMembershipResults(String namespaceCode, String roleName);
+    boolean shouldCacheRoleMembershipResults(String namespaceCode, String roleName);
     
-    public List<String> getQualifiersForExactMatch();
+    /** For roles whose memberships may be matched exactly by qualifiers,
+     * this method returns the list of such qualifiers 
+     * 
+     * @return list of qualifier names that can be used for exact match
+     */
+    List<String> getQualifiersForExactMatch();
     
 }

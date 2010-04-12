@@ -1763,6 +1763,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 		}
 		// also add any attributes already in the document that are not in the attributeDataList
+		int countOfOriginalAttributesNotPresent = 0;
+		List<KimDocumentRoleQualifier> fillerRoleQualifiers = new ArrayList<KimDocumentRoleQualifier>();
+		
 		AttributeDefinitionMap origAttributes = identityManagementRoleDocument.getDefinitions();
 		if ( origAttributes != null ) {
 			for(String key: origAttributes.keySet()) {
@@ -1777,11 +1780,16 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					}
 				}
 				if(!attributePresent){
+					countOfOriginalAttributesNotPresent++;
 					pndMemberRoleQualifier = new KimDocumentRoleQualifier();
 					pndMemberRoleQualifier.setKimAttrDefnId(origAttributeId);
 					pndMemberRoleQualifier.refreshReferenceObject("kimAttribute");
-					pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
+					fillerRoleQualifiers.add(pndMemberRoleQualifier);
 				}
+			}
+			
+			if(countOfOriginalAttributesNotPresent != origAttributes.size()) {
+				pndMemberRoleQualifiers.addAll(fillerRoleQualifiers);
 			}
 		}
 		return pndMemberRoleQualifiers;

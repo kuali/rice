@@ -306,7 +306,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     	if(LOG.isInfoEnabled()){
     		String oldProp = rawProperties.getProperty(name);
     		if(oldProp != null && !oldProp.equals(value)){
-    			LOG.info("Raw Config Override: " + name + "=[" + oldProp +"]->[" + value +"]");
+    			LOG.info("Raw Config Override: " + name + "=[" + ConfigLogger.getDisplaySafeValue(name,oldProp) +"]->[" + ConfigLogger.getDisplaySafeValue(name,value) +"]");
     		}
     	}
     	rawProperties.setProperty(name, value);
@@ -452,9 +452,9 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     					String unResolved = rawProperties.getProperty(key);
     					
     					if(unResolved.indexOf("$") != -1 ){
-    						LOG.info("Resolved Config Override: " + key + "(" + unResolved +")=[" + oldResolved +"]->[" + resolved +"]");     					
+    						LOG.info("Resolved Config Override: " + key + "(" + unResolved +")=[" + ConfigLogger.getDisplaySafeValue(key,oldResolved) +"]->[" + ConfigLogger.getDisplaySafeValue(key,resolved) +"]");     					
     					}else{
-    						LOG.info("Resolved Config Override: " + key + "=[" + oldResolved +"]->[" + resolved +"]"); 
+    						LOG.info("Resolved Config Override: " + key + "=[" + ConfigLogger.getDisplaySafeValue(key,oldResolved) +"]->[" + ConfigLogger.getDisplaySafeValue(key,resolved) +"]"); 
     					}    					
     				}
     			}    			

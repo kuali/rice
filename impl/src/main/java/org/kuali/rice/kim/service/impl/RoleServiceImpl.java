@@ -808,7 +808,26 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	return false;
   	}
 
-
+	private List<RoleMemberImpl> getStoredRoleGroupsUsingExactMatchOnQualification(List<String> groupIds, Set<String> roleIds, AttributeSet qualification) {
+    	List<String> copyRoleIds = new ArrayList(roleIds);
+    	List<RoleMemberImpl> rms = new ArrayList<RoleMemberImpl>();
+    	
+    	for(String roleId : roleIds) {
+    		KimRoleTypeService roleTypeService = getRoleTypeService( roleId );
+    		if(roleTypeService != null) {
+	    		List<String> attributesForExactMatch = roleTypeService.getQualifiersForExactMatch();
+	    		if(CollectionUtils.isNotEmpty(attributesForExactMatch)) {
+	    			copyRoleIds.remove(roleId);
+	    			rms.addAll(getStoredRoleGroupsForGroupIdsAndRoleIds(Collections.singletonList(roleId), groupIds, populateQualifiersForExactMatch(qualification, attributesForExactMatch)));
+	    		}
+    		}
+    	}
+    	if(CollectionUtils.isNotEmpty(copyRoleIds)) {
+    		rms.addAll(getStoredRoleGroupsForGroupIdsAndRoleIds(copyRoleIds, groupIds, null));
+    	}
+    	return rms;
+	}
+	
     protected boolean principalHasRole(String principalId, List<String> roleIds, AttributeSet qualification, boolean checkDelegations ) {
     	if ( StringUtils.isBlank( principalId ) ) {
     		return false;
@@ -875,7 +894,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	List<String> principalGroupIds = getIdentityManagementService().getGroupIdsForPrincipal(principalId);
     	// find the role/group associations
     	if ( !principalGroupIds.isEmpty() ) {
-	    	List<RoleMemberImpl> rgs = getStoredRoleGroupsForGroupIdsAndRoleIds(allRoleIds, principalGroupIds, qualification); 
+	    	List<RoleMemberImpl> rgs = getStoredRoleGroupsUsingExactMatchOnQualification(principalGroupIds, allRoleIds, qualification); 
 			roleIdToMembershipMap.clear(); // clear the role/member map for further use
 	    	if ( getRoleIdToMembershipMap( roleIdToMembershipMap, rgs ) ) {
 	    		return true;

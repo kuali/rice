@@ -256,6 +256,15 @@ public class DTOConverter {
         routeHeader.setAppDocStatus(routeHeaderVO.getAppDocStatus());
         routeHeader.setAppDocStatusDate(Utilities.convertCalendar(routeHeaderVO.getAppDocStatusDate()));
 
+        
+        // Convert the variables
+        List<KeyValueDTO> variables = routeHeaderVO.getVariables();
+        if( variables != null && !variables.isEmpty()){
+        	for(KeyValueDTO kvp : variables){
+        		routeHeader.setVariable(kvp.getKey(), kvp.getValue());
+        	}
+        }
+        
         return routeHeader;
     }
 

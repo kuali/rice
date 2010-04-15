@@ -21,6 +21,7 @@ import java.util.List;
 import org.junit.Test;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.KeyValueDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
@@ -221,5 +222,70 @@ public class FutureRequestsTest extends KEWTestCase {
         reportCriteriaDTO.setTargetPrincipalIds(new String[]{user2PrincipalId});
         assertTrue("User " + user2PrincipalId + " should have any approval request on the document", info.documentWillHaveAtLeastOneActionRequest(reportCriteriaDTO, new String[]{KEWConstants.ACTION_REQUEST_APPROVE_REQ}, false));
 
+    }
+    
+    /**
+     * 
+     * This method tests future action request with duplicate nodes. Both on a straight path
+     * and a split path.  
+     * 
+     * This test was written because of KULRICE-4074.  Branch data was not being save when we
+     * call saveRoutingData.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testFutureRequestsWithDuplicateNodesSplit() throws Exception {
+    	// This file has the split node that mimmics KC
+    	testFutureRequestsWithDuplicateNodesImpl("FutureRequestsConfig2.xml");    	    	    
+    }
+    
+    @Test
+    public void testFutureRequestsWithDuplicateNodesStraight() throws Exception {
+    	// This file has no split node
+    	testFutureRequestsWithDuplicateNodesImpl("FutureRequestsConfig3.xml");
+    }
+    
+    private void testFutureRequestsWithDuplicateNodesImpl(String fileName) throws Exception{    	
+    	this.loadXmlFile(this.getClass(), fileName);
+    	
+
+        String user1PrincipalId = getPrincipalIdForName("user1");
+        String user2PrincipalId = getPrincipalIdForName("user2");
+        String user3PrincipalId = getPrincipalIdForName("earl");
+
+        WorkflowDocument document = new WorkflowDocument(user1PrincipalId, "FutureRequestsDoc");
+        document.routeDocument("");
+       
+
+        // Node1
+        //user1 should have approval requested
+        document = new WorkflowDocument(user3PrincipalId, document.getRouteHeaderId());
+        assertTrue("should have approval status", document.isApprovalRequested());
+
+        document.setReceiveFutureRequests();
+        
+        /*
+         *  Uncomment the following line to duplicate the error in KC
+         */        
+        document.saveRoutingData();
+        
+        document.approve("route node 1");
+
+        document = new WorkflowDocument(user1PrincipalId, document.getRouteHeaderId());
+        List<KeyValueDTO> l =document.getRouteHeader().getVariables();
+        assertFalse("should not have approval status 1", document.isApprovalRequested());
+
+        document = new WorkflowDocument(user2PrincipalId, document.getRouteHeaderId());
+        assertTrue("should have approval status 2", document.isApprovalRequested());
+        document.approve("routing node 2");
+        
+        // Node3
+        //user1 should have approval requested bc of future action requests
+        document = new WorkflowDocument(user3PrincipalId, document.getRouteHeaderId());
+        System.out.println("Doc status prior to 3: " + document.getStatusDisplayValue());
+        assertTrue("should have approval status 3", document.isApprovalRequested());
+        document.approve("routing node 3");
+        System.out.println("Doc status after 3: " + document.getStatusDisplayValue());
     }
 }

@@ -16,15 +16,20 @@
  */
 package org.kuali.rice.kew.service.impl;
 
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.KeyValueDTO;
 import org.kuali.rice.kew.dto.MovePointDTO;
 import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.engine.node.Branch;
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.dao.BranchDAO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -47,10 +52,43 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
 
         DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);
         document.setRouteHeaderData(routeHeaderVO);
+                                
         KEWServiceLocator.getRouteHeaderService().saveRouteHeader(document);
+        
+        /* 
+         * Branch data is not persisted when we call saveRouteHeader so we must Explicitly
+         * save the branch.  Noticed issue in: KULRICE-4074 when the future action request info,
+         * which is stored in the branch, was not being persisted.
+         * 
+         * The call to setRouteHeaderData will ensure that the variable data is in the branch, but we have
+         * to persist the route header before we can save the branch info.
+         * 
+         * Placing here to minimize system impact.  We should investigate placing this logic into 
+         * saveRouteHeader... but at that point we should just turn auto-update = true on the branch relationship
+         * 
+         */
+        this.saveRouteNodeInstances(document);
+        
         return document;
     }
 
+    /**
+     * 
+     * This method explicitly saves the branch data if it exists in the routeHeaderValue
+     * 
+     * @param routeHeader
+     */
+    private void saveRouteNodeInstances(DocumentRouteHeaderValue routeHeader){
+    
+    	List<RouteNodeInstance> routeNodes = routeHeader.getInitialRouteNodeInstances();               
+        if(routeNodes != null && !routeNodes.isEmpty()){        	        	
+        	for(RouteNodeInstance rni: routeNodes){
+        		KEWServiceLocator.getRouteNodeService().save(rni);        		
+        	}
+        }
+    	
+    }
+    
     private void init(Long documentId) throws WorkflowException {
         incomingParamCheck(documentId, "documentId");
         LOG.debug("Initializing Document from incoming Document ID [docId=" + documentId + "]");

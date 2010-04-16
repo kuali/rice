@@ -38,19 +38,31 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 
+@SuppressWarnings("unchecked")
+@Entity
+@Table(name="KRIM_PERM_T")
 public class GenericPermission extends PersistableBusinessObjectBase {
 //	private static final Logger LOG = Logger.getLogger(GenericPermission.class);	
 	
 	private static final long serialVersionUID = 1L;
 	
-
+	@Id
+	@Column(name="PERM_ID")
 	protected String permissionId;
+	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
+	@Column(name="NM")
 	protected String name;
+	@Column(name="DESC_TXT", length=400)
 	protected String description;
+	@Type(type="yes_no")
+	@Column(name="ACTV_IND")
 	protected boolean active;
+	@Column(name="PERM_TMPL_ID")
 	protected String templateId;
+	@Transient
 	protected String detailValues;
+	@Transient
 	protected AttributeSet details;
 	
 	/**

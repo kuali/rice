@@ -29,6 +29,7 @@ import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -39,6 +40,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.TypedArrayList;
 import org.springframework.core.io.DefaultResourceLoader;
 
@@ -58,7 +60,10 @@ public class PersonServiceImplTest extends KIMTestCase {
 		
 		KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipal("p1");
 		
+		SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
+		Long externalIdentifierId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_EXT_ID_ID_S", KimEntityExternalIdentifierImpl.class);
 		KimEntityExternalIdentifierImpl externalIdentifier = new KimEntityExternalIdentifierImpl();
+		externalIdentifier.setEntityExternalIdentifierId(externalIdentifierId.toString());
 		externalIdentifier.setEntityExternalIdentifierId("");
 		externalIdentifier.setEntityId(principal.getEntityId());
 		externalIdentifier.setExternalId("000-00-0000");
@@ -142,7 +147,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		assertNotNull( "criteria must filter on entity type code", entityCriteria.get( "entityTypes.entityTypeCode" ) );
 		assertNotNull( "criteria must filter for first name", entityCriteria.get( "names.firstName" ) );
 		assertNotNull( "criteria must filter for active names", entityCriteria.get( "names.active" ) );
-		assertNotNull( "criteria must filter for the default name", entityCriteria.get( "names.dflt" ) );
+		assertNotNull( "criteria must filter for the default name", entityCriteria.get( "names.defaultValue" ) );
 	}
 
 	/**

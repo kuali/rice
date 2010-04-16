@@ -51,8 +51,7 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 	@GeneratedValue(generator="KRIM_ENTITY_EMP_ID_S")
 	@GenericGenerator(name="KRIM_ENTITY_EMP_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ENTITY_EMP_ID_S"),
-			@Parameter(name="value_column",value="id"),
-			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+			@Parameter(name="value_column",value="id")
 		})
 	@Column(name = "ENTITY_EMP_ID")
 	protected String entityEmploymentId;
@@ -81,11 +80,11 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 	@Column(name="PRMRY_IND")
 	protected boolean primary;
 
-	@ManyToOne(targetEntity=EmploymentTypeImpl.class, fetch = FetchType.LAZY, cascade = {})
+	@ManyToOne(targetEntity=EmploymentTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EMP_TYP_CD", insertable = false, updatable = false)
 	protected EmploymentType employmentType;
 
-	@ManyToOne(targetEntity=EmploymentStatusImpl.class, fetch = FetchType.LAZY, cascade = {})
+	@ManyToOne(targetEntity=EmploymentStatusImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EMP_STAT_CD", insertable = false, updatable = false)
 	protected EmploymentStatus employmentStatus;
 	@Transient

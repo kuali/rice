@@ -230,40 +230,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
 		return new ArrayList<String>(ids);
 	}
-
-	/**
-	 * @see org.kuali.rice.kim.service.GroupService#isMemberOfGroup(java.lang.String,
-	 *      java.lang.String)
-	 */
-	public boolean isMemberOfGroup(String principalId, String groupId) {
-		if ( principalId == null || groupId == null ) {
-			return false;
-		}
-		// we could call the getMemberPrincipalIds method, but this will be more efficient
-		// when group traversal is not needed
-		GroupImpl group = getGroupImpl(groupId);
-		if ( group == null || !group.isActive() ) {
-			return false;
-		}
-		// check the immediate group
-		for (String groupPrincipalId : group.getMemberPrincipalIds() ) {
-			if (groupPrincipalId.equals(principalId)) {
-				return true;
-			}
-		}
-
-		// check each contained group, returning as soon as a match is found
-		for ( String memberGroupId : group.getMemberGroupIds() ) {
-			if ( isMemberOfGroup( principalId, memberGroupId ) ) {
-				return true;
-			}
-		}
-
-		// no match found, return false
-		return false;
-	}
-
-
 	
 
 

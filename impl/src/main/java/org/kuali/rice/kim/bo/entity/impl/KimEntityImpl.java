@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -27,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -53,51 +55,44 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	protected String entityId;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	//@IndexColumn(name="ENTITY_NM_ID", columnDefinition="TEXT")
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityNameImpl> names = new TypedArrayList(KimEntityNameImpl.class);
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	//@IndexColumn(name="PRNCPL_ID", columnDefinition="TEXT")
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimPrincipalImpl> principals = new TypedArrayList(KimPrincipalImpl.class);
 
 	@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	//@IndexColumn(name="ENTITY_EXT_ID_ID")
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityExternalIdentifierImpl> externalIdentifiers = new TypedArrayList(KimEntityExternalIdentifierImpl.class);
 
-	@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
-	//@IndexColumn(name="ENTITY_AFLTN_ID")
 	@Fetch(value = FetchMode.SELECT)
+	@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityAffiliationImpl> affiliations = new TypedArrayList(KimEntityAffiliationImpl.class);
+	protected List<KimEntityAffiliationImpl> affiliations; // = new TypedArrayList(KimEntityAffiliationImpl.class);
 
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-	//@IndexColumn(name="ENTITY_EMP_ID")
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityEmploymentInformationImpl> employmentInformation = new TypedArrayList(KimEntityEmploymentInformationImpl.class);
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	//@IndexColumn(name="ENT_TYP_CD")
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityEntityTypeImpl> entityTypes = new TypedArrayList(KimEntityEntityTypeImpl.class);
 	
-	@OneToOne(targetEntity=KimEntityPrivacyPreferencesImpl.class, fetch = FetchType.LAZY, cascade = { })
+	@OneToOne(targetEntity=KimEntityPrivacyPreferencesImpl.class, fetch = FetchType.EAGER, cascade = { })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected KimEntityPrivacyPreferencesImpl privacyPreferences;
 
-	@OneToOne(targetEntity=KimEntityBioDemographicsImpl.class, fetch = FetchType.LAZY, cascade = { })
+	@OneToOne(targetEntity=KimEntityBioDemographicsImpl.class, fetch = FetchType.EAGER, cascade = { })
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected KimEntityBioDemographicsImpl bioDemographics;
 	
 	@OneToMany(targetEntity = KimEntityCitizenshipImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	//@IndexColumn(name="ENTITY_CTZNSHP_ID")
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
 	protected List<KimEntityCitizenshipImpl> citizenships = new TypedArrayList(KimEntityCitizenshipImpl.class);
@@ -211,6 +206,9 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 * @return the affiliations
 	 */
 	public List<KimEntityAffiliationImpl> getAffiliations() {
+		if (this.affiliations == null) {
+			return new ArrayList<KimEntityAffiliationImpl>();
+		}
 		return this.affiliations;
 	}
 

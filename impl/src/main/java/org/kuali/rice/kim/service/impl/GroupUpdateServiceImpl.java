@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.jws.WebService;
 
+import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
@@ -31,6 +32,8 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 
@@ -40,7 +43,8 @@ import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
  */
 @WebService(endpointInterface = KIMWebServiceConstants.GroupUpdateService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.GroupUpdateService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.GroupUpdateService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpdateService {
-
+	private SequenceAccessorService sequenceAccessorService;
+	
 	/**
      * @see org.kuali.rice.kim.service.GroupService#addGroupToGroup(java.lang.String, java.lang.String)
      */
@@ -53,7 +57,11 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
             throw new IllegalArgumentException("Circular group reference.");
         }
 
+        sequenceAccessorService = getSequenceAccessorService();
+        Long groupMemberId = sequenceAccessorService.getNextAvailableSequenceNumber(
+				"KRIM_GRP_MBR_ID_S", KimEntityAffiliationImpl.class);
         GroupMemberImpl groupMember = new GroupMemberImpl();
+        groupMember.setGroupMemberId(groupMemberId.toString());
         groupMember.setGroupId(parentId);
         groupMember.setMemberTypeCode( KimGroupMemberTypes.GROUP_MEMBER_TYPE );
         groupMember.setMemberId(childId);
@@ -68,18 +76,32 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
      * @see org.kuali.rice.kim.service.GroupService#addPrincipalToGroup(java.lang.String, java.lang.String)
      */
     public boolean addPrincipalToGroup(String principalId, String groupId) {
+    	if (isMemberOfGroup(principalId, groupId)) {
+    		return true;
+    	}
+    	sequenceAccessorService = getSequenceAccessorService();
+    	Long groupMemberId = sequenceAccessorService.getNextAvailableSequenceNumber(
+				"KRIM_GRP_MBR_ID_S", KimEntityAffiliationImpl.class);
         GroupMemberImpl groupMember = new GroupMemberImpl();
+        groupMember.setGroupMemberId(groupMemberId.toString());
         groupMember.setGroupId(groupId);
         groupMember.setMemberTypeCode( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE );
         groupMember.setMemberId(principalId);
+        
 
-        getBusinessObjectService().save(groupMember);
+        groupMember = (GroupMemberImpl)getBusinessObjectService().save(groupMember);
         KIMServiceLocator.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(), groupMember.getGroupId());
         getIdentityManagementNotificationService().groupUpdated();
         return true;
     }
 
     public GroupInfo createGroup(GroupInfo groupInfo) {
+    	if (groupInfo.getGroupId() == null) {
+    		sequenceAccessorService = getSequenceAccessorService();
+    		Long groupId = sequenceAccessorService.getNextAvailableSequenceNumber(
+				"KRIM_GRP_ID_S", KimEntityAffiliationImpl.class);
+    		groupInfo.setGroupId(groupId.toString());
+    	}
         GroupImpl group = new GroupImpl();
 
         copyInfoToGroup(groupInfo, group);
@@ -201,4 +223,11 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         }
         getBusinessObjectService().delete( groupAttribute );
     }
+	
+	protected SequenceAccessorService getSequenceAccessorService() {
+		if ( sequenceAccessorService == null ) {
+			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+		}
+		return sequenceAccessorService;
+	}
 }

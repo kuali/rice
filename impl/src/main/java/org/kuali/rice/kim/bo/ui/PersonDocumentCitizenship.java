@@ -42,8 +42,7 @@ public class PersonDocumentCitizenship extends KimDocumentBoBase {
 	@GeneratedValue(generator="KRIM_ENTITY_CTZNSHP_ID_S")
 	@GenericGenerator(name="KRIM_ENTITY_CTZNSHP_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ENTITY_CTZNSHP_ID_S"),
-			@Parameter(name="value_column",value="id"),
-			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+			@Parameter(name="value_column",value="id")
 		})
 	@Column(name = "ENTITY_CTZNSHP_ID")
 	protected String entityCitizenshipId;

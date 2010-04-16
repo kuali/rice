@@ -27,20 +27,20 @@ import org.kuali.rice.kns.bo.DefaultableInactivateable;
 public class KimDefaultableInfo extends KimInactivatableInfo implements Defaultable,
 		DefaultableInactivateable {
 
-	protected boolean dflt;
+	protected boolean defaultValue;
 
 	/**
 	 * @return the dflt
 	 */
-	public boolean isDefault() {
-		return this.dflt;
+	public boolean isDefaultValue() {
+		return this.defaultValue;
 	}
 
 	/**
 	 * @param dflt the dflt to set
 	 */
-	public void setDefault(boolean dflt) {
-		this.dflt = dflt;
+	public void setDefaultValue(boolean defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 
 }

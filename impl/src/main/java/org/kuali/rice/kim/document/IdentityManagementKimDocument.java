@@ -59,7 +59,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 
 	protected static final Logger LOG = Logger.getLogger(IdentityManagementKimDocument.class);
 	
-	@OneToMany(targetEntity=RoleDocumentDelegation.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+	@OneToMany(targetEntity=RoleDocumentDelegation.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
 	protected List<RoleDocumentDelegation> delegations = new TypedArrayList(RoleDocumentDelegation.class);
 	@Transient

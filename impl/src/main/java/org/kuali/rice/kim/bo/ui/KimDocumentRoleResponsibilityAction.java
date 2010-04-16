@@ -49,8 +49,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
 	@GeneratedValue(generator="KRIM_ROLE_RSP_ACTN_ID_S")
 	@GenericGenerator(name="KRIM_ROLE_RSP_ACTN_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ROLE_RSP_ACTN_ID_S"),
-			@Parameter(name="value_column",value="id"),
-			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+			@Parameter(name="value_column",value="id")
 		})
 	@Column(name="ROLE_RSP_ACTN_ID")
 	protected String roleResponsibilityActionId;

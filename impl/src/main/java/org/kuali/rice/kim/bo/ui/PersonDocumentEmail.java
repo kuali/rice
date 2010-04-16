@@ -46,8 +46,7 @@ public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 	@GeneratedValue(generator="KRIM_ENTITY_EMAIL_ID_S")
 	@GenericGenerator(name="KRIM_ENTITY_EMAIL_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ENTITY_EMAIL_ID_S"),
-			@Parameter(name="value_column",value="id"),
-			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+			@Parameter(name="value_column",value="id")
 		})
 	@Column(name = "ENTITY_EMAIL_ID")
 	protected String entityEmailId;
@@ -61,7 +60,7 @@ public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 	@Column(name = "EMAIL_ADDR")
 	protected String emailAddress;
 
-	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch = FetchType.LAZY, cascade = {})
+	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "EMAIL_TYP_CD", insertable = false, updatable = false)
 	protected EmailType emailType;
 	

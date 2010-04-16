@@ -60,7 +60,7 @@ public class KimTypeImpl extends PersistableBusinessObjectBase {
 	@Column(name="ACTV_IND")
 	protected boolean active;
 
-	@OneToMany(targetEntity=KimTypeAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToMany(targetEntity=KimTypeAttributeImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
 	@JoinColumn(name="KIM_TYP_ID", insertable=false, updatable=false)
 	protected List<KimTypeAttributeImpl> attributeDefinitions;
 

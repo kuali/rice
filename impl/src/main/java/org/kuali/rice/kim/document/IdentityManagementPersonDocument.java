@@ -35,6 +35,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
@@ -82,8 +84,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     @GeneratedValue(generator="KRIM_PRNCPL_ID_S")
 	@GenericGenerator(name="KRIM_PRNCPL_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_PRNCPL_ID_S"),
-			@Parameter(name="value_column",value="id"),
-			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+			@Parameter(name="value_column",value="id")
 		})
 	@Column(name="prncpl_id")
     protected String principalId;
@@ -92,8 +93,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     @GeneratedValue(generator="KRIM_ENTITY_ID_S")
 	@GenericGenerator(name="KRIM_ENTITY_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ENTITY_ID_S"),
-			@Parameter(name="value_column",value="id"),
-			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+			@Parameter(name="value_column",value="id")
 		})
 	@Column(name="entity_id")
     protected String entityId;
@@ -107,7 +107,8 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     @Column(name="univ_id")
     protected String univId = "";
     // affiliation data
-    @OneToMany(targetEntity=PersonDocumentAffiliation.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @OneToMany(targetEntity=PersonDocumentAffiliation.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentAffiliation> affiliations;
 
@@ -125,26 +126,33 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     @Transient
     protected List<PersonDocumentCitizenship> citizenships;
     // protected List<DocEmploymentInfo> employmentInformations;
-    @OneToMany(targetEntity=PersonDocumentName.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @OneToMany(targetEntity=PersonDocumentName.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentName> names;
-    @OneToMany(targetEntity=PersonDocumentAddress.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @OneToMany(targetEntity=PersonDocumentAddress.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentAddress> addrs;
-    @OneToMany(targetEntity=PersonDocumentPhone.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @OneToMany(targetEntity=PersonDocumentPhone.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentPhone> phones;
-    @OneToMany(targetEntity=PersonDocumentEmail.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @OneToMany(targetEntity=PersonDocumentEmail.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentEmail> emails;
-    @OneToMany(targetEntity=PersonDocumentRole.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @OneToMany(targetEntity=PersonDocumentRole.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentGroup> groups;
-    @OneToMany(targetEntity=PersonDocumentGroup.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @OneToMany(targetEntity=PersonDocumentGroup.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentRole> roles;
 
-    @ManyToOne(targetEntity=PersonDocumentPrivacy.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
+    @ManyToOne(targetEntity=PersonDocumentPrivacy.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+    @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected PersonDocumentPrivacy privacy;
 

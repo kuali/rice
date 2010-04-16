@@ -76,7 +76,7 @@ public class KimEntityAddressInfo extends KimDefaultableInfo implements KimEntit
 			this.line2Unmasked = addr.getLine2Unmasked();
 			this.line3 = addr.getLine3();
 			this.line3Unmasked = addr.getLine3Unmasked();
-			this.dflt = addr.isDefault();
+			this.defaultValue = addr.isDefaultValue();
 			this.active = addr.isActive();
 			this.suppressAddress = addr.isSuppressAddress();
 		}

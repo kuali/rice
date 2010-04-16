@@ -322,6 +322,18 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 			String key = e.getKey();
 			Object value = e.getValue();
+			String alias = "";
+			String[] keySplit = key.split("\\.");
+			if (keySplit.length > 1) {
+				alias = keySplit[keySplit.length-2];
+				String variableKey = keySplit[keySplit.length-1];
+				for (int j = 0; j < keySplit.length - 1; j++)  {
+					if (criteria.getAliasIndex(keySplit[j]) == -1) {
+		    			criteria.join(keySplit[j], keySplit[j], false, true);
+		    		}
+				}
+				key = "__JPA_ALIAS[['" + alias + "']]__." + variableKey;
+			}
 			if (value == null) {
 				continue;
 			} else if (value instanceof Collection) {

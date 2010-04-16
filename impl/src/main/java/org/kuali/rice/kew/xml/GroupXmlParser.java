@@ -151,6 +151,8 @@ public class GroupXmlParser implements XmlConstants {
         String id = element.getChildText(ID, GROUP_NAMESPACE);
         if (id != null) {
             groupInfo.setGroupId(id.trim());
+        } else {
+        	
         }
 
         String description = element.getChildText(DESCRIPTION, GROUP_NAMESPACE);
@@ -311,6 +313,7 @@ public class GroupXmlParser implements XmlConstants {
         List<String> principalIds = memberPrincipalIds.get(key);
         if (principalIds != null) {
             for (String principalId : principalIds) {
+            	
             	identityManagementService.addPrincipalToGroup(principalId, groupInfo.getGroupId());
             }
         }

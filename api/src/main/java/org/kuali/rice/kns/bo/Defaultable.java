@@ -25,7 +25,7 @@ package org.kuali.rice.kns.bo;
  */
 public interface Defaultable {
 
-	boolean isDefault();
-	void setDefault( boolean dflt );
+	boolean isDefaultValue();
+	void setDefaultValue( boolean dflt );
 	
 }

@@ -18,16 +18,13 @@ package org.kuali.rice.kim.test.bo;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -44,6 +41,7 @@ public class BOContainingPerson extends PersistableBusinessObjectBase {
 	@Column(name="prncpl_id")
 	protected String principalId;
 	
+	@Transient
 	protected Person person;
 	
 	public String getBoPrimaryKey() {

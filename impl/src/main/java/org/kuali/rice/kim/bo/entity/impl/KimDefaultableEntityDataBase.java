@@ -31,22 +31,22 @@ import org.kuali.rice.kns.bo.Defaultable;
 public abstract class KimDefaultableEntityDataBase extends
 		KimInactivatableEntityDataBase implements Defaultable {
 
-    @Type(type="yes_no")
+	@Type(type="yes_no")
 	@Column(name="DFLT_IND")
-	protected boolean dflt;
+	protected boolean defaultValue;
 
 	/**
 	 * @return the dflt
 	 */
-	public boolean isDefault() {
-		return this.dflt;
+	public boolean isDefaultValue() {
+		return this.defaultValue;
 	}
 
 	/**
 	 * @param dflt the dflt to set
 	 */
-	public void setDefault(boolean dflt) {
-		this.dflt = dflt;
+	public void setDefaultValue(boolean defaultValue) {
+		this.defaultValue = defaultValue;
 	}
 
 }

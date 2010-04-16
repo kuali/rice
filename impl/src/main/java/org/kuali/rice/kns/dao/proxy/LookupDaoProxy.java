@@ -60,18 +60,7 @@ public class LookupDaoProxy implements LookupDao {
             if (StringUtils.isNotEmpty(dataSourceName)) {
                 if (lookupDaoValues.get(dataSourceName) != null) {
                     return lookupDaoValues.get(dataSourceName);
-                } else {
-                	
-                	// TODO - temporary until we get the other modules converted
-                	if ("kimDataSource,enWorkflowDataSource".contains(dataSourceName)) {
-                        //using OJB
-                		LookupDaoOjb classSpecificLookupDaoOjb = new LookupDaoOjb();
-                        classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
-                        classSpecificLookupDaoOjb.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
-                        lookupDaoValues.put(dataSourceName, classSpecificLookupDaoOjb);
-                        return classSpecificLookupDaoOjb;
-                    }
-                	
+                } else {                	
                 	LookupDaoJpa classSpecificLookupDaoJpa = new LookupDaoJpa();
                 	if (entityManager != null) {
                 		classSpecificLookupDaoJpa.setEntityManager(entityManager);

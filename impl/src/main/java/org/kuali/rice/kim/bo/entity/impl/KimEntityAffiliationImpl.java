@@ -57,9 +57,14 @@ public class KimEntityAffiliationImpl extends KimDefaultableEntityDataBase imple
 	@ManyToOne(targetEntity=AffiliationTypeImpl.class, fetch=FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "AFLTN_TYP_CD", insertable = false, updatable = false)
 	protected AffiliationType affiliationType;
+	
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="ENTITY_ID",insertable=false, updatable=false)
+	protected KimEntityImpl kimEntity;
 
 	// Waiting until we pull in from KFS
 	// protected Campus campus;
+
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityAffiliation#getAffiliationTypeCode()
@@ -127,4 +132,11 @@ public class KimEntityAffiliationImpl extends KimDefaultableEntityDataBase imple
 		this.entityAffiliationId = entityAffiliationId;
 	}
 
+	public KimEntityImpl getKimEntity() {
+		return this.kimEntity;
+	}
+
+	public void setKimEntity(KimEntityImpl kimEntity) {
+		this.kimEntity = kimEntity;
+	}
 }

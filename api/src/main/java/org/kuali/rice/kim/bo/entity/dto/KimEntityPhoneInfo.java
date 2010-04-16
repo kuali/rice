@@ -61,7 +61,7 @@ public class KimEntityPhoneInfo extends KimDefaultableInfo implements KimEntityP
 		    this.phoneNumber = phone.getPhoneNumber();
 		    this.extensionNumber = phone.getExtensionNumber();
 		    this.countryCode = phone.getCountryCodeUnmasked();
-		    this.dflt = phone.isDefault();
+		    this.defaultValue = phone.isDefaultValue();
 		    this.active = phone.isActive();
 		    this.suppressPhone = phone.isSuppressPhone();
 		    

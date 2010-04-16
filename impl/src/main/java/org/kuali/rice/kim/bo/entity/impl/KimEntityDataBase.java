@@ -35,7 +35,7 @@ public abstract class KimEntityDataBase extends PersistableBusinessObjectBase {
 	protected DefaultableInactivateable getDefaultItem( List<? extends DefaultableInactivateable> list ) {
 		// find the default entry
 		for ( DefaultableInactivateable item : list ) {
-			if ( item.isDefault() && item.isActive() ) {
+			if ( item.isDefaultValue() && item.isActive() ) {
 				return item;
 			}
 		}

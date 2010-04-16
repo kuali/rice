@@ -29,6 +29,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.KimDelegation;
@@ -67,7 +69,8 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	@Column(name="DLGN_TYP_CD")
 	protected String delegationTypeCode;
 	
-	@OneToMany(targetEntity=KimDelegationMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToMany(targetEntity=KimDelegationMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
 	protected List<KimDelegationMemberImpl> members = new TypedArrayList(KimDelegationMemberImpl.class);
 

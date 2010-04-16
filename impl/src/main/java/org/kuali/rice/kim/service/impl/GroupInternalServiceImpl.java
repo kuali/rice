@@ -54,7 +54,7 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     public void saveWorkgroup(GroupImpl group) {
     	GroupService ims = getGroupService();
     	List<String> oldIds = ims.getMemberPrincipalIds(group.getGroupId());
-        getBusinessObjectService().save( group );
+        group = (GroupImpl)getBusinessObjectService().save( group );
         List<String> newIds = ims.getMemberPrincipalIds(group.getGroupId());
         updateForWorkgroupChange(group.getGroupId(), oldIds, newIds);
     }

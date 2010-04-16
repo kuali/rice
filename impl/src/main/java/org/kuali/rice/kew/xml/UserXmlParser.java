@@ -30,6 +30,7 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
@@ -115,6 +116,7 @@ public class UserXmlParser implements XmlConstants {
         	emplInfo.setPrimary(true);
         	emplInfo.setEntityId("" + entityId);
         	emplInfo.setEntityEmploymentId(emplId);
+        	emplInfo.setEntityAffiliationId(null);
         }
         
     	
@@ -145,12 +147,12 @@ public class UserXmlParser implements XmlConstants {
 			name.setFirstName(firstName);
 			name.setMiddleName("");
 			name.setLastName(lastName);
-			name.setDefault(true);
+			name.setDefaultValue(true);
 			
 			entity.getNames().add(name);
 		}
-		
-		KNSServiceLocator.getBusinessObjectService().save(entity);
+
+		entity = (KimEntityImpl)KNSServiceLocator.getBusinessObjectService().save(entity);
 		
 		String emailAddress = userElement.getChildTextTrim(EMAIL_ELEMENT, NAMESPACE);
 		if (!StringUtils.isBlank(emailAddress)) {
@@ -163,9 +165,9 @@ public class UserXmlParser implements XmlConstants {
 			// must be in krim_email_typ_t.email_typ_cd:
 			email.setEmailTypeCode("WRK");
 			email.setEmailAddress(emailAddress);
-			email.setDefault(true);
+			email.setDefaultValue(true);
 			email.setEntityId(entity.getEntityId());
-			KNSServiceLocator.getBusinessObjectService().save(email);
+			email = (KimEntityEmailImpl)KNSServiceLocator.getBusinessObjectService().save(email);
 		}
 		
 		return entity;
@@ -186,7 +188,7 @@ public class UserXmlParser implements XmlConstants {
 		principal.setPrincipalId(principalId);
 		principal.setPrincipalName(principalName);
 		principal.setEntityId(entityId);
-		KNSServiceLocator.getBusinessObjectService().save(principal);
+		principal = (KimPrincipalImpl)KNSServiceLocator.getBusinessObjectService().save(principal);
 		
 		return principal;
     }

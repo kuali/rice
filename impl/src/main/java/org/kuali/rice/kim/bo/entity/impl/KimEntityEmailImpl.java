@@ -62,7 +62,7 @@ public class KimEntityEmailImpl extends KimDefaultableEntityDataBase implements 
 	@Column(name = "EMAIL_ADDR")
 	protected String emailAddress;
 
-	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch=FetchType.LAZY, cascade={})
+	@ManyToOne(targetEntity=EmailTypeImpl.class, fetch=FetchType.EAGER, cascade={})
 	@JoinColumn(name = "EMAIL_TYP_CD", insertable = false, updatable = false)
 	protected EmailType emailType;
 	

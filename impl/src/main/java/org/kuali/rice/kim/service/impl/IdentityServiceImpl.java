@@ -251,7 +251,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		info.setAffiliations( affInfo );
 		for ( KimEntityAffiliation aff : entity.getAffiliations() ) {
 			affInfo.add( new KimEntityAffiliationInfo( aff ) );
-			if ( aff.isActive() && aff.isDefault() ) {
+			if ( aff.isActive() && aff.isDefaultValue() ) {
 				info.setDefaultAffiliation( affInfo.get( affInfo.size() - 1 ) );
 			}
 		}
@@ -397,9 +397,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 		Map<String, KimEntityNameInfo> result = new HashMap<String, KimEntityNameInfo>(entityIds.size());
 		
 		for(String s : entityIds) {
-			Map<String,String> criteria = new HashMap<String,String>();
+			Map<String,Object> criteria = new HashMap<String,Object>();
 			criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, s);
-			criteria.put("DFLT_IND", "Y");
+			criteria.put("defaultValue", true);
 			
 			KimEntityNameImpl name = (KimEntityNameImpl) getBusinessObjectService().findByPrimaryKey(KimEntityNameImpl.class, criteria);
 			
@@ -429,7 +429,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 				
 				criteria.clear();
 				criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, principal.getEntityId());
-				criteria.put("DFLT_IND", "Y");
+				criteria.put("defaultValue", "Y");
 				KimEntityNameImpl name = (KimEntityNameImpl) getBusinessObjectService().findByPrimaryKey(KimEntityNameImpl.class, criteria);
 				
 				namePrincipal.setDefaultEntityName( new KimEntityNameInfo( name ) );

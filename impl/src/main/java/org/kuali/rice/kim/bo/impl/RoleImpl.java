@@ -31,6 +31,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
@@ -67,7 +69,8 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
 
-	@OneToMany(targetEntity=RoleMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToMany(targetEntity=RoleMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
 	protected List<RoleMemberImpl> members = new TypedArrayList(RoleMemberImpl.class);
 

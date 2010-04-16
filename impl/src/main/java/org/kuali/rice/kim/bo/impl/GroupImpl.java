@@ -31,6 +31,8 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -73,11 +75,13 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
 
-	@OneToMany(targetEntity=GroupMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToMany(targetEntity=GroupMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
 	protected List<GroupMemberImpl> members;
 
-	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
 	protected List<GroupAttributeDataImpl> groupAttributes = new TypedArrayList(GroupAttributeDataImpl.class);
 

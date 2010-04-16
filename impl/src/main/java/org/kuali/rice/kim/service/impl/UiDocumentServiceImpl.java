@@ -761,7 +761,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docName.setSuffix(name.getSuffixUnmasked());
 
 					docName.setActive(name.isActive());
-					docName.setDflt(name.isDefault());
+					docName.setDflt(name.isDefaultValue());
 					docName.setEdit(true);
 					docName.setEntityNameId(name.getEntityNameId());
 					docNames.add(docName);
@@ -815,7 +815,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docAffiliation.setAffiliationTypeCode(affiliation.getAffiliationTypeCode());
 					docAffiliation.setCampusCode(affiliation.getCampusCode());
 					docAffiliation.setActive(affiliation.isActive());
-					docAffiliation.setDflt(affiliation.isDefault());
+					docAffiliation.setDflt(affiliation.isDefaultValue());
 					docAffiliation.setEntityAffiliationId(affiliation.getEntityAffiliationId());
 					docAffiliation.refreshReferenceObject("affiliationType");
 					// EntityAffiliationImpl does not define empinfos as collection
@@ -935,7 +935,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					entityName.setTitle(name.getTitle());
 					entityName.setSuffix(name.getSuffix());
 					entityName.setActive(name.isActive());
-					entityName.setDefault(name.isDflt());
+					entityName.setDefaultValue(name.isDflt());
 					entityName.setEntityNameId(name.getEntityNameId());
 					if(ObjectUtils.isNotNull(origNames)){
 						for (KimEntityNameImpl origName : origNames) {
@@ -962,7 +962,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				entityAffiliation.setAffiliationTypeCode(affiliation.getAffiliationTypeCode());
 				entityAffiliation.setCampusCode(affiliation.getCampusCode());
 				entityAffiliation.setActive(affiliation.isActive());
-				entityAffiliation.setDefault(affiliation.isDflt());
+				entityAffiliation.setDefaultValue(affiliation.isDflt());
 				entityAffiliation.setEntityId(identityManagementPersonDocument.getEntityId());
 				entityAffiliation.setEntityAffiliationId(affiliation.getEntityAffiliationId());
 				if(ObjectUtils.isNotNull(origAffiliations)){
@@ -1056,7 +1056,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					entityPhone.setExtension(phone.getExtension());
 					entityPhone.setExtensionNumber(phone.getExtensionNumber());
 					entityPhone.setActive(phone.isActive());
-					entityPhone.setDefault(phone.isDflt());
+					entityPhone.setDefaultValue(phone.isDflt());
 					if(ObjectUtils.isNotNull(origPhones)){
 						for (KimEntityPhone origPhone : origPhones) {
 							if (origPhone.getEntityPhoneId()!=null && StringUtils.equals(origPhone.getEntityPhoneId(), entityPhone.getEntityPhoneId())) {
@@ -1087,7 +1087,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docPhone.setExtensionNumber(phone.getExtensionNumberUnmasked());
 
 					docPhone.setActive(phone.isActive());
-					docPhone.setDflt(phone.isDefault());
+					docPhone.setDflt(phone.isDefaultValue());
 					docPhone.setEntityPhoneId(phone.getEntityPhoneId());
 					docPhone.setEdit(true);
 					docPhones.add(docPhone);
@@ -1111,7 +1111,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					entityEmail.setEmailTypeCode(email.getEmailTypeCode());
 					entityEmail.setEmailAddress(email.getEmailAddress());
 					entityEmail.setActive(email.isActive());
-					entityEmail.setDefault(email.isDflt());
+					entityEmail.setDefaultValue(email.isDflt());
 					entityEmail.setEntityEmailId(email.getEntityEmailId());
 					if(ObjectUtils.isNotNull(origEmails)){
 						for (KimEntityEmail origEmail : origEmails) {
@@ -1140,7 +1140,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docEmail.setEmailAddress(email.getEmailAddressUnmasked());
 
 					docEmail.setActive(email.isActive());
-					docEmail.setDflt(email.isDefault());
+					docEmail.setDflt(email.isDefaultValue());
 					docEmail.setEntityEmailId(email.getEntityEmailId());
 					docEmail.setEdit(true);
 					emails.add(docEmail);
@@ -1169,7 +1169,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					entityAddress.setCountryCode(address.getCountryCode());
 					entityAddress.setCityName(address.getCityName());
 					entityAddress.setActive(address.isActive());
-					entityAddress.setDefault(address.isDflt());
+					entityAddress.setDefaultValue(address.isDflt());
 					entityAddress.setEntityAddressId(address.getEntityAddressId());
 					if(ObjectUtils.isNotNull(origAddresses)){
 						for (KimEntityAddress origAddress : origAddresses) {
@@ -1204,7 +1204,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					docAddress.setCityName(address.getCityNameUnmasked());
 
 					docAddress.setActive(address.isActive());
-					docAddress.setDflt(address.isDefault());
+					docAddress.setDflt(address.isDefaultValue());
 					docAddress.setEntityAddressId(address.getEntityAddressId());
 					docAddress.setEdit(true);
 					docAddresses.add(docAddress);

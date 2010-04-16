@@ -563,12 +563,14 @@ public class MetadataManager {
 							if (jcFkField != null) {
 								descriptor.addFkField(jcFkField.getName());
 							}
+							descriptor.addJoinColumnDescriptor(constructJoinDescriptor(jc));
 							descriptor.setInsertable(jc.insertable());
 							descriptor.setUpdateable(jc.updatable());
 						}
 						if (field.isAnnotationPresent(JoinColumns.class)) {
 							JoinColumns jcs = field.getAnnotation(JoinColumns.class);
 							for (JoinColumn jc : jcs.value()) {
+								descriptor.addJoinColumnDescriptor(constructJoinDescriptor(jc));
 								descriptor.addFkField(entityDescriptor.getFieldByColumnName(jc.name()).getName());
 								descriptor.setInsertable(jc.insertable());
 								descriptor.setUpdateable(jc.updatable());

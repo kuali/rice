@@ -30,6 +30,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -57,8 +59,7 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	@GeneratedValue(generator="KRIM_DLGN_MBR_ID_S")
 	@GenericGenerator(name="KRIM_DLGN_MBR_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_DLGN_MBR_ID_S"),
-			@Parameter(name="value_column",value="id"),
-			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+			@Parameter(name="value_column",value="id")
 		})
 	@Column(name="DLGN_MBR_ID")
 	protected String delegationMemberId;
@@ -94,8 +95,9 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	
 	@Column(name="MBR_NM")
 	protected String memberName;
-	@OneToMany(targetEntity=RoleDocumentDelegationMemberQualifier.class, fetch=FetchType.LAZY, cascade={CascadeType.ALL})
-    @JoinColumns({
+	@OneToMany(targetEntity=RoleDocumentDelegationMemberQualifier.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+    @Fetch(value = FetchMode.SELECT)
+	@JoinColumns({
 		@JoinColumn(name="dlgn_id",insertable=false,updatable=false),
 		@JoinColumn(name="fdoc_nbr", insertable=false, updatable=false)
 	})

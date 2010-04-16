@@ -47,8 +47,7 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 	@GeneratedValue(generator="KRIM_ENTITY_PHONE_ID_S")
 	@GenericGenerator(name="KRIM_ENTITY_PHONE_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ENTITY_PHONE_ID_S"),
-			@Parameter(name="value_column",value="id"),
-			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+			@Parameter(name="value_column",value="id")
 		})
 	@Column(name = "ENTITY_PHONE_ID")
 	protected String entityPhoneId;
@@ -68,7 +67,7 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 	@Column(name = "POSTAL_CNTRY_CD")
 	protected String countryCode;
 	
-	@ManyToOne(targetEntity=PhoneTypeImpl.class, fetch = FetchType.LAZY, cascade = {})
+	@ManyToOne(targetEntity=PhoneTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "PHONE_TYP_CD", insertable = false, updatable = false)
 	protected PhoneType phoneType;
 

@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 import javax.persistence.Query;
 
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
+import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.kns.util.TypeUtils;
 
 /**
@@ -1186,7 +1187,11 @@ public class Criteria {
 			Object value = param.getValue();
 			if (value != null) {
 				if (value instanceof String) {
-					value = ((String)value).replaceAll("\\*", "%");
+					if (query.getParameter(param.getKey()).getParameterType().equals(java.lang.Boolean.class)) {
+						value = RiceUtilities.getBooleanValueForString((String)value, false);
+					} else {
+						value = ((String)value).replaceAll("\\*", "%");
+					}
 				}
 				query.setParameter(param.getKey(), value);
 			}

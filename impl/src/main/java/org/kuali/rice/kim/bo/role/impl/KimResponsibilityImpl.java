@@ -75,7 +75,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	
 	@Column(name="RSP_TMPL_ID")
 	protected String templateId;
-	@OneToOne(cascade={},fetch=FetchType.LAZY)
+	@OneToOne(cascade={},fetch=FetchType.EAGER)
     @JoinColumn(name="RSP_TMPL_ID", insertable=false, updatable=false)
 	protected KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
 	

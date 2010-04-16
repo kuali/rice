@@ -52,19 +52,18 @@ public class KimEntityEntityTypeImpl extends KimInactivatableEntityDataBase impl
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(name = "ENT_TYP_CD")
-	protected String entityTypeCode;
-	
-	@Id
 	@Column(name = "ENTITY_ID")
 	protected String entityId;
+	
+	@Id
+	@Column(name = "ENT_TYP_CD")
+	protected String entityTypeCode;
 	 
 	@ManyToOne(targetEntity = EntityTypeImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name = "ENT_TYP_CD", insertable = false, updatable = false)
 	protected EntityType entityType;
 	
 	@OneToMany(targetEntity = KimEntityEmailImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	//@IndexColumn(name="ENTITY_EMAIL_ID")
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumns({
 	    @JoinColumn(name="ENTITY_ID", insertable = false, updatable = false), 
@@ -73,7 +72,6 @@ public class KimEntityEntityTypeImpl extends KimInactivatableEntityDataBase impl
 	protected List<KimEntityEmail> emailAddresses = new TypedArrayList(KimEntityEmailImpl.class);
 	
 	@OneToMany(targetEntity = KimEntityPhoneImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	//@IndexColumn(name="ENTITY_PHONE_ID")
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumns({
 	    @JoinColumn(name="ENTITY_ID", insertable = false, updatable = false), 
@@ -82,7 +80,6 @@ public class KimEntityEntityTypeImpl extends KimInactivatableEntityDataBase impl
 	protected List<KimEntityPhone> phoneNumbers = new TypedArrayList(KimEntityPhoneImpl.class);
 	
 	@OneToMany(targetEntity = KimEntityAddressImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
-	//@IndexColumn(name="ENTITY_ADDR_ID")
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumns({
 	    @JoinColumn(name="ENTITY_ID", insertable = false, updatable = false), 

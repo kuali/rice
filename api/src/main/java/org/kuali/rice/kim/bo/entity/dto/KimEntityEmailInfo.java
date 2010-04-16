@@ -51,7 +51,7 @@ public class KimEntityEmailInfo extends KimDefaultableInfo implements KimEntityE
 			this.emailTypeCode = email.getEmailTypeCode();
 			this.emailAddress = email.getEmailAddress();
 			this.emailAddressUnmasked = email.getEmailAddressUnmasked();
-			this.dflt = email.isDefault();
+			this.defaultValue = email.isDefaultValue();
 			this.active = email.isActive();
 			this.suppressEmail = email.isSuppressEmail();
 		}

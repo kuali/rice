@@ -30,6 +30,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.apache.log4j.Logger;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -68,19 +70,21 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	@Column(name="ACTV_IND")
 	protected boolean active;
 	
-	@OneToMany(targetEntity=PermissionAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
+	@OneToMany(targetEntity=PermissionAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
 	protected List<PermissionAttributeDataImpl> detailObjects = new TypedArrayList(PermissionAttributeDataImpl.class);
 
 	@Column(name="PERM_TMPL_ID")
 	protected String templateId;
 	
-	@OneToOne(targetEntity=KimPermissionTemplateImpl.class,cascade={},fetch=FetchType.LAZY)
+	@OneToOne(targetEntity=KimPermissionTemplateImpl.class,cascade={},fetch=FetchType.EAGER)
     @JoinColumn(name="PERM_TMPL_ID", insertable=false, updatable=false)
 	protected KimPermissionTemplateImpl template;
 
-	@OneToMany(targetEntity=RolePermissionImpl.class,cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-    @JoinColumn(name="PERM_ID", insertable=false, updatable=false)
+	@OneToMany(targetEntity=RolePermissionImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    @Fetch(value = FetchMode.SELECT)
+	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
 	protected List<RolePermissionImpl> rolePermissions = new TypedArrayList(RolePermissionImpl.class);
 
 	/**

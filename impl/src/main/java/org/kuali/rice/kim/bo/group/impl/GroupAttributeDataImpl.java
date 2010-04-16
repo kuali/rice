@@ -37,8 +37,7 @@ public class GroupAttributeDataImpl extends KimAttributeDataImpl {
 	//@GeneratedValue(generator="KRSB_SVC_DEF_S")
 	//@GenericGenerator(name="KRSB_SVC_DEF_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 	//		@Parameter(name="sequence_name",value="KRSB_SVC_DEF_S"),
-	//		@Parameter(name="value_column",value="id"),
-	//		@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+	//		@Parameter(name="value_column",value="id")
 	//	})
 	//@Column(name="ATTR_DATA_ID")
 	//protected String attributeDataId;

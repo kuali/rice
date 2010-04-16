@@ -31,6 +31,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -55,8 +57,7 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	@GeneratedValue(generator="KRIM_ROLE_MBR_ID_S")
 	@GenericGenerator(name="KRIM_ROLE_MBR_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ROLE_MBR_ID_S"),
-			@Parameter(name="value_column",value="id"),
-			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+			@Parameter(name="value_column",value="id")
 		})
 	@Column(name="ROLE_MBR_ID")
 	protected String roleMemberId;

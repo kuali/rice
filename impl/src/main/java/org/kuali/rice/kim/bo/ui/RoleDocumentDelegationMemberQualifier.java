@@ -19,6 +19,7 @@ import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 
@@ -30,6 +31,7 @@ import javax.persistence.Table;
  *
  */
 @Entity
+@IdClass(KimDocumentAttributeDataBusinessObjectBaseId.class)
 @Table(name="KRIM_PND_DLGN_MBR_ATTR_DATA_T")
 public class RoleDocumentDelegationMemberQualifier extends KimDocumentAttributeDataBusinessObjectBase {
 	@Column(name="DLGN_MBR_ID")

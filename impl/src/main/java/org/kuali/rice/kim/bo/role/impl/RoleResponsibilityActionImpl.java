@@ -58,7 +58,7 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	@Column(name="PRIORITY_NBR")
 	protected Integer priorityNumber;
 	
-	@ManyToOne(targetEntity=RoleResponsibilityImpl.class, fetch = FetchType.LAZY, cascade = {})
+	@ManyToOne(targetEntity=RoleResponsibilityImpl.class, fetch = FetchType.EAGER, cascade = {})
 	@JoinColumn(name="ROLE_RSP_ID",insertable=false, updatable=false)
 	protected RoleResponsibilityImpl roleResponsibility;
 	

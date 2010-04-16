@@ -351,6 +351,20 @@ public class LookupDaoJpa implements LookupDao {
 	}
 
 	private void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Criteria criteria) {
+		String alias = "";
+		String[] keySplit = propertyName.split("\\.");
+		if (keySplit.length > 1) {
+			alias = keySplit[keySplit.length-2];
+			String variableKey = keySplit[keySplit.length-1];
+			for (int j = 0; j < keySplit.length - 1; j++)  {
+				if (criteria.getAliasIndex(keySplit[j]) == -1) {
+	    			criteria.join(keySplit[j], keySplit[j], false, true);
+	    		}
+			}
+			if (!StringUtils.contains(propertyName, "__JPA_ALIAS[[")) {
+				propertyName = "__JPA_ALIAS[['" + alias + "']]__." + variableKey;
+			}
+		}
 		if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue, KNSConstants.OR_LOGICAL_OPERATOR)) {
 			addOrCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria);
 			return;
@@ -367,7 +381,11 @@ public class LookupDaoJpa implements LookupDao {
 			if (caseInsensitive) {
 				// TODO: What to do here now that the JPA version does not extend platform aware?
 				//propertyName = getDbPlatform().getUpperCaseFunction() + "(__JPA_ALIAS[[0]]__." + propertyName + ")";
-				propertyName = "UPPER(__JPA_ALIAS[[0]]__." + propertyName + ")";
+				if (StringUtils.contains(propertyName, "__JPA_ALIAS[[")) {
+					propertyName = "UPPER(" + propertyName + ")";
+				} else {
+					propertyName = "UPPER(__JPA_ALIAS[[0]]__." + propertyName + ")";
+				}
 				propertyValue = propertyValue.toUpperCase();
 			}
 			if (!treatWildcardsAndOperatorsAsLiteral && StringUtils.contains(propertyValue,

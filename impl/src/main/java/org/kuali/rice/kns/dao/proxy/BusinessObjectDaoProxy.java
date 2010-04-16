@@ -62,16 +62,6 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
                     return boDaoValues.get(dataSourceName);
                 } else {
                 	
-                	// TODO - temporary until we get the other modules converted
-                	if ("kimDataSource".contains(dataSourceName)) {
-                        //using OJB
-                        BusinessObjectDaoOjb boDaoOjb = new BusinessObjectDaoOjb();
-                        boDaoOjb.setJcdAlias(dataSourceName);
-                        boDaoOjb.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
-                        boDaoValues.put(dataSourceName, boDaoOjb);
-                        return boDaoOjb;
-                    }
-                	
                 	BusinessObjectDaoJpa boDaoJpa = new BusinessObjectDaoJpa();
                 	if (entityManager != null) {
                 		boDaoJpa.setEntityManager(entityManager);

@@ -71,7 +71,7 @@ public class KimEntityNameInfo extends KimDefaultableInfo implements KimEntityNa
 		    this.suffix = name.getSuffix();
 		    this.suffixUnmasked = name.getSuffixUnmasked();
 		    this.active = name.isActive();
-		    this.dflt = name.isDefault();
+		    this.defaultValue = name.isDefaultValue();
 		    this.suppressName = name.isSuppressName();
 		    
 		    this.formattedName = name.getFormattedName();

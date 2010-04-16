@@ -49,7 +49,7 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 	@Column(name="ACTV_IND")
 	protected boolean active;
 	
-	@OneToOne(targetEntity=KimResponsibilityImpl.class, fetch = FetchType.LAZY, cascade = { })
+	@OneToOne(targetEntity=KimResponsibilityImpl.class, fetch = FetchType.EAGER, cascade = { })
 	@JoinColumn(name = "RSP_ID", insertable = false, updatable = false)
 	protected KimResponsibilityImpl kimResponsibility;
 

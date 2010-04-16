@@ -470,19 +470,19 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 			}		
 			if ( nameCriteria ) {
 				newCriteria.put( ENTITY_NAME_PROPERTY_PREFIX + "active", "Y" );
-				newCriteria.put( ENTITY_NAME_PROPERTY_PREFIX + "dflt", "Y" );
+				newCriteria.put( ENTITY_NAME_PROPERTY_PREFIX + "defaultValue", "Y" );
 			}
 			if ( addressCriteria ) {
 				newCriteria.put( ENTITY_ADDRESS_PROPERTY_PREFIX + "active", "Y" );
-				newCriteria.put( ENTITY_ADDRESS_PROPERTY_PREFIX + "dflt", "Y" );
+				newCriteria.put( ENTITY_ADDRESS_PROPERTY_PREFIX + "defaultValue", "Y" );
 			}
 			if ( phoneCriteria ) {
 				newCriteria.put( ENTITY_PHONE_PROPERTY_PREFIX + "active", "Y" );
-				newCriteria.put( ENTITY_PHONE_PROPERTY_PREFIX + "dflt", "Y" );
+				newCriteria.put( ENTITY_PHONE_PROPERTY_PREFIX + "defaultValue", "Y" );
 			}
 			if ( emailCriteria ) {
 				newCriteria.put( ENTITY_EMAIL_PROPERTY_PREFIX + "active", "Y" );
-				newCriteria.put( ENTITY_EMAIL_PROPERTY_PREFIX + "dflt", "Y" );
+				newCriteria.put( ENTITY_EMAIL_PROPERTY_PREFIX + "defaultValue", "Y" );
 			}
 			if ( employeeIdCriteria ) {
 				newCriteria.put( ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX + "active", "Y" );
@@ -492,7 +492,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 				newCriteria.put( ENTITY_AFFILIATION_PROPERTY_PREFIX + "active", "Y" );
 			}
 			if ( affiliationDefaultOnlyCriteria ) {
-				newCriteria.put( ENTITY_AFFILIATION_PROPERTY_PREFIX + "dflt", "Y" );
+				newCriteria.put( ENTITY_AFFILIATION_PROPERTY_PREFIX + "defaultValue", "Y" );
 			}
 			if ( externalIdentifierCriteria ) {
 				newCriteria.put( ENTITY_EXT_ID_PROPERTY_PREFIX + "active", "Y" );

@@ -162,7 +162,7 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 		info.setAffiliations( affInfo );
 		KimEntityAffiliationInfo aff = new KimEntityAffiliationInfo();
 		aff.setCampusCode(this.getCampusCode());
-		aff.setDefault(true);
+		aff.setDefaultValue(true);
 		info.setDefaultAffiliation(aff);
 		info.setAffiliations(affInfo);
 

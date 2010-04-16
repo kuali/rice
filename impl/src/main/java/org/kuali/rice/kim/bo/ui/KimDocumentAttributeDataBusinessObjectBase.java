@@ -39,8 +39,7 @@ public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoBas
 	@GeneratedValue(generator="KRIM_ATTR_DATA_ID_S")
 	@GenericGenerator(name="KRIM_ATTR_DATA_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ATTR_DATA_ID_S"),
-			@Parameter(name="value_column",value="id"),
-			@Parameter(name="optimizer",value="org.kuali.rice.core.jpa.spring.StringHandlingNoOpSequenceOptimizer")
+			@Parameter(name="value_column",value="id")
 		})
 	@Column(name = "ATTR_DATA_ID")
 	private String attrDataId;

@@ -180,7 +180,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
                 if (result == null) {
                     result = affiliation;
                 }
-                if (affiliation.isDefault()) {
+                if (affiliation.isDefaultValue()) {
                     result = affiliation;
                     break;
                 }
@@ -333,7 +333,7 @@ public class KimEntityInfo extends KimInactivatableInfo implements KimEntity {
             if (result == null) {
                 result = name;
             }
-            if (name.isDefault()) {
+            if (name.isDefaultValue()) {
                 result = name;
                 break;
             }

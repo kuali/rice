@@ -24,6 +24,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
@@ -85,7 +86,7 @@ public class KimEntityEmploymentInformationImpl extends KimInactivatableEntityDa
 	@ManyToOne(targetEntity=KimEntityAffiliationImpl.class, fetch = FetchType.EAGER, cascade = {})
 	//@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ENTITY_AFLTN_ID", insertable = false, updatable = false)
-	protected KimEntityAffiliationImpl affiliation = new KimEntityAffiliationImpl();
+	protected KimEntityAffiliationImpl affiliation; // = new KimEntityAffiliationImpl();
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getBaseSalaryAmount()

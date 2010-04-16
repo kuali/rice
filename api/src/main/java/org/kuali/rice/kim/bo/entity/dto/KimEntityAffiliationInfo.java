@@ -46,7 +46,7 @@ public class KimEntityAffiliationInfo extends KimDefaultableInfo implements KimE
 			entityAffiliationId = aff.getEntityAffiliationId();
 			affiliationTypeCode = aff.getAffiliationTypeCode();
 			campusCode = aff.getCampusCode();
-			dflt = aff.isDefault();
+			defaultValue = aff.isDefaultValue();
 			active = aff.isActive();
 		}
 	}

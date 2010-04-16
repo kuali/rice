@@ -55,13 +55,24 @@ public class IdentityServiceTest extends KIMTestCase {
 
 	@Test
 	public void testGetDefaultNamesForEntityIds(){
+		//List<String> entityIds= new ArrayList<String>();
+		//entityIds.add("p1");
+		//entityIds.add("kuluser");
+		List<String> principalIds= new ArrayList<String>();
+		principalIds.add("p1");
+		principalIds.add("KULUSER");
 		List<String> entityIds= new ArrayList<String>();
-		entityIds.add("p1");
-		entityIds.add("kuluser");
+		for (String principalId : principalIds) {
+			KimEntityInfo entityInfo = identityService.getEntityInfoByPrincipalId(principalId);
+			entityIds.add(entityInfo.getEntityId());
+		}
+		
 		Map<String,KimEntityNameInfo> results = identityService.getDefaultNamesForEntityIds(entityIds);
 		assertEquals(2,results.size());
-		assertTrue(results.containsKey("p1"));
-		assertTrue(results.containsKey("kuluser"));
+		for (String entityId : entityIds) {
+			assertTrue(results.containsKey(entityId));
+		}
+		//assertTrue(results.containsKey("kuluser"));
 	}
 	
 	@Test

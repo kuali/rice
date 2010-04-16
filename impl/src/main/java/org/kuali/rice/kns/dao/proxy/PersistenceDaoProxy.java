@@ -29,6 +29,7 @@ import org.kuali.rice.kns.dao.impl.PersistenceDaoOjb;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -62,10 +63,7 @@ public class PersistenceDaoProxy implements PersistenceDao {
                 if (persistenceDaoValues.get(dataSourceName) != null) {
                     return persistenceDaoValues.get(dataSourceName);
                 } else {
-                	final String TMP_NM = clazz.getName();
-            		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
-                	if (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
-            				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) {
+                	if (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled("rice.kns"))) {
                         //return the default JPA values since PersistenceDaoJPA delegates to the BusinessObjectService which should grab the correct datasource
                         persistenceDaoValues.put(dataSourceName, persistenceDaoJpa);
                         return persistenceDaoJpa;
@@ -83,10 +81,8 @@ public class PersistenceDaoProxy implements PersistenceDao {
 
             }
         }
-        final String TMP_NM = clazz.getName();
-		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
-    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
-				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) ? persistenceDaoJpa : persistenceDaoOjb; 
+    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled("rice.kns"))) ?
+						persistenceDaoJpa : persistenceDaoOjb; 
     }
 
 	/**
@@ -104,21 +100,21 @@ public class PersistenceDaoProxy implements PersistenceDao {
      * @see org.kuali.rice.kns.dao.PersistenceDao#resolveProxy(java.lang.Object)
      */
     public Object resolveProxy(Object o) {
-    	return getDao(o.getClass()).resolveProxy(o);
+    	return getDao(ObjectUtils.materializeClassForProxiedObject(o)).resolveProxy(o);
     }
 
     /**
      * @see org.kuali.rice.kns.dao.PersistenceDao#retrieveAllReferences(java.lang.Object)
      */
     public void retrieveAllReferences(Object o) {
-    	getDao(o.getClass()).retrieveAllReferences(o);
+    	getDao(ObjectUtils.materializeClassForProxiedObject(o)).retrieveAllReferences(o);
     }
 
     /**
      * @see org.kuali.rice.kns.dao.PersistenceDao#retrieveReference(java.lang.Object, java.lang.String)
      */
     public void retrieveReference(Object o, String referenceName) {
-    	getDao(o.getClass()).retrieveReference(o, referenceName);
+    	getDao(ObjectUtils.materializeClassForProxiedObject(o)).retrieveReference(o, referenceName);
     }
  
     /**

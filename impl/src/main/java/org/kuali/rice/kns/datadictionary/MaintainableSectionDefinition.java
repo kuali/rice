@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.util.KNSConstants;
 
 /**
     The maintainableSection element defines one section of the

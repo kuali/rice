@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +47,7 @@ public class PersistenceServiceImpl extends PersistenceServiceImplBase implement
 	}
 
 	private PersistenceService getService(Class clazz) {
-		final String TMP_NM = clazz.getName();
-		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
-    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
-				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) ?
+    	return (isJpaEnabledForKnsClass(clazz)) ?
 						persistenceServiceJpa : persistenceServiceOjb;
 	}
 

@@ -48,11 +48,7 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
         if ( moduleConfig == null )
         	throw new ConfigurationException("moduleConfiguration is null");
         
-        final String TMP_NM = clazz.getName();
-		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
-    	if ( OrmUtils.isJpaAnnotated(clazz) && ( OrmUtils.isJpaEnabled() ||
-		//		OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) {
-				OrmUtils.isJpaEnabled("rice.kns") ) ) {
+    	if ( OrmUtils.isJpaAnnotated(clazz) && ( OrmUtils.isJpaEnabled() ||	OrmUtils.isJpaEnabled("rice.kns") ) ) {
     		EntityManager entityManager = moduleConfig.getEntityManager();
     		
             if ( entityManager != null ) 

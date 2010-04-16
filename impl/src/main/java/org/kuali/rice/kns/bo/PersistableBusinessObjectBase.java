@@ -59,16 +59,11 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     // The following support notes on BusinessObjects (including DocumentHeader)
     @Transient
     private List boNotes = null;
-    @Transient
     private transient Boolean thisNotesSupport;
-    @Transient
     private transient static Map<Class<? extends PersistableBusinessObjectBase>,Boolean> notesSupportCache = new HashMap<Class<? extends PersistableBusinessObjectBase>,Boolean>();
     
-    @Transient
     private static transient AttachmentService attachmentService;
-    @Transient
     private static transient PersistenceService persistenceService;
-    @Transient
     private static transient NoteService noteService;
     
     // This is only a flag if a @Sequence is used and is set up explicitly on Maint Doc creation

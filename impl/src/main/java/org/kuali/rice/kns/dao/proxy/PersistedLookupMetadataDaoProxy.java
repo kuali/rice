@@ -30,8 +30,7 @@ public class PersistedLookupMetadataDaoProxy implements PersistedLookupMetadataD
     private PersistedLookupMetadataDao getDao(Class clazz) {
     	final String TMP_NM = clazz.getName();
 		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
-    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
-				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) ?
+    	return (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled("rice.kns"))) ?
 						persistedLookupMetadataDaoJpa : persistedLookupMetadataDaoOjb; 
     }
 

@@ -82,10 +82,7 @@ public class PersistenceServiceStructureImplBase {
 	@CacheNoCopy
 	public List listPrimaryKeyFieldNames(Class clazz) {
     	// Rice JPA MetadataManager
-		final String TMP_NM = clazz.getName();
-		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
-		if (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
-				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) {
+		if (isJpaEnabledForKnsClass(clazz)) {
 			List fieldNames = new ArrayList();
 	    	EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(clazz);
 	    	for (org.kuali.rice.core.jpa.metadata.FieldDescriptor field : descriptor.getPrimaryKeys()) {
@@ -154,6 +151,19 @@ public class PersistenceServiceStructureImplBase {
 
 		return classDescriptor;
 	}
+	
+	/**
+	 * Determines if JPA is enabled for the KNS and for the given class
+	 * 
+	 * @param clazz the class to check for JPA enabling of
+	 * @return true if JPA is enabled for the class, false otherwise
+	 */
+	public boolean isJpaEnabledForKnsClass(Class clazz) {
+		final boolean jpaAnnotated = OrmUtils.isJpaAnnotated(clazz);
+		final boolean jpaEnabled = OrmUtils.isJpaEnabled();
+		final boolean prefixJpaEnabled = OrmUtils.isJpaEnabled("rice.kns");
+		return jpaAnnotated && (jpaEnabled || prefixJpaEnabled);
+	}
 
 	/**
 	 * @see org.kuali.rice.kns.service.PersistenceStructureService#getBusinessObjectAttributeClass(java.lang.Class,
@@ -172,10 +182,7 @@ public class PersistenceServiceStructureImplBase {
 		}
 
     	// Rice JPA MetadataManager
-		final String TMP_NM = clazz.getName();
-		final int START_INDEX = TMP_NM.indexOf('.', TMP_NM.indexOf('.') + 1) + 1;
-		if (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() ||
-				OrmUtils.isJpaEnabled(TMP_NM.substring(START_INDEX, TMP_NM.indexOf('.', TMP_NM.indexOf('.', START_INDEX) + 1))) ) ) {
+		if (isJpaEnabledForKnsClass(clazz)) {
 			Class attributeClass = null;
 	    	EntityDescriptor descriptor = MetadataManager.getEntityDescriptor(clazz);
 	    	ObjectDescriptor objectDescriptor = descriptor.getObjectDescriptorByName(baseAttributeName);

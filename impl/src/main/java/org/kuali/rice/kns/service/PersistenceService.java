@@ -146,4 +146,12 @@ public interface PersistenceService {
      * @return true if the object is an ORM proxy; false otherwise
      */
     public abstract boolean isProxied(Object object);
+    
+    /**
+	 * Determines if JPA is enabled for the KNS and for the given class
+	 * 
+	 * @param clazz the class to check for JPA enabling of
+	 * @return true if JPA is enabled for the class, false otherwise
+	 */
+	public abstract boolean isJpaEnabledForKnsClass(Class clazz);
 }

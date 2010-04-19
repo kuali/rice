@@ -39,7 +39,7 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name="PERM_TMPL_ID")
+	@Column(name="RSP_TMPL_ID")
 	protected String responsibilityTemplateId;
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;

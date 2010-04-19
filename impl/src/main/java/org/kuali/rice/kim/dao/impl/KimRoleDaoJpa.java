@@ -315,6 +315,7 @@ public class KimRoleDaoJpa implements KimRoleDao {
 			groupCheck.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
 		}
 		groupCheck.eq( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
+		orSet.or( groupCheck );
 		c.and( orSet );
 
 		ArrayList<RoleMemberImpl> coll = (ArrayList<RoleMemberImpl>) new QueryByCriteria(entityManager, c).toQuery().getResultList();

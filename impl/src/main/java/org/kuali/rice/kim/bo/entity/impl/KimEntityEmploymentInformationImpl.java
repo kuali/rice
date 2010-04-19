@@ -24,9 +24,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
@@ -37,6 +37,10 @@ import org.kuali.rice.kns.util.KualiDecimal;
  */
 @Entity
 @Table(name = "KRIM_ENTITY_EMP_INFO_T")
+@TypeDef(
+		name="rice_decimal",
+		typeClass=org.kuali.rice.kns.util.HibernateKualiDecimalFieldType.class
+	)
 public class KimEntityEmploymentInformationImpl extends KimInactivatableEntityDataBase implements KimEntityEmploymentInformation {
 
 	private static final long serialVersionUID = 1L;
@@ -66,6 +70,7 @@ public class KimEntityEmploymentInformationImpl extends KimInactivatableEntityDa
 	@Column(name = "PRMRY_DEPT_CD")
 	protected String primaryDepartmentCode;
 	
+	@Type(type="rice_decimal")
 	@Column(name = "BASE_SLRY_AMT")
 	protected KualiDecimal baseSalaryAmount;
 

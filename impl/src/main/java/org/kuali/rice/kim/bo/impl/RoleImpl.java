@@ -33,6 +33,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
@@ -62,6 +63,7 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	protected String roleName;
 	@Column(name="DESC_TXT",length=4000)
 	protected String roleDescription;
+	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active;
 	@Column(name="KIM_TYP_ID")

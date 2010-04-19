@@ -226,6 +226,15 @@ public interface BusinessObjectService {
      * @param bos A List of populated BusinessObject (or descendent) instances to be linked & updated.
      */
     public void linkUserFields(List<PersistableBusinessObject> bos);
+    
+    /**
+     * Merges the given business object, but tells the ORM that the object is to be treated as Read Only,
+     * and even if it has changes, it will not be persisted to the database 
+     * 
+     * @param bo the business object to managed
+     * @return the managed copied of the business object
+     */
+    public PersistableBusinessObject manageReadOnly(PersistableBusinessObject bo);
 
 }
 

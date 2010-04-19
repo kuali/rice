@@ -26,6 +26,9 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
+import org.hibernate.FlushMode;
+import org.hibernate.Session;
+import org.hibernate.ejb.HibernateEntityManager;
 import org.hibernate.proxy.HibernateProxy;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
@@ -221,6 +224,9 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 			}
 		}
 		*/
+		if (entityManager.contains(bo) && ((HibernateEntityManager)entityManager).getSession().isReadOnly(bo)) {
+			((HibernateEntityManager)entityManager).getSession().setReadOnly(bo, false); // are we read only?  turn that off...
+		}
 		return reattachAndSave(bo);
 	}
 	
@@ -375,6 +381,19 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	}
 
 	/**
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#manageReadOnly(org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 */
+	public PersistableBusinessObject manageReadOnly(PersistableBusinessObject bo) {
+		Session session = ((HibernateEntityManager)entityManager).getSession();
+		FlushMode currentFlushMode = session.getFlushMode();
+		session.setFlushMode(FlushMode.MANUAL); // make sure the merge doesn't flush what we're trying to make read only
+		PersistableBusinessObject managedBO = entityManager.merge(bo);
+		session.setReadOnly(managedBO, true);
+		session.setFlushMode(currentFlushMode);
+		return managedBO;
+	}
+
+	/**
 	 * Gets the persistenceStructureService attribute.
 	 * 
 	 * @return Returns the persistenceStructureService.
@@ -402,12 +421,12 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 				entityManager.merge(bo.getExtension());
 			}
 		} else {
-			if (bo.getExtension() != null) {
+			/*if (bo.getExtension() != null) {
 				PersistableBusinessObject attachedBoe = findByPrimaryKey(bo.getExtension().getClass(), MetadataManager.getPersistableBusinessObjectPrimaryKeyValuePairs(bo.getExtension()));
 				OrmUtils.reattach(bo.getExtension(),attachedBoe);
 				attachedBo.setExtension((PersistableBusinessObjectExtension) attachedBoe);
 				entityManager.merge(attachedBoe);
-			}
+			}*/
 			OrmUtils.reattach(bo,attachedBo);
 			newBo = entityManager.merge(attachedBo);
 		}

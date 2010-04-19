@@ -290,6 +290,14 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 	}
 
 	/**
+	 * No need to do anything - avoid saving and OJB will "manage read only"
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#manageReadOnly(org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 */
+	public PersistableBusinessObject manageReadOnly(PersistableBusinessObject bo) {
+		return bo;
+	}
+
+	/**
      * This method will build out criteria in the key-value paradigm (attribute-value).
      * 
      * @param fieldValues

@@ -207,4 +207,13 @@ public interface BusinessObjectDao {
      * @param fieldValues
      */
     public void deleteMatching(Class clazz, Map<String, ?> fieldValues);
+    
+    /**
+     * Merges the given business object, but tells the ORM that the object is to be treated as Read Only,
+     * and even if it has changes, it will not be persisted to the database 
+     * 
+     * @param bo the business object to managed
+     * @return the managed copied of the business object
+     */
+    public PersistableBusinessObject manageReadOnly(PersistableBusinessObject bo);
 }

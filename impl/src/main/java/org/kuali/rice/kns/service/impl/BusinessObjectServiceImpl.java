@@ -473,6 +473,13 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
     }
 
     /**
+	 * @see org.kuali.rice.kns.service.BusinessObjectService#manageReadOnly(org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 */
+	public PersistableBusinessObject manageReadOnly(PersistableBusinessObject bo) {
+		return getBusinessObjectDao().manageReadOnly(bo);
+	}
+
+	/**
      * Gets the businessObjectDao attribute.
      * 
      * @return Returns the businessObjectDao.

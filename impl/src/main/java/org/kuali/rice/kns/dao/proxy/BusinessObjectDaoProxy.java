@@ -207,6 +207,14 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	public PersistableBusinessObject retrieve(PersistableBusinessObject object) {
 		return getDao(object.getClass()).retrieve(object);
 	}
+	
+	/**
+
+	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#manageReadOnly(org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 */
+	public PersistableBusinessObject manageReadOnly(PersistableBusinessObject bo) {
+		return getDao(bo.getClass()).manageReadOnly(bo);
+	}
 
 	/**
 	 * Defers to correct DAO for this class

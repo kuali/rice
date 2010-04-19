@@ -354,18 +354,13 @@ public class XmlHelper {
 		return writer.toString();
 	}
 
-	public static void appendXml(Node parentNode, String xml){
+	public static void appendXml(Node parentNode, String xml) throws Exception {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
-		try {
-			org.w3c.dom.Document xmlDocument = factory.newDocumentBuilder().parse(new InputSource(new StringReader(xml)));
-			org.w3c.dom.Element xmlDocumentElement = xmlDocument.getDocumentElement();
-			Node importedNode = parentNode.getOwnerDocument().importNode(xmlDocumentElement, true);
-			parentNode.appendChild(importedNode);
-		} catch (Exception e) {
-			LOG.error("Error when appending XML", e);
-			throw new RuntimeException("Error when appending XML", e);
-		}
+		org.w3c.dom.Document xmlDocument = factory.newDocumentBuilder().parse(new InputSource(new StringReader(xml)));
+		org.w3c.dom.Element xmlDocumentElement = xmlDocument.getDocumentElement();
+		Node importedNode = parentNode.getOwnerDocument().importNode(xmlDocumentElement, true);
+		parentNode.appendChild(importedNode);
 	}
 
 	public static org.w3c.dom.Document readXml(String xml) throws TransformerException {

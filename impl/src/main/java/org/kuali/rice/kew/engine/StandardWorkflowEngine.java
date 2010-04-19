@@ -96,7 +96,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			if ( LOG.isInfoEnabled() ) {
 				LOG.info("Aquired lock on document " + documentId);
 			}
-			DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
+			DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId, true);
 			context.setDocument(document);
 			lockAdditionalDocuments(document);
 			

@@ -354,7 +354,7 @@ public class XmlHelper {
 		return writer.toString();
 	}
 
-	public static void appendXml(Node parentNode, String xml) throws Exception {
+	public static void appendXml(Node parentNode, String xml) throws SAXException, IOException, ParserConfigurationException {
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setValidating(false);
 		org.w3c.dom.Document xmlDocument = factory.newDocumentBuilder().parse(new InputSource(new StringReader(xml)));

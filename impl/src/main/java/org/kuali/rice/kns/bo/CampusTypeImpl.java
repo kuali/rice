@@ -36,6 +36,7 @@ public class CampusTypeImpl extends PersistableBusinessObjectBase implements Ina
 	@Id
 	@Column(name="CAMPUS_TYP_CD")
 	private String campusTypeCode;
+	@Type(type="yes_no")
 	@Column(name="DOBJ_MAINT_CD_ACTV_IND")
 	private boolean dataObjectMaintenanceCodeActiveIndicator;
 	@Column(name="CMP_TYP_NM")

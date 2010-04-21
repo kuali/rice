@@ -83,8 +83,8 @@ public class Criteria {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Criteria.class);
 	private static final Pattern APOS_PAT = Pattern.compile("'");
-	private static final Pattern ANY_CHARS_WILDCARD_PAT = Pattern.compile("[\\*&&[^[\\\\][\\*]]]"); // Matches "*" but not "\*".
-	private static final Pattern ONE_CHAR_WILDCARD_PAT = Pattern.compile("[\\?&&[^[\\\\][\\?]]]"); // Matches "?" but not "\?".
+	private static final Pattern ANY_CHARS_WILDCARD_PAT = Pattern.compile("(\\\\){0}\\*"); // Matches "*" but not "\*".
+	private static final Pattern ONE_CHAR_WILDCARD_PAT = Pattern.compile("(\\\\){0}\\?"); // Matches "?" but not "\?".
 	
 	/** The String representing the beginning of a by-name or by-index reference to an entity alias. */
 	public static final String JPA_ALIAS_PREFIX = "__JPA_ALIAS[[";

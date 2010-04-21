@@ -51,7 +51,7 @@ import org.kuali.rice.kns.util.TypeUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 
 /**
- * This class is the OJB implementation of the LookupDao interface.
+ * This class is the JPA implementation of the LookupDao interface.
  */
 public class LookupDaoJpa implements LookupDao {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDao.class);
@@ -357,9 +357,17 @@ public class LookupDaoJpa implements LookupDao {
 			alias = keySplit[keySplit.length-2];
 			String variableKey = keySplit[keySplit.length-1];
 			for (int j = 0; j < keySplit.length - 1; j++)  {
-				if (criteria.getAliasIndex(keySplit[j]) == -1) {
-	    			criteria.join(keySplit[j], keySplit[j], false, true);
-	    		}
+				if (StringUtils.contains(keySplit[j], Criteria.JPA_ALIAS_PREFIX)) {
+					String tempKey = keySplit[j].substring(keySplit[j].indexOf('\'', keySplit[j].indexOf(Criteria.JPA_ALIAS_PREFIX)) + 1,
+							keySplit[j].lastIndexOf('\'', keySplit[j].indexOf(Criteria.JPA_ALIAS_SUFFIX)));
+					if (criteria.getAliasIndex(tempKey) == -1) {
+						criteria.join(tempKey, tempKey, false, true);
+					}
+				} else {
+					if (criteria.getAliasIndex(keySplit[j]) == -1) {
+						criteria.join(keySplit[j], keySplit[j], false, true);
+					}
+				}
 			}
 			if (!StringUtils.contains(propertyName, "__JPA_ALIAS[[")) {
 				propertyName = "__JPA_ALIAS[['" + alias + "']]__." + variableKey;

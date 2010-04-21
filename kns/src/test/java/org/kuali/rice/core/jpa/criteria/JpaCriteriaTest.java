@@ -554,7 +554,7 @@ public class JpaCriteriaTest extends KNSTestCase {
 		crit.join("accounts", "acct", true, false);
 		objectList = (List<Object[]>) new QueryByCriteria(em, crit).toQuery().getResultList();
 		assertCorrectAccountsAndAccountManagersWereReturned(new String[][] { {"fo-101", "b101"}, {"fo-101", "b102"}, {"fo-101", "b103"}, {"fo-102", "b104"},
-				{"fo-102", "b105"}, {"fo-103", null}, {"fo-104", "b106"}, {"fo-104", "b107"}, {"fo-105", "b108"}, {"fo-105", "b109"}, {"fo-105", "b110"} }, objectList);
+				{"fo-102", "b105"}, {"fo-104", "b106"}, {"fo-104", "b107"}, {"fo-105", "b108"}, {"fo-105", "b109"}, {"fo-105", "b110"}, {"fo-103", null} }, objectList);
 		
 		// Test an INNER JOIN FETCH, which should auto-retrieve the "accounts" lists on the AccountManagers as well.
 		crit = new Criteria(AccountManager.class.getName());

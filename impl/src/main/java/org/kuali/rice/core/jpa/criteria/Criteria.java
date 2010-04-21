@@ -83,6 +83,8 @@ public class Criteria {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Criteria.class);
 	private static final Pattern APOS_PAT = Pattern.compile("'");
+	private static final Pattern ANY_CHARS_WILDCARD_PAT = Pattern.compile("[\\*&&[^[\\\\][\\*]]]"); // Matches "*" but not "\*".
+	private static final Pattern ONE_CHAR_WILDCARD_PAT = Pattern.compile("[\\?&&[^[\\\\][\\?]]]"); // Matches "?" but not "\?".
 	
 	/** The String representing the beginning of a by-name or by-index reference to an entity alias. */
 	public static final String JPA_ALIAS_PREFIX = "__JPA_ALIAS[[";
@@ -544,7 +546,8 @@ public class Criteria {
 	 * @param value The pattern to compare with for "likeness".
 	 */
 	public void like(String attribute, Object value) {
-		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute, value.toString());
+		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute, 
+				ONE_CHAR_WILDCARD_PAT.matcher(ANY_CHARS_WILDCARD_PAT.matcher(value.toString()).replaceAll("%")).replaceAll("_"));
 		whereClause.append(attribute).append(" LIKE ").append(fixedAttr);
 	}
 
@@ -556,7 +559,8 @@ public class Criteria {
 	 * @param value The pattern to compare with for "non-likeness".
 	 */
 	public void notLike(String attribute, Object value) {
-		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute, value.toString());
+		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute,
+				ONE_CHAR_WILDCARD_PAT.matcher(ANY_CHARS_WILDCARD_PAT.matcher(value.toString()).replaceAll("%")).replaceAll("_"));
 		whereClause.append(attribute).append(" NOT LIKE ").append(fixedAttr);
 	}
 
@@ -570,7 +574,8 @@ public class Criteria {
 	 * @param escapeChar The designated wildcard escape character for the given value.
 	 */
 	public void likeEscape(String attribute, Object value, char escapeChar) {
-		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute, value.toString());
+		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute,
+				ONE_CHAR_WILDCARD_PAT.matcher(ANY_CHARS_WILDCARD_PAT.matcher(value.toString()).replaceAll("%")).replaceAll("_"));
 		whereClause.append(attribute).append(" LIKE ").append(fixedAttr).append(" ESCAPE ").append(
 				prepareAttribute(JPA_ALIAS_PREFIX, Character.valueOf(escapeChar)));
 	}
@@ -585,7 +590,8 @@ public class Criteria {
 	 * @param escapeChar The designated wildcard escape character for the given value.
 	 */
 	public void notLikeEscape(String attribute, Object value, char escapeChar) {
-		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute, value.toString());
+		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute,
+				ONE_CHAR_WILDCARD_PAT.matcher(ANY_CHARS_WILDCARD_PAT.matcher(value.toString()).replaceAll("%")).replaceAll("_"));
 		whereClause.append(attribute).append(" NOT LIKE ").append(fixedAttr).append(" ESCAPE ").append(
 				prepareAttribute(JPA_ALIAS_PREFIX, Character.valueOf(escapeChar)));
 	}
@@ -1190,7 +1196,7 @@ public class Criteria {
 					if (query.getParameter(param.getKey()).getParameterType().equals(java.lang.Boolean.class)) {
 						value = RiceUtilities.getBooleanValueForString((String)value, false);
 					} else {
-						value = ((String)value).replaceAll("\\*", "%");
+						//value = ((String)value).replaceAll("\\*", "%");
 					}
 				}
 				query.setParameter(param.getKey(), value);

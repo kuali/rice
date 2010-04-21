@@ -29,6 +29,7 @@ import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.ProcessResult;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.RouteNodeUtils;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.engine.transition.Transition;
 import org.kuali.rice.kew.engine.transition.TransitionEngine;
@@ -96,7 +97,8 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			if ( LOG.isInfoEnabled() ) {
 				LOG.info("Aquired lock on document " + documentId);
 			}
-			DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId, true);
+						
+			DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
 			context.setDocument(document);
 			lockAdditionalDocuments(document);
 			
@@ -115,18 +117,17 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 				LOG.debug("Document not routable so returning with doing no action");
 				return;
 			}
-			List nodeInstancesToProcess = new LinkedList();
+			List nodeInstancesToProcess = new LinkedList();			
 			if (nodeInstanceId == null) {
-				nodeInstancesToProcess.addAll(getRouteNodeService().getActiveNodeInstances(documentId));
-			} else {
-				RouteNodeInstance instanceNode = getRouteNodeService().findRouteNodeInstanceById(nodeInstanceId);
+				// pulls the node instances from the passed in document
+				nodeInstancesToProcess.addAll(RouteNodeUtils.getActiveNodeInstances(document));				
+			} else {				
+				RouteNodeInstance instanceNode = RouteNodeUtils.findRouteNodeInstanceById(nodeInstanceId,document);
 				if (instanceNode == null) {
 					throw new IllegalArgumentException("Invalid node instance id: " + nodeInstanceId);
 				}
 				nodeInstancesToProcess.add(instanceNode);
-			}
-
-			
+			}			
 
 			context.setEngineState(new EngineState());
 			ProcessContext processContext = new ProcessContext(true, nodeInstancesToProcess);

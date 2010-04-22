@@ -34,7 +34,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
@@ -67,8 +66,7 @@ public class Branch implements Serializable {
 	private Branch parentBranch;
 	@Column(name="NM")
 	private String name;
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE}, mappedBy="branch")
-    @Cascade({org.hibernate.annotations.CascadeType.DELETE_ORPHAN})    
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST,CascadeType.MERGE}, mappedBy="branch", orphanRemoval=true)
     @Fetch(value=FetchMode.SELECT)
 	private List<BranchState> branchState = new ArrayList<BranchState>();
 //	  apache lazy list commented out due to not being serializable

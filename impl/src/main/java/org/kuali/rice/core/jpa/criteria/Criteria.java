@@ -83,8 +83,9 @@ public class Criteria {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Criteria.class);
 	private static final Pattern APOS_PAT = Pattern.compile("'");
-	private static final Pattern ANY_CHARS_WILDCARD_PAT = Pattern.compile("(\\\\){0}\\*"); // Matches "*" but not "\*".
-	private static final Pattern ONE_CHAR_WILDCARD_PAT = Pattern.compile("(\\\\){0}\\?"); // Matches "?" but not "\?".
+	private static final String[] LOOKUP_WILDCARDS = {"*", "?"};
+	private static final String[] ESCAPED_LOOKUP_WILDCARDS = {"\\*", "\\?"};
+	private static final char[] JPQL_WILDCARDS = {'%', '_'};
 	
 	/** The String representing the beginning of a by-name or by-index reference to an entity alias. */
 	public static final String JPA_ALIAS_PREFIX = "__JPA_ALIAS[[";
@@ -385,6 +386,39 @@ public class Criteria {
 	}
 	
 	/*
+	 * Fixes the search pattern by converting all non-escaped lookup wildcards ("*" and "?") into their
+	 * respective JPQL wildcards ("%" and "_"). Any lookup wildcards escaped by a backslash are ignored.
+	 * TODO: Should backslashed lookup wildcards be converted to their non-backslashed equivalents
+	 * once all other non-backslashed ones have been converted to JPQL wildcards?
+	 */
+	private String fixSearchPattern(String value) {
+		StringBuilder fixedPattern = new StringBuilder(value);
+		int valueLen = value.length();
+		String lookupWildcard;
+		String escapedLookupWildcard;
+		char jpqlWildcard;
+		// Convert all non-escaped  wildcards.
+		for (int i = 0; i < LOOKUP_WILDCARDS.length; i++) {
+			lookupWildcard = LOOKUP_WILDCARDS[i];
+			escapedLookupWildcard = ESCAPED_LOOKUP_WILDCARDS[i];
+			jpqlWildcard = JPQL_WILDCARDS[i];
+			int wildcardIndex = fixedPattern.indexOf(lookupWildcard);
+			int escapedWildcardIndex = fixedPattern.indexOf(escapedLookupWildcard);
+			while (wildcardIndex != -1) {
+				if (wildcardIndex == 0 || escapedWildcardIndex != wildcardIndex - 1) {
+					fixedPattern.setCharAt(wildcardIndex, jpqlWildcard);
+					wildcardIndex = fixedPattern.indexOf(lookupWildcard, wildcardIndex);
+				} else {
+					//fixedPattern.replace(escapedWildcardIndex, wildcardIndex + 1, lookupWildcard);
+					wildcardIndex = fixedPattern.indexOf(lookupWildcard, wildcardIndex + 1);
+					escapedWildcardIndex = fixedPattern.indexOf(escapedLookupWildcard, wildcardIndex);
+				}
+			}
+		}
+		return fixedPattern.toString();
+	}
+	
+	/*
 	 * Automatically appends a new " AND " to the WHERE clause if adding more than one condition to it,
 	 * and also appends the initial entity's alias and a '.' if the expression does not contain any
 	 * properly-referenced aliases (as defined in the description of this class).
@@ -546,8 +580,7 @@ public class Criteria {
 	 * @param value The pattern to compare with for "likeness".
 	 */
 	public void like(String attribute, Object value) {
-		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute, 
-				ONE_CHAR_WILDCARD_PAT.matcher(ANY_CHARS_WILDCARD_PAT.matcher(value.toString()).replaceAll("%")).replaceAll("_"));
+		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute, fixSearchPattern(value.toString()));
 		whereClause.append(attribute).append(" LIKE ").append(fixedAttr);
 	}
 
@@ -559,8 +592,7 @@ public class Criteria {
 	 * @param value The pattern to compare with for "non-likeness".
 	 */
 	public void notLike(String attribute, Object value) {
-		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute,
-				ONE_CHAR_WILDCARD_PAT.matcher(ANY_CHARS_WILDCARD_PAT.matcher(value.toString()).replaceAll("%")).replaceAll("_"));
+		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute, fixSearchPattern(value.toString()));
 		whereClause.append(attribute).append(" NOT LIKE ").append(fixedAttr);
 	}
 
@@ -574,8 +606,7 @@ public class Criteria {
 	 * @param escapeChar The designated wildcard escape character for the given value.
 	 */
 	public void likeEscape(String attribute, Object value, char escapeChar) {
-		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute,
-				ONE_CHAR_WILDCARD_PAT.matcher(ANY_CHARS_WILDCARD_PAT.matcher(value.toString()).replaceAll("%")).replaceAll("_"));
+		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute, fixSearchPattern(value.toString()));
 		whereClause.append(attribute).append(" LIKE ").append(fixedAttr).append(" ESCAPE ").append(
 				prepareAttribute(JPA_ALIAS_PREFIX, Character.valueOf(escapeChar)));
 	}
@@ -590,8 +621,7 @@ public class Criteria {
 	 * @param escapeChar The designated wildcard escape character for the given value.
 	 */
 	public void notLikeEscape(String attribute, Object value, char escapeChar) {
-		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute,
-				ONE_CHAR_WILDCARD_PAT.matcher(ANY_CHARS_WILDCARD_PAT.matcher(value.toString()).replaceAll("%")).replaceAll("_"));
+		String fixedAttr = preparePrefixAndAttributeIfNecessary(attribute, fixSearchPattern(value.toString()));
 		whereClause.append(attribute).append(" NOT LIKE ").append(fixedAttr).append(" ESCAPE ").append(
 				prepareAttribute(JPA_ALIAS_PREFIX, Character.valueOf(escapeChar)));
 	}

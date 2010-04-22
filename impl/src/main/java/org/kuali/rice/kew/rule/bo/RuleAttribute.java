@@ -34,6 +34,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
@@ -84,8 +86,9 @@ public class RuleAttribute extends KewPersistableBusinessObjectBase implements W
     @Column(name="SVC_NMSPC")
 	private String serviceNamespace;
     
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
            targetEntity=org.kuali.rice.kew.rule.bo.RuleTemplateAttribute.class, mappedBy="ruleAttribute")
+    @Fetch(value=FetchMode.SELECT)
 	private List ruleTemplateAttributes;
     @Transient
     private List validValues;

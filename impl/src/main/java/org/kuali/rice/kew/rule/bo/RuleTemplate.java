@@ -103,7 +103,7 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
 	private List<RuleTemplateAttribute> ruleTemplateAttributes;
     @Fetch(value = FetchMode.SELECT)
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
-           mappedBy="ruleTemplate")
+           mappedBy="ruleTemplate", orphanRemoval=true)
 	private List<RuleTemplateOption> ruleTemplateOptions;
 
     // required to be lookupable

@@ -1312,7 +1312,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
         for (int i = 0; i < documentTypePolicies.getLength(); i++) {
             DocumentTypePolicy policy = new DocumentTypePolicy();
-            policy.setDocumentTypeId(documentType.getDocumentTypeId());
+            policy.setDocumentType(documentType);
             try {
                 String policyName = (String) getXPath().evaluate("./name", documentTypePolicies.item(i), XPathConstants.STRING);
                 policy.setPolicyName(DocumentTypePolicyEnum.lookup(policyName).getName().toUpperCase());
@@ -1376,7 +1376,7 @@ public class DocumentTypeXmlParser implements XmlConstants {
 
         for (int i = 0; i < documentTypeStatuses.getLength(); i++) {
         	ApplicationDocumentStatus status = new ApplicationDocumentStatus();
-        	status.setDocumentTypeId(documentType.getDocumentTypeId());
+        	status.setDocumentType(documentType);
         	Node myNode = documentTypeStatuses.item(i);  
         	String statusName = myNode.getFirstChild().getNodeValue();
         	status.setStatusName(statusName);

@@ -18,9 +18,11 @@ package org.kuali.rice.kew.doctype;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 
 /**
  */
+@Embeddable
 public class ApplicationDocumentStatusId implements Serializable {
 
     @Column(name="DOC_TYP_ID")
@@ -32,8 +34,12 @@ public class ApplicationDocumentStatusId implements Serializable {
 
     public Long getDocumentTypeId() { return documentTypeId; }
 
+    public void setDocumentTypeId(Long documentTypeId) { this.documentTypeId = documentTypeId; }
+    
     public String getStatusName() { return statusName; }
 
+    public void setStatusName(String statusName) { this.statusName = statusName; }
+    
 	/**
 	 * This overridden method ...
 	 * 

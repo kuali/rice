@@ -32,7 +32,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -105,12 +104,6 @@ import org.kuali.rice.kns.web.format.FormatException;
             "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
             "ORDER BY UPPER(dt.label)")
 })
-/*@TypeDefs({
-	@TypeDef(
-			name="numericBool",
-			typeClass=DocumentType.class
-	)
-})*/
 public class DocumentType extends KewPersistableBusinessObjectBase implements Inactivateable, DocumentTypeEBO {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
 
@@ -183,7 +176,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     private Group defaultExceptionWorkgroup;
 
     @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
-    //@JoinColumn(name="DOC_TYP_ID")
     @Fetch(value=FetchMode.SELECT)
     private Collection<DocumentTypePolicy> policies;
     
@@ -192,8 +184,7 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
      * values may be assigned as the status.  If not valid values are defined, the status may
      * be set to any value by the client.
      */
-    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST})
-    @JoinColumn(name="DOC_TYP_ID")
+    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
     @Fetch(value=FetchMode.SELECT)
     private List<ApplicationDocumentStatus> validApplicationStatuses;
     

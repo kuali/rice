@@ -29,9 +29,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
-import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -124,56 +122,11 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 	}
 
 	public void save(DocumentType documentType) {
-		Collection<DocumentTypePolicy> docPolicies = documentType.getPolicies();
-		List<ApplicationDocumentStatus> docStatuses = documentType.getValidApplicationStatuses();
-		documentType.setPolicies(new ArrayList<DocumentTypePolicy>());
-
 		if (documentType.getDocumentTypeId() == null){
-			if (docStatuses != null) {
-				documentType.setValidApplicationStatuses(new ArrayList<ApplicationDocumentStatus>());
-			}
-			
 			entityManager.persist(documentType);
-			
-			if (docStatuses != null) {
-				for (ApplicationDocumentStatus docStatus : docStatuses) {
-					docStatus.setDocumentTypeId(documentType.getDocumentTypeId());
-					entityManager.persist(docStatus);
-				}
-				documentType.setValidApplicationStatuses(docStatuses);
-			}
 		} else {
-			for(org.kuali.rice.kew.engine.node.Process process:(List<org.kuali.rice.kew.engine.node.Process>)documentType.getProcesses()){
-				if(process.getInitialRouteNode().getRouteNodeId()==null){
-					process.getInitialRouteNode().setDocumentTypeId(documentType.getDocumentTypeId());
-					entityManager.persist(process.getInitialRouteNode());
-				} else {
-					OrmUtils.merge(entityManager, process.getInitialRouteNode());
-				}
-			}
-			if (docStatuses != null) {
-				for (ApplicationDocumentStatus docStatus : docStatuses) {
-					if (docStatus.getDocumentTypeId() == null) {
-						docStatus.setDocumentTypeId(documentType.getDocumentTypeId());
-						entityManager.persist(docStatus);
-					} else {
-						OrmUtils.merge(entityManager, docStatus);
-					}
-				}
-			}
 			OrmUtils.merge(entityManager, documentType);
 		}
-
-		for (DocumentTypePolicy docTypePolicy:docPolicies){
-			if (docTypePolicy.getDocumentTypeId() == null){
-				docTypePolicy.setDocumentTypeId(documentType.getDocumentTypeId());
-				entityManager.persist(docTypePolicy);
-			} else {
-				OrmUtils.merge(entityManager, docTypePolicy);
-			}
-		}
-		
-		documentType.setPolicies(new ArrayList<DocumentTypePolicy>(docPolicies));
 	}
 
 	public List findByRouteHeaderId(Long routeHeaderId) {

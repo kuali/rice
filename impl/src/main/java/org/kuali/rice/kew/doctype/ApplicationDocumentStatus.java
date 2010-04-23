@@ -17,13 +17,16 @@ package org.kuali.rice.kew.doctype;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 
 
 /**
@@ -44,33 +47,51 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
  * @author Dan Seibert
  *
  */
-@IdClass(org.kuali.rice.kew.doctype.ApplicationDocumentStatusId.class)
 @Entity
 @Table(name="KREW_DOC_TYP_APP_DOC_STAT_T")
 public class ApplicationDocumentStatus extends KewPersistableBusinessObjectBase {
 	private static final long serialVersionUID = -2212481684546954746L;
 
-	@Id
-	@Column(name="DOC_TYP_ID",insertable=false,updatable=false)
-	private Long documentTypeId;
-	@Id
-	@Column(name="DOC_STAT_NM",insertable=false,updatable=false)
-	private String statusName;
+	@EmbeddedId
+	private ApplicationDocumentStatusId applicationDocumentStatusId;
+	@MapsId("documentTypeId")
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="DOC_TYP_ID")
+	private DocumentType documentType;
 	
-    public Long getDocumentTypeId() {
-		return this.documentTypeId;
+    public ApplicationDocumentStatusId getApplicationDocumentStatusId() {
+    	if (this.applicationDocumentStatusId == null) {
+    		this.applicationDocumentStatusId = new ApplicationDocumentStatusId();
+    	}
+		return this.applicationDocumentStatusId;
+	}
+
+	public void setApplicationDocumentStatusId(ApplicationDocumentStatusId documentStatusId) {
+		this.applicationDocumentStatusId = documentStatusId;
+	}
+
+	public Long getDocumentTypeId() {
+		return this.getApplicationDocumentStatusId().getDocumentTypeId();
 	}
 
 	public void setDocumentTypeId(Long documentTypeId) {
-		this.documentTypeId = documentTypeId;
+		this.getApplicationDocumentStatusId().setDocumentTypeId(documentTypeId);
 	}
 
 	public String getStatusName() {
-		return this.statusName;
+		return this.getApplicationDocumentStatusId().getStatusName();
 	}
 
 	public void setStatusName(String statusName) {
-		this.statusName = statusName;
+		this.getApplicationDocumentStatusId().setStatusName(statusName);
+	}
+
+	public DocumentType getDocumentType() {
+		return this.documentType;
+	}
+
+	public void setDocumentType(DocumentType documentType) {
+		this.documentType = documentType;
 	}
 
 	/**
@@ -79,8 +100,8 @@ public class ApplicationDocumentStatus extends KewPersistableBusinessObjectBase 
 	@Override
 	protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
-        m.put("documentTypeId", this.documentTypeId);
-        m.put("statusName", this.statusName);
+        m.put("documentTypeId", this.getApplicationDocumentStatusId().getDocumentTypeId());
+        m.put("statusName", this.getApplicationDocumentStatusId().getStatusName());
 		return m;
 	}
 }

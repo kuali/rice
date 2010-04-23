@@ -19,12 +19,12 @@ package org.kuali.rice.kew.doctype;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -38,38 +38,44 @@ import org.kuali.rice.kew.util.KEWConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-@IdClass(org.kuali.rice.kew.doctype.DocumentTypePolicyId.class)
 @Entity
 @Table(name="KREW_DOC_TYP_PLCY_RELN_T")
 public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
 	private static final long serialVersionUID = -4612246888683336474L;
 
-	@Id
-	@Column(name="DOC_TYP_ID",insertable=false,updatable=false)
-	private Long documentTypeId;
-    @Id
-	@Column(name="DOC_PLCY_NM",insertable=false,updatable=false)
-	private String policyName;
+	@EmbeddedId
+	private DocumentTypePolicyId documentTypePolicyId;
     @Column(name="PLCY_NM")
 	private Boolean policyValue;
     @Column(name="PLCY_VAL")
     private String policyStringValue;
     @Transient
     private Boolean inheritedFlag;
-
+    @MapsId("documentTypeId")
     @ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="DOC_TYP_ID",updatable=false,insertable=false)
+	@JoinColumn(name="DOC_TYP_ID")
 	private DocumentType documentType;
 
     public DocumentTypePolicy() {
     }
 
     public DocumentTypePolicy(String policyName, Boolean policyValue) {
-        this.policyName = policyName;
+    	this.getDocumentTypePolicyId().setPolicyName(policyName);
         this.policyValue = policyValue;
     }
 
-    public String getPolicyDisplayValue() {
+    public DocumentTypePolicyId getDocumentTypePolicyId() {
+    	if (this.documentTypePolicyId == null) {
+    		this.documentTypePolicyId = new DocumentTypePolicyId();
+    	}
+		return this.documentTypePolicyId;
+	}
+
+	public void setDocumentTypePolicyId(DocumentTypePolicyId documentTypePolicyId) {
+		this.documentTypePolicyId = documentTypePolicyId;
+	}
+
+	public String getPolicyDisplayValue() {
         if(policyValue != null){
             if(policyValue.booleanValue()){
                 return "Active";
@@ -89,27 +95,27 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
     }
     
     public boolean isAllowUnrequestedAction() {
-        return KEWConstants.ALLOW_UNREQUESTED_ACTION_POLICY.equals(policyName);
+        return KEWConstants.ALLOW_UNREQUESTED_ACTION_POLICY.equals(getDocumentTypePolicyId().getPolicyName());
     }
 
     public boolean isDefaultApprove() {
-        return KEWConstants.DEFAULT_APPROVE_POLICY.equals(policyName);
+        return KEWConstants.DEFAULT_APPROVE_POLICY.equals(getDocumentTypePolicyId().getPolicyName());
     }
 
     public boolean isDisApprove() {
-        return KEWConstants.DISAPPROVE_POLICY.equals(policyName);
+        return KEWConstants.DISAPPROVE_POLICY.equals(getDocumentTypePolicyId().getPolicyName());
     }
 
     public Long getDocumentTypeId() {
-        return documentTypeId;
+        return getDocumentTypePolicyId().getDocumentTypeId();
     }
 
     public void setDocumentTypeId(Long documentTypeId) {
-        this.documentTypeId = documentTypeId;
+        this.getDocumentTypePolicyId().setDocumentTypeId(documentTypeId);
     }
 
     public String getPolicyName() {
-        return policyName;
+        return this.getDocumentTypePolicyId().getPolicyName();
     }
 
     public void setPolicyName(String policyName) {
@@ -122,7 +128,7 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
          * So instead, let's just be sure to fail-fast.
          */
         DocumentTypePolicyEnum policy = DocumentTypePolicyEnum.lookup(policyName);
-        this.policyName = policy.getName();
+        this.getDocumentTypePolicyId().setPolicyName(policy.getName());
     }
 
     public Boolean getPolicyValue() {
@@ -144,11 +150,11 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
     public Object copy(boolean preserveKeys) {
         DocumentTypePolicy clone = new DocumentTypePolicy();
 
-        if(preserveKeys && documentTypeId != null){
-            clone.setDocumentTypeId(new Long(documentTypeId.longValue()));
+        if(preserveKeys && getDocumentTypePolicyId().getDocumentTypeId() != null){
+            clone.setDocumentTypeId(new Long(getDocumentTypePolicyId().getDocumentTypeId().longValue()));
         }
-        if(policyName != null){
-            clone.setPolicyName(new String(policyName));
+        if(getDocumentTypePolicyId().getPolicyName() != null){
+            clone.setPolicyName(new String(getDocumentTypePolicyId().getPolicyName()));
         }
 
         if(policyValue != null){
@@ -176,8 +182,8 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
     @Override
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
-        m.put("documentTypeId", this.documentTypeId);
-        m.put("policyName", this.policyName);
+        m.put("documentTypeId", this.getDocumentTypePolicyId().getDocumentTypeId());
+        m.put("policyName", this.getDocumentTypePolicyId().getPolicyName());
         m.put("policyValue", this.policyValue);
         m.put("policyStringValue", this.policyStringValue);
         return m;

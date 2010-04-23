@@ -13,6 +13,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
+
+<%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
+
 <%@ attribute name="url" required="true" %> 
 <%@ attribute name="title" required="true" %> 
 <%@ attribute name="displayTitle" required="false" %> 

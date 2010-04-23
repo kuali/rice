@@ -387,9 +387,8 @@ public class Criteria {
 	
 	/*
 	 * Fixes the search pattern by converting all non-escaped lookup wildcards ("*" and "?") into their
-	 * respective JPQL wildcards ("%" and "_"). Any lookup wildcards escaped by a backslash are ignored.
-	 * TODO: Should backslashed lookup wildcards be converted to their non-backslashed equivalents
-	 * once all other non-backslashed ones have been converted to JPQL wildcards?
+	 * respective JPQL wildcards ("%" and "_"). Any lookup wildcards escaped by a backslash are converted
+	 * into their non-backslashed equivalents.
 	 */
 	private String fixSearchPattern(String value) {
 		StringBuilder fixedPattern = new StringBuilder(value);
@@ -409,8 +408,8 @@ public class Criteria {
 					fixedPattern.setCharAt(wildcardIndex, jpqlWildcard);
 					wildcardIndex = fixedPattern.indexOf(lookupWildcard, wildcardIndex);
 				} else {
-					//fixedPattern.replace(escapedWildcardIndex, wildcardIndex + 1, lookupWildcard);
-					wildcardIndex = fixedPattern.indexOf(lookupWildcard, wildcardIndex + 1);
+					fixedPattern.replace(escapedWildcardIndex, wildcardIndex + 1, lookupWildcard);
+					wildcardIndex = fixedPattern.indexOf(lookupWildcard, wildcardIndex);
 					escapedWildcardIndex = fixedPattern.indexOf(escapedLookupWildcard, wildcardIndex);
 				}
 			}

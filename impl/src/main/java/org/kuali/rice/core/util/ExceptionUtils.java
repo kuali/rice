@@ -45,4 +45,18 @@ public abstract class ExceptionUtils {
 		return throwable;
 	}
 	
+	/**
+	 * Searches the causes of the given Throwable to see if the given Throwable Class is among them;
+	 * if so, returns that Exception, otherwise returns null
+	 * 
+	 * @param throwable the Throwable to search for causes in
+	 * @param soughtCause the Throwable Class to search for in the cause stack
+	 * @return the Throwable which is an instance of the sought for Throwable Class, or null if it could not be found
+	 */
+	public static Throwable searchForCause(Throwable throwable, Class<? extends Throwable> soughtCause) {
+		if (throwable.getClass().equals(soughtCause)) return throwable;
+		if (throwable.getCause() == null) return null;
+		return searchForCause(throwable.getCause(), soughtCause);
+	}
+	
 }

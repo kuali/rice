@@ -121,7 +121,7 @@
         <idref local="enActionRequestDAO" />
         <idref local="enActionTakenDAO" />
         <idref local="enBranchDAO" />
-        <idref local="enDocumentLinkDAO" />
+        <!--<idref local="enDocumentLinkDAO" />-->
         <idref local="enDocumentRouteHeaderDAO" />
         <idref local="enDocumentTypeDAO" />
         <idref local="enEDocLiteDAO" />

@@ -23,6 +23,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import org.kuali.rice.core.config.xsd.Param;
@@ -267,7 +268,13 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                 } else if (p.isOverride() || !rawProperties.containsKey(name)) {
 
                     if (p.isRandom()) {
-                        this.setProperty(p.getName(), String.valueOf(generateRandomInteger(p.getValue())));
+                    
+                    	String randStr = String.valueOf(generateRandomInteger(p.getValue()));
+                        this.setProperty(p.getName(), randStr); 
+                    	if(LOG.isInfoEnabled())
+                    	{	
+                    		LOG.info("generating random string " + randStr + " for property " + p.getName());
+                    	}
                     } else if (p.isSystem()) {
                         // resolve and set system params immediately so they can override
                         // existing system params. Add to rawProperties resolved as well to
@@ -494,6 +501,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         // not very random huh...
         if (from == to) {
             num = from;
+            if(LOG.isInfoEnabled())
+            {
+            	LOG.info("from==to, so not generating random value for property.");
+            }
         } else {
             num = from + RANDOM.nextInt((to - from) + 1);
         }

@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.kuali.rice</groupId>
         <artifactId>rice</artifactId>
-        <version>1.0.x-KC-SNAPSHOT</version>
+        <version>1.0.x-KC-M3</version>
     </parent>
     <artifactId>rice-kim</artifactId>
 
@@ -45,7 +45,7 @@
         <dependency>
             <groupId>org.kuali.rice</groupId>
             <artifactId>rice-impl</artifactId>
-            <version>1.0.x-KC-SNAPSHOT</version>
+            <version>1.0.x-KC-M3</version>
         </dependency>
 	</dependencies>
 </project>

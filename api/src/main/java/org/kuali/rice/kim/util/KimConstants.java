@@ -40,6 +40,12 @@ public class KimConstants {
 	public static final String KIM_PERSON_SERVICE = "personService";
 	public static final String DEFAULT_KIM_TYPE_SERVICE = "kimTypeService";
 
+	//Kim Attribute Boolean representations
+	public static final String KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE_DISPLAY = "Yes";
+	public static final String KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY = "No";
+	public static final String KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE = "Y";
+	public static final String KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE = "N";
+	
 	public class EntityTypes {
 		public static final String PERSON = "PERSON";
 		public static final String SYSTEM = "SYSTEM";

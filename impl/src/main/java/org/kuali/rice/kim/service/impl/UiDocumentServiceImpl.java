@@ -2235,10 +2235,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 	
 	protected void formatCheckboxAttributeData(KimDocumentRoleQualifier roleQualifier) {
-		if (roleQualifier.getAttrVal().equals("Y")) {
-			roleQualifier.setAttrVal("Yes");
-		} else if (roleQualifier.getAttrVal().equals("N")) {  
-			roleQualifier.setAttrVal("No");     
+		if (roleQualifier.getAttrVal().equals(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE)) {
+			roleQualifier.setAttrVal(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE_DISPLAY);
+		} else if (roleQualifier.getAttrVal().equals(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE)) {  
+			roleQualifier.setAttrVal(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY);     
 		}  
 	}
 	
@@ -2271,10 +2271,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @param roleMemberAttributeData the attribute data to format the attribute value of 
 	 */
 	protected void convertCheckboxAttributeData(RoleMemberAttributeDataImpl roleMemberAttributeData) {
-		if (roleMemberAttributeData.getAttributeValue().equalsIgnoreCase("Yes")) {
-			roleMemberAttributeData.setAttributeValue("Y");
-		} else if (roleMemberAttributeData.getAttributeValue().equalsIgnoreCase("No")) { 
-			roleMemberAttributeData.setAttributeValue("N");
+		if (roleMemberAttributeData.getAttributeValue().equalsIgnoreCase(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE_DISPLAY)) {
+			roleMemberAttributeData.setAttributeValue(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE);
+		} else if (roleMemberAttributeData.getAttributeValue().equalsIgnoreCase(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY)) { 
+			roleMemberAttributeData.setAttributeValue(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE);
 		}
 	}
 

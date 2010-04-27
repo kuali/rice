@@ -65,7 +65,6 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.bo.types.KimAttributeData;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
@@ -721,12 +720,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						if (attrDefId!=null && StringUtils.equals(attrDefId, qualifier.getKimAttributeId())) {
 				    		KimDocumentRoleQualifier docRoleQualifier = new KimDocumentRoleQualifier();
 				    		docRoleQualifier.setAttrDataId(qualifier.getAttributeDataId());
-				    		docRoleQualifier.setAttrVal(qualifier.getAttributeValue());
+				    		docRoleQualifier.setAttrVal(qualifier.getAttributeValue()); 
 				    		docRoleQualifier.setKimAttrDefnId(qualifier.getKimAttributeId());
 				    		docRoleQualifier.setKimAttribute(qualifier.getKimAttribute());
 				    		docRoleQualifier.setKimTypId(qualifier.getKimTypeId());
 				    		docRoleQualifier.setRoleMemberId(qualifier.getRoleMemberId());
-				    		docRoleQualifier.setEdit(true);
+				    		docRoleQualifier.setEdit(true);  
+				    		formatAttrValIfNecessary(docRoleQualifier);
 				    		docRoleQualifiers.add(docRoleQualifier);
 				    		qualifierFound = true;
 				    		break;
@@ -1759,6 +1759,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
 				pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
 				pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
+				formatAttrValIfNecessary(pndMemberRoleQualifier);
 				pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
 			}
 		}
@@ -2216,12 +2217,29 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @param roleMemberAttributeData a role member qualifier attribute to update
 	 */
 	protected void updateAttrValIfNecessary(RoleMemberAttributeDataImpl roleMemberAttributeData) {
-		final AttributeDefinition attributeDefinition = getKNSAttributeDefinition(roleMemberAttributeData);
+		final AttributeDefinition attributeDefinition = getKNSAttributeDefinition(roleMemberAttributeData.getKimTypeId(), roleMemberAttributeData.getKimAttributeId());
 		if (attributeDefinition != null) {
 			if (attributeDefinition.getControl() != null && attributeDefinition.getControl().isCheckbox()) {
-				formatCheckboxAttributeData(roleMemberAttributeData);
+				convertCheckboxAttributeData(roleMemberAttributeData);
 			}
 		}
+	}
+	
+	protected void formatAttrValIfNecessary(KimDocumentRoleQualifier roleQualifier) {
+		final AttributeDefinition attributeDefinition = getKNSAttributeDefinition(roleQualifier.getKimTypId(), roleQualifier.getKimAttrDefnId());
+		if (attributeDefinition != null) {
+			if (attributeDefinition.getControl() != null && attributeDefinition.getControl().isCheckbox()) {
+				formatCheckboxAttributeData(roleQualifier);
+			}
+		}
+	}
+	
+	protected void formatCheckboxAttributeData(KimDocumentRoleQualifier roleQualifier) {
+		if (roleQualifier.getAttrVal().equals("Y")) {
+			roleQualifier.setAttrVal("Yes");
+		} else if (roleQualifier.getAttrVal().equals("N")) {  
+			roleQualifier.setAttrVal("No");     
+		}  
 	}
 	
 	/**
@@ -2230,12 +2248,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @param roleMemberAttributeData a qualifier's attribute information
 	 * @return the KNS attribute used to render that qualifier, or null if the AttributeDefinition cannot be determined
 	 */
-	protected AttributeDefinition getKNSAttributeDefinition(RoleMemberAttributeDataImpl roleMemberAttributeData) {
-		final KimTypeInfo type = getKimTypeInfoService().getKimType(roleMemberAttributeData.getKimTypeId());
+	protected AttributeDefinition getKNSAttributeDefinition(String kimTypId, String attrDefnId) {
+		final KimTypeInfo type = getKimTypeInfoService().getKimType(kimTypId);
 		if (type != null) {
 			final KimTypeService typeService = (KimTypeService)KIMServiceLocator.getBean(type.getKimTypeServiceName());
 			if (typeService != null) {
-				final KimTypeAttributeInfo attributeInfo = type.getAttributeDefinition(roleMemberAttributeData.getKimAttributeId());
+				final KimTypeAttributeInfo attributeInfo = type.getAttributeDefinition(attrDefnId);
 				if (attributeInfo != null) {
 					final AttributeDefinitionMap attributeMap = typeService.getAttributeDefinitions(type.getKimTypeId());
 					if (attributeMap != null) {
@@ -2250,12 +2268,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	/**
 	 * Formats the attribute value on this checkbox attribute, changing "on" to "Y" and "off" to "N"
 	 * 
-	 * @param roleMemberAttributeData the attribute data to format the attribute value of
+	 * @param roleMemberAttributeData the attribute data to format the attribute value of 
 	 */
-	protected void formatCheckboxAttributeData(RoleMemberAttributeDataImpl roleMemberAttributeData) {
-		if (roleMemberAttributeData.getAttributeValue().equals("on")) {
+	protected void convertCheckboxAttributeData(RoleMemberAttributeDataImpl roleMemberAttributeData) {
+		if (roleMemberAttributeData.getAttributeValue().equalsIgnoreCase("Yes")) {
 			roleMemberAttributeData.setAttributeValue("Y");
-		} else if (roleMemberAttributeData.getAttributeValue().equals("off")) {
+		} else if (roleMemberAttributeData.getAttributeValue().equalsIgnoreCase("No")) { 
 			roleMemberAttributeData.setAttributeValue("N");
 		}
 	}

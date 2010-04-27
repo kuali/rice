@@ -84,7 +84,10 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
                 for (int i = 0; i < checkboxesToReset.length; i++) {
                     String propertyName = (String) checkboxesToReset[i];
                     if ( !StringUtils.isBlank(propertyName) && parameterMap.get(propertyName) == null ) {
-                    	populateForProperty(propertyName, "off", parameterMap);
+                    	populateForProperty(propertyName, "No", parameterMap);
+                    }  
+                    else if ( !StringUtils.isBlank(propertyName) && parameterMap.get(propertyName) != null && parameterMap.get(propertyName).length >= 1 && parameterMap.get(propertyName)[0].equalsIgnoreCase("on") ) {
+                    	populateForProperty(propertyName, "Yes", parameterMap); 
                     }
                 }
             }

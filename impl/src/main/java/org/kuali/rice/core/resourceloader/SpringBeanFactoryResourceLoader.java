@@ -62,7 +62,7 @@ public class SpringBeanFactoryResourceLoader extends BaseResourceLoader implemen
 
 	/**
 	 * Resolves the given QName service name to a String representation which is used
-	 * to lookup the service in Spring.  Default implementation simply calls getLocalPart()
+	 * to lookup the service in Spring.  Default implementation simply calls toString()
 	 * on the QName.
 	 */
 	protected String resolveServiceName(QName serviceName) {

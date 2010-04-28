@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.kuali.rice</groupId>
 		<artifactId>rice</artifactId>
-		<version>1.0.x-KC-M4</version>
+		<version>1.0.x-KC-SNAPSHOT</version>
 	</parent>
 	<artifactId>rice-api</artifactId>
 

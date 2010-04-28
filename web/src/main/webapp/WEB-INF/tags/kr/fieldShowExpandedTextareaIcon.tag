@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ attribute name="isReadOnly" reIquired="true"
+<%@ attribute name="isReadOnly" required="true"
               description="Is the view for this field readOnly?" %>
 <%@ attribute name="field" required="true" type="org.kuali.rice.kns.web.ui.Field"
               description="The field for which to show the lookup icon." %>

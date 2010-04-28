@@ -64,6 +64,12 @@ delete from krew_rte_brch_t
 /
 delete from krew_doc_hdr_t
 /
+delete from krew_doc_typ_app_doc_stat_t
+/
+delete from krew_app_doc_stat_tran_t
+/
+delete from krew_doc_lnk_t
+/
 
 -- Document Type Tables - delete all except the current version
 

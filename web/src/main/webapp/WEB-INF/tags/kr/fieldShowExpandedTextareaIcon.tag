@@ -1,5 +1,5 @@
 <%--
- Copyright 2007 The Kuali Foundation
+ Copyright 2007-2010 The Kuali Foundation
  
  Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ attribute name="isReadOnly" required="true"
+<%@ attribute name="isReadOnly" reIquired="true"
               description="Is the view for this field readOnly?" %>
 <%@ attribute name="field" required="true" type="org.kuali.rice.kns.web.ui.Field"
               description="The field for which to show the lookup icon." %>

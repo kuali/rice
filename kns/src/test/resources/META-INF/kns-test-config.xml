@@ -11,11 +11,13 @@
      -->
     <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
 
-	<param name="serviceServletUrl">http://localhost:9916/${app.context.name}/remoting/</param>
+	<param name="kns.test.port" random="true">30000-34999</param>
+
+	<param name="serviceServletUrl">http://localhost:${kns.test.port}/${app.context.name}/remoting/</param>
 	<param name="transaction.timeout">3600</param>
 	
 	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
 	<param name="config.location">${alt.config.location}</param>
 	
-	<param name="kns.test.port">9916</param>
+	
 </config>

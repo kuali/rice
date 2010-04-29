@@ -4,21 +4,21 @@ it may have errors
 
 Pre-request:
 
-install groovy-1.7.0, set GROOVY_HOME to the installed dir(example: /java/tools/groovy/groovy-1.7.0)
+install groovy-1.7.0, set GROOVY_HOME to the installed directory(example: /java/tools/groovy/groovy-1.7.0)
 
 List of modules:
 
-ojb2jpa.groovy, this is the main script, with all setups(the same as the old script) and global resource locator. 
+ojb2jpa.groovy, this is the main script, contains all configurations and global resource handles. 
 
 jpa_makeup.groovy, major help script, for cleaning up existing annotations before generating BOs and adding @transient after generating BOs  
 
-AnnoationHandler.groovy, major script with annotation function, handles all annotation details.
+AnnoationHandler.groovy, major script with annotation functions, handles all annotation details.
 
 ConversionUtils.groovy, utility functions for conversion. 
 
-MetaDataHandler.groovy, is the function to load OJB meta data into memory
+MetaDataHandler.groovy, contains functions for loading OJB meta data into memory
 
-CustomerTypeHanlder.groovy, handles annotation of all type converters  
+CustomerTypeHanlder.groovy, contains functions for handling annotations of all customer type converters  
 
 MySQLHandler.groovy, handles mySQL sequence and ORM file(optional) 
 
@@ -36,7 +36,7 @@ help script: jpa_makeup.groovy(for clean existing annotations and add @TRANSIENT
   
     usage: groovy -cp ./scripts/jpaconversion ./scripts/jpaconversion/jpa_makeup.groovy [CLEAN | TRANSIENT]
     
-If you want to run it in a batch, the order is:
+If you want to run it in a batch, the order should be:
 
 groovy -cp ./scripts/jpaconversion ./scripts/jpaconversion/jpa_makeup.groovy CLEAN
 groovy -cp ./scripts/jpaconversion ./scripts/jpaconversion/ojb2jpa.groovy
@@ -53,7 +53,7 @@ The scripts perform the following tasks:
 - generates orm.xml files for mysql sequence annotation overrides 
 - clean up existing annotations from BOs
 
-Note: The generated files have not been verified to be correct.
+Note: The generated files have not been verified to be 100% correct.
 They are intended to provide a head start in converting from OJB to JPA
 
 /*** Properties Local to your local environment ***
@@ -62,12 +62,12 @@ They are intended to provide a head start in converting from OJB to JPA
  /**********************************************************************************************/
  /*1,  run option properties , changing these props will decide what tasks to perform          */
   /**********************************************************************************************/
-persistenceXml = false,     /*true means the script with create persistence.xml file*/  
-mysql = false               /*true means the script will generate MySQL sql scripts for creating sequence generation tables*/
+getXML_MYSQL_PerApp = false,     /*true means the script will genreate persistence.xml, MySQL sequence script and orm file per application*/  
+getXML_MYSQL_PerModule = false   /*true means the script will generate persistence.xml, MySQL sequence script and orm file per module, under the name module_persistence.xml, etc.*/
 pkClasses = false           /*true means the script will generate composite primary key class source files */
-createBOs = true            /*true means the script will generates the JPA annotated BO POJO source files*/
+createBOs = false            /*true means the script will generates the JPA annotated BO POJO source files*/
 scanForConfigFiles = false  /*true means the script will search the resource repository for the OJB config files*/
-                            /*false means you will provide the path of the OJB config file(s) */ 
+                            /*false means you will provide the path of the OJB config file(s) in the file path properties section*/ 
 clean = false               /*true means the script will clean up the backup files 
 dry = false                 /*true means performing a dry run, output to the console, do not actually create the files. */
 verbose = false             /*true means printing debugging message to console*/  
@@ -90,12 +90,11 @@ def sourceDirectories = [
 		'/impl/src/main/java/'
 		]
 		
-metaInf = 'META-INF/'                            /*resourceDir + metaInf is the output dir for*/ 
-                                                 /*persistence.xml and orm.xml*/
+metaInf = 'META-INF/'          /*resourceDir + metaInf is the output dir for persistence.xml, mysql sequence script and orm.xml*/
                                                  
-persistenceXmlFilename = 'persistence.xml'	
-mysqlScriptFile = '/scripts/upgrades/mysqlSequenceFix.sql'
-mysqlOrmFile = 'project-orm.xml'
+persistenceXmlFilename = 'persistence.xml'	               /*persistence.xml file name at application level*/
+mysqlScriptFile = 'mysqlSequenceFix.sql'                   /*mySQL sequence table script file name at application level*/
+mysqlOrmFile = 'orm.xml'                                   /*mySQL sequence orm.xml file name at application level*/
 
 /**********************************************************************************************/
 /* other misc. config properties
@@ -103,21 +102,40 @@ mysqlOrmFile = 'project-orm.xml'
 def persistenceUnitName = "rice"                     /*persistence unit name*/
 def schemaName = "RICE110DEV"                        /*the schema name of rice or client database*/
 def backupExtension = ".backup"                      /*backup file ext*/
-def logger = new Logger("errors.log")                /*define log file, it contains important information about
-                                                       which class you need to convert manually */
+def logger = JPAConversionHandlers.bo_log            /*define default log, pointing jpa_bo.log defined in JPAConversionHandlers*/
+
+
+/**********************************************************************************************/
+/* JPAConversionHandlers
+/**********************************************************************************************/
+This is a global resource locator, pointing to other scripts to complete conversion tasks.
+It also config some logs for logging some important information in the process:
+1,  jpa_bo.log: log important information about mapped super class, customer Type, bi-directional relationships, 
+			    java.sql.date/timestampe conversion found in the process 
+2,  jpa_error.log: log errors and exceptions caught in the process
+3,  jpa_cpk.log: same info as jpa_bo.log but is captured in cpk genreation. 
+4,  jpa_info.log: not really being used now(holding some duplicated info) 
+
 
 /*************  Dependencies *********************/
 NOTE:  For the generated code with JPA2.0 features(such as CASCADETYPE.REFRESH) and dependencies on rice-1.1.x(such as composite 
 primary key id classes need CompositePrimaryKeyBase from 1.1 ), you will need update the class path before making them compiled.
 
-/************* newly supported features **********/ 
-1, modify auto-xxx and proxy translation according to KULRICE-3882
-2, handle generated sequence using sequence
+/************* newly added major features **********/ 
+0, have generated Composite Primary Key classes extend CompositePrimaryKeyBase which implements the equals() and hashCode() methods.
+1, modify auto-xxx and proxy translation into JPA CascadeType annotation according to KULRICE-3882
+2, handle generated sequence using sequence generator
 3, join column referencing with multi columns 
 4, add constructor with parameters for CPK class
-5,  
+5, Log OneToOne, OneToMany and ManyToOne bidirectional relationships 
+6, Log possible mapped super classes and AttributeOverrides
+7, change all java.sql.Date/TimeStamp classes to java.util.Date, and annotated as @Temporal(TemporalType.TIMESTAMP)
+8, import customer Types to cpk classes 
+9, annotate the id fields inside CPK class, but keep annotation of the same fields in the entity class
+10, add support to @orderBy
+11, add a script jpa_makeup to clean existing annotations before annotation, and add @Transient after annotation 
+12, converted and handled all customer types
 
-
-
+There should be more, need to find them and document.
 
 

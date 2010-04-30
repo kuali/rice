@@ -16,5 +16,6 @@
     <param name="config.location">${rice.base}../../conf/rice-config.xml</param>
     <param name="config.location">${additional.config.locations}</param>
     <param name="config.location">classpath:META-INF/common-config-defaults.xml</param>
+	<param name="config.location">classpath:META-INF/common-config-locations.xml</param>
 
 </config>

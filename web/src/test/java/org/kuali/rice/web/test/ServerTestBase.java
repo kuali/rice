@@ -18,6 +18,7 @@ package org.kuali.rice.web.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.spring.ConfigFactoryBean;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
@@ -91,10 +92,20 @@ public class ServerTestBase extends RiceInternalSuiteDataTestCase {
 			public void start() throws Exception {
 				System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
                 ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
+                
+                // We want to be able to run multiple tests at the same time. In order to do this we need to create
+                // an initial random port, and use that port during the jetty.start().  Normally this
+                // config var would be created again when you start a new jetty life cycle. in order to 
+                // prevent this we set the current port as a system var and then use that with override=false
+                // in the config file.  We later remove the system var.
+                String currentPort = ConfigContext.getCurrentContextConfig().getProperty("kns.test.port");
+                System.getProperties().put("web.test.port", currentPort);
+                
                 new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
                 new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
                 System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);
 				super.start();
+				System.getProperties().remove("web.test.port");
 			}
 		};
 	}

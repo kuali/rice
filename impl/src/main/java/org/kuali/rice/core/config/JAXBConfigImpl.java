@@ -282,7 +282,15 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                     parseConfig(configLocation, unmarshaller, depth + 1);
                 } else if (p.isOverride() || !rawProperties.containsKey(name)) {
 
-                    if (p.isRandom()) {
+                	if(p.isRandom() && p.isSystem()){
+                		String randStr = String.valueOf(generateRandomInteger(p.getValue()));
+                		System.setProperty(name, randStr);
+                        this.setProperty(p.getName(), randStr); 
+                    	if(LOG.isInfoEnabled())
+                    	{	
+                    		LOG.info("generating random string " + randStr + " for system property " + p.getName());
+                    	}                		                		
+                	} else if (p.isRandom()) {
                     
                     	String randStr = String.valueOf(generateRandomInteger(p.getValue()));
                         this.setProperty(p.getName(), randStr); 

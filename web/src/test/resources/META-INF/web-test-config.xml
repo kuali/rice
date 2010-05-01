@@ -17,7 +17,7 @@
 	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
 	<param name="config.location">${alt.config.location}</param>
 	
-	<param name="web.test.port" random="true" override="false">20000-29999</param>
+	<param name="web.test.port" random="true" override="false" system="true">20000-29999</param>
 	<param name="http.port">${web.test.port}</param>
 	<param name="kns.test.port">${web.test.port}</param>
 </config>

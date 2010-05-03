@@ -276,21 +276,35 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             for (Param p : config.getParamList()) {
 
                 String name = p.getName();
-
+                                
                 if (name.equals(IMPORT_NAME)) {
                     String configLocation = parseValue(p.getValue(), new HashSet<String>());
                     parseConfig(configLocation, unmarshaller, depth + 1);
-                } else if (p.isOverride() || !rawProperties.containsKey(name)) {
+                } else if(p.isSystem()){
+                	if (p.isOverride() || !(System.getProperty(name) != null)){
+                		if(p.isRandom()){
+                			String randStr = String.valueOf(generateRandomInteger(p.getValue()));
+                			System.setProperty(name, randStr);
+                            this.setProperty(p.getName(), randStr); 
+                        	if(LOG.isInfoEnabled())
+                        	{	
+                        		LOG.info("generating random string " + randStr + " for system property " + p.getName());
+                        	}    
+                		}else{
+                			// resolve and set system params immediately so they can override
+                            // existing system params. Add to rawProperties resolved as well to
+                            // prevent possible mismatch
+                            HashSet<String> set = new HashSet<String>();
+                            set.add(p.getName());
+                            String value = parseValue(p.getValue(), set);
+                            System.setProperty(name, value);
+                            this.setProperty(name, value);
+                		}
+                	}
+                }
+                else if (p.isOverride() || !rawProperties.containsKey(name)) {
 
-                	if(p.isRandom() && p.isSystem()){
-                		String randStr = String.valueOf(generateRandomInteger(p.getValue()));
-                		System.setProperty(name, randStr);
-                        this.setProperty(p.getName(), randStr); 
-                    	if(LOG.isInfoEnabled())
-                    	{	
-                    		LOG.info("generating random string " + randStr + " for system property " + p.getName());
-                    	}                		                		
-                	} else if (p.isRandom()) {
+                	if (p.isRandom()) {
                     
                     	String randStr = String.valueOf(generateRandomInteger(p.getValue()));
                         this.setProperty(p.getName(), randStr); 
@@ -298,15 +312,6 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                     	{	
                     		LOG.info("generating random string " + randStr + " for property " + p.getName());
                     	}
-                    } else if (p.isSystem()) {
-                        // resolve and set system params immediately so they can override
-                        // existing system params. Add to rawProperties resolved as well to
-                        // prevent possible mismatch
-                        HashSet<String> set = new HashSet<String>();
-                        set.add(p.getName());
-                        String value = parseValue(p.getValue(), set);
-                        System.setProperty(name, value);
-                        this.setProperty(name, value);
                     } else {
                     	
                     	/*

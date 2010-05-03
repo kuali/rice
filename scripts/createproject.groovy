@@ -30,13 +30,16 @@ for (arg in args) {
 
 PROJECT_PATH = PROJECT_DIR + '/' + PROJECT_NAME
 
+//get rice version from rice projects pom file
+def pom=new XmlSlurper().parse(new File("${RICE_DIR}/pom.xml"))
+riceVersion = pom.version.text()
+
 TEMPLATE_BINDING = [
 	"\${PROJECT_NAME}":"$PROJECT_NAME",
-	"\${RICE_VERSION}":"1.0.2-SNAPSHOT",
+	"\${RICE_VERSION}":riceVersion,
 	"\${USER_HOME}":System.getProperty('user.home'),
 	"\${bootstrap.spring.file}":"SpringBeans.xml"
 ] 
-
 println warningtext()
 
 input = new BufferedReader(new InputStreamReader(System.in))

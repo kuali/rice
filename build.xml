@@ -562,7 +562,7 @@ in order to package the various Rice datasets.
 			addproperty="project.new.version"/>
 		<echo>Re-versioning POM files and groovy scripts to version '${project.new.version}'</echo>
 		<replaceregexp match="\b${maven.project.version}\b" replace="${project.new.version}" byline="true" flags="g">
-			<fileset dir="." includes="**/pom.xml, **/*.groovy"/>
+			<fileset dir="." includes="**/pom.xml"/>
 		</replaceregexp>
 	</target>
 	

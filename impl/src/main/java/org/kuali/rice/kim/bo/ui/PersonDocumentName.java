@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -32,7 +31,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.reference.EntityNameType;
 import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -47,7 +45,7 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 
 	@Id
 	@GeneratedValue(generator="KRIM_ENTITY_NM_ID_S")
-	@GenericGenerator(name="KRIM_ENTITY_NM_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+	@GenericGenerator(name="KRIM_ENTITY_NM_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ENTITY_NM_ID_S"),
 			@Parameter(name="value_column",value="id")
 		})

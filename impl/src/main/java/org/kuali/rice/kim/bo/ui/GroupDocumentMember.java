@@ -42,7 +42,7 @@ public class GroupDocumentMember extends KimDocumentBoBase {
 
 	@Id
 	@GeneratedValue(generator="KRIM_PND_GRP_MBR_T")
-	@GenericGenerator(name="KRIM_PND_GRP_MBR_T",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+	@GenericGenerator(name="KRIM_PND_GRP_MBR_T",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_PND_GRP_MBR_T"),
 			@Parameter(name="value_column",value="id")
 		})

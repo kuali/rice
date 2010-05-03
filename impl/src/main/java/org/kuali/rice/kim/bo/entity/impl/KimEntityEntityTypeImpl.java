@@ -38,7 +38,6 @@ import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.reference.EntityType;
 import org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl;
-import org.kuali.rice.kns.util.TypedArrayList;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -69,7 +68,7 @@ public class KimEntityEntityTypeImpl extends KimInactivatableEntityDataBase impl
 	    @JoinColumn(name="ENTITY_ID", insertable = false, updatable = false), 
 	    @JoinColumn(name="ENT_TYP_CD", insertable = false, updatable = false)
 	})
-	protected List<KimEntityEmail> emailAddresses = new TypedArrayList(KimEntityEmailImpl.class);
+	protected List<KimEntityEmail> emailAddresses;// = new TypedArrayList(KimEntityEmailImpl.class);
 	
 	@OneToMany(targetEntity = KimEntityPhoneImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
@@ -77,7 +76,7 @@ public class KimEntityEntityTypeImpl extends KimInactivatableEntityDataBase impl
 	    @JoinColumn(name="ENTITY_ID", insertable = false, updatable = false), 
 	    @JoinColumn(name="ENT_TYP_CD", insertable = false, updatable = false)
 	})
-	protected List<KimEntityPhone> phoneNumbers = new TypedArrayList(KimEntityPhoneImpl.class);
+	protected List<KimEntityPhone> phoneNumbers;// = new TypedArrayList(KimEntityPhoneImpl.class);
 	
 	@OneToMany(targetEntity = KimEntityAddressImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
@@ -85,7 +84,7 @@ public class KimEntityEntityTypeImpl extends KimInactivatableEntityDataBase impl
 	    @JoinColumn(name="ENTITY_ID", insertable = false, updatable = false), 
 	    @JoinColumn(name="ENT_TYP_CD", insertable = false, updatable = false)
 	})
-	protected List<KimEntityAddress> addresses = new TypedArrayList(KimEntityAddressImpl.class);
+	protected List<KimEntityAddress> addresses;// = new TypedArrayList(KimEntityAddressImpl.class);
 	
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEntityType#getAddresses()

@@ -82,7 +82,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     // principal data
     
     @GeneratedValue(generator="KRIM_PRNCPL_ID_S")
-	@GenericGenerator(name="KRIM_PRNCPL_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+	@GenericGenerator(name="KRIM_PRNCPL_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_PRNCPL_ID_S"),
 			@Parameter(name="value_column",value="id")
 		})
@@ -91,7 +91,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     @Column(name="prncpl_nm")
     protected String principalName;
     @GeneratedValue(generator="KRIM_ENTITY_ID_S")
-	@GenericGenerator(name="KRIM_ENTITY_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+	@GenericGenerator(name="KRIM_ENTITY_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ENTITY_ID_S"),
 			@Parameter(name="value_column",value="id")
 		})

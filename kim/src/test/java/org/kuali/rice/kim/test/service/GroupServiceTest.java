@@ -85,7 +85,8 @@ public class GroupServiceTest extends KIMTestCase {
 		GroupInfo g4Info = getGroupService().getGroupInfo("g4");
 		g4Info.setActive(true);
 		getGroupUpdateService().updateGroup("g4", g4Info);
-
+		g4Info = getGroupService().getGroupInfo("g4");
+		
 		assertTrue( "p4 should be reported as a member of g2 (now that g4 is active)", getGroupService().isMemberOfGroup("p4", "g2") );
 	}
 

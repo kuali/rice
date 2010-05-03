@@ -41,6 +41,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityPrivacyPreferencesInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
@@ -291,11 +292,13 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	}
 
 	public KimEntityImpl getEntityImpl(String entityId) {
-		Map<String,String> criteria = new HashMap<String,String>(1);
-        criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
-        KimEntityImpl entityImpl = (KimEntityImpl)getBusinessObjectService().findByPrimaryKey(KimEntityImpl.class, criteria);
-        if(entityImpl!=null)
-        	entityImpl.refresh();
+		KimEntityImpl entityImpl = (KimEntityImpl)getBusinessObjectService().findBySinglePrimaryKey(KimEntityImpl.class, entityId);
+        //TODO - remove this hack... This is here because currently jpa only seems to be going 2 levels deep on the eager fetching.
+		if(entityImpl!=null  && entityImpl.getEntityTypes() != null) {
+        	for (KimEntityEntityTypeImpl et : entityImpl.getEntityTypes()) {
+        		et.refresh();
+        	}
+        }
         return entityImpl;
 	}
 	

@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Date;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
@@ -45,7 +44,7 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 	private static final long serialVersionUID = -1551337026170706411L;
 	@Id
 	@GeneratedValue(generator="KRIM_GRP_MBR_ID_S")
-	@GenericGenerator(name="KRIM_GRP_MBR_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+	@GenericGenerator(name="KRIM_GRP_MBR_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_GRP_MBR_ID_S"),
 			@Parameter(name="value_column",value="id")
 		})

@@ -65,7 +65,6 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.bo.types.KimAttributeData;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
@@ -155,6 +154,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		} else {
 			// TODO : in order to resolve optimistic locking issue. has to get entity and set the version number if entity records matched
 			// Need to look into this.
+			//kimEntity = origEntity;
 			kimEntity.setActive(origEntity.isActive());
 			kimEntity.setVersionNumber(origEntity.getVersionNumber());
 			creatingNew = false;
@@ -200,11 +200,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			if(ObjectUtils.isNotNull(origEntity.getEntityTypes()))
 				kimEntity.setEntityTypes(origEntity.getEntityTypes());
 		}
-		if(creatingNew || canOverrideEntityPrivacyPreferences(getInitiatorPrincipalId(identityManagementPersonDocument), identityManagementPersonDocument.getPrincipalId()))
+		if(creatingNew || canOverrideEntityPrivacyPreferences(getInitiatorPrincipalId(identityManagementPersonDocument), identityManagementPersonDocument.getPrincipalId())) {
 			setupPrivacy(identityManagementPersonDocument, kimEntity, origEntity.getPrivacyPreferences());
-		else{
-			if(ObjectUtils.isNotNull(origEntity.getPrivacyPreferences()))
+		} else {
+			if(ObjectUtils.isNotNull(origEntity.getPrivacyPreferences())) {
+			//	copyPrivacy(identityManagementPersonDocument, kimEntity, origEntity.getPrivacyPreferences());
 				kimEntity.setPrivacyPreferences(origEntity.getPrivacyPreferences());
+			}
 		}
 		List <GroupMemberImpl>  groupPrincipals = populateGroupMembers(identityManagementPersonDocument);
 		List <RoleMemberImpl>  rolePrincipals = populateRoleMembers(identityManagementPersonDocument);
@@ -213,8 +215,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		List <RoleResponsibilityActionImpl> roleRspActions = populateRoleRspActions(identityManagementPersonDocument);
 		List <RoleMemberAttributeDataImpl> blankRoleMemberAttrs = getBlankRoleMemberAttrs(rolePrincipals);
 		bos.add(kimEntity);
-		if(ObjectUtils.isNotNull(kimEntity.getPrivacyPreferences()))
-			bos.add(kimEntity.getPrivacyPreferences());
+		//if(ObjectUtils.isNotNull(kimEntity.getPrivacyPreferences()))
+		//	bos.add(kimEntity.getPrivacyPreferences());
 		bos.addAll(groupPrincipals);
 		bos.addAll(rolePrincipals);
 		bos.addAll(roleRspActions);
@@ -633,12 +635,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 	
 	private KimEntityImpl getEntityImpl(String entityId) {
-		Map<String,String> criteria = new HashMap<String,String>(1);
-        criteria.put(KIMPropertyConstants.Entity.ENTITY_ID, entityId);
-        KimEntityImpl entityImpl = (KimEntityImpl)getBusinessObjectService().findByPrimaryKey(KimEntityImpl.class, criteria);
-        if(entityImpl!=null)
-        	entityImpl.refresh();
-        return entityImpl;
+		KimEntityImpl entityImpl = (KimEntityImpl)getBusinessObjectService().findBySinglePrimaryKey(KimEntityImpl.class, entityId);
+        //TODO - remove this hack... This is here because currently jpa only seems to be going 2 levels deep on the eager fetching.
+		if(entityImpl!=null  && entityImpl.getEntityTypes() != null) {
+        	for (KimEntityEntityTypeImpl et : entityImpl.getEntityTypes()) {
+        		et.refresh();
+        	}
+        }
+		return entityImpl;
 	}
 	
     @SuppressWarnings("unchecked")
@@ -860,6 +864,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		principal.setPrincipalName(identityManagementPersonDocument.getPrincipalName());
 		principal.setPassword(identityManagementPersonDocument.getPassword());
 		principal.setActive(identityManagementPersonDocument.isActive());
+		principal.setEntityId(identityManagementPersonDocument.getEntityId());
 		if(ObjectUtils.isNotNull(origPrincipals)){
 			for (KimPrincipalImpl prncpl : origPrincipals) {
 				if (prncpl.getPrincipalId()!=null && StringUtils.equals(prncpl.getPrincipalId(), principal.getPrincipalId())) {
@@ -909,6 +914,22 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			privacyPreferences.setVersionNumber(origPrivacy.getVersionNumber());
 		}
 		kimEntity.setPrivacyPreferences(privacyPreferences);
+	}
+    
+    protected void copyPrivacy(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, KimEntityPrivacyPreferencesImpl origPrivacy) {
+		if (ObjectUtils.isNull(origPrivacy)) {
+			setupPrivacy(identityManagementPersonDocument, kimEntity, origPrivacy);
+		} else {
+	    	KimEntityPrivacyPreferencesImpl privacyPreferences = new KimEntityPrivacyPreferencesImpl();
+			privacyPreferences.setEntityId(identityManagementPersonDocument.getEntityId());
+			privacyPreferences.setSuppressAddress(origPrivacy.isSuppressAddress());
+			privacyPreferences.setSuppressEmail(origPrivacy.isSuppressEmail());
+			privacyPreferences.setSuppressName(origPrivacy.isSuppressName());
+			privacyPreferences.setSuppressPhone(origPrivacy.isSuppressPhone());
+			privacyPreferences.setSuppressPersonal(origPrivacy.isSuppressPersonal());
+			privacyPreferences.setVersionNumber(origPrivacy.getVersionNumber());
+			kimEntity.setPrivacyPreferences(privacyPreferences);
+		}
 	}
     protected PersonDocumentPrivacy loadPrivacyReferences(KimEntityPrivacyPreferencesImpl privacyPreferences) {
 		PersonDocumentPrivacy docPrivacy = new PersonDocumentPrivacy();
@@ -1213,6 +1234,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		return docAddresses;
 	}
+
 
     protected List <GroupMemberImpl> populateGroupMembers(IdentityManagementPersonDocument identityManagementPersonDocument) {
 		List <GroupMemberImpl>  groupPrincipals = new ArrayList<GroupMemberImpl>();

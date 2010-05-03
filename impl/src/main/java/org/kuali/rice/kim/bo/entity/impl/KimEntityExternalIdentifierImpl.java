@@ -54,11 +54,11 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	//@GeneratedValue(generator="KRIM_ENTITY_EXT_ID_ID_S")
-	//@GenericGenerator(name="KRIM_ENTITY_EXT_ID_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-	//		@Parameter(name="sequence_name",value="KRIM_ENTITY_EXT_ID_ID_S"),
-	//		@Parameter(name="value_column",value="id")
-	//	})
+	@GeneratedValue(generator="KRIM_ENTITY_EXT_ID_ID_S")
+	@GenericGenerator(name="KRIM_ENTITY_EXT_ID_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ENTITY_EXT_ID_ID_S"),
+			@Parameter(name="value_column",value="id")
+		})
 	@Column(name = "ENTITY_EXT_ID_ID")
 	protected String entityExternalIdentifierId;
 
@@ -77,6 +77,9 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 
 	@Transient protected ExternalIdentifierType cachedExtIdType = null;	
 	@Transient protected boolean encryptionRequired = false;
+	@Transient
+	private boolean decryptionNeeded = false;
+
 
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getEntityExternalIdentifierId()
@@ -89,6 +92,9 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier#getExternalId()
 	 */
 	public String getExternalId() {
+		if (this.decryptionNeeded) {
+			return decryptedExternalId();
+		}
 		return externalId;
 	}
 
@@ -104,6 +110,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	 */
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
+		this.decryptionNeeded = false;
 	}
 
 	/**
@@ -176,13 +183,30 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	@PreUpdate
 	public void beforeUpdate() {
 		super.beforeUpdate();
-		encryptExternalId();
+		if (!this.decryptionNeeded) {
+			encryptExternalId();
+		}
 	}
 	
-	@PostLoad 
+	@PostLoad
 	public void afterLookup(){
-		decryptExternalId();
+		this.decryptionNeeded = true;
+		//decryptExternalId();
 	}
+	
+	//@Override
+	//@PostPersist
+	//public void afterInsert() {
+	//	super.afterInsert();
+	//	decryptExternalId();
+	//}
+	
+	//@Override
+	//@PostUpdate
+	//public void afterUpdate() {
+	//	super.afterUpdate();
+	//	decryptExternalId();
+	//}
 	
 	protected void evaluateExternalIdentifierType() {
 		if ( cachedExtIdType == null ) {
@@ -195,9 +219,10 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	
 	protected void encryptExternalId() {
 		evaluateExternalIdentifierType();
-		if ( encryptionRequired && StringUtils.isNotEmpty(externalId) ) {
+		if ( encryptionRequired && StringUtils.isNotEmpty(this.externalId) ) {
 			try {
-				externalId = KNSServiceLocator.getEncryptionService().encrypt(externalId);
+				this.externalId = KNSServiceLocator.getEncryptionService().encrypt(this.externalId);
+				this.decryptionNeeded = true;
 			}
 			catch ( Exception e ) {
 				LOG.info("Unable to encrypt value : " + e.getMessage() + " or it is already encrypted");
@@ -209,11 +234,24 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 		evaluateExternalIdentifierType();
 		if ( encryptionRequired && StringUtils.isNotEmpty(externalId) ) {
 			try {
-				externalId = KNSServiceLocator.getEncryptionService().decrypt(externalId);
+				this.externalId = KNSServiceLocator.getEncryptionService().decrypt(this.externalId);
 			}
 			catch ( Exception e ) {
 				LOG.info("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");
 	        }
 		}
+    }	
+	
+	protected String decryptedExternalId() {
+		evaluateExternalIdentifierType();
+		if ( encryptionRequired && StringUtils.isNotEmpty(externalId) ) {
+			try {
+				return KNSServiceLocator.getEncryptionService().decrypt(this.externalId);
+			}
+			catch ( Exception e ) {
+				LOG.info("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");
+	        }
+		}
+		return "";
     }	
 }

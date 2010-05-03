@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.bo.entity.impl;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.MappedSuperclass;
 
@@ -42,6 +43,21 @@ public abstract class KimEntityDataBase extends PersistableBusinessObjectBase {
 		// if no default, return the first
 		if ( list.size() > 0 ) {
 			return list.get( 0 );
+		}
+		// if neither, return null
+		return null;		
+	}
+	
+	protected DefaultableInactivateable getDefaultItem( Set<? extends DefaultableInactivateable> set ) {
+		// find the default entry
+		for ( DefaultableInactivateable item : set ) {
+			if ( item.isDefaultValue() && item.isActive() ) {
+				return item;
+			}
+		}
+		// if no default, return the first
+		if ( set.size() > 0 ) {
+			return set.iterator().next();
 		}
 		// if neither, return null
 		return null;		

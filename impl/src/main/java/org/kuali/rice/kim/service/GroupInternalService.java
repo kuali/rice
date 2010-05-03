@@ -34,7 +34,7 @@ public interface GroupInternalService {
 	 * 
 	 * @param group
 	 */
-    public void saveWorkgroup(GroupImpl group);
+    public GroupImpl saveWorkgroup(GroupImpl group);
 	
     /**
      * Updates KEW for workgroup members according to membership differences between the

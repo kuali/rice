@@ -82,7 +82,28 @@ public class RiceToNervousSystemBusinessObjectClassExposer implements Persistabl
 	    exposedClasses.add(org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl.class.getName());
 	    exposedClasses.add(org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl.class.getName());
 	    exposedClasses.add(org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl.class.getName());
-		return exposedClasses;
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.PersonDocumentName.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.PersonDocumentAddress.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.PersonDocumentEmail.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.PersonDocumentPhone.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.PersonDocumentRole.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.KimDocumentRoleMember.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibilityAction.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.PersonDocumentGroup.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.document.IdentityManagementRoleDocument.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.KimDocumentRolePermission.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.RoleDocumentDelegation.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.document.IdentityManagementGroupDocument.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.GroupDocumentMember.class.getName());
+	    exposedClasses.add(org.kuali.rice.kim.bo.ui.GroupDocumentQualifier.class.getName()); 
+	    return exposedClasses;
 	}
 
 }

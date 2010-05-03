@@ -51,12 +51,13 @@ public class GroupInternalServiceImpl implements GroupInternalService {
     	return KIMServiceLocator.getGroupService();
     }
 
-    public void saveWorkgroup(GroupImpl group) {
+    public GroupImpl saveWorkgroup(GroupImpl group) {
     	GroupService ims = getGroupService();
     	List<String> oldIds = ims.getMemberPrincipalIds(group.getGroupId());
         group = (GroupImpl)getBusinessObjectService().save( group );
         List<String> newIds = ims.getMemberPrincipalIds(group.getGroupId());
         updateForWorkgroupChange(group.getGroupId(), oldIds, newIds);
+        return group;
     }
 
     public void updateForWorkgroupChange(String groupId,

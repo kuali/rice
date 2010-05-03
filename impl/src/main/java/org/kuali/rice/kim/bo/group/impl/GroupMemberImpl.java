@@ -38,6 +38,11 @@ import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 public class GroupMemberImpl extends KimAbstractMemberImpl {
 
 	@Id
+	@GeneratedValue(generator="KRIM_GRP_MBR_ID_S")
+	@GenericGenerator(name="KRIM_GRP_MBR_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_GRP_MBR_ID_S"),
+			@Parameter(name="value_column",value="id")
+		})	
 	@Column(name="GRP_MBR_ID")
 	protected String groupMemberId;
 		

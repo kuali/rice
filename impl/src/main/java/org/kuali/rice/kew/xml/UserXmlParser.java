@@ -30,7 +30,7 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
+import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
@@ -130,10 +130,33 @@ public class UserXmlParser implements XmlConstants {
 		entity.setEmploymentInformation(emplInfos);
 		
 		KimEntityEntityTypeImpl entityType = new KimEntityEntityTypeImpl();
-		entity.getEntityTypes().add(entityType);
+		//entity.getEntityTypes().add(entityType);
 		entityType.setEntityTypeCode(entityTypeCode);
 		entityType.setEntityId(entity.getEntityId());
 		entityType.setActive(true);
+		entityType.setVersionNumber(new Long(1));
+		String emailAddress = userElement.getChildTextTrim(EMAIL_ELEMENT, NAMESPACE);
+		if (!StringUtils.isBlank(emailAddress)) {
+			Long emailId = sas.getNextAvailableSequenceNumber(
+					"KRIM_ENTITY_EMAIL_ID_S", KimEntityEmailImpl.class);
+			KimEntityEmailImpl email = new KimEntityEmailImpl();
+			email.setActive(true);
+			email.setEntityEmailId("" + emailId);
+			email.setEntityTypeCode(entityTypeCode);
+			// must be in krim_email_typ_t.email_typ_cd:
+			email.setEmailTypeCode("WRK");
+			email.setVersionNumber(new Long(1));
+			email.setEmailAddress(emailAddress);
+			email.setDefaultValue(true);
+			email.setEntityId(entity.getEntityId());
+			List<KimEntityEmail> emailAddresses = new ArrayList<KimEntityEmail>(1);
+			emailAddresses.add(email);
+			entityType.setEmailAddresses(emailAddresses);
+			//email = (KimEntityEmailImpl)KNSServiceLocator.getBusinessObjectService().save(email);
+		}
+		List<KimEntityEntityTypeImpl> entityTypes = new ArrayList<KimEntityEntityTypeImpl>(1);
+		entityTypes.add(entityType);
+		entity.setEntityTypes(entityTypes);
 		
 		if (!StringUtils.isBlank(firstName) || !StringUtils.isBlank(lastName)) {
 			Long entityNameId = sas.getNextAvailableSequenceNumber(
@@ -153,22 +176,6 @@ public class UserXmlParser implements XmlConstants {
 		}
 
 		entity = (KimEntityImpl)KNSServiceLocator.getBusinessObjectService().save(entity);
-		
-		String emailAddress = userElement.getChildTextTrim(EMAIL_ELEMENT, NAMESPACE);
-		if (!StringUtils.isBlank(emailAddress)) {
-			Long emailId = sas.getNextAvailableSequenceNumber(
-					"KRIM_ENTITY_EMAIL_ID_S", KimEntityEmailImpl.class);
-			KimEntityEmailImpl email = new KimEntityEmailImpl();
-			email.setActive(true);
-			email.setEntityEmailId("" + emailId);
-			email.setEntityTypeCode("PERSON");
-			// must be in krim_email_typ_t.email_typ_cd:
-			email.setEmailTypeCode("WRK");
-			email.setEmailAddress(emailAddress);
-			email.setDefaultValue(true);
-			email.setEntityId(entity.getEntityId());
-			email = (KimEntityEmailImpl)KNSServiceLocator.getBusinessObjectService().save(email);
-		}
 		
 		return entity;
     }

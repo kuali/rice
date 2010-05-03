@@ -71,7 +71,7 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
 
-	@OneToMany(targetEntity=RoleMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@OneToMany(targetEntity=RoleMemberImpl.class,cascade={CascadeType.MERGE, CascadeType.REFRESH},fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
 	protected List<RoleMemberImpl> members = new TypedArrayList(RoleMemberImpl.class);

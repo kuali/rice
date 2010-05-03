@@ -41,7 +41,7 @@ public class KimEntityVisaImpl extends KimEntityDataBase implements KimEntityVis
 
 	@Id
 	@GeneratedValue(generator="KRIM_ENTITY_VISA_ID_S")
-	@GenericGenerator(name="KRIM_ENTITY_VISA_ID_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+	@GenericGenerator(name="KRIM_ENTITY_VISA_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ENTITY_VISA_ID_S"),
 			@Parameter(name="value_column",value="id")
 		})

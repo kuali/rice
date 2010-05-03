@@ -68,9 +68,9 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	@Column(name="ACTV_IND")
 	protected boolean active;
 
-	@OneToMany(targetEntity=ResponsibilityAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@OneToMany(targetEntity=ResponsibilityAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="responsibilityId")
 	@Fetch(value = FetchMode.SELECT)
-	@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
+	//@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
 	protected List<ResponsibilityAttributeDataImpl> detailObjects = new TypedArrayList(ResponsibilityAttributeDataImpl.class);
 	
 	@Column(name="RSP_TMPL_ID")
@@ -79,9 +79,9 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
     @JoinColumn(name="RSP_TMPL_ID", insertable=false, updatable=false)
 	protected KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
 	
-	@OneToMany(targetEntity=RoleResponsibilityImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@OneToMany(targetEntity=RoleResponsibilityImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="responsibilityId")
 	@Fetch(value = FetchMode.SELECT)
-	@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
+	//@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
 	protected List<RoleResponsibilityImpl> roleResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 	
 	/**

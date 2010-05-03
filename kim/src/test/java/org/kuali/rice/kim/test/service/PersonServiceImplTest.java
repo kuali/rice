@@ -58,6 +58,14 @@ public class PersonServiceImplTest extends KIMTestCase {
 		super.setUp();
 		personService = (PersonServiceImpl)GlobalResourceLoader.getService(new QName("personService"));
 		
+	}
+
+	/**
+	 * Test method for {@link org.kuali.rice.kim.service.impl.PersonServiceImpl#getPersonByExternalIdentifier(java.lang.String, java.lang.String)}.
+	 */
+	@Test
+	public void testGetPersonByExternalIdentifier() {
+		//insert external identifier
 		KimPrincipal principal = KIMServiceLocator.getIdentityService().getPrincipal("p1");
 		
 		SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
@@ -69,13 +77,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		externalIdentifier.setExternalId("000-00-0000");
 		externalIdentifier.setExternalIdentifierTypeCode("SSN");
 		KNSServiceLocator.getBusinessObjectService().save(externalIdentifier);
-	}
-
-	/**
-	 * Test method for {@link org.kuali.rice.kim.service.impl.PersonServiceImpl#getPersonByExternalIdentifier(java.lang.String, java.lang.String)}.
-	 */
-	@Test
-	public void testGetPersonByExternalIdentifier() {
+		
 		List<PersonImpl> people = personService.getPersonByExternalIdentifier( "SSN", "000-00-0000" );
 		assertNotNull( "result object must not be null", people );
 		assertEquals( "exactly one record should be returned", 1, people.size() );

@@ -190,7 +190,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         getBusinessObjectService().deleteMatching(GroupAttributeDataImpl.class, criteria);
 
 
-        saveGroup(group);
+        group = saveGroup(group);
         getIdentityManagementNotificationService().groupUpdated();
 
         //create new group attributes
@@ -202,12 +202,12 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         return getGroupInfo(groupInfo.getGroupId());
     }
 
-	protected void saveGroup(GroupImpl group) {
+	protected GroupImpl saveGroup(GroupImpl group) {
 		if ( group == null ) {
-			return;
+			return null;
 		}
 
-		KIMServiceLocator.getGroupInternalService().saveWorkgroup(group);
+		return KIMServiceLocator.getGroupInternalService().saveWorkgroup(group);
 	}
 
 	protected void saveGroupAttributes(List<GroupAttributeDataImpl> groupAttributes) {

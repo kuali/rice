@@ -38,7 +38,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
  */
 public class SearchableAttributeProcessor implements SearchableAttributeProcessingService {
 
-	private static Logger LOG = Logger.getLogger(SearchableAttribute.class);
+	private static Logger LOG = Logger.getLogger(SearchableAttributeProcessor.class);
 
 	public void indexDocument(Long documentId) {
 		indexDocument(documentId, true);

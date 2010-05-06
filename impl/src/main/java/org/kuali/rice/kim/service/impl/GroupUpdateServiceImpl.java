@@ -57,11 +57,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
             throw new IllegalArgumentException("Circular group reference.");
         }
 
-        sequenceAccessorService = getSequenceAccessorService();
-        Long groupMemberId = sequenceAccessorService.getNextAvailableSequenceNumber(
-				"KRIM_GRP_MBR_ID_S", KimEntityAffiliationImpl.class);
         GroupMemberImpl groupMember = new GroupMemberImpl();
-        groupMember.setGroupMemberId(groupMemberId.toString());
         groupMember.setGroupId(parentId);
         groupMember.setMemberTypeCode( KimGroupMemberTypes.GROUP_MEMBER_TYPE );
         groupMember.setMemberId(childId);
@@ -79,11 +75,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
     	if (isMemberOfGroup(principalId, groupId)) {
     		return true;
     	}
-    	sequenceAccessorService = getSequenceAccessorService();
-    	Long groupMemberId = sequenceAccessorService.getNextAvailableSequenceNumber(
-				"KRIM_GRP_MBR_ID_S", KimEntityAffiliationImpl.class);
         GroupMemberImpl groupMember = new GroupMemberImpl();
-        groupMember.setGroupMemberId(groupMemberId.toString());
         groupMember.setGroupId(groupId);
         groupMember.setMemberTypeCode( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE );
         groupMember.setMemberId(principalId);
@@ -96,13 +88,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
     }
 
     public GroupInfo createGroup(GroupInfo groupInfo) {
-    	if (groupInfo.getGroupId() == null) {
-    		sequenceAccessorService = getSequenceAccessorService();
-    		Long groupId = sequenceAccessorService.getNextAvailableSequenceNumber(
-				"KRIM_GRP_ID_S", KimEntityAffiliationImpl.class);
-    		groupInfo.setGroupId(groupId.toString());
-    	}
-        GroupImpl group = new GroupImpl();
+    	GroupImpl group = new GroupImpl();
 
         copyInfoToGroup(groupInfo, group);
 
@@ -213,6 +199,13 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 	protected void saveGroupAttributes(List<GroupAttributeDataImpl> groupAttributes) {
         if ( groupAttributes == null ) {
             return;
+        }
+        SequenceAccessorService sas = getSequenceAccessorService();
+        for (GroupAttributeDataImpl groupAttribute : groupAttributes) {
+        	if (groupAttribute.getAttributeDataId() == null) {
+        		groupAttribute.setAttributeDataId(sas.getNextAvailableSequenceNumber(
+        				"KRIM_GRP_ATTR_DATA_ID_S", KimEntityAffiliationImpl.class).toString());
+        	}
         }
         getBusinessObjectService().save( groupAttributes );
     }

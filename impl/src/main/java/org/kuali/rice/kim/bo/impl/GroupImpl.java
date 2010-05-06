@@ -23,6 +23,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -33,6 +34,8 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -59,6 +62,11 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@GeneratedValue(generator="KRIM_GRP_ID_S")
+	@GenericGenerator(name="KRIM_GRP_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_GRP_ID_S"),
+			@Parameter(name="value_column",value="id")
+		})	
 	@Column(name="GRP_ID")
 	protected String groupId;
 	@Column(name="GRP_NM")

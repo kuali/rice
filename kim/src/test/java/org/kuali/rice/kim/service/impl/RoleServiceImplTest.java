@@ -421,7 +421,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 			roleUpdateService.assignGroupToRole("g8", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
 			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
-			groupRoleMemberId = assertRoleMemberUpdateSucceeded("g8", getStoredRoleGroupsForGroupIdsAndRoleIds(oneRoleId, oneGroupId, attributeSet), true);
+			groupRoleMemberId = assertRoleMemberUpdateSucceeded("g8", getStoredRoleGroupsForGroupIdsAndRoleIds(oneRoleId, oneGroupId, null), true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.assignRoleToRole("r6", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
@@ -441,7 +441,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 			roleUpdateService.removeGroupFromRole("g8", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
 			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
-			assertRoleMemberUpdateSucceeded("g8", getStoredRoleGroupsForGroupIdsAndRoleIds(oneRoleId, oneGroupId, attributeSet), false);
+			assertRoleMemberUpdateSucceeded("g8", getStoredRoleGroupsForGroupIdsAndRoleIds(oneRoleId, oneGroupId, null), false);
 			assertRoleMemberHasExpectedExistence(groupRoleMemberId, false);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
@@ -462,7 +462,7 @@ public class RoleServiceImplTest extends KIMTestCase {
 			roleUpdateService.saveRoleMemberForRole(null, "g8", "G", "r3", attributeSet, null, null);
 			assertCorrectObjectsWereClearedFromCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds, false);
 			getBusinessObjectService().findBySinglePrimaryKey(RoleImpl.class, "r3").refreshReferenceObject("members");
-			groupRoleMemberId = assertRoleMemberUpdateSucceeded("g8", getStoredRoleGroupsForGroupIdsAndRoleIds(oneRoleId, oneGroupId, attributeSet), true);
+			groupRoleMemberId = assertRoleMemberUpdateSucceeded("g8", getStoredRoleGroupsForGroupIdsAndRoleIds(oneRoleId, oneGroupId, null), true);
 			
 			assertAndPopulateCache(roleIds, roleMemberIds, delegationIds, delegationMemberIds);
 			roleUpdateService.saveRoleMemberForRole(null, "r6", "R", "r3", attributeSet, null, null);

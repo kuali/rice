@@ -916,7 +916,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	// check member roles
     	// first, check that the qualifiers on the role membership match
     	// then, perform a principalHasRole on the embedded role
-    	List<RoleMemberImpl> rrs = getStoredRoleMembersForRoleIds( roleIds, Role.ROLE_MEMBER_TYPE, qualification );
+    	List<RoleMemberImpl> rrs = getStoredRoleMembersForRoleIds( roleIds, Role.ROLE_MEMBER_TYPE, null );
     	for ( RoleMemberImpl rr : rrs ) {
     		KimRoleTypeService roleTypeService = getRoleTypeService( rr.getRoleId() );
     		if ( roleTypeService != null ) {

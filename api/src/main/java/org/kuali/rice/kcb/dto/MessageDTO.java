@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kcb.dto;
 
+import java.io.Serializable;
+
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 
@@ -23,7 +25,9 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MessageDTO {
+public class MessageDTO implements Serializable {
+	private static final long serialVersionUID = 1L;
+	
     private String deliveryType;
     private String title;
     private String channel;

@@ -17,7 +17,7 @@
     <param name="datasource.pool.maxWait" override="false">30000</param>
     
     
-    <param name="datasource.ojb.platform" override="false">Oracle</param>
+    <param name="datasource.ojb.platform" override="false">Oracle9i</param>
     
     <param name="datasource.driver.name.Oracle" override="false">oracle.jdbc.driver.OracleDriver</param>
     <param name="datasource.platform.Oracle" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>

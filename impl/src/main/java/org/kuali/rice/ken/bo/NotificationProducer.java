@@ -60,7 +60,7 @@ public class NotificationProducer extends PersistableBusinessObjectBase{
 	private String contactInfo;
     
     // List references
-    @ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})@JoinTable(name="KREN_CHANNEL_PRODUCERS", 
+    @ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})@JoinTable(name="KREN_CHNL_PRODCR_T", 
 	           joinColumns=@JoinColumn(name="PRODCR_ID"), 
 	           inverseJoinColumns=@JoinColumn(name="CHNL_ID"))
 	@OrderBy("id ASC")

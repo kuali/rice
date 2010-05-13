@@ -15,14 +15,21 @@
  */
 package org.kuali.rice.ken.bo;
 
+import java.util.LinkedHashMap;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This class represents the data structure that will house a default recipient list for a notification channel.
@@ -30,8 +37,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="KREN_RECIP_LIST_T")
-public class NotificationRecipientList {
+public class NotificationRecipientList extends PersistableBusinessObjectBase{
     @Id
+    @GeneratedValue(generator="KREN_RECIP_LIST_S")
+	@GenericGenerator(name="KREN_RECIP_LIST_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREN_RECIP_LIST_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RECIP_LIST_ID")
 	private Long id;
     @Column(name="RECIP_TYP_CD", nullable=false)
@@ -39,8 +51,8 @@ public class NotificationRecipientList {
     @Column(name="RECIP_ID", nullable=false)
 	private String recipientId;
     
-    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
-	@JoinColumn(name="CHNL_ID")
+    @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.MERGE})
+	@JoinColumn(name="CHNL_ID", insertable=false, updatable=false)
 	private NotificationChannel channel;
     
     /**
@@ -113,5 +125,18 @@ public class NotificationRecipientList {
     public void setRecipientType(String recipientType) {
         this.recipientType = recipientType;
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@Override
+	protected LinkedHashMap toStringMapper() {
+        LinkedHashMap m = new LinkedHashMap();
+        m.put("id", getId());
+
+        return m;
+	}
 }
 

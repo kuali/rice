@@ -18,7 +18,8 @@ package org.kuali.rice.ken.services.impl;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.apache.ojb.broker.query.Criteria;
+//import org.apache.ojb.broker.query.Criteria;
+import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.junit.Test;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
@@ -92,10 +93,13 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends KENTestC
         	Executors.newFixedThreadPool(5), services.getUserPreferenceService());
     }
 
+    //this is the one need to tweek on Criteria
     protected void assertProcessResults() {
         // one error should have occurred and the delivery should have been marked unlocked again
-        Criteria criteria = new Criteria();
-        criteria.addNotNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+//        Criteria criteria = new Criteria();
+//        criteria.addNotNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+    	Criteria criteria = new Criteria(Notification.class.getName());
+    	criteria.notNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
         Collection<NotificationMessageDelivery> lockedDeliveries = services.getGenericDao().findMatching(Notification.class, criteria);
         assertEquals(0, lockedDeliveries.size());
 

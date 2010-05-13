@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.ken.bo;
 
+import java.util.LinkedHashMap;
+
+import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
@@ -25,6 +28,9 @@ import javax.persistence.Table;
 import javax.persistence.Entity;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * A reviewer for a notification publications to a NotificationChannel
@@ -32,11 +38,16 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 @Table(name="KREN_RVWER_T")
-public class NotificationChannelReviewer {
+public class NotificationChannelReviewer extends PersistableBusinessObjectBase{
     @Id
+    @GeneratedValue(generator="KREN_RVWER_S")
+	@GenericGenerator(name="KREN_RVWER_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREN_RVWER_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="RVWER_ID")
 	private Long id;
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH })
 	@JoinColumn(name="CHNL_ID")
 	private NotificationChannel channel;
     @Column(name="TYP", nullable=false)
@@ -117,4 +128,17 @@ public class NotificationChannelReviewer {
                                         .append("channel", channel != null ? channel.getId() : null)
                                         .append("reviewerId", reviewerId).toString();
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@Override
+	protected LinkedHashMap toStringMapper() {
+        LinkedHashMap m = new LinkedHashMap();
+        m.put("id", getId());
+
+        return m;
+	}
 }

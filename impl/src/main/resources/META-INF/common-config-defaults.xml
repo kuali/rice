@@ -246,6 +246,7 @@
 	<!-- End KIM-specific JPA parameters -->
 
 	<param name="enable.nonproduction.data.unmasking" override="false">false</param>
+
     <!-- KEN -->
 
 	<param name="ken.url" override="false">${application.url}/ken</param>
@@ -265,5 +266,12 @@
     <param name="kcb.maxProcessAttempts" override="false">3</param>
     <param name="kcb.messaging.synchronous" override="false">false</param>
     <param name="kcb.smtp.host" override="false">${mail.smtp.host}</param>
+    
+    <!-- KEN-specific JPA parameters --> 
+   	<param name="rice.ken.jpa.enabled" override="false">true</param>
+	<param name="rice.ken.jpa.PersistenceXmlLocation" override="false">META-INF/ken-persistence.xml</param>
+	<param name="rice.ken.jpa.PersistenceUnitName" override="false">ken-unit</param>
+	<param name="rice.ken.jpa.GenerateDdl" override="false">true</param>
+	<!-- End KEN-specific JPA parameters -->
 
 </config>

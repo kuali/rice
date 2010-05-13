@@ -15,14 +15,21 @@
  */
 package org.kuali.rice.ken.bo;
 
+import java.util.LinkedHashMap;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This class represents the data structure that will house information about the non-system 
@@ -31,8 +38,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="KREN_SNDR_T")
-public class NotificationSender {
+public class NotificationSender extends PersistableBusinessObjectBase{
     @Id
+    @GeneratedValue(generator="KREN_SNDR_S")
+	@GenericGenerator(name="KREN_SNDR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREN_SNDR_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="SNDR_ID")
 	private Long id;
     @Column(name="NTFCTN_ID", nullable=false)
@@ -98,4 +110,17 @@ public class NotificationSender {
     public void setSenderName(String userId) {
         this.senderName = userId;
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@Override
+	protected LinkedHashMap toStringMapper() {
+        LinkedHashMap m = new LinkedHashMap();
+        m.put("id", getId());
+
+        return m;
+	}
 }

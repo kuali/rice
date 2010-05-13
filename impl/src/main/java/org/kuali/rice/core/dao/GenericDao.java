@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.ojb.broker.query.Criteria;
+//import org.apache.ojb.broker.query.Criteria;
 
 /**
  * This is the generic data access interface for business objects. 
@@ -141,7 +141,8 @@ public interface GenericDao {
      * @param criteria
      * @return Collection
      */
-    public Collection findMatching(Class clazz, Criteria criteria);
+//open this to revert to OJB
+    public Collection findMatching(Class clazz, org.apache.ojb.broker.query.Criteria criteria);
 
     /**
      * This method allows for a more flexible search by allowing the programmer to 
@@ -152,7 +153,8 @@ public interface GenericDao {
      * @param wait millis to wait for select for update
      * @return Collection
      */
-    public Collection findMatching(Class clazz, Criteria criteria, boolean selectForUpdate, long wait);
+  //open this to revert to OJB
+    public Collection findMatching(Class clazz, org.apache.ojb.broker.query.Criteria criteria, boolean selectForUpdate, long wait);
 
     /**
      * @param clazz
@@ -213,4 +215,25 @@ public interface GenericDao {
      * @param fieldValues
      */
     public void deleteMatching(Class clazz, Map fieldValues);
+    
+    /**
+     * This method allows for a more flexible search by allowing the programmer to 
+     * construct the criteria however they need to and then pass that in for execution.
+     * @param clazz
+     * @param criteria
+     * @return Collection
+     */
+    public Collection findMatching(Class clazz, org.kuali.rice.core.jpa.criteria.Criteria criteria);
+
+    /**
+     * This method allows for a more flexible search by allowing the programmer to 
+     * construct the criteria however they need to and then pass that in for execution.
+     * @param clazz
+     * @param criteria
+     * @param selectForUpdate whether to perform a select for update query
+     * @param wait millis to wait for select for update
+     * @return Collection
+     */
+    public Collection findMatching(Class clazz, org.kuali.rice.core.jpa.criteria.Criteria criteria, boolean selectForUpdate, long wait);
+
 }

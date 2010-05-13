@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.ken.bo;
 
+import java.util.LinkedHashMap;
+
+import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
@@ -24,6 +27,10 @@ import javax.persistence.CascadeType;
 import javax.persistence.Table;
 import javax.persistence.Entity;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
 /**
  * This class represents an instance of a user's subscription to a specific 
  * notification channel.
@@ -31,14 +38,19 @@ import javax.persistence.Entity;
  */
 @Entity
 @Table(name="KREN_CHNL_SUBSCRP_T")
-public class UserChannelSubscription {
+public class UserChannelSubscription extends PersistableBusinessObjectBase{
     @Id
+    @GeneratedValue(generator="KREN_CHNL_SUBSCRP_S")
+	@GenericGenerator(name="KREN_CHNL_SUBSCRP_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREN_CHNL_SUBSCRP_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="CHNL_SUBSCRP_ID")
 	private Long id;
     @Column(name="PRNCPL_ID", nullable=false)
 	private String userId;
     
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(name="CHNL_ID")
 	private NotificationChannel channel;
     
@@ -95,5 +107,18 @@ public class UserChannelSubscription {
     public void setUserId(String userId) {
 	this.userId = userId;
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@Override
+	protected LinkedHashMap toStringMapper() {
+        LinkedHashMap m = new LinkedHashMap();
+        m.put("id", getId());
+
+        return m;
+	}
 }
 

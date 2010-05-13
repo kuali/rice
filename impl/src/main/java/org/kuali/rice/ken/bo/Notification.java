@@ -17,6 +17,7 @@ package org.kuali.rice.ken.bo;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -24,6 +25,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -31,10 +33,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
+import javax.persistence.OrderBy;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.ken.util.NotificationConstants;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This class represents an instace of a notification message that is received by the overall 
@@ -43,8 +49,14 @@ import org.kuali.rice.ken.util.NotificationConstants;
  */
 @Entity
 @Table(name="KREN_NTFCTN_T")
-public class Notification implements Lockable {
+public class Notification extends PersistableBusinessObjectBase implements Lockable {
+   
     @Id
+    @GeneratedValue(generator="KREN_NTFCTN_S")
+	@GenericGenerator(name="KREN_NTFCTN_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREN_NTFCTN_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="NTFCTN_ID")
 	private Long id;
     @Column(name="DELIV_TYP", nullable=false)
@@ -68,31 +80,33 @@ public class Notification implements Lockable {
     /**
      * Lock column for OJB optimistic locking
      */
-    @Version
-	@Column(name="VER_NBR")
-	private Integer lockVerNbr;
+//    @Version
+//	@Column(name="VER_NBR")
+//	private Integer lockVerNbr;
     
     // object references
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name="PRIO_ID")
 	private NotificationPriority priority;
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name="CNTNT_TYP_ID")
 	private NotificationContentType contentType;
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name="CHNL_ID")
 	private NotificationChannel channel;
-    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST})
+    @OneToOne(fetch=FetchType.EAGER, cascade={CascadeType.REFRESH, CascadeType.DETACH})
 	@JoinColumn(name="PRODCR_ID")
 	private NotificationProducer producer;
     
     // lists
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+    @OneToMany(cascade={CascadeType.ALL},
            targetEntity=org.kuali.rice.ken.bo.NotificationRecipient.class, mappedBy="notification")
+    @OrderBy("id ASC")
 	private List<NotificationRecipient> recipients;
-    @OneToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE, CascadeType.MERGE},
+    @OneToMany(cascade={CascadeType.ALL},
            targetEntity=org.kuali.rice.ken.bo.NotificationSender.class, mappedBy="notification")
-	private List<NotificationSender> senders;
+	@OrderBy("id ASC")
+    private List<NotificationSender> senders;
     
     /**
      * Constructs a Notification instance.
@@ -124,7 +138,8 @@ public class Notification implements Lockable {
      * @return value of lock column for OJB optimistic locking
      */
     public Integer getLockVerNbr() {
-        return lockVerNbr;
+       // return lockVerNbr;
+    	return Integer.valueOf(super.getVersionNumber().intValue());
     }
 
     /**
@@ -132,7 +147,8 @@ public class Notification implements Lockable {
      * @param lockVerNbr value of lock column for OJB optimistic locking
      */
     public void setLockVerNbr(Integer lockVerNbr) {
-        this.lockVerNbr = lockVerNbr;
+        //this.lockVerNbr = lockVerNbr;
+    	super.setVersionNumber(lockVerNbr.longValue());
     }
 
     /**
@@ -413,7 +429,8 @@ public class Notification implements Lockable {
                        .append("content", StringUtils.abbreviate(content, 100))
                        .append("processingFlag", processingFlag)
                        .append("lockedDate", lockedDate)
-                       .append("lockVerNbr", lockVerNbr)
+                       .append("lockVerNbr", super.getVersionNumber())
+                       //.append("obj_id", super.getObjectId())
                        .append("priority", priority)
                        .append("contentType", contentType)
                        .append("channel", channel)
@@ -421,4 +438,17 @@ public class Notification implements Lockable {
                        .append("recipients", recipients == null ? null : "" + recipients.size())
                        .append("senders", senders == null ? null : "" + senders.size()).toString();
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@Override
+	protected LinkedHashMap toStringMapper() {
+        LinkedHashMap m = new LinkedHashMap();
+        m.put("id", getId());
+
+        return m;
+	}
 }

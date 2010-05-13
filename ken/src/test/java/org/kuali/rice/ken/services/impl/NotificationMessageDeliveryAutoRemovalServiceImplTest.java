@@ -18,7 +18,8 @@ package org.kuali.rice.ken.services.impl;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.apache.ojb.broker.query.Criteria;
+//import org.apache.ojb.broker.query.Criteria;
+import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
@@ -38,8 +39,10 @@ public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends KENTe
     
     protected void assertProcessResults() {
         // one error should have occurred and the delivery should have been marked unlocked again
-        Criteria criteria = new Criteria();
-        criteria.addNotNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+//        Criteria criteria = new Criteria();
+//        criteria.addNotNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+        Criteria criteria = new Criteria(NotificationMessageDelivery.class.getName());
+        criteria.notNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
         Collection<NotificationMessageDelivery> lockedDeliveries = services.getGenericDao().findMatching(NotificationMessageDelivery.class, criteria);
         assertEquals(0, lockedDeliveries.size());
 

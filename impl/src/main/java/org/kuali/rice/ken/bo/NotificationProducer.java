@@ -16,6 +16,7 @@
 package org.kuali.rice.ken.bo;
 
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -24,11 +25,16 @@ import javax.persistence.Id;
 import javax.persistence.CascadeType;
 import javax.persistence.Table;
 import javax.persistence.Entity;
+import javax.persistence.OrderBy;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This class represents an instance of who can actually submit notification messages to the system 
@@ -37,8 +43,13 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  */
 @Entity
 @Table(name="KREN_PRODCR_T")
-public class NotificationProducer {
+public class NotificationProducer extends PersistableBusinessObjectBase{
     @Id
+    @GeneratedValue(generator="KREN_PRODCR_S")
+	@GenericGenerator(name="KREN_PRODCR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KREN_PRODCR_S"),
+			@Parameter(name="value_column",value="id")
+	})
 	@Column(name="PRODCR_ID")
 	private Long id;
     @Column(name="NM", nullable=false)
@@ -49,9 +60,10 @@ public class NotificationProducer {
 	private String contactInfo;
     
     // List references
-    @ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})@JoinTable(name="NOTIFICATION_CHANNEL_PRODUCERS", 
+    @ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})@JoinTable(name="KREN_CHANNEL_PRODUCERS", 
 	           joinColumns=@JoinColumn(name="PRODCR_ID"), 
 	           inverseJoinColumns=@JoinColumn(name="CHNL_ID"))
+	@OrderBy("id ASC")
 	private List<NotificationChannel> channels;
     
     /**
@@ -148,4 +160,17 @@ public class NotificationProducer {
                                         .append("contactInfo", contactInfo)
                                         .toString();
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+	 */
+	@Override
+	protected LinkedHashMap toStringMapper() {
+        LinkedHashMap m = new LinkedHashMap();
+        m.put("id", getId());
+
+        return m;
+	}
 }

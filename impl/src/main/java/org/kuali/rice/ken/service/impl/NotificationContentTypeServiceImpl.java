@@ -19,9 +19,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.ojb.broker.query.Criteria;
-import org.apache.ojb.broker.query.QueryByCriteria;
-import org.apache.ojb.broker.query.QueryFactory;
+//import org.apache.ojb.broker.query.Criteria;
+//import org.apache.ojb.broker.query.QueryByCriteria;
+//import org.apache.ojb.broker.query.QueryFactory;
+import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationContentType;
@@ -47,10 +48,15 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
     /**
      * @see org.kuali.rice.ken.service.NotificationContentTypeService#getNotificationContentType(java.lang.String)
      */
+    //this is the one need to tweek on criteria
     public NotificationContentType getNotificationContentType(String name) {
-        Criteria c = new Criteria();
-        c.addEqualTo("name", name);
-        c.addEqualTo("current", true);
+//        Criteria c = new Criteria();
+//        c.addEqualTo("name", name);
+//        c.addEqualTo("current", true);	
+    	Criteria c = new Criteria(NotificationContentType.class.getName());
+    	c.eq("name", name);
+    	c.eq("current", true);
+    	
         Collection<NotificationContentType> coll = businessObjectDao.findMatching(NotificationContentType.class, c);
         if (coll.size() == 0) {
             return null;
@@ -115,8 +121,11 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
      * @see org.kuali.rice.ken.service.NotificationContentTypeService#getAllCurrentContentTypes()
      */
     public Collection<NotificationContentType> getAllCurrentContentTypes() {
-        Criteria c = new Criteria();
-        c.addEqualTo("current", true);
+//        Criteria c = new Criteria();
+//        c.addEqualTo("current", true);
+    	Criteria c = new Criteria(NotificationContentType.class.getName());
+    	c.eq("current", true);
+   
         return businessObjectDao.findMatching(NotificationContentType.class, c);
     }
     

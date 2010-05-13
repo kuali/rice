@@ -174,12 +174,13 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
 	private AttributeSet populateQualifiersForExactMatch(AttributeSet defaultQualification, List<String> attributes) {
 		AttributeSet qualifiersForExactMatch = new AttributeSet();
-		for(String attributeName : attributes) {
-			if(StringUtils.isNotEmpty(defaultQualification.get(attributeName))) {
-				qualifiersForExactMatch.put(attributeName, defaultQualification.get(attributeName));
+		if(defaultQualification != null && CollectionUtils.isNotEmpty(defaultQualification.keySet())) {
+			for(String attributeName : attributes) {
+				if(StringUtils.isNotEmpty(defaultQualification.get(attributeName))) {
+					qualifiersForExactMatch.put(attributeName, defaultQualification.get(attributeName));
+				}
 			}
 		}
-		
 		return qualifiersForExactMatch;
 	}
 	

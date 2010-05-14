@@ -83,8 +83,8 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
     /**
      * Default constructor.
      */
-    public DataDictionaryServiceImpl() {
-        dataDictionary = new DataDictionary();
+    public DataDictionaryServiceImpl(DataDictionary dataDictionary) {
+        this.dataDictionary = dataDictionary;
     }
 
     /**

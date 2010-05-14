@@ -28,12 +28,22 @@
 <%@ attribute name="headerTabActive" required="false" description="The name of the active header tab, if header navigation is used." %>
 <%@ attribute name="feedbackKey" required="false" description="application resources key that contains feedback contact address only used when lookup attribute is false" %>
 <%@ attribute name="auditCount" required="false" description="The number of audit errors displayed on this page." %>
+<%@ attribute name="docTitle" required="false" %>
+<%@ attribute name="alternativeHelp" required="false"%>
 
 <%@ variable name-given="documentEntry" scope="NESTED" %>
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
 <c:set var="sessionDocument" value="${documentEntry.sessionDocument}" />
 <c:set var="additionalScriptFiles" value="${KualiForm.additionalScriptFiles}" />
 
+<c:choose>
+	<c:when test="${docTitle != null}">
+		<c:set var="documentTitle" value="${docTitle}" />
+	</c:when>
+	<c:otherwise>
+		<c:set var="documentTitle" value="${documentEntry.label}" />
+	</c:otherwise>
+</c:choose>
 <!--  pass documentTypeName into htmlControlAttribute -->
 <!-- Do not remove session check here. Since it used by other pages (not MD or TD) -->
 <c:if test="${KualiForm.document.sessionDocument || sessionDocument}">
@@ -49,9 +59,9 @@
 </c:if>
 <c:set var="renderRequiredFieldsLabel" value="${(KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]
 ||KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]) && (not KualiForm.suppressAllButtons)}" />
-<kul:page docTitle="${documentEntry.label}" transactionalDocument="${documentEntry.transactionalDocument}"
+<kul:page docTitle="${documentTitle}" transactionalDocument="${documentEntry.transactionalDocument}"
   headerMenuBar="${headerMenuBar}" showDocumentInfo="${showDocumentInfo}" headerTitle="${headerTitle}" 
-  htmlFormAction="${htmlFormAction}" renderMultipart="${renderMultipart}" showTabButtons="${showTabButtons}" 
+  htmlFormAction="${htmlFormAction}" alternativeHelp="${alternativeHelp}" renderMultipart="${renderMultipart}" showTabButtons="${showTabButtons}" 
   extraTopButtons="${extraTopButtons}" headerDispatch="${headerDispatch}" headerTabActive="${headerTabActive}" 
   feedbackKey="${feedbackKey}" auditCount="${auditCount}" additionalScriptFiles="${additionalScriptFiles}" renderRequiredFieldsLabel="${renderRequiredFieldsLabel}">
     <jsp:doBody/>

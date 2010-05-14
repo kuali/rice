@@ -41,7 +41,7 @@
 <%@ attribute name="maintenanceDocument" required="false" description="Boolean value of whether this page is rendering a maintenance document." %>
 <%@ attribute name="sessionDocument" required="false" description="Unused." %>
 <%@ attribute name="renderRequiredFieldsLabel" required = "false" description="Boolean value of whether to include a helpful note that the asterisk represents a required field - good for accessibility." %>
-
+<%@ attribute name="alternativeHelp" required="false"%>
 
 <%-- Is the screen an inquiry? --%>
 <c:set var="_isInquiry"
@@ -133,14 +133,17 @@
 					${headerMenuBar}
 				</div>
 		</c:if>
+		<c:choose>
+			<c:when test="${!empty alternativeHelp}">
+				<h1>${docTitle}<kul:help documentTypeName="${KualiForm.docTypeName}" alternativeHelp="${alternativeHelp}" altText="document help"/></h1>
+			</c:when>
+			<c:otherwise>
+				<c:if test="${showDocumentInfo}">
+					<h1>${docTitle}<kul:help documentTypeName="${KualiForm.docTypeName}" altText="document help"/></h1>
+				</c:if>
+			</c:otherwise>
+		</c:choose>
 
-		<c:if test="${showDocumentInfo}">
-				<h1>
-					${docTitle}
-					<kul:help documentTypeName="${KualiForm.docTypeName}"
-						altText="document help" />
-				</h1>
-		</c:if>
     </c:when>
 	<c:otherwise>
 		<c:if test="${not empty KualiForm.anchor}">
@@ -172,10 +175,16 @@
 		<div class="headerarea" id="headerarea">
 				<h1>
 					${docTitle}&nbsp;
-					<c:if test="${showDocumentInfo}">
-						<kul:help documentTypeName="${KualiForm.docTypeName}"
-							altText="document help" />
-					</c:if>
+					<c:choose>
+						<c:when test="${!empty alternativeHelp}"> 
+							<kul:help documentTypeName="${KualiForm.docTypeName}" alternativeHelp="${alternativeHelp}" altText="document help"/>
+						</c:when>
+						<c:otherwise>
+							<c:if test="${showDocumentInfo}">
+								<kul:help documentTypeName="${KualiForm.docTypeName}" altText="document help"/>
+							</c:if>
+						</c:otherwise>
+					</c:choose>
 				</h1>
 			<c:if test="${!empty defaultMethodToCall}">
 				<kul:enterKey methodToCall="${defaultMethodToCall}" />

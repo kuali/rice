@@ -18,6 +18,10 @@ package org.kuali.rice.kim.document;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -51,6 +55,9 @@ import org.kuali.rice.kns.util.TypedArrayList;
  *
  */
 @Entity
+@AttributeOverrides({
+	@AttributeOverride(name="documentNumber",column=@Column(name="FDOC_NBR"))
+})
 @Table(name="KRIM_GRP_DOCUMENT_T")
 public class IdentityManagementGroupDocument extends IdentityManagementTypeAttributeTransactionalDocument {
 	private static final Logger LOG = Logger.getLogger(IdentityManagementGroupDocument.class);
@@ -155,7 +162,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		if(getMembers()!=null){
 			String groupMemberId;
 			for(GroupDocumentMember member: getMembers()){
-				member.setGroupId(groupId);
+				member.setGroupId(getGroupId());
 				if(StringUtils.isBlank(member.getGroupMemberId())){
 					SequenceAccessorService sas = getSequenceAccessorService();
 					Long nextSeq = sas.getNextAvailableSequenceNumber(
@@ -163,7 +170,10 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 					groupMemberId = nextSeq.toString();
 					member.setGroupMemberId(groupMemberId);
 				}
-			}
+				if (StringUtils.isBlank(member.getDocumentNumber())) {
+					member.setDocumentNumber(getDocumentNumber());
+				}
+ 			}
 		}
 		int index = 0;
 		// this needs to be checked - are all qualifiers present?

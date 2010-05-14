@@ -50,7 +50,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @IdClass(KimDocumentRoleMemberId.class)
 @Entity
 @Table(name="KRIM_PND_ROLE_MBR_MT")
-public class KimDocumentRoleMember  extends KimDocumentBoBase {
+public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditableBase {
 	private static final long serialVersionUID = -2463865643038170979L;
 
 	@Id
@@ -70,9 +70,9 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	//TODO: remove the default
 	@Column(name="MBR_TYP_CD")
 	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE;
-	@Column(name="MBR_NM")
+	@Transient
 	protected String memberName;
-	@Column(name="MBR_NMSPC")
+	@Transient
 	protected String memberNamespaceCode;
 
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)

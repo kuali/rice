@@ -28,6 +28,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
@@ -46,7 +48,7 @@ import org.kuali.rice.kns.util.KualiDecimal;
 @IdClass(PersonDocumentEmploymentInfoId.class)
 @Entity
 @Table(name = "KRIM_PND_EMP_INFO_MT")
-public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
+public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditableBase {
 	@Id
 	@GeneratedValue(generator="KRIM_ENTITY_EMP_ID_S")
 	@GenericGenerator(name="KRIM_ENTITY_EMP_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
@@ -85,6 +87,7 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 	protected EmploymentType employmentType;
 
 	@ManyToOne(targetEntity=EmploymentStatusImpl.class, fetch = FetchType.EAGER, cascade = {})
+	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "EMP_STAT_CD", insertable = false, updatable = false)
 	protected EmploymentStatus employmentStatus;
 	@Transient
@@ -236,11 +239,6 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoBase {
 
 	public void setEmploymentRecordId(String employmentRecordId) {
 		this.employmentRecordId = employmentRecordId;
-	}
-
-	@Override
-	public boolean isActive(){
-		return this.active;
 	}
 
 }

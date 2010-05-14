@@ -62,11 +62,11 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(generator="KRIM_GRP_ID_S")
-	@GenericGenerator(name="KRIM_GRP_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KRIM_GRP_ID_S"),
-			@Parameter(name="value_column",value="id")
-		})	
+	//@GeneratedValue(generator="KRIM_GRP_ID_S")
+	//@GenericGenerator(name="KRIM_GRP_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
+	//		@Parameter(name="sequence_name",value="KRIM_GRP_ID_S"),
+	//		@Parameter(name="value_column",value="id")
+	//	})	
 	@Column(name="GRP_ID")
 	protected String groupId;
 	@Column(name="GRP_NM")
@@ -83,14 +83,14 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
 
-	@OneToMany(targetEntity=GroupMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@OneToMany(targetEntity=GroupMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="groupId")
 	@Fetch(value = FetchMode.SELECT)
-	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
+	//@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
 	protected List<GroupMemberImpl> members;
 
-	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="groupId")
 	@Fetch(value = FetchMode.SELECT)
-	@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
+	//@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
 	protected List<GroupAttributeDataImpl> groupAttributes = new TypedArrayList(GroupAttributeDataImpl.class);
 
 	@Transient

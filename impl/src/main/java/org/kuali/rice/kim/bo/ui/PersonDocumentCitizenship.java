@@ -37,7 +37,7 @@ import org.hibernate.annotations.Parameter;
 @IdClass(PersonDocumentCitizenshipId.class)
 @Entity
 @Table(name = "KRIM_PND_CTZNSHP_MT")
-public class PersonDocumentCitizenship extends KimDocumentBoBase {
+public class PersonDocumentCitizenship extends KimDocumentBoActivatableEditableBase {
 	@Id
 	@GeneratedValue(generator="KRIM_ENTITY_CTZNSHP_ID_S")
 	@GenericGenerator(name="KRIM_ENTITY_CTZNSHP_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={

@@ -38,7 +38,7 @@ import org.kuali.rice.kim.util.KimConstants;
 @IdClass(GroupDocumentMemberId.class)
 @Entity
 @Table(name="KRIM_PND_GRP_MBR_T")
-public class GroupDocumentMember extends KimDocumentBoBase {
+public class GroupDocumentMember extends KimDocumentBoActiveToFromBase {
 
 	@Id
 	@GeneratedValue(generator="KRIM_PND_GRP_MBR_T")

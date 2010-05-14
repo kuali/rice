@@ -31,7 +31,7 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name = "KRIM_PND_PRIV_PREF_MT")
-public class PersonDocumentPrivacy extends KimDocumentBoBase {
+public class PersonDocumentPrivacy extends KimDocumentBoEditableBase {
 	
 	@Type(type="yes_no")
 	@Column(name="SUPPRESS_NM_IND")

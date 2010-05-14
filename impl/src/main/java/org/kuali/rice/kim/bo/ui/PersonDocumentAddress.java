@@ -26,6 +26,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -55,7 +56,8 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 	@Column(name = "ADDR_TYP_CD")
 	protected String addressTypeCode;
 
-	@Column(name = "ENT_TYP_CD")
+	//@Column(name = "ENT_TYP_CD")
+	@Transient
 	protected String entityTypeCode;
 
 	@Column(name = "CITY_NM")
@@ -249,9 +251,5 @@ public class PersonDocumentAddress extends PersonDocumentBoDefaultBase {
 		return m;
 	}
 
-	@Override
-	public boolean isActive(){
-		return this.active;
-	}
 
 }

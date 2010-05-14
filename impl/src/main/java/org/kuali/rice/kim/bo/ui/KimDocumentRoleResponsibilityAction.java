@@ -43,7 +43,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
 @IdClass(KimDocumentRoleResponsibilityActionId.class)
 @Entity
 @Table(name="KRIM_PND_ROLE_RSP_ACTN_MT")
-public class KimDocumentRoleResponsibilityAction extends KimDocumentBoBase {
+public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBase {
 	private static final long serialVersionUID = 696663543888096105L;
 	@Id
 	@GeneratedValue(generator="KRIM_ROLE_RSP_ACTN_ID_S")

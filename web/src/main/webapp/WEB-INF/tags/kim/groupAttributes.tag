@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<c:set var="groupMemberAttributes" value="${DataDictionary.KimDocumentGroupMember.attributes}" />
+<c:set var="groupMemberAttributes" value="${DataDictionary.GroupDocumentMember.attributes}" />
 <c:set var="groupQualifierAttributes" value="${DataDictionary.GroupDocumentQualifier.attributes}" />
 <c:set var="kimAttributes" value="${DataDictionary.KimAttributeImpl.attributes}" />
 

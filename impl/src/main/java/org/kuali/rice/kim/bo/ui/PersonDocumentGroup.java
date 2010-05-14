@@ -40,7 +40,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 @IdClass(PersonDocumentGroupId.class) 
 @Entity
 @Table(name="KRIM_PND_GRP_PRNCPL_MT")
-public class PersonDocumentGroup extends KimDocumentBoBase {
+public class PersonDocumentGroup extends KimDocumentBoActivatableToFromEditableBase {
 	private static final long serialVersionUID = -1551337026170706411L;
 	@Id
 	@GeneratedValue(generator="KRIM_GRP_MBR_ID_S")
@@ -55,7 +55,7 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 		
 	@Column(name="GRP_ID")
 	protected String groupId;
-	@Column(name="GRP_NAME")
+	@Column(name="GRP_NM")
 	protected String groupName;
 	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
@@ -141,14 +141,4 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 	public void setNamespaceCode(String namespaceCode) {
 		this.namespaceCode = namespaceCode;
 	}
-
-	/**
-	 * Returns active if the current time is between the from and to dates.  Null dates are 
-	 * considered to indicate an open range.
-	 */
-	public boolean isActive() {
-		long now = System.currentTimeMillis();		
-		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
-	}
-
 }

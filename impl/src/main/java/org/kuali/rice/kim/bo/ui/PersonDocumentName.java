@@ -26,6 +26,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -52,7 +53,8 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 	@Column(name = "ENTITY_NM_ID")
 	protected String entityNameId;
 
-	@Column(name = "ENTITY_ID")
+	//@Column(name = "ENTITY_ID")
+	@Transient
 	protected String entityId;
 
 	@Column(name = "NM_TYP_CD")
@@ -194,10 +196,5 @@ public class PersonDocumentName extends PersonDocumentBoDefaultBase {
 
 	public void setEntityNameId(String entityNameId) {
 		this.entityNameId = entityNameId;
-	}
-
-	@Override
-	public boolean isActive(){
-		return this.active;
 	}
 }

@@ -90,13 +90,15 @@ public class OrmUtils {
     	// Don't want to get parent fields if overridden in children since we are walking the tree from child to parent
     	Set<String> cachedFields = new HashSet<String>(); 
     	Class attachedClass = detached.getClass();
+    	
     	do {
     		for (Field attachedField : attachedClass.getDeclaredFields()) {
     			try {
     				attachedField.setAccessible(true);
     				int mods = attachedField.getModifiers();
     				if (!cachedFields.contains(attachedField.getName()) && !Modifier.isFinal(mods) && !Modifier.isStatic(mods)) {
-    					attachedField.set(detached, attachedField.get(attached));
+    					//detached.getClass().getDeclaredField(attachedField.getName()).get(attached)
+    					attachedField.set(attached, attachedField.get(detached));
     					cachedFields.add(attachedField.getName());
     				}
     			} catch (Exception e) {

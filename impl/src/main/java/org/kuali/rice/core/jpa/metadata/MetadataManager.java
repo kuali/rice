@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
@@ -335,11 +337,22 @@ public class MetadataManager {
 				AttributeOverride override = (AttributeOverride) temp.getAnnotation(AttributeOverride.class);
 				entityDescriptor.getFieldByName(override.name()).setColumn(override.column().name());					
 			}
+			//if (temp.isAnnotationPresent(AssociationOverrides.class)) {
+			//	for (AssociationOverride override : ((AssociationOverrides)temp.getAnnotation(AssociationOverride.class)).value()) {
+			//		entityDescriptor.getFieldByName(override.name()).;
+			//	}
+			//}
+			//if (temp.isAnnotationPresent(AttributeOverride.class)) {
+			//	AttributeOverride override = (AttributeOverride) temp.getAnnotation(AttributeOverride.class);
+			//	entityDescriptor.getFieldByName(override.name()).setColumn(override.column().name());					
+			//}
+			
 		}
 				
 		return entityDescriptor;
 	}
 
+	
 	private static void extractFieldMetadata(Class clazz, EntityDescriptor entityDescriptor) {
     	// Don't want to get parent fields if overridden in children since we are walking the tree from child to parent
 		Set<String> cachedFields = new HashSet<String>(); 
@@ -360,6 +373,8 @@ public class MetadataManager {
 				fieldDescriptor.setClazz(field.getType());
 				fieldDescriptor.setTargetClazz(field.getType());
 				fieldDescriptor.setName(field.getName());
+				
+				
 				if (field.isAnnotationPresent(Id.class)) {
 					fieldDescriptor.setId(true);
 					
@@ -394,6 +409,7 @@ public class MetadataManager {
 					fieldDescriptor.setTemporalType(field.getAnnotation(Temporal.class).value());
 				}				
 
+				
 				// Relationships
 				if (field.isAnnotationPresent(OneToOne.class)) {
 					OneToOneDescriptor descriptor = new OneToOneDescriptor();
@@ -416,6 +432,29 @@ public class MetadataManager {
 						FieldDescriptor jcFkField = entityDescriptor.getFieldByColumnName(jc.name());
 						if (jcFkField != null) {
 							descriptor.addFkField(jcFkField.getName());
+						} else {
+							//check to see if foreign key is in an AttributeOverride annotation
+							if (clazz.isAnnotationPresent(AttributeOverrides.class)) {
+								for (AttributeOverride override : ((AttributeOverrides)clazz.getAnnotation(AttributeOverrides.class)).value()) {
+									if (jc.name().equals(override.column().name())) {
+										entityDescriptor.getFieldByName(override.name()).setColumn(override.column().name());
+										jcFkField = entityDescriptor.getFieldByName(override.name());
+										if (jcFkField != null) {
+											descriptor.addFkField(jcFkField.getName());
+										}
+									}
+								}
+							}
+							if (clazz.isAnnotationPresent(AttributeOverride.class)) {
+								AttributeOverride override = (AttributeOverride) clazz.getAnnotation(AttributeOverride.class);
+								if (jc.name().equals(override.column().name())) {
+									entityDescriptor.getFieldByName(override.name()).setColumn(override.column().name());
+									jcFkField = entityDescriptor.getFieldByName(override.name());
+									if (jcFkField != null) {
+										descriptor.addFkField(jcFkField.getName());
+									}
+								}					
+							}
 						}
 						//descriptor.addFkField(entityDescriptor.getFieldByColumnName(jc.name()).getName());
 						descriptor.setInsertable(jc.insertable());

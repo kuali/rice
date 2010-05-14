@@ -958,6 +958,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					entityName.setActive(name.isActive());
 					entityName.setDefaultValue(name.isDflt());
 					entityName.setEntityNameId(name.getEntityNameId());
+					entityName.setEntityId(identityManagementPersonDocument.getEntityId());
 					if(ObjectUtils.isNotNull(origNames)){
 						for (KimEntityNameImpl origName : origNames) {
 							if (origName.getEntityNameId()!=null && StringUtils.equals(origName.getEntityNameId(), entityName.getEntityNameId())) {
@@ -2390,7 +2391,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				pndMember = new GroupDocumentMember();
 				pndMember.setActiveFromDate(member.getActiveFromDate());
 				pndMember.setActiveToDate(member.getActiveToDate());
-				pndMember.setActive(member.isActive());
+				//pndMember.setActive(member.isActive());
 				if(pndMember.isActive()){
 					pndMember.setGroupMemberId(member.getGroupMemberId());
 					pndMember.setGroupId(member.getGroupId());
@@ -2451,8 +2452,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		GroupImpl kimGroup = new GroupImpl();
 		Map<String, String> criteria = new HashMap<String, String>();
 		String groupId = identityManagementGroupDocument.getGroupId();
-		criteria.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupId);
-		GroupImpl origGroup = (GroupImpl)getBusinessObjectService().findByPrimaryKey(GroupImpl.class, criteria);
+		//criteria.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupId);
+		GroupImpl origGroup = (GroupImpl)getBusinessObjectService().findBySinglePrimaryKey(GroupImpl.class, groupId);
 		List<GroupMemberImpl> origGroupMembers = new ArrayList<GroupMemberImpl>();
 		if (ObjectUtils.isNull(origGroup)) {
 			origGroup = new GroupImpl();
@@ -2478,16 +2479,19 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 		List<String> oldIds = null;
 		List<String> newIds = null;
-		List<PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
+		//List<PersistableBusinessObject> bos = new ArrayList<PersistableBusinessObject>();
 		oldIds = getGroupService().getMemberPrincipalIds(kimGroup.getGroupId()); // for the actionList update
 
+		
 		List<GroupMemberImpl> newGroupMembersList = getGroupMembers(identityManagementGroupDocument, origGroupMembers);
 		kimGroup.setMembers(newGroupMembersList);  // add the new, complete list to the group
-		bos.add(kimGroup);
+		
+		//bos.add(kimGroup);
 
-		getBusinessObjectService().save(bos);
-
-		newIds = getGroupService().getMemberPrincipalIds(kimGroup.getGroupId()); // for the action list update
+		kimGroup = (GroupImpl)getBusinessObjectService().save(kimGroup);
+		
+		newIds = kimGroup.getMemberPrincipalIds();
+		//newIds = getGroupService().getMemberPrincipalIds(kimGroup.getGroupId()); // for the action list update
 
 		// Do an async update of the action list for the updated groups
 		KIMServiceLocator.getGroupInternalService().updateForWorkgroupChange(kimGroup.getGroupId(), oldIds, newIds);

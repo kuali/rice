@@ -20,14 +20,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -65,6 +69,7 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
@@ -75,6 +80,12 @@ import org.kuali.rice.kns.util.GlobalVariables;
  * 
  */
 @Entity
+@AttributeOverrides({
+	@AttributeOverride(name="documentNumber",column=@Column(name="FDOC_NBR"))
+})
+@AssociationOverrides({
+	@AssociationOverride(name="documentHeader",joinColumns=@JoinColumn(name="FDOC_NBR",referencedColumnName="DOC_HDR_ID",insertable=false,updatable=false))
+})
 @Table(name="KRIM_PERSON_DOCUMENT_T")
 public class IdentityManagementPersonDocument extends IdentityManagementKimDocument {
 
@@ -86,25 +97,25 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 			@Parameter(name="sequence_name",value="KRIM_PRNCPL_ID_S"),
 			@Parameter(name="value_column",value="id")
 		})
-	@Column(name="prncpl_id")
+	@Column(name="PRNCPL_ID")
     protected String principalId;
-    @Column(name="prncpl_nm")
+    @Column(name="PRNCPL_NM")
     protected String principalName;
     @GeneratedValue(generator="KRIM_ENTITY_ID_S")
 	@GenericGenerator(name="KRIM_ENTITY_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
 			@Parameter(name="sequence_name",value="KRIM_ENTITY_ID_S"),
 			@Parameter(name="value_column",value="id")
 		})
-	@Column(name="entity_id")
+	@Column(name="ENTITY_ID")
     protected String entityId;
     @Type(type="org.kuali.rice.kns.util.HibernateKualiHashType")
-    @Column(name="password")
+    @Column(name="PRNCPL_PSWD")
     protected String password;
     
     // ext id - now hard coded for "tax id" & "univ id"
-    @Column(name="tax_id")
+    @Column(name="TAX_ID")
     protected String taxId = "";
-    @Column(name="univ_id")
+    @Column(name="UNIV_ID")
     protected String univId = "";
     // affiliation data
     @OneToMany(targetEntity=PersonDocumentAffiliation.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
@@ -136,23 +147,22 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     protected List<PersonDocumentAddress> addrs;
     @OneToMany(targetEntity=PersonDocumentPhone.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
     @Fetch(value = FetchMode.SELECT)
-    @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
+    @JoinColumn(name="FDOC_NBR")
     protected List<PersonDocumentPhone> phones;
     @OneToMany(targetEntity=PersonDocumentEmail.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
     @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentEmail> emails;
-    @OneToMany(targetEntity=PersonDocumentRole.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+    @OneToMany(targetEntity=PersonDocumentGroup.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
     @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentGroup> groups;
-    @OneToMany(targetEntity=PersonDocumentGroup.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+    @OneToMany(targetEntity=PersonDocumentRole.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
     @Fetch(value = FetchMode.SELECT)
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected List<PersonDocumentRole> roles;
 
-    @ManyToOne(targetEntity=PersonDocumentPrivacy.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
-    @Fetch(value = FetchMode.SELECT)
+    @OneToOne(targetEntity=PersonDocumentPrivacy.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
     protected PersonDocumentPrivacy privacy;
 
@@ -366,8 +376,24 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         }
         setEmployeeRecordIds();
         for (PersonDocumentRole role : getRoles()) {
+        	role.setDocumentNumber(getDocumentNumber());
+        	//if (StringUtils.isEmpty(role.getRoleId())) {
+    		//	SequenceAccessorService sas = getSequenceAccessorService();
+			//	Long nextSeq = sas.getNextAvailableSequenceNumber(
+			//			"KRIM_ROLE_ID_S", this.getClass());
+			//	String roleId = nextSeq.toString();
+			//	role.setRoleId(roleId);
+    		//}
             for (KimDocumentRoleMember rolePrncpl : role.getRolePrncpls()) {
                 rolePrncpl.setDocumentNumber(getDocumentNumber());
+                rolePrncpl.setRoleId(role.getRoleId());
+                if (StringUtils.isEmpty(rolePrncpl.getRoleMemberId())) {
+        			SequenceAccessorService sas = getSequenceAccessorService();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							"KRIM_ROLE_MBR_ID_S", this.getClass());
+					String roleMemberId = nextSeq.toString();
+					rolePrncpl.setRoleMemberId(roleMemberId);
+        		}
                 for (KimDocumentRoleQualifier qualifier : rolePrncpl.getQualifiers()) {
                     qualifier.setDocumentNumber(getDocumentNumber());
                     qualifier.setKimTypId(role.getKimTypeId());
@@ -384,6 +410,85 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
                 addDelegationMemberToDelegation(delegationMember);
             }
         }
+        if (getAddrs() != null) {
+        	String entityAddressId;
+        	for(PersonDocumentAddress address : getAddrs()) {
+        		address.setDocumentNumber(getDocumentNumber());
+        		if (StringUtils.isEmpty(address.getEntityAddressId())) {
+        			SequenceAccessorService sas = getSequenceAccessorService();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							"KRIM_ENTITY_ADDR_ID_S", this.getClass());
+					entityAddressId = nextSeq.toString();
+					address.setEntityAddressId(entityAddressId);
+        		}
+        	}
+        }
+        if (getAffiliations() != null) {
+        	String affiliationId;
+        	for(PersonDocumentAffiliation affiliation : getAffiliations()) {
+        		affiliation.setDocumentNumber(getDocumentNumber());
+        		if (StringUtils.isEmpty(affiliation.getEntityAffiliationId())) {
+        			SequenceAccessorService sas = getSequenceAccessorService();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							"KRIM_ENTITY_AFLTN_ID_S", this.getClass());
+					affiliationId = nextSeq.toString();
+					affiliation.setEntityAffiliationId(affiliationId);
+        		}
+        	}
+        }
+        if (getEmails() != null) {
+        	String entityEmailId;
+        	for(PersonDocumentEmail email : getEmails()) {
+        		email.setDocumentNumber(getDocumentNumber());
+        		if (StringUtils.isEmpty(email.getEntityEmailId())) {
+        			SequenceAccessorService sas = getSequenceAccessorService();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							"KRIM_ENTITY_EMAIL_ID_S", this.getClass());
+					entityEmailId = nextSeq.toString();
+					email.setEntityEmailId(entityEmailId);
+        		}
+        	}
+        }
+        if (getGroups() != null) {
+        	String groupMemberId;
+        	for(PersonDocumentGroup group : getGroups()) {
+        		group.setDocumentNumber(getDocumentNumber());
+        		if (StringUtils.isEmpty(group.getGroupMemberId())) {
+        			SequenceAccessorService sas = getSequenceAccessorService();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							"KRIM_GRP_MBR_ID_S", this.getClass());
+					groupMemberId = nextSeq.toString();
+					group.setGroupMemberId(groupMemberId);
+        		}
+        	}
+        }
+        if (getNames() != null) {
+        	String entityNameId;
+        	for(PersonDocumentName name : getNames()) {
+        		name.setDocumentNumber(getDocumentNumber());
+        		if (StringUtils.isEmpty(name.getEntityNameId())) {
+        			SequenceAccessorService sas = getSequenceAccessorService();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							"KRIM_ENTITY_NM_ID_S", this.getClass());
+					entityNameId = nextSeq.toString();
+					name.setEntityNameId(entityNameId);
+        		}
+        	}
+        }
+        if (getPhones() != null) {
+        	String entityPhoneId;
+        	for(PersonDocumentPhone phone : getPhones()) {
+        		phone.setDocumentNumber(getDocumentNumber());
+        		if (StringUtils.isEmpty(phone.getEntityPhoneId())) {
+        			SequenceAccessorService sas = getSequenceAccessorService();
+					Long nextSeq = sas.getNextAvailableSequenceNumber(
+							"KRIM_ENTITY_PHONE_ID_S", this.getClass());
+					entityPhoneId = nextSeq.toString();
+					phone.setEntityPhoneId(entityPhoneId);
+        		}
+        	}
+        }
+        
     }
 
     protected void setEmployeeRecordIds(){

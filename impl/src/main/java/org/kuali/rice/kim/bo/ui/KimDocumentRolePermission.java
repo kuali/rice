@@ -37,7 +37,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 @IdClass(KimDocumentRolePermissionId.class)
 @Entity
 @Table(name="KRIM_PND_ROLE_PERM_T")
-public class KimDocumentRolePermission extends KimDocumentBoBase {
+public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 
 	private static final long serialVersionUID = 1L;
 	@Id
@@ -107,11 +107,6 @@ public class KimDocumentRolePermission extends KimDocumentBoBase {
 	 */
 	public void setKimPermission(KimPermissionInfo kimPermission) {
 		this.kimPermission = kimPermission;
-	}
-
-	@Override
-	public boolean isActive() {
-		return this.active;
 	}
 	
 }

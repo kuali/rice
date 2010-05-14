@@ -15,10 +15,14 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -32,7 +36,7 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
  *
  */
 @MappedSuperclass
-public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoBase {
+public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoActivatableEditableBase {
 
 	private static final long serialVersionUID = -1512640359333185819L;
 	@Id
@@ -49,6 +53,8 @@ public class KimDocumentAttributeDataBusinessObjectBase extends KimDocumentBoBas
 	private String kimAttrDefnId;
 	@Column(name = "ATTR_VAL")
 	private String attrVal = "";
+	@OneToOne(targetEntity=KimAttributeImpl.class, fetch=FetchType.EAGER, cascade={})
+    @JoinColumn(name="KIM_ATTR_DEFN_ID",insertable=false,updatable=false)
 	private KimAttributeImpl kimAttribute;
 	@Transient
 	private String qualifierKey;

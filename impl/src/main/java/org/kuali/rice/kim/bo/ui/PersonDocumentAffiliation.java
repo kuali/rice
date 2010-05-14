@@ -27,11 +27,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
@@ -69,11 +73,14 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	protected AffiliationTypeImpl affiliationType;
 	@Transient
 	protected PersonDocumentEmploymentInfo newEmpInfo;
-	//currently mapped as manyToMany even though it is technically a OneToMany
-	//The reason for this is it is linked with a partial Composite-id, which technically can't 
-	//guarantee uniqueness.
-	@ManyToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE},fetch=FetchType.EAGER)
-	@JoinColumn(name="ENTITY_AFLTN_ID", insertable=false, updatable=false)
+
+	@OneToMany(cascade={CascadeType.PERSIST,CascadeType.MERGE},fetch=FetchType.EAGER)
+	//@JoinColumn(name="ENTITY_AFLTN_ID", insertable=false, updatable=false)
+	@Fetch(value = FetchMode.SELECT)
+	@JoinColumns({
+		@JoinColumn(name="FDOC_NBR",insertable=false,updatable=false),
+		@JoinColumn(name="ENTITY_AFLTN_ID", insertable=false, updatable=false)
+	})
 	protected List<PersonDocumentEmploymentInfo> empInfos;
 
 	public PersonDocumentAffiliation() {
@@ -166,11 +173,6 @@ public class PersonDocumentAffiliation extends PersonDocumentBoDefaultBase {
 	 
 	public void setAffiliationType(AffiliationTypeImpl affiliationType) {
 		this.affiliationType = affiliationType;
-	}
-
-	@Override
-	public boolean isActive(){
-		return this.active;
 	}
 
 }

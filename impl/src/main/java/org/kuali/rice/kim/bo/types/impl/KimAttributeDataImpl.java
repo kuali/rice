@@ -17,7 +17,6 @@ package org.kuali.rice.kim.bo.types.impl;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.Id;

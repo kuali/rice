@@ -133,9 +133,9 @@ public abstract class GroupServiceBase {
 		if ( groupId == null ) {
 			return null;
 		}
-		Map<String,String> criteria = new HashMap<String,String>();
-		criteria.put(KIMPropertyConstants.Group.GROUP_ID, groupId);
-		return (GroupImpl) getBusinessObjectService().findByPrimaryKey(GroupImpl.class, criteria);
+		//Map<String,String> criteria = new HashMap<String,String>();
+		//criteria.put(KIMPropertyConstants.Group.GROUP_ID, groupId);
+		return (GroupImpl) getBusinessObjectService().findBySinglePrimaryKey(GroupImpl.class, groupId);
 	}
 
 	@SuppressWarnings("unchecked")

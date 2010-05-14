@@ -39,7 +39,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @IdClass(KimDocumentRoleResponsibilityId.class)
 @Entity
 @Table(name="KRIM_PND_ROLE_RSP_T")
-public class KimDocumentRoleResponsibility extends KimDocumentBoBase {
+public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase {
 	
 	private static final long serialVersionUID = -4465768714850961538L;
 	@Id
@@ -147,11 +147,6 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoBase {
 	public void setRoleRspActions(
 			List<KimDocumentRoleResponsibilityAction> roleRspActions) {
 		this.roleRspActions = roleRspActions;
-	}
-
-	@Override
-	public boolean isActive() {
-		return this.active;
 	}
 
 }

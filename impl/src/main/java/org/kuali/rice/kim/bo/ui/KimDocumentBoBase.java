@@ -15,15 +15,12 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Date;
 import java.util.LinkedHashMap;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
-import org.hibernate.annotations.Type;
-import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -33,23 +30,23 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 @MappedSuperclass
-public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements Inactivateable {
+public class KimDocumentBoBase  extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 9042706897191231670L;
 	@Id
     @Column(name="FDOC_NBR")
     protected String documentNumber;
-	@Type(type="yes_no")
-	@Column(name="ACTV_IND")
-    protected boolean active = true;
-	@Type(type="yes_no")
-	@Column(name="EDIT_FLAG")
-    protected boolean edit;
+	//@Type(type="yes_no")
+	//@Column(name="ACTV_IND")
+    //protected boolean active = true;
+	//@Type(type="yes_no")
+	//@Column(name="EDIT_FLAG")
+	//protected boolean edit;
 
 	
-	@Column(name="ACTV_FRM_DT")
-	protected Date activeFromDate;
-	@Column(name="ACTV_TO_DT")
-	protected Date activeToDate;
+	//@Column(name="ACTV_FRM_DT")
+	//protected Date activeFromDate;
+	//@Column(name="ACTV_TO_DT")
+	//protected Date activeToDate;
 
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
@@ -70,49 +67,49 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase implements
 		this.documentNumber = documentNumber;
 	}
 
-	public boolean isActive() {
-		long now = System.currentTimeMillis();		
-		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
-	}
+	//public boolean isActive() {
+	//	long now = System.currentTimeMillis();		
+	//	return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
+	//}
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+	//public void setActive(boolean active) {
+	//	this.active = active;
+	//}
 
-	public boolean isEdit() {
-		return this.edit;
-	}
+	//public boolean isEdit() {
+	//	return this.edit;
+	//}
 
-	public void setEdit(boolean edit) {
-		this.edit = edit;
-	}
+	//public void setEdit(boolean edit) {
+	//	this.edit = edit;
+	//}
 
 	/**
 	 * @return the activeFromDate
 	 */
-	public Date getActiveFromDate() {
-		return this.activeFromDate;
-	}
+	//public Date getActiveFromDate() {
+	//	return this.activeFromDate;
+	//}
 
 	/**
 	 * @param activeFromDate the activeFromDate to set
 	 */
-	public void setActiveFromDate(Date activeFromDate) {
-		this.activeFromDate = activeFromDate;
-	}
+	//public void setActiveFromDate(Date activeFromDate) {
+	//	this.activeFromDate = activeFromDate;
+	//}
 
 	/**
 	 * @return the activeToDate
 	 */
-	public Date getActiveToDate() {
-		return this.activeToDate;
-	}
+	//public Date getActiveToDate() {
+	//	return this.activeToDate;
+	//}
 
 	/**
 	 * @param activeToDate the activeToDate to set
 	 */
-	public void setActiveToDate(Date activeToDate) {
-		this.activeToDate = activeToDate;
-	}
+	//public void setActiveToDate(Date activeToDate) {
+	//	this.activeToDate = activeToDate;
+	//}
 
 }

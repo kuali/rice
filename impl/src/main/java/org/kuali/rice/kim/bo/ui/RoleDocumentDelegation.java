@@ -47,7 +47,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 @IdClass(RoleDocumentDelegationId.class)
 @Entity
 @Table(name="KRIM_PND_DLGN_T")
-public class RoleDocumentDelegation extends KimDocumentBoBase {
+public class RoleDocumentDelegation extends KimDocumentBoActivatableBase {
 
 	private static final long serialVersionUID = 1L;
 

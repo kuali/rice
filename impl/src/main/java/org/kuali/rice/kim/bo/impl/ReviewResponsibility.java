@@ -23,9 +23,11 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
+import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -38,26 +40,42 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
  *
  */
 
+@SuppressWarnings("unchecked")
+@Entity
+@Table(name="KRIM_RSP_T")
 public class ReviewResponsibility extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 1L;
-
+	@Transient
 	public static final String ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL_FIELD_NAME = "actionDetailsAtRoleMemberLevel";
 	// standard responsibility attributes 
 
+	@Id
+	@Column(name="RSP_ID")
 	protected String responsibilityId;
+	@Column(name="NMSPC_CD")
 	protected String namespaceCode;
+	@Column(name="NM")
 	protected String name;
+	@Column(name="DESC_TXT", length=400)
 	protected String description;
+	@Type(type="yes_no")
+	@Column(name="ACTV_IND")
 	protected boolean active;
 
 	// review responsibility standard properties
+	@Transient
 	protected String documentTypeName;
+	@Transient
 	protected String routeNodeName;
+	@Transient
 	protected boolean actionDetailsAtRoleMemberLevel;
+	@Transient
 	protected boolean required;
+	@Transient
 	protected String qualifierResolverProvidedIdentifier;
 
+	@Transient
 	protected DocumentTypeEBO documentType;
 	
 	public ReviewResponsibility() {

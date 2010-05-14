@@ -16,8 +16,11 @@
 package org.kuali.rice.kim.bo.ui;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.CompositePrimaryKeyBase;
 
 /**
@@ -32,6 +35,11 @@ public class PersonDocumentAffiliationId extends CompositePrimaryKeyBase {
     protected String documentNumber;
 	
 	@Id
+	@GeneratedValue(generator="KRIM_ENTITY_AFLTN_ID_S")
+	@GenericGenerator(name="KRIM_ENTITY_AFLTN_ID_S",strategy="org.kuali.rice.core.jpa.spring.RiceNumericStringSequenceStyleGenerator",parameters={
+			@Parameter(name="sequence_name",value="KRIM_ENTITY_AFLTN_ID_S"),
+			@Parameter(name="value_column",value="id")
+		})
 	@Column(name = "ENTITY_AFLTN_ID")
 	protected String entityAffiliationId;
 

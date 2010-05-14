@@ -17,10 +17,8 @@ package org.kuali.rice.kim.bo.ui;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
-import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -29,33 +27,20 @@ import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
  *
  */
 @MappedSuperclass
-public class PersonDocumentBoDefaultBase extends KimDocumentBoActivatableEditableBase{
-    @Type(type="yes_no")
-	@Column(name="DFLT_IND")
-	protected boolean dflt;
-    @Transient
-	protected IdentityManagementPersonDocument personDocument;
-	
-	/**
-	 * @return the personDocument
-	 */
-	public IdentityManagementPersonDocument getPersonDocument() {
-		return this.personDocument;
+public class KimDocumentBoEditableBase  extends KimDocumentBoBase {
+    private static final long serialVersionUID = 9042706897191231672L;
+
+	@Type(type="yes_no")
+	@Column(name="EDIT_FLAG")
+    protected boolean edit;
+
+	public boolean isEdit() {
+		return this.edit;
 	}
 
-	/**
-	 * @param personDocument the personDocument to set
-	 */
-	public void setPersonDocument(IdentityManagementPersonDocument personDocument) {
-		this.personDocument = personDocument;
+	public void setEdit(boolean edit) {
+		this.edit = edit;
 	}
 
-	public boolean isDflt() {
-		return this.dflt;
-	}
-
-	public void setDflt(boolean dflt) {
-		this.dflt = dflt;
-	}
 
 }

@@ -1,14 +1,64 @@
 <config>
     <!--  NOTE: This environment parameter must be defined early -->
-    <param name="app.namespace">KUALI</param>
+    <param name="app.namespace" override="false">KUALI</param>
     <param name="environment" override="false">dev</param>
     <param name="app.code" override="false">kr</param>
     <param name="app.context.name" override="false">${app.code}-${environment}</param>
-    <param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources</param>
+    <param name="rice.struts.message.resources" override="false">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources</param>
     <param name="http.port" override="false">8080</param>
     <param name="application.host" override="false">localhost</param>
     <param name="application.http.scheme" override="false">http</param>
     <param name="rice.custom.ojb.properties" override="false">org/kuali/rice/core/ojb/RiceOJB.properties</param>
+
+	<!-- Database Config -->
+	    <param name="datasource.pool.minSize" override="false">0</param>
+    <param name="datasource.pool.maxSize" override="false">5</param>
+    <param name="datasource.pool.size" override="false">5</param>
+    <param name="datasource.pool.maxWait" override="false">30000</param>
+    
+    
+    <param name="datasource.ojb.platform" override="false">Oracle9i</param>
+    
+    <param name="datasource.driver.name.Oracle" override="false">oracle.jdbc.driver.OracleDriver</param>
+    <param name="datasource.platform.Oracle" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+    <param name="datasource.ojb.sequenceManager.Oracle" override="false"></param>
+    <param name="datasource.ojb.sequenceManager.className.Oracle" override="false"></param>
+    <param name="datasource.pool.validationQuery.Oracle" override="false">select 1 from dual</param>
+    
+    <param name="datasource.driver.name.Oracle9i" override="false">oracle.jdbc.driver.OracleDriver</param>
+    <param name="datasource.platform.Oracle9i" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+    <param name="datasource.ojb.sequenceManager.Oracle9i" override="false"></param>
+    <param name="datasource.ojb.sequenceManager.className.Oracle9i" override="false"></param>
+    <param name="datasource.pool.validationQuery.Oracle9i" override="false">select 1 from dual</param>
+    
+    <param name="datasource.driver.name.MySQL" override="false">com.mysql.jdbc.Driver</param>
+    <param name="datasource.platform.MySQL" override="false">org.kuali.rice.core.database.platform.MySQLDatabasePlatform</param>
+    <param name="datasource.ojb.sequenceManager.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
+    <param name="datasource.ojb.sequenceManager.className.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
+    <param name="datasource.pool.validationQuery.MySQL" override="false">select 1</param>
+    
+    <param name="datasource.driver.name.Derby" override="false">org.apache.derby.jdbc.EmbeddedDriver</param>
+    <param name="datasource.platform.Derby" override="false">org.kuali.rice.core.database.platform.DerbyDatabasePlatform</param>
+    <param name="datasource.ojb.sequenceManager.Derby" override="false">** NEEDS IMPLEMENTED **</param>
+    <param name="datasource.ojb.sequenceManager.className.Derby" override="false">** NEEDS IMPLEMENTED **</param>
+    <param name="datasource.pool.validationQuery.Derby" override="false">values(1)</param>
+    
+    <param name="datasource.driver.name.McKoi" override="false">com.mckoi.JDBCDriver</param>
+    <param name="datasource.platform.McKoi" override="false">org.kuali.rice.core.database.platform.MckoiDatabasePlatform</param>
+    <param name="datasource.ojb.sequenceManager.McKoi" override="false">org.apache.ojb.broker.platforms.PlatformMckoiImpl</param>
+    <param name="datasource.ojb.sequenceManager.className.McKoi" override="false">org.apache.ojb.broker.platforms.PlatformMckoiImpl</param>
+    <param name="datasource.pool.validationQuery.McKoi" override="false">select 1 from dual</param>
+    
+    <param name="datasource.driver.name" override="false">${datasource.driver.name.${datasource.ojb.platform}}</param>
+    <param name="datasource.platform" override="false">${datasource.platform.${datasource.ojb.platform}}</param>
+    <param name="datasource.ojb.sequenceManager" override="false">${datasource.ojb.sequenceManager.${datasource.ojb.platform}}</param>
+    <param name="datasource.ojb.sequenceManager.className" override="false">${datasource.ojb.sequenceManager.className.${datasource.ojb.platform}}</param>
+    <param name="datasource.pool.validationQuery" override="false">${datasource.pool.validationQuery.${datasource.ojb.platform}}</param>
+    
+    <!-- Action List Outbox -->
+    <param name="actionlist.outbox.default.preference.on" override="false">true</param>
+    <param name="actionlist.outbox" override="false">true</param>
+	
 
     <!--
       NOTE: The application.url parameter needs to be set by the client
@@ -92,8 +142,8 @@
 	<!-- End JPA-related parameters -->
 
     <param name="transaction.timeout" override="false">30000</param>
-    
-    <!-- 
+
+    <!--
     	See KULRICE- regarding the encryption.key property
     <param name="encryption.key" override="false">7IC64w6ksLU</param>
 
@@ -104,6 +154,7 @@
     <param name="mail.smtp.host" override="false">localhost</param>
 
     <param name="edl.config.loc" override="false">classpath:META-INF/EDLConfig.xml</param>
+    <param name="edl.style.widgets" override="false">classpath:org/kuali/rice/kew/edl/default-widgets.xml</param>
 
     <!-- KEW XML-related filesystem locations -->
     <!-- These should be overridden, but the defaults are here so they do not have to
@@ -157,9 +208,9 @@
 	<param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
     <param name="attachments.pending.directory" override="false">${java.io.tmpdir}/${environment}/attachments/pending</param>
 
-    <param name="rice.kns.illegalBusinessObjectsForSave.applyCheck">true</param>
-    
-    <param name="kns.editable.properties.history.size">20</param>
+    <param name="rice.kns.illegalBusinessObjectsForSave.applyCheck" override="false">true</param>
+
+    <param name="kns.editable.properties.history.size" override="false">20</param>
 
     <!-- KSB -->
 

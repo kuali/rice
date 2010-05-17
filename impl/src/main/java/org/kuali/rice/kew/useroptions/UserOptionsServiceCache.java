@@ -103,9 +103,9 @@ public class UserOptionsServiceCache implements UserOptionsService {
 	 * @see org.kuali.rice.kew.useroptions.UserOptionsService#refreshActionList(java.lang.String)
 	 */
 	public boolean refreshActionList(String principalId) {
-		boolean result = inner.refreshActionList(principalId);
-		cache.clearCacheGroup(principalId);
-		return result;
+        // ignore the cache for this user option, as these are generated with unique numbers and shouldn't be
+	    // retrieved more then once, as they are deleted once retrieved
+		return inner.refreshActionList(principalId);
 	}
 
 	/**

@@ -21,7 +21,7 @@ import java.util.Properties;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.config.SimpleConfig;
+import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.springframework.beans.factory.FactoryBean;
 
 public class ConfigFactoryBean implements FactoryBean {
@@ -31,18 +31,22 @@ public class ConfigFactoryBean implements FactoryBean {
 	public static String CONFIG_OVERRIDE_LOCATION;
 
 	public Object getObject() throws Exception {
+		
+		Config oldConfig = null;
+		
 		if (getConfigLocations() == null) {
 			throw new ConfigurationException("No config locations declared, at least one is required");
 		}
 		Properties baseProperties = new Properties();
 		if (ConfigContext.getCurrentContextConfig() != null) {
-			baseProperties = ConfigContext.getCurrentContextConfig().getProperties();
+			oldConfig = ConfigContext.getCurrentContextConfig();
 		}
-		SimpleConfig config = null;
+		//SimpleConfig config = null;
+		JAXBConfigImpl config = null;
 		if (CONFIG_OVERRIDE_LOCATION != null) {
-			config = new SimpleConfig(CONFIG_OVERRIDE_LOCATION, baseProperties);
+			config = new JAXBConfigImpl(CONFIG_OVERRIDE_LOCATION, oldConfig);		
 		} else {
-			config = new SimpleConfig(getConfigLocations(), baseProperties);
+			config = new JAXBConfigImpl(getConfigLocations(), oldConfig);
 		}
 
 		config.parseConfig();

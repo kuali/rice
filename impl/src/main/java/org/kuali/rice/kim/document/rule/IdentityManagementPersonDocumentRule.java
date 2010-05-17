@@ -517,7 +517,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     			if (qualifier != null && qualifier.getKimAttribute() != null && !StringUtils.isBlank(qualifier.getKimAttribute().getAttributeName())) {
     	    		final AttributeDefinition relatedDefinition = attributeDefinitions.getByAttributeName(qualifier.getKimAttribute().getAttributeName());
     	    		
-    	    		if (relatedDefinition.getUnique() != null && relatedDefinition.getUnique().booleanValue()) {
+    	    		if (relatedDefinition != null && relatedDefinition.getUnique() != null && relatedDefinition.getUnique().booleanValue()) {
     	    			uniqueQualifications.add(qualifier.getKimAttrDefnId());
     	    		}
     			}

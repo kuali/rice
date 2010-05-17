@@ -1,3 +1,18 @@
+/*
+ * Copyright 2007-2010 The Kuali Foundation
+ *
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.opensource.org/licenses/ecl2.php
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.kuali.rice.core.config;
 
 import static org.junit.Assert.assertEquals;
@@ -43,26 +58,10 @@ public class JAXBConfigImplTest {
     public void testBasicFunctionality() throws Exception {
         System.setProperty("some.system.property", "sys-value");
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
-        config.setLoadDefaults(false);
-        config.parseConfig();
-
-        doBasicAssertions(config);
-    }
     
-    @Test
-    public void testRuntimeBasicFunctionality() throws Exception {
-        System.setProperty("some.system.property", "sys-value");
-        JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
-        config.setLoadDefaults(false);
-        config.setRunitmeResolution(true);
         config.parseConfig();
 
         doBasicAssertions(config);
-        
-        config.overrideProperty("db", "mysql");
-        
-        assertEquals("mysql-user", config.getProperty("username"));
-        assertEquals("mysql-user+mysql", config.getProperty("multi"));
     }
 
     protected void doBasicAssertions(Config config) {
@@ -95,7 +94,7 @@ public class JAXBConfigImplTest {
         System.setProperty("a", "3");
 
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
-        config.setLoadDefaults(false);
+        
         config.setSystemOverride(true);
         config.parseConfig();
         assertEquals("3", config.getProperty("b"));
@@ -108,7 +107,7 @@ public class JAXBConfigImplTest {
         files.add("classpath:org/kuali/rice/core/config/jaxb-test-override.xml");
 
         JAXBConfigImpl config = new JAXBConfigImpl(files);
-        config.setLoadDefaults(false);
+        
         config.parseConfig();
         assertEquals("mysql-user", config.getProperty("username"));
     }
@@ -119,7 +118,7 @@ public class JAXBConfigImplTest {
         files.add("classpath:org/kuali/rice/core/config/jaxb-test-import-config.xml");
 
         JAXBConfigImpl config = new JAXBConfigImpl(files);
-        config.setLoadDefaults(false);
+        
         config.parseConfig();
         assertEquals("mysql-user", config.getProperty("username"));
     }
@@ -127,16 +126,71 @@ public class JAXBConfigImplTest {
     @Test(expected = ConfigurationException.class)
     public void testCircularReference() throws Exception {
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-circular.xml");
-        config.setLoadDefaults(false);
+        
         config.parseConfig();
+    }
+    
+    @Test(expected = ConfigurationException.class)
+    public void testCircularReference2() throws Exception {
+        JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-circular2.xml");
+        
+        config.parseConfig();
+    }
+    
+    /**
+     * 		
+     * This method tests having a variable already set and then doing a circular reference.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testCircularReference3() throws Exception{
+        JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-circular2.xml");
+        // The next line tests 2 things. 1. the inline replace, but with a system var
+        System.setProperty("environment", "test");
+        config.parseConfig();
+        
+        // run the test again, but this time use a standard config var.
+        config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-circular2.xml");   
+        config.putProperty("environment", "test");
+        config.parseConfig();
+    }
+
+    /**
+     * 		
+     * This method tests parsing a config file and then altering a variable that is used as a composite for other variables.
+     * 
+     * @throws Exception
+     */
+    @Test
+    public void testResolutionAfterParse() throws Exception{
+        JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");        
+        config.parseConfig();
+                  
+        config.putProperty("db", "mysql");        
+        
+        assertEquals("mysql-user", config.getProperty("username"));
+        assertEquals("mysql-user+mysql", config.getProperty("multi"));
+        assertEquals("mysql", config.getProperty("db"));
+        
     }
     
     @Ignore
     public void testPropertiesParams() throws Exception {
+    	Config rootConfig = ConfigContext.getCurrentContextConfig();    	
+        
         JAXBConfigImpl config = new JAXBConfigImpl("classpath:org/kuali/rice/core/config/jaxb-test-config.xml");
-        config.setLoadDefaults(false);
         config.parseConfig();
+
+        // When you run the tests via maven the suite initially sets up the a rootConfig object.
+        // If this is the case then we should just Add our properties to the root config.
+        // If we call the init then we overwrite the existing config in the context, which breaks
+        // other tests in the suite.
+        if(rootConfig != null){
+        	rootConfig.putProperties(config.getProperties());
+        }else{
         ConfigContext.init(config);
+        }
         
         ApplicationContext context = new ClassPathXmlApplicationContext("org/kuali/rice/core/config/jaxb-test-context.xml");
         PropertyHolder holder = (PropertyHolder) context.getBean("jpaProps");

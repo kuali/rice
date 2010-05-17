@@ -271,14 +271,17 @@ public class NotificationServiceImpl implements NotificationService {
 		
 		Collection<Notification> available_notifications = businessObjectDao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
 
-		LOG.debug("Available notifications: " + available_notifications.size());
+		//LOG.debug("Available notifications: " + available_notifications.size());
 
 		// mark as "taken"
-		for (Notification notification: available_notifications) {
-			LOG.info("notification: " + notification);
-			notification.setLockedDate(new Timestamp(System.currentTimeMillis()));
-			businessObjectDao.save(notification);
+		if (available_notifications != null) {
+			for (Notification notification: available_notifications) {
+				LOG.info("notification: " + notification);
+				notification.setLockedDate(new Timestamp(System.currentTimeMillis()));
+				businessObjectDao.save(notification);
+			}
 		}
+		
 
 		return available_notifications;
 	}

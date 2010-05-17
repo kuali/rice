@@ -25,10 +25,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -61,7 +62,7 @@ import org.kuali.rice.kns.util.TypedArrayList;
 public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
     private static final Logger LOG = Logger.getLogger(PersonDocumentRole.class);
 	private static final long serialVersionUID = 4908044213007222739L;
-	//@Id
+	@Id
 	@Column(name="ROLE_ID")
 	protected String roleId;
 	@Column(name="KIM_TYP_ID")
@@ -92,13 +93,13 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 	//currently mapped as manyToMany even though it is technically a OneToMany
 	//The reason for this is it is linked with a partial Composite-id, which technically can't 
 	//guarantee uniqueness.  
-	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})
+	@ManyToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})
     @Fetch(value = FetchMode.SELECT)
-    //@JoinColumn(name="ROLE_ID",insertable=false,updatable=false)
-    @JoinColumns({
-		@JoinColumn(name="ROLE_ID",insertable=false,updatable=false),
-		@JoinColumn(name="FDOC_NBR", insertable=false, updatable=false, table="KRIM_PERSON_DOCUMENT_T")
-	})
+    @JoinColumn(name="ROLE_ID",insertable=false,updatable=false)
+    //@JoinColumns({
+	//	@JoinColumn(name="ROLE_ID",insertable=false,updatable=false),
+	//	@JoinColumn(name="FDOC_NBR", insertable=false, updatable=false, table="KRIM_PERSON_DOCUMENT_T")
+	//})
 	protected List<RoleResponsibilityImpl> assignedResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
 
 	@Transient

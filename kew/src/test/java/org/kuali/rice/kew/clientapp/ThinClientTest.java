@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -80,7 +81,8 @@ public class ThinClientTest extends KEWTestCase {
 		Thread.currentThread().setContextClassLoader(ourClassLoader);
 
 		try {
-			Config config = new SimpleConfig(CONFIG_FILE);
+			//Config config = new SimpleConfig(CONFIG_FILE);
+			Config config = new JAXBConfigImpl(CONFIG_FILE);
 			config.parseConfig();
 			// initialize our config using properties bound to our custom classloader
 			ConfigContext.init(ourClassLoader, config);

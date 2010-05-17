@@ -26,6 +26,7 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -40,11 +41,11 @@ public interface KimRoleDao {
 	 * 
 	 * If the roleIds parameter is null, all RoleMemberImpls for the principal are returned.
 	 */
-	List<RoleMemberImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId );
+	List<RoleMemberImpl> getRolePrincipalsForPrincipalIdAndRoleIds( Collection<String> roleIds, String principalId, AttributeSet qualification );
 	
 	List<GroupMembershipInfo> getGroupPrincipalsForPrincipalIdAndGroupIds( Collection<String> groupIds, String principalId );
 	
-	List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds );
+	List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds( Collection<String> roleIds, Collection<String> groupIds, AttributeSet qualification );
 	
 	Map<String,KimDelegationImpl> getDelegationImplMapFromRoleIds(Collection<String> roleIds);
 	
@@ -54,11 +55,11 @@ public interface KimRoleDao {
 
 	List<KimDelegationMemberImpl> getDelegationGroupsForGroupIdsAndDelegationIds( Collection<String> delegationIds, List<String> groupIds );
 	
-	List<RoleMemberImpl> getRoleMembersForRoleIds( Collection<String> roleIds, String memberTypeCode );
+	List<RoleMemberImpl> getRoleMembersForRoleIds( Collection<String> roleIds, String memberTypeCode, AttributeSet qualification );
 	
-	List<RoleMemberImpl> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds);
+	List<RoleMemberImpl> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, AttributeSet qualification );
 
-	List<RoleMemberImpl> getRoleMembersForRoleIdsWithFilters( Collection<String> roleIds, String principalId, List<String> groupIds );
+	List<RoleMemberImpl> getRoleMembersForRoleIdsWithFilters( Collection<String> roleIds, String principalId, List<String> groupIds, AttributeSet qualification );
 	
 	Map<String,List<KimDelegationMemberImpl>> getDelegationMembersForDelegationIds( List<String> delegationIds );
 	

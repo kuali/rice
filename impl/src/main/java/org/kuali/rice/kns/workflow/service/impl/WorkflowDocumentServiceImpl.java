@@ -137,7 +137,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("retrieving flexDoc(" + documentHeaderId + "," + user.getPrincipalName() + ")");
+            LOG.debug("retrieving document(" + documentHeaderId + "," + user.getPrincipalName() + ")");
         }
 
         KualiWorkflowDocument document = new KualiWorkflowDocumentImpl(getUserIdVO(user), documentHeaderId);
@@ -152,7 +152,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void acknowledge(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("acknowleding flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("acknowleding document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
 
         handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ }));
@@ -164,7 +164,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void approve(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("approving flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("approving document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
 
         handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ }));
@@ -178,7 +178,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void superUserApprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
     	if ( LOG.isInfoEnabled() ) {
-    		LOG.info("super user approve flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+    		LOG.info("super user approve document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
     	}
         workflowDocument.superUserApprove(annotation);
     }
@@ -188,7 +188,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      *      java.lang.String)
      */
     public void superUserCancel(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
-        LOG.info("super user cancel flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+        LOG.info("super user cancel document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         workflowDocument.superUserCancel(annotation);
     }
 
@@ -198,7 +198,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void superUserDisapprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
     	if ( LOG.isInfoEnabled() ) {
-    		LOG.info("super user approve flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+    		LOG.info("super user disapprove document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
     	}
         workflowDocument.superUserDisapprove(annotation);
     }
@@ -208,7 +208,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void blanketApprove(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("blanket approving flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("blanket approving document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
 
         handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ }));
@@ -220,7 +220,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void cancel(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("canceling flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("canceling document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
 
         workflowDocument.cancel(annotation);
@@ -231,7 +231,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void clearFyi(KualiWorkflowDocument workflowDocument, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("clearing FYI for flexDoc(" + workflowDocument.getRouteHeaderId() + ")");
+            LOG.debug("clearing FYI for document(" + workflowDocument.getRouteHeaderId() + ")");
         }
 
         handleAdHocRouteRequests(workflowDocument, "", filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_FYI_REQ }));
@@ -247,7 +247,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients, String notificationLabel) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("sending FYI for flexDoc(" + workflowDocument.getRouteHeaderId() + ")");
+            LOG.debug("sending FYI for document(" + workflowDocument.getRouteHeaderId() + ")");
         }
 
         handleAdHocRouteRequests(workflowDocument, annotation, adHocRecipients, notificationLabel);
@@ -258,7 +258,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void disapprove(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("disapproving flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("disapproving document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
 
         workflowDocument.disapprove(annotation);
@@ -269,7 +269,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void route(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("routing flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("routing document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
 
         handleAdHocRouteRequests(workflowDocument, annotation, filterAdHocRecipients(adHocRecipients, new String[] { KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ }));
@@ -282,7 +282,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     public void save(KualiWorkflowDocument workflowDocument, String annotation) throws WorkflowException {
         if (workflowDocument.isStandardSaveAllowed()) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("saving flexDoc(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
+            LOG.debug("saving document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
 
         workflowDocument.saveDocument(annotation);
@@ -297,7 +297,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public void saveRoutingData(KualiWorkflowDocument workflowDocument) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("saving flexDoc(" + workflowDocument.getRouteHeaderId() + ")");
+            LOG.debug("saving document(" + workflowDocument.getRouteHeaderId() + ")");
         }
 
         workflowDocument.saveRoutingData();
@@ -308,7 +308,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      */
     public String getCurrentRouteLevelName(KualiWorkflowDocument workflowDocument) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("getting current route level name for flexDoc(" + workflowDocument.getRouteHeaderId());
+            LOG.debug("getting current route level name for document(" + workflowDocument.getRouteHeaderId());
         }
 //        return KEWServiceLocator.getRouteHeaderService().getRouteHeader(workflowDocument.getRouteHeaderId()).getCurrentRouteLevelName();
         KualiWorkflowDocument freshCopyWorkflowDoc = createWorkflowDocument(workflowDocument.getRouteHeaderId(), GlobalVariables.getUserSession().getPerson());

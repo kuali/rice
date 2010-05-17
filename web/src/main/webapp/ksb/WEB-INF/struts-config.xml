@@ -8,6 +8,7 @@
 		<!-- End required KNS forms -->
 		<form-bean name="MessageQueueForm" type="org.kuali.rice.ksb.messaging.web.MessageQueueForm" />
 		<form-bean name="ServiceRegistryForm" type="org.kuali.rice.ksb.messaging.web.ServiceRegistryForm" />
+		<form-bean name="ConfigViewerForm" type="org.kuali.rice.ksb.messaging.web.ConfigViewerForm" />
 		<form-bean name="ThreadPoolForm" type="org.kuali.rice.ksb.messaging.web.ThreadPoolForm" />
 		<form-bean name="QuartzForm" type="org.kuali.rice.ksb.messaging.web.QuartzQueueForm" />
 		<form-bean name="JavaSecurityManagementForm" type="org.kuali.rice.ksb.security.admin.web.JavaSecurityManagementForm" />
@@ -28,6 +29,7 @@
 		<forward name="close" path="/index.html" redirect="true" />
 		<forward name="portal" path="/index.html" redirect="true" />
 		<forward name="route_report" path="/WEB-INF/jsp/RoutingReportForward.jsp" />
+		<forward name="updateTextArea" path="/../kr/WEB-INF/jsp/TextArea.jsp"/>
         <forward name="exceptionIncidentHandler" path="/kr/kualiExceptionIncidentReport.do" contextRelative="true"/>
 		<!-- End required KNS forwards -->
 	</global-forwards>
@@ -43,6 +45,10 @@
 			type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">
 			<forward name="basic" path="/portal.jsp" />
 		</action>
+		
+		<action path="/updateTextArea" name="KualiForm" type="org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase">
+            <forward name="basic" path="/../kr/WEB-INF/jsp/TextArea.jsp"/>
+        </action>
 		<!--  End Required KNS Action Mappings -->
 		<action path="/MessageQueue" name="MessageQueueForm" scope="request" input="/WEB-INF/jsp/messagequeue/MessageEntry.jsp" validate="false"
 			type="org.kuali.rice.ksb.messaging.web.MessageQueueAction" parameter="methodToCall">
@@ -72,6 +78,10 @@
 			<forward name="joblisting" path="/WEB-INF/jsp/messagequeue/Quartz.jsp" />
 		</action>
 
+		<action path="/ConfigViewer" name="ConfigViewerForm" scope="request" input="/WEB-INF/jsp/config/ConfigViewer.jsp" validate="false"
+			type="org.kuali.rice.ksb.messaging.web.ConfigViewerAction" parameter="methodToCall">
+			<forward name="basic" path="/WEB-INF/jsp/config/ConfigViewer.jsp" />
+		</action>
 	</action-mappings>
 
 	<controller processorClass="org.kuali.rice.ksb.messaging.web.KSBStrutsRequestProcessor" />

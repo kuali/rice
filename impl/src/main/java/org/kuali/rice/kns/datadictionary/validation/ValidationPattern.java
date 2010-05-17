@@ -37,6 +37,7 @@ import org.kuali.rice.kns.datadictionary.exporter.ExportMap;
                         * type
                         * allowWhitespace
                         * allowUnderscore
+                        * allowPeriod
                         * validChars
                         * precision
                         * scale
@@ -48,6 +49,7 @@ import org.kuali.rice.kns.datadictionary.exporter.ExportMap;
                                         maxLength
                                         allowWhitespace
                                         allowUnderscore
+                                        allowPeriod
 
                         alpha           exactLength
                                         maxLength

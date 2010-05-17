@@ -235,7 +235,7 @@ public abstract class BaseConfig implements Config {
 	}
 
     public void overrideProperty(String name, String value) {
-        this.propertiesUsed.put(name, value);
+    	this.putProperty(name,value);     
     }
 
     /**
@@ -348,7 +348,7 @@ public abstract class BaseConfig implements Config {
             refreshRate = new Integer(ConfigContext.getCurrentContextConfig().getProperty(Config.REFRESH_RATE));
         } catch (NumberFormatException nfe) {
             LOG.error("Couldn't parse property " + Config.REFRESH_RATE + " to set bus refresh rate. Defaulting to 30 seconds.");
-            ConfigContext.getCurrentContextConfig().overrideProperty(Config.REFRESH_RATE, "30");
+            ConfigContext.getCurrentContextConfig().putProperty(Config.REFRESH_RATE, "30");
             return 30;
         }
         return refreshRate;
@@ -463,4 +463,39 @@ public abstract class BaseConfig implements Config {
     public String toString() {
         return new ToStringBuilder(this).append("fileLocs", fileLocs).toString();
     }
+    
+    
+	public void putProperties(Properties properties) {
+		if (properties != null) {
+            getProperties().putAll(properties);
+		}		
+	}
+	
+	public void putProperty(String key, String value) {
+		this.getProperties().put(key, value);		
+	}
+	
+	public void putObject(String key, Object value) {
+		this.objects.put(key, value);	
+	}
+	
+	public void putObjects(Map<String, Object> objects) {
+		if(objects != null){
+			this.objects.putAll(objects);
+		}
+		
+	}
+	
+	public void removeObject(String key){
+		this.objects.remove(key);
+	}
+	
+	public void removeProperty(String key){
+		this.getProperties().remove(key);
+	}
+	
+	public void putConfig(Config config) {
+		putProperties(config.getProperties());
+		putObjects(config.getObjects());
+	}
 }

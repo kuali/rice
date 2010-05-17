@@ -32,6 +32,8 @@ public class KEWConstants extends JSTLConstants {
 
     private static final long serialVersionUID = -3897059085433394648L;
 
+    public static final String KEW_MODULE_NAMESPACE = "KEW";
+    
     public static final String WEBAPP_DIRECTORY = "/kew";
 
     /**

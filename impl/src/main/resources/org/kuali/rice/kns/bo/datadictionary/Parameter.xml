@@ -103,7 +103,7 @@
 		<property name="shortLabel" value="Parm Nm"/>
 		<property name="maxLength" value="100"/>
 		<property name="validationPattern">
-			<bean parent="AlphaNumericValidationPattern" p:allowUnderscore="true"/>
+			<bean parent="AlphaNumericValidationPattern" p:allowUnderscore="true" p:allowPeriod="true"/>
 		</property>
 		<property name="required" value="true"/>
 		<property name="control">

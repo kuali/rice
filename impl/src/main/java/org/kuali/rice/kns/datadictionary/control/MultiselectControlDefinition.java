@@ -24,6 +24,9 @@ package org.kuali.rice.kns.datadictionary.control;
 public class MultiselectControlDefinition extends MultivalueControlDefinitionBase {
     private static final long serialVersionUID = -381869420276558508L;
 
+    public MultiselectControlDefinition() {
+    }
+
 	/**
      * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isMultiselect()
      */

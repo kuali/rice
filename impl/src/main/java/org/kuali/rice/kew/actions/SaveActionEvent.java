@@ -68,7 +68,7 @@ public class SaveActionEvent extends ActionTakenEvent {
     	}
     	// check state before checking kim
     	if (! KEWServiceLocator.getDocumentTypePermissionService().canSave(getPrincipal().getPrincipalId(), getRouteHeader().getRouteHeaderId().toString(), getRouteHeader().getDocumentType(), getRouteHeader().getCurrentNodeNames(), getRouteHeader().getDocRouteStatus(), getRouteHeader().getInitiatorWorkflowId())) {
-    		return "User is not authorized to Cancel document";
+    		return "User is not authorized to Save document";
     	}
     	return "";
     }

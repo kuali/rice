@@ -233,29 +233,27 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 
 	protected Config parseConfig() throws Exception {
 		if (this.rootConfig == null) {
-		    this.rootConfig = new SimpleConfig();
+		    this.rootConfig = new JAXBConfigImpl();
 		}
 		// append current root config to existing core config if config has already been initialized
-		Config currentRootConfig = ConfigContext.getRootConfig();
+		Config currentRootConfig = ConfigContext.getCurrentContextConfig();
 		if (currentRootConfig != null) {
-			currentRootConfig.getProperties().putAll(this.rootConfig.getProperties());
+			currentRootConfig.putConfig(rootConfig);
 			this.rootConfig = currentRootConfig;
 		} else {
 			ConfigContext.init(this.rootConfig);
 		}
-		if (this.configLocations != null) {
-			Config config = new SimpleConfig(this.configLocations, this.properties);
-			config.parseConfig();
-			// merge the configs
-			// TODO with a refactoring of the config system, should we move toward a CompositeConfig?  THat way we can preserve the info about where this config was
-			// loaded from instead of just copying the properties?
-			this.rootConfig.getProperties().putAll(config.getProperties());
-			this.rootConfig.getObjects().putAll(config.getObjects());
+		
+		if (this.configLocations != null && !this.configLocations.isEmpty()) {			
+			 Config tmpConfig = new JAXBConfigImpl(this.configLocations, this.properties);
+			tmpConfig.parseConfig();			
+			this.rootConfig.putConfig(tmpConfig);			
 		} else if (this.properties != null) {
-		    this.rootConfig.getProperties().putAll(this.properties);
+		    this.rootConfig.putProperties(this.properties);
 		}
 		// add the RiceConfigurer into the root ConfigContext for access later by the application
-		this.rootConfig.getObjects().put( RiceConstants.RICE_CONFIGURER_CONFIG_NAME, this );
+		
+		this.rootConfig.putObject( RiceConstants.RICE_CONFIGURER_CONFIG_NAME, this );
 		return this.rootConfig;
 	}
 
@@ -264,21 +262,20 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 			// TODO should there be a hierarchy here?
 			Config moduleConfig = module.loadConfig(rootConfig);
 			if (moduleConfig != null) {
-				rootConfig.getProperties().putAll(moduleConfig.getProperties());
-				rootConfig.getObjects().putAll(moduleConfig.getObjects());
+				rootConfig.putConfig(moduleConfig);				
 			}
 		}
 	}
 
 	protected void configureEnvironment(Config config) {
 		if (!StringUtils.isBlank(this.environment)) {
-			config.getProperties().put(Config.ENVIRONMENT, this.environment);
+			config.putProperty(Config.ENVIRONMENT, this.environment);		
 		}
 	}
 	
 	protected void configureServiceNamespace(Config config) {
 		if (!StringUtils.isBlank(this.serviceNamespace)) {
-			config.getProperties().put(Config.SERVICE_NAMESPACE, this.serviceNamespace);
+			config.putProperty(Config.SERVICE_NAMESPACE, this.serviceNamespace);
 		}
 	}
 

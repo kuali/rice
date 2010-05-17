@@ -26,9 +26,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.config.ModuleConfigurer;
-import org.kuali.rice.core.config.SimpleConfig;
-import org.kuali.rice.core.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
@@ -80,7 +79,8 @@ public class KEWConfigurer extends ModuleConfigurer {
 	@Override
 	public String getSpringFileLocations(){
 		String springFileLocations;
-		if (KEWConfigurer.REMOTE_RUN_MODE.equals(getRunMode()) || KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(ConfigContext.getCurrentContextConfig().getClientProtocol())) {
+		if (KEWConfigurer.REMOTE_RUN_MODE.equals(getRunMode()) || KEWConfigurer.THIN_RUN_MODE.equals(getRunMode()) ||
+				KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(ConfigContext.getCurrentContextConfig().getClientProtocol())) {
 			springFileLocations = "";
 		} else {
 			springFileLocations = getEmbeddedSpringFileLocation();
@@ -118,9 +118,9 @@ public class KEWConfigurer extends ModuleConfigurer {
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		if ( getRunMode().equals( REMOTE_RUN_MODE ) ) {
+		if ( getRunMode().equals( THIN_RUN_MODE ) ) {
 			lifecycles.add(createThinClientLifecycle());
-		} else { // local or embedded
+		} else if ( !getRunMode().equals( REMOTE_RUN_MODE ) ) { // local or embedded
 			lifecycles.add(createEmbeddedLifeCycle());
 		}
 		return lifecycles;
@@ -155,7 +155,9 @@ public class KEWConfigurer extends ModuleConfigurer {
 		List<String> defaultConfigLocations = new ArrayList<String>();
 		defaultConfigLocations.add(KEWConstants.DEFAULT_GLOBAL_CONFIG_LOCATION);
 		defaultConfigLocations.add(KEWConstants.DEFAULT_APPLICATION_CONFIG_LOCATION);
-		Config kewConfig = new SimpleConfig(defaultConfigLocations, parentConfig.getProperties());
+		
+		Config kewConfig = new JAXBConfigImpl(defaultConfigLocations, parentConfig.getProperties());
+		
 		kewConfig.parseConfig();
 		mergeDefaultsIntoParentConfig(parentConfig, kewConfig);
 		return parentConfig;
@@ -170,7 +172,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 		for (Object keyObj : defaultConfig.getProperties().keySet()) {
 			String key = (String)keyObj;
 			if (!parentConfig.getProperties().containsKey(key)) {
-				parentConfig.getProperties().put(key, defaultConfig.getProperty(key));
+				parentConfig.putProperty(key, defaultConfig.getProperty(key));
 			}
 		}
 	}
@@ -187,7 +189,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 			clientProtocol = config.getClientProtocol();
 			if (StringUtils.isBlank(clientProtocol)) {
 			    // if not explcitly set, set the protocol based on the run mode
-			    if ( getRunMode().equals( REMOTE_RUN_MODE ) ) {
+			    if ( getRunMode().equals( REMOTE_RUN_MODE ) || getRunMode().equals( THIN_RUN_MODE ) ) {
 			        clientProtocol = KEWConstants.WEBSERVICE_CLIENT_PROTOCOL;
 			    } else {
 			        clientProtocol = KEWConstants.LOCAL_CLIENT_PROTOCOL;
@@ -202,14 +204,14 @@ public class KEWConfigurer extends ModuleConfigurer {
 		if (!KEWConstants.CLIENT_PROTOCOLS.contains(clientProtocol)) {
 			throw new ConfigurationException("Invalid client protocol specified '" + clientProtocol + "'.");
 		}
-		config.getProperties().put(Config.CLIENT_PROTOCOL, clientProtocol);
+		config.putProperty(Config.CLIENT_PROTOCOL, clientProtocol);
 	}
 
 	protected void configureDataSource(Config config) {
 		if (getDataSource() != null) {
-			config.getObjects().put(KEW_DATASOURCE_OBJ, getDataSource());
+			config.putObject(KEW_DATASOURCE_OBJ, getDataSource());
 		} else if (!StringUtils.isBlank(getDataSourceJndiName())) {
-			config.getProperties().put(KEW_DATASOURCE_JNDI, getDataSourceJndiName());
+			config.putProperty(KEW_DATASOURCE_JNDI, getDataSourceJndiName());
 		}
 	}
 

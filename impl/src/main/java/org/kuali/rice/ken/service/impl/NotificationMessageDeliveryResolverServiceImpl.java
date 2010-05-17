@@ -81,10 +81,11 @@ public class NotificationMessageDeliveryResolverServiceImpl extends ConcurrentJo
     @Override
     protected Collection<Notification> takeAvailableWorkItems() {
         Collection<Notification> nots = notificationService.takeNotificationsForResolution();
-        LOG.debug("Took " + nots.size() + " notifications");
-        for (Notification not: nots) {
-            LOG.debug("Took notification: " + not.getId() + " " + not.getTitle());
-        }
+        //LOG.debug("Took " + nots.size() + " notifications");
+        
+        //for (Notification not: nots) {
+        //   LOG.debug("Took notification: " + not.getId() + " " + not.getTitle());
+        //}
         return nots;
     }
 

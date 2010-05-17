@@ -36,6 +36,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     private static final long serialVersionUID = 4372435175782501152L;
     
 	protected boolean datePicker;
+	protected boolean expandedTextArea;
     protected String script;
     protected String valuesFinderClass;
     protected String businessObjectClass;
@@ -63,7 +64,19 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     public void setDatePicker(boolean datePicker) {
         this.datePicker=datePicker;
     }
+    
+    public boolean isExpandedTextArea() {
+        return expandedTextArea;
+    }
 
+    /** Whether this control should have a expanded text area button next to the field.
+     *  Valid for textarea fields.
+     *  
+     * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#setExpandedTextArea(boolean)
+     */
+    public void setExpandedTextArea(boolean eTextArea) {
+        this.expandedTextArea=eTextArea;
+    }
 
     /**
      * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isCheckbox()

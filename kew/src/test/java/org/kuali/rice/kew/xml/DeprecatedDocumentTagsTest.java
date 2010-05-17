@@ -48,7 +48,7 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
     private static final String TEST_GROUP_NAME = "TestWorkgroup";
     
     protected void loadTestData() throws Exception {
-        ConfigContext.getCurrentContextConfig().overrideProperty("test.doctype.workgroup", TEST_GROUP_NAME);
+        ConfigContext.getCurrentContextConfig().putProperty("test.doctype.workgroup", TEST_GROUP_NAME);
         loadXmlFile("DeprecatedDocumentTags.xml");
     }
     

@@ -151,7 +151,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		List services = (List) ConfigContext.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
 		if (services == null) {
 			services = new ArrayList();
-			ConfigContext.getCurrentContextConfig().getObjects().put(Config.BUS_DEPLOYED_SERVICES, services);
+			ConfigContext.getCurrentContextConfig().putObject(Config.BUS_DEPLOYED_SERVICES, services);
 		}
 		services.add(serviceDefinition);
 		// force an immediate registry of the service

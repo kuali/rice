@@ -42,6 +42,7 @@ public class KIMConfigurer extends ModuleConfigurer {
 		super();
 		setModuleName( "KIM" );
 		setHasWebInterface( true );
+		VALID_RUN_MODES.remove( THIN_RUN_MODE );
 	}
 
 	@Override

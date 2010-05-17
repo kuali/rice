@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.util.ImmutableProperties;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.properties.PropertyHolder;
 import org.kuali.rice.kns.util.spring.Cached;
@@ -93,13 +94,6 @@ public abstract class AbstractStaticConfigurationServiceImpl {
     public Properties getAllProperties() {
         LOG.debug("getAllProperties() started");
 
-        Properties p = new Properties();
-
-        for (Iterator i = propertyHolder.getKeys(); i.hasNext();) {
-            String key = (String) i.next();
-            p.setProperty(key, propertyHolder.getProperty(key));
-        }
-
-        return p;
+        return new ImmutableProperties(propertyHolder.getHeldProperties());      
     }
 }

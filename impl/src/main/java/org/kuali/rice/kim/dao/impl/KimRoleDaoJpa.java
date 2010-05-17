@@ -41,6 +41,7 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -770,4 +771,68 @@ public class KimRoleDaoJpa implements KimRoleDao {
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection, java.util.Collection, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	@Override
+	public List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds(
+			Collection<String> roleIds, Collection<String> groupIds,
+			AttributeSet qualification) {
+		// TODO jjhanso - THIS METHOD NEEDS JAVADOCS
+		return null;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(java.util.Collection, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	@Override
+	public List<RoleMemberImpl> getRoleMembersForRoleIds(
+			Collection<String> roleIds, String memberTypeCode,
+			AttributeSet qualification) {
+		// TODO jjhanso - THIS METHOD NEEDS JAVADOCS
+		return null;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIdsWithFilters(java.util.Collection, java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	@Override
+	public List<RoleMemberImpl> getRoleMembersForRoleIdsWithFilters(
+			Collection<String> roleIds, String principalId,
+			List<String> groupIds, AttributeSet qualification) {
+		// TODO jjhanso - THIS METHOD NEEDS JAVADOCS
+		return null;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembershipsForRoleIdsAsMembers(java.util.Collection, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	@Override
+	public List<RoleMemberImpl> getRoleMembershipsForRoleIdsAsMembers(
+			Collection<String> roleIds, AttributeSet qualification) {
+		// TODO jjhanso - THIS METHOD NEEDS JAVADOCS
+		return null;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	@Override
+	public List<RoleMemberImpl> getRolePrincipalsForPrincipalIdAndRoleIds(
+			Collection<String> roleIds, String principalId,
+			AttributeSet qualification) {
+		// TODO jjhanso - THIS METHOD NEEDS JAVADOCS
+		return null;
+	}
 }

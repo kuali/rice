@@ -302,8 +302,8 @@ public class RuleXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testParameterReplacement() throws IOException, InvalidXmlException {
-        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.user", "user3");
-        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "WorkflowAdmin");
+        ConfigContext.getCurrentContextConfig().putProperty("test.replacement.user", "user3");
+        ConfigContext.getCurrentContextConfig().putProperty("test.replacement.workgroup", "WorkflowAdmin");
         List<RuleBaseValues> rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
         assertEquals(1, rules.size());
         RuleBaseValues rule = rules.get(0);
@@ -316,8 +316,8 @@ public class RuleXmlParserTest extends KEWTestCase {
             assertEquals("WorkflowAdmin", resp.getGroup().getGroupName());
         }
 
-        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.user", "user1");
-        ConfigContext.getCurrentContextConfig().overrideProperty("test.replacement.workgroup", "TestWorkgroup");
+        ConfigContext.getCurrentContextConfig().putProperty("test.replacement.user", "user1");
+        ConfigContext.getCurrentContextConfig().putProperty("test.replacement.workgroup", "TestWorkgroup");
         rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));
         assertEquals(1, rules.size());
         rule = rules.get(0);

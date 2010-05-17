@@ -36,14 +36,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public class LookupDaoProxy implements LookupDao {
-//	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDaoProxy.class);
     
 	private LookupDao lookupDaoJpa;
+	private LookupDao lookupDaoOjb;
     private static KualiModuleService kualiModuleService;
     private static Map<String, LookupDao> lookupDaoValues = Collections.synchronizedMap(new HashMap<String, LookupDao>());
 	
     public void setLookupDaoJpa(LookupDao lookupDaoJpa) {
 		this.lookupDaoJpa = lookupDaoJpa;
+	}
+	
+	public void setLookupDaoOjb(LookupDao lookupDaoOjb) {
+		this.lookupDaoOjb = lookupDaoOjb;
 	}
 	
     private LookupDao getDao(Class clazz) {
@@ -65,6 +69,7 @@ public class LookupDaoProxy implements LookupDao {
                 	if (entityManager != null) {
                 		classSpecificLookupDaoJpa.setEntityManager(entityManager);
                 		classSpecificLookupDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                        	classSpecificLookupDaoJpa.setDateTimeService(KNSServiceLocator.getDateTimeService());
                 		lookupDaoValues.put(dataSourceName, classSpecificLookupDaoJpa);
                 		return classSpecificLookupDaoJpa;
                 	} else {

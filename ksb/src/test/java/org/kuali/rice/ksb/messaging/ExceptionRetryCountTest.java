@@ -69,7 +69,7 @@ public class ExceptionRetryCountTest extends KSBTestCase {
     public void testRetryCount() throws Exception {
 		//Turn the requeue up very high so the message will go through all it's requeues immediately
 
-		ConfigContext.getCurrentContextConfig().overrideProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "100");
+		ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "100");
 
 	KSBJavaService explodingQueue = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(
 		this.retryCountServiceName);

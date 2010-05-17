@@ -52,7 +52,7 @@ public class SpringBeanFactoryResourceLoader extends BaseResourceLoader implemen
 	public Object getService(QName serviceName) {
 		String resolvedServiceName = resolveServiceName(serviceName);
 		if (this.beanFactory.containsBean(resolvedServiceName)) {
-			Object service = this.beanFactory.getBean(serviceName.toString());
+			Object service = this.beanFactory.getBean(resolvedServiceName);
 			if (service != null) {
 				return postProcessService(serviceName, service);
 			}

@@ -517,6 +517,22 @@
 		<property name="exportIf" value="WorkflowDocumentActionsServiceSOAP.expose"/>
 	</bean>
 
+	<bean parent="kewLocalServiceExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceDefinition">
+			<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<property name="service">
+					<ref bean="enWorkflowDocumentActionsService" />
+				</property>
+				<property name="localServiceName" value="enWorkflowDocumentActionsService" />
+				<property name="serviceNameSpaceURI" value="" />
+				<property name="priority" value="3" />
+				<property name="retryAttempts" value="0" />
+				<property name="busSecurity" value="${secure.workflowdocument.javaservice.endpoint}"/>
+			</bean>
+		</property>
+	</bean>
+
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
 		<property name="serviceDefinition">
@@ -544,6 +560,22 @@
           </property>
 		<property name="exportIf" value="WorkflowUtilityServiceSOAP.expose" />
     </bean>
+
+	<bean parent="kewLocalServiceExporter">
+		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+		<property name="serviceDefinition">
+			<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
+				<property name="service">
+					<ref bean="enWorkflowUtilityService" />
+				</property>
+				<property name="localServiceName" value="enWorkflowUtilityService" />
+				<property name="serviceNameSpaceURI" value="" />
+				<property name="priority" value="3" />
+				<property name="retryAttempts" value="0" />
+				<property name="busSecurity" value="${secure.workflowutility.javaservice.endpoint}"/>
+			</bean>
+		</property>
+	</bean>
 
 	<bean parent="kewLocalServiceExporter">
 	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>

@@ -82,15 +82,15 @@ public class ThreadPoolAction extends KSBAction {
 	    form.getThreadPool().setMaximumPoolSize(form.getMaximumPoolSize());
 
 	    if (form.getTimeIncrement() == null) {
-		ConfigContext.getCurrentContextConfig().getProperties().remove(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY);
+		ConfigContext.getCurrentContextConfig().removeProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY);
 	    } else {
-		ConfigContext.getCurrentContextConfig().getProperties().put(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, form.getTimeIncrement().toString());
+		ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, form.getTimeIncrement().toString());
 	    }
 
 	    if (form.getMaxRetryAttempts() == null) {
-		ConfigContext.getCurrentContextConfig().getProperties().remove(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY);
+		ConfigContext.getCurrentContextConfig().removeProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY);
 	    } else {
-		ConfigContext.getCurrentContextConfig().getProperties().put(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, form.getMaxRetryAttempts().toString());
+		ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, form.getMaxRetryAttempts().toString());
 	    }
 	}
 	return mapping.findForward("basic");

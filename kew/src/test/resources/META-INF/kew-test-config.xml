@@ -27,6 +27,7 @@
 
 	<param name="webservices.settings.url">${kew.url.host}:${http.service.port}/en-test/services</param>
     <param name="edl.config.loc">classpath:META-INF/EDLConfig.xml</param>
+    <param name="edl.style.gidgets">classpath:org/kuali/rice/kew/edl/gidgets.xml</param>
 
 	<param name="plugin.dir">${workflow.base}/../../../test/plugin</param> -->
 	<param name="plugin.dir">./work/unit-test/plugins</param>

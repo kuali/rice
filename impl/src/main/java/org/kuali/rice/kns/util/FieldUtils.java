@@ -240,6 +240,8 @@ public class FieldUtils {
                 else {
                     field.setCols(40);
                 }
+
+                field.setExpandedTextArea(control.isExpandedTextArea());
             }
 
             // for dropdown and radio, get instance of specified KeyValuesFinder and set field values

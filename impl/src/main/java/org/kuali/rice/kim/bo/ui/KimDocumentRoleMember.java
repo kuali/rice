@@ -226,7 +226,12 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 	public AttributeSet getQualifierAsAttributeSet() {
 		AttributeSet m = new AttributeSet();
 		for ( KimDocumentRoleQualifier data : getQualifiers() ) {
-			m.put( data.getKimAttribute().getAttributeName(), data.getAttrVal() );
+			if (data.getKimAttribute() == null){
+				data.refreshReferenceObject("kimAttribute");
+			}
+			if (data.getKimAttribute() != null){
+				m.put( data.getKimAttribute().getAttributeName(), data.getAttrVal() );
+			}
 		}
 		return m;
 	}

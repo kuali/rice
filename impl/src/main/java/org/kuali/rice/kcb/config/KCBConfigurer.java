@@ -37,6 +37,7 @@ public class KCBConfigurer extends ModuleConfigurer {
     public KCBConfigurer() {
         super();
         setModuleName(MODULE_NAME);
+        VALID_RUN_MODES.remove( THIN_RUN_MODE );
         LOG.info("KCBConfigurer constructed");
     }
 

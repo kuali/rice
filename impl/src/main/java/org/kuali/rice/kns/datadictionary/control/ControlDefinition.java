@@ -26,6 +26,9 @@ public interface ControlDefinition extends DataDictionaryDefinition {
 
     public boolean isDatePicker();
     public void setDatePicker(boolean datePicker);
+    
+    public boolean isExpandedTextArea();
+    public void setExpandedTextArea(boolean eTextArea);
 
     /**
      * @return true if this ControlDefinition instance represents an HTML checkbox control

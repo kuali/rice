@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,8 +31,11 @@ import javax.xml.transform.stream.StreamSource;
 
 import junit.framework.AssertionFailedError;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
+import org.kuali.rice.kew.edl.dao.EDocLiteDAO;
 import org.kuali.rice.kew.edl.service.StyleService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -45,13 +48,14 @@ import org.kuali.rice.kew.test.TestUtilities;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class StyleServiceImplTest extends KEWTestCase {
+    private static final Logger LOG = Logger.getLogger(StyleServiceImplTest.class);
 
 	@Test public void testLoadXML() throws FileNotFoundException {
         loadXmlFile("style.xml");
 
         StyleService styleService = KEWServiceLocator.getStyleService();
         assertNotNull("Style 'an_arbitrary_style' not found", styleService.getStyle("an_arbitrary_style"));
-        
+
         assertTrue("Style not found among all styles", styleService.getStyleNames().contains("an_arbitrary_style"));
 
         EDocLiteStyle style = styleService.getStyle("an_arbitrary_style");
@@ -62,11 +66,42 @@ public class StyleServiceImplTest extends KEWTestCase {
         assertNotNull(style.getXmlContent());
     }
 
+
+	/**
+	 * Tests automatic import of styles from files based on configuration properties.
+	 * See edl.style.widgets in common-config-defualts.xml, edl.style.gidgets in kew-test-config.xml
+	 */
+    @Test public void testLoadingFromConfiguredFile() {
+        StyleService styleService = KEWServiceLocator.getStyleService();
+        EDocLiteDAO dao = (EDocLiteDAO)KEWServiceLocator.getService("enEDocLiteDAO");
+
+        String notThereStyle = "gidgets";
+        String isThereStyle = "widgets";
+
+        // first verify that the database doesn't contain these styles already
+        assertNull(dao.getEDocLiteStyle(notThereStyle));
+        assertNull(dao.getEDocLiteStyle(isThereStyle));
+
+        // test loading an incorrectly configured style
+        try {
+            // the configured location for the gidgets style doesn't contain a file
+            styleService.getStyle(notThereStyle);
+            fail("should have thrown " + RiceRuntimeException.class.getSimpleName());
+        } catch (RiceRuntimeException e) {
+            LOG.info("^^^ CAUGHT EXPECTED EXCEPTION ^^^");
+        } catch (Exception e) {
+            fail("Wrong exception type '" + e.getClass() + "', should have been '" + RiceRuntimeException.class.getCanonicalName() + "'");
+        }
+
+        styleService.getStyle("widgets");
+        // should succeed in loading it's style into the database
+    }
+
     @Test public void testInclusions() throws FileNotFoundException, TransformerConfigurationException, TransformerException {
         loadXmlFile("style.xml");
 
         StyleService styleService = KEWServiceLocator.getStyleService();
-        
+
         // ignoring the duplicate definition via inclusion test as the behavior seems
         // unspecified
         // XML.com claims it is an "error": http://www.xml.com/pub/a/2000/11/01/xslt/index.html
@@ -152,38 +187,38 @@ public class StyleServiceImplTest extends KEWTestCase {
         assertNotNull(style);
         assertNotNull(style.getXmlContent());
     }
-    
-    /** 
+
+    /**
      * Tests the caching of "styles" in StyleServiceImpl.
-     * 
-     * The style cache is really a cache of java.xml.transform.Templates objects which represent 
+     *
+     * The style cache is really a cache of java.xml.transform.Templates objects which represent
      * the "compiled" stylesheets.
      */
     @Test public void testStyleCaching() throws Exception {
         loadXmlFile("style.xml");
-        
+
         // try to grab the templates out of the cache, it shouldn't be cached yet
         Templates cachedTemplates = new StyleServiceImpl().fetchTemplatesFromCache("an_arbitrary_style");
         assertNull("The default style template should not be cached yet.", cachedTemplates);
-        
+
         // fetch the Templates object from the service
         Templates templates = KEWServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
         assertNotNull("Templates should not be null.", templates);
         templates = KEWServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
         assertNotNull("Templates should not be null.", templates);
-        
+
         // the Templates should now be cached
         cachedTemplates = new StyleServiceImpl().fetchTemplatesFromCache("an_arbitrary_style");
         assertNotNull("Templates should now be cached.", cachedTemplates);
-        
+
         // the cached Templates should be the same as the Templates we fetched from the service
         assertEquals("Templates should be the same.", templates, cachedTemplates);
-        
+
         // now re-import the style and the templates should no longer be cached
         loadXmlFile("style.xml");
         cachedTemplates = new StyleServiceImpl().fetchTemplatesFromCache("an_arbitrary_style");
         assertNull("After re-import, the Default style Templates should no longer be cached.", cachedTemplates);
-        
+
         // re-fetch the templates from the service and verify they are in the cache
         Templates newTemplates = KEWServiceLocator.getStyleService().getStyleAsTranslet("an_arbitrary_style");
         assertNotNull("Templates should not be null.", templates);
@@ -192,9 +227,9 @@ public class StyleServiceImplTest extends KEWTestCase {
 
         cachedTemplates = new StyleServiceImpl().fetchTemplatesFromCache("an_arbitrary_style");
         assertNotNull("Templates should now be cached.", cachedTemplates);
-        
+
         // lastly, check that the newly cached templates are not the same as the original templates
         assertFalse("Old Templates should be different from new Templates.", templates.equals(newTemplates));
-        
+
     }
 }

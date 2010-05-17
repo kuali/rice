@@ -18,6 +18,7 @@ package org.kuali.rice.web.test;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.spring.ConfigFactoryBean;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
@@ -90,7 +91,7 @@ public class ServerTestBase extends RiceInternalSuiteDataTestCase {
 		return new BaseLifecycle() {
 			public void start() throws Exception {
 				System.setProperty(KEWConstants.BOOTSTRAP_SPRING_FILE, "SampleAppBeans-test.xml");
-                ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();
+                ConfigFactoryBean.CONFIG_OVERRIDE_LOCATION = getTestConfigFilename();                
                 new JettyServerLifecycle(getPort(), getContextName(), getRelativeWebappRoot()).start();
                 new KEWXmlDataLoaderLifecycle(getXmlFilename()).start();
                 System.getProperties().remove(KEWConstants.BOOTSTRAP_SPRING_FILE);

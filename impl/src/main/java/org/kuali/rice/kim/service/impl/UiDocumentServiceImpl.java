@@ -725,12 +725,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						if (attrDefId!=null && StringUtils.equals(attrDefId, qualifier.getKimAttributeId())) {
 				    		KimDocumentRoleQualifier docRoleQualifier = new KimDocumentRoleQualifier();
 				    		docRoleQualifier.setAttrDataId(qualifier.getAttributeDataId());
-				    		docRoleQualifier.setAttrVal(qualifier.getAttributeValue());
+				    		docRoleQualifier.setAttrVal(qualifier.getAttributeValue()); 
 				    		docRoleQualifier.setKimAttrDefnId(qualifier.getKimAttributeId());
 				    		docRoleQualifier.setKimAttribute(qualifier.getKimAttribute());
 				    		docRoleQualifier.setKimTypId(qualifier.getKimTypeId());
 				    		docRoleQualifier.setRoleMemberId(qualifier.getRoleMemberId());
-				    		docRoleQualifier.setEdit(true);
+				    		docRoleQualifier.setEdit(true);  
+				    		formatAttrValIfNecessary(docRoleQualifier);
 				    		docRoleQualifiers.add(docRoleQualifier);
 				    		qualifierFound = true;
 				    		break;
@@ -745,6 +746,18 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		    		docRoleQualifiers.add(docRoleQualifier);
 				}
 			}
+			// If all of the qualifiers are empty, return an empty list
+			// This is to prevent dynamic qualifiers from appearing in the 
+			// person maintenance roles tab.  see KULRICE-3989 for more detail
+			int qualCount = 0;
+			for (KimDocumentRoleQualifier qual : docRoleQualifiers){
+				if (StringUtils.isEmpty(qual.getAttrVal())){
+					qualCount++;
+				}
+			}
+			if (qualCount == docRoleQualifiers.size()){
+				return new ArrayList <KimDocumentRoleQualifier>();
+			}				
 		}
     	return docRoleQualifiers;
     }
@@ -1699,6 +1712,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	public String getMemberName(String memberTypeCode, String memberId){
 		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
 		BusinessObject member = getMember(memberTypeCode, memberId);
+		if (member == null) { //not a REAL principal, try to fake the name
+			String fakeName = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId).getPrincipalName();
+			if(fakeName == null || fakeName.equals("")) {	
+				return "";
+			}
+			return fakeName;
+		}
 		return getMemberName(memberTypeCode, member);
 	}
 
@@ -1752,6 +1772,25 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			List<RoleMemberAttributeDataImpl> attributeDataList){
 		List<KimDocumentRoleQualifier> pndMemberRoleQualifiers = new ArrayList<KimDocumentRoleQualifier>();
 		KimDocumentRoleQualifier pndMemberRoleQualifier = new KimDocumentRoleQualifier();
+		
+		// add all attributes from attributeDataList
+		if(attributeDataList!=null){
+			for(RoleMemberAttributeDataImpl memberRoleQualifier: attributeDataList){
+				pndMemberRoleQualifier = new KimDocumentRoleQualifier();
+				pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getAttributeDataId());
+				pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
+				pndMemberRoleQualifier.setRoleMemberId(memberRoleQualifier.getRoleMemberId());
+				pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
+				pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
+				pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
+				formatAttrValIfNecessary(pndMemberRoleQualifier);
+				pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
+			}
+		}
+		// also add any attributes already in the document that are not in the attributeDataList
+		int countOfOriginalAttributesNotPresent = 0;
+		List<KimDocumentRoleQualifier> fillerRoleQualifiers = new ArrayList<KimDocumentRoleQualifier>();
+		
 		AttributeDefinitionMap origAttributes = identityManagementRoleDocument.getDefinitions();
 		if ( origAttributes != null ) {
 			for(String key: origAttributes.keySet()) {
@@ -1760,23 +1799,22 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(attributeDataList!=null){
 					for(RoleMemberAttributeDataImpl memberRoleQualifier: attributeDataList){
 						if(origAttributeId!=null && StringUtils.equals(origAttributeId, memberRoleQualifier.getKimAttribute().getKimAttributeId())){
-							pndMemberRoleQualifier = new KimDocumentRoleQualifier();
-							pndMemberRoleQualifier.setAttrDataId(memberRoleQualifier.getAttributeDataId());
-							pndMemberRoleQualifier.setAttrVal(memberRoleQualifier.getAttributeValue());
-							pndMemberRoleQualifier.setRoleMemberId(memberRoleQualifier.getRoleMemberId());
-							pndMemberRoleQualifier.setKimTypId(memberRoleQualifier.getKimTypeId());
-							pndMemberRoleQualifier.setKimAttrDefnId(memberRoleQualifier.getKimAttributeId());
-							pndMemberRoleQualifier.setKimAttribute(memberRoleQualifier.getKimAttribute());
-							pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
 							attributePresent = true;
+							break;
 						}
 					}
 				}
 				if(!attributePresent){
+					countOfOriginalAttributesNotPresent++;
 					pndMemberRoleQualifier = new KimDocumentRoleQualifier();
 					pndMemberRoleQualifier.setKimAttrDefnId(origAttributeId);
-					pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
+					pndMemberRoleQualifier.refreshReferenceObject("kimAttribute");
+					fillerRoleQualifiers.add(pndMemberRoleQualifier);
 				}
+			}
+			
+			if(countOfOriginalAttributesNotPresent != origAttributes.size()) {
+				pndMemberRoleQualifiers.addAll(fillerRoleQualifiers);
 			}
 		}
 		return pndMemberRoleQualifiers;
@@ -1875,6 +1913,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(!attributePresent){
 					pndMemberRoleQualifier = new RoleDocumentDelegationMemberQualifier();
 					pndMemberRoleQualifier.setKimAttrDefnId(origAttributeId);
+					pndMemberRoleQualifier.refreshReferenceObject("kimAttribute");
 					pndMemberRoleQualifiers.add(pndMemberRoleQualifier);
 				}
 				attributePresent = false;
@@ -2202,12 +2241,29 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @param roleMemberAttributeData a role member qualifier attribute to update
 	 */
 	protected void updateAttrValIfNecessary(RoleMemberAttributeDataImpl roleMemberAttributeData) {
-		final AttributeDefinition attributeDefinition = getKNSAttributeDefinition(roleMemberAttributeData);
+		final AttributeDefinition attributeDefinition = getKNSAttributeDefinition(roleMemberAttributeData.getKimTypeId(), roleMemberAttributeData.getKimAttributeId());
 		if (attributeDefinition != null) {
 			if (attributeDefinition.getControl() != null && attributeDefinition.getControl().isCheckbox()) {
-				formatCheckboxAttributeData(roleMemberAttributeData);
+				convertCheckboxAttributeData(roleMemberAttributeData);
 			}
 		}
+	}
+	
+	protected void formatAttrValIfNecessary(KimDocumentRoleQualifier roleQualifier) {
+		final AttributeDefinition attributeDefinition = getKNSAttributeDefinition(roleQualifier.getKimTypId(), roleQualifier.getKimAttrDefnId());
+		if (attributeDefinition != null) {
+			if (attributeDefinition.getControl() != null && attributeDefinition.getControl().isCheckbox()) {
+				formatCheckboxAttributeData(roleQualifier);
+			}
+		}
+	}
+	
+	protected void formatCheckboxAttributeData(KimDocumentRoleQualifier roleQualifier) {
+		if (roleQualifier.getAttrVal().equals(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE)) {
+			roleQualifier.setAttrVal(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE_DISPLAY);
+		} else if (roleQualifier.getAttrVal().equals(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE)) {  
+			roleQualifier.setAttrVal(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY);     
+		}  
 	}
 	
 	/**
@@ -2216,12 +2272,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @param roleMemberAttributeData a qualifier's attribute information
 	 * @return the KNS attribute used to render that qualifier, or null if the AttributeDefinition cannot be determined
 	 */
-	protected AttributeDefinition getKNSAttributeDefinition(RoleMemberAttributeDataImpl roleMemberAttributeData) {
-		final KimTypeInfo type = getKimTypeInfoService().getKimType(roleMemberAttributeData.getKimTypeId());
+	protected AttributeDefinition getKNSAttributeDefinition(String kimTypId, String attrDefnId) {
+		final KimTypeInfo type = getKimTypeInfoService().getKimType(kimTypId);
 		if (type != null) {
 			final KimTypeService typeService = (KimTypeService)KIMServiceLocator.getBean(type.getKimTypeServiceName());
 			if (typeService != null) {
-				final KimTypeAttributeInfo attributeInfo = type.getAttributeDefinition(roleMemberAttributeData.getKimAttributeId());
+				final KimTypeAttributeInfo attributeInfo = type.getAttributeDefinition(attrDefnId);
 				if (attributeInfo != null) {
 					final AttributeDefinitionMap attributeMap = typeService.getAttributeDefinitions(type.getKimTypeId());
 					if (attributeMap != null) {
@@ -2236,13 +2292,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	/**
 	 * Formats the attribute value on this checkbox attribute, changing "on" to "Y" and "off" to "N"
 	 * 
-	 * @param roleMemberAttributeData the attribute data to format the attribute value of
+	 * @param roleMemberAttributeData the attribute data to format the attribute value of 
 	 */
-	protected void formatCheckboxAttributeData(RoleMemberAttributeDataImpl roleMemberAttributeData) {
-		if (roleMemberAttributeData.getAttributeValue().equals("on")) {
-			roleMemberAttributeData.setAttributeValue("Y");
-		} else if (roleMemberAttributeData.getAttributeValue().equals("off")) {
-			roleMemberAttributeData.setAttributeValue("N");
+	protected void convertCheckboxAttributeData(RoleMemberAttributeDataImpl roleMemberAttributeData) {
+		if (roleMemberAttributeData.getAttributeValue().equalsIgnoreCase(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE_DISPLAY)) {
+			roleMemberAttributeData.setAttributeValue(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE);
+		} else if (roleMemberAttributeData.getAttributeValue().equalsIgnoreCase(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY)) { 
+			roleMemberAttributeData.setAttributeValue(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE);
 		}
 	}
 

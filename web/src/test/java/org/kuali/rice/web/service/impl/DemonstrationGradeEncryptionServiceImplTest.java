@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl;
@@ -91,10 +92,10 @@ public class DemonstrationGradeEncryptionServiceImplTest extends ServerTestBase 
         Config config = ConfigContext.getCurrentContextConfig();
         if (config == null) {
             // because of previously running tests, the config might already be initialized
-            config = new SimpleConfig();
+            config = new JAXBConfigImpl();
             ConfigContext.init(config);
         }
-        config.overrideProperty("encryption.key", key);
+        config.putProperty("encryption.key", key);
 
         final EncryptionService service = new DemonstrationGradeEncryptionServiceImpl();
         List<Thread> threads = new ArrayList<Thread>();
@@ -137,10 +138,10 @@ public class DemonstrationGradeEncryptionServiceImplTest extends ServerTestBase 
         Config config = ConfigContext.getCurrentContextConfig();
         if (config == null) {
             // because of previously running tests, the config might already be initialized
-            config = new SimpleConfig();
+            config = new JAXBConfigImpl();
             ConfigContext.init(config);
         }
-        config.overrideProperty("encryption.key", key);
+        config.putProperty("encryption.key", key);
         List<Thread> threads = new ArrayList<Thread>();
         failed = false;
         for (int i = 0; i < 10; i++) {

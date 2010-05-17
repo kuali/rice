@@ -114,7 +114,7 @@ public class KENWebServiceTest extends ServerTestBase {
     public void invokeSOAPService() throws Exception {
         QName serviceName = new QName("TRAVEL", "sendNotificationKewXmlSOAPService");
 
-        ConfigContext.getCurrentContextConfig().overrideProperty("bam.enabled", "true");
+        ConfigContext.getCurrentContextConfig().putProperty("bam.enabled", "true");
         KSBXMLService service = (KSBXMLService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
         service.invoke(notificationMessageAsXml);
 

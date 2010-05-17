@@ -1,5 +1,5 @@
 README.txt
-Kuali Rice 1.0.1.1
+Kuali Rice 1.1.0
 February 5, 2010
 
 

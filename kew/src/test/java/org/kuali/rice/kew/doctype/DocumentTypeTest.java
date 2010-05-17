@@ -55,7 +55,7 @@ public class DocumentTypeTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(DocumentTypeTest.class);
 
     protected void loadTestData() throws Exception {
-        ConfigContext.getCurrentContextConfig().overrideProperty("test.doctype.workgroup", "TestWorkgroup");
+        ConfigContext.getCurrentContextConfig().putProperty("test.doctype.workgroup", "TestWorkgroup");
         loadXmlFile("DoctypeConfig.xml");
     }
 
@@ -170,7 +170,7 @@ public class DocumentTypeTest extends KEWTestCase {
      * @throws Exception
      */
     @Test public void testDocumentTypeXmlParser() throws Exception {
-        ConfigContext.getCurrentContextConfig().overrideProperty("test.base.url", "http://someurl/path");
+        ConfigContext.getCurrentContextConfig().putProperty("test.base.url", "http://someurl/path");
         DocumentType parsedDocument = KEWServiceLocator.getDocumentTypeService().findByName("DocumentType");
         assertEquals("Wrong name", "DocumentType", parsedDocument.getName());
         assertEquals("Wrong description", "TestDocumentType", parsedDocument.getDescription());

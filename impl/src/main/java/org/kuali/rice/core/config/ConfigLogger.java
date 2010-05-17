@@ -16,8 +16,10 @@
  */
 package org.kuali.rice.core.config;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -39,6 +41,17 @@ public class ConfigLogger {
 		{"encryption.key", "Top Secret Encryption Key"}
 	};
 	
+	/**
+	 * These are a list of keys that we know we can display regardless of whether they
+	 * are considered "secret"
+	 */
+	private static final String[] PUBLIC_KEYS = 
+	{ 
+		"cas.validate.password"
+		
+	};
+	 
+	
 	public static void logConfig(Config config) {
 		Map<String, String> safeConfig = getDisplaySafeConfig(config.getProperties());
 		String props = "";
@@ -59,8 +72,11 @@ public class ConfigLogger {
 	 */
 	public static String getDisplaySafeValue(String name, String value) {
 	    String safeValue = value;
+	    
+	    List<String> l = Arrays.asList(PUBLIC_KEYS);
+	    
         for (String[] secretKey : SECRET_KEYS) {
-            if (name.indexOf(secretKey[0]) > -1) {
+            if (name.indexOf(secretKey[0]) > -1 && !l.contains(name)) {
                 safeValue = secretKey[1];
                 break;
             }   

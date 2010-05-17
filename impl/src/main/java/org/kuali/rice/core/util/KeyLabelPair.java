@@ -18,20 +18,24 @@ package org.kuali.rice.core.util;
 import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.CompareToBuilder;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * A class for associating a text label with a given key.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KeyLabelPair implements Serializable{
+public class KeyLabelPair implements Serializable, Comparable<KeyLabelPair>{
 	private static final long serialVersionUID = 7997396592230527472L;
     public Object key;
     public String label;
     public int numPaddedSpaces;
     
     public KeyLabelPair() {
-    	numPaddedSpaces = 0;
+
     }
 
     public KeyLabelPair(Object key, String label) {
@@ -62,4 +66,63 @@ public class KeyLabelPair implements Serializable{
     public String getHtmlSpacePadding() {
     	return StringUtils.repeat("&nbsp;", numPaddedSpaces);
     }
+
+    /** {inheritDoc} */
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder(19, 39)
+		.append(this.label)
+		.append(this.key)
+		.append(this.numPaddedSpaces)
+		.toHashCode();
+	}
+
+	/** {inheritDoc} */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof KeyLabelPair)) {
+			return false;
+		}
+		
+		final KeyLabelPair other = (KeyLabelPair) obj;
+		return new EqualsBuilder()
+		.append(this.label, other.label)
+		.append(this.key, other.key)
+		.append(this.numPaddedSpaces, other.numPaddedSpaces)
+		.isEquals();
+	}
+
+	/** {inheritDoc} */
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this)
+		.append("label", this.label)
+		.append("key", this.key)
+		.append("numPaddedSpaces", this.numPaddedSpaces)
+		.toString();
+	}
+
+	/** {inheritDoc} */
+	public int compareTo(KeyLabelPair o) {
+		if (o == null) {
+			throw new NullPointerException("the object to compare to is null");
+		}
+		final CompareToBuilder builder = new CompareToBuilder();
+		builder.append(this.label, o.label, String.CASE_INSENSITIVE_ORDER);
+		
+		if (this.key instanceof String && o.key instanceof String) {
+			builder.append(this.key, o.key, String.CASE_INSENSITIVE_ORDER);	
+		} else {
+			builder.append(this.key, o.key);
+		}
+		
+		builder.append(this.numPaddedSpaces, o.numPaddedSpaces);
+		return builder.toComparison();
+	}
 }

@@ -17,8 +17,10 @@
 
 package org.kuali.rice.kew.edl.service.impl;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.Properties;
 
@@ -31,6 +33,9 @@ import javax.xml.transform.URIResolver;
 import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.kew.edl.WidgetURIResolver;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.edl.dao.EDocLiteDAO;
@@ -45,8 +50,10 @@ import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.StyleXmlParser;
 import org.kuali.rice.kew.xml.export.StyleXmlExporter;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -59,6 +66,7 @@ public class StyleServiceImpl implements StyleService {
     private static final Logger LOG = Logger.getLogger(StyleServiceImpl.class);
 
     private static final String TEMPLATES_CACHE_GROUP_NAME = "Templates";
+    private static final String STYLE_CONFIG_PREFIX = "edl.style";
 
     /**
      * The Spring-wired DAO bean
@@ -71,10 +79,91 @@ public class StyleServiceImpl implements StyleService {
         this.dao = dao;
     }
 
-    // ---- StyleService interface
-
+    /**
+     * Loads the named style from the database, or (if configured) imports it from a file
+     * specified via a configuration parameter with a name of the format edl.style.&lt;styleName&gt;
+     * {@inheritDoc}
+     * @see org.kuali.rice.kew.edl.service.StyleService#getStyle(java.lang.String)
+     */
     public EDocLiteStyle getStyle(String styleName) {
-        return dao.getEDocLiteStyle(styleName);
+        EDocLiteStyle result = null;
+        // try to fetch the style from the database
+        result = dao.getEDocLiteStyle(styleName);
+        // if it's null, look for a config param specifiying a file to load
+        if (result == null) {
+            String propertyName = STYLE_CONFIG_PREFIX + "." + styleName;
+            String location = ConfigContext.getCurrentContextConfig().getProperty(propertyName);
+            if (location != null) {
+
+                InputStream xml = null;
+
+                try {
+                    xml = RiceUtilities.getResourceAsStream(location);
+                } catch (MalformedURLException e) {
+                    throw new RiceRuntimeException(getUnableToLoadMessage(propertyName, location), e);
+                } catch (IOException e) {
+                    throw new RiceRuntimeException(getUnableToLoadMessage(propertyName, location), e);
+                }
+
+                if (xml == null) {
+                    throw new RiceRuntimeException(getUnableToLoadMessage(propertyName, location) + ", no such file");
+                }
+
+                Element style = findNamedStyle(styleName, xml);
+
+                if (style == null) {
+                    throw new RiceRuntimeException(getUnableToLoadMessage(propertyName, location) +
+                            ", no style named '"+ styleName +"' in that file");
+                }
+
+                EDocLiteStyle loadedStyle = parseEDocLiteStyle(style);
+                // redundant check, but it doesn't hurt
+                if (!styleName.equals(loadedStyle.getName())) {
+                    throw new RiceRuntimeException("EDocLiteStyle loaded from " + location +
+                            " does not contain style named " + styleName);
+                } else {
+                    LOG.info("importing style '" + styleName + "' from '" + location + "' as configured by "+ propertyName);
+                    saveStyle(loadedStyle);
+                    result = loadedStyle;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * returns the first <style> element it encounters with the
+     * given name attribute from an xml document
+     */
+    private Element findNamedStyle(String styleName, InputStream xml) {
+        Element style = null;
+
+        Document xmlDoc = parse(xml);
+        NodeList nodes = xmlDoc.getElementsByTagName("style");
+        if (nodes != null) for (int i=0; i<nodes.getLength(); i++) {
+            Element element = (Element)nodes.item(i);
+            NamedNodeMap attrs = element.getAttributes();
+            if (attrs != null) {
+                Attr attr = (Attr)attrs.getNamedItem("name");
+                if (styleName.equals(attr.getValue())) {
+                    style = element;
+                    break;
+                }
+            }
+        }
+        return style;
+    }
+
+    /**
+     * This method ...
+     *
+     * @param propertyName
+     * @param location
+     * @return
+     */
+    private String getUnableToLoadMessage(String propertyName, String location) {
+        return "unable to load resource at '" + location +
+                "' specified by configuration parameter '" + propertyName + "'";
     }
 
     public Templates getStyleAsTranslet(String name) throws TransformerConfigurationException {
@@ -147,7 +236,7 @@ public class StyleServiceImpl implements StyleService {
     }
 
     public void saveStyle(EDocLiteStyle data) {
-        EDocLiteStyle existingData = getStyle(data.getName());
+        EDocLiteStyle existingData = dao.getEDocLiteStyle(data.getName());
         if (existingData != null) {
             existingData.setActiveInd(Boolean.FALSE);
             dao.saveEDocLiteStyle(existingData);

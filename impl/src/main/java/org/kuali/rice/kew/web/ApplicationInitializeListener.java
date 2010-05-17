@@ -27,7 +27,9 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -117,7 +119,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
     		if (StringUtils.isEmpty(additionalConfigLocations)) {
     		    baseProps.setProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
     		}
-    		SimpleConfig config = new SimpleConfig(baseProps);
+    		Config config = new JAXBConfigImpl(baseProps);
     		config.parseConfig();
     		ConfigContext.init(config);
 

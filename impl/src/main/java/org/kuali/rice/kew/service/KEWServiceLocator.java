@@ -22,6 +22,8 @@ import javax.transaction.UserTransaction;
 import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.NodeSettings;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
@@ -84,6 +86,8 @@ public final class KEWServiceLocator {
 
 	private static final Logger LOG = Logger.getLogger(KEWServiceLocator.class);
 
+	public static final String KEW_RUN_MODE_PROPERTY = "kew.mode";
+	
 	public static final String DATASOURCE = "enWorkflowDataSource";
 
 	public static final String QUICK_LINKS_SERVICE = "enQuickLinksService";
@@ -253,15 +257,23 @@ public final class KEWServiceLocator {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + serviceName);
 		}
-		return GlobalResourceLoader.getResourceLoader().getService(new QName(serviceName));
+		return GlobalResourceLoader.getResourceLoader().getService(
+				(ModuleConfigurer.REMOTE_RUN_MODE.equals(ConfigContext.getCurrentContextConfig().getProperty(KEW_RUN_MODE_PROPERTY))) ?
+						new QName(KEWConstants.KEW_MODULE_NAMESPACE, serviceName) : new QName(serviceName));
 	}
 
 	public static WorkflowUtility getWorkflowUtilityService() {
-		return (WorkflowUtility) getBean(KEWConstants.WORKFLOW_UTILITY_SERVICE);
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Fetching service " + KEWConstants.WORKFLOW_UTILITY_SERVICE);
+		}
+		return (WorkflowUtility) GlobalResourceLoader.getResourceLoader().getService(new QName(KEWConstants.WORKFLOW_UTILITY_SERVICE));
 	}
 
 	public static WorkflowDocumentActions getWorkflowDocumentActionsService() {
-		return (WorkflowDocumentActions) getBean(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
+		if ( LOG.isDebugEnabled() ) {
+			LOG.debug("Fetching service " + KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE);
+		}
+		return (WorkflowDocumentActions) GlobalResourceLoader.getResourceLoader().getService(new QName(KEWConstants.WORKFLOW_DOCUMENT_ACTIONS_SERVICE));
 	}
 
 	public static DocumentTypeService getDocumentTypeService() {

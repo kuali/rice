@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2010 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -326,16 +326,6 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     // Persistence Methods
     // --------------------
 
-	// TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map
-
-	@SuppressWarnings("unchecked")
-	protected String getKimAttributeId( String attributeName ) {
-		Map<String,Object> critieria = new HashMap<String,Object>( 1 );
-		critieria.put( "attributeName", attributeName );
-		Collection<KimAttributeImpl> defs = getBusinessObjectService().findMatching( KimAttributeImpl.class, critieria );
-		return defs.iterator().next().getKimAttributeId();
-	}
-	
 	private void deleteNullMemberAttributeData(List<RoleMemberAttributeDataImpl> attributes) {
 		List<RoleMemberAttributeDataImpl> attributesToDelete = new ArrayList<RoleMemberAttributeDataImpl>();
 		for(RoleMemberAttributeDataImpl attribute: attributes){

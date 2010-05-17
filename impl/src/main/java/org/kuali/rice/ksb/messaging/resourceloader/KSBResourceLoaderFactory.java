@@ -86,7 +86,7 @@ public class KSBResourceLoaderFactory {
 	}
 
 	public static void setRootResourceLoaderName(QName name) {
-		ConfigContext.getCurrentContextConfig().getObjects().put(KSB_ROOT_RESOURCE_LOACER_NAME, name);
+		ConfigContext.getCurrentContextConfig().putObject(KSB_ROOT_RESOURCE_LOACER_NAME, name);
 	}
 
 	public static QName getRemoteResourceLoaderName() {
@@ -94,7 +94,7 @@ public class KSBResourceLoaderFactory {
 	}
 
 	public static void setRemoteResourceLoaderName(QName remoteResourceLoaderName) {
-		ConfigContext.getCurrentContextConfig().getObjects().put(KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME, remoteResourceLoaderName);
+		ConfigContext.getCurrentContextConfig().putObject(KSB_REMOTE_RESOURCE_LOADER_LOCAL_NAME, remoteResourceLoaderName);
 	}
 
 }

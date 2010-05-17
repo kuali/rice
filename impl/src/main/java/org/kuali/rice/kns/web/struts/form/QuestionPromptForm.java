@@ -115,7 +115,7 @@ public class QuestionPromptForm extends KualiForm {
      * @return Returns the questionText.
      */
     public String getQuestionText() {
-        return WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+        return questionText != null ? WebUtils.filterHtmlAndReplaceRiceMarkup(questionText) : questionText;
     }
 
     /**

@@ -96,11 +96,14 @@ public abstract class ConcurrentJob<T> {
      * @return a collection of collection of work items
      */
     protected Collection<Collection<T>> groupWorkItems(Collection<T> workItems, ProcessingResult result) {
-        Collection<Collection<T>> groupedWorkItems = new ArrayList<Collection<T>>(workItems.size());
-        for (T workItem: workItems) {
-            Collection<T> c = new ArrayList<T>(1);
-            c.add(workItem);
-            groupedWorkItems.add(c);
+        Collection<Collection<T>> groupedWorkItems = new ArrayList<Collection<T>>();
+        
+        if (workItems != null) {
+	        for (T workItem: workItems) {
+	            Collection<T> c = new ArrayList<T>(1);
+	            c.add(workItem);
+	            groupedWorkItems.add(c);
+	        }
         }
         return groupedWorkItems;
     }

@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.datadictionary.validation.charlevel;
 
 import org.junit.Test;
-import org.kuali.test.KNSTestCase;
+import org.kuali.rice.test.BaseRiceTestCase;
 
 /**
  * This is a description of what this class does - ctdang don't forget to fill this in. 
@@ -24,13 +24,10 @@ import org.kuali.test.KNSTestCase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RegexValidationPatternTest extends KNSTestCase {
+public class RegexValidationPatternTest extends BaseRiceTestCase {
     private RegexValidationPattern regexValidationPattern;
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-        
+    public void setUp() throws Exception {      
         regexValidationPattern=new RegexValidationPattern();
     }
     

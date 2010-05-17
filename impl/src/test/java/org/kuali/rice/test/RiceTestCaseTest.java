@@ -42,7 +42,7 @@ public class RiceTestCaseTest extends RiceTestCase {
 
 	@Override
 	protected String getModuleName() {
-		return "testharness";
+		return "impl";
 	}
 
 }

@@ -43,7 +43,7 @@ public class StoreAndForwardTest extends KSBTestCase {
 	
 
 	@Test public void testServiceCall() throws Exception {
-		ConfigContext.getCurrentContextConfig().overrideProperty(Config.STORE_AND_FORWARD, "true");
+		ConfigContext.getCurrentContextConfig().putProperty(Config.STORE_AND_FORWARD, "true");
 		QName serviceName = new QName("TestCl1", "testXmlAsyncService");
 		KSBXMLService testXmlAsyncService = (KSBXMLService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName);
 		testXmlAsyncService.invoke("message content");

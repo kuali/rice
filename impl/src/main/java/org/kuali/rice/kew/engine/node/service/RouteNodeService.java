@@ -44,6 +44,17 @@ public interface RouteNodeService {
     public void save(Branch branch);
     public RouteNode findRouteNodeById(Long nodeId);
     public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId);
+    
+    /**
+     * 
+     * This method looks though the passed in DocumentRouteHeaderValue and retrieves a nodeInstance that
+     * matches the ID passed in. 
+     * 
+     * @param nodeInstanceId
+     * @param document
+     * @return
+     */
+    public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId, DocumentRouteHeaderValue document);
 
     /**
      * Retrieves the initial node instances of the given document.  The initial node instances are 

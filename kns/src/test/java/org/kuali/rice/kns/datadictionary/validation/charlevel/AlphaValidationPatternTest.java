@@ -45,6 +45,9 @@ public class AlphaValidationPatternTest extends BaseRiceTestCase {
                 false, // "a1b2_c3"
                 false, // "a 1b2c3"
                 false, // "a 1b2_c3"
+                false, //"foo.bar"
+                false, //"foo.bar_baz"
+                false, //".bar_foo baz"
         };
 
         ValidationTestUtils.assertPatternMatches(pattern, expected);
@@ -65,6 +68,9 @@ public class AlphaValidationPatternTest extends BaseRiceTestCase {
                 false, // "a1b2_c3"
                 false, // "a 1b2c3"
                 false, // "a 1b2_c3"
+                false, //"foo.bar"
+                false, //"foo.bar_baz"
+                false, //".bar_foo baz"
         };
 
         pattern.setAllowWhitespace(true);

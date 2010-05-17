@@ -463,9 +463,6 @@
 		<property name="persistenceService">
 			<ref bean="persistenceService" />
 		</property>
-		<property name="configService">
-			<ref bean="kualiConfigurationService" />
-		</property>
 		<property name="persistenceStructureService">
 			<ref bean="persistenceStructureService"/>
 		</property>

@@ -24,14 +24,36 @@ import org.kuali.rice.core.config.SimpleConfig;
 
 public class HierarchicalConfigParserTest extends TestCase {
 
+	private static String simpleConfig = "SIMPLE_CONFIG";
+	private static String jaxbConfig = "JAXB_CONFIG";
+	
+	
+	// We want to test with both impls
+	protected Config getConfigObject(String configType, String fileName){
+		Config cRet = null;
+		if(simpleConfig.equals(configType)){
+			cRet = new SimpleConfig(fileName);
+		}else if(jaxbConfig.equals(configType)){
+			cRet = new JAXBConfigImpl(fileName);
+		}
+		return cRet;
+	}
+	
 	/**
 	 * Tests the resolution to issue EN-68 where the overrides are working properly
 	 * after attempting to overrdide a property after a few levels of depth.
 	 */
 	@Test public void testHierarchicalConfigParser() throws Exception {
+		
+		testHierarchicalConfigParserImpl(simpleConfig);
+		testHierarchicalConfigParserImpl(jaxbConfig);
+		
+	}
+		
+	protected void testHierarchicalConfigParserImpl(String configType) throws Exception {
 		// first load the hier-config-3.xml file
 //		HierarchicalConfigParser parser = new HierarchicalConfigParser(null);
-		SimpleConfig simpleConfig = new SimpleConfig("classpath:org/kuali/rice/core/config/hier-config-3.xml");
+		Config simpleConfig = getConfigObject(configType, "classpath:org/kuali/rice/core/config/hier-config-3.xml");
 		simpleConfig.parseConfig();
 //		String fileLoc1 = ;
 //		Map propertyMap = parser.parse(fileLoc1);
@@ -45,7 +67,7 @@ public class HierarchicalConfigParserTest extends TestCase {
 		// next load the hier-config-2.xml file
 		
 		String fileLoc2 = "classpath:org/kuali/rice/core/config/hier-config-2.xml";
-		simpleConfig = new SimpleConfig(fileLoc2);
+		simpleConfig = getConfigObject(configType,fileLoc2);
 		simpleConfig.parseConfig();
 		properties = simpleConfig.getProperties();
 		assertNotNull(properties);
@@ -58,7 +80,7 @@ public class HierarchicalConfigParserTest extends TestCase {
 		
 		// next load the hier-config-1.xml file
 		String fileLoc3 = "classpath:org/kuali/rice/core/config/hier-config-1.xml";
-		simpleConfig = new SimpleConfig(fileLoc3);
+		simpleConfig = getConfigObject(configType,fileLoc3);
 		simpleConfig.parseConfig();
 		properties = simpleConfig.getProperties();
 		assertNotNull(properties);
@@ -79,8 +101,13 @@ public class HierarchicalConfigParserTest extends TestCase {
 	 * @throws Exception
 	 */
 	@Test public void testParsingOfAltConfigLocation() throws Exception {
+		testParsingOfAltConfigLocationImpl(simpleConfig);
+		testParsingOfAltConfigLocationImpl(jaxbConfig);
+	}
+	
+	protected void testParsingOfAltConfigLocationImpl(String configType) throws Exception {
 		String fileLoc1 = "classpath:org/kuali/rice/core/config/config-alt-location-param.xml";
-		SimpleConfig simpleConfig = new SimpleConfig(fileLoc1);
+		Config simpleConfig = getConfigObject(configType,fileLoc1);
 		simpleConfig.parseConfig();
 		assertNotNull(simpleConfig.getProperties());
 	}

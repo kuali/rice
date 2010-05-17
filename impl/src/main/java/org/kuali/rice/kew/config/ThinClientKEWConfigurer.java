@@ -38,7 +38,7 @@ public class ThinClientKEWConfigurer extends RiceConfigurerBase {
 		
 		// If this flag is not set, KEWConfigurer will need a database connection and other
 		// things we haven't configured.
-		kewConfigurer.setRunMode(KEWConfigurer.REMOTE_RUN_MODE);
+		kewConfigurer.setRunMode(KEWConfigurer.THIN_RUN_MODE);
 		kewConfigurer.setClientProtocol(KEWConstants.WEBSERVICE_CLIENT_PROTOCOL);
 		
 		getModules().add(kewConfigurer);

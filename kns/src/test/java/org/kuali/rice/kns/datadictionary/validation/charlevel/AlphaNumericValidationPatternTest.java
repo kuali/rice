@@ -45,6 +45,9 @@ public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
                 false, // "a1b2_c3"
                 false, // "a 1b2c3"
                 false, // "a 1b2_c3"
+                false, //"foo.bar"
+                false, //"foo.bar_baz"
+                false, //".bar_foo baz"
         };
 
         ValidationTestUtils.assertPatternMatches(pattern, expected);
@@ -65,6 +68,9 @@ public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
                 true, // "a1b2_c3"
                 false, // "a 1b2c3"
                 false, // "a 1b2_c3"
+                false, //"foo.bar"
+                false, //"foo.bar_baz"
+                false, //".bar_foo baz"
         };
 
         pattern.setAllowUnderscore(true);
@@ -86,13 +92,16 @@ public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
                 false, // "a1b2_c3"
                 true, // "a 1b2c3"
                 false, // "a 1b2_c3"
+                false, //"foo.bar"
+                false, //"foo.bar_baz"
+                false, //".bar_foo baz"
         };
 
         pattern.setAllowWhitespace(true);
         ValidationTestUtils.assertPatternMatches(pattern, expected);
     }
 
-    @Test public final void testMatch_allowBoth() {
+    @Test public final void testMatch_allowUnderScoreAndWhiteSpace() {
         boolean[] expected = { true, // ""
                 false, // "!!!"
                 false, // "[a-9]"
@@ -107,8 +116,89 @@ public class AlphaNumericValidationPatternTest extends BaseRiceTestCase {
                 true, // "a1b2_c3"
                 true, // "a 1b2c3"
                 true, // "a 1b2_c3"
+                false, //"foo.bar"
+                false, //"foo.bar_baz"
+                false, //".bar_foo baz"
         };
 
+        pattern.setAllowUnderscore(true);
+        pattern.setAllowWhitespace(true);
+
+        ValidationTestUtils.assertPatternMatches(pattern, expected);
+    }
+    
+    @Test public final void testMatch_allowPeriod() {
+        boolean[] expected = { true, // ""
+                false, // "!!!"
+                false, // "[a-9]"
+                false, // "^A-Z"
+                true, // "abc"
+                false, // "a bc"
+                false, // "a_bc"
+                true, // "123"
+                false, // "12 3"
+                false, // "12_3"
+                true, // "a1b2c3"
+                false, // "a1b2_c3"
+                false, // "a 1b2c3"
+                false, // "a 1b2_c3"
+                true, //"foo.bar"
+                false, //"foo.bar_baz"
+                false, //".bar_foo baz"
+        };
+
+        pattern.setAllowPeriod(true);
+
+        ValidationTestUtils.assertPatternMatches(pattern, expected);
+    }
+    
+    @Test public final void testMatch_allowPeriodAndUnderscore() {
+        boolean[] expected = { true, // ""
+                false, // "!!!"
+                false, // "[a-9]"
+                false, // "^A-Z"
+                true, // "abc"
+                false, // "a bc"
+                true, // "a_bc"
+                true, // "123"
+                false, // "12 3"
+                true, // "12_3"
+                true, // "a1b2c3"
+                true, // "a1b2_c3"
+                false, // "a 1b2c3"
+                false, // "a 1b2_c3"
+                true, //"foo.bar"
+                true, //"foo.bar_baz"
+                false, //".bar_foo baz"
+        };
+
+        pattern.setAllowPeriod(true);
+        pattern.setAllowUnderscore(true);
+
+        ValidationTestUtils.assertPatternMatches(pattern, expected);
+    }
+    
+    @Test public final void testMatch_allowPeriodAndUnderscoreAndSpace() {
+        boolean[] expected = { true, // ""
+                false, // "!!!"
+                false, // "[a-9]"
+                false, // "^A-Z"
+                true, // "abc"
+                true, // "a bc"
+                true, // "a_bc"
+                true, // "123"
+                true, // "12 3"
+                true, // "12_3"
+                true, // "a1b2c3"
+                true, // "a1b2_c3"
+                true, // "a 1b2c3"
+                true, // "a 1b2_c3"
+                true, //"foo.bar"
+                true, //"foo.bar_baz"
+                true, //".bar_foo baz"
+        };
+
+        pattern.setAllowPeriod(true);
         pattern.setAllowUnderscore(true);
         pattern.setAllowWhitespace(true);
 

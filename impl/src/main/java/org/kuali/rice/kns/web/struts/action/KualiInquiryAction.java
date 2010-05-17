@@ -15,10 +15,12 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +31,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RedirectingActionForward;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -37,7 +38,6 @@ import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.bo.Note;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
@@ -46,11 +46,12 @@ import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.InquiryForm;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.Row;
+import org.kuali.rice.kns.web.ui.Section;
 
 /**
  * This class handles actions for inquiries of business objects.
@@ -127,6 +128,43 @@ public class KualiInquiryAction extends KualiAction {
 		return continueWithInquiry(mapping, form, request, response);
     }
     
+    
+    public ActionForward downloadCustomBOAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	String fileName = request.getParameter(KNSConstants.BO_ATTACHMENT_FILE_NAME);
+		String contentType = request.getParameter(KNSConstants.BO_ATTACHMENT_FILE_CONTENT_TYPE);
+		String fileContentBoField = request.getParameter(KNSConstants.BO_ATTACHMENT_FILE_CONTENT_FIELD);
+    	//require certain request properties
+    	if (fileName != null
+    			&& contentType != null
+    			&& fileContentBoField != null) {
+    		//make sure user has authorization to download attachment
+    		checkAuthorization(form, findMethodToCall(form, request));
+    		
+    		fileName = StringUtils.replace(fileName, " ", "_");
+    		
+    		InquiryForm inquiryForm = (InquiryForm) form;
+        	BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
+    		checkBO(bo);
+    		
+    		Class clazz = (bo.getClass());
+    		Method method = clazz.getMethod("get"+StringUtils.capitalize(fileContentBoField));
+    		byte[] fileContents = (byte[]) method.invoke(bo);
+    		streamToResponse(fileContents, fileName, contentType,response);
+    	} else {
+    		if (fileName == null) {
+    			LOG.error("Request Parameter \""+ KNSConstants.BO_ATTACHMENT_FILE_NAME + "\" not provided.");
+    		}
+    		if (contentType == null) {
+    			LOG.error("Request Parameter \""+ KNSConstants.BO_ATTACHMENT_FILE_CONTENT_TYPE + "\" not provided.");
+    		}
+    		if (fileContentBoField == null) {
+    			LOG.error("Request Parameter \""+ KNSConstants.BO_ATTACHMENT_FILE_CONTENT_FIELD + "\" not provided.");
+    		}
+    	}
+    	return null;
+    }
+    
+    
     /**
      * Downloads the selected attachment to the user's browser
      *
@@ -163,9 +201,7 @@ public class KualiInquiryAction extends KualiAction {
     	}
     	
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-        if (bo == null) {
-        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-        }
+        checkBO(bo);
         
         populateSections(mapping, request, inquiryForm, bo);
         
@@ -183,9 +219,7 @@ public class KualiInquiryAction extends KualiAction {
         }
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-        if (bo == null) {
-        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-        }
+        checkBO(bo);
         
         Inquirable kualiInquirable = inquiryForm.getInquirable();
         //////////////////////////////
@@ -214,9 +248,7 @@ public class KualiInquiryAction extends KualiAction {
         }
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-        if (bo == null) {
-        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-        }
+        checkBO(bo);
         
         populateSections(mapping, request, inquiryForm, bo);
         
@@ -240,9 +272,7 @@ public class KualiInquiryAction extends KualiAction {
         }
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-        if (bo == null) {
-        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-        }
+        checkBO(bo);
         
         populateSections(mapping, request, inquiryForm, bo);
 		
@@ -262,9 +292,7 @@ public class KualiInquiryAction extends KualiAction {
         }
         
         BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-        if (bo == null) {
-        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-        }
+        checkBO(bo);
         
         populateSections(mapping, request, inquiryForm, bo);
 		
@@ -278,17 +306,21 @@ public class KualiInquiryAction extends KualiAction {
     	InquiryForm inquiryForm = (InquiryForm) form;
     	if (inquiryForm.isCanExport()) {
     		BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
-    		if (bo == null) {
-            	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
-    		}        
-    		BusinessObjectEntry businessObjectEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName());
-    		Class<? extends Exporter> exporterClass = businessObjectEntry.getExporterClass();
-    		if (exporterClass != null) {
-    			Exporter exporter = exporterClass.newInstance();
-        		response.setContentType(KNSConstants.XML_MIME_TYPE);
-        		response.setHeader("Content-disposition", "attachment; filename=export.xml");
-        		exporter.export(businessObjectEntry.getBusinessObjectClass(), Collections.singletonList(bo), KNSConstants.XML_FORMAT, response.getOutputStream());
-        	}
+    		checkBO(bo);
+    		if (bo != null) {
+	    		BusinessObjectEntry businessObjectEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName());
+	    		Class<? extends Exporter> exporterClass = businessObjectEntry.getExporterClass();
+	    		if (exporterClass != null) {
+	    			Exporter exporter = exporterClass.newInstance();
+	        		response.setContentType(KNSConstants.XML_MIME_TYPE);
+	        		response.setHeader("Content-disposition", "attachment; filename=export.xml");
+	        		exporter.export(businessObjectEntry.getBusinessObjectClass(), Collections.singletonList(bo), KNSConstants.XML_FORMAT, response.getOutputStream());
+	        	}
+    		} else {
+    			//show the empty section with error
+    			populateSections(mapping, request, inquiryForm, bo);
+    			return mapping.findForward(RiceConstants.MAPPING_BASIC); 
+    		}
         }
         
         return null;
@@ -322,12 +354,69 @@ public class KualiInquiryAction extends KualiAction {
     
     protected void populateSections(ActionMapping mapping, HttpServletRequest request, InquiryForm inquiryForm, BusinessObject bo) {
     	Inquirable kualiInquirable = inquiryForm.getInquirable();
-	
-        // get list of populated sections for display
-        List sections = kualiInquirable.getSections(bo);
-        inquiryForm.setSections(sections);
-        kualiInquirable.addAdditionalSections(sections, bo);
+    	
+    	if (bo != null) {
+    		// get list of populated sections for display
+    		List sections = kualiInquirable.getSections(bo);
+        	inquiryForm.setSections(sections);
+        	kualiInquirable.addAdditionalSections(sections, bo);
+    	} else {
+    		inquiryForm.setSections(getEmptySections(kualiInquirable.getTitle()));
+    	}
+
         request.setAttribute(KNSConstants.INQUIRABLE_ATTRIBUTE_NAME, kualiInquirable);
+    }
+    
+    /**
+    *
+    * Handy method to stream the byte array to response object
+    * @param attachmentDataSource
+    * @param response
+    * @throws Exception
+    */
+   protected void streamToResponse(byte[] fileContents, String fileName, String fileContentType,HttpServletResponse response) throws Exception{
+       ByteArrayOutputStream baos = null;
+       try{
+           baos = new ByteArrayOutputStream(fileContents.length);
+           baos.write(fileContents);
+           WebUtils.saveMimeOutputStreamAsFile(response, fileContentType, baos, fileName);
+       }finally{
+           try{
+               if(baos!=null){
+                   baos.close();
+                   baos = null;
+               }
+           }catch(IOException ioEx){
+               LOG.error("Error while downloading attachment");
+               throw new RuntimeException("IOException occurred while downloading attachment", ioEx);
+           }
+       }
+   }
+    /**
+     * Returns a section list with one empty section and one row.
+     * 
+     * @return list of sections
+     */
+    private List<Section> getEmptySections(String title) {
+    	final Row row = new Row(Collections.<Field>emptyList());
+    	
+    	final Section section = new Section(Collections.singletonList(row));
+		section.setErrorKey("*");
+		section.setSectionTitle(title != null ? title : "");
+		section.setNumberOfColumns(0);
+		
+		return Collections.singletonList(section);
+    }
+    
+    /**
+     * throws an exception if BO fails the check.
+     * @param bo the BusinessObject to check.
+     * @throws UnsupportedOperationException if BO is null & no messages have been generated.
+     */
+    private void checkBO(BusinessObject bo) {
+        if (bo == null && GlobalVariables.getMessageMap().hasNoMessages()) {
+        	throw new UnsupportedOperationException("The record you have inquired on does not exist.");
+        }
     }
     
     protected NoteService getNoteService() {

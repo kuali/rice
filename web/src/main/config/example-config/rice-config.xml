@@ -16,41 +16,33 @@
 <config>
 
 	<!-- Please fill in a value for this parameter! -->
-	<param name="app.context.name">kr-${environment}</param>
-	<param name="application.url">http://yourserver:yourport/${app.context.name}</param>
+	<param name="http.port">8080</param>
+	<param name="application.host">http://yourserver</param>
+	<param name="application.url">${application.host}:${http.port}/${app.context.name}</param>
 
-	<param name="workflow.url">${application.url}/kew</param>
-
-	<param name="plugin.dir">/usr/local/rice/plugins</param>
+	<param name="plugin.dir">/usr/local/rice/plugins</param> 
 
 	<!-- set some datasource defaults -->
+	<param name="datasource.username">rice</param>
+	<param name="datasource.password">*** password ***</param>
 	
 	<!-- MySQL example -->
 	<param name="datasource.ojb.platform">MySQL</param>
 	<param name="datasource.platform">org.kuali.rice.core.database.platform.MySQLDatabasePlatform</param>
-	<param name="datasource.url">jdbc:mysql://localhost:3306/rice</param>
-	<param name="datasource.username">rice</param>
-	<param name="datasource.password">*** password ***</param>
+	<param name="datasource.url">jdbc:mysql://localhost:3306/${datasource.username}</param>
 	<param name="datasource.driver.name">com.mysql.jdbc.Driver</param>
-	<param name="datasource.pool.size">5</param>
-	<param name="datasource.pool.maxWait">10000</param>
 	<param name="datasource.pool.validationQuery">select 1</param>
 	
 	<!-- Oracle example 
 	<param name="datasource.ojb.platform">Oracle9i</param>
 	<param name="datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
 	<param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE</param>
-	<param name="datasource.username">rice</param>
-	<param name="datasource.password">*** password ***</param>
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
-	<param name="datasource.pool.size">5</param>
-	<param name="datasource.pool.maxWait">10000</param>
 	<param name="datasource.pool.validationQuery">select 1 from dual</param>
 	-->
 	
 	<param name="attachment.dir.location">/usr/local/rice/kew_attachments</param>
-
-    <param name="mail.smtp.host">localhost</param>
+	<param name="data.xml.root.location">/usr/local/rice/kew/xml</param> 
 
 	<!-- log4j settings -->
 	<param name="log4j.settings.path">/usr/local/rice/log4j.properties</param>
@@ -60,6 +52,10 @@
 	<param name="keystore.file">/usr/local/rice/rice.keystore</param>
 	<param name="keystore.alias">*** key alias ***</param>
 	<param name="keystore.password">*** password ***</param>
+	
+	<param name="mail.relay.server">localhost</param>
+    <param name="mailing.list.batch">mailing.list.batch</param>
+    <param name="encryption.key">*** encryption key ***</param> 
 
 	<!-- Dummy Login Filter - use if you don't want to go through CAS -->
 	<param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
@@ -68,4 +64,5 @@
     <!-- Sample Application Flag -->
     <param name="sample.enabled">false</param>
 
+    <param name="dev.mode">false</param> 
 </config>

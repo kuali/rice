@@ -1,11 +1,11 @@
 /*
- * Copyright 2007 The Kuali Foundation
+ * Copyright 2007-2010 The Kuali Foundation
  *
- * Licensed under the Educational Community License, Version 1.0 (the "License");
+ * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.opensource.org/licenses/ecl1.php
+ * http://www.opensource.org/licenses/ecl2.php
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -26,6 +26,7 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -42,6 +43,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -172,6 +174,24 @@ public class RoleServiceBase {
 	}
 	
 	/**
+	 * Converts the Qualifier Name/Value Role qualification set into Qualifier AttributeID/Value set
+	 * 
+	 * @param qualification The original role qualification attribute set
+	 * @return Converted attributeSet containing ID/value pairs
+	 */	
+	private AttributeSet convertQualifierKeys(AttributeSet qualification) {
+		AttributeSet convertedQualification = new AttributeSet();
+		if(qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) { 
+			for(String attributeName : qualification.keySet()) {
+				if(StringUtils.isNotEmpty(getKimAttributeId(attributeName))) {
+					convertedQualification.put(getKimAttributeId(attributeName), qualification.get(attributeName));
+				}
+			}
+		}
+		return convertedQualification;
+	}
+	
+	/**
 	 * Retrieves a list of RoleMemberImpl instances from the cache and/or the KimRoleDao as appropriate.
 	 * 
 	 * @param daoActionToTake An indicator for which KimRoleDao method should be used to get the results if the desired RoleMemberImpls are not cached.
@@ -179,15 +199,17 @@ public class RoleServiceBase {
 	 * @param principalId The principal ID to filter by; may get ignored depending on the daoActionToTake value.
 	 * @param groupIds The group IDs to filter by; may get ignored depending on the daoActionToTake value.
 	 * @param memberTypeCode The member type code to filter by; may get overridden depending on the daoActionToTake value.
+	 * @param qualification The original role qualification attribute set 
 	 * @return A list of RoleMemberImpl instances based on the provided parameters.
 	 * @throws IllegalArgumentException if daoActionToTake refers to an enumeration constant that is not role-member-related.
 	 */
 	protected List<RoleMemberImpl> getRoleMemberImplList(RoleDaoAction daoActionToTake, Collection<String> roleIds, String principalId,
-			Collection<String> groupIds, String memberTypeCode) {
+			Collection<String> groupIds, String memberTypeCode, AttributeSet qualification) {
 		List<RoleMemberImpl> finalResults = new ArrayList<RoleMemberImpl>();
 		List<RoleMemberCacheKeyHelper> searchKeys = new ArrayList<RoleMemberCacheKeyHelper>();
 		List<RoleMemberCacheKeyHelper> uncachedKeys = new ArrayList<RoleMemberCacheKeyHelper>();
 		Set<String> usedKeys = new HashSet<String>();
+		AttributeSet convertedQualification = convertQualifierKeys(qualification);
 		
 		if (roleIds == null || roleIds.isEmpty()) { roleIds = Collections.singletonList(null); }
 		if (groupIds == null || groupIds.isEmpty()) { groupIds = Collections.singletonList(null); }
@@ -258,19 +280,19 @@ public class RoleServiceBase {
 			// Retrieve the uncached RoleMemberImpls via the appropriate RoleDao method.
 			switch (daoActionToTake) {
 				case ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS : // Search for principal role members only.
-					uncachedResults = roleDao.getRolePrincipalsForPrincipalIdAndRoleIds(uncachedRoles, principalId);
+					uncachedResults = roleDao.getRolePrincipalsForPrincipalIdAndRoleIds(uncachedRoles, principalId, convertedQualification);
 					break;
 				case ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS : // Search for group role members only.
-					uncachedResults = roleDao.getRoleGroupsForGroupIdsAndRoleIds(uncachedRoles, uncachedGroups);
+					uncachedResults = roleDao.getRoleGroupsForGroupIdsAndRoleIds(uncachedRoles, uncachedGroups, convertedQualification);
 					break;
 				case ROLE_MEMBERS_FOR_ROLE_IDS : // Search for role members with the given member type code.
-					uncachedResults = roleDao.getRoleMembersForRoleIds(uncachedRoles, memberTypeCode);
+					uncachedResults = roleDao.getRoleMembersForRoleIds(uncachedRoles, memberTypeCode, convertedQualification);
 					break;
 				case ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS : // Search for role members who are also roles.
-					uncachedResults = roleDao.getRoleMembershipsForRoleIdsAsMembers(uncachedRoles);
+					uncachedResults = roleDao.getRoleMembershipsForRoleIdsAsMembers(uncachedRoles, convertedQualification);
 					break;
 				case ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS : // Search for role members that might be roles, principals, or groups.
-					uncachedResults = roleDao.getRoleMembersForRoleIdsWithFilters(uncachedRoles, principalId, uncachedGroups);
+					uncachedResults = roleDao.getRoleMembersForRoleIdsWithFilters(uncachedRoles, principalId, uncachedGroups, convertedQualification);
 					break;
 				default : // This should never happen, since the previous switch block should handle this case appropriately.
 					throw new IllegalArgumentException("The 'daoActionToTake' parameter cannot refer to a non-role-member-related value!");
@@ -327,28 +349,28 @@ public class RoleServiceBase {
 	}
 	
 	/** Calls the KimRoleDao's "getRolePrincipalsForPrincipalIdAndRoleIds" method and/or retrieves any corresponding members from the cache. */
-	protected List<RoleMemberImpl> getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collection<String> roleIds, String principalId) {
-		return getRoleMemberImplList(RoleDaoAction.ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS, roleIds, principalId, null, null);
+	protected List<RoleMemberImpl> getStoredRolePrincipalsForPrincipalIdAndRoleIds(Collection<String> roleIds, String principalId, AttributeSet qualification) {
+		return getRoleMemberImplList(RoleDaoAction.ROLE_PRINCIPALS_FOR_PRINCIPAL_ID_AND_ROLE_IDS, roleIds, principalId, null, null, qualification);
 	}
 	
 	/** Calls the KimRoleDao's "getRoleGroupsForGroupIdsAndRoleIds" method and/or retrieves any corresponding members from the cache. */
-	protected List<RoleMemberImpl> getStoredRoleGroupsForGroupIdsAndRoleIds(Collection<String> roleIds, Collection<String> groupIds) {
-		return getRoleMemberImplList(RoleDaoAction.ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS, roleIds, null, groupIds, null);
+	protected List<RoleMemberImpl> getStoredRoleGroupsForGroupIdsAndRoleIds(Collection<String> roleIds, Collection<String> groupIds, AttributeSet qualification) {
+		return getRoleMemberImplList(RoleDaoAction.ROLE_GROUPS_FOR_GROUP_IDS_AND_ROLE_IDS, roleIds, null, groupIds, null, qualification);
 	}
 	
 	/** Calls the KimRoleDao's "getRoleMembersForRoleIds" method and/or retrieves any corresponding members from the cache. */
-	protected List<RoleMemberImpl> getStoredRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode) {
-		return getRoleMemberImplList(RoleDaoAction.ROLE_MEMBERS_FOR_ROLE_IDS, roleIds, null, null, memberTypeCode);
+	protected List<RoleMemberImpl> getStoredRoleMembersForRoleIds(Collection<String> roleIds, String memberTypeCode, AttributeSet qualification) {
+		return getRoleMemberImplList(RoleDaoAction.ROLE_MEMBERS_FOR_ROLE_IDS, roleIds, null, null, memberTypeCode, qualification);
 	}
 	
 	/** Calls the KimRoleDao's "getRoleMembershipsForRoleIdsAsMembers" method and/or retrieves any corresponding members from the cache. */
-	protected List<RoleMemberImpl> getStoredRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds) {
-		return getRoleMemberImplList(RoleDaoAction.ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS, roleIds, null, null, null);
+	protected List<RoleMemberImpl> getStoredRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, AttributeSet qualification) {
+		return getRoleMemberImplList(RoleDaoAction.ROLE_MEMBERSHIPS_FOR_ROLE_IDS_AS_MEMBERS, roleIds, null, null, null, qualification);
 	}
 	
 	/** Calls the KimRoleDao's "getRoleMembersForRoleIdsWithFilters" method and/or retrieves any corresponding members from the cache. */
-	protected List<RoleMemberImpl> getStoredRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, List<String> groupIds) {
-		return getRoleMemberImplList(RoleDaoAction.ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS, roleIds, principalId, groupIds, null);
+	protected List<RoleMemberImpl> getStoredRoleMembersForRoleIdsWithFilters(Collection<String> roleIds, String principalId, List<String> groupIds, AttributeSet qualification) {
+		return getRoleMemberImplList(RoleDaoAction.ROLE_MEMBERS_FOR_ROLE_IDS_WITH_FILTERS, roleIds, principalId, groupIds, null, qualification);
 	}
 	
 	/**
@@ -1152,6 +1174,19 @@ public class RoleServiceBase {
     		}
 		}
 		return false;
+	}
+	
+	// TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map
+	@SuppressWarnings("unchecked")
+	protected String getKimAttributeId( String attributeName ) {
+		String result = null;
+		Map<String,Object> critieria = new HashMap<String,Object>( 1 );
+		critieria.put( "attributeName", attributeName );
+		Collection<KimAttributeImpl> defs = getBusinessObjectService().findMatching( KimAttributeImpl.class, critieria );
+		if(CollectionUtils.isNotEmpty(defs)) {
+			result = defs.iterator().next().getKimAttributeId();
+		}
+		return result;
 	}
 	
     /**

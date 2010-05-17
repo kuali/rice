@@ -17,15 +17,13 @@ package org.kuali.rice.kns.datadictionary.validation.charlevel;
 
 import org.junit.Test;
 import org.kuali.rice.kns.datadictionary.validation.ValidationTestUtils;
-import org.kuali.test.KNSTestCase;
+import org.kuali.rice.test.BaseRiceTestCase;
 
-public class NumericValidationPatternTest extends KNSTestCase {
+public class NumericValidationPatternTest extends BaseRiceTestCase {
     private NumericValidationPattern pattern;
 
-    @Override
+    
     public void setUp() throws Exception {
-        super.setUp();
-
         pattern = new NumericValidationPattern();
     }
 
@@ -45,6 +43,9 @@ public class NumericValidationPatternTest extends KNSTestCase {
                 false, // "a1b2_c3"
                 false, // "a 1b2c3"
                 false, // "a 1b2_c3"
+                false, //"foo.bar"
+                false, //"foo.bar_baz"
+                false, //".bar_foo baz"
         };
 
         ValidationTestUtils.assertPatternMatches(pattern, expected);

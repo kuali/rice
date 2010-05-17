@@ -39,6 +39,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	public static final String LOCAL_RUN_MODE = "local";
 	public static final String EMBEDDED_RUN_MODE = "embedded";
 	public static final String REMOTE_RUN_MODE = "remote";
+	public static final String THIN_RUN_MODE = "thin";
 	protected final List<String> VALID_RUN_MODES = new ArrayList<String>();
 	
 	private String runMode = LOCAL_RUN_MODE;	
@@ -58,6 +59,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 		VALID_RUN_MODES.add( LOCAL_RUN_MODE );
 		VALID_RUN_MODES.add( EMBEDDED_RUN_MODE );
 		VALID_RUN_MODES.add( REMOTE_RUN_MODE );
+		VALID_RUN_MODES.add( THIN_RUN_MODE );
 	}
 	
 	/**
@@ -122,7 +124,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 				setWebModuleConfigurationFiles( config.getProperty( "rice." + getModuleName().toLowerCase() + ".struts.config.files" ) );
 			}
 		}
-		config.getProperties().put( "rice." + getModuleName().toLowerCase() + ".struts.config.files", getWebModuleConfigurationFiles() );
+		config.putProperty( "rice." + getModuleName().toLowerCase() + ".struts.config.files", getWebModuleConfigurationFiles() );
 		if ( StringUtils.isBlank( getWebModuleBaseUrl() ) ) {
 			if ( StringUtils.isBlank( config.getProperty( getModuleName().toLowerCase() + ".url" ) ) ) {
 				setWebModuleBaseUrl( config.getProperty( "application.url" ) + "/" + getModuleName().toLowerCase() );
@@ -130,7 +132,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 				setWebModuleBaseUrl( config.getProperty( getModuleName().toLowerCase() + ".url" ) );
 			}
 		}
-		config.getProperties().put( getModuleName().toLowerCase() + ".url", getWebModuleBaseUrl() );
+		config.putProperty( getModuleName().toLowerCase() + ".url", getWebModuleBaseUrl() );
 		if ( StringUtils.isEmpty( getSpringFileLocations() ) ) {
 			setSpringFileLocations( getDefaultSpringBeansPath(getDefaultConfigPackagePath() ) );
 		}
@@ -141,7 +143,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	 */
 	protected void configureRunMode(Config config) {
 		String propertyName = getModuleName().toLowerCase() + ".mode";
-		config.getProperties().setProperty(propertyName, getRunMode());
+		config.putProperty(propertyName, getRunMode());
 	}
 	
 	/**

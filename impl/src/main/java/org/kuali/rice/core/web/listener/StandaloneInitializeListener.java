@@ -31,7 +31,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.SimpleConfig;
+import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -119,9 +119,10 @@ public class StandaloneInitializeListener implements ServletContextListener {
             // Resources. Spring can coerce string <value>s into Resources, but not vice-versa
             if (StringUtils.isEmpty(additionalConfigLocations)) {
                 baseProps.setProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
-            }
-            SimpleConfig config = new SimpleConfig(baseProps);
-            config.parseConfig();
+            }  
+            JAXBConfigImpl config = new JAXBConfigImpl(baseProps);            
+            // removing this so that the defaults don't get resolved by default.  
+            //config.parseConfig();
             ConfigContext.init(config);
             
             context = new ClassPathXmlApplicationContext(bootstrapSpringBeans);

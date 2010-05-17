@@ -40,7 +40,7 @@ public class EDLControllerTest extends KEWTestCase {
 	}
 
 	@Test public void testEDLControllerCreation() throws Exception {
-		ConfigContext.getCurrentContextConfig().overrideProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
+		ConfigContext.getCurrentContextConfig().putProperty(Config.EDL_CONFIG_LOCATION, "classpath:org/kuali/rice/kew/edl/TestEDLConfig.xml");
 
 
 		EDLController edlController = getEDLService().getEDLController("FakeyEDL");

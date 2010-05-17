@@ -6,6 +6,6 @@ package org.kuali.rice.kew.ria.valuefinder;
  */
 public class RIADocTypeMapNextIdFinder extends SequenceNextIdFinder {
 	public RIADocTypeMapNextIdFinder() {
-        super("SEQ_RIA_DOCTYPE_MAP_ID");
+        super("KREW_RIA_DOCTYPE_MAP_ID_S");
     }
 }

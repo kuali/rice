@@ -25,7 +25,11 @@ import java.util.Map.Entry;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.query.Query;
+import org.apache.ojb.broker.query.QueryFactory;
+import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kim.bo.Role;
@@ -40,6 +44,7 @@ import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.dao.KimRoleDao;
@@ -773,66 +778,157 @@ public class KimRoleDaoJpa implements KimRoleDao {
     }
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleGroupsForGroupIdsAndRoleIds(java.util.Collection, java.util.Collection, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
-	@Override
 	public List<RoleMemberImpl> getRoleGroupsForGroupIdsAndRoleIds(
 			Collection<String> roleIds, Collection<String> groupIds,
 			AttributeSet qualification) {
-		// TODO jjhanso - THIS METHOD NEEDS JAVADOCS
-		return null;
+		Criteria c = new Criteria(RoleMemberImpl.class.getName());
+		if(roleIds!=null && !roleIds.isEmpty())
+			c.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
+		if(groupIds!=null && !groupIds.isEmpty())
+			c.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
+		c.eq( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
+		addSubCriteriaBasedOnRoleQualification(c, qualification);
+		
+		Collection<RoleMemberImpl> coll = (Collection<RoleMemberImpl>) new QueryByCriteria(entityManager, c).toQuery().getResultList();
+		ArrayList<RoleMemberImpl> results = new ArrayList<RoleMemberImpl>( coll.size() );
+		for ( RoleMemberImpl rm : coll ) {
+			if ( rm.isActive() ) {
+				results.add(rm);
+			}
+		}
+		return results;
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(java.util.Collection, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
-	@Override
 	public List<RoleMemberImpl> getRoleMembersForRoleIds(
 			Collection<String> roleIds, String memberTypeCode,
 			AttributeSet qualification) {
-		// TODO jjhanso - THIS METHOD NEEDS JAVADOCS
-		return null;
+		Criteria c = new Criteria(RoleMemberImpl.class.getName());
+
+		if(roleIds!=null && !roleIds.isEmpty())
+			c.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
+		if ( memberTypeCode != null ) {
+			c.eq( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, memberTypeCode );
+		}
+		addSubCriteriaBasedOnRoleQualification(c, qualification);
+		
+		Collection<RoleMemberImpl> coll = (Collection<RoleMemberImpl>) new QueryByCriteria(entityManager, c).toQuery().getResultList();
+		ArrayList<RoleMemberImpl> results = new ArrayList<RoleMemberImpl>( coll.size() );
+		for ( RoleMemberImpl rm : coll ) {
+			if ( rm.isActive() ) {
+				results.add(rm);
+			}
+		}
+		return results;
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIdsWithFilters(java.util.Collection, java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
-	@Override
 	public List<RoleMemberImpl> getRoleMembersForRoleIdsWithFilters(
 			Collection<String> roleIds, String principalId,
 			List<String> groupIds, AttributeSet qualification) {
-		// TODO jjhanso - THIS METHOD NEEDS JAVADOCS
-		return null;
+		Criteria c = new Criteria(RoleMemberImpl.class.getName());
+
+		if(roleIds!=null && !roleIds.isEmpty())
+			c.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
+		Criteria orSet = new Criteria(RoleMemberImpl.class.getName());
+		orSet.eq( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.ROLE_MEMBER_TYPE );
+		Criteria principalCheck = new Criteria(RoleMemberImpl.class.getName());
+		if(principalId!=null)
+			principalCheck.eq(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId);
+		principalCheck.eq( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
+		orSet.or( principalCheck );
+		Criteria groupCheck = new Criteria(RoleMemberImpl.class.getName());
+		if(groupIds!=null && !groupIds.isEmpty())
+			groupCheck.in(KIMPropertyConstants.RoleMember.MEMBER_ID, groupIds);
+		groupCheck.eq( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.GROUP_MEMBER_TYPE );
+		orSet.or( groupCheck );
+		c.and( orSet );
+		addSubCriteriaBasedOnRoleQualification(c, qualification);
+		
+		Collection<RoleMemberImpl> coll = (Collection<RoleMemberImpl>) new QueryByCriteria(entityManager, c).toQuery().getResultList();
+		ArrayList<RoleMemberImpl> results = new ArrayList<RoleMemberImpl>( coll.size() );
+		for ( RoleMemberImpl rm : coll ) {
+			if ( rm.isActive() ) {
+				results.add(rm);
+			}
+		}
+		return results;
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
+
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembershipsForRoleIdsAsMembers(java.util.Collection, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
-	@Override
 	public List<RoleMemberImpl> getRoleMembershipsForRoleIdsAsMembers(
 			Collection<String> roleIds, AttributeSet qualification) {
-		// TODO jjhanso - THIS METHOD NEEDS JAVADOCS
-		return null;
+		Criteria c = new Criteria(RoleMemberImpl.class.getName());
+
+		if(roleIds!=null && !roleIds.isEmpty())
+			c.in(KIMPropertyConstants.RoleMember.MEMBER_ID, roleIds);
+		c.eq( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+		addSubCriteriaBasedOnRoleQualification(c, qualification);
+		
+		Collection<RoleMemberImpl> coll = (Collection<RoleMemberImpl>) new QueryByCriteria(entityManager, c).toQuery().getResultList();
+		ArrayList<RoleMemberImpl> results = new ArrayList<RoleMemberImpl>( coll.size() );
+		for ( RoleMemberImpl rm : coll ) {
+			if ( rm.isActive() ) {
+				results.add(rm);
+			}
+		}
+		return results;
 	}
 
 	/**
-	 * This overridden method ...
-	 * 
 	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRolePrincipalsForPrincipalIdAndRoleIds(java.util.Collection, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
 	 */
-	@Override
 	public List<RoleMemberImpl> getRolePrincipalsForPrincipalIdAndRoleIds(
 			Collection<String> roleIds, String principalId,
 			AttributeSet qualification) {
-		// TODO jjhanso - THIS METHOD NEEDS JAVADOCS
-		return null;
+		Criteria c = new Criteria(RoleMemberImpl.class.getName());
+
+		if ( roleIds != null ) {
+			c.in(KIMPropertyConstants.RoleMember.ROLE_ID, roleIds);
+		}
+		if(principalId!=null)
+			c.eq(KIMPropertyConstants.RoleMember.MEMBER_ID, principalId);
+		c.eq( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, Role.PRINCIPAL_MEMBER_TYPE );
+		addSubCriteriaBasedOnRoleQualification(c, qualification);
+		
+		Collection<RoleMemberImpl> coll = (Collection<RoleMemberImpl>) new QueryByCriteria(entityManager, c).toQuery().getResultList();
+		ArrayList<RoleMemberImpl> results = new ArrayList<RoleMemberImpl>( coll.size() );
+		for ( RoleMemberImpl rm : coll ) {
+			if ( rm.isActive() ) {
+				results.add(rm);
+			}
+		}
+		return results;
+	}
+	
+	/**
+	 * Adds SubCriteria to the Query Criteria using the role qualification passed in 
+	 * 
+	 * @param c The Query Criteria object to be used 
+	 * @param qualification The role qualification
+	 */
+	private void addSubCriteriaBasedOnRoleQualification(Criteria c, AttributeSet qualification) {
+		if(qualification != null && CollectionUtils.isNotEmpty(qualification.keySet())) {
+			for(Map.Entry<String, String> qualifier : qualification.entrySet()) {
+		        Criteria subCrit = new Criteria(RoleMemberAttributeDataImpl.class.getName());
+		        if(StringUtils.isNotEmpty(qualifier.getValue())) {
+					String value = (qualifier.getValue()).replace('*', '%');
+					subCrit.like("attributeValue", value);
+					subCrit.eq("kimAttributeId", qualifier.getKey());
+					//ArrayList<RoleMemberImpl> roleMbrs = (ArrayList<RoleMemberImpl>) new QueryByCriteria(entityManager, grpRoleCrit).toQuery().getResultList();
+					//ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(RoleMemberAttributeDataImpl.class, subCrit);
+					c.exists(subCrit);
+		        }
+			}
+		}
 	}
 }

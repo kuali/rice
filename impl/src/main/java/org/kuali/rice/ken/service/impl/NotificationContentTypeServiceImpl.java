@@ -19,10 +19,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-//import org.apache.ojb.broker.query.Criteria;
+import org.apache.ojb.broker.query.Criteria;
 //import org.apache.ojb.broker.query.QueryByCriteria;
 //import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.rice.core.jpa.criteria.Criteria;
+//import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationContentType;
@@ -50,12 +50,15 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
      */
     //this is the one need to tweek on criteria
     public NotificationContentType getNotificationContentType(String name) {
-//        Criteria c = new Criteria();
-//        c.addEqualTo("name", name);
-//        c.addEqualTo("current", true);	
-    	Criteria c = new Criteria(NotificationContentType.class.getName());
-    	c.eq("name", name);
-    	c.eq("current", true);
+        Criteria c = new Criteria();
+        c.addEqualTo("name", name);
+        c.addEqualTo("current", true);	
+//    	Criteria c = new Criteria(NotificationContentType.class.getName());
+//    	c.eq("name", name);
+//    	c.eq("current", true);
+//    	Map<String, Object> c = new HashMap<String, Object>();
+//    	c.put("name", name);
+//    	c.put("current", new Boolean(true));
     	
         Collection<NotificationContentType> coll = businessObjectDao.findMatching(NotificationContentType.class, c);
         if (coll.size() == 0) {
@@ -121,10 +124,13 @@ public class NotificationContentTypeServiceImpl implements NotificationContentTy
      * @see org.kuali.rice.ken.service.NotificationContentTypeService#getAllCurrentContentTypes()
      */
     public Collection<NotificationContentType> getAllCurrentContentTypes() {
-//        Criteria c = new Criteria();
-//        c.addEqualTo("current", true);
-    	Criteria c = new Criteria(NotificationContentType.class.getName());
-    	c.eq("current", true);
+        Criteria c = new Criteria();
+        c.addEqualTo("current", true);
+//    	Criteria c = new Criteria(NotificationContentType.class.getName());
+//    	c.eq("current", true);
+    	
+//    	Map<String, Boolean> c = new HashMap<String, Boolean>();
+//    	c.put("current", new Boolean(true));
    
         return businessObjectDao.findMatching(NotificationContentType.class, c);
     }

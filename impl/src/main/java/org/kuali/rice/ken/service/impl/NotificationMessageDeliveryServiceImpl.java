@@ -18,9 +18,10 @@ package org.kuali.rice.ken.service.impl;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
-//import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.apache.ojb.broker.query.Criteria;
+//import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ken.bo.Notification;
@@ -64,10 +65,13 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
      */
     //switch to JPA criteria
     public NotificationMessageDelivery getNotificationMessageDeliveryByDelivererId(Long id) {
-//        Criteria criteria = new Criteria();
-//        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.DELIVERY_SYSTEM_ID, id);
-    	Criteria criteria =new Criteria(NotificationMessageDelivery.class.getName());
-    	criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.DELIVERY_SYSTEM_ID, id);
+        Criteria criteria = new Criteria();
+        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.DELIVERY_SYSTEM_ID, id);
+//    	Criteria criteria =new Criteria(NotificationMessageDelivery.class.getName());
+//    	criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.DELIVERY_SYSTEM_ID, id);
+        
+//    	Map<String, Object> c = new HashMap<String, Object>();
+//    	c.put(NotificationConstants.BO_PROPERTY_NAMES.DELIVERY_SYSTEM_ID, id);
     	
         Collection<NotificationMessageDelivery> results = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria);
         if (results == null || results.size() == 0) return null;
@@ -89,12 +93,14 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
      */
     //switch to JPA criteria
     public Collection<NotificationMessageDelivery> getNotificationMessageDeliveries(Notification notification, String userRecipientId) {
-//        Criteria criteria = new Criteria();
-//        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION, notification.getId());
-//        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.USER_RECIPIENT_ID, userRecipientId);
-    	 Criteria criteria = new Criteria(NotificationMessageDelivery.class.getName());
-    	 criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION, notification.getId());
-    	 criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.USER_RECIPIENT_ID, userRecipientId);
+        Criteria criteria = new Criteria();
+        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION, notification.getId());
+        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.USER_RECIPIENT_ID, userRecipientId);
+//    	 Criteria criteria = new Criteria(NotificationMessageDelivery.class.getName());
+//    	 criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION, notification.getId());
+//    	 criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.USER_RECIPIENT_ID, userRecipientId);
+    	 
+    	 
     	
         return businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria);
     }
@@ -114,12 +120,12 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
         // need to think about durability of work list
 
         // get all undelivered message deliveries
-//        Criteria criteria = new Criteria();
-//        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
-//        criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-        Criteria criteria = new Criteria(NotificationMessageDelivery.class.getName());
-        criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
-        criteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+        Criteria criteria = new Criteria();
+        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
+        criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+//        Criteria criteria = new Criteria(NotificationMessageDelivery.class.getName());
+//        criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
+//        criteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
         // implement our select for update hack
         //criteria = Util.makeSelectForUpdate(criteria);
         Collection<NotificationMessageDelivery> messageDeliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria, true, RiceConstants.NO_WAIT);
@@ -146,41 +152,41 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
     //switch to JPA criteria
     public Collection<NotificationMessageDelivery> takeMessageDeliveriesForAutoRemoval() {
         // get all UNDELIVERED/DELIVERED notification notification message delivery records with associated notifications that have and autoRemovalDateTime <= current
-//        Criteria criteria_STATUS = new Criteria();
-//        criteria_STATUS.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED);
-//
-//        Criteria criteria_UNDELIVERED = new Criteria();
-//        criteria_UNDELIVERED.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
-//
-//        // now OR the above two together
-//        criteria_STATUS.addOrCriteria(criteria_UNDELIVERED);
-//
-//        //Criteria criteria_NOTLOCKED = new Criteria();
-//        //criteria_NOTLOCKED.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-//
-//        Criteria fullQueryCriteria = new Criteria();
-//        fullQueryCriteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-//        //fullQueryCriteria.addAndCriteria(criteria_NOTLOCKED);
-//        fullQueryCriteria.addLessOrEqualThan(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION_AUTO_REMOVE_DATE_TIME, new Timestamp(System.currentTimeMillis()));
-//        // now add in the STATUS check
-//        fullQueryCriteria.addAndCriteria(criteria_STATUS);
-//        
-//        //fullQueryCriteria = Util.makeSelectForUpdate(fullQueryCriteria);
-        Criteria criteria_STATUS = new Criteria(NotificationMessageDelivery.class.getName());
-        criteria_STATUS.eq(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED);
+        Criteria criteria_STATUS = new Criteria();
+        criteria_STATUS.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED);
 
-        Criteria criteria_UNDELIVERED = new Criteria(NotificationMessageDelivery.class.getName());
-        criteria_UNDELIVERED.eq(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
+        Criteria criteria_UNDELIVERED = new Criteria();
+        criteria_UNDELIVERED.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
 
         // now OR the above two together
-        criteria_STATUS.or(criteria_UNDELIVERED);
+        criteria_STATUS.addOrCriteria(criteria_UNDELIVERED);
 
-        Criteria fullQueryCriteria = new Criteria(NotificationMessageDelivery.class.getName());
-        fullQueryCriteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-        
-        fullQueryCriteria.lte(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION_AUTO_REMOVE_DATE_TIME, new Timestamp(System.currentTimeMillis()));
-        
-        fullQueryCriteria.and(criteria_STATUS);
+        //Criteria criteria_NOTLOCKED = new Criteria();
+        //criteria_NOTLOCKED.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+
+        Criteria fullQueryCriteria = new Criteria();
+        fullQueryCriteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+        //fullQueryCriteria.addAndCriteria(criteria_NOTLOCKED);
+        fullQueryCriteria.addLessOrEqualThan(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION_AUTO_REMOVE_DATE_TIME, new Timestamp(System.currentTimeMillis()));
+        // now add in the STATUS check
+        fullQueryCriteria.addAndCriteria(criteria_STATUS);
+//        
+//        //fullQueryCriteria = Util.makeSelectForUpdate(fullQueryCriteria);
+//        Criteria criteria_STATUS = new Criteria(NotificationMessageDelivery.class.getName());
+//        criteria_STATUS.eq(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED);
+//
+//        Criteria criteria_UNDELIVERED = new Criteria(NotificationMessageDelivery.class.getName());
+//        criteria_UNDELIVERED.eq(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
+//
+//        // now OR the above two together
+//        criteria_STATUS.or(criteria_UNDELIVERED);
+//
+//        Criteria fullQueryCriteria = new Criteria(NotificationMessageDelivery.class.getName());
+//        fullQueryCriteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+//        
+//        fullQueryCriteria.lte(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION_AUTO_REMOVE_DATE_TIME, new Timestamp(System.currentTimeMillis()));
+//        
+//        fullQueryCriteria.and(criteria_STATUS);
         
         Collection<NotificationMessageDelivery> messageDeliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, fullQueryCriteria, true, RiceConstants.NO_WAIT);
         
@@ -199,12 +205,12 @@ public class NotificationMessageDeliveryServiceImpl implements NotificationMessa
      */
     //switch to JPA criteria
     public void unlockMessageDelivery(NotificationMessageDelivery messageDelivery) {
-//        Criteria criteria = new Criteria();
-//        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, messageDelivery.getId());
-        //criteria = Util.makeSelectForUpdate(criteria);
+        Criteria criteria = new Criteria();
+        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, messageDelivery.getId());
+ //       criteria = Util.makeSelectForUpdate(criteria);
 
-        Criteria criteria = new Criteria(NotificationMessageDelivery.class.getName());
-        criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.ID, messageDelivery.getId());
+//        Criteria criteria = new Criteria(NotificationMessageDelivery.class.getName());
+//        criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.ID, messageDelivery.getId());
         Collection<NotificationMessageDelivery> deliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria, true, RiceConstants.NO_WAIT);
         if (deliveries == null || deliveries.size() == 0) {
             throw new RuntimeException("NotificationMessageDelivery #" + messageDelivery.getId() + " not found to unlock");

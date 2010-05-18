@@ -192,7 +192,11 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 		if ( group == null ) {
 			return null;
 		}
-
+		SequenceAccessorService sas = getSequenceAccessorService();
+    	if (group.getGroupId() == null) {
+    		group.setGroupId(sas.getNextAvailableSequenceNumber(
+    				"KRIM_GRP_ID_S", GroupImpl.class).toString());
+    	}
 		return KIMServiceLocator.getGroupInternalService().saveWorkgroup(group);
 	}
 

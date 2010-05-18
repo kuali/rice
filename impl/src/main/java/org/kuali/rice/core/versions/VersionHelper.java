@@ -69,14 +69,13 @@ public class VersionHelper {
             if ( method.getName().equals(methodName) ) {
                 // TODO: Do this better, prefer methods with annotations
                 //       to those without
-                return isMethodSupported(obj, method, ver);
+                return isMethodSupported(method, ver);
             }
         }
         return false;
     }
 
-    public static boolean isMethodSupported(Object obj, Method method,
-                                            double ver) {
+    public static boolean isMethodSupported(Method method, double ver) {
         SupportedSince supported = method.getAnnotation(SupportedSince.class);
         DeprecatedSince deprecated = method.getAnnotation(DeprecatedSince.class);
         return isVersionValid(supported, deprecated, ver);
@@ -86,15 +85,14 @@ public class VersionHelper {
                                            double ver) {
         try {
             Field field = obj.getClass().getField(fieldName);
-            return isFieldSupported(obj, field, ver);
+            return isFieldSupported(field, ver);
         }
         catch ( NoSuchFieldException e ) {
             return false;
         }
     }
 
-    public static boolean isFieldSupported(Object obj, Field field,
-                                           double ver) {
+    public static boolean isFieldSupported(Field field, double ver) {
         SupportedSince supported = field.getAnnotation(SupportedSince.class);
         DeprecatedSince deprecated = field.getAnnotation(DeprecatedSince.class);
         return isVersionValid(supported, deprecated, ver);

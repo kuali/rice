@@ -29,6 +29,7 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -240,6 +241,8 @@ public class JpaCriteriaTest extends KNSTestCase {
 	 * 
 	 * @throws Exception
 	 */
+	//JPA unit test.  ignoring for the time being for OJB revert
+	@Ignore
 	@Test
 	public void testSimpleQueries() throws Exception {
 		String[] strArray = null;
@@ -510,6 +513,8 @@ public class JpaCriteriaTest extends KNSTestCase {
 	 * 
 	 * @throws Exception
 	 */
+	//JPA unit test
+	@Ignore
 	@Test
 	public void testSubQueriesAndAssociations() throws Exception {
 		Set<String> strSet = new HashSet<String>();

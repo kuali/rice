@@ -93,7 +93,7 @@
 		<field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" />
 		<field-descriptor name="amId" column="acct_fo_id" jdbc-type="BIGINT" nillable="false" />
 
-		<reference-descriptor name="accountManager" class-ref="org.kuali.rice.kns.test.document.bo.AccountManager">
+		<reference-descriptor name="accountManager" class-ref="org.kuali.rice.kns.test.document.bo.AccountManager" auto-delete="none" auto-retrieve="true" auto-update="object" proxy="true">
 			<foreignkey field-ref="amId" />
 		</reference-descriptor>
 		

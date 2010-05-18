@@ -195,12 +195,13 @@ public class Parameter extends PersistableBusinessObjectBase {
 	}
 
 	public ParameterDetailType getParameterDetailType() {
-		if (!StringUtils.isBlank(parameterDetailTypeCode) && !StringUtils.isBlank(parameterNamespaceCode) && (parameterDetailType == null || !parameterDetailType.getParameterDetailTypeCode().equals(this.parameterDetailTypeCode))) {
-			ParameterDetailTypeId id = new ParameterDetailTypeId();
-			id.setParameterNamespaceCode(parameterNamespaceCode);
-			id.setParameterDetailTypeCode(parameterDetailTypeCode);
-			parameterDetailType = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ParameterDetailType.class, id);
-		}
+		//Special JPA stuff for @Transient.  Commenting out for the OJB reversion
+		//if (!StringUtils.isBlank(parameterDetailTypeCode) && !StringUtils.isBlank(parameterNamespaceCode) && (parameterDetailType == null || !parameterDetailType.getParameterDetailTypeCode().equals(this.parameterDetailTypeCode))) {
+		//	ParameterDetailTypeId id = new ParameterDetailTypeId();
+		//	id.setParameterNamespaceCode(parameterNamespaceCode);
+		//	id.setParameterDetailTypeCode(parameterDetailTypeCode);
+		//	parameterDetailType = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ParameterDetailType.class, id);
+		//}
 		return parameterDetailType;
 	}
 

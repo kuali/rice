@@ -15,12 +15,16 @@
  */
 package org.kuali.rice.kns.dao.impl;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
@@ -47,11 +51,17 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
 	 */
 	public <T extends BusinessObject> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey) {
-		try {
-			return (T) getPersistenceBrokerTemplate().getObjectById(clazz, primaryKey);
-		} catch ( DataAccessException ex ) {
-    		// it doesn't exist, just return null
-			return null;
+		if (primaryKey.getClass().getName().startsWith("java.lang.")) {
+			try {
+				return (T) getPersistenceBrokerTemplate().getObjectById(clazz, primaryKey);
+			} catch ( DataAccessException ex ) {
+	    		// it doesn't exist, just return null
+				return null;
+			}
+		} else {
+			Criteria criteria = buildCriteria(primaryKey);
+
+	        return (T) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQuery(clazz, criteria));
 		}
 	}
     
@@ -319,6 +329,32 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
         }
 
         return criteria;
+    }
+    
+    
+    private Criteria buildCriteria(Object primaryKey) {
+    	Map<String, Object> fieldValues = new HashMap<String, Object>();
+        //create map of values
+    	for (Field field : primaryKey.getClass().getDeclaredFields()) {
+    		Object fieldValue;
+			try {
+				fieldValue = primaryKey.getClass().getMethod("get" + StringUtils.capitalize(field.getName())).invoke(primaryKey);
+				fieldValues.put(field.getName(), fieldValue);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				e.printStackTrace();
+			}
+    	}
+        
+        //profit
+        return this.buildCriteria(fieldValues);
     }
     
     /**

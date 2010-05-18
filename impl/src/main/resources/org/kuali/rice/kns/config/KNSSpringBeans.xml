@@ -791,6 +791,7 @@
 
   <bean id="lookupDao" class="org.kuali.rice.kns.dao.proxy.LookupDaoProxy">
     <property name="lookupDaoJpa" ref="lookupDaoJpa" />
+    <property name="lookupDaoOjb" ref="lookupDaoOjb" />
   </bean>
 
   <bean id="maintenanceDocumentDao" class="org.kuali.rice.kns.dao.proxy.MaintenanceDocumentDaoProxy">
@@ -817,6 +818,7 @@
 
   <bean id="businessObjectDao" class="org.kuali.rice.kns.dao.proxy.BusinessObjectDaoProxy">
     <property name="businessObjectDaoJpa" ref="businessObjectDaoJpa" />
+    <property name="businessObjectDaoOjb" ref="businessObjectDaoOjb" />
   </bean>
   
   <bean id="businessObjectDaoJpa" class="org.kuali.rice.kns.dao.impl.BusinessObjectDaoJpa">
@@ -824,6 +826,9 @@
     <property name="entityManager" ref="knsApplicationEntityManager"/>
   </bean>
   
+  <bean id="businessObjectDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.BusinessObjectDaoOjb">
+    <property name="persistenceStructureService" ref="persistenceStructureService" />
+  </bean>
 	<bean id="sessionDocumentDao" class="org.kuali.rice.kns.dao.proxy.SessionDocumentDaoProxy">
     	<property name="sessionDocumentDaoJpa" ref="sessionDocumentDaoJpa" />
     	<property name="sessionDocumentDaoOjb" ref="sessionDocumentDaoOjb" />
@@ -1051,7 +1056,11 @@
     <property name="entityManager" ref="knsApplicationEntityManager"/>
   </bean>
 
-
+  <bean id="lookupDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.LookupDaoOjb">
+    <property name="persistenceStructureService" ref="persistenceStructureService" />
+    <property name="dateTimeService" ref="dateTimeService" />
+    <property name="businessObjectDictionaryService" ref="businessObjectDictionaryService"/>
+  </bean>
 	<bean id="maintenanceDocumentDaoJpa" class="org.kuali.rice.kns.dao.impl.MaintenanceDocumentDaoJpa">
 		<property name="entityManager" ref="knsApplicationEntityManager"/>
 	</bean>

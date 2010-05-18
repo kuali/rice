@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 
@@ -139,7 +138,7 @@ public interface BusinessObjectDao {
      * @param criteria the criteria to form the query with
      * @return a Collection (most likely a List) of all matching entities 
      */
-    public abstract <T extends BusinessObject> Collection<T> findMatching(Criteria criteria);
+    //public abstract <T extends BusinessObject> Collection<T> findMatching(Criteria criteria);
     
     /**
      * This method retrieves a collection of business objects populated with data, such that each record in the database populates a

@@ -185,7 +185,7 @@
 	<param name="rice.kew.enableKENNotification" override="false">true</param>
 
 	<!-- KEW-specific JPA parameters -->
-	<param name="rice.kew.jpa.enabled" override="false">true</param>
+	<param name="rice.kew.jpa.enabled" override="false">false</param>
 	<param name="rice.kew.jpa.PersistenceXmlLocation" override="false">/META-INF/kew-persistence.xml</param>
 	<param name="rice.kew.jpa.PersistenceUnitName" override="false">kew-unit</param>
 	<param name="rice.kew.jpa.GenerateDdl" override="false">true</param>
@@ -237,7 +237,7 @@
     <param name="ksb.org.quartz.jobStore.tablePrefix" override="false">KRSB_QRTZ_</param>
 
 	<!-- KSB-specific JPA parameters -->
-	<param name="rice.ksb.jpa.enabled" override="false">true</param>
+	<param name="rice.ksb.jpa.enabled" override="false">false</param>
 	<param name="rice.ksb.registry.jpa.PersistenceXmlLocation" override="false">META-INF/ksb-persistence.xml</param>
 	<param name="rice.ksb.registry.jpa.PersistenceUnitName" override="false">ksb-registry-unit</param>
 	<param name="rice.ksb.registry.jpa.GenerateDdl" override="false">true</param>
@@ -248,7 +248,7 @@
 	<!-- End KSB-specific JPA parameters -->
 
 	<!-- KNS-specific JPA parameters -->
-	<param name="rice.kns.jpa.enabled" override="false">true</param>
+	<param name="rice.kns.jpa.enabled" override="false">false</param>
 	<param name="rice.kns.application.jpa.PersistenceXmlLocation" override="false">META-INF/kns-persistence.xml</param>
 	<param name="rice.kns.application.jpa.PersistenceUnitName" override="false">kns-application-unit</param>
 	<param name="rice.kns.application.jpa.GenerateDdl" override="false">true</param>
@@ -289,7 +289,7 @@
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
     
     <!-- KIM-specific JPA parameters --> 
-	<param name="rice.kim.jpa.enabled" override="false">true</param>
+	<param name="rice.kim.jpa.enabled" override="false">false</param>
 	<param name="rice.kim.jpa.PersistenceXmlLocation" override="false">META-INF/kim-persistence.xml</param>
 	<param name="rice.kim.jpa.PersistenceUnitName" override="false">kim-unit</param>
 	<param name="rice.kim.jpa.GenerateDdl" override="false">true</param>
@@ -319,7 +319,7 @@
     <param name="kcb.smtp.host" override="false">${mail.smtp.host}</param>
     
     <!-- KEN-specific JPA parameters --> 
-   	<param name="rice.ken.jpa.enabled" override="false">true</param>
+   	<param name="rice.ken.jpa.enabled" override="false">false</param>
 	<param name="rice.ken.jpa.PersistenceXmlLocation" override="false">META-INF/ken-persistence.xml</param>
 	<param name="rice.ken.jpa.PersistenceUnitName" override="false">ken-unit</param>
 	<param name="rice.ken.jpa.GenerateDdl" override="false">true</param>

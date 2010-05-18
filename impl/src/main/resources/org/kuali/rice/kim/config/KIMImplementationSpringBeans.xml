@@ -56,13 +56,12 @@
     </bean>
     
 
-<!-- 
+
     <bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoOjb" parent="kimPlatformAwareDao" />
 	<bean id="kimGroupDao" class="org.kuali.rice.kim.dao.impl.KimGroupDaoOjb" parent="kimPlatformAwareDao" />
 	<bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="kimPlatformAwareDao" />
 	<bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoOjb" parent="kimPlatformAwareDao"/>
--->
-
+<!-- 
 	<bean id="kimRoleDao" class="org.kuali.rice.kim.dao.impl.KimRoleDaoJpa">
 		<property name="entityManager" ref="kimEntityManager"/>
 	</bean>
@@ -75,7 +74,7 @@
     <bean id="kimResponsibilityDao" class="org.kuali.rice.kim.dao.impl.KimResponsibilityDaoJpa">
       <property name="entityManager" ref="kimEntityManager"/>
     </bean> 
-
+-->
     <bean id="kimSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="KIM"/>
        <property name="jaxWsService" value="false"/>

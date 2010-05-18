@@ -55,11 +55,17 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
     @ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DOC_TYP_ID")
 	private DocumentType documentType;
+    
+    @Transient
+    private Long documentTypeId;
+    @Transient
+    private String policyName;
 
     public DocumentTypePolicy() {
     }
 
     public DocumentTypePolicy(String policyName, Boolean policyValue) {
+    	this.policyName = policyName;
     	this.getDocumentTypePolicyId().setPolicyName(policyName);
         this.policyValue = policyValue;
     }
@@ -111,6 +117,7 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
     }
 
     public void setDocumentTypeId(Long documentTypeId) {
+    	this.documentTypeId = documentTypeId;
         this.getDocumentTypePolicyId().setDocumentTypeId(documentTypeId);
     }
 
@@ -128,6 +135,7 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
          * So instead, let's just be sure to fail-fast.
          */
         DocumentTypePolicyEnum policy = DocumentTypePolicyEnum.lookup(policyName);
+        this.policyName = policy.getName();
         this.getDocumentTypePolicyId().setPolicyName(policy.getName());
     }
 
@@ -188,4 +196,5 @@ public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
         m.put("policyStringValue", this.policyStringValue);
         return m;
     }
+    
 }

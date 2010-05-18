@@ -64,23 +64,34 @@ public class LookupDaoProxy implements LookupDao {
             if (StringUtils.isNotEmpty(dataSourceName)) {
                 if (lookupDaoValues.get(dataSourceName) != null) {
                     return lookupDaoValues.get(dataSourceName);
-                } else {                	
-                	LookupDaoJpa classSpecificLookupDaoJpa = new LookupDaoJpa();
-                	if (entityManager != null) {
-                		classSpecificLookupDaoJpa.setEntityManager(entityManager);
-                		classSpecificLookupDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                } else {         
+                    if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
+                        //using JPA       	
+                	    LookupDaoJpa classSpecificLookupDaoJpa = new LookupDaoJpa();
+                		if (entityManager != null) {
+                			classSpecificLookupDaoJpa.setEntityManager(entityManager);
+                			classSpecificLookupDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
                         	classSpecificLookupDaoJpa.setDateTimeService(KNSServiceLocator.getDateTimeService());
-                		lookupDaoValues.put(dataSourceName, classSpecificLookupDaoJpa);
-                		return classSpecificLookupDaoJpa;
-                	} else {
-                		throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
-                	}
-
+                			lookupDaoValues.put(dataSourceName, classSpecificLookupDaoJpa);
+                			return classSpecificLookupDaoJpa;
+                		} else {
+                			throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
+                		}
+					} else {
+						LookupDaoOjb classSpecificLookupDaoOjb = new LookupDaoOjb();
+                        classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
+                        classSpecificLookupDaoOjb.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                        classSpecificLookupDaoOjb.setDateTimeService(KNSServiceLocator.getDateTimeService());
+                        classSpecificLookupDaoOjb.setBusinessObjectDictionaryService(KNSServiceLocator.getBusinessObjectDictionaryService());
+                        lookupDaoValues.put(dataSourceName, classSpecificLookupDaoOjb);
+                        return classSpecificLookupDaoOjb;
+                    }
                 }
 
             }
         }
-        return lookupDaoJpa;
+        //return lookupDaoJpa;
+        return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? lookupDaoJpa : lookupDaoOjb;
     }
     
 	/**

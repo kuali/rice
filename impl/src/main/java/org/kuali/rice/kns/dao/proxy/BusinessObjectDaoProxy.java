@@ -25,7 +25,7 @@ import javax.persistence.EntityManager;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -43,6 +43,7 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectDaoProxy.class);
 
 	private BusinessObjectDao businessObjectDaoJpa;
+	private BusinessObjectDao businessObjectDaoOjb;
     private static KualiModuleService kualiModuleService;
     private static HashMap<String, BusinessObjectDao> boDaoValues = new HashMap<String, BusinessObjectDao>();
 
@@ -61,21 +62,31 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
                 if (boDaoValues.get(dataSourceName) != null) {
                     return boDaoValues.get(dataSourceName);
                 } else {
-                	
-                	BusinessObjectDaoJpa boDaoJpa = new BusinessObjectDaoJpa();
-                	if (entityManager != null) {
-                		boDaoJpa.setEntityManager(entityManager);
-                		boDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
-                		boDaoValues.put(dataSourceName, boDaoJpa);
-                		return boDaoJpa;
-                	} else {
-                		throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
-                	}
+                	if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
+                        //using JPA
+                		BusinessObjectDaoJpa boDaoJpa = new BusinessObjectDaoJpa();
+                		if (entityManager != null) {
+                			boDaoJpa.setEntityManager(entityManager);
+                			boDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                			boDaoValues.put(dataSourceName, boDaoJpa);
+                			return boDaoJpa;
+                		} else {
+                			throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
+                		}
+                	} else {	
+                	    //using OJB
+                        BusinessObjectDaoOjb boDaoOjb = new BusinessObjectDaoOjb();
+                        boDaoOjb.setJcdAlias(dataSourceName);
+                        boDaoOjb.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                        boDaoValues.put(dataSourceName, boDaoOjb);
+                        return boDaoOjb;
+                    }    
                 }
 
             }
         }
-        return businessObjectDaoJpa;
+        //return businessObjectDaoJpa;
+        return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? businessObjectDaoJpa : businessObjectDaoOjb;
     }
 
 	/**
@@ -177,15 +188,15 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 	 * Has the proxied DAO handle the criteria
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(org.kuali.rice.core.jpa.criteria.Criteria)
 	 */
-	public <T extends BusinessObject> Collection<T> findMatching(Criteria criteria) {
-		Class clazz = null;
-		try {
-			clazz = Class.forName(criteria.getEntityName());
-		} catch (ClassNotFoundException cnfe) {
-			throw new RuntimeException("Attempted to run JPA Criteria which uses a non-existent class to query against: "+criteria.getEntityName(), cnfe);
-		}
-		return getDao(clazz).findMatching(criteria);
-	}
+	//public <T extends BusinessObject> Collection<T> findMatching(Criteria criteria) {
+	//	Class clazz = null;
+	//	try {
+	//		clazz = Class.forName(criteria.getEntityName());
+	//	} catch (ClassNotFoundException cnfe) {
+	//		throw new RuntimeException("Attempted to run JPA Criteria which uses a non-existent class to query against: "+criteria.getEntityName(), cnfe);
+	//	}
+	//	return getDao(clazz).findMatching(criteria);
+	//}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatchingActive(java.lang.Class, java.util.Map)
@@ -254,4 +265,7 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 		this.businessObjectDaoJpa = businessObjectDaoJpa;
 	}
 
+	public void setBusinessObjectDaoOjb(BusinessObjectDao businessObjectDaoOjb) {
+		this.businessObjectDaoOjb = businessObjectDaoOjb;
+	}
 }

@@ -112,7 +112,7 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditab
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmployeeTypeCode()
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#getEmploymentTypeCode()
 	 */
 	public String getEmploymentTypeCode() {
 		return employmentTypeCode;
@@ -161,7 +161,7 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditab
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setEmployeeTypeCode(java.lang.String)
+	 * @see org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation#setEmploymentTypeCode(java.lang.String)
 	 */
 	public void setEmploymentTypeCode(String employmentTypeCode) {
 		this.employmentTypeCode = employmentTypeCode;
@@ -183,7 +183,7 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditab
 		m.put( "entityEmploymentId", entityEmploymentId );
 		m.put( "entityAffiliationId", entityAffiliationId );
 		m.put( "employeeStatusCode", employmentStatusCode );
-		m.put( "employeeTypeCode", employmentTypeCode );
+		m.put( "employmentTypeCode", employmentTypeCode );
 		m.put( "baseSalaryAmount", baseSalaryAmount );
 		m.put( "primary", primary );
 		return m;

@@ -26,6 +26,7 @@ import javax.persistence.PersistenceException;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.rule.RuleBaseValues;
@@ -39,6 +40,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
 
 
@@ -645,9 +647,12 @@ public class RuleServiceTest extends KEWTestCase {
         rbv.getRuleExtensions().add(ext);
 
         /*
-         * FIXME: When the operation below throws the expected exception, it appears to do so while returning from the method call (at which time the expected-to-fail
-         * saving operation gets committed by Hibernate). Unfortunately, the exception gets thrown at the wrong time when returning, because any attempts to run
-         * subsequent unit tests or unit test methods during the same JUnit test run will fail, due to NOWAIT exceptions during test case startup.
+         * The AssertThrows below should work with OJB, but some problems are occurring when using JPA/Hibernate (see below).
+         * 
+         * FIXME: When the operation below throws the expected exception (when JPA/Hibernate is used), it appears to do so while returning from the method call
+         * (at which time the expected-to-fail saving operation gets committed by Hibernate). Unfortunately, the exception gets thrown at the wrong time when returning,
+         * because any attempts to run subsequent unit tests or unit test methods during the same JUnit test run will fail, due to NOWAIT exceptions
+         * during test case startup.
          * 
          * A temporary hack to bypass this problem is to add the following line at the end of the 3-argument RuleServiceImpl.save2() method, which will force the
          * bad saving operation to take place at the right time for a proper rollback to occur:
@@ -656,7 +661,10 @@ public class RuleServiceTest extends KEWTestCase {
          * 
          * However, a longer-term solution will be needed in case there are similar areas in the system with these kinds of problems.
          */
-        new AssertThrows(PersistenceException.class, "Did not throw persistence exception as expected.  If rule service behavior has changed, update this test.") {
+        boolean isKewJpaEnabled = OrmUtils.isJpaEnabled("rice.kew");
+        new AssertThrows(isKewJpaEnabled ? PersistenceException.class : DataIntegrityViolationException.class, isKewJpaEnabled ?
+        		"Did not throw persistence exception as expected.  If rule service behavior has changed, update this test." :
+        				"Did not throw constraint violation as expected.  If rule service behavior has changed, update this test.") {
             public void test() throws Exception {
                 KEWServiceLocator.getRuleService().save2(rbv);
             }

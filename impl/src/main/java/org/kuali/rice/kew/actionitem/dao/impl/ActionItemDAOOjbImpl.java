@@ -189,7 +189,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 		 Criteria crit = new Criteria();
 	     crit.addEqualTo("principalId", principalId);
 	     QueryByCriteria query = new QueryByCriteria(ActionItem.class, crit);
-	     query.addOrderByAscending("routeHeader.routeHeaderId");
+	     query.addOrderByAscending("routeHeaderId");
 	     return this.getPersistenceBrokerTemplate().getCollectionByQuery(query);
 	}
 

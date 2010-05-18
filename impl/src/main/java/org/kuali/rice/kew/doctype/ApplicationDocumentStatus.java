@@ -24,6 +24,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -58,6 +59,11 @@ public class ApplicationDocumentStatus extends KewPersistableBusinessObjectBase 
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="DOC_TYP_ID")
 	private DocumentType documentType;
+
+	@Transient
+	private Long documentTypeId;
+	@Transient
+	private String statusName;
 	
     public ApplicationDocumentStatusId getApplicationDocumentStatusId() {
     	if (this.applicationDocumentStatusId == null) {
@@ -71,18 +77,20 @@ public class ApplicationDocumentStatus extends KewPersistableBusinessObjectBase 
 	}
 
 	public Long getDocumentTypeId() {
-		return this.getApplicationDocumentStatusId().getDocumentTypeId();
+		return (this.getApplicationDocumentStatusId().getDocumentTypeId() != null) ? this.getApplicationDocumentStatusId().getDocumentTypeId() : this.documentTypeId;
 	}
 
 	public void setDocumentTypeId(Long documentTypeId) {
+		this.documentTypeId = documentTypeId;
 		this.getApplicationDocumentStatusId().setDocumentTypeId(documentTypeId);
 	}
 
 	public String getStatusName() {
-		return this.getApplicationDocumentStatusId().getStatusName();
+		return (this.getApplicationDocumentStatusId().getStatusName() != null) ? this.getApplicationDocumentStatusId().getStatusName() : this.statusName;
 	}
 
 	public void setStatusName(String statusName) {
+		this.statusName = statusName;
 		this.getApplicationDocumentStatusId().setStatusName(statusName);
 	}
 
@@ -100,8 +108,8 @@ public class ApplicationDocumentStatus extends KewPersistableBusinessObjectBase 
 	@Override
 	protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
-        m.put("documentTypeId", this.getApplicationDocumentStatusId().getDocumentTypeId());
-        m.put("statusName", this.getApplicationDocumentStatusId().getStatusName());
+        m.put("documentTypeId", this.getDocumentTypeId());
+        m.put("statusName", this.getStatusName());
 		return m;
 	}
 }

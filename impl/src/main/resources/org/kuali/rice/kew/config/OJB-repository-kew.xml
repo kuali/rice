@@ -37,7 +37,7 @@
     <field-descriptor name="routedByUserWorkflowId" column="RTE_PRNCPL_ID"  jdbc-type="VARCHAR" />
     <field-descriptor column="OBJ_ID" name="objectId" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
+    <!--<collection-descriptor element-class-ref="org.kuali.rice.kew.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
       auto-delete="true" name="actionItems">
       <inverse-foreignkey field-ref="routeHeaderId" />
     </collection-descriptor>
@@ -48,7 +48,7 @@
     <collection-descriptor orderby="actionDate" sort="ASC" element-class-ref="org.kuali.rice.kew.actiontaken.ActionTakenValue" auto-retrieve="true" auto-update="false"
       auto-delete="true" name="actionsTaken">
       <inverse-foreignkey field-ref="routeHeaderId" />
-    </collection-descriptor>
+    </collection-descriptor>-->
     <collection-descriptor auto-retrieve="true" auto-update="false" auto-delete="true"
         element-class-ref="org.kuali.rice.kew.notes.Note"
         name="notes"
@@ -157,9 +157,9 @@
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <field-descriptor name="requestLabel" column="RQST_LBL" jdbc-type="VARCHAR"/>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader">
+    <!--<reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
-    </reference-descriptor>
+    </reference-descriptor>-->
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.actionitem.ActionItemActionListExtension" table="KREW_ACTN_ITM_T">
@@ -181,9 +181,9 @@
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <field-descriptor name="requestLabel" column="RQST_LBL" jdbc-type="VARCHAR"/>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
+    <!--<reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
-    </reference-descriptor>
+    </reference-descriptor>-->
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.actionitem.OutboxItemActionListExtension" table="KREW_OUT_BOX_ITM_T">
@@ -205,9 +205,9 @@
     <field-descriptor name="delegationType" column="DLGN_TYP" jdbc-type="VARCHAR" />
     <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
     <field-descriptor name="requestLabel" column="RQST_LBL" jdbc-type="VARCHAR"/>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
+    <!--<reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false" class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
-    </reference-descriptor>
+    </reference-descriptor>-->
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kew.actiontaken.ActionTakenValue" table="KREW_ACTN_TKN_T">
@@ -268,18 +268,18 @@
     	class-ref="org.kuali.rice.kew.actiontaken.ActionTakenValue" name="actionTaken">
     	<foreignkey field-ref="actionTakenId" />
     </reference-descriptor>
-    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
+    <!--<reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
       class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
-    </reference-descriptor>
+    </reference-descriptor>-->
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
     	class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="nodeInstance">
     	<foreignkey field-ref="nodeInstanceId"/>
     </reference-descriptor>
-    <collection-descriptor element-class-ref="org.kuali.rice.kew.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
+    <!--<collection-descriptor element-class-ref="org.kuali.rice.kew.actionitem.ActionItem" auto-retrieve="true" auto-update="false"
       auto-delete="false" name="actionItems" proxy="true">
       <inverse-foreignkey field-ref="actionRequestId" />
-    </collection-descriptor>
+    </collection-descriptor>-->
     <collection-descriptor element-class-ref="org.kuali.rice.kew.actionrequest.ActionRequestValue" auto-retrieve="true" auto-update="true"
       auto-delete="false" name="childrenRequests">
       <inverse-foreignkey field-ref="parentActionRequestId" />

@@ -17,6 +17,12 @@ package org.kuali.rice.kim.bo.group.dto;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlElement;
+
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
@@ -27,16 +33,36 @@ import org.kuali.rice.kim.bo.types.dto.AttributeSet;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+
+@XmlRootElement(name = "group", namespace = "http://rice.kuali.org/xsd/kim/group")
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name = "Group", namespace = "http://rice.kuali.org/xsd/kim/group", propOrder = {
+    "groupId", "groupName", "groupDescription", "active", "kimTypeId", "namespaceCode", "attributes"
+})
+
 public class GroupInfo implements Group, Serializable {
 	
 	private static final long serialVersionUID = 1L;
-	
+
+	@XmlElement(name = "groupId", namespace = "http://rice.kuali.org/xsd/kim/group")	
 	protected String groupId;
+
+	@XmlElement(name = "groupName", namespace = "http://rice.kuali.org/xsd/kim/group")	
 	protected String groupName;
+
+	@XmlElement(name = "groupDescription", namespace = "http://rice.kuali.org/xsd/kim/group")	
 	protected String groupDescription;
+
+	@XmlElement(name = "active", namespace = "http://rice.kuali.org/xsd/kim/group")	
 	protected boolean active;
+
+	@XmlElement(name = "kimTypeId", namespace = "http://rice.kuali.org/xsd/kim/group")	
 	protected String kimTypeId;
+
+	@XmlElement(name = "namespaceCode", namespace = "http://rice.kuali.org/xsd/kim/group")	
 	protected String namespaceCode;
+
+	@XmlElement(name = "attributes", namespace = "http://rice.kuali.org/xsd/kim/group")	
 	protected AttributeSet attributes;
 	
 	

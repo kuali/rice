@@ -2101,44 +2101,54 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return roleRspActions;
 	}
 
-	protected List<RoleMemberImpl> getRoleMembers(IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberImpl> origRoleMembers){
-		List<RoleMemberImpl> roleMembers = new ArrayList<RoleMemberImpl>();
-		RoleMemberImpl newRoleMember;
-		RoleMemberImpl origRoleMemberImplTemp = null;
-		List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
-		boolean activatingInactive = false;
-		String newRoleMemberIdAssigned = "";
-		if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getMembers())){
-			for(KimDocumentRoleMember documentRoleMember: identityManagementRoleDocument.getMembers()){
-				newRoleMember = new RoleMemberImpl();
-				KimCommonUtils.copyProperties(newRoleMember, documentRoleMember);
-				newRoleMember.setRoleId(identityManagementRoleDocument.getRoleId());
-				if(ObjectUtils.isNotNull(origRoleMembers)){
-					for(RoleMemberImpl origRoleMemberImpl: origRoleMembers){
-						if((origRoleMemberImpl.getRoleId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleId(), newRoleMember.getRoleId())) &&
-							(origRoleMemberImpl.getMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getMemberId(), newRoleMember.getMemberId())) &&
-							!origRoleMemberImpl.isActive()){
-							//TODO: verify if you want to add  && newRoleMember.isActive() condition to if...
-							newRoleMemberIdAssigned = newRoleMember.getRoleMemberId();
-							newRoleMember.setRoleMemberId(origRoleMemberImpl.getRoleMemberId());
-							activatingInactive = true;
-						}
-						if(origRoleMemberImpl.getRoleMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleMemberId(), newRoleMember.getRoleMemberId())){
-							newRoleMember.setVersionNumber(origRoleMemberImpl.getVersionNumber());
-							origRoleMemberImplTemp = origRoleMemberImpl;
-						}
-					}
-				}
-				origAttributes = (origRoleMemberImplTemp==null || origRoleMemberImplTemp.getAttributes()==null)?
-									new ArrayList<RoleMemberAttributeDataImpl>():origRoleMemberImplTemp.getAttributes();
-				newRoleMember.setAttributes(getRoleMemberAttributeData(documentRoleMember.getQualifiers(), origAttributes, activatingInactive, newRoleMemberIdAssigned));
-				newRoleMember.setRoleRspActions(getRoleMemberResponsibilityActions(documentRoleMember, origRoleMemberImplTemp, activatingInactive, newRoleMemberIdAssigned));
-				roleMembers.add(newRoleMember);
-				activatingInactive = false;
-			}
-		}
-		return roleMembers;
-	}
+    protected List<RoleMemberImpl> getRoleMembers(IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberImpl> origRoleMembers){
+        List<RoleMemberImpl> roleMembers = new ArrayList<RoleMemberImpl>();
+        RoleMemberImpl newRoleMember;
+        RoleMemberImpl origRoleMemberImplTemp = null;
+        List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
+        boolean activatingInactive = false;
+        String newRoleMemberIdAssigned = "";
+        
+        identityManagementRoleDocument.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()));
+        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( identityManagementRoleDocument.getKimType() );
+        
+        if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getMembers())){
+            for(KimDocumentRoleMember documentRoleMember: identityManagementRoleDocument.getMembers()){
+                origRoleMemberImplTemp = null;
+                
+                newRoleMember = new RoleMemberImpl();
+                KimCommonUtils.copyProperties(newRoleMember, documentRoleMember);
+                newRoleMember.setRoleId(identityManagementRoleDocument.getRoleId());
+                if(ObjectUtils.isNotNull(origRoleMembers)){
+                    for(RoleMemberImpl origRoleMemberImpl: origRoleMembers){
+                        if((origRoleMemberImpl.getRoleId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleId(), newRoleMember.getRoleId())) &&
+                            (origRoleMemberImpl.getMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getMemberId(), newRoleMember.getMemberId())) &&
+                            (origRoleMemberImpl.getMemberTypeCode()!=null && StringUtils.equals(origRoleMemberImpl.getMemberTypeCode(), newRoleMember.getMemberTypeCode())) && 
+                            !origRoleMemberImpl.isActive() && 
+                            !kimTypeService.validateUniqueAttributes(identityManagementRoleDocument.getKimType().getKimTypeId(), 
+                                    documentRoleMember.getQualifierAsAttributeSet(), origRoleMemberImpl.getQualifier())){
+                            //TODO: verify if you want to add  && newRoleMember.isActive() condition to if...
+                            
+                            newRoleMemberIdAssigned = newRoleMember.getRoleMemberId();
+                            newRoleMember.setRoleMemberId(origRoleMemberImpl.getRoleMemberId());
+                            activatingInactive = true;
+                        }
+                        if(origRoleMemberImpl.getRoleMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleMemberId(), newRoleMember.getRoleMemberId())){
+                            newRoleMember.setVersionNumber(origRoleMemberImpl.getVersionNumber());
+                            origRoleMemberImplTemp = origRoleMemberImpl;
+                        }
+                    }
+                }
+                origAttributes = (origRoleMemberImplTemp==null || origRoleMemberImplTemp.getAttributes()==null)?
+                                    new ArrayList<RoleMemberAttributeDataImpl>():origRoleMemberImplTemp.getAttributes();
+                newRoleMember.setAttributes(getRoleMemberAttributeData(documentRoleMember.getQualifiers(), origAttributes, activatingInactive, newRoleMemberIdAssigned));
+                newRoleMember.setRoleRspActions(getRoleMemberResponsibilityActions(documentRoleMember, origRoleMemberImplTemp, activatingInactive, newRoleMemberIdAssigned));
+                roleMembers.add(newRoleMember);
+                activatingInactive = false;
+            }
+        }
+        return roleMembers;
+    }
 
 	protected List<RoleResponsibilityActionImpl> getRoleMemberResponsibilityActions(
 			KimDocumentRoleMember documentRoleMember, RoleMemberImpl origRoleMemberImplTemp, boolean activatingInactive, String newRoleMemberIdAssigned){

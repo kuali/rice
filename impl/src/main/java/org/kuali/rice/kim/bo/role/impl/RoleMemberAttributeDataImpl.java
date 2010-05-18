@@ -36,7 +36,7 @@ public class RoleMemberAttributeDataImpl extends KimAttributeDataImpl {
         return this.roleMemberId;
     }
 
-    public void setRoleMemberId(String groupId) {
+    public void setRoleMemberId(String roleMemberId) {
         this.roleMemberId = roleMemberId;
     }
 

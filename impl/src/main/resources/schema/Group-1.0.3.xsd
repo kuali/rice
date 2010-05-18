@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" targetNamespace="http://rice.kuali.org/xsd/kim/group" xmlns:tns="http://rice.kuali.org/xsd/kim/group" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:import schemaLocation="AttributeSet-1.0.3.xsd"/>
+
+  <xs:element name="group" type="tns:Group"/>
+
+  <xs:complexType name="Group">
+    <xs:sequence>
+      <xs:element name="groupId" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="groupName" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="groupDescription" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="active" type="xs:boolean" form="qualified"/>
+      <xs:element name="kimTypeId" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="namespaceCode" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="attributes" type="attributeSet" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

@@ -21,7 +21,7 @@
     <field-descriptor name="content" column="CNTNT" jdbc-type="CLOB" nullable="false" />
     <field-descriptor name="processingFlag" column="PROCESSING_FLAG" jdbc-type="VARCHAR" nullable="false" />
     <field-descriptor name="lockedDate" column="LOCKD_DTTM" jdbc-type="TIMESTAMP" indexed="false" nullable="true"/>
-    <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
+    <!-- field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/ -->
 
     <!-- Anonymous keys - our foreign keys -->
     <field-descriptor name="producerId" column="PRODCR_ID" jdbc-type="BIGINT" access="anonymous" indexed="true" nullable="false" />
@@ -187,7 +187,7 @@
     <field-descriptor name="userRecipientId" column="RECIP_ID" jdbc-type="VARCHAR" indexed="true" nullable="false" />
     <field-descriptor name="deliverySystemId" column="SYS_ID" jdbc-type="VARCHAR" indexed="false" nullable="true" />
     <field-descriptor name="lockedDate" column="LOCKD_DTTM" jdbc-type="TIMESTAMP" indexed="false" nullable="true"/>
-    <field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/>
+    <!-- field-descriptor name="lockVerNbr" column="VER_NBR" jdbc-type="INTEGER" locking="true"/ -->
 
     <!-- Anonymous keys - our foreign keys -->
     <field-descriptor name="notificationId" column="NTFCTN_ID" jdbc-type="BIGINT" access="anonymous" indexed="true" nullable="false" />

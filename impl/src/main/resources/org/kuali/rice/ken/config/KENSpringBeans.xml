@@ -168,17 +168,18 @@
        
 
     <!-- DAOS -->
-    <!-- 
+    <!-- OJB-->
     <bean id="kenGenericDao" class="org.kuali.rice.core.dao.impl.GenericDaoOjb">
         <property name="jcdAlias">
             <value>kenDataSource</value>
         </property>
     </bean>
-    -->
     
+    <!-- JPA
     <bean id="kenGenericDao" class="org.kuali.rice.core.dao.impl.GenericDaoJpa">
 		<property name="entityManager" ref="kenEntityManager"/>
 	</bean>
+	 -->
     <!-- END DAOS -->
 
     <bean id="resolverExecutor" class="edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor">

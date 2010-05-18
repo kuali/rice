@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -46,7 +47,11 @@ public class BasicJoinEngine implements JoinEngine {
         for (Iterator iter = splitNode.getNextNodeInstances().iterator(); iter.hasNext();) {
             RouteNodeInstance splitNodeNextNode = (RouteNodeInstance) iter.next();
             splitNodeNextNode.getBranch().setJoinNode(joinInstance);
-            //saveBranch(context, splitNodeNextNode.getBranch());
+            // The saveBranch() call below is necessary for parallel routing to work properly with OJB, but it breaks parallel routing with JPA,
+            // so only perform it if KEW is not JPA-enabled.
+            if (!OrmUtils.isJpaEnabled("rice.kew")) {
+            	saveBranch(context, splitNodeNextNode.getBranch());
+            }
             addExpectedJoiner(joinInstance, splitNodeNextNode.getBranch());
         }
         joinInstance.setBranch(splitNode.getBranch());

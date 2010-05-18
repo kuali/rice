@@ -71,7 +71,7 @@
 
 	<bean id="knsApplicationModuleConfiguration-parentBean" class="org.kuali.rice.kns.bo.ModuleConfiguration" abstract="true">
 		<property name="namespaceCode" value="KR-NS" />
-		<!-- <property name="dataSourceName" value="knsApplicationDataSource"/> -->
+		<property name="dataSourceName" value="knsApplicationDataSource"/>
 		<property name="entityManager" ref="knsApplicationEntityManager"/>
 		<property name="initializeDataDictionary" value="true"/>
 		<property name="dataDictionaryService" ref="dataDictionaryService" />
@@ -103,7 +103,7 @@
 
 	<bean id="knsServerModuleConfiguration-parentBean" class="org.kuali.rice.kns.bo.ModuleConfiguration" abstract="true">
 		<property name="namespaceCode" value="KR-NS" />
-		<!-- <property name="dataSourceName" value="knsServerDataSource"/> -->
+		<property name="dataSourceName" value="knsServerDataSource"/>
 		<property name="entityManager" ref="knsServerEntityManager"/>
 		<property name="initializeDataDictionary" value="true"/>
 		<property name="dataDictionaryService" ref="dataDictionaryService" />
@@ -877,14 +877,16 @@
   		</property>
 	</bean>
 
-  <bean id="knsApplicationEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceLocalContainerEntityManagerFactoryBean">    
+  <bean id="knsApplicationEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">    
     <constructor-arg value="rice.kns.application"/>
     <constructor-arg ref="knsApplicationDataSource" />
+    <constructor-arg value="rice.kns" />
   </bean>
 
-  <bean id="knsServerEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceLocalContainerEntityManagerFactoryBean">    
+  <bean id="knsServerEntityManagerFactory" class="org.kuali.rice.core.jpa.spring.RiceEntityManagerProxyFactoryBean">    
     <constructor-arg value="rice.kns.server"/>
     <constructor-arg ref="knsServerDataSource"/>
+    <constructor-arg value="rice.kns" />
   </bean>
   
 

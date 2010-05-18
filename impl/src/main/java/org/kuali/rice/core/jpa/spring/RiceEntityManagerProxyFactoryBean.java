@@ -30,14 +30,22 @@ public class RiceEntityManagerProxyFactoryBean implements FactoryBean, Initializ
 	private RiceLocalContainerEntityManagerFactoryBean factoryBean;
 	private String prefix;
 	private DataSource datasource;
-		
+	private String moduleJpaEnabledPropertyPrefix;
+	
 	public RiceEntityManagerProxyFactoryBean(String prefix, DataSource datasource) {
 		this.prefix = prefix;
 		this.datasource = datasource;
+		this.moduleJpaEnabledPropertyPrefix = prefix;
+	}
+		
+	public RiceEntityManagerProxyFactoryBean(String prefix, DataSource datasource, String moduleJpaEnabledPropertyPrefix) {
+		this.prefix = prefix;
+		this.datasource = datasource;
+		this.moduleJpaEnabledPropertyPrefix = moduleJpaEnabledPropertyPrefix;
 	}	
 
 	public void afterPropertiesSet() throws Exception {
-		if (OrmUtils.isJpaEnabled(prefix)) {
+		if (OrmUtils.isJpaEnabled(moduleJpaEnabledPropertyPrefix)) {
 			factoryBean = new RiceLocalContainerEntityManagerFactoryBean(prefix, datasource);
 			factoryBean.afterPropertiesSet();
 		}

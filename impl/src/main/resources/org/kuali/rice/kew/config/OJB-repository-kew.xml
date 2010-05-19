@@ -268,10 +268,10 @@
     	class-ref="org.kuali.rice.kew.actiontaken.ActionTakenValue" name="actionTaken">
     	<foreignkey field-ref="actionTakenId" />
     </reference-descriptor>
-    <!--<reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
+    <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
       class-ref="org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue" name="routeHeader">
       <foreignkey field-ref="routeHeaderId" />
-    </reference-descriptor>-->
+    </reference-descriptor>
     <reference-descriptor auto-retrieve="true" auto-update="false" auto-delete="false"
     	class-ref="org.kuali.rice.kew.engine.node.RouteNodeInstance" name="nodeInstance">
     	<foreignkey field-ref="nodeInstanceId"/>

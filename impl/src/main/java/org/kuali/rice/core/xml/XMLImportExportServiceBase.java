@@ -1,20 +1,13 @@
 package org.kuali.rice.core.xml;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.JAXBConfigImpl.ConfigNamespaceURIFilter;
-import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLFilter;
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLFilterImpl;
-
-import java.io.InputStream;
-import java.util.List;
 
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.UnmarshallerHandler;
 import javax.xml.parsers.SAXParserFactory;
+import java.io.InputStream;
+import java.util.List;
 
 /**
  * Base implementation of an XMLImportExportService.  Will be extracted into
@@ -73,7 +66,7 @@ public class XMLImportExportServiceBase {
                     try {
                         ChainedXMLFilter filter = entry.getFilterClass().newInstance();
                         if ( prevFilter != null )
-                            prevFilter.setNextFilter(filter);
+                            prevFilter.setParent(filter);
                         if ( result == null )
                             result = filter;
                         prevFilter = filter;
@@ -84,10 +77,6 @@ public class XMLImportExportServiceBase {
                 }
             }
         }
-        if ( result != null )
-            prevFilter.setNextFilter(new TerminalXMLFilter());
-        else
-            result = new TerminalXMLFilter();
-        return result;
+        return result != null ? result : new PassthruXMLFilter();
     }
 }

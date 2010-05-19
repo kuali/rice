@@ -2,6 +2,7 @@ package org.kuali.rice.core.xml;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 /**
  * Acts as the first step in a Chain of XML Filters.  This node does the work
@@ -13,7 +14,6 @@ public class InitialXMLFilter extends ChainedXMLFilterBase {
     private String schemaUri = null;
 
     public InitialXMLFilter() {
-        setNextFilter(new TerminalXMLFilter());
     }
 
     @Override
@@ -25,11 +25,19 @@ public class InitialXMLFilter extends ChainedXMLFilterBase {
             if ( schemaUri != null ) {
                 XMLImportExportServiceBase xmlService = getXMLImportExportService();
                 ChainedXMLFilter startFilter = xmlService.getFilterForSchemaURI(schemaUri);
-                if ( startFilter != null )
-                    setNextFilter(startFilter);
+                if ( startFilter != null ) {
+                    XMLReader oldParent = getParent();
+                    ChainedXMLFilter current = startFilter;
+                    while ( current.getParent() != null ) {
+                        current = (ChainedXMLFilter)current.getParent();
+                    }
+                    if ( oldParent != null )
+                        current.setParent(oldParent);
+                    setParent(startFilter);
+                }
             }
         }
-        next().startElement(uri, localName, qName, atts);
+        super.startElement(uri, localName, qName, atts);
     }
 
     public String getSchemaURI() {

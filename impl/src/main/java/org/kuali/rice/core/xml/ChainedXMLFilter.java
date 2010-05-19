@@ -1,20 +1,13 @@
 package org.kuali.rice.core.xml;
 
 import org.xml.sax.XMLFilter;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.DTDHandler;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.ErrorHandler;
 
 /**
- * A ChainedXMLFilter extends a standard SAX XMLFilter to provide hooks for
- * chaining the processing of filtration.  After custom processing, the
- * methods of an implementing class should call the same method for the next()
- * link in the chain.
+ * A ChainedXMLFilter is a marker interface that identifies a Class as being
+ * capable of cooperating in a transforming XML parse.  The reason a marker
+ * interface is required is to ensure that the implementing class supports
+ * a version of setParent that allows the filter chain to be reconfigured on
+ * the fly.
  */
-public interface ChainedXMLFilter extends XMLFilter, EntityResolver,
-        DTDHandler, ContentHandler, ErrorHandler {
-    void setNextFilter(ChainedXMLFilter nextFilter);
-    ChainedXMLFilter getNextFilter();
-    ChainedXMLFilter next();
+public interface ChainedXMLFilter extends XMLFilter {
 }

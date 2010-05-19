@@ -12,10 +12,7 @@ import java.util.List;
 public class XMLImportExportServiceBase {
     private static final Logger LOG = Logger.getLogger(XMLImportExportServiceBase.class);
             
-    private enum State {
-        INIT,
-        LINKING
-    }
+    private enum State { INIT, LINKING }
     
     protected List<XMLInputFilterEntry> filters;
     

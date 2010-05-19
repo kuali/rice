@@ -17,39 +17,11 @@ package org.kuali.rice.kew.workgroup;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashSet;
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.UnmarshallerHandler;
-import javax.xml.parsers.SAXParserFactory;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.core.config.ConfigLogger;
-import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.config.JAXBConfigImpl;
-import org.kuali.rice.core.config.JAXBConfigImpl.ConfigNamespaceURIFilter;
-import org.kuali.rice.core.config.xsd.Config;
-import org.kuali.rice.core.config.xsd.Param;
-import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.xml.GroupXmlJAXBParser;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
-import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLFilter;
-import org.xml.sax.helpers.XMLFilterImpl;
+import org.kuali.rice.kim.xml.GroupXmlDto;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -73,7 +45,7 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
     	InputStream xmlFile = getClass().getResourceAsStream("GroupXmlImportJAXBTest.xml");
     	
     	GroupXmlJAXBParser parser = new GroupXmlJAXBParser();
-    	GroupInfo groupInfo = parser.parse(xmlFile);
+    	GroupXmlDto groupInfo = parser.parse(xmlFile);
 
     	assertNotNull(groupInfo);
     	assertTrue(groupInfo.getGroupName().equals("TestUserGroup"));

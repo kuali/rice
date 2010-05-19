@@ -26,9 +26,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.config.xsd.Config;
-import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.xml.GroupXmlDto;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -47,13 +45,13 @@ import org.xml.sax.helpers.XMLFilterImpl;
 public class GroupXmlJAXBParser implements XmlConstants {
     private static final Logger LOG = Logger.getLogger(GroupXmlJAXBParser.class);
 
-	public GroupInfo parse(InputStream in) throws IOException {
-        GroupInfo groupInfo = new GroupInfo();
+	public GroupXmlDto parse(InputStream in) throws IOException {
+        GroupXmlDto groupXmlDto = new GroupXmlDto();
 		JAXBContext jaxbContext;
 		Unmarshaller unmarshaller;
 
 		try {
-			jaxbContext = JAXBContext.newInstance(GroupInfo.class);
+			jaxbContext = JAXBContext.newInstance(GroupXmlDto.class);
 			unmarshaller = jaxbContext.createUnmarshaller();
 		} catch (Exception ex) {
 			throw new ConfigurationException("Error initializing JAXB for config", ex);
@@ -67,18 +65,18 @@ public class GroupXmlJAXBParser implements XmlConstants {
 			LOG.warn("###############################");
 		} else {
 			try {
-//				groupInfo = (GroupInfo) unmarshaller.unmarshal(in);  // test w/o filter
-				groupInfo = unmarshal(unmarshaller, in);
+//				groupXmlDto = (GroupXmlDto) unmarshaller.unmarshal(in);  // test w/o filter
+				groupXmlDto = unmarshal(unmarshaller, in);
 			} catch (Exception ex) {
 				LOG.error(ex.getMessage());
 				throw new ConfigurationException("Error parsing XML input stream", ex);
 			}
 
 		}
-		return groupInfo;
+		return groupXmlDto;
 	}
 
-    protected GroupInfo unmarshal(Unmarshaller unmarshaller, InputStream in) throws Exception {
+    protected GroupXmlDto unmarshal(Unmarshaller unmarshaller, InputStream in) throws Exception {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
 
@@ -90,7 +88,7 @@ public class GroupXmlJAXBParser implements XmlConstants {
 
         filter.parse(new InputSource(in));
 
-        return (GroupInfo)handler.getResult();
+        return (GroupXmlDto)handler.getResult();
     }
 
     public class GroupNamespaceURIFilter extends XMLFilterImpl {

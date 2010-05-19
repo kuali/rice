@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:complexType name="stringMapEntry">
+    <xs:sequence>
+      <xs:element name="value" type="xs:string"/>
+    </xs:sequence>
+    <xs:attribute name="key" type="xs:string"/>
+  </xs:complexType>
+
+  <xs:complexType name="stringMapEntryArray" final="#all">
+    <xs:sequence>
+      <xs:element name="item" type="stringMapEntry" minOccurs="0" maxOccurs="unbounded" nillable="true"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

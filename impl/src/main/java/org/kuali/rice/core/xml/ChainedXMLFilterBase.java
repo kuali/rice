@@ -17,6 +17,13 @@ public abstract class ChainedXMLFilterBase extends XMLFilterImpl
 
     public void setNextFilter(ChainedXMLFilter nextFilter) {
         this.nextFilter = nextFilter;
+        if ( nextFilter != null ) {
+            nextFilter.setParent(getParent());
+            nextFilter.setEntityResolver(getEntityResolver());
+            nextFilter.setDTDHandler(getDTDHandler());
+            nextFilter.setContentHandler(getContentHandler());
+            nextFilter.setErrorHandler(getErrorHandler());
+        }
     }
 
     public ChainedXMLFilter getNextFilter() {
@@ -25,26 +32,6 @@ public abstract class ChainedXMLFilterBase extends XMLFilterImpl
 
     public ChainedXMLFilter next() {
         return getNextFilter();
-    }
-
-    @Override
-    public void setParent(XMLReader xmlReader) {
-        super.setParent(xmlReader);
-        next().setParent(xmlReader);
-    }
-
-    @Override
-    public void setFeature(String s, boolean b) throws SAXNotRecognizedException,
-            SAXNotSupportedException {
-        super.setFeature(s, b);
-        next().setFeature(s, b);
-    }
-
-    @Override
-    public void setProperty(String s, Object o) throws SAXNotRecognizedException,
-            SAXNotSupportedException {
-        super.setProperty(s, o);
-        next().setProperty(s, o);
     }
 
     @Override

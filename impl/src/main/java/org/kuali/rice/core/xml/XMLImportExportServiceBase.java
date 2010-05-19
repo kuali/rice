@@ -38,7 +38,7 @@ public class XMLImportExportServiceBase {
         ChainedXMLFilter result = null, prevFilter = null;
         List<XMLInputFilterEntry> filters = getFilters();
         if ( filters != null ) {
-            State state = State.INIT;            
+            State state = State.INIT;
             for ( XMLInputFilterEntry entry : filters ) {
                 if ( state == State.INIT && entry.getSchemaURI().equals(schemaURI) ) {
                     // We actually want to skip this entry and start linking
@@ -50,17 +50,15 @@ public class XMLImportExportServiceBase {
                     if ( entry.getFilterClass() != null ) {
                         try {
                             filter = entry.getFilterClass().newInstance();
+                            if ( prevFilter != null )
+                                prevFilter.setNextFilter(filter);
+                            if ( result == null )
+                                result = filter;
+                            prevFilter = filter;
                         }
                         catch ( Exception e ) {
-                            LOG.error("Could not instantiate ChainedXMLFilter", e);
+                            throw new RuntimeException("Could not instantiate ChainedXMLFilter", e);
                         }
-                    }
-                    if ( filter != null ) {
-                        if ( prevFilter != null )
-                            prevFilter.setNextFilter(filter);
-                        if ( result == null )
-                            result = filter;
-                        prevFilter = filter;
                     }
                 }
             }

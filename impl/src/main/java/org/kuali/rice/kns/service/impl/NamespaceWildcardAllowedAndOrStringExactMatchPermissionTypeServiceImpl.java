@@ -16,17 +16,27 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.bo.Namespace;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl
 		extends NamespacePermissionTypeServiceImpl {
+	protected static final String NAMESPACE_CODE = KimConstants.UniqueKeyConstants.NAMESPACE_CODE;
+	
 	protected String exactMatchStringAttributeName;
 	protected boolean namespaceRequiredOnStoredAttributeSet;
 
@@ -78,5 +88,32 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 	public void setNamespaceRequiredOnStoredAttributeSet(
 			boolean namespaceRequiredOnStoredAttributeSet) {
 		this.namespaceRequiredOnStoredAttributeSet = namespaceRequiredOnStoredAttributeSet;
+	}
+
+	/**
+	 * Overrides the superclass's version of this method in order to account for "namespaceCode" permission detail values containing wildcards.
+	 */
+	@Override
+	protected Map<String, List<String>> validateReferencesExistAndActive(KimTypeInfo kimType, AttributeSet attributes, Map<String, String> previousValidationErrors) {
+		Map<String,List<String>> errors = new HashMap<String,List<String>>();
+		AttributeSet nonNamespaceCodeAttributes = new AttributeSet(attributes);
+		// Check if "namespaceCode" is one of the permission detail values.
+		if (attributes.containsKey(NAMESPACE_CODE)) {
+			nonNamespaceCodeAttributes.remove(NAMESPACE_CODE);
+			Collection<Namespace> namespaces = KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(
+					Namespace.class, Collections.singletonMap("code", attributes.get(NAMESPACE_CODE)));
+			// If the lookup service found at least one namespace, perform exists-and-active checks on each one.
+			if (namespaces != null && !namespaces.isEmpty()) {
+				for (Namespace namespace : namespaces) {
+					errors.putAll(super.validateReferencesExistAndActive(kimType, new AttributeSet(NAMESPACE_CODE, namespace.getNamespaceCode()), previousValidationErrors));
+				}
+			} else {
+				// If no namespaces were found, let the superclass generate an appropriate error.
+				errors.putAll(super.validateReferencesExistAndActive(kimType, new AttributeSet(NAMESPACE_CODE, attributes.get(NAMESPACE_CODE)), previousValidationErrors));
+			}
+		}
+		// Validate all non-namespaceCode attributes.
+		errors.putAll(super.validateReferencesExistAndActive(kimType, nonNamespaceCodeAttributes, previousValidationErrors));
+		return errors;
 	}
 }

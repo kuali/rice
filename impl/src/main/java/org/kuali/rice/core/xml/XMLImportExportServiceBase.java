@@ -1,9 +1,20 @@
 package org.kuali.rice.core.xml;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.config.JAXBConfigImpl.ConfigNamespaceURIFilter;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
+import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.helpers.XMLFilterImpl;
 
+import java.io.InputStream;
 import java.util.List;
+
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.UnmarshallerHandler;
+import javax.xml.parsers.SAXParserFactory;
 
 /**
  * Base implementation of an XMLImportExportService.  Will be extracted into
@@ -24,6 +35,32 @@ public class XMLImportExportServiceBase {
         this.filters = filters;
     }
 
+    public <T extends Class> T unmarshal(T clazz, Unmarshaller unmarshaller, InputStream in) throws Exception {
+        SAXParserFactory spf = SAXParserFactory.newInstance();
+        spf.setNamespaceAware(true);
+
+        XMLFilter filter = new UriFinderFilter();
+        filter.setParent(spf.newSAXParser().getXMLReader());
+
+        UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
+        filter.setContentHandler(handler);
+
+        filter.parse(new InputSource(in));
+
+        return (T)handler.getResult();
+    }
+    
+    public class UriFinderFilter extends ChainedXMLFilterBase {
+    	
+		public void startElement(String uri, String localName, String qName,
+				Attributes atts) throws SAXException {
+
+			this.setNextFilter(getFilterForSchemaURI(uri));
+			
+			super.startElement(uri, localName, qName, atts);
+		}
+    }
+    
     /**
      * Returns the linked set of ChainedXMLFilter instances required to
      * transform a document of the specified schema to current.

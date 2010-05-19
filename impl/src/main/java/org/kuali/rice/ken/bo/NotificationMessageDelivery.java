@@ -98,19 +98,19 @@ public class NotificationMessageDelivery extends PersistableBusinessObjectBase i
      * Return value of lock column for OJB optimistic locking
      * @return value of lock column for OJB optimistic locking
      */
-    public Integer getLockVerNbr() {
-        //return lockVerNbr;
-    	return Integer.valueOf(super.getVersionNumber().intValue());
-    }
+    //public Integer getLockVerNbr() {
+    //    return lockVerNbr;
+    	//return Integer.valueOf(super.getVersionNumber().intValue());
+    //}
 
     /**
      * Set value of lock column for OJB optimistic locking
      * @param lockVerNbr value of lock column for OJB optimistic locking
      */
-    public void setLockVerNbr(Integer lockVerNbr) {
-        //this.lockVerNbr = lockVerNbr;
-    	super.setVersionNumber(lockVerNbr.longValue());
-    }
+    //public void setLockVerNbr(Integer lockVerNbr) {
+    //    this.lockVerNbr = lockVerNbr;
+    //	//super.setVersionNumber(lockVerNbr.longValue());
+    //}
 
     /**
      * Gets the messageDeliveryStatus attribute. 

@@ -221,7 +221,7 @@ public class NotificationServiceImpl implements NotificationService {
 			} else if (targetStatus.equals(messageDelivery.getMessageDeliveryStatus())) {
 				LOG.info("Skipping dismissal of already removed message delivery #" + messageDelivery.getId());
 			} else {
-				LOG.debug("Dismissing message delivery #" + messageDelivery.getId() + " " + messageDelivery.getLockVerNbr());
+				LOG.debug("Dismissing message delivery #" + messageDelivery.getId() + " " + messageDelivery.getVersionNumber());//.getLockVerNbr());
 
 				// we have our message deliverer, so tell it to dismiss the message
 				//try {
@@ -240,7 +240,7 @@ public class NotificationServiceImpl implements NotificationService {
 			// TODO: locking
 			// mark as unlocked
 			//messageDelivery.setLockedDate(null);
-			LOG.debug("Saving message delivery #" + messageDelivery.getId() + " " + messageDelivery.getLockVerNbr());
+			LOG.debug("Saving message delivery #" + messageDelivery.getId() + " " + messageDelivery.getVersionNumber());
 			businessObjectDao.save(messageDelivery);
 
 			LOG.debug("Message delivery '" + messageDelivery.getId() + "' for notification '" + messageDelivery.getNotification().getId() + "' was successfully dismissed.");

@@ -17,6 +17,8 @@ package org.kuali.rice.ken.bo;
 
 import java.util.LinkedHashMap;
 
+import org.hibernate.annotations.Type;
+
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -47,9 +49,9 @@ public class NotificationContentType extends PersistableBusinessObjectBase{
 	private Long id;
     @Column(name="NM", nullable=false)
 	private String name;
-    @Transient
+    @Type(type="true_false")
     private boolean current = true;
-    @Transient
+    @Column(name="CNTNT_TYP_VER_NBR", nullable=false)
     private Integer version = Integer.valueOf(0);
     @Column(name="DESC_TXT", nullable=false)
 	private String description;

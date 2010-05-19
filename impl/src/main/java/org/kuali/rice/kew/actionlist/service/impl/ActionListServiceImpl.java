@@ -195,7 +195,7 @@ public class ActionListServiceImpl implements ActionListService {
 
 
     public void validateActionItem(ActionItem actionItem) {
-        List errors = new ArrayList();
+        List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();
         String principalId = actionItem.getPrincipalId();
         if (principalId == null || principalId.trim().equals("")) {
             errors.add(new WorkflowServiceErrorImpl("ActionItem person null.", "actionitem.personid.empty", actionItem
@@ -307,8 +307,7 @@ public class ActionListServiceImpl implements ActionListService {
     /**
      * This overridden method ...
      *
-     * @see org.kuali.rice.kew.actionlist.service.ActionListService#removeOutboxItems(org.kuali.rice.kew.user.WorkflowUser,
-     *      java.util.List)
+     * @see org.kuali.rice.kew.actionlist.service.ActionListService#removeOutboxItems(String, java.util.List)
      */
     public void removeOutboxItems(String principalId, List<String> outboxItems) {
         this.getActionListDAO().removeOutboxItems(principalId, outboxItems);
@@ -322,7 +321,7 @@ public class ActionListServiceImpl implements ActionListService {
      *
      * save the ouboxitem unless the document is saved or the user already has the item in their outbox.
      *
-     * @see org.kuali.rice.kew.actionlist.service.ActionListService#saveOutboxItem(org.kuali.rice.kew.actionitem.OutboxItemActionListExtension)
+     * @see org.kuali.rice.kew.actionlist.service.ActionListService#saveOutboxItem(org.kuali.rice.kew.actionitem.ActionItem, boolean)
      */
     public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox) {
             if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId()).isUsingOutbox()

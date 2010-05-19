@@ -17,14 +17,7 @@
 package org.kuali.rice.kew.actionlist.dao.impl;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -64,8 +57,8 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
     /**
 	 * This method ...
 	 * 
-	 * @param actionItemsInActionList
-	 * @return
+	 * @param actionItems
+	 * @return actionItemActionListExtensions
 	 */
 	private Collection<ActionItem> toActionItemActionListExtensions(
 			Collection<ActionItem> actionItems) {
@@ -513,7 +506,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
     /**
      * Deletes all outbox items specified by the list of ids
      * 
-     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(org.kuali.rice.kew.user.WorkflowUser, java.util.List)
+     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#removeOutboxItems(String, java.util.List)
      */
     public void removeOutboxItems(String principalId, List<String> outboxItems) {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());
@@ -552,7 +545,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
     /**
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentIdUserId(java.lang.Long)
+     * @see org.kuali.rice.kew.actionlist.dao.ActionListDAO#getOutboxByDocumentIdUserId(Long, String)
      */
     public OutboxItemActionListExtension getOutboxByDocumentIdUserId(Long documentId, String userId) {
         Criteria crit = new Criteria(OutboxItemActionListExtension.class.getName());

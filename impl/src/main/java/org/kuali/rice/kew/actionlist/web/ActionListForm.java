@@ -53,10 +53,10 @@ public class ActionListForm extends KualiForm {
     private String actionListType;
     private Boolean customActionList;
     private String defaultActionToTake;
-    private List actionsToTake = new ArrayList();
-    private Map defaultActions = new HashMap();
+    private List<ActionToTake> actionsToTake = new ArrayList<ActionToTake>();
+    private Map<?, ?> defaultActions = new HashMap<Object, Object>();
     private String delegationId;
-    private List delegators;
+    private List<?> delegators;
     private Boolean hasCustomActions;
     private Boolean routeLogPopup;
     private Boolean documentPopup;
@@ -151,11 +151,11 @@ public class ActionListForm extends KualiForm {
 	this.defaultActionToTake = defaultActionToTake;
     }
 
-    public List getActionsToTake() {
+    public List<ActionToTake> getActionsToTake() {
 	return actionsToTake;
     }
 
-    public void setActionsToTake(List actionsToTake) {
+    public void setActionsToTake(List<ActionToTake> actionsToTake) {
 	this.actionsToTake = actionsToTake;
     }
 
@@ -163,14 +163,14 @@ public class ActionListForm extends KualiForm {
 	while (getActionsToTake().size() <= index) {
 	    getActionsToTake().add(new ActionToTake());
 	}
-	return (ActionToTake) getActionsToTake().get(index);
+	return getActionsToTake().get(index);
     }
 
-    public Map getDefaultActions() {
+    public Map<?, ?> getDefaultActions() {
 	return defaultActions;
     }
 
-    public void setDefaultActions(Map defaultActions) {
+    public void setDefaultActions(Map<?, ?> defaultActions) {
 	this.defaultActions = defaultActions;
     }
 
@@ -182,11 +182,11 @@ public class ActionListForm extends KualiForm {
 	this.delegationId = delegationId;
     }
 
-    public List getDelegators() {
+    public List<?> getDelegators() {
 	return delegators;
     }
 
-    public void setDelegators(List delegators) {
+    public void setDelegators(List<?> delegators) {
 	this.delegators = delegators;
     }
 
@@ -348,8 +348,8 @@ public class ActionListForm extends KualiForm {
         //if (documentPopupInd) {
         //    documentPopup = "true";
         //}
-        setRouteLogPopup(Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND)));
-        setDocumentPopup(Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND)));
+        setRouteLogPopup(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_ROUTE_LOG_POPUP_IND));
+        setDocumentPopup(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTION_LIST_DOCUMENT_POPUP_IND));
         request.setAttribute("noRefresh", Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.ACTION_LIST_NO_REFRESH)));
 		super.populate(request);
 	}

@@ -9,6 +9,11 @@ import java.util.List;
  * an interface when completed.
  */
 public class XMLImportExportServiceBase {
+    private enum State {
+        INIT,
+        LINKING
+    }
+    
     protected List<XMLInputFilterEntry> filters;
     
     public List<XMLInputFilterEntry> getFilters() {
@@ -26,7 +31,41 @@ public class XMLImportExportServiceBase {
      * @param schemaURI The Schema URI of the current Document
      * @return The starting ChainedXMLFilter for transforming the Document
      */
-    protected XMLFilter getFilterForSchemaURI(String schemaURI) {
-        return null; // TODO: This
+    protected ChainedXMLFilter getFilterForSchemaURI(String schemaURI) {
+        State state = State.INIT;
+        ChainedXMLFilter result = null;
+        ChainedXMLFilter prevFilter = null;
+        if ( filters != null ) {
+            for ( XMLInputFilterEntry entry : getFilters() ) {
+                if ( state == State.INIT && entry.getSchemaURI().equals(schemaURI) ) {
+                    // We actually want to skip this entry and start linking
+                    // at the next entry.
+                    state = State.LINKING;
+                }
+                else if ( state == State.LINKING ) {
+                    ChainedXMLFilter filter = null;
+                    if ( entry.getFilterClass() != null ) {
+                        try {
+                            filter = entry.getFilterClass().newInstance();
+                        }
+                        catch ( Exception e ) {
+                            //LOG.error("Could not instantiate ChainedXMLFilter", e);
+                        }
+                    }
+                    if ( filter == null )
+                        filter = new PassthruXMLFilter();                    
+                    if ( prevFilter != null )
+                        prevFilter.setNextFilter(filter);
+                    if ( result == null )
+                        result = filter;
+                    prevFilter = filter;
+                }
+            }
+        }
+        if ( result != null )
+            prevFilter.setNextFilter(new TerminalXMLFilter());
+        else
+            result = new TerminalXMLFilter();
+        return result;
     }
 }

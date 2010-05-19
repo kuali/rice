@@ -102,6 +102,9 @@
         <xercesImpl.version>2.9.1</xercesImpl.version>
         <xml-apis.version>1.0.b2</xml-apis.version>
         <xstream.version>1.2.2</xstream.version>
+        <build.plugins.plugin.version>1.0-beta-4</build.plugins.plugin.version>
+		<reporting.plugins.plugin.version>2.1.2</reporting.plugins.plugin.version>
+		<surefire.report.plugin.version>2.5</surefire.report.plugin.version>
     </properties>
 
     <profiles>
@@ -169,17 +172,12 @@
                             <forkMode>once</forkMode>
                             <reportFormat>plain</reportFormat>
                             <argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
-                            <systemProperties>
-                                <property>
-                                    <name>alt.log4j.config.location</name>
-                                    <value>${alt.log4j.config.location}</value>
-                                </property>
-                            </systemProperties>
                         </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.codehaus.mojo</groupId>
                         <artifactId>buildnumber-maven-plugin</artifactId>
+                        <version>${build.plugins.plugin.version}</version>
                         <executions>
                             <execution>
                                 <phase>validate</phase>
@@ -687,11 +685,13 @@
                 <groupId>com.oracle</groupId>
                 <artifactId>ojdbc14</artifactId>
                 <version>${ojdbc14.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-java.version}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
@@ -958,6 +958,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>${reporting.plugins.plugin.version}</version>
                 <configuration>
                     <!-- this takes forever to complete, enable as needed -->
                     <dependencyLocationsEnabled>
@@ -968,6 +969,7 @@
 
             <plugin>
                 <artifactId>maven-surefire-report-plugin</artifactId>
+                <version>${surefire.report.plugin.version}</version>
                 <reportSets>
                     <reportSet>
                         <reports>
@@ -1007,7 +1009,6 @@
     <scm>
         <connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-1-0-br</connection>
         <developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-1-0-br</developerConnection>
-        <tag>HEAD</tag>
         <url>https://test.kuali.org/fisheye/browse/rice</url>
     </scm>
     <distributionManagement>

@@ -39,7 +39,8 @@ public class XMLImportExportServiceBase {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
 
-        XMLFilter filter = new UriFinderFilter();
+        InitialXMLFilter filter = new InitialXMLFilter();
+        filter.setXMLImportExportService(this);
         filter.setParent(spf.newSAXParser().getXMLReader());
 
         UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
@@ -48,17 +49,6 @@ public class XMLImportExportServiceBase {
         filter.parse(new InputSource(in));
 
         return (T)handler.getResult();
-    }
-    
-    public class UriFinderFilter extends ChainedXMLFilterBase {
-    	
-		public void startElement(String uri, String localName, String qName,
-				Attributes atts) throws SAXException {
-
-			this.setNextFilter(getFilterForSchemaURI(uri));
-			
-			super.startElement(uri, localName, qName, atts);
-		}
     }
     
     /**

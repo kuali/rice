@@ -190,7 +190,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
         delegatorWorkflowIdCriteria.eq("delegatorWorkflowId", principalId);
         if (CollectionUtils.isNotEmpty(workgroupIds)) {
             Criteria delegatorWorkgroupCriteria = new Criteria(ActionItem.class.getName());
-            delegatorWorkgroupCriteria.in("delegatorGroupId", new ArrayList(workgroupIds));
+            delegatorWorkgroupCriteria.in("delegatorGroupId", new ArrayList<String>(workgroupIds));
             orCriteria.or(delegatorWorkgroupCriteria);
             orCriteria.or(delegatorWorkflowIdCriteria);
         }

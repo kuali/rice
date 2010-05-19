@@ -99,7 +99,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         return getItemsByDocumentType(OutboxItemActionListExtension.class, documentTypeName);
     }
 
-    private Collection<ActionItem> getItemsByDocumentType(Class objectClass, String documentTypeName) {
+    private Collection<ActionItem> getItemsByDocumentType(Class<? extends ActionItem> objectClass, String documentTypeName) {
         Criteria crit = new Criteria();
         crit.addEqualTo("docName", documentTypeName);
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(objectClass, crit));

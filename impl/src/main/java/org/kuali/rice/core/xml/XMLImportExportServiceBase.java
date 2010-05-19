@@ -45,20 +45,17 @@ public class XMLImportExportServiceBase {
                     // at the next one, as we don't need to convert to self.
                     state = State.LINKING;
                 }
-                else if ( state == State.LINKING ) {
-                    ChainedXMLFilter filter = null;
-                    if ( entry.getFilterClass() != null ) {
-                        try {
-                            filter = entry.getFilterClass().newInstance();
-                            if ( prevFilter != null )
-                                prevFilter.setNextFilter(filter);
-                            if ( result == null )
-                                result = filter;
-                            prevFilter = filter;
-                        }
-                        catch ( Exception e ) {
-                            throw new RuntimeException("Could not instantiate ChainedXMLFilter", e);
-                        }
+                else if ( state == State.LINKING && entry.getFilterClass() != null ) {
+                    try {
+                        ChainedXMLFilter filter = entry.getFilterClass().newInstance();
+                        if ( prevFilter != null )
+                            prevFilter.setNextFilter(filter);
+                        if ( result == null )
+                            result = filter;
+                        prevFilter = filter;
+                    }
+                    catch ( Exception e ) {
+                        throw new RuntimeException("Could not instantiate ChainedXMLFilter", e);
                     }
                 }
             }

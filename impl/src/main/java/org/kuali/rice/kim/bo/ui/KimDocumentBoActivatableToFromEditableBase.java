@@ -32,7 +32,7 @@ import org.hibernate.annotations.Type;
  */
 @MappedSuperclass
 @AttributeOverrides({
-	@AttributeOverride(name="edit",column=@Column(name="EDIT_FLAG")),
+	@AttributeOverride(name="edit",column=@Column(name="EDIT_FLAG"))
 })
 public class KimDocumentBoActivatableToFromEditableBase  extends KimDocumentBoBase {
     private static final long serialVersionUID = 9042706897191231673L;

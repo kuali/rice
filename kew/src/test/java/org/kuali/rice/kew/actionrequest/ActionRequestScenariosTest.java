@@ -155,10 +155,10 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 		List rootRequests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocId(document.getRouteHeaderId());
 		assertEquals("Should be 1 root request.", 1, rootRequests.size());
 		ActionRequestValue ewestfalRequest = (ActionRequestValue)rootRequests.get(0);
-		assertTrue("Request to ewestfal should be force action of true", ewestfalRequest.getForceAction().booleanValue());
+		assertTrue("Request to ewestfal should be force action of true", ewestfalRequest.getForceAction());
 		assertEquals("Should have 1 child request.", 1, ewestfalRequest.getChildrenRequests().size());
 		ActionRequestValue rkirkendRequest = (ActionRequestValue)ewestfalRequest.getChildrenRequests().get(0);
-		assertFalse("Request to rkirkend should be force action of false", rkirkendRequest.getForceAction().booleanValue());
+		assertFalse("Request to rkirkend should be force action of false", rkirkendRequest.getForceAction());
 
 		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), "testForceActionWithDelegation");
 
@@ -181,7 +181,8 @@ public class ActionRequestScenariosTest extends KEWTestCase {
 	/**
 	 * Test that Role to Role Delegation works properly.
 	 * Implemented to expose the bug and test the fix for KULWF-655.
-	 */
+     * @throws Exception
+     */
 	@Test public void testRoleToRoleDelegation() throws Exception {
 		WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "testRoleToRoleDelegation");
 		document.routeDocument("");

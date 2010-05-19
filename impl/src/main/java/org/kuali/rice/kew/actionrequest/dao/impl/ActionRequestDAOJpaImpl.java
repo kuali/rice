@@ -81,7 +81,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         return ((Long)query.getSingleResult()) > 0;
     }
 
-    public List findActivatedByGroup(Group group) {
+    public List<?> findActivatedByGroup(Group group) {
         
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindActivatedByGroup");
         query.setParameter("groupId", group.getGroupId());
@@ -152,7 +152,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
 
     public List findPendingByResponsibilityIds(Collection responsibilityIds) {
         if (responsibilityIds == null || responsibilityIds.size() == 0)
-            return Collections.EMPTY_LIST;
+            return Collections.emptyList();
 
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindPendingByDocIdAtOrBelowRouteLevel");
         query.setParameter("responsibilityIds", responsibilityIds);
@@ -243,10 +243,10 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
             actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
         }
         if (actionRequest.getPriority() == null) {
-            actionRequest.setPriority(new Integer(KEWConstants.ACTION_REQUEST_DEFAULT_PRIORITY));
+            actionRequest.setPriority(KEWConstants.ACTION_REQUEST_DEFAULT_PRIORITY);
         }
         if (actionRequest.getCurrentIndicator() == null) {
-            actionRequest.setCurrentIndicator(new Boolean(true));
+            actionRequest.setCurrentIndicator(true);
         }
         actionRequest.setCreateDate(new Timestamp(System.currentTimeMillis()));
     }

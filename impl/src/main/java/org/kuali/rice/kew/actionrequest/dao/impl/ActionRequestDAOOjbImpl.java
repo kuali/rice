@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.actionrequest.dao.impl;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,7 +59,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     }
 
     public List findPendingByResponsibilityIds(Collection responsibilityIds) {
-        if (responsibilityIds == null || responsibilityIds.size() == 0) return Collections.EMPTY_LIST;
+        if (responsibilityIds == null || responsibilityIds.size() == 0) return Collections.emptyList();
         Criteria crit = new Criteria();
         Criteria statusCriteria = new Criteria();
         Criteria activatedCriteria = new Criteria();
@@ -87,7 +88,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         Criteria crit = new Criteria();
         crit.addEqualTo("status", statusCd);
         crit.addEqualTo("routeHeaderId", routeHeaderId);
-        crit.addEqualTo("currentIndicator", new Boolean(true));
+        crit.addEqualTo("currentIndicator", true);
 
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
@@ -104,10 +105,10 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
             actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
         }
         if (actionRequest.getPriority() == null) {
-            actionRequest.setPriority(new Integer(KEWConstants.ACTION_REQUEST_DEFAULT_PRIORITY));
+            actionRequest.setPriority(KEWConstants.ACTION_REQUEST_DEFAULT_PRIORITY);
         }
         if (actionRequest.getCurrentIndicator() == null) {
-            actionRequest.setCurrentIndicator(new Boolean(true));
+            actionRequest.setCurrentIndicator(true);
         }
         actionRequest.setCreateDate(new Timestamp(System.currentTimeMillis()));
     }
@@ -134,7 +135,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         crit.addLessOrEqualThan("routeLevel", routeLevel);
         crit.addNotEqualTo("status", KEWConstants.ACTION_REQUEST_DONE_STATE);
         crit.addEqualTo("routeHeaderId", routeHeaderId);
-        crit.addEqualTo("currentIndicator", new Boolean(true));
+        crit.addEqualTo("currentIndicator", true);
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
 
@@ -143,7 +144,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         crit.addLessOrEqualThan("routeLevel", routeLevel);
         crit.addNotEqualTo("status", KEWConstants.ACTION_REQUEST_DONE_STATE);
         crit.addEqualTo("routeHeaderId", routeHeaderId);
-        crit.addEqualTo("currentIndicator", new Boolean(true));
+        crit.addEqualTo("currentIndicator", true);
         crit.addIsNull("parentActionRequest");
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
@@ -167,7 +168,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
 
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", routeHeaderId);
-        crit.addEqualTo("currentIndicator", new Boolean(true));
+        crit.addEqualTo("currentIndicator", true);
         crit.addAndCriteria(statusCriteria);
 
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
@@ -176,14 +177,14 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     public List findAllByDocId(Long routeHeaderId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", routeHeaderId);
-        crit.addEqualTo("currentIndicator", new Boolean(true));
+        crit.addEqualTo("currentIndicator", true);
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
 
     public List findAllRootByDocId(Long routeHeaderId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", routeHeaderId);
-        crit.addEqualTo("currentIndicator", new Boolean(true));
+        crit.addEqualTo("currentIndicator", true);
         crit.addIsNull("parentActionRequest");
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
@@ -259,7 +260,7 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     	ReportQueryByCriteria query = QueryFactory.newReportQuery(ActionRequestValue.class, crit);
     	query.setAttributes(new String[] { "groupId" });
 
-    	List<String> groupIds = new ArrayList();
+    	List<String> groupIds = new ArrayList<String>();
     	Iterator iter = getPersistenceBrokerTemplate().getReportQueryIteratorByQuery(query);
     	while (iter.hasNext()) {
 			Object[] row = (Object[]) iter.next();
@@ -270,14 +271,14 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     }
 
 	/**
-	 * @see org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO#findActivatedByGroup(org.kuali.rice.kim.bo.group.KimGroup)
+	 * @see org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO#findActivatedByGroup(String)
 	 */
 	public List findActivatedByGroup(String groupId) {
         Criteria statusCriteria = new Criteria();
         statusCriteria.addEqualTo("status", KEWConstants.ACTION_REQUEST_ACTIVATED);
         Criteria crit = new Criteria();
         crit.addEqualTo("groupId", groupId);
-        crit.addEqualTo("currentIndicator", new Boolean(true));
+        crit.addEqualTo("currentIndicator", true);
         crit.addAndCriteria(statusCriteria);
 
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));

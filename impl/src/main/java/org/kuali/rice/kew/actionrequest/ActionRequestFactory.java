@@ -94,11 +94,11 @@ public class ActionRequestFactory {
 	 * @param recipient
 	 * @param description
 	 * @param forceAction
-	 *
-	 * @return ActionRequestValue
+	 * @param annotation
+     * @return ActionRequestValue
 	 */
 	public ActionRequestValue createActionRequest(String actionRequested, Recipient recipient, String description, Boolean forceAction, String annotation) {
-		return createActionRequest(actionRequested, new Integer(0), recipient, description, KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, forceAction, annotation);
+		return createActionRequest(actionRequested, 0, recipient, description, KEWConstants.MACHINE_GENERATED_RESPONSIBILITY_ID, forceAction, annotation);
 	}
 
 	public ActionRequestValue createActionRequest(String actionRequested, Integer priority, Recipient recipient, String description, Long responsibilityId, Boolean forceAction, String annotation) {
@@ -147,7 +147,7 @@ public class ActionRequestFactory {
     }
 
     //unify these 2 methods if possible
-    public List generateNotifications(List requests, KimPrincipal principal, Recipient delegator,
+    public List<ActionRequestValue> generateNotifications(List requests, KimPrincipal principal, Recipient delegator,
             String notificationRequestCode, String actionTakenCode)
     {
         String groupName =  Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE,
@@ -163,18 +163,21 @@ public class ActionRequestFactory {
             String actionTakenCode, Group notifyExclusionWorkgroup)
     {
         List<ActionRequestValue> notificationRequests = new ArrayList<ActionRequestValue>();
-        for (Iterator iter = requests.iterator(); iter.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            if (!(actionRequest.isRecipientRoutedRequest(principal.getPrincipalId()) || actionRequest.isRecipientRoutedRequest(delegator))) {
+        for (Object request : requests)
+        {
+            ActionRequestValue actionRequest = (ActionRequestValue) request;
+            if (!(actionRequest.isRecipientRoutedRequest(principal.getPrincipalId()) || actionRequest.isRecipientRoutedRequest(delegator)))
+            {
                 // skip user requests to system users
-                if( (notifyExclusionWorkgroup != null) &&
+                if ((notifyExclusionWorkgroup != null) &&
                         (isRecipientInGroup(notifyExclusionWorkgroup, actionRequest.getRecipient())))
                 {
                     continue;
                 }
                 ActionRequestValue notificationRequest = createNotificationRequest(actionRequest, principal, notificationRequestCode, actionTakenCode);
                 notificationRequests.add(notificationRequest);
-                if (parentRequest != null) {
+                if (parentRequest != null)
+                {
                     notificationRequest.setParentActionRequest(parentRequest);
                     parentRequest.getChildrenRequests().add(notificationRequest);
                 }
@@ -228,7 +231,7 @@ public class ActionRequestFactory {
         if (routeNode != null) {
         	actionRequest.setNodeInstance(routeNode);
         }
-        actionRequest.setJrfVerNbr(new Integer(0));
+        actionRequest.setJrfVerNbr(0);
         actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);
         actionRequest.setRouteHeader(document);
     }
@@ -284,6 +287,7 @@ public class ActionRequestFactory {
      * @param responsibilityId
      * @param forceAction
      * @param description
+     * @param ruleId
      * @return the created root role request
      */
     public ActionRequestValue addRoleRequest(RoleRecipient role, String actionRequested, String approvePolicy, Integer priority, Long responsibilityId, Boolean forceAction, String description, Long ruleId) {
@@ -291,26 +295,31 @@ public class ActionRequestFactory {
     	ActionRequestValue requestGraph = createActionRequest(actionRequested, priority, role, description, responsibilityId, forceAction, approvePolicy, ruleId, null);
     	if (role != null && role.getResolvedQualifiedRole() != null && role.getResolvedQualifiedRole().getRecipients() != null) {
     	    int legitimateTargets = 0;
-    	for (Iterator iter = role.getResolvedQualifiedRole().getRecipients().iterator(); iter.hasNext();) {
-			Id recipientId = (Id) iter.next();
-			if (recipientId.isEmpty()) {
-				throw new WorkflowRuntimeException("Failed to resolve id of type " + recipientId.getClass().getName() + " returned from role '" + role.getRoleName() + "'.  Id returned contained a null or empty value.");
-			}
-			if (recipientId instanceof UserId) {
-				KimPrincipal principal = getIdentityHelperService().getPrincipal((UserId)recipientId);
-				role.setTarget(new KimPrincipalRecipient(principal));
-			} else if (recipientId instanceof GroupId){
-				role.setTarget(new KimGroupRecipient(getIdentityHelperService().getGroup((GroupId) recipientId)));
-			} else {
-				throw new WorkflowRuntimeException("Could not process the given type of id: " + recipientId.getClass());
-			}
-			if (role.getTarget() != null) {
-                legitimateTargets++;
-                ActionRequestValue request = createActionRequest(actionRequested, priority, role, description, responsibilityId, forceAction, null, ruleId, null);
-                request.setParentActionRequest(requestGraph);
-                requestGraph.getChildrenRequests().add(request);
-			}
-	     }
+            for (Id recipientId : role.getResolvedQualifiedRole().getRecipients())
+            {
+                if (recipientId.isEmpty())
+                {
+                    throw new WorkflowRuntimeException("Failed to resolve id of type " + recipientId.getClass().getName() + " returned from role '" + role.getRoleName() + "'.  Id returned contained a null or empty value.");
+                }
+                if (recipientId instanceof UserId)
+                {
+                    KimPrincipal principal = getIdentityHelperService().getPrincipal((UserId) recipientId);
+                    role.setTarget(new KimPrincipalRecipient(principal));
+                } else if (recipientId instanceof GroupId)
+                {
+                    role.setTarget(new KimGroupRecipient(getIdentityHelperService().getGroup((GroupId) recipientId)));
+                } else
+                {
+                    throw new WorkflowRuntimeException("Could not process the given type of id: " + recipientId.getClass());
+                }
+                if (role.getTarget() != null)
+                {
+                    legitimateTargets++;
+                    ActionRequestValue request = createActionRequest(actionRequested, priority, role, description, responsibilityId, forceAction, null, ruleId, null);
+                    request.setParentActionRequest(requestGraph);
+                    requestGraph.getChildrenRequests().add(request);
+                }
+            }
     	if (legitimateTargets == 0) {
             LOG.warn("Role did not yield any legitimate recipients");
         }
@@ -323,6 +332,8 @@ public class ActionRequestFactory {
 
     /**
      * Generates an ActionRequest graph for the given KIM Responsibilities.  This graph includes any associated delegations.
+     * @param responsibilities
+     * @param approvePolicy
      */
     public void addRoleResponsibilityRequest(List<ResponsibilityActionInfo> responsibilities, String approvePolicy) {
     	if (responsibilities == null || responsibilities.isEmpty()) {
@@ -467,9 +478,9 @@ public class ActionRequestFactory {
     	ActionRequestValue delegationRoleRequest = createActionRequest(parentRequest.getActionRequested(), parentRequest.getPriority(), role, description, responsibilityId, forceAction, approvePolicy, ruleId, null);
     	delegationRoleRequest.setDelegationType(delegationType);
     	int count = 0;
-    	for (Iterator iter = role.getResolvedQualifiedRole().getRecipients().iterator(); iter.hasNext(); count++) {
+    	for (Iterator<Id> iter = role.getResolvedQualifiedRole().getRecipients().iterator(); iter.hasNext(); count++) {
     		//repeat of createRoleRequest code
-    		Id recipientId = (Id) iter.next();
+    		Id recipientId = iter.next();
     		if (recipientId.isEmpty()) {
 				throw new WorkflowRuntimeException("Failed to resolve id of type " + recipientId.getClass().getName() + " returned from role '" + role.getRoleName() + "'.  Id returned contained a null or empty value.");
 			}
@@ -533,33 +544,36 @@ public class ActionRequestFactory {
     	return false;
     }
 
-	public List getRequestGraphs() {
+	public List<ActionRequestValue> getRequestGraphs() {
 		//clean up all the trailing role requests with no children -
 		requestGraphs.removeAll(cleanUpChildren(requestGraphs));
 		return requestGraphs;
 	}
 
-	private Collection cleanUpChildren(Collection children) {
-		Collection requestsToRemove = new ArrayList();
-		for (Iterator iter = children.iterator(); iter.hasNext();) {
+	private Collection<ActionRequestValue> cleanUpChildren(Collection<ActionRequestValue> children) {
+		Collection<ActionRequestValue> requestsToRemove = new ArrayList<ActionRequestValue>();
+        for (ActionRequestValue aChildren : children)
+        {
 
-			ActionRequestValue request = (ActionRequestValue)iter.next();
-			if (request.isRoleRequest()) {
-				if (request.getChildrenRequests().isEmpty()) {
-					requestsToRemove.add(request);
-				} else {
-					Collection childRequestsToRemove = cleanUpChildren(request.getChildrenRequests());
-					request.getChildrenRequests().removeAll(childRequestsToRemove);
-				}
-			}
-		}
+            if (aChildren.isRoleRequest())
+            {
+                if (aChildren.getChildrenRequests().isEmpty())
+                {
+                    requestsToRemove.add(aChildren);
+                } else
+                {
+                    Collection<ActionRequestValue> childRequestsToRemove = cleanUpChildren(aChildren.getChildrenRequests());
+                    aChildren.getChildrenRequests().removeAll(childRequestsToRemove);
+                }
+            }
+        }
 		return requestsToRemove;
 	}
 
     private String generateNotificationAnnotation(KimPrincipal principal, String notificationRequestCode, String actionTakenCode, ActionRequestValue request) {
     	String notification = "Action " + CodeTranslator.getActionRequestLabel(notificationRequestCode) + " generated by Workflow because " + principal.getPrincipalName() + " took action "
 				+ CodeTranslator.getActionTakenLabel(actionTakenCode);
-    	if (request.getResponsibilityId() != null && request.getResponsibilityId().longValue() != 0) {
+    	if (request.getResponsibilityId() != null && request.getResponsibilityId() != 0) {
     		notification += " Responsibility " + request.getResponsibilityId();
     	}
     	if (request.getRuleBaseValuesId() != null) {

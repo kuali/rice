@@ -26,13 +26,13 @@ public class InitialXMLFilter extends ChainedXMLFilterBase {
                 XMLImportExportServiceBase xmlService = getXMLImportExportService();
                 ChainedXMLFilter startFilter = xmlService.getFilterForSchemaURI(schemaUri);
                 if ( startFilter != null ) {
+                    // Insert this chain into the current one
                     XMLReader oldParent = getParent();
                     ChainedXMLFilter current = startFilter;
                     while ( current.getParent() != null ) {
                         current = (ChainedXMLFilter)current.getParent();
                     }
-                    if ( oldParent != null )
-                        current.setParent(oldParent);
+                    current.setParent(oldParent);
                     setParent(startFilter);
                 }
             }

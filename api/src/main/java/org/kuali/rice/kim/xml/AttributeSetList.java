@@ -37,7 +37,7 @@ import javax.xml.bind.annotation.XmlType;
 
 
 @XmlRootElement
-@XmlType(name = "PurchaseListType", namespace = "http://rice.kuali.org/xsd/kim/group")
+@XmlType(name = "AttributeSetListType", namespace = "http://rice.kuali.org/xsd/kim/group")
 public class AttributeSetList {
     //- this must be a public field for the adapter to function
     //- When it is public the generated xml uses the variable name

@@ -90,7 +90,6 @@ public class GroupXmlDto implements Serializable {
 	@XmlElement(name = "attributes", namespace = "http://rice.kuali.org/xsd/kim/group")	
 //	@XmlJavaTypeAdapter(value = AttributeSetAdapter.class)
     @XmlJavaTypeAdapter(AdapterAttributeSetToHashMap.class)
-//    HashMap<String, String> attributes = new HashMap<String, String>();
 	protected AttributeSet attributes;
 
 	

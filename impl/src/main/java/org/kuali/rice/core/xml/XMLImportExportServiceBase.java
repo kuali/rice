@@ -28,6 +28,10 @@ public class XMLImportExportServiceBase {
         this.filters = filters;
     }
 
+    // TODO: This method is going to have to be changed to support creating
+    //       multiple instances of the given Class.  It should also not
+    //       return an instance, because the import will yield multiple
+    //       instances that need to be saved to the data store.
     public <T extends Class> T unmarshal(T clazz, Unmarshaller unmarshaller, InputStream in) throws Exception {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -37,6 +41,7 @@ public class XMLImportExportServiceBase {
         filter.setParent(spf.newSAXParser().getXMLReader());
 
         UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
+
         filter.setContentHandler(handler);
 
         filter.parse(new InputSource(in));

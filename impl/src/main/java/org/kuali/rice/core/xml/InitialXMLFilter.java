@@ -3,28 +3,37 @@ package org.kuali.rice.core.xml;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * Acts as the first step in a Chain of XML Filters.  This node does the work
  * of identifying the Document's Schema URI and linking in the ChainedXMLFilter
- * instances that would be required to upgrade the input stream. 
+ * instances that would be required to upgrade the input stream.  It is also
+ * capable of reported a default namespace URI as well as reporting an
+ * overriden XML Schema URI.
  */
 public class InitialXMLFilter extends ChainedXMLFilterBase {
-    private XMLImportExportServiceBase xmlService;
-    private String schemaUri = null;
-
-    public InitialXMLFilter() {
-    }
+    private XMLImportExportServiceBase xmlImportExportService;
+    private String originalSchemaUri = null;
+    private String reportedSchemaUri = null;
+    private String defaultNamespaceUri = null;
 
     @Override
     public void startElement(String uri, String localName, String qName,
                              Attributes atts) throws SAXException {
-        if ( schemaUri == null ) {
-            schemaUri = atts.getValue("http://www.w3.org/2001/XMLSchema-instance",
-                                      "noNamespaceSchemaLocation");
-            if ( schemaUri != null ) {
+        // Set the default namespace URI if one is not set
+        String defaultNamespaceUri = getDefaultNamespaceURI();
+        if ( uri == null && defaultNamespaceUri != null )
+            uri = defaultNamespaceUri;
+
+        // Scan for the Original Schema
+        if ( originalSchemaUri == null ) {
+            int attrIndex = atts.getIndex("http://www.w3.org/2001/XMLSchema-instance",
+                                          "noNamespaceSchemaLocation");
+            if ( attrIndex != -1 ) {
+                originalSchemaUri = atts.getValue(attrIndex);
                 XMLImportExportServiceBase xmlService = getXMLImportExportService();
-                ChainedXMLFilter startFilter = xmlService.getFilterForSchemaURI(schemaUri);
+                ChainedXMLFilter startFilter = xmlService.getFilterForSchemaURI(originalSchemaUri);
                 if ( startFilter != null ) {
                     // Insert this chain into the current one
                     XMLReader oldParent = getParent();
@@ -35,20 +44,81 @@ public class InitialXMLFilter extends ChainedXMLFilterBase {
                     current.setParent(oldParent);
                     setParent(startFilter);
                 }
+
+                String reportedSchemaUri = getReportedSchemaURI();
+                if ( reportedSchemaUri != null ) {
+                    atts = new AttributesImpl(atts);
+                    ((AttributesImpl)atts).setValue(attrIndex, reportedSchemaUri);
+                }
             }
         }
         super.startElement(uri, localName, qName, atts);
     }
 
-    public String getSchemaURI() {
-        return schemaUri;
-    }
-    
-    public XMLImportExportServiceBase getXMLImportExportService() {
-        return xmlService;
+    @Override
+    public void endElement(String uri, String localName, String qName)
+            throws SAXException {
+        // Set the default namespace URI if one is not set
+        String defaultNamespaceUri = getDefaultNamespaceURI();
+        if ( uri == null && defaultNamespaceUri != null )
+            uri = defaultNamespaceUri;
+
+        super.endElement(uri, localName, qName);
     }
 
-    public void setXMLImportExportService(XMLImportExportServiceBase xmlService) {
-        this.xmlService = xmlService;
+    /**
+     * Returns the XML Schema URI originally reported by the Document being
+     * parsed.  This may be null if the URI has not yet been encountered.
+     *
+     * @return The Original Schema URI
+     */
+    public String getOriginalSchemaURI() {
+        return originalSchemaUri;
+    }
+
+    /**
+     * Returns the Schema URI that should be reported to the SAX Parser.
+     *
+     * @return The Reported Schema URI
+     */
+    public String getReportedSchemaURI() {
+        return reportedSchemaUri;
+    }
+
+    /**
+     * Sets the Schema URI that should be reported to the SAX Parser.
+     *
+     * @param reportedSchemaUri The Reported Schema URI
+     */
+    public void setReportedSchemaURI(String reportedSchemaUri) {
+        this.reportedSchemaUri = reportedSchemaUri;
+    }
+
+    /**
+     * Returns the Default Namespace URI that should be reported if an Element
+     * is not already assigned to a namespace.
+     *
+     * @return The Default Namespace URI
+     */
+    public String getDefaultNamespaceURI() {
+        return defaultNamespaceUri;
+    }
+
+    /**
+     * Sets the Default Namespace URI that should be reported if an Element
+     * is not already assigned to a namespace.
+     *
+     * @param defaultNamespaceUri The Default Namespace URI
+     */
+    public void setDefaultNamespaceURI(String defaultNamespaceUri) {
+        this.defaultNamespaceUri = defaultNamespaceUri;
+    }
+
+    public XMLImportExportServiceBase getXMLImportExportService() {
+        return xmlImportExportService;
+    }
+
+    public void setXMLImportExportService(XMLImportExportServiceBase xmlImportExportService) {
+        this.xmlImportExportService = xmlImportExportService;
     }
 }

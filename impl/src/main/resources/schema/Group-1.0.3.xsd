@@ -5,6 +5,8 @@
 
   <xs:element name="group" type="tns:Group"/>
 
+  <xs:element name="member" type="tns:Member"/>
+
   <xs:complexType name="Group">
     <xs:sequence>
       <xs:element name="groupId" type="xs:string" form="qualified" minOccurs="0"/>
@@ -13,18 +15,34 @@
       <xs:element name="active" type="xs:boolean" form="qualified"/>
       <xs:element name="kimTypeId" type="xs:string" form="qualified" minOccurs="0"/>
       <xs:element name="namespaceCode" type="xs:string" form="qualified" minOccurs="0"/>
-      <xs:element name="attributes" type="stringMapEntryArray" form="qualified" minOccurs="0"/>
-      <xs:element name="members" type="tns:member" form="qualified" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="attributes" type="tns:AttributeSetListType" form="qualified" minOccurs="0"/>
+      <xs:element name="members" form="qualified" minOccurs="0">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element ref="tns:member" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
 
-  <xs:complexType name="member">
+  <xs:complexType name="AttributeSetListType">
     <xs:sequence>
-      <xs:element name="memberId" type="xs:string" minOccurs="0"/>
-      <xs:element name="memberTypeCode" type="xs:string" minOccurs="0"/>
-      <xs:element name="activeFromDate" type="xs:string" minOccurs="0"/>
-      <xs:element name="activeToDate" type="xs:string" minOccurs="0"/>
+      <xs:element name="attribute" type="attributeEntry" form="qualified" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
+
+  <xs:complexType name="Member">
+    <xs:sequence>
+      <xs:element name="memberId" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="memberTypeCode" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="activeFromDate" type="xs:string" form="qualified" minOccurs="0"/>
+      <xs:element name="activeToDate" type="xs:string" form="qualified" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:attribute name="key" type="xs:string"/>
+
+  <xs:attribute name="value" type="xs:string"/>
 </xs:schema>
 

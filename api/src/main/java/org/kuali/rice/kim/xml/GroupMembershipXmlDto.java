@@ -35,6 +35,7 @@ import org.kuali.rice.core.jaxb.SqlDateAdapter;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+@XmlRootElement(name = "member", namespace = "http://rice.kuali.org/xsd/kim/group")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Member", namespace = "http://rice.kuali.org/xsd/kim/group", propOrder = {
     "memberId", "memberTypeCode", "activeFromDate", "activeToDate"
@@ -49,20 +50,20 @@ public class GroupMembershipXmlDto implements Serializable {
 	@XmlTransient
 	protected String groupMemberId;
 	
-	@XmlElement
+	@XmlElement(name = "memberId", namespace = "http://rice.kuali.org/xsd/kim/group")	
 	protected String memberId;
 	
-	@XmlElement
-	protected String memberTypeCode;
+	@XmlElement(name = "memberTypeCode", namespace = "http://rice.kuali.org/xsd/kim/group")
+	String memberTypeCode;
 	
 	@XmlTransient
 	protected Long versionNumber;
 	
-	@XmlElement
+	@XmlElement(name = "activeFromDate", namespace = "http://rice.kuali.org/xsd/kim/group")	
 	@XmlJavaTypeAdapter(value = SqlDateAdapter.class)
 	protected Date activeFromDate;
 	
-	@XmlElement
+	@XmlElement(name = "activeToDate", namespace = "http://rice.kuali.org/xsd/kim/group")	
 	@XmlJavaTypeAdapter(value = SqlDateAdapter.class)
 	protected Date activeToDate;
 
@@ -77,8 +78,7 @@ public class GroupMembershipXmlDto implements Serializable {
 	}
 	
 	// for jax-ws service construction
-	@SuppressWarnings("unused")
-	private GroupMembershipXmlDto() {}
+	public GroupMembershipXmlDto() {}
 	
 	public String getMemberId() {
 		return this.memberId;

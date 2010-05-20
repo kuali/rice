@@ -16,15 +16,18 @@
 package org.kuali.rice.kim.xml;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import org.kuali.rice.core.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 
 import org.kuali.rice.kim.bo.Group;
@@ -49,6 +52,17 @@ import org.kuali.rice.kim.xml.GroupMembershipXmlDto;
 
 public class GroupXmlDto implements Group, Serializable {
 	
+	public GroupXmlDto(String groupName, String groupDescription, boolean active) {
+		super();
+		this.groupName = groupName;
+		this.groupDescription = groupDescription;
+		this.active = active;
+	}
+	public GroupXmlDto() {
+		super();
+		this.active = true;
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	@XmlElement(name = "groupId", namespace = "http://rice.kuali.org/xsd/kim/group")	
@@ -70,11 +84,12 @@ public class GroupXmlDto implements Group, Serializable {
 	protected String namespaceCode;
 
 	@XmlElement(name = "attributes", namespace = "http://rice.kuali.org/xsd/kim/group")	
-	@XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+	@XmlJavaTypeAdapter(value = AttributeSetAdapter.class)
 	protected AttributeSet attributes;
 	
-	@XmlElement(name = "members", namespace = "http://rice.kuali.org/xsd/kim/group")	
-	protected List<GroupMembershipXmlDto> members;
+	@XmlElementWrapper(name = "members", namespace = "http://rice.kuali.org/xsd/kim/group")
+	@XmlElement(name = "member", namespace = "http://rice.kuali.org/xsd/kim/group")	
+	protected List<GroupMembershipXmlDto> members = new ArrayList<GroupMembershipXmlDto>();
 		
 	public String getGroupDescription() {
 		return this.groupDescription;

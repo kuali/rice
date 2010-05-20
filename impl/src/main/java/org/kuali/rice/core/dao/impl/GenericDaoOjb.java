@@ -317,4 +317,18 @@ public class GenericDaoOjb extends PersistenceBrokerDaoSupport implements Generi
 		// TODO g1zhang - THIS METHOD NEEDS JAVADOCS
 		return null;
 	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.core.dao.GenericDao#findMatching(java.lang.Class, java.util.Map, boolean, long)
+	 */
+	@Override
+	public Collection findMatching(Class clazz, Map criteria,
+			boolean selectForUpdate, long wait) {
+		
+		Criteria c = buildCriteria(criteria);
+		
+		return findMatching(clazz, c, selectForUpdate, wait);
+	}
 }

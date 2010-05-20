@@ -99,7 +99,7 @@ public class XMLImportExportServiceBase {
                 }
             }
             catch ( Exception e ) {
-                throw new RuntimeException("Cannot set Filter Configuration", e);
+                throw new RuntimeException("Cannot configure Filter", e);
             }
         }
     }

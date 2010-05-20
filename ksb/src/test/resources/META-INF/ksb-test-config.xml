@@ -10,9 +10,9 @@
 	
 	<param name="client1.location">${basedir}/src/test/clients/TestClient1/</param>	
 	<param name="client2.location">${basedir}/src/test/clients/TestClient2/</param>
-	<param name="ksb.client1.port" override="false">9913</param>
-	<param name="ksb.client2.port" override="false">9914</param>
-	<param name="ksb.testharness.port" override="false">9915</param>
+	<param name="ksb.client1.port" random="true" override="false" system="true">9500-9599</param>
+	<param name="ksb.client2.port" random="true" override="false" system="true">9600-9699</param>
+	<param name="ksb.testharness.port" random="true" override="false" system="true">9700-9799</param>
 	
 	<param name="threadPool.size">1</param>
 	<param name="threadPool.fetchFrequency">3000</param>

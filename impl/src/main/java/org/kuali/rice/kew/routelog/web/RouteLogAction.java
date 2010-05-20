@@ -137,11 +137,11 @@ public class RouteLogAction extends KewKualiAction {
 
     @SuppressWarnings("unchecked")
 	private ActionRequestValue switchActionRequestPositionIfPrimaryDelegatePresent( ActionRequestValue actionRequest ) {
-    	List<ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
+    	List<? super ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
     	if ( primaryDelegateRequests.isEmpty() ) {
     		return actionRequest;
     	}
-    	ActionRequestValue primaryDelegateRequest = primaryDelegateRequests.get(0);
+    	ActionRequestValue primaryDelegateRequest = (ActionRequestValue) primaryDelegateRequests.get(0);
 		primaryDelegateRequest.setChildrenRequests(actionRequest.getChildrenRequests());
 		primaryDelegateRequest.getChildrenRequests().add(0, actionRequest);
 		primaryDelegateRequest.getChildrenRequests().remove(primaryDelegateRequest);

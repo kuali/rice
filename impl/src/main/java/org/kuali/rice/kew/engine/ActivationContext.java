@@ -1,13 +1,13 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation
- * 
- * 
+ *
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 package org.kuali.rice.kew.engine;
-
-import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,19 +29,19 @@ public class ActivationContext implements Serializable {
     private static final long serialVersionUID = 5063689034941122774L;
 
     public static final boolean CONTEXT_IS_SIMULATION = true;
-	
+
     boolean simulation = !CONTEXT_IS_SIMULATION;
     boolean activateRequests = false;
-    List<ActionTakenValue> simulatedActionsTaken = new ArrayList<ActionTakenValue>();
-    List<ActionItem> generatedActionItems = new ArrayList<ActionItem>();
-    
-    
+    List simulatedActionsTaken = new ArrayList();
+    List generatedActionItems = new ArrayList();
+
+
 	public ActivationContext(boolean simulation) {
 		super();
 		this.simulation = simulation;
 	}
-	
-	public ActivationContext(boolean simulation, List<ActionTakenValue> simulatedActionsTaken) {
+
+	public ActivationContext(boolean simulation, List simulatedActionsTaken) {
 		super();
 		this.simulation = simulation;
 		this.simulatedActionsTaken = simulatedActionsTaken;
@@ -58,19 +55,19 @@ public class ActivationContext implements Serializable {
         this.activateRequests = activateRequests;
     }
 
-    public List<ActionItem> getGeneratedActionItems() {
+    public List getGeneratedActionItems() {
         return generatedActionItems;
     }
 
-    public void setGeneratedActionItems(List<ActionItem> generatedActionItems) {
+    public void setGeneratedActionItems(List generatedActionItems) {
         this.generatedActionItems = generatedActionItems;
     }
 
-    public List<ActionTakenValue> getSimulatedActionsTaken() {
+    public List getSimulatedActionsTaken() {
         return simulatedActionsTaken;
     }
 
-    public void setSimulatedActionsTaken(List<ActionTakenValue> simulatedActionsTaken) {
+    public void setSimulatedActionsTaken(List simulatedActionsTaken) {
         this.simulatedActionsTaken = simulatedActionsTaken;
     }
 

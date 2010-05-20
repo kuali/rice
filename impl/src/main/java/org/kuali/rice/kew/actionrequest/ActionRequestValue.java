@@ -967,9 +967,9 @@ public class ActionRequestValue implements WorkflowPersistable {
 	}
 
 	public DocumentRouteHeaderValue getRouteHeader() {
-		//if (this.routeHeader == null && this.routeHeaderId != null) {
-		//	this.routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(this.routeHeaderId);
-		//}
+		if (this.routeHeader == null && this.routeHeaderId != null) {
+			this.routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(this.routeHeaderId);
+		}
 		return this.routeHeader;
 	}
 

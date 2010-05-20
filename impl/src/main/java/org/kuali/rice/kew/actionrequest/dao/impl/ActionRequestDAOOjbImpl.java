@@ -30,6 +30,7 @@ import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -213,8 +214,11 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
     }
 
     public List findPendingRootRequestsByDocumentType(Long documentTypeId) {
+    	Criteria routeHeaderCrit = new Criteria();
+    	routeHeaderCrit.addEqualTo("documentTypeId", documentTypeId);
     	Criteria crit = new Criteria();
-        crit.addEqualTo("routeHeader.documentTypeId", documentTypeId);
+        //crit.addEqualTo("routeHeader.documentTypeId", documentTypeId);
+    	crit.addIn("routeHeaderId", new ReportQueryByCriteria(DocumentRouteHeaderValue.class, new String[] {"routeHeaderId"}, routeHeaderCrit));
         crit.addAndCriteria(getPendingCriteria());
         crit.addEqualTo("currentIndicator", Boolean.TRUE);
         crit.addIsNull("parentActionRequest");

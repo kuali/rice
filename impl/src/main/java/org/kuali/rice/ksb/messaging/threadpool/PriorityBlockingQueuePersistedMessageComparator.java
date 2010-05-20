@@ -20,7 +20,7 @@ import java.util.Comparator;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 
-import edu.emory.mathcs.backport.java.util.concurrent.PriorityBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * A comparator to put into the {@link PriorityBlockingQueue} used in the {@link KSBThreadPoolImpl}.

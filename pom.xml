@@ -26,7 +26,6 @@
 
 		<acegi.version>1.0.6</acegi.version>
 		<asm.version>2.2.3</asm.version>
-		<backport-util-concurrent.version>2.1</backport-util-concurrent.version>
 		<bcel.version>5.1</bcel.version>
 		<bcprov.version>133</bcprov.version>
 		<bsf.version>2.4.0</bsf.version>
@@ -553,12 +552,7 @@
 				<artifactId>commons-dbcp</artifactId>
 				<version>${commons-dbcp.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>backport-util-concurrent</groupId>
-				<artifactId>backport-util-concurrent</artifactId>
-				<version>${backport-util-concurrent.version}</version>
-			</dependency>
-			<dependency>
+            <dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
 				<version>${log4j.version}</version>

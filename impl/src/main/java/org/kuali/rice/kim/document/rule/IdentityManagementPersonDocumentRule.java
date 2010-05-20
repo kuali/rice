@@ -71,7 +71,6 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
-import edu.emory.mathcs.backport.java.util.Collections;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

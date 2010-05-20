@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -44,8 +46,6 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import edu.emory.mathcs.backport.java.util.concurrent.ExecutionException;
-import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 /**
  * This is the default implementation for the IdentityArchiveService. 
@@ -78,7 +78,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 	private final Runnable shutdownWriter = 
 		new CallableAdapter(new PreLogCallableWrapper<Boolean>(writer, Level.DEBUG, "rice is shutting down, flushing write queue"));
 
-	private final edu.emory.mathcs.backport.java.util.concurrent.Callable missRetryWriter = 
+	private final Callable missRetryWriter = 
 		new PreLogCallableWrapper<Boolean>(writer, Level.DEBUG, "missed in the archive, flushing write queue");
 
 	
@@ -284,7 +284,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 *
 	 */
-	private static class PreLogCallableWrapper<A> implements Callable<A>, edu.emory.mathcs.backport.java.util.concurrent.Callable {
+	private static class PreLogCallableWrapper<A> implements Callable<A> {
 		
 		private final Callable inner;
 		private final Level level;
@@ -299,7 +299,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 		/**
 		 * logs the message then calls the inner Callable
 		 * 
-		 * @see edu.emory.mathcs.backport.java.util.concurrent.Callable#call()
+		 * @see java.util.concurrent.Callable#call()
 		 */
 		@SuppressWarnings("unchecked")
 		public A call() throws Exception {

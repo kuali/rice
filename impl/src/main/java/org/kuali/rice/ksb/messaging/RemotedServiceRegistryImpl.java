@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,9 +43,6 @@ import org.kuali.rice.ksb.messaging.serviceexporters.ServiceExporterFactory;
 import org.kuali.rice.ksb.service.KSBContextServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.web.servlet.mvc.Controller;
-
-import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
-import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runnable {
 

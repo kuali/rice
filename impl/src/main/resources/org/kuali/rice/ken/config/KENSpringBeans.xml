@@ -177,28 +177,28 @@
     
     <!-- END DAOS -->
 
-    <bean id="resolverExecutor" class="edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor">
+    <bean id="resolverExecutor" class="java.util.concurrent.ThreadPoolExecutor">
         <constructor-arg><value>1</value></constructor-arg> <!--  core pool size -->
         <constructor-arg><value>5</value></constructor-arg> <!-- max pool size -->
         <constructor-arg><value>30</value></constructor-arg> <!-- idle thread keepalive time -->
         <constructor-arg>
             <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
-                <property name="staticField"><value>edu.emory.mathcs.backport.java.util.concurrent.TimeUnit.SECONDS</value></property>
+                <property name="staticField"><value>java.util.concurrent.TimeUnit.SECONDS</value></property>
             </bean>
         </constructor-arg>
-        <constructor-arg><bean class="edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue"/></constructor-arg>
+        <constructor-arg><bean class="java.util.concurrent.LinkedBlockingQueue"/></constructor-arg>
     </bean>
     
-    <bean id="autoRemovalExecutor" class="edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor">
+    <bean id="autoRemovalExecutor" class="java.util.concurrent.ThreadPoolExecutor">
         <constructor-arg><value>1</value></constructor-arg> <!--  core pool size -->
         <constructor-arg><value>5</value></constructor-arg> <!-- max pool size -->
         <constructor-arg><value>30</value></constructor-arg> <!-- idle thread keepalive time -->
         <constructor-arg>
             <bean class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
-                <property name="staticField"><value>edu.emory.mathcs.backport.java.util.concurrent.TimeUnit.SECONDS</value></property>
+                <property name="staticField"><value>java.util.concurrent.TimeUnit.SECONDS</value></property>
             </bean>
         </constructor-arg>
-        <constructor-arg><bean class="edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue"/></constructor-arg>
+        <constructor-arg><bean class="java.util.concurrent.LinkedBlockingQueue"/></constructor-arg>
     </bean>
 
    	<bean id="kenLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">

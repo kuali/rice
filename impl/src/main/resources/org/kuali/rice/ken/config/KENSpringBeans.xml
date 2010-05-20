@@ -91,6 +91,8 @@
               <value>notificationMessageDeliveryService</value>
               <value>userPreferencesService</value>
               <value>kenGenericDao</value>
+              <value>kenNotificationDao</value>
+              <value>kenNotificationMessegeDeliveryDao</value>
             </list>
         </property>
     </bean>
@@ -110,6 +112,7 @@
 
     <bean id="notificationService" class="org.kuali.rice.ken.service.impl.NotificationServiceImpl">
       <constructor-arg><ref local="kenGenericDao"/></constructor-arg>
+      <constructor-arg><ref local="kenNotificationDao"/></constructor-arg>
       <constructor-arg><ref local="messageContentService"/></constructor-arg>
       <constructor-arg><ref local="notificationAuthorizationService"/></constructor-arg>
       <constructor-arg><ref local="notificationRecipientService"/></constructor-arg>
@@ -162,6 +165,7 @@
     
     <bean id="notificationMessageDeliveryService" class="org.kuali.rice.ken.service.impl.NotificationMessageDeliveryServiceImpl">
       <constructor-arg><ref local="kenGenericDao"/></constructor-arg>
+      <constructor-arg><ref local="kenNotificationMessegeDeliveryDao"/></constructor-arg>
     </bean>
     
     <!-- END SERVICES -->
@@ -170,6 +174,18 @@
     <!-- DAOS -->
     <!-- OJB-->
     <bean id="kenGenericDao" class="org.kuali.rice.core.dao.impl.GenericDaoOjb">
+        <property name="jcdAlias">
+            <value>kenDataSource</value>
+        </property>
+    </bean>
+    
+    <bean id="kenNotificationDao" class="org.kuali.rice.ken.dao.impl.NotificationDaoOjb">
+        <property name="jcdAlias">
+            <value>kenDataSource</value>
+        </property>
+    </bean>
+    
+    <bean id="kenNotificationMessegeDeliveryDao" class="org.kuali.rice.ken.dao.impl.NotificationMessegeDeliveryDaoOjb">
         <property name="jcdAlias">
             <value>kenDataSource</value>
         </property>

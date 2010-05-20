@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.ojb.broker.query.Criteria;
 //import org.kuali.rice.core.jpa.criteria.Criteria;
@@ -28,6 +29,7 @@ import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.bo.NotificationRecipient;
 import org.kuali.rice.ken.bo.NotificationResponse;
+import org.kuali.rice.ken.dao.NotificationDao;
 import org.kuali.rice.ken.deliverer.impl.KEWActionListMessageDeliverer;
 import org.kuali.rice.ken.exception.InvalidXMLException;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
@@ -47,6 +49,7 @@ public class NotificationServiceImpl implements NotificationService {
 	.getLogger(NotificationServiceImpl.class);
 
 	private GenericDao businessObjectDao;
+	private NotificationDao notDao;
 	private NotificationMessageContentService messageContentService;
 	private NotificationAuthorizationService notificationAuthorizationService;
 	private NotificationRecipientService notificationRecipientService;
@@ -65,13 +68,15 @@ public class NotificationServiceImpl implements NotificationService {
 	public NotificationServiceImpl(GenericDao businessObjectDao, NotificationMessageContentService messageContentService, 
 			NotificationAuthorizationService notificationAuthorizationService, NotificationRecipientService notificationRecipientService, 
 			NotificationWorkflowDocumentService notificationWorkflowDocumentService, 
-			NotificationMessageDeliveryService notificationMessageDeliveryService) {
+			NotificationMessageDeliveryService notificationMessageDeliveryService,
+			NotificationDao notDao) {
 		this.businessObjectDao = businessObjectDao;
 		this.messageContentService = messageContentService;
 		this.notificationAuthorizationService = notificationAuthorizationService;
 		this.notificationRecipientService = notificationRecipientService;
 		this.notificationWorkflowDocumentService = notificationWorkflowDocumentService;
 		this.notificationMessageDeliveryService = notificationMessageDeliveryService;
+		this.notDao = notDao;
 	}
 
 	/**
@@ -258,18 +263,20 @@ public class NotificationServiceImpl implements NotificationService {
 	//switch to JPA criteria
 	public Collection<Notification> takeNotificationsForResolution() {
 		// get all unprocessed notifications with sendDateTime <= current
-		        Criteria criteria = new Criteria();
-		        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-		        criteria.addLessOrEqualThan(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
-		        criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-		        //criteria = Util.makeSelectForUpdate(criteria);
+		Criteria criteria = new Criteria();
+		criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
+		criteria.addLessOrEqualThan(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
+		criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+		//criteria = Util.makeSelectForUpdate(criteria);
 
-//		Criteria criteria = new Criteria(Notification.class.getName());
-//		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-//		criteria.lte(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
-//		criteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+		//		Criteria criteria = new Criteria(Notification.class.getName());
+		//		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
+		//		criteria.lte(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
+		//		criteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+
+		//Collection<Notification> available_notifications = businessObjectDao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
 		
-		Collection<Notification> available_notifications = businessObjectDao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
+		Collection<Notification> available_notifications = notDao.findMatchedNotifications(new Timestamp(System.currentTimeMillis()), businessObjectDao);
 
 		//LOG.debug("Available notifications: " + available_notifications.size());
 
@@ -281,7 +288,7 @@ public class NotificationServiceImpl implements NotificationService {
 				businessObjectDao.save(notification);
 			}
 		}
-		
+
 
 		return available_notifications;
 	}
@@ -292,12 +299,14 @@ public class NotificationServiceImpl implements NotificationService {
 	 */
 	//switch to JPA criteria
 	public void unlockNotification(Notification notification) {
-		        Criteria criteria = new Criteria();
-		        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
-		        //criteria = Util.makeSelectForUpdate(criteria);
+		Map<String, Long> criteria = new HashMap<String, Long>();
+		criteria.put(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
+//		Criteria criteria = new Criteria();
+//		criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
+		//criteria = Util.makeSelectForUpdate(criteria);
 
-//		Criteria criteria = new Criteria(Notification.class.getName());
-//		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
+		//		Criteria criteria = new Criteria(Notification.class.getName());
+		//		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
 
 		Collection<Notification> notifications = businessObjectDao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
 		if (notifications == null || notifications.size() == 0) {

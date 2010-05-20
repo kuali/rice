@@ -16,6 +16,9 @@
  */
 package org.kuali.rice.kew.engine;
 
+import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +35,8 @@ public class ActivationContext implements Serializable {
 
     boolean simulation = !CONTEXT_IS_SIMULATION;
     boolean activateRequests = false;
-    List simulatedActionsTaken = new ArrayList();
-    List generatedActionItems = new ArrayList();
+    List<ActionTakenValue> simulatedActionsTaken = new ArrayList<ActionTakenValue>();
+    List<ActionItem> generatedActionItems = new ArrayList<ActionItem>();
 
 
 	public ActivationContext(boolean simulation) {
@@ -41,7 +44,7 @@ public class ActivationContext implements Serializable {
 		this.simulation = simulation;
 	}
 
-	public ActivationContext(boolean simulation, List simulatedActionsTaken) {
+	public ActivationContext(boolean simulation, List<ActionTakenValue> simulatedActionsTaken) {
 		super();
 		this.simulation = simulation;
 		this.simulatedActionsTaken = simulatedActionsTaken;
@@ -55,19 +58,19 @@ public class ActivationContext implements Serializable {
         this.activateRequests = activateRequests;
     }
 
-    public List getGeneratedActionItems() {
+    public List<ActionItem> getGeneratedActionItems() {
         return generatedActionItems;
     }
 
-    public void setGeneratedActionItems(List generatedActionItems) {
+    public void setGeneratedActionItems(List<ActionItem> generatedActionItems) {
         this.generatedActionItems = generatedActionItems;
     }
 
-    public List getSimulatedActionsTaken() {
+    public List<ActionTakenValue> getSimulatedActionsTaken() {
         return simulatedActionsTaken;
     }
 
-    public void setSimulatedActionsTaken(List simulatedActionsTaken) {
+    public void setSimulatedActionsTaken(List<ActionTakenValue> simulatedActionsTaken) {
         this.simulatedActionsTaken = simulatedActionsTaken;
     }
 

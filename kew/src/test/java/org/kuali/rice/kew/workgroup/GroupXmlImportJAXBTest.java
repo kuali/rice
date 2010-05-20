@@ -19,6 +19,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -51,14 +52,17 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
 
     @Test public void testGroupImportXml() throws Exception {
 //    	loadXmlFile("GroupXmlImportTest.xml");
+    	
     	InputStream xmlFile = getClass().getResourceAsStream("GroupXmlImportJAXBTest.xml");
     	
     	GroupXmlJAXBParser parser = new GroupXmlJAXBParser();
     	GroupXmlDto groupInfo = parser.parse(xmlFile);
 
     	assertNotNull(groupInfo);
-    	assertTrue(groupInfo.getGroupName().equals("TestUserGroup"));
-    	assertTrue(groupInfo.getGroupDescription().equals("Group for test user"));
+    	assertTrue(groupInfo.getGroupName().equals("MyGroup"));
+    	assertTrue(groupInfo.getGroupDescription().equals("Dan's unit test"));
+
+    	//assertTrue(groupInfo.getGroupDescription().equals("Dan's unit test"));
     	
 //        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
 //        //verify that the group was ingested
@@ -71,6 +75,21 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
 //        assertTrue(identityManagementService.isMemberOfGroup(identityManagementService.getPrincipalByPrincipalName("rkirkend").getPrincipalId(), group.getGroupId()));
 //        assertTrue(identityManagementService.isMemberOfGroup("2015", group.getGroupId()));
 //        assertTrue(KIMServiceLocator.getGroupService().isGroupMemberOfGroup(identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestWorkgroup").getGroupId(), group.getGroupId()));
+    }
+    
+    @Test public void testOriginalGroupImportXml() throws Exception {
+    	InputStream xmlFile = getClass().getResourceAsStream("GroupXmlImportTest.xml");
+    	
+    	GroupXmlJAXBParser parser = new GroupXmlJAXBParser();
+    	GroupXmlDto groupInfo = parser.parse(xmlFile);
+
+    	assertNotNull(groupInfo);
+    	assertTrue(groupInfo.getGroupName().equals("TestUserGroup"));
+    	assertTrue(groupInfo.getGroupDescription().equals("Group for test user"));
+    	
+    	for (GroupMembershipXmlDto groupMember : groupInfo.getMembers()){
+    		System.out.println(groupMember.getMemberId());
+    	}
     }
     
     @Test public void testGroupExportXml() throws Exception {
@@ -100,6 +119,7 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
         grp.setMembers(mbrs);
         
         AttributeSet attrs = new AttributeSet();
+//        HashMap<String, String> attrs = new HashMap<String, String>();
         attrs.put("documentTypeName","Doc");
         attrs.put("routeNodeName","P");
         attrs.put("required","false");

@@ -80,6 +80,7 @@ public class GroupXmlJAXBParser implements XmlConstants {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
 
+//        XMLFilter filter = new TestGroupNamespaceURIFilter();
         XMLFilter filter = new GroupNamespaceURIFilter();
         filter.setParent(spf.newSAXParser().getXMLReader());
 

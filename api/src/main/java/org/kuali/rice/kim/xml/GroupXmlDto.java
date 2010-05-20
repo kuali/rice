@@ -17,18 +17,21 @@ package org.kuali.rice.kim.xml;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.jaxb.MapStringStringAdapter;
+import org.kuali.rice.core.jaxb.StringMapEntry;
 
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -50,7 +53,8 @@ import org.kuali.rice.kim.xml.GroupMembershipXmlDto;
     "attributes", "members"
 })
 
-public class GroupXmlDto implements Group, Serializable {
+//public class GroupXmlDto implements Group, Serializable {
+public class GroupXmlDto implements Serializable {
 	
 	public GroupXmlDto(String groupName, String groupDescription, boolean active) {
 		super();
@@ -84,8 +88,12 @@ public class GroupXmlDto implements Group, Serializable {
 	protected String namespaceCode;
 
 	@XmlElement(name = "attributes", namespace = "http://rice.kuali.org/xsd/kim/group")	
-	@XmlJavaTypeAdapter(value = AttributeSetAdapter.class)
+//	@XmlJavaTypeAdapter(value = AttributeSetAdapter.class)
+    @XmlJavaTypeAdapter(AdapterAttributeSetToHashMap.class)
+//    HashMap<String, String> attributes = new HashMap<String, String>();
 	protected AttributeSet attributes;
+
+	
 	
 	@XmlElementWrapper(name = "members", namespace = "http://rice.kuali.org/xsd/kim/group")
 	@XmlElement(name = "member", namespace = "http://rice.kuali.org/xsd/kim/group")	
@@ -115,6 +123,10 @@ public class GroupXmlDto implements Group, Serializable {
 		return this.attributes;
 	}
 	
+//	public HashMap getAttributes() {
+//		return this.attributes;
+//	}
+	
 	public List<GroupMembershipXmlDto> getMembers() {
 		return this.members;
 	}
@@ -142,6 +154,10 @@ public class GroupXmlDto implements Group, Serializable {
 	public void setAttributes(AttributeSet attributes) {
 		this.attributes = attributes;
 	}
+	
+//	public void setAttributes(HashMap attributes) {
+//		this.attributes = attributes;
+//	}
 	
 	public void setMembers(List<GroupMembershipXmlDto> members) {
 		this.members = members;

@@ -45,6 +45,7 @@ public class InitialXMLFilter extends ChainedXMLFilterBase {
                     setParent(startFilter);
                 }
 
+                // Override the reported Schema URI
                 String reportedSchemaUri = getReportedSchemaURI();
                 if ( reportedSchemaUri != null ) {
                     atts = new AttributesImpl(atts);

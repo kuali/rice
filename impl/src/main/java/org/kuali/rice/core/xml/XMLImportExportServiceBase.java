@@ -1,5 +1,6 @@
 package org.kuali.rice.core.xml;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 
@@ -8,6 +9,7 @@ import javax.xml.bind.UnmarshallerHandler;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Base implementation of an XMLImportExportService.  Will be extracted into
@@ -18,7 +20,7 @@ public class XMLImportExportServiceBase {
             
     private enum State { INIT, LINKING }
     
-    protected List<XMLInputFilterEntry> filters;
+    private List<XMLInputFilterEntry> filters;
     
     public List<XMLInputFilterEntry> getFilters() {
         return filters;
@@ -70,6 +72,7 @@ public class XMLImportExportServiceBase {
                 else if ( state == State.LINKING && entry.getFilterClass() != null ) {
                     try {
                         ChainedXMLFilter filter = entry.getFilterClass().newInstance();
+                        configureFilter(entry, filter);
                         if ( prevFilter != null )
                             prevFilter.setParent(filter);
                         if ( result == null )
@@ -83,5 +86,21 @@ public class XMLImportExportServiceBase {
             }
         }
         return result != null ? result : new PassthruXMLFilter();
+    }
+
+    protected void configureFilter(XMLInputFilterEntry entry,
+                                   ChainedXMLFilter filter) {
+        Map<String, Object> properties = entry.getProperties();
+        if ( properties != null ) {
+            try {
+                for ( Map.Entry<String, Object> property : properties.entrySet() ) {
+                    PropertyUtils.setProperty(filter, property.getKey(),
+                                              property.getValue());
+                }
+            }
+            catch ( Exception e ) {
+                throw new RuntimeException("Cannot set Filter Configuration", e);
+            }
+        }
     }
 }

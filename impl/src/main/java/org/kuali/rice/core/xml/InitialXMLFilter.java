@@ -10,7 +10,7 @@ import org.xml.sax.helpers.AttributesImpl;
  * of identifying the Document's Schema URI and linking in the ChainedXMLFilter
  * instances that would be required to upgrade the input stream.  It is also
  * capable of reported a default namespace URI as well as reporting an
- * overriden XML Schema URI.
+ * overridden XML Schema URI.
  */
 public class InitialXMLFilter extends ChainedXMLFilterBase {
     private XMLImportExportServiceBase xmlImportExportService;

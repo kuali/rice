@@ -34,76 +34,72 @@ import org.kuali.rice.ken.util.NotificationConstants;
  */
 // deadlocks are detected during clear database lifecycle (even when select for update is commented out...)
 public class NotificationMessageDeliveryAutoRemovalServiceImplTest extends KENTestCase {
-    // NOTE: this value is highly dependent on test data 
-    private static final int EXPECTED_SUCCESSES = 6;
-    
-    protected void assertProcessResults() {
-        // one error should have occurred and the delivery should have been marked unlocked again
-        Criteria criteria = new Criteria();
-        criteria.addNotNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-//        Criteria criteria = new Criteria(NotificationMessageDelivery.class.getName());
-//        criteria.notNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-        Collection<NotificationMessageDelivery> lockedDeliveries = services.getGenericDao().findMatching(NotificationMessageDelivery.class, criteria);
-        assertEquals(0, lockedDeliveries.size());
+	// NOTE: this value is highly dependent on test data 
+	private static final int EXPECTED_SUCCESSES = 6;
 
-        // should be 1 autoremoved delivery
-        HashMap<String, String> queryCriteria = new HashMap<String, String>();
-        queryCriteria.put(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.AUTO_REMOVED);
-        Collection<NotificationMessageDelivery> unprocessedDeliveries = services.getGenericDao().findMatching(NotificationMessageDelivery.class, queryCriteria);
-        assertEquals(EXPECTED_SUCCESSES, unprocessedDeliveries.size());
-    }
+	protected void assertProcessResults() {
+		// one error should have occurred and the delivery should have been marked unlocked again
+		Collection<NotificationMessageDelivery> lockedDeliveries = services.getNotificationMessegDeliveryDao().getLockedDeliveries(NotificationMessageDelivery.class, services.getGenericDao());
 
-    /**
-     * Test auto-removal message deliveries
-     */
-    @Test
-    public void testAutoRemovedNotificationMessageDeliveries() {
-        NotificationMessageDeliveryAutoRemovalService nSvc = services.getNotificationMessageDeliveryAutoRemovalService();
+		assertEquals(0, lockedDeliveries.size());
 
+		// should be 1 autoremoved delivery
+		HashMap<String, String> queryCriteria = new HashMap<String, String>();
+		queryCriteria.put(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.AUTO_REMOVED);
+		Collection<NotificationMessageDelivery> unprocessedDeliveries = services.getGenericDao().findMatching(NotificationMessageDelivery.class, queryCriteria);
+		assertEquals(EXPECTED_SUCCESSES, unprocessedDeliveries.size());
+	}
 
-        services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
+	/**
+	 * Test auto-removal message deliveries
+	 */
+	@Test
+	public void testAutoRemovedNotificationMessageDeliveries() {
+		NotificationMessageDeliveryAutoRemovalService nSvc = services.getNotificationMessageDeliveryAutoRemovalService();
 
-        ProcessingResult result = nSvc.processAutoRemovalOfDeliveredNotificationMessageDeliveries();
-        
-        assertEquals(0, result.getFailures().size());
-        assertEquals(EXPECTED_SUCCESSES, result.getSuccesses().size());
-        
-        assertProcessResults();
-    }
+		services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
 
-    /**
-     * Test concurrent auto-removal of message deliveries
-     */
-    @Test
-    public void testAutoRemovalConcurrency() throws InterruptedException {
-        final NotificationMessageDeliveryAutoRemovalService nSvc = services.getNotificationMessageDeliveryAutoRemovalService();
+		ProcessingResult result = nSvc.processAutoRemovalOfDeliveredNotificationMessageDeliveries();
 
-        services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
+		assertEquals(0, result.getFailures().size());
+		assertEquals(EXPECTED_SUCCESSES, result.getSuccesses().size());
 
-        final ProcessingResult[] results = new ProcessingResult[2];
-        Thread t1 = new Thread(new Runnable() {
-            public void run() {
-                results[0] = nSvc.processAutoRemovalOfDeliveredNotificationMessageDeliveries();
-            }
-        });
-        Thread t2 = new Thread(new Runnable() {
-            public void run() {
-                results[1] = nSvc.processAutoRemovalOfDeliveredNotificationMessageDeliveries();
-            }
-        });
-        
-        t1.start();
-        t2.start();
-        
-        t1.join();
-        t2.join();
+		assertProcessResults();
+	}
 
-        // assert that ONE of the autoremovers got all the items, and the other got NONE of the items
-        LOG.info("Results of thread #1: " + results[0]);
-        LOG.info("Results of thread #2: " + results[1]);
-        assertTrue((results[0].getSuccesses().size() == EXPECTED_SUCCESSES && results[0].getFailures().size() == 0 && results[1].getSuccesses().size() == 0 && results[1].getFailures().size() == 0) ||
-                   (results[1].getSuccesses().size() == EXPECTED_SUCCESSES && results[1].getFailures().size() == 0 && results[0].getSuccesses().size() == 0 && results[0].getFailures().size() == 0));
-        
-        assertProcessResults();
-    }
+	/**
+	 * Test concurrent auto-removal of message deliveries
+	 */
+	@Test
+	public void testAutoRemovalConcurrency() throws InterruptedException {
+		final NotificationMessageDeliveryAutoRemovalService nSvc = services.getNotificationMessageDeliveryAutoRemovalService();
+
+		services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
+
+		final ProcessingResult[] results = new ProcessingResult[2];
+		Thread t1 = new Thread(new Runnable() {
+			public void run() {
+				results[0] = nSvc.processAutoRemovalOfDeliveredNotificationMessageDeliveries();
+			}
+		});
+		Thread t2 = new Thread(new Runnable() {
+			public void run() {
+				results[1] = nSvc.processAutoRemovalOfDeliveredNotificationMessageDeliveries();
+			}
+		});
+
+		t1.start();
+		t2.start();
+
+		t1.join();
+		t2.join();
+
+		// assert that ONE of the autoremovers got all the items, and the other got NONE of the items
+		LOG.info("Results of thread #1: " + results[0]);
+		LOG.info("Results of thread #2: " + results[1]);
+		assertTrue((results[0].getSuccesses().size() == EXPECTED_SUCCESSES && results[0].getFailures().size() == 0 && results[1].getSuccesses().size() == 0 && results[1].getFailures().size() == 0) ||
+				(results[1].getSuccesses().size() == EXPECTED_SUCCESSES && results[1].getFailures().size() == 0 && results[0].getSuccesses().size() == 0 && results[0].getFailures().size() == 0));
+
+		assertProcessResults();
+	}
 }

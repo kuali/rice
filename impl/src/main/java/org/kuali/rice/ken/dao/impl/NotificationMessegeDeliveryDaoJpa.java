@@ -19,14 +19,12 @@ import java.sql.Timestamp;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.apache.ojb.broker.query.Criteria;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.dao.NotificationMessegeDeliveryDao;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 
@@ -34,11 +32,10 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class NotificationMessegeDeliveryDaoOjb extends PersistenceBrokerDaoSupport implements
-		NotificationMessegeDeliveryDao {
+public class NotificationMessegeDeliveryDaoJpa implements NotificationMessegeDeliveryDao{
 
-	private static final Logger LOG = Logger.getLogger(NotificationDaoOjb.class);
-	
+	private static final Logger LOG = Logger.getLogger(NotificationDaoJpa.class);
+
 	/**
 	 * This overridden method ...
 	 * 
@@ -46,15 +43,15 @@ public class NotificationMessegeDeliveryDaoOjb extends PersistenceBrokerDaoSuppo
 	 */
 	@Override
 	public Collection getUndeliveredMessageDelivers(GenericDao businessObjectDao) {
-		
-		LOG.info("************************calling OJBNotificationMessegeDeliveryDao.getUndeliveredMessageDelivers************************ ");
-		
-        Criteria criteria = new Criteria();
-        criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
-        criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-        Collection<NotificationMessageDelivery> messageDeliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria, true, RiceConstants.NO_WAIT);
 
-        return messageDeliveries;
+		LOG.info("************************calling OJBNotificationMessegeDeliveryDao.getUndeliveredMessageDelivers************************ ");
+
+		Criteria criteria = new Criteria(NotificationMessageDelivery.class.getName());
+		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
+		criteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+		Collection<NotificationMessageDelivery> messageDeliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, criteria, true, RiceConstants.NO_WAIT);
+
+		return messageDeliveries;
 	}
 
 	/**
@@ -64,27 +61,30 @@ public class NotificationMessegeDeliveryDaoOjb extends PersistenceBrokerDaoSuppo
 	 */
 	@Override
 	public Collection<NotificationMessageDelivery> getMessageDeliveriesForAutoRemoval(Timestamp tm, GenericDao businessObjectDao) {
-		
+
 		LOG.info("************************calling OJBNotificationMessegeDeliveryDao.getMessageDeliveriesForAutoRemoval************************ ");
-		
-        // get all UNDELIVERED/DELIVERED notification notification message delivery records with associated notifications that have and autoRemovalDateTime <= current
-        Criteria criteria_STATUS = new Criteria();
-        criteria_STATUS.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED);
 
-        Criteria criteria_UNDELIVERED = new Criteria();
-        criteria_UNDELIVERED.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
+		// get all UNDELIVERED/DELIVERED notification notification message delivery records with associated notifications that have and autoRemovalDateTime <= current
 
-        // now OR the above two together
-        criteria_STATUS.addOrCriteria(criteria_UNDELIVERED);
+		Criteria criteria_STATUS = new Criteria(NotificationMessageDelivery.class.getName());
+		criteria_STATUS.eq(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.DELIVERED);
 
-        Criteria fullQueryCriteria = new Criteria();
-        fullQueryCriteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-        fullQueryCriteria.addLessOrEqualThan(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION_AUTO_REMOVE_DATE_TIME, tm);
-        fullQueryCriteria.addAndCriteria(criteria_STATUS);
+		Criteria criteria_UNDELIVERED = new Criteria(NotificationMessageDelivery.class.getName());
+		criteria_UNDELIVERED.eq(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
 
-        Collection<NotificationMessageDelivery> messageDeliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, fullQueryCriteria, true, RiceConstants.NO_WAIT);
-     
-        return messageDeliveries;
+		// now OR the above two together
+		criteria_STATUS.or(criteria_UNDELIVERED);
+
+		Criteria fullQueryCriteria = new Criteria(NotificationMessageDelivery.class.getName());
+		fullQueryCriteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+
+		fullQueryCriteria.lte(NotificationConstants.BO_PROPERTY_NAMES.NOTIFICATION_AUTO_REMOVE_DATE_TIME, new Timestamp(System.currentTimeMillis()));
+
+		fullQueryCriteria.and(criteria_STATUS);
+
+		Collection<NotificationMessageDelivery> messageDeliveries = businessObjectDao.findMatching(NotificationMessageDelivery.class, fullQueryCriteria, true, RiceConstants.NO_WAIT);
+
+		return messageDeliveries;
 	}
 
 	/**
@@ -95,11 +95,11 @@ public class NotificationMessegeDeliveryDaoOjb extends PersistenceBrokerDaoSuppo
 	@Override
 	public Collection<NotificationMessageDelivery> getLockedDeliveries(
 			Class clazz, GenericDao dao) {
-        Criteria criteria = new Criteria();
-        criteria.addNotNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+    	Criteria criteria = new Criteria(clazz.getName());
+    	criteria.notNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
         Collection<NotificationMessageDelivery> lockedDeliveries = dao.findMatching(clazz, criteria);
-        
-        return lockedDeliveries;
+		return null;
 	}
+
 
 }

@@ -16,6 +16,8 @@
 package org.kuali.rice.ken.core;
 
 import org.kuali.rice.core.dao.GenericDao;
+import org.kuali.rice.ken.dao.NotificationDao;
+import org.kuali.rice.ken.dao.NotificationMessegeDeliveryDao;
 import org.kuali.rice.ken.service.KENAPIService;
 import org.kuali.rice.ken.service.NotificationAuthorizationService;
 import org.kuali.rice.ken.service.NotificationChannelService;
@@ -42,6 +44,9 @@ public class SpringNotificationServiceLocator implements NotificationServiceLoca
     private static final String NOTIFICATION_CONTENT_TYPE_SERVICE = "notificationContentTypeService";
     private static final String MESSAGE_CONTENT_SERVICE = "messageContentService";
     private static final String GENERIC_DAO = "kenGenericDao";
+    private static final String NOTIFICATION_DAO = "kenNotificationDao";
+    private static final String NOTIFICATION_MESSEGE_DELIVERY_DAO = "kenNotificationMessegeDeliveryDao";
+    
     private static final String NOTIFICATION_AUTHORIZATION_SERVICE = "notificationAuthorizationService";
     private static final String NOTIFICATION_WORKFLOW_DOCUMENT_SERVICE = "notificationWorkflowDocumentService";
     private static final String NOTIFICATION_MESSAGE_DELIVERY_DISPATCH_SERVICE = "notificationMessageDeliveryDispatchService";
@@ -97,6 +102,14 @@ public class SpringNotificationServiceLocator implements NotificationServiceLoca
      */
     public GenericDao getGenericDao() {
         return (GenericDao) beanFactory.getBean(GENERIC_DAO);
+    }
+    
+    public NotificationDao getNotificationDao() {
+        return (NotificationDao) beanFactory.getBean(NOTIFICATION_DAO);
+    }
+    
+    public NotificationMessegeDeliveryDao getNotificationMessegDeliveryDao() {
+        return (NotificationMessegeDeliveryDao) beanFactory.getBean(NOTIFICATION_MESSEGE_DELIVERY_DAO);
     }
 
     /**

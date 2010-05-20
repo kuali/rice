@@ -17,21 +17,14 @@ package org.kuali.rice.ken.dao.impl;
 
 import java.sql.Timestamp;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationMessageDelivery;
-import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.core.dao.impl.GenericDaoOjb;
 import org.apache.log4j.Logger;
-import org.apache.ojb.broker.query.Criteria;
+import org.kuali.rice.core.jpa.criteria.Criteria;
+import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
-import org.kuali.rice.ken.dao.NotificationDao;
 import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.dao.NotificationDao;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 
@@ -39,9 +32,9 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class NotificationDaoOjb extends PersistenceBrokerDaoSupport implements NotificationDao {
+public class NotificationDaoJpa implements NotificationDao{
 
-	private static final Logger LOG = Logger.getLogger(NotificationDaoOjb.class);
+	private static final Logger LOG = Logger.getLogger(NotificationDaoJpa.class);
 	/**
 	 * This overridden method ...
 	 * 
@@ -51,11 +44,11 @@ public class NotificationDaoOjb extends PersistenceBrokerDaoSupport implements N
 	public Collection findMatchedNotificationsForResolution(Timestamp tm, GenericDao dao) {
 
 		LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForResolution(************************ ");
-		
-		Criteria criteria = new Criteria();
-		criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-		criteria.addLessOrEqualThan(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, tm);
-		criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+
+		Criteria criteria = new Criteria(Notification.class.getName());
+		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
+		criteria.lte(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
+		criteria.isNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
 
 		Collection<Notification> available_notifications = dao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
 
@@ -71,9 +64,9 @@ public class NotificationDaoOjb extends PersistenceBrokerDaoSupport implements N
 	public Collection findMatchedNotificationsForUnlock(Notification not, GenericDao dao) {
 
 		LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForForUnlock************************ ");
-		
-		Criteria criteria = new Criteria();
-		criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, not.getId());
+
+		Criteria criteria = new Criteria(Notification.class.getName());
+		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.ID, not.getId());
 
 		Collection<Notification> notifications = dao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
 
@@ -81,3 +74,4 @@ public class NotificationDaoOjb extends PersistenceBrokerDaoSupport implements N
 	}
 
 }
+

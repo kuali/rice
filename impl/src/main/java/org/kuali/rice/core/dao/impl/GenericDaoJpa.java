@@ -34,8 +34,6 @@ import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 
-
-
 /**
  * JPA implementation of GenericDao 
  * 
@@ -100,9 +98,7 @@ public class GenericDaoJpa implements GenericDao{
 	 */
 	@Override
 	public void delete(Object bo) {
-		//entityManager.remove(bo);
 		if(bo instanceof PersistableBusinessObject){
-			//KNSServiceLocator.getBusinessObjectDao().delete((PersistableBusinessObject) bo);
 			KNSServiceLocator.getBusinessObjectService().delete((PersistableBusinessObject)bo);
 		}
 		else {
@@ -118,7 +114,6 @@ public class GenericDaoJpa implements GenericDao{
 	@Override
 	public void delete(List<Object> boList) {
 	    for (Object bo : boList) {
-	    	//entityManager.remove(bo);
 	    	delete(bo);
         }
 		
@@ -161,12 +156,8 @@ public class GenericDaoJpa implements GenericDao{
 	 * 
 	 * @see org.kuali.rice.core.dao.GenericDao#findById(java.lang.Class, java.lang.Object)
 	 */
-	//will work for most KEN bo except NotificationResponse
 	@Override
 	public Object findById(Class clazz, Object keyValue) {
-//		Criteria crit = new Criteria(clazz.getName());
-//		crit.eq("id", (Long)keyValue);
-//		return new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
 		return KNSServiceLocator.getBusinessObjectDao().findBySinglePrimaryKey(clazz, keyValue);
 
 	}
@@ -176,19 +167,8 @@ public class GenericDaoJpa implements GenericDao{
 	 * 
 	 * @see org.kuali.rice.core.dao.GenericDao#findByPrimaryKey(java.lang.Class, java.util.Map)
 	 */
-	//caller need to cast return obj to bo 
 	@Override
 	public Object findByPrimaryKey(Class clazz, Map primaryKeys) {
-//		if (primaryKeys == null || primaryKeys.isEmpty()) {
-//			return null;
-//		}
-//		Object bo = null;
-//		try {
-//			bo = KNSServiceLocator.getBusinessObjectDao().findByPrimaryKey(clazz, primaryKeys);
-//		} 
-//		catch (PersistenceException e) {}
-//	
-//		return bo;
 		return KNSServiceLocator.getBusinessObjectDao().findByPrimaryKey(clazz, primaryKeys);
 	}
 
@@ -200,17 +180,6 @@ public class GenericDaoJpa implements GenericDao{
 	//caller need casting return obj to bo 
 	@Override
 	public Object findByUniqueKey(Class clazz, Map uniqueKeys) {
-//		if (uniqueKeys == null || uniqueKeys.isEmpty()) {
-//			return null;
-//		}
-//		
-//		Object bo = null;
-//		try {
-//			bo = KNSServiceLocator.getBusinessObjectDao().findByPrimaryKey(clazz, uniqueKeys);
-//		} 
-//		catch (PersistenceException e) {}
-//	
-//		return bo;
 		return KNSServiceLocator.getBusinessObjectDao().findByPrimaryKey(clazz, uniqueKeys);
 	}
 
@@ -242,8 +211,8 @@ public class GenericDaoJpa implements GenericDao{
 	@Override
 	public Collection findMatching(Class clazz, org.kuali.rice.core.jpa.criteria.Criteria criteria,
 			boolean selectForUpdate, long wait) {
-		// TODO g1zhang - THIS METHOD NEEDS JAVADOCS
-		System.out.println("*************calling JPA********************************");
+		//need implementation
+		LOG.info("*************calling JPA********************************");
 		return null;
 	}
 
@@ -254,7 +223,7 @@ public class GenericDaoJpa implements GenericDao{
 	 */
 	@Override
 	public Collection findMatchingByExample(Object object) {
-		// TODO g1zhang - THIS METHOD NEEDS JAVADOCS
+		//need implementation
 		return null;
 	}
 
@@ -277,12 +246,6 @@ public class GenericDaoJpa implements GenericDao{
 	@Override
 	//could also use KNS BusinessObjectDaoJpa.retrieve()
 	public Object retrieve(Object bo) {
-//		try{
-//		return findById(bo.getClass(), bo.getClass().getMethod("getId").invoke(bo));
-//		}
-//		catch(Exception e){
-//			throw new RuntimeException(e.getMessage(), e);
-//		}
 		
 		if(bo instanceof PersistableBusinessObject)
 			return KNSServiceLocator.getBusinessObjectDao().retrieve((PersistableBusinessObject) bo);
@@ -299,19 +262,8 @@ public class GenericDaoJpa implements GenericDao{
 	 */
 	@Override
 	public void save(Object bo) {
-//	    //may need call KNS service
-//		try{
-//    	if (bo.getClass().getMethod("getId").invoke(bo) == null){
-//    		entityManager.persist(bo);
-//    	} else {
-//    		OrmUtils.merge(entityManager, bo);
-//    	}	
-//    	}
-//		catch(Exception e){
-//			throw new RuntimeException(e.getMessage(), e);
-//		}
 		
-		System.out.println("*************calling JPA********************************");
+		LOG.info("*************calling JPA********************************");
 		
 		if(bo instanceof PersistableBusinessObject)
 			KNSServiceLocator.getBusinessObjectDao().save((PersistableBusinessObject) bo);
@@ -339,7 +291,6 @@ public class GenericDaoJpa implements GenericDao{
 	@Override
 	public Collection findMatching(Class clazz,
 			org.apache.ojb.broker.query.Criteria criteria) {
-		// TODO g1zhang - THIS METHOD NEEDS JAVADOCS
 		return null;
 	}
 
@@ -353,10 +304,10 @@ public class GenericDaoJpa implements GenericDao{
 			org.apache.ojb.broker.query.Criteria criteria,
 			boolean selectForUpdate, long wait) {
 		// TODO g1zhang - THIS METHOD NEEDS JAVADOCS
-		System.out.println("*************calling OJB********************************");
+		LOG.info("*************calling OJB********************************");
 		return null;
 	}
-
+	
 	/**
 	 * This overridden method ...
 	 * 
@@ -365,7 +316,7 @@ public class GenericDaoJpa implements GenericDao{
 	@Override
 	public Collection findMatching(Class clazz, Map criteria,
 			boolean selectForUpdate, long wait) {
-		// TODO g1zhang - THIS METHOD NEEDS JAVADOCS
+		// need implementation
 		return null;
 	}
 

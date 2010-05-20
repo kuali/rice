@@ -263,10 +263,10 @@ public class NotificationServiceImpl implements NotificationService {
 	//switch to JPA criteria
 	public Collection<Notification> takeNotificationsForResolution() {
 		// get all unprocessed notifications with sendDateTime <= current
-		Criteria criteria = new Criteria();
-		criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
-		criteria.addLessOrEqualThan(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
-		criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
+//		Criteria criteria = new Criteria();
+//		criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
+//		criteria.addLessOrEqualThan(NotificationConstants.BO_PROPERTY_NAMES.SEND_DATE_TIME, new Timestamp(System.currentTimeMillis()));
+//		criteria.addIsNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
 		//criteria = Util.makeSelectForUpdate(criteria);
 
 		//		Criteria criteria = new Criteria(Notification.class.getName());
@@ -276,7 +276,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 		//Collection<Notification> available_notifications = businessObjectDao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
 		
-		Collection<Notification> available_notifications = notDao.findMatchedNotifications(new Timestamp(System.currentTimeMillis()), businessObjectDao);
+		Collection<Notification> available_notifications = notDao.findMatchedNotificationsForResolution(new Timestamp(System.currentTimeMillis()), businessObjectDao);
 
 		//LOG.debug("Available notifications: " + available_notifications.size());
 
@@ -299,8 +299,8 @@ public class NotificationServiceImpl implements NotificationService {
 	 */
 	//switch to JPA criteria
 	public void unlockNotification(Notification notification) {
-		Map<String, Long> criteria = new HashMap<String, Long>();
-		criteria.put(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
+//		Map<String, Long> criteria = new HashMap<String, Long>();
+//		criteria.put(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
 //		Criteria criteria = new Criteria();
 //		criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
 		//criteria = Util.makeSelectForUpdate(criteria);
@@ -308,7 +308,10 @@ public class NotificationServiceImpl implements NotificationService {
 		//		Criteria criteria = new Criteria(Notification.class.getName());
 		//		criteria.eq(NotificationConstants.BO_PROPERTY_NAMES.ID, notification.getId());
 
-		Collection<Notification> notifications = businessObjectDao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
+		//Collection<Notification> notifications = businessObjectDao.findMatching(Notification.class, criteria, true, RiceConstants.NO_WAIT);
+		
+		Collection<Notification> notifications = notDao.findMatchedNotificationsForUnlock(notification, businessObjectDao);
+		
 		if (notifications == null || notifications.size() == 0) {
 			throw new RuntimeException("Notification #" + notification.getId() + " not found to unlock");
 		}

@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 
 import org.kuali.rice.core.dao.GenericDao;
+import org.kuali.rice.ken.bo.Notification;
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 
  * 
@@ -27,6 +28,8 @@ import org.kuali.rice.core.dao.GenericDao;
  */
 public interface NotificationDao {
 	
-	public Collection findMatchedNotifications(Timestamp tm,  GenericDao dao);
-
+	public Collection findMatchedNotificationsForResolution(Timestamp tm,  GenericDao dao);
+	
+	public Collection findMatchedNotificationsForUnlock(Notification not, GenericDao dao);
+	
 }

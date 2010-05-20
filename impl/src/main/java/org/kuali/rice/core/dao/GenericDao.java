@@ -141,7 +141,6 @@ public interface GenericDao {
      * @param criteria
      * @return Collection
      */
-//open this to revert to OJB
     public Collection findMatching(Class clazz, org.apache.ojb.broker.query.Criteria criteria);
 
     /**
@@ -153,7 +152,6 @@ public interface GenericDao {
      * @param wait millis to wait for select for update
      * @return Collection
      */
-  //open this to revert to OJB
     public Collection findMatching(Class clazz, org.apache.ojb.broker.query.Criteria criteria, boolean selectForUpdate, long wait);
     
     public Collection findMatching(Class clazz, Map criteria, boolean selectForUpdate, long wait);

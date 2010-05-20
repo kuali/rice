@@ -34,6 +34,7 @@ public interface NotificationMessegeDeliveryDao {
 	
 	public Collection getUndeliveredMessageDelivers(GenericDao businessObjectDao);
 	
-    public Collection<NotificationMessageDelivery> getMessageDeliveriesForAutoRemoval(GenericDao businessObjectDao);
+    public Collection<NotificationMessageDelivery> getMessageDeliveriesForAutoRemoval(Timestamp tm, GenericDao businessObjectDao);
 
+    public Collection <NotificationMessageDelivery> getLockedDeliveries(Class clazz, GenericDao dao);
 }

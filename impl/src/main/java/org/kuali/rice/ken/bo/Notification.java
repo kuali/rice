@@ -137,8 +137,8 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * Return value of lock column for OJB optimistic locking
      * @return value of lock column for OJB optimistic locking
      */
+ // should discard this method and call super directly
     public Integer getLockVerNbr() {
-       // return lockVerNbr;
     	return Integer.valueOf(super.getVersionNumber().intValue());
     }
 
@@ -146,8 +146,8 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
      * Set value of lock column for OJB optimistic locking
      * @param lockVerNbr value of lock column for OJB optimistic locking
      */
+ // should discard this method and call super directly
     public void setLockVerNbr(Integer lockVerNbr) {
-        //this.lockVerNbr = lockVerNbr;
     	super.setVersionNumber(lockVerNbr.longValue());
     }
 

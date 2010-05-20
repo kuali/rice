@@ -96,12 +96,9 @@ public class NotificationMessageDeliveryResolverServiceImplTest extends KENTestC
     //this is the one need to tweek on Criteria
     protected void assertProcessResults() {
         // one error should have occurred and the delivery should have been marked unlocked again
-        Criteria criteria = new Criteria();
-        criteria.addNotNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-//    	Criteria criteria = new Criteria(Notification.class.getName());
-//    	criteria.notNull(NotificationConstants.BO_PROPERTY_NAMES.LOCKED_DATE);
-        Collection<NotificationMessageDelivery> lockedDeliveries = services.getGenericDao().findMatching(Notification.class, criteria);
-        assertEquals(0, lockedDeliveries.size());
+    	Collection<NotificationMessageDelivery> lockedDeliveries = services.getNotificationMessegDeliveryDao().getLockedDeliveries(Notification.class, services.getGenericDao());
+         
+    	assertEquals(0, lockedDeliveries.size());
 
         // should be 1 unprocessed delivery (the one that had an error)
         HashMap<String, String> queryCriteria = new HashMap<String, String>();

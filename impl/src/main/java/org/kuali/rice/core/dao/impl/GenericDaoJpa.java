@@ -357,4 +357,16 @@ public class GenericDaoJpa implements GenericDao{
 		return null;
 	}
 
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.core.dao.GenericDao#findMatching(java.lang.Class, java.util.Map, boolean, long)
+	 */
+	@Override
+	public Collection findMatching(Class clazz, Map criteria,
+			boolean selectForUpdate, long wait) {
+		// TODO g1zhang - THIS METHOD NEEDS JAVADOCS
+		return null;
+	}
+
 }

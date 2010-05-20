@@ -115,10 +115,20 @@ public class InitialXMLFilter extends ChainedXMLFilterBase {
         this.defaultNamespaceUri = defaultNamespaceUri;
     }
 
+    /**
+     * Returns the XMLImportExportService used by this Filter
+     *
+     * @return The XMLImportExportService
+     */
     public XMLImportExportServiceBase getXMLImportExportService() {
         return xmlImportExportService;
     }
 
+    /**
+     * Sets the XMLImportExportService used by this Filter
+     *
+     * @param xmlImportExportService The XMLImportExportService
+     */
     public void setXMLImportExportService(XMLImportExportServiceBase xmlImportExportService) {
         this.xmlImportExportService = xmlImportExportService;
     }

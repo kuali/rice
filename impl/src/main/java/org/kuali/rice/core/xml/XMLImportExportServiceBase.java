@@ -20,16 +20,8 @@ public class XMLImportExportServiceBase {
             
     private enum State { INIT, LINKING }
     
-    private List<XMLInputFilterEntry> filters;
+    private List<XMLInputFilterDefinition> definitions;
     
-    public List<XMLInputFilterEntry> getFilters() {
-        return filters;
-    }
-
-    public void setFilters(List<XMLInputFilterEntry> filters) {
-        this.filters = filters;
-    }
-
     // TODO: This method is going to have to be changed to support creating
     //       multiple instances of the given Class.  It should also not
     //       return an instance, because the import will yield multiple
@@ -40,6 +32,14 @@ public class XMLImportExportServiceBase {
 
         InitialXMLFilter filter = new InitialXMLFilter();
         filter.setXMLImportExportService(this);
+
+        // Set the InitialXMLFilter's reported Schema URI
+        List<XMLInputFilterDefinition> definitions = getDefinitions();
+        if ( filter != null && definitions.size() > 0 ) {
+            XMLInputFilterDefinition definition = definitions.get(definitions.size()-1);
+            filter.setReportedSchemaURI(definition.getSchemaURI());
+        }
+
         filter.setParent(spf.newSAXParser().getXMLReader());
 
         UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
@@ -59,17 +59,22 @@ public class XMLImportExportServiceBase {
      * @return The starting ChainedXMLFilter for transforming the Document
      */
     protected ChainedXMLFilter getFilterForSchemaURI(String schemaURI) {
+        List<XMLInputFilterDefinition> definitions = getDefinitions();
+        if ( definitions == null )
+            return new PassthruXMLFilter();
+        
         ChainedXMLFilter result = null, prevFilter = null;
-        List<XMLInputFilterEntry> filters = getFilters();
-        if ( filters != null ) {
-            State state = State.INIT;
-            for ( XMLInputFilterEntry entry : filters ) {
-                if ( state == State.INIT && entry.getSchemaURI().equals(schemaURI) ) {
-                    // We actually want to skip this entry and start linking
-                    // at the next one, as we don't need to convert to self.
-                    state = State.LINKING;
-                }
-                else if ( state == State.LINKING && entry.getFilterClass() != null ) {
+        State state = State.INIT;
+        for ( XMLInputFilterDefinition definition : definitions ) {
+            if ( state == State.INIT && definition.getSchemaURI().equals(schemaURI) ) {
+                // We actually want to skip this entry and start linking
+                // at the next one, as we don't need to convert to self.
+                state = State.LINKING;
+            }
+            else if ( state == State.LINKING && definition.getEntries() != null ) {
+                for ( XMLInputFilterEntry entry : definition.getEntries() ) {
+                    if ( entry.getFilterClass() == null )
+                        continue;
                     try {
                         ChainedXMLFilter filter = entry.getFilterClass().newInstance();
                         configureFilter(entry, filter);
@@ -102,5 +107,23 @@ public class XMLImportExportServiceBase {
                 throw new RuntimeException("Cannot configure Filter", e);
             }
         }
+    }
+
+    /**
+     * Returns the XML Filter Definitions for this Import/Export Service
+     *
+     * @return The Service's XMLInputFilterDefinition List
+     */
+    public List<XMLInputFilterDefinition> getDefinitions() {
+        return definitions;
+    }
+
+    /**
+     * Set the XML Filter Definitions for this Import/Export Service
+     *
+     * @param definitions The Service's XMLInputFilterDefinition List
+     */
+    public void setDefinitions(List<XMLInputFilterDefinition> definitions) {
+        this.definitions = definitions;
     }
 }

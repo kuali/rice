@@ -3,31 +3,11 @@ package org.kuali.rice.core.xml;
 import java.util.Map;
 
 /**
- * Represents a Map between a Schema URI and the ChainedXMLFilter
- * implementation required to migrate a Document from the Previous version.
+ * Represents a Map between ChainedXMLFilter and a set of optional Properties
  */
 public class XMLInputFilterEntry {
-    private String schemaURI;
     private Class<? extends ChainedXMLFilter> filterClass;
     private Map<String, Object> properties;
-
-    /**
-     * Returns the Schema URI associated with this Entry
-     *
-     * @return The Schema URI
-     */
-    public String getSchemaURI() {
-        return schemaURI;
-    }
-
-    /**
-     * Set the Schema URI associated with this Entry
-     *
-     * @param schemaUri The Schema URI
-     */
-    public void setSchemaURI(String schemaURI) {
-        this.schemaURI = schemaURI;
-    }
 
     /**
      * Returns the Class that will be used to upgrade a Document's content

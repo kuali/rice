@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -60,8 +61,21 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
 
     	assertNotNull(groupInfo);
     	assertTrue(groupInfo.getGroupName().equals("MyGroup"));
-    	assertTrue(groupInfo.getGroupDescription().equals("Dan's unit test"));
-
+    	assertTrue(groupInfo.getGroupDescription().equals("Group Import unit test"));
+    	assertTrue(groupInfo.getMembers().size()==3);
+    	assertTrue(groupInfo.getAttributes().size()==4);
+    	
+    	assertTrue(groupInfo.getAttributes().containsKey("documentTypeName"));
+    	assertTrue(groupInfo.getAttributes().containsValue("Doc"));
+    	
+    	Iterator iter = groupInfo.getMembers().iterator();
+    	while (iter.hasNext()){
+    		GroupMembershipXmlDto member = (GroupMembershipXmlDto) iter.next();
+    		String memberName = member.getMemberId();
+    		assertTrue (memberName.equals("ewestfal") ||
+    				    memberName.equals("rkirkend") ||
+    				    memberName.equals("TestWorkgroup"));
+    	}
     	//assertTrue(groupInfo.getGroupDescription().equals("Dan's unit test"));
     	
 //        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();

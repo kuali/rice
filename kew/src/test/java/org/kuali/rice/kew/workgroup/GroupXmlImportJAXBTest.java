@@ -112,21 +112,21 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         
         GroupXmlDto grp = new GroupXmlDto(
-            "MyGroup", "Dan's unit test", true);
+            "MyGroup", "Group Import unit test", true);
         List<GroupMembershipXmlDto> mbrs = new ArrayList<GroupMembershipXmlDto>();
         
         GroupMembershipXmlDto mbr1 = new GroupMembershipXmlDto();
-        mbr1.setMemberId("CHynde");
+        mbr1.setMemberId("ewestfal");
         mbr1.setMemberTypeCode("P");
         mbrs.add(mbr1);
         
         GroupMembershipXmlDto mbr2 = new GroupMembershipXmlDto();
-        mbr2.setMemberId("BMarley");
+        mbr2.setMemberId("rkirkend");
         mbr2.setMemberTypeCode("P");
         mbrs.add(mbr2);
         
         GroupMembershipXmlDto mbr3 = new GroupMembershipXmlDto();
-        mbr3.setMemberId("Pretenders");
+        mbr3.setMemberId("TestWorkgroup");
         mbr3.setMemberTypeCode("G");
         mbrs.add(mbr3);
         
@@ -139,7 +139,7 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
         attrs.put("required","false");
         attrs.put("actionDetailsAtRoleMemberLevel","false");
         grp.setAttributes(attrs);
-        marshaller.marshal(grp, new FileWriter(".\\GroupXmlExportJAXBResults.xml"));       
+        marshaller.marshal(grp, new FileWriter(".\\kew\\src\\test\\resources\\org\\kuali\\rice\\kew\\workgroup\\GroupXmlExportJAXBResults.xml"));       
     }
  
 }

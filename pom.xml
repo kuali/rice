@@ -130,7 +130,7 @@
 						<artifactId>maven-compiler-plugin</artifactId>
 						<configuration>
 							<source>1.5</source>
-							<target>1.5</target>
+							<target>1.6</target>
 							<!-- impl module is huge and requires at least 768m to compile -->
 							<fork>true</fork>
 							<meminitial>256</meminitial>

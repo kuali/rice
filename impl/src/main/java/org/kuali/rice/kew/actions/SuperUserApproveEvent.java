@@ -70,7 +70,7 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
         String errorMessage = super.validateActionRules();
         if (!Utilities.isEmpty(errorMessage)) {
             LOG.info("User not authorized");
-            List errors = new ArrayList();
+            List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();
             errors.add(new WorkflowServiceErrorImpl(errorMessage, AUTHORIZATION));
             throw new WorkflowServiceErrorException(errorMessage, errors);
         }
@@ -91,10 +91,10 @@ public class SuperUserApproveEvent extends SuperUserActionTakenEvent {
 		OrchestrationConfig config = new OrchestrationConfig();
 		config.setCause(actionTaken);
 		config.setDestinationNodeNames(new HashSet());
-		config.setSendNotifications(docType.getSuperUserApproveNotificationPolicy().getPolicyValue().booleanValue());
+		config.setSendNotifications(docType.getSuperUserApproveNotificationPolicy().getPolicyValue());
 		RequestsNode.setSupressPolicyErrors(RouteContext.getCurrentRouteContext());
 		try {
-			completeAnyOutstandingCompleteApproveRequests(actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue().booleanValue());
+			completeAnyOutstandingCompleteApproveRequests(actionTaken, docType.getSuperUserApproveNotificationPolicy().getPolicyValue());
 			new BlanketApproveEngine(config, isRunPostProcessorLogic()).process(getRouteHeader().getRouteHeaderId(), null);
 		} catch (Exception e) {
 			LOG.error("Failed to orchestrate the document to SuperUserApproved.", e);

@@ -45,7 +45,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 public class ActionRegistryImpl implements ActionRegistry {
     private static final Logger LOG = Logger.getLogger(ActionRegistryImpl.class);
 
-	private static Map actionMap = new HashMap();
+	private static Map<String, String> actionMap = new HashMap<String, String>();
 	static {
 		actionMap.put(KEWConstants.ACTION_TAKEN_ACKNOWLEDGED_CD, AcknowledgeAction.class.getName());
 		actionMap.put(KEWConstants.ACTION_TAKEN_ADHOC_CD, AdHocAction.class.getName());
@@ -98,7 +98,7 @@ public class ActionRegistryImpl implements ActionRegistry {
 	 * @see org.kuali.rice.kew.actions.ActionRegistry#createAction(java.lang.String, java.util.List)
 	 */
 	public ActionTakenEvent createAction(String actionCode, List<DataDefinition> parameters) throws ResourceUnavailableException {
-		String actionClassName = (String)actionMap.get(actionCode);
+		String actionClassName = actionMap.get(actionCode);
 		if (actionClassName == null) {
 			throw new IllegalArgumentException("No action has been registered for the given action code of '" + actionCode + "'.");
 		}
@@ -132,17 +132,18 @@ public class ActionRegistryImpl implements ActionRegistry {
         ValidActions validActions = new ValidActions();
         ArrayList<ActionRequestValue> activeRequests = new ArrayList<ActionRequestValue>();
         for ( ActionRequestValue ar : document.getActionRequests() ) {
-        	if ( (ar.getCurrentIndicator() != null && ar.getCurrentIndicator().booleanValue()) && StringUtils.equals( ar.getStatus(), KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
+        	if ( (ar.getCurrentIndicator() != null && ar.getCurrentIndicator()) && StringUtils.equals( ar.getStatus(), KEWConstants.ACTION_REQUEST_ACTIVATED ) ) {
         		activeRequests.add(ar);
         	}
         }
-        for (Iterator<String> iter = actionMap.keySet().iterator(); iter.hasNext();) {
-            String actionTakenCode = iter.next();
+        for (String actionTakenCode : actionMap.keySet())
+        {
             List<DataDefinition> parameters = new ArrayList<DataDefinition>();
             parameters.add(new DataDefinition(document));
             parameters.add(new DataDefinition(principal));
             ActionTakenEvent actionEvent = createAction(actionTakenCode, parameters);
-            if ( StringUtils.isEmpty( actionEvent.validateActionRules(activeRequests) ) ) {
+            if (StringUtils.isEmpty(actionEvent.validateActionRules(activeRequests)))
+            {
                 validActions.addActionTakenCode(actionTakenCode);
             }
         }

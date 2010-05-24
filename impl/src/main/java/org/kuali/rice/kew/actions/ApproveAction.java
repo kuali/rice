@@ -49,7 +49,7 @@ public class ApproveAction extends ActionTakenEvent {
     /**
      * @param routeHeader
      *            RouteHeader for the document upon which the action is taken.
-     * @param user
+     * @param principal
      *            User taking the action.
      */
     public ApproveAction(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
@@ -59,7 +59,7 @@ public class ApproveAction extends ActionTakenEvent {
     /**
      * @param routeHeader
      *            RouteHeader for the document upon which the action is taken.
-     * @param user
+     * @param principal
      *            User taking the action.
      * @param annotation
      *            User comment on the action taken

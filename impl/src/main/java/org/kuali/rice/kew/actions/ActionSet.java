@@ -34,7 +34,7 @@ public class ActionSet implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 7857749268529671300L;
-	private List actionSet = new ArrayList();
+	private List<String> actionSet = new ArrayList<String>();
 	
 	public boolean hasAction(String actionCode) {
 		return actionSet.contains(actionCode);

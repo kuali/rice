@@ -155,12 +155,14 @@ public class MoveDocumentAction extends ActionTakenEvent {
         queueDocumentProcessing();
     }
 
-    private RouteNodeInstance determineStartNode(Collection activeNodes, MovePoint movePoint) throws InvalidActionTakenException {
+    private RouteNodeInstance determineStartNode(Collection<RouteNodeInstance> activeNodes, MovePoint movePoint) throws InvalidActionTakenException {
         RouteNodeInstance startNodeInstance = null;
-        for (Iterator iterator = activeNodes.iterator(); iterator.hasNext();) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
-            if (nodeInstance.getName().equals(movePoint.getStartNodeName())) {
-                if (startNodeInstance != null) {
+        for (RouteNodeInstance nodeInstance : activeNodes)
+        {
+            if (nodeInstance.getName().equals(movePoint.getStartNodeName()))
+            {
+                if (startNodeInstance != null)
+                {
                     throw new InvalidActionTakenException("More than one active node exists with the given name:  " + movePoint.getStartNodeName());
                 }
                 startNodeInstance = nodeInstance;

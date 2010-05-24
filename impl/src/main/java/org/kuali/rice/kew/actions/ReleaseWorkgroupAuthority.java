@@ -40,7 +40,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
     private String groupId;
     /**
      * @param routeHeader
-     * @param user
+     * @param principal
      */
     public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
         super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, principal);
@@ -48,9 +48,9 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
 
     /**
      * @param routeHeader
-     * @param user
+     * @param principal
      * @param annotation
-     * @param workgroup
+     * @param groupId
      */
     public ReleaseWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String groupId) {
         super(KEWConstants.ACTION_TAKEN_RELEASE_WORKGROUP_AUTHORITY_CD, routeHeader, principal, annotation);
@@ -93,17 +93,21 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
             return (getPrincipal().getPrincipalName() + " not a member of workgroup " + groupId);
         }
 
-        List actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
+        List<ActionRequestValue> actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
         //List groupRequestsToActivate = new ArrayList();//requests for this group that need action items
-        for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
+        for (ActionRequestValue actionRequest : actionRequests)
+        {
             //we left the group active from take authority action.  pending havent been normally activated yet
-            if (actionRequest.isGroupRequest() && actionRequest.isActive() && actionRequest.getGroupId().equals(groupId)) {
-                if (actionRequest.getActionItems().size() == 1) {
+            if (actionRequest.isGroupRequest() && actionRequest.isActive() && actionRequest.getGroupId().equals(groupId))
+            {
+                if (actionRequest.getActionItems().size() == 1)
+                {
                     ActionItem actionItem = (ActionItem) actionRequest.getActionItems().get(0);
-                    if (! actionItem.getPrincipalId().equals(getPrincipal().getPrincipalId())) {
+                    if (!actionItem.getPrincipalId().equals(getPrincipal().getPrincipalId()))
+                    {
                         return "User attempting to release workgroup authority did not take it.";
-                    } else if (!forValidationOnly) {
+                    } else if (!forValidationOnly)
+                    {
                         actionRequest.setStatus(KEWConstants.ACTION_REQUEST_INITIALIZED);//to circumvent check in service during activation
                         getActionRequestService().activateRequest(actionRequest);
                     }

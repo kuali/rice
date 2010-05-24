@@ -95,7 +95,7 @@ public class AdHocRevoke implements java.io.Serializable {
 	}
 
 	/**
-	 * @param group the group to set
+	 * @param groupId of the group to set
 	 */
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;

@@ -110,7 +110,8 @@ public abstract class ActionTakenEvent {
 	 *
 	 * Method may be overriden is action performed will be different than action
 	 * taken
-	 */
+     * @return
+     */
 	protected String getActionPerformedCode() {
 		return getActionTakenCode();
 	}

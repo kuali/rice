@@ -99,12 +99,12 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * TODO will this work properly in the case of an ALL APPROVE role requests with some of the requests already completed?
      */
-    private void revokePendingRequests(List pendingRequests, ActionTakenValue actionTaken, Recipient delegator) {
+    private void revokePendingRequests(List<ActionRequestValue> pendingRequests, ActionTakenValue actionTaken, Recipient delegator) {
         revokeRequests(pendingRequests);
         getActionRequestService().deactivateRequests(actionTaken, pendingRequests);
         if (sendNotifications) {
         	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader());
-        	List notificationRequests = arFactory.generateNotifications(pendingRequests, getPrincipal(), delegator, KEWConstants.ACTION_REQUEST_FYI_REQ, getActionTakenCode());
+        	List<ActionRequestValue> notificationRequests = arFactory.generateNotifications(pendingRequests, getPrincipal(), delegator, KEWConstants.ACTION_REQUEST_FYI_REQ, getActionTakenCode());
         	getActionRequestService().activateRequests(notificationRequests);
         }
     }
@@ -112,9 +112,9 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
     /**
      * Takes a list of root action requests and marks them and all of their children as "non-current".
      */
-    private void revokeRequests(List actionRequests) {
-        for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+    private void revokeRequests(List<ActionRequestValue> actionRequests) {
+        for (Iterator<ActionRequestValue> iterator = actionRequests.iterator(); iterator.hasNext();) {
+            ActionRequestValue actionRequest = iterator.next();
             actionRequest.setCurrentIndicator(Boolean.FALSE);
             if (actionRequest.getActionTaken() != null) {
                 actionRequest.getActionTaken().setCurrentIndicator(Boolean.FALSE);
@@ -174,11 +174,11 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         }
 
         boolean actionCompatible = false;
-        Iterator ars = requests.iterator();
+        Iterator<ActionRequestValue> ars = requests.iterator();
         ActionRequestValue actionRequest = null;
 
         while (ars.hasNext()) {
-            actionRequest = (ActionRequestValue) ars.next();
+            actionRequest = ars.next();
 
             //if (actionRequest.isWorkgroupRequest() && !actionRequest.getWorkgroup().hasMember(this.delegator)) {
             // TODO might not need this, if so, do role check
@@ -227,8 +227,8 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
             ActionTakenValue actionTaken = saveActionTaken(Boolean.FALSE, delegator);
 
             LOG.debug("Finding requests in return path and setting current indicator to FALSE");
-            List doneRequests = new ArrayList();
-            List pendingRequests = new ArrayList();
+            List<ActionRequestValue> doneRequests = new ArrayList<ActionRequestValue>();
+            List<ActionRequestValue> pendingRequests = new ArrayList<ActionRequestValue>();
             for (Iterator iterator = result.getPath().iterator(); iterator.hasNext();) {
             	RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
             	// mark the node instance as having been revoked
@@ -330,15 +330,15 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         if (CompatUtils.isRouteLevelCompatible(getRouteHeader())) {
             int returnPathLength = result.getPath().size()-1;
             oldRouteLevel = getRouteHeader().getDocRouteLevel();
-            newRouteLevel = new Integer(oldRouteLevel.intValue() - returnPathLength);
+            newRouteLevel = oldRouteLevel - returnPathLength;
             LOG.debug("Changing route header "+ getRouteHeader().getRouteHeaderId()+" route level for backward compatibility to "+newRouteLevel);
             getRouteHeader().setDocRouteLevel(newRouteLevel);
             KEWServiceLocator.getRouteHeaderService().saveRouteHeader(routeHeader);
         }
-        List startingNodes = determineStartingNodes(result.getPath(), activeNodes);
+        List<RouteNodeInstance> startingNodes = determineStartingNodes(result.getPath(), activeNodes);
         RouteNodeInstance newNodeInstance = materializeReturnPoint(startingNodes, result);
-        for (Iterator iterator = startingNodes.iterator(); iterator.hasNext();) {
-            RouteNodeInstance activeNode = (RouteNodeInstance) iterator.next();
+        for (RouteNodeInstance activeNode : startingNodes)
+        {
             notifyNodeChange(oldRouteLevel, newRouteLevel, activeNode, newNodeInstance);
         }
         processReturnToInitiator(newNodeInstance);
@@ -365,28 +365,30 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         }
     }
 
-    private List determineStartingNodes(List path, Collection activeNodes) {
-    	List startingNodes = new ArrayList();
-    	for (Iterator iterator = activeNodes.iterator(); iterator.hasNext(); ) {
-			RouteNodeInstance activeNodeInstance = (RouteNodeInstance) iterator.next();
-			if (isInPath(activeNodeInstance, path)) {
-				startingNodes.add(activeNodeInstance);
-			}
-		}
+    private List<RouteNodeInstance> determineStartingNodes(List path, Collection<RouteNodeInstance> activeNodes) {
+    	List<RouteNodeInstance> startingNodes = new ArrayList<RouteNodeInstance>();
+        for (RouteNodeInstance activeNodeInstance : activeNodes)
+        {
+            if (isInPath(activeNodeInstance, path))
+            {
+                startingNodes.add(activeNodeInstance);
+            }
+        }
     	return startingNodes;
     }
 
-    private boolean isInPath(RouteNodeInstance nodeInstance, List path) {
-    	for (Iterator iterator = path.iterator(); iterator.hasNext(); ) {
-			RouteNodeInstance pathNodeInstance = (RouteNodeInstance) iterator.next();
-			if (pathNodeInstance.getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())) {
-				return true;
-			}
-		}
+    private boolean isInPath(RouteNodeInstance nodeInstance, List<RouteNodeInstance> path) {
+        for (RouteNodeInstance pathNodeInstance : path)
+        {
+            if (pathNodeInstance.getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId()))
+            {
+                return true;
+            }
+        }
     	return false;
     }
 
-    private RouteNodeInstance materializeReturnPoint(Collection startingNodes, NodeGraphSearchResult result) {
+    private RouteNodeInstance materializeReturnPoint(Collection<RouteNodeInstance> startingNodes, NodeGraphSearchResult result) {
         RouteNodeService nodeService = KEWServiceLocator.getRouteNodeService();
         RouteNodeInstance returnInstance = result.getResultNodeInstance();
         RouteNodeInstance newNodeInstance = helper.getNodeFactory().createRouteNodeInstance(getRouteHeaderId(), returnInstance.getRouteNode());
@@ -394,16 +396,16 @@ public class ReturnToPreviousNodeAction extends ActionTakenEvent {
         newNodeInstance.setProcess(returnInstance.getProcess());
         newNodeInstance.setComplete(false);
         newNodeInstance.setActive(true);
-        for (Iterator iterator = startingNodes.iterator(); iterator.hasNext();) {
-            RouteNodeInstance activeNodeInstance = (RouteNodeInstance) iterator.next();
+        for (RouteNodeInstance activeNodeInstance : startingNodes)
+        {
             // TODO what if the activeNodeInstance already has next nodes?
             activeNodeInstance.setComplete(true);
             activeNodeInstance.setActive(false);
             activeNodeInstance.setInitial(false);
             activeNodeInstance.addNextNodeInstance(newNodeInstance);
         }
-        for (Iterator iterator = startingNodes.iterator(); iterator.hasNext();) {
-            RouteNodeInstance activeNodeInstance = (RouteNodeInstance) iterator.next();
+        for (RouteNodeInstance activeNodeInstance : startingNodes)
+        {
             nodeService.save(activeNodeInstance);
         }
         // TODO really we need to call transitionTo on this node, how can we do that?

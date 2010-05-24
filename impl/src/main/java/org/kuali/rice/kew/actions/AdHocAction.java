@@ -95,7 +95,7 @@ public class AdHocAction extends ActionTakenEvent {
     	return validateActionRules();
     }
 
-    private String validateActionRulesInternal(List targetNodes) {
+    private String validateActionRulesInternal(List<RouteNodeInstance> targetNodes) {
     	// recipient will be null when this is invoked from ActionRegistry.getValidActions
     	if (recipient != null) {
     		if (recipient instanceof KimPrincipalRecipient) {
@@ -115,21 +115,24 @@ public class AdHocAction extends ActionTakenEvent {
         return adhocRouteAction(targetNodes, true);
     }
 
-    private String adhocRouteAction(List targetNodes, boolean forValidationOnly) {
+    private String adhocRouteAction(List<RouteNodeInstance> targetNodes, boolean forValidationOnly) {
         //if (targetNodes.isEmpty()) {
         //    return "Could not locate an node instance on the document with the name '" + nodeName + "'";
         //}
         boolean requestCreated = false;
-        for (Iterator iter = targetNodes.iterator(); iter.hasNext();) {
-            RouteNodeInstance routeNode = (RouteNodeInstance) iter.next();
+        for (RouteNodeInstance routeNode : targetNodes)
+        {
             // if the node name is null, then adhoc it to the first available node
-            if (nodeName == null || routeNode.getName().equals(nodeName)) {
+            if (nodeName == null || routeNode.getName().equals(nodeName))
+            {
                 String message = createAdHocRequest(routeNode, forValidationOnly);
-                if (!StringUtils.isEmpty(message)) {
+                if (!StringUtils.isEmpty(message))
+                {
                     return message;
                 }
                 requestCreated = true;
-                if (nodeName == null) {
+                if (nodeName == null)
+                {
                     break;
                 }
             }

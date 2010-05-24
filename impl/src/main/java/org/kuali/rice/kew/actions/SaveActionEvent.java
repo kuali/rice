@@ -134,7 +134,7 @@ public class SaveActionEvent extends ActionTakenEvent {
         //RouteNodeInstance initialNode = (RouteNodeInstance) KEWServiceLocator.getRouteNodeService().getInitialNodeInstances(getRouteHeaderId()).get(0);
     	ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), initialNode);
     	ActionRequestValue saveRequest = arFactory.createActionRequest(KEWConstants.ACTION_REQUEST_COMPLETE_REQ,
-    		new Integer(0), new KimPrincipalRecipient(getPrincipal()), RESPONSIBILITY_DESCRIPTION, KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
+                0, new KimPrincipalRecipient(getPrincipal()), RESPONSIBILITY_DESCRIPTION, KEWConstants.SAVED_REQUEST_RESPONSIBILITY_ID,
     		Boolean.TRUE, annotation);
     	//      this.getActionRequestService().saveActionRequest(saveRequest);
     	this.getActionRequestService().activateRequest(saveRequest);

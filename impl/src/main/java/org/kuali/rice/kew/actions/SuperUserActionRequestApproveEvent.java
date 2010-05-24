@@ -101,7 +101,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
         String errorMessage = super.validateActionRules();
         if (!Utilities.isEmpty(errorMessage)) {
             LOG.info("User not authorized");
-            List errors = new ArrayList();
+            List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();
             errors.add(new WorkflowServiceErrorImpl(errorMessage, SuperUserActionTakenEvent.AUTHORIZATION));
             throw new WorkflowServiceErrorException(errorMessage, errors);
         }
@@ -127,7 +127,7 @@ public class SuperUserActionRequestApproveEvent extends SuperUserActionTakenEven
 
         ActionRequestValue request = getActionRequest();
         getActionRequestService().deactivateRequest(actionTaken, request);
-        if (docType.getSuperUserApproveNotificationPolicy().getPolicyValue().booleanValue() && request.isApproveOrCompleteRequest()) {
+        if (docType.getSuperUserApproveNotificationPolicy().getPolicyValue() && request.isApproveOrCompleteRequest()) {
         	KEWServiceLocator.getActionRequestService().activateRequest(
         	new ActionRequestFactory(this.getRouteHeader()).createNotificationRequest(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, request.getPrincipal(), this.getActionTakenCode(), getPrincipal(), null));
         }

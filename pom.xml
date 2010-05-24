@@ -536,6 +536,12 @@
 				<groupId>ojb</groupId>
 				<artifactId>db-ojb</artifactId>
 				<version>${db-ojb.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>cglib</groupId>
+                        <artifactId>cglib</artifactId>
+                    </exclusion>
+                </exclusions>
 			</dependency>
 			<dependency>
 				<groupId>commons-beanutils</groupId>
@@ -702,10 +708,27 @@
 				<artifactId>cxf-rt-frontend-jaxws</artifactId>
 				<version>${cxf.version}</version>
 				<exclusions>
-					<exclusion><!-- avoids conflict with javamail -->
+                    <!-- avoids conflict with javamail -->
+					<exclusion>
 						<groupId>org.apache.geronimo.specs</groupId>
 						<artifactId>geronimo-javamail_1.4_spec</artifactId>
 					</exclusion>
+                    <exclusion>
+                        <artifactId>geronimo-jaxws_2.1_spec</artifactId>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>geronimo-activation_1.1_spec</artifactId>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>geronimo-annotation_1.0_spec</artifactId>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                    </exclusion>
 				</exclusions>
 			</dependency>
 			<dependency>
@@ -722,6 +745,16 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-ws-security</artifactId>
 				<version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>geronimo-annotation_1.0_spec</artifactId>
+                        <groupId>org.apache.geronimo.specs</groupId>
+                    </exclusion>
+                </exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
@@ -742,6 +775,10 @@
                     <exclusion>
                         <groupId>org.apache.geronimo.specs</groupId>
                         <artifactId>geronimo-javamail_1.4_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <artifactId>geronimo-activation_1.1_spec</artifactId>
+                        <groupId>org.apache.geronimo.specs</groupId>
                     </exclusion>
                 </exclusions>
 			</dependency>

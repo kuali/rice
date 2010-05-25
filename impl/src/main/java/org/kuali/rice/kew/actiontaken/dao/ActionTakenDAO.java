@@ -16,10 +16,10 @@
  */
 package org.kuali.rice.kew.actiontaken.dao;
 
+import org.kuali.rice.kew.actiontaken.ActionTakenValue;
+
 import java.util.Collection;
 import java.util.List;
-
-import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 
 
 /**

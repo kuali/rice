@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
@@ -40,6 +32,8 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.util.*;
 
 
 public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleDelegationDAO {
@@ -277,8 +271,8 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 
     private Criteria getSearchCriteria(String docTypeName, Long ruleTemplateId, String ruleDescription, Boolean activeInd, Map extensionValues) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("currentInd", new Boolean(true));
-        crit.addEqualTo("templateRuleInd", new Boolean(false));
+        crit.addEqualTo("currentInd", Boolean.TRUE);
+        crit.addEqualTo("templateRuleInd", Boolean.FALSE);
         if (activeInd != null) {
             crit.addEqualTo("activeInd", activeInd);
         }

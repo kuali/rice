@@ -16,23 +16,6 @@
  */
 package org.kuali.rice.kew.actiontaken;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.jpa.annotations.Sequence;
@@ -46,13 +29,16 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 /**
@@ -98,7 +84,7 @@ public class ActionTakenValue implements WorkflowPersistable {
     @OneToMany(mappedBy="actionTaken")
 	private Collection<ActionRequestValue> actionRequests;
     @Column(name="CUR_IND")
-    private Boolean currentIndicator = new Boolean(true);
+    private Boolean currentIndicator = Boolean.TRUE;
     @Transient
     private String actionDateString;
 

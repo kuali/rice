@@ -16,22 +16,6 @@
  */
 package org.kuali.rice.core.config;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.XmlJotter;
 import org.w3c.dom.Document;
@@ -39,6 +23,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
 
 /**
  * A configuration parser that can get properties already parsed passed in and
@@ -125,7 +120,7 @@ class HierarchicalConfigParser {
             }
             Element param = (Element) node;
             String name = param.getAttribute("name");
-            Boolean override = new Boolean(true);
+            Boolean override = Boolean.TRUE;
             if (param.getAttribute("override") != null && param.getAttribute("override").trim().length() > 0) {
                 override = new Boolean(param.getAttribute("override"));
             }

@@ -16,15 +16,6 @@
  */
 package org.kuali.rice.kew.doctype.dao.impl;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
@@ -39,6 +30,15 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.util.Utilities;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implements DocumentTypeDAO {
@@ -66,7 +66,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		}else{
 			crit.addEqualTo("name", name);
 		}
-		crit.addEqualTo("currentInd", new Boolean(true));
+		crit.addEqualTo("currentInd", Boolean.TRUE);
 		DocumentType docType = (DocumentType) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentType.class, crit));
 		return docType;
 	}

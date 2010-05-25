@@ -16,17 +16,6 @@
  */
 package org.kuali.rice.kew.notes.web;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -48,6 +37,12 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.util.*;
 
 
 /**
@@ -234,10 +229,10 @@ public class NoteAction extends KewKualiAction {
             if (noteForm.getSortNotes() != null && noteForm.getSortNotes().booleanValue()) {
                 if (KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(noteForm.getSortOrder())) {
                     noteForm.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_ASC);
-                    noteForm.setSortNotes(new Boolean(false));
+                    noteForm.setSortNotes(Boolean.FALSE);
                 } else {
                     noteForm.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_DSC);
-                    noteForm.setSortNotes(new Boolean(false));
+                    noteForm.setSortNotes(Boolean.FALSE);
                 }
             } else {
                 noteForm.setSortOrder(noteForm.getSortOrder());

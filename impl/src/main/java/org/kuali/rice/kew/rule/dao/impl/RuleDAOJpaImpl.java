@@ -16,25 +16,11 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleResponsibility;
@@ -43,6 +29,12 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 public class RuleDAOJpaImpl implements RuleDAO {
@@ -74,10 +66,10 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.in("docTypeName", documentTypes);
 		crit.eq("ruleTemplateId", ruleTemplateId);
-		crit.eq("currentInd", new Boolean(true));
-		crit.eq("activeInd", new Boolean(true));
-		crit.eq("delegateRule", new Boolean(false));
-		crit.eq("templateRuleInd", new Boolean(false));
+		crit.eq("currentInd", Boolean.TRUE);
+		crit.eq("activeInd", Boolean.TRUE);
+		crit.eq("delegateRule", Boolean.FALSE);
+		crit.eq("templateRuleInd", Boolean.FALSE);
 
 		crit.and(generateFromToDateCriteria(new Date()));
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
@@ -87,9 +79,9 @@ public class RuleDAOJpaImpl implements RuleDAO {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.in("docTypeName", documentTypes);
 		crit.eq("ruleTemplateId", ruleTemplateId);
-		crit.eq("activeInd", new Boolean(true));
-		crit.eq("delegateRule", new Boolean(false));
-		crit.eq("templateRuleInd", new Boolean(false));
+		crit.eq("activeInd", Boolean.TRUE);
+		crit.eq("delegateRule", Boolean.FALSE);
+		crit.eq("templateRuleInd", Boolean.FALSE);
 		if (effectiveDate != null) {
 			crit.lte("activationDate", effectiveDate);
 			crit.gte("deactivationDate", effectiveDate);
@@ -127,7 +119,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 	public List fetchAllRules(boolean currentRules) {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.eq("currentInd", new Boolean(currentRules));
-		crit.eq("templateRuleInd", new Boolean(false));
+		crit.eq("templateRuleInd", Boolean.FALSE);
 		crit.orderBy("activationDate", false);
 
 		QueryByCriteria query = new QueryByCriteria(entityManager, crit);
@@ -212,7 +204,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 
 	//FIXME nothing uses this, it's not in ruleDAO interface
 //	public List findRuleBaseValuesByObjectGraph(RuleBaseValues ruleBaseValues) {
-//		ruleBaseValues.setCurrentInd(new Boolean(true));
+//		ruleBaseValues.setCurrentInd(Boolean.TRUE);
 //		ruleBaseValues.setTemplateRuleInd(Boolean.FALSE);
 //		return (List) new QueryByObject(entityManager,ruleBaseValues).toQuery().getResultList();
 //	}
@@ -333,8 +325,8 @@ public class RuleDAOJpaImpl implements RuleDAO {
 
     private Criteria getSearchCriteria(String docTypeName, Long ruleTemplateId, String ruleDescription, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
         Criteria crit = new Criteria(RuleBaseValues.class.getName());
-        crit.eq("currentInd", new Boolean(true));
-        crit.eq("templateRuleInd", new Boolean(false));
+        crit.eq("currentInd", Boolean.TRUE);
+        crit.eq("templateRuleInd", Boolean.FALSE);
         if (activeInd != null) {
             crit.eq("activeInd", activeInd);
         }
@@ -423,7 +415,7 @@ public class RuleDAOJpaImpl implements RuleDAO {
 	public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId) {
 		Criteria crit = new Criteria(RuleBaseValues.class.getName());
 		crit.eq("ruleTemplateId", ruleTemplateId);
-		crit.eq("templateRuleInd", new Boolean(true));
+		crit.eq("templateRuleInd", Boolean.TRUE);
 		List rules = (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 		if (rules != null && !rules.isEmpty()) {
 			return (RuleBaseValues) rules.get(0);

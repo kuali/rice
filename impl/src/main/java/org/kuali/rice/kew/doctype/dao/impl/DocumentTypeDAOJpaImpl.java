@@ -16,15 +16,6 @@
  */
 package org.kuali.rice.kew.doctype.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
@@ -35,6 +26,14 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.util.Utilities;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
@@ -82,7 +81,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		}else{
 			crit.eq("name", name);
 		}
-		crit.eq("currentInd", new Boolean(true));
+		crit.eq("currentInd", Boolean.TRUE);
 		try{
 			DocumentType docType = (DocumentType) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
 			return docType;

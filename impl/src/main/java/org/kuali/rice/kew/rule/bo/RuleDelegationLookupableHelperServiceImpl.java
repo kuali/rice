@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -64,6 +56,9 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.sql.Date;
+import java.util.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -223,9 +218,9 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
         if (!activeParam.equals("")) {
             if (activeParam.equals("Y")) {
-                isActive = new Boolean(true);
+                isActive = Boolean.TRUE;
             } else {
-                isActive = new Boolean(false);
+                isActive = Boolean.FALSE;
             }
         }
 

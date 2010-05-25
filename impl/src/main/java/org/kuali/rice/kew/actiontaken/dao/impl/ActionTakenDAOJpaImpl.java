@@ -16,19 +16,18 @@
  */
 package org.kuali.rice.kew.actiontaken.dao.impl;
 
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.dao.ActionTakenDAO;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -57,7 +56,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         LOG.debug("finding Action Taken by actionTakenId " + actionTakenId);
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
         crit.eq("actionTakenId", actionTakenId);
-        crit.eq("currentIndicator", new Boolean(true));
+        crit.eq("currentIndicator", Boolean.TRUE);
         return (ActionTakenValue) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
 
@@ -66,7 +65,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
         crit.eq("routeHeaderId", routeHeaderId);
         crit.eq("actionTaken", action);
-        crit.eq("currentIndicator", new Boolean(true));
+        crit.eq("currentIndicator", Boolean.TRUE);
         return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
@@ -74,7 +73,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         LOG.debug("finding Action Takens by routeHeaderId " + routeHeaderId);
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
         crit.eq("routeHeaderId", routeHeaderId);
-        crit.eq("currentIndicator", new Boolean(true));
+        crit.eq("currentIndicator", Boolean.TRUE);
         return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
@@ -83,7 +82,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
         crit.eq("routeHeaderId", routeHeaderId);
         crit.eq("principalId", workflowId);
-        crit.eq("currentIndicator", new Boolean(true));
+        crit.eq("currentIndicator", Boolean.TRUE);
         return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
@@ -105,7 +104,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
             actionTaken.setActionDate(new Timestamp(System.currentTimeMillis()));
         }
         if (actionTaken.getCurrentIndicator() == null) {
-            actionTaken.setCurrentIndicator(new Boolean(true));
+            actionTaken.setCurrentIndicator(Boolean.TRUE);
         }
         LOG.debug("saving ActionTaken: routeHeader " + actionTaken.getRouteHeaderId() +
                 ", actionTaken " + actionTaken.getActionTaken() + ", principalId " + actionTaken.getPrincipalId());

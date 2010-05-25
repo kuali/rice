@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.edl.components;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceConstants;
@@ -46,6 +38,10 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.util.*;
 
 
 /**
@@ -137,10 +133,10 @@ public class NoteConfigComponent implements EDLModelComponent {
             if (form.getSortNotes() != null && form.getSortNotes().booleanValue()) {
                 if (KEWConstants.Sorting.SORT_SEQUENCE_DSC.equalsIgnoreCase(form.getSortOrder())) {
                     form.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_ASC);
-                    form.setSortNotes(new Boolean(false));
+                    form.setSortNotes(Boolean.FALSE);
                 } else {
                     form.setSortOrder(KEWConstants.Sorting.SORT_SEQUENCE_DSC);
-                    form.setSortNotes(new Boolean(false));
+                    form.setSortNotes(Boolean.FALSE);
                 }
             } else {
                 form.setSortOrder(form.getSortOrder());

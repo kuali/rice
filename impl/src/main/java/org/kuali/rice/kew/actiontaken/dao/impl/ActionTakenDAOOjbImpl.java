@@ -16,16 +16,16 @@
  */
 package org.kuali.rice.kew.actiontaken.dao.impl;
 
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.List;
-
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.dao.ActionTakenDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -53,7 +53,7 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
         LOG.debug("finding Action Taken by actionTakenId " + actionTakenId);
         Criteria crit = new Criteria();
         crit.addEqualTo("actionTakenId", actionTakenId);
-        crit.addEqualTo("currentIndicator", new Boolean(true));
+        crit.addEqualTo("currentIndicator", Boolean.TRUE);
         return (ActionTakenValue) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(ActionTakenValue.class, crit));
     }
 
@@ -62,7 +62,7 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", routeHeaderId);
         crit.addEqualTo("actionTaken", action);
-        crit.addEqualTo("currentIndicator", new Boolean(true));
+        crit.addEqualTo("currentIndicator", Boolean.TRUE);
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionTakenValue.class, crit));
     }
 
@@ -70,7 +70,7 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
         LOG.debug("finding Action Takens by routeHeaderId " + routeHeaderId);
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", routeHeaderId);
-        crit.addEqualTo("currentIndicator", new Boolean(true));
+        crit.addEqualTo("currentIndicator", Boolean.TRUE);
         return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionTakenValue.class, crit));
     }
 
@@ -79,7 +79,7 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
         Criteria crit = new Criteria();
         crit.addEqualTo("routeHeaderId", routeHeaderId);
         crit.addEqualTo("principalId", principalId);
-        crit.addEqualTo("currentIndicator", new Boolean(true));
+        crit.addEqualTo("currentIndicator", Boolean.TRUE);
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionTakenValue.class, crit));
     }
 
@@ -101,7 +101,7 @@ public class ActionTakenDAOOjbImpl extends PersistenceBrokerDaoSupport implement
             actionTaken.setActionDate(new Timestamp(System.currentTimeMillis()));
         }
         if (actionTaken.getCurrentIndicator() == null) {
-            actionTaken.setCurrentIndicator(new Boolean(true));
+            actionTaken.setCurrentIndicator(Boolean.TRUE);
         }
         LOG.debug("saving ActionTaken: routeHeader " + actionTaken.getRouteHeaderId() +
                 ", actionTaken " + actionTaken.getActionTaken() + ", principalId " + actionTaken.getPrincipalId());

@@ -15,13 +15,18 @@
  */
 package org.kuali.rice.kew.xml;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.UnmarshalException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.UnmarshallerHandler;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -48,12 +53,22 @@ public class GroupXmlJAXBParser implements XmlConstants {
 	public GroupXmlDto parse(InputStream in) throws IOException {
         GroupXmlDto groupXmlDto = new GroupXmlDto();
 		JAXBContext jaxbContext;
-		Unmarshaller unmarshaller;
+		Unmarshaller unmarshaller = null;;
 
 		try {
 			jaxbContext = JAXBContext.newInstance(GroupXmlDto.class);
 			unmarshaller = jaxbContext.createUnmarshaller();
-		} catch (Exception ex) {
+
+			// Setup Schema Validation
+//			SchemaFactory schemaFactory=SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+//			Schema schema=schemaFactory.newSchema(new File("Group-1.0.3.xsd"));
+//			unmarshaller.setSchema(schema);
+//
+//		} catch( UnmarshalException ue ) {
+//		    System.out.println( "Caught UnmarshalException" );
+//		} catch( JAXBException je ) { 
+//		    je.printStackTrace();
+		} catch(Exception ex) {
 			throw new ConfigurationException("Error initializing JAXB for config", ex);
 		}
 
@@ -67,6 +82,12 @@ public class GroupXmlJAXBParser implements XmlConstants {
 			try {
 //				groupXmlDto = (GroupXmlDto) unmarshaller.unmarshal(in);  // test w/o filter
 				groupXmlDto = unmarshal(unmarshaller, in);
+//			} catch( UnmarshalException ue ) {
+//			    System.out.println( "Caught UnmarshalException" );
+//			} catch( JAXBException je ) { 
+//			    je.printStackTrace();
+//			} catch( IOException ioe ) {
+//			    ioe.printStackTrace();
 			} catch (Exception ex) {
 				LOG.error(ex.getMessage());
 				throw new ConfigurationException("Error parsing XML input stream", ex);
@@ -80,17 +101,21 @@ public class GroupXmlJAXBParser implements XmlConstants {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
 
-        XMLFilter filter = new TestGroupNamespaceURIFilter();
-//        XMLFilter filter = new GroupNamespaceURIFilter();
-        filter.setParent(spf.newSAXParser().getXMLReader());
-
         UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
-        filter.setContentHandler(handler);
-
-        filter.parse(new InputSource(in));
+       
+        // Plug in chained filters
+        XMLFilter eliminationFilter = new GroupNamespaceURIEliminationFilterPOC();
+        XMLFilter transformationFilter = new GroupNamespaceURITransformationFilterPOC();
+        XMLFilter memberTransformationFilter = new GroupNamespaceURIMemberTransformationFilterPOC();
+                
+        // Initialize filter chain
+        eliminationFilter.setParent(spf.newSAXParser().getXMLReader());
+        transformationFilter.setParent(eliminationFilter);
+        memberTransformationFilter.setParent(transformationFilter);
+        memberTransformationFilter.setContentHandler(handler);
 
         return (GroupXmlDto)handler.getResult();
-    }
+   }
 
     public class GroupNamespaceURIFilter extends XMLFilterImpl {
 

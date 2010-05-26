@@ -56,4 +56,11 @@ public interface KeyValuesFinder {
      * @return
      */
     public String getKeyLabel(Object key);
+    
+   
+    /**
+     * Clears any internal cache that is being maintained by the value finder
+     */
+    public void clearInternalCache();
+
 }

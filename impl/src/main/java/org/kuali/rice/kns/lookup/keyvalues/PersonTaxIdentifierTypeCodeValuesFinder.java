@@ -31,5 +31,10 @@ public class PersonTaxIdentifierTypeCodeValuesFinder extends KeyValuesBase {
     public List getKeyValues() {
         return values;
     }
+    
+    @Override
+    public void clearInternalCache() {
+    	values = null;
+    }
 
 }

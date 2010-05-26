@@ -4,16 +4,16 @@
 	<parent>
 		<groupId>org.kuali.rice</groupId>
 		<artifactId>rice</artifactId>
-		<version>1.0.2</version>
+		<version>1.0.2.1</version>
 	</parent>
 	<artifactId>rice-web</artifactId>
 	<packaging>war</packaging>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.kuali.rice</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>rice-impl</artifactId>
-			<version>1.0.2</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 

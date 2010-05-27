@@ -43,8 +43,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
  *
  * @see KimGroups
  *
- * @author Kuali Rice Team (rice.collab@kuali.org) *
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @author Kuali Rice Team (rice.collab@kuali.org) 
  *
  */
 public class GroupXmlJAXBParser implements XmlConstants {
@@ -59,17 +58,8 @@ public class GroupXmlJAXBParser implements XmlConstants {
 			jaxbContext = JAXBContext.newInstance(GroupXmlDto.class);
 			unmarshaller = jaxbContext.createUnmarshaller();
 
-			// Setup Schema Validation
-//			SchemaFactory schemaFactory=SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-//			Schema schema=schemaFactory.newSchema(new File("Group-1.0.3.xsd"));
-//			unmarshaller.setSchema(schema);
-//
-//		} catch( UnmarshalException ue ) {
-//		    System.out.println( "Caught UnmarshalException" );
-//		} catch( JAXBException je ) { 
-//		    je.printStackTrace();
 		} catch(Exception ex) {
-			throw new ConfigurationException("Error initializing JAXB for config", ex);
+			throw new RuntimeException("Error creating JAXB unmarshaller", ex);
 		}
 
 		if (in == null) {
@@ -82,12 +72,6 @@ public class GroupXmlJAXBParser implements XmlConstants {
 			try {
 //				groupXmlDto = (GroupXmlDto) unmarshaller.unmarshal(in);  // test w/o filter
 				groupXmlDto = unmarshal(unmarshaller, in);
-//			} catch( UnmarshalException ue ) {
-//			    System.out.println( "Caught UnmarshalException" );
-//			} catch( JAXBException je ) { 
-//			    je.printStackTrace();
-//			} catch( IOException ioe ) {
-//			    ioe.printStackTrace();
 			} catch (Exception ex) {
 				LOG.error(ex.getMessage());
 				throw new ConfigurationException("Error parsing XML input stream", ex);
@@ -113,6 +97,7 @@ public class GroupXmlJAXBParser implements XmlConstants {
         transformationFilter.setParent(eliminationFilter);
         memberTransformationFilter.setParent(transformationFilter);
         memberTransformationFilter.setContentHandler(handler);
+        memberTransformationFilter.parse(new InputSource(in));
 
         return (GroupXmlDto)handler.getResult();
    }

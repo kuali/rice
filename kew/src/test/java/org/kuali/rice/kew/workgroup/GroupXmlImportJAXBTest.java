@@ -76,7 +76,6 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
     				    memberName.equals("rkirkend") ||
     				    memberName.equals("TestWorkgroup"));
     	}
-    	//assertTrue(groupInfo.getGroupDescription().equals("Dan's unit test"));
     	
 //        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
 //        //verify that the group was ingested

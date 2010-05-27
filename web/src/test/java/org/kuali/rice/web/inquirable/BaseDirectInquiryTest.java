@@ -44,7 +44,7 @@ public class BaseDirectInquiryTest extends ServerTestBase {
 	final HtmlTextInput travelAcctNumber = (HtmlTextInput) form.getInputByName("travelAccount.number");
 	travelAcctNumber.setValueAttribute("a1");
 	int idx1 = travelDocPage.asXml().indexOf(
-		"methodToCall.performInquiry.(!!edu.sampleu.travel.bo.TravelAccount!!).((#travelAccount.number:number#))");
+		"methodToCall.performInquiry.(!!edu.sampleu.travel.bo.TravelAccount!!).((`travelAccount.number:number`))");
 	int idx2 = travelDocPage.asXml().indexOf("\"", idx1);
 	// no popup for now
 	webClient.setJavaScriptEnabled(false);
@@ -67,7 +67,7 @@ public class BaseDirectInquiryTest extends ServerTestBase {
 	// test account number can't be found
 	travelAcctNumber1.setValueAttribute("");
 	idx1 = page.asXml().indexOf(
-		"methodToCall.performInquiry.(!!edu.sampleu.travel.bo.TravelAccount!!).((#travelAccount.number:number#))");
+		"methodToCall.performInquiry.(!!edu.sampleu.travel.bo.TravelAccount!!).((`travelAccount.number:number`))");
 	idx2 = page.asXml().indexOf("\"", idx1);
 	final HtmlImageInput button1 = (HtmlImageInput) form2.getInputByName(page.asXml().substring(idx1, idx2).replace(
 		"&amp;", "&").replace("((&lt;&gt;))", "((<>))"));

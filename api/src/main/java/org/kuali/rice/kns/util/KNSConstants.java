@@ -319,8 +319,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String METHOD_TO_CALL_BOPARM_RIGHT_DEL = "!!)";
     public static final String METHOD_TO_CALL_PARM1_LEFT_DEL = "(((";
     public static final String METHOD_TO_CALL_PARM1_RIGHT_DEL = ")))";
-    public static final String METHOD_TO_CALL_PARM2_LEFT_DEL = "((#";
-    public static final String METHOD_TO_CALL_PARM2_RIGHT_DEL = "#))";
+    public static final String METHOD_TO_CALL_PARM2_LEFT_DEL = "((`";
+    public static final String METHOD_TO_CALL_PARM2_RIGHT_DEL = "`))";
     public static final String METHOD_TO_CALL_PARM3_LEFT_DEL = "((<";
     public static final String METHOD_TO_CALL_PARM3_RIGHT_DEL = ">))";
     public static final String METHOD_TO_CALL_PARM4_LEFT_DEL = "(([";

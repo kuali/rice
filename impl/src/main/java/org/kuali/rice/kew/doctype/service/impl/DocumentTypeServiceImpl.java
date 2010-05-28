@@ -65,13 +65,14 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     private DocumentTypeDAO documentTypeDAO;
 
-    public Collection find(DocumentType documentType, String docTypeParentName, boolean climbHierarchy) {
+    public Collection<DocumentType> find(DocumentType documentType, String docTypeParentName, boolean climbHierarchy) {
         DocumentType docTypeParent = this.findByName(docTypeParentName);
-        Collection documentTypes = getDocumentTypeDAO().find(documentType, docTypeParent, climbHierarchy);
+        Collection<DocumentType> documentTypes = getDocumentTypeDAO().find(documentType, docTypeParent, climbHierarchy);
         //since we're here put them in the cache
-        for (Iterator iter = documentTypes.iterator(); iter.hasNext();) {
-			insertIntoCache((DocumentType)iter.next());
-		}
+        for (Object documentType1 : documentTypes)
+        {
+            insertIntoCache((DocumentType) documentType1);
+        }
         return documentTypes;
     }
 

@@ -76,7 +76,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	}
 
 	public List getChildDocumentTypeIds(Long parentDocumentTypeId) {
-		List childrenIds = new ArrayList();
+		List<Long> childrenIds = new ArrayList<Long>();
 		PersistenceBroker broker = getPersistenceBroker(false);
 		Connection conn = null;
 		Statement st = null;
@@ -138,7 +138,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
 	}
 
-	public Collection find(DocumentType documentType, DocumentType docTypeParent, boolean climbHierarchy) {
+	public Collection<DocumentType> find(DocumentType documentType, DocumentType docTypeParent, boolean climbHierarchy) {
 		LOG.debug("documentType: "+ documentType);
 		LOG.debug("docTypeParent: "+ docTypeParent);
 		LOG.debug("climbHierarchy: " + climbHierarchy);
@@ -186,7 +186,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 			}
 		}
 		crit.addEqualTo("currentInd", Boolean.TRUE);
-		return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
+		return (Collection<DocumentType>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
 	}
 
     private void addParentIdOrCriteria(Long parentId, Criteria mainCriteria) {
@@ -242,13 +242,13 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
         return findAll(crit);
     }
 
-    private List findAllCurrent(Criteria crit) {
+    private List<DocumentType> findAllCurrent(Criteria crit) {
         crit.addEqualTo("currentInd", Boolean.TRUE);
         return findAll(crit);
     }
 
-    private List findAll(Criteria crit) {
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
+    private List<DocumentType> findAll(Criteria crit) {
+        return (List<DocumentType>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
     }
 
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute) {

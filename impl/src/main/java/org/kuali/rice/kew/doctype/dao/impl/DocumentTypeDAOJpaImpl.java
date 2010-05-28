@@ -160,7 +160,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
 	}
 
-	public Collection find(DocumentType documentType, DocumentType docTypeParent, boolean climbHierarchy) {
+	public Collection<DocumentType> find(DocumentType documentType, DocumentType docTypeParent, boolean climbHierarchy) {
 		LOG.debug("documentType: "+ documentType);
 		LOG.debug("docTypeParent: "+ docTypeParent);
 		LOG.debug("climbHierarchy: " + climbHierarchy);

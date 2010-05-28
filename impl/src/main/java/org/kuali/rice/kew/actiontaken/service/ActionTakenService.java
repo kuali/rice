@@ -43,7 +43,7 @@ public interface ActionTakenService {
 
     public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken);
 
-    public Collection findByRouteHeaderId(Long routeHeaderId);
+    public Collection<ActionTakenValue> findByRouteHeaderId(Long routeHeaderId);
 
     public Collection findByDocIdAndAction(Long docId, String action);
 

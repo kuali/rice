@@ -24,17 +24,17 @@ package org.kuali.rice.kew.attribute;
 public interface ExtensionData {
 
 	/**
-	 * Return the key of this extension.
-	 */
+	 * @return the key of this extension.
+     */
 	public String getKey();
 
 	/**
-	 * Returns the value of this extension.
-	 */
+	 * @return the value of this extension.
+     */
 	public String getValue();
 
 	/**
-	 * Set the value of this extension to the given value.
+	 * @param value of this extension to the given value.
 	 */
 	public void setValue(String value);
 

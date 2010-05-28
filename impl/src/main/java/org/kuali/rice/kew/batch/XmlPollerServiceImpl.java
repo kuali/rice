@@ -16,21 +16,12 @@
  */
 package org.kuali.rice.kew.batch;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+
+import java.io.*;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-import org.kuali.rice.kew.service.KEWServiceLocator;
+import java.util.*;
 
 
 /**
@@ -94,22 +85,30 @@ public class XmlPollerServiceImpl implements XmlPollerService {
         }
         LOG.info("Found " + files.length + " files to ingest.");
         List<XmlDocCollection> collections = new ArrayList<XmlDocCollection>();
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isDirectory()) {
-                collections.add(new DirectoryXmlDocCollection(files[i]));
-            } else if (files[i].getName().equals(PENDING_MOVE_FAILED_ARCHIVE_FILE)){
+        for (File file : files)
+        {
+            if (file.isDirectory())
+            {
+                collections.add(new DirectoryXmlDocCollection(file));
+            } else if (file.getName().equals(PENDING_MOVE_FAILED_ARCHIVE_FILE))
+            {
                 // the movesfailed file...ignore this
                 continue;
-            } else if (files[i].getName().toLowerCase().endsWith(".zip")) {
-                try {
-                    collections.add(new ZipXmlDocCollection(files[i]));
-                } catch (IOException ioe) {
-                    LOG.error("Unable to load file: " + files[i]);
+            } else if (file.getName().toLowerCase().endsWith(".zip"))
+            {
+                try
+                {
+                    collections.add(new ZipXmlDocCollection(file));
+                } catch (IOException ioe)
+                {
+                    LOG.error("Unable to load file: " + file);
                 }
-            } else if (files[i].getName().endsWith(".xml")) {
-                collections.add(new FileXmlDocCollection(files[i]));
-            } else {
-                LOG.warn("Ignoring extraneous file in xml pending directory: " + files[i]);
+            } else if (file.getName().endsWith(".xml"))
+            {
+                collections.add(new FileXmlDocCollection(file));
+            } else
+            {
+                LOG.warn("Ignoring extraneous file in xml pending directory: " + file);
             }
         }
 

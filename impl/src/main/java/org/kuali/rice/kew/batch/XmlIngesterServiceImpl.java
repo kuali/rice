@@ -16,19 +16,6 @@
  */
 package org.kuali.rice.kew.batch;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
@@ -39,6 +26,13 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.util.*;
 
 
 /**
@@ -94,7 +88,7 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
      * to indicate the "all others" set, but for now everything that is not specified
      * just gets invoked last (in arbitrary order)
      */
-    private List serviceOrder;
+    private List<String> serviceOrder;
 
     // ---- bean properties
 
@@ -106,7 +100,7 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
         this.resolver = resolver;
     }
 
-    public void setServiceOrder(List serviceOrder) throws BeanInitializationException {
+    public void setServiceOrder(List<String> serviceOrder) throws BeanInitializationException {
         //eat Strings for now
 //        Iterator orderIt = serviceOrder.iterator();
 //        while (orderIt.hasNext()) {
@@ -169,19 +163,19 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
      * @param successful xmldoccollections in which all docs successfully validated
      * @param failed xmldoccollections in which one or more docs failed validation
      */
-    private static void validate(List collections, EntityResolver resolver, Set successful, Set failed) {
+    private static void validate(List<XmlDocCollection> collections, EntityResolver resolver, Set<XmlDocCollection> successful, Set<XmlDocCollection> failed) {
         // for every collection, validate all docs
-        Iterator collectionIt = collections.iterator();
-        while (collectionIt.hasNext()) {
-            XmlDocCollection collection = (XmlDocCollection) collectionIt.next();
+        for (XmlDocCollection collection : collections)
+        {
 
-            Iterator xmlDocIt = collection.getXmlDocs().iterator();
             // for every xml doc in the collection, try to validate it
-            while (xmlDocIt.hasNext()) {
-                XmlDoc xmlDoc = (XmlDoc) xmlDocIt.next();
-                try {
+            for (XmlDoc xmlDoc : collection.getXmlDocs())
+            {
+                try
+                {
                     validate(xmlDoc, resolver);
-                } catch (Exception e) {
+                } catch (Exception e)
+                {
                     LOG.error("Error validating doc: " + xmlDoc, e);
                     addProcessingException(xmlDoc, "Error validating doc: " + xmlDoc, e);
                     // validation failed, so add collection to successful set
@@ -198,35 +192,37 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
         }
     }
 
-    private void ingest(XmlLoader xmlLoader, Collection xmlDocCollections, String principalId, Set successful, Set failed) {
-        Iterator xmlDocCollectionsIt = xmlDocCollections.iterator();
-        while (xmlDocCollectionsIt.hasNext()) {
-            XmlDocCollection xmlDocCollection = (XmlDocCollection) xmlDocCollectionsIt.next();
+    private void ingest(XmlLoader xmlLoader, Collection<XmlDocCollection> xmlDocCollections, String principalId, Set<Object> successful, Set<XmlDocCollection> failed) {
+        for (XmlDocCollection xmlDocCollection : xmlDocCollections)
+        {
 
-            if (failed.contains(xmlDocCollection)) {
+            if (failed.contains(xmlDocCollection))
+            {
                 LOG.debug("Skipping " + xmlDocCollection.getFile() + "...");
                 continue;
             }
 
-            try {
+            try
+            {
                 //SpringServiceLocator.getXmlDigesterService().digest(xmlLoader, xmlDocCollection, user);
                 digesterService.digest(xmlLoader, xmlDocCollection, principalId);
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 LOG.error("Caught Exception loading xml data from " + xmlDocCollection.getFile() + ".  Will move associated file to problem dir.", e);
                 failed.add(xmlDocCollection);
             }
         }
     }
 
-    public Collection ingest(List collections) throws Exception {
+    public Collection<XmlDocCollection> ingest(List<XmlDocCollection> collections) throws Exception {
         return ingest(collections, null);
     }
 
-    private void ingestThroughOrderedLoaders(Collection xmlDocCollections, String principalId, Set successful, Set failed) {
+    private void ingestThroughOrderedLoaders(Collection<XmlDocCollection> xmlDocCollections, String principalId, Set<Object> successful, Set<XmlDocCollection> failed) {
         LOG.debug("Ingesting through ordered XmlLoaders");
-        Iterator orderIt = serviceOrder.iterator();
-        while (orderIt.hasNext()) {
-            XmlLoader xmlLoader = (XmlLoader) KEWServiceLocator.getService((String) orderIt.next());
+        for (String aServiceOrder : serviceOrder)
+        {
+            XmlLoader xmlLoader = (XmlLoader) KEWServiceLocator.getService(aServiceOrder);
             LOG.debug("Ingesting through ordered XmlLoader: " + xmlLoader);
             ingest(xmlLoader, xmlDocCollections, principalId, successful, failed);
         }
@@ -251,23 +247,23 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
         }
     }*/
 
-    public Collection ingest(List collections, String principalId) {
-        Set failed = new LinkedHashSet();
+    public Collection<XmlDocCollection> ingest(List<XmlDocCollection> collections, String principalId) {
+        Set<XmlDocCollection> failed = new LinkedHashSet<XmlDocCollection>();
         // validate all the docs up-front because we will be iterating over them
         // multiple times: one for each XmlLoader.  If we delegated validation to
         // XmlDigesterService then the docs would re-validated over and over again,
         // for each XmlLoader
         if (validate) {
-            Set successful = new LinkedHashSet();
+            Set<XmlDocCollection> successful = new LinkedHashSet<XmlDocCollection>();
             validate(collections, resolver, successful, failed);
-            collections = new LinkedList(successful);
+            collections = new LinkedList<XmlDocCollection>(successful);
         }
 
-        Set successful = new LinkedHashSet();
+        Set<Object> successful = new LinkedHashSet<Object>();
         // ingest docs first by ordered services
         ingestThroughOrderedLoaders(collections, principalId, successful, failed);
         // then by unordered services
-        collections = new LinkedList(successful);
+//        collections = new LinkedList(successful);
 
         //ingestThroughUnorderedLoaders(collections, user, successful, failed);
 

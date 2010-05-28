@@ -31,14 +31,14 @@ import java.util.List;
  */
 abstract class BaseXmlDocCollection implements XmlDocCollection {
     protected File file;
-    protected List xmlDocs = new ArrayList();
+    protected List<BaseXmlDoc> xmlDocs = new ArrayList<BaseXmlDoc>();
     public BaseXmlDocCollection(File file) {
         this.file = file;
     }
     public File getFile() {
         return file;
     }
-    public List getXmlDocs() {
+    public List<? extends XmlDoc> getXmlDocs() {
         return xmlDocs;
     }
     public void close() throws IOException {

@@ -16,27 +16,12 @@
  */
 package org.kuali.rice.kew.batch.web;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.rice.kew.batch.CompositeXmlDocCollection;
-import org.kuali.rice.kew.batch.FileXmlDocCollection;
-import org.kuali.rice.kew.batch.XmlDoc;
-import org.kuali.rice.kew.batch.XmlDocCollection;
-import org.kuali.rice.kew.batch.ZipXmlDocCollection;
+import org.kuali.rice.kew.batch.*;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
@@ -47,6 +32,15 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -75,55 +69,65 @@ public class IngesterAction extends KualiAction {
 
         IngesterForm iform = (IngesterForm) form;
 
-        List messages = new ArrayList();
-        List tempFiles = new ArrayList();
+        List<String> messages = new ArrayList<String>();
+        List<File> tempFiles = new ArrayList<File>();
         try {
-            Collection  files = iform.getFiles();
-            List collections = new ArrayList(files.size());
+            Collection<FormFile> files = iform.getFiles();
+            List<XmlDocCollection> collections = new ArrayList<XmlDocCollection>(files.size());
             LOG.debug(files);
             LOG.debug("" + files.size());
 
-            Iterator it = files.iterator();
-            while (it.hasNext()) {
-                FormFile file = (FormFile) it.next();
-                if (file.getFileName() == null || file.getFileName().length() == 0) continue;
-                if (file.getFileData() == null) {
-                    messages.add("File '" + file.getFileName() + "' contained no data");
+            for (FormFile file1 : files)
+            {
+                if (file1.getFileName() == null || file1.getFileName().length() == 0) continue;
+                if (file1.getFileData() == null)
+                {
+                    messages.add("File '" + file1.getFileName() + "' contained no data");
                     continue;
                 }
-                LOG.debug("Processing file: " + file.getFileName());
+                LOG.debug("Processing file: " + file1.getFileName());
                 // ok, we have to copy it to *another* file because Struts doesn't give us a File
                 // reference (which itself is not a bad abstraction) and XmlDocs based on ZipFile
                 // can't be constructed without a file reference.
                 FileOutputStream fos = null;
                 File temp = null;
-                try {
+                try
+                {
                     temp = File.createTempFile("ingester", null);
                     tempFiles.add(temp);
                     fos = new FileOutputStream(temp);
-                    fos.write(file.getFileData());
-                } catch (IOException ioe) {
-                    messages.add("Error copying file data for '" + file.getFileName() + "': " + ioe);
+                    fos.write(file1.getFileData());
+                } catch (IOException ioe)
+                {
+                    messages.add("Error copying file data for '" + file1.getFileName() + "': " + ioe);
                     continue;
-                } finally {
-                    if (fos != null) try {
+                } finally
+                {
+                    if (fos != null) try
+                    {
                         fos.close();
-                    } catch (IOException ioe) {
+                    } catch (IOException ioe)
+                    {
                         LOG.error("Error closing temp file output stream: " + temp, ioe);
                     }
                 }
-                if (file.getFileName().toLowerCase().endsWith(".zip")) {
-                    try {
+                if (file1.getFileName().toLowerCase().endsWith(".zip"))
+                {
+                    try
+                    {
                         collections.add(new ZipXmlDocCollection(temp));
-                    } catch (IOException ioe) {
-                        String message = "Unable to load file: " + file;
+                    } catch (IOException ioe)
+                    {
+                        String message = "Unable to load file: " + file1;
                         LOG.error(message);
                         messages.add(message);
                     }
-                } else if (file.getFileName().endsWith(".xml")) {
-                    collections.add(new FileXmlDocCollection(temp, file.getFileName()));
-                } else {
-                    messages.add("Ignoring extraneous file: " + file.getFileName());
+                } else if (file1.getFileName().endsWith(".xml"))
+                {
+                    collections.add(new FileXmlDocCollection(temp, file1.getFileName()));
+                } else
+                {
+                    messages.add("Ignoring extraneous file: " + file1.getFileName());
                 }
             }
 
@@ -143,22 +147,24 @@ public class IngesterAction extends KualiAction {
                     if (txFailed) {
                         messages.add("Ingestion failed");
                     }
-                    it = collections.iterator();
-                    while (it.hasNext()) {
-                        XmlDocCollection collection = (XmlDocCollection) it.next();
-                        List docs = collection.getXmlDocs();
-                        Iterator docIt = docs.iterator();
-                        while (docIt.hasNext()) {
-                            XmlDoc doc = (XmlDoc) docIt.next();
-                            if (doc.isProcessed()) {
-                                if (!txFailed) {
+                    for (XmlDocCollection collection1 : collections)
+                    {
+                        List<? extends XmlDoc> docs = collection1.getXmlDocs();
+                        for (XmlDoc doc1 : docs)
+                        {
+                            if (doc1.isProcessed())
+                            {
+                                if (!txFailed)
+                                {
                                     totalProcessed++;
-                                    messages.add("Ingested xml doc: " + doc.getName() + (doc.getProcessingMessage() == null ? "" : "\n" + doc.getProcessingMessage()));
-                                } else {
-                                    messages.add("Rolled back doc: " + doc.getName() + (doc.getProcessingMessage() == null ? "" : "\n" + doc.getProcessingMessage()));
+                                    messages.add("Ingested xml doc: " + doc1.getName() + (doc1.getProcessingMessage() == null ? "" : "\n" + doc1.getProcessingMessage()));
+                                } else
+                                {
+                                    messages.add("Rolled back doc: " + doc1.getName() + (doc1.getProcessingMessage() == null ? "" : "\n" + doc1.getProcessingMessage()));
                                 }
-                            } else {
-                                messages.add("Failed to ingest xml doc: " + doc.getName() + (doc.getProcessingMessage() == null ? "" : "\n" + doc.getProcessingMessage()));
+                            } else
+                            {
+                                messages.add("Failed to ingest xml doc: " + doc1.getName() + (doc1.getProcessingMessage() == null ? "" : "\n" + doc1.getProcessingMessage()));
                             }
                         }
                     }
@@ -175,11 +181,11 @@ public class IngesterAction extends KualiAction {
             }
         } finally {
             if (tempFiles.size() > 0) {
-                Iterator it = tempFiles.iterator();
-                while (it.hasNext()) {
-                    File temp = (File) it.next();
-                    if (!temp.delete()) {
-                        LOG.warn("Error deleting temp file: " + temp);
+                for (File tempFile : tempFiles)
+                {
+                    if (!tempFile.delete())
+                    {
+                        LOG.warn("Error deleting temp file: " + tempFile);
                     }
                 }
             }

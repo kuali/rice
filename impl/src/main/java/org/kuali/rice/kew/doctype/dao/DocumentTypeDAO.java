@@ -36,7 +36,7 @@ public interface DocumentTypeDAO {
 
     public void save(DocumentType documentType);
 
-    public Collection find(DocumentType documentType, DocumentType docTypeParentName, boolean climbHierarchy);
+    public Collection<DocumentType> find(DocumentType documentType, DocumentType docTypeParentName, boolean climbHierarchy);
 
     public void delete(DocumentType documentType);
 

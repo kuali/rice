@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kew.batch;
 
+import org.apache.commons.io.IOUtils;
+
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
 
 /**
  * Stream-based XML doc 

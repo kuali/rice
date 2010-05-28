@@ -25,6 +25,7 @@ import org.kuali.rice.kew.actiontaken.dao.ActionTakenDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.List;
@@ -36,10 +37,10 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
-	
+
 	@PersistenceContext(unitName="kew-unit")
 	private EntityManager entityManager;
-	
+
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ActionTakenDAOJpaImpl.class);
 
     public ActionTakenValue load(Long id) {
@@ -60,30 +61,30 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         return (ActionTakenValue) new QueryByCriteria(entityManager, crit).toQuery().getSingleResult();
     }
 
-    public Collection findByDocIdAndAction(Long routeHeaderId, String action) {
+    public Collection<ActionTakenValue> findByDocIdAndAction(Long routeHeaderId, String action) {
         LOG.debug("finding Action Taken by routeHeaderId " + routeHeaderId + " and action " + action);
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
         crit.eq("routeHeaderId", routeHeaderId);
         crit.eq("actionTaken", action);
         crit.eq("currentIndicator", Boolean.TRUE);
-        return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        return (Collection<ActionTakenValue>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    public Collection findByRouteHeaderId(Long routeHeaderId) {
+    public Collection<ActionTakenValue> findByRouteHeaderId(Long routeHeaderId) {
         LOG.debug("finding Action Takens by routeHeaderId " + routeHeaderId);
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
         crit.eq("routeHeaderId", routeHeaderId);
         crit.eq("currentIndicator", Boolean.TRUE);
-        return new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        return (Collection<ActionTakenValue>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
-    public List findByRouteHeaderIdWorkflowId(Long routeHeaderId, String workflowId) {
+    public List<ActionTakenValue> findByRouteHeaderIdWorkflowId(Long routeHeaderId, String workflowId) {
         LOG.debug("finding Action Takens by routeHeaderId " + routeHeaderId + " and workflowId" + workflowId);
         Criteria crit = new Criteria(ActionTakenValue.class.getName());
         crit.eq("routeHeaderId", routeHeaderId);
         crit.eq("principalId", workflowId);
         crit.eq("currentIndicator", Boolean.TRUE);
-        return (List) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
+        return (List<ActionTakenValue>) new QueryByCriteria(entityManager, crit).toQuery().getResultList();
     }
 
     public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId) {
@@ -108,7 +109,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
         }
         LOG.debug("saving ActionTaken: routeHeader " + actionTaken.getRouteHeaderId() +
                 ", actionTaken " + actionTaken.getActionTaken() + ", principalId " + actionTaken.getPrincipalId());
-        
+
         if(actionTaken.getActionTakenId()==null){
         	entityManager.persist(actionTaken);
         }else{
@@ -117,7 +118,7 @@ public class ActionTakenDAOJpaImpl implements ActionTakenDAO {
     }
 
     //TODO perhaps runtime isn't the best here, maybe a dao runtime exception
-    private void checkNull(Object value, String valueName) throws RuntimeException {
+    private void checkNull(Serializable value, String valueName) throws RuntimeException {
         if (value == null) {
             throw new RuntimeException("Null value for " + valueName);
         }

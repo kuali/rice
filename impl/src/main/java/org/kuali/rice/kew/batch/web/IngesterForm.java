@@ -16,11 +16,12 @@
  */
 package org.kuali.rice.kew.batch.web;
 
+import org.apache.struts.upload.FormFile;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
  * Struts form that accepts uploaded files (in the form of <code>FormFile</code>s)
@@ -34,18 +35,18 @@ public class IngesterForm extends KualiForm {
 	// this is sort of weak but the alternative is to linearly
     // pad a standard List will null items to make the accessors/mutators happy
     // on get(index)/set(index, value) so they don't throw IndexOutOfBoundsException
-    private Map files = new HashMap();
+    private Map<Integer, FormFile> files = new HashMap<Integer, FormFile>();
 
-    public Collection getFiles() {
+    public Collection<FormFile> getFiles() {
         return files.values();
     }
 
-    public void setFile(int index, Object value) {
-        files.put(new Integer(index), value);
+    public void setFile(int index, FormFile value) {
+        files.put(index, value);
     }
 
-    public Object getFile(int index) {
-        return files.get(new Integer(index));
+    public FormFile getFile(int index) {
+        return files.get(index);
     }
 
     public void reset() {

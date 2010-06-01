@@ -29,6 +29,7 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import javax.xml.validation.ValidatorHandler;
 
 import org.junit.Test;
@@ -123,12 +124,6 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 		XMLReader reader = spf.newSAXParser().getXMLReader();
 		reader.setContentHandler(vh);
 		reader.parse(new InputSource(xmlFile));
-//		XMLFilter myFilter = new XMLFilterImpl();
-//		myFilter.setParent(spf.newSAXParser().getXMLReader());
-//		myFilter.setContentHandler(handler);
-//		myFilter.setErrorHandler(new TestSchemaValidationErrorHandler());
-//		myFilter.parse(new InputSource(xmlFile));
-//		groupXmlDto = (GroupXmlDto) handler.getResult();
 		
 		assertTrue(getCompileErrors()==0);
 		
@@ -153,7 +148,7 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 		JAXBContext jaxbContext = JAXBContext.newInstance(GroupXmlDto.class);
         ValidatorHandler vh = groupSchema.newValidatorHandler(); 
         vh.setErrorHandler(new TestSchemaValidationErrorHandler());
-
+        
 		SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
 		spf.setSchema(groupSchema);
@@ -170,6 +165,24 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 		
 		assertTrue(getCompileErrors()>0);
 	}
+
+	@Test	
+	public void testValidatorAgainstCompiledSchema() throws Exception {
+		if (groupSchema == null){
+			testCompileGroup103Schema();
+		}
+		setCompileErrors(0);
+		InputStream xmlFile = getClass().getResourceAsStream("GroupInstance1.xml");
+		assertNotNull(xmlFile);
+
+		Validator validator = groupSchema.newValidator();
+		validator.setErrorHandler(new TestSchemaValidationErrorHandler());
+		validator.validate(new StreamSource(xmlFile));
+		
+		assertTrue(getCompileErrors()==0);
+		
+	}
+	
 ///////// local helper methods //////////////
 	
 	

@@ -26,6 +26,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.UnmarshallerHandler;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -35,8 +36,12 @@ import javax.xml.validation.ValidatorHandler;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.core.xml.schema.RiceXmlSchemaFactory;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtils;
+import org.kuali.rice.kew.xml.GroupNamespaceURIEliminationFilterPOC;
+import org.kuali.rice.kew.xml.GroupNamespaceURIMemberTransformationFilterPOC;
+import org.kuali.rice.kew.xml.GroupNamespaceURITransformationFilterPOC;
 import org.kuali.rice.kim.xml.GroupXmlDto;
 import org.kuali.rice.test.RiceTestCase;
 import org.xml.sax.ContentHandler;
@@ -64,17 +69,8 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 
 	@Test
 	public void testCompileGroup103Schema() throws Exception {
-		InputStream xmlFile = RiceUtilities.getResourceAsStream(SCHEMA_DIR
-				+ GROUP_SCHEMA);
-		assertNotNull(xmlFile);
-
 		setCompileErrors(0);
-		String language = XMLConstants.W3C_XML_SCHEMA_NS_URI;
-		SchemaFactory factory = SchemaFactory.newInstance(language);
-		factory.setErrorHandler(new TestSchemaValidationErrorHandler());
-		factory.setResourceResolver( new TestSchemaLSResourceResolver());
-		StreamSource ss = new StreamSource(xmlFile);
-		groupSchema = factory.newSchema(ss);
+		groupSchema = RiceXmlSchemaFactory.addSchema(GROUP_SCHEMA, null, new TestSchemaValidationErrorHandler());
 
 		assertNotNull(groupSchema);
 		assertTrue(getCompileErrors()==0);
@@ -87,12 +83,7 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 		assertNotNull(xmlFile);
 
 		setCompileErrors(0);
-		String language = XMLConstants.W3C_XML_SCHEMA_NS_URI;
-		SchemaFactory factory = SchemaFactory.newInstance(language);
-		factory.setErrorHandler(new TestSchemaValidationErrorHandler());
-		factory.setResourceResolver( new TestSchemaLSResourceResolver());
-		StreamSource ss = new StreamSource(xmlFile);
-		schema = factory.newSchema(ss);
+		schema = RiceXmlSchemaFactory.addSchema(BAD_GROUP_SCHEMA1, xmlFile, new TestSchemaValidationErrorHandler());
 
 		assertNotNull(schema);
 		assertTrue(getCompileErrors()>0);
@@ -106,8 +97,9 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 	 */
 	public void testValidateGroupXmlAgainstCompiledSchemaDuringParse() throws Exception {
 		if (groupSchema == null){
-			testCompileGroup103Schema();
+			groupSchema = RiceXmlSchemaFactory.getSchema(GROUP_SCHEMA);
 		}
+		
 		setCompileErrors(0);
 		InputStream xmlFile = getClass().getResourceAsStream("GroupInstance1.xml");
 		assertNotNull(xmlFile);
@@ -138,7 +130,7 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 	 */
 	public void testValidateGroupXmlAgainstCompiledSchemaDuringParse2() throws Exception {
 		if (groupSchema == null){
-			testCompileGroup103Schema();
+			groupSchema = RiceXmlSchemaFactory.getSchema(GROUP_SCHEMA);
 		}
 		setCompileErrors(0);
 		InputStream xmlFile = getClass().getResourceAsStream("GroupInstance2.xml");
@@ -156,6 +148,7 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 		XMLReader reader = spf.newSAXParser().getXMLReader();
 		reader.setContentHandler(vh);
 		reader.parse(new InputSource(xmlFile));
+		
 //		XMLFilter myFilter = new XMLFilterImpl();
 //		myFilter.setParent(spf.newSAXParser().getXMLReader());
 //		myFilter.setContentHandler(handler);
@@ -168,14 +161,11 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 
 	@Test	
 	public void testValidatorAgainstCompiledSchema() throws Exception {
-		if (groupSchema == null){
-			testCompileGroup103Schema();
-		}
 		setCompileErrors(0);
 		InputStream xmlFile = getClass().getResourceAsStream("GroupInstance1.xml");
 		assertNotNull(xmlFile);
 
-		Validator validator = groupSchema.newValidator();
+		Validator validator = RiceXmlSchemaFactory.getSchema(GROUP_SCHEMA).newValidator();
 		validator.setErrorHandler(new TestSchemaValidationErrorHandler());
 		validator.validate(new StreamSource(xmlFile));
 		
@@ -183,6 +173,57 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 		
 	}
 	
+	@Test	
+	public void testValidatorAfterFiltering() throws Exception {
+		setCompileErrors(0);
+		InputStream xmlFile = getClass().getResourceAsStream("GroupInstance0.xml");
+		assertNotNull(xmlFile);
+
+		SAXParserFactory spf = SAXParserFactory.newInstance();
+		spf.setNamespaceAware(true);
+
+		JAXBContext jaxbContext = JAXBContext.newInstance(GroupXmlDto.class);
+		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+		UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
+
+		// Plug in chained filters
+		XMLFilter eliminationFilter = new GroupNamespaceURIEliminationFilterPOC();
+		XMLFilter transformationFilter = new GroupNamespaceURITransformationFilterPOC();
+		XMLFilter memberTransformationFilter = new GroupNamespaceURIMemberTransformationFilterPOC();
+
+		// Initialize filter chain
+//		eliminationFilter.setParent(spf.newSAXParser().getXMLReader());
+//		transformationFilter.setParent(eliminationFilter);
+//		memberTransformationFilter.setParent(transformationFilter);
+//		memberTransformationFilter.setContentHandler(handler);
+//		memberTransformationFilter.parse(new InputSource(in));
+
+		// create intermediate sax sources for each filter.
+		// Need to figure out how to chain SAXSource(,)
+		eliminationFilter.setParent(spf.newSAXParser().getXMLReader());
+		eliminationFilter.setContentHandler(handler);
+		SAXSource saxSource1 = new SAXSource(eliminationFilter, new InputSource(xmlFile));
+		
+		transformationFilter.setParent(spf.newSAXParser().getXMLReader());
+		transformationFilter.setContentHandler(handler);
+		SAXSource saxSource2 = new SAXSource(transformationFilter, saxSource1.getInputSource());
+		
+		memberTransformationFilter.setParent(spf.newSAXParser().getXMLReader());
+		memberTransformationFilter.setContentHandler(handler);
+		SAXSource saxSource3 = new SAXSource(memberTransformationFilter, saxSource2.getInputSource());
+
+		// get a new filtered source
+//		SAXSource saxSource = new SAXSource(memberTransformationFilter, new InputSource(xmlFile));
+
+		assertTrue(getCompileErrors()==0);
+
+		Validator validator = RiceXmlSchemaFactory.getSchema(GROUP_SCHEMA).newValidator();
+		validator.setErrorHandler(new TestSchemaValidationErrorHandler());
+		validator.validate(saxSource3);
+		
+//		assertTrue(getCompileErrors()==0);
+		
+	}
 ///////// local helper methods //////////////
 	
 	

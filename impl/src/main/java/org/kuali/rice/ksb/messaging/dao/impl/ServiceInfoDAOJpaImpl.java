@@ -22,6 +22,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.xml.namespace.QName;
 
+import org.kuali.rice.ksb.messaging.FlattenedServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
 
@@ -33,9 +34,12 @@ public class ServiceInfoDAOJpaImpl implements ServiceInfoDAO {
 	
     public void addEntry(ServiceInfo entry) {
         if(entry.getMessageEntryId() == null) {
+        	entityManager.persist(entry.getSerializedServiceNamespace());
+        	entry.setFlattenedServiceDefinitionId(entry.getSerializedServiceNamespace().getFlattenedServiceDefinitionId());
             entityManager.persist(entry);
         }
         else {
+        	entityManager.merge(entry.getSerializedServiceNamespace());
             entityManager.merge(entry);
         }
     }
@@ -83,23 +87,31 @@ public class ServiceInfoDAOJpaImpl implements ServiceInfoDAO {
     }
 
     public void removeEntry(ServiceInfo entry) {
-    	Query query = entityManager.createNamedQuery("ServiceInfo.DeleteByEntry");
-    	query.setParameter("messageEntryId", entry.getMessageEntryId());
-		query.executeUpdate();
+    	//Query query = entityManager.createNamedQuery("ServiceInfo.DeleteByEntry");
+    	//query.setParameter("messageEntryId", entry.getMessageEntryId());
+		//query.executeUpdate();
+    	//entityManager.remove(entityManager.getReference(ServiceInfo.class, entry.getMessageEntryId()));
+    	entityManager.remove(entityManager.find(FlattenedServiceDefinition.class, entry.getFlattenedServiceDefinitionId()));
+    	entityManager.remove(entityManager.find(ServiceInfo.class, entry.getMessageEntryId()));
     }
 
     public ServiceInfo findServiceInfo(Long serviceInfoId) {
-    	return (ServiceInfo) entityManager.find(ServiceInfo.class, serviceInfoId);
+    	return entityManager.find(ServiceInfo.class, serviceInfoId);
     }
 
     public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace) {
-    	Query query = entityManager.createNamedQuery("ServiceInfo.DeleteLocallyPublishedServices");
-    	query.setParameter("serverIp", ipNumber);
-    	query.setParameter("serviceNamespace", serviceNamespace);
-		query.executeUpdate();
+    	//Query query = entityManager.createNamedQuery("ServiceInfo.DeleteLocallyPublishedServices");
+    	//query.setParameter("serverIp", ipNumber);
+    	//query.setParameter("serviceNamespace", serviceNamespace);
+		//query.executeUpdate();
+    	List<ServiceInfo> localServices = findLocallyPublishedServices(ipNumber, serviceNamespace);
+    	for (ServiceInfo localService : localServices) {
+    		entityManager.remove(entityManager.find(FlattenedServiceDefinition.class, localService.getFlattenedServiceDefinitionId()));
+    		entityManager.remove(entityManager.find(ServiceInfo.class, localService.getMessageEntryId()));
+    	}
     }
 
-    public EntityManager getEntityManager() {
+	public EntityManager getEntityManager() {
         return this.entityManager;
     }
 
@@ -107,4 +119,7 @@ public class ServiceInfoDAOJpaImpl implements ServiceInfoDAO {
         this.entityManager = entityManager;
     }
 
+	public FlattenedServiceDefinition findFlattenedServiceDefinition(Long flattenedServiceDefinitionId) {
+		return entityManager.find(FlattenedServiceDefinition.class, flattenedServiceDefinitionId);
+	}
 }

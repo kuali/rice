@@ -24,15 +24,11 @@ import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -47,7 +43,6 @@ import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.cache.FastByteArrayOutputStream;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -83,8 +78,9 @@ public class ServiceInfo implements Serializable {
 	private String endpointUrl;
     @Transient
 	private String endpointAlternateUrl;
-    @OneToOne(fetch=FetchType.LAZY,cascade={CascadeType.ALL})
-    @JoinColumn(name="FLT_SVC_DEF_ID")
+    @Column(name="FLT_SVC_DEF_ID")
+    private Long flattenedServiceDefinitionId;
+    @Transient
     private FlattenedServiceDefinition serializedServiceNamespace;
 	@Column(name="SVC_NM")
 	private String serviceName;
@@ -147,11 +143,11 @@ public class ServiceInfo implements Serializable {
 	}
 
 	public ServiceDefinition getServiceDefinition(MessageHelper enMessageHelper) {
-		if (this.serviceDefinition == null && ObjectUtils.isNotNull(this.serializedServiceNamespace)) {
+		if (this.serviceDefinition == null) {
 		    this.serviceDefinition = (ServiceDefinition)
-		    (enMessageHelper==null
-		    		?KSBServiceLocator.getMessageHelper().deserializeObject(this.serializedServiceNamespace.getFlattenedServiceDefinitionData())
-		    		:enMessageHelper.deserializeObject(this.serializedServiceNamespace.getFlattenedServiceDefinitionData()));
+		    		(enMessageHelper==null
+		    				?KSBServiceLocator.getMessageHelper().deserializeObject(this.getSerializedServiceNamespace().getFlattenedServiceDefinitionData())
+		    						:enMessageHelper.deserializeObject(this.getSerializedServiceNamespace().getFlattenedServiceDefinitionData()));
 		    this.serviceDefinition.setServiceClassLoader(getServiceClassLoader());
 		}
 		return this.serviceDefinition;
@@ -239,6 +235,9 @@ public class ServiceInfo implements Serializable {
 	}
 
 	public FlattenedServiceDefinition getSerializedServiceNamespace() {
+		if (this.serializedServiceNamespace == null && this.getFlattenedServiceDefinitionId() != null) {
+			this.serializedServiceNamespace = KSBServiceLocator.getIPTableService().getFlattenedServiceDefinition(this.getFlattenedServiceDefinitionId());
+		}
 		return this.serializedServiceNamespace;
 	}
 
@@ -260,6 +259,14 @@ public class ServiceInfo implements Serializable {
 
 	public void setChecksum(String checksum) {
 		this.checksum = checksum;
+	}
+	
+	public Long getFlattenedServiceDefinitionId() {
+		return this.flattenedServiceDefinitionId;
+	}
+
+	public void setFlattenedServiceDefinitionId(Long flattenedServiceDefinitionId) {
+		this.flattenedServiceDefinitionId = flattenedServiceDefinitionId;
 	}
 	
 	/**

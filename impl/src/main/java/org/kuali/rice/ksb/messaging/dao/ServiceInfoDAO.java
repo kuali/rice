@@ -19,6 +19,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.kuali.rice.ksb.messaging.FlattenedServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 
 public interface ServiceInfoDAO {
@@ -33,4 +34,5 @@ public interface ServiceInfoDAO {
 	public List<ServiceInfo> findLocallyPublishedServices(String ipNumber, String serviceNamespace);
 	public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace);
 	public ServiceInfo findServiceInfo(Long serviceInfoId);
+	public FlattenedServiceDefinition findFlattenedServiceDefinition(Long flattenedServiceDefinitionId);
 }

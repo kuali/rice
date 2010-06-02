@@ -22,6 +22,7 @@
   
   <persistence-unit name="ksb-unit" transaction-type="JTA">
     <mapping-file>META-INF/ksb-orm.xml</mapping-file>
+    <class>org.kuali.rice.ksb.messaging.FlattenedServiceDefinition</class>
     <class>org.kuali.rice.ksb.messaging.PersistedMessage</class>
     <class>org.kuali.rice.ksb.messaging.PersistedMessagePayload</class>
     <class>org.kuali.rice.ksb.messaging.ServiceInfo</class>
@@ -39,6 +40,7 @@
 
   <persistence-unit name="ksb-registry-unit" transaction-type="JTA">
     <mapping-file>META-INF/ksb-orm.xml</mapping-file>
+    <class>org.kuali.rice.ksb.messaging.FlattenedServiceDefinition</class>
     <class>org.kuali.rice.ksb.messaging.ServiceInfo</class>
     <class>org.kuali.rice.ksb.messaging.bam.BAMTargetEntry</class>
     <class>org.kuali.rice.ksb.messaging.bam.BAMParam</class>

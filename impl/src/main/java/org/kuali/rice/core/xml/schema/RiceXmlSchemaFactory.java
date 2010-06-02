@@ -15,10 +15,7 @@
  */
 package org.kuali.rice.core.xml.schema;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.Hashtable;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.XMLConstants;
@@ -27,9 +24,6 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.core.xml.TestSchemaLSResourceResolver;
-import org.kuali.rice.core.xml.TestSchemaValidationErrorHandler;
-import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 
@@ -47,8 +41,20 @@ public class RiceXmlSchemaFactory {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceXmlSchemaFactory.class);
 	private static final String SCHEMA_DIR = "classpath:schema/";
 
+	// A map of already created schemas
 	private static ConcurrentHashMap schemaMap = new ConcurrentHashMap();
 	
+	/**
+	 * 
+	 * This method retrieves a schema.  
+	 * If the schema already exists, returns it.
+	 * If the schema does not exist, attempts to compile a new one using
+	 * the schemaName as the resource.   Looks in the default project resource 
+	 * schema directory for the .xsd file. 
+	 * 
+	 * @param schemaName
+	 * @return
+	 */
 	public static Schema getSchema(String schemaName){
 		Schema schema = null;
 		if (schemaName != null) {
@@ -62,6 +68,17 @@ public class RiceXmlSchemaFactory {
 		return schema;
 	}
 
+	/**
+	 * 
+	 * This method adds a schema to the collection of compiled schema objects.
+	 * Either adds a new schema or overrides the schema if it already exists.
+	 * Uses the default location to find the schema, the schema name is also 
+	 * the filename of the .xsd file
+	 * 
+	 * @param schemaName - the filename of the .xsd file, also used as the key
+	 *  	to locate the schema
+	 * @return
+	 */
 	public static Schema addSchema(String schemaName){
 		Schema schema = null;
 		if (schemaName != null){
@@ -73,10 +90,22 @@ public class RiceXmlSchemaFactory {
 		return schema;
 	}
 
+	/**
+	 * 
+	 * This method adds a schema to the collection of compiled schema objects.
+	 * Either adds a new schema or overrides the schema if it already exists.
+	 * Allows for an alternate input stream (other than the default name and location).
+	 * 
+	 * @param schemaName - key to be used to identify the schema
+	 * @param stream - InputStream to be used as a source of the .xsd file
+	 * 				 if null, attempts to create an input stream using the 
+	 * 				 default schema location, and the schemaName as the resource filename.
+	 * @return
+	 */
 	public static Schema addSchema(String schemaName, InputStream stream){
 		Schema schema = null;
 		if (schemaName != null){
-			schema = compileSchema(schemaName);
+			schema = compileSchema(schemaName, stream, null);
 		}
 		if (schema != null){
 			schemaMap.put(schemaName, schema);
@@ -84,17 +113,16 @@ public class RiceXmlSchemaFactory {
 		return schema;
 	}
 	
-	public static Schema addSchema(String schemaName, ErrorHandler eHandler){
-		Schema schema = null;
-		if (schemaName != null){
-			schema = compileSchema(schemaName, getInputStream(schemaName), eHandler);
-		}
-		if (schema != null){
-			schemaMap.put(schemaName, schema);
-		}
-		return schema;
-	}
 
+	/**
+	 * 
+	 * Adds a new schema, or overrides an existing schema.
+	 * 
+	 * @param schemaName
+	 * @param inStream
+	 * @param eHandler
+	 * @return
+	 */
 	public static Schema addSchema(String schemaName, InputStream inStream, ErrorHandler eHandler){
 		Schema schema = null;
 		if (schemaName != null){
@@ -114,13 +142,30 @@ public class RiceXmlSchemaFactory {
 		return schema;
 	}
 
+	/**
+	 * 
+	 * This method creates a Schema object using the default error handler,
+	 * and creating an inputSource from a resource in the default project schema location.
+	 *
+	 * 
+	 * @param schemaName - the filename of the .xsd file, also the key used to identify the Schema object
+	 * @return
+	 */
 	private static Schema compileSchema(String schemaName){
 		InputStream inStream = getInputStream(schemaName);
 		ErrorHandler eHandler = new SchemaValidationErrorHandler();
 		return compileSchema(schemaName, inStream, eHandler);
 	}
 	
-	
+	/**
+	 * 
+	 * This method is the worker method that actually creates the Schema object.
+	 * 
+	 * @param schemaName - name of the schema
+	 * @param inStream - input stream created from the .xsd resource
+	 * @param errorHandler - the schema validation error handler
+	 * @return
+	 */
 	private static Schema compileSchema(String schemaName, InputStream inStream, ErrorHandler errorHandler){
 		Schema schema = null;
 		// get input stream
@@ -143,6 +188,17 @@ public class RiceXmlSchemaFactory {
 		return schema;
 	}
 
+	/**
+	 * 
+	 * This method creates an input stream, looking for the resourse in the default
+	 * project resource schema directory.
+	 * 
+	 * TODO: Once we start publishing the schemas, we may want to 
+	 * update this to get the published schema
+	 * 
+	 * @param schemaName
+	 * @return
+	 */
 	private static InputStream getInputStream(String schemaName){
 		InputStream xmlFile = null;
 		if (!schemaName.isEmpty()){

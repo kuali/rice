@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.kns.lookup;
 
-import java.security.GeneralSecurityException;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kim.bo.Person;
@@ -40,25 +29,8 @@ import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.InputHtmlData;
-import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.ParameterService;
-import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.TypeUtils;
-import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.util.*;
 import org.kuali.rice.kns.util.cache.CopiedObject;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
@@ -71,6 +43,10 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.security.GeneralSecurityException;
+import java.sql.Date;
+import java.util.*;
 
 /**
  * This class declares many of the common spring injected properties, the get/set-ers for them,
@@ -128,21 +104,21 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 /**
 	  * This implementation always returns false.
 	  *
-	  * @see org.kuali.core.lookup.LookupableHelperService#checkForAdditionalFields(java.util.Map)
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#checkForAdditionalFields(java.util.Map)
 	  */
 	 public boolean checkForAdditionalFields(Map fieldValues) {
 		 return false;
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#getBusinessObjectClass()
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#getBusinessObjectClass()
 	  */
 	 public Class getBusinessObjectClass() {
 		 return businessObjectClass;
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#setBusinessObjectClass(java.lang.Class)
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#setBusinessObjectClass(java.lang.Class)
 	  */
 	 public void setBusinessObjectClass(Class businessObjectClass) {
 		 this.businessObjectClass = businessObjectClass;
@@ -150,14 +126,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#getParameters()
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#getParameters()
 	  */
 	 public Map getParameters() {
 		 return parameters;
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#setParameters(java.util.Map)
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#setParameters(java.util.Map)
 	  */
 	 public void setParameters(Map parameters) {
 		 this.parameters = parameters;
@@ -350,7 +326,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * It calls the method getCustomActionUrls to get html data, calls getMaintenanceUrl to get the actual html tag,
 	  * and returns a formatted/concatenated string of action urls.
 	  *
-	  * @see org.kuali.core.lookup.LookupableHelperService#getActionUrls(org.kuali.core.bo.BusinessObject)
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#getActionUrls(org.kuali.rice.kns.bo.BusinessObject)
 	  */
 	 final public String getActionUrls(BusinessObject businessObject, List pkNames, BusinessObjectRestrictions businessObjectRestrictions) {
 		 StringBuffer actions = new StringBuffer();
@@ -704,7 +680,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#getReturnLocation()
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#getReturnLocation()
 	  */
 	 public String getReturnLocation() {
 		 return backLocation;
@@ -743,7 +719,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#getReturnUrl(org.kuali.core.bo.BusinessObject, java.util.Map, java.lang.String)
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#getReturnUrl(org.kuali.core.bo.BusinessObject, java.util.Map, java.lang.String)
 	  */
 	 public HtmlData getReturnUrl(BusinessObject businessObject, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
 		 Properties parameters = getParameters(

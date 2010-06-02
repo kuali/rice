@@ -16,13 +16,13 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import org.kuali.rice.kew.exception.WorkflowServiceError;
+import org.kuali.rice.kns.util.MessageMap;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-
-import org.kuali.rice.kew.exception.WorkflowServiceError;
-import org.kuali.rice.kns.util.MessageMap;
 
 
 /**
@@ -37,7 +37,7 @@ public interface DocumentSearchGenerator {
     public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria);
     public String generateSearchSql(DocSearchCriteriaDTO searchCriteria);
     /**
-     * @deprecated Removed as of version 0.9.3.  Use {@link #processResultSet(Statement, ResultSet, DocSearchCriteriaDTO, WorkflowUser)} instead.
+     * @deprecated Removed as of version 0.9.3.  Use {@link DocumentSearchGenerator#processResultSet(java.sql.Statement, java.sql.ResultSet, DocSearchCriteriaDTO, String)}
      */
     public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet,DocSearchCriteriaDTO searchCriteria) throws SQLException;
 

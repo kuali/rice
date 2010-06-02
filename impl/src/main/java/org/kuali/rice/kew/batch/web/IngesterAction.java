@@ -142,7 +142,7 @@ public class IngesterAction extends KualiAction {
                 List<XmlDocCollection> c = new ArrayList<XmlDocCollection>(1);
                 c.add(compositeCollection);
                 try {
-                    Collection failed = KEWServiceLocator.getXmlIngesterService().ingest(c, UserSession.getAuthenticatedUser().getPrincipal().getPrincipalId());
+                    Collection<XmlDocCollection> failed = KEWServiceLocator.getXmlIngesterService().ingest(c, UserSession.getAuthenticatedUser().getPrincipal().getPrincipalId());
                     boolean txFailed = failed.size() > 0;
                     if (txFailed) {
                         messages.add("Ingestion failed");

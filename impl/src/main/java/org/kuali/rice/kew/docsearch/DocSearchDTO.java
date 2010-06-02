@@ -16,18 +16,14 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.RowStyleable;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -242,13 +238,14 @@ public class DocSearchDTO implements Serializable, RowStyleable {
     	if (key == null) {
     		return returnPair;
     	}
-    	for (Iterator iter = searchableAttributes.iterator(); iter.hasNext();) {
-    		KeyValueSort pair = (KeyValueSort) iter.next();
-			if (key.equals((String)pair.getKey())) {
-				returnPair = pair;
-				break;
-			}
-		}
+        for (KeyValueSort searchableAttribute : searchableAttributes)
+        {
+            if (key.equals(searchableAttribute.getKey()))
+            {
+                returnPair = searchableAttribute;
+                break;
+            }
+        }
     	return returnPair;
     }
 

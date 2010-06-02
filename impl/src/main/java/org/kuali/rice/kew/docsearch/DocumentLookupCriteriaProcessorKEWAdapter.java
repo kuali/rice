@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
@@ -31,6 +27,10 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 /**
  * This is a description of what this class does - chris don't forget to fill this in.
@@ -61,7 +61,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	}
 
 	/**
-	 * @see org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor#getRows(org.kuali.rice.kns.bo.PersistableBusinessObject)
+	 * @see org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor#getRows(org.kuali.rice.kew.doctype.bo.DocumentType, java.util.List, boolean, boolean)
 	 */
 	public List<Row> getRows(DocumentType documentType, List<Row> knsRows, boolean detailed, boolean superSearch) {
 		List<Row> rows = new ArrayList<Row>();
@@ -118,7 +118,10 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	/**
 	 * This method ...
 	 *
-	 */
+     * @param documentType document Type
+     * @param fields containing search criteria
+     * @return list of row objects
+     */
 	protected List<Row> standardNonSearchAttRows(DocumentType documentType, List<List<StandardDocSearchCriteriaFieldContainer>> fields) {
 		List<Row> customPreRows = new ArrayList<Row>();
 		for (List<StandardDocSearchCriteriaFieldContainer> list : fields) {
@@ -194,8 +197,8 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 							if(documentType!=null) {
 								//TODO: can these be used directly in values finder also there is an option key and value property that could probably be used by all of these
 								List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
-								List routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
-								for (RouteNode routeNode : (List<RouteNode>)routeNodes) {
+								List<RouteNode> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
+								for (RouteNode routeNode : routeNodes) {
 									keyValues.add(new KeyLabelPair(routeNode.getRouteNodeId()+"",routeNode.getRouteNodeName()));
 								}
 								field.setFieldValidValues(keyValues);
@@ -261,7 +264,9 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 	/**
 	 * This method gets the search att rows and fixes them where necessary
 	 *
-	 */
+     * @param documentType seach on att rows
+     * @return list of rows
+     */
 	protected List<Row> searchAttRows(DocumentType documentType) {
 		List<Row> customSearchAttRows = new ArrayList<Row>();
 		List<SearchableAttribute> searchAtts = documentType.getSearchableAttributes();

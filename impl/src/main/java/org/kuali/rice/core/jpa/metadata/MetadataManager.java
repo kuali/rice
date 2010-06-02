@@ -15,39 +15,14 @@
  */
 package org.kuali.rice.core.jpa.metadata;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.jpa.annotations.Sequence;
+
+import javax.persistence.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.jpa.annotations.Sequence;
+import java.util.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

@@ -16,16 +16,6 @@
  */
 package org.kuali.rice.kew.docsearch.xml;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
@@ -35,6 +25,15 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.BufferedReader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -95,7 +94,7 @@ public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearch
 			if (searchResultConfig != null) {
 				NamedNodeMap fieldAttributes = searchResultConfig.getAttributes();
 				if (fieldAttributes.getNamedItem("showStandardSearchFields") != null) {
-					returnValue = Boolean.valueOf(fieldAttributes.getNamedItem("showStandardSearchFields").getNodeValue()).booleanValue();
+					returnValue = Boolean.valueOf(fieldAttributes.getNamedItem("showStandardSearchFields").getNodeValue());
 				}
 			}
 		} catch (XPathExpressionException e) {
@@ -116,7 +115,7 @@ public class DocumentSearchXMLResultProcessorImpl extends StandardDocumentSearch
 			if (searchResultConfig != null) {
 				NamedNodeMap fieldAttributes = searchResultConfig.getAttributes();
 				if (fieldAttributes.getNamedItem("overrideSearchableAttributes") != null) {
-					returnValue = Boolean.valueOf(fieldAttributes.getNamedItem("overrideSearchableAttributes").getNodeValue()).booleanValue();
+					returnValue = Boolean.valueOf(fieldAttributes.getNamedItem("overrideSearchableAttributes").getNodeValue());
 				}
 			}
 		} catch (XPathExpressionException e) {

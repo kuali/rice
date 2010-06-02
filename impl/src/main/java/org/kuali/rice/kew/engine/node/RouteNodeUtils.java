@@ -15,20 +15,6 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -36,6 +22,11 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
+import java.util.*;
 
 /**
  * A simple class for performing operations on RouteNode.  In particular, this class provides some
@@ -80,17 +71,17 @@ public class RouteNodeUtils {
 		return elementValue;
 	}
 	
-	public static List getFlattenedNodeInstances(DocumentRouteHeaderValue document, boolean includeProcesses) {
-        List nodeInstances = new ArrayList();
-        Set visitedNodeInstanceIds = new HashSet();
-        for (Iterator iterator = document.getInitialRouteNodeInstances().iterator(); iterator.hasNext();) {
-            RouteNodeInstance initialNodeInstance = (RouteNodeInstance) iterator.next();
-            flattenNodeInstanceGraph(nodeInstances, visitedNodeInstanceIds, initialNodeInstance, includeProcesses);    
+	public static List<RouteNodeInstance> getFlattenedNodeInstances(DocumentRouteHeaderValue document, boolean includeProcesses) {
+        List<RouteNodeInstance> nodeInstances = new ArrayList<RouteNodeInstance>();
+        Set<Long> visitedNodeInstanceIds = new HashSet<Long>();
+        for (RouteNodeInstance initialNodeInstance : document.getInitialRouteNodeInstances())
+        {
+            flattenNodeInstanceGraph(nodeInstances, visitedNodeInstanceIds, initialNodeInstance, includeProcesses);
         }
         return nodeInstances;
     }
     
-    private static void flattenNodeInstanceGraph(List nodeInstances, Set visitedNodeInstanceIds, RouteNodeInstance nodeInstance, boolean includeProcesses) {
+    private static void flattenNodeInstanceGraph(List<RouteNodeInstance> nodeInstances, Set<Long> visitedNodeInstanceIds, RouteNodeInstance nodeInstance, boolean includeProcesses) {
         if (visitedNodeInstanceIds.contains(nodeInstance.getRouteNodeInstanceId())) {
             return;
         }
@@ -105,11 +96,12 @@ public class RouteNodeUtils {
         }
     }
     
-    public static List getFlattenedNodes(DocumentType documentType, boolean climbHierarchy) {
-        List nodes = new ArrayList();
+    public static List<RouteNode> getFlattenedNodes(DocumentType documentType, boolean climbHierarchy) {
+        List<RouteNode> nodes = new ArrayList<RouteNode>();
         if (!documentType.isRouteInherited() || climbHierarchy) {
-            for (Iterator iterator = documentType.getProcesses().iterator(); iterator.hasNext();) {
-                Process process = (Process) iterator.next();
+            for (Object o : documentType.getProcesses())
+            {
+                Process process = (Process) o;
                 nodes.addAll(getFlattenedNodes(process));
             }
         }
@@ -117,15 +109,15 @@ public class RouteNodeUtils {
         return nodes;
     }
     
-    public static List getFlattenedNodes(Process process) {
-        Map nodesMap = new HashMap();
+    public static List<RouteNode> getFlattenedNodes(Process process) {
+        Map<String, RouteNode> nodesMap = new HashMap<String, RouteNode>();
         if (process.getInitialRouteNode() != null) {
             flattenNodeGraph(nodesMap, process.getInitialRouteNode());
-            List nodes = new ArrayList(nodesMap.values());
+            List<RouteNode> nodes = new ArrayList<RouteNode>(nodesMap.values());
             Collections.sort(nodes, new RouteNodeSorter());
             return nodes;
         } else {
-            List nodes = new ArrayList();
+            List<RouteNode> nodes = new ArrayList<RouteNode>();
             nodes.add(new RouteNode());
             return nodes;
         }
@@ -135,15 +127,17 @@ public class RouteNodeUtils {
     /**
      * Recursively walks the node graph and builds up the map.  Uses a map because we will
      * end up walking through duplicates, as is the case with Join nodes.
+     * @param nodes map
+     * @param node graph
      */
-    private static void flattenNodeGraph(Map nodes, RouteNode node) {
+    private static void flattenNodeGraph(Map<String, RouteNode> nodes, RouteNode node) {
         if (node != null) {
             if (nodes.containsKey(node.getRouteNodeName())) {
                 return;
             }
             nodes.put(node.getRouteNodeName(), node);
-            for (Iterator iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
-                RouteNode nextNode = (RouteNode) iterator.next();
+            for (RouteNode nextNode : node.getNextNodes())
+            {
                 flattenNodeGraph(nodes, nextNode);
             }
         } else {
@@ -165,12 +159,13 @@ public class RouteNodeUtils {
         }
     }
     
-    public static List getActiveNodeInstances(DocumentRouteHeaderValue document) {
-        List flattenedNodeInstances = getFlattenedNodeInstances(document, true);
-        List activeNodeInstances = new ArrayList();
-        for (Iterator iterator = flattenedNodeInstances.iterator(); iterator.hasNext();) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
-            if (nodeInstance.isActive()) {
+    public static List<RouteNodeInstance> getActiveNodeInstances(DocumentRouteHeaderValue document) {
+        List<RouteNodeInstance> flattenedNodeInstances = getFlattenedNodeInstances(document, true);
+        List<RouteNodeInstance> activeNodeInstances = new ArrayList<RouteNodeInstance>();
+        for (RouteNodeInstance nodeInstance : flattenedNodeInstances)
+        {
+            if (nodeInstance.isActive())
+            {
                 activeNodeInstances.add(nodeInstance);
             }
         }
@@ -178,13 +173,14 @@ public class RouteNodeUtils {
     }
     
     public static RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId, DocumentRouteHeaderValue document) {
-    	List flattenedNodeInstances = getFlattenedNodeInstances(document, true);
+    	List<RouteNodeInstance> flattenedNodeInstances = getFlattenedNodeInstances(document, true);
     	RouteNodeInstance niRet = null;
-        for (Iterator iterator = flattenedNodeInstances.iterator(); iterator.hasNext();) {
-        	RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
-            if(nodeInstanceId == nodeInstance.getRouteNodeInstanceId()){
-            	niRet = nodeInstance;
-            	break;
+        for (RouteNodeInstance nodeInstance : flattenedNodeInstances)
+        {
+            if (nodeInstanceId.equals(nodeInstance.getRouteNodeInstanceId()))
+            {
+                niRet = nodeInstance;
+                break;
             }
         }
         return niRet;

@@ -16,18 +16,8 @@
  */
 package org.kuali.rice.kew.config;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.config.JAXBConfigImpl;
-import org.kuali.rice.core.config.ModuleConfigurer;
+import org.kuali.rice.core.config.*;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
@@ -39,6 +29,11 @@ import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginRegistryFactory;
 import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
+
+import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 
 /**
@@ -133,7 +128,9 @@ public class KEWConfigurer extends ModuleConfigurer {
 	/**
 	 * TODO Because a lot of our lifecycles live behind the embedded plugin and the KEWConfigurer does not, this is a simple
 	 * measure to load these without having to deal with the removal of the embedded plugin right away.
-	 */
+     * @return Life Cycle
+     * @throws Exception if life cycle not created
+     */
 	protected Lifecycle createEmbeddedLifeCycle() throws Exception {
 		return new EmbeddedLifeCycle();
 	}
@@ -167,7 +164,10 @@ public class KEWConfigurer extends ModuleConfigurer {
 	 * Merges any default configuration into the parent config.  If a property appears in both
 	 * places, precedence is given to the parentConfig.  This allows for our defaults to not
 	 * override any property which has already been defined.
-	 */
+     * @param parentConfig parent configuration
+     * @param defaultConfig original configuration
+     *
+     */
 	protected void mergeDefaultsIntoParentConfig(Config parentConfig, Config defaultConfig) {
 		for (Object keyObj : defaultConfig.getProperties().keySet()) {
 			String key = (String)keyObj;

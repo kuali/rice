@@ -16,15 +16,10 @@
  */
 package org.kuali.rice.kew.docsearch.service;
 
-import java.util.List;
-
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.DocumentSearchResult;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
-import org.kuali.rice.kew.docsearch.SavedSearchResult;
+import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.web.KeyValue;
+
+import java.util.List;
 
 
 /**
@@ -37,7 +32,7 @@ public interface DocumentSearchService {
     /**
      * This method performs a standard document search
      *
-     * @param user - user executing the search
+     * @param principalId - user executing the search
      * @param criteria - criteria to use to search documents
      * @return a {@link DocumentSearchResultComponents} object holding the search result columns and search result rows
      *         represented by a list of {@link DocumentSearchResult} objects
@@ -48,7 +43,7 @@ public interface DocumentSearchService {
      * This method performs a standard document search but uses the value returned by
      * {@link DocSearchCriteriaDTO#getThreshold()} as the maximum search results returned
      *
-     * @param user - user executing the search
+     * @param principalId - user executing the search
      * @param criteria - criteria to use to search documents
      * @return a {@link DocumentSearchResultComponents} object holding the search result columns and search result rows
      *         represented by a list of {@link DocumentSearchResult} objects

@@ -13,13 +13,13 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kns.web.ui.Row;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
-import org.kuali.rice.kns.web.ui.Row;
 
 
 /**
@@ -45,14 +45,14 @@ public interface SearchableAttribute extends Serializable {
     public static final String RANGE_LOWER_BOUND_PROPERTY_PREFIX = "rangeLowerBoundKeyPrefix_";
     public static final String RANGE_UPPER_BOUND_PROPERTY_PREFIX = "rangeUpperBoundKeyPrefix_";
 
-    public static final List SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST = Arrays.asList(new Class[]{
-	    SearchableAttributeStringValue.class, SearchableAttributeFloatValue.class, SearchableAttributeLongValue.class,
-	    SearchableAttributeDateTimeValue.class});
+    public static final List SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST = Arrays.asList(SearchableAttributeStringValue.class, SearchableAttributeFloatValue.class, SearchableAttributeLongValue.class,
+            SearchableAttributeDateTimeValue.class);
 
     /**
      * this gives the xml representation of the attribute; returning a standard java xml object might be a better
      * approach here
      *
+     * @param documentSearchContext
      * @return
      */
     public String getSearchContent(DocumentSearchContext documentSearchContext);
@@ -61,6 +61,7 @@ public interface SearchableAttribute extends Serializable {
      * this will return the loaded data objects for storage in workflow�s database to be related to the document the
      * attributes xml content was loaded with
      *
+     * @param documentSearchContext
      * @return
      */
     public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext);
@@ -68,6 +69,7 @@ public interface SearchableAttribute extends Serializable {
     /**
      * this will return a list of field objects to be rendered in the docsearch interface
      *
+     * @param documentSearchContext
      * @return
      */
     public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext);
@@ -75,7 +77,9 @@ public interface SearchableAttribute extends Serializable {
     /**
      * this will return a list of error objects if the user has made an input error
      *
-     * @return
+     * @param paramMap map
+     * @param searchContext document search context
+     * @return list of workflow attribute validation errors
      */
     public List<WorkflowAttributeValidationError> validateUserSearchInputs(
     		Map<Object, Object> paramMap, DocumentSearchContext searchContext);

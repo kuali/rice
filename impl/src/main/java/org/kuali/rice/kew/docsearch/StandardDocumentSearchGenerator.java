@@ -16,23 +16,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -60,12 +43,15 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.TypeUtils;
+import org.kuali.rice.kns.util.*;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -99,15 +85,15 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     public StandardDocumentSearchGenerator() {
         super();
-        this.searchableAttributes = new ArrayList<SearchableAttribute>();
+        searchableAttributes = new ArrayList<SearchableAttribute>();
     }
 
     /**
-     * @param searchableAttributes
+     * @param searchableAttributes in a list
      */
     public StandardDocumentSearchGenerator(List<SearchableAttribute> searchableAttributes) {
         this();
-        this.searchableAttributes = searchableAttributes;
+        StandardDocumentSearchGenerator.searchableAttributes = searchableAttributes;
     }
 
     public DocSearchCriteriaDTO getCriteria() {
@@ -122,7 +108,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         return searchableAttributes;
     }
 
-    public void setSearchableAttributes(List searchableAttributes) {
+    public void setSearchableAttributes(List<SearchableAttribute> searchableAttributes) {
         this.searchableAttributes = searchableAttributes;
     }
 
@@ -147,9 +133,11 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if (StringUtils.isBlank(name)) {
             throw new IllegalArgumentException("Attempted to find Searchable Attribute with blank Field name '" + name + "'");
         }
-        for (Iterator iter = getCriteria().getSearchableAttributes().iterator(); iter.hasNext();) {
-            SearchAttributeCriteriaComponent critComponent = (SearchAttributeCriteriaComponent) iter.next();
-            if (name.equals(critComponent.getFormKey())) {
+        for (SearchAttributeCriteriaComponent critComponent : getCriteria().getSearchableAttributes())
+        {
+
+            if (name.equals(critComponent.getFormKey()))
+            {
                 return critComponent;
             }
         }
@@ -240,6 +228,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     /**
      * Cleans upper bounds on an entire list of values.
+     * @param stringDates list
+     * @return list of dates
      */
     private static List<String> cleanUpperBounds(List<String> stringDates) {
         List<String> lRet = null;
@@ -256,6 +246,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      * When dealing with upperbound dates, it is a business requirement that if a timestamp isn't already
      * stated append 23:59:59 to the end of the date.  This ensures that you are searching for the entire
      * day.
+     * @param stringDate
+     * @return upper bound date
      */
     private static String cleanUpperBound(String stringDate){
         try{
@@ -394,14 +386,16 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         Map<String, List<SearchAttributeCriteriaComponent>> searchableAttributeRangeComponents = new HashMap<String, List<SearchAttributeCriteriaComponent>>();
 
-        for (Iterator iterator = searchableAttributes.iterator(); iterator.hasNext();) {
-            SearchAttributeCriteriaComponent criteriaComponent = (SearchAttributeCriteriaComponent) iterator.next();
-            if (!criteriaComponent.isSearchable()) {
+        for (SearchAttributeCriteriaComponent criteriaComponent : searchableAttributes)
+        {
+            if (!criteriaComponent.isSearchable())
+            {
                 continue;
             }
 
             SearchableAttributeValue searchAttribute = criteriaComponent.getSearchableAttributeValue();
-            if (searchAttribute == null) {
+            if (searchAttribute == null)
+            {
                 // key given for propertyField must not be on document
                 String errorMsg = "The search attribute value associated with key '"
                         + criteriaComponent.getSavedKey() + "' cannot be found";
@@ -411,28 +405,34 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
             Class clazz = getSearchableAttributeClass(searchAttribute);
 
-            if (criteriaComponent.isRangeSearch()) {
+            if (criteriaComponent.isRangeSearch())
+            {
 
-                if (searchableAttributeRangeComponents.containsKey(criteriaComponent.getSavedKey())) {
+                if (searchableAttributeRangeComponents.containsKey(criteriaComponent.getSavedKey()))
+                {
                     List<SearchAttributeCriteriaComponent> criteriaComponents = searchableAttributeRangeComponents.get(criteriaComponent.getSavedKey());
                     List<SearchAttributeCriteriaComponent> newCriteriaComponents = new ArrayList<SearchAttributeCriteriaComponent>();
                     newCriteriaComponents.addAll(criteriaComponents);
                     newCriteriaComponents.add(criteriaComponent);
                     searchableAttributeRangeComponents.put(criteriaComponent.getSavedKey(), newCriteriaComponents);
-                } else {
+                } else
+                {
                     searchableAttributeRangeComponents.put(criteriaComponent.getSavedKey(),
-                                    Arrays.asList(new SearchAttributeCriteriaComponent[] { criteriaComponent })
-                                    );
+                            Arrays.asList(criteriaComponent)
+                    );
                 }
                 // we need to make sure the dates are converted based on case.
                 // for upperbound
-                if (TypeUtils.isTemporalClass(clazz) && criteriaComponent.isComponentUpperBoundValue()) {
+                if (TypeUtils.isTemporalClass(clazz) && criteriaComponent.isComponentUpperBoundValue())
+                {
                     criteriaComponent.setValue(cleanUpperBound(criteriaComponent.getValue()));
                     criteriaComponent.setValues(cleanUpperBounds(criteriaComponent.getValues()));
                 }
 
-            } else {
-                if (TypeUtils.isTemporalClass(clazz)) {
+            } else
+            {
+                if (TypeUtils.isTemporalClass(clazz))
+                {
                     criteriaComponent.setValue(criteriaComponent.getValue());
                 }
             }
@@ -529,7 +529,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         // last step is to remove all range items from the list because we have
         // just combined them into single elements
-        for (Iterator iterator = searchableAttributes.iterator(); iterator
+        for (Iterator<SearchAttributeCriteriaComponent> iterator = searchableAttributes.iterator(); iterator
                 .hasNext();) {
             SearchAttributeCriteriaComponent criteriaComponent = (SearchAttributeCriteriaComponent) iterator
                     .next();
@@ -625,8 +625,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         String whereClausePrefix = (whereSql.length() == 0) ? whereClausePredicatePrefix : getGeneratedPredicatePrefix(whereSql.length());
 
-        QueryComponent qc = new QueryComponent("",fromSql.toString(),whereClausePrefix + " "+ finalCriteria.buildWhere());
-        return qc;
+        return new QueryComponent("",fromSql.toString(),whereClausePrefix + " "+ finalCriteria.buildWhere());
     }
 
     public QueryComponent generateSearchableAttributeSql(SearchAttributeCriteriaComponent criteriaComponent,String whereSqlStarter,int tableIndex) {
@@ -725,7 +724,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 List<String> newList = new ArrayList<String>();
                 for (String attributeValueEntered : attributeValuesSearched) {
                     newList.add(attributeValueEntered.trim().replace('*', DATABASE_WILDCARD_CHARACTER));
-                    usingWildcards |= (attributeValueEntered.indexOf(DATABASE_WILDCARD_CHARACTER_STRING) != -1);
+                    usingWildcards |= (attributeValueEntered.contains(DATABASE_WILDCARD_CHARACTER_STRING));
                 }
                 attributeValuesSearched = newList;
             } else {
@@ -976,7 +975,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             // the concept of the "executing user" into the doc search api in some way...
             perfLog = new PerformanceLogger();
             SecuritySession securitySession = new SecuritySession(userSession);
-            for (Iterator iterator = docList.iterator(); iterator.hasNext();) {
+            for (Iterator<DocSearchDTO> iterator = docList.iterator(); iterator.hasNext();) {
                 DocSearchDTO docCriteriaDTO = (DocSearchDTO) iterator.next();
                 if (!KEWServiceLocator.getDocumentSecurityService().docSearchAuthorized(userSession, docCriteriaDTO, securitySession)) {
                     iterator.remove();
@@ -1262,12 +1261,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      *             method.
      */
     @Deprecated
-    public QueryComponent generateSqlForSearchableAttributeValue(SearchableAttributeValue attributeValue, List tableAliasComponentNames, String docHeaderTableAlias) {
+    public QueryComponent generateSqlForSearchableAttributeValue(SearchableAttributeValue attributeValue, List<String> tableAliasComponentNames, String docHeaderTableAlias) {
         StringBuffer selectSql = new StringBuffer();
         StringBuffer fromSql = new StringBuffer();
         String currentAttributeTableAlias = "SA_" + attributeValue.getAttributeDataType().toUpperCase();
         fromSql.append(" LEFT OUTER JOIN " + attributeValue.getAttributeTableName() + " " + currentAttributeTableAlias + " ON (" + docHeaderTableAlias + ".DOC_HDR_ID = " + currentAttributeTableAlias + ".DOC_HDR_ID)");
-        for (Iterator iter = tableAliasComponentNames.iterator(); iter.hasNext();) {
+        for (Iterator<String> iter = tableAliasComponentNames.iterator(); iter.hasNext();) {
             String aliasComponentName = (String) iter.next();
             if (aliasComponentName.equalsIgnoreCase(attributeValue.getAttributeDataType())) {
                 selectSql.append(", " + currentAttributeTableAlias + ".KEY_CD as " + aliasComponentName + "_KEY, " + currentAttributeTableAlias + ".VAL as " + aliasComponentName + "_VALUE");

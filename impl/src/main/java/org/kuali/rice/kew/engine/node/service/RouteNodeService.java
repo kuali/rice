@@ -16,18 +16,13 @@
  */
 package org.kuali.rice.kew.engine.node.service;
 
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.engine.node.*;
+import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+
 import java.util.List;
 import java.util.Set;
-
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.engine.node.Branch;
-import org.kuali.rice.kew.engine.node.NodeGraphSearchCriteria;
-import org.kuali.rice.kew.engine.node.NodeGraphSearchResult;
-import org.kuali.rice.kew.engine.node.NodeState;
-import org.kuali.rice.kew.engine.node.Process;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 
 
 /**
@@ -110,7 +105,7 @@ public interface RouteNodeService {
      * @param climbHierarchy whether to include the parents nodes if the passed in DocumentType contains no nodes
      * @return List or empty List
      */
-    public List getFlattenedNodes(DocumentType documentType, boolean climbHierarchy);
+    public List<RouteNode> getFlattenedNodes(DocumentType documentType, boolean climbHierarchy);
     public List getFlattenedNodes(Process process);
     
     /**

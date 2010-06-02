@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.config;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -44,6 +36,9 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
+
+import javax.xml.namespace.QName;
+import java.util.*;
 
 
 /**
@@ -143,11 +138,7 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 	    proxyFactory.setServiceInterface(serviceInterface);
 	    String secureProp = ConfigContext.getCurrentContextConfig().getProperty(secureEndpointParam);
 	    Boolean secureIt = null;
-	    if (secureProp == null) {
-		secureIt = true;
-	    } else {
-		secureIt = new Boolean(secureProp);
-	    }
+        secureIt = secureProp == null || Boolean.valueOf(secureProp);
 	    KSBHttpInvokerRequestExecutor executor = new KSBHttpInvokerRequestExecutor(getHttpClient());
 	    executor.setSecure(secureIt);
 	    proxyFactory.setHttpInvokerRequestExecutor(executor);

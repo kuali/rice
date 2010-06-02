@@ -15,12 +15,11 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import org.kuali.rice.kew.util.Utilities;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.kuali.rice.kew.util.Utilities;
 
 
 /**
@@ -76,9 +75,10 @@ public class StandardDocSearchCriteriaFieldContainer implements java.io.Serializ
 	}
 
     public boolean isHidden() {
-        for (Iterator iterator = fields.iterator(); iterator.hasNext();) {
-            StandardSearchCriteriaField field = (StandardSearchCriteriaField) iterator.next();
-            if (!field.isHidden()) {
+        for (StandardSearchCriteriaField field1 : fields)
+        {
+            if (!field1.isHidden())
+            {
                 return false;
             }
         }
@@ -86,10 +86,11 @@ public class StandardDocSearchCriteriaFieldContainer implements java.io.Serializ
     }
     
     public void hideFieldsIfNecessary(Set<String> hiddenFieldKeys) {
-        for (Iterator iterator = fields.iterator(); iterator.hasNext();) {
-            StandardSearchCriteriaField field = (StandardSearchCriteriaField) iterator.next();
-            if ( (hiddenFieldKeys.contains(getFieldKey())) || (hiddenFieldKeys.contains(field.getKey())) ) {
-                field.setHidden(true);
+        for (StandardSearchCriteriaField field1 : fields)
+        {
+            if ((hiddenFieldKeys.contains(getFieldKey())) || (hiddenFieldKeys.contains(field1.getKey())))
+            {
+                field1.setHidden(true);
             }
         }
     }

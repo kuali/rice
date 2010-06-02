@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.core.jdbc;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jdbc.criteria.Criteria;
@@ -32,12 +23,17 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.TypeUtils;
+import org.kuali.rice.kns.util.*;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
+
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.

@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -32,6 +24,8 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectBase;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.util.*;
 
 
 /**
@@ -508,55 +502,67 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         }
 
         Set<String> alreadyAddedRangeAttributes = new HashSet<String>();
-        for (Iterator iter = searchableAttributes.iterator(); iter.hasNext();) {
-            SearchAttributeCriteriaComponent searchAttributeEntry = (SearchAttributeCriteriaComponent) iter.next();
-            if (!Utilities.isEmpty(searchAttributeEntry.getValue())) {
+        for (SearchAttributeCriteriaComponent searchableAttribute : searchableAttributes)
+        {
+            if (!Utilities.isEmpty(searchableAttribute.getValue()))
+            {
                 // single value entered
-                if (searchAttributeEntry.isRangeSearch()) {
+                if (searchableAttribute.isRangeSearch())
+                {
                     // if search attribute criteria component is member of a range we must find it's potential matching partner to build the string
-                    if (!alreadyAddedRangeAttributes.contains(searchAttributeEntry.getSavedKey())) {
+                    if (!alreadyAddedRangeAttributes.contains(searchableAttribute.getSavedKey()))
+                    {
                         // the key has not been processed yet
-                        String lowerSearchAttributeRangeValue = (searchAttributeEntry.getFormKey().startsWith(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) ? searchAttributeEntry.getValue() : null;
-                        String upperSearchAttributeRangeValue = (searchAttributeEntry.getFormKey().startsWith(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) ? searchAttributeEntry.getValue() : null;
+                        String lowerSearchAttributeRangeValue = (searchableAttribute.getFormKey().startsWith(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute.getValue() : null;
+                        String upperSearchAttributeRangeValue = (searchableAttribute.getFormKey().startsWith(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute.getValue() : null;
                         // loop through the attributes to find this search attribute criteria components potential match
-                        for (Iterator iterator = searchableAttributes.iterator(); iterator.hasNext();) {
-                            SearchAttributeCriteriaComponent testSearchCriteria = (SearchAttributeCriteriaComponent) iterator.next();
-                            if ((testSearchCriteria.getSavedKey().equals(searchAttributeEntry.getSavedKey())) && (!(testSearchCriteria.getFormKey().equals(searchAttributeEntry.getFormKey())))) {
+                        for (SearchAttributeCriteriaComponent searchableAttribute1 : searchableAttributes)
+                        {
+                            if ((searchableAttribute1.getSavedKey().equals(searchableAttribute.getSavedKey())) && (!(searchableAttribute1.getFormKey().equals(searchableAttribute.getFormKey()))))
+                            {
                                 // we found the other side of the range
-                                if (lowerSearchAttributeRangeValue == null) {
-                                    lowerSearchAttributeRangeValue = (testSearchCriteria.getFormKey().startsWith(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) ? testSearchCriteria.getValue() : null;
+                                if (lowerSearchAttributeRangeValue == null)
+                                {
+                                    lowerSearchAttributeRangeValue = (searchableAttribute1.getFormKey().startsWith(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute1.getValue() : null;
                                 }
-                                if (upperSearchAttributeRangeValue == null) {
-                                    upperSearchAttributeRangeValue = (testSearchCriteria.getFormKey().startsWith(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) ? testSearchCriteria.getValue() : null;
+                                if (upperSearchAttributeRangeValue == null)
+                                {
+                                    upperSearchAttributeRangeValue = (searchableAttribute1.getFormKey().startsWith(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute1.getValue() : null;
                                 }
                                 break;
                             }
                         }
                         // we should have valid values for the 'to' and 'from' range field values by now
-                        abbreviatedString.append(searchAttributeEntry.getSavedKey()).append("=").append(getRangeString(lowerSearchAttributeRangeValue, upperSearchAttributeRangeValue)).append(";");
-                        alreadyAddedRangeAttributes.add(searchAttributeEntry.getSavedKey());
+                        abbreviatedString.append(searchableAttribute.getSavedKey()).append("=").append(getRangeString(lowerSearchAttributeRangeValue, upperSearchAttributeRangeValue)).append(";");
+                        alreadyAddedRangeAttributes.add(searchableAttribute.getSavedKey());
                     }
-                } else {
-                    abbreviatedString.append(searchAttributeEntry.getSavedKey()).append("=").append(searchAttributeEntry.getValue()).append(";");
+                } else
+                {
+                    abbreviatedString.append(searchableAttribute.getSavedKey()).append("=").append(searchableAttribute.getValue()).append(";");
                 }
-            } else if (!Utilities.isEmpty(searchAttributeEntry.getValues())) {
+            } else if (!Utilities.isEmpty(searchableAttribute.getValues()))
+            {
                 // multiple values entered
                 StringBuffer tempAbbreviatedString = new StringBuffer();
-                tempAbbreviatedString.append(searchAttributeEntry.getSavedKey()).append("=");
+                tempAbbreviatedString.append(searchableAttribute.getSavedKey()).append("=");
                 boolean firstValue = true;
-                for (Iterator iterator = searchAttributeEntry.getValues().iterator(); iterator.hasNext();) {
-                    String value = (String) iterator.next();
-                    if (StringUtils.isNotBlank(value)) {
-                        if (firstValue) {
+                for (String value : searchableAttribute.getValues())
+                {
+                    if (StringUtils.isNotBlank(value))
+                    {
+                        if (firstValue)
+                        {
                             tempAbbreviatedString.append(value);
                             firstValue = false;
-                        } else {
+                        } else
+                        {
                             tempAbbreviatedString.append(" or ").append(value);
                         }
                     }
                 }
                 String testString = tempAbbreviatedString.toString().replaceAll("=", "").replaceAll(" or ", "");
-                if (testString.trim().length() > 0) {
+                if (testString.trim().length() > 0)
+                {
                     abbreviatedString.append(tempAbbreviatedString).append(";");
                 }
             }

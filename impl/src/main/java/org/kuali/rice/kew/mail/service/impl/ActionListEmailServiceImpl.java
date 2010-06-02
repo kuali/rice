@@ -16,15 +16,6 @@
  */
 package org.kuali.rice.kew.mail.service.impl;
 
-import java.text.FieldPosition;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -34,13 +25,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.mail.CustomEmailAttribute;
-import org.kuali.rice.kew.mail.DailyEmailJob;
-import org.kuali.rice.kew.mail.EmailBody;
-import org.kuali.rice.kew.mail.EmailFrom;
-import org.kuali.rice.kew.mail.EmailSubject;
-import org.kuali.rice.kew.mail.EmailTo;
-import org.kuali.rice.kew.mail.WeeklyEmailJob;
+import org.kuali.rice.kew.mail.*;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -53,12 +38,11 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.quartz.CronTrigger;
-import org.quartz.JobDetail;
-import org.quartz.ObjectAlreadyExistsException;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
+import org.quartz.*;
+
+import java.text.FieldPosition;
+import java.text.MessageFormat;
+import java.util.*;
 
 
 /**
@@ -378,7 +362,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 		String docHandlerUrl = actionItem.getRouteHeader().getDocumentType()
 				.getDocHandlerUrl();
 		if (StringUtils.isNotBlank(docHandlerUrl)) {
-    		if (docHandlerUrl.indexOf("?") == -1) {
+    		if (!docHandlerUrl.contains("?")) {
     			docHandlerUrl += "?";
     		} else {
     			docHandlerUrl += "&";

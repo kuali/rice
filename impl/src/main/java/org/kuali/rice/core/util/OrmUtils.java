@@ -15,22 +15,21 @@
  */
 package org.kuali.rice.core.util;
 
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
+import org.kuali.rice.core.jpa.annotations.Sequence;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.MappedSuperclass;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.MappedSuperclass;
-
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.database.platform.DatabasePlatform;
-import org.kuali.rice.core.jpa.annotations.Sequence;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 
 /**
  * A utility for common ORM related functions.
@@ -120,7 +119,7 @@ public class OrmUtils {
     		return false;
     	}
     	if (!cache.containsKey(clazz.getName())) {
-    		if (clazz.getName().indexOf("EnhancerByCGLIB") > -1) {
+    		if (clazz.getName().contains("EnhancerByCGLIB")) {
     			try {
     				// Strip a proxy if found
     				clazz = Class.forName(clazz.getName().substring(0, clazz.getName().indexOf("$$EnhancerByCGLIB")));

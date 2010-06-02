@@ -71,7 +71,7 @@ public class ConfigLogger {
 	    List<String> l = Arrays.asList(PUBLIC_KEYS);
 	    
         for (String[] secretKey : SECRET_KEYS) {
-            if (name.indexOf(secretKey[0]) > -1 && !l.contains(name)) {
+            if (name.contains(secretKey[0]) && !l.contains(name)) {
                 safeValue = secretKey[1];
                 break;
             }   

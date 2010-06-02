@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kew.mail.service.impl;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -35,6 +31,10 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 
 
 /**
@@ -186,7 +186,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 		String docHandlerUrl = actionItem.getRouteHeader().getDocumentType()
 				.getDocHandlerUrl();
 		if (StringUtils.isNotBlank(docHandlerUrl)) {
-    		if (docHandlerUrl.indexOf("?") == -1) {
+    		if (!docHandlerUrl.contains("?")) {
     			docHandlerUrl += "?";
     		} else {
     			docHandlerUrl += "&";

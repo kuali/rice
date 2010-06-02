@@ -15,32 +15,9 @@
  */
 package org.kuali.rice.core.config;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Random;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.UnmarshallerHandler;
-import javax.xml.parsers.SAXParserFactory;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-
 import org.kuali.rice.core.config.xsd.Param;
 import org.kuali.rice.core.util.ImmutableProperties;
 import org.kuali.rice.core.util.RiceUtilities;
@@ -49,6 +26,16 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.helpers.XMLFilterImpl;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.UnmarshallerHandler;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This implementation of the Config interface uses JAXB to parse the config file and
@@ -453,7 +440,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     	// Look for a property in the map first and use that.  If system override is true
     	// then it will get overridden during the resolve phase.  If the value is null
     	// we need to check the system now so we don't throw an error.
-    	if(value.indexOf("${"+ name +"}") != -1) {
+    	if(value.contains("${" + name + "}")) {
     		if( (temporary = rawProperties.getProperty(name)) == null ) {
     			temporary = System.getProperty(name);
     		}
@@ -486,7 +473,7 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     					String key = (String)o;
     					String unResolved = rawProperties.getProperty(key);
     					
-    					if(unResolved.indexOf("$") != -1 ){
+    					if(unResolved.contains("$")){
     						LOG.info("Resolved Config Override: " + key + "(" + unResolved +")=[" + ConfigLogger.getDisplaySafeValue(key,oldResolved) +"]->[" + ConfigLogger.getDisplaySafeValue(key,resolved) +"]");     					
     					}else{
     						LOG.info("Resolved Config Override: " + key + "=[" + ConfigLogger.getDisplaySafeValue(key,oldResolved) +"]->[" + ConfigLogger.getDisplaySafeValue(key,resolved) +"]"); 

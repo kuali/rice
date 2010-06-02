@@ -16,21 +16,14 @@
 
 package org.kuali.rice.kns.service.impl;
 
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
+import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
+import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.mapper.Mapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
@@ -38,18 +31,14 @@ import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.XmlObjectSerializerService;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
-import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
-import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
-import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.mapper.Mapper;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -117,7 +106,7 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
             super(mapper, reflectionProvider);
         }
         public boolean canConvert(Class clazz) {
-            return clazz.getName().indexOf("CGLIB") > -1;
+            return clazz.getName().contains("CGLIB");
         }
 
         public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {

@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.kew.help.service.impl;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jdom.Element;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -33,6 +29,10 @@ import org.kuali.rice.kew.xml.export.HelpEntryXmlExporter;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Transactional
@@ -80,7 +80,7 @@ public class HelpServiceImpl implements HelpService {
 
         if (helpEntry.getHelpKey() == null || "".equals(helpEntry.getHelpKey().trim())) {
             GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_EMPTY);
-        } else if (helpEntry.getHelpKey().indexOf("'") >= 0) {
+        } else if (helpEntry.getHelpKey().contains("'")) {
             GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_ILLEGAL, "'");
         } else {
             helpEntry.setHelpKey(helpEntry.getHelpKey().trim());
@@ -117,7 +117,7 @@ public class HelpServiceImpl implements HelpService {
 
         if (helpEntry.getHelpKey() == null || "".equals(helpEntry.getHelpKey().trim())) {
             GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_EMPTY);
-        } else if (helpEntry.getHelpKey().indexOf("'") >= 0){
+        } else if (helpEntry.getHelpKey().contains("'")){
             GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_ILLEGAL, "'");
         } else {
             helpEntry.setHelpKey(helpEntry.getHelpKey().trim());

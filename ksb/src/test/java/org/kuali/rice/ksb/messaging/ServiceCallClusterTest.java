@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
@@ -29,6 +24,10 @@ import org.kuali.rice.ksb.messaging.remotedservices.TestServiceInterface;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -78,9 +77,9 @@ public class ServiceCallClusterTest extends KSBTestCase {
 		List<BAMTargetEntry> bams = KSBServiceLocator.getBAMService().getCallsForService(serviceName);
 		for (BAMTargetEntry bam : bams) {
 			System.out.println("Found bam service URL of " + bam.getServiceURL());
-			if (bam.getServiceURL().indexOf(server1Name) > -1) {
+			if (bam.getServiceURL().contains(server1Name)) {
 				server1Called = true;
-			} else if (bam.getServiceURL().indexOf(server2Name) > -1) {
+			} else if (bam.getServiceURL().contains(server2Name)) {
 				server2Called = true;
 			}
 		}
@@ -109,9 +108,9 @@ public class ServiceCallClusterTest extends KSBTestCase {
 		//verify clustering is happening
 		List<BAMTargetEntry> bams = KSBServiceLocator.getBAMService().getCallsForService(serviceName);
 		for (BAMTargetEntry bam : bams) {
-			if (bam.getServiceURL().indexOf(server1Name) > -1) {
+			if (bam.getServiceURL().contains(server1Name)) {
 				server1Called = true;
-			} else if (bam.getServiceURL().indexOf(server2Name) > -1) {
+			} else if (bam.getServiceURL().contains(server2Name)) {
 				server2Called = true;
 			}
 		}
@@ -147,9 +146,9 @@ public class ServiceCallClusterTest extends KSBTestCase {
 		
 		List<BAMTargetEntry> bams = KSBServiceLocator.getBAMService().getCallsForService(serviceName);
 		for (BAMTargetEntry bam : bams) {
-			if (bam.getServiceURL().indexOf(server1Name) > -1 && bam.getServerInvocation()) {
+			if (bam.getServiceURL().contains(server1Name) && bam.getServerInvocation()) {
 				server1Called = true;
-			} else if (bam.getServiceURL().indexOf(server2Name) > -1) {
+			} else if (bam.getServiceURL().contains(server2Name)) {
 				server2Called = true;
 			}
 		}
@@ -185,9 +184,9 @@ public class ServiceCallClusterTest extends KSBTestCase {
 		//verify clustering is happening through bam
 		List<BAMTargetEntry> bams = KSBServiceLocator.getBAMService().getCallsForService(serviceName);
 		for (BAMTargetEntry bam : bams) {
-			if (bam.getServerInvocation() && bam.getServiceURL().indexOf(server1Name) > -1) {
+			if (bam.getServerInvocation() && bam.getServiceURL().contains(server1Name)) {
 				server1Called = true;
-			} else if (bam.getServerInvocation() && bam.getServiceURL().indexOf(server2Name) > -1) {
+			} else if (bam.getServerInvocation() && bam.getServiceURL().contains(server2Name)) {
 				server2Called = true;
 			}
 		}
@@ -217,9 +216,9 @@ public class ServiceCallClusterTest extends KSBTestCase {
 		//verify clustering is happening
 		List<BAMTargetEntry> bams = KSBServiceLocator.getBAMService().getCallsForService(serviceName);
 		for (BAMTargetEntry bam : bams) {
-			if (bam.getServiceURL().indexOf(server1Name) > -1) {
+			if (bam.getServiceURL().contains(server1Name)) {
 				server1Called = true;
-			} else if (bam.getServiceURL().indexOf(testHarness) > -1) {
+			} else if (bam.getServiceURL().contains(testHarness)) {
 				localCalled = true;
 			}
 		}

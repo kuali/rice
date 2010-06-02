@@ -15,20 +15,7 @@
  */
 package org.kuali.rice.test;
 
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.sql.DataSource;
-
 import junit.framework.Assert;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.apache.commons.lang.time.StopWatch;
@@ -42,6 +29,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Lifecycle class to clean up the database for use in testing.
@@ -225,15 +219,15 @@ public class ClearDatabaseLifecycle extends BaseLifecycle {
     }
 
     private boolean isUsingDerby(DatabaseMetaData metaData) throws SQLException {
-        return metaData.getDriverName().toLowerCase().indexOf("derby") > -1;
+        return metaData.getDriverName().toLowerCase().contains("derby");
     }
 
     private boolean isUsingOracle(DatabaseMetaData metaData) throws SQLException {
-        return metaData.getDriverName().toLowerCase().indexOf("oracle") > -1;
+        return metaData.getDriverName().toLowerCase().contains("oracle");
     }
 
     private boolean isUsingMySQL(DatabaseMetaData metaData) throws SQLException {
-        return metaData.getDriverName().toLowerCase().indexOf("mysql") > -1;
+        return metaData.getDriverName().toLowerCase().contains("mysql");
     }
 
     

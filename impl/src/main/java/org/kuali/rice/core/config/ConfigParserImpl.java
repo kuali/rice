@@ -185,7 +185,7 @@ public class ConfigParserImpl implements ConfigParser {
                 // what is this...we don't follow a string with this substring in it? i.e. if the value does not
                 // resolve then don't try to follow it (it won't find it anyway; this is the case for any path
                 // with unresolved params...)?
-                if (value.indexOf(ALTERNATE_BUILD_LOCATION_KEY) < 0) {
+                if (!value.contains(ALTERNATE_BUILD_LOCATION_KEY)) {
                     parse(params, value, subs, depth + 1);
                 }
             } else {

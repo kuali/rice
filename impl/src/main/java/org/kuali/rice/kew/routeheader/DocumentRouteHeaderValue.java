@@ -15,29 +15,6 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -78,6 +55,10 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 
@@ -663,7 +644,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
      */
     public boolean isValidActionToTake(String actionCd) {
         String actions = (String) legalActions.get(docRouteStatus);
-        if (actions.indexOf(actionCd) == -1) {
+        if (!actions.contains(actionCd)) {
             return false;
         } else {
             return true;
@@ -671,7 +652,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     }
 
     public boolean isValidStatusChange(String newStatus) {
-    	return ((String) stateTransitionMap.get(getDocRouteStatus())).indexOf(newStatus) >= 0;
+    	return ((String) stateTransitionMap.get(getDocRouteStatus())).contains(newStatus);
     }
 
     public void setRouteStatus(String newStatus, boolean finalState) throws InvalidActionTakenException {
@@ -679,7 +660,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
             // only modify the status mod date if the status actually changed
             setRouteStatusDate(new Timestamp(System.currentTimeMillis()));
         }
-        if (((String) stateTransitionMap.get(getDocRouteStatus())).indexOf(newStatus) >= 0) {
+        if (((String) stateTransitionMap.get(getDocRouteStatus())).contains(newStatus)) {
             LOG.debug("changing status");
             setDocRouteStatus(newStatus);
         } else {

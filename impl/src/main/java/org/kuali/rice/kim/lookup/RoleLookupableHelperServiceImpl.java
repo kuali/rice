@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.KeyLabelPair;
@@ -53,6 +44,8 @@ import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.util.*;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -354,7 +347,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     	} else{
     		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
     	}
-		if (StringUtils.isNotBlank(href) && href.indexOf(ROLE_ID_URL_KEY)!=-1) {
+		if (StringUtils.isNotBlank(href) && href.contains(ROLE_ID_URL_KEY)) {
 			int idx1 = href.indexOf("&"+KimConstants.PrimaryKeyConstants.ROLE_ID+"=");
 		    int idx2 = href.indexOf("&", idx1+1);
 		    if (idx2 < 0) {

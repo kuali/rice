@@ -276,7 +276,7 @@ public class SqlBuilder {
 			criteria.lt(propertyName, parseDate(cleanDate(propertyValue)), propertyType);
 		} else {
 			String sDate = convertSimpleDateToDateRange(cleanDate(propertyValue));
-			if(sDate.indexOf(KNSConstants.BETWEEN_OPERATOR) != -1){
+			if(sDate.contains(KNSConstants.BETWEEN_OPERATOR)){
 				addDateRangeCriteria(propertyName, sDate, criteria, propertyType);
 			}else{
 				criteria.eq(propertyName, parseDate(sDate), propertyType);

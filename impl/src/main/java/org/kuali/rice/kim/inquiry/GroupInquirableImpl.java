@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.kim.inquiry;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -34,6 +28,8 @@ import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.UrlFactory;
+
+import java.util.*;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -79,7 +75,7 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 	public String getCustomGroupInquiryHref(String href){
         Properties parameters = new Properties();
         String hrefPart = "";
-		if (StringUtils.isNotBlank(href) && href.indexOf("&"+KimConstants.PrimaryKeyConstants.GROUP_ID+"=")!=-1) {
+		if (StringUtils.isNotBlank(href) && href.contains("&" + KimConstants.PrimaryKeyConstants.GROUP_ID + "=")) {
 			int idx1 = href.indexOf("&"+KimConstants.PrimaryKeyConstants.GROUP_ID+"=");
 		    int idx2 = href.indexOf("&", idx1+1);
 		    if (idx2 < 0) {

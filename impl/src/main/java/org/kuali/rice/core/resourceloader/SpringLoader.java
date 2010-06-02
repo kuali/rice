@@ -16,16 +16,14 @@
  */
 package org.kuali.rice.core.resourceloader;
 
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
-import org.kuali.rice.core.resourceloader.ServiceLocator;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import javax.xml.namespace.QName;
+import java.util.Set;
 
 
 /**
@@ -100,7 +98,7 @@ public final class SpringLoader extends BaseLifecycle implements ServiceLocator 
 
         LOG.info("Initializing Spring from resources: ");
         try {
-            if ( -1 == getContextFiles().indexOf( SPRING_SEPARATOR_CHARACTER ) ) {
+            if (!getContextFiles().contains(SPRING_SEPARATOR_CHARACTER)) {
                 LOG.info( getContextFiles() );
                 appContext = new ClassPathXmlApplicationContext(getContextFiles());
             } else {

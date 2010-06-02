@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kim.util;
 
-import java.security.GeneralSecurityException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -38,6 +33,11 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
+
+import java.security.GeneralSecurityException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill
@@ -198,8 +198,8 @@ public class KimCommonUtils {
 	public static String getPathWithKimContext(String path, String kimActionName){
 		String kimContext = KimConstants.KimUIConstants.KIM_APPLICATION+KimConstants.KimUIConstants.URL_SEPARATOR;
 		String kimContextParameterized = KimConstants.KimUIConstants.KIM_APPLICATION+KimConstants.KimUIConstants.PARAMETERIZED_URL_SEPARATOR;
-    	if(path.indexOf(kimActionName)!=-1 && path.indexOf(kimContext+kimActionName)==-1
-    			&& path.indexOf(kimContextParameterized+kimActionName)==-1)
+    	if(path.contains(kimActionName) && !path.contains(kimContext + kimActionName)
+    			&& !path.contains(kimContextParameterized + kimActionName))
     		path = path.replace(kimActionName, kimContext+kimActionName);
     	return path;
 	}

@@ -17,11 +17,6 @@
 
 package org.kuali.rice.kew.mail.service.impl;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
@@ -33,6 +28,11 @@ import org.kuali.rice.kew.mail.EmailContent;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
+
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 
 
 /**
@@ -55,7 +55,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
     public EmailContent generateImmediateReminder(Person person, ActionItem actionItem, DocumentType documentType) {
         String docHandlerUrl = actionItem.getRouteHeader().getDocumentType().getDocHandlerUrl();
         if (StringUtils.isNotBlank(docHandlerUrl)) {
-            if (docHandlerUrl.indexOf("?") == -1) {
+            if (!docHandlerUrl.contains("?")) {
                 docHandlerUrl += "?";
             } else {
                 docHandlerUrl += "&";

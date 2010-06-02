@@ -143,7 +143,7 @@ class HierarchicalConfigParser {
                     throw new RuntimeException(e);
                 }
                 if (name.equals("config.location")) {
-                    if (contentValue.indexOf(ALTERNATE_BUILD_LOCATION_KEY) < 0) {
+                    if (!contentValue.contains(ALTERNATE_BUILD_LOCATION_KEY)) {
                         parse(contentValue, fileProperties, false);
                     }
                 } else {
@@ -207,7 +207,7 @@ class HierarchicalConfigParser {
     private String resolvePropertyTokens(String content, Map<String, Object> properties) {
         // TODO: consider implementing with iteration instead of recursion, and using the jakarta commons support for
         // parameter expansion
-        if (content.indexOf(VAR_START_TOKEN) > -1) {
+        if (content.contains(VAR_START_TOKEN)) {
             int tokenStart = content.indexOf(VAR_START_TOKEN);
             int tokenEnd = content.indexOf(VAR_END_TOKEN, tokenStart + VAR_START_TOKEN.length());
             if (tokenEnd == -1) {
@@ -248,7 +248,7 @@ class HierarchicalConfigParser {
             }
 
             if (tokenValue == null) {
-                if (token.indexOf(ALTERNATE_BUILD_LOCATION_KEY) > -1) {
+                if (token.contains(ALTERNATE_BUILD_LOCATION_KEY)) {
                     return token;
                 }
                 LOG.debug("Did not find token " + token + " in local properties.  Looking in parent.");

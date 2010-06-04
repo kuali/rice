@@ -21,10 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
-import org.xml.sax.helpers.XMLFilterImpl;
 
 /**
  * This XML Filter is used to rename elements of concern in a pre-1.0.3 Group XML document

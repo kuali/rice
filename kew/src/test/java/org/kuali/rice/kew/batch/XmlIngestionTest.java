@@ -17,22 +17,18 @@
 package org.kuali.rice.kew.batch;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
+import org.junit.Assert;
 import org.junit.Test;
-import org.kuali.rice.kew.batch.XmlPollerServiceImpl;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.FileCopyUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 
 /**
@@ -60,15 +56,17 @@ public class XmlIngestionTest extends KEWTestCase {
     private void deleteContentsOfDir(File dir, int depth) {
         File[] files = dir.listFiles();
         if (files == null) return;
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isDirectory() && depth > 0) {
+        for (File file : files)
+        {
+            if (file.isDirectory() && depth > 0)
+            {
                 // decrement depth
                 // to avoid the possibility of inadvertent
                 // recursive delete!
-                deleteContentsOfDir(files[i], depth - 1);
+                deleteContentsOfDir(file, depth - 1);
             }
-            boolean success = files[i].delete();
-            LOG.info("deleting: " + files[i] + "..." + (success ? "succeeded" : "failed"));
+            boolean success = file.delete();
+            LOG.info("deleting: " + file + "..." + (success ? "succeeded" : "failed"));
         }
     }
 
@@ -106,6 +104,7 @@ public class XmlIngestionTest extends KEWTestCase {
      * TODO: beef this up
      * need a reliable way to test if the file arrived in the right date-stamped
      * subdirectory (maybe just pick the last, or first directory?)
+     * @throws java.io.IOException
      */
     @Test public void testXmlIngestion() throws IOException {
         XmlPollerServiceImpl poller = new XmlPollerServiceImpl();
@@ -117,22 +116,22 @@ public class XmlIngestionTest extends KEWTestCase {
 
         Properties filesToIngest = new Properties();
         filesToIngest.load(getClass().getResourceAsStream("XmlIngestionTest.txt"));
-        List pendingFiles = new LinkedList();
-        List shouldPass = new LinkedList();
-        List shouldFail = new LinkedList();
-        Iterator entries = filesToIngest.entrySet().iterator();
+        List<File> pendingFiles = new LinkedList<File>();
+        List<File> shouldPass = new LinkedList<File>();
+        List<File> shouldFail = new LinkedList<File>();
+        Iterator<Map.Entry<Object,Object>> entries = filesToIngest.entrySet().iterator();
         int i = 0;
         while (entries.hasNext()) {
-            Map.Entry entry = (Map.Entry) entries.next();
+            Map.Entry<?, ?> entry = entries.next();
             String filePath = entry.getKey().toString();
             filePath = filePath.replace("${"+TestUtils.BASEDIR_PROP+"}", TestUtils.getBaseDir());
             File testFile = new File(filePath);
             File pendingDir = new File(PENDING_DIR + "/TestDoc-" + i);
-            pendingDir.mkdirs();
+            Assert.assertTrue(pendingDir.mkdirs());
             assertTrue(pendingDir.isDirectory());
             File pending = new File(pendingDir, testFile.getName());
             pendingFiles.add(pending);
-            if (Boolean.valueOf(entry.getValue().toString()).booleanValue()) {
+            if (Boolean.valueOf(entry.getValue().toString())) {
                 shouldPass.add(pending);
             } else {
                 shouldFail.add(pending);
@@ -146,9 +145,9 @@ public class XmlIngestionTest extends KEWTestCase {
         poller.run();
 
         // check that all files have been processed
-        Iterator it = pendingFiles.iterator();
+        Iterator<File> it = pendingFiles.iterator();
         while (it.hasNext()) {
-            File pending = (File) it.next();
+            File pending = it.next();
             assertTrue(!pending.isFile());
         }
 
@@ -157,14 +156,14 @@ public class XmlIngestionTest extends KEWTestCase {
         // loaded files should be in the loaded dir...
         it = shouldPass.iterator();
         while (it.hasNext()) {
-            File file = (File) it.next();
+            File file = it.next();
             assertTrue("Loaded file " + file + " was not moved to loaded directory " + LOADED_DIR, verifyFileExists(LOADED_DIR, file));
             assertFalse("Loaded file " + file + " was moved to problem directory " + PROBLEM_DIR, verifyFileExists(PROBLEM_DIR, file));
         }
         // and problem files should be in the problem dir...
         it = shouldFail.iterator();
         while (it.hasNext()) {
-            File file = (File) it.next();
+            File file = it.next();
             assertTrue("Problem file " + file + " was not moved to problem directory" + PROBLEM_DIR, verifyFileExists(PROBLEM_DIR, file));
             assertFalse("Problem file " + file + " was moved to loaded directory" + LOADED_DIR, verifyFileExists(LOADED_DIR, file));
         }

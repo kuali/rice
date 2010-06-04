@@ -61,16 +61,20 @@ public interface RouteNodeService {
     /**
      * Retrieves the active node instances of the given Document.  The active node instances
      * represent where in the route path the document is currently located.
+     * @param documentId of the document
+     * @return list of route node instances
      */
-    public List getActiveNodeInstances(Long documentId);
+    public List<RouteNodeInstance> getActiveNodeInstances(Long documentId);
     
-    public List getActiveNodeInstances(DocumentRouteHeaderValue document);
+    public List<RouteNodeInstance> getActiveNodeInstances(DocumentRouteHeaderValue document);
     
     /**
      * Retrieves the terminal node instances of the given Document.  The terminal node instances
      * are nodes in the route path which are both inactive and complete and have no next nodes
      * in their path.  Terminal node instances will typically only exist on documents which are no
      * longer Enroute.
+     * @param documentId for the given Document
+     * @return list of terminal node instances
      */
     public List getTerminalNodeInstances(Long documentId);
     
@@ -106,14 +110,17 @@ public interface RouteNodeService {
      * @return List or empty List
      */
     public List<RouteNode> getFlattenedNodes(DocumentType documentType, boolean climbHierarchy);
-    public List getFlattenedNodes(Process process);
+    public List<RouteNode> getFlattenedNodes(Process process);
     
     /**
      * Returns a flattened list of RouteNodeInstances on the given document.  If the includeProcesses flag is
      * true than this method includes process RouteNodeInstances, otherwise they are excluded.
      * which are processes.
+     * @param document route header value
+     * @param includeProcesses flag
+     * @return list of routeNodeInstances
      */
-    public List getFlattenedNodeInstances(DocumentRouteHeaderValue document, boolean includeProcesses);
+    public List<RouteNodeInstance> getFlattenedNodeInstances(DocumentRouteHeaderValue document, boolean includeProcesses);
     
     public NodeGraphSearchResult searchNodeGraph(NodeGraphSearchCriteria criteria);
     
@@ -123,7 +130,7 @@ public interface RouteNodeService {
      * @param nodeName
      * @return
      */
-    public List getActiveNodeInstances(DocumentRouteHeaderValue document, String nodeName);
+    public List<RouteNodeInstance> getActiveNodeInstances(DocumentRouteHeaderValue document, String nodeName);
         public void deleteByRouteNodeInstance(RouteNodeInstance routeNodeInstance);
     public void deleteNodeStateById(Long nodeStateId);
     public void deleteNodeStates(List statesToBeDeleted);

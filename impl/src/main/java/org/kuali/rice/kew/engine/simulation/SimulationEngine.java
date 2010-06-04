@@ -16,20 +16,6 @@
  */
 package org.kuali.rice.kew.engine.simulation;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -38,21 +24,9 @@ import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.engine.ActivationContext;
-import org.kuali.rice.kew.engine.EngineState;
-import org.kuali.rice.kew.engine.ProcessContext;
-import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.engine.StandardWorkflowEngine;
-import org.kuali.rice.kew.engine.node.Branch;
-import org.kuali.rice.kew.engine.node.NoOpNode;
-import org.kuali.rice.kew.engine.node.NodeJotter;
-import org.kuali.rice.kew.engine.node.NodeType;
+import org.kuali.rice.kew.engine.*;
+import org.kuali.rice.kew.engine.node.*;
 import org.kuali.rice.kew.engine.node.Process;
-import org.kuali.rice.kew.engine.node.RequestsNode;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.exception.DocumentSimulatedRouteException;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -64,6 +38,10 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
+
+import java.io.*;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 /**
@@ -195,14 +173,14 @@ public class SimulationEngine extends StandardWorkflowEngine {
 
     private boolean isNodeNameInPath(String nodeName, RouteNodeInstance nodeInstance) {
         boolean isInPath = false;
-        for (Iterator iterator = nodeInstance.getRouteNode().getNextNodes().iterator(); iterator.hasNext();) {
+        for (Iterator<RouteNode> iterator = nodeInstance.getRouteNode().getNextNodes().iterator(); iterator.hasNext();) {
             RouteNode nextNode = (RouteNode) iterator.next();
-            isInPath = isInPath || isNodeNameInPath(nodeName, nextNode, new HashSet());
+            isInPath = isInPath || isNodeNameInPath(nodeName, nextNode, new HashSet<Long>());
         }
         return isInPath;
     }
 
-    private boolean isNodeNameInPath(String nodeName, RouteNode node, Set inspected) {
+    private boolean isNodeNameInPath(String nodeName, RouteNode node, Set<Long> inspected) {
         boolean isInPath = !inspected.contains(node.getRouteNodeId()) && node.getRouteNodeName().equals(nodeName);
         inspected.add(node.getRouteNodeId());
         if (helper.isSubProcessNode(node)) {
@@ -210,7 +188,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
             RouteNode subNode = subProcess.getInitialRouteNode();
             isInPath = isInPath || isNodeNameInPath(nodeName, subNode, inspected);
         }
-        for (Iterator iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
+        for (Iterator<RouteNode> iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
             RouteNode nextNode = (RouteNode) iterator.next();
             isInPath = isInPath || isNodeNameInPath(nodeName, nextNode, inspected);
         }
@@ -221,7 +199,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
         if (!criteria.getDestinationRecipients().isEmpty()) {
             for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
                 ActionRequestValue request = (ActionRequestValue) iterator.next();
-                for (Iterator userIt = criteria.getDestinationRecipients().iterator(); userIt.hasNext();) {
+                for (Iterator<Recipient> userIt = criteria.getDestinationRecipients().iterator(); userIt.hasNext();) {
                     Recipient recipient = (Recipient) userIt.next();
                     if (request.isRecipientRoutedRequest(recipient)) {
                         if ( (Utilities.isEmpty(criteria.getDestinationNodeName())) || (criteria.getDestinationNodeName().equals(request.getNodeInstance().getName())) ) {
@@ -235,16 +213,16 @@ public class SimulationEngine extends StandardWorkflowEngine {
             || nodeInstance.getRouteNode().getRouteNodeName().equals(criteria.getDestinationNodeName());
     }
 
-    private List processPotentialActionsTaken(RouteContext routeContext, DocumentRouteHeaderValue routeHeader, RouteNodeInstance justProcessedNode, SimulationCriteria criteria) {
-    	List actionsTaken = new ArrayList();
+    private List<ActionTakenValue> processPotentialActionsTaken(RouteContext routeContext, DocumentRouteHeaderValue routeHeader, RouteNodeInstance justProcessedNode, SimulationCriteria criteria) {
+    	List<ActionTakenValue> actionsTaken = new ArrayList<ActionTakenValue>();
     	List requestsToCheck = new ArrayList();
     	requestsToCheck.addAll(routeContext.getEngineState().getGeneratedRequests());
         requestsToCheck.addAll(routeHeader.getActionRequests());
-    	List pendingActionRequestValues = getCriteriaActionsToDoByNodeName(requestsToCheck, justProcessedNode.getName());
-        List actionsToTakeForNode = generateActionsToTakeForNode(justProcessedNode.getName(), routeHeader, criteria, pendingActionRequestValues);
+    	List<ActionRequestValue> pendingActionRequestValues = getCriteriaActionsToDoByNodeName(requestsToCheck, justProcessedNode.getName());
+        List<ActionTakenValue> actionsToTakeForNode = generateActionsToTakeForNode(justProcessedNode.getName(), routeHeader, criteria, pendingActionRequestValues);
 
-        for (Iterator iter = actionsToTakeForNode.iterator(); iter.hasNext();) {
-            ActionTakenValue actionTaken = (ActionTakenValue) iter.next();
+        for (ActionTakenValue actionTaken : actionsToTakeForNode)
+        {
             KEWServiceLocator.getActionRequestService().deactivateRequests(actionTaken, pendingActionRequestValues, routeContext.getActivationContext());
             actionsTaken.add(actionTaken);
 //            routeContext.getActivationContext().getSimulatedActionsTaken().add(actionTaken);
@@ -252,8 +230,8 @@ public class SimulationEngine extends StandardWorkflowEngine {
     	return actionsTaken;
     }
 
-    private List generateActionsToTakeForNode(String nodeName, DocumentRouteHeaderValue routeHeader, SimulationCriteria criteria, List pendingActionRequests) {
-        List actions = new ArrayList();
+    private List<ActionTakenValue> generateActionsToTakeForNode(String nodeName, DocumentRouteHeaderValue routeHeader, SimulationCriteria criteria, List<ActionRequestValue> pendingActionRequests) {
+        List<ActionTakenValue> actions = new ArrayList<ActionTakenValue>();
         if ( (criteria.getActionsToTake() != null) && (!criteria.getActionsToTake().isEmpty()) ) {
             for (SimulationActionToTake simAction : criteria.getActionsToTake()) {
                 if (nodeName.equals(simAction.getNodeName())) {
@@ -264,8 +242,8 @@ public class SimulationEngine extends StandardWorkflowEngine {
         return actions;
     }
 
-    private List getCriteriaActionsToDoByNodeName(List generatedRequests, String nodeName) {
-    	List requests = new ArrayList();
+    private List<ActionRequestValue> getCriteriaActionsToDoByNodeName(List generatedRequests, String nodeName) {
+    	List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
         for (Iterator iterator = generatedRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
             if ( (request.isPending()) && request.getNodeInstance() != null && nodeName.equals(request.getNodeInstance().getName())) {
@@ -473,7 +451,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
         }
     	ActionRequestService actionRequestService = KEWServiceLocator.getActionRequestService();
         // TODO delyea - deep copy below
-        List actionRequests = new ArrayList();
+        List<ActionRequestValue> actionRequests = new ArrayList<ActionRequestValue>();
         for (Iterator iter = actionRequestService.findPendingByDoc(document.getRouteHeaderId()).iterator(); iter.hasNext();) {
             ActionRequestValue arv = (ActionRequestValue) iter.next();
             actionRequests.add((ActionRequestValue)deepCopy(arv));
@@ -481,7 +459,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
 //        actionRequests.addAll(actionRequestService.findPendingByDoc(document.getRouteHeaderId()));
         LOG.debug("Simulate Deactivating all pending action requests");
         // deactivate any requests for the user that routed the document.
-        for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
+        for (Iterator<ActionRequestValue> iter = actionRequests.iterator(); iter.hasNext();) {
             ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
             // requests generated to the user who is routing the document should be deactivated
             if ( (user.getPrincipalId().equals(actionRequest.getPrincipalId())) && (actionRequest.isActive()) ) {
@@ -532,7 +510,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
 	 *
 	 * Returns the highest priority delegator in the list of action requests.
 	 */
-	private Recipient findDelegatorForActionRequests(List actionRequests) {
+	private Recipient findDelegatorForActionRequests(List<ActionRequestValue> actionRequests) {
 		return KEWServiceLocator.getActionRequestService().findDelegator(actionRequests);
 	}
 
@@ -552,7 +530,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
     	
     	// if we are in simulation mode, lets go ahead and assign some id
     	// values to our beans
-    	for (Iterator iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
+    	for (Iterator<RouteNodeInstance> iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
     		RouteNodeInstance routeNodeInstance = (RouteNodeInstance) iterator.next();
     		if (routeNodeInstance.getRouteNodeInstanceId() == null) {
     			routeNodeInstance.setRouteNodeInstanceId(context.getEngineState().getNextSimulationId());

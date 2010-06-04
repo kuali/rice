@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kew.actionlist;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -36,6 +31,10 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -257,17 +256,17 @@ public class OutboxTest extends KEWTestCase {
         document = new WorkflowDocument(rkirkendPrincipalId, document.getRouteHeaderId());
         assertTrue("approve should be requested", document.isApprovalRequested());
         
-        List actionList = new ArrayList(KEWServiceLocator.getActionListService().getActionList(rkirkendPrincipalId, new ActionListFilter()));	
-    	List invocations = new ArrayList();
+        List<ActionItem> actionList = new ArrayList<ActionItem>(KEWServiceLocator.getActionListService().getActionList(rkirkendPrincipalId, new ActionListFilter()));
+    	List<ActionInvocation> invocations = new ArrayList<ActionInvocation>();
         ActionToTake actionToTake = new ActionToTake();
         ActionItem actionItem = new ActionItem();
-          
-        for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
-    			ActionItem actinItem = (ActionItem) iterator.next();
-    			actionToTake.setActionItemId(actinItem.getActionItemId());
-    			actionToTake.setActionTakenCd(actinItem.getActionRequestCd());
-    			invocations.add(new ActionInvocation(actinItem.getActionItemId(), actionToTake.getActionTakenCd()));
-    	}
+
+        for (ActionItem actinItem : actionList)
+        {
+            actionToTake.setActionItemId(actinItem.getActionItemId());
+            actionToTake.setActionTakenCd(actinItem.getActionRequestCd());
+            invocations.add(new ActionInvocation(actinItem.getActionItemId(), actionToTake.getActionTakenCd()));
+        }
         KEWServiceLocator.getWorkflowDocumentService().takeMassActions(rkirkendPrincipalId, invocations);
         assertEquals("Wrong number of outbox items found for rkirkendPrincipalId", 2, KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter()).size());
           

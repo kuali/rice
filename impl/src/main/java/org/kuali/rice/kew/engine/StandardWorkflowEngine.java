@@ -16,20 +16,10 @@
  */
 package org.kuali.rice.kew.engine;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.engine.node.Branch;
-import org.kuali.rice.kew.engine.node.BranchState;
+import org.kuali.rice.kew.engine.node.*;
 import org.kuali.rice.kew.engine.node.Process;
-import org.kuali.rice.kew.engine.node.ProcessResult;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.engine.node.RouteNodeUtils;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.engine.transition.Transition;
 import org.kuali.rice.kew.engine.transition.TransitionEngine;
@@ -37,14 +27,7 @@ import org.kuali.rice.kew.engine.transition.TransitionEngineFactory;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.RouteManagerException;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
-import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
-import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
-import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
-import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
-import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
-import org.kuali.rice.kew.postprocessor.PostProcessor;
-import org.kuali.rice.kew.postprocessor.ProcessDocReport;
+import org.kuali.rice.kew.postprocessor.*;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -52,6 +35,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import java.util.*;
 
 
 /**
@@ -191,7 +176,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			// list which we put in the next node before doing work.
 			List<RouteNodeInstance> nodesToActivate = new ArrayList<RouteNodeInstance>();
 			if (!nextNodeCandidates.isEmpty()) {
-				nodeInstance.setNextNodeInstances(new ArrayList());
+				nodeInstance.setNextNodeInstances(new ArrayList<RouteNodeInstance>());
 				for (Iterator nextIt = nextNodeCandidates.iterator(); nextIt.hasNext();) {
 					RouteNodeInstance nextNodeInstance = (RouteNodeInstance) nextIt.next();
 					transitionEngine = TransitionEngineFactory.createTransitionEngine(nextNodeInstance);
@@ -356,7 +341,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		} else {
 			// if we are in simulation mode, lets go ahead and assign some id
 			// values to our beans
-			for (Iterator iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
+			for (Iterator<RouteNodeInstance> iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
 				RouteNodeInstance routeNodeInstance = (RouteNodeInstance) iterator.next();
 				if (routeNodeInstance.getRouteNodeInstanceId() == null) {
 					routeNodeInstance.setRouteNodeInstanceId(context.getEngineState().getNextSimulationId());
@@ -375,9 +360,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 	// document state
 	protected DocumentRouteHeaderValue nodePostProcess(RouteContext context) throws InvalidActionTakenException {
 		DocumentRouteHeaderValue document = context.getDocument();
-		Collection activeNodes = getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
+		Collection<RouteNodeInstance> activeNodes = getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
 		boolean moreNodes = false;
-		for (Iterator iterator = activeNodes.iterator(); iterator.hasNext();) {
+		for (Iterator<RouteNodeInstance> iterator = activeNodes.iterator(); iterator.hasNext();) {
 			RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
 			moreNodes = moreNodes || !nodeInstance.isComplete();
 		}

@@ -13,10 +13,6 @@
  */
 package org.kuali.rice.kew.engine.node.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
@@ -28,6 +24,10 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements RouteNodeDAO {
@@ -78,16 +78,17 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
 		new QueryByCriteria(RouteNodeInstance.class, criteria));
     }
 
-    public List getActiveNodeInstances(Long documentId) {
+    @SuppressWarnings(value = "unchecked")
+    public List<RouteNodeInstance> getActiveNodeInstances(Long documentId) {
 	Criteria criteria = new Criteria();
 	criteria.addEqualTo(DOCUMENT_ID, documentId);
 	criteria.addEqualTo(ACTIVE, Boolean.TRUE);
-	return (List) getPersistenceBrokerTemplate().getCollectionByQuery(
+	return (List<RouteNodeInstance>) getPersistenceBrokerTemplate().getCollectionByQuery(
 		new QueryByCriteria(RouteNodeInstance.class, criteria));
     }
 
     @SuppressWarnings("unchecked")
-    public List getTerminalNodeInstances(Long documentId) {
+    public List<RouteNodeInstance> getTerminalNodeInstances(Long documentId) {
 	Criteria criteria = new Criteria();
 	criteria.addEqualTo(DOCUMENT_ID, documentId);
 	criteria.addEqualTo(ACTIVE, Boolean.FALSE);
@@ -99,7 +100,7 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
 //	return (List) getPersistenceBrokerTemplate().getCollectionByQuery(query);
 	
 	//forced to do this programmatically, for some reason the above code stopped working 
-	List terminalNodes = new ArrayList();
+	List<RouteNodeInstance> terminalNodes = new ArrayList<RouteNodeInstance>();
 	List<RouteNodeInstance> routeNodeInstances = (List<RouteNodeInstance>) getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RouteNodeInstance.class, criteria));
 	for (RouteNodeInstance routeNodeInstance : routeNodeInstances) {
 	    if (routeNodeInstance.getNextNodeInstances().isEmpty()) {
@@ -156,10 +157,10 @@ public class RouteNodeDAOOjbImpl extends PersistenceBrokerDaoSupport implements 
     }
 
     public void deleteLinksToPreNodeInstances(RouteNodeInstance routeNodeInstance) {
-	List preNodeInstances = routeNodeInstance.getPreviousNodeInstances();
-	for (Iterator preNodeInstanceIter = preNodeInstances.iterator(); preNodeInstanceIter.hasNext();) {
+	List<RouteNodeInstance> preNodeInstances = routeNodeInstance.getPreviousNodeInstances();
+	for (Iterator<RouteNodeInstance> preNodeInstanceIter = preNodeInstances.iterator(); preNodeInstanceIter.hasNext();) {
 	    RouteNodeInstance preNodeInstance = (RouteNodeInstance) preNodeInstanceIter.next();
-	    List nextInstances = preNodeInstance.getNextNodeInstances();
+	    List<RouteNodeInstance> nextInstances = preNodeInstance.getNextNodeInstances();
 	    nextInstances.remove(routeNodeInstance);
 	    save(preNodeInstance);
 	}

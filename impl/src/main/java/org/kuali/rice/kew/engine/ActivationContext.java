@@ -33,7 +33,7 @@ public class ActivationContext implements Serializable {
 
     public static final boolean CONTEXT_IS_SIMULATION = true;
 
-    boolean simulation = !CONTEXT_IS_SIMULATION;
+    boolean simulation = false;
     boolean activateRequests = false;
     List<ActionTakenValue> simulatedActionsTaken = new ArrayList<ActionTakenValue>();
     List<ActionItem> generatedActionItems = new ArrayList<ActionItem>();

@@ -13,15 +13,6 @@
  */
 package org.kuali.rice.kew.engine.node.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
@@ -29,6 +20,14 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
+
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
@@ -102,10 +101,11 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
    
     }
 
-    public List getActiveNodeInstances(Long documentId) {
+    @SuppressWarnings("unchecked")
+    public List<RouteNodeInstance> getActiveNodeInstances(Long documentId) {
     	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindActiveNodeInstances");
     	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
-    	return (List)query.getResultList();
+    	return (List<RouteNodeInstance>)query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
@@ -114,7 +114,7 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
 		
 		//FIXME: Can we do this better using just the JPQL query?  
-		List terminalNodes = new ArrayList();
+		List<RouteNodeInstance> terminalNodes = new ArrayList<RouteNodeInstance>();
 		List<RouteNodeInstance> routeNodeInstances = (List<RouteNodeInstance>) query.getResultList();
 		for (RouteNodeInstance routeNodeInstance : routeNodeInstances) {
 		    if (routeNodeInstance.getNextNodeInstances().isEmpty()) {
@@ -165,10 +165,10 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     }
 
     public void deleteLinksToPreNodeInstances(RouteNodeInstance routeNodeInstance) {
-		List preNodeInstances = routeNodeInstance.getPreviousNodeInstances();
-		for (Iterator preNodeInstanceIter = preNodeInstances.iterator(); preNodeInstanceIter.hasNext();) {
+		List<RouteNodeInstance> preNodeInstances = routeNodeInstance.getPreviousNodeInstances();
+		for (Iterator<RouteNodeInstance> preNodeInstanceIter = preNodeInstances.iterator(); preNodeInstanceIter.hasNext();) {
 		    RouteNodeInstance preNodeInstance = (RouteNodeInstance) preNodeInstanceIter.next();
-		    List nextInstances = preNodeInstance.getNextNodeInstances();
+		    List<RouteNodeInstance> nextInstances = preNodeInstance.getNextNodeInstances();
 		    nextInstances.remove(routeNodeInstance);
 		    entityManager.merge(preNodeInstance);
 		}

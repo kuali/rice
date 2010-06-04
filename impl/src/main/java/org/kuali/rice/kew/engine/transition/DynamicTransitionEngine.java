@@ -16,18 +16,14 @@
  */
 package org.kuali.rice.kew.engine.transition;
 
+import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.engine.node.*;
+import org.kuali.rice.kew.exception.RouteManagerException;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
-import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.engine.node.DynamicNode;
-import org.kuali.rice.kew.engine.node.DynamicResult;
-import org.kuali.rice.kew.engine.node.ProcessResult;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.RouteManagerException;
 
 
 /**
@@ -60,7 +56,7 @@ public class DynamicTransitionEngine extends TransitionEngine {
         }
       
         if (nextNodeInstance !=null) {
-            initializeNodeGraph(context, dynamicNodeInstance, nextNodeInstance, new HashSet(), finalNodeInstance);
+            initializeNodeGraph(context, dynamicNodeInstance, nextNodeInstance, new HashSet<RouteNodeInstance>(), finalNodeInstance);
         }
         return nextNodeInstance;   
     }
@@ -100,20 +96,20 @@ public class DynamicTransitionEngine extends TransitionEngine {
      * Will throw errors if there is a problem with what the implementor has returned to us. This allows them to do things like return next
      * nodes with no attached branches, and we will go ahead and generate the branches for them, etc.
      */
-    private void initializeNodeGraph(RouteContext context, RouteNodeInstance dynamicNodeInstance, RouteNodeInstance nodeInstance, Set nodeInstances, RouteNodeInstance finalNodeInstance) throws Exception {
+    private void initializeNodeGraph(RouteContext context, RouteNodeInstance dynamicNodeInstance, RouteNodeInstance nodeInstance, Set<RouteNodeInstance> nodeInstances, RouteNodeInstance finalNodeInstance) throws Exception {
         if (nodeInstances.contains(nodeInstance)) {
             throw new RouteManagerException("A cycle was detected in the node graph returned from the dynamic node.", context);
         }
         nodeInstances.add(nodeInstance);
         nodeInstance.setProcess(dynamicNodeInstance);
-        List nextNodeInstances = nodeInstance.getNextNodeInstances();
+        List<RouteNodeInstance> nextNodeInstances = nodeInstance.getNextNodeInstances();
         
         if (nextNodeInstances.size() > 1) {
             // TODO implement this feature
 //            throw new UnsupportedOperationException("Need to implement support for branch generation!");
         }
-        for (Iterator iterator = nextNodeInstances.iterator(); iterator.hasNext();) {
-            RouteNodeInstance nextNodeInstance = (RouteNodeInstance) iterator.next();
+        for (RouteNodeInstance nextNodeInstance : nextNodeInstances)
+        {
             initializeNodeGraph(context, dynamicNodeInstance, nextNodeInstance, nodeInstances, finalNodeInstance);
         }
         if (nextNodeInstances.isEmpty() && finalNodeInstance != null) {
@@ -122,7 +118,7 @@ public class DynamicTransitionEngine extends TransitionEngine {
     }
 
     private RouteNodeInstance getFinalNodeInstance(RouteNodeInstance dynamicNodeInstance, RouteContext context) throws Exception {
-        List nextNodes = dynamicNodeInstance.getRouteNode().getNextNodes();
+        List<RouteNode> nextNodes = dynamicNodeInstance.getRouteNode().getNextNodes();
         if (nextNodes.size() > 1) {
             throw new RouteManagerException("There should only be 1 next node following a dynamic node, there were " + nextNodes.size(), context);
         }

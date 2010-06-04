@@ -16,12 +16,12 @@
  */
 package org.kuali.rice.kew.engine.node.dao;
 
-import java.util.List;
-
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+
+import java.util.List;
 
 
 
@@ -33,7 +33,7 @@ public interface RouteNodeDAO {
     public void save(Branch branch);
     public RouteNode findRouteNodeById(Long nodeId);
     public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId);
-    public List getActiveNodeInstances(Long documentId);
+    public List<RouteNodeInstance> getActiveNodeInstances(Long documentId);
     public List getTerminalNodeInstances(Long documentId);
     public List getInitialNodeInstances(Long documentId);
     public NodeState findNodeState(Long nodeInstanceId, String key);

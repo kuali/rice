@@ -17,15 +17,9 @@
 package org.kuali.rice.kew.actions;
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.postprocessor.DefaultPostProcessor;
 import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
@@ -36,7 +30,10 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.test.TransactionalTest;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     
@@ -254,7 +251,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
         
         // check that the post processor was notified properly on the rollback
         assertEquals("Post processor should have been notified.", 1, ReturnToPreviousPostProcessor.getRouteLevelChanges().size());
-        DocumentRouteLevelChange levelChangeEvent = (DocumentRouteLevelChange)ReturnToPreviousPostProcessor.getRouteLevelChanges().get(0);
+        DocumentRouteLevelChange levelChangeEvent = ReturnToPreviousPostProcessor.getRouteLevelChanges().get(0);
         assertEquals("New node should be WorkflowDocument2-B1", ParallelSetup.WORKFLOW_DOCUMENT_2_B1_NODE, levelChangeEvent.getNewNodeName());
         assertEquals("Old node should be WorkflowDocument3-B1", ParallelSetup.WORKFLOW_DOCUMENT_3_B1_NODE, levelChangeEvent.getOldNodeName());
         
@@ -398,14 +395,14 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     
     public static class ReturnToPreviousPostProcessor extends DefaultPostProcessor {
 
-    	private static List routeLevelChanges = new ArrayList();
+    	private static List<DocumentRouteLevelChange> routeLevelChanges = new ArrayList<DocumentRouteLevelChange>();
     	
 		public ProcessDocReport doRouteLevelChange(DocumentRouteLevelChange levelChangeEvent) throws Exception {
 			routeLevelChanges.add(levelChangeEvent);
 			return new ProcessDocReport(true);
 		}
 		
-		public static List getRouteLevelChanges() {
+		public static List<DocumentRouteLevelChange> getRouteLevelChanges() {
 			return routeLevelChanges;
 		}
 		

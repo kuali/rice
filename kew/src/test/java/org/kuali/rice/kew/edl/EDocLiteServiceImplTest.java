@@ -17,15 +17,7 @@
 package org.kuali.rice.kew.edl;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.transform.Templates;
-
 import junit.framework.AssertionFailedError;
-
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -39,6 +31,12 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Element;
+
+import javax.xml.transform.Templates;
+import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -77,7 +75,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
         } catch (RuntimeException re) {
             // should probably use type system to detect type of error, not just message string...
             // maybe we need general parsing or "semantic" validation exception
-            assertTrue("Wrong exception occurred", re.getMessage().indexOf("EDocLite definition contains references to non-existent attributes") != -1);
+            assertTrue("Wrong exception occurred", re.getMessage().contains("EDocLite definition contains references to non-existent attributes"));
         }
     }
 

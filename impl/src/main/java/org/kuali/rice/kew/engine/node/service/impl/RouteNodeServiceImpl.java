@@ -79,11 +79,11 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return currentNodeInstances;
     }
     
-    public List getActiveNodeInstances(Long documentId) {
+    public List<RouteNodeInstance> getActiveNodeInstances(Long documentId) {
     	return routeNodeDAO.getActiveNodeInstances(documentId);
     }
     
-    public List getActiveNodeInstances(DocumentRouteHeaderValue document) {
+    public List<RouteNodeInstance> getActiveNodeInstances(DocumentRouteHeaderValue document) {
        return RouteNodeUtils.getActiveNodeInstances(document);
     }
     
@@ -201,11 +201,11 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return RouteNodeUtils.getFlattenedNodes(documentType, climbHierarchy);
     }
     
-    public List getFlattenedNodes(Process process) {
-    	return RouteNodeUtils.getFlattenedNodes(process);        
+    public List<RouteNode> getFlattenedNodes(Process process) {
+    	return RouteNodeUtils.getFlattenedNodes(process);
     }        
     
-    public List getFlattenedNodeInstances(DocumentRouteHeaderValue document, boolean includeProcesses) {
+    public List<RouteNodeInstance> getFlattenedNodeInstances(DocumentRouteHeaderValue document, boolean includeProcesses) {
     	return RouteNodeUtils.getFlattenedNodeInstances(document, includeProcesses);        
     }      
     
@@ -264,7 +264,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         }
     }
     
-    public List getActiveNodeInstances(DocumentRouteHeaderValue document, String nodeName) {
+    public List<RouteNodeInstance> getActiveNodeInstances(DocumentRouteHeaderValue document, String nodeName) {
 		Collection activeNodes = getActiveNodeInstances(document.getRouteHeaderId());
 		List foundNodes = new ArrayList();
         for (Iterator iterator = activeNodes.iterator(); iterator.hasNext();) {

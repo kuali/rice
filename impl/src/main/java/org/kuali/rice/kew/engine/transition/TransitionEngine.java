@@ -16,16 +16,15 @@
  */
 package org.kuali.rice.kew.engine.transition;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.Node;
 import org.kuali.rice.kew.engine.node.ProcessResult;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -45,9 +44,10 @@ public abstract class TransitionEngine {
     /**
      * Tell the WorkflowEngine processing the activeNodeInstance if the node is complete and transitionFrom can 
      * be called.
-     * 
-     * @param activeNodeInstance
+     *
      * @return boolean
+     * @param context for routing
+     * @throws Exception
      */
     public abstract ProcessResult isComplete(RouteContext context) throws Exception;
 	
@@ -71,11 +71,15 @@ public abstract class TransitionEngine {
      * Determines the next nodes instances for the transition.  If the node instance already
      * has next nodes instances (i.e. a dynamic node), then those will be returned.  Otherwise
      * it will resolve the next nodes from the RouteNode prototype.
+     * @param nodeInstance for the transition
+     * @param nextRouteNodes list of route notes
+     * @return list of route note instances
      */
-    protected List resolveNextNodeInstances(RouteNodeInstance nodeInstance, List nextRouteNodes) {
-        List nextNodeInstances = new ArrayList();
-        for (Iterator iterator = nextRouteNodes.iterator(); iterator.hasNext();) {
-            RouteNode nextNode = (RouteNode) iterator.next();
+    protected List<RouteNodeInstance> resolveNextNodeInstances(RouteNodeInstance nodeInstance, List<RouteNode> nextRouteNodes) {
+        List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
+        for (RouteNode nextRouteNode : nextRouteNodes)
+        {
+            RouteNode nextNode = (RouteNode) nextRouteNode;
             RouteNodeInstance nextNodeInstance = getRouteHelper().getNodeFactory().createRouteNodeInstance(nodeInstance.getDocumentId(), nextNode);
             nextNodeInstance.setBranch(nodeInstance.getBranch());
             nextNodeInstance.setProcess(nodeInstance.getProcess());
@@ -84,7 +88,7 @@ public abstract class TransitionEngine {
         return nextNodeInstances;
     }
     
-    protected List resolveNextNodeInstances(RouteNodeInstance nodeInstance) {
+    protected List<RouteNodeInstance> resolveNextNodeInstances(RouteNodeInstance nodeInstance) {
         return resolveNextNodeInstances(nodeInstance, nodeInstance.getRouteNode().getNextNodes());
     }
     

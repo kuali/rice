@@ -16,12 +16,11 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -32,11 +31,11 @@ import org.kuali.rice.kew.engine.RouteHelper;
 public class SimpleSplitNode implements SplitNode {
 
     public SplitResult process(RouteContext routeContext, RouteHelper routeHelper) throws Exception {
-    	List branchNames = new ArrayList();
-    	for (Iterator iterator = routeContext.getNodeInstance().getRouteNode().getNextNodes().iterator(); iterator.hasNext(); ) {
-			RouteNode routeNode = (RouteNode) iterator.next();
-			branchNames.add(routeNode.getBranch().getName());
-		}
+    	List<String> branchNames = new ArrayList<String>();
+        for (RouteNode routeNode : routeContext.getNodeInstance().getRouteNode().getNextNodes())
+        {
+            branchNames.add(routeNode.getBranch().getName());
+        }
         return new SplitResult(branchNames);
     }
     

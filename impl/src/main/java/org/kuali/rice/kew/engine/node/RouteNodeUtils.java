@@ -90,8 +90,8 @@ public class RouteNodeUtils {
         }
         visitedNodeInstanceIds.add(nodeInstance.getRouteNodeInstanceId());
         nodeInstances.add(nodeInstance);
-        for (Iterator iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
-            RouteNodeInstance nextNodeInstance = (RouteNodeInstance) iterator.next();
+        for (RouteNodeInstance nextNodeInstance : nodeInstance.getNextNodeInstances())
+        {
             flattenNodeInstanceGraph(nodeInstances, visitedNodeInstanceIds, nextNodeInstance, includeProcesses);
         }
     }

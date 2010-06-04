@@ -30,6 +30,8 @@ import org.w3c.dom.ls.LSResourceResolver;
  * This is an entity resolver for loading schemas.
  * It finds resources in the impl/src/main/resources/schema directory.
  * 
+ * TODO:  Handle schemas that are formally published
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -37,7 +39,7 @@ public class SchemaLSResourceResolver implements LSResourceResolver {
 
 	private static final String SCHEMA_DIR = "classpath:schema/";
 	/**
-	 * This overridden method ...
+	 * This overridden method currently looks for resources in the "classpath:schema/" directory.
 	 * 
 	 * @see org.w3c.dom.ls.LSResourceResolver#resolveResource(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */

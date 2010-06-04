@@ -15,11 +15,17 @@
  */
 package org.kuali.rice.kew.workgroup;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringBufferInputStream;
+import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,7 +34,7 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.core.xml.dto.DataXmlDto;
 import org.kuali.rice.kew.xml.GroupXmlJAXBParser;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.xml.GroupMembershipXmlDto;
@@ -40,7 +46,7 @@ import org.kuali.rice.kim.xml.GroupXmlDto;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class GroupXmlImportJAXBTest extends KEWTestCase {
+public class GroupXmlImportJAXBTest {
     private static final Logger LOG = Logger.getLogger(GroupXmlImportJAXBTest.class);
     private static final String INDENT = "  ";
 
@@ -57,8 +63,17 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
     	InputStream xmlFile = getClass().getResourceAsStream("GroupXmlImportJAXBTest.xml");
     	
     	GroupXmlJAXBParser parser = new GroupXmlJAXBParser();
-    	GroupXmlDto groupInfo = parser.parse(xmlFile);
-
+    	DataXmlDto groupsInfo = null;
+    	try{
+    		groupsInfo = parser.parse(xmlFile);
+    	}
+    		catch(Exception ex){
+    			ex.printStackTrace();
+    			throw ex;
+    		}
+    		
+    	GroupXmlDto groupInfo = groupsInfo.getGroups().get(0);
+    		
     	assertNotNull(groupInfo);
     	assertTrue(groupInfo.getGroupName().equals("MyGroup"));
     	assertTrue(groupInfo.getGroupDescription().equals("Group Import unit test"));
@@ -94,8 +109,9 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
     	InputStream xmlFile = getClass().getResourceAsStream("GroupXmlImportTest.xml");
     	
     	GroupXmlJAXBParser parser = new GroupXmlJAXBParser();
-    	GroupXmlDto groupInfo = parser.parse(xmlFile);
+    	DataXmlDto groupsInfo = parser.parse(xmlFile);
 
+    	GroupXmlDto groupInfo = groupsInfo.getGroups().get(0);
     	assertNotNull(groupInfo);
     	assertTrue(groupInfo.getGroupName().equals("TestUserGroup"));
     	assertTrue(groupInfo.getGroupDescription().equals("Group for test user"));
@@ -105,13 +121,16 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
     	}
     }
     
-    @Test public void testGroupExportXml() throws Exception {
-        JAXBContext context = JAXBContext.newInstance(GroupXmlDto.class);
+    @Test public void testGroupExportXml() throws Exception {    	
+        JAXBContext context = JAXBContext.newInstance(DataXmlDto.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
         
+        String GROUP_NAME = "MyGroup";
+        String GROUP_DESC = "Group Import unit test";
+        
         GroupXmlDto grp = new GroupXmlDto(
-            "MyGroup", "Group Import unit test", true);
+            GROUP_NAME, GROUP_DESC, true);
         List<GroupMembershipXmlDto> mbrs = new ArrayList<GroupMembershipXmlDto>();
         
         GroupMembershipXmlDto mbr1 = new GroupMembershipXmlDto();
@@ -138,7 +157,36 @@ public class GroupXmlImportJAXBTest extends KEWTestCase {
         attrs.put("required","false");
         attrs.put("actionDetailsAtRoleMemberLevel","false");
         grp.setAttributes(attrs);
-        marshaller.marshal(grp, new FileWriter(".\\kew\\src\\test\\resources\\org\\kuali\\rice\\kew\\workgroup\\GroupXmlExportJAXBResults.xml"));       
-    }
- 
+        
+        DataXmlDto dataDto = new DataXmlDto();
+        List<GroupXmlDto> lGroup = new ArrayList<GroupXmlDto>();
+        lGroup.add(grp);
+        dataDto.setGroups(lGroup);
+        StringWriter fw = new StringWriter();
+        marshaller.marshal(dataDto, fw);
+        
+        String output = fw.toString();
+        fw.close();          
+                
+        InputStream xmlFile = new StringBufferInputStream(output);
+    	
+    	GroupXmlJAXBParser parser = new GroupXmlJAXBParser();
+    	DataXmlDto groupsInfo = null;
+    	try{
+    		groupsInfo = parser.parse(xmlFile);
+    	}
+    		catch(Exception ex){
+    			ex.printStackTrace();
+    			throw ex;
+    		}
+    		
+    	GroupXmlDto groupInfo = groupsInfo.getGroups().get(0);
+    	
+    	assertTrue(GROUP_NAME.equals(groupInfo.getGroupName()));
+    	assertTrue(GROUP_DESC.equals(groupInfo.getGroupDescription()));
+    	assertTrue(groupInfo.getMembers().size() == 3);
+            	
+        
+    }    
+        
 }

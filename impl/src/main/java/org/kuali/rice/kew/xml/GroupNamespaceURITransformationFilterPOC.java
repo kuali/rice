@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.util.KeyValue;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -50,76 +51,20 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class GroupNamespaceURITransformationFilterPOC extends XMLFilterImpl {
+public class GroupNamespaceURITransformationFilterPOC extends AbstractTransformationFilter {
 
-	// The URI of a Group 1.0.3 schema 
-    public static final String GROUP_URI="http://rice.kuali.org/xsd/kim/group";
+	// The URI of a Group 1.0.0 schema 
+    public static final String GROUP_URI="ns:workflow/Group";    
     
 	// The Map containing element transformation values
 	private Map<String,String> elementTransformationMap;
-	
-	// The List containing elements with attributes for transformation
-	private List<String> elementAttributeTransformationList;
-	
-	// The list which helps keep track of where we are in the XML 
-	// hierarchy as the stream is being processed
-	private List<String> groupXmlStack = new ArrayList<String>();
     
 	public GroupNamespaceURITransformationFilterPOC(){
 		super();
 		
 		// Initialize the element transformation map
-		setElementTransformationMap();
-
-		// Initialize the element attribute transformation list
-		setElementAttributeTransformationList();
+		setElementTransformationMap();		
 	}
-	
-    public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-		// Push the element onto the stack
-		if (groupXmlStack.isEmpty()){
-			// Push the root element without onto the stack without special formatting
-			groupXmlStack.add(localName);
-		}
-		else {
-			// Push a child element by appending localName to the value of the top element in the stack
-			groupXmlStack.add(groupXmlStack.get(groupXmlStack.size()-1) + "." + localName);
-		}
-		
-		// Fetch the current element from the top of the stack
-		String currentElement = groupXmlStack.get(groupXmlStack.size()-1);
-		
-		// Transform elements of concern:
-		if (elementTransformationMap.containsKey(currentElement)){
-			String transformedLocalName = elementTransformationMap.get(currentElement);
-			String transformedQualifiedName = transformedLocalName;
-			super.startElement(GROUP_URI, transformedLocalName, transformedQualifiedName, getTransformedAttributes(currentElement, atts));
-		}
-		else {
-			// Pass other elements through as they are
-			super.startElement(GROUP_URI, localName, qName, atts);
-		}
-    }
-
-    public void endElement(String uri, String localName, String qName) throws SAXException {
-		// Fetch the current element from the top of the stack
-		String currentElement = groupXmlStack.get(groupXmlStack.size()-1);
-	
-		if (elementTransformationMap.containsKey(currentElement)){
-			String transformedLocalName = elementTransformationMap.get(currentElement);
-			String transformedQualifiedName = transformedLocalName;
-			super.endElement(GROUP_URI, transformedLocalName, transformedQualifiedName);
-		}
-		else {
-			// Pass other elements through as they are
-			super.endElement(GROUP_URI, localName, qName);
-		}
-		
-		// Pop the element from the stack if it's not empty
-		if (!groupXmlStack.isEmpty()){
-			groupXmlStack.remove(currentElement);			
-		}
-    }
 
 	/*
 	 * Build a Map that maps elements we intend to transform to their corresponding transformed value.
@@ -137,27 +82,63 @@ public class GroupNamespaceURITransformationFilterPOC extends XMLFilterImpl {
 		elementTransformationMap.put("group.members.principalId", "memberId");
 		this.elementTransformationMap = elementTransformationMap;
 	}
+
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#getElementTransformationList()
+	 */	
+	public List<KeyValue> getElementTransformationList() {
+		List<KeyValue> rList = new ArrayList<KeyValue>();
+
+		rList.add(new KeyValue("group.name", GROUP_URI));
+		rList.add(new KeyValue("group.namespace", GROUP_URI));
+		rList.add(new KeyValue("group.description", GROUP_URI));
+		rList.add(new KeyValue("group.members.principalName", GROUP_URI));
+		rList.add(new KeyValue("group.members.principalId", GROUP_URI));		
+
+		return rList;
+	}
+
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#getStartingElementPath()
+	 */	
+	public String getStartingElementPath() {
+		
+		return "data.groups";
+	}
+
 	
-	/*
-	 * Placeholder: Build a List defining which elements have attributes that we intend to transform
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#transformStartElement(org.kuali.rice.kew.xml.AbstractTransformationFilter.CurrentElement)
 	 */
-	private void setElementAttributeTransformationList() {
-		List<String> elementAttributeTransformationList = new ArrayList<String>();
-		this.elementAttributeTransformationList = elementAttributeTransformationList;
+	public CurrentElement transformStartElement(CurrentElement currentElement) throws SAXException{
+		String transformedLocalName = elementTransformationMap.get(this.getTrimmedCurrentElementKey(currentElement.getNameKey()));
+		String transformedQualifiedName = transformedLocalName;
+		
+		return new CurrentElement(currentElement.getNameKey(),currentElement.getUri(), transformedLocalName, transformedQualifiedName, currentElement.getAttributes());
 	}
 	
-	/*
-	 * Placeholder method adding support for transforming an element's attributes
+	
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#transformEndElement(org.kuali.rice.kew.xml.AbstractTransformationFilter.CurrentElement)
 	 */
-	private Attributes getTransformedAttributes(String stackRepresentedElement, Attributes attributes){
-		// If the element is found in the Element Attribute Transformation List, transform its appropriate attributes
-		if (elementAttributeTransformationList.contains(stackRepresentedElement)){
-			// Just a placeholder, remember?
-			return new AttributesImpl();
-		}
-		else {
-			// Otherwise, return a "hollow" Attributes object
-			return new AttributesImpl();
-		}		
+	public CurrentElement transformEndElement(CurrentElement currentElement) throws SAXException {
+		String transformedLocalName = elementTransformationMap.get(this.getTrimmedCurrentElementKey(currentElement.getNameKey()));
+		String transformedQualifiedName = transformedLocalName;
+								
+		return new CurrentElement(currentElement.getNameKey(),currentElement.getUri(), transformedLocalName, transformedQualifiedName);
 	}
+	
+
+	
+
 }

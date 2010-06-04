@@ -58,37 +58,38 @@ import org.xml.sax.helpers.XMLFilterImpl;
  */
 public class GroupNamespaceURIMemberTransformationFilterPOC extends XMLFilterImpl {
 
-	// The URI of a Group 1.0.3 schema 
-    public static final String GROUP_URI="http://rice.kuali.org/xsd/kim/group";
+	// The URI of a Group 1.0.3 schema     
+    public static final String GROUP_URI_OLD = "ns:workflow/Group";
+	public static final String GROUP_URI_NEW = "http://rice.kuali.org/xsd/kim/group";
     
 	public GroupNamespaceURIMemberTransformationFilterPOC(){
 		super();
 	}
 	
     public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-    	if (localName.equals("memberId")){
-    		super.startElement(GROUP_URI, "member", "member", new AttributesImpl());
-    			super.startElement(GROUP_URI, localName, qName, atts);
+    	if (localName.equals("memberId") && GROUP_URI_OLD.equals(uri)){
+    		super.startElement(GROUP_URI_NEW, "member", "member", new AttributesImpl());
+    			super.startElement(GROUP_URI_NEW, localName, qName, atts);
     	}
     	else {
     		// Pass all elements through as they are
-    		super.startElement(GROUP_URI, localName, qName, atts);
+    		super.startElement(uri, localName, qName, atts);
     	}
     }
 
     public void endElement(String uri, String localName, String qName) throws SAXException {
 		// Append a <memberTypeCode> element to each <memberId> element
-		if (localName.equals("memberId")){
-				super.endElement(GROUP_URI, "memberId", "memberId");
-				super.startElement(GROUP_URI, "memberTypeCode", "memberTypeCode", new AttributesImpl());
+		if (localName.equals("memberId") && GROUP_URI_OLD.equals(uri)){
+				super.endElement(GROUP_URI_NEW, "memberId", "memberId");
+				super.startElement(GROUP_URI_NEW, "memberTypeCode", "memberTypeCode", new AttributesImpl());
 		            String memberTypeCode = "P";
 		            characters(memberTypeCode.toCharArray(), 0, 1);
-		        super.endElement(GROUP_URI, "memberTypeCode", "memberTypeCode");
-	        super.endElement(GROUP_URI, "member", "member");
+		        super.endElement(GROUP_URI_NEW, "memberTypeCode", "memberTypeCode");
+	        super.endElement(GROUP_URI_NEW, "member", "member");
 		}
 		else {
 			// Pass other elements through as they are
-			super.endElement(GROUP_URI, localName, qName);
+			super.endElement(uri, localName, qName);
 		}
     }
 }

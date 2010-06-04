@@ -15,22 +15,20 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.UnmarshalException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.UnmarshallerHandler;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.xml.dto.DataXmlDto;
 import org.kuali.rice.kim.xml.GroupXmlDto;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -48,17 +46,17 @@ import org.xml.sax.helpers.XMLFilterImpl;
  */
 public class GroupXmlJAXBParser implements XmlConstants {
     private static final Logger LOG = Logger.getLogger(GroupXmlJAXBParser.class);
-
-	public GroupXmlDto parse(InputStream in) throws IOException {
-        GroupXmlDto groupXmlDto = new GroupXmlDto();
+    private static final String DEFAULT_GROUP_DESCRIPTION = "";
+    
+	public DataXmlDto parse(InputStream in) throws IOException {
+        DataXmlDto groupsXmlDto = new DataXmlDto();
 		JAXBContext jaxbContext;
-		Unmarshaller unmarshaller = null;;
+		Unmarshaller unmarshaller;
 
 		try {
-			jaxbContext = JAXBContext.newInstance(GroupXmlDto.class);
+			jaxbContext = JAXBContext.newInstance(DataXmlDto.class);
 			unmarshaller = jaxbContext.createUnmarshaller();
-
-		} catch(Exception ex) {
+		}catch (Exception ex) {
 			throw new RuntimeException("Error creating JAXB unmarshaller", ex);
 		}
 
@@ -70,45 +68,212 @@ public class GroupXmlJAXBParser implements XmlConstants {
 			LOG.warn("###############################");
 		} else {
 			try {
-//				groupXmlDto = (GroupXmlDto) unmarshaller.unmarshal(in);  // test w/o filter
-				groupXmlDto = unmarshal(unmarshaller, in);
+
+				groupsXmlDto = unmarshal(unmarshaller, in);
+
 			} catch (Exception ex) {
 				LOG.error(ex.getMessage());
 				throw new ConfigurationException("Error parsing XML input stream", ex);
 			}
 
 		}
-		return groupXmlDto;
+		return groupsXmlDto;
 	}
 
-    protected GroupXmlDto unmarshal(Unmarshaller unmarshaller, InputStream in) throws Exception {
+	/**
+	 * 
+	 * This method returns a list of xmlfilters.  The order here matters. The fist element gets processed 
+	 * first. FIFO.
+	 * 
+	 * @return
+	 */
+	public List<XMLFilter> getXMLFilterList(){
+	
+		List<XMLFilter> lRet = new ArrayList<XMLFilter>();
+		
+		lRet.add(new DataNamespaceURIFilter());		
+		lRet.add(new GroupNamespaceURITransformationFilterPOC());
+		lRet.add(new GroupNamespaceURIMemberTransformationFilterPOC());
+		lRet.add(new GroupNamespaceURIFilter());
+		
+		return lRet;
+	}
+	
+	/**
+	 * 
+	 * This method takes in a list of xml filters and appends them together via
+	 * parent child relationships.  The end result is one xml filter that can be applied to the parse.
+	 * 
+	 * @param filters
+	 * @return
+	 * @throws Exception
+	 */
+	public XMLFilter getXMLFilter(List<XMLFilter> filters) throws Exception{
+		 SAXParserFactory spf = SAXParserFactory.newInstance();
+	     spf.setNamespaceAware(true);
+	     XMLFilter previous = null;
+	     XMLFilter current = null;
+	     
+	     for(int i=0; i< filters.size();i++)
+	     {	    	 
+	    	 if(i==0){
+	    		 previous = filters.get(i);
+	    		 previous.setParent(spf.newSAXParser().getXMLReader());
+	    	 }else{
+	    		 current = filters.get(i);
+	    		 current.setParent(previous);
+	    		 previous = current;
+	    	 }
+	     }
+	     return current;
+	}
+	
+	protected DataXmlDto unmarshal(Unmarshaller unmarshaller, InputStream in) throws Exception {       
+
+        UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
+
+        XMLFilter filter = this.getXMLFilter(this.getXMLFilterList());
+        filter.setContentHandler(handler);
+        filter.parse(new InputSource(in));
+
+        return (DataXmlDto)handler.getResult();
+   }
+	
+    protected GroupXmlDto unmarshalNew(Unmarshaller unmarshaller, InputStream in) throws Exception {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
 
+        XMLFilter filter = new TestGroupNamespaceURIFilter();
+        filter.setParent(spf.newSAXParser().getXMLReader());
+
+        unmarshaller.setListener(new Unmarshaller.Listener() {
+			
+			public void afterUnmarshal(Object target, Object parent) {
+				GroupXmlDto gxd = (GroupXmlDto)target;
+				//super.afterUnmarshal(target, parent);
+			}
+		});
+        
+        
         UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
-       
-        // Plug in chained filters
-        XMLFilter eliminationFilter = new GroupNamespaceURIEliminationFilterPOC();
-        XMLFilter transformationFilter = new GroupNamespaceURITransformationFilterPOC();
-        XMLFilter memberTransformationFilter = new GroupNamespaceURIMemberTransformationFilterPOC();
-                
-        // Initialize filter chain
-        eliminationFilter.setParent(spf.newSAXParser().getXMLReader());
-        transformationFilter.setParent(eliminationFilter);
-        memberTransformationFilter.setParent(transformationFilter);
-        memberTransformationFilter.setContentHandler(handler);
-        memberTransformationFilter.parse(new InputSource(in));
+        filter.setContentHandler(handler);
+
+        filter.parse(new InputSource(in));
 
         return (GroupXmlDto)handler.getResult();
-   }
+    }
+//
+//    protected GroupInfo generateGroupInfo(GroupXmlDto groupDto){
+//    	IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+//    	
+//    	List<String> errors = new ArrayList<String>();
+//    	GroupInfo gi = new GroupInfo();
+//    	List<KimTypeAttributeInfo> typeAttributes = null;
+//    	
+//    	if(isBlank(groupDto.getNamespaceCode())){
+//    		errors.add("Namespace must have a value.");
+//    	}else{
+//    		gi.setNamespaceCode(groupDto.getNamespaceCode());
+//    	}
+//    	
+//    	if(groupDto.getKimType() != null){
+//    		KimTypeInfo kimTypeInfo = null;
+//    		if(!isBlank(groupDto.getKimType().getKimTypeId())){
+//    			 kimTypeInfo = KIMServiceLocator.getTypeInfoService().getKimType(groupDto.getKimType().getKimTypeId());
+//    		}
+//    		if(!isBlank(groupDto.getKimType().getName()) && !isBlank(groupDto.getKimType().getNamespaceCode())){
+//    			kimTypeInfo = KIMServiceLocator.getTypeInfoService().getKimTypeByName(groupDto.getKimType().getNamespaceCode(), groupDto.getKimType().getName());
+//    		}
+//    		
+//    		if (kimTypeInfo == null) {
+//            	errors.add("Invalid typeId or type name and namespace specified.");
+//            } else  {
+//            	gi.setKimTypeId(kimTypeInfo.getKimTypeId());
+//            	typeAttributes = kimTypeInfo.getAttributeDefinitions();
+//            }            
+//    	} else{
+//    		KimTypeInfo kimTypeDefault = KIMServiceLocator.getTypeInfoService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
+//            if (kimTypeDefault != null) {
+//            	gi.setKimTypeId(kimTypeDefault.getKimTypeId());
+//            	typeAttributes = kimTypeDefault.getAttributeDefinitions();
+//            } else {
+//            	errors.add("Failed to locate the 'Default' group type!  Please ensure that it's in your database.");
+//            }
+//    	}
+//    	
+//    	//Active Indicator
+//        gi.setActive(groupDto.isActive());
+//        
+//      //Get list of attribute keys
+//        List<String> validAttributeKeys = new ArrayList<String>();
+//        for (KimTypeAttributeInfo attribute : typeAttributes) {
+//            validAttributeKeys.add(attribute.getAttributeName());
+//        }
+//        //Group attributes
+//        if (groupDto.getAttributes() != null) {
+//        	AttributeSet attributeSet = new AttributeSet();
+//            for (String key : groupDto.getAttributes().keySet() ) {
+//                String value = groupDto.getAttributes().get(key);
+//                attributeSet.put(key, value);
+//                if (!validAttributeKeys.contains(key)) {
+//                    errors.add("Invalid attribute specified.");
+//                }
+//            }
+//            if (attributeSet.size() > 0) {
+//                gi.setAttributes(attributeSet);
+//            }
+//        }
+//        
+//        // Group Members
+//        for(GroupMembershipXmlDto groupMember : groupDto.getMembers()){
+//        	
+//        	GroupMembershipInfo gmi = new GroupMembershipInfo(groupDto.getGroupId(), null, null, null, null, null);
+//        	if(!isBlank(groupMember.getMemberId())){
+//        		KimPrincipal principal = identityManagementService.getPrincipal(groupMember.getMemberId());
+//        		gmi.setMemberId(principal.getPrincipalId());
+//        		gmi.setMemberTypeCode(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+//        	}
+//        	if(!isBlank(groupMember.getMemberName())){
+//        		KimPrincipal principal = identityManagementService.getPrincipalByPrincipalName(groupMember.getMemberName());
+//        		gmi.setMemberId(principal.getPrincipalId());
+//        		gmi.setMemberTypeCode(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
+//        	}
+//        	if(groupMember.getGroupName() != null){
+//        		Group group = identityManagementService.getGroupByName(groupMember.getGroupName().getNamespaceCode(),groupMember.getGroupName().getName());
+//        		gmi.setMemberId(group.getGroupId());
+//        		gmi.setMemberTypeCode(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+//        	}
+//        	if(groupMember.getGroupName() != null){
+//        		Group group = identityManagementService.getGroupByName(groupMember.getGroupName().getNamespaceCode(),groupMember.getGroupName().getName());
+//        		gmi.setMemberId(group.getGroupId());
+//        		gmi.setMemberTypeCode(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
+//        	}
+//        	
+//        	/**
+//            if (principal != null) {
+//                addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), principal.getPrincipalId());
+//            } else {
+//                throw new InvalidXmlException("Principal Name "+principalName+" cannot be found.");
+//            }
+//            **/
+//    
+//        }
+//    	
+//    	return gi;
+//    }
+// 
+    private boolean isBlank(Object o){
+    	return (o == null || "".equals(o));
+    }
+        
+    
+    public class DataNamespaceURIFilter extends XMLFilterImpl {
 
-    public class GroupNamespaceURIFilter extends XMLFilterImpl {
-
-        public static final String GROUP_URI="http://rice.kuali.org/xsd/kim/group";
+        public static final String DATA_URI="http://rice.kuali.org/xsd/core/data";
         
         public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
-            if(StringUtils.isBlank(uri)) {
-                uri = GROUP_URI;
+            if("data".equals(localName)) {
+                uri = DATA_URI;
             }
             
             super.startElement(uri, localName, qName, atts);
@@ -116,7 +281,7 @@ public class GroupXmlJAXBParser implements XmlConstants {
 
         public void endElement(String uri, String localName, String qName) throws SAXException {
             if(StringUtils.isBlank(uri)) {
-                uri = GROUP_URI;
+                uri = DATA_URI;
             }
             
             super.endElement(uri, localName, qName);

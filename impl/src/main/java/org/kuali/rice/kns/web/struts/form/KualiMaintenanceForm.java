@@ -562,6 +562,9 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_DELETE_METHOD_TO_CALL)) {
 			return true;
 		}
+		if ( StringUtils.indexOf(methodToCallActionName, KNSConstants.TOGGLE_INACTIVE_METHOD ) == 0 ) {
+			return true;
+		}
 		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);
 	}
 
@@ -580,6 +583,9 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
 				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION) ||
 				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_DELETE_METHOD_TO_CALL)) {
+			return true;
+		}
+		if ( StringUtils.indexOf(methodToCallParameterName, KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TOGGLE_INACTIVE_METHOD ) == 0 ) {
 			return true;
 		}
 		return super.shouldMethodToCallParameterBeUsed(methodToCallParameterName,

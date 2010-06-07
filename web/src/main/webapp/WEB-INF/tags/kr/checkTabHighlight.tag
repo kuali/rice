@@ -1,5 +1,5 @@
 <%--
- Copyright 2007-2008 The Kuali Foundation
+ Copyright 2005-2010 The Kuali Foundation
  
  Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -29,7 +29,8 @@ on maintenance document, then sets a var to indicate the tab should be highlight
   <c:forEach items="${rows}" var="row">
     <c:forEach items="${row.fields}" var="field"> 
         <c:if test="${(field.fieldType eq field.CONTAINER) && !tabHighlight}" >
-           <kul:checkTabHighlight rows="${field.containerRows}" addHighlighting="${addHighlighting}" />  
+           <%-- cannot refer to recursive tag (checkTabHighlight) using kul alias or Jetty 7 will have jsp compilation errors on Linux --%>
+           </WEB-INF/tags/kr:checkTabHighlight rows="${field.containerRows}" addHighlighting="${addHighlighting}" />  
         </c:if>
       
   	    <c:if test="${field.highlightField}">

@@ -16,6 +16,7 @@
 package org.kuali.rice.ksb.messaging;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -23,6 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.ExceptionUtils;
 
 /**
  * This class creates a proxy for services deployed on KSB. A 
@@ -54,8 +56,11 @@ private static final Logger LOG = Logger.getLogger(KSBClientProxy.class);
             service = GlobalResourceLoader.getService(serviceName);
             LOG.info("Obtained service using GRL for: " + serviceName);
         }
-        
-        return method.invoke(service, args);
+        try {
+	        return method.invoke(service, args);
+	    } catch (InvocationTargetException e) {
+	        throw ExceptionUtils.unwrapActualCause(e);
+	    }
     }
 
 }

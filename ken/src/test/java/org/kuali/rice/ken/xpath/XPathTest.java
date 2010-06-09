@@ -35,7 +35,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import com.sun.org.apache.xerces.internal.jaxp.JAXPConstants;
+import org.apache.xerces.jaxp.JAXPConstants;
 
 /**
  * Unit test that tests the affects of various document parsing (DocumentBuilderFactory)

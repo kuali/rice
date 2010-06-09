@@ -23,5 +23,5 @@
   <c:set var="frameHeight" value="500"/>
 </c:if>
 
-<iframe src="${channelUrl}" onload='setFocusedIframeDimensions("iframeportlet", ${frameHeight}, true); setIframeAnchor("iframeportlet")' name="iframeportlet" id="iframeportlet" hspace="0" vspace="0" style="height: ${frameHeight}px;" title="E-Doc" frameborder="0" height="${frameHeight}" scrolling="auto" width="100%"></iframe>
+<iframe src="${channelUrl}" onload='setFocusedIframeDimensions("iframeportlet", ${frameHeight}, true); <c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>' name="iframeportlet" id="iframeportlet" hspace="0" vspace="0" style="height: ${frameHeight}px;" title="E-Doc" frameborder="0" height="${frameHeight}" scrolling="auto" width="100%"></iframe>
                      

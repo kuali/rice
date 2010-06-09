@@ -20,8 +20,17 @@
 <html>
 <head>
 <title>Kuali Portal Index</title>
-<link href="${ConfigProperties.application.url}/${ConfigProperties.portal.css.files}" rel="stylesheet" type="text/css" />
-<script language="JavaScript" type="text/javascript" src="${ConfigProperties.application.url}/${ConfigProperties.portal.javascript.files}"></script>
+<c:forEach items="${fn:split(ConfigProperties.portal.css.files, ',')}" var="cssFile">
+	<c:if test="${fn:length(fn:trim(cssFile)) > 0}">
+        <link href="${pageContext.request.contextPath}/${fn:trim(cssFile)}" rel="stylesheet" type="text/css" />
+	</c:if>
+</c:forEach>
+<c:forEach items="${fn:split(ConfigProperties.portal.javascript.files, ',')}" var="javascriptFile">
+	<c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
+        <script language="JavaScript" type="text/javascript" src="${ConfigProperties.application.url}/${fn:trim(javascriptFile)}"></script>
+	</c:if>
+</c:forEach> 
+
 <script language="javascript" >
 if (top.location != self.location) {
 	top.location = self.location;

@@ -79,7 +79,7 @@
 	                <label>Username:&nbsp;</label>
 	            </td>
 	            <td class="rightTd" align="left">
-	                <input type="text" name="__login_user" value="admin" size="20"/>
+	                <input type="text" name="__login_user" value="" size="20"/>
 	            </td>
             </tr>
             <c:if test="${requestScope.showPasswordField}">
@@ -87,7 +87,7 @@
             <td class="leftTd" width="Infinity%" align="right">
                 <label>Password:&nbsp;</label>
             </td>
-              <td class="rightTd" align="left"><input type="password" name="__login_pw" value="admin" size="20"/></td>
+              <td class="rightTd" align="left"><input type="password" name="__login_pw" value="" size="20"/></td>
             </tr>
             </c:if>
             <c:if test="${requestScope.invalidPassword}">

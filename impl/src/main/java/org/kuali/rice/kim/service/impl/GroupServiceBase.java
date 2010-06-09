@@ -153,44 +153,7 @@ public abstract class GroupServiceBase {
 
     	return lRet;
     }
-
-    protected GroupImpl copyInfoToGroup(GroupInfo info, GroupImpl group) {
-        group.setActive(info.isActive());
-        group.setGroupDescription(info.getGroupDescription());
-        group.setGroupId(info.getGroupId());
-        group.setGroupName(info.getGroupName());
-        group.setKimTypeId(info.getKimTypeId());
-        group.setNamespaceCode(info.getNamespaceCode());
-
-        return group;
-    }
-
-    protected List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String,String> infoMap, String groupId, String kimTypeId) {
-        List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
-
-        // TODO: fix this to use the KimTypeInfoService to get the attribute information rather than selecting from the database
-
-        for(String key : infoMap.keySet()) {
-            Map<String,String> criteria = new HashMap<String,String>();
-            criteria.put("attributeName", key);
-            KimAttributeImpl kimAttr = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-
-            if(kimAttr == null) {
-            	throw new IllegalArgumentException("KimAttribute not found: " + key);
-            }
-
-            GroupAttributeDataImpl groupAttr = new GroupAttributeDataImpl();
-            groupAttr.setKimAttributeId(kimAttr.getKimAttributeId());
-            groupAttr.setAttributeValue(infoMap.get(key));
-            groupAttr.setGroupId(groupId);
-            groupAttr.setKimTypeId(kimTypeId);
-
-            attrList.add(groupAttr);
-        }
-
-        return attrList;
-    }
-    
+ 
 	protected boolean isGroupMemberOfGroupInternal(String groupMemberId, String groupId) {
 
 	    GroupImpl group = getGroupImpl(groupId);

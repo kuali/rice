@@ -21,12 +21,19 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
+import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -35,7 +42,9 @@ import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -368,5 +377,43 @@ public class KimCommonUtils {
 		}
 		return identityManagementService;
 	}
+	
+	
+    public static GroupImpl copyInfoToGroup(GroupInfo info, GroupImpl group) {
+        group.setActive(info.isActive());
+        group.setGroupDescription(info.getGroupDescription());
+        group.setGroupId(info.getGroupId());
+        group.setGroupName(info.getGroupName());
+        group.setKimTypeId(info.getKimTypeId());
+        group.setNamespaceCode(info.getNamespaceCode());
+
+        return group;
+    }
     
+    public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String,String> infoMap, String groupId, String kimTypeId) {
+    	List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
+        KimTypeInfoService ktis = KIMServiceLocator.getTypeInfoService();
+		KimTypeInfo kimTypeInfo = ktis.getKimType( kimTypeId );
+        List<KimTypeAttributeInfo> attributeInfoList = kimTypeInfo.getAttributeDefinitions();
+        
+        /*for(String key : infoMap.keySet()) {
+            Map<String,String> criteria = new HashMap<String,String>();
+            criteria.put("attributeName", key);
+            kimAttrId//KimAttributeImpl kimAttr = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+
+            if(kimAttr == null) {
+            	throw new IllegalArgumentException("KimAttribute not found: " + key);
+            }
+
+            GroupAttributeDataImpl groupAttr = new GroupAttributeDataImpl();
+            groupAttr.setKimAttributeId(kimAttr.getKimAttributeId());
+            groupAttr.setAttributeValue(infoMap.get(key));
+            groupAttr.setGroupId(groupId);
+            groupAttr.setKimTypeId(kimTypeId);
+
+            attrList.add(groupAttr);
+        }*/
+
+        return attrList;
+    }
 }

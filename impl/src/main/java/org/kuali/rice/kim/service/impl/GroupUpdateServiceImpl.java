@@ -30,6 +30,7 @@ import org.kuali.rice.kim.service.GroupUpdateService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
+import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
 /**
@@ -82,14 +83,15 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
     public GroupInfo createGroup(GroupInfo groupInfo) {
         GroupImpl group = new GroupImpl();
 
-        copyInfoToGroup(groupInfo, group);
+        group = KimCommonUtils.copyInfoToGroup(groupInfo, group);
 
         saveGroup(group);
 
         GroupInfo newGroupInfo = getGroupInfoByName(groupInfo.getNamespaceCode(), groupInfo.getGroupName());
 
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
-            List<GroupAttributeDataImpl> groupAttributes = copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), newGroupInfo.getGroupId(), newGroupInfo.getKimTypeId());
+            List<GroupAttributeDataImpl> groupAttributes = 
+            		KimCommonUtils.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), newGroupInfo.getGroupId(), newGroupInfo.getKimTypeId());
             saveGroupAttributes(groupAttributes);
         }
         return getGroupInfo(newGroupInfo.getGroupId());
@@ -160,7 +162,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
             throw new IllegalArgumentException("Group not found for update.");
         }
 
-        copyInfoToGroup(groupInfo, group);
+        group = KimCommonUtils.copyInfoToGroup(groupInfo, group);
 
         //delete old group attributes
         Map<String,String> criteria = new HashMap<String,String>();
@@ -173,7 +175,8 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
         //create new group attributes
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
-            List<GroupAttributeDataImpl> groupAttributes = copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), group.getGroupId(), group.getKimTypeId());
+            List<GroupAttributeDataImpl> groupAttributes = 
+            		KimCommonUtils.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), group.getGroupId(), group.getKimTypeId());
             saveGroupAttributes(groupAttributes);
         }
 

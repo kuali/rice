@@ -25,6 +25,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Properties;
 
@@ -33,7 +34,9 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -113,17 +116,25 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
         return anchorHtmlData;
     }
 
+    /**
+     * Converts GroupInfo objects to GroupImpl objects.
+     * 
+     * @param  fieldValues  names and values returned by the Group Lookup screen
+     * @return  groupImplList  a list of GroupImpl objects
+     * @see  KimCommonUtils#copyInfoToGroup(GroupInfo, GroupImpl)
+     */
     @Override
-    public List<? extends BusinessObject> getSearchResults(java.util.Map<String,String> fieldValues) {
-    	List<GroupImpl> groups = groupDao.getGroups(fieldValues);
-
-        for (GroupImpl group : groups) {
-        	if (!group.getGroupAttributes().isEmpty()) {
-                sort(group.getGroupAttributes(), new KimAttributeDataComparator());
-        	}
-        }
-
-        return groups;
+    public List<GroupImpl> getSearchResults(java.util.Map<String,String> fieldValues)  {
+    	List<? extends Group> groupInfoObjs = KIMServiceLocator.getGroupService().lookupGroups(fieldValues);
+    	List<GroupImpl> groupImplList = new ArrayList<GroupImpl>();
+    	for(Group g : groupInfoObjs){
+    		if(g instanceof GroupInfo){
+    			GroupImpl impl = new GroupImpl();
+    			impl = KimCommonUtils.copyInfoToGroup((GroupInfo)g, impl);
+    			groupImplList.add(impl);
+    		}
+    	}
+    	return groupImplList;
     }
 
     @Override

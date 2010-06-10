@@ -91,7 +91,9 @@
 	                <input type="text" name="__login_user" value="" size="20"/>
 	            </td>
             </tr>
+            <c:set var="invalidAuthMsg" value="Invalid username" />
             <c:if test="${requestScope.showPasswordField}">
+            <c:set var="invalidAuthMsg" value="Invalid username or password" />
             <tr>
             <td class="leftTd" width="Infinity%" align="right">
                 <label>Password:&nbsp;</label>
@@ -99,9 +101,9 @@
               <td class="rightTd" align="left"><input type="password" name="__login_pw" value="" size="20"/></td>
             </tr>
             </c:if>
-            <c:if test="${requestScope.invalidPassword}">
+            <c:if test="${requestScope.invalidAuth}">
             <tr>
-              <td align="center" colspan="2"><strong>Invalid username or password</strong></td>
+              <td align="center" colspan="2"><strong>${invalidAuthMsg}</strong></td>
             </tr>
             </c:if>
             <tr>

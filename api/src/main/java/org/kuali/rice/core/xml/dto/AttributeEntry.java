@@ -26,16 +26,18 @@
  * own identifying information: Portions Copyright [yyyy]
  * [name of copyright owner]
  */
-package org.kuali.rice.kim.xml;
+package org.kuali.rice.core.xml.dto;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.XmlType;
 
+import org.kuali.rice.core.xml.CoreNamespaceConstants;
 
+@XmlType(name="attributeEntry",namespace=CoreNamespaceConstants.CORE)
 public class AttributeEntry {
-    @XmlAttribute ( namespace = "http://rice.kuali.org/xsd/kim/group")
+	@XmlAttribute
     public String value;
-    @XmlAttribute ( namespace = "http://rice.kuali.org/xsd/kim/group")
+	@XmlAttribute
     public String key;
 
     public AttributeEntry() {

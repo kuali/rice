@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kew.xml;
 
+import org.kuali.rice.kim.xml.KimNamespaceConstants;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
@@ -60,7 +61,7 @@ public class GroupNamespaceURIMemberTransformationFilterPOC extends XMLFilterImp
 
 	// The URI of a Group 1.0.3 schema     
     public static final String GROUP_URI_OLD = "ns:workflow/Group";
-	public static final String GROUP_URI_NEW = "http://rice.kuali.org/xsd/kim/group";
+	public static final String GROUP_URI_NEW = KimNamespaceConstants.GROUP;
     
 	public GroupNamespaceURIMemberTransformationFilterPOC(){
 		super();

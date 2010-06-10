@@ -16,6 +16,7 @@
 package org.kuali.rice.core.xml.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -23,8 +24,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 
+import org.kuali.rice.core.xml.CoreNamespaceConstants;
 import org.kuali.rice.kim.xml.GroupXmlDto;
+import org.kuali.rice.kim.xml.KimNamespaceConstants;
 
 /**
  * This is a description of what this class does - g don't forget to fill this in. 
@@ -32,13 +36,14 @@ import org.kuali.rice.kim.xml.GroupXmlDto;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@XmlRootElement(name = "data", namespace = "http://rice.kuali.org/xsd/core/data")
+@XmlRootElement(name = "data", namespace = CoreNamespaceConstants.CORE)
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(name="data",namespace=CoreNamespaceConstants.CORE)
 public class DataXmlDto implements Serializable {
 
-	@XmlElementWrapper(name = "groups", namespace = "http://rice.kuali.org/xsd/kim/group")
-	@XmlElement(name = "group", namespace = "http://rice.kuali.org/xsd/kim/group")
-	List<GroupXmlDto> groups = null;
+	@XmlElementWrapper(name = "groups", namespace=KimNamespaceConstants.GROUP)
+	@XmlElement(name = "group", namespace=KimNamespaceConstants.GROUP)
+	List<GroupXmlDto> groups = new ArrayList<GroupXmlDto>();
 
 	public List<GroupXmlDto> getGroups() {
 		return this.groups;

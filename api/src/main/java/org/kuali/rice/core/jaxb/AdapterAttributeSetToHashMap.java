@@ -26,13 +26,14 @@
  * own identifying information: Portions Copyright [yyyy]
  * [name of copyright owner]
  */
-package org.kuali.rice.kim.xml;
+package org.kuali.rice.core.jaxb;
 
-import java.util.HashMap;
 import java.util.TreeMap;
 import java.util.Iterator;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
+import org.kuali.rice.core.xml.dto.AttributeEntry;
+import org.kuali.rice.core.xml.dto.AttributeSetList;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 

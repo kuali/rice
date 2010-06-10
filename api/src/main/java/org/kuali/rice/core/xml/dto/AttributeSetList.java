@@ -26,7 +26,7 @@
  * own identifying information: Portions Copyright [yyyy]
  * [name of copyright owner]
  */
-package org.kuali.rice.kim.xml;
+package org.kuali.rice.core.xml.dto;
 
 import java.util.List;
 import java.util.Vector;
@@ -35,9 +35,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.kuali.rice.core.xml.CoreNamespaceConstants;
+
+
 
 @XmlRootElement
-@XmlType(name = "AttributeSetListType", namespace = "http://rice.kuali.org/xsd/kim/group")
+@XmlType(name = "AttributeSetListType", namespace = CoreNamespaceConstants.CORE)
 public class AttributeSetList {
     //- this must be a public field for the adapter to function
     //- When it is public the generated xml uses the variable name
@@ -45,7 +48,7 @@ public class AttributeSetList {
     //- If the entry is not public the generic identifier is used
     //- as the element tag.  Settter/getter methods would be
     //- needed.
-	@XmlElement(name = "attribute", namespace = "http://rice.kuali.org/xsd/kim/group")
+	@XmlElement(name = "attribute", namespace = CoreNamespaceConstants.CORE)
     public List<AttributeEntry> entry;
 
     public AttributeSetList() {

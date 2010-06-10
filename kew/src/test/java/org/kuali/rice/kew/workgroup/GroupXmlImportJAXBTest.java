@@ -117,6 +117,22 @@ public class GroupXmlImportJAXBTest {
     	}
     }
     
+    @Test public void testOriginalGroupImportXmlWithValidation() throws Exception {
+    	InputStream xmlFile = getClass().getResourceAsStream("GroupXmlImportTest.xml");
+    	
+    	GroupXmlJAXBParser parser = new GroupXmlJAXBParser();
+    	DataXmlDto groupsInfo = parser.parse(xmlFile);
+
+    	GroupXmlDto groupInfo = groupsInfo.getGroups().get(0);
+    	assertNotNull(groupInfo);
+    	assertTrue(groupInfo.getGroupName().equals("TestUserGroup"));
+    	assertTrue(groupInfo.getGroupDescription().equals("Group for test user"));
+    	
+    	for (GroupMembershipXmlDto groupMember : groupInfo.getMembers()){
+    		System.out.println(groupMember.getMemberId());
+    	}
+    }
+    
     @Test public void testGroupExportXml() throws Exception {    	
         JAXBContext context = JAXBContext.newInstance(DataXmlDto.class);
         Marshaller marshaller = context.createMarshaller();
@@ -146,6 +162,7 @@ public class GroupXmlImportJAXBTest {
         
         grp.setMembers(mbrs);
         
+      //  HashMap<String, String> attrs = new HashMap<String,String>();
         AttributeSet attrs = new AttributeSet();
 //        HashMap<String, String> attrs = new HashMap<String, String>();
         attrs.put("documentTypeName","Doc");
@@ -184,5 +201,4 @@ public class GroupXmlImportJAXBTest {
             	
         
     }    
-        
 }

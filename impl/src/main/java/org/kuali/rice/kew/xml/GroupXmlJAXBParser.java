@@ -28,6 +28,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.xml.CoreNamespaceConstants;
 import org.kuali.rice.core.xml.dto.DataXmlDto;
 import org.kuali.rice.kim.xml.GroupXmlDto;
 import org.xml.sax.Attributes;
@@ -269,7 +270,7 @@ public class GroupXmlJAXBParser implements XmlConstants {
     
     public class DataNamespaceURIFilter extends XMLFilterImpl {
 
-        public static final String DATA_URI="http://rice.kuali.org/xsd/core/data";
+        public static final String DATA_URI=CoreNamespaceConstants.CORE;
         
         public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
             if("data".equals(localName)) {

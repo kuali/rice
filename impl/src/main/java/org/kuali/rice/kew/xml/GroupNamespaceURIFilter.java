@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.xml.CoreNamespaceConstants;
 
 
 /**
@@ -76,7 +77,11 @@ public class GroupNamespaceURIFilter extends AbstractTransformationFilter {
 	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#transformEndElement(org.kuali.rice.kew.xml.AbstractTransformationFilter.CurrentElement)
 	 */
 	public CurrentElement transformEndElement(CurrentElement currentElement) {
-		currentElement.setUri(GROUP_URI_NEW);
+		if("groups.group.attributes".equals(this.getTrimmedCurrentElementKey(currentElement.getNameKey()))){
+			currentElement.setUri(CoreNamespaceConstants.CORE);
+		}else{
+			currentElement.setUri(GROUP_URI_NEW);
+		}
 		return currentElement;
 	}
 

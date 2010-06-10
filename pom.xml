@@ -1,11 +1,17 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.kuali.rice</groupId>
 	<artifactId>rice</artifactId>
 	<packaging>pom</packaging>
 	<name>Kuali Rice</name>
 	<version>1.0.3-SNAPSHOT</version>
-	<description>The Kuali Rice effort provides an enterprise class middleware suite of integrated products that allows both Kuali and non-Kuali applications to be built in an agile fashion, such that developers will be able to react to end-user business requirements in an efficient and productive manner, so that they can produce high quality business applications.</description>
+	<description>The Kuali Rice effort provides an enterprise class
+		middleware suite of integrated products that allows both Kuali and
+		non-Kuali applications to be built in an agile fashion, such that
+		developers will be able to react to end-user business requirements in
+		an efficient and productive manner, so that they can produce high
+		quality business applications.</description>
 	<url>http://rice.kuali.org</url>
 	<inceptionYear>2007</inceptionYear>
 	<licenses>
@@ -20,8 +26,10 @@
 		<url>http://kuali.org/</url>
 	</organization>
 	<properties>
-		<!-- must provide an explicit pattern - surefire default does not work
-			b/c of non-unit test classes that are included in default expression -->
+		<!--
+			must provide an explicit pattern - surefire default does not work b/c
+			of non-unit test classes that are included in default expression
+		-->
 		<test.includes>**/*Test.java</test.includes>
 
 		<acegi.version>1.0.6</acegi.version>
@@ -96,19 +104,20 @@
 			</activation>
 			<build>
 				<testResources>
-					<!-- NOTE: Because Maven test runs can be spawned in a new JVM, the system properties
-						on the initial Maven command line are not necessarily propagated to the spawned
-						test run.  This means we cannot automatically use System property definitions
-						to override configuration parameters.  To work around this, we have configured
-						the test resources to be pre-filtered by maven prior to running, which results
-						in config parameter tokens being replaced by System property definitions (because
-						the ${token} syntax happens to be the same.
-						
-						So.  If you need to introduce a new configuration property that needs to be overridable
-						by Bamboo/CI, make sure to set the property in one of the below config files, so that
-						it can be pre-emptively replaced by Maven prior to kicking off the test run.
-						
-						E.g. <param name="my.new.param">${my.new.param}</param>
+					<!--
+						NOTE: Because Maven test runs can be spawned in a new JVM, the
+						system properties on the initial Maven command line are not
+						necessarily propagated to the spawned test run. This means we
+						cannot automatically use System property definitions to override
+						configuration parameters. To work around this, we have configured
+						the test resources to be pre-filtered by maven prior to running,
+						which results in config parameter tokens being replaced by System
+						property definitions (because the ${token} syntax happens to be
+						the same. So. If you need to introduce a new configuration
+						property that needs to be overridable by Bamboo/CI, make sure to
+						set the property in one of the below config files, so that it can
+						be pre-emptively replaced by Maven prior to kicking off the test
+						run. E.g. <param name="my.new.param">${my.new.param}</param>
 					-->
 					<testResource>
 						<filtering>true</filtering>
@@ -141,10 +150,10 @@
 						<artifactId>maven-surefire-plugin</artifactId>
 						<version>2.4.2</version>
 						<configuration>
-                            <additionalClasspathElements>
-                                <additionalClasspathElement>/opt/java/drivers/mysql-connector-java-${mysql-connector-java.version}.jar</additionalClasspathElement>     
-                                <additionalClasspathElement>/opt/java/drivers/ojdbc14-${ojdbc14.version}.jar</additionalClasspathElement>       
-                            </additionalClasspathElements>
+							<additionalClasspathElements>
+								<additionalClasspathElement>/opt/java/drivers/mysql-connector-java-${mysql-connector-java.version}.jar</additionalClasspathElement>
+								<additionalClasspathElement>/opt/java/drivers/ojdbc14-${ojdbc14.version}.jar</additionalClasspathElement>
+							</additionalClasspathElements>
 							<useFile>false</useFile>
 							<failIfNoTests>false</failIfNoTests>
 							<includes>
@@ -193,42 +202,25 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>cobertura-maven-plugin</artifactId>
-                        <version>2.3</version>
+						<version>2.3</version>
 						<configuration>
-						    <instrumentation>
-							<excludes>
-							    <exclude>org/kuali/rice/**/test/**/*.class</exclude>
-							</excludes>
-						    </instrumentation>
+							<instrumentation>
+								<excludes>
+									<exclude>org/kuali/rice/**/test/**/*.class</exclude>
+								</excludes>
+							</instrumentation>
 						</configuration>
-					    </plugin>
+					</plugin>
 					<!--
-						<plugin>
-						<artifactId>maven-clover-plugin</artifactId>
-						<executions>
-						<execution>
-						<id>main</id>
-						<phase>verify</phase>
-						<goals>
-						<goal>instrument</goal>
-						<goal>aggregate</goal>
-						<goal>log</goal>
-						</goals>
-						</execution>
-						<execution>
-						<phase>pre-site</phase>
-						<goals>
-						<goal>instrument</goal>
-						<goal>aggregate</goal>
-						<goal>save-history</goal>
-						</goals>
-						</execution>
-						</executions>
-						<configuration>
-						<jdk>1.5</jdk>
+						<plugin> <artifactId>maven-clover-plugin</artifactId> <executions>
+						<execution> <id>main</id> <phase>verify</phase> <goals>
+						<goal>instrument</goal> <goal>aggregate</goal> <goal>log</goal>
+						</goals> </execution> <execution> <phase>pre-site</phase> <goals>
+						<goal>instrument</goal> <goal>aggregate</goal>
+						<goal>save-history</goal> </goals> </execution> </executions>
+						<configuration> <jdk>1.5</jdk>
 						<licenseLocation>kns/src/test/config/clover.license</licenseLocation>
-						</configuration>
-						</plugin>
+						</configuration> </plugin>
 					-->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -273,6 +265,57 @@
 						<artifactId>maven-eclipse-plugin</artifactId>
 						<version>2.6</version>
 					</plugin>
+					<plugin>
+						<groupId>com.sun.tools.jxc.maven2</groupId>
+						<artifactId>maven-jaxb-schemagen-plugin</artifactId>
+						<version>1.2</version>
+						<executions>
+							<execution>
+								<phase>generate-resources</phase>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+							</execution>
+						</executions>
+
+						<configuration>
+							<project>
+								${project}
+							</project>
+							<destdir>${project.build.directory}/schema</destdir>
+							<includes>
+								<include>core/xml/</include>																
+								<include>kim/xml/</include>															
+								<include>core/jaxb/SqlDateAdapter.java</include>
+								<include>core/jaxb/AdapterAttributeSetToHashMap.java</include>
+								<include>kim/bo/types/dto/AttributeSet.java</include>
+							</includes>
+							<srcdir>${basedir}/api/src/main/java/org/kuali/rice/</srcdir>
+							<verbose>true</verbose>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>javax.xml.bind</groupId>
+								<artifactId>jaxb-api</artifactId>
+								<version>2.2</version>
+							</dependency>
+							<dependency>
+								<groupId>com.sun.xml.bind</groupId>
+								<artifactId>jaxb-xjc</artifactId>
+								<version>2.2</version>
+							</dependency>
+							<dependency>
+								<groupId>com.sun.xml.bind</groupId>
+								<artifactId>jaxb-impl</artifactId>
+								<version>2.2</version>
+							</dependency>
+							<dependency>
+								<groupId>com.sun.xml.bind</groupId>
+								<artifactId>jaxb-xjc</artifactId>
+								<version>2.2</version>
+							</dependency>
+						</dependencies>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -312,6 +355,11 @@
 		<pluginRepository>
 			<id>kuali</id>
 			<url>https://test.kuali.org/maven</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>maven-repository.dev.java.net</id>
+			<name>Java.net Maven 2 Repository</name>
+			<url>http://download.java.net/maven/2</url>
 		</pluginRepository>
 	</pluginRepositories>
 
@@ -536,12 +584,12 @@
 				<groupId>ojb</groupId>
 				<artifactId>db-ojb</artifactId>
 				<version>${db-ojb.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>cglib</groupId>
-                        <artifactId>cglib</artifactId>
-                    </exclusion>
-                </exclusions>
+				<exclusions>
+					<exclusion>
+						<groupId>cglib</groupId>
+						<artifactId>cglib</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>commons-beanutils</groupId>
@@ -558,7 +606,7 @@
 				<artifactId>commons-dbcp</artifactId>
 				<version>${commons-dbcp.version}</version>
 			</dependency>
-            <dependency>
+			<dependency>
 				<groupId>log4j</groupId>
 				<artifactId>log4j</artifactId>
 				<version>${log4j.version}</version>
@@ -708,27 +756,27 @@
 				<artifactId>cxf-rt-frontend-jaxws</artifactId>
 				<version>${cxf.version}</version>
 				<exclusions>
-                    <!-- avoids conflict with javamail -->
+					<!-- avoids conflict with javamail -->
 					<exclusion>
 						<groupId>org.apache.geronimo.specs</groupId>
 						<artifactId>geronimo-javamail_1.4_spec</artifactId>
 					</exclusion>
-                    <exclusion>
-                        <artifactId>geronimo-jaxws_2.1_spec</artifactId>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>geronimo-activation_1.1_spec</artifactId>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>geronimo-annotation_1.0_spec</artifactId>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                    </exclusion>
+					<exclusion>
+						<artifactId>geronimo-jaxws_2.1_spec</artifactId>
+						<groupId>org.apache.geronimo.specs</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
+						<groupId>org.apache.geronimo.specs</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>geronimo-activation_1.1_spec</artifactId>
+						<groupId>org.apache.geronimo.specs</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>geronimo-annotation_1.0_spec</artifactId>
+						<groupId>org.apache.geronimo.specs</groupId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 			<dependency>
@@ -745,42 +793,42 @@
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-ws-security</artifactId>
 				<version>${cxf.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <artifactId>geronimo-stax-api_1.0_spec</artifactId>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>geronimo-annotation_1.0_spec</artifactId>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                    </exclusion>
-                </exclusions>
+				<exclusions>
+					<exclusion>
+						<artifactId>geronimo-stax-api_1.0_spec</artifactId>
+						<groupId>org.apache.geronimo.specs</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>geronimo-annotation_1.0_spec</artifactId>
+						<groupId>org.apache.geronimo.specs</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-databinding-aegis</artifactId>
 				<version>${cxf.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
-                    </exclusion>
-                </exclusions>
+				<exclusions>
+					<exclusion>
+						<groupId>org.apache.geronimo.specs</groupId>
+						<artifactId>geronimo-javamail_1.4_spec</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-databinding-jaxb</artifactId>
 				<version>${cxf.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>geronimo-activation_1.1_spec</artifactId>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                    </exclusion>
-                </exclusions>
+				<exclusions>
+					<exclusion>
+						<groupId>org.apache.geronimo.specs</groupId>
+						<artifactId>geronimo-javamail_1.4_spec</artifactId>
+					</exclusion>
+					<exclusion>
+						<artifactId>geronimo-activation_1.1_spec</artifactId>
+						<groupId>org.apache.geronimo.specs</groupId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.codehaus.groovy</groupId>
@@ -828,7 +876,7 @@
 					</dependencyLocationsEnabled>
 				</configuration>
 			</plugin>
-		
+
 			<plugin>
 				<artifactId>maven-surefire-report-plugin</artifactId>
 				<version>${surefire.report.plugin.version}</version>
@@ -849,28 +897,29 @@
 					<maxmemory>512m</maxmemory>
 				</configuration>
 			</plugin>
-            <plugin>
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.3</version>
-		        <configuration>
-		          <formats>
-		            <format>html</format>
-		            <format>xml</format>
-		          </formats>
-		        </configuration>
-	      </plugin>
-			<!-- turn off clover so we don't get duplicate test runs
-				wait until Atlassian gets this straightened out... 
-				<plugin>
-				<artifactId>maven-clover-plugin</artifactId>
-				</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<formats>
+						<format>html</format>
+						<format>xml</format>
+					</formats>
+				</configuration>
+			</plugin>
+			<!--
+				turn off clover so we don't get duplicate test runs wait until
+				Atlassian gets this straightened out... <plugin>
+				<artifactId>maven-clover-plugin</artifactId> </plugin>
 			-->
 		</plugins>
 	</reporting>
 	<scm>
-		<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-1-br</connection>
-		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-1-br</developerConnection>
+		<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-1-br
+		</connection>
+		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-1-br
+		</developerConnection>
 		<url>https://test.kuali.org/fisheye/browse/rice</url>
 	</scm>
 	<distributionManagement>
@@ -881,7 +930,8 @@
 		<site>
 			<id>rice-site</id>
 			<name>Rice Web Site</name>
-			<url>scp://rice.kuali.org:/opt/www/drupal/contents/rice/docs/${project.version}/site</url>
+			<url>scp://rice.kuali.org:/opt/www/drupal/contents/rice/docs/${project.version}/site
+			</url>
 		</site>
 	</distributionManagement>
 </project>

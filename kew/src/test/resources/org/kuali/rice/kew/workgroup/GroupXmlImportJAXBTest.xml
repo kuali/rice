@@ -1,57 +1,55 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<data xmlns="http://rice.kuali.org/xsd/core/data">
-	<ns1:groups xmlns:ns1="http://rice.kuali.org/xsd/kim/group">
-		<ns1:group xmlns:ns1="http://rice.kuali.org/xsd/kim/group">
-			<ns1:groupName>MyGroup</ns1:groupName>
-			<ns1:groupDescription>Group Import unit test</ns1:groupDescription>
-			<ns1:active>true</ns1:active>
-			<ns1:attributes>
-				<ns1:attribute ns1:key="actionDetailsAtRoleMemberLevel"
-					ns1:value="false" />
-				<ns1:attribute ns1:key="documentTypeName" ns1:value="Doc" />
-				<ns1:attribute ns1:key="required" ns1:value="false" />
-				<ns1:attribute ns1:key="routeNodeName" ns1:value="P" />
-			</ns1:attributes>
-			<ns1:members>
-				<ns1:member>
-					<ns1:memberId>ewestfal</ns1:memberId>
-					<ns1:memberTypeCode>P</ns1:memberTypeCode>
-				</ns1:member>
-				<ns1:member>
-					<ns1:memberId>rkirkend</ns1:memberId>
-					<ns1:memberTypeCode>P</ns1:memberTypeCode>
-				</ns1:member>
-				<ns1:member>
-					<ns1:memberId>TestWorkgroup</ns1:memberId>
-					<ns1:memberTypeCode>G</ns1:memberTypeCode>
-				</ns1:member>
-			</ns1:members>
-		</ns1:group>
-		<ns1:group xmlns:ns1="http://rice.kuali.org/xsd/kim/group">
-			<ns1:groupName>MyGroup2</ns1:groupName>
-			<ns1:groupDescription>Group Import unit test</ns1:groupDescription>
-			<ns1:active>true</ns1:active>
-			<ns1:attributes>
-				<ns1:attribute ns1:key="actionDetailsAtRoleMemberLevel"
-					ns1:value="false" />
-				<ns1:attribute ns1:key="documentTypeName" ns1:value="Doc" />
-				<ns1:attribute ns1:key="required" ns1:value="false" />
-				<ns1:attribute ns1:key="routeNodeName" ns1:value="P" />
-			</ns1:attributes>
-			<ns1:members>
-				<ns1:member>
-					<ns1:memberId>ewestfal</ns1:memberId>
-					<ns1:memberTypeCode>P</ns1:memberTypeCode>
-				</ns1:member>
-				<ns1:member>
-					<ns1:memberId>rkirkend</ns1:memberId>
-					<ns1:memberTypeCode>P</ns1:memberTypeCode>
-				</ns1:member>
-				<ns1:member>
-					<ns1:memberId>TestWorkgroup</ns1:memberId>
-					<ns1:memberTypeCode>G</ns1:memberTypeCode>
-				</ns1:member>
-			</ns1:members>
-		</ns1:group>
-	</ns1:groups>
-</data>
+<ns2:data xmlns:ns2="http://rice.kuali.org/xsd/core/xml/dto" xmlns:ns3="http://rice.kuali.org/xsd/kim/group">
+    <ns3:groups>
+        <ns3:group>
+            <ns3:groupName>MyGroup</ns3:groupName>
+            <ns3:groupDescription>Group Import unit test</ns3:groupDescription>
+            <ns3:active>true</ns3:active>
+            <ns3:attributes>
+                <ns2:attribute key="actionDetailsAtRoleMemberLevel" value="false"/>
+                <ns2:attribute key="documentTypeName" value="Doc"/>
+                <ns2:attribute key="required" value="false"/>
+                <ns2:attribute key="routeNodeName" value="P"/>
+            </ns3:attributes>
+            <ns3:members>
+                <ns3:member>
+                    <ns3:memberId>ewestfal</ns3:memberId>
+                    <ns3:memberTypeCode>P</ns3:memberTypeCode>
+                </ns3:member>
+                <ns3:member>
+                    <ns3:memberId>rkirkend</ns3:memberId>
+                    <ns3:memberTypeCode>P</ns3:memberTypeCode>
+                </ns3:member>
+                <ns3:member>
+                    <ns3:memberId>TestWorkgroup</ns3:memberId>
+                    <ns3:memberTypeCode>G</ns3:memberTypeCode>
+                </ns3:member>
+            </ns3:members>
+        </ns3:group>
+        <ns3:group>
+            <ns3:groupName>MyGroup2</ns3:groupName>
+            <ns3:groupDescription>Group Import unit test</ns3:groupDescription>
+            <ns3:active>true</ns3:active>
+            <ns3:attributes>
+                <ns2:attribute key="actionDetailsAtRoleMemberLevel" value="false"/>
+                <ns2:attribute key="documentTypeName" value="Doc"/>
+                <ns2:attribute key="required" value="false"/>
+                <ns2:attribute key="routeNodeName" value="P"/>
+            </ns3:attributes>
+            <ns3:members>
+                <ns3:member>
+                    <ns3:memberId>ewestfal</ns3:memberId>
+                    <ns3:memberTypeCode>P</ns3:memberTypeCode>
+                </ns3:member>
+                <ns3:member>
+                    <ns3:memberId>rkirkend</ns3:memberId>
+                    <ns3:memberTypeCode>P</ns3:memberTypeCode>
+                </ns3:member>
+                <ns3:member>
+                    <ns3:memberId>TestWorkgroup</ns3:memberId>
+                    <ns3:memberTypeCode>G</ns3:memberTypeCode>
+                </ns3:member>
+            </ns3:members>
+        </ns3:group>
+    </ns3:groups>
+</ns2:data>

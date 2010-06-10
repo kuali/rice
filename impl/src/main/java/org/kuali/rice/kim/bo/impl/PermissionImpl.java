@@ -17,6 +17,8 @@ package org.kuali.rice.kim.bo.impl;
 
 import java.util.List;
 
+import javax.persistence.Transient;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
@@ -29,19 +31,29 @@ import org.kuali.rice.kns.util.TypedArrayList;
 public class PermissionImpl extends KimPermissionImpl {
 
 	private static final long serialVersionUID = 1L;
-	
+	@Transient
 	List<RoleImpl> assignedToRoles = new TypedArrayList(RoleImpl.class);
-	
+	@Transient
 	protected String assignedToRoleNamespaceForLookup;
+	@Transient
 	protected String assignedToRoleNameForLookup;
+	@Transient
 	protected RoleImpl assignedToRole;
+	@Transient
 	protected String assignedToPrincipalNameForLookup;
+	@Transient
 	protected Person assignedToPrincipal;
+	@Transient
 	protected String assignedToGroupNamespaceForLookup;
+	@Transient
 	protected String assignedToGroupNameForLookup;
+	@Transient
 	protected GroupImpl assignedToGroup;
+	@Transient
 	protected String attributeName;
+	@Transient
 	protected String attributeValue;
+	@Transient
 	protected String detailCriteria;
 	
 	/**

@@ -233,7 +233,44 @@ public abstract class GroupServiceBase {
 			lookupService = KNSServiceLocator.getLookupService();
 		}
 		return lookupService;
-	}
+    }
+    
+    /**
+     * 
+     * This method is not "client" safe and should only be used internally by rice. This is because it calls the BO service
+     * directly, bypassing any external group service.  Which is fine if it's being used internally by our implementation
+     * of the group service.
+     * 
+     * @param infoMap
+     * @param groupId
+     * @param kimTypeId
+     * @return
+     */
+    protected static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String,String> infoMap, String groupId, String kimTypeId) {
+        List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
+
+        // TODO: fix this to use the KimTypeInfoService to get the attribute information rather than selecting from the database
+
+        for(String key : infoMap.keySet()) {
+            Map<String,String> criteria = new HashMap<String,String>();
+            criteria.put("attributeName", key);
+            KimAttributeImpl kimAttr = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
+
+            if(kimAttr == null) {
+            	throw new IllegalArgumentException("KimAttribute not found: " + key);
+            }
+
+            GroupAttributeDataImpl groupAttr = new GroupAttributeDataImpl();
+            groupAttr.setKimAttributeId(kimAttr.getKimAttributeId());
+            groupAttr.setAttributeValue(infoMap.get(key));
+            groupAttr.setGroupId(groupId);
+            groupAttr.setKimTypeId(kimTypeId);
+
+            attrList.add(groupAttr);
+        }
+
+        return attrList;
+    }
     
     
 }

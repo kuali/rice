@@ -91,7 +91,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
             List<GroupAttributeDataImpl> groupAttributes = 
-            		KimCommonUtils.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), newGroupInfo.getGroupId(), newGroupInfo.getKimTypeId());
+            		copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), newGroupInfo.getGroupId(), newGroupInfo.getKimTypeId());
             saveGroupAttributes(groupAttributes);
         }
         return getGroupInfo(newGroupInfo.getGroupId());
@@ -176,7 +176,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         //create new group attributes
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
             List<GroupAttributeDataImpl> groupAttributes = 
-            		KimCommonUtils.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), group.getGroupId(), group.getKimTypeId());
+            		copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), group.getGroupId(), group.getKimTypeId());
             saveGroupAttributes(groupAttributes);
         }
 

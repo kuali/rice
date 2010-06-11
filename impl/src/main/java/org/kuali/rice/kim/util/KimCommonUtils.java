@@ -18,6 +18,7 @@ package org.kuali.rice.kim.util;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -379,7 +380,7 @@ public class KimCommonUtils {
 	}
 	
 	
-    public static GroupImpl copyInfoToGroup(GroupInfo info, GroupImpl group) {
+    public static GroupImpl copyInfoToGroup(Group info, GroupImpl group) {
         group.setActive(info.isActive());
         group.setGroupDescription(info.getGroupDescription());
         group.setGroupId(info.getGroupId());
@@ -390,7 +391,7 @@ public class KimCommonUtils {
         return group;
     }
     
-    public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String,String> infoMap, String groupId, String kimTypeId) {
+    public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributesNew(Map<String,String> infoMap, String groupId, String kimTypeId) {
     	List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
         KimTypeInfoService ktis = KIMServiceLocator.getTypeInfoService();
 		KimTypeInfo kimTypeInfo = ktis.getKimType( kimTypeId );
@@ -416,4 +417,5 @@ public class KimCommonUtils {
 
         return attrList;
     }
+        
 }

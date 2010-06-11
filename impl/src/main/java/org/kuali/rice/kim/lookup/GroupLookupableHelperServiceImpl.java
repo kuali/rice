@@ -127,12 +127,10 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
     public List<GroupImpl> getSearchResults(java.util.Map<String,String> fieldValues)  {
     	List<? extends Group> groupInfoObjs = KIMServiceLocator.getGroupService().lookupGroups(fieldValues);
     	List<GroupImpl> groupImplList = new ArrayList<GroupImpl>();
-    	for(Group g : groupInfoObjs){
-    		if(g instanceof GroupInfo){
-    			GroupImpl impl = new GroupImpl();
-    			impl = KimCommonUtils.copyInfoToGroup((GroupInfo)g, impl);
-    			groupImplList.add(impl);
-    		}
+    	for(Group g : groupInfoObjs){    		
+    		GroupImpl impl = new GroupImpl();
+    		impl = KimCommonUtils.copyInfoToGroup(g, impl);
+    		groupImplList.add(impl);    		
     	}
     	return groupImplList;
     }

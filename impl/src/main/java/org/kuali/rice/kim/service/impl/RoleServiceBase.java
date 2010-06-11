@@ -30,9 +30,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
@@ -54,7 +54,6 @@ import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
@@ -933,9 +932,9 @@ public class RoleServiceBase {
 				RoleMemberImpl.class, fieldValues, true);
     	for(RoleMemberImpl roleMember: roleMembers){
     		roleMembersCompleteInfo = roleMember.toSimpleInfo();
-			BusinessObject member = getMember(roleMembersCompleteInfo.getMemberTypeCode(), roleMembersCompleteInfo.getMemberId());
-			roleMembersCompleteInfo.setMemberName(getMemberName(roleMembersCompleteInfo.getMemberTypeCode(), member));
-			roleMembersCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(roleMembersCompleteInfo.getMemberTypeCode(), member));
+			Object member = getMember(roleMembersCompleteInfo.getMemberTypeCode(), roleMembersCompleteInfo.getMemberId());
+			roleMembersCompleteInfo.setMemberName(getMemberName(member));
+			roleMembersCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(member));
 			roleMembersCompleteInfo.setRoleRspActions(getRoleMemberResponsibilityActionInfo(roleMember.getRoleMemberId()));
 			roleMembersCompleteInfos.add(roleMembersCompleteInfo);
     	}
@@ -985,9 +984,9 @@ public class RoleServiceBase {
 	    		delegationTemp = getDelegationImpl(delegations, delegateMember.getDelegationId());
 	    		delegateMemberCompleteInfo.setRoleId(delegationTemp.getRoleId());
 	    		delegateMemberCompleteInfo.setDelegationTypeCode(delegationTemp.getDelegationTypeCode());
-				BusinessObject member = getMember(delegateMemberCompleteInfo.getMemberTypeCode(), delegateMemberCompleteInfo.getMemberId());
-				delegateMemberCompleteInfo.setMemberName(getMemberName(delegateMemberCompleteInfo.getMemberTypeCode(), member));
-				delegateMemberCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(delegateMemberCompleteInfo.getMemberTypeCode(), member));
+				Object member = getMember(delegateMemberCompleteInfo.getMemberTypeCode(), delegateMemberCompleteInfo.getMemberId());
+				delegateMemberCompleteInfo.setMemberName(getMemberName(member));
+				delegateMemberCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(member));
 				delegateMembersCompleteInfo.add(delegateMemberCompleteInfo);
 	    	}
 
@@ -1005,48 +1004,50 @@ public class RoleServiceBase {
     	return null;
     }
 	
-	protected BusinessObject getMember(String memberTypeCode, String memberId){
-        Class<? extends BusinessObject> roleMemberTypeClass = null;
-        String roleMemberIdName = "";
+	protected Object getMember(String memberTypeCode, String memberId){
+		if ( StringUtils.isBlank(memberId) ) {
+			return null;
+		}
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-            roleMemberTypeClass = KimPrincipalImpl.class;
-            roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
+        	return getIdentityManagementService().getPrincipal(memberId);
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-            roleMemberTypeClass = GroupImpl.class;
-            roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
+        	return getIdentityManagementService().getGroup(memberId);
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-            roleMemberTypeClass = RoleImpl.class;
-            roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
+        	return getRoleImpl(memberId);
         }
-        Map<String, String> criteria = new HashMap<String, String>();
-        criteria.put(roleMemberIdName, memberId);
-        return KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(roleMemberTypeClass, criteria);
+        return null;
     }
 	
-	protected String getMemberName(String memberTypeCode, BusinessObject member){
-        String roleMemberName = "";
-        if(member==null) return roleMemberName;
-        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-            roleMemberName = ((KimPrincipalImpl)member).getPrincipalName();
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-            roleMemberName = ((GroupImpl)member).getGroupName();
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-            roleMemberName = ((RoleImpl)member).getRoleName();
+	protected String getMemberName(Object member){
+        if( member == null ) {
+        	return "";
         }
-        return roleMemberName;
+        if ( member instanceof KimPrincipal ) {
+        	return ((KimPrincipal)member).getPrincipalName();
+        }
+        if ( member instanceof Group ) {
+        	return ((Group)member).getGroupName();
+        }
+        if ( member instanceof Role ) {
+        	return ((Role)member).getRoleName();
+        }
+        return member.toString();
     }
 	
-	protected String getMemberNamespaceCode(String memberTypeCode, BusinessObject member){
-        String roleMemberNamespaceCode = "";
-        if(member==null) return roleMemberNamespaceCode;
-        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-            roleMemberNamespaceCode = "";
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-            roleMemberNamespaceCode = ((GroupImpl)member).getNamespaceCode();
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-            roleMemberNamespaceCode = ((RoleImpl)member).getNamespaceCode();
+	protected String getMemberNamespaceCode(Object member){
+        if( member == null ) {
+        	return "";
         }
-        return roleMemberNamespaceCode;
+        if ( member instanceof KimPrincipal ) {
+        	return "";
+        }
+        if ( member instanceof Group ) {
+        	return ((Group)member).getNamespaceCode();
+        }
+        if ( member instanceof Role ) {
+        	return ((Role)member).getNamespaceCode();
+        }
+        return "";
     }
 	
 	protected RoleImpl getRoleImpl(String roleId) {

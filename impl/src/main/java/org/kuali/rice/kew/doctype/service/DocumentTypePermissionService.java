@@ -86,6 +86,6 @@ public interface DocumentTypePermissionService {
 	 * For example, if the cancel permission is defined for node 1 but not for node 2, then a document which
 	 * is at both node 1 and node 2 should satisfy the permission check.
 	 */
-	public boolean canCancel(String principalId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId);
+	public boolean canCancel(String principalId, String routeHeaderId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId);
 	
 }

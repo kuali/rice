@@ -432,6 +432,27 @@ public class SectionBridge {
                             Object propertyValue = ObjectUtils.getPropertyValue(lineBusinessObject, fieldDefinition.getName());
                             
                             collField.setPropertyValue(propertyValue);
+                            
+                            // KULRICE-4024 - special handling for person fields, the values
+                            // were being blanked out upon submission because these fields were
+                            // rendered but not populated.  This caused the service to re-resolve the
+                            // blank principal ID hidden field to overwrite the one populated
+                            // based on the principal Name field on the UI
+							if (StringUtils.isNotBlank(collField.getUniversalIdAttributeName())) {
+								Object principalId = ObjectUtils.getNestedValue(lineBusinessObject,collField
+										.getUniversalIdAttributeName());
+								if (principalId != null) {
+									collField.setUniversalIdValue(principalId.toString());
+								}
+							}
+							if (StringUtils.isNotBlank(collField.getPersonNameAttributeName())) {
+								Object personName = ObjectUtils.getNestedValue(lineBusinessObject, collField
+										.getPersonNameAttributeName());
+								if (personName != null) {
+									collField.setPersonNameValue(personName.toString());
+								}
+							}
+							// END KULRICE-4024
                                 
                             // the the field as read only (if appropriate)
                             if (fieldDefinition.isReadOnlyAfterAdd()) {

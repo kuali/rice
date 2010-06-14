@@ -16,11 +16,8 @@
  */
 package org.kuali.rice.core.xml;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 
-import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.UnmarshallerHandler;
@@ -29,27 +26,19 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 import javax.xml.validation.ValidatorHandler;
 
 import org.junit.Test;
-import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.core.xml.schema.RiceXmlSchemaFactory;
-import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.TestUtils;
 import org.kuali.rice.kew.xml.GroupNamespaceURIEliminationFilterPOC;
 import org.kuali.rice.kew.xml.GroupNamespaceURIMemberTransformationFilterPOC;
 import org.kuali.rice.kew.xml.GroupNamespaceURITransformationFilterPOC;
 import org.kuali.rice.kim.xml.GroupXmlDto;
 import org.kuali.rice.test.RiceTestCase;
-import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLFilterImpl;
 
 public class JaxpSchemaValidationTest extends RiceTestCase {
 
@@ -229,9 +218,10 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 	
 /////////////////////////////////////////////
 	
-	protected String getModuleName() {
-		return TestUtils.getModuleName();
-	}
+	//protected String getModuleName() {
+	//	return this.getModuleName();
+		//return TestUtils.getModuleName();
+	//}
 
 	public static int getCompileErrors() {
 		return compileErrors;
@@ -244,6 +234,16 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 
 	public static void setCompileErrors(int compileErrors) {
 		JaxpSchemaValidationTest.compileErrors = compileErrors;
+	}
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.test.RiceTestCase#getModuleName()
+	 */
+	@Override
+	protected String getModuleName() {
+		return "impl";
 	}
 
 }

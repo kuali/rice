@@ -126,7 +126,6 @@ public class KNSConstants extends JSTLConstants {
     public static final String WORKFLOW_URL_KEY = "workflow.url";
     public static final String KUALI_RICE_URL_KEY = "kr.url";
     public static final String PROD_ENVIRONMENT_CODE_KEY = "production.environment.code";
-    public static final String MAINTAIN_USERS_LOCALLY_KEY = "maintain.users.locally";
     public static final String DOC_HANDLER_ACTION = "DocHandler.do";
     public static final String DOCHANDLER_DO_URL = "/" + DOC_HANDLER_ACTION + "?docId=";
     public static final String DOCHANDLER_URL_CHUNK = "&command=displayDocSearchView";

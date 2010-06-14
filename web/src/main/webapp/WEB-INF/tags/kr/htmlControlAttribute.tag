@@ -69,9 +69,8 @@
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
     <c:set var="displayMask" value="${kfunc:canPartiallyUnmaskField(className, fieldName,KualiForm)? 'false' : 'true'}" />
 	<c:set var="readOnly" value="${displayMask || readOnly}"/>
-	<c:set var="displayMaskValue" value="${kfunc:getPartiallyMaskedValue(className, fieldName, KualiForm, property)}" />
 	<c:if test="${displayMask}">
-		<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
+		<c:set var="displayMaskValue" value="${kfunc:getPartiallyMaskedValue(className, fieldName, KualiForm, property)}" />
 	</c:if>
 </c:if>
 

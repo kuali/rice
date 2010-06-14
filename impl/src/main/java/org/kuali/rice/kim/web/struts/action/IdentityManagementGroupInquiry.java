@@ -17,6 +17,7 @@ package org.kuali.rice.kim.web.struts.action;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -40,9 +41,19 @@ public class IdentityManagementGroupInquiry extends IdentityManagementBaseInquir
 	protected void loadKimObject(HttpServletRequest request, IdentityManagementDocumentFormBase form) {
         IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
         String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
+        
+        if (StringUtils.isNotEmpty(groupId)) {
+        	GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
+            getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
+        } else {
+        	String namespaceCode = request.getParameter(KimConstants.UniqueKeyConstants.NAMESPACE_CODE);
+        	String groupName = request.getParameter(KimConstants.UniqueKeyConstants.GROUP_NAME);
+        	
+        	GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfoByName(namespaceCode, groupName);
+            getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
+        }
 //    	groupDocumentForm.setGroupId(groupId);
-        GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
-        getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
+        
 	}
 	
 }

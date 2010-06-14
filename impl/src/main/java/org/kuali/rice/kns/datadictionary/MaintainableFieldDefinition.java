@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
-import org.apache.commons.lang.StringUtils;
+import java.util.List;
+
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 
 /**
@@ -69,7 +69,8 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
 
     protected String webUILeaveFieldFunction = "";
     protected String webUILeaveFieldCallbackFunction = "";
-    
+    protected List<String> webUILeaveFieldFunctionParameters;
+
     protected Class<? extends BusinessObject> overrideLookupClass;
     protected String overrideFieldConversions;
     
@@ -296,7 +297,25 @@ The defaultValueFinderClass specifies the java class that will be
 	public boolean isLookupReadOnly() {
 		return lookupReadOnly;
 	}
-      public void setLookupReadOnly(boolean lookupReadOnly) {
-    	  this.lookupReadOnly = lookupReadOnly;
-      }
+    
+	public void setLookupReadOnly(boolean lookupReadOnly) {
+    	this.lookupReadOnly = lookupReadOnly;
+    }
+      
+      
+      /**
+  	 * @return the webUILeaveFieldFunctionParameters
+  	 */
+  	public List<String> getWebUILeaveFieldFunctionParameters() {
+  		return this.webUILeaveFieldFunctionParameters;
+  	}
+
+  	/**
+  	 * @param webUILeaveFieldFunctionParameters the webUILeaveFieldFunctionParameters to set
+  	 */
+  	public void setWebUILeaveFieldFunctionParameters(
+  			List<String> webUILeaveFieldFunctionParameters) {
+  		this.webUILeaveFieldFunctionParameters = webUILeaveFieldFunctionParameters;
+  	}
+
 }

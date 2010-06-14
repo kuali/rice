@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.web.ui;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +29,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
 import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -166,13 +168,15 @@ public class Field implements java.io.Serializable {
     private boolean secure;
     private String webOnBlurHandler;
     private String webOnBlurHandlerCallback;
+    protected List<String> webUILeaveFieldFunctionParameters = new ArrayList<String>();
     private String styleClass;
     private int formattedMaxLength;
     private String containerName;
     private String containerElementName;
     private List<Field> containerDisplayFields;
     private boolean isDatePicker;
-    private boolean expandedTextArea;
+
+	private boolean expandedTextArea;
     private String referencesToRefresh;
     private int numberOfColumnsForCollection;
     public String cellAlign;
@@ -1610,7 +1614,25 @@ public class Field implements java.io.Serializable {
 		this.baseLookupUrl = baseLookupURL;
 	}
 
+    /**
+	 * @return the webUILeaveFieldFunctionParameters
+	 */
+	public List<String> getWebUILeaveFieldFunctionParameters() {
+		return this.webUILeaveFieldFunctionParameters;
+	}
+
+	/**
+	 * @param webUILeaveFieldFunctionParameters the webUILeaveFieldFunctionParameters to set
+	 */
+	public void setWebUILeaveFieldFunctionParameters(
+			List<String> webUILeaveFieldFunctionParameters) {
+		this.webUILeaveFieldFunctionParameters = webUILeaveFieldFunctionParameters;
+	}
 	
+  	public String getWebUILeaveFieldFunctionParametersString() {
+  		return KNSUtils.joinWithQuotes(getWebUILeaveFieldFunctionParameters());
+  	}
+
 	
     //#END DOC SEARCH RELATED
 }

@@ -572,4 +572,7 @@ public class KNSConstants extends JSTLConstants {
     }
 
 	public static final String ENABLE_NONPRODUCTION_UNMASKING = "enable.nonproduction.data.unmasking";
+	
+  	public static final String SINGLE_QUOTE = "'";
+
 }

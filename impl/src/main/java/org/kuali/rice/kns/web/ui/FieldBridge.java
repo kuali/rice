@@ -81,6 +81,10 @@ public class FieldBridge {
                 field.setWebOnBlurHandlerCallback(maintainableFieldDefinition.getWebUILeaveFieldCallbackFunction());
             }
 
+            if (maintainableFieldDefinition.getWebUILeaveFieldFunctionParameters()!=null) {
+                field.setWebUILeaveFieldFunctionParameters(maintainableFieldDefinition.getWebUILeaveFieldFunctionParameters());
+            }
+
         }
 
         /* setup security of field (sensitive data) if needed, note this will always be true on old maintainables since

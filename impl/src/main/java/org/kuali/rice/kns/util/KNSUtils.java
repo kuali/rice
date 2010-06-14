@@ -99,4 +99,11 @@ public class KNSUtils {
 	    }
 	}
 
+	public static String joinWithQuotes(List<String> list){
+		if(list==null || list.size()==0) return "";
+
+		return KNSConstants.SINGLE_QUOTE+
+			StringUtils.join(list.iterator(), KNSConstants.SINGLE_QUOTE+","+KNSConstants.SINGLE_QUOTE)+
+			KNSConstants.SINGLE_QUOTE;
+	}
 }

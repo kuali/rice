@@ -145,18 +145,23 @@
 
             <c:if test="${!(empty field.webOnBlurHandler)}">
 
+				<c:set var="onblurParameters" value="" />
                 <c:choose>
 
                     <c:when test="${!(empty field.webOnBlurHandlerCallback)}">
-                        <c:set var="onblur" value="${field.webOnBlurHandler}( this, ${field.webOnBlurHandlerCallback} );" />
+                        <c:set var="onblurParameters" value="this, ${field.webOnBlurHandlerCallback}" />
                     </c:when>
 
                     <c:otherwise>
-                        <c:set var="onblur" value="${field.webOnBlurHandler}( this );" />
+                        <c:set var="onblurParameters" value="this" />
                     </c:otherwise>
 
                 </c:choose>
-
+                <c:if test="${!(empty field.webUILeaveFieldFunctionParameters)}">
+					<c:set var="onblurParameters" value="${onblurParameters},${field.webUILeaveFieldFunctionParametersString}" />					
+				</c:if>
+                
+				<c:set var="onblur" value="${field.webOnBlurHandler}( ${onblurParameters} );" />
                 <c:set var="onblurcall" value="onblur='${onblur}'" />
 
             </c:if>

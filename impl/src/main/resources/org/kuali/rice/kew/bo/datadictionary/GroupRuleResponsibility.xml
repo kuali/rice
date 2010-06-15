@@ -36,11 +36,7 @@
           <property name="primitiveAttributes">
             <list>
               <bean parent="PrimitiveAttributeDefinition" p:sourceName="name" p:targetName="groupName"/>
-            </list>
-          </property>
-          <property name="supportAttributes">
-            <list>
-              <bean parent="SupportAttributeDefinition" p:identifier="true" p:sourceName="namespaceCode" p:targetName="namespaceCode"/>
+              <bean parent="PrimitiveAttributeDefinition" p:sourceName="namespaceCode" p:targetName="namespaceCode"/>
             </list>
           </property>
         </bean>

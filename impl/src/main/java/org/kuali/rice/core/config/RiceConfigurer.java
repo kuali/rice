@@ -34,7 +34,9 @@ import org.kuali.rice.kew.config.KEWConfigurer;
 import org.kuali.rice.kim.config.KIMConfigurer;
 import org.kuali.rice.kns.config.KNSConfigurer;
 import org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator;
+import org.kuali.rice.ksb.messaging.MessageFetcher;
 import org.kuali.rice.ksb.messaging.config.KSBConfigurer;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
  * Used to configure common Rice configuration properties.
@@ -81,6 +83,10 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		if(getKenConfigurer()!=null) getModules().add(index++,getKenConfigurer());
 		// now execute the super class's start method which will initialize configuration and resource loaders
 		super.start();
+		
+		//automatically requeue documents sitting with status of 'R'
+		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
+		KSBServiceLocator.getThreadPool().execute(messageFetcher);
 	}
 	
 

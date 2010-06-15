@@ -108,12 +108,12 @@ public class FieldUtils {
     /**
      * Builds up a Field object based on the propertyName and business object class.
      *
-     * See KULRICE-2480 for info on translateCheckboxes flag
+     * See KULRICE-2480 for info on convertForLookup flag
      *
      * @param propertyName
      * @return Field
      */
-    public static Field getPropertyField(Class businessObjectClass, String attributeName, boolean translateCheckboxes) {
+    public static Field getPropertyField(Class businessObjectClass, String attributeName, boolean convertForLookup) {
         Field field = new Field();
         field.setPropertyName(attributeName);
         field.setFieldLabel(getDataDictionaryService().getAttributeLabel(businessObjectClass, attributeName));
@@ -169,7 +169,7 @@ public class FieldUtils {
                 fieldType = Field.FILE;
             }
 
-            if (control.isTextarea()) {
+            if (control.isTextarea() && !convertForLookup) {
                 fieldType = Field.TEXT_AREA;
             }
 
@@ -240,7 +240,6 @@ public class FieldUtils {
                 else {
                     field.setCols(40);
                 }
-
                 field.setExpandedTextArea(control.isExpandedTextArea());
             }
 
@@ -282,7 +281,7 @@ public class FieldUtils {
                 }
             }
 
-            if (Field.CHECKBOX.equals(fieldType) && translateCheckboxes) {
+            if (Field.CHECKBOX.equals(fieldType) && convertForLookup) {
                 fieldType = Field.RADIO;
                 field.setFieldValidValues(IndicatorValuesFinder.INSTANCE.getKeyValues());
             }
@@ -1233,7 +1232,7 @@ public class FieldUtils {
 
             if( isHiddenMap.containsKey(field.getPropertyName()) && isHiddenMap.get(field.getPropertyName()).booleanValue()){
             	field.setFieldType(Field.HIDDEN);
-            	field.setHidden(true);
+            	//field.setHidden(true);
             }
 
             field.setFieldLevelHelpEnabled(isLookupFieldLevelHelpEnabled(businessObjectClass, attributeName));

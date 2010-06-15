@@ -282,7 +282,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 				if(field.getMaxLength()==0) {
 					field.setMaxLength(100);
 				}
-				if(field.isDatePicker()) {
+				if(field.isDatePicker() && field.isRanged()) {
 					Field newDate = FieldUtils.createRangeDateField(field);
 					List<Field> newFields = new ArrayList<Field>();
 					newFields.add(newDate);

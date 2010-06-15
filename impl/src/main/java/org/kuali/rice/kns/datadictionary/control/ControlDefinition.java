@@ -118,6 +118,11 @@ public interface ControlDefinition extends DataDictionaryDefinition {
     public boolean isLink();
     
     /**
+     * @return true if the ControlDefinition instance represents a ranged (will render from and to fields) date control
+     */   
+    public boolean isRanged();
+    
+    /**
      * Sets the Class used to retrieve the complete range of values for radiobutton and select controls.
      *
      * @param valuesFinderClass

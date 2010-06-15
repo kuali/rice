@@ -47,9 +47,11 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     protected Integer size;
     protected Integer rows;
     protected Integer cols;
+    protected boolean ranged;
 
 
     public ControlDefinitionBase() {
+    	ranged = true;
     }
 
     public boolean isDatePicker() {
@@ -394,8 +396,24 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     public void setScript(String script) {
         this.script = script;
     }
+    
+    /**
+     * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isRanged()
+     */
+    public boolean isRanged() {
+		return this.ranged;
+	}
 
     /**
+     * Sets the control as a ranged (from and to) date field if true, or a single date field if false
+     * 
+     * @param ranged boolean true for a ranged control, false for a single date field
+     */
+	public void setRanged(boolean ranged) {
+		this.ranged = ranged;
+	}
+
+	/**
      * @see java.lang.Object#equals(Object)
      */
     public boolean equals(Object object) {
@@ -411,6 +429,7 @@ public abstract class ControlDefinitionBase extends DataDictionaryDefinitionBase
     			.append( this.script, rhs.script )
     			.append( this.size, rhs.size )
     			.append( this.datePicker, rhs.datePicker )
+    			.append( this.ranged, rhs.ranged )
     			.append( this.labelAttribute,rhs.labelAttribute )
     			.append( this.includeKeyInLabel, rhs.includeKeyInLabel )
     			.append( this.keyAttribute, rhs.keyAttribute )

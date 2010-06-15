@@ -176,6 +176,7 @@ public class AttributesMapBuilder {
             controlMap.set("text", "true");
             controlMap.set("size", control.getSize().toString());
             controlMap.set("datePicker", Boolean.valueOf(control.isDatePicker()).toString());
+            controlMap.set("ranged", Boolean.valueOf(control.isRanged()).toString());
         }
         else if (control.isTextarea()) {
             controlMap.set("textarea", "true");

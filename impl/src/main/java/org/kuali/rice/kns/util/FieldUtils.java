@@ -210,7 +210,7 @@ public class FieldUtils {
                     field.setSize(30);
                 }
                 field.setDatePicker(control.isDatePicker());
-
+                field.setRanged(control.isRanged());
             }
 
             if (Field.WORKFLOW_WORKGROUP.equals(fieldType)) {
@@ -1183,7 +1183,7 @@ public class FieldUtils {
         {
             Field field = FieldUtils.getPropertyField(businessObjectClass, attributeName, true);
 
-            if(field.isDatePicker()) {
+            if(field.isDatePicker() && field.isRanged()) {
 
             	Field newDate = createRangeDateField(field);
             	fields.add(newDate);

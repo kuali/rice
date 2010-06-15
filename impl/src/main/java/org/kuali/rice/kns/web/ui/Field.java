@@ -175,6 +175,7 @@ public class Field implements java.io.Serializable {
     private String containerElementName;
     private List<Field> containerDisplayFields;
     private boolean isDatePicker;
+    private boolean ranged;
 
 	private boolean expandedTextArea;
     private String referencesToRefresh;
@@ -395,7 +396,15 @@ public class Field implements java.io.Serializable {
         this.isDatePicker = isDatePicker;
     }
     
-    public boolean isExpandedTextArea() {
+    public boolean isRanged() {
+		return this.ranged;
+	}
+
+	public void setRanged(boolean ranged) {
+		this.ranged = ranged;
+	}
+
+	public boolean isExpandedTextArea() {
         return expandedTextArea;
     }
 

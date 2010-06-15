@@ -832,8 +832,40 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
         return success;
     }
-
+    
     /**
+     * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.kns.bo.BusinessObject, org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
+     */
+	public boolean validateDefaultExistenceChecksForNewCollectionItem(BusinessObject bo, BusinessObject newCollectionItem,
+			String collectionName) {
+        boolean success = true;
+        
+        if (StringUtils.isNotBlank(collectionName)) {
+	        // get a collection of all the referenceDefinitions setup for this object
+	        Collection references = maintenanceDocumentDictionaryService.getDefaultExistenceChecks(bo.getClass());
+	
+	        // walk through the references, doing the tests on each
+	        for (Iterator iter = references.iterator(); iter.hasNext();) {
+	            ReferenceDefinition reference = (ReferenceDefinition) iter.next();
+				if(collectionName != null && collectionName.equals(reference.getCollection())){
+					String displayFieldName;
+		            if (reference.isDisplayFieldNameSet()) {
+		                displayFieldName = reference.getDisplayFieldName();
+		            }
+		            else {
+		                Class boClass = reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() : bo.getClass();
+		                displayFieldName = dataDictionaryService.getAttributeLabel(boClass, reference.getAttributeToHighlightOnFail());
+		            }
+		
+		            success &= validateReferenceExistsAndIsActive(newCollectionItem, reference.getAttributeName(), reference.getAttributeToHighlightOnFail(), displayFieldName);
+				}
+	        }
+        }
+        
+        return success;
+	}
+
+	/**
 	 * This overridden method ...
 	 * 
 	 * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDefaultExistenceChecksForTransDoc(org.kuali.rice.kns.document.TransactionalDocument)

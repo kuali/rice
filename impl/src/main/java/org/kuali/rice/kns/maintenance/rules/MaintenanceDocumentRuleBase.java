@@ -1504,10 +1504,13 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         getMaintDocDictionaryService().validateMaintainableCollectionsAddLineRequiredFields( document, document.getNewMaintainableObject().getBusinessObject(), collectionName );
         String errorPath = KNSConstants.MAINTENANCE_ADD_PREFIX + collectionName;
         map.addToErrorPath( errorPath );
+      
         getDictionaryValidationService().validateBusinessObject( bo, false );
         success &= map.getErrorCount() == errorCount;
+        success &= dictionaryValidationService.validateDefaultExistenceChecksForNewCollectionItem(document.getNewMaintainableObject().getBusinessObject(), bo, collectionName);
         success &= validateDuplicateIdentifierInDataDictionary(document, collectionName, bo);
         success &= processCustomAddCollectionLineBusinessRules( document, collectionName, bo );
+    
         map.removeFromErrorPath( errorPath );
         map.removeFromErrorPath( MAINTAINABLE_ERROR_PATH );
         if ( LOG.isDebugEnabled() ) {

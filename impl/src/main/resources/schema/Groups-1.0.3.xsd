@@ -2,9 +2,6 @@
 <xs:schema version="1.0" targetNamespace="http://rice.kuali.org/xsd/kim/group" xmlns:tns="http://rice.kuali.org/xsd/kim/group" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
   <xs:import schemaLocation="Core-1.0.3.xsd"/>
-
-  <xs:element name="data" />
-
   
   <xs:element name="groups" type="tns:Groups"/>
   
@@ -18,9 +15,7 @@
 
   <xs:element name="member" type="tns:Member"/>
 
-
-
-  <xs:complexType name="Group">
+    <xs:complexType name="Group">
     <xs:sequence>
       <xs:element name="groupId" type="xs:string" form="qualified" minOccurs="0"/>
       <xs:element name="groupName" type="xs:string" form="qualified" minOccurs="0"/>

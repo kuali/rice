@@ -39,7 +39,7 @@ import org.kuali.rice.core.xml.CoreNamespaceConstants;
 
 
 
-@XmlRootElement
+//@XmlRootElement
 @XmlType(name = "AttributeSetListType", namespace = CoreNamespaceConstants.CORE)
 public class AttributeSetList {
     //- this must be a public field for the adapter to function

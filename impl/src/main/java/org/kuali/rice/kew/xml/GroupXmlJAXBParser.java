@@ -23,19 +23,22 @@ import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.UnmarshallerHandler;
+import javax.xml.bind.util.ValidationEventCollector;
 import javax.xml.parsers.SAXParserFactory;
+import javax.xml.validation.Schema;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.xml.CoreNamespaceConstants;
 import org.kuali.rice.core.xml.dto.DataXmlDto;
-import org.kuali.rice.kim.xml.GroupXmlDto;
+import org.kuali.rice.core.xml.schema.RiceSchemaValidationEventCollector;
+import org.kuali.rice.core.xml.schema.RiceXmlSchemaFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.helpers.XMLFilterImpl;
+
 
 /**
  * Parses groups from XML using JAXB.
@@ -48,6 +51,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
 public class GroupXmlJAXBParser implements XmlConstants {
     private static final Logger LOG = Logger.getLogger(GroupXmlJAXBParser.class);
     private static final String DEFAULT_GROUP_DESCRIPTION = "";
+    private static final String DEFAULT_GROUP_SCHEMA_NAME = "Groups-1.0.3.xsd";
     
 	public DataXmlDto parse(InputStream in) throws IOException {
         DataXmlDto groupsXmlDto = new DataXmlDto();
@@ -74,7 +78,7 @@ public class GroupXmlJAXBParser implements XmlConstants {
 
 			} catch (Exception ex) {
 				LOG.error(ex.getMessage());
-				throw new ConfigurationException("Error parsing XML input stream", ex);
+				throw new RuntimeException("Error parsing XML input stream", ex);
 			}
 
 		}
@@ -132,37 +136,43 @@ public class GroupXmlJAXBParser implements XmlConstants {
 	protected DataXmlDto unmarshal(Unmarshaller unmarshaller, InputStream in) throws Exception {       
 
         UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
-
+        Schema groupSchema = RiceXmlSchemaFactory.getSchema(DEFAULT_GROUP_SCHEMA_NAME);
+        unmarshaller.setSchema(groupSchema);
+        ValidationEventCollector vec = new RiceSchemaValidationEventCollector();
+        unmarshaller.setEventHandler(vec);        
+        
         XMLFilter filter = this.getXMLFilter(this.getXMLFilterList());
         filter.setContentHandler(handler);
+       
         filter.parse(new InputSource(in));
+        
 
         return (DataXmlDto)handler.getResult();
    }
 	
-    protected GroupXmlDto unmarshalNew(Unmarshaller unmarshaller, InputStream in) throws Exception {
-        SAXParserFactory spf = SAXParserFactory.newInstance();
-        spf.setNamespaceAware(true);
-
-        XMLFilter filter = new TestGroupNamespaceURIFilter();
-        filter.setParent(spf.newSAXParser().getXMLReader());
-
-        unmarshaller.setListener(new Unmarshaller.Listener() {
-			
-			public void afterUnmarshal(Object target, Object parent) {
-				GroupXmlDto gxd = (GroupXmlDto)target;
-				//super.afterUnmarshal(target, parent);
-			}
-		});
-        
-        
-        UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
-        filter.setContentHandler(handler);
-
-        filter.parse(new InputSource(in));
-
-        return (GroupXmlDto)handler.getResult();
-    }
+//    protected GroupXmlDto unmarshalNew(Unmarshaller unmarshaller, InputStream in) throws Exception {
+//        SAXParserFactory spf = SAXParserFactory.newInstance();
+//        spf.setNamespaceAware(true);
+//
+//        XMLFilter filter = new TestGroupNamespaceURIFilter();
+//        filter.setParent(spf.newSAXParser().getXMLReader());
+//
+//        unmarshaller.setListener(new Unmarshaller.Listener() {
+//			
+//			public void afterUnmarshal(Object target, Object parent) {
+//				GroupXmlDto gxd = (GroupXmlDto)target;
+//				//super.afterUnmarshal(target, parent);
+//			}
+//		});
+//        
+//        
+//        UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
+//        filter.setContentHandler(handler);
+//
+//        filter.parse(new InputSource(in));
+//
+//        return (GroupXmlDto)handler.getResult();
+//    }
 //
 //    protected GroupInfo generateGroupInfo(GroupXmlDto groupDto){
 //    	IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();

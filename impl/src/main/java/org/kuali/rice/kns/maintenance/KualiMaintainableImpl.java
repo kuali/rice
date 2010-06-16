@@ -1466,4 +1466,17 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 		KNSServiceLocator.getBusinessObjectService().delete(businessObject);
 		businessObject = null;	
 	}
+
+	public boolean isOldBusinessObjectInDocument() {
+        boolean isOldBusinessObjectInExistence = false;
+        if (getBusinessObject() == null) {
+            isOldBusinessObjectInExistence = false;
+        } else {
+            if ( KNSServiceLocator.getPersistenceStructureService().isPersistable( getBusinessObject().getClass() ) ) {
+                isOldBusinessObjectInExistence = KNSServiceLocator.getPersistenceStructureService().hasPrimaryKeyFieldValues(getBusinessObject());
+            }
+        }
+        return isOldBusinessObjectInExistence;
+        
+    }
 }

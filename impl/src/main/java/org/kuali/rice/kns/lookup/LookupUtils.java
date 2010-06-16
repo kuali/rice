@@ -32,7 +32,6 @@ import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
@@ -538,8 +537,11 @@ public class LookupUtils {
             } else {
             	//KFSMI-709: Make Inquiry Framework use BusinessObjectMetadataService instead of just PersistenceStructureService
             	referenceClasses = businessObjectMetaDataService.getReferencesForForeignKey(businessObject, attributeName);
-            	if(referenceClasses==null || referenceClasses.isEmpty())
-            		referenceClasses = persistenceStructureService.getReferencesForForeignKey(businessObject.getClass(), attributeName);
+            	if(referenceClasses==null || referenceClasses.isEmpty()) {
+            	    if ( persistenceStructureService.isPersistable(businessObject.getClass()) ) {
+            	        referenceClasses = persistenceStructureService.getReferencesForForeignKey(businessObject.getClass(), attributeName);
+            	    }
+            	}
                 propMap.put(attributeName, referenceClasses);
             }
         } catch ( ClassNotPersistableException ex ) {
@@ -701,8 +703,8 @@ public class LookupUtils {
     }
 
 
-    private static String translateToDisplayedField(Class businessObjectClass, String fieldName, List displayedFieldNames) {
-        if ( PersistableBusinessObject.class.isAssignableFrom( businessObjectClass ) ) {
+    private static String translateToDisplayedField(Class businessObjectClass, String fieldName, List displayedFieldNames) {        
+        if ( persistenceStructureService.isPersistable(businessObjectClass) ) {
             Map nestedFkMap = persistenceStructureService.getNestedForeignKeyMap(businessObjectClass);
 
             // translate to primitive fk if nested

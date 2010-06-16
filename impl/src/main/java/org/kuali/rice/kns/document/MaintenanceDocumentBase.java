@@ -224,13 +224,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         boolean isOldBusinessObjectInExistence = false;
         if (oldMaintainableObject == null || oldMaintainableObject.getBusinessObject() == null) {
             isOldBusinessObjectInExistence = false;
-        }
-        else {
-            isOldBusinessObjectInExistence = KNSServiceLocator.getPersistenceStructureService().hasPrimaryKeyFieldValues(oldMaintainableObject.getBusinessObject());
+        } else {
+            isOldBusinessObjectInExistence = oldMaintainableObject.isOldBusinessObjectInDocument();
         }
         return isOldBusinessObjectInExistence;
     }
-
 
     /**
      * This method is a simplified-naming wrapper around isOldBusinessObjectInDocument(), so that the method name matches the

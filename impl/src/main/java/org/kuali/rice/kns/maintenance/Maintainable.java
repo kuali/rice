@@ -304,4 +304,6 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
      * @see org.kuali.rice.kns.service.impl.PessimisticLockServiceImpl
      */
     public String getCustomLockDescriptor(Person user);
+    
+    boolean isOldBusinessObjectInDocument();
 }

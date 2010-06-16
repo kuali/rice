@@ -22,11 +22,15 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.MalformedURLException;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Enumeration;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
@@ -36,8 +40,11 @@ import org.springframework.core.io.Resource;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RiceUtilities {
-	
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceUtilities.class);
 	private static final String[] TRUE_VALUES = new String[] { "true", "yes", "t", "y" };
+	
+	private static String instanceIpAddress = null;
+	private static String instanceHostName = null;
 	
 	public static boolean getBooleanValueForString(String value, boolean defaultValue) {
 		if (!StringUtils.isBlank(value)) {
@@ -59,20 +66,93 @@ public class RiceUtilities {
         return sw.toString();
     }
     
-	public static String getIpNumber() {
-		try {
-			return InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			throw new RiceRuntimeException("Error retrieving ip number.", e);
-		}
-	}
+    public static String getIpNumber() {
+        if ( instanceIpAddress == null ) {
+            // protect from running upon startup
+            if ( ConfigContext.getCurrentContextConfig() != null ) {
+                // attempt to load from environment
+                String ip = System.getProperty("host.ip");
+                if ( StringUtils.isBlank(ip) ) {
+                    ip = ConfigContext.getCurrentContextConfig().getProperty("host.ip");
+                }
+                // if not set at all just return
+                if ( StringUtils.isBlank(ip) ) {                    
+                    return getCurrentEnvironmentNetworkIp();
+                } else { 
+                    // ok - it was set in configuration or by this method, set it permanently for this instance
+                    instanceIpAddress = ip;
+                }
+            } else {
+                // prior to startup, just return it
+                return getCurrentEnvironmentNetworkIp();
+            }
+        }
+        return instanceIpAddress;
+    }
 
+    /** * @return the current environment's IP address, taking into account the Internet connection to any of the available
+	 *         machine's Network interfaces. Examples of the outputs can be in octatos or in IPV6 format.
+	 *
+	 *         fec0:0:0:9:213:e8ff:fef1:b717%4 siteLocal: true isLoopback: false isIPV6: true
+	 *         ============================================ 130.212.150.216 <<<<<<<<<<<------------- This is the one we
+	 *         want to grab so that we can. siteLocal: false address the DSP on the network. isLoopback: false isIPV6:
+	 *         false ==> lo ============================================ 0:0:0:0:0:0:0:1%1 siteLocal: false isLoopback:
+	 *         true isIPV6: true ============================================ 127.0.0.1 siteLocal: false isLoopback:
+	 *         true isIPV6: false
+	 */
+	public static String getCurrentEnvironmentNetworkIp() {
+	     Enumeration<NetworkInterface> netInterfaces = null;
+	     try {
+	          netInterfaces = NetworkInterface.getNetworkInterfaces();
+	     } catch (SocketException e) {
+	          LOG.error("Somehow we have a socket error...",e);
+	          return "127.0.0.1";
+	     }
+
+	     while (netInterfaces.hasMoreElements()) {
+	          NetworkInterface ni = netInterfaces.nextElement();
+	          Enumeration<InetAddress> address = ni.getInetAddresses();
+	          while (address.hasMoreElements()) {
+	               InetAddress addr = address.nextElement();
+	               if (!addr.isLoopbackAddress() && !addr.isSiteLocalAddress()
+	                         && !(addr.getHostAddress().indexOf(":") > -1)) {
+	                    return addr.getHostAddress();
+	               }
+	          }
+	     }
+	     try {
+	          return InetAddress.getLocalHost().getHostAddress();
+	     } catch (UnknownHostException e) {
+	          return "127.0.0.1";
+	     }
+	}
+	
+	
 	public static String getHostName() {
-		try {
-			return InetAddress.getLocalHost().getHostName();
-		} catch (UnknownHostException e) {
-			throw new RiceRuntimeException("Error retrieving host name.", e);
-		}
+        if ( instanceHostName == null ) {
+            try {
+                // protect from running upon startup
+                if ( ConfigContext.getCurrentContextConfig() != null ) {
+                    String host = System.getProperty("host.name");
+                    if ( StringUtils.isBlank(host) ) {
+                        host = ConfigContext.getCurrentContextConfig().getProperty("host.name");
+                    }
+                    // if not set at all just return
+                    if ( StringUtils.isBlank(host) ) {
+                        return InetAddress.getByName( getCurrentEnvironmentNetworkIp() ).getHostName();
+                    } else { 
+                        // ok - it was set in configuration or by this method, set it permanently for this instance
+                        instanceHostName = host;
+                    }
+                } else {
+                    // prior to startup, just return it
+                    return InetAddress.getByName( getCurrentEnvironmentNetworkIp() ).getHostName();
+                }
+            } catch ( Exception ex ) {
+                return "localhost";
+            }
+        }
+        return instanceHostName;
 	}
 
 	/**

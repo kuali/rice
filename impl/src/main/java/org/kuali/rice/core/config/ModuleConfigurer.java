@@ -52,6 +52,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
     protected String springFileLocations = "";
     protected String resourceLoaderName;
     protected boolean exposeServicesOnBus = true;
+    protected boolean includeUserInterfaceComponents = true;
 	
 	/**
 	 * 
@@ -290,6 +291,15 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 
 	public void setExposeServicesOnBus(boolean exposeServicesOnBus) {
 		this.exposeServicesOnBus = exposeServicesOnBus;
+	}
+
+	public boolean isIncludeUserInterfaceComponents() {
+		return this.includeUserInterfaceComponents;
+	}
+
+	public void setIncludeUserInterfaceComponents(
+			boolean includeUserInterfaceComponents) {
+		this.includeUserInterfaceComponents = includeUserInterfaceComponents;
 	}
 
 }

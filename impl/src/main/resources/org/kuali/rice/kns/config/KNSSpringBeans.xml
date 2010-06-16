@@ -999,11 +999,6 @@
         </property>
     </bean>
 
-    <bean id="knsService" class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" abstract="true">
-      <property name="serviceNameSpaceURI" value="KNS" />
-      <property name="retryAttempts" value="0" />
-    </bean>
-
     <bean id="documentTypePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl"/>
 
     <bean id="campusRoleService" class="org.kuali.rice.kns.service.impl.CampusRoleTypeServiceImpl"/>
@@ -1064,15 +1059,6 @@
             </list>
         </property>	
 	</bean>
-	<bean class="org.kuali.rice.ksb.messaging.KSBExporter">
-	  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-	  <property name="serviceDefinition">
-	    <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition"
-	      p:service-ref="riceApplicationConfigurationService"
-	      p:localServiceName="riceApplicationConfigurationService" />
-	  </property>
-	</bean>
-
 
 	<bean id="businessObjectAuthorizationService" class="org.kuali.rice.kns.service.impl.BusinessObjectAuthorizationServiceImpl"/>
 	 

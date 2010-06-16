@@ -43,12 +43,14 @@
 	        <bean class="org.kuali.rice.kns.config.KNSConfigurer"
                   p:loadDataDictionary="true"
                   p:validateDataDictionary="true" 
+                  p:exposeServicesOnBus="true"
                   p:webModuleConfigurationFiles="${rice.kns.struts.config.files}"/>
 		</property>
 		<property name="kimConfigurer">
 	        <bean class="org.kuali.rice.kim.config.KIMConfigurer" 
                   p:runMode="${kim.mode}"
                   p:exposeServicesOnBus="true"
+                  p:includeUserInterfaceComponents="true"
                   p:webModuleConfigurationFiles="${rice.kim.struts.config.files}" />
 		</property>
 		<property name="kcbConfigurer">
@@ -57,6 +59,7 @@
 		<property name="kewConfigurer">
 			<bean class="org.kuali.rice.kew.config.KEWConfigurer"
                 p:runMode="${kew.mode}" 
+                p:exposeServicesOnBus="true"
                 p:webModuleConfigurationFiles="${rice.kew.struts.config.files}" />
 		</property>
 		<property name="kenConfigurer">

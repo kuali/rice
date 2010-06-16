@@ -89,7 +89,11 @@ public class KEWConfigurer extends ModuleConfigurer {
     	if (springLocation == null) {
     	    springLocation = "classpath:org/kuali/rice/kew/config/KEWSpringBeans.xml";
     	}
-    	
+
+        if ( exposeServicesOnBus ) {
+        	springLocation += "," + "classpath:org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml";
+        }
+
     	springLocation += SpringLoader.SPRING_SEPARATOR_CHARACTER;
         
         if (OrmUtils.isJpaEnabled("rice.kew")) {

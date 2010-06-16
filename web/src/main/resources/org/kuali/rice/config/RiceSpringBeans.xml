@@ -48,6 +48,7 @@
 		<property name="kimConfigurer">
 	        <bean class="org.kuali.rice.kim.config.KIMConfigurer" 
                   p:runMode="${kim.mode}"
+                  p:exposeServicesOnBus="true"
                   p:webModuleConfigurationFiles="${rice.kim.struts.config.files}" />
 		</property>
 		<property name="kcbConfigurer">

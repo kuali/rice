@@ -60,26 +60,6 @@
 	<bean id="kimPermissionDao" class="org.kuali.rice.kim.dao.impl.KimPermissionDaoOjb" parent="kimPlatformAwareDao" />
 
 
-    <bean id="kimSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
-       <property name="serviceNameSpaceURI" value="KIM"/>
-       <property name="jaxWsService" value="false"/>
-       <property name="priority" value="3" />
-       <property name="retryAttempts" value="0" />
-       <property name="busSecurity" value="true"/>
-    </bean>
-
-    <bean id="kimJaxWsSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
-       <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/kim"/>
-       <property name="jaxWsService" value="true"/>
-       <property name="priority" value="3" />
-       <property name="retryAttempts" value="0" />
-       <property name="busSecurity" value="${kim.soapExposedService.jaxws.security}"/>
-    </bean>
-
-    <bean id="kimService" class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" abstract="true">
-      <property name="serviceNameSpaceURI" value="KIM" />
-      <property name="retryAttempts" value="0" />
-    </bean>
 
   <!-- START JPA CONFIGURATION -->
 
@@ -93,12 +73,6 @@
   </bean>
 
   <!-- END JPA CONFIGURATION -->
-
-  <bean id="kimLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
-	<property name="runModePropertyName" value="kim.mode" />
-	<property name="validRunMode" value="local" />
-  </bean>
-
   <!--
         Identity Service
   -->
@@ -117,25 +91,6 @@
     <constructor-arg ref="kimIdentityDelegateService" />
   </bean>
 
-  <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker" />
-    <property name="serviceDefinition">
-      <bean parent="kimService" 
-        p:service-ref="kimIdentityService" 
-        p:localServiceName="kimIdentityService" />
-    </property>
-  </bean> 
-
-  <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimIdentityService"
-        p:localServiceName="kimIdentityServiceSOAP" />
-    </property>
-    <property name="exportIf" value="kimIdentityServiceSOAP.expose"/>
-  </bean>
-
 
   <!--
         Role Service
@@ -143,93 +98,14 @@
   <bean id="kimRoleService" class="org.kuali.rice.kim.service.impl.RoleServiceImpl"
   	p:roleDao-ref="kimRoleDao" />
 
-  <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimRoleService"
-        p:localServiceName="kimRoleService" />
-    </property>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimRoleService"
-        p:localServiceName="kimRoleServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.RoleService" />
-    </property>
-    <property name="exportIf" value="kimRoleServiceSOAP.expose"/>
-  </bean>
-
   <bean id="kimRoleUpdateService" class="org.kuali.rice.kim.service.impl.RoleUpdateServiceImpl" 
     p:roleDao-ref="kimRoleDao"/>
-  <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimRoleUpdateService"
-        p:localServiceName="kimRoleUpdateService" />
-    </property>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimRoleUpdateService"
-        p:localServiceName="kimRoleUpdateServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.RoleUpdateService" />
-    </property>
-    <property name="exportIf" value="kimRoleUpdateServiceSOAP.expose"/>
-  </bean>
 
   <!--
         Group Services
   -->
   <bean id="kimGroupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl"/>
-
-  <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimGroupService"
-        p:localServiceName="kimGroupService" />
-    </property>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimGroupService"
-        p:localServiceName="kimGroupServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.GroupService" />
-    </property>
-    <property name="exportIf" value="kimGroupServiceSOAP.expose"/>
-  </bean>
-
   <bean id="kimGroupUpdateService" class="org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl"/>
-  <bean parent="kimLocalServiceExporter">
-	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimGroupUpdateService"
-        p:localServiceName="kimGroupUpdateService" />
-    </property>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-  	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimGroupUpdateService"
-        p:localServiceName="kimGroupUpdateServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.GroupUpdateService" />
-    </property>
-    <property name="exportIf" value="kimGroupUpdateServiceSOAP.expose"/>
-  </bean>
 
   <!--
         Permission Service
@@ -238,46 +114,7 @@
     p:permissionDao-ref="kimPermissionDao"
   />
 
-  <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimPermissionService"
-        p:localServiceName="kimPermissionService" />
-    </property>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimPermissionService"
-        p:localServiceName="kimPermissionServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.PermissionService" />
-    </property>
-    <property name="exportIf" value="kimPermissionServiceSOAP.expose"/>
-  </bean>
-
   <bean id="kimPermissionUpdateService" class="org.kuali.rice.kim.service.impl.PermissionUpdateServiceImpl" />
-  <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimPermissionUpdateService"
-        p:localServiceName="kimPermissionUpdateService" />
-    </property>
-  </bean>
-
-    <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimPermissionUpdateService"
-        p:localServiceName="kimPermissionUpdateServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.PermissionUpdateService" />
-    </property>
-    <property name="exportIf" value="kimPermissionServiceSOAP.expose"/>
-  </bean>
 
   <!--
         Responsibility Service
@@ -288,73 +125,13 @@
   	p:responsibilityDao-ref="kimResponsibilityDao"
   />
 
-  <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimResponsibilityService"
-        p:localServiceName="kimResponsibilityService" />
-    </property>
-  </bean>
-
-    <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimResponsibilityService"
-        p:localServiceName="kimResponsibilityServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.ResponsibilityUpdateService" />
-    </property>
-    <property name="exportIf" value="kimResponsibilityServiceSOAP.expose"/>
-  </bean>
-
   <bean id="kimResponsibilityUpdateService" class="org.kuali.rice.kim.service.impl.ResponsibilityUpdateServiceImpl" />
-  <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="kimResponsibilityUpdateService"
-        p:localServiceName="kimResponsibilityUpdateService" />
-    </property>
-  </bean>
-
-    <bean parent="kimLocalServiceExporter">
-  <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimResponsibilityUpdateService"
-        p:localServiceName="kimResponsibilityUpdateServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.ResponsibilityUpdateService" />
-    </property>
-    <property name="exportIf" value="kimResponsibilityUpdateServiceSOAP.expose"/>
-  </bean>
-
   <!--
     IdentityManagementNotificationService 
   -->
 
   <bean id="kimIdentityManagementNotificationService" class="org.kuali.rice.kim.service.impl.IdentityManagementNotificationServiceImpl"/>
   
-  <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker" />
-    <property name="serviceDefinition">
-      <bean parent="kimService" 
-        p:service-ref="kimIdentityManagementNotificationService" 
-        p:localServiceName="kimIdentityManagementNotificationService" />
-    </property>
-  </bean>
-
-  <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimJaxWsSoapService"
-        p:service-ref="kimIdentityManagementNotificationService"
-        p:localServiceName="kimIdentityManagementNotificationServiceSOAP"
-        p:serviceInterface="org.kuali.rice.kim.service.IdentityManagementNotificationService"
-        />
-    </property>
-    <property name="exportIf" value="kimIdentityManagementNotificationServiceSOAP.expose"/>
-  </bean>
 
   <bean id="kimTypeInfoService" class="org.kuali.rice.kim.service.impl.KimTypeInfoServiceImpl" />
 
@@ -367,107 +144,40 @@
 	<property name="permissionTemplateNamespace" value="KR-SYS" />
 	<property name="permissionTemplateName" value="Initiate Document" />
   </bean>
-  <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="documentInitiatorRoleTypeService"
-        p:localServiceName="documentInitiatorRoleTypeService" />
-    </property>
-  </bean>
 
   <bean id="documentEditorRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
 	<property name="permissionTemplateNamespace" value="KR-NS" />
 	<property name="permissionTemplateName" value="Edit Document" />
-  </bean>
-  <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="documentEditorRoleTypeService"
-        p:localServiceName="documentEditorRoleTypeService" />
-    </property>
   </bean>
 
   <bean id="documentOpenerRoleTypeService" class="org.kuali.rice.kns.authorization.PermissionDerivedRoleTypeServiceImpl">
 	<property name="permissionTemplateNamespace" value="KR-NS" />
 	<property name="permissionTemplateName" value="Open Document" />
   </bean>
-  <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="documentOpenerRoleTypeService"
-        p:localServiceName="documentOpenerRoleTypeService" />
-    </property>
-  </bean>
 
   <bean id="documentTypeAndNodeOrStatePermissionTypeService" class="org.kuali.rice.kns.service.impl.DocumentTypeAndNodeOrStatePermissionTypeServiceImpl" />
-
   <bean id="defaultPermissionTypeService" class="org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase" />
-
   <bean id="defaultResponsibilityTypeService" class="org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase" />
-
-  <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="activePrincipalRoleTypeService"
-        p:localServiceName="activePrincipalRoleTypeService" />
-    </property>
-  </bean>
 
   <bean id="permissionPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="permissionName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
     </bean>
-  <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="permissionPermissionTypeService"
-        p:localServiceName="permissionPermissionTypeService" />
-    </property>
-  </bean>
 
   <bean id="responsibilityPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="responsibilityName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
     </bean>
-  <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="responsibilityPermissionTypeService"
-        p:localServiceName="responsibilityPermissionTypeService" />
-    </property>
-  </bean>
 
   <bean id="rolePermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="roleName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
     </bean>
-  <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="rolePermissionTypeService"
-        p:localServiceName="rolePermissionTypeService" />
-    </property>
-  </bean>
 
   <bean id="groupPermissionTypeService" class="org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl">
     	<property name="exactMatchStringAttributeName" value="groupName" />
     	<property name="namespaceRequiredOnStoredAttributeSet" value="true" />
     </bean>
-  <bean parent="kimLocalServiceExporter">
-    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
-    <property name="serviceDefinition">
-      <bean parent="kimService"
-        p:service-ref="groupPermissionTypeService"
-        p:localServiceName="groupPermissionTypeService" />
-    </property>
-  </bean>
 
   <!-- for person Doc UI  -->
   <bean id="kimTypeService" class="org.kuali.rice.kim.service.support.impl.KimTypeServiceBase" />
@@ -540,5 +250,4 @@
             </bean>
         </property>
     </bean>
-
 </beans>

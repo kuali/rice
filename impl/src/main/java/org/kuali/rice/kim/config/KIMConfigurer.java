@@ -21,7 +21,6 @@ import java.util.List;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.config.event.RiceConfigEventListener;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * This class handles the Spring based KIM configuration that is part of the Rice Configurer that must 
@@ -32,6 +31,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 public class KIMConfigurer extends ModuleConfigurer {
 	private static final String KIM_INTERFACE_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMInterfaceSpringBeans.xml";
 	private static final String KIM_IMPL_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMImplementationSpringBeans.xml";
+	private static final String KIM_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMServiceBusSpringBeans.xml";
 	
 	private List<RiceConfigEventListener> configEventListeners = new ArrayList<RiceConfigEventListener>();
 
@@ -47,10 +47,14 @@ public class KIMConfigurer extends ModuleConfigurer {
 
 	@Override
 	public String getSpringFileLocations() {
+		StringBuffer springFileLocations = new StringBuffer( KIM_INTERFACE_SPRING_BEANS_PATH );
 		if ( getRunMode().equals( LOCAL_RUN_MODE ) || getRunMode().equals( EMBEDDED_RUN_MODE ) ) {
-			return KIM_INTERFACE_SPRING_BEANS_PATH+","+KIM_IMPL_SPRING_BEANS_PATH;
+			springFileLocations.append(',').append(KIM_IMPL_SPRING_BEANS_PATH);
 		}
-		return KIM_INTERFACE_SPRING_BEANS_PATH;
+		if ( exposeServicesOnBus ) {
+			springFileLocations.append(',').append(KIM_KSB_SPRING_BEANS_PATH);
+		}
+		return springFileLocations.toString();
 	}
 	
 	public void registerConfigEventListener(RiceConfigEventListener listener) {

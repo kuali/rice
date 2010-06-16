@@ -362,7 +362,7 @@ public class SectionBridge {
                          */  
                         boolean setRowHidden = false;
                         BusinessObject oldLineBusinessObject = null;
-                        if (oldObj != null) {
+                        if (oldObj != null && ((List) oldObj).size() > i) {
                             oldLineBusinessObject = (BusinessObject) ((List) oldObj).get(i);
                         }
                         

@@ -72,6 +72,7 @@ function loadUserInfo( userIdFieldName, universalIdFieldName, userNameFieldName 
  * datadictionary are removed we have to use the current method.  This mothod
  * stores the current docTypeFullName on Page load.  the call is in page.tag.
  */
+ //FIXME: IS THIS STILL USED?
 function storeCurrentDocTypeNameOnLoad(){
 	var oldDocTypeField;
 	var docTypeName = document.getElementById("docTypeFullName");
@@ -91,6 +92,9 @@ function storeCurrentDocTypeNameOnLoad(){
  *
  */
 function validateDocTypeAndRefresh(docTypeNameField){
+	if (!document.forms[0].oldDocTypeFieldName) {
+		return;
+	}
 
 	var docTypeName = DWRUtil.getValue( docTypeNameField );
 	var oldDocTypeName = document.forms[0].oldDocTypeFieldName.value;

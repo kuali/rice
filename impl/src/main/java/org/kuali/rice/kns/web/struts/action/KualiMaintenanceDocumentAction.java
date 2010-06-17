@@ -681,6 +681,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		// link up the user fields, if any
 		getBusinessObjectService().linkUserFields(addBO);
 
+		//KULRICE-4264 - a hook to change the state of the business object, which is the "new line" of a collection, before it is validated
+		newMaintainable.processBeforeAddLine(collectionName, collectionClass, addBO);
+		
 		// apply rules to the addBO
 		boolean rulePassed = false;
 		if (LOG.isDebugEnabled()) {

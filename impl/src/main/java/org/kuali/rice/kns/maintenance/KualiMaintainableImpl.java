@@ -763,9 +763,16 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
         this.documentNumber = documentNumber;
     }
 
+    @Deprecated
     public void processAfterAddLine(String colName, Class colClass) {
     }
     
+    /**
+     * @see org.kuali.rice.kns.maintenance.Maintainable#processBeforeAddLine(java.lang.String, java.lang.Class, org.kuali.rice.kns.bo.BusinessObject)
+     */
+    public void processBeforeAddLine(String colName, Class colClass, BusinessObject addBO) {
+    }
+
     /**
      * @see org.kuali.rice.kns.maintenance.Maintainable#getShowInactiveRecords(java.lang.String)
      */

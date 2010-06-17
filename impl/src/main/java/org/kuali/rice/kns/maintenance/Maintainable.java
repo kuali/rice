@@ -166,6 +166,16 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
 
     /**
      * 
+     * KULRICE-4264 - a hook to change the state of the business object, which is the "new line" of a collection, before it is validated
+     * 
+     * @param colName
+     * @param colClass
+     * @param addBO
+     */
+    public void processBeforeAddLine(String colName, Class colClass, BusinessObject addBO);
+    
+    /**
+     * 
      * This method is a hook to do any necessary post-post processing.
      * 
      */

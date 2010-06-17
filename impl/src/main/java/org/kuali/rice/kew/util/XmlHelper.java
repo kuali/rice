@@ -426,22 +426,25 @@ public class XmlHelper {
 
 	public static void printNode(Node node, int level) {
 		if (node.getNodeType() == Node.TEXT_NODE) {
-			System.out.print(node.getNodeValue());
+			if (LOG.isInfoEnabled()) {
+				LOG.info(node.getNodeValue());
+			}
 			return;
 		} else {
+			final StringBuilder log = new StringBuilder();
 			/*
 			 * System.out.println("\n"); for(int i=0;i<level;i++){
 			 * System.out.print(" "); }
 			 */
-			System.out.print("<" + node.getNodeName());
+			log.append("<" + node.getNodeName());
 			if (node.hasAttributes()) {
 				NamedNodeMap attrMap = node.getAttributes();
 				for (int i = 0; i < attrMap.getLength(); i++) {
 					org.w3c.dom.Attr attribute = (org.w3c.dom.Attr) attrMap.item(i);
-					System.out.print(" " + attribute.getName().trim() + "=\"" + attribute.getValue() + "\"");
+					log.append(" " + attribute.getName().trim() + "=\"" + attribute.getValue() + "\"");
 				}
 			}
-			System.out.print(">");
+			log.append(">");
 			if (node.hasChildNodes()) {
 				NodeList children = node.getChildNodes();
 				for (int i = 0; i < children.getLength(); i++) {
@@ -453,8 +456,10 @@ public class XmlHelper {
 					}
 				}
 			}
-			System.out.print("</" + node.getNodeName() + ">");
-
+			log.append("</" + node.getNodeName() + ">");
+			if (LOG.isInfoEnabled()) {
+				LOG.info(log);
+			}
 		}
 	}
 
@@ -499,36 +504,39 @@ public class XmlHelper {
 
 	public static void printSAXNode(Element element, int level) {
 		if (element.getChildren().isEmpty()) {
-			System.out.print("<" + element.getName().trim() + ">" + element.getText() + "</" + element.getName().trim() + ">");
+			if (LOG.isInfoEnabled()) {
+				LOG.info("<" + element.getName().trim() + ">" + element.getText() + "</" + element.getName().trim() + ">");
+			}
 			return;
 		} else {
+			final StringBuilder log = new StringBuilder();
 			/*
 			 * System.out.println("\n"); for(int i=0;i<level;i++){
 			 * System.out.print(" "); }
 			 */
-			System.out.print("<" + element.getName());
+			log.append("<" + element.getName());
 			org.jdom.Namespace ns = element.getNamespace();
 			if (ns != null) {
-				System.out.print(" xmlns=\"" + ns.getURI() + "\"");
+				log.append(" xmlns=\"" + ns.getURI() + "\"");
 
 			}
 			ns = element.getNamespace("xsi");
 			if (ns != null) {
-				System.out.print(" xmlns:" + ns.getPrefix() + "=\"" + ns.getURI() + "\"");
+				log.append(" xmlns:" + ns.getPrefix() + "=\"" + ns.getURI() + "\"");
 			}
 			if (element.getAttributes() != null && element.getAttributes().size() > 0) {
 				List attrMap = element.getAttributes();
 				for (int i = 0; i < attrMap.size(); i++) {
 					Attribute attribute = (Attribute) attrMap.get(i);
 					ns = attribute.getNamespace();
-					System.out.print(" ");
+					log.append(" ");
 					if (ns != null) {
-						System.out.print(ns.getPrefix() + ":");
+						log.append(ns.getPrefix() + ":");
 					}
-					System.out.print(attribute.getName().trim() + "=\"" + attribute.getValue() + "\"");
+					log.append(attribute.getName().trim() + "=\"" + attribute.getValue() + "\"");
 				}
 			}
-			System.out.print(">");
+			log.append(">");
 			List children = element.getChildren();
 			for (int i = 0; i < children.size(); i++) {
 				Element child = (Element) children.get(i);
@@ -539,8 +547,10 @@ public class XmlHelper {
 				}
 			}
 
-			System.out.print("</" + element.getName() + ">");
-
+			log.append("</" + element.getName() + ">");
+			if (LOG.isInfoEnabled()) {
+				LOG.info(log);
+			}
 		}
 	}
 

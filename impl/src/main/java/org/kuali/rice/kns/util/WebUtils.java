@@ -372,7 +372,9 @@ public class WebUtils {
                 	Object key = keys.nextElement();
                 	FormFile file = (FormFile)multipartHandler.getFileElements().get(key);
                 	long maxSize = WebUtils.getMaxUploadSize(form);
-                	System.out.println(file.getFileSize()+"");
+                	if (LOG.isDebugEnabled()) {
+                		LOG.debug(file.getFileSize());
+                	}
                 	if (maxSize > 0 && Long.parseLong(file.getFileSize()+"") > maxSize ) {
                 		
                         GlobalVariables.getMessageMap().putError(key.toString(),

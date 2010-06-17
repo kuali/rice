@@ -183,7 +183,9 @@ public class RuleXmlExporter implements XmlExporter, XmlConstants {
     private void exportRuleDelegations(Element rootElement, RuleBaseValues rule){
 		List<RuleDelegation> ruleDelegationDefaults = KEWServiceLocator.getRuleDelegationService().findByDelegateRuleId(rule.getRuleBaseValuesId());
 		for(RuleDelegation dele : ruleDelegationDefaults){
-			System.out.println("*******delegates********\t"  +  dele.getRuleDelegationId()) ;
+			if (LOG.isInfoEnabled()) {
+				LOG.info("*******delegates********\t"  +  dele.getRuleDelegationId()) ;
+			}
 			exportRuleDelegation(rootElement, dele);	
 		}
     }

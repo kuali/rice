@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.web.jetty.JettyServer;
@@ -143,13 +145,16 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 	 */
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
+		Config cfgCtx = null;
+		try {
+			cfgCtx = getTestHarnessConfig();
+		} catch (Exception e) {
+			log.error("Caught exception attempting to load test harness prior to aggregating suite lifecycles.");
+		}
+		int port = Integer.parseInt(cfgCtx.getProperty(KEWConstants.HTTP_SERVICE_PORT));
+		String serverContext = cfgCtx.getProperty(KEWConstants.KEW_SERVER_CONTEXT);
 		List<Lifecycle> lifeCycles = super.getSuiteLifecycles();
-//		JettyServer server = new JettyServer(getJettyServerPort(), "/en-test",
-//				"/../web/src/main/webapp/kew");
-//		server.setFailOnContextFailure(true);
-//		server.setTestMode(true);
-//		lifeCycles.add(server);
-		lifeCycles.add(buildJettyServer(getJettyServerPort(), getJettyServerContextName(), getJettyServerRelativeWebappRoot()));
+		lifeCycles.add( buildJettyServer(port, serverContext, getJettyServerRelativeWebappRoot()));
 		lifeCycles.add(new InitializeGRL());
 		lifeCycles.add(new BaseLifecycle() {
 			public void start() throws Exception {
@@ -175,12 +180,17 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 		return server;
 	}
 
+	/*
+	 * Checks to see if a Jetty server is runningneeds to be randomly generated and then made available to subsequent
+	 * tests
+	 */
 	protected int getJettyServerPort() {
-		return 9952;
+		return Integer.parseInt(
+				ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.HTTP_SERVICE_PORT));
 	}
-
+	
 	protected String getJettyServerContextName() {
-		return "/en-test";
+		return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.KEW_SERVER_CONTEXT);
 	}
 
 	protected String getJettyServerRelativeWebappRoot() {

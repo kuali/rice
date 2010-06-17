@@ -57,7 +57,7 @@ import org.kuali.rice.kew.test.TestUtils;
  */
 public class OfficeOfAffirmativeActionTest extends KEWTestCase {
 
-	private static final String URL_PREFIX = "http://localhost:9952/en-test/";
+	//private static final String URL_PREFIX = "http://localhost:9952/en-test/";
 	private static final String OAA_DIR = TestUtils.getBaseDir() + "/src/test/config/edoclite/OfficeOfAffirmativeAction/";
 
 	protected void loadTestData() throws Exception {

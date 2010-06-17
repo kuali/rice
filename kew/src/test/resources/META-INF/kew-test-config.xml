@@ -3,7 +3,7 @@
 
     <param name="kcb.url">this is a fake kcb.url from kcb-test-config.xml</param>
     <param name="kcb.smtp.host">this is a fake kcb.smtp.host from kcb-test-config.xml</param>
-
+/en/
     <!-- for tests send document immediately to exception routing -->
     <param name="Routing.ImmediateExceptionRouting">true</param>
 
@@ -12,7 +12,8 @@
 	<param name="bam.enabled">true</param>
 	<param name="service.namespace">KEW</param>
 	<param name="findServicesLocally">true</param>
-	<param name="http.service.port">9952</param>
+	<param name="http.service.port" override="false" random="true" system="true">10000-10099</param>
+	<param name="kew.server.context">/en-test</param>
 	<param name="kew.url.host">http://localhost</param>
 	<param name="dev.mode">true</param>
     <param name="message.delivery">synchronous</param>

@@ -393,8 +393,7 @@ public class KimCommonUtils {
     
     public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributesNew(Map<String,String> infoMap, String groupId, String kimTypeId) {
     	List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
-        KimTypeInfoService ktis = KIMServiceLocator.getTypeInfoService();
-		KimTypeInfo kimTypeInfo = ktis.getKimType( kimTypeId );
+        KimTypeInfo kimTypeInfo = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
         List<KimTypeAttributeInfo> attributeInfoList = kimTypeInfo.getAttributeDefinitions();
         
         /*for(String key : infoMap.keySet()) {

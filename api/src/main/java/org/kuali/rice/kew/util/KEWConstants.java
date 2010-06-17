@@ -65,6 +65,7 @@ public class KEWConstants extends JSTLConstants {
 
     public static final String KEW_URL_HOST = "kew.url.host";
     public static final String HTTP_SERVICE_PORT = "http.service.port";
+	public static final String KEW_SERVER_CONTEXT = "kew.server.context";
 
     public static final String RELOAD_ACTION_LIST = "RELOAD_ACTION_LIST";
     public static final String DELEGATION_WIZARD = "delegationWizard";
@@ -1013,4 +1014,5 @@ public class KEWConstants extends JSTLConstants {
     // special user used when no other user is available
     public static final String SYSTEM_USER = "kr";
     public static final String ENABLE_KEN_NOTIFICATION = "rice.kew.enableKENNotification";
+
 }

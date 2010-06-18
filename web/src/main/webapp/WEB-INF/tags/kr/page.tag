@@ -55,7 +55,15 @@
 </c:if>
 
 <head>
-	<script>var jsContextPath = "${pageContext.request.contextPath}";</script>
+<c:if test="${not empty SESSION_TIMEOUT_WARNING_MILLISECONDS}">
+	<script type="text/javascript">
+	<!-- 
+	setTimeout("alert('Your session will expire in ${SESSION_TIMEOUT_WARNING_MINUTES} minutes.')",'${SESSION_TIMEOUT_WARNING_MILLISECONDS}');
+	// -->
+	</script>
+</c:if>
+
+	<script type="text/javascript">var jsContextPath = "${pageContext.request.contextPath}";</script>
 	<title><bean:message key="app.title" /> :: ${headerTitle}</title>
 	<c:forEach items="${fn:split(ConfigProperties.css.files, ',')}"
 		var="cssFile">

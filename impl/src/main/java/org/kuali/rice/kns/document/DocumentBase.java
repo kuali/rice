@@ -384,8 +384,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             ObjectUtils.setObjectPropertyDeep(this, KNSPropertyConstants.DOCUMENT_NUMBER, documentNumber.getClass(), newDoc.getDocumentNumber());
         }
         catch (Exception e) {
-            LOG.error("Unable to set document number property in copied document " + e.getMessage());
-            throw new RuntimeException("Unable to set document number property in copied document " + e.getMessage());
+            LOG.error("Unable to set document number property in copied document " + e.getMessage(),e);
+            throw new RuntimeException("Unable to set document number property in copied document " + e.getMessage(),e);
         }
 
         // replace current documentHeader with new documentHeader

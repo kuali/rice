@@ -404,7 +404,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         }
         catch (Exception e) {
          logErrors();
-         throw new RuntimeException("Couldn't create note on copy or error");
+         throw new RuntimeException("Couldn't create note on copy or error",e);
         }
         KNSServiceLocator.getDocumentService().addNoteToDocument(this, note);
     }

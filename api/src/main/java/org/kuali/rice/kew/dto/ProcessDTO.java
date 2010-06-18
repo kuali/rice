@@ -31,7 +31,7 @@ public class ProcessDTO implements Serializable {
     private String name;
     private RouteNodeDTO initialRouteNode;
     private boolean initial = false;
-    private RouteNodeDTO[] nodes = new RouteNodeDTO[0];
+   
     
     public boolean isInitial() {
         return initial;
@@ -57,15 +57,7 @@ public class ProcessDTO implements Serializable {
     public void setProcessId(Long processId) {
         this.processId = processId;
     }
-    public RouteNodeDTO getRouteNode(Long routeNodeId) {
-        for (int index = 0; index < nodes.length; index++) {
-            RouteNodeDTO node = nodes[index];
-            if (node.getRouteNodeId().equals(routeNodeId)) {
-                return node;
-            }
-        }
-        return null;
-    }
+    
     
     
 }

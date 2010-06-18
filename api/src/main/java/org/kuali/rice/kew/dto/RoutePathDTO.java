@@ -45,18 +45,7 @@ public class RoutePathDTO implements Serializable {
             }
         }        
         return null;
-    }
-    
-    public RouteNodeDTO getRouteNode(Long routeNodeId) {
-        for (int index = 0; index < processes.length; index++) {
-            ProcessDTO process = processes[index];
-            RouteNodeDTO node = process.getRouteNode(routeNodeId);
-            if (node != null) {
-                return node;
-            }
-        }
-        return null;
-    }
+    }    
     
     
 }

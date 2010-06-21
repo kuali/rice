@@ -97,7 +97,6 @@ public class DummyLoginFilter implements Filter {
 	private void handleInvalidLogin(ServletRequest request, ServletResponse response) throws ServletException, IOException {
 		request.setAttribute("invalidAuth", Boolean.TRUE);
 		request.getRequestDispatcher(loginPath).forward(request, response);
-		System.err.println("invalid auth");
 	}
 
     public void destroy() {

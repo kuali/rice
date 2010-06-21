@@ -16,38 +16,22 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
+ import org.apache.commons.lang.ArrayUtils;
+ import org.apache.commons.lang.builder.ToStringBuilder;
+ import org.hibernate.annotations.Fetch;
+ import org.hibernate.annotations.FetchMode;
+ import org.kuali.rice.core.jpa.annotations.Sequence;
+ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+ import org.kuali.rice.kew.bo.WorkflowPersistable;
+ import org.kuali.rice.kew.rule.Role;
+ import org.kuali.rice.kew.rule.RoleAttribute;
+ import org.kuali.rice.kew.rule.RuleTemplateOption;
+ import org.kuali.rice.kew.rule.WorkflowAttribute;
+ import org.kuali.rice.kew.util.KEWConstants;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.kuali.rice.core.jpa.annotations.Sequence;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
-import org.kuali.rice.kew.rule.Role;
-import org.kuali.rice.kew.rule.RoleAttribute;
-import org.kuali.rice.kew.rule.RuleTemplateOption;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
-import org.kuali.rice.kew.util.KEWConstants;
+ import javax.persistence.*;
+ import java.net.URLEncoder;
+ import java.util.*;
 
 
 /**
@@ -204,12 +188,14 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
     /**
      * Returns a List of only the active RuleTemplateAttributes on the RuleTemplate
      * sorted according to display order (ascending).
+     * @return
      */
     public List<RuleTemplateAttribute> getActiveRuleTemplateAttributes() {
         List<RuleTemplateAttribute> activeAttributes = new ArrayList<RuleTemplateAttribute>();
-        for (Iterator<RuleTemplateAttribute> iterator = getRuleTemplateAttributes().iterator(); iterator.hasNext();) {
-            RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iterator.next();
-            if (templateAttribute.isActive()) {
+        for (RuleTemplateAttribute templateAttribute : getRuleTemplateAttributes())
+        {
+            if (templateAttribute.isActive())
+            {
                 activeAttributes.add(templateAttribute);
             }
         }
@@ -409,22 +395,25 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
     
     /**
      * Returns a List of Roles from all RoleAttributes attached to this template.
+     * @return list of roles
      */
     public List<Role> getRoles() {
     	List<Role> roles = new ArrayList<Role>();
-    	List ruleTemplateAttributes = getActiveRuleTemplateAttributes();
+    	List<RuleTemplateAttribute> ruleTemplateAttributes = getActiveRuleTemplateAttributes();
 		Collections.sort(ruleTemplateAttributes);
-		for (Iterator iter = ruleTemplateAttributes.iterator(); iter.hasNext();) {
-			RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
-			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
-				continue;
-			}
-			WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
-			if (workflowAttribute instanceof RoleAttribute) {
-				RoleAttribute roleAttribute = (RoleAttribute) workflowAttribute;
-				roles.addAll(roleAttribute.getRoleNames());
-			}
-		}
+        for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes)
+        {
+            if (!ruleTemplateAttribute.isWorkflowAttribute())
+            {
+                continue;
+            }
+            WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+            if (workflowAttribute instanceof RoleAttribute)
+            {
+                RoleAttribute roleAttribute = (RoleAttribute) workflowAttribute;
+                roles.addAll(roleAttribute.getRoleNames());
+            }
+        }
 		return roles;
     }
     

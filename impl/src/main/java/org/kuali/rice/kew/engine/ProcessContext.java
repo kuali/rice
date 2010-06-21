@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.engine;
 
+import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,18 +32,18 @@ import java.util.List;
 public class ProcessContext {
 
     private boolean complete = true;
-    private final List nextNodeInstances;
+    private final List<RouteNodeInstance> nextNodeInstances;
     
     public ProcessContext() {
-        this(true, new ArrayList());
+        this(true, new ArrayList<RouteNodeInstance>());
     }
     
-    public ProcessContext(boolean complete, List nextNodeInstances) {
+    public ProcessContext(boolean complete, List<RouteNodeInstance> nextNodeInstances) {
         this.complete = complete;
         this.nextNodeInstances = nextNodeInstances;
     }
 
-    public List getNextNodeInstances() {
+    public List<RouteNodeInstance> getNextNodeInstances() {
         return nextNodeInstances;
     }
     

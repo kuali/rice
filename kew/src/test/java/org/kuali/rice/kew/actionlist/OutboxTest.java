@@ -74,7 +74,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.saveDocument("");
 
-        Collection outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
+        Collection<ActionItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should not be any outbox items", 0, outbox.size());
     }
 
@@ -96,7 +96,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.approve("");
 
-        Collection outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
+        Collection<ActionItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
     }
 
@@ -121,7 +121,7 @@ public class OutboxTest extends KEWTestCase {
 
         document.approve("");
 
-        Collection outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
+        Collection<ActionItem> outbox = KEWServiceLocator.getActionListService().getOutbox(rkirkendPrincipalId, new ActionListFilter());
         assertEquals("there should be an outbox item", 1, outbox.size());
 
         document = new WorkflowDocument(user1PrincipalId, document.getRouteHeaderId());

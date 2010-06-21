@@ -16,15 +16,16 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
+import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
+
+import java.util.Collection;
+import java.util.List;
 
 
 public class CancelActionTest extends KEWTestCase {
@@ -60,7 +61,7 @@ public class CancelActionTest extends KEWTestCase {
         List requests = KEWServiceLocator.getActionRequestService().findPendingByDoc(document.getRouteHeaderId());
         assertEquals("Should not have any active requests", 0, requests.size());
         
-        Collection actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
+        Collection<ActionItem> actionItems = KEWServiceLocator.getActionListService().findByRouteHeaderId(document.getRouteHeaderId());
         assertEquals("Should not have any action items", 0, actionItems.size());
         
         

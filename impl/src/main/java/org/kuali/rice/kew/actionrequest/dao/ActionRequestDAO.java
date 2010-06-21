@@ -16,10 +16,10 @@
  */
 package org.kuali.rice.kew.actionrequest.dao;
 
+import org.kuali.rice.kew.actionrequest.ActionRequestValue;
+
 import java.util.Collection;
 import java.util.List;
-
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 
 
 /**
@@ -41,7 +41,7 @@ public interface ActionRequestDAO {
 
     public void delete(Long actionRequestId);
 
-    public List findPendingByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId);
+     public List findPendingByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId);
 
     public List findAllPendingByDocId(Long routeHeaderId);
 
@@ -49,7 +49,7 @@ public interface ActionRequestDAO {
 
     public List findAllRootByDocId(Long routeHeaderId);
 
-    public List findByStatusAndDocId(String statusCd, Long routeHeaderId);
+    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, Long routeHeaderId);
 
     public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId);
 

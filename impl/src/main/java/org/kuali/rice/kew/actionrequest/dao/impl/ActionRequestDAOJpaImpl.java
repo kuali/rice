@@ -16,21 +16,21 @@
  */
 package org.kuali.rice.kew.actionrequest.dao.impl;
 
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * This is a description of what this class does - sgibson don't forget to fill this in.
@@ -107,12 +107,13 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         return query.getResultList();
     }
 
-    public List findAllRootByDocId(Long routeHeaderId) {
+    @SuppressWarnings("unchecked")
+    public List<ActionRequestValue> findAllRootByDocId(Long routeHeaderId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindAllRootByDocId");
         query.setParameter("routeHeaderId", routeHeaderId);
         query.setParameter("currentIndicator", Boolean.TRUE);
         
-        return query.getResultList();
+        return (List<ActionRequestValue>) query.getResultList();
     }
 
     public List findByRouteHeaderIdIgnoreCurrentInd(Long routeHeaderId) {
@@ -122,13 +123,14 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         return query.getResultList();
     }
 
-    public List findByStatusAndDocId(String statusCd, Long routeHeaderId) {
+    @SuppressWarnings("unchecked")
+    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, Long routeHeaderId) {
         Query query = entityManager.createNamedQuery("ActionRequestValue.FindByStatusAndDocId");
         query.setParameter("routeHeaderId", routeHeaderId);
         query.setParameter("status", statusCd);
         query.setParameter("currentIndicator", Boolean.TRUE);
         
-        return query.getResultList();
+        return (List<ActionRequestValue>)query.getResultList();
     }
 
     public List findPendingByActionRequestedAndDocId(String actionRequestedCd, Long routeHeaderId) {
@@ -251,7 +253,7 @@ public class ActionRequestDAOJpaImpl implements ActionRequestDAO {
         actionRequest.setCreateDate(new Timestamp(System.currentTimeMillis()));
     }
     //TODO Runtime might not be the right thing to do here...
-    private void checkNull(Object value, String valueName) throws RuntimeException {
+    private void checkNull(Serializable value, String valueName) throws RuntimeException {
         if (value == null) {
             throw new RuntimeException("Null value for " + valueName);
         }

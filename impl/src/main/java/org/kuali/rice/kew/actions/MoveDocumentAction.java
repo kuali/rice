@@ -16,12 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
@@ -38,6 +32,11 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -135,7 +134,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
             }
     }
 
-    public void performDeferredMoveDocumentWork(ActionTakenValue actionTaken, Set nodeNames) throws Exception {
+    public void performDeferredMoveDocumentWork(ActionTakenValue actionTaken, Set<String> nodeNames) throws Exception {
 
         if (getRouteHeader().isInException()) {
             LOG.debug("Moving document back to Enroute from Exception");

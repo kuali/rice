@@ -13,15 +13,6 @@
  */
 package org.kuali.rice.kew.actionrequest.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
@@ -43,15 +34,13 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kew.util.ResponsibleParty;
-import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.*;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import java.util.*;
 
 
 /**
@@ -161,7 +150,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if ( LOG.isInfoEnabled() ) {
         	performanceLogger = new PerformanceLogger();
         }
-        activationContext.setGeneratedActionItems(new ArrayList());
+        activationContext.setGeneratedActionItems(new ArrayList<ActionItem>());
         activateRequestsInternal(actionRequests, activationContext);
         if (!activationContext.isSimulation()) {
             KEWServiceLocator.getNotificationService().notify(activationContext.getGeneratedActionItems());
@@ -192,7 +181,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public List activateRequestNoNotification(ActionRequestValue actionRequest, ActivationContext activationContext) {
-        activationContext.setGeneratedActionItems(new ArrayList());
+        activationContext.setGeneratedActionItems(new ArrayList<ActionItem>());
         activateRequestInternal(actionRequest, activationContext);
         return activationContext.getGeneratedActionItems();
     }
@@ -447,19 +436,22 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return false;
     }
 
-    public List getRootRequests(Collection actionRequests) {
-            Set unsavedRequests = new HashSet();
-            Map requestMap = new HashMap();
-            for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
-                ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
-                ActionRequestValue rootRequest = getRoot(actionRequest);
-                if (rootRequest.getActionRequestId() != null) {
-                    requestMap.put(rootRequest.getActionRequestId(), rootRequest);
-                } else {
-                    unsavedRequests.add(rootRequest);
-                }
+    public List<ActionRequestValue> getRootRequests(Collection<ActionRequestValue> actionRequests) {
+            Set<ActionRequestValue> unsavedRequests = new HashSet<ActionRequestValue>();
+            Map<Long, ActionRequestValue> requestMap = new HashMap<Long, ActionRequestValue>();
+        for (ActionRequestValue actionRequest1 : actionRequests)
+        {
+            ActionRequestValue actionRequest = (ActionRequestValue) actionRequest1;
+            ActionRequestValue rootRequest = getRoot(actionRequest);
+            if (rootRequest.getActionRequestId() != null)
+            {
+                requestMap.put(rootRequest.getActionRequestId(), rootRequest);
+            } else
+            {
+                unsavedRequests.add(rootRequest);
             }
-            List requests = new ArrayList();
+        }
+            List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
             requests.addAll(requestMap.values());
             requests.addAll(unsavedRequests);
             return requests;
@@ -482,8 +474,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      */
     public List<ActionRequestValue> findAllPendingRequests(Long routeHeaderId) {
     	ActionRequestDAO arDAO = getActionRequestDAO();
-        Collection pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, routeHeaderId);
-        return (List<ActionRequestValue>)pendingArs;
+        List<ActionRequestValue> pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, routeHeaderId);
+        return pendingArs;
     }
 
     public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode) {
@@ -730,7 +722,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
     }
 
-    public List findByStatusAndDocId(String statusCd, Long routeHeaderId) {
+    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, Long routeHeaderId) {
         return getActionRequestDAO().findByStatusAndDocId(statusCd, routeHeaderId);
     }
 

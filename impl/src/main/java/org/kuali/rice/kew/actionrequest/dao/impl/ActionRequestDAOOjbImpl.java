@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.actionrequest.dao.impl;
 
-import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
@@ -33,6 +25,9 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.dao.ActionRequestDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.sql.Timestamp;
+import java.util.*;
 
 
 /**
@@ -84,13 +79,14 @@ public class ActionRequestDAOOjbImpl extends PersistenceBrokerDaoSupport impleme
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
 
-    public List findByStatusAndDocId(String statusCd, Long routeHeaderId) {
+    @SuppressWarnings("unchecked")
+    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, Long routeHeaderId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("status", statusCd);
         crit.addEqualTo("routeHeaderId", routeHeaderId);
         crit.addEqualTo("currentIndicator", true);
 
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
+        return (List<ActionRequestValue>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ActionRequestValue.class, crit));
     }
 
     private void loadDefaultValues(ActionRequestValue actionRequest) {

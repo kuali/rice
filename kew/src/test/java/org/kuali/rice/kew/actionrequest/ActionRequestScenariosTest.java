@@ -33,6 +33,12 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+/**
+ * This is a description of what this class does - jjhanso don't forget to fill this in. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public class ActionRequestScenariosTest extends KEWTestCase {
 
 	protected void loadTestData() throws Exception {
@@ -298,6 +304,41 @@ public class ActionRequestScenariosTest extends KEWTestCase {
             assertTrue("Document should be in exception routing", document.stateIsException());
         }
 	}
+	
+	/*
+	 * The test was created to test Groups with with the All approve policy
+	 * This is commented out because that is currently not supported in rice.
+	 */
+//	@Test public void testGroupRecipientsWithAllApprovePolicy() throws Exception {
+//        WorkflowDocument document = new WorkflowDocument(getPrincipalIdFromPrincipalName("user1"), "testGroupAllApprovePolicy");
+//        document.routeDocument("");
+//        
+//        assertTrue("Should have approval policy of All", document.getActionRequests()[0].getApprovePolicy().equals(KEWConstants.APPROVE_POLICY_ALL_APPROVE));
+//        
+//    	document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getRouteHeaderId());
+//		assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());
+//		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getRouteHeaderId());
+//		assertTrue("Should have an approve request.", document.isApprovalRequested());
+//		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("xqi"), document.getRouteHeaderId());
+//		assertTrue("Should have an approve request.", document.isApprovalRequested());
+//		document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getRouteHeaderId());
+//		assertTrue("Should have an approve request.", document.isApprovalRequested());
+		
+		//approve document as jitrue
+		//document.approve("Approving as primary jitrue.");
+		
+		//make sure other group members still have approve requests.
+		//document = new WorkflowDocument(getPrincipalIdFromPrincipalName("ewestfal"), document.getRouteHeaderId());
+		//assertTrue("ewestfal should have an approve request.", document.isApprovalRequested());
+		//document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jhopf"), document.getRouteHeaderId());
+		//assertTrue("Should have an approve request.", document.isApprovalRequested());
+		//document = new WorkflowDocument(getPrincipalIdFromPrincipalName("xqi"), document.getRouteHeaderId());
+		//assertTrue("Should have an approve request.", document.isApprovalRequested());
+		
+		//document = new WorkflowDocument(getPrincipalIdFromPrincipalName("jitrue"), document.getRouteHeaderId());
+		//assertTrue("Should NOT have an approve request.", document.isApprovalRequested());
+//	}
+
 
 	private String getPrincipalIdFromPrincipalName(String principalName) {
 	    return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();

@@ -112,6 +112,10 @@
 				</attribute>
 			</attributes>
 		</ruleTemplate>
+		<ruleTemplate>
+			<name>GroupApproveTemplate</name>
+			<description>Group Approve Template</description>
+		</ruleTemplate>
 	</ruleTemplates>
 	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
 		<documentType>
@@ -231,6 +235,38 @@
 				<requests name="Node1">
 					<activationType>P</activationType>
 					<ruleTemplate>RoleToRoleTemplate</ruleTemplate>
+				</requests>
+			</routeNodes>
+		</documentType>
+		
+		<documentType>
+			<name>testGroupAllApprovePolicy</name>
+			<description>DocType for testGroupAllApprovePolicy</description>
+			<label>DocType for testGroupAllApprovePolicy</label>
+			<postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+			<docHandler>about:blank</docHandler>
+			<superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+			<blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+			<defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+			<policies>
+				<policy>
+					<name>DEFAULT_APPROVE</name>
+					<value>false</value>
+				</policy>
+			</policies>
+			<routePaths>
+				<routePath>
+					<start name="AdHoc" nextNode="Node1" />
+					<requests name="Node1" />
+				</routePath>
+			</routePaths>
+			<routeNodes>
+				<start name="AdHoc">
+					<activationType>P</activationType>
+				</start>
+				<requests name="Node1">
+					<activationType>P</activationType>
+					<ruleTemplate>GroupApproveTemplate</ruleTemplate>
 				</requests>
 			</routeNodes>
 		</documentType>
@@ -505,6 +541,23 @@
 				<responsibility>
 					<role>org.kuali.rice.kew.actionrequest.RoleToRoleDelegationRole!MAIN</role>
 					<approvePolicy>A</approvePolicy>
+					<actionRequested>A</actionRequested>
+					<priority>1</priority>
+				</responsibility>
+			</responsibilities>
+		</rule>
+		
+<!-- this is for testing all approve group policy -->
+		<rule>
+		    <name>ActionRequestsConfig-Rule4</name>
+			<documentType>testGroupAllApprovePolicy</documentType>
+			<ruleTemplate>GroupApproveTemplate</ruleTemplate>
+			<description>test group approval with all approve policy</description>
+			<forceAction>false</forceAction>
+			<responsibilities>
+				<responsibility>
+					<groupId>3001</groupId>
+					<!--<approvePolicy>A</approvePolicy>-->
 					<actionRequested>A</actionRequested>
 					<priority>1</priority>
 				</responsibility>

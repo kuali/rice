@@ -162,7 +162,7 @@
 				</c:if>
                 
 				<c:set var="onblur" value="${field.webOnBlurHandler}( ${onblurParameters} );" />
-                <c:set var="onblurcall" value="onblur='${onblur}'" />
+                <c:set var="onblurcall" value='onblur="${onblur}"' />
 
             </c:if>
 

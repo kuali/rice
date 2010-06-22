@@ -171,12 +171,14 @@
 
   <bean id="RuleDelegation-parentRule-description-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Description"/>
-    <property name="maxLength" value="30"/>
+
+    <property name="maxLength" value="2000"/>
     <property name="validationPattern">
       <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
     </property>
     <property name="control">
-      <bean parent="TextControlDefinition" p:size="30"/>
+      <bean parent="TextControlDefinition" p:size="60"/>
+ 
     </property>
     <property name="name" value="ruleResponsibility.ruleBaseValues.description"/>
     <property name="label" value="Description"/>
@@ -187,7 +189,9 @@
   <bean id="RuleDelegation-parentResponsibility-ruleResponsibilityName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="shortLabel" value="Reviewer"/>
     <property name="validationPattern">
-      <bean parent="AnyCharacterValidationPattern"/>
+
+      <bean parent="AnyCharacterValidationPattern" p:allowWhitespace="true"/>
+
     </property>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="30"/>
@@ -401,7 +405,7 @@
           <property name="numberOfColumns" value="1"/>
           <property name="inquiryFields">
             <list>
-              <bean parent="FieldDefinition" p:attributeName="ruleDelegationId"/>
+              <bean parent="FieldDefinition" p:attributeName="ruleDelegationId" p:noInquiry="true"/>
               <bean parent="FieldDefinition" p:attributeName="ruleResponsibility.ruleBaseValues.ruleBaseValuesId"/>
               <bean parent="FieldDefinition" p:attributeName="responsibilityId"/>
               <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.documentType.name"/>
@@ -532,8 +536,9 @@
     <property name="resultFields">
       <list>
         <bean parent="FieldDefinition" p:attributeName="ruleDelegationId"/>
-        <bean parent="FieldDefinition" p:attributeName="ruleResponsibility.ruleBaseValues.ruleBaseValuesId"/>
-        <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.name"/>
+
+        <!-- <bean parent="FieldDefinition" p:attributeName="ruleResponsibility.ruleBaseValues.ruleBaseValuesId"/> -->
+        <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.description"/>
         <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.ruleTemplate.name"/>
         <bean parent="FieldDefinition" p:noInquiry="true" p:attributeName="delegationRuleBaseValues.activeInd"/>
         <bean parent="FieldDefinition" p:attributeName="delegationRuleBaseValues.documentType.name"/>

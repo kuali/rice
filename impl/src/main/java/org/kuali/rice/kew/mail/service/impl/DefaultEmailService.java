@@ -30,6 +30,12 @@ import org.kuali.rice.kew.mail.service.EmailService;
 import org.springframework.beans.factory.InitializingBean;
 
 
+
+import org.kuali.rice.kew.mail.service.impl.EmailBcList;
+import org.kuali.rice.kew.mail.service.impl.EmailCcList;
+import org.kuali.rice.kew.mail.service.impl.EmailToList;
+
+
 public class DefaultEmailService implements EmailService, InitializingBean {
     private static final Logger LOG = Logger.getLogger(DefaultEmailService.class);
 
@@ -73,5 +79,32 @@ public class DefaultEmailService implements EmailService, InitializingBean {
 			throw new WorkflowRuntimeException(e);
 		}
 	}
-	
+
+
+	public void sendEmail(EmailFrom from, EmailToList to, EmailSubject subject, EmailBody body, EmailCcList cc, EmailBcList bc, boolean htmlMessage) {
+		if(mailer == null){
+			try {
+				this.afterPropertiesSet();
+			} catch (Exception e) {
+				LOG.error("Error initializing mailer for multi-recipient email.", e);
+			}
+		}
+		if (to.getToAddresses().isEmpty()) {
+			LOG.error("List of To addresses must contain at least one entry.");
+		} else {
+			try {
+				mailer.sendMessage(
+						from.getFromAddress(), 
+						to.getToAddressesAsAddressArray(), 
+						subject.getSubject(), 
+						body.getBody(), 
+						(cc == null ? null : cc.getToAddressesAsAddressArray()), 
+						(bc == null ? null : bc.getToAddressesAsAddressArray()), 
+						htmlMessage);
+			} catch (Exception e) {
+				LOG.error("Error sending email to multiple recipients.", e);
+			}
+		}
+	}
+
 }

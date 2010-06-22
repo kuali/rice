@@ -72,6 +72,8 @@ public class BrowserHandler implements EDLModelComponent {
 		res = "Firefox";
 	    }else if(saf > 0 && chr < 0){
 		res = "Safari";
+	    }else if(saf > 0 && chr > 0){
+	    res = "Chrome";
 	    }else{
 		res = "Other";
 	    }	    

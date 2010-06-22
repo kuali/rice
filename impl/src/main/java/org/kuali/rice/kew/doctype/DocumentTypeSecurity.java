@@ -159,10 +159,18 @@ public class DocumentTypeSecurity implements Serializable {
               groupName = Utilities.substituteConfigParameters(groupName).trim();
               String namespaceCode = Utilities.substituteConfigParameters(((Element) groupNode).getAttribute(XmlConstants.NAMESPACE)).trim();
               Group groupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
-                if (groupObject == null) {
-                  throw new WorkflowException("Could not find group with name '" + groupName + "' and namespace '" + namespaceCode + "'");
-                }
-              workgroups.add(groupObject);
+              
+              
+              if (groupObject != null) {
+            	  workgroups.add(groupObject); 
+              } else {
+            	  LOG.warn("Could not find group with name '" + groupName + "' and namespace '" + namespaceCode + "' which was defined on Document Type security");
+              }
+//                if (groupObject == null) {
+//                  throw new WorkflowException("Could not find group with name '" + groupName + "' and namespace '" + namespaceCode + "'");
+//                }
+         
+              
             }
           }
         }
@@ -209,14 +217,9 @@ public class DocumentTypeSecurity implements Serializable {
             } else {
                 throw new WorkflowException("Cannot find attribute 'name' or attribute 'class' for securityAttribute Node");
             }
-            ObjectDefinition objDef = new ObjectDefinition(className, serviceNamespace);
-            if (objDef != null) {
-                try {
-                    this.securityAttributes.add((SecurityAttribute)GlobalResourceLoader.getObject(objDef));
-                } catch (RuntimeException e) {
-                    throw new WorkflowException("Error obtaining security attribute: " + objDef,e);
-                }
-            }
+          
+            this.securityAttributes.add(new LazyLoadSecurityAttribute(className, serviceNamespace));
+            
           }
         }
     } catch (Exception err) {

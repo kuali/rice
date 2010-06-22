@@ -62,7 +62,8 @@ public class FYIByUniversityId extends RequestActivationNode {
                		String employeeId = field.getChildText("value");
             		LOG.debug("Should send an FYI to employee ID:  " + employeeId);
                		if (!StringUtils.isBlank(employeeId)) {
-               			Person person = KIMServiceLocator.getPersonService().getPersonByEmployeeId(employeeId);
+               			Person person = KIMServiceLocator.getPersonService().getPerson(employeeId);
+
                			if (person == null) {
                				throw new WorkflowRuntimeException("Failed to locate a Person with the given employee ID: " + employeeId);
                			}

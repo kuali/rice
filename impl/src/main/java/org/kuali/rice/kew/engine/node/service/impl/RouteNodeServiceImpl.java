@@ -102,7 +102,15 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     }
     
     public List getActiveNodeInstances(DocumentRouteHeaderValue document) {
-       return RouteNodeUtils.getActiveNodeInstances(document);
+        List flattenedNodeInstances = getFlattenedNodeInstances(document, true);
+        List activeNodeInstances = new ArrayList();
+        for (Iterator iterator = flattenedNodeInstances.iterator(); iterator.hasNext();) {
+            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
+            if (nodeInstance.isActive()) {
+                activeNodeInstances.add(nodeInstance);
+            }
+        }
+        return activeNodeInstances;
     }
     
     public List getTerminalNodeInstances(Long documentId) {
@@ -216,16 +224,80 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     }
     
     public List getFlattenedNodes(DocumentType documentType, boolean climbHierarchy) {
-        return RouteNodeUtils.getFlattenedNodes(documentType, climbHierarchy);
+        List nodes = new ArrayList();
+        if (!documentType.isRouteInherited() || climbHierarchy) {
+            for (Iterator iterator = documentType.getProcesses().iterator(); iterator.hasNext();) {
+                Process process = (Process) iterator.next();
+                nodes.addAll(getFlattenedNodes(process));
+            }
+        }
+        Collections.sort(nodes, new RouteNodeSorter());
+        return nodes;
     }
     
     public List getFlattenedNodes(Process process) {
-    	return RouteNodeUtils.getFlattenedNodes(process);        
-    }        
+        Map nodesMap = new HashMap();
+        if (process.getInitialRouteNode() != null) {
+            flattenNodeGraph(nodesMap, process.getInitialRouteNode());
+            List nodes = new ArrayList(nodesMap.values());
+            Collections.sort(nodes, new RouteNodeSorter());
+            return nodes;
+        } else {
+            List nodes = new ArrayList();
+            nodes.add(new RouteNode());
+            return nodes;
+        }
+
+    }
+    
+    /**
+     * Recursively walks the node graph and builds up the map.  Uses a map because we will
+     * end up walking through duplicates, as is the case with Join nodes.
+     */
+    private void flattenNodeGraph(Map nodes, RouteNode node) {
+        if (node != null) {
+            if (nodes.containsKey(node.getRouteNodeName())) {
+                return;
+            }
+            nodes.put(node.getRouteNodeName(), node);
+            for (Iterator iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
+                RouteNode nextNode = (RouteNode) iterator.next();
+                flattenNodeGraph(nodes, nextNode);
+            }
+        } else {
+            return;
+        }
+    }
     
     public List getFlattenedNodeInstances(DocumentRouteHeaderValue document, boolean includeProcesses) {
-    	return RouteNodeUtils.getFlattenedNodeInstances(document, includeProcesses);        
-    }      
+        List nodeInstances = new ArrayList();
+        Set visitedNodeInstanceIds = new HashSet();
+        for (Iterator iterator = document.getInitialRouteNodeInstances().iterator(); iterator.hasNext();) {
+            RouteNodeInstance initialNodeInstance = (RouteNodeInstance) iterator.next();
+            flattenNodeInstanceGraph(nodeInstances, visitedNodeInstanceIds, initialNodeInstance, includeProcesses);    
+        }
+        return nodeInstances;
+    }
+    
+	private void flattenNodeInstanceGraph(List nodeInstances, Set visitedNodeInstanceIds, RouteNodeInstance nodeInstance, boolean includeProcesses) {
+
+		if (nodeInstance != null) {
+			if (visitedNodeInstanceIds.contains(nodeInstance.getRouteNodeInstanceId())) {
+				return;
+			}
+			if (includeProcesses && nodeInstance.getProcess() != null) {
+				flattenNodeInstanceGraph(nodeInstances, visitedNodeInstanceIds, nodeInstance.getProcess(), includeProcesses);
+			}
+			visitedNodeInstanceIds.add(nodeInstance.getRouteNodeInstanceId());
+			nodeInstances.add(nodeInstance);
+			for (Iterator iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
+				RouteNodeInstance nextNodeInstance = (RouteNodeInstance) iterator.next();
+				flattenNodeInstanceGraph(nodeInstances, visitedNodeInstanceIds, nextNodeInstance, includeProcesses);
+			}
+
+		}
+
+	}
     
     public NodeGraphSearchResult searchNodeGraph(NodeGraphSearchCriteria criteria) {
     	NodeGraphContext context = new NodeGraphContext();
@@ -330,7 +402,20 @@ public class RouteNodeServiceImpl implements RouteNodeService {
 		}
     }
     
-       
+    
+    /**
+     * Sorts by RouteNodeId or the order the nodes will be evaluated in *roughly*.  This is 
+     * for display purposes when rendering a flattened list of nodes.
+     * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+     */
+    private static class RouteNodeSorter implements Comparator {
+        public int compare(Object arg0, Object arg1) {
+            RouteNode rn1 = (RouteNode)arg0;
+            RouteNode rn2 = (RouteNode)arg1;
+            return rn1.getRouteNodeId().compareTo(rn2.getRouteNodeId());
+        }
+    }
     
     private static class NodeInstanceIdSorter implements Comparator {
         public int compare(Object arg0, Object arg1) {

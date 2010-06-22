@@ -237,14 +237,16 @@ public class WebRuleUtils {
 			}
         }
 	}
-    
-	public static List customizeSections(RuleBaseValues rule, List<Section> sections) {
+	
+
+	public static List customizeSections(RuleBaseValues rule, List<Section> sections, boolean delegateRule) {
+
 		List<Section> finalSections = new ArrayList<Section>();
 		for (Section section : sections) {
 			// unfortunately, in the case of an inquiry the sectionId will always be null so we have to check section title
 			if (section.getSectionTitle().equals(RULE_ATTRIBUTES_SECTION_TITLE) || 
 					RULE_ATTRIBUTES_SECTION_ID.equals(section.getSectionId())) {
-				List<Row> ruleTemplateRows = getRuleTemplateRows(rule);
+				List<Row> ruleTemplateRows = getRuleTemplateRows(rule, delegateRule);
 				if (!ruleTemplateRows.isEmpty()) {
 					section.setRows(ruleTemplateRows);
 					finalSections.add(section);
@@ -261,14 +263,19 @@ public class WebRuleUtils {
 		return finalSections;
 	}
 	
-	public static List<Row> getRuleTemplateRows(RuleBaseValues rule) {
+	
+	
+
+	public static List<Row> getRuleTemplateRows(RuleBaseValues rule, boolean delegateRule) {
+
 		List<Row> rows = new ArrayList<Row>();
 		RuleTemplate ruleTemplate = rule.getRuleTemplate();
+		Map<String, String> fieldNameMap = new HashMap<String, String>();
 		// refetch rule template from service because after persistence in KNS, it comes back without any rule template attributes
 		if (ruleTemplate != null){
 			ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateId(ruleTemplate.getRuleTemplateId());
 			if (ruleTemplate != null) {
-
+				
 				List<RuleTemplateAttribute> ruleTemplateAttributes = ruleTemplate.getActiveRuleTemplateAttributes();
 				Collections.sort(ruleTemplateAttributes);
 
@@ -281,15 +288,40 @@ public class WebRuleUtils {
 					if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 						((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
 					}
-
-					List<Row> attributeRows = transformAndPopulateAttributeRows(workflowAttribute.getRuleRows(), ruleTemplateAttribute, rule);
+					Map<String, String> parameterMap = getFieldMapForRuleTemplateAttribute(rule, ruleTemplateAttribute);
+					workflowAttribute.validateRuleData(parameterMap);
+					List<Row> attributeRows = transformAndPopulateAttributeRows(workflowAttribute.getRuleRows(), ruleTemplateAttribute, rule, fieldNameMap, delegateRule);
 					rows.addAll(attributeRows);
 
 				}
 			}
+			transformFieldConversions(rows, fieldNameMap);
 		}
 		return rows;
 	}
+	
+	public static void transformFieldConversions(List<Row> rows, Map<String, String> fieldNameMap) {
+		for (Row row : rows) {
+			Map<String, String> transformedFieldConversions = new HashMap<String, String>();
+			for (Field field : row.getFields()) {
+				Map<String, String> fieldConversions = field.getFieldConversionMap();
+				for (String lookupFieldName : fieldConversions.keySet()) {
+					String localFieldName = fieldConversions.get(lookupFieldName);
+					if (fieldNameMap.containsKey(localFieldName)) {
+						// set the transformed value
+						transformedFieldConversions.put(lookupFieldName, fieldNameMap.get(localFieldName));
+					} else {
+						// set the original value (not sure if this case will happen, but just in case)
+						transformedFieldConversions.put(lookupFieldName, fieldConversions.get(lookupFieldName));
+					}
+				}
+				field.setFieldConversions(transformedFieldConversions);
+			}
+		}
+	}
+	
+
+
 	
 	private static boolean hasRoles(RuleBaseValues rule) {
 		RuleTemplate ruleTemplate = rule.getRuleTemplate();
@@ -300,13 +332,25 @@ public class WebRuleUtils {
 	 * Processes the Fields on the various attributes Rows to assign an appropriate field name to them so that the
 	 * field name rendered in the maintenance HTML will properly assign the value to RuleBaseValues.fieldValues.
 	 */
-	public static List<Row> transformAndPopulateAttributeRows(List<Row> attributeRows, RuleTemplateAttribute ruleTemplateAttribute, RuleBaseValues rule) {
+	
+	public static List<Row> transformAndPopulateAttributeRows(List<Row> attributeRows, RuleTemplateAttribute ruleTemplateAttribute, RuleBaseValues rule, Map<String, String> fieldNameMap, boolean delegateRule) {
+
 		for (Row row : attributeRows) {
 			for (Field field : row.getFields()) {
 				String fieldName = field.getPropertyName();
 				if (!StringUtils.isBlank(fieldName)) {
 					String valueKey = ruleTemplateAttribute.getRuleTemplateAttributeId() + ID_SEPARATOR + fieldName;
-					field.setPropertyName("fieldValues(" + valueKey + ")");
+
+					String propertyName;
+					
+					if (delegateRule) {
+						propertyName = "delegationRuleBaseValues.fieldValues(" + valueKey + ")"; 
+					} else {
+						propertyName = "fieldValues(" + valueKey + ")"; 
+					}
+
+					fieldNameMap.put(fieldName, propertyName);
+					field.setPropertyName(propertyName);
 					field.setPropertyValue(rule.getFieldValues().get(valueKey));
 				}
 			}

@@ -50,7 +50,9 @@ public class RuleDelegationInquirableImpl extends KualiInquirableImpl {
 	 */
 	public List getSections(BusinessObject bo) {
 		List<Section> sections = super.getSections(bo);
-		return WebRuleUtils.customizeSections(((RuleDelegation)bo).getDelegationRuleBaseValues(), sections);
+		
+		return WebRuleUtils.customizeSections(((RuleDelegation)bo).getDelegationRuleBaseValues(), sections, true);
+		
 	}
 
 }

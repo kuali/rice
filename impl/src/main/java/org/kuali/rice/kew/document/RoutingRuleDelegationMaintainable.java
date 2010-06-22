@@ -46,8 +46,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 	@Override
 	public List getSections(MaintenanceDocument document, Maintainable oldMaintainable) {
 		List<Section> sections = super.getSections(document, oldMaintainable);
-		return WebRuleUtils.customizeSections(getThisRule(), sections);
-
+		return WebRuleUtils.customizeSections(getThisRule(), sections, true);
 	}
 	
 	/**
@@ -114,6 +113,7 @@ public class RoutingRuleDelegationMaintainable extends KualiMaintainableImpl {
 			throw new RiceRuntimeException("Cannot edit a non-current version of a rule.");
 		}
 		WebRuleUtils.populateForCopyOrEdit(getOldRule(document), getNewRule(document));
+		getNewRule(document).setPreviousVersionId(getOldRule(document).getRuleBaseValuesId());       
 		getNewRule(document).setRouteHeaderId(new Long(document.getDocumentHeader().getDocumentNumber()));
 		super.processAfterEdit(document, parameters);
 	}

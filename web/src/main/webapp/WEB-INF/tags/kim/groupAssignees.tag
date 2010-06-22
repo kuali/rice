@@ -35,7 +35,7 @@
 	        		<th>&nbsp;</th> 
 	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberTypeCode}" horizontal="false" />
 	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberId}" horizontal="false" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberName}" horizontal="false" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberFullName}" horizontal="false" />
 	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeFromDate}" horizontal="false" />
 	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeToDate}" horizontal="false" />
 					<c:if test="${canAssignGroup}">	
@@ -67,7 +67,7 @@
 					</td>
 	                <td class="infoline">   
 	                <div align="center">             	
-						<kul:htmlControlAttribute property="member.memberName" attributeEntry="${groupMemberAttributes.memberName}" readOnly="true" />
+						<kul:htmlControlAttribute property="member.memberFullName" attributeEntry="${groupMemberAttributes.memberFullName}" readOnly="true" />
 					</div>
 					</td>
 	                <td align="left" valign="middle" class="infoline">
@@ -104,9 +104,14 @@
 		               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberId"  attributeEntry="${groupMemberAttributes.memberId}" readOnly="true" />
 						</div>
 					</td>
-		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberName"  attributeEntry="${groupMemberAttributes.memberName}" readOnly="true"  />
-						</div>
+		            <td align="left" valign="middle">						            
+                    	<kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${member.memberId}" render="true">
+                        	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberFullName"  attributeEntry="${groupMemberAttributes.memberFullName}" readOnly="true"  />
+							</div>
+                    	</kul:inquiry>
+                    </td>
+						
+						
 					</td>
 		            <td align="left" valign="middle">
 		               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].activeFromDate"  attributeEntry="${groupMemberAttributes.activeFromDate}" readOnly="${!canAssignGroup}" datePicker="true" />

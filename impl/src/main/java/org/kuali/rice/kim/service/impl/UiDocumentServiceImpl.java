@@ -31,6 +31,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
@@ -1697,6 +1698,19 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		return getMemberName(memberTypeCode, member);
 	}
+	
+	public String getMemberFullName(String memberTypeCode, String memberId){
+		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
+		BusinessObject member = getMember(memberTypeCode, memberId);
+		if (member == null) { //not a REAL principal, try to fake the name
+			String fakeName = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId).getPrincipalName();
+			if(fakeName == null || fakeName.equals("")) {	
+				return "";
+			}
+			return fakeName;
+		}
+		return getFullMemberName(memberTypeCode, member);
+	}
 
 	public String getMemberNamespaceCode(String memberTypeCode, String memberId){
 		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
@@ -1724,6 +1738,23 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	String roleMemberName = "";
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberName = ((KimPrincipalImpl)member).getPrincipalName();
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	roleMemberName = ((GroupImpl)member).getGroupName();
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	roleMemberName = ((RoleImpl)member).getRoleName();
+        }
+        return roleMemberName;
+    }
+    
+    public String getFullMemberName(String memberTypeCode, BusinessObject member){
+    	String roleMemberName = "";
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	String principalName = ((KimPrincipalImpl)member).getPrincipalName();
+        	Person psn = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        	       	
+        	roleMemberName = psn.getFirstName() + " " + psn.getLastName();
+        	
+        	System.out.println("*************person full name*****************\t" + roleMemberName);
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	roleMemberName = ((GroupImpl)member).getGroupName();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
@@ -2439,6 +2470,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setGroupId(member.getGroupId());
 					pndMember.setMemberId(member.getMemberId());
 					pndMember.setMemberName(getMemberName(member.getMemberTypeCode(), member.getMemberId()));
+					pndMember.setMemberFullName(getMemberFullName(member.getMemberTypeCode(), member.getMemberId()));
 					pndMember.setMemberTypeCode(member.getMemberTypeCode());
 					pndMember.setEdit(true);
 					pndMembers.add(pndMember);

@@ -23,9 +23,9 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
-import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 
 /**
@@ -128,7 +128,23 @@ public class GlobalResourceLoader {
 			throw new IllegalArgumentException("The service name must be non-null.");
 		}
 		LOG.debug("GlobalResourceLoader fetching service " + serviceName);
-		return getResourceLoader().getService(serviceName);
+		/**
+		 * Begin IU Customization
+		 * Author: Saurabh Ajmera (sajmera@indiana.edu)
+		 * Date: 6/8/2010
+		 * Issue:EN-1553
+		 * Description:
+		 * resolving the issue where opening a doc blows up if it tries to acquire a remote service which does not exist.
+		 */
+		try {
+			return getResourceLoader().getService(serviceName);
+		} catch (RiceRemoteServiceConnectionException ex) {
+			LOG.warn(ex.getMessage());
+			return null;
+		}
+		/**
+		 * End IU Customization
+		 */
 	}
 
 	public static Object getService(String localServiceName) {

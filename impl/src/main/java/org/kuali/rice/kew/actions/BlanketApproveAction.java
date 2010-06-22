@@ -26,7 +26,6 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actions.asyncservices.BlanketApproveProcessorService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.BlanketApproveEngine;
 import org.kuali.rice.kew.engine.CompatUtils;
@@ -55,6 +54,9 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
         super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal);
+
+        setQueueDocumentAfterAction(false);
+
     }
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, Integer routeLevel) {
@@ -68,6 +70,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
     public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, Set nodeNames) {
         super(KEWConstants.ACTION_TAKEN_BLANKET_APPROVE_CD, rh, principal, annotation);
         this.nodeNames = (nodeNames == null ? new HashSet() : nodeNames);
+        setQueueDocumentAfterAction(false);
     }
 
     private static Set convertRouteLevel(DocumentType documentType, Integer routeLevel) {

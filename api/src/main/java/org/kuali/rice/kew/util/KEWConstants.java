@@ -35,6 +35,9 @@ public class KEWConstants extends JSTLConstants {
     public static final String KEW_MODULE_NAMESPACE = "KEW";
     
     public static final String WEBAPP_DIRECTORY = "/kew";
+    
+    public static final String USE_OUT_BOX = "USE_OUT_BOX%";
+
 
     /**
      * Node state key under which rule selector can be specified on a per-nodeinstance basis

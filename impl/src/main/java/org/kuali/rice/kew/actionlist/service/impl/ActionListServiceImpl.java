@@ -52,7 +52,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 public class ActionListServiceImpl implements ActionListService {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
-    private final static String USE_OUT_BOX = "USE_OUT_BOX%";
 
     private ActionListDAO actionListDAO;
 
@@ -330,7 +329,7 @@ public class ActionListServiceImpl implements ActionListService {
     public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox) {
     	UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
     	Boolean isUsingOutBox = true;
-    	List<UserOptions> options = userOptionsService.findByUserQualified(actionItem.getPrincipalId(), USE_OUT_BOX);
+    	List<UserOptions> options = userOptionsService.findByUserQualified(actionItem.getPrincipalId(), KEWConstants.USE_OUT_BOX);
     	if (options == null || options.isEmpty()){
     		isUsingOutBox = true;
     	} else {

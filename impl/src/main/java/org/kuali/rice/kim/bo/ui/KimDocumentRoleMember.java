@@ -55,6 +55,8 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	protected String memberName;
 	@Column(name="MBR_NMSPC")
 	protected String memberNamespaceCode;
+	
+	protected String memberFullName;
 
 	protected List <KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
 	protected String qualifiersToDisplay;
@@ -219,6 +221,20 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	 */
 	public void setQualifiersToDisplay(String qualifiersToDisplay) {
 		this.qualifiersToDisplay = qualifiersToDisplay;
+	}
+	
+	/**
+	 * @return the memberFullName
+	 */
+	public String getMemberFullName() {
+		return this.memberFullName;
+	}
+
+	/**
+	 * @param memberFullName the memberFullName to set
+	 */
+	public void setMemberFullName(String memberFullName) {
+		this.memberFullName = memberFullName;
 	}
 
 }

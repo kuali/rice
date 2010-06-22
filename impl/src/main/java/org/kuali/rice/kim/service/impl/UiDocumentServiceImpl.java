@@ -1604,6 +1604,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setMemberId(member.getMemberId());
 					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getMemberTypeCode(), member.getMemberId()));
 					pndMember.setMemberName(getMemberName(member.getMemberTypeCode(), member.getMemberId()));
+					pndMember.setMemberFullName(getMemberFullName(member.getMemberTypeCode(), member.getMemberId()));
 					pndMember.setMemberTypeCode(member.getMemberTypeCode());
 					pndMember.setQualifiers(loadRoleMemberQualifiers(identityManagementRoleDocument, member.getAttributes()));
 					pndMember.setEdit(true);
@@ -1751,10 +1752,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	String principalName = ((KimPrincipalImpl)member).getPrincipalName();
         	Person psn = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
-        	       	
         	roleMemberName = psn.getFirstName() + " " + psn.getLastName();
-        	
-        	System.out.println("*************person full name*****************\t" + roleMemberName);
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	roleMemberName = ((GroupImpl)member).getGroupName();
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){

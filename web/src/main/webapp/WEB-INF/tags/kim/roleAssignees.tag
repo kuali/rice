@@ -39,7 +39,7 @@
                 <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberTypeCode}" horizontal="false" />
                 <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberId}" horizontal="false" />
                 <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberNamespaceCode}" horizontal="false" />
-                <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberName}" horizontal="false" />
+                <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberFullName}" horizontal="false" />
                 <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeFromDate}" horizontal="false" />
                 <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.activeToDate}" horizontal="false" />
                 <c:forEach var="attrDefn" items="${KualiForm.document.kimType.attributeDefinitions}" varStatus="status">
@@ -81,7 +81,7 @@
                 </td>
                 <td class="infoline">   
                 <div align="center">                
-                    <kul:htmlControlAttribute property="member.memberName" attributeEntry="${roleMemberAttributes.memberName}" readOnly="true" />
+                    <kul:htmlControlAttribute property="member.memberFullName" attributeEntry="${roleMemberAttributes.memberFullName}" readOnly="true" />
                 </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
@@ -151,8 +151,11 @@
                     </div>
                 </td>
                 <td align="left" valign="middle">
-                    <div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberName"  attributeEntry="${roleMemberAttributes.memberName}" readOnly="true"  />
-                    </div>
+                    <kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${member.memberId}" render="true">
+                        	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberFullName"  attributeEntry="${roleMemberAttributes.memberFullName}" readOnly="true"  />
+							</div>
+                    </kul:inquiry>
+                    
                 </td>
                 <td align="left" valign="middle">
                     <div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].activeFromDate"  attributeEntry="${roleMemberAttributes.activeFromDate}" readOnly="${!canModifyAssignees}" datePicker="true" />

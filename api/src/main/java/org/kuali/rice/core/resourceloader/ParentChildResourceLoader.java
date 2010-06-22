@@ -20,7 +20,6 @@ import java.util.List;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.reflect.ObjectDefinition;
-import org.kuali.rice.core.resourceloader.ResourceLoader;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.
@@ -76,10 +75,16 @@ public class ParentChildResourceLoader extends BaseResourceLoader {
 	this.child.addResourceLoaderFirst(resourceLoader);
     }
 
+ 
     public ResourceLoader getResourceLoader(QName name) {
-	return this.child.getResourceLoader(name);
+    	ResourceLoader resourceLoader = this.child.getResourceLoader(name);
+    	if (resourceLoader == null && parent != null) {
+    		return parent.getResourceLoader(name);
+    	} else {
+    		return resourceLoader;
+    	}
     }
-
+  
     public List<QName> getResourceLoaderNames() {
 	return this.child.getResourceLoaderNames();
     }

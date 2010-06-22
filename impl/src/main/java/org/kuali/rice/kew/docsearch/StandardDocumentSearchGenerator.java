@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,6 @@ import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
@@ -57,7 +57,7 @@ import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -954,6 +954,37 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             }
             resultSetHasNext = resultSet.next();
         }
+        /**
+         * Begin IU Customization
+         * 05/01/2010 - Eric Westfall
+         * EN-1792
+         * 
+         * Go through all doc search rows after they have been generated to fetch all names.  Attempting to
+         * address some significance performance issues with doc search whenever none of the initiators on
+         * the returned documents are cached.
+         */
+        Set<String> initiatorPrincipalIdSet = new HashSet<String>();
+        for (DocSearchDTO docSearchRow : docList) {
+        	initiatorPrincipalIdSet.add(docSearchRow.getInitiatorWorkflowId());
+        }
+        List<String> initiatorPrincipalIds = new ArrayList<String>();
+        initiatorPrincipalIds.addAll(initiatorPrincipalIdSet);
+        Map<String, KimEntityNamePrincipalNameInfo> entityNames = KIMServiceLocator.getIdentityService().getDefaultNamesForPrincipalIds(initiatorPrincipalIds);
+        for (DocSearchDTO docSearchRow : docList) {
+        	KimEntityNamePrincipalNameInfo name = entityNames.get(docSearchRow.getInitiatorWorkflowId());
+        	if (name != null) {
+        		docSearchRow.setInitiatorFirstName(name.getDefaultEntityName().getFirstName());
+        		docSearchRow.setInitiatorLastName(name.getDefaultEntityName().getLastName());
+        		docSearchRow.setInitiatorName(name.getDefaultEntityName().getFormattedName());
+        		docSearchRow.setInitiatorNetworkId(name.getPrincipalName());
+        		docSearchRow.setInitiatorTransposedName(name.getDefaultEntityName().getFormattedName());
+        		// it doesn't look like the doc search code even uses the initiator email address for anything
+        		docSearchRow.setInitiatorEmailAddress("");
+        	}
+        }
+        /**
+         * End IU Customization
+         */
         perfLog.log("Time to read doc search results.", true);
         // if we have threshold+1 results, then we have more results than we are going to display
         criteria.setOverThreshold(resultSetHasNext);
@@ -1055,8 +1086,18 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         docCriteriaDTO.setInitiatorWorkflowId(rs.getString("INITR_PRNCPL_ID"));
 
-        Person user = KIMServiceLocator.getPersonService().getPerson(docCriteriaDTO.getInitiatorWorkflowId());
+        /**
+         * Begin IU Customization
+         * 05/01/2010 - Eric Westfall
+         * EN-1792
+         * 
+         * Remove the code to fetch the person and principal from their services.  After all rows
+         * have been fetched, we will process the names in one big bunch in the method that calls processRow.
+         * So we will basically comment out all of the following code.
+         */
 
+        /*
+        Person user = KIMServiceLocator.getPersonService().getPerson(docCriteriaDTO.getInitiatorWorkflowId());
         if (user != null) {
             KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
 
@@ -1068,6 +1109,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             docCriteriaDTO.setInitiatorEmailAddress(user.getEmailAddress());
         }
 
+        */
+
+        /**
+         * End IU Customization
+         */
+        
         if (isUsingAtLeastOneSearchAttribute()) {
             populateRowSearchableAttributes(docCriteriaDTO,searchAttributeStatement);
         }
@@ -1138,7 +1185,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
         // the DISTINCT here is important as it filters out duplicate rows which could occur as the result of doc search extension values...
         StringBuffer selectSQL = new StringBuffer("select DISTINCT("+ docHeaderTableAlias +".DOC_HDR_ID), "+ docHeaderTableAlias +".INITR_PRNCPL_ID, "
-                + docHeaderTableAlias +".DOC_HDR_STAT_CD, "+ docHeaderTableAlias +".CRTE_DT, "+ docHeaderTableAlias +".TTL, "+ docHeaderTableAlias +".APP_DOC_STAT, "+ docTypeTableAlias +".DOC_TYP_NM, "
+        		+ docHeaderTableAlias +".DOC_HDR_STAT_CD, "+ docHeaderTableAlias +".CRTE_DT, "+ docHeaderTableAlias +".TTL, "+ docTypeTableAlias +".DOC_TYP_NM, "
                 + docTypeTableAlias +".LBL, "+ docTypeTableAlias +".DOC_HDLR_URL, "+ docTypeTableAlias +".ACTV_IND");
         StringBuffer fromSQL = new StringBuffer(" from KREW_DOC_TYP_T "+ docTypeTableAlias +" ");
         StringBuffer fromSQLForDocHeaderTable = new StringBuffer(", KREW_DOC_HDR_T " + docHeaderTableAlias + " ");
@@ -1539,9 +1586,22 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         // render the node choices on the form.
         String returnSql = "";
         if ((docRouteLevel != null) && (!"".equals(docRouteLevel.trim())) && (!docRouteLevel.equals("-1"))) {
+        	
+            /**
+        	 * Begin IU Customization
+        	 * 04-14-2010 - Shannon Hess
+        	 * 
+        	 * Using the docRouteLevel, get the corresponding route node name and use that for the comparison.  EN-1698.
+        	 * 
+        	 */
+    		
+        	long docRouteLevelLong = Long.parseLong(docRouteLevel);
+    		RouteNode searchCriteriaRouteNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(docRouteLevelLong);
+    		String searchCriteriaRouteNodeName = searchCriteriaRouteNode.getRouteNodeName();
+    				
             StringBuffer routeNodeCriteria = new StringBuffer("and " + ROUTE_NODE_TABLE + ".NM ");
             if (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT.equalsIgnoreCase(docRouteLevelLogic.trim())) {
-                routeNodeCriteria.append("= '" + getDbPlatform().escapeString(docRouteLevel) + "' ");
+        		routeNodeCriteria.append("= '" + getDbPlatform().escapeString(searchCriteriaRouteNodeName) + "' ");
             } else {
                 routeNodeCriteria.append("in (");
                 // below buffer used to facilitate the addition of the string ", " to separate out route node names
@@ -1549,7 +1609,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 boolean foundSpecifiedNode = false;
                 List<RouteNode> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(getValidDocumentType(documentTypeFullName), true);
                 for (RouteNode routeNode : routeNodes) {
-                    if (docRouteLevel.equals(routeNode.getRouteNodeName())) {
+                    if (searchCriteriaRouteNodeName.equals(routeNode.getRouteNodeName())) {
+              /**
+               * End IU Customization
+               */
                         // current node is specified node so we ignore it outside of the boolean below
                         foundSpecifiedNode = true;
                         continue;

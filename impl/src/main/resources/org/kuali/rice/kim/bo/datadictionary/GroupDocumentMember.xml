@@ -32,7 +32,7 @@
   </bean>
     
   <bean id="GroupDocumentMember-memberTypeCode" parent="GroupDocumentMember-memberTypeCode-parentBean"/>
-  <bean id="GroupDocumentMember-memberTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberTypeCode" p:forceUppercase="true" p:label="Member Type Code" p:shortLabel="Type Code" p:maxLength="40" p:required="false">
+  <bean id="GroupDocumentMember-memberTypeCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberTypeCode" p:forceUppercase="true" p:label="Member Type Code" p:shortLabel="Type Code" p:maxLength="40" p:required="true">
     <property name="control">
       <bean parent="SelectControlDefinition" p:valuesFinderClass="org.kuali.rice.kim.bo.options.GroupMemberTypeValuesFinder"/>
     </property>

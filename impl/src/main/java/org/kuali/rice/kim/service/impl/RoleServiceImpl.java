@@ -1169,10 +1169,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	ArrayList<KimTypeInfo> applicationRoleTypes = new ArrayList<KimTypeInfo>( types.size() );
     	for ( KimTypeInfo typeInfo : types ) {
     		KimRoleTypeService service = getRoleTypeService(typeInfo);
-    		if ( isApplicationRoleType(typeInfo.getKimTypeId(), service)) {
-    				applicationRoleTypes.add(typeInfo);
-    			}
+        	try {//log service unavailable as WARN error
+	    		if ( isApplicationRoleType(typeInfo.getKimTypeId(), service)) {
+	    				applicationRoleTypes.add(typeInfo);
+	    			}
+        	}catch(Exception e) {
+    			LOG.warn(e.getMessage(), e);
     		}
+    	}			
+			
     	Map<String,Object> roleLookupMap = new HashMap<String, Object>(2);
     	roleLookupMap.put( KIMPropertyConstants.Role.ACTIVE, "Y");
     	// loop over application types

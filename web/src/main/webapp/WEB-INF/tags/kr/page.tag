@@ -195,34 +195,6 @@
 	<c:set var="docHeaderAttributes"
 		value="${DataDictionary.DocumentHeader.attributes}" />
 <c:if test="${showDocumentInfo}">
-<%--
-    <c:if test="${!empty KualiForm.document.documentHeader.additionalDocId1.label}">
-        <c:set var="secondDocAttributeName" value="${KualiForm.document.documentHeader.additionalDocId1.key}" />
-        <c:set var="secondDocId" value="${KualiForm.document.documentHeader.additionalDocId1.label}" />
-        <c:set var="addColumn" value="true" />
-    </c:if>
-		<c:if
-			test="${!empty KualiForm.document.documentHeader.additionalDocId2.label}">
-			<c:set var="thirdDocAttributeName"
-				value="${KualiForm.document.documentHeader.additionalDocId2.key}" />
-			<c:set var="thirdDocId"
-				value="${KualiForm.document.documentHeader.additionalDocId2.label}" />
-        <c:set var="addColumn" value="true" />
-    </c:if>
-    <c:set var="headerClass" value="headerinfo"/>
-		<c:if
-			test="${not empty KualiForm.additionalDocInfo1 or not empty KualiForm.additionalDocInfo2}">
-		<c:choose>
-			<c:when test="${lookup}" >
-				<c:set var="headerClass" value="headerinfo-3row"/>
-			</c:when>
-			<c:otherwise>
-				<c:set var="headerClass" value=""/>
-			</c:otherwise>
-		</c:choose>
-    </c:if>
---%>
-
 	<c:set var="KualiForm" value="${KualiForm}" />
 	<jsp:useBean id="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
 
@@ -280,35 +252,6 @@
 			 	</c:if>
 				<c:set var="fieldCounter" value="${fieldCounter+1}" />
 		 </c:forEach>
-<%--
-		 <c:if test="${addColumn}">
-		 	<c:if test="${i==1}">
-			 	<c:set var="attributeEntry" value="${secondDocAttributeName}" />
-			 	<c:set var="docId" value="${secondDocId}" />
-		 	</c:if>
-		 	<c:if test="${i==2}">
-			 	<c:set var="attributeEntry" value="${thirdDocAttributeName}" />
-			 	<c:set var="docId" value="${thirdDocId}" />
-		 	</c:if>
-		 	<c:if test="${i<=2}">
-	            <kul:htmlAttributeHeaderCell attributeEntry="${attributeEntry}" horizontal="true" scope="row"/>
-	            <td>
-					<c:choose>
-						<c:when test="${lookup}" >
-							${docId}
-						</c:when>
-						<c:otherwise>
-							<a href="${ConfigProperties.workflow.url}/DocHandler.do?docId=${docId}&command=displayDocSearchView">${docId}</a>
-						</c:otherwise>
-					</c:choose>
-				</td>
-       		 </c:if>
-       		 <c:if test="${i>2}">
-	             <kul:htmlAttributeHeaderCell/>
-                 <td><br/></td>
-       		 </c:if>
-        </c:if>
---%>
       </tr>
     </c:forEach>
    </table>

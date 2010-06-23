@@ -2395,6 +2395,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		identityManagementGroupDocument.setGroupTypeName(kimGroupImpl.getKimTypeInfo().getName());
 		identityManagementGroupDocument.setGroupTypeId(kimGroupImpl.getKimTypeInfo().getKimTypeId());
 		identityManagementGroupDocument.setGroupName(kimGroupImpl.getGroupName());
+		identityManagementGroupDocument.setGroupDescription(kimGroupImpl.getGroupDescription());
 		identityManagementGroupDocument.setActive(kimGroupImpl.isActive());
 		identityManagementGroupDocument.setGroupNamespace(kimGroupImpl.getNamespaceCode());
 		identityManagementGroupDocument.setMembers(loadGroupMembers(identityManagementGroupDocument, kimGroupImpl.getMembers()));
@@ -2507,6 +2508,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimGroup.setKimTypeId(kimType.getKimTypeId());
 		kimGroup.setNamespaceCode(identityManagementGroupDocument.getGroupNamespace());
 		kimGroup.setGroupName(identityManagementGroupDocument.getGroupName());
+		kimGroup.setGroupDescription(identityManagementGroupDocument.getGroupDescription());
 		kimGroup.setGroupAttributes(getGroupAttributeData(identityManagementGroupDocument, origGroup.getGroupAttributes()));
 
 		List<String> oldIds = null;

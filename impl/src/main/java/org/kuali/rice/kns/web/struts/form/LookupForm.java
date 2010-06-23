@@ -69,6 +69,9 @@ public class LookupForm extends KualiForm {
     private boolean supplementalActionsEnabled = false;
     private boolean actionUrlsExist = false;
     private boolean ddExtraButton = false;
+	private boolean headerBarEnabled = true;
+
+
     
     /**
      * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
@@ -264,6 +267,7 @@ public class LookupForm extends KualiForm {
 
             		field.setPropertyValue(LookupUtils.forceUppercase(boClass, field.getPropertyName(), field.getPropertyValue()));
                 	fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+                	//LOG.info("field name/value added was: " + field.getPropertyName() + field.getPropertyValue());
                 	localLookupable.applyFieldAuthorizationsFromNestedLookups(field);
                 }
             }
@@ -292,6 +296,7 @@ public class LookupForm extends KualiForm {
                         fieldValues.put(field.getPropertyName(), field.getPropertyValue());
                     }
                 }
+               
             }
             fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getFormKey());
             fieldValues.put(KNSConstants.BACK_LOCATION, this.getBackLocation());
@@ -697,4 +702,14 @@ public class LookupForm extends KualiForm {
 	public void setDdExtraButton(boolean ddExtraButton) {
 		this.ddExtraButton = ddExtraButton;
 	}
+
+	public boolean isHeaderBarEnabled() {
+		return headerBarEnabled;
+	}
+
+	public void setHeaderBarEnabled(boolean headerBarEnabled) {
+		this.headerBarEnabled = headerBarEnabled;
+	}	
+
+    
 }

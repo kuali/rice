@@ -21,13 +21,16 @@ import org.kuali.rice.kns.datadictionary.validation.CharacterLevelValidationPatt
 /**
  * Pattern for matching alphanumeric characters
  * 
- * Also, allows conditionally whitespace, underscore, or period.
+ * Also, allows conditionally whitespace, underscore, period, parens, dollar signs, and forward slash.
  */
 public class AlphaNumericValidationPattern extends CharacterLevelValidationPattern {
     protected boolean allowWhitespace = false;
     protected boolean allowUnderscore = false;
     protected boolean allowPeriod = false;
 
+    protected boolean allowParenthesis = false;
+    protected boolean allowDollar = false;
+    protected boolean allowForwardSlash = false;
     /**
      * @return allowPeriod
      */
@@ -40,7 +43,56 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
      */
     public void setAllowPeriod(boolean allowPeriod) {
         this.allowPeriod = allowPeriod;
-    }
+    }    
+    
+    /**
+	 * @return the allowPeriod
+	 */
+	public boolean isAllowPeriod() {
+		return allowPeriod;
+	}
+    
+    /**
+	 * @return the allowParenthesis
+	 */
+	public boolean isAllowParenthesis() {
+		return allowParenthesis;
+	}
+
+	/**
+	 * @param allowParenthesis the allowParenthesis to set
+	 */
+	public void setAllowParenthesis(boolean allowParenthesis) {
+		this.allowParenthesis = allowParenthesis;
+	}
+	
+	/**
+	 * @return the allowDollar
+	 */
+	public boolean isAllowDollar() {
+		return allowDollar;
+	}
+
+	/**
+	 * @param allowDollar the allowDollar to set
+	 */
+	public void setAllowDollar(boolean allowDollar) {
+		this.allowDollar = allowDollar;
+	}
+
+	/**
+	 * @return the allowforwardSlash
+	 */
+	public boolean isAllowForwardSlash() {
+		return allowForwardSlash;
+	}
+
+	/**
+	 * @param allowforwardSlash the allowforwardSlash to set
+	 */
+	public void setAllowForwardSlash(boolean allowForwardSlash) {
+		this.allowForwardSlash = allowForwardSlash;
+	}
     
     /**
      * @return allowWhitespace
@@ -87,6 +139,16 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
         if (allowPeriod) {
             regexString.append(".");
         }
+        if(allowParenthesis) {
+        	regexString.append("(");
+        	regexString.append(")");
+        }
+        if(allowDollar) {
+        	regexString.append("$");
+        }
+        if(allowForwardSlash) {
+        	regexString.append("/");
+        }
         regexString.append("]");
 
         return regexString.toString();
@@ -108,6 +170,18 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
         if (allowPeriod) {
         	exportMap.set("allowPeriod", "true");
         }
+        if(allowParenthesis) {
+            exportMap.set("allowParenthesis", "true");
+
+        }
+        if(allowDollar) {
+            exportMap.set("allowDollar", "true");
+
+        }
+        if(allowForwardSlash) {
+            exportMap.set("allowForwardSlash", "true");
+
+        }
     }
 
 	@Override
@@ -122,6 +196,15 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
 		}
 		if (allowPeriod) {
 			opts.append(".allowPeriod");
+		}
+		if(allowParenthesis) {
+			opts.append(".allowParenthesis");
+		}
+		if(allowDollar) {
+			opts.append(".allowDollar");
+		}
+		if(allowForwardSlash) {
+			opts.append(".allowForwardSlash");
 		}
 
 		return opts.toString();

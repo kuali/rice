@@ -32,6 +32,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
@@ -323,6 +324,12 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
      * @throws Exception
      */
     public EmailContent generateImmediateReminder(Person user, ActionItem actionItem, DocumentType documentType) {
+    	
+    	LOG.info("Starting generation of immediate email reminder...");
+    	LOG.info("Action Id: " + actionItem.getActionItemId() + 
+    			 ";  ActionRequestId: " + actionItem.getActionRequestId() + 
+    			 ";  Action Item Principal Name: " + actionItem.getPerson().getPrincipalName());
+    	LOG.info("User Principal Name: " + user.getPrincipalName());
         // change style name based on documentType when configurable email style on document is implemented...
         String styleSheet = documentType.getCustomEmailStylesheet();
         LOG.debug(documentType.getName() + " style: " + styleSheet);
@@ -330,7 +337,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             styleSheet = globalEmailStyleSheet;
         }
 
-        LOG.debug("generateImmediateReminder: style: "+ styleSheet);
+        LOG.info("generateImmediateReminder using style sheet: "+ styleSheet + " for Document Type " + documentType.getName());
 //        return generateReminderForActionItems(user, actionItems, "immediateReminder", styleSheet);
         DocumentBuilder db = getDocumentBuilder(false);
         Document doc = db.newDocument();
@@ -385,6 +392,10 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             LOG.error(message, e);
             throw new WorkflowRuntimeException(e);
         }
+        LOG.info("Leaving generation of immeidate email reminder...");
+    	/**
+    	 * End IU customization
+    	 */
         return generateEmailContent(styleSheet, doc);
     }
     
@@ -400,17 +411,27 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     	// now we need to "fix" the xml document content because it's going to be in there as escaped XML
     	Element docContentElement = (Element)element.getElementsByTagName("docContent").item(0);
     	String documentContent = docContentElement.getTextContent();
-    	Document documentContentXML = XmlHelper.readXml(documentContent);
-    	Element documentContentElement = documentContentXML.getDocumentElement();
-    	documentContentElement = (Element)document.importNode(documentContentElement, true);
     	
-    	// remove the old, bad text content
-    	docContentElement.removeChild(docContentElement.getFirstChild());
+    	if (!StringUtils.isBlank(documentContent) && documentContent.startsWith("<")) {
+    		Document documentContentXML = XmlHelper.readXml(documentContent);
+    		Element documentContentElement = documentContentXML.getDocumentElement();
+    		documentContentElement = (Element)document.importNode(documentContentElement, true);
     	
-    	// replace with actual XML
-    	docContentElement.appendChild(documentContentElement);
+    		// remove the old, bad text content
+    		docContentElement.removeChild(docContentElement.getFirstChild());
     	
-        LOG.debug(XmlHelper.jotNode(element));
+    		// replace with actual XML
+    		docContentElement.appendChild(documentContentElement);
+    	} else {
+    		// in this case it means that the XML is encrypted, unfortunately, we have no way to decrypt it since
+    		// the key is stored in the client application.  We will just include the doc content since none of our
+    		// current IU clients will be using this feature right away
+
+    		// remove the old, bad text content
+    		docContentElement.removeChild(docContentElement.getFirstChild());
+    	}
+    	
+    	LOG.debug(XmlHelper.jotNode(element));
 
         node.appendChild(element);
     }

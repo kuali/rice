@@ -54,9 +54,9 @@ import org.kuali.rice.kns.util.GlobalVariables;
 /**
  * This is a description of what this class does - shyu don't forget to fill
  * this in.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ *
  */
 public class IdentityManagementPersonDocument extends IdentityManagementKimDocument {
 
@@ -66,9 +66,8 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     protected String principalName;
     protected String entityId;
     protected String password;
-    
+
     // ext id - now hard coded for "tax id" & "univ id"
-    protected String taxId = "";
     protected String univId = "";
     // affiliation data
     protected List<PersonDocumentAffiliation> affiliations;
@@ -226,14 +225,6 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         return this.groups;
     }
 
-    public String getTaxId() {
-        return taxId = KimCommonUtils.decryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-    }
-
-    public void setTaxId(String taxId) {
-        this.taxId = taxId;
-    }
-
     public String getUnivId() {
         return this.univId;
     }
@@ -258,7 +249,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
             this.entityId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ENTITY_ID_S).toString();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public List buildListOfDeletionAwareLists() {
@@ -292,7 +283,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         }
     }
 
-    
+
     @Override
     public void prepareForSave(){
         if (StringUtils.isBlank(getPrivacy().getDocumentNumber())) {
@@ -348,40 +339,6 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         //addDelegationRoleKimTypeAttributeHelper(roleId, helper);
     }
 
-    @Override
-	public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-		super.beforeInsert(persistenceBroker);
-        taxId = KimCommonUtils.encryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-	}
-	
-	@Override
-	public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-		beforeUpdate();
-	}
-	
-	@Override
-	public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        super.afterLookup(persistenceBroker);
-        taxId = KimCommonUtils.decryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-	}
-	
-	@Override
-	public void beforeInsert() {
-		super.beforeInsert();
-		taxId = KimCommonUtils.encryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-    }
-
-	@Override
-	public void beforeUpdate() {
-		super.beforeUpdate();
-        taxId = KimCommonUtils.encryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-	}
-	
-	@javax.persistence.PostLoad 
-	public void afterLookup(){
-        taxId = KimCommonUtils.decryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-	}
-	
 	public void setIfRolesEditable(){
 		if(CollectionUtils.isNotEmpty(getRoles())){
 			for(PersonDocumentRole role: getRoles()){
@@ -410,7 +367,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 
 	protected transient DocumentHelperService documentHelperService;
 	protected transient UiDocumentService uiDocumentService;
-		
+
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
 	        documentHelperService = KNSServiceLocator.getDocumentHelperService();

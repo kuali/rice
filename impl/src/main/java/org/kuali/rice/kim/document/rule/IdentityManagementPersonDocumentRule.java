@@ -73,15 +73,15 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 
 
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
- * 
+ * This is a description of what this class does - shyu don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class IdentityManagementPersonDocumentRule extends TransactionalDocumentRuleBase implements AddGroupRule, AddRoleRule, AddPersonDocumentRoleQualifierRule, AddPersonDelegationMemberRule {
 
 //	protected static final Logger LOG = Logger.getLogger( IdentityManagementPersonDocumentRule.class );
-	
+
 	protected AddGroupRule addGroupRule;
 	protected AddRoleRule  addRoleRule;
 	protected AddPersonDelegationMemberRule addPersonDelegationMemberRule;
@@ -93,9 +93,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	protected Class<? extends AddGroupRule> addGroupRuleClass = PersonDocumentGroupRule.class;
 	protected Class<? extends AddRoleRule> addRoleRuleClass = PersonDocumentRoleRule.class;
 	protected Class<? extends AddPersonDelegationMemberRule> addPersonDelegationMemberRuleClass = PersonDocumentDelegationMemberRule.class;
-	
+
 	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
-	
+
     @Override
     protected boolean processCustomSaveDocumentBusinessRules(Document document) {
         if (!(document instanceof IdentityManagementPersonDocument)) {
@@ -117,10 +117,10 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         // kimtypeservice.validateAttributes is not working yet.
         valid &= validateRoleQualifier (personDoc.getRoles());
         valid &= validateDelegationMemberRoleQualifier(personDoc.getDelegationMembers());
-        if (StringUtils.isNotBlank(personDoc.getPrincipalName())) { 
+        if (StringUtils.isNotBlank(personDoc.getPrincipalName())) {
         	valid &= doesPrincipalNameExist (personDoc.getPrincipalName(), personDoc.getPrincipalId());
         }
-        
+
         valid &= validActiveDatesForRole (personDoc.getRoles());
         valid &= validActiveDatesForGroup (personDoc.getGroups());
         valid &= validActiveDatesForDelegations (personDoc.getDelegationMembers());
@@ -129,16 +129,15 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         // all failed at this point.
 //        valid &= checkUnassignableRoles(personDoc);
 //        valid &= checkUnpopulatableGroups(personDoc);
-        
+
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
         return valid;
     }
-    
+
     protected boolean validateEntityInformation(boolean isCreatingNew, IdentityManagementPersonDocument personDoc){
         boolean valid = true;
         boolean canOverridePrivacyPreferences = getUIDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDoc.getPrincipalId());
-        valid &= validTaxId(personDoc);
         valid &= checkMultipleDefault (personDoc.getAffiliations(), "affiliations");
         if(isCreatingNew || canOverridePrivacyPreferences || !personDoc.getPrivacy().isSuppressName())
         	valid &= checkMultipleDefault (personDoc.getNames(), "names");
@@ -154,7 +153,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         valid &= checkUniqueAffiliationTypePerCampus(personDoc.getAffiliations());
     	return valid;
     }
-    
+
     @SuppressWarnings("unchecked")
 	protected boolean validDuplicatePrincipalName(IdentityManagementPersonDocument personDoc){
     	Map<String, String> criteria = new HashMap<String, String>();
@@ -165,7 +164,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     		if(prncplImpls.size()==1 && prncplImpls.get(0).getPrincipalId().equals(personDoc.getPrincipalId()))
     			rulePassed = true;
     		else{
-	    		GlobalVariables.getMessageMap().putError("document.principalName", 
+	    		GlobalVariables.getMessageMap().putError("document.principalName",
 	    				RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Principal Name"});
 	    		rulePassed = false;
     		}
@@ -190,7 +189,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         }
         return valid;
 	}
-	
+
 	protected boolean checkUnpopulatableGroups(IdentityManagementPersonDocument document) {
 		boolean valid = true;
     	Map<String,Set<String>> unpopulatableGroups = getAuthorizer( document ).getUnpopulateableGroups(document, GlobalVariables.getUserSession().getPerson());
@@ -208,7 +207,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         }
         return valid;
 	}
-    
+
     @Override
 	protected boolean processCustomRouteDocumentBusinessRules(Document document) {
 		super.processCustomRouteDocumentBusinessRules(document);
@@ -239,11 +238,11 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
      		i++;
     	}
     	if (!boList.isEmpty() && !isDefaultSet) {
-				GlobalVariables.getMessageMap().putError(listName+"[0].dflt",RiceKeyConstants.ERROR_NO_DEFAULT_SELETION);    		
+				GlobalVariables.getMessageMap().putError(listName+"[0].dflt",RiceKeyConstants.ERROR_NO_DEFAULT_SELETION);
     	}
     	return valid;
     }
-    
+
     protected boolean checkPrimaryEmploymentInfo (List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
@@ -273,7 +272,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	}
     	return valid;
     }
-    
+
     protected boolean checkAffiliationTypeChange (List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
@@ -312,16 +311,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	}
     	return valid;
     }
-    
-    protected boolean validTaxId(IdentityManagementPersonDocument personDoc){
-    	boolean valid = true;
-    	if(isPersonAnEmployee(personDoc.getAffiliations()) && StringUtils.isEmpty(personDoc.getTaxId())){
-     		GlobalVariables.getMessageMap().putError("document.taxId", RiceKeyConstants.ERROR_REQUIRED_CONDITIONALLY, new String[] {"Tax Identification Number", "an employee"});
-     		valid = false;
-    	}
-    	return valid;
-    }
-    
+
     protected boolean isPersonAnEmployee(List<PersonDocumentAffiliation> affiliations){
     	boolean isEmployee = false;
     	for (PersonDocumentAffiliation affiliation : affiliations){
@@ -332,7 +322,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	}
     	return isEmployee;
     }
-    
+
     protected boolean checkUniqueAffiliationTypePerCampus (List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
@@ -341,7 +331,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         	for (PersonDocumentAffiliation affiliation1 : affiliations) {
 	    		if (j > i && affiliation.getAffiliationTypeCode() .equals(affiliation1.getAffiliationTypeCode()) && affiliation.getCampusCode().equals(affiliation1.getCampusCode())) {
 			     		GlobalVariables.getMessageMap().putError("affiliations[" + j + "].affiliationTypeCode",RiceKeyConstants.ERROR_NOT_UNIQUE_AFFILIATION_TYPE_PER_CAMPUE, affiliation.getAffiliationType().getAffiliationTypeName());
-			     		valid = false;	    		
+			     		valid = false;
 	    		}
 	    		j++;
         	}
@@ -349,20 +339,20 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	}
     	return valid;
     }
-    
+
     protected boolean checkAffiliationEithOneEMpInfo (List <PersonDocumentAffiliation> affiliations) {
     	boolean valid = true;
     	int i = 0;
     	for (PersonDocumentAffiliation affiliation : affiliations) {
 	    		if (affiliation.getAffiliationType() .isEmploymentAffiliationType() && affiliation.getEmpInfos().isEmpty()) {
 			     		GlobalVariables.getMessageMap().putError("affiliations[" + i + "].affiliationTypeCode",RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "Employment Information");
-			     		valid = false;	    		
+			     		valid = false;
 	    		}
         	i++;
     	}
     	return valid;
     }
-    
+
     /*
      * Verify at least one affiliation and one default name
      */
@@ -371,7 +361,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	if (personDoc.getAffiliations().isEmpty()) {
      		GlobalVariables.getMessageMap().putError("affiliations[0]",RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "affiliation");
      		valid = false;
-    	}	
+    	}
     	if (personDoc.getNames().isEmpty()) {
      		GlobalVariables.getMessageMap().putError("names[0]",RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "name");
      		valid = false;
@@ -384,14 +374,14 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         	}
         	if(!activeExists){
         		GlobalVariables.getMessageMap().putError("names[0]", RiceKeyConstants.ERROR_ONE_ACTIVE_ITEM_REQUIRED, "name");
-	     		valid = false;	    		
+	     		valid = false;
         	}
         	return valid;
 
     	}
     	return valid;
     }
-    
+
     protected boolean doesPrincipalNameExist (String principalName, String principalId) {
     	KimPrincipal principal = getIdentityService().getPrincipalByPrincipalName(principalName);
     	if (principal != null && (StringUtils.isBlank(principalId) || !principal.getPrincipalId().equals(principalId))) {
@@ -400,7 +390,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	}
     	return true;
     }
-	
+
     protected boolean validateRoleQualifier( List<PersonDocumentRole> roles ) {
 		AttributeSet validationErrors = new AttributeSet();
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
@@ -410,28 +400,28 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         	if(CollectionUtils.isEmpty(role.getRolePrncpls()) && !role.getDefinitions().isEmpty()){
         		KimTypeInfo kimTypeInfo = KIMServiceLocator.getTypeInfoService().getKimType(role.getKimRoleType().getKimTypeId());
         		AttributeSet blankQualifiers = attributeValidationHelper.getBlankValueQualifiersMap(kimTypeInfo.getAttributeDefinitions());
-        		AttributeSet localErrors = kimTypeService.validateAttributes( 
+        		AttributeSet localErrors = kimTypeService.validateAttributes(
         			role.getKimRoleType().getKimTypeId(), blankQualifiers);
         		if(localErrors!=null && !localErrors.isEmpty()){
-        			GlobalVariables.getMessageMap().putError("document.roles["+i+"].newRolePrncpl.qualifiers[0].attrVal", 
-        					RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "Role Qualifier"); 
+        			GlobalVariables.getMessageMap().putError("document.roles["+i+"].newRolePrncpl.qualifiers[0].attrVal",
+        					RiceKeyConstants.ERROR_ONE_ITEM_REQUIRED, "Role Qualifier");
         			return false;
         		}
         	}
 
         	final AttributeDefinitionMap attributeDefinitions = role.getDefinitions();
         	final Set<String> uniqueQualifierAttributes = findUniqueQualificationAttributes(role, attributeDefinitions);
-        	
+
 	        if ( kimTypeService != null ) {
 		        int j = 0;
 	        	for ( KimDocumentRoleMember rolePrincipal : role.getRolePrncpls() ) {
 	        		AttributeSet localErrors = kimTypeService.validateAttributes( role.getKimRoleType().getKimTypeId(), attributeValidationHelper.convertQualifiersToMap( rolePrincipal.getQualifiers() ) );
 			        validationErrors.putAll( attributeValidationHelper.convertErrors("roles["+i+"].rolePrncpls["+j+"]",attributeValidationHelper.convertQualifiersToAttrIdxMap(rolePrincipal.getQualifiers()),localErrors) );
-			        
+
 			        if (uniqueQualifierAttributes.size() > 0) {
 			        	validateUniquePersonRoleQualifiersUniqueForMembership(role, rolePrincipal, j, uniqueQualifierAttributes, i, validationErrors);
 			        }
-			        
+
 			        j++;
 		        }
 	        }
@@ -445,10 +435,10 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     		return false;
     	}
     }
-    
+
     /**
      * Checks all the qualifiers for the given membership, so that all qualifiers which should be unique are guaranteed to be unique
-     * 
+     *
      * @param membership the membership to check
      * @param attributeDefinitions the Map of attribute definitions used by the role
      * @param roleIndex the index of the role on the document (for error reporting purposes)
@@ -458,14 +448,14 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     protected boolean validateUniquePersonRoleQualifiersUniqueForMembership(PersonDocumentRole role, KimDocumentRoleMember membershipToCheck, int membershipToCheckIndex, Set<String> uniqueQualifierAttributes, int roleIndex, AttributeSet validationErrors) {
     	boolean foundError = false;
     	int count = 0;
-    	
+
     	for (KimDocumentRoleMember membership : role.getRolePrncpls()) {
     		if (membershipToCheckIndex != count) {
     			if (sameMembershipQualifications(membershipToCheck, membership, uniqueQualifierAttributes)) {
     				foundError = true;
-    				
+
     				int qualifierCount = 0;
-					
+
 					for (KimDocumentRoleQualifier qualifier : membership.getQualifiers()) {
 						if (qualifier != null && uniqueQualifierAttributes.contains(qualifier.getKimAttrDefnId())) {
 							validationErrors.put("document.roles["+roleIndex+"].rolePrncpls["+membershipToCheckIndex+"].qualifiers["+qualifierCount+"].attrVal", RiceKeyConstants.ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE+":"+qualifier.getKimAttribute().getAttributeName()+";"+qualifier.getAttrVal());
@@ -474,12 +464,12 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 					}
     			}
     		}
-    		
+
     		count += 1;
     	}
     	return foundError;
     }
-    
+
     /**
      * Determines if two seperate memberships have the same qualifications
      * @param membershipA the first membership to check
@@ -492,37 +482,37 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	for (String uniqueQualifierAttributeDefinitionId : uniqueQualifierAttributes) {
     		final KimDocumentRoleQualifier qualifierA = membershipA.getQualifier(uniqueQualifierAttributeDefinitionId);
     		final KimDocumentRoleQualifier qualifierB = membershipB.getQualifier(uniqueQualifierAttributeDefinitionId);
-    		
+
     		if (qualifierA != null && qualifierB != null) {
     			equalSoFar &= (qualifierA.getAttrVal() == null && qualifierB.getAttrVal() == null) || (qualifierA.getAttrVal() == null || qualifierA.getAttrVal().equals(qualifierB.getAttrVal()));
-    		} 
+    		}
     	}
     	return equalSoFar;
     }
-    
+
     /**
-     * Finds the set of unique qualification attributes for the given role 
-     * 
+     * Finds the set of unique qualification attributes for the given role
+     *
      * @param role the role associated with this person
      * @param attributeDefinitions the Map of attribute definitions where we can find out if a KimAttribute is supposed to be unique
      * @return a Set of attribute definition ids for qualifications which are supposed to be unique
      */
     public Set<String> findUniqueQualificationAttributes(PersonDocumentRole role, AttributeDefinitionMap attributeDefinitions) {
     	Set<String> uniqueQualifications = new HashSet<String>();
-    	
+
     	if (role.getRolePrncpls() != null && role.getRolePrncpls().size() > 1) {
     		final KimDocumentRoleMember membership = role.getRolePrncpls().get(0);
     		for (KimDocumentRoleQualifier qualifier: membership.getQualifiers()) {
     			if (qualifier != null && qualifier.getKimAttribute() != null && !StringUtils.isBlank(qualifier.getKimAttribute().getAttributeName())) {
     	    		final AttributeDefinition relatedDefinition = attributeDefinitions.getByAttributeName(qualifier.getKimAttribute().getAttributeName());
-    	    		
+
     	    		if (relatedDefinition != null && relatedDefinition.getUnique() != null && relatedDefinition.getUnique().booleanValue()) {
     	    			uniqueQualifications.add(qualifier.getKimAttrDefnId());
     	    		}
     			}
     		}
     	}
-    	
+
     	return uniqueQualifications;
     }
 
@@ -533,13 +523,13 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 			int j = 0;
     		for (KimDocumentRoleMember principal : role.getRolePrncpls()) {
     			valid &= validateActiveDate("roles["+i+"].rolePrncpls["+j+"].activeToDate",principal.getActiveFromDate(), principal.getActiveToDate());
-    			j++;    			
+    			j++;
     		}
     		i++;
     	}
     	return valid;
     }
-    
+
     protected boolean validActiveDatesForGroup (List<PersonDocumentGroup> groups ) {
     	boolean valid = true;
 		int i = 0;
@@ -569,13 +559,13 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		}
 		return valid;
 	}
-	
+
     public boolean processAddGroup(AddGroupEvent addGroupEvent) {
-        return getAddGroupRule().processAddGroup(addGroupEvent);    
+        return getAddGroupRule().processAddGroup(addGroupEvent);
     }
 
     public boolean processAddRole(AddRoleEvent addRoleEvent) {
-        return getAddRoleRule().processAddRole(addRoleEvent);    
+        return getAddRoleRule().processAddRole(addRoleEvent);
     }
 
     public boolean processAddPersonDelegationMember(AddPersonDelegationMemberEvent addPersonDelegationMemberEvent){
@@ -602,7 +592,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		}
 		return uiDocumentService;
 	}
-	
+
 	public IdentityManagementKimDocumentAuthorizer getAuthorizer(IdentityManagementPersonDocument document) {
 		if ( authorizer == null ) {
 			authorizer = (IdentityManagementKimDocumentAuthorizer)KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
@@ -623,7 +613,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	/**
 	 * Can be overridden by subclasses to indicate the rule class to use when adding groups.
-	 * 
+	 *
 	 * @param addGroupRuleClass the addGroupRuleClass to set
 	 */
 	public void setAddGroupRuleClass(Class<? extends AddGroupRule> addGroupRuleClass) {
@@ -643,7 +633,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	/**
 	 * Can be overridden by subclasses to indicate the rule class to use when adding roles.
-	 * 
+	 *
 	 * @param addRoleRuleClass the addRoleRuleClass to set
 	 */
 	public void setAddRoleRuleClass(Class<? extends AddRoleRule> addRoleRuleClass) {
@@ -726,10 +716,10 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	    	oldMemberQualifiers = member.getQualifierAsAttributeSet();
 	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
 	    			role.getKimRoleType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
-	    	validationErrors.putAll( 
+	    	validationErrors.putAll(
 					attributeValidationHelper.convertErrors(
 						errorPath,
-						attributeValidationHelper.convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()), 
+						attributeValidationHelper.convertQualifiersToAttrIdxMap(kimDocumentRoleMember.getQualifiers()),
 						errorsAttributesAgainstExisting));
 
 	    	attributesUnique = kimTypeService.validateUniqueAttributes(
@@ -755,7 +745,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	}
     	return rulePassed;
 	}
-	
+
     protected boolean validateDelegationMemberRoleQualifier(List<RoleDocumentDelegationMember> delegationMembers){
 		AttributeSet validationErrors = new AttributeSet();
 		boolean valid;

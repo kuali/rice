@@ -174,7 +174,10 @@
     <property name="shortLabel" value="Responsibility Name"/>
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
-    </property>
+    </property>    
+    <property name="validationPattern">
+			<bean parent="AlphaNumericValidationPattern" p:allowWhitespace="true" p:allowUnderscore="true" p:allowPeriod="true" p:allowParenthesis="true" p:allowDollar="true" p:allowForwardSlash="true"/>
+	</property>
   </bean>
 
   <bean id="ResponsibilityImpl-assignedToRoleNamespaceForLookup" parent="ResponsibilityImpl-assignedToRoleNamespaceForLookup-parentBean"/>

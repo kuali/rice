@@ -37,7 +37,10 @@ public class OjbKualiEncryptDecryptFieldConversion implements FieldConversion {
         Object converted = source;
 
         try {
-            converted = KNSServiceLocator.getEncryptionService().encrypt(converted);
+        	//check if the encryption service is enable before using it
+        	if(KNSServiceLocator.getEncryptionService().isEnabled()) {
+            	converted = KNSServiceLocator.getEncryptionService().encrypt(converted);
+        	}
         }
         catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt value to db: " + e.getMessage());
@@ -56,7 +59,10 @@ public class OjbKualiEncryptDecryptFieldConversion implements FieldConversion {
         }
 
         try {
-            converted = KNSServiceLocator.getEncryptionService().decrypt(converted);
+        	//check if the encryption service is enable before using it
+        	if(KNSServiceLocator.getEncryptionService().isEnabled()) {
+            	converted = KNSServiceLocator.getEncryptionService().decrypt(converted);
+        	}
         }
         catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to decrypt value from db: " + e.getMessage());

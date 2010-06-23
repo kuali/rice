@@ -19,6 +19,12 @@
 <kul:page headerTitle="Routing & Identity Management Document Type Hierarchy" transactionalDocument="false"
 	showDocumentInfo="false" htmlFormAction="RuleQuickLinks" docTitle="Routing & Identity Management Document Type Hierarchy">
 
+	</td>
+	</tr>
+	</tbody>
+	</table>
+	<div style="padding-left:1%;padding-right:20px">
+	
 		<c:if test="${!empty KualiForm.documentTypeQuickLinksStructures}">			
         	<c:forEach var="documentTypeStruct" items="${KualiForm.documentTypeQuickLinksStructures}" varStatus="docStatus">
             <c:if test="${documentTypeStruct.shouldDisplay}">

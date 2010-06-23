@@ -42,6 +42,7 @@ import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
 import org.kuali.rice.ksb.messaging.serviceexporters.ServiceExporterFactory;
 import org.kuali.rice.ksb.service.KSBContextServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.web.servlet.mvc.Controller;
 
 public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runnable {
@@ -426,7 +427,12 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	 *
 	 */
 	private static class ServiceNameFinder {
-		
+	    
+	    // the subpath used for matching within RESTful service urls to isolate the service name
+	    private String restfulSubPath = 
+	        ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.RESTFUL_SERVICE_PATH) 
+	        + "/";
+	    
 		/**
 		 * A service path to service QName map
 		 */
@@ -436,6 +442,9 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		 * This method trims the endpoint url base ({@link Config#getEndPointUrl()}) base off of the full service URL, e.g.
 		 * "http://kuali.edu/kr-dev/remoting/SomeService" -> "SomeService".  It makes an effort to do so even if the host
 		 * and ip don't match what is in {@link Config#getEndPointUrl()} by stripping host/port info.
+		 * 
+		 * If the service URL contains the configured subpath for RESTful service, additional trimming is done to
+		 * isolate the service name from the rest of the url.
 		 * 
 		 * @param url
 		 * @return the service specific suffix.  If fullServiceUrl doesn't contain the endpoint url base,
@@ -455,6 +464,15 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 				String basePath = endpointUrlBase.getPath();
 				
 				trimmedUrl = StringUtils.removeStart(reqPath, basePath);
+			}
+			
+
+			// if it's a RESTful url, it should have some special additional path tagged on
+			if (trimmedUrl.contains(restfulSubPath)) {
+			    trimmedUrl = trimmedUrl.substring(restfulSubPath.length());
+			    if (trimmedUrl.contains("/")) {
+			        trimmedUrl = trimmedUrl.substring(0, trimmedUrl.indexOf("/"));
+			    }
 			}
 			return trimmedUrl;
 		}

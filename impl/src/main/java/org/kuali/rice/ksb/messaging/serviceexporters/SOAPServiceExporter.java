@@ -16,72 +16,35 @@
  */
 package org.kuali.rice.ksb.messaging.serviceexporters;
 
-import java.util.List;
 
-import org.apache.cxf.Bus;
 import org.apache.cxf.aegis.databinding.AegisDatabinding;
-import org.apache.cxf.endpoint.Server;
-import org.apache.cxf.endpoint.ServerRegistry;
 import org.apache.cxf.frontend.ServerFactoryBean;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
 import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
 import org.apache.log4j.Logger;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServerSideRemotedServiceHolder;
+import org.kuali.rice.ksb.messaging.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.ksb.messaging.bam.BAMServerProxy;
-import org.kuali.rice.ksb.messaging.servlet.CXFServletControllerAdapter;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JInInterceptor;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
 import org.kuali.rice.ksb.service.KSBContextServiceLocator;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class SOAPServiceExporter implements ServiceExporter {
+public class SOAPServiceExporter extends AbstractWebServiceExporter implements ServiceExporter {
 
-	private static final Logger LOG = Logger.getLogger(SOAPServiceExporter.class);
+	static final Logger LOG = Logger.getLogger(SOAPServiceExporter.class);
 	
-	private ServiceInfo serviceInfo;
-	private KSBContextServiceLocator serviceLocator;
-
 	public SOAPServiceExporter(ServiceInfo serviceInfo) {
 		this(serviceInfo, null);
 	}
 	
 	public SOAPServiceExporter(ServiceInfo serviceInfo, KSBContextServiceLocator serviceLocator) {
-		this.serviceInfo = serviceInfo;
-		this.serviceLocator = serviceLocator;
-	}
-
-	public ServerSideRemotedServiceHolder getServiceExporter(Object serviceImpl) {
-		try {			
-			SOAPServiceDefinition serviceDef = (SOAPServiceDefinition) getServiceInfo().getServiceDefinition();
-			
-			//Determine endpoint address to publish service on
-			String serviceAddress = serviceDef.getServicePath();
-			if (("/").equals(serviceAddress)){
-				serviceAddress = serviceAddress + getServiceInfo().getQname().getLocalPart();
-			} else {
-				serviceAddress = serviceAddress + "/" + getServiceInfo().getQname().getLocalPart();
-			}
-			
-			//Publish the CXF service if it hasn't already been published
-			if (!(isServicePublished(serviceAddress))){
-				publishService(serviceDef, serviceImpl, serviceAddress);
-			}
-			
-			//Create a CXF mvc controller for this service
-			CXFServletControllerAdapter cxfController = new CXFServletControllerAdapter(this.getServiceInfo());
-			
-			return new ServerSideRemotedServiceHolder(BAMServerProxy.wrap(cxfController, this.getServiceInfo()), this.serviceInfo.getServiceDefinition().getService(), getServiceInfo());
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+	    super(serviceInfo, serviceLocator);
 	}
 
 	/**
@@ -90,7 +53,8 @@ public class SOAPServiceExporter implements ServiceExporter {
 	 * @param serviceImpl
 	 * @throws Exception
 	 */
-	public void publishService(SOAPServiceDefinition serviceDef, Object serviceImpl, String address) throws Exception{
+	@Override
+    public void publishService(ServiceDefinition serviceDef, Object serviceImpl, String address) throws Exception{
 		ServerFactoryBean svrFactory;
 		
 		//Use the correct bean factory depending on pojo service or jaxws service
@@ -109,7 +73,7 @@ public class SOAPServiceExporter implements ServiceExporter {
 		svrFactory.setAddress(address);
 		svrFactory.setPublishedEndpointUrl(getServiceInfo().getActualEndpointUrl());
 		svrFactory.setServiceBean(serviceImpl);
-		svrFactory.setServiceClass(Class.forName(serviceDef.getServiceInterface()));
+		svrFactory.setServiceClass(Class.forName(((SOAPServiceDefinition)serviceDef).getServiceInterface()));
 		
 		//Set logging and security interceptors
 		svrFactory.getInInterceptors().add(new LoggingInInterceptor());
@@ -122,46 +86,6 @@ public class SOAPServiceExporter implements ServiceExporter {
 		svrFactory.getOutFaultInterceptors().add(new CXFWSS4JOutInterceptor(serviceInfo));
 		
 		svrFactory.create();
-	}
-
-	/** 
-	 * This determines if the service has already been published on the CXF bus.
-	 * 
-	 * @return true if cxf server exists for this service.
-	 */
-	protected boolean isServicePublished(String serviceAddress){
-		
-		ServerRegistry serverRegistry = getCXFServerRegistry();
-		List<Server> servers = serverRegistry.getServers();
-		
-		for (Server server:servers){		
-			String endpointAddress = server.getEndpoint().getEndpointInfo().getAddress();
-
-			if (endpointAddress.equals(serviceAddress)){
-				LOG.info("Service already published on CXF, not republishing: " + serviceAddress);
-				return true;
-			}		
-		}
-		
-		return false;
-	}
-	
-	public ServiceInfo getServiceInfo() {
-		return this.serviceInfo;
-	}
-	
-	protected Bus getCXFBus() {
-		if (this.serviceLocator != null) {
-			return serviceLocator.getCXFBus();
-		}
-		return KSBServiceLocator.getCXFBus();
-	}
-	
-	protected ServerRegistry getCXFServerRegistry() {
-		if (this.serviceLocator != null) {
-			return serviceLocator.getCXFServerRegistry();
-		}
-		return KSBServiceLocator.getCXFServerRegistry();
 	}
 
 }

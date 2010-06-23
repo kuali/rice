@@ -105,6 +105,9 @@
 				<c:when test='${result.serviceDefinition.class.name == "org.kuali.rice.ksb.messaging.SOAPServiceDefinition"}'>
 		    	<a href="${result.endpointUrl}?wsdl"><c:out value="${result.endpointUrl}"/></a>&nbsp;
 				</c:when>
+                <c:when test='${result.serviceDefinition.class.name == "org.kuali.rice.ksb.messaging.RESTServiceDefinition"}'>
+                <a href="${result.endpointUrl}?_wadl&_type=xml"><c:out value="${result.endpointUrl}"/></a>&nbsp;
+                </c:when>
 				<c:otherwise>
 		    	<c:out value="${result.endpointUrl}"/>&nbsp;
 				</c:otherwise>

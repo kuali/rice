@@ -52,7 +52,7 @@
 		<commons-pool.version>1.2</commons-pool.version>
 		<concurrent.version>1.3.4</concurrent.version>
 		<connector-api.version>1.5</connector-api.version>
-		<cxf.version>2.1.5</cxf.version>
+		<cxf.version>2.2.7</cxf.version>
 		<db-ojb.version>1.0.4-patch3</db-ojb.version>
 		<derby.version>10.2.2.0</derby.version>
 		<displaytag.version>1.1</displaytag.version>
@@ -728,6 +728,11 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+                <version>${cxf.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-frontend-simple</artifactId>

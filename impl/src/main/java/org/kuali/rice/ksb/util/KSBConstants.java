@@ -76,6 +76,7 @@ public class KSBConstants extends JSTLConstants {
         public static final String KSB_ALTERNATE_ENDPOINTS = KSBConstants.KSB_ALTERNATE_ENDPOINTS;
         public static final String KSB_ALTERNATE_ENDPOINT_LOCATIONS = KSBConstants.KSB_ALTERNATE_ENDPOINT_LOCATIONS;
         public static final String LOAD_KNS_MODULE_CONFIGURATION = KSBConstants.LOAD_KNS_MODULE_CONFIGURATION;
+        public static final String RESTFUL_SERVICE_PATH = "rice.ksb.restfulServicePath";
     }
     
     // messaging constants

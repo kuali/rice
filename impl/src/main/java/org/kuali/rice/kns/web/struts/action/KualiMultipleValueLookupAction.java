@@ -77,6 +77,13 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
     @Override
     public ActionForward search(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         MultipleValueLookupForm multipleValueLookupForm = (MultipleValueLookupForm) form;
+        
+        // If this is a new search, clear out the old search results.
+    	String methodToCall = findMethodToCall(form, request);
+		if (methodToCall.equalsIgnoreCase("search")) {
+			GlobalVariables.getUserSession().removeObjectsByPrefix(KNSConstants.SEARCH_METHOD);
+		}
+		
         Lookupable kualiLookupable = multipleValueLookupForm.getLookupable();
         if (kualiLookupable == null) {
             LOG.error("Lookupable is null.");

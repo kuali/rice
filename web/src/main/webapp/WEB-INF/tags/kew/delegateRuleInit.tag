@@ -42,6 +42,7 @@
 				<th align=middle valign=middle class="bord-l-b">Action Request Code</th>
 			</tr>
 			<c:forEach items="${KualiForm.parentRule.responsibilities}" varStatus="status" var="responsibility">
+			  <tr>
 			    <td align=middle valign=middle class="datacell">
 			      <html:radio property="parentResponsibilityId" title="Responsibility ${status.index}" value="${responsibility.responsibilityId}"/>
 			    </td>
@@ -54,6 +55,7 @@
 			    <td align=left valign=middle class="datacell">
 			      ${KualiForm.actionRequestCodes[status.index]}
 			    </td>
+			</tr>
 			</c:forEach>
 	    </table>
     </div>

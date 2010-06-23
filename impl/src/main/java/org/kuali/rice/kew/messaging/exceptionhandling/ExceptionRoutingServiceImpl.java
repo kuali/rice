@@ -146,8 +146,41 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     	RoleRouteModule roleRouteModule = new RoleRouteModule();
     	roleRouteModule.setNamespace(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
     	roleRouteModule.setResponsibilityTemplateName(KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME);
-    	return roleRouteModule.findActionRequests(routeContext);
+    	List<ActionRequestValue> requests = roleRouteModule.findActionRequests(routeContext);
+    	processExceptionRequests(requests);
+    	return requests;
     }
+    
+    
+    
+    /**
+     * Takes the given list of Action Requests and ensures their attributes are set properly for exception
+     * routing requests.  Namely, this ensures that all "force action" values are set to "true".
+     */
+    protected void processExceptionRequests(List<ActionRequestValue> exceptionRequests) {
+    	if (exceptionRequests != null) {
+    		for (ActionRequestValue actionRequest : exceptionRequests) {
+    			processExceptionRequest(actionRequest);
+    		}
+    	}
+    }
+    
+    /**
+     * Processes a single exception request, ensuring that it's force action flag is set to true.
+     * It then recurses through any children requests.
+     */
+    protected void processExceptionRequest(ActionRequestValue actionRequest) {
+    	actionRequest.setForceAction(true);
+    	processExceptionRequests(actionRequest.getChildrenRequests());
+    }
+    
+    /**
+     * End IU Customization
+     * @param routeContext
+     * @param exceptionRequests
+     * @param exceptionMessage
+     * @throws Exception
+     */
     
     protected void activateExceptionRequests(RouteContext routeContext, List<ActionRequestValue> exceptionRequests, String exceptionMessage) throws Exception {
     	setExceptionAnnotations(exceptionRequests, exceptionMessage);

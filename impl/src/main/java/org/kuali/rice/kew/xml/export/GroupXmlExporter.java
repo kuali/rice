@@ -34,7 +34,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 public class GroupXmlExporter implements XmlExporter, XmlConstants {
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
-    private XmlRenderer renderer = new XmlRenderer(RULE_NAMESPACE);
+    private XmlRenderer renderer = new XmlRenderer(GROUP_NAMESPACE);
 
     /**
      * This overridden method ...

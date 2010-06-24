@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
  Copyright 2008-2009 The Kuali Foundation
-
+ 
  Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
-
+ 
  http://www.opensource.org/licenses/ecl2.php
-
+ 
  Unless required by applicable law or agreed to in writing, software
  distributed under the License is distributed on an "AS IS" BASIS,
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,7 +47,7 @@
 		<property name="dist.binary.config.dir" value="${dist.binary.dir}/config"/>
 		<property name="dist.server.config.dir" value="${dist.server.dir}/config"/>
 		<property name="dist.src.dir" value="${dist.build.dir}/dist-src/rice-${maven.project.version}-src"/>
-
+		
 		<property name="dist.impex.dir" value="${dist.build.dir}/database-impex"/>
 		<property name="dist.dataset.dir" value="${dist.build.dir}/datasets"/>
 		<property name="dist.dba.server.dataset.dir" value="${basedir}/${dist.dataset.dir}/dba-server-dataset"/>
@@ -70,9 +70,9 @@
 				<available file="${dist.bootstrap.client.dataset.dir}"/>
 			</and>
 		</condition>
-
+		
 		<property name="oracle.driver.version" value="10.2.0.3.0"/>
-		<property name="default.jta.excludes" value="**/xapool*.jar, **/jotm*.jar, **/connector*.jar, **/howl*.jar, **/jta*.jar, **/jts*.jar, **/ow_carol*.jar, **/carol.properties"/>
+		<property name="default.jta.excludes" value="**/xapool*.jar, **/jotm*.jar, **/connector*.jar, **/howl*.jar, **/jta*.jar, **/jts*.jar, **/ow_carol*.jar, **/carol.properties"/>		
 		<property environment="env"/>
 	    <!-- if the M2_HOME is already defined in the environment, use it -->
 		<property name="maven.home.directory" value="${env.M2_HOME}"/>
@@ -88,25 +88,25 @@
 	<target name="init-jta-excludes" if="webapp.exclude.jta" depends="init" >
 		<property name="jta.excludes" value="${default.jta.excludes}"/>
 	</target>
-
+	
 	<target name="clean" description="Cleans the temporary build files." depends="init">
 		<maven goals="clean"/>
 	</target>
-
+	
 	<target name="update-eclipse-classpath" depends="init" description="Updates Eclipse classpath">
 	    <maven goals="install eclipse:eclipse" options="-DdownloadSources=true -DskipTests=true"/>
 		<antcall target="merge-module-classpaths"/>
     </target>
-
+	
 	<target name="package-test-files" depends="init" description="Updates Eclipse classpath">
 	    <maven goals="test-compile" />
 		<jar destfile="target/kewTests.jar"
 	         basedir="kew/target/test-classes" />
 	</target>
-
+	
 	<target name="coverage-init" description="init cobertura" depends="init">
 		<path id="cobertura.classpath"/>
-
+		
 		<artifact:dependencies pathId="cobertura.classpath">
 			<dependency groupId="net.sourceforge.cobertura" artifactId="cobertura" version="1.9.2" />
 		</artifact:dependencies>
@@ -148,11 +148,11 @@
 
 	<target name="coverage-report" description="generate cobertura report" depends="coverage-init">
 
-		<!--
+		<!-- 
 		     see http://cobertura.sourceforge.net/anttaskreference.html for information on
 		     the cobertura ant tasks
 		-->
-
+		
 		<echo message="(COVERAGE): installing clean version of rice to maven repo" />
 		<maven goals="clean install" options="-Dmaven.repo.local=${M2_REPO} -DskipTests -Dalt.config.location=${env.WORKSPACE}/${alt.config.location} -Dalt.log4j.config.location=${env.WORKSPACE}/${alt.log4j.config.location}"/>
 
@@ -186,7 +186,7 @@
 				<include name="**/*.java" />
 			</fileset>
 		</cobertura-report>
-
+	
 		<echo message="(COVERAGE): generating all inclusive XML coverage report (${coverage.datafile} -> ${coverage.report})" />
 		<cobertura-report format="xml" destdir="${coverage.report}" datafile="${coverage.datafile}">
 			<fileset dir="api/src/main/java">
@@ -199,7 +199,7 @@
 
 		<echo message="(COVERAGE): Finished! Report was generated in ${coverage.report}" />
 	</target>
-
+	
 
 	<target name="merge-module-classpaths" depends="init">
 		<dirname property="project.dir" file="${ant.file}"/>
@@ -209,7 +209,7 @@
             <arg value="${project.dir}/scripts/merge_module_classpaths.groovy"/>
 			<arg value="${project.dir}"/>
 			<classpath>
-                <fileset dir="${project.dir}/../rice-1.0.1.1/scripts/">
+                <fileset dir="${project.dir}/scripts/">
                     <include name="groovy-*/lib/*.jar" />
                 </fileset>
             </classpath>
@@ -221,7 +221,7 @@
 		<property name="oracle.driver.jar"  location="${drivers.directory}/ojdbc14.jar"/>
 		<maven goals="install:install-file" options="-DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=${oracle.driver.version} -Dpackaging=jar -Dfile=${oracle.driver.jar}"/>
 	</target>
-
+	
 	<target name="retrieve-maven-dependencies" depends="install-oracle-jar">
         <maven goals="install" options="-DskipTests=true"/>
 	</target>
@@ -237,7 +237,7 @@
 		</artifact:install>
 	</target>
 
-    <!-- unzip src is made when prepare-lib dep calls install-rice-jars -->
+    <!-- unzip src is made when prepare-lib dep calls install-rice-jars -->	
 	<target name="dist-war" depends="init-jta-excludes, prepare-lib" description="Builds and packages the Rice server distribution">
 		<echo>jta.excludes: ${jta.excludes}</echo>
 
@@ -255,7 +255,7 @@
 			<fileset dir="${dist.war.dir}" excludes="${jta.excludes}"/>
 		</jar>
 	</target>
-
+	
 	<target name="dist-server" depends="dist-database, dist-war" description="Builds and packages the Rice server distribution">
 		<copy todir="${dist.server.dir}" file="target/${rice.app.code}-${rice.environment}.war"/>
 		<copy todir="${dist.server.dir}">
@@ -395,13 +395,13 @@
 		</condition>
 
 		<fail unless="dist.database.properties.set">
-
+				
 Database packaging properties not set.
-
-All of the following need to be set in your kuali-build.properties
-file in your home directory (${user.home})
+	
+All of the following need to be set in your kuali-build.properties 
+file in your home directory (${user.home}) 
 in order to package the various Rice datasets.
-
+				
 1) impex.home.directory -- the absolute path of the impex directory
 2) dist.database.svn.base -- the base path of the Rice master database project (rice-cfg-dbs) to use.  For example: branches/rice-release-1-0-1-br
 3) dist.database.password
@@ -412,35 +412,35 @@ in order to package the various Rice datasets.
 
 	</target>
 
-
+		
 	<target name="dist-impex" depends="init, check-dist-database-properties" description="Prepares a distribution of the impex tool">
-		<echo>Cleaning the impex project at ${impex.home.directory}</echo>
-
+		<echo>Cleaning the impex project at ${impex.home.directory}</echo> 
+				
 		<ant dir="${impex.home.directory}" inheritall="false" target="clean" />
-
+			
 		<echo>End of clean target</echo>
-		<echo>Copying the impex tool for packaging at ${dist.impex.dir}</echo>
-
+		<echo>Copying the impex tool for packaging at ${dist.impex.dir}</echo> 
+				
 		<copy todir="${dist.impex.dir}">
 			<fileset dir="${impex.home.directory}"/>
 		</copy>
 		<copy tofile="${dist.impex.dir}/impex-build.properties.sample" flatten="true" overwrite="true" file="scripts/dataset/dist-impex-build.properties"/>
 		<copy tofile="${dist.impex.dir}/build.properties" flatten="true" overwrite="true" file="scripts/dataset/dist-build.properties"/>
 	</target>
-
+	
 	<target name="dist-server-datasets" depends="init, check-dist-database-properties" unless="dist.server.datasets.exist" description="Creates distributions of the Rice server datasets and the Impex tool">
 
 		<echo>Checking out the rice-cfg-dbs project from SVN to ${dist.dba.server.dataset.dir}</echo>
-
+		
 		<ant dir="${impex.home.directory}" inheritall="false" target="satellite-init">
 			<property name="svn.base" value="${dist.database.svn.base}"/>
 			<property name="torque.schema.dir" value="${dist.dba.server.dataset.dir}"/>
 			<property file="scripts/dataset/server-dataset-impex-build.properties"/>
 		</ant>
-
+		
 		<echo>Importing the master database into the RICEPACKAGING database.</echo>
 		<echo>Also executing the demo dataset cleanup script after import, this will create our demo database.</echo>
-
+		
 		<ant dir="${impex.home.directory}" inheritall="false">
 			<property name="import.torque.database.password" value="${dist.database.password}"/>
 			<property name="torque.schema.dir" value="${dist.dba.server.dataset.dir}"/>
@@ -452,11 +452,11 @@ in order to package the various Rice datasets.
 			<target name="empty-schema"/>
 			<target name="import"/>
 		</ant>
-
-
-
+		
+		
+		
 		<echo>Exporting the demo database to create our demo dataset at ${dist.demo.server.dataset.dir}</echo>
-
+		
 		<mkdir dir="${dist.demo.server.dataset.dir}"/>
 		<touch file="${dist.demo.server.dataset.dir}/schema.xml"/>
 		<ant dir="${impex.home.directory}" inheritall="false">
@@ -465,17 +465,17 @@ in order to package the various Rice datasets.
 			<property file="scripts/dataset/server-dataset-impex-build.properties"/>
 			<target name="export"/>
 		</ant>
-
+		
 		<echo>Running the bootstrap dataset cleanup against the RICEPACKAGING database.</echo>
-
+		
 		<ant dir="${impex.home.directory}" inheritall="false">
 			<property name="import.torque.database.password" value="${dist.database.password}"/>
 			<property name="post.import.script.files" value="${basedir}/scripts/dataset/bootstrap-server-dataset-cleanup.sql"/>
 			<property file="scripts/dataset/server-dataset-impex-build.properties"/>
-			<target name="inittasks"/>
+			<target name="inittasks"/>		
 			<target name="post-import-sql"/>
 		</ant>
-
+		
 		<echo>Exporting the bootstrap database to create our bootstrap dataset at ${dist.bootstrap.server.dataset.dir}</echo>
 
 		<mkdir dir="${dist.bootstrap.server.dataset.dir}"/>
@@ -491,16 +491,16 @@ in order to package the various Rice datasets.
 	<target name="dist-client-datasets" depends="init, check-dist-database-properties" unless="dist.client.datasets.exist" description="Creates distributions of the various Rice client datasets and the Impex tool">
 
 		<echo>Checking out the rice-client-db project from SVN to ${dist.dba.client.dataset.dir}</echo>
-
+		
 		<ant dir="${impex.home.directory}" inheritall="false" target="satellite-init">
 			<property name="svn.base" value="${dist.database.svn.base}"/>
 			<property name="torque.schema.dir" value="${dist.dba.client.dataset.dir}"/>
 			<property file="scripts/dataset/client-dataset-impex-build.properties"/>
 		</ant>
-
+		
 		<echo>Importing the master database into the RICEPACKAGING database.</echo>
 		<echo>Also executing the demo dataset cleanup script after import, this will create our demo database.</echo>
-
+		
 		<ant dir="${impex.home.directory}" inheritall="false">
 			<property name="import.torque.database.password" value="${dist.database.password}"/>
 			<property name="torque.schema.dir" value="${dist.dba.client.dataset.dir}"/>
@@ -512,9 +512,9 @@ in order to package the various Rice datasets.
 			<target name="empty-schema"/>
 			<target name="import"/>
 		</ant>
-
+		
 		<echo>Exporting the demo database to create our demo dataset at ${dist.demo.client.dataset.dir}</echo>
-
+		
 		<mkdir dir="${dist.demo.client.dataset.dir}"/>
 		<touch file="${dist.demo.client.dataset.dir}/schema.xml"/>
 		<ant dir="${impex.home.directory}" inheritall="false">
@@ -523,17 +523,17 @@ in order to package the various Rice datasets.
 			<property file="scripts/dataset/client-dataset-impex-build.properties"/>
 			<target name="export"/>
 		</ant>
-
+		
 		<echo>Running the bootstrap dataset cleanup against the RICEPACKAGING database.</echo>
-
+		
 		<ant dir="${impex.home.directory}" inheritall="false">
 			<property name="import.torque.database.password" value="${dist.database.password}"/>
 			<property name="post.import.script.files" value="${basedir}/scripts/dataset/bootstrap-client-dataset-cleanup.sql"/>
 			<property file="scripts/dataset/client-dataset-impex-build.properties"/>
-			<target name="inittasks"/>
+			<target name="inittasks"/>		
 			<target name="post-import-sql"/>
 		</ant>
-
+		
 		<echo>Exporting the bootstrap database to create our bootstrap dataset at ${dist.bootstrap.client.dataset.dir}</echo>
 
 		<mkdir dir="${dist.bootstrap.client.dataset.dir}"/>
@@ -544,18 +544,18 @@ in order to package the various Rice datasets.
 			<property file="scripts/dataset/client-dataset-impex-build.properties"/>
 			<target name="export"/>
 		</ant>
-
+		
 	</target>
 
 	<target name="dist-database" depends="dist-impex, dist-server-datasets, dist-client-datasets" description="Creates all database distributions"/>
-
+	
 	<target name="dist-all" depends="clean, dist-database, dist-server, dist-binary, dist-src" description="Creates server, binary and source distributions"/>
-
+	
 	<!-- Used for deployments in the kuali test environments -->
 	<target name="dist" depends="dist-war">
 		<copy file="target/${rice.app.code}-${rice.environment}.war" todir="${basedir}"/>
 	</target>
-
+	
 	<target name="prepare-new-version" depends="init" description="Prompts for a new version to change the POM and groovy scripts to">
 		<input message="Detected current version in POM file of '${maven.project.version}'.  Please enter new version: "
 			defaultvalue="${maven.project.version}"
@@ -565,25 +565,25 @@ in order to package the various Rice datasets.
 			<fileset dir="." includes="**/pom.xml"/>
 		</replaceregexp>
 	</target>
-
+	
 	<target name="maven-version" depends="init" description="Executes and mvn -v to print out maven version to command line">
 		<maven goals="" options="-v"/>
 	</target>
-
+	
 	<target name="prepare-dev-environment" depends="init">
 		<property name="sample-app-config" value="${user.home}/kuali/main/${rice.environment}/sample-app-config.xml"/>
 		<available property="sample-app-config.exists" file="${sample-app-config}"/>
 		<fail if="sample-app-config.exists" message="The file ${sample-app-config} already exists!  You must delete it first if you want it to be recreated."/>
 		<copy file="config/templates/sample-app-config.template.xml" tofile="${sample-app-config}"/>
 	</target>
-
+	
 	<target name="prepare-unit-test-environment" depends="init" description="Generate common-test-config.xml">
 		<property name="common-test-config" value="${user.home}/kuali/test2/${rice.environment}/common-test-config.xml"/>
 		<available property="common-test-config.exists" file="${common-test-config}"/>
 		<fail if="common-test-config.exists" message="The file ${common-test-config} already exists!  You must delete it first if you want it to be recreated."/>
 		<copy file="config/templates/common-test-config.template.xml" tofile="${common-test-config}"/>
 	</target>
-
+	
 	<macrodef name="maven">
 		<attribute name="goals" />
 		<attribute name="options" default="" />
@@ -594,7 +594,7 @@ in order to package the various Rice datasets.
 				<env key="PATH" path="${environment.path.variable}:/usr/local/java/bin"/>
 				<arg line="@{options} @{goals}" />
 				<sysproperty key="classworlds.conf" value="${maven.home.directory}/bin/m2.conf" />
-				<sysproperty key="maven.home" value="${maven.home.directory}" />
+				<sysproperty key="maven.home" value="${maven.home.directory}" />	
 				<classpath>
 					<fileset dir="${maven.home.directory}/boot">
 						<include name="classworlds-*.jar" />
@@ -603,5 +603,5 @@ in order to package the various Rice datasets.
 			</java>
 		</sequential>
 	</macrodef>
-
+	
 </project>

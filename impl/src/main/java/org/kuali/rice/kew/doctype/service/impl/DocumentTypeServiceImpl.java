@@ -103,7 +103,36 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     	return this.findByName(name, false,true);
     }
 
+    /**
+     * 
+     * This method seaches for a DocumentType by document name.
+     * 
+     * @param name
+     * @param caseSensitive
+     * @deprecated Use findByName(String name, boolean caseSensitive, boolean checkCache)
+     * @return
+     */
+    protected DocumentType findByName(String name, boolean caseSensitive) {
+    	if (name == null) {
+    		return null;
+    	}
+    	DocumentType documentType = fetchFromCacheByName(name);
+        if (documentType == null) {
+        	documentType = getDocumentTypeDAO().findByName(name, caseSensitive);
+        	insertIntoCache(documentType);
+        }
+    	return documentType;
+    }
 
+    /**
+     * 
+     * This method seaches for a DocumentType by document name.
+     * 
+     * @param name DocumentType name
+     * @param caseSensitive If false, case will be ignored
+     * @param checkCache if false the cache will not be checked.
+     * @return
+     */
     protected DocumentType findByName(String name, boolean caseSensitive, boolean checkCache) {
     	if (name == null) {
     		return null;

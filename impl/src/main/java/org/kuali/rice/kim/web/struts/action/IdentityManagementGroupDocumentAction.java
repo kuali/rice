@@ -30,6 +30,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
@@ -83,9 +84,10 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     
     protected void setKimType(String kimTypeId, IdentityManagementGroupDocumentForm groupDocumentForm){
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
-			groupDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId));
+			KimTypeInfo kType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+			groupDocumentForm.setKimType(kType);
 			if (groupDocumentForm.getGroupDocument() != null) {
-				groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
+				groupDocumentForm.getGroupDocument().setKimType(kType);
 			}
 		} else if ( groupDocumentForm.getGroupDocument() != null && StringUtils.isNotBlank(groupDocumentForm.getGroupDocument().getGroupTypeId() ) ) {
 			groupDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(

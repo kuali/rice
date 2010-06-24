@@ -81,6 +81,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     	String href = "";
     	//TODO: clean this up.
     	boolean showReturnHref = true;
+    	boolean refreshMe = false;
     	String docTypeName = "";
     	String docTypeAction = "";
     	if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(lookupForm.getFormKey())){
@@ -97,12 +98,15 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     	} else{
     		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
     		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
-    		showReturnHref = kimType!=null;
+//    		showReturnHref = kimType!=null;
+    		refreshMe = true;
     	}
     	if(showReturnHref){
-	    	parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
-	    	parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
-	    	parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
+    		if (!refreshMe){
+    			parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+    			parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+    			parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
+    		}
 	    	href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+docTypeAction, parameters);
     	}
         return href;

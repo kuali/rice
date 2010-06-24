@@ -22,6 +22,7 @@ import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -102,6 +103,9 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 		else return kimType;
 	}
 
+	public String getKimTypeClass(){
+		return KimTypeImpl.class.getName();
+	}
 	/**
 	 * @return the canAssignGroup
 	 */

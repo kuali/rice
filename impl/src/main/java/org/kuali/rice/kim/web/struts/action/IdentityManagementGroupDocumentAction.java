@@ -178,6 +178,15 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     public ActionForward addMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
         GroupDocumentMember newMember = groupDocumentForm.getMember();
+        if (StringUtils.isEmpty(newMember.getMemberId()) 
+        		&& StringUtils.isNotEmpty(newMember.getMemberName())
+        		&& StringUtils.isNotEmpty(newMember.getMemberNamespaceCode())
+        		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
+        	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
+        	if (tempGroup != null) {
+        		newMember.setMemberId(tempGroup.getGroupId());
+        	}
+        }
         if(checkKimDocumentGroupMember(newMember) && 
         		KNSServiceLocator.getKualiRuleService().applyRules(new AddGroupMemberEvent("", groupDocumentForm.getGroupDocument(), newMember))){
         	newMember.setDocumentNumber(groupDocumentForm.getDocument().getDocumentNumber());

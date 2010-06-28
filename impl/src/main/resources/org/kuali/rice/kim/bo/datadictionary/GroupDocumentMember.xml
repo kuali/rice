@@ -10,6 +10,7 @@
         <!-- TODO: create entry for this  -->
         <ref bean="GroupDocumentMember-memberTypeCode"/>
         <ref bean="GroupDocumentMember-memberName"/>
+        <ref bean="GroupDocumentMember-memberNamespaceCode"/>
         <ref bean="GroupDocumentMember-activeFromDate"/>
         <ref bean="GroupDocumentMember-activeToDate"/>
         <ref bean="GroupDocumentMember-memberFullName"/>
@@ -40,7 +41,14 @@
   </bean>
 
   <bean id="GroupDocumentMember-memberName" parent="GroupDocumentMember-memberName-parentBean"/>
-  <bean id="GroupDocumentMember-memberName-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberName" p:forceUppercase="true" p:label="Member Name" p:shortLabel="Name" p:maxLength="40" p:required="false">
+  <bean id="GroupDocumentMember-memberName-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberName" p:forceUppercase="true" p:label="Member Name" p:shortLabel="Name" p:maxLength="80" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="10"/>
+    </property>
+  </bean>
+  
+  <bean id="GroupDocumentMember-memberNamespaceCode" parent="GroupDocumentMember-memberNamespaceCode-parentBean"/>
+  <bean id="GroupDocumentMember-memberNamespaceCode-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberNamespaceCode" p:forceUppercase="true" p:label="Member Namespace" p:shortLabel="Namespace" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>

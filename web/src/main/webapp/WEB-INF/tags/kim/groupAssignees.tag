@@ -30,20 +30,27 @@
 	    <input type="hidden" name="memberTableMetadata.${Constants.TableRenderConstants.PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM}" value="${KualiForm.memberTableMetadata.columnToSortIndex}"/>
 	    <input type="hidden" name="memberTableMetadata.sortDescending" value="${KualiForm.memberTableMetadata.sortDescending}"/>
 	    <input type="hidden" name="memberTableMetadata.viewedPageNumber" value="${KualiForm.memberTableMetadata.viewedPageNumber}"/>
-	    <table cellpadding="0" cellspacing="0" summary="">
-	        	<tr>
+	    <c:if test="${canAssignGroup}">
+	      <table cellpadding="0" cellspacing="0" summary="">
+	    	  <tr>
+                <td colspan=8 class="tab-subhead">Add Member:</td>
+              </tr>
+	          <tr>
 	        		<th>&nbsp;</th> 
 	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberTypeCode}" horizontal="false" />
 	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberId}" horizontal="false" />
-	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberFullName}" horizontal="false" />
+	        		<c:if test='${KualiForm.member.memberTypeCode == "G"}'>
+	        		  <kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberNamespaceCode}" horizontal="false" />
+	        		  <kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberName}" horizontal="false" />
+	        		</c:if>
 	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeFromDate}" horizontal="false" />
 	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeToDate}" horizontal="false" />
 					<c:if test="${canAssignGroup}">	
 	            		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col" horizontal="false" />
 					</c:if>	
-	        	</tr>     
-	          <c:if test="${canAssignGroup}">	
-	             <tr>
+	          </tr> 
+	    	  	
+	          <tr>
 					<th class="infoline">Add:</th>
 	                <td align="left" valign="middle" class="infoline">
 		                <div align="center">
@@ -65,11 +72,21 @@
 		               	</c:if>
 					</div>
 					</td>
-	                <td class="infoline">   
-	                <div align="center">             	
-						<kul:htmlControlAttribute property="member.memberFullName" attributeEntry="${groupMemberAttributes.memberFullName}" readOnly="true" />
-					</div>
-					</td>
+					<c:if test='${KualiForm.member.memberTypeCode == "G"}'>
+					  <td class="infoline">   
+	                    <div align="center">             	
+						  <kul:htmlControlAttribute property="member.memberNamespaceCode" attributeEntry="${groupMemberAttributes.memberNamespaceCode}" readOnly="${readOnly}" />
+					    </div>
+					  </td>
+	                  <td class="infoline">   
+	                    <div align="center">             	
+						  <kul:htmlControlAttribute property="member.memberName" attributeEntry="${groupMemberAttributes.memberName}" readOnly="${readOnly}" />
+						  <c:if test="${!readOnly}">
+			               	  <kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
+		               	  </c:if>
+					    </div>
+					  </td>
+					</c:if>  
 	                <td align="left" valign="middle" class="infoline">
 	                <div align="center">
 	                	<kul:htmlControlAttribute property="member.activeFromDate" attributeEntry="${groupMemberAttributes.activeFromDate}" datePicker="true" readOnly="${readOnly}" />
@@ -86,32 +103,65 @@
 							src='${ConfigProperties.kr.externalizable.images.url}tinybutton-add1.gif' styleClass="tinybutton"/>
                         </div>
                     </td>
-	    	   </tr>         
-			</c:if>
+	    	 </tr>       
+		  </table>	
+		</c:if>  
+	    <br /><br />
+	    <table cellpadding="0" cellspacing="0" summary="">
+	    	  <tr>
+                <td colspan=9 class="tab-subhead">Members:</td>
+              </tr>
+	        	<tr>
+	        		<th>&nbsp;</th> 
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberTypeCode}" horizontal="false" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberId}" horizontal="false" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberNamespaceCode}" horizontal="false" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberName}" horizontal="false" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberFullName}" horizontal="false" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeFromDate}" horizontal="false" />
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeToDate}" horizontal="false" />
+					<c:if test="${canAssignGroup}">	
+	            		<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col" horizontal="false" />
+					</c:if>	
+	        	</tr> 
 			<c:if test="${KualiForm.memberTableMetadata.firstRowIndex >= 0}">
 	      	<c:forEach var="member" items="${KualiForm.document.members}" varStatus="statusMember"
                  begin="${KualiForm.memberTableMetadata.firstRowIndex}" 
                  end="${KualiForm.memberTableMetadata.lastRowIndex}">
-	            <tr>
+                 <c:set var="inquiryClass" value="org.kuali.rice.kim.bo.Person" />
+                 <c:set var="keyValue" value="principalId" />
+                 <c:if test='${member.memberTypeCode == "G"}'>
+                   <c:set var="inquiryClass" value="org.kuali.rice.kim.bo.Group" />
+                   <c:set var="keyValue" value="groupId" />
+                 </c:if>
+	             <tr>
 					<th class="infoline" valign="top">
 						<c:out value="${statusMember.index+1}" />
 					</th>
 		            <td align="left" valign="middle">
-		               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberTypeCode"  attributeEntry="${groupMemberAttributes.memberTypeCode}" disabled="true" readOnly="false" />
+		               	<div align="center"><kul:htmlControlAttribute property="document.members[${statusMember.index}].memberTypeCode"  attributeEntry="${groupMemberAttributes.memberTypeCode}" disabled="true" readOnly="false" />
 						</div>
 					</td>
 		            <td align="left" valign="middle">
 		               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberId"  attributeEntry="${groupMemberAttributes.memberId}" readOnly="true" />
 						</div>
 					</td>
+					<td align="left" valign="middle">						            
+                     	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberNamespaceCode"  attributeEntry="${groupMemberAttributes.memberNamespaceCode}" readOnly="true"  />
+						</div>
+                    </td>
+					<td align="left" valign="middle">						            
+                    	<kul:inquiry boClassName="${inquiryClass}" keyValues="${keyValue}=${member.memberId}" render="true">
+                        	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberName"  attributeEntry="${groupMemberAttributes.memberName}" readOnly="true"  />
+							</div>
+                    	</kul:inquiry>
+                    </td>	
 		            <td align="left" valign="middle">						            
-                    	<kul:inquiry boClassName="org.kuali.rice.kim.bo.Person" keyValues="principalId=${member.memberId}" render="true">
+                    	<kul:inquiry boClassName="${inquiryClass}" keyValues="${keyValue}=${member.memberId}" render="true">
                         	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].memberFullName"  attributeEntry="${groupMemberAttributes.memberFullName}" readOnly="true"  />
 							</div>
                     	</kul:inquiry>
                     </td>
-						
-						
 					</td>
 		            <td align="left" valign="middle">
 		               	<div align="center"> <kul:htmlControlAttribute property="document.members[${statusMember.index}].activeFromDate"  attributeEntry="${groupMemberAttributes.activeFromDate}" readOnly="${!canAssignGroup}" datePicker="true" />
@@ -138,5 +188,7 @@
 			</c:forEach>        
 			</c:if>
 		</table>
+		
+		<br />
 	</div>
 </kul:tab>

@@ -251,6 +251,7 @@
 				<include name="**/web.xml" />
 			</fileset>
 		</replaceregexp>
+		<copy todir="${dist.war.dir}/WEB-INF/classes" file="impl/src/main/resources/org/kuali/rice/core/logging/default-log4j.properties"/>
 		<jar destfile="target/${rice.app.code}-${rice.environment}.war">
 			<fileset dir="${dist.war.dir}" excludes="${jta.excludes}"/>
 		</jar>

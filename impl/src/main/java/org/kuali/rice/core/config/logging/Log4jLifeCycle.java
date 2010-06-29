@@ -52,13 +52,18 @@ public class Log4jLifeCycle extends BaseLifecycle {
     /**
      * Location of default/automatic Log4J configuration properties, in Spring ResourceUtils resource/url syntax
      */
-    private static final String AUTOMATIC_LOGGING_CONFIG_URL = "classpath:org/kuali/rice/core/logging/default-log4j.properties";
+    private static final String AUTOMATIC_LOGGING_CONFIG_URL = "classpath:default-log4j.properties";
 
     /**
      * Default settings reload interval to use in the case that the settings are reloadable (i.e. they originate from a file)
      */
     private static final int DEFAULT_RELOAD_INTERVAL = 5 * MINUTE; // 5 minutes
 
+    /**
+     * Does file at LOG4J_SETTINGS_PATH exist?
+     */
+    private boolean log4jFileExists;
+    
     /**
      * Non-static and non-final so that it can be reset after configuration is read
      */
@@ -67,7 +72,9 @@ public class Log4jLifeCycle extends BaseLifecycle {
 	public void start() throws Exception {
         // obtain the root workflow config
 		Config config = ConfigContext.getRootConfig();
-
+		
+		log4jFileExists = checkPropertiesFileExists(Config.LOG4J_SETTINGS_PATH);
+		
         // first check for in-line xml configuration
 		String log4jconfig = config.getProperty(Config.LOG4J_SETTINGS_XML);
 		if (log4jconfig != null) {
@@ -91,7 +98,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
 				log.error("Error loading Log4J configuration settings: " + log4jconfig, ioe);
 			}
         // check for an external file location specification
-		} else if ((log4jconfig = config.getProperty(Config.LOG4J_SETTINGS_PATH)) != null) {
+		} else if (log4jFileExists) {
 			log.info("Configuring Log4J logging.");
 
             int reloadInterval = DEFAULT_RELOAD_INTERVAL;
@@ -129,6 +136,17 @@ public class Log4jLifeCycle extends BaseLifecycle {
 	}
 
     /**
+	 * This method ...
+	 * 
+	 * @param log4jSettingsPath
+	 */
+	private boolean checkPropertiesFileExists(String log4jSettingsPath) {
+		File log4jProps = new File(log4jSettingsPath);
+		
+		return log4jProps.exists();
+	}
+
+	/**
      * Uses reflection to attempt to obtain the ImplementationVersion of the org.apache.log4j
      * package from the jar manifest.
      * @return the value returned from Package.getPackage("org.apache.log4j").getImplementationVersion()

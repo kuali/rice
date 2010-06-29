@@ -222,39 +222,40 @@ delete from krim_grp_mbr_t where grp_id not in (select grp_id from krim_grp_t)
 
 -- delete all entity and principal data except for principalID/entityID = 1 which is the 'kr' system user
 -- and principalID=admin/entityID = 1100 which is the 'admin' user
+-- also keep the 'notsys' user, as it is required for KEN
 
-delete from krim_entity_addr_t where entity_id not in ('1', '1100')
+delete from krim_entity_addr_t where entity_id not in ('1', '1100', '1131')
 /
-delete from krim_entity_afltn_t where entity_id not in ('1', '1100')
+delete from krim_entity_afltn_t where entity_id not in ('1', '1100' '1131')
 /
-delete from krim_entity_bio_t where entity_id not in ('1', '1100')
+delete from krim_entity_bio_t where entity_id not in ('1', '1100' '1131')
 /
-delete from krim_entity_ctznshp_t where entity_id not in ('1', '1100')
+delete from krim_entity_ctznshp_t where entity_id not in ('1', '1100' '1131')
 /
-delete from krim_entity_email_t where entity_id not in ('1', '1100')
+delete from krim_entity_email_t where entity_id not in ('1', '1100' '1131')
 /
-delete from krim_entity_emp_info_t where entity_id not in ('1', '1100')
+delete from krim_entity_emp_info_t where entity_id not in ('1', '1100' '1131')
 /
-delete from krim_entity_ent_typ_t where entity_id not in ('1', '1100')
+delete from krim_entity_ent_typ_t where entity_id not in ('1', '1100' '1131')
 /
-delete from krim_entity_ext_id_t where entity_id not in ('1', '1100')
+delete from krim_entity_ext_id_t where entity_id not in ('1', '1100' '1131')
 /
-delete from krim_entity_nm_t where entity_id not in ('1', '1100')
+delete from krim_entity_nm_t where entity_id not in ('1', '1100' '1131')
 /
-delete from krim_entity_phone_t where entity_id not in ('1', '1100')
+delete from krim_entity_phone_t where entity_id not in ('1', '1100' '1131')
 /
-delete from krim_entity_priv_pref_t where entity_id not in ('1', '1100')
+delete from krim_entity_priv_pref_t where entity_id not in ('1', '1100' '1131')
 /
-delete from KRIM_ENTITY_ETHNIC_T where entity_id not in ('1', '1100')
+delete from KRIM_ENTITY_ETHNIC_T where entity_id not in ('1', '1100' '1131')
 /
-delete from KRIM_ENTITY_RESIDENCY_T where entity_id not in ('1', '1100')
+delete from KRIM_ENTITY_RESIDENCY_T where entity_id not in ('1', '1100' '1131')
 /
-delete from KRIM_ENTITY_VISA_T where entity_id not in ('1', '1100')
+delete from KRIM_ENTITY_VISA_T where entity_id not in ('1', '1100' '1131')
 /
-delete from krim_entity_t where entity_id not in ('1', '1100')
+delete from krim_entity_t where entity_id not in ('1', '1100' '1131')
 /
 
-delete from krim_prncpl_t where prncpl_id not in ('1', 'admin')
+delete from krim_prncpl_t where prncpl_id not in ('1', 'admin', 'notsys')
 /
 
 -- #####################

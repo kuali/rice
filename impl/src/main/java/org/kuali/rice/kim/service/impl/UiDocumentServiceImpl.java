@@ -34,10 +34,20 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityAddressInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmailInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
@@ -304,7 +314,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @see org.kuali.rice.kim.service.UiDocumentService#loadEntityToPersonDoc(IdentityManagementPersonDocument, String)
 	 */
 	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId) {
-        KimPrincipalImpl principal = getPrincipalImpl(principalId);
+		KimPrincipalInfo principal = this.getIdentityService().getPrincipal(principalId);
         if(principal==null)
         	throw new RuntimeException("Principal does not exist for principal id:"+principalId);
 
@@ -312,7 +322,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         identityManagementPersonDocument.setPrincipalName(principal.getPrincipalName());
         identityManagementPersonDocument.setPassword(principal.getPassword());
         identityManagementPersonDocument.setActive(principal.isActive());
-		KimEntityImpl kimEntity = getEntityImpl(principal.getEntityId());
+        KimEntityInfo kimEntity = this.getIdentityService().getEntityInfo(principal.getEntityId());
 		identityManagementPersonDocument.setEntityId(kimEntity.getEntityId());
 		if ( ObjectUtils.isNotNull( kimEntity.getPrivacyPreferences() ) ) {
 			identityManagementPersonDocument.setPrivacy(loadPrivacyReferences(kimEntity.getPrivacyPreferences()));
@@ -320,8 +330,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		//identityManagementPersonDocument.setActive(kimEntity.isActive());
 		identityManagementPersonDocument.setAffiliations(loadAffiliations(kimEntity.getAffiliations(),kimEntity.getEmploymentInformation()));
 		identityManagementPersonDocument.setNames(loadNames( identityManagementPersonDocument, principalId, kimEntity.getNames(), identityManagementPersonDocument.getPrivacy().isSuppressName() ));
-		KimEntityEntityTypeImpl entityType = null;
-		for (KimEntityEntityTypeImpl type : kimEntity.getEntityTypes()) {
+		KimEntityEntityTypeInfo entityType = null;
+		for (KimEntityEntityTypeInfo type : kimEntity.getEntityTypes()) {
 			if (KimConstants.EntityTypes.PERSON.equals(type.getEntityTypeCode())) {
 				entityType = type;
 			}
@@ -751,14 +761,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	return docRoleQualifiers;
     }
 
-    protected List<PersonDocumentName> loadNames( IdentityManagementPersonDocument personDoc, String principalId, List <KimEntityNameImpl> names, boolean suppressDisplay ) {
+    protected List<PersonDocumentName> loadNames( IdentityManagementPersonDocument personDoc, String principalId, List <KimEntityNameInfo> names, boolean suppressDisplay ) {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();
 		if(ObjectUtils.isNotNull(names)){
-			for (KimEntityNameImpl name: names) {
+			for (KimEntityNameInfo name: names) {
 				if(name.isActive()){
 					PersonDocumentName docName = new PersonDocumentName();
 					docName.setNameTypeCode(name.getNameTypeCode());
-					docName.setEntityNameType(name.getEntityNameType());
+					
 					//We do not need to check the privacy setting here - The UI should care of it
 					docName.setFirstName(name.getFirstNameUnmasked());
 					docName.setLastName(name.getLastNameUnmasked());
@@ -812,10 +822,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return rulePassed;
 	}
 
-    protected List<PersonDocumentAffiliation> loadAffiliations(List <KimEntityAffiliationImpl> affiliations, List<KimEntityEmploymentInformationImpl> empInfos) {
+	protected List<PersonDocumentAffiliation> loadAffiliations(List <KimEntityAffiliationInfo> affiliations, List<KimEntityEmploymentInformationInfo> empInfos) {
 		List<PersonDocumentAffiliation> docAffiliations = new ArrayList<PersonDocumentAffiliation>();
 		if(ObjectUtils.isNotNull(affiliations)){
-			for (KimEntityAffiliationImpl affiliation: affiliations) {
+			for (KimEntityAffiliation affiliation: affiliations) {
 				if(affiliation.isActive()){
 					PersonDocumentAffiliation docAffiliation = new PersonDocumentAffiliation();
 					docAffiliation.setAffiliationTypeCode(affiliation.getAffiliationTypeCode());
@@ -830,7 +840,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					// employment informations
 					List<PersonDocumentEmploymentInfo> docEmploymentInformations = new ArrayList<PersonDocumentEmploymentInfo>();
 					if(ObjectUtils.isNotNull(empInfos)){
-						for (KimEntityEmploymentInformationImpl empInfo: empInfos) {
+						for (KimEntityEmploymentInformationInfo empInfo: empInfos) {
 							if (empInfo.isActive() && StringUtils.equals(docAffiliation.getEntityAffiliationId(), empInfo.getEntityAffiliationId())) {
 								PersonDocumentEmploymentInfo docEmpInfo = new PersonDocumentEmploymentInfo();
 								docEmpInfo.setEntityEmploymentId(empInfo.getEntityEmploymentId());
@@ -843,7 +853,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 								docEmpInfo.setActive(empInfo.isActive());
 								docEmpInfo.setPrimary(empInfo.isPrimary());
 								docEmpInfo.setEntityAffiliationId(empInfo.getEntityAffiliationId());
-								docEmpInfo.setVersionNumber(empInfo.getVersionNumber());
+								// there is no version number on KimEntityEmploymentInformationInfo
+								//docEmpInfo.setVersionNumber(empInfo.getVersionNumber());
 								docEmpInfo.setEdit(true);
 								docEmpInfo.refreshReferenceObject("employmentType");
 								docEmploymentInformations.add(docEmpInfo);
@@ -896,7 +907,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		kimEntity.setPrivacyPreferences(privacyPreferences);
 	}
-    protected PersonDocumentPrivacy loadPrivacyReferences(KimEntityPrivacyPreferencesImpl privacyPreferences) {
+    protected PersonDocumentPrivacy loadPrivacyReferences(KimEntityPrivacyPreferences privacyPreferences) {
 		PersonDocumentPrivacy docPrivacy = new PersonDocumentPrivacy();
 		docPrivacy.setSuppressAddress(privacyPreferences.isSuppressAddress());
 		docPrivacy.setSuppressEmail(privacyPreferences.isSuppressEmail());
@@ -1058,7 +1069,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	}
 	}
 
-    protected List<PersonDocumentPhone> loadPhones(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityPhone> entityPhones, boolean suppressDisplay ) {
+    protected List<PersonDocumentPhone> loadPhones(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityPhoneInfo> entityPhones, boolean suppressDisplay ) {
 		List<PersonDocumentPhone> docPhones = new ArrayList<PersonDocumentPhone>();
 		if(ObjectUtils.isNotNull(entityPhones)){
 			for (KimEntityPhone phone: entityPhones) {
@@ -1112,7 +1123,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityType.setEmailAddresses(entityEmails);
     	}
 	}
-    protected List<PersonDocumentEmail> loadEmails(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityEmail> entityEmails, boolean suppressDisplay ) {
+    protected List<PersonDocumentEmail> loadEmails(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityEmailInfo> entityEmails, boolean suppressDisplay ) {
 		List<PersonDocumentEmail> emails = new ArrayList<PersonDocumentEmail>();
 		if(ObjectUtils.isNotNull(entityEmails)){
 			for (KimEntityEmail email: entityEmails) {
@@ -1121,7 +1132,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					//docEmail.setEntityId(email.getEntityId());
 					docEmail.setEntityTypeCode(email.getEntityTypeCode());
 					docEmail.setEmailTypeCode(email.getEmailTypeCode());
-					docEmail.setEmailType(((KimEntityEmailImpl)email).getEmailType());
+					// EmailType not on info object. 
+					//docEmail.setEmailType(((KimEntityEmailImpl)email).getEmailType());
 					//We do not need to check the privacy setting here - The UI should care of it
 					docEmail.setEmailAddress(email.getEmailAddressUnmasked());
 
@@ -1171,7 +1183,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	}
 	}
 
-    protected List<PersonDocumentAddress> loadAddresses(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityAddress> entityAddresses, boolean suppressDisplay ) {
+    protected List<PersonDocumentAddress> loadAddresses(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityAddressInfo> entityAddresses, boolean suppressDisplay ) {
 		List<PersonDocumentAddress> docAddresses = new ArrayList<PersonDocumentAddress>();
 		if(ObjectUtils.isNotNull(entityAddresses)){
 			for (KimEntityAddress address: entityAddresses) {

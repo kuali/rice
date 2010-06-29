@@ -156,16 +156,18 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 	protected boolean validAssignGroup(IdentityManagementGroupDocument document){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
-        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getGroupNamespace());
-        additionalPermissionDetails.put(KimAttributes.GROUP_NAME, document.getGroupName());
-		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-				document, 
-				KimConstants.NAMESPACE_CODE, 
-				KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
-				GlobalVariables.getUserSession().getPrincipalId(), 
-				additionalPermissionDetails, null)){
-            rulePassed = false;
-		}
+        if (!StringUtils.isEmpty(document.getGroupNamespace())) {
+        	additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getGroupNamespace());
+        	additionalPermissionDetails.put(KimAttributes.GROUP_NAME, document.getGroupName());
+        	if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
+        			document, 
+        			KimConstants.NAMESPACE_CODE, 
+        			KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
+        			GlobalVariables.getUserSession().getPrincipalId(), 
+        			additionalPermissionDetails, null)){
+        		rulePassed = false;
+        	}
+        }
 		return rulePassed;
 	}
 

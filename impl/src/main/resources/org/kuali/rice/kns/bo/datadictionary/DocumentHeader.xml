@@ -39,7 +39,7 @@
   <bean id="DocumentHeader-documentDescription" parent="DocumentHeader-documentDescription-parentBean"/>
 
   <bean id="DocumentHeader-documentDescription-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="false"/>
+    <property name="forceUppercase" value="true"/>
     <property name="shortLabel" value="Description"/>
     <property name="maxLength" value="40"/>
     <property name="required" value="true"/>

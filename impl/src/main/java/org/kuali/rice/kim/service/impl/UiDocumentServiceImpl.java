@@ -1076,7 +1076,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				if(phone.isActive()){
 					PersonDocumentPhone docPhone = new PersonDocumentPhone();
 					docPhone.setPhoneTypeCode(phone.getPhoneTypeCode());
-					docPhone.setPhoneType(((KimEntityPhoneImpl)phone).getPhoneType());
+					//docPhone.setPhoneType(((KimEntityPhoneImpl)phone).getPhoneType());
 					docPhone.setEntityTypeCode(phone.getEntityTypeCode());
 					//We do not need to check the privacy setting here - The UI should care of it
 					docPhone.setPhoneNumber(phone.getPhoneNumberUnmasked());
@@ -1191,7 +1191,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					PersonDocumentAddress docAddress = new PersonDocumentAddress();
 					docAddress.setEntityTypeCode(address.getEntityTypeCode());
 					docAddress.setAddressTypeCode(address.getAddressTypeCode());
-					docAddress.setAddressType(((KimEntityAddressImpl)address).getAddressType());
+					
 					//We do not need to check the privacy setting here - The UI should care of it
 					docAddress.setLine1(address.getLine1Unmasked());
 					docAddress.setLine2(address.getLine2Unmasked());

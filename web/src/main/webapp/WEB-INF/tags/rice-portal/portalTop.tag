@@ -27,11 +27,11 @@
 </c:forEach>
 <c:forEach items="${fn:split(ConfigProperties.portal.javascript.files, ',')}" var="javascriptFile">
 	<c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
-        <script language="JavaScript" type="text/javascript" src="${ConfigProperties.application.url}/${fn:trim(javascriptFile)}"></script>
+        <script type="text/javascript" src="${ConfigProperties.application.url}/${fn:trim(javascriptFile)}"></script>
 	</c:if>
 </c:forEach> 
 
-<script language="javascript" >
+<script type="text/javascript" >
 if (top.location != self.location) {
 	top.location = self.location;
 }

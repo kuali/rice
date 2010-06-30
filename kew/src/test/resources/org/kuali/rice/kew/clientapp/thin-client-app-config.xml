@@ -5,10 +5,10 @@
     <!--                                                                    -->
 
     <!-- remote service URLs -->
-    <param name="workflowdocument.javaservice.endpoint">http://localhost:9952/en-test/remoting/WorkflowDocumentActionsService</param>
-    <param name="workflowutility.javaservice.endpoint">http://localhost:9952/en-test/remoting/WorkflowUtilityService</param>
-    <param name="identity.javaservice.endpoint">http://localhost:9952/en-test/remoting/kimIdentityService</param>
-    <param name="group.javaservice.endpoint">http://localhost:9952/en-test/remoting/kimGroupService</param>
+    <param name="workflowdocument.javaservice.endpoint">${kew.url.host}:${http.service.port}/en-test/remoting/WorkflowDocumentActionsService</param>
+    <param name="workflowutility.javaservice.endpoint">${kew.url.host}:${http.service.port}/en-test/remoting/WorkflowUtilityService</param>
+    <param name="identity.javaservice.endpoint">${kew.url.host}:${http.service.port}/en-test/remoting/kimIdentityService</param>
+    <param name="group.javaservice.endpoint">${kew.url.host}:${http.service.port}/en-test/remoting/kimGroupService</param>
 
     <!-- required for message signing -->
     <param name="keystore.alias">rice</param>

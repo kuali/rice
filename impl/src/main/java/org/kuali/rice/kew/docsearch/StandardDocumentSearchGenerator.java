@@ -1185,7 +1185,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         String sqlSuffix = ") FINAL_SEARCH order by FINAL_SEARCH.DOC_HDR_ID desc";
         // the DISTINCT here is important as it filters out duplicate rows which could occur as the result of doc search extension values...
         StringBuffer selectSQL = new StringBuffer("select DISTINCT("+ docHeaderTableAlias +".DOC_HDR_ID), "+ docHeaderTableAlias +".INITR_PRNCPL_ID, "
-        		+ docHeaderTableAlias +".DOC_HDR_STAT_CD, "+ docHeaderTableAlias +".CRTE_DT, "+ docHeaderTableAlias +".TTL, "+ docTypeTableAlias +".DOC_TYP_NM, "
+        		+ docHeaderTableAlias +".DOC_HDR_STAT_CD, "+ docHeaderTableAlias +".CRTE_DT, "+ docHeaderTableAlias +".TTL, "+ docHeaderTableAlias +".APP_DOC_STAT, "+ docTypeTableAlias +".DOC_TYP_NM, "
                 + docTypeTableAlias +".LBL, "+ docTypeTableAlias +".DOC_HDLR_URL, "+ docTypeTableAlias +".ACTV_IND");
         StringBuffer fromSQL = new StringBuffer(" from KREW_DOC_TYP_T "+ docTypeTableAlias +" ");
         StringBuffer fromSQLForDocHeaderTable = new StringBuffer(", KREW_DOC_HDR_T " + docHeaderTableAlias + " ");

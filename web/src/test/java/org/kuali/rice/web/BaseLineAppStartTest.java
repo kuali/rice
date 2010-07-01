@@ -28,8 +28,7 @@ public class BaseLineAppStartTest extends ServerTestBase {
 
     @Test public void testHomePage() throws Exception {
         final WebClient webClient = new WebClient();
-        final URL url = new URL(HtmlUnitUtil.BASE_URL);
-        final HtmlPage page = (HtmlPage)webClient.getPage(url);
+        final HtmlPage page = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL);
         assertEquals(HTML_PAGE_TITLE_TEXT, page.getTitleText() );
     }
     

@@ -38,7 +38,7 @@ if (top.location != self.location) {
 </script>
 
 </head>
-<body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
+<body>
 
  <div id="header" title="Kuali Rice"> 
     <h1 class="kfs"></h1>Kuali Rice

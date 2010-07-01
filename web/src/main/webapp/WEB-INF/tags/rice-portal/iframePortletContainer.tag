@@ -17,11 +17,75 @@
 
 <%@ attribute name="channelTitle" required="true" %>
 <%@ attribute name="channelUrl" required="true" %>
-<%@ attribute name="frameHeight" required="false" %>
 
-<c:if test="${empty frameHeight}">
-  <c:set var="frameHeight" value="500"/>
-</c:if>
+<iframe src="${channelUrl}" onload='<c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>' name="iframeportlet" id="iframeportlet" style="height: 100%; width: 100%" title="E-Doc" frameborder="0" height="100%" scrolling="auto" width="100%"></iframe>                   
 
-<iframe src="${channelUrl}" onload='setFocusedIframeDimensions("iframeportlet", ${frameHeight}, true); <c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>' name="iframeportlet" id="iframeportlet" hspace="0" vspace="0" style="height: ${frameHeight}px;" title="E-Doc" frameborder="0" height="${frameHeight}" scrolling="auto" width="100%"></iframe>
-                     
+<%-- may want to move this to a script a js file at some point.  right now though this is very specific to this tag --%>
+<script type="text/javascript">
+  /* <![CDATA[ */
+  /** "namespacing" the portlet resize elements. */
+  var org$kuali$rice$portletResize = function() {
+
+    /** gets the portlet iframe. */
+    function getPortlet() {
+      return document.getElementById('iframeportlet');
+    }
+
+    /** gets the portlet container. */
+    function getPortletContainer() {
+      return document.getElementById('iframe_portlet_container_div');
+    }
+
+    /** gets the current height of the passed in frame in numeric form (ex: 500). */
+    function getFrameHeight(frame) {
+      if (frame.contentDocument){
+        //using the offsetHeight to set the correct height for IE
+        return frame.contentDocument.body.offsetHeight + 35;
+      } else {
+        return frame.contentWindow.document.body.scrollHeight;
+      }
+    }
+
+    /** sets the portlet container's height. */
+    function setContainerHeight() {
+      var height = '500';
+      try {
+         height = getFrameHeight(getPortlet());
+      } catch (e) {
+          //fallback for crossdomain permission problems.
+          height = '500';
+      }
+
+      getPortletContainer().style.height = height + 'px';
+    }
+
+    /* resizes the portlet container to fit the size of the porlet. */
+    function resizePortletContainer() {
+      setContainerHeight();
+      //width handling needs some work
+      //setContainerWidth();
+    }
+
+    //registering event handlers...
+    var frame = getPortlet();
+    var prevPortletLoadEvent = frame.onload ? frame.onload : function () {};
+    frame.onload = function () {prevPortletLoadEvent(); resizePortletContainer(); };
+
+    var prevPortletResizeEvent = frame.onresize ? frame.onresize : function () {};
+    var onresize = function () {prevPortletResizeEvent(); resizePortletContainer(); };
+    //IE may not raise an onresize event for frames...not a big deal b/c of the setInterval logic
+    frame.onresize = onresize;
+
+    //this is necessary because dynamically generated content on the page does not trigger
+    //an onresize event
+    setInterval (onresize, 500);
+
+    //no public functions at this time...
+    return {
+
+    };
+
+  //executing the function...
+  }();
+  /* ]]> */
+</script>

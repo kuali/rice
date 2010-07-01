@@ -13,51 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-window.onerror=myErrorHandler;
-function myErrorHandler() {
-    return true;
-}
-function getDocHeight(doc) {
-  var docHt = 0, sh, oh;
-  if (doc.height) {
-    docHt = doc.height;
-  } else if (doc.body) {
-    if (doc.body.offsetHeight) { docHt = oh = 0; } //doc.body.offsetHeight;
-    if (doc.body.scrollHeight) { docHt = sh = doc.body.scrollHeight; }
-    if (sh && oh) { docHt = Math.max(sh, oh); }
-  }
-  return docHt;
-}
-function setIframeHeight(iframeName, pubHeight) {
-  var iframeWin = window.frames[iframeName];
-  var iframeEl = document.getElementById? document.getElementById(iframeName): document.all? document.all[iframeName]: null;
-  if (!iframeEl) {
-    iframeEl = document.getElementById('focused_frame');
-  }
-  if ( iframeEl && iframeWin ) {
-    iframeEl.style.height = pubHeight + "px";
-    var docHt = getDocHeight(iframeWin.document);
-    if (docHt) {
-      if(docHt>pubHeight){
-      	iframeEl.style.height = docHt + 30 + "px";
-      }
-    }
-  }
-}
-function setFocusedIframeHeight(iframeName, focusHeight) {
-  var iframeWin = window.frames[iframeName];
-  var iframeEl = document.getElementById? document.getElementById(iframeName): document.all? document.all[iframeName]: null;
-  if (!iframeEl) {
-    iframeEl = document.getElementById('focused_frame');
-  }
-  if ( iframeEl && iframeWin ) {
-    iframeEl.style.height = focusHeight + "px";
-    var docHt = getDocHeight(iframeWin.document);
-    if (docHt && docHt > focusHeight) {
-      iframeEl.style.height = docHt + 30 + "px";
-    }
-  }
-}
 var isChanged = 0;
 function ieKeyPress() {
    return;

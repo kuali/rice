@@ -28,7 +28,6 @@ import org.jdom.Element;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
@@ -50,8 +49,12 @@ import org.kuali.rice.kns.util.KNSConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class RuleDelegationServiceImpl implements RuleDelegationService {
+	
 
     private static final String USING_RULE_DLGN_CACHE_IND = "CACHING_IND";
+    private static final String RULE_DLGN_GROUP_CACHE = "org.kuali.rice.kew.rule.RuleDlgnCache";
+
+
     
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 			.getLogger(RuleDelegationServiceImpl.class);
@@ -165,7 +168,9 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
         return (RuleTemplateService)KEWServiceLocator.getRuleTemplateService();
     }
     
-        public List findByResponsibilityId(Long responsibilityId, boolean ignoreCache) {
+
+    
+    public List findByResponsibilityId(Long responsibilityId, boolean ignoreCache) {
     	if ( responsibilityId != null ) {
     		PerformanceLogger performanceLogger = new PerformanceLogger();
     		Boolean cachingRules = Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_DLGN_CACHE_IND));
@@ -193,7 +198,9 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
     protected void putListInCache(Long responsibilityId, List<RuleDelegation> rules) {
     	String responsibilityIdStr = responsibilityId.toString();
         LOG.info("Caching " + rules.size() + " rules for responsibilityId=" + responsibilityIdStr );
-        KEWServiceLocator.getCacheAdministrator().putInCache(getRuleDlgnCacheKey(responsibilityIdStr), rules);
+
+        KEWServiceLocator.getCacheAdministrator().putInCache(getRuleDlgnCacheKey(responsibilityIdStr), rules, RULE_DLGN_GROUP_CACHE);
+
     }
     
     protected List<RuleDelegation> getListFromCache(Long responsibilityId) {
@@ -205,4 +212,13 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
     protected String getRuleDlgnCacheKey(String responsibilityIdStr) {
         return "RuleDlgnCache:" + responsibilityIdStr;
     }
+    
+   
+    public void flushRuleDlgnCache() {
+        LOG.info("Flushing entire Rule Delegation Cache.");
+        KEWServiceLocator.getCacheAdministrator().flushGroup(RULE_DLGN_GROUP_CACHE);
+    }
+    
+
+    
 }

@@ -52,7 +52,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
     /**
      * Location of default/automatic Log4J configuration properties, in Spring ResourceUtils resource/url syntax
      */
-    private static final String AUTOMATIC_LOGGING_CONFIG_URL = "classpath:default-log4j.properties";
+    private static final String AUTOMATIC_LOGGING_CONFIG_URL = "classpath:org/kuali/rice/core/logging/default-log4j.properties";
 
     /**
      * Default settings reload interval to use in the case that the settings are reloadable (i.e. they originate from a file)

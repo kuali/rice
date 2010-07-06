@@ -3,7 +3,7 @@
 
     <param name="kcb.url">this is a fake kcb.url from kcb-test-config.xml</param>
     <param name="kcb.smtp.host">this is a fake kcb.smtp.host from kcb-test-config.xml</param>
-/en/
+
     <!-- for tests send document immediately to exception routing -->
     <param name="Routing.ImmediateExceptionRouting">true</param>
 

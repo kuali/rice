@@ -1595,9 +1595,17 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         	 * 
         	 */
     		
-        	long docRouteLevelLong = Long.parseLong(docRouteLevel);
-    		RouteNode searchCriteriaRouteNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(docRouteLevelLong);
-    		String searchCriteriaRouteNodeName = searchCriteriaRouteNode.getRouteNodeName();
+        	String searchCriteriaRouteNodeName = "";
+        	try {
+        		long docRouteLevelLong = Long.parseLong(docRouteLevel);
+        		RouteNode searchCriteriaRouteNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(docRouteLevelLong);
+        		
+        		if (searchCriteriaRouteNode != null) {
+        			searchCriteriaRouteNodeName = searchCriteriaRouteNode.getRouteNodeName();
+        		}
+        	} catch (java.lang.NumberFormatException e) {
+        		searchCriteriaRouteNodeName = docRouteLevel;
+        	}
     				
             StringBuffer routeNodeCriteria = new StringBuffer("and " + ROUTE_NODE_TABLE + ".NM ");
             if (KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIER_EXACT.equalsIgnoreCase(docRouteLevelLogic.trim())) {

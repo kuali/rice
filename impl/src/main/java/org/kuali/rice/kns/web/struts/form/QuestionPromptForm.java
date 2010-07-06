@@ -32,7 +32,6 @@ import org.kuali.rice.kns.util.WebUtils;
  */
 public class QuestionPromptForm extends KualiForm {
     private static final long serialVersionUID = 1L;
-    private String backLocation;
     private ArrayList buttons;
     private String caller;
 
@@ -74,13 +73,6 @@ public class QuestionPromptForm extends KualiForm {
      */
     public void setShowReasonField(String showReasonField) {
         this.showReasonField = showReasonField;
-    }
-
-    /**
-     * @return Returns the backLocation.
-     */
-    public String getBackLocation() {
-        return backLocation;
     }
 
     /**
@@ -174,13 +166,6 @@ public class QuestionPromptForm extends KualiForm {
                 buttons = kualiQuestion.getButtons();
             }
         }
-    }
-
-    /**
-     * @param backLocation The backLocation to set.
-     */
-    public void setBackLocation(String backLocation) {
-        this.backLocation = backLocation;
     }
 
     /**

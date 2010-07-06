@@ -44,7 +44,6 @@ public class LookupForm extends KualiForm {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupForm.class);
 
     private String formKey;
-    private String backLocation;
     private Map<String, String> fields;
     private Map fieldsForLookup;
     private String lookupableImplServiceName;
@@ -324,8 +323,8 @@ public class LookupForm extends KualiForm {
 
             // if showMaintenanceLinks is not already true, only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
             if (!isShowMaintenanceLinks()) {
-            	if (StringUtils.contains(backLocation, "/"+KNSConstants.PORTAL_ACTION) 
-            			|| StringUtils.contains(backLocation, "/index.html")) {
+            	if (StringUtils.contains(getBackLocation(), "/"+KNSConstants.PORTAL_ACTION) 
+            			|| StringUtils.contains(getBackLocation(), "/index.html")) {
             		showMaintenanceLinks = true;
             	}
             }
@@ -348,21 +347,6 @@ public class LookupForm extends KualiForm {
      */
     public void setLookupableImplServiceName(String lookupableImplServiceName) {
         this.lookupableImplServiceName = lookupableImplServiceName;
-    }
-
-
-    /**
-     * @return Returns the backLocation.
-     */
-    public String getBackLocation() {
-        return backLocation;
-    }
-
-    /**
-     * @param backLocation The backLocation to set.
-     */
-    public void setBackLocation(String backLocation) {
-        this.backLocation = backLocation;
     }
 
     /**

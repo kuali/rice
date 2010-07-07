@@ -154,7 +154,7 @@
 		-->
 
 		<echo message="(COVERAGE): installing clean version of rice to maven repo" />
-		<maven goals="clean install" options="-Dmaven.repo.local=${M2_REPO} -DskipTests -Dalt.config.location=${env.WORKSPACE}/${alt.config.location} -Dalt.log4j.config.location=${env.WORKSPACE}/${alt.log4j.config.location}"/>
+		<maven goals="clean install" options="-Dmaven.repo.local='${M2_REPO}' -DskipTests -Dalt.config.location=${env.WORKSPACE}/${alt.config.location} -Dalt.log4j.config.location=${env.WORKSPACE}/${alt.log4j.config.location}"/>
 
 		<echo message="(COVERAGE): copying repository files into alt repo" />
 		<copy todir="${coverage.m2repo}">

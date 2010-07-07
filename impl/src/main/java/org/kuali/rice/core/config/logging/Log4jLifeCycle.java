@@ -63,7 +63,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
      * Does file at LOG4J_SETTINGS_PATH exist?
      */
     private boolean log4jFileExists;
-    
+
     /**
      * Non-static and non-final so that it can be reset after configuration is read
      */
@@ -72,9 +72,9 @@ public class Log4jLifeCycle extends BaseLifecycle {
 	public void start() throws Exception {
         // obtain the root workflow config
 		Config config = ConfigContext.getRootConfig();
-		
-		log4jFileExists = checkPropertiesFileExists(Config.LOG4J_SETTINGS_PATH);
-		
+
+		log4jFileExists = checkPropertiesFileExists(config.getProperty(Config.LOG4J_SETTINGS_PATH));
+
         // first check for in-line xml configuration
 		String log4jconfig = config.getProperty(Config.LOG4J_SETTINGS_XML);
 		if (log4jconfig != null) {
@@ -100,6 +100,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
         // check for an external file location specification
 		} else if (log4jFileExists) {
 			log.info("Configuring Log4J logging.");
+			log4jconfig = config.getProperty(Config.LOG4J_SETTINGS_PATH);
 
             int reloadInterval = DEFAULT_RELOAD_INTERVAL;
 
@@ -137,12 +138,12 @@ public class Log4jLifeCycle extends BaseLifecycle {
 
     /**
 	 * This method ...
-	 * 
+	 *
 	 * @param log4jSettingsPath
 	 */
 	private boolean checkPropertiesFileExists(String log4jSettingsPath) {
 		File log4jProps = new File(log4jSettingsPath);
-		
+
 		return log4jProps.exists();
 	}
 
@@ -161,7 +162,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
     /**
      * Subclasses the Spring Log4jConfigurer to expose a static method which accepts an initial set of
      * properties (to use for variable substitution)
-     * 
+     *
  * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private static final class WorkflowLog4j_1_2_13_Configurer extends Log4jConfigurer {
@@ -220,9 +221,9 @@ public class Log4jLifeCycle extends BaseLifecycle {
     public void stop() throws Exception {
     	// commenting out LogManager.shutdown() for now because it kills logging before shutdown of the rest of the system is complete
     	// so if there are other errors that are encountered during shutdown, they won't be logged!
-    	
+
     	// move this to the standalone initialize listener instead
-    	
+
 		//LogManager.shutdown();
 		super.stop();
 	}

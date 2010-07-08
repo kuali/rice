@@ -169,9 +169,11 @@ public class KimCommonUtils {
     				service = null;
     			}
     		}
-	    	synchronized (kimTypeServiceCache) {
-				kimTypeServiceCache.put(serviceName, service);
-			}
+	    	if (service != null) {
+		    	synchronized (kimTypeServiceCache) {
+					kimTypeServiceCache.put(serviceName, service);
+				}
+	    	}
     	} else {
     		LOG.warn( "Blank service name passed into getKimTypeService" );
     	}

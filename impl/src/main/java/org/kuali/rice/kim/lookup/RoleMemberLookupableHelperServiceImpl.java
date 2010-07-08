@@ -153,13 +153,13 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     	Map<String, String> searchCriteria;
     	
     	// TODO KULRICE-4249
-    	// Refactor to get Principals through Identity Service to take into account that institutions 
-    	// may override with their own implementations, and therefore the source system from which
-    	// Principals should be retrieved. 
+    	// Refactor to get Principals through Identity Management Service to take into account that 
+    	// institutions may override with their own implementations, and therefore the source system 
+    	// from which Principals should be retrieved. 
     	List<KimPrincipalInfo> principals = null;
     	if(StringUtils.isNotEmpty(assignedToPrincipalName)){
         	principals = 
-        		(List<KimPrincipalInfo>)KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(WILDCARD+assignedToPrincipalName+WILDCARD);
+        		(List<KimPrincipalInfo>)KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(WILDCARD+assignedToPrincipalName+WILDCARD);
         	if(principals==null || principals.isEmpty())
         		return null;
     	}
@@ -216,7 +216,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         if(principals!=null){
         	memberQueryString = new StringBuffer();
         	// TODO KULRICE-4249
-        	// Use KimPrincipalInfo instead of KimPrincipalImpl, since that is what is returned by the Identity Service
+        	// Use KimPrincipalInfo instead of KimPrincipalImpl, since that is what is returned by the Identity Management Service
         	// for(KimPrincipalImpl principal: principals){
         	for(KimPrincipalInfo principal: principals){
         		memberQueryString.append(principal.getPrincipalId()+KimConstants.KimUIConstants.OR_OPERATOR);

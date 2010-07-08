@@ -145,16 +145,9 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 	 */
 	@Override
 	protected List<Lifecycle> getSuiteLifecycles() {
-		Config cfgCtx = null;
-		try {
-			cfgCtx = getTestHarnessConfig();
-		} catch (Exception e) {
-			log.error("Caught exception attempting to load test harness prior to aggregating suite lifecycles.");
-		}
-		int port = Integer.parseInt(cfgCtx.getProperty(KEWConstants.HTTP_SERVICE_PORT));
-		String serverContext = cfgCtx.getProperty(KEWConstants.KEW_SERVER_CONTEXT);
+		
 		List<Lifecycle> lifeCycles = super.getSuiteLifecycles();
-		lifeCycles.add( buildJettyServer(port, serverContext, getJettyServerRelativeWebappRoot()));
+		lifeCycles.add( buildJettyServer(getJettyServerPort(), getJettyServerContextName(), getJettyServerRelativeWebappRoot()));
 		lifeCycles.add(new InitializeGRL());
 		lifeCycles.add(new BaseLifecycle() {
 			public void start() throws Exception {
@@ -185,12 +178,23 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 	 * tests
 	 */
 	protected int getJettyServerPort() {
-		return Integer.parseInt(
-				ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.HTTP_SERVICE_PORT));
+		Config cfgCtx = null;
+		try {
+			cfgCtx = getTestHarnessConfig();
+		} catch (Exception e) {
+			log.error("Caught exception attempting to load test harness prior to aggregating suite lifecycles.");
+		}
+		return Integer.parseInt(cfgCtx.getProperty(KEWConstants.HTTP_SERVICE_PORT));
 	}
-	
+
 	protected String getJettyServerContextName() {
-		return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.KEW_SERVER_CONTEXT);
+		Config cfgCtx = null;
+		try {
+			cfgCtx = getTestHarnessConfig();
+		} catch (Exception e) {
+			log.error("Caught exception attempting to load test harness prior to aggregating suite lifecycles.");
+		}
+		return cfgCtx.getProperty(KEWConstants.KEW_SERVER_CONTEXT);		
 	}
 
 	protected String getJettyServerRelativeWebappRoot() {

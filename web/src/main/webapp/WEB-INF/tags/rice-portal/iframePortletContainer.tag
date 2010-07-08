@@ -47,12 +47,12 @@
     /** gets the current height of the passed in frame in numeric form (ex: 500). */
     function getFrameHeight(frame) {
 
-      //if (frame.contentDocument){
-        //using the offsetHeight to set the correct height for IE
-      //  return frame.contentDocument.body.offsetHeight;
-     // } else {
+      if (frame.contentWindow){
         return frame.contentWindow.document.body.scrollHeight;
-     // }
+      } else {
+        //using the offsetHeight to set the correct height for IE
+        return frame.contentDocument.body.offsetHeight;
+      }
     }
 
     /** sets the portlet container's height. */

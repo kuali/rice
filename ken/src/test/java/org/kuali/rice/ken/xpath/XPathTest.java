@@ -25,6 +25,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.xerces.jaxp.JAXPConstants;
 import org.junit.Test;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.DocumentNamespaceContext;
@@ -35,7 +36,6 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import com.sun.org.apache.xerces.internal.jaxp.JAXPConstants;
 
 /**
  * Unit test that tests the affects of various document parsing (DocumentBuilderFactory)

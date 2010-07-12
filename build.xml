@@ -209,8 +209,8 @@
             <arg value="${project.dir}/scripts/merge_module_classpaths.groovy"/>
 			<arg value="${project.dir}"/>
 			<classpath>
-                <fileset dir="${project.dir}/scripts/">
-                    <include name="groovy-*/lib/*.jar" />
+                <fileset dir="${env.GROOVY_HOME}/lib">
+                    <include name="*.jar" />
                 </fileset>
             </classpath>
         </java>

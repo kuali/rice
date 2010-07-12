@@ -37,6 +37,11 @@ public class EDLContext {
 	private RequestParser requestParser;
 	private boolean inError;
 	private UserAction userAction;
+	private String redirectUrl;
+	
+	public EDLContext() {
+		redirectUrl = null;
+	}
 	
 	public UserSession getUserSession() {
 		return userSession;
@@ -79,6 +84,14 @@ public class EDLContext {
 	}
 	public void setUserAction(UserAction userAction) {
 	    this.userAction = userAction;
+	}
+
+	public String getRedirectUrl() {
+		return redirectUrl;
+	}
+
+	public void setRedirectUrl(String redirectUrl) {
+		this.redirectUrl = redirectUrl;
 	}	
 	
 }

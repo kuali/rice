@@ -454,6 +454,9 @@ function validateOnSubmit(form) {
 		  return false; // submit will not take place.
 		}  
     }
+	if ( buttonTitle == 'performLookup' ) {
+		return true; // when doing a lookup, do not perform validation
+	}
 	// do form validation.
     var  errs = validateForm();
 	if (errs > 1) {

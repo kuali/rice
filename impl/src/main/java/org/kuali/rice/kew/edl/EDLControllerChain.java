@@ -24,6 +24,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.session.UserSession;
@@ -62,6 +63,11 @@ public class EDLControllerChain {
 	}
 
 	private void transform(EDLContext edlContext, Document dom, HttpServletResponse response) throws Exception {
+		if (StringUtils.isNotBlank(edlContext.getRedirectUrl())) {
+			response.sendRedirect(edlContext.getRedirectUrl());
+			return;
+		}
+	    response.setContentType("text/html; charset=UTF-8");
 		Transformer transformer = edlContext.getTransformer();
 
         transformer.setOutputProperty("indent", "yes");

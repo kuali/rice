@@ -38,6 +38,7 @@ public class UserAction {
     public static final String ACTION_COMPLETE = "complete";
     public static final String ACTION_DELETE = "delete";
     public static final String ACTION_RETURN_TO_PREVIOUS = "returnToPrevious";
+    public static final String ACTION_REFRESH_FROM_LOOKUP = "refresh";
     
     public static final String ACTION_CREATE_LABEL = "initiate";
     public static final String ACTION_LOAD_LABEL = "load";
@@ -52,6 +53,7 @@ public class UserAction {
     public static final String ACTION_COMPLETE_LABEL = "complete";
     public static final String ACTION_DELETE_LABEL = "delete";
     public static final String ACTION_RETURN_TO_PREVIOUS_LABEL = "return to previous";
+    public static final String ACTION_REFRESH_FROM_LOOKUP_LABEL = ACTION_REFRESH_FROM_LOOKUP;
     
     public static final String[] LOAD_ACTIONS = new String[] {
 	ACTION_LOAD,
@@ -120,6 +122,8 @@ public class UserAction {
 			this.action = ACTION_DELETE;
 		} else if (action.equals(ACTION_RETURN_TO_PREVIOUS_LABEL)) {
 			this.action = ACTION_RETURN_TO_PREVIOUS;
+		} else if (action.equals(ACTION_REFRESH_FROM_LOOKUP_LABEL)) {
+			this.action = ACTION_REFRESH_FROM_LOOKUP;
 		} else {
 			this.action = action;
 		}
@@ -134,7 +138,7 @@ public class UserAction {
     }
     
     public boolean isIncrementVersionAction() {
-	return !isLoadAction() && !isReplaceVersionAction();
+	return !isLoadAction() && !isReplaceVersionAction() && !ACTION_REFRESH_FROM_LOOKUP.equals(action);
     }
     
     public boolean isReplaceVersionAction() {

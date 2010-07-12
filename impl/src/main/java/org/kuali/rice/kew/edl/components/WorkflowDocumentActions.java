@@ -75,7 +75,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 		} else {
 			document = (WorkflowDocument)requestParser.getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
 			if (document == null) {
-				String docId = requestParser.getParameterValue("docId");
+				String docId = (String) requestParser.getAttribute("docId");
 				if (docId == null) {
 					LOG.info("no document found for edl " + edlContext.getEdocLiteAssociation().getEdlName());
 					return;

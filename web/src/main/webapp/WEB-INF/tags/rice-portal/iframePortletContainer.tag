@@ -20,7 +20,11 @@
 
 <iframe src="${channelUrl}" onload='<c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>' name="iframeportlet" id="iframeportlet" style="height: 500px; width: 100%" title="E-Doc" frameborder="0" height="500px" scrolling="auto" width="100%"></iframe>                   
 
-<%-- may want to move this to a script a js file at some point.  right now though this is very specific to this tag --%>
+<%-- 
+  May want to move this to a script a js file at some point.
+  Right now though this is very specific to this tag.  This was
+  very simple logic until it came to supporting IE :-(
+--%>
 <script type="text/javascript">
   /* <![CDATA[ */
   /** "namespacing" the portlet resize elements. */
@@ -44,9 +48,8 @@
       return document.getElementById('iframe_portlet_container_div');
     }
 
-    /** gets the current height of the passed in frame in numeric form (ex: 500). */
+    /** gets the current height of the passed in frame in numeric form (ex: 500). Could generate a permission exception.  */
     function getFrameHeight(frame) {
-
       if (frame.contentWindow){
         return frame.contentWindow.document.body.scrollHeight;
       } else {
@@ -57,16 +60,16 @@
 
     /** sets the portlet container's height. */
     function setContainerHeight() {
+      //reset the height to shrink the scroll height.  For the usecase where the portlet's contents got smaller.
+      getPortlet().style.height = '0px';
+      getPortlet().height = '0px';
+      
       var height = '500';
       try {
-      	 //reset the height to shrink the scroll height.  For the usecase where the portlet's contents got smaller.
-         getPortlet().style.height = '0px';
-         getPortlet().height = '0px';
-      
          height = getFrameHeight(getPortlet());
       } catch (e) {
-          //fallback for crossdomain permission problems.
-          height = '500';
+        //fallback for crossdomain permission problems.
+        height = '500';
       }
 
       //set the portlet & portlet container to be the same height - not using 100% for the portlet to avoid the inner scrollbar
@@ -74,12 +77,34 @@
       getPortlet().style.height = (height + getHorScrollBarHeight()) + 'px';
       getPortlet().height = (height + getHorScrollBarHeight()) + 'px';
     }
+    
+    /** 
+      * Checks if the portlet container's height has changed.
+      * If a permission exception occurs then the function returns true.
+      * This check is necessary for IE - otherwise control is lost on
+      * dropdown menus when the portlet is resized - weird.
+     */
+    function hasContainerHeightChanged() {
+      var height;
+      try {
+        height = getFrameHeight(getPortlet());
+      } catch (e) {
+      	return true;
+      }
+      var conHeight = getPortletContainer().style.height;
+      return conHeight != height + 'px';
+    }
 
     /* resizes the portlet container to fit the size of the porlet. */
     function resizePortletContainer() {
-      setContainerHeight();
+      if (hasContainerHeightChanged()) {
+        setContainerHeight();
+      }
+
       //width handling needs some work
-      //setContainerWidth();
+      //if (hasContainerWidthChanged()) {
+        //setContainerWidth();
+      //}
     }
 
     //registering event handlers...

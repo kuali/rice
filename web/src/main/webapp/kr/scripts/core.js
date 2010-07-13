@@ -51,7 +51,7 @@ function doToAllTabs(func) {
 }
 
 function showTab(doc, tabKey) {
-    if (!doc.getElementById('tab-' + tabKey + '-div')) {
+    if (!doc.getElementById('tab-' + tabKey + '-div') || !doc.getElementById('tab-' + tabKey + '-imageToggle')) {
 		return false;
 	}
 	
@@ -68,7 +68,7 @@ function showTab(doc, tabKey) {
 }
 
 function hideTab(doc, tabKey) {
-	if (!doc.getElementById('tab-' + tabKey + '-div')) {
+    if (!doc.getElementById('tab-' + tabKey + '-div') || !doc.getElementById('tab-' + tabKey + '-imageToggle')) {
 		return false;
 	}
 	

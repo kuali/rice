@@ -17,10 +17,11 @@ package org.kuali.rice.kns.service;
 
 import java.util.List;
 
-import org.kuali.rice.kns.authorization.BusinessObjectAuthorizer;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
 import org.kuali.rice.kns.inquiry.InquiryPresentationController;
+import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 
 
 /**
@@ -28,7 +29,7 @@ import org.kuali.rice.kns.inquiry.InquiryPresentationController;
  */
 public interface BusinessObjectDictionaryService {
 	public <T extends BusinessObject> InquiryPresentationController getInquiryPresentationController(Class<T> businessObjectClass);
-	
+
 	public <T extends BusinessObject> InquiryAuthorizer getInquiryAuthorizer(Class<T> businessObjectClass);
 
     /**
@@ -59,7 +60,7 @@ public interface BusinessObjectDictionaryService {
      * indicates whether business object has an exporter defined
      */
     public Boolean isExportable(Class businessObjectClass);
-    
+
     /**
      * the list defined as lookup fields for the business object.
      */
@@ -76,7 +77,7 @@ public interface BusinessObjectDictionaryService {
      * menu bar html defined for the business object.
      */
     public String getLookupMenuBar(Class businessObjectClass);
-    
+
 
     /**
      * source for optional extra button
@@ -134,7 +135,7 @@ public interface BusinessObjectDictionaryService {
      * returns boolean indicating whether lookup search field marked to force an inquiry
      */
     public Boolean forceInquiryFieldLookup(Class businessObjectClass, String attributeName);
-    
+
     /**
      * returns boolean indicating whether lookup search field marked to not do a lookup
      */
@@ -172,6 +173,19 @@ public interface BusinessObjectDictionaryService {
      * returns Class used to generate a lookup field default value
      */
     public Class getLookupFieldDefaultValueFinderClass(Class businessObjectClass, String attributeName);
+
+    /**
+     * See {@link FieldDefinition#getQuickfinderParameterString()}.
+     * returns String indicating the default search value for the lookup field.
+     */
+    public String getLookupFieldQuickfinderParameterString(Class businessObjectClass, String attributeName);
+
+
+    /**
+     * returns Class used to generate quickfinder lookup field default values.
+     * See {@link FieldDefinition#getQuickfinderParameterStringBuilderClass()}.
+     */
+    public Class<? extends ValueFinder> getLookupFieldQuickfinderParameterStringBuilderClass(Class businessObjectClass, String attributeName);
 
 
     /**
@@ -244,7 +258,7 @@ public interface BusinessObjectDictionaryService {
 
     /**
      * returns whether on a lookup, field/attribute values with wildcards and operators should treat them as literal characters
-     * 
+     *
      * @param businessObjectClass
      * @param attributeName
      * @return

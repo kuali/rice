@@ -33,6 +33,7 @@ import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.SupportAttributeDefinition;
+import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -85,6 +86,21 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 			Class businessObjectClass, String attributeName) {
 		return businessObjectDictionaryService
 				.getLookupFieldDefaultValueFinderClass(businessObjectClass,
+						attributeName);
+	}
+
+	/** {@inheritDoc} */
+	public String getLookupFieldQuickfinderParameterString(Class businessObjectClass,
+			String attributeName) {
+		return businessObjectDictionaryService.getLookupFieldQuickfinderParameterString(
+				businessObjectClass, attributeName);
+	}
+
+	/** {@inheritDoc} */
+	public Class<? extends ValueFinder> getLookupFieldQuickfinderParameterStringBuilderClass(
+			Class businessObjectClass, String attributeName) {
+		return businessObjectDictionaryService
+				.getLookupFieldQuickfinderParameterStringBuilderClass(businessObjectClass,
 						attributeName);
 	}
 
@@ -268,7 +284,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 		}
 		int maxSize = Integer.MAX_VALUE;
 		// try persistable reference first
-		if (PersistableBusinessObject.class.isAssignableFrom(boClass) && persistenceStructureService.isPersistable(boClass) ) {			
+		if (PersistableBusinessObject.class.isAssignableFrom(boClass) && persistenceStructureService.isPersistable(boClass) ) {
 			Map<String, BusinessObjectRelationship> rels = persistenceStructureService
 					.getRelationshipMetadata(boClass, attributeName,
 							attributePrefix);

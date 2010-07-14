@@ -1230,6 +1230,8 @@ public class FieldUtils {
                 field.setReadOnly(true);
             }
 
+            populateQuickfinderDefaultsForLookup(businessObjectClass, attributeName, field);
+
             if( isHiddenMap.containsKey(field.getPropertyName()) && isHiddenMap.get(field.getPropertyName()).booleanValue()){
             	field.setFieldType(Field.HIDDEN);
             	//field.setHidden(true);
@@ -1240,6 +1242,40 @@ public class FieldUtils {
         }
         return fields;
     }
+
+
+	/**
+	 * This method ...
+	 *
+	 * @param businessObjectClass
+	 * @param attributeName
+	 * @param field
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 */
+	private static void populateQuickfinderDefaultsForLookup(
+			Class businessObjectClass, String attributeName, Field field)
+			throws InstantiationException, IllegalAccessException {
+		// handle quickfinderParameterString / quickfinderParameterFinderClass
+		String quickfinderParamString = getBusinessObjectMetaDataService().getLookupFieldQuickfinderParameterString(businessObjectClass, attributeName);
+		Class<? extends ValueFinder> quickfinderParameterFinderClass =
+			getBusinessObjectMetaDataService().getLookupFieldQuickfinderParameterStringBuilderClass(businessObjectClass, attributeName);
+		if (quickfinderParameterFinderClass != null) {
+			quickfinderParamString = quickfinderParameterFinderClass.newInstance().getValue();
+		}
+
+		if (!StringUtils.isEmpty(quickfinderParamString)) {
+			String [] params = quickfinderParamString.split(",");
+			if (params != null) for (String param : params) {
+				if (param.contains(KNSConstants.LOOKUP_PARAMETER_LITERAL_DELIMITER)) {
+					String[] paramChunks = param.split(KNSConstants.LOOKUP_PARAMETER_LITERAL_DELIMITER, 2);
+					field.appendLookupParameters(
+							KNSConstants.LOOKUP_PARAMETER_LITERAL_PREFIX+KNSConstants.LOOKUP_PARAMETER_LITERAL_DELIMITER+
+							paramChunks[1]+":"+paramChunks[0]);
+				}
+			}
+		}
+	}
 
 
 	/**

@@ -42,6 +42,7 @@ import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
 import org.kuali.rice.kns.inquiry.InquiryAuthorizerBase;
 import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.inquiry.InquiryPresentationControllerBase;
+import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -150,14 +151,14 @@ public class BusinessObjectDictionaryServiceImpl implements
 
         return isMaintainable;
     }
-    
+
 
     /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isExportable(java.lang.Class)
 	 */
 	public Boolean isExportable(Class businessObjectClass) {
 		Boolean isExportable = Boolean.FALSE;
-		
+
 		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {
             isExportable = entry.getExporterClass() != null;
@@ -244,7 +245,7 @@ public class BusinessObjectDictionaryServiceImpl implements
         return buttonParams;
     }
 
-    
+
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getSearchIconOverride(java.lang.Class)
      */
@@ -261,7 +262,7 @@ public class BusinessObjectDictionaryServiceImpl implements
         return iconUrl;
     }
 
-    
+
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupDefaultSortFieldName(java.lang.Class)
      */
@@ -448,7 +449,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     public void performForceUppercase(BusinessObject bo) {
     	performForceUppercaseCycleSafe(bo, new HashSet<BusinessObject>());
     }
-    
+
     /**
      * Handles recursion for performForceUppercase in a cycle-safe manner,
      * keeping track of visited BusinessObjects to prevent infinite recursion.
@@ -896,11 +897,21 @@ public class BusinessObjectDictionaryServiceImpl implements
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldDefaultValueFinderClass(java.lang.Class,
      *      java.lang.String)
      */
-	public Class getLookupFieldDefaultValueFinderClass(
+	public Class<? extends ValueFinder> getLookupFieldDefaultValueFinderClass(
 			Class businessObjectClass, String attributeName) {
 		return getLookupFieldDefinition(businessObjectClass, attributeName)
 				.getDefaultValueFinderClass();
     }
+
+	/** {@inheritDoc} */
+	public String getLookupFieldQuickfinderParameterString(Class businessObjectClass, String attributeName) {
+		return getLookupFieldDefinition(businessObjectClass, attributeName).getQuickfinderParameterString();
+	}
+
+	/** {@inheritDoc} */
+	public Class<? extends ValueFinder> getLookupFieldQuickfinderParameterStringBuilderClass(Class businessObjectClass, String attributeName) {
+		return getLookupFieldDefinition(businessObjectClass, attributeName).getQuickfinderParameterStringBuilderClass();
+	}
 
 	public void setPersistenceStructureService(
 			PersistenceStructureService persistenceStructureService) {

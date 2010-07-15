@@ -801,11 +801,11 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
      */
     private void checkNumberFormattingIfNumeric(String testValue, boolean valueIsLong, boolean valueIsFloat) {
         if (valueIsLong) {
-            try { Long.parseLong(testValue); }
+            try { Long.parseLong(testValue.trim()); }
             catch (Exception exc) { throw new RiceRuntimeException("Invalid number format", exc); }
         }
         if (valueIsFloat) {
-            try { new BigDecimal(testValue); }
+            try { new BigDecimal(testValue.trim()); }
             catch (Exception exc) { throw new RiceRuntimeException("Invalid number format", exc); }
         }
     }

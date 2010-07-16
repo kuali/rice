@@ -208,7 +208,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 					Map<QName, List<RemotedServiceHolder>> x = this.getClients();
 					if (x != null) {
 						for (QName b : x.keySet()) {
-							System.out.println(b.getNamespaceURI() + " " + b.getLocalPart());
+							LOG.debug(b.getNamespaceURI() + " " + b.getLocalPart());
 						}
 					}
 				}

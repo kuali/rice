@@ -9,8 +9,6 @@
 	<param name="institution">iu</param>
 	<param name="version">03/19/2007 01:59 PM</param>
 
-	<param name="maintain.users.locally">true</param>
-
 	<param name="datasource.url"></param>
 	<param name="datasource.username"></param>
 	<param name="datasource.password"></param>

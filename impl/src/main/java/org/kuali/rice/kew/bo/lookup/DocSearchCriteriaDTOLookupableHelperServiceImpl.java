@@ -750,12 +750,12 @@ KualiLookupableHelperServiceImpl {
 		StringBuilder suppMenuBar = new StringBuilder();
 
 		// Add the detailed-search-toggling button.
-		suppMenuBar.append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(((").append(detailed ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO").append(
-				"#))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append(detailed ? "/images/tinybutton-basicsearch.gif\" alt=\"basic search\" title=\"basic search\" />" : "/images/tinybutton-detailedsearch.gif\" alt=\"detailed search\" title=\"detailed search\" />");
+		suppMenuBar.append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(((").append(detailed ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((`").append(superSearch ? DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING : "NO").append(
+				"`))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append(detailed ? "/images/tinybutton-basicsearch.gif\" alt=\"basic search\" title=\"basic search\" />" : "/images/tinybutton-detailedsearch.gif\" alt=\"detailed search\" title=\"detailed search\" />");
 
 		// Add the superuser-search-toggling button.
-		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(((").append((!detailed && superSearch) ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((#").append(superSearch ? "NO" : DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING).append(
-				"#))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append(superSearch ? "/images/tinybutton-nonsupusearch.gif\" alt=\"non-superuser search\" title=\"non-superuser search\" />" : "/images/tinybutton-superusersearch.gif\" alt=\"superuser search\" title=\"superuser search\" />");
+		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(((").append((!detailed && superSearch) ? "NO" : DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING).append("))).((`").append(superSearch ? "NO" : DocSearchCriteriaDTO.SUPER_USER_SEARCH_INDICATOR_STRING).append(
+				"`))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append(superSearch ? "/images/tinybutton-nonsupusearch.gif\" alt=\"non-superuser search\" title=\"non-superuser search\" />" : "/images/tinybutton-superusersearch.gif\" alt=\"superuser search\" title=\"superuser search\" />");
 
 		// Add the "clear saved searches" button.
 		suppMenuBar.append("&nbsp;").append("<input type=\"image\" name=\"methodToCall.customLookupableMethodCall.(([true]))\" class=\"tinybutton\" src=\"..").append(KEWConstants.WEBAPP_DIRECTORY).append("/images/tinybutton-clearsavedsearch.gif\" alt=\"clear saved searches\" title=\"clear saved searches\" />");

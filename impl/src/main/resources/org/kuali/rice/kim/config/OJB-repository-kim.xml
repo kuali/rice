@@ -1129,6 +1129,7 @@
     <field-descriptor name="groupTypeId" column="kim_typ_id" jdbc-type="VARCHAR"/>
     <field-descriptor name="groupNamespace" column="grp_nmspc" jdbc-type="VARCHAR"  />
     <field-descriptor name="groupName" column="grp_nm" jdbc-type="VARCHAR"  />
+    <field-descriptor name="groupDescription" column="grp_desc" jdbc-type="VARCHAR" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />

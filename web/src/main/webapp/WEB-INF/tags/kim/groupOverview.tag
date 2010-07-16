@@ -52,8 +52,10 @@
 	 	<tr>
 			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.active}"  /></div></th>
 	 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${groupAttributes.active}" readOnly="${readOnly}" /></td>
-	 		<th>&nbsp;</th>
-            <td>&nbsp;</td>
+	 		
+			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.groupDescription}"  /></div></th>
+		    <td><kul:htmlControlAttribute property="document.groupDescription" attributeEntry="${groupAttributes.groupDescription}" readOnly="${readOnly}" /></td>
+		    
 	 	</tr>
 	</table> 
 </div>

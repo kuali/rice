@@ -174,51 +174,40 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		return ADMIN_ROUTING_CACHE_PREFIX + documentType.getName() + "/" + principalId;
 	}
 	
-	public boolean canCancel(String principalId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId) {
+	public boolean canCancel(String principalId, String routeHeaderId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
 		validateRouteNodeNames(routeNodeNames);
 		validateDocumentStatus(documentStatus);
 		validatePrincipalId(initiatorPrincipalId);
 
-		String cacheKey = buildCancelCacheKey(principalId, documentType, routeNodeNames, documentStatus, initiatorPrincipalId);
-		Boolean result = (Boolean)getCacheAdministrator().getFromCache(cacheKey);
-		
-		if ( result == null ) {
-			if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_CANCEL)) {
-				List<AttributeSet> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
-				boolean foundAtLeastOnePermission = false;
-				// loop over permission details, only one of them needs to be authorized
-				for (AttributeSet permissionDetails : permissionDetailList) {
-					if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails)) {
-						foundAtLeastOnePermission = true;
-						if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails, EMPTY_ROLE_QUALIFIERS)) {
-							getCacheAdministrator().putInCache(cacheKey, Boolean.TRUE, DOC_TYPE_PERM_CACHE_GROUP);
-							return true;
-						}
+		if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_CANCEL)) {
+            List<AttributeSet> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
+            AttributeSet roleQualifiers = buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, routeHeaderId);
+
+            boolean foundAtLeastOnePermission = false;
+			// loop over permission details, only one of them needs to be authorized
+			for (AttributeSet permissionDetails : permissionDetailList) {
+				if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails)) {
+					foundAtLeastOnePermission = true;
+					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails, roleQualifiers)) {
+						return true;
 					}
 				}
-				// if we found defined KIM permissions, but not of them have authorized this user, return false
-				if (foundAtLeastOnePermission) {
-					getCacheAdministrator().putInCache(cacheKey, Boolean.FALSE, DOC_TYPE_PERM_CACHE_GROUP);
-					return false;
-				}
 			}
-			
-			if (documentType.getInitiatorMustCancelPolicy().getPolicyValue()) {
-				result = executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
-			} else {
-				result = Boolean.TRUE;
-			}			
-			getCacheAdministrator().putInCache(cacheKey, result, DOC_TYPE_PERM_CACHE_GROUP);
+			// if we found defined KIM permissions, but not of them have authorized this user, return false
+			if (foundAtLeastOnePermission) {
+				return false;
+			}
 		}
-		return result;
+		
+		if (documentType.getInitiatorMustCancelPolicy().getPolicyValue()) {
+			return executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
+		} else {
+			return true;
+		}			
 	}
 
-	protected String buildCancelCacheKey( String principalId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId ) {
-		return CANCEL_CACHE_PREFIX + documentType.getName() + "/" + documentStatus + "/" + routeNodeNames + "/" + principalId + "/" + initiatorPrincipalId;
-	}
-	
 	public boolean canInitiate(String principalId, DocumentType documentType) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);

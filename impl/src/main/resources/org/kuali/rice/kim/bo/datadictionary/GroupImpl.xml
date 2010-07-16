@@ -18,7 +18,7 @@
   <bean id="GroupImpl" parent="GroupImpl-parentBean"/>
 
   <bean id="GroupImpl-parentBean" abstract="true" parent="BusinessObjectEntry" p:businessObjectClass="org.kuali.rice.kim.bo.impl.GroupImpl" p:titleAttribute="groupId" p:objectLabel="Group" p:inquiryDefinition-ref="GroupImpl-inquiryDefinition" p:lookupDefinition-ref="GroupImpl-lookupDefinition">
-
+	<property name="exporterClass" value="org.kuali.rice.kew.export.DataExporter"/> 
     <property name="attributes">
       <list>
         <ref bean="GroupImpl-groupId"/>
@@ -28,6 +28,7 @@
         <ref bean="GroupImpl-kimTypeName"/>
         <ref bean="GroupImpl-kimTypeNamespaceCode"/>
         <ref bean="GroupImpl-active"/>
+        <ref bean="GroupImpl-groupDescription"/>
       </list>
     </property>
     <property name="collections">
@@ -58,9 +59,9 @@
   </bean>
 
   <bean id="GroupImpl-groupId" parent="GroupImpl-groupId-parentBean"/>
-  <bean id="GroupImpl-groupId-parentBean" parent="AttributeDefinition" abstract="true" p:name="groupId" p:forceUppercase="true" p:label="Group Id" p:shortLabel="Group Id" p:maxLength="10" p:required="false">
+  <bean id="GroupImpl-groupId-parentBean" parent="AttributeDefinition" abstract="true" p:name="groupId" p:forceUppercase="true" p:label="Group Id" p:shortLabel="Group Id" p:maxLength="70" p:required="false">
     <property name="control">
-      <bean parent="TextControlDefinition" p:size="10"/>
+      <bean parent="TextControlDefinition" p:size="40"/>
     </property>
   </bean>
 
@@ -84,9 +85,17 @@
   </bean>
 
   <bean id="GroupImpl-groupName" parent="GroupImpl-groupName-parentBean"/>
-  <bean id="GroupImpl-groupName-parentBean" parent="AttributeDefinition" abstract="true" p:name="groupName" p:forceUppercase="false" p:label="Group Name" p:shortLabel="Group Name" p:maxLength="40" p:required="true">
+  <bean id="GroupImpl-groupName-parentBean" parent="AttributeDefinition" abstract="true" p:name="groupName" p:forceUppercase="false" p:label="Group Name" p:shortLabel="Group Name" p:maxLength="80" p:required="true">
     <property name="control">
-      <bean parent="TextControlDefinition" p:size="40"/>
+      <bean parent="TextControlDefinition" p:size="50"/>
+    </property>
+  </bean>
+
+	<!-- Added Group Description -->
+  <bean id="GroupImpl-groupDescription" parent="GroupImpl-groupDescription-parentBean"/>
+  <bean id="GroupImpl-groupDescription-parentBean" parent="AttributeDefinition" abstract="true" p:name="groupDescription" p:forceUppercase="false" p:label="Group Description" p:shortLabel="Group Description" p:maxLength="4000" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="50"/>
     </property>
   </bean>
 
@@ -110,6 +119,7 @@
               <bean parent="FieldDefinition" p:attributeName="groupId"/>
               <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
               <bean parent="FieldDefinition" p:attributeName="groupName"/>
+              <bean parent="FieldDefinition" p:attributeName="groupDescription"/>
               <!-- <bean parent="FieldDefinition" p:attributeName="kimTypeId" />-->
               <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.namespaceCode" p:noInquiry="true"/>
 		      <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>
@@ -130,6 +140,7 @@
                       <bean parent="FieldDefinition" p:attributeName="groupId"/>
 				      <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
 				      <bean parent="FieldDefinition" p:attributeName="groupName"/>
+				      <bean parent="FieldDefinition" p:attributeName="groupDescription"/>
 				      <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.namespaceCode" p:noInquiry="true"/>
 				      <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>
                   </list>
@@ -138,6 +149,7 @@
                   <list>
                       <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
 				      <bean parent="FieldDefinition" p:attributeName="groupName"/>
+				      <bean parent="FieldDefinition" p:attributeName="groupDescription"/>
                   </list>
                 </property>
               </bean>
@@ -197,6 +209,7 @@
         <bean parent="FieldDefinition" p:attributeName="groupId"/>
         <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
         <bean parent="FieldDefinition" p:attributeName="groupName"/>
+        <bean parent="FieldDefinition" p:attributeName="groupDescription"/>
         <bean parent="FieldDefinition" p:attributeName="kimTypeId"/>
         <bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
         <!--
@@ -210,6 +223,7 @@
         <bean parent="FieldDefinition" p:attributeName="kimTypeInfo.name"/>
         <bean parent="FieldDefinition" p:attributeName="namespaceCode"/>
         <bean parent="FieldDefinition" p:attributeName="groupName"/>
+        <bean parent="FieldDefinition" p:attributeName="groupDescription"/>
       </list>
     </property>
   </bean>

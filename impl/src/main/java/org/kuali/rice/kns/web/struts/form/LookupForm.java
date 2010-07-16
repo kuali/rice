@@ -44,7 +44,6 @@ public class LookupForm extends KualiForm {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupForm.class);
 
     private String formKey;
-    private String backLocation;
     private Map<String, String> fields;
     private Map fieldsForLookup;
     private String lookupableImplServiceName;
@@ -69,6 +68,9 @@ public class LookupForm extends KualiForm {
     private boolean supplementalActionsEnabled = false;
     private boolean actionUrlsExist = false;
     private boolean ddExtraButton = false;
+	private boolean headerBarEnabled = true;
+
+
     
     /**
      * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
@@ -264,6 +266,7 @@ public class LookupForm extends KualiForm {
 
             		field.setPropertyValue(LookupUtils.forceUppercase(boClass, field.getPropertyName(), field.getPropertyValue()));
                 	fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+                	//LOG.info("field name/value added was: " + field.getPropertyName() + field.getPropertyValue());
                 	localLookupable.applyFieldAuthorizationsFromNestedLookups(field);
                 }
             }
@@ -292,6 +295,7 @@ public class LookupForm extends KualiForm {
                         fieldValues.put(field.getPropertyName(), field.getPropertyValue());
                     }
                 }
+               
             }
             fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getFormKey());
             fieldValues.put(KNSConstants.BACK_LOCATION, this.getBackLocation());
@@ -319,8 +323,8 @@ public class LookupForm extends KualiForm {
 
             // if showMaintenanceLinks is not already true, only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
             if (!isShowMaintenanceLinks()) {
-            	if (StringUtils.contains(backLocation, "/"+KNSConstants.PORTAL_ACTION) 
-            			|| StringUtils.contains(backLocation, "/index.html")) {
+            	if (StringUtils.contains(getBackLocation(), "/"+KNSConstants.PORTAL_ACTION) 
+            			|| StringUtils.contains(getBackLocation(), "/index.html")) {
             		showMaintenanceLinks = true;
             	}
             }
@@ -343,21 +347,6 @@ public class LookupForm extends KualiForm {
      */
     public void setLookupableImplServiceName(String lookupableImplServiceName) {
         this.lookupableImplServiceName = lookupableImplServiceName;
-    }
-
-
-    /**
-     * @return Returns the backLocation.
-     */
-    public String getBackLocation() {
-        return backLocation;
-    }
-
-    /**
-     * @param backLocation The backLocation to set.
-     */
-    public void setBackLocation(String backLocation) {
-        this.backLocation = backLocation;
     }
 
     /**
@@ -697,4 +686,14 @@ public class LookupForm extends KualiForm {
 	public void setDdExtraButton(boolean ddExtraButton) {
 		this.ddExtraButton = ddExtraButton;
 	}
+
+	public boolean isHeaderBarEnabled() {
+		return headerBarEnabled;
+	}
+
+	public void setHeaderBarEnabled(boolean headerBarEnabled) {
+		this.headerBarEnabled = headerBarEnabled;
+	}	
+
+    
 }

@@ -63,10 +63,22 @@ public class NoteAction extends KewKualiAction {
         initForm(request, form);
         return super.execute(mapping, form, request, response);
     }
+    
     //public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     //    return mapping.findForward("allNotesReport");
     //}
+    
+   
+    @Override
+    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	NoteForm noteForm = (NoteForm) form;
+    	if(StringUtils.isBlank(noteForm.getShowEdit())) {
+    		noteForm.setShowEdit("no");
+    	}
+    	return super.start(mapping, noteForm, request, response);
+    }
 
+    
     public ActionForward add(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         NoteForm noteForm = (NoteForm) form;
         noteForm.setShowEdit("no");

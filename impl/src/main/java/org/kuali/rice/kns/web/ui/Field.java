@@ -17,6 +17,7 @@ package org.kuali.rice.kns.web.ui;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -541,6 +542,27 @@ public class Field implements java.io.Serializable {
     public String getFieldConversions() {
         return fieldConversions;
     }
+
+
+    public Map<String, String> getFieldConversionMap() {
+    	Map<String, String> fieldConversionMap = new HashMap<String, String>();
+    	if (!StringUtils.isBlank(fieldConversions)) {
+    		String[] splitFieldConversions = fieldConversions.split(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
+    		for (String fieldConversion : splitFieldConversions) {
+    			if (!StringUtils.isBlank(fieldConversion)) {
+    				String[] splitFieldConversion = fieldConversion.split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
+    				String originalFieldName = splitFieldConversion[0];
+    				String convertedFieldName = "";
+    				if (splitFieldConversion.length > 1) {
+    					convertedFieldName = splitFieldConversion[1];
+    				}
+    				fieldConversionMap.put(originalFieldName, convertedFieldName);
+    			}
+    		}
+    	}
+    	return fieldConversionMap;
+    }
+
 
     /**
      * @return Returns the fieldHelpUrl.

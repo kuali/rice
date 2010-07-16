@@ -81,7 +81,7 @@
 	<tr>
 		<th><div align="right"><span class="thnormal"><bean-el:message key="actionList.ActionListFilter.filter.label.actionRequestGroup"/>: <bean-el:message key="general.help.actionRequestWorkgroup"/></span></div></th>
 		<td class="datacell">
-		    <html-el:select name="ActionListFilterForm" property="filter.groupId">
+		    <html-el:select name="ActionListFilterForm" property="filter.groupIdString">
               <html-el:optionsCollection property="userWorkgroups" label="value" value="key" filter="false"/>
             </html-el:select>&nbsp;<bean-el:message key="actionList.ActionListFilter.filter.label.exclude"/><html-el:checkbox property="filter.excludeGroupId"/></td>
 	</tr>

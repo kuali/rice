@@ -22,6 +22,7 @@ import javax.xml.namespace.QName;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.ksb.messaging.FlattenedServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.ServiceInfoDAO;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -97,6 +98,14 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     public ServiceInfo findServiceInfo(Long serviceInfoId) {
     	return (ServiceInfo) getPersistenceBrokerTemplate().getObjectById(ServiceInfo.class, serviceInfoId);
     }
+
+	public FlattenedServiceDefinition findFlattenedServiceDefinition(Long flattenedServiceDefinitionId) {
+		Criteria crit = new Criteria();
+    	crit.addEqualTo("flattenedServiceDefinitionId", flattenedServiceDefinitionId);
+    	return (FlattenedServiceDefinition) getPersistenceBrokerTemplate().getObjectByQuery(
+    			new QueryByCriteria(FlattenedServiceDefinition.class, crit));
+
+	}
 
     public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace) {
     	List<ServiceInfo> localServices = findLocallyPublishedServices(ipNumber, serviceNamespace);

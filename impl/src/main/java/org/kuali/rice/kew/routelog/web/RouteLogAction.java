@@ -92,9 +92,7 @@ public class RouteLogAction extends KewKualiAction {
 
         for (ActionTakenValue actionTaken : routeHeader.getActionsTaken()) {
             Collections.sort((List<ActionRequestValue>) actionTaken.getActionRequests(), ROUTE_LOG_ACTION_REQUEST_SORTER);
-            // FIXME: For some reason, this is causing the action requests to appear twice under
-            // the  actions taken section
-            actionTaken.setActionRequests( switchActionRequestPositionsIfPrimaryDelegatesPresent( actionTaken.getActionRequests() ) );
+            actionTaken.setActionRequests( actionTaken.getActionRequests() );
         }
 
         populateRouteLogFormActionRequests(rlForm, routeHeader);
@@ -118,7 +116,7 @@ public class RouteLogAction extends KewKualiAction {
 	public void populateRouteLogFormActionRequests(RouteLogForm rlForm, DocumentRouteHeaderValue routeHeader) {
         List<ActionRequestValue> rootRequests = getActionRequestService().getRootRequests(routeHeader.getActionRequests());
         Collections.sort(rootRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
-        rootRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(rootRequests);
+        
         int arCount = 0;
         for ( ActionRequestValue actionRequest : rootRequests ) {
             if (actionRequest.isPending()) {
@@ -185,7 +183,7 @@ public class RouteLogAction extends KewKualiAction {
         	reconstituteActionRequestValues(documentDetail, preexistingActionRequestIds);
 
         Collections.sort(futureActionRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
-        futureActionRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(futureActionRequests);
+        
         int pendingActionRequestCount = 0;
         for (ActionRequestValue actionRequest: futureActionRequests) {
             if (actionRequest.isPending()) {

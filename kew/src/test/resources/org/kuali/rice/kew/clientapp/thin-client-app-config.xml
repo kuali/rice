@@ -10,6 +10,7 @@
     <param name="identity.javaservice.endpoint">http://localhost:${http.service.port}/en-test/remoting/kimIdentityService</param>
     <param name="group.javaservice.endpoint">http://localhost:${http.service.port}/en-test/remoting/kimGroupService</param>
 
+
     <!-- required for message signing -->
     <param name="keystore.alias">rice</param>
     <param name="keystore.password">r1c3pw</param>

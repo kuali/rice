@@ -49,14 +49,6 @@
 <c:if test="${KualiForm.document.sessionDocument || sessionDocument}">
 <% request.setAttribute("sessionDoc", Boolean.TRUE); %>
 </c:if>
-
-<c:if test="${not empty SESSION_TIMEOUT_WARNING_MILLISECONDS}">
-	<script type="text/javascript">
-	<!-- 
-	setTimeout("alert('Your session will expire in ${SESSION_TIMEOUT_WARNING_MINUTES} minutes.')",'${SESSION_TIMEOUT_WARNING_MILLISECONDS}');
-	// -->
-	</script>
-</c:if>
 <c:set var="renderRequiredFieldsLabel" value="${(KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT]
 ||KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]) && (not KualiForm.suppressAllButtons)}" />
 <kul:page docTitle="${documentTitle}" transactionalDocument="${documentEntry.transactionalDocument}"

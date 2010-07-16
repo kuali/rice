@@ -16,14 +16,28 @@
  */
 package org.kuali.rice.kew.config;
 
+
+import java.io.IOException;
+import java.net.SocketException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Properties;
+
+import javax.xml.namespace.QName;
+
+import org.apache.commons.httpclient.DefaultHttpMethodRetryHandler;
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpMethod;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
 import org.apache.commons.httpclient.params.HttpParams;
+import org.apache.commons.httpclient.util.IdleConnectionTimeoutThread;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
@@ -37,9 +51,6 @@ import org.kuali.rice.ksb.messaging.HttpClientHelper;
 import org.kuali.rice.ksb.messaging.KSBHttpInvokerRequestExecutor;
 import org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean;
 
-import javax.xml.namespace.QName;
-import java.util.*;
-
 
 /**
  * Initializes and loads webservice resources for the Embedded plugin.
@@ -49,6 +60,7 @@ import java.util.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ThinClientResourceLoader extends BaseResourceLoader {
+		private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ThinClientResourceLoader.class);
 
     	private static final String DEFAULT_MAX_CONNECTIONS = "40";
     	private static final String DEFAULT_CONNECTION_TIMEOUT = "60000";
@@ -65,16 +77,27 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
     	public static final String GROUP_ENDPOINT = "group.javaservice.endpoint"; 
     	public static final String SECURE_GROUP_ENDPOINT = "secure.group.javaservice.endpoint"; 
     	
+    	
+    	private static final String IDLE_CONNECTION_THREAD_INTERVAL_PROPERTY = "ksb.thinClient.idleConnectionThreadInterval";
+    	private static final String IDLE_CONNECTION_TIMEOUT_PROPERTY = "ksb.thinClient.idleConnectionTimeout";
+    	private static final String DEFAULT_IDLE_CONNECTION_THREAD_INTERVAL = "7500";
+    	private static final String DEFAULT_IDLE_CONNECTION_TIMEOUT = "5000";
+    	private static final String RETRY_SOCKET_EXCEPTION_PROPERTY = "ksb.thinClient.retrySocketException";
+    	
     	private Map<String, Object> services = Collections.synchronizedMap(new HashMap<String, Object>());
 
+    	private IdleConnectionTimeoutThread ictt;
+    	
 	public ThinClientResourceLoader() {
 		super(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), "ThinClientResourceLoader"));
+		ictt = new IdleConnectionTimeoutThread();
 	}
 
 	@Override
 	public void start() throws Exception {
 		super.start();
 		initializeHttpClientParams();
+		runIdleConnectionTimeout();
 		//springLifecycle.start();
 	}
 
@@ -83,6 +106,9 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 	@Override
 	public void stop() throws Exception {
 		super.stop();
+		if (ictt != null) {
+		    ictt.shutdown();
+		}
 		//springLifecycle.stop();
 	}
 
@@ -203,6 +229,51 @@ public class ThinClientResourceLoader extends BaseResourceLoader {
 		params.setParameter(HttpConnectionManagerParams.MAX_HOST_CONNECTIONS, maxHostConnectionsMap);
 		params.setIntParameter(HttpConnectionManagerParams.MAX_TOTAL_CONNECTIONS, new Integer(DEFAULT_MAX_CONNECTIONS));
 		params.setIntParameter(HttpConnectionManagerParams.CONNECTION_TIMEOUT, new Integer(DEFAULT_CONNECTION_TIMEOUT));
+	
+		boolean retrySocketException = new Boolean(ConfigContext.getCurrentContextConfig().getProperty(RETRY_SOCKET_EXCEPTION_PROPERTY));
+		if (retrySocketException) {
+		    LOG.info("Installing custom HTTP retry handler to retry requests in face of SocketExceptions");
+		    params.setParameter(HttpMethodParams.RETRY_HANDLER, new CustomHttpMethodRetryHandler());
+		}
+	}
+	
+		/**
+	 * Idle connection timeout thread added as a part of the fix for ensuring that 
+	 * threads that timed out need to be cleaned or and send back to the pool so that 
+	 * other clients can use it.
+	 *
+	 */
+	private void runIdleConnectionTimeout() {
+	    if (ictt != null) {
+		    String timeoutInterval = ConfigContext.getCurrentContextConfig().getProperty(IDLE_CONNECTION_THREAD_INTERVAL_PROPERTY);
+		    if (StringUtils.isBlank(timeoutInterval)) {
+			timeoutInterval = DEFAULT_IDLE_CONNECTION_THREAD_INTERVAL;
+		    }
+		    String connectionTimeout = ConfigContext.getCurrentContextConfig().getProperty(IDLE_CONNECTION_TIMEOUT_PROPERTY);
+		    if (StringUtils.isBlank(connectionTimeout)) {
+			connectionTimeout = DEFAULT_IDLE_CONNECTION_TIMEOUT;
+		    }
+		    
+		    ictt.addConnectionManager(getHttpClient().getHttpConnectionManager());
+		    ictt.setTimeoutInterval(new Integer(timeoutInterval));
+		    ictt.setConnectionTimeout(new Integer(connectionTimeout));
+		    //start the thread
+		    ictt.start();
+	    }
+	}
+	
+	private static final class CustomHttpMethodRetryHandler extends DefaultHttpMethodRetryHandler {
+
+	    @Override
+	    public boolean retryMethod(HttpMethod method, IOException exception, int executionCount) {
+		boolean shouldRetry = super.retryMethod(method, exception, executionCount);
+		if (!shouldRetry && exception instanceof SocketException) {
+		    LOG.warn("Retrying request because of SocketException!", exception);
+		    shouldRetry = true;
+		}
+		return shouldRetry;
+	    }
+	    
 	}
 
 }

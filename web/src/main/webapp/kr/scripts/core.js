@@ -25,22 +25,37 @@ function toggleTab(doc, tabKey) {
 	return false;
 }
 
-function expandAllTab(doc, tabStatesSize) {
-	for (var tabIndex = 0; tabIndex <= tabStatesSize.value; tabIndex++) {
-        showTab(doc, tabIndex);
-	}
+/** expands all tabs by unhiding them. */
+function expandAllTab() {
+	doToAllTabs(showTab);
 	return false;
 }
 
-function collapseAllTab(doc, tabStatesSize) {
-	for (var tabIndex = 0; tabIndex <= tabStatesSize.value; tabIndex++) {
-        hideTab(doc, tabIndex);
+/** collapses all tab by hiding them. */
+function collapseAllTab() {
+	doToAllTabs(hideTab);
+	return false;
+}
+
+/** executes a function on all tabs.  The function will be passed a document & partial tab name. */
+function doToAllTabs(func) {
+	var elements = document.getElementsByTagName('div');
+	
+	for (var x in elements) {
+		if (elements[x].id && elements[x].id.substring(0, 4) === 'tab-' 
+			&& elements[x].id.substring(elements[x].id.length - 4, elements[x].id.length) === '-div') {
+			func(document, elements[x].id.substring(4, elements[x].id.length - 4));
+		}
 	}
 	return false;
 }
 
 function showTab(doc, tabKey) {
-    // replaced 'block' with '' to make budgetExpensesRow.tag happy.
+    if (!doc.getElementById('tab-' + tabKey + '-div') || !doc.getElementById('tab-' + tabKey + '-imageToggle')) {
+		return false;
+	}
+	
+	// replaced 'block' with '' to make budgetExpensesRow.tag happy.
     doc.getElementById('tab-' + tabKey + '-div').style.display = '';
     doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'OPEN';
     var image = doc.getElementById('tab-' + tabKey + '-imageToggle');
@@ -53,7 +68,11 @@ function showTab(doc, tabKey) {
 }
 
 function hideTab(doc, tabKey) {
-    doc.getElementById('tab-' + tabKey + '-div').style.display = 'none';
+    if (!doc.getElementById('tab-' + tabKey + '-div') || !doc.getElementById('tab-' + tabKey + '-imageToggle')) {
+		return false;
+	}
+	
+	doc.getElementById('tab-' + tabKey + '-div').style.display = 'none';
     doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'CLOSE';
     var image = doc.getElementById('tab-' + tabKey + '-imageToggle');
     image.src = jsContextPath + '/kr/images/tinybutton-show.gif';

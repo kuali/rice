@@ -164,10 +164,11 @@ public class AdHocAction extends ActionTakenEvent {
                 }
                 if (adhocRequest.isApproveOrCompleteRequest() && ! (routeHeader.isEnroute() || routeHeader.isStateInitiated() ||
                         routeHeader.isStateSaved())) {
-                    return "Cannot AdHoc a Complete or Approve request when document is in state '" + routeHeader.getRouteStatusLabel() + "'.";
+            return "Cannot AdHoc a Complete or Approve request when document is in state '" + routeHeader.getDocRouteStatusLabel() + "'.";
                 }
                 if (!forValidationOnly) {
-                    if (routeHeader.isDisaproved() || routeHeader.isFinal() || routeHeader.isProcessed()) {
+     
+                	if (routeHeader.isDisaproved() || routeHeader.isCanceled() || routeHeader.isFinal() || routeHeader.isProcessed()) {
                         getActionRequestService().activateRequest(adhocRequest);
                     } else {
                         KEWServiceLocator.getActionRequestService().saveActionRequest(adhocRequest);

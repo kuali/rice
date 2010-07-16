@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
@@ -33,6 +34,7 @@ import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -42,7 +44,11 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements ActionItemDAO {
+	
+ 
+	private static final Logger LOG = Logger.getLogger(ActionItemDAOOjbImpl.class);
 
+	
     public ActionItem findByActionItemId(Long actionItemId) {
         Criteria crit = new Criteria();
         crit.addEqualTo("actionItemId", actionItemId);
@@ -169,8 +175,14 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         while (iterator.hasNext()) {
             Object[] ids = (Object[]) iterator.next();
             if (ids[0] != null && !delegators.containsKey((String) ids[0])) {
-            	WebFriendlyRecipient rec = new WebFriendlyRecipient(KIMServiceLocator.getPersonService().getPerson((String) ids[0]));
-                delegators.put((String) ids[0],rec);
+               
+            	Person person = KIMServiceLocator.getPersonService().getPerson((String) ids[0]);
+            	if (person != null) {
+            		WebFriendlyRecipient rec = new WebFriendlyRecipient(person);
+            	    delegators.put((String) ids[0],rec);
+            	    LOG.warn("The name for " + (String) ids[0] + " was not added to the primary delegate drop down list because the delegate does not exist.");
+            	}
+              	
             }
         }
         return delegators.values();

@@ -32,7 +32,7 @@
 <script language="JavaScript" src="scripts/messagequeue-common.js"></script>
 </head>
 
-<body bgcolor="#ffffff" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">
+<body>
 
 <table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
   <tr>

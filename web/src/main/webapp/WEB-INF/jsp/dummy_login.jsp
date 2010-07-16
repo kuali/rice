@@ -18,7 +18,16 @@
 <html>
   <head>
     <title>Login</title>
-    <link href="${ConfigProperties.application.url}/${ConfigProperties.portal.css.files}" rel="stylesheet" type="text/css" />
+	<c:forEach items="${fn:split(ConfigProperties.portal.css.files, ',')}" var="cssFile">
+		<c:if test="${fn:length(fn:trim(cssFile)) > 0}">
+	        <link href="${pageContext.request.contextPath}/${fn:trim(cssFile)}" rel="stylesheet" type="text/css" />
+		</c:if>
+	</c:forEach>
+	<c:forEach items="${fn:split(ConfigProperties.portal.javascript.files, ',')}" var="javascriptFile">
+		<c:if test="${fn:length(fn:trim(javascriptFile)) > 0}">
+	        <script language="JavaScript" type="text/javascript" src="${ConfigProperties.application.url}/${fn:trim(javascriptFile)}"></script>
+		</c:if>
+	</c:forEach> 
 
     <style type="text/css">
         div.body {
@@ -79,20 +88,22 @@
 	                <label>Username:&nbsp;</label>
 	            </td>
 	            <td class="rightTd" align="left">
-	                <input type="text" name="__login_user" value="admin" size="20"/>
+	                <input type="text" name="__login_user" value="" size="20"/>
 	            </td>
             </tr>
+            <c:set var="invalidAuthMsg" value="Invalid username" />
             <c:if test="${requestScope.showPasswordField}">
+            <c:set var="invalidAuthMsg" value="Invalid username or password" />
             <tr>
             <td class="leftTd" width="Infinity%" align="right">
                 <label>Password:&nbsp;</label>
             </td>
-              <td class="rightTd" align="left"><input type="password" name="__login_pw" value="admin" size="20"/></td>
+              <td class="rightTd" align="left"><input type="password" name="__login_pw" value="" size="20"/></td>
             </tr>
             </c:if>
-            <c:if test="${requestScope.invalidPassword}">
+            <c:if test="${requestScope.invalidAuth}">
             <tr>
-              <td align="center" colspan="2"><strong>Invalid username or password</strong></td>
+              <td align="center" colspan="2"><strong>${invalidAuthMsg}</strong></td>
             </tr>
             </c:if>
             <tr>

@@ -42,16 +42,18 @@ public class IdentityManagementGroupInquiry extends IdentityManagementBaseInquir
         IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
         String groupId = request.getParameter(KimConstants.PrimaryKeyConstants.GROUP_ID);
         
+        GroupInfo group = null;
         if (StringUtils.isNotEmpty(groupId)) {
-        	GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
-            getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
+        	group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
         } else {
         	String namespaceCode = request.getParameter(KimConstants.UniqueKeyConstants.NAMESPACE_CODE);
         	String groupName = request.getParameter(KimConstants.UniqueKeyConstants.GROUP_NAME);
         	
-        	GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfoByName(namespaceCode, groupName);
-            getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
+        	if (!StringUtils.isBlank(namespaceCode) && !StringUtils.isBlank(groupName)) {
+        		group = KIMServiceLocator.getGroupService().getGroupInfoByName(namespaceCode, groupName);
+            }
         }
+        getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
 //    	groupDocumentForm.setGroupId(groupId);
         
 	}

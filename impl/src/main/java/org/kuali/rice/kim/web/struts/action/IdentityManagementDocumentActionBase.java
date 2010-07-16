@@ -102,6 +102,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
     	return KimCommonUtils.getPathWithKimContext(returnLocation, getActionName());
     }
 
+	@Override
     protected ActionForward returnToSender(HttpServletRequest request, ActionMapping mapping, KualiDocumentFormBase form) {
         ActionForward dest = null;
         if (form.isReturnToActionList()) {
@@ -109,12 +110,14 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
             String actionListUrl = workflowBase + "/ActionList.do";
 
             dest = new ActionForward(actionListUrl, true);
-        }
-        else {
+        } else if (StringUtils.isNotBlank(form.getBackLocation())){
+        	dest = new ActionForward(form.getBackLocation(), true);
+        } else {
         	dest = mapping.findForward(KNSConstants.MAPPING_PORTAL);
             ActionForward newDest = new ActionForward();
+            //why is this being done?
             KimCommonUtils.copyProperties(newDest, dest);
-            newDest.setPath(getBasePath(request));
+            newDest.setPath(getApplicationBaseUrl());
             return newDest;
         }
 
@@ -129,7 +132,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         if(!canSave(form) || getQuestion(request)!=null){
 	        ActionForward newDest = new ActionForward();
 	        KimCommonUtils.copyProperties(newDest, dest);
-	        newDest.setPath(getBasePath(request));
+	        newDest.setPath(getApplicationBaseUrl());
 	        return newDest;
         }
         return dest;
@@ -154,7 +157,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 	protected ActionForward getBasePathForward(HttpServletRequest request, ActionForward forward){
 		ActionForward newDest = new ActionForward();
         KimCommonUtils.copyProperties(newDest, forward);
-        newDest.setPath(getBasePath(request));
+        newDest.setPath(getApplicationBaseUrl());
         return newDest;
     }
 

@@ -59,6 +59,15 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
+import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.MaintenanceUtils;
+import org.kuali.rice.kns.util.MessageMap;
+import org.kuali.rice.kns.util.ObjectUtils;
+
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
@@ -774,7 +783,8 @@ public class FieldUtils {
 
                 for (int l = 0; l < conversions.length; l++) {
                     String conversion = conversions[l];
-                    String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                    //String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                    String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
                     String conversionFrom = conversionPair[0];
                     String conversionTo = conversionPair[1];
                     conversionTo = KNSConstants.MAINTENANCE_NEW_MAINTAINABLE + conversionTo;
@@ -796,7 +806,8 @@ public class FieldUtils {
 
                 for (int l = 0; l < parameters.length; l++) {
                     String parameter = parameters[l];
-                    String[] parameterPair = StringUtils.split(parameter, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                    //String[] parameterPair = StringUtils.split(parameter, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                    String[] parameterPair = StringUtils.split(parameter, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
                     String conversionFrom = parameterPair[0];
                     String conversionTo = parameterPair[1];
 
@@ -835,7 +846,8 @@ public class FieldUtils {
 
                 for (int m = 0; m < conversions.length; m++) {
                     String conversion = conversions[m];
-                    String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                    //String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                    String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);                    
                     String conversionFrom = conversionPair[0];
                     String conversionTo = conversionPair[1];
                     conversionFrom = KNSConstants.MAINTENANCE_NEW_MAINTAINABLE + conversionFrom;

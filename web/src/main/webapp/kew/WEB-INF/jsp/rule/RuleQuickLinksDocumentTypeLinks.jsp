@@ -78,7 +78,7 @@
 	                        <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
 	                        <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
 	                        <c:param name="hideReturnLink" value="true"/>
-	                        <c:param name="methodToCall" value="search"/>
+	                        <c:param name="methodToCall" value="start"/>
 	                        <c:param name="docFormKey" value="88888888"/>
 	                        <c:param name="documentType.name" value="${documentType.name}"/>
 	                        <c:param name="ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
@@ -99,10 +99,10 @@
 	                          <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>
 	                          <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
 	                          <c:param name="hideReturnLink" value="true"/>
-	                          <c:param name="methodToCall" value="search"/>
+	                          <c:param name="methodToCall" value="start"/>
 	                          <c:param name="docFormKey" value="88888888"/>
 	                          <c:param name="delegationRuleBaseValues.documentType.name" value="${documentType.name}"/>
-	                          <c:param name="delegationRuleBaseValues.ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
+	                          <c:param name="delegationRuleBaseValues.ruleTemplate.name" value="${routeLevel.ruleTemplate.delegationTemplate.name}"/>
 	                        </c:url>" target="_blank">Search Delegations</a>
 	                    </c:if>
 	                  </td>
@@ -150,7 +150,7 @@
                         <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleBaseValues"/>
                         <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
                         <c:param name="hideReturnLink" value="true"/>
-                        <c:param name="methodToCall" value="search"/>
+                        <c:param name="methodToCall" value="start"/>
                         <c:param name="docFormKey" value="88888888"/>
                         <c:param name="documentType.name" value="${documentType.name}"/>
                         <c:param name="ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
@@ -171,10 +171,10 @@
                           <c:param name="businessObjectClassName" value="org.kuali.rice.kew.rule.RuleDelegation"/>
                           <c:param name="returnLocation" value="${ConfigProperties.application.url}/portal.do"/>
                           <c:param name="hideReturnLink" value="true"/>
-                          <c:param name="methodToCall" value="search"/>
+                          <c:param name="methodToCall" value="start"/>
                           <c:param name="docFormKey" value="88888888"/>
                           <c:param name="delegationRuleBaseValues.documentType.name" value="${documentType.name}"/>
-                          <c:param name="delegationRuleBaseValues.ruleTemplate.name" value="${routeLevel.ruleTemplate.name}"/>
+                          <c:param name="delegationRuleBaseValues.ruleTemplate.name" value="${routeLevel.ruleTemplate.delegationTemplate.name}"/>
                         </c:url>" target="_blank">Search Delegations</a>
                     </c:if>
                   </td>
@@ -187,15 +187,15 @@
                   </kul:htmlAttributeHeaderCell>
 				</tr>  
               </c:if>
+            </c:if>
+          </c:forEach>
+          </table>
               <c:if test="${! empty documentTypeStruct.childrenDocumentTypes}">
                 <c:forEach items="${documentTypeStruct.childrenDocumentTypes}" var="childDocumentTypeStruct">
                   <c:set var="documentTypeStruct" value="${childDocumentTypeStruct}" scope="request"/>
                   <c:import url="RuleQuickLinksDocumentTypeLinks.jsp" />
                 </c:forEach>
               </c:if>
-            </c:if>
-          </c:forEach>
-          </table>
         </c:otherwise>
       </c:choose>
       <c:if test="${! empty documentTypeStruct.childrenDocumentTypes}">

@@ -404,6 +404,12 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		newCriteria.put( "entityTypes.entityTypeCode", personEntityTypeLookupCriteria );
 		if ( criteria != null ) {
 			for ( String key : criteria.keySet() ) {
+						
+				//check active radio button
+				if(key.equals(KIMPropertyConstants.Person.ACTIVE)) {
+					newCriteria.put(KIMPropertyConstants.Person.ACTIVE, criteria.get(KIMPropertyConstants.Person.ACTIVE));
+				}
+			
 				// if no value was passed, skip the entry in the Map
 				if ( StringUtils.isEmpty( criteria.get(key) ) ) {
 					continue;
@@ -471,6 +477,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 			if ( nameCriteria ) {
 				newCriteria.put( ENTITY_NAME_PROPERTY_PREFIX + "active", "Y" );
 				newCriteria.put( ENTITY_NAME_PROPERTY_PREFIX + "dflt", "Y" );
+				newCriteria.put(ENTITY_NAME_PROPERTY_PREFIX + "nameTypeCode", "PRFR");//so we only display 1 result
 			}
 			if ( addressCriteria ) {
 				newCriteria.put( ENTITY_ADDRESS_PROPERTY_PREFIX + "active", "Y" );

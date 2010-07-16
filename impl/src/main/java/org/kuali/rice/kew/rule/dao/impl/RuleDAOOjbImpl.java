@@ -199,15 +199,28 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	}
 
 	public RuleResponsibility findRuleResponsibility(Long responsibilityId) {
-		Criteria crit = new Criteria();
-		crit.addEqualTo("responsibilityId", responsibilityId);
-		Collection responsibilities = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleResponsibility.class, crit));
-		for (Iterator iterator = responsibilities.iterator(); iterator.hasNext();) {
-			RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
-			if (responsibility.getRuleBaseValues().getCurrentInd().booleanValue()) {
-				return responsibility;
+				
+		ReportQueryByCriteria subQuery;
+		Criteria subCrit = new Criteria();
+		Criteria crit2 = new Criteria();
+		subCrit.addLike("responsibilityId", responsibilityId);
+		subQuery = QueryFactory.newReportQuery(RuleResponsibility.class, subCrit);
+		subQuery.setColumns(new String[] {"RULE_ID"});
+		crit2.addIn("ruleBaseValuesId", subQuery);
+		crit2.addEqualTo("currentInd", 1);
+		QueryByCriteria outerQuery = QueryFactory.newQuery(RuleBaseValues.class, crit2);
+		RuleBaseValues rbv = (RuleBaseValues)this.getPersistenceBrokerTemplate().getObjectByQuery(outerQuery);
+		Criteria finalCrit = new Criteria();
+		finalCrit.addEqualTo("responsibilityId", responsibilityId);
+		finalCrit.addEqualTo("ruleBaseValuesId", rbv.getRuleBaseValuesId());
+		RuleResponsibility rResp = (RuleResponsibility)this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleResponsibility.class, finalCrit));
+		
+		if(rResp != null){
+			if(rResp.getRuleBaseValuesId().equals(rbv.getRuleBaseValuesId())){
+				return rResp;
 			}
-		}
+		}	
+	
 		return null;
 	}
 

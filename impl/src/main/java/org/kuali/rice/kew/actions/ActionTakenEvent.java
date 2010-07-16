@@ -16,8 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -72,6 +70,10 @@ public abstract class ActionTakenEvent {
     private final boolean runPostProcessorLogic;
     
     private List<String> groupIdsForPrincipal;
+    
+
+    private boolean queueDocumentAfterAction = true;
+
 
 	public ActionTakenEvent(String actionTakenCode, DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
 		this(actionTakenCode, routeHeader, principal, null, true);
@@ -87,6 +89,7 @@ public abstract class ActionTakenEvent {
         this.principal = principal;
         this.annotation = annotation == null ? "" : annotation;
 		this.runPostProcessorLogic = runPostProcessorLogic;
+		this.queueDocumentAfterAction = true;
 	}
 
 	public ActionRequestService getActionRequestService() {
@@ -150,7 +153,10 @@ public abstract class ActionTakenEvent {
 
 	public void performAction() throws InvalidActionTakenException {
 	    recordAction();
-	    queueDocumentProcessing();
+	    if (queueDocumentAfterAction) {
+	    	queueDocumentProcessing();
+	    }
+
 	}
 
 	protected abstract void recordAction() throws InvalidActionTakenException;
@@ -290,4 +296,12 @@ public abstract class ActionTakenEvent {
 		}
 		return groupIdsForPrincipal;
 	}
+
+
+	public void setQueueDocumentAfterAction(boolean queueDocumentAfterAction) {
+		this.queueDocumentAfterAction = queueDocumentAfterAction;
+	}
+
+
+	
 }

@@ -23,6 +23,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
+import org.apache.cxf.common.util.StringUtils;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
@@ -169,7 +170,7 @@ public class RiceXmlSchemaFactory {
 	private static Schema compileSchema(String schemaName, InputStream inStream, ErrorHandler errorHandler){
 		Schema schema = null;
 		// get input stream
-		if (!schemaName.isEmpty()){
+		if (!StringUtils.isEmpty(schemaName)){
 			if (inStream != null){
 				try{
 					String language = XMLConstants.W3C_XML_SCHEMA_NS_URI;
@@ -201,7 +202,7 @@ public class RiceXmlSchemaFactory {
 	 */
 	private static InputStream getInputStream(String schemaName){
 		InputStream xmlFile = null;
-		if (!schemaName.isEmpty()){
+		if (!StringUtils.isEmpty(schemaName)){
 			try {
 				// this will look in classpath:/schema directory
 				xmlFile = RiceUtilities.getResourceAsStream(SCHEMA_DIR + schemaName);

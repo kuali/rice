@@ -556,13 +556,13 @@ in order to package the various Rice datasets.
 		<copy file="target/${rice.app.code}-${rice.environment}.war" todir="${basedir}"/>
 	</target>
 
-	<target name="prepare-new-version" depends="init" description="Prompts for a new version to change the POM and groovy scripts to">
+	<target name="prepare-new-version" depends="init" description="Prompts for a new version to change the POM to">
 		<input message="Detected current version in POM file of '${maven.project.version}'.  Please enter new version: "
 			defaultvalue="${maven.project.version}"
 			addproperty="project.new.version"/>
-		<echo>Re-versioning POM files and groovy scripts to version '${project.new.version}'</echo>
+		<echo>Re-versioning POM files to version '${project.new.version}'</echo>
 		<replaceregexp match="\b${maven.project.version}\b" replace="${project.new.version}" byline="true" flags="g">
-			<fileset dir="." includes="**/pom.xml"/>
+			<fileset dir="." includes="**/pom.xml,.project,scripts/launch/*.launch"/>
 		</replaceregexp>
 	</target>
 

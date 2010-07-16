@@ -25,6 +25,7 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
@@ -544,7 +545,14 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         for (Object aDocumentsAffected : documentsAffected)
         {
             Long routeHeaderId = (Long) aDocumentsAffected;
-            String serviceNamespace = KEWServiceLocator.getRouteHeaderService().getServiceNamespaceByDocumentId(routeHeaderId);
+
+             String serviceNamespace = null;
+             DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(routeHeaderId);
+                    
+             if (documentType != null) {
+                serviceNamespace = documentType.getServiceNamespace();
+             }
+
             if (serviceNamespace == null)
             {
                 serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
@@ -566,7 +574,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         deleteActionItems(actionRequest);
         if (actionRequest.getActionTakenId() != null) {
             ActionTakenValue actionTaken = getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId());
+
+            if(actionTaken != null){//iu patch
             getActionTakenService().delete(actionTaken);
+            }//iu patch
+           
         }
         getActionRequestDAO().delete(actionRequest.getActionRequestId());
         for (ActionRequestValue child: actionRequest.getChildrenRequests()) {

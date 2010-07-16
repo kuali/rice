@@ -51,7 +51,7 @@ public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibil
 		Iterator<KimResponsibilityInfo> respIter = baseMatches.iterator();
 		while ( respIter.hasNext() ) {
 			AttributeSet respDetails = respIter.next().getDetails();
-			if ( respDetails.containsKey( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) ) {
+			if ( respDetails.containsKey( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) && StringUtils.isNotBlank( respDetails.get(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER) ) ) {
 				if ( !requestedDetails.containsKey( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) 
 						|| !StringUtils.equals( respDetails.get(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER)
 								, requestedDetails.get(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER))) {

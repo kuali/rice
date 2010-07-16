@@ -72,12 +72,14 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 		String kimTypeId = request.getParameter(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID);
         setKimType(kimTypeId, groupDocumentForm);
 
-        ActionForward forward = super.execute(mapping, groupDocumentForm, request, response);
-
+        
 		KualiTableRenderFormMetadata memberTableMetadata = groupDocumentForm.getMemberTableMetadata();
 		if (groupDocumentForm.getMemberRows() != null) {
 			memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), groupDocumentForm.getMemberRows().size(), groupDocumentForm.getRecordsPerPage());
 		}
+		
+		ActionForward forward = super.execute(mapping, groupDocumentForm, request, response);
+		
 		groupDocumentForm.setCanAssignGroup(validAssignGroup(groupDocumentForm.getGroupDocument()));
 		return forward;
     }

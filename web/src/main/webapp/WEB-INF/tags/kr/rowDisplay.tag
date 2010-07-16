@@ -69,7 +69,10 @@
 
     <c:set var="rowHidden" value="${rowsHidden || row.hidden}" />
 
-    <tr>
+	<c:choose>
+		<c:when test="${rowHidden}"><tr style="display: none;"></c:when>
+		<c:otherwise><tr></c:otherwise>
+	</c:choose>
 
         <c:forEach items="${row.fields}" var="field" varStatus="fieldVarStatus">
             <c:set var="isFieldAContainer" value="${field.fieldType eq field.CONTAINER}" />

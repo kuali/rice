@@ -49,6 +49,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	protected String groupTypeName;
 	protected String groupNamespace;
 	protected String groupName;
+    protected String groupDescription;
 	protected boolean active = true;
 
 	protected boolean editing;
@@ -192,6 +193,14 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		this.groupName = groupName;
 	}
 
+	public String getGroupDescription() {
+		return this.groupDescription;
+	}
+
+	public void setGroupDescription(String groupDescription) {
+		this.groupDescription = groupDescription;
+	}
+	
 	/**
 	 * @return the groupNamespace
 	 */

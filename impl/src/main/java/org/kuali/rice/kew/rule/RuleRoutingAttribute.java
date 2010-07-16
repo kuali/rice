@@ -22,13 +22,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentContent;
+import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
@@ -51,6 +56,9 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
 
     private static final String LOOKUPABLE_CLASS = "org.kuali.rice.kew.doctype.bo.DocumentType";//DocumentTypeLookupableImplService//org.kuali.rice.kew.doctype.bo.DocumentType
     private static final String DOC_TYPE_NAME_LABEL = "Document type name";
+
+    private static final String DOC_TYPE_NAME_XPATH = "//newMaintainableObject/businessObject/docTypeName";
+    private static final String DOC_TYPE_NAME_DEL_XPATH = "//newMaintainableObject/businessObject/delegationRuleBaseValues/docTypeName";
 
     private String doctypeName;
     private List<Row> rows;
@@ -77,25 +85,27 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
     public boolean isMatch(DocumentContent docContent, List ruleExtensions) {
 	setDoctypeName(getRuleDocumentTypeFromRuleExtensions(ruleExtensions));
         DocumentTypeService service = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
-        List documentTypeValues = parseDocContent(docContent);
-        for (Iterator iterator = documentTypeValues.iterator(); iterator.hasNext();) {
-            RuleRoutingAttribute attribute = (RuleRoutingAttribute) iterator.next();
-            if (attribute.getDoctypeName().equals(getDoctypeName())) {
+        
+		try {
+			String docTypeName = getDocTypNameFromXML(docContent);
+            if (docTypeName.equals(getDoctypeName())) {
                 return true;
             }
-            DocumentType documentType = service.findByName(attribute.getDoctypeName());
+            DocumentType documentType = service.findByName(docTypeName);
             while (documentType != null && documentType.getParentDocType() != null) {
                 documentType = documentType.getParentDocType();
                 if(documentType.getName().equals(getDoctypeName())){
                     return true;
                 }
             }
-        }
-
+		} catch (XPathExpressionException e) {
+			throw new WorkflowRuntimeException(e);
+		}
+		
+		
         if (ruleExtensions.isEmpty()) {
             return true;
         }
-
         return false;
     }
 
@@ -131,10 +141,27 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
             return "";
         }
     }
+  
+
+	private String getDocTypNameFromXML(DocumentContent docContent) throws XPathExpressionException {
+		XPath xPath = XPathHelper.newXPath();
+		String docTypeName = xPath.evaluate(DOC_TYPE_NAME_XPATH, docContent.getDocument());
+				
+		if (StringUtils.isBlank(docTypeName)) {
+			docTypeName = xPath.evaluate(DOC_TYPE_NAME_DEL_XPATH, docContent.getDocument());
+			
+			if (StringUtils.isBlank(docTypeName)) {
+				throw new WorkflowRuntimeException("Could not locate Document Type Name on the document: " + 
+						docContent.getRouteContext().getDocument().getRouteHeaderId());
+			}
+		} 
+		return docTypeName;
+	}
+
 
     public List<RuleRoutingAttribute> parseDocContent(DocumentContent docContent) {
         try {
-            Document doc2 = XmlHelper.buildJDocument(new StringReader(docContent.getDocContent()));
+            Document doc2 = (Document) XmlHelper.buildJDocument(new StringReader(docContent.getDocContent()));
             
             List<RuleRoutingAttribute> doctypeAttributes = new ArrayList<RuleRoutingAttribute>();
             List ruleRoutings = XmlHelper.findElements(doc2.getRootElement(), "docTypeName");

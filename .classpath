@@ -3,7 +3,6 @@
     <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
     <classpathentry kind="output" path="target/classes"/>
     <classpathentry kind="src" path="api/src/main/java" output="api/target/classes" />
-    <classpathentry kind="src" path="api/target/schema" />
     <classpathentry kind="src" path="impl/src/main/java" output="impl/target/classes" />
     <classpathentry kind="src" path="impl/src/main/resources" output="impl/target/classes" />
     <classpathentry kind="src" path="impl/src/test/java" output="impl/target/test-classes" />
@@ -119,8 +118,10 @@
     <classpathentry kind="var" path="M2_REPO/org/apache/derby/derbynet/10.2.2.0/derbynet-10.2.2.0.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-activation_1.1_spec/1.0.2/geronimo-activation_1.1_spec-1.0.2.jar" sourcepath="M2_REPO/org/apache/geronimo/specs/geronimo-activation_1.1_spec/1.0.2/geronimo-activation_1.1_spec-1.0.2-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-annotation_1.0_spec/1.1.1/geronimo-annotation_1.0_spec-1.1.1.jar" sourcepath="M2_REPO/org/apache/geronimo/specs/geronimo-annotation_1.0_spec/1.1.1/geronimo-annotation_1.0_spec-1.1.1-sources.jar"/>
+    <classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-jaxws_2.1_spec/1.0/geronimo-jaxws_2.1_spec-1.0.jar" sourcepath="M2_REPO/org/apache/geronimo/specs/geronimo-jaxws_2.1_spec/1.0/geronimo-jaxws_2.1_spec-1.0-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-javamail_1.4_spec/1.6/geronimo-javamail_1.4_spec-1.6.jar" sourcepath="M2_REPO/org/apache/geronimo/specs/geronimo-javamail_1.4_spec/1.6/geronimo-javamail_1.4_spec-1.6-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-stax-api_1.0_spec/1.0.1/geronimo-stax-api_1.0_spec-1.0.1.jar" sourcepath="M2_REPO/org/apache/geronimo/specs/geronimo-stax-api_1.0_spec/1.0.1/geronimo-stax-api_1.0_spec-1.0.1-sources.jar"/>
+    <classpathentry kind="var" path="M2_REPO/org/apache/geronimo/specs/geronimo-ws-metadata_2.0_spec/1.1.2/geronimo-ws-metadata_2.0_spec-1.1.2.jar" sourcepath="M2_REPO/org/apache/geronimo/specs/geronimo-ws-metadata_2.0_spec/1.1.2/geronimo-ws-metadata_2.0_spec-1.1.2-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/apache/neethi/neethi/2.0.4/neethi-2.0.4.jar" sourcepath="M2_REPO/org/apache/neethi/neethi/2.0.4/neethi-2.0.4-sources.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/apache/santuario/xmlsec/1.4.3/xmlsec-1.4.3.jar"/>
     <classpathentry kind="var" path="M2_REPO/org/apache/ws/commons/axiom/axiom-api/1.2.5/axiom-api-1.2.5.jar" sourcepath="M2_REPO/org/apache/ws/commons/axiom/axiom-api/1.2.5/axiom-api-1.2.5-sources.jar"/>

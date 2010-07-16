@@ -1169,10 +1169,15 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	ArrayList<KimTypeInfo> applicationRoleTypes = new ArrayList<KimTypeInfo>( types.size() );
     	for ( KimTypeInfo typeInfo : types ) {
     		KimRoleTypeService service = getRoleTypeService(typeInfo);
-    		if ( isApplicationRoleType(typeInfo.getKimTypeId(), service)) {
-    				applicationRoleTypes.add(typeInfo);
-    			}
+        	try {//log service unavailable as WARN error
+	    		if ( isApplicationRoleType(typeInfo.getKimTypeId(), service)) {
+	    				applicationRoleTypes.add(typeInfo);
+	    			}
+        	}catch(Exception e) {
+    			LOG.warn(e.getMessage(), e);
     		}
+    	}			
+			
     	Map<String,Object> roleLookupMap = new HashMap<String, Object>(2);
     	roleLookupMap.put( KIMPropertyConstants.Role.ACTIVE, "Y");
     	// loop over application types
@@ -1325,9 +1330,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 	    		delegationTemp = getDelegationImpl(delegations, delegateMember.getDelegationId());
 	    		delegateMemberCompleteInfo.setRoleId(delegationTemp.getRoleId());
 	    		delegateMemberCompleteInfo.setDelegationTypeCode(delegationTemp.getDelegationTypeCode());
-				BusinessObject member = getMember(delegateMemberCompleteInfo.getMemberTypeCode(), delegateMemberCompleteInfo.getMemberId());
-				delegateMemberCompleteInfo.setMemberName(getMemberName(delegateMemberCompleteInfo.getMemberTypeCode(), member));
-				delegateMemberCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(delegateMemberCompleteInfo.getMemberTypeCode(), member));
+				Object member = getMember(delegateMemberCompleteInfo.getMemberTypeCode(), delegateMemberCompleteInfo.getMemberId());
+				delegateMemberCompleteInfo.setMemberName(getMemberName(member));
+				delegateMemberCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(member));
 				delegateMembersCompleteInfo.add(delegateMemberCompleteInfo);
 	    	}
 
@@ -1384,9 +1389,9 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 		if(delegation==null || delegationMember==null) return null;
 		DelegateMemberCompleteInfo delegateMemberCompleteInfo = delegationMember.toSimpleInfo();
 		delegateMemberCompleteInfo.setDelegationTypeCode(delegation.getDelegationTypeCode());
-		BusinessObject member = getMember(delegationMember.getMemberTypeCode(), delegationMember.getMemberId());
-		delegateMemberCompleteInfo.setMemberName(getMemberName(delegationMember.getMemberTypeCode(), member));
-		delegateMemberCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(delegationMember.getMemberTypeCode(), member));
+		Object member = getMember(delegationMember.getMemberTypeCode(), delegationMember.getMemberId());
+		delegateMemberCompleteInfo.setMemberName(getMemberName(member));
+		delegateMemberCompleteInfo.setMemberNamespaceCode(getMemberNamespaceCode(member));
 		return delegateMemberCompleteInfo;
 	}
 

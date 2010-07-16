@@ -153,8 +153,15 @@ public class ActionRequestFactory {
         String groupName =  Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE,
 		        KNSConstants.DetailTypes.WORKGROUP_DETAIL_TYPE,
 		        KEWConstants.NOTIFICATION_EXCLUDED_USERS_WORKGROUP_NAME_IND);
-
-        Group notifyExclusionWorkgroup = getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+        
+        
+        Group notifyExclusionWorkgroup = null;
+        if(!StringUtils.isBlank(groupName)){
+        	notifyExclusionWorkgroup = getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+        }
+        
+ 
+        
         return generateNotifications(null, getActionRequestService().getRootRequests(requests), principal, delegator, notificationRequestCode, actionTakenCode, notifyExclusionWorkgroup);
     }
 

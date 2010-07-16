@@ -457,9 +457,12 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames){
 		 Properties parameters = new Properties();
 		 parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
-        // TODO: why is this not using the businessObject parmeter's class?
-        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
+		 // TODO: why is this not using the businessObject parmeter's class?
+		 parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
 		 parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
+		 if (StringUtils.isNotBlank(getReturnLocation())) {
+			 parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+		 }
 		 return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
 	 }
 

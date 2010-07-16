@@ -26,10 +26,9 @@
 		<url>http://kuali.org/</url>
 	</organization>
 	<properties>
-		<!--
-			must provide an explicit pattern - surefire default does not work b/c
-			of non-unit test classes that are included in default expression
-		-->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- must provide an explicit pattern - surefire default does not work
+			b/c of non-unit test classes that are included in default expression -->
 		<test.includes>**/*Test.java</test.includes>
 
 		<acegi.version>1.0.6</acegi.version>
@@ -139,7 +138,7 @@
 						<artifactId>maven-compiler-plugin</artifactId>
 						<configuration>
 							<source>1.5</source>
-							<target>1.6</target>
+							<target>1.5</target>
 							<!-- impl module is huge and requires at least 768m to compile -->
 							<fork>true</fork>
 							<meminitial>256</meminitial>
@@ -709,14 +708,6 @@
 					<exclusion>
 						<groupId>org.apache.geronimo.specs</groupId>
 						<artifactId>geronimo-javamail_1.4_spec</artifactId>
-					</exclusion>
-					<exclusion>
-						<artifactId>geronimo-jaxws_2.1_spec</artifactId>
-						<groupId>org.apache.geronimo.specs</groupId>
-					</exclusion>
-					<exclusion>
-						<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
-						<groupId>org.apache.geronimo.specs</groupId>
 					</exclusion>
 					<exclusion>
 						<artifactId>geronimo-activation_1.1_spec</artifactId>

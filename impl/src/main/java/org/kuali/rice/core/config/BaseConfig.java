@@ -132,7 +132,6 @@ public abstract class BaseConfig implements Config {
     	});
     	sorted.addAll(entrySet);
     	//}
-    	loadDefaults();
     	if ( LOG.isInfoEnabled() ) {
 	    	for (Map.Entry<String, String> propUsed: sorted) {
 	    		LOG.info("Using config Prop " + propUsed.getKey() + "=[" + propUsed.getValue() + "]");
@@ -157,76 +156,6 @@ public abstract class BaseConfig implements Config {
             this.propertiesUsed.put(key, value);
         }
     }
-
-	private void loadDefaults() {
-		// Load defaults if not set in config files : KULRICE-1067
-        // This code is just terribly unmaintainable... better way?
-		Properties p = getProperties();
-        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_POOL_MIN_SIZE))) {
-        	p.setProperty(Config.DATASOURCE_POOL_MIN_SIZE, "0");
-        }
-        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_POOL_MAX_SIZE))) {
-        	p.setProperty(Config.DATASOURCE_POOL_MAX_SIZE, "5");
-        }
-        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_POOL_SIZE))) {
-        	p.setProperty(Config.DATASOURCE_POOL_SIZE, "5");
-        }
-        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_POOL_MAXWAIT))) {
-        	p.setProperty(Config.DATASOURCE_POOL_MAXWAIT, "30000");
-        }
-        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_POOL_VALIDATION_QUERY))) {
-        	p.setProperty(Config.DATASOURCE_POOL_VALIDATION_QUERY, "select 1 from dual");
-        }
-        if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("Oracle")) {
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
-	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "oracle.jdbc.driver.OracleDriver");
-	        }
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.OracleDatabasePlatform");
-	        }	        
-        } else if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("MySQL")) {
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
-	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "com.mysql.jdbc.Driver");
-	        }
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MySQLDatabasePlatform");
-	        }
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
-	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl");
-	        }
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS))) {
-	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS, "org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl");
-	        }
-        } else if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("Derby")) {
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
-	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "org.apache.derby.jdbc.EmbeddedDriver");
-	        }
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.DerbyDatabasePlatform");
-	        }
-	        /* TODO: Implement these for Derby
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
-	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "");
-	        }
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS))) {
-	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS, "");
-	        }
-	        */
-        } else if (StringUtils.isNotEmpty(p.getProperty(Config.OJB_PLATFORM)) && p.getProperty(Config.OJB_PLATFORM).trim().startsWith("McKoi	")) {
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_DRIVER_NAME))) {
-	        	p.setProperty(Config.DATASOURCE_DRIVER_NAME, "com.mckoi.JDBCDriver");
-	        }
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_PLATFORM))) {
-	        	p.setProperty(Config.DATASOURCE_PLATFORM, "org.kuali.rice.core.database.platform.MckoiDatabasePlatform");
-	        }
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER))) {
-	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER, "org.apache.ojb.broker.platforms.PlatformMckoiImpl");
-	        }
-	        if (StringUtils.isEmpty(p.getProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS))) {
-	        	p.setProperty(Config.DATASOURCE_OJB_SEQUENCE_MANAGER_CLASS, "org.apache.ojb.broker.platforms.PlatformMckoiImpl");
-	        }
-        }
-	}
 
     public void overrideProperty(String name, String value) {
     	this.putProperty(name,value);     
@@ -338,15 +267,7 @@ public abstract class BaseConfig implements Config {
     }
 
     public Integer getRefreshRate() {
-        Integer refreshRate;
-        try {
-            refreshRate = new Integer(ConfigContext.getCurrentContextConfig().getProperty(Config.REFRESH_RATE));
-        } catch (NumberFormatException nfe) {
-            LOG.error("Couldn't parse property " + Config.REFRESH_RATE + " to set bus refresh rate. Defaulting to 30 seconds.");
-            ConfigContext.getCurrentContextConfig().putProperty(Config.REFRESH_RATE, "30");
-            return 30;
-        }
-        return refreshRate;
+    	return Integer.valueOf(ConfigContext.getCurrentContextConfig().getProperty(Config.REFRESH_RATE));
     }
 
     public String getEndPointUrl() {

@@ -99,6 +99,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                                                                principalId, activeInd,
                                                                extensionValues, workflowIdDirective));
 
+        crit.addLessThanField("rownum", ((Integer)KEWConstants.MAX_RETURNED_ROWS).toString());
         return (List<RuleDelegation>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit, true));
     }
 
@@ -129,6 +130,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                                                                ruleDescription, workgroupIds,
                                                                workflowId, activeInd,
                                                                extensionValues, actionRequestCodes));
+        crit.addLessThanField("rownum", ((Integer)KEWConstants.MAX_RETURNED_ROWS).toString());
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit, true));
     }
 
@@ -159,6 +161,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             Map extensionValues, Collection actionRequestCodes) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, activeInd, extensionValues);
         crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty())));
+        crit.addEqualTo("delegateRule", 1);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleBaseValues.class, crit);
         query.setAttributes(new String[] { "ruleBaseValuesId" });
         return query;
@@ -178,7 +181,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         List<String> workgroupIds = new ArrayList<String>();
         Boolean searchUser = Boolean.FALSE;
         Boolean searchUserInWorkgroups = Boolean.FALSE;
-        if (!Utilities.isEmpty(workflowIdDirective)) {
+        if (workflowIdDirective != null) {/** IU patch EN-1552 */
             if ("group".equals(workflowIdDirective)) {
                 searchUserInWorkgroups = Boolean.TRUE;
             } else if ("".equals(workflowIdDirective)) {
@@ -199,7 +202,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
         crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups));
-
+        crit.addEqualTo("delegateRule", 1);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleBaseValues.class, crit);
         query.setAttributes(new String[] { "ruleBaseValuesId" });
         return query;

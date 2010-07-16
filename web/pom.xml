@@ -11,9 +11,9 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>org.kuali.rice</groupId>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>rice-impl</artifactId>
-			<version>1.0.3-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 

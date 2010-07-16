@@ -474,7 +474,8 @@ public class LookupUtils {
 
                     for (int l = 0; l < conversions.length; l++) {
                         String conversion = conversions[l];
-                        String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                        //String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                        String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
                         String conversionFrom = conversionPair[0];
                         String conversionTo = conversionPair[1];
                         newInquiryParameters += (conversionTo + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + conversionFrom);

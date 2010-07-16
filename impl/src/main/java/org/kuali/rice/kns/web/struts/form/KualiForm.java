@@ -46,6 +46,7 @@ public class KualiForm extends PojoFormBase {
     private static final String literalPrefixAndDelimiter =
     	KNSConstants.LOOKUP_PARAMETER_LITERAL_PREFIX+KNSConstants.LOOKUP_PARAMETER_LITERAL_DELIMITER;
 
+    private String backLocation;
     private String methodToCall;
     private String refreshCaller;
     private String anchor;
@@ -108,6 +109,7 @@ public class KualiForm extends PojoFormBase {
 
         super.populate(request);
 
+        populateBackLocation(request);
         populateFieldLevelHelpEnabled(request);
 
         if (actionFormUtilMap instanceof ActionFormUtilMap) {
@@ -117,6 +119,12 @@ public class KualiForm extends PojoFormBase {
 
     private static Boolean ENABLE_FIELD_LEVEL_HELP_IND = null;
 
+    protected void populateBackLocation(HttpServletRequest request){
+        if (getParameter(request, "returnLocation") != null) {
+            setBackLocation(getParameter(request, "returnLocation"));
+        }
+    }
+    
     /**
      * Populates whether the each field will have field-level help associated with it.  Depending on how the jsp/tags are implemented, the value
      * populated by this method may be overruled by other settings
@@ -449,4 +457,19 @@ public class KualiForm extends PojoFormBase {
 			displayedInfo.clear();
 		}
 	}
+	
+    /**
+	 * @return the backLocation
+	 */
+	public String getBackLocation() {
+		return this.backLocation;
+	}
+
+	/**
+	 * @param backLocation the backLocation to set
+	 */
+	public void setBackLocation(String backLocation) {
+		this.backLocation = backLocation;
+	}
+
 }

@@ -11,7 +11,15 @@
     <param name="rice.custom.ojb.properties" override="false">org/kuali/rice/core/ojb/RiceOJB.properties</param>
 
 	<!-- Database Config -->
-	    <param name="datasource.pool.minSize" override="false">0</param>
+	
+	<!-- below used by atomikos data sources -->
+    <!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
+    <param name="datasource.pool.maxActive" override="false">50</param>
+    <param name="datasource.minIdle" override="false">7</param>
+    <param name="datasource.accessToUnderlyingConnectionAllowed" override="false">true</param>
+    <param name="datasource.initialSize" override="false">7</param>
+	
+	<param name="datasource.pool.minSize" override="false">0</param>
     <param name="datasource.pool.maxSize" override="false">5</param>
     <param name="datasource.pool.size" override="false">5</param>
     <param name="datasource.pool.maxWait" override="false">30000</param>
@@ -58,7 +66,7 @@
     <!-- Action List Outbox -->
     <param name="actionlist.outbox.default.preference.on" override="false">true</param>
     <param name="actionlist.outbox" override="false">true</param>
-	
+    <param name="ActionList.norefresh" override="false">false</param>
 
     <!--
       NOTE: The application.url parameter needs to be set by the client
@@ -81,6 +89,9 @@
     <param name="cas.require.https" override="false">false</param>
     <param name="cas.validate.password" override="false">false</param>
     <param name="cas.rice.server.name" override="false">${appserver.url}</param>
+
+	<!-- Tells the StandaloneInitializeListener to look in another location for the Rice configuration. Comma separated list -->
+	<param name="additional.config.locations" override="false"></param>
 
     <!-- A comma separated list of additional spring files for the RiceConfigurer -->
     <param name="rice.additionalSpringFiles" override="false"></param>
@@ -111,30 +122,6 @@
 
     <param name="portal.css.files" override="false">rice-portal/css/portal.css</param>
     <param name="portal.javascript.files" override="false">kr/scripts/my_common.js</param>
-
-
-
-
-    <!--
-        DATASOURCE RELATED PROPERTIES
-        to make our lives easier, common settings are all defaulted to Oracle
-    -->
-
-	<!-- below used by atomikos data sources -->
-    <!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
-    <param name="datasource.pool.maxActive" override="false">50</param>
-    <param name="datasource.minIdle" override="false">7</param>
-    <param name="datasource.accessToUnderlyingConnectionAllowed" override="false">true</param>
-    <param name="datasource.initialSize" override="false">7</param>
-
-    <!-- NOT NEEDED B/C THEY ARE DEFAULTED BY WORK DONE IN KULRICE-1067
-  	<param name="datasource.pool.size" override="false">5</param>
-    <param name="datasource.pool.maxWait" override="false">30000</param>
-    <param name="datasource.ojb.platform" override="false">Oracle9i</param>
-    <param name="datasource.platform" override="false">org.kuali.<param name="rice.core.database.platform.OraclePlatform</param>
-    <param name="datasource.driver.name" override="false">oracle.jdbc.driver.OracleDriver</param>
-    <param name="datasource.pool.validationQuery" override="false">select 1 from dual</param>
-    -->
 
     <param name="transaction.timeout" override="false">30000</param>
 
@@ -272,5 +259,10 @@
     <param name="kcb.maxProcessAttempts" override="false">3</param>
     <param name="kcb.messaging.synchronous" override="false">false</param>
     <param name="kcb.smtp.host" override="false">${mail.smtp.host}</param>
-
+    
+	<param name="secure.workflowutility.soapservice.endpoint" override="false">true</param>
+	<param name="title.inquiry.url.value.prependtext" override="false"></param>
+	<param name="portal.show.sample.app" override="false">false</param>
+	<param name="bus.refresh.rate" override="false">30</param>
+	<param name="threadPool.size" override="false">5</param>
 </config>

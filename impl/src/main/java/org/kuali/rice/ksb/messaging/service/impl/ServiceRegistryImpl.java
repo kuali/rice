@@ -143,4 +143,8 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 
 		}
 	}
+
+	public FlattenedServiceDefinition getFlattenedServiceDefinition(Long flattenedServiceDefinitionId) {
+		return getDao().findFlattenedServiceDefinition(flattenedServiceDefinitionId);
+	}
 }

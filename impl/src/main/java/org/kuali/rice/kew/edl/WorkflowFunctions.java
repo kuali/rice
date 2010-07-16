@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.edl;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -66,6 +67,10 @@ public class WorkflowFunctions {
 				LOG.debug("Invalid format routeHeaderId (should be LONG): " + id);
 			} catch (WorkflowException e) {
 				LOG.debug("Error checking if user is route log authenticated: userId: " + principalId + ";routeHeaderId: " + id);
+
+		    } catch (RiceRuntimeException e) {
+		    	LOG.error("Runtime Exception checking if user is route log authenticated: userId: " + principalId + ";routeHeaderId: " + id);
+
 		    }
 		}
 
@@ -89,7 +94,14 @@ public class WorkflowFunctions {
 		UserSession userSession=UserSession.getAuthenticatedUser();
 		if(userSession!=null){
 			if(!Utilities.isEmpty(groupName)){
-				isUserInGroup = userSession.isMemberOfGroupWithName(namespace, groupName);
+
+				try{
+					isUserInGroup = userSession.isMemberOfGroupWithName(namespace, groupName);
+				}catch(Exception e){
+	    			LOG.error("Exception encountered trying to determine if user is member of a group: userId: " + userSession.getPrincipalId() + ";groupNamespace/Name: " 
+	    					+ namespace + "/" + groupName + " resulted in error:" + e);
+				}
+
 			}
 		}
 		return isUserInGroup;

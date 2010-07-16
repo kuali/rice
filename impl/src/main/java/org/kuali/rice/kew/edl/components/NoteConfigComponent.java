@@ -16,14 +16,47 @@
  */
 package org.kuali.rice.kew.edl.components;
 
+
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLModelComponent;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.mail.EmailBody;
+import org.kuali.rice.kew.mail.EmailContent;
+import org.kuali.rice.kew.mail.EmailFrom;
+import org.kuali.rice.kew.mail.EmailStyleHelper;
+import org.kuali.rice.kew.mail.EmailSubject;
+import org.kuali.rice.kew.mail.service.impl.EmailBcList;
+import org.kuali.rice.kew.mail.service.impl.EmailCcList;
+import org.kuali.rice.kew.mail.service.impl.EmailToList;
 import org.kuali.rice.kew.notes.Attachment;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.Note;
@@ -34,14 +67,14 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.util.*;
+import com.thoughtworks.xstream.XStream;
 
 
 /**
@@ -53,6 +86,16 @@ import java.util.*;
 public class NoteConfigComponent implements EDLModelComponent {
 
 	private static final Logger LOG = Logger.getLogger(NoteConfigComponent.class);
+
+	private EmailStyleHelper emailStyleHelper = new EmailStyleHelper();
+	private String styleName;
+	private String from;
+	private List<String> to;
+	private List<String> cc = new ArrayList<String>();
+	private List<String> bc = new ArrayList<String>();
+	private static final String DEFAULT_EMAIL_FROM_ADDRESS = KNSServiceLocator.getParameterService().getParameterValue(KEWConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
+	
+
 
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
 		NoteForm noteForm = new NoteForm(edlContext.getRequestParser());
@@ -263,6 +306,88 @@ public class NoteConfigComponent implements EDLModelComponent {
                 return;
         	}
             getNoteService().saveNote(noteToSave);
+            
+
+            // add ability to send emails when a note is saved. 
+            boolean sendEmailOnNoteSave = false;
+			// Check if edoclite specifies <param name="sendEmailOnNoteSave">
+			Document edlDom = KEWServiceLocator.getEDocLiteService()
+					.getDefinitionXml(edlContext.getEdocLiteAssociation());
+			XPath xpath = XPathFactory.newInstance().newXPath();
+			String xpathExpression = "//config/param[@name='sendEmailOnNoteSave']";
+			try {
+				String match = (String) xpath.evaluate(xpathExpression, edlDom,	XPathConstants.STRING);
+				if (!StringUtils.isBlank(match) && match.equals("true")) {
+					sendEmailOnNoteSave = true;
+				}
+			} catch (XPathExpressionException e) {
+				throw new WorkflowRuntimeException(
+						"Unable to evaluate sendEmailOnNoteSave xpath expression in NoteConfigComponent saveNote method"
+								+ xpathExpression, e);
+			}
+
+			if (sendEmailOnNoteSave) {
+				xpathExpression = "//data/version[@current='true']/field[@name='emailTo']/value";
+				String emailTo = xpath.evaluate(xpathExpression, dom);
+				if (StringUtils.isBlank(emailTo)) {
+					EDLXmlUtils.addGlobalErrorMessage(dom,"No email notifications were sent because EmailTo field was empty.");
+					return;
+				}
+				// Actually send the emails.
+				if (isProduction()) {
+					this.to = stringToList(emailTo);
+				} else {
+					String testAddress = getTestAddress(edlDom);
+					if (StringUtils.isBlank(testAddress)) {
+						EDLXmlUtils.addGlobalErrorMessage(
+										dom,
+										"No email notifications were sent because testAddress edl param was empty or not specified in a non production environment");
+						return;
+					}
+					this.to = stringToList(getTestAddress(edlDom));
+        }
+				if (!isEmailListValid(this.to)) {
+					EDLXmlUtils.addGlobalErrorMessage(
+									dom,
+									"No email notifications were sent because emailTo field contains invalid email address.");
+					return;
+				}
+				String noteEmailStylesheet = "";
+				xpathExpression = "//config/param[@name='noteEmailStylesheet']";
+				try {
+					noteEmailStylesheet = (String) xpath.evaluate(
+							xpathExpression, edlDom, XPathConstants.STRING);
+					if (StringUtils.isBlank(noteEmailStylesheet)) {
+						EDLXmlUtils.addGlobalErrorMessage(
+										dom,
+										"No email notifications were sent because noteEmailStylesheet edl param was empty or not specified.");
+						return;
+					}
+				} catch (XPathExpressionException e) {
+					throw new WorkflowRuntimeException(
+							"Unable to evaluate noteEmailStylesheet xpath expression in NoteConfigComponent method"
+									+ xpathExpression, e);
+				}
+				this.styleName = noteEmailStylesheet;
+				this.from = DEFAULT_EMAIL_FROM_ADDRESS;
+				Document document = generateXmlInput(form, edlContext, edlDom);
+				if (LOG.isDebugEnabled()) {
+					LOG.debug("XML input for email tranformation:\n" + XmlHelper.jotNode(document));
+				}
+				Templates style = loadStyleSheet(styleName);
+				EmailContent emailContent = emailStyleHelper
+						.generateEmailContent(style, document);
+				if (!this.to.isEmpty()) {
+					KEWServiceLocator.getEmailService().sendEmail(
+							new EmailFrom(from), new EmailToList(this.to),
+							new EmailSubject(emailContent.getSubject()),
+							new EmailBody(emailContent.getBody()),
+							new EmailCcList(this.cc), new EmailBcList(this.bc),
+							emailContent.isHtml());
+				}
+			}
+            
+
         }
         if (form.getShowEdit()!=null && form.getShowEdit().equals("yes")) {
             form.setNote(new Note());
@@ -272,6 +397,129 @@ public class NoteConfigComponent implements EDLModelComponent {
         form.setShowEdit("no");
         form.setNoteIdNumber(null);
     }
+
+
+	 protected String getTestAddress(Document edlDom) {
+			String testAddress = "";
+			XPath xpath = XPathFactory.newInstance().newXPath();
+			String xpathExpression = "//config/param[@name='testAddress']";
+			try {
+			    testAddress = (String) xpath.evaluate(xpathExpression, edlDom, XPathConstants.STRING);
+			} catch (XPathExpressionException e) {
+			    throw new WorkflowRuntimeException("Unable to evaluate testAddressAttributeFound xpath expression in NoteConfigComponent getTestAddress method" + xpathExpression, e);
+			}
+			return testAddress;
+		    }
+		    
+		    protected Document generateXmlInput(NoteForm form, EDLContext edlContext, Document dom) throws Exception {
+			DocumentBuilder db = getDocumentBuilder(true);
+		        Document doc = db.newDocument();
+		        Element emailNodeElem = doc.createElement("emailNode");
+		        doc.appendChild(emailNodeElem);
+			WorkflowDocument document = (WorkflowDocument)edlContext.getRequestParser().getAttribute(RequestParser.WORKFLOW_DOCUMENT_SESSION_KEY);
+
+		    /* Upgrade Changes 0914 to 1011 */
+			//RouteHeaderVO routeHeaderVO = document.getRouteHeader();
+			RouteHeaderDTO routeHeaderVO = document.getRouteHeader();
+		        XStream xstream = new XStream();
+		        Element docElem = XmlHelper.readXml(xstream.toXML(routeHeaderVO)).getDocumentElement();
+		        emailNodeElem.appendChild(doc.importNode(docElem, true));
+		        emailNodeElem.appendChild(doc.importNode(dom.getDocumentElement(), true));
+		        Element dConElem = XmlHelper.readXml(document.getDocumentContent().getApplicationContent()).getDocumentElement(); //Add document Content element for
+		        emailNodeElem.appendChild(doc.importNode(dConElem, true)); //access by the stylesheet when creating the email
+		        return doc;
+		    }
+		    
+		    protected DocumentBuilder getDocumentBuilder(boolean coalesce) throws Exception {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			dbf.setCoalescing(coalesce);
+			return dbf.newDocumentBuilder();
+		    }
+		    
+		    /* Upgrade Changes 0914 to 1011 */
+		    /*
+		    protected boolean isProduction() {
+			return EdenConstants.PROD_DEPLOYMENT_CODE.equalsIgnoreCase(Core.getCurrentContextConfig().getEnvironment());
+		    }
+		    */
+		    protected boolean isProduction() {
+		    	return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.PROD_DEPLOYMENT_CODE).equalsIgnoreCase(
+		    			ConfigContext.getCurrentContextConfig().getEnvironment());
+		    }
+		    
+		    protected boolean isEmailListValid(List<String> emailList) {
+			Pattern p = Pattern.compile("^\\.|^\\@");
+			Matcher m = null;
+			for (String emailAddress : emailList) {
+			    m = p.matcher(emailAddress);
+			    if (m.find()) {
+			         //System.err.println("Email addresses don't start with dots or @ signs.");
+				return false;
+			    }
+			}
+			p = Pattern.compile("^www\\.");
+			for (String emailAddress : emailList) {
+			    m = p.matcher(emailAddress);
+			    if (m.find()) {
+			         //System.err.println("Email addresses don't start with \"www.\", only web pages do.");
+				return false;
+			    }
+			}
+			// find illegal characters.
+			p = Pattern.compile("[^A-Za-z0-9\\.\\@_\\-~#]+");
+			for (String emailAddress : emailList) {
+			    // strip comma at end if there is one.
+			    String e2 = stripComma(emailAddress);
+			    m = p.matcher(e2);
+			    if (m.find()) {
+			         //System.err.println("Email address contains illegal character(s).");
+			        return false;
+			    }
+			}
+			// email address should match this pattern.
+			p = Pattern.compile("^([a-zA-Z0-9_\\-\\.]+)\\@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$");
+			for (String emailAddress : emailList) {
+			    String e2 = stripComma(emailAddress);
+			    m = p.matcher(e2);
+			    if (!m.find()) {
+			         //System.err.println("Illegal Email address format.");
+			        return false;
+			    }
+			}
+			return true;
+		    }
+		    
+		    protected String stripComma(String s) {
+			String sNew = "";
+			if (s.endsWith(",")) {
+			    int x = s.length() -1;
+			    sNew = s.substring(0, x);
+			} else {
+			    sNew = s;
+			}
+			return sNew;
+		    }
+		    
+		    protected List<String> stringToList(String to) {
+			List<String> recipientAddresses = new ArrayList<String>();
+			StringTokenizer st = new StringTokenizer(to, " ", false);
+			     while (st.hasMoreTokens()) {
+			         recipientAddresses.add(st.nextToken());
+			     }
+			return recipientAddresses;
+		    }
+		    
+		    protected Templates loadStyleSheet(String styleName) {
+			try {
+			    Templates style = KEWServiceLocator.getStyleService().getStyleAsTranslet(styleName);
+			    if (style == null) {
+				throw new WorkflowRuntimeException("Failed to locate stylesheet with name '" + styleName + "'");
+			    }
+			    return style;
+			} catch (TransformerConfigurationException tce) {
+			    throw new WorkflowRuntimeException("Failed to load stylesheet with name '" + styleName + "'");
+			}
+		    }
 
 	public static void addNotes(Document doc, NoteForm form) {
 		Element noteForm = EDLXmlUtils.getOrCreateChildElement(doc.getDocumentElement(), "NoteForm", true);

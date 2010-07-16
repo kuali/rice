@@ -1502,14 +1502,16 @@ public class KualiDocumentActionBase extends KualiAction {
      * @return
      */
     protected ActionForward returnToSender(HttpServletRequest request, ActionMapping mapping, KualiDocumentFormBase form) {
-        ActionForward dest = null;
+        final ActionForward dest;
         if (form.isReturnToActionList()) {
             String workflowBase = getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY);
             String actionListUrl = workflowBase + "/ActionList.do";
 
             dest = new ActionForward(actionListUrl, true);
         }
-        else {
+        else if(StringUtils.isNotBlank(form.getBackLocation())){
+        	dest = new ActionForward(form.getBackLocation(), true);
+        } else{
             dest = mapping.findForward(KNSConstants.MAPPING_PORTAL);
         }
 

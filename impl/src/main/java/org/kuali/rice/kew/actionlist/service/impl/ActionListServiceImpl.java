@@ -37,6 +37,8 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.useroptions.UserOptions;
+import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.GroupService;
@@ -324,21 +326,37 @@ public class ActionListServiceImpl implements ActionListService {
      * @see org.kuali.rice.kew.actionlist.service.ActionListService#saveOutboxItem(org.kuali.rice.kew.actionitem.ActionItem, boolean)
      */
     public void saveOutboxItem(ActionItem actionItem, boolean forceIntoOutbox) {
-            if (KEWServiceLocator.getPreferencesService().getPreferences(actionItem.getPrincipalId()).isUsingOutbox()
-                    && ConfigContext.getCurrentContextConfig().getOutBoxOn()
-                    && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getRouteHeaderId(), actionItem.getPrincipalId()) == null
-                    && !actionItem.getRouteHeader().getDocRouteStatus().equals(KEWConstants.ROUTE_HEADER_SAVED_CD)) {
-                // only create an outbox item if this user has taken action on the document
-                ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(
-                        actionItem.getActionRequestId());
-                ActionTakenValue actionTaken = actionRequest.getActionTaken();
-                // if an action was taken...
-                if (forceIntoOutbox || (actionTaken != null && actionTaken.getPrincipalId().equals(actionItem.getPrincipalId()))) {
-                    this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
-                }
-            }
-    }
+    	UserOptionsService userOptionsService = KEWServiceLocator.getUserOptionsService();
+    	Boolean isUsingOutBox = true;
+    	List<UserOptions> options = userOptionsService.findByUserQualified(actionItem.getPrincipalId(), KEWConstants.USE_OUT_BOX);
+    	if (options == null || options.isEmpty()){
+    		isUsingOutBox = true;
+    	} else {
+			for (Iterator iter = options.iterator(); iter.hasNext();) {
+				UserOptions u = (UserOptions) iter.next();
+				if (u.getOptionVal() == null || !(u.getOptionVal().equals("yes"))){
+					isUsingOutBox = false;
+				}
+			}
+    	}
+    	
+    	if (isUsingOutBox
+            && ConfigContext.getCurrentContextConfig().getOutBoxOn()
+            && getActionListDAO().getOutboxByDocumentIdUserId(actionItem.getRouteHeaderId(), actionItem.getPrincipalId()) == null
+            && !KEWServiceLocator.getRouteHeaderService().getDocumentStatus(actionItem.getRouteHeaderId()).equals(KEWConstants.ROUTE_HEADER_SAVED_CD)) {
 
+    		// only create an outbox item if this user has taken action on the document
+    		ActionRequestValue actionRequest = KEWServiceLocator.getActionRequestService().findByActionRequestId(
+    				actionItem.getActionRequestId());
+    		ActionTakenValue actionTaken = actionRequest.getActionTaken();
+    		// if an action was taken...
+    		if (forceIntoOutbox || (actionTaken != null && actionTaken.getPrincipalId().equals(actionItem.getPrincipalId()))) {
+    			this.getActionListDAO().saveOutboxItem(new OutboxItemActionListExtension(actionItem));
+    		}
+       
+    	}
+    }
+    
 	public Collection<ActionItem> findByPrincipalId(String principalId) {
 		return getActionItemDAO().findByPrincipalId(principalId);
 	}

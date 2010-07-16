@@ -217,19 +217,27 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 			GroupImpl oldGroup = getGroupImpl(group.getGroupId());
 
 			if (oldGroup != null) {
-				// Inactivate and re-add members no longer present in order to preserve history.
+				// Inactivate and re-add members no longer in the group (in order to preserve history).
 				java.sql.Date activeTo = new java.sql.Date(System.currentTimeMillis());
 				List<GroupMemberImpl> toReAdd = null;
 
 				if (oldGroup.getMembers() != null) for (GroupMemberImpl member : oldGroup.getMembers()) {
-					if (!group.getMembers().contains(member)) {
+					// if the old member isn't in the new group
+					if (group.getMembers() == null || !group.getMembers().contains(member)) {
+						// inactivate the member
 						member.setActiveToDate(activeTo);
 						if (toReAdd == null) { toReAdd = new ArrayList<GroupMemberImpl>(); }
+						// queue it up for re-adding
 						toReAdd.add(member);
 					}
 				}
 
-				if (toReAdd != null) { group.getMembers().addAll(toReAdd); }
+				// do the re-adding
+				if (toReAdd != null) {
+					List<GroupMemberImpl> groupMembers = group.getMembers();
+					if (groupMembers == null) { groupMembers = new ArrayList<GroupMemberImpl>(toReAdd.size()); }
+					group.setMembers(groupMembers);
+				}
 			}
 		}
 

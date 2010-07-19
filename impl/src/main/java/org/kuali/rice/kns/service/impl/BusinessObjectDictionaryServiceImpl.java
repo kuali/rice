@@ -936,4 +936,91 @@ public class BusinessObjectDictionaryServiceImpl implements
 		FieldDefinition lookupFieldDefinition = getLookupFieldDefinition(businessObjectClass, attributeName);
 		return lookupFieldDefinition != null && lookupFieldDefinition.isTreatWildcardsAndOperatorsAsLiteral();
 	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryFieldAdditionalDisplayAttributeName(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public String getInquiryFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName) {
+		String additionalDisplayAttributeName = null;
+
+		if (getInquiryFieldDefinition(businessObjectClass, attributeName) != null) {
+			additionalDisplayAttributeName = getInquiryFieldDefinition(businessObjectClass, attributeName)
+					.getAdditionalDisplayAttributeName();
+		}
+
+		return additionalDisplayAttributeName;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryFieldAlternateDisplayAttributeName(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public String getInquiryFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName) {
+		String alternateDisplayAttributeName = null;
+
+		if (getInquiryFieldDefinition(businessObjectClass, attributeName) != null) {
+			alternateDisplayAttributeName = getInquiryFieldDefinition(businessObjectClass, attributeName)
+					.getAlternateDisplayAttributeName();
+		}
+
+		return alternateDisplayAttributeName;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldAdditionalDisplayAttributeName(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public String getLookupFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName) {
+		String additionalDisplayAttributeName = null;
+
+		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+			additionalDisplayAttributeName = getLookupFieldDefinition(businessObjectClass, attributeName)
+					.getAdditionalDisplayAttributeName();
+		}
+
+		return additionalDisplayAttributeName;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldAlternateDisplayAttributeName(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public String getLookupFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName) {
+		String alternateDisplayAttributeName = null;
+
+		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+			alternateDisplayAttributeName = getLookupFieldDefinition(businessObjectClass, attributeName)
+					.getAlternateDisplayAttributeName();
+		}
+
+		return alternateDisplayAttributeName;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#tranlateCodesInLookup(java.lang.Class)
+	 */
+	public Boolean tranlateCodesInLookup(Class businessObjectClass) {
+		boolean translateCodes = false;
+
+		if (getLookupDefinition(businessObjectClass) != null) {
+			translateCodes = getLookupDefinition(businessObjectClass).isTranslateCodes();
+		}
+
+		return translateCodes;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#tranlateCodesInInquiry(java.lang.Class)
+	 */
+	public Boolean tranlateCodesInInquiry(Class businessObjectClass) {
+		boolean translateCodes = false;
+
+		if (getInquiryDefinition(businessObjectClass) != null) {
+			translateCodes = getInquiryDefinition(businessObjectClass).isTranslateCodes();
+		}
+
+		return translateCodes;
+	}
+	
 }

@@ -31,7 +31,10 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.kns.bo.KualiCode;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
@@ -46,8 +49,8 @@ import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
@@ -59,18 +62,10 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
-import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
-import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.kns.util.MaintenanceUtils;
-import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.kns.util.ObjectUtils;
-
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
+import org.kuali.rice.kns.web.ui.PropertyRenderingConfigElement;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
 
@@ -350,7 +345,7 @@ public class FieldUtils {
                 throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
             }
         }
-
+        
         // set Field help properties
         field.setBusinessObjectClassName(businessObjectClass.getName());
         field.setFieldHelpName(attributeName);
@@ -358,6 +353,34 @@ public class FieldUtils {
 
         return field;
     }
+    
+	/**
+	 * For attributes that are codes (determined by whether they have a
+	 * reference to a KualiCode bo and similar naming) sets the name as an
+	 * additional display property
+	 * 
+	 * @param businessObjectClass -
+	 *            class containing attribute
+	 * @param attributeName - 
+	 *            name of attribute in the business object
+	 * @param field - 
+	 *            property display element
+	 */
+	public static void setAdditionalDisplayPropertyForCodes(Class businessObjectClass, String attributeName, PropertyRenderingConfigElement field) {
+		try {
+			BusinessObjectRelationship relationship = getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+					(BusinessObject) businessObjectClass.newInstance(), attributeName);
+
+			if (relationship != null && attributeName.startsWith(relationship.getParentAttributeName())
+					&& KualiCode.class.isAssignableFrom(relationship.getRelatedClass())) {
+				field.setAdditionalDisplayPropertyName(relationship.getParentAttributeName() + "."
+						+ KNSPropertyConstants.NAME);
+			}
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot get new instance of class to check for KualiCode references: "
+					+ e.getMessage());
+		}
+	}
 
 
     /**
@@ -513,11 +536,15 @@ public class FieldUtils {
     public static List<Field> populateFieldsFromBusinessObject(List<Field> fields, BusinessObject bo) {
         List<Field> populatedFields = new ArrayList<Field>();
 
+        if (bo instanceof PersistableBusinessObject) {
+        	((PersistableBusinessObject) bo).refreshNonUpdateableReferences();
+        }
+        
         for (Iterator<Field> iter = fields.iterator(); iter.hasNext();) {
-            Field element = iter.next();
+            Field element = iter.next();            
             if (element.containsBOData()) {
                 String propertyName = element.getPropertyName();
-
+                
                 // See: https://test.kuali.org/jira/browse/KULCOA-1185
                 // Properties that could not possibly be set by the BusinessObject should be ignored.
                 // (https://test.kuali.org/jira/browse/KULRNE-4354; this code was killing the src attribute of IMAGE_SUBMITs).
@@ -527,6 +554,18 @@ public class FieldUtils {
                 else if (PropertyUtils.isReadable(bo, propertyName)) {
                 	populateReadableField(element, bo);
                 }
+                
+    			if (StringUtils.isNotBlank(element.getAlternateDisplayPropertyName())) {
+    				String alternatePropertyValue = ObjectUtils.getFormattedPropertyValue(bo, element
+    						.getAlternateDisplayPropertyName(), null);
+    				element.setAlternateDisplayPropertyValue(alternatePropertyValue);
+    			}
+
+    			if (StringUtils.isNotBlank(element.getAdditionalDisplayPropertyName())) {
+    				String additionalPropertyValue = ObjectUtils.getFormattedPropertyValue(bo, element
+    						.getAdditionalDisplayPropertyName(), null);
+    				element.setAdditionalDisplayPropertyValue(additionalPropertyValue);
+    			}
             }
             populatedFields.add(element);
         }

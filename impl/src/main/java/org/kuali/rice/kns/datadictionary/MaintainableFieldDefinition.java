@@ -17,6 +17,7 @@ package org.kuali.rice.kns.datadictionary;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
@@ -73,6 +74,10 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
 
     protected Class<? extends BusinessObject> overrideLookupClass;
     protected String overrideFieldConversions;
+    
+    protected String alternateDisplayAttributeName;
+    protected String additionalDisplayAttributeName;
+    
     
     public MaintainableFieldDefinition() {}
 
@@ -178,6 +183,18 @@ required is true if the field must contain a non-null value
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getName())) {
             throw new AttributeValidationException("unable to find attribute or collection named '" + getName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
+        }
+        
+        if (StringUtils.isNotBlank(getAlternateDisplayAttributeName())) {
+            if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAlternateDisplayAttributeName())) {
+                throw new AttributeValidationException("unable to find attribute or collection named '" + getName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
+            }
+        }
+        
+        if (StringUtils.isNotBlank(getAdditionalDisplayAttributeName())) {
+            if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAdditionalDisplayAttributeName())) {
+                throw new AttributeValidationException("unable to find attribute or collection named '" + getName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
+            }
         }
 
         if (defaultValueFinderClass != null && defaultValue != null) {
@@ -301,9 +318,32 @@ The defaultValueFinderClass specifies the java class that will be
 	public void setLookupReadOnly(boolean lookupReadOnly) {
     	this.lookupReadOnly = lookupReadOnly;
     }
-      
-      
-      /**
+    
+	/**
+	 * The alternateDisplayAttributeName is the name of the attribute whose value will be displayed instead
+	 * of the actual maintenance field attribute. Only applies when field is read-only.
+	 */
+    public String getAlternateDisplayAttributeName() {
+		return this.alternateDisplayAttributeName;
+	}
+
+	public void setAlternateDisplayAttributeName(String alternateDisplayAttributeName) {
+		this.alternateDisplayAttributeName = alternateDisplayAttributeName;
+	}
+
+	/**
+	 * The additionalDisplayAttributeName is the name of the attribute whose value will be displayed in addition
+	 * to the actual maintenance field attribute. Only applies when field is read-only.
+	 */
+	public String getAdditionalDisplayAttributeName() {
+		return this.additionalDisplayAttributeName;
+	}
+
+	public void setAdditionalDisplayAttributeName(String additionalDisplayAttributeName) {
+		this.additionalDisplayAttributeName = additionalDisplayAttributeName;
+	}
+
+	/**
   	 * @return the webUILeaveFieldFunctionParameters
   	 */
   	public List<String> getWebUILeaveFieldFunctionParameters() {

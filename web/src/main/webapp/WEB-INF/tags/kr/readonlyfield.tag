@@ -26,7 +26,7 @@
       <c:when test="${field.secure}">
         <c:out value="${field.displayMaskValue}"/>
       </c:when>
-      <c:when test="${field.fieldType==field.DROPDOWN or field.fieldType==field.DROPDOWN_APC or field.fieldType==field.DROPDOWN_REFRESH or field.fieldType==field.DROPDOWN_SCRIPT or field.fieldType==field.RADIO}">
+      <c:when test="${(field.fieldType==field.DROPDOWN or field.fieldType==field.DROPDOWN_APC or field.fieldType==field.DROPDOWN_REFRESH or field.fieldType==field.DROPDOWN_SCRIPT or field.fieldType==field.RADIO) && empty field.additionalDisplayPropertyName}">
         <c:set var="value_found" value="false" />
         <c:forEach items="${field.fieldValidValues}" var="select">
           <c:if test="${field.propertyValue==select.key}">
@@ -79,9 +79,12 @@
 </c:set>
 
 <c:choose>
+  <c:when test="${!empty field.alternateDisplayPropertyName && !field.secure}">${field.alternateDisplayPropertyValue}</c:when>
   <c:when test="${empty result}">&nbsp;</c:when>
   <c:otherwise>${result}</c:otherwise>
 </c:choose>
+
+<c:if test="${!empty field.additionalDisplayPropertyName && !field.secure}"> *-* ${field.additionalDisplayPropertyValue}</c:if>
 
 <c:if test="${addHighlighting && field.highlightField}">
    <kul:fieldShowChangedIcon />

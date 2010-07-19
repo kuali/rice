@@ -264,4 +264,36 @@ public interface BusinessObjectDictionaryService {
      * @return
      */
     public boolean isLookupFieldTreatWildcardsAndOperatorsAsLiteral(Class businessObjectClass, String attributeName);
+    
+    /**
+     * returns String giving alternate display attribute name for lookup field if configured, or null
+     */
+    public String getLookupFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName);
+
+    /**
+     * returns String giving alternate display attribute name for inquiry field if configured, or null
+     */
+    public String getInquiryFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName);
+    
+    /**
+     * returns String giving additional display attribute name for lookup field if configured, or null
+     */
+    public String getLookupFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName);
+
+    /**
+     * returns String giving additional display attribute name for inquiry field if configured, or null
+     */
+    public String getInquiryFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName);
+    
+    /**
+     * @param businessObjectClass - business object class for lookup definition
+     * @return Boolean indicating whether translating of codes is configured to true in lookup definition  
+     */
+    public Boolean tranlateCodesInLookup(Class businessObjectClass);
+
+    /**
+     * @param businessObjectClass - business object class for inquiry definition
+     * @return Boolean indicating whether translating of codes is configured to true in inquiry definition  
+     */
+    public Boolean tranlateCodesInInquiry(Class businessObjectClass);
 }

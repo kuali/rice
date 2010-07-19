@@ -281,4 +281,10 @@ public interface MaintenanceDocumentDictionaryService {
     //for issue KULRice3070
     public Boolean getAllowsRecordDeletion(MaintenanceDocument document);
     
+    /**
+     * @param businessObjectClass - business object class for maintenance definition
+     * @return Boolean indicating whether translating of codes is configured to true in maintenance definition  
+     */
+    public Boolean translateCodes(Class businessObjectClass);
+    
 }

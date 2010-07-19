@@ -25,12 +25,11 @@ import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
 import org.kuali.rice.kns.web.format.Formatter;
 
 /**
- * This class represents a column in a result table.
+ * Represents a Column in a result table
  * 
- * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
-public class Column implements java.io.Serializable {
+public class Column implements java.io.Serializable, PropertyRenderingConfigElement {
     private static final long serialVersionUID = -5916942413570667803L;
     private String columnTitle;
     private String sortable = "true";
@@ -41,6 +40,9 @@ public class Column implements java.io.Serializable {
     private Formatter formatter;
     private Comparator comparator;
     private boolean escapeXMLValue=true;
+    
+    private String alternateDisplayPropertyName;
+    private String additionalDisplayPropertyName;
     
     /**
      * A comparator used to compare the propertyValue values
@@ -259,4 +261,21 @@ public class Column implements java.io.Serializable {
 	public void setEscapeXMLValue(boolean escapeXMLValue) {
 		this.escapeXMLValue = escapeXMLValue;
 	}
+
+	public String getAlternateDisplayPropertyName() {
+		return this.alternateDisplayPropertyName;
+	}
+
+	public void setAlternateDisplayPropertyName(String alternateDisplayPropertyName) {
+		this.alternateDisplayPropertyName = alternateDisplayPropertyName;
+	}
+
+	public String getAdditionalDisplayPropertyName() {
+		return this.additionalDisplayPropertyName;
+	}
+
+	public void setAdditionalDisplayPropertyName(String additionalDisplayPropertyName) {
+		this.additionalDisplayPropertyName = additionalDisplayPropertyName;
+	}
+	
 }

@@ -33,7 +33,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 public class FieldDefinition extends DataDictionaryDefinitionBase implements FieldDefinitionI {
     private static final long serialVersionUID = -3426603523049661524L;
-
+    
 	protected String attributeName;
     protected boolean required = false;
     protected boolean forceInquiry = false;
@@ -56,7 +56,10 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 	protected boolean readOnly 	= false;
 
 	protected boolean treatWildcardsAndOperatorsAsLiteral = false;
-
+	
+    protected String alternateDisplayAttributeName;
+    protected String additionalDisplayAttributeName;
+	
     public FieldDefinition() {
     }
 
@@ -241,14 +244,14 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     /**
      * See {@link #getQuickfinderParameterStringBuilderClass()}
 	 * @param quickfinderParameterStringBuilderClass the quickfinderParameterStringBuilderClass to set
-	 */
+     */
 	public void setQuickfinderParameterStringBuilderClass(
 			Class<? extends ValueFinder> quickfinderParameterStringBuilderClass) {
         if (quickfinderParameterStringBuilderClass == null) {
             throw new IllegalArgumentException("invalid (null) quickfinderParameterStringBuilderClass");
         }
 		this.quickfinderParameterStringBuilderClass = quickfinderParameterStringBuilderClass;
-	}
+    }
 
     /**
      * Directly validate simple fields.
@@ -260,6 +263,18 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAttributeName())) {
             throw new AttributeValidationException("unable to find attribute '" + attributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
+        }
+        
+        if (StringUtils.isNotBlank(getAlternateDisplayAttributeName())) {
+            if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAlternateDisplayAttributeName())) {
+                throw new AttributeValidationException("unable to find attribute named '" + getName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
+            }
+        }
+        
+        if (StringUtils.isNotBlank(getAdditionalDisplayAttributeName())) {
+            if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAdditionalDisplayAttributeName())) {
+                throw new AttributeValidationException("unable to find attribute named '" + getName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
+            }
         }
 
         if (defaultValueFinderClass != null && defaultValue != null) {
@@ -277,7 +292,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     }
 
 
-	/**
+    /**
 	 * This method does validation on the quickfinderParameterString and quickfinderParameterStringBuilderClass members
 	 *
 	 * @param rootBusinessObjectClass
@@ -416,8 +431,8 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
         }
         this.defaultValueFinderClass = defaultValueFinderClass;
     }
-
-    /**
+    
+	/**
 	 * @return the hidden
 	 */
 	public boolean isHidden() {
@@ -438,14 +453,14 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
 	}
-
+	
 	/**
 	 * @return the readOnly
 	 */
 	public boolean isReadOnly() {
 		return this.readOnly;
 	}
-
+	
 	/**
 	 * @param readOnly the readOnly to set
 	 */
@@ -469,4 +484,25 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 			boolean treatWildcardsAndOperatorsAsLiteralOnLookups) {
 		this.treatWildcardsAndOperatorsAsLiteral = treatWildcardsAndOperatorsAsLiteralOnLookups;
 	}
+
+
+	public String getAlternateDisplayAttributeName() {
+		return this.alternateDisplayAttributeName;
+	}
+
+
+	public void setAlternateDisplayAttributeName(String alternateDisplayAttributeName) {
+		this.alternateDisplayAttributeName = alternateDisplayAttributeName;
+	}
+
+
+	public String getAdditionalDisplayAttributeName() {
+		return this.additionalDisplayAttributeName;
+	}
+
+
+	public void setAdditionalDisplayAttributeName(String additionalDisplayAttributeName) {
+		this.additionalDisplayAttributeName = additionalDisplayAttributeName;
+	}
+	
 }

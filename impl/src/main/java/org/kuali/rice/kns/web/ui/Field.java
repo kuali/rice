@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.web.ui;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,14 +30,15 @@ import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
-import org.kuali.rice.kns.web.format.BooleanFormatter;
-import org.kuali.rice.kns.web.format.DateFormatter;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.Formatter;
 
 /**
- * This class represents a field render on the ui.
+ * Represents a Field (form field or read only)
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class Field implements java.io.Serializable {
+public class Field implements java.io.Serializable, PropertyRenderingConfigElement {
     private static final long serialVersionUID = 6549897986355019202L;
     public static final int DEFAULT_MAXLENGTH = 30;
     public static final int DEFAULT_SIZE = 30;
@@ -127,6 +127,11 @@ public class Field implements java.io.Serializable {
     private String fieldHelpUrl;
     private String propertyName; 
     private String propertyValue;
+    
+    private String alternateDisplayPropertyName;
+    private String alternateDisplayPropertyValue;
+    private String additionalDisplayPropertyName;
+    private String additionalDisplayPropertyValue;  
 
     private List<KeyLabelPair> fieldValidValues;
     private String quickFinderClassNameImpl;
@@ -937,30 +942,10 @@ public class Field implements java.io.Serializable {
      * @param propertyValue The propertyValue to set.
      */
     public void setPropertyValue(Object propertyValue) {
-        String newPropertyValue = KNSConstants.EMPTY_STRING;
-
-        if (propertyValue != null) {
-            // for Booleans always use BooleanFormatter
-            if (propertyValue instanceof Boolean) {
-                setFormatter(new BooleanFormatter());
-            }
-
-            // for Dates, always use DateFormatter
-            if (propertyValue instanceof Date) {
-                formatter = new DateFormatter();
-            }
-
-            if (formatter != null && !(propertyValue instanceof String)) {
-                newPropertyValue = (String) formatter.format(propertyValue);
-            }
-            else {
-                newPropertyValue = propertyValue.toString();
-            }
-
-            // uppercase
-            if (isUpperCase()) {
-                newPropertyValue = newPropertyValue.toUpperCase();
-            }
+        String newPropertyValue = ObjectUtils.formatPropertyValue(propertyValue);
+        
+        if (isUpperCase()) {
+            newPropertyValue = newPropertyValue.toUpperCase();
         }
 
         this.propertyValue = newPropertyValue;
@@ -1512,6 +1497,42 @@ public class Field implements java.io.Serializable {
 	    }
 	}
 	
+	public String getAlternateDisplayPropertyName() {
+		return this.alternateDisplayPropertyName;
+	}
+
+	public void setAlternateDisplayPropertyName(String alternateDisplayPropertyName) {
+		this.alternateDisplayPropertyName = alternateDisplayPropertyName;
+	}
+
+	public String getAlternateDisplayPropertyValue() {
+		return this.alternateDisplayPropertyValue;
+	}
+
+	public void setAlternateDisplayPropertyValue(Object alternateDisplayPropertyValue) {
+        String formattedValue = ObjectUtils.formatPropertyValue(alternateDisplayPropertyValue);
+
+		this.alternateDisplayPropertyValue = formattedValue;
+	}
+
+	public String getAdditionalDisplayPropertyName() {
+		return this.additionalDisplayPropertyName;
+	}
+
+	public void setAdditionalDisplayPropertyName(String additionalDisplayPropertyName) {
+		this.additionalDisplayPropertyName = additionalDisplayPropertyName;
+	}
+
+	public String getAdditionalDisplayPropertyValue() {
+		return this.additionalDisplayPropertyValue;
+	}
+
+	public void setAdditionalDisplayPropertyValue(Object additionalDisplayPropertyValue) {
+		String formattedValue = ObjectUtils.formatPropertyValue(additionalDisplayPropertyValue);
+		
+		this.additionalDisplayPropertyValue = formattedValue;
+	}
+
 	//#BEGIN DOC SEARCH RELATED
     public boolean isIndexedForSearch() {
         return this.isIndexedForSearch;

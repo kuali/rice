@@ -21,6 +21,8 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.BusinessObjectRelationship;
+import org.kuali.rice.kns.bo.KualiCode;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -457,8 +459,8 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 protected String getActionUrlHref(BusinessObject businessObject, String methodToCall, List pkNames){
 		 Properties parameters = new Properties();
 		 parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, methodToCall);
-		 // TODO: why is this not using the businessObject parmeter's class?
-		 parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
+        // TODO: why is this not using the businessObject parmeter's class?
+        parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
 		 parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
 		 if (StringUtils.isNotBlank(getReturnLocation())) {
 			 parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
@@ -642,6 +644,24 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 						 throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
 					 }
 				 }
+				 
+				String alternateDisplayPropertyName = getBusinessObjectDictionaryService()
+						.getLookupFieldAlternateDisplayAttributeName(getBusinessObjectClass(), attributeName);
+				if (StringUtils.isNotBlank(alternateDisplayPropertyName)) {
+					column.setAlternateDisplayPropertyName(alternateDisplayPropertyName);
+				}
+
+				String additionalDisplayPropertyName = getBusinessObjectDictionaryService()
+						.getLookupFieldAdditionalDisplayAttributeName(getBusinessObjectClass(), attributeName);
+				if (StringUtils.isNotBlank(additionalDisplayPropertyName)) {
+					column.setAdditionalDisplayPropertyName(additionalDisplayPropertyName);
+				}
+				else {
+					boolean translateCodes = getBusinessObjectDictionaryService().tranlateCodesInLookup(getBusinessObjectClass());
+					if (translateCodes) {
+						FieldUtils.setAdditionalDisplayPropertyForCodes(getBusinessObjectClass(), attributeName, column);
+					}	
+				}
 
 				 columns.add(column);
 			 }
@@ -1031,146 +1051,144 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 throw new UnsupportedOperationException("Lookupable helper services do not always support getSearchResultsUnbounded");
 	 }
 
-	 /**
-	  *
-	  * This method performs the lookup and returns a collection of lookup items
-	  * @param lookupForm
-	  * @param kualiLookupable
-	  * @param resultTable
-	  * @param bounded
-	  * @return
-	  */
-	 public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
-		 Map lookupFormFields = lookupForm.getFieldsForLookup();
+	/**
+	 * Performs the lookup and returns a collection of lookup items
+	 * 
+	 * @param lookupForm
+	 * @param resultTable
+	 * @param bounded
+	 * @return
+	 */
+	public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
+		Map lookupFormFields = lookupForm.getFieldsForLookup();
 
-		 setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
-		 setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
-		 Collection displayList;
+		setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
+		setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
+		Collection displayList;
 
+		preprocessDateFields(lookupFormFields);
 
-		 preprocessDateFields(lookupFormFields);
+		Map fieldsForLookup = new HashMap(lookupForm.getFieldsForLookup());
+		// call search method to get results
+		if (bounded) {
+			displayList = getSearchResults(lookupForm.getFieldsForLookup());
+		} else {
+			displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
+		}
 
-		 Map fieldsForLookup = new HashMap(lookupForm.getFieldsForLookup());
-		 // call search method to get results
-		 if (bounded) {
-			 displayList = getSearchResults(lookupForm.getFieldsForLookup());
-		 }
-		 else {
-			 displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
-		 }
+		boolean hasReturnableRow = false;
 
-		 HashMap<String,Class> propertyTypes = new HashMap<String, Class>();
+		List returnKeys = getReturnKeys();
+		List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+		Person user = GlobalVariables.getUserSession().getPerson();
 
-		 boolean hasReturnableRow = false;
+		// iterate through result list and wrap rows with return url and action
+		// urls
+		for (Iterator iter = displayList.iterator(); iter.hasNext();) {
+			BusinessObject element = (BusinessObject) iter.next();
 
-		 List returnKeys = getReturnKeys();
-		 List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
-		 Person user = GlobalVariables.getUserSession().getPerson();
+			final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(element);
+			if (lookupId != null) {
+				lookupForm.setLookupObjectId(lookupId);
+			}
 
-		 // iterate through result list and wrap rows with return url and action urls
-		 for (Iterator iter = displayList.iterator(); iter.hasNext();) {
-			 BusinessObject element = (BusinessObject) iter.next();
-			 
-			 final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(element);
-			 if(lookupId != null){
-				 lookupForm.setLookupObjectId(lookupId);
-			 }
+			BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService()
+					.getLookupResultRestrictions(element, user);
 
-			 BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
+			HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
+			String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
+			// Fix for JIRA - KFSMI-2417
+			if ("".equals(actionUrls)) {
+				actionUrls = ACTION_URLS_EMPTY;
+			}
 
-			 HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
+			List<Column> columns = getColumns();
+			for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+				Column col = (Column) iterator.next();
 
-			 String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
-			 //Fix for JIRA - KFSMI-2417
-			 if("".equals(actionUrls)){
-				 actionUrls = ACTION_URLS_EMPTY;
-			 }
+				String propValue = ObjectUtils.getFormattedPropertyValue(element, col.getPropertyName(), col.getFormatter());
+				Class propClass = getPropertyClass(element, col.getPropertyName());
 
-			 List<Column> columns = getColumns();
-			 for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+				col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
+				col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
 
-				 Column col = (Column) iterator.next();
-				 Formatter formatter = col.getFormatter();
+				String propValueBeforePotientalMasking = propValue;
+				propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue,
+						businessObjectRestrictions);
+				col.setPropertyValue(propValue);
 
-				 // pick off result column from result list, do formatting
-				 String propValue = KNSConstants.EMPTY_STRING;
-				 Object prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
+				// if property value is masked, don't display additional or alternate properties
+				if (StringUtils.equals(propValueBeforePotientalMasking, propValue)) {
+					if (StringUtils.isNotBlank(col.getAlternateDisplayPropertyName())) {
+						String alternatePropertyValue = ObjectUtils.getFormattedPropertyValue(element, col
+								.getAlternateDisplayPropertyName(), null);
+						col.setPropertyValue(alternatePropertyValue);
+					}
 
-				 // set comparator and formatter based on property type
-				 Class propClass = propertyTypes.get(col.getPropertyName());
-				 if ( propClass == null ) {
-					 try {
-						 propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
-						 propertyTypes.put( col.getPropertyName(), propClass );
-					 } catch (Exception e) {
-						 throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
-					 }
-				 }
+					if (StringUtils.isNotBlank(col.getAdditionalDisplayPropertyName())) {
+						String additionalPropertyValue = ObjectUtils.getFormattedPropertyValue(element, col
+								.getAdditionalDisplayPropertyName(), null);
+						col.setPropertyValue(col.getPropertyValue() + " *-* " + additionalPropertyValue);
+					}
+				}
 
-				 // formatters
-				 if (prop != null) {
-					 // for Booleans, always use BooleanFormatter
-					 if (prop instanceof Boolean) {
-						 formatter = new BooleanFormatter();
-					 }
+				if (StringUtils.isNotBlank(propValue)) {
+					col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
+				}
+			}
 
-					 // for Dates, always use DateFormatter
-					 if (prop instanceof Date) {
-						 formatter = new DateFormatter();
-					 }
+			ResultRow row = new ResultRow(columns, returnUrl.constructCompleteHtmlTag(), actionUrls);
+			row.setRowId(returnUrl.getName());
+			row.setReturnUrlHtmlData(returnUrl);
 
-					 // for collection, use the list formatter if a formatter hasn't been defined yet
-					 if (prop instanceof Collection && formatter == null) {
-						 formatter = new CollectionFormatter();
-					 }
+			// because of concerns of the BO being cached in session on the
+			// ResultRow,
+			// let's only attach it when needed (currently in the case of
+			// export)
+			if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
+				row.setBusinessObject(element);
+			}
 
-					 if (formatter != null) {
-						 propValue = (String) formatter.format(prop);
-					 }
-					 else {
-						 propValue = prop.toString();
-					 }
-				 }
+			if (lookupId != null) {
+				row.setObjectId(lookupId);
+			}
 
-				 // comparator
-				 col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
-				 col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
+			boolean rowReturnable = isResultReturnable(element);
+			row.setRowReturnable(rowReturnable);
+			if (rowReturnable) {
+				hasReturnableRow = true;
+			}
+			resultTable.add(row);
+		}
 
-				 propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue, businessObjectRestrictions);
+		lookupForm.setHasReturnableRow(hasReturnableRow);
 
-				 col.setPropertyValue(propValue);
+		return displayList;
+	}
 
-				 if (StringUtils.isNotBlank(propValue)) {
-					 col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
+	/**
+	 * Gets the Class for the property in the given BusinessObject instance, if
+	 * property is not accessible then runtime exception is thrown
+	 * 
+	 * @param element
+	 *            BusinessObject instance that contains property
+	 * @param propertyName
+	 *            Name of property in BusinessObject to get class for
+	 * @return Type for property as Class
+	 */
+	protected Class getPropertyClass(BusinessObject element, String propertyName) {
+		Class propClass = null;
 
-				 }
-			 }
+		try {
+			propClass = ObjectUtils.getPropertyType(element, propertyName, getPersistenceStructureService());
 
-			 ResultRow row = new ResultRow(columns, returnUrl.constructCompleteHtmlTag(), actionUrls);
-			 row.setRowId(returnUrl.getName());
-			 row.setReturnUrlHtmlData(returnUrl);
-			 // because of concerns of the BO being cached in session on the ResultRow,
-			 // let's only attach it when needed (currently in the case of export)
-			 if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
-				 row.setBusinessObject(element);
-			 }
-			 if(lookupId != null){
-				 row.setObjectId(lookupId);
-			 }
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot access PropertyType for property " + "'" + propertyName + "' "
+					+ " on an instance of '" + element.getClass().getName() + "'.", e);
+		}
 
-
-			 boolean rowReturnable = isResultReturnable(element);
-			 row.setRowReturnable(rowReturnable);
-			 if (rowReturnable) {
-				 hasReturnableRow = true;
-			 }
-			 resultTable.add(row);
-		 }
-
-		 lookupForm.setHasReturnableRow(hasReturnableRow);
-
-		 return displayList;
-	 }
+		return propClass;
+	}
 
 	 /**
 	  * changes from/to dates into the range operators the lookupable dao expects ("..",">" etc)

@@ -50,6 +50,7 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -72,6 +73,7 @@ public class SectionBridge {
     	}
     	return dataDictionaryService;
     }
+    private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
     /**
      * This method creates a Section for display on an Inquiry Screen.
@@ -340,6 +342,8 @@ public class SectionBridge {
         if (StringUtils.isEmpty(collectionElementLabel)) {
             collectionElementLabel = getDataDictionaryService().getCollectionElementLabel(o.getClass().getName(), collectionDefinition.getName(), collectionDefinition.getBusinessObjectClass());
         }
+        
+        boolean translateCodes = getMaintenanceDocumentDictionaryService().translateCodes(o.getClass());
 
         if (o != null) {
             if (PropertyUtils.isWriteable(o, collectionDefinition.getName()) && ObjectUtils.getPropertyValue(o, collectionDefinition.getName()) != null) {
@@ -355,6 +359,10 @@ public class SectionBridge {
                     boolean hidableRowsPresent = false;
                     for (int i = 0; i < ((List) obj).size(); i++) {
                         BusinessObject lineBusinessObject = (BusinessObject) ((List) obj).get(i);
+                        
+                        if (lineBusinessObject instanceof PersistableBusinessObject) {
+                        	((PersistableBusinessObject) lineBusinessObject).refreshNonUpdateableReferences();
+                        }
                         
                         /*
                          * Handle display of inactive records. The old maintainable is used to compare the old side (if it exists). If the row should not be displayed, it is set as
@@ -400,6 +408,10 @@ public class SectionBridge {
                             // construct Field UI object from definition
                             Field collField = FieldUtils.getPropertyField(collectionDefinition.getBusinessObjectClass(), fieldDefinition.getName(), false);
                             
+            				if (translateCodes) {
+            					FieldUtils.setAdditionalDisplayPropertyForCodes(lineBusinessObject.getClass(), collField.getPropertyName(), collField);
+            				}
+                            
                             FieldBridge.setupField(collField, fieldDefinition);
                             setPrimaryKeyFieldsReadOnly(collectionDefinition.getBusinessObjectClass(), collField);
 
@@ -430,9 +442,41 @@ public class SectionBridge {
                             }
 
                             Object propertyValue = ObjectUtils.getPropertyValue(lineBusinessObject, fieldDefinition.getName());
-                            
                             collField.setPropertyValue(propertyValue);
                             
+							if (StringUtils.isNotBlank(collField.getAlternateDisplayPropertyName())) {
+								Object alternateDisplayPropertyValue = ObjectUtils.getPropertyValue(lineBusinessObject,
+										collField.getAlternateDisplayPropertyName());
+								collField.setAlternateDisplayPropertyValue(alternateDisplayPropertyValue);
+							}
+							
+							if (StringUtils.isNotBlank(collField.getAdditionalDisplayPropertyName())) {
+								Object additionalDisplayPropertyValue = ObjectUtils.getPropertyValue(lineBusinessObject,
+										collField.getAdditionalDisplayPropertyName());
+								collField.setAdditionalDisplayPropertyValue(additionalDisplayPropertyValue);
+							}
+                                
+                            // KULRICE-4024 - special handling for person fields, the values
+                            // were being blanked out upon submission because these fields were
+                            // rendered but not populated.  This caused the service to re-resolve the
+                            // blank principal ID hidden field to overwrite the one populated
+                            // based on the principal Name field on the UI
+							if (StringUtils.isNotBlank(collField.getUniversalIdAttributeName())) {
+								Object principalId = ObjectUtils.getNestedValue(lineBusinessObject,collField
+										.getUniversalIdAttributeName());
+								if (principalId != null) {
+									collField.setUniversalIdValue(principalId.toString());
+								}
+							}
+							if (StringUtils.isNotBlank(collField.getPersonNameAttributeName())) {
+								Object personName = ObjectUtils.getNestedValue(lineBusinessObject, collField
+										.getPersonNameAttributeName());
+								if (personName != null) {
+									collField.setPersonNameValue(personName.toString());
+								}
+							}
+							// END KULRICE-4024
+                                
                             // KULRICE-4024 - special handling for person fields, the values
                             // were being blanked out upon submission because these fields were
                             // rendered but not populated.  This caused the service to re-resolve the
@@ -546,6 +590,10 @@ public class SectionBridge {
                                 for (int j = 0; j < ((List) subObj).size(); j++) {
                                     BusinessObject lineSubBusinessObject = (BusinessObject) ((List) subObj).get(j);
                                     
+                                    if (lineSubBusinessObject instanceof PersistableBusinessObject) {
+                                    	((PersistableBusinessObject) lineSubBusinessObject).refreshNonUpdateableReferences();
+                                    }
+                                    
                                     // determine if sub collection line is inactive and should be hidden
                                     boolean setSubRowHidden = false;
                                     if (lineSubBusinessObject instanceof Inactivateable && !((Inactivateable) lineSubBusinessObject).isActive() ) {
@@ -576,6 +624,12 @@ public class SectionBridge {
 
                                         // construct Field UI object from definition
                                         Field subCollField = FieldUtils.getPropertyField(subCollectionDefinition.getBusinessObjectClass(), fieldDefinition.getName(), false);
+                                        
+                                        String subCollectionFullName = collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName();
+                                        
+                        				if (translateCodes) {
+                        					FieldUtils.setAdditionalDisplayPropertyForCodes(lineSubBusinessObject.getClass(), subCollField.getPropertyName(), subCollField);
+                        				}
 
                                         FieldBridge.setupField(subCollField, fieldDefinition);
                                         setPrimaryKeyFieldsReadOnly(subCollectionDefinition.getBusinessObjectClass(), subCollField);
@@ -583,7 +637,6 @@ public class SectionBridge {
                                         // save the simple property name
                                         String name = subCollField.getPropertyName();
 
-                                        String subCollectionFullName = collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName();
                                         // prefix name for multi line (indexed)
                                         subCollField.setPropertyName(subCollectionFullName + "[" + j + "]." + subCollField.getPropertyName());
 
@@ -598,8 +651,19 @@ public class SectionBridge {
                                         }
 
                                         Object propertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject, fieldDefinition.getName());
-                                        
                                         subCollField.setPropertyValue(propertyValue);
+                                        
+            							if (StringUtils.isNotBlank(subCollField.getAlternateDisplayPropertyName())) {
+            								Object alternateDisplayPropertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject,
+            										subCollField.getAlternateDisplayPropertyName());
+            								subCollField.setAlternateDisplayPropertyValue(alternateDisplayPropertyValue);
+            							}
+            							
+            							if (StringUtils.isNotBlank(subCollField.getAdditionalDisplayPropertyName())) {
+            								Object additionalDisplayPropertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject,
+            										subCollField.getAdditionalDisplayPropertyName());
+            								subCollField.setAdditionalDisplayPropertyValue(additionalDisplayPropertyValue);
+            							}
                                      
                                         // check if this is a summary field
                                         if (subCollectionDefinition.hasSummaryField(fieldDefinition.getName())) {
@@ -822,5 +886,12 @@ public class SectionBridge {
         }
         return false;
     }
+    
+	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+    	if (maintenanceDocumentDictionaryService == null) {
+    		maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+    	}
+		return maintenanceDocumentDictionaryService; 
+	}
 }
 

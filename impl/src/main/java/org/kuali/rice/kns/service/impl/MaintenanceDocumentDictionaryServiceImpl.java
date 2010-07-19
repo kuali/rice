@@ -813,4 +813,19 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
         return document != null ? this.getAllowsRecordDeletion(document.getNewMaintainableObject().getBoClass()) : Boolean.FALSE;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#translateCodes(java.lang.Class)
+	 */
+	public Boolean translateCodes(Class businessObjectClass) {
+		boolean translateCodes = false;
+
+		MaintenanceDocumentEntry docEntry = getMaintenanceDocumentEntry(businessObjectClass);
+
+		if (docEntry != null) {
+			translateCodes = docEntry.isTranslateCodes();
+		}
+
+		return translateCodes;
+	}
+
 }

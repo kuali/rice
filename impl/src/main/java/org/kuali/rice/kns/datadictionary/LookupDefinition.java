@@ -76,6 +76,8 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
     
     protected HelpDefinition helpDefinition;
     protected String helpUrl;
+    
+    protected boolean translateCodes = false;
 
     public LookupDefinition() {}
 
@@ -514,4 +516,13 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 	public void setHelpUrl(String helpUrl) {
 		this.helpUrl = helpUrl;
 	}
+
+	public boolean isTranslateCodes() {
+		return this.translateCodes;
+	}
+
+	public void setTranslateCodes(boolean translateCodes) {
+		this.translateCodes = translateCodes;
+	}
+	
 }

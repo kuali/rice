@@ -17,6 +17,7 @@ package org.kuali.rice.kns.datadictionary.exporter;
 
 import java.util.Iterator;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.MaintainableCollectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
@@ -100,6 +101,12 @@ public class MaintenanceDocumentEntryMapper extends DocumentEntryMapper {
             itemMap.set("field", "true");
             itemMap.set("name", field.getName());
             itemMap.set("required", Boolean.toString(field.isRequired()));
+			if (StringUtils.isNotBlank(field.getAlternateDisplayAttributeName())) {
+				itemMap.set("alternateDisplayAttributeName", field.getAlternateDisplayAttributeName());
+			}
+			if (StringUtils.isNotBlank(field.getAdditionalDisplayAttributeName())) {
+				itemMap.set("additionalDisplayAttributeName", field.getAdditionalDisplayAttributeName());
+			}
         }
         else if (item instanceof MaintainableCollectionDefinition) {
             MaintainableCollectionDefinition collection = (MaintainableCollectionDefinition) item;

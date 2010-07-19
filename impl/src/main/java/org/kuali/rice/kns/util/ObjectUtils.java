@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
+import java.sql.Date;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -43,6 +44,9 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.cache.CopiedObject;
+import org.kuali.rice.kns.web.format.BooleanFormatter;
+import org.kuali.rice.kns.web.format.CollectionFormatter;
+import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 
@@ -328,6 +332,71 @@ public class ObjectUtils {
 
         return propertyValue;
     }
+    
+	/**
+	 * Gets the property value from the business object, then based on the value
+	 * type select a formatter and format the value
+	 * 
+	 * @param element
+	 *            BusinessObject instance that contains the property
+	 * @param propertyName
+	 *            Name of property in BusinessObject to get value for
+	 * @param formatter
+	 *            Default formatter to use (or null)
+	 * @return Formatted property value as String, or empty string if value is null
+	 */
+	public static String getFormattedPropertyValue(BusinessObject businessObject, String propertyName, Formatter formatter) {
+		String propValue = KNSConstants.EMPTY_STRING;
+
+		Object prop = ObjectUtils.getPropertyValue(businessObject, propertyName);
+		if (formatter == null) {
+			propValue = formatPropertyValue(prop);
+		}
+		else {
+			propValue = (String) formatter.format(prop);
+		}
+
+		return propValue;
+	}
+
+	/**
+	 * Based on the value type selects a formatter and returns the formatted
+	 * value as a string
+	 * 
+	 * @param propertyValue
+	 *            Object value to be formatted
+	 * @return formatted value as a String
+	 */
+	public static String formatPropertyValue(Object propertyValue) {
+		String propValue = KNSConstants.EMPTY_STRING;
+
+		Formatter formatter = null;
+		if (propertyValue != null) {
+			// for Booleans, always use BooleanFormatter
+			if (propertyValue instanceof Boolean) {
+				formatter = new BooleanFormatter();
+			}
+
+			// for Dates, always use DateFormatter
+			if (propertyValue instanceof Date) {
+				formatter = new DateFormatter();
+			}
+
+			// for collection, use the list formatter if a formatter hasn't been
+			// defined yet
+			if (propertyValue instanceof Collection && formatter == null) {
+				formatter = new CollectionFormatter();
+			}
+
+			if (formatter != null) {
+				propValue = (String) formatter.format(propertyValue);
+			} else {
+				propValue = propertyValue.toString();
+			}
+		}
+
+		return propValue;
+	}
     
     /**
      * Sets the property of an object with the given value. Converts using the formatter of the type for the property.

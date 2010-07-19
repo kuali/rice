@@ -578,7 +578,7 @@ in order to package the various Rice datasets.
 	</target>
 
 	<target name="prepare-unit-test-environment" depends="init" description="Generate common-test-config.xml">
-		<property name="common-test-config" value="${user.home}/kuali/test2/${rice.environment}/common-test-config.xml"/>
+		<property name="common-test-config" value="${user.home}/kuali/test/${rice.environment}/common-test-config.xml"/>
 		<available property="common-test-config.exists" file="${common-test-config}"/>
 		<fail if="common-test-config.exists" message="The file ${common-test-config} already exists!  You must delete it first if you want it to be recreated."/>
 		<copy file="config/templates/common-test-config.template.xml" tofile="${common-test-config}"/>

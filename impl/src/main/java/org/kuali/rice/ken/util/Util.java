@@ -45,6 +45,7 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.xerces.jaxp.JAXPConstants;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.bo.Notification;
@@ -64,11 +65,6 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
-// if Eclipse is complaining about this import you can fix it (the complaint)
-// by turning off the deprecated/restricted API error in compiler error/warnings settings
-// see: http://lkamal.blogspot.com/2008/09/eclipse-access-restriction-on-library.html
-import com.sun.org.apache.xerces.internal.jaxp.JAXPConstants;
 
 /**
  * A general Utility class for the Notification system.

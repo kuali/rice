@@ -665,9 +665,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public void saveActionRequest(ActionRequestValue actionRequest) {
-
-        if (actionRequest.isGroupRequest() && !actionRequest.getGroup().isActive()) {
-            throw new RuntimeException("Routing to inactive workgroup.  Putting document in exception routing.");
+        if (actionRequest.isGroupRequest() && (!actionRequest.getGroup().isActive() 
+        		|| KIMServiceLocator.getGroupService().getMemberPrincipalIds(actionRequest.getGroup().getGroupId()).size() == 0 )) {
+        	throw new RuntimeException("Routing to inactive workgroup.  Putting document in exception routing.");
         }
         getActionRequestDAO().saveActionRequest(actionRequest);
     }

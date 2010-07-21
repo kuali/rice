@@ -208,6 +208,7 @@ public class SectionBridge {
         section.setSectionClass(o.getClass());
         section.setHidden( sd.isHidden() );
         section.setDefaultOpen(sd.isDefaultOpen());
+        section.setHelpUrl(sd.getHelpUrl());
 
         // iterate through section maint items and contruct Field UI objects
         Collection maintItems = sd.getMaintainableItems();
@@ -712,6 +713,35 @@ public class SectionBridge {
         return containerRows;
     }
 
+     /**
+      * Updates fields of type kualiuser sets the universal user id and/or name if required. 
+      * 
+      * @param field
+      * @param businessObject
+      */
+     private static final void updateUserFields(Field field, BusinessObject businessObject){
+         // for user fields, attempt to pull the principal ID and person's name from the source object
+         if ( field.getFieldType().equals(Field.KUALIUSER) ) {
+             // this is supplemental, so catch and log any errors
+             try {
+                 if ( StringUtils.isNotBlank(field.getUniversalIdAttributeName()) ) {
+                     Object principalId = ObjectUtils.getNestedValue(businessObject, field.getUniversalIdAttributeName());
+                     if ( principalId != null ) {
+                         field.setUniversalIdValue(principalId.toString());
+                     }
+                 }
+                 if ( StringUtils.isNotBlank(field.getPersonNameAttributeName()) ) {
+                     Object personName = ObjectUtils.getNestedValue(businessObject, field.getPersonNameAttributeName());
+                     if ( personName != null ) {
+                         field.setPersonNameValue( personName.toString() );
+                     }
+                 }
+             } catch ( Exception ex ) {
+                 LOG.warn( "Unable to get principal ID or person name property in SectionBridge.", ex );
+             }
+         }
+     }
+     
     /**
      * Helper method to build up a Field containing a delete button mapped up to remove the collection record identified by the
      * given collection name and index.

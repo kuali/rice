@@ -31,6 +31,7 @@ public class Section implements java.io.Serializable {
     String extraButtonSource;
     boolean hidden = false;
     boolean readOnly = false;
+    String helpUrl="";
 
     boolean defaultOpen = true;
     
@@ -259,4 +260,13 @@ public class Section implements java.io.Serializable {
 	public void setDefaultOpen(boolean defaultOpen) {
 		this.defaultOpen = defaultOpen;
 	}
+
+	public String getHelpUrl() {
+		return helpUrl;
+	}
+
+	public void setHelpUrl(String helpUrl) {
+		this.helpUrl = helpUrl;
+	}
+	
 }

@@ -45,6 +45,8 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
     
     protected boolean defaultOpen = true;
     
+    protected String helpUrl;
+    
     public MaintainableSectionDefinition() {}
 
     /**
@@ -184,4 +186,13 @@ public class MaintainableSectionDefinition extends DataDictionaryDefinitionBase 
 	public void setDefaultOpen(boolean defaultOpen) {
 		this.defaultOpen = defaultOpen;
 	}
+
+	public String getHelpUrl() {
+		return helpUrl;
+	}
+
+	public void setHelpUrl(String helpUrl) {
+		this.helpUrl = helpUrl;
+	}
+	
 }

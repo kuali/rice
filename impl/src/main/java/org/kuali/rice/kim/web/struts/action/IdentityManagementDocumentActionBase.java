@@ -23,7 +23,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.IdentityService;
@@ -180,12 +180,14 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), idmForm.getMemberRows().size(), idmForm.getRecordsPerPage());
     }
 
-    protected boolean validateRole( String roleId, RoleImpl roleImpl, String propertyName, String message){
-    	if ( roleImpl == null ) {
+    protected boolean validateRole( String roleId, Role role, String propertyName, String message){
+    	if ( role == null ) {
         	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_INVALID_ROLE, roleId );
     		return false;
     	}
-    	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
+    	KimTypeInfo typeInfo = KIMServiceLocator.getTypeInfoService().getKimType(role.getKimTypeId());
+    	
+    	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(typeInfo)){
         	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_CANT_ADD_DERIVED_ROLE, message);
         	return false;
         }

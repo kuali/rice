@@ -29,9 +29,11 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -286,24 +288,48 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     }
 
     protected boolean checkKimDocumentRoleMember(KimDocumentRoleMember newMember){
-        if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
+    	boolean memberExists = false;
+        String memberName = null;
+        String memberNamespace = null;
+         
+    	if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
         	GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY,
         			new String[] {"Member Type Code and Member ID"});
         	return false;
 		}
-    	BusinessObject member = getUiDocumentService().getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
-        if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE) 
-        		&& !validateRole(newMember.getMemberId(), (RoleImpl)member, "document.member.memberId", "Role")){
-        	return false;
-        }
+                      
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(newMember.getMemberTypeCode())){        	
+        	KimPrincipal pi = this.getIdentityService().getPrincipal(newMember.getMemberId());
+        	if(pi != null){
+        		memberExists = true;
+        		memberName = pi.getPrincipalName();
+        		memberNamespace = "";
+        	}
+        }else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(newMember.getMemberTypeCode())){        	
+        	Group gi = KIMServiceLocator.getGroupService().getGroupInfo(newMember.getMemberId());
+        	if(gi != null){
+        		memberExists = true;
+        		memberName = gi.getGroupName();
+        		memberNamespace = gi.getNamespaceCode();
+        	}
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
+        	Role ri = KIMServiceLocator.getRoleService().getRole(newMember.getMemberId());
+        	if(!validateRole(newMember.getMemberId(), ri, "document.member.memberId", "Role")){        	
+        		return false;
+    		}else{
+    			memberExists = true;
+           		memberName = ri.getRoleName();
+           		memberNamespace = ri.getNamespaceCode();
+    		}
+        }             	
 
-        if(member==null){
+        if(!memberExists){
         	GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
         			new String[] {newMember.getMemberId()});
         	return false;
 		}
-        newMember.setMemberName(getUiDocumentService().getMemberName(newMember.getMemberTypeCode(), member));
-        newMember.setMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(newMember.getMemberTypeCode(), member));
+        newMember.setMemberName(memberName);
+        newMember.setMemberNamespaceCode(memberName);
         return true;
     }
 

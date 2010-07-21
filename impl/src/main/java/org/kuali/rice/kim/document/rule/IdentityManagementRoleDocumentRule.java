@@ -16,12 +16,12 @@
 package org.kuali.rice.kim.document.rule;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -59,6 +60,8 @@ import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationRule;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.impl.RoleServiceBase;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -585,6 +588,68 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	}
 	
 	/**
+	 *
+	 * This method checks to see if adding a role to role membership
+	 * creates a circular reference.
+	 * 
+	 * @param addMemberEvent
+	 * @return
+	 */
+	protected boolean checkForCircularRoleMembership(AddMemberEvent addMemberEvent)
+	{
+		boolean ok = true;
+		KimDocumentRoleMember newMember = addMemberEvent.getMember();
+		if (newMember == null || StringUtils.isBlank(newMember.getMemberId())){
+			ok = false;
+		} else {
+			List<RoleMemberImpl> roleMembers = null;
+			// if the role member is a role, check to make sure we won't be creating a circular reference.
+			// Verify that the new role is not already related to the role either directly or indirectly
+			if (newMember.isRole()){
+				// get all nested role members that are of type role
+				try {
+					RoleService roleService = KIMServiceLocator.getRoleService();
+					roleMembers = ((RoleServiceBase) roleService).getRoleTypeRoleMembers(newMember.getMemberId());
+				} catch (Exception ex){
+					ok = false;
+				}
+
+				// check to see if the document role is not a member of the new member role
+				IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addMemberEvent.getDocument();
+				String docRoleNamespace = document.getRoleNamespace();
+				String docRoleName = document.getRoleName();
+				String docRoleId = document.getRoleId();
+				String roleId = KIMServiceLocator.getRoleService().getRoleIdByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
+				if (StringUtils.isEmpty(roleId)){
+					ok = false;   // if role doesn't exist, return false
+				} else {
+
+					for (RoleMemberImpl member : roleMembers) {
+						if (org.kuali.rice.kim.bo.Role.ROLE_MEMBER_TYPE.equals(member.getMemberTypeCode())){
+							if (docRoleId.equals(member.getMemberId())){
+								ok = false;
+								MessageMap errorMap = GlobalVariables.getMessageMap();
+								errorMap.putError("member.memberId", RiceKeyConstants.ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR, new String[] {member.getMemberId()});        	
+								return false;
+							}
+						}
+					}
+				}
+			}
+		}
+		if (ok != true){
+			MessageMap errorMap = GlobalVariables.getMessageMap();
+			errorMap.putError("member.memberId", RiceKeyConstants.ERROR_INVALID_ROLE, new String[] {""});        	
+		}
+		return ok;
+	}
+	
+	protected ArrayList getNestedRoleTypeMembers(ArrayList foundMembers){
+		
+		return foundMembers;
+	}
+	
+	/**
 	 * @return the addResponsibilityRule
 	 */
 	public AddResponsibilityRule getAddResponsibilityRule() {
@@ -673,6 +738,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     public boolean processAddMember(AddMemberEvent addMemberEvent) {
         boolean success = new KimDocumentMemberRule().processAddMember(addMemberEvent);
         success &= validateActiveDate("member.activeFromDate", addMemberEvent.getMember().getActiveFromDate(), addMemberEvent.getMember().getActiveToDate());
+        success &= checkForCircularRoleMembership(addMemberEvent);
         return success;
     }
 

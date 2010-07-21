@@ -190,6 +190,40 @@ public class RoleServiceBase {
 		return convertedQualification;
 	}
 	
+    public List<RoleMemberImpl> getRoleTypeRoleMembers( String roleId ){
+    	List<RoleMemberImpl> results = new ArrayList();
+    	ArrayList<String> roleList = new ArrayList<String>( 1 );
+		roleList.add( roleId );
+    	List<RoleMemberImpl> firstLevelMembers = getStoredRoleMembersForRoleIds(roleList, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, null);
+		for (RoleMemberImpl member : firstLevelMembers) {
+			if (KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(member.getMemberTypeCode())){
+				results.add(member);
+				getNestedRoleTypeMembers( member.getRoleId(), results, 0);
+			}
+    	}
+		
+    	return results;
+    }
+
+    protected void getNestedRoleTypeMembers( String roleId, List members, long depth ) throws RuntimeException
+    {
+    	long MAX_DEPTH = 1000;  // testing
+    	depth++;
+    	if (depth > MAX_DEPTH){
+    		throw new RuntimeException("Max Depth of "+MAX_DEPTH+" Exceeded.");
+    	}
+    	ArrayList<String> roleList = new ArrayList<String>( 1 );
+		roleList.add( roleId );
+		List<RoleMemberImpl> firstLevelMembers = getStoredRoleMembersForRoleIds(roleList, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, null);
+		for (RoleMemberImpl member : firstLevelMembers) {
+			if (KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(member.getMemberTypeCode())){
+				members.add(member);
+				getNestedRoleTypeMembers( member.getMemberId(), members, depth);
+			}
+    	}
+    	
+    }
+    
 	/**
 	 * Retrieves a list of RoleMemberImpl instances from the cache and/or the KimRoleDao as appropriate.
 	 * 

@@ -162,8 +162,8 @@ public class MaintenanceUtils {
         }
         if (maintainableFieldDefinition.isNoLookup()){
         	return field;
-        }        
-        return LookupUtils.setFieldQuickfinder(businessObject, attributeName, field, displayedFieldNames, srr);
+        }
+        return LookupUtils.setFieldQuickfinder(businessObject, null, false, 0, attributeName, field, displayedFieldNames, maintainableFieldDefinition.isNoLookup());
     }
 
     public static final Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index,

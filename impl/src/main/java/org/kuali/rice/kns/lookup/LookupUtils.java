@@ -339,16 +339,30 @@ public class LookupUtils {
      * Sets a fields quickfinder class and field conversions for an attribute.
      */
     public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index,
-            String attributeName, Field field, List displayedFieldNames) {
+                                            String attributeName, Field field, List displayedFieldNames) {
+        boolean noLookup = false;
         if (businessObject == null) {
             return field;
         }
 
         Boolean noLookupField = businessObjectDictionaryService.noLookupFieldLookup(businessObject.getClass(), attributeName);
-        if (noLookupField != null && noLookupField.booleanValue()) {
+        if (noLookupField != null && noLookupField) {
+            noLookup = true;
+        }
+
+         return setFieldQuickfinder(businessObject, collectionName, addLine, index, attributeName, field, displayedFieldNames, noLookup);
+
+    }
+
+    public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index, String attributeName, Field field, List displayedFieldNames, boolean noLookupField)
+    {
+         if (businessObject == null) {
             return field;
         }
 
+        if (noLookupField) {
+            return field;
+        }
         BusinessObjectRelationship relationship = null;
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "setFieldQuickfinder("+businessObject.getClass().getName()+","+attributeName+","+field+","+displayedFieldNames+")" );
@@ -405,7 +419,7 @@ public class LookupUtils {
 
         return field;
     }
-    
+
     private static String BASE_LOOKUP_ACTION_URL = null;
     private static String BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL = null;
     private static String BASE_INQUIRY_ACTION_URL = null;

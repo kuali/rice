@@ -24,22 +24,10 @@
     </parent>
     <artifactId>rice-kim</artifactId>
 
-    <build>
-        <plugins>
-		    <plugin>                                                                                                                                                      
-                <artifactId>maven-surefire-plugin</artifactId>                                                                                                   
-                <configuration>
-                    <forkMode>pertest</forkMode>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+  <properties>
+  	<maven.skip.packaging>true</maven.skip.packaging>
+  	<maven.surefire.forkmode>pertest</maven.surefire.forkmode>
+  </properties>
 
 	<dependencies>
         <dependency>

@@ -41,7 +41,9 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-antrun-plugin</artifactId>
+                <version>1.4</version>
                 <executions>
                     <execution>
                         <phase>compile</phase>
@@ -59,7 +61,9 @@
                 </executions>
             </plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1-beta-1</version>
 				<configuration>
 				    <!-- exclude the sample app files and the jars that we don't want to include -->
 					<packagingExcludes>**/ojdbc14*.jar, **/mysql*.jar, **/junit*.jar, **/htmlunit*.jar, **/jetty*.jar, **/jasper*.jar, **/jsp*.jar</packagingExcludes>

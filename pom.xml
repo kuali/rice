@@ -47,8 +47,6 @@
 		<!-- project dependencies -->
         <acegi.version>1.0.6</acegi.version>
         <asm.version>2.2.3</asm.version>
-        <backport-util-concurrent.version>2.1</backport-util-concurrent.version>
-        <bcel.version>5.1</bcel.version>
         <bcprov.version>133</bcprov.version>
         <bsf.version>2.4.0</bsf.version>
         <casclient.version>2.1.1</casclient.version>
@@ -64,7 +62,6 @@
         <commons-lang.version>2.3</commons-lang.version>
         <commons-logging.version>1.1.1</commons-logging.version>
         <commons-pool.version>1.2</commons-pool.version>
-        <concurrent.version>1.3.4</concurrent.version>
         <connector-api.version>1.5</connector-api.version>
         <cxf.version>2.1.5</cxf.version>
         <db-ojb.version>1.0.4-patch3</db-ojb.version>
@@ -599,11 +596,6 @@
                 <version>${commons-dbcp.version}</version>
             </dependency>
             <dependency>
-                <groupId>backport-util-concurrent</groupId>
-                <artifactId>backport-util-concurrent</artifactId>
-                <version>${backport-util-concurrent.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
                 <version>${log4j.version}</version>
@@ -666,11 +658,6 @@
                 <groupId>org.hibernate.javax.persistence</groupId>
                 <artifactId>hibernate-jpa-2.0-api</artifactId>
                 <version>${persistence.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>concurrent</groupId>
-                <artifactId>concurrent</artifactId>
-                <version>${concurrent.version}</version>
             </dependency>
             <dependency>
                 <groupId>struts</groupId>
@@ -758,11 +745,6 @@
                         <groupId>commons-logging</groupId>
                     </exclusion>
                 </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>bcel</groupId>
-                <artifactId>bcel</artifactId>
-                <version>${bcel.version}</version>
             </dependency>
             <dependency>
                 <groupId>xerces</groupId>
@@ -923,6 +905,7 @@
                     <additionalClasspathElements>
                         <additionalClasspathElement>/opt/java/drivers/mysql-connector-java-${mysql-connector-java.version}.jar</additionalClasspathElement>     
                         <additionalClasspathElement>/opt/java/drivers/ojdbc14-${ojdbc14.version}.jar</additionalClasspathElement>
+                        <additionalClasspathElement>C:\java\drivers\ojdbc14.jar</additionalClasspathElement>
                     </additionalClasspathElements>
                     <useFile>false</useFile>
                     <failIfNoTests>false</failIfNoTests>
@@ -939,6 +922,8 @@
 	                        </reports>
 	                    </reportSet>
 	                </reportSets>
+	                <!-- using the argLine since the environmentVariables tag is not working (ver 2.5 of this plugin) -->
+	                <argLine>-Dalt.config.location="${alt.config.location}"</argLine>                
                 </configuration>
                 <inherited>true</inherited>
             </plugin>

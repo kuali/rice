@@ -21,10 +21,10 @@ import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.kew.batch.XmlPollerService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
-import edu.emory.mathcs.backport.java.util.concurrent.Executors;
-import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;
-import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
-import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class XmlPipelineLifeCycle extends BaseLifecycle {
 

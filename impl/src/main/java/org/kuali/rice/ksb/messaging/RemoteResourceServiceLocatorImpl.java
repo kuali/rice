@@ -44,8 +44,8 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import edu.emory.mathcs.backport.java.util.concurrent.ScheduledFuture;
-import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer implements Runnable, RemoteResourceServiceLocator {
 

@@ -31,7 +31,7 @@ import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Auto removes expired message deliveries.

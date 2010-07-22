@@ -16,7 +16,7 @@
 package org.kuali.rice.ksb.messaging.threadpool;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 
-import edu.emory.mathcs.backport.java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 
 public interface KSBScheduledPool extends ScheduledExecutorService, Lifecycle {
 

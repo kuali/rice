@@ -19,8 +19,8 @@ package org.kuali.rice.ksb.messaging.threadpool;
 
 import org.kuali.rice.core.lifecycle.Lifecycle;
 
-import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
-import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
 
 /**
  * A thread pool which can be used to schedule asynchronous tasks.

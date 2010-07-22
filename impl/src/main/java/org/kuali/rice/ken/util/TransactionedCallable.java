@@ -19,7 +19,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import edu.emory.mathcs.backport.java.util.concurrent.Callable;
+import java.util.concurrent.Callable;
 
 /**
  * A Callable that performs work within a transaction and returns the
@@ -49,7 +49,7 @@ public class TransactionedCallable implements Callable, TransactionCallback {
     }
 
     /**
-     * @see edu.emory.mathcs.backport.java.util.concurrent.Callable#call()
+     * @see java.util.concurrent.Callable#call()
      */
     public Object call() throws Exception {
         TransactionCallback cb;

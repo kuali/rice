@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.Logger;
 
-import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
-import edu.emory.mathcs.backport.java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * This class is the simulator for s2s notification requests for testers.

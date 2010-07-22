@@ -291,11 +291,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>backport-util-concurrent</groupId>
-			<artifactId>backport-util-concurrent</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 		</dependency>
@@ -346,11 +341,6 @@
         </dependency>           
 
 		<dependency>
-			<groupId>concurrent</groupId>
-			<artifactId>concurrent</artifactId>
-		</dependency>
-
-		<dependency>
 			<groupId>struts</groupId>
 			<artifactId>struts</artifactId>
 		</dependency>
@@ -392,11 +382,6 @@
 		<dependency>
 			<groupId>bsf</groupId>
 			<artifactId>bsf</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>bcel</groupId>
-			<artifactId>bcel</artifactId>
 		</dependency>
 
 		<dependency>

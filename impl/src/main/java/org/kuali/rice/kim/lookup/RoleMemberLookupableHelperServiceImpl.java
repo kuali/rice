@@ -152,7 +152,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
     	Map<String, String> searchCriteria;
     	
-    	// TODO KULRICE-4249
+    	// KULRICE-4249
     	// Refactor to get Principals through Identity Management Service to take into account that 
     	// institutions may override with their own implementations, and therefore the source system 
     	// from which Principals should be retrieved. 
@@ -178,7 +178,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         String assignedToGroupNamespaceCode = fieldValues.get(ASSIGNED_TO_GROUP_NAMESPACE_CODE);
         String assignedToGroupName = fieldValues.get(ASSIGNED_TO_GROUP_NAME);
         
-        // TODO KULRICE-4249
+        // KULRICE-4249
         // Refactor to get Groups through Group Service to take into account that institutions 
     	// may override with their own implementations, and therefore the source system from which
     	// Groups should be retrieved.
@@ -215,7 +215,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     	StringBuffer memberQueryString = null;
         if(principals!=null){
         	memberQueryString = new StringBuffer();
-        	// TODO KULRICE-4249
+        	// KULRICE-4249
         	// Use KimPrincipalInfo instead of KimPrincipalImpl, since that is what is returned by the Identity Management Service
         	// for(KimPrincipalImpl principal: principals){
         	for(KimPrincipalInfo principal: principals){
@@ -229,7 +229,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         		memberQueryString = new StringBuffer();
         	else if(StringUtils.isNotEmpty(memberQueryString.toString()))
         		memberQueryString.append(KimConstants.KimUIConstants.OR_OPERATOR);
-        	// TODO KULRICE-4249
+        	// KULRICE-4249
         	// // Use GroupInfo instead of GroupImpl, since that is what is returned by the Group Service
         	// for(GroupImpl group: groups){
         	for(GroupInfo group: groups){

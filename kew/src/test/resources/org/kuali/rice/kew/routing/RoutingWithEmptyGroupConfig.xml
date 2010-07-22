@@ -17,7 +17,6 @@
 <data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
 	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
 		<group>
-			<id>5</id>
 			<name>EmptyWorkgroup</name>
 			<namespace>KR-WKFLW</namespace>
 			<description>EmptyWorkgroup</description>
@@ -71,15 +70,15 @@
 		</documentType>
 	</documentTypes>
 	<ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
-		<ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
 			<name>WorkflowDocument11Template</name>
 			<description>Workflow Document Template</description>
 		</ruleTemplate>
-		<ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
 			<name>WorkflowDocument22Template</name>
 			<description>Workflow Document 2 Template</description>
 		</ruleTemplate>
-		<ruleTemplate>
+		<ruleTemplate allowOverwrite="true">
 			<name>WorkflowDocument33Template</name>
 			<description>Workflow Document 3 Template</description>
 		</ruleTemplate>

@@ -9,11 +9,6 @@
 	<artifactId>rice-api</artifactId>
 
     <dependencies>
-        <!-- 
-            To prevent painful logging issues:
-            slf4j and commons-logging should be the first deps declared, 
-            and jcl-over-slf4j should come before commons-logging.
-        -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
@@ -21,13 +16,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-        </dependency>            
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <scope>provided</scope>
-        </dependency> 
-        
+        </dependency>                   
 		<dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>

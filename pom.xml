@@ -60,7 +60,6 @@
         <commons-httpclient.version>3.0.1</commons-httpclient.version>
         <commons-io.version>1.4</commons-io.version>
         <commons-lang.version>2.3</commons-lang.version>
-        <commons-logging.version>1.1.1</commons-logging.version>
         <commons-pool.version>1.2</commons-pool.version>
         <connector-api.version>1.5</connector-api.version>
         <cxf.version>2.1.5</cxf.version>
@@ -83,7 +82,7 @@
         <jstl.version>1.1.2</jstl.version>
         <jta.version>1.0.1B</jta.version>
         <junit.version>4.4</junit.version>
-        <log4j.version>1.2.14</log4j.version>
+        <log4j.version>1.2.16</log4j.version>
         <mysql-connector-java.version>5.1.5</mysql-connector-java.version>
         <ojdbc14.version>10.2.0.3.0</ojdbc14.version>
         <oro.version>2.0.8</oro.version>
@@ -152,6 +151,36 @@
         </testResources>
         <pluginManagement>
 	        <plugins>
+	            <!-- 
+	            this plugin helps enforce that excluded dependencies stay excluded and don't sneak
+	            back in through another dependency.  This also helps enforce exclusions where a duplicate
+	            may exist from an artifact id rename or where multiple implementations exist
+	            (ex: javax vs geronimo)
+	             -->
+		        <plugin>
+				  <groupId>org.apache.maven.plugins</groupId>
+				  <artifactId>maven-enforcer-plugin</artifactId>
+				  <version>1.0-beta-1</version>
+				  <executions>
+				    <execution>
+				      <id>enforce-banned-dependencies</id>
+				      <goals>
+				        <goal>enforce</goal>
+				      </goals>
+				      <configuration>
+				        <rules>
+				          <bannedDependencies>
+				            <excludes>
+				              <!-- jcl-over-slf4j is an alternate implementation of commons-logging - excluding commons-logging -->
+				              <exclude>commons-logging:commons-logging</exclude>
+				            </excludes>
+				          </bannedDependencies>
+				        </rules>
+				        <fail>true</fail>
+				      </configuration>
+				    </execution>
+				  </executions>
+				</plugin>
 	            <plugin>
 	 				<groupId>org.apache.maven.plugins</groupId>
 	 				<artifactId>maven-compiler-plugin</artifactId>
@@ -244,6 +273,28 @@
 	       	</plugins>
         </pluginManagement>
         
+        <plugins>
+        	<plugin>
+			  <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-enforcer-plugin</artifactId>
+			</plugin>
+			
+		    <plugin>
+              	<groupId>org.codehaus.mojo</groupId>
+               	<artifactId>buildnumber-maven-plugin</artifactId>
+            </plugin>
+            
+           	<plugin>
+	        	<groupId>org.codehaus.mojo</groupId>
+	            <artifactId>cobertura-maven-plugin</artifactId>
+	        </plugin>
+	        
+	       	<plugin>
+	        	<groupId>com.atlassian.maven.plugins</groupId>
+	            <artifactId>maven-licenses-plugin</artifactId>
+	        </plugin>
+        </plugins>
+        
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>
@@ -293,11 +344,6 @@
 
     <dependencyManagement>
         <dependencies>
-            <!--
-                To prevent painful logging issues:
-                slf4j and commons-logging should be the first deps declared,
-                and jcl-over-slf4j should come before commons-logging.
-            -->
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
@@ -308,13 +354,6 @@
                 <artifactId>jcl-over-slf4j</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
-            <dependency>
-                <groupId>commons-logging</groupId>
-                <artifactId>commons-logging</artifactId>
-                <version>${commons-logging.version}</version>
-                <scope>provided</scope>
-            </dependency>
-
             <!-- Explictly define versions for each Spring module -->
             <dependency>
                 <groupId>org.springframework</groupId>

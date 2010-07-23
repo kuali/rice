@@ -15,22 +15,9 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
@@ -39,6 +26,9 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
+
+import javax.xml.namespace.QName;
+import java.util.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 
@@ -234,43 +224,4 @@ public abstract class GroupServiceBase {
 		}
 		return lookupService;
     }
-    
-    /**
-     * 
-     * This method is not "client" safe and should only be used internally by rice. This is because it calls the BO service
-     * directly, bypassing any external group service.  Which is fine if it's being used internally by our implementation
-     * of the group service.
-     * 
-     * @param infoMap
-     * @param groupId
-     * @param kimTypeId
-     * @return
-     */
-    protected static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String,String> infoMap, String groupId, String kimTypeId) {
-        List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
-
-        // TODO: fix this to use the KimTypeInfoService to get the attribute information rather than selecting from the database
-
-        for(String key : infoMap.keySet()) {
-            Map<String,String> criteria = new HashMap<String,String>();
-            criteria.put("attributeName", key);
-            KimAttributeImpl kimAttr = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-
-            if(kimAttr == null) {
-            	throw new IllegalArgumentException("KimAttribute not found: " + key);
-            }
-
-            GroupAttributeDataImpl groupAttr = new GroupAttributeDataImpl();
-            groupAttr.setKimAttributeId(kimAttr.getKimAttributeId());
-            groupAttr.setAttributeValue(infoMap.get(key));
-            groupAttr.setGroupId(groupId);
-            groupAttr.setKimTypeId(kimTypeId);
-
-            attrList.add(groupAttr);
-        }
-
-        return attrList;
-    }
-    
-    
 }

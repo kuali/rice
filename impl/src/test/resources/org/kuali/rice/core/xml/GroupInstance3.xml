@@ -33,10 +33,9 @@
         </attributes>
         <members>
           <principalName>testuser1</principalName>
-          <principalName>testuser2</principalName>
-          <principalId>10000</principalId>
+          <principalId>testuser1</principalId>
           <groupName>
-            <name>TestWorkgroup</name>
+            <name>RecipeMasters</name>
             <namespace>KR-WKFLW</namespace>
           </groupName>
           <!-- <principalId>imbad</principalId>-->
@@ -56,11 +55,10 @@
           <attribute key="actionDetailsAtRoleMemberLevel" value="false"/>
         </attributes>
         <members>
-          <principalName>testuser1</principalName>
           <principalName>testuser2</principalName>
-          <principalId>10000</principalId>
+          <principalId>testuser2</principalId>
           <groupName>
-            <name>TestWorkgroup</name>
+            <name>RecipeMasters</name>
             <namespace>KR-WKFLW</namespace>
           </groupName>
           <!-- <principalId>imbad</principalId>-->

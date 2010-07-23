@@ -15,15 +15,6 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.jws.WebService;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.log4j.Logger;
@@ -39,6 +30,9 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.mortbay.log.Log;
+
+import javax.jws.WebService;
+import java.util.*;
 
 /**
  * This is the default implementation for the {@link GroupUpdateService}, where the write methods for KIM groups are located.
@@ -100,7 +94,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
             List<GroupAttributeDataImpl> groupAttributes =
-            		copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), newGroupInfo.getGroupId(), newGroupInfo.getKimTypeId());
+            		KimCommonUtils.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), newGroupInfo.getGroupId(), newGroupInfo.getKimTypeId());
             saveGroupAttributes(groupAttributes);
         }
         return getGroupInfo(newGroupInfo.getGroupId());
@@ -113,14 +107,13 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
    public void removeAllGroupMembers(String groupId) {
        List<String> memberPrincipalsBefore = KIMServiceLocator.getGroupService().getMemberPrincipalIds(groupId);
 
-       Collection toDeactivate = getActiveGroupMembers(groupId, null, null);
+       Collection<GroupMemberImpl> toDeactivate = getActiveGroupMembers(groupId, null, null);
        java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
 
        // Set principals as inactive
-       for (Iterator iter = toDeactivate.iterator(); iter.hasNext();) {
-    	   GroupMemberImpl groupMember = (GroupMemberImpl)iter.next();
-    	   groupMember.setActiveToDate(today);
-       }
+        for (GroupMemberImpl aToDeactivate : toDeactivate) {
+            aToDeactivate.setActiveToDate(today);
+        }
 
        // Save
        getBusinessObjectService().save(new ArrayList<GroupMemberImpl>(toDeactivate));
@@ -202,7 +195,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         //create new group attributes
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
             List<GroupAttributeDataImpl> groupAttributes =
-            		copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), group.getGroupId(), group.getKimTypeId());
+            		KimCommonUtils.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), group.getGroupId(), group.getKimTypeId());
             saveGroupAttributes(groupAttributes);
         }
 
@@ -268,6 +261,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 	 * @param parentId
 	 * @param childId optional, but if provided then memberType must be too
 	 * @param memberType optional, but must be provided if childId is
+     * @return a list of group members
 	 */
 	private List<GroupMemberImpl> getActiveGroupMembers(String parentId,
 			String childId, String memberType) {
@@ -278,7 +272,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 		Map<String,Object> criteria = new HashMap<String,Object>(4);
         criteria.put(KIMPropertyConstants.GroupMember.GROUP_ID, parentId);
 
-        if (childId != null && memberType != null) {
+        if (childId != null) {
         	criteria.put(KIMPropertyConstants.GroupMember.MEMBER_ID, childId);
         	criteria.put(KIMPropertyConstants.GroupMember.MEMBER_TYPE_CODE, memberType);
         }

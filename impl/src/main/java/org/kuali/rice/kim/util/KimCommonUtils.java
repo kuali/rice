@@ -22,7 +22,6 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -30,11 +29,8 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
-import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -43,11 +39,7 @@ import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 import java.security.GeneralSecurityException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill
@@ -220,7 +212,7 @@ public class KimCommonUtils {
 		String stripped;
 		if(toStripFrom==null) stripped = null;
 		if(toStrip==null) stripped = toStripFrom;
-		if(toStripFrom.endsWith(toStrip)){ 
+		if(toStripFrom.endsWith(toStrip)){
 			StringBuffer buffer = new StringBuffer(toStripFrom);
 			buffer.delete(buffer.length()-toStrip.length(), buffer.length());
 			stripped = buffer.toString();
@@ -248,15 +240,12 @@ public class KimCommonUtils {
         boolean suppressName = false;
         if (privacy != null) {
             suppressName = privacy.isSuppressName();
-        } 
-        if (	   suppressName
-        		&& userSession != null 
-                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
-                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId())) {
-            return true;
         }
-        return false;
-	}
+        return suppressName
+                && userSession != null
+                && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
+                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
+    }
   
     public static boolean isSuppressEmail(String entityId) {
         KimEntityPrivacyPreferences privacy = null; 
@@ -269,14 +258,11 @@ public class KimCommonUtils {
         boolean suppressEmail = false;
         if (privacy != null) {
             suppressEmail = privacy.isSuppressEmail();
-        } 
-        if (	   suppressEmail
-        		&& userSession != null 
-                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
-                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId())) {
-            return true;
         }
-        return false;
+        return suppressEmail
+                && userSession != null
+                && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
+                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
     }
    
     public static boolean isSuppressAddress(String entityId) {
@@ -290,14 +276,11 @@ public class KimCommonUtils {
         boolean suppressAddress = false;
         if (privacy != null) {
             suppressAddress = privacy.isSuppressAddress();
-        } 
-        if (	   suppressAddress
-    			&& userSession != null 
-                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
-                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId())) {
-            return true;
         }
-        return false;
+        return suppressAddress
+                && userSession != null
+                && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
+                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
     }
    
     public static boolean isSuppressPhone(String entityId) {
@@ -311,14 +294,11 @@ public class KimCommonUtils {
         boolean suppressPhone = false;
         if (privacy != null) {
             suppressPhone = privacy.isSuppressPhone();
-        } 
-        if (	   suppressPhone
-        		&& userSession != null 
-                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
-                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId())) {
-            return true;
         }
-        return false;
+        return suppressPhone
+                && userSession != null
+                && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
+                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
     }
     
     public static boolean isSuppressPersonal(String entityId) {
@@ -332,14 +312,11 @@ public class KimCommonUtils {
         boolean suppressPersonal = false;
         if (privacy != null) {
             suppressPersonal = privacy.isSuppressPersonal();
-        } 
-        if (	   suppressPersonal
-        		&& userSession != null 
-                && !StringUtils.equals(userSession.getPerson().getEntityId(),entityId)
-                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId())) {
-            return true;
         }
-        return false;
+        return suppressPersonal
+                && userSession != null
+                && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
+                && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
     }
 
 	public static String encryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
@@ -392,30 +369,31 @@ public class KimCommonUtils {
 
         return group;
     }
-    
-    public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributesNew(Map<String,String> infoMap, String groupId, String kimTypeId) {
+
+    /**
+     *
+     * @param infoMap Containing the Info Attribute objects.
+     * @param groupId for the group of attributes
+     * @param kimTypeId for the group of attributes
+     * @return a list of group attributes
+     */
+
+    public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String,String> infoMap, String groupId, String kimTypeId)
+    {
     	List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
-        KimTypeInfo kimTypeInfo = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
-        List<KimTypeAttributeInfo> attributeInfoList = kimTypeInfo.getAttributeDefinitions();
-        
-        /*for(String key : infoMap.keySet()) {
-            Map<String,String> criteria = new HashMap<String,String>();
-            criteria.put("attributeName", key);
-            kimAttrId//KimAttributeImpl kimAttr = (KimAttributeImpl) getBusinessObjectService().findByPrimaryKey(KimAttributeImpl.class, criteria);
-
-            if(kimAttr == null) {
-            	throw new IllegalArgumentException("KimAttribute not found: " + key);
+        List<KimTypeAttributeInfo> attributeInfoList = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitions();
+        for(KimTypeAttributeInfo attributeInfo : attributeInfoList)
+        {
+            if(infoMap.containsKey(attributeInfo.getAttributeName()))
+            {
+                GroupAttributeDataImpl groupAttribute = new GroupAttributeDataImpl();
+                groupAttribute.setKimAttributeId(attributeInfo.getKimAttributeId());
+                groupAttribute.setAttributeValue(infoMap.get(attributeInfo.getAttributeName()));
+                groupAttribute.setGroupId(groupId);
+                groupAttribute.setKimTypeId(kimTypeId);
+                attrList.add(groupAttribute);
             }
-
-            GroupAttributeDataImpl groupAttr = new GroupAttributeDataImpl();
-            groupAttr.setKimAttributeId(kimAttr.getKimAttributeId());
-            groupAttr.setAttributeValue(infoMap.get(key));
-            groupAttr.setGroupId(groupId);
-            groupAttr.setKimTypeId(kimTypeId);
-
-            attrList.add(groupAttr);
-        }*/
-
+        }
         return attrList;
     }
         

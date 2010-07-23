@@ -100,7 +100,6 @@
         <xalan.version>2.7.0</xalan.version>
         <xapool.version>1.5.0-patch3</xapool.version>
         <xercesImpl.version>2.9.1</xercesImpl.version>
-        <xml-apis.version>1.0.b2</xml-apis.version>
         <xstream.version>1.2.2</xstream.version>
         <wss4j.version>1.5.7</wss4j.version>
 		<ws.version>1.1.2</ws.version>
@@ -197,6 +196,13 @@
 			              	  <exclude>javax.activation</exclude>
 			              	  <exclude>org.apache.geronimo.specs:geronimo-activation_1.0.2_spec</exclude>
 			              	  <exclude>org.apache.geronimo.specs:geronimo-activation_1.1_spec</exclude>
+			              	  
+			              	  <!-- 
+			              	  These are repackaged parser apis - some of these apis are included in jdk 6.
+			              	  The non-jdk parsers can be added indivually if needed.
+			              	  -->
+			              	  <exclude>xerces:xmlParserAPIs</exclude>
+			              	  <exclude>xml-apis</exclude>
 			              	  
 			              	  <!-- group ids for many sun xml apis - in jdk 6 -->
 			              	  <exclude>javax.xml</exclude>
@@ -647,11 +653,6 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>xalan</groupId>
-                <artifactId>xalan</artifactId>
-                <version>${xalan.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>${junit.version}</version>
@@ -700,7 +701,11 @@
                     <exclusion>
                     	<groupId>cglib</groupId>
                     	<artifactId>cglib</artifactId>
-                    </exclusion>
+                    </exclusion>       
+                	<exclusion>
+          				<groupId>xml-apis</groupId>
+          				<artifactId>xml-apis</artifactId>
+        			</exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -740,6 +745,12 @@
                 <groupId>commons-dbcp</groupId>
                 <artifactId>commons-dbcp</artifactId>
                 <version>${commons-dbcp.version}</version>
+                <exclusions>
+                	<exclusion>
+          				<groupId>xml-apis</groupId>
+          				<artifactId>xml-apis</artifactId>
+        			</exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>log4j</groupId>
@@ -778,6 +789,12 @@
                 <groupId>org.hibernate</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
+                <exclusions>
+                	<exclusion>
+          				<groupId>xml-apis</groupId>
+          				<artifactId>xml-apis</artifactId>
+        			</exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
@@ -813,6 +830,10 @@
                         <artifactId>commons-logging</artifactId>
                         <groupId>commons-logging</groupId>
                     </exclusion>
+                	<exclusion>
+          				<groupId>xml-apis</groupId>
+          				<artifactId>xml-apis</artifactId>
+        			</exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -856,6 +877,10 @@
                         <artifactId>commons-logging</artifactId>
                         <groupId>commons-logging</groupId>
                     </exclusion>
+                	<exclusion>
+          				<groupId>xerces</groupId>
+          				<artifactId>xmlParserAPIs</artifactId>
+        			</exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -867,6 +892,10 @@
                         <artifactId>commons-logging</artifactId>
                         <groupId>commons-logging</groupId>
                     </exclusion>
+                    <exclusion>
+          				<groupId>xerces</groupId>
+          				<artifactId>xmlParserAPIs</artifactId>
+        			</exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -891,15 +920,17 @@
                     </exclusion>
                 </exclusions>
             </dependency>
+<!-- explicitly including xercesImpl to change version number from what maven would have resolved it to -->
             <dependency>
                 <groupId>xerces</groupId>
                 <artifactId>xercesImpl</artifactId>
                 <version>${xercesImpl.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>xml-apis</groupId>
-                <artifactId>xml-apis</artifactId>
-                <version>${xml-apis.version}</version>
+    			<exclusions>
+                	<exclusion>
+          				<groupId>xml-apis</groupId>
+          				<artifactId>xml-apis</artifactId>
+        			</exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>jdom</groupId>
@@ -920,6 +951,12 @@
                 <groupId>commons-pool</groupId>
                 <artifactId>commons-pool</artifactId>
                 <version>${commons-pool.version}</version>
+                <exclusions>
+                	<exclusion>
+          				<groupId>xml-apis</groupId>
+          				<artifactId>xml-apis</artifactId>
+        			</exclusion>
+                </exclusions>
             </dependency>
             <dependency>
                 <groupId>bouncycastle</groupId>

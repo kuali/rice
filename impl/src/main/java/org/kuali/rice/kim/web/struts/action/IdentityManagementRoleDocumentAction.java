@@ -329,7 +329,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         	return false;
 		}
         newMember.setMemberName(memberName);
-        newMember.setMemberNamespaceCode(memberName);
+        newMember.setMemberNamespaceCode(memberNamespace);
         return true;
     }
 

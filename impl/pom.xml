@@ -8,36 +8,6 @@
 	</parent>
 	<artifactId>rice-impl</artifactId>
 
-	<build>
-		<testResources>
-			<testResource>
-				<directory>${basedir}/src/test/resources</directory>
-				<includes>
-					<include>META-INF/impl-test-config.xml</include>
-				</includes>
-				<filtering>true</filtering>
-			</testResource>
-
-			<testResource>
-				<directory>${basedir}/src/test/resources</directory>
-				<includes>
-					<include>META-INF/test-config-defaults.xml</include>
-				</includes>
-				<filtering>true</filtering>
-			</testResource>
-
-			<testResource>
-				<directory>${basedir}/src/test/resources</directory>
-				<excludes>
-					<exclude>impl-test-config.xml</exclude>
-				</excludes>
-				<filtering>false</filtering>
-			</testResource>
-
-		</testResources>
-	</build>
-
-
 	<dependencies>
 	    <dependency>
         	<groupId>org.slf4j</groupId>

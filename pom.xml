@@ -140,12 +140,6 @@
                     <include>META-INF/sample-app-test-config.xml</include>
                 </includes>
             </testResource>
-            <testResource>
-                <directory>${basedir}/src/test/resources</directory>
-                <excludes>
-                    <exclude>${project.name}-test-config.xml</exclude>
-                </excludes>
-            </testResource>
         </testResources>
         <pluginManagement>
 	        <plugins>

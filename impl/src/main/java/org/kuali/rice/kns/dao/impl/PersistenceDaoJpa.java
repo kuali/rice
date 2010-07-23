@@ -36,7 +36,7 @@ import org.kuali.rice.kns.dao.PersistenceDao;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 public class PersistenceDaoJpa implements PersistenceDao {
-	static org.slf4j.Logger LOG = org.slf4j.LoggerFactory.getLogger(PersistenceDaoJpa.class);
+	static org.apache.commons.logging.Log LOG = org.apache.commons.logging.LogFactory.getLog(PersistenceDaoJpa.class);
 	
 	@PersistenceContext
 	private EntityManager entityManager;

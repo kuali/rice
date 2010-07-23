@@ -45,16 +45,18 @@
         <test.includes>**/*Test.java</test.includes>
 
 		<!-- project dependencies -->
+		<aopalliance.version>1.0</aopalliance.version>
         <acegi.version>1.0.6</acegi.version>
         <asm.version>2.2.3</asm.version>
         <bcprov.version>133</bcprov.version>
         <bsf.version>2.4.0</bsf.version>
         <casclient.version>2.1.1</casclient.version>
         <cas-client-core.version>3.1.6</cas-client-core.version>
-        <cglib.version>2.1_3</cglib.version>
+        <cglib.version>2.2</cglib.version>
         <commons-beanutils.version>1.7.0</commons-beanutils.version>
         <commons-codec.version>1.3</commons-codec.version>
         <commons-collections.version>3.2</commons-collections.version>
+        <commons-validator.version>1.1.4</commons-validator.version>
         <commons-dbcp.version>1.2.1</commons-dbcp.version>
         <commons-fileupload.version>1.2.1</commons-fileupload.version>
         <commons-httpclient.version>3.0.1</commons-httpclient.version>
@@ -64,7 +66,6 @@
         <connector-api.version>1.5</connector-api.version>
         <cxf.version>2.1.5</cxf.version>
         <db-ojb.version>1.0.4-patch3</db-ojb.version>
-        <derby.version>10.2.2.0</derby.version>
         <displaytag.version>1.1</displaytag.version>
         <dwr.version>1.1.3</dwr.version>
         <groovy.version>1.5.4</groovy.version>
@@ -77,7 +78,6 @@
         <jaxen.version>1.1.1</jaxen.version>
         <jdom.version>1.0</jdom.version>
         <jetty.version>6.1.1</jetty.version>
-        <jmeter.version>2.3-RC4</jmeter.version>
         <jotm.version>2.0.10</jotm.version>
         <jstl.version>1.1.2</jstl.version>
         <jta.version>1.0.1B</jta.version>
@@ -97,13 +97,13 @@
         <struts-el.version>1.2.9</struts-el.version>
         <struts.version>1.2.9</struts.version>
         <taglibs-standard.version>1.1.2</taglibs-standard.version>
-        <wss4j.version>1.5.1</wss4j.version>
         <xalan.version>2.7.0</xalan.version>
         <xapool.version>1.5.0-patch3</xapool.version>
         <xercesImpl.version>2.9.1</xercesImpl.version>
         <xml-apis.version>1.0.b2</xml-apis.version>
         <xstream.version>1.2.2</xstream.version>
-		
+        <wss4j.version>1.5.7</wss4j.version>
+		<ws.version>1.1.2</ws.version>
 		<!-- plugin dependencies -->
 		<cobertura-maven-plugin.version>2.3</cobertura-maven-plugin.version>
     </properties>
@@ -173,6 +173,42 @@
 				            <excludes>
 				              <!-- jcl-over-slf4j is an alternate implementation of commons-logging - excluding commons-logging -->
 				              <exclude>commons-logging:commons-logging</exclude>
+				              <!-- already including cglib-nodep -->
+			                  <exclude>cglib:cglib</exclude>
+			                  <!-- already including the jdk15 version -->
+			                  <exclude>bouncycastle:bcprov-jdk14</exclude>
+			                  
+			                  <!-- in jdk 6 -->
+			              	  <exclude>javax.activation</exclude>
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>org.apache.geronimo.specs:geronimo-activation_1.0.2_spec</exclude>
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>org.apache.geronimo.specs:geronimo-activation_1.1_spec</exclude>
+			              	  
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>javax.xml.bind</exclude>
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>com.sun.xml.bind</exclude>
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>org.apache.geronimo.specs:geronimo-jaxb_2.1_spec</exclude>
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>org.apache.geronimo.specs:geronimo-jaxb_2.2_spec</exclude>
+
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>javax.xml.ws</exclude>			              	  
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>org.apache.geronimo.specs:geronimo-jaxws_2.1_spec</exclude>
+							  <!-- in jdk 6 -->
+			              	  <exclude>org.apache.geronimo.specs:geronimo-jaxws_2.2_spec</exclude>
+			              	  
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>stax</exclude>
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>javax.xml.stream</exclude>
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>org.apache.geronimo.specs:geronimo-stax-api_1.0_spec</exclude>
+			              	  <!-- in jdk 6 -->
+			              	  <exclude>org.apache.geronimo.specs:geronimo-stax-api_1.2_spec</exclude>
 				            </excludes>
 				          </bannedDependencies>
 				        </rules>
@@ -344,6 +380,34 @@
 
     <dependencyManagement>
         <dependencies>
+	       	<dependency>
+				<groupId>org.apache.geronimo.specs</groupId>
+				<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
+				<version>${ws.version}</version>
+			</dependency>
+        
+	        <dependency>
+			    <groupId>org.apache.ws.security</groupId>
+			    <artifactId>wss4j</artifactId>
+			    <version>${wss4j.version}</version>
+			    <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                    <exclusion>
+                    	<groupId>bouncycastle</groupId>
+                    	<artifactId>bcprov-jdk14</artifactId>
+                    </exclusion>
+                </exclusions>
+			</dependency>
+
+        	<dependency>
+    			<groupId>aopalliance</groupId>
+    			<artifactId>aopalliance</artifactId>
+    			<version>${aopalliance.version}</version>
+			</dependency>
+        
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-log4j12</artifactId>
@@ -394,6 +458,11 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-orm</artifactId>
+                <version>${spring.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-jdbc</artifactId>
                 <version>${spring.version}</version>
             </dependency>
             <dependency>
@@ -449,6 +518,7 @@
                         <artifactId>spring-web</artifactId>
                     </exclusion>
                 </exclusions>
+                <scope>runtime</scope>
             </dependency>
             <!-- Force servlet-api to scope=provided -->
             <dependency>
@@ -478,6 +548,7 @@
                         <groupId>commons-logging</groupId>
                     </exclusion>
                 </exclusions>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>commons-io</groupId>
@@ -493,12 +564,6 @@
                 <groupId>asm</groupId>
                 <artifactId>asm</artifactId>
                 <version>${asm.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>jmeter</groupId>
-                <artifactId>jmeter</artifactId>
-                <version>${jmeter.version}</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.mortbay.jetty</groupId>
@@ -581,15 +646,12 @@
                 <artifactId>jta</artifactId>
                 <version>${jta.version}</version>
             </dependency>
+            <!-- required by jtom -->
             <dependency>
                 <groupId>javax.resource</groupId>
                 <artifactId>connector-api</artifactId>
                 <version>${connector-api.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>wss4j</groupId>
-                <artifactId>wss4j</artifactId>
-                <version>${wss4j.version}</version>
+                <scope>runtime</scope>
             </dependency>
             <dependency>
                 <groupId>commons-lang</groupId>
@@ -605,12 +667,27 @@
                         <artifactId>commons-logging</artifactId>
                         <groupId>commons-logging</groupId>
                     </exclusion>
+                    <exclusion>
+                    	<groupId>cglib</groupId>
+                    	<artifactId>cglib</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
                 <groupId>commons-beanutils</groupId>
                 <artifactId>commons-beanutils</artifactId>
                 <version>${commons-beanutils.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>commons-validator</groupId>
+                <artifactId>commons-validator</artifactId>
+                <version>${commons-validator.version}</version>
                 <exclusions>
                     <exclusion>
                         <artifactId>commons-logging</artifactId>
@@ -656,11 +733,6 @@
                 </exclusions>
             </dependency>
             <dependency>
-                <groupId>org.apache.derby</groupId>
-                <artifactId>derby</artifactId>
-                <version>${derby.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.oracle</groupId>
                 <artifactId>ojdbc14</artifactId>
                 <version>${ojdbc14.version}</version>
@@ -690,6 +762,10 @@
                     <exclusion>
                         <groupId>org.hibernate</groupId>
                         <artifactId>hibernate</artifactId>
+                    </exclusion>
+                    <exclusion>
+                    	<groupId>cglib</groupId>
+                    	<artifactId>cglib</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -833,6 +909,14 @@
                         <artifactId>commons-logging</artifactId>
                         <groupId>commons-logging</groupId>
                     </exclusion>
+                    <exclusion>
+                    	<groupId>org.apache.geronimo.specs</groupId>
+                    	<artifactId>geronimo-activation_1.1_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                    	<groupId>org.apache.geronimo.specs</groupId>
+                    	<artifactId>geronimo-jaxws_2.1_spec</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -876,6 +960,74 @@
                         <groupId>org.apache.geronimo.specs</groupId>
                         <artifactId>geronimo-javamail_1.4_spec</artifactId>
                     </exclusion>
+                    <exclusion>
+                    	<groupId>org.apache.geronimo.specs</groupId>
+                    	<artifactId>geronimo-activation_1.1_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                    	<groupId>com.sun.xml.bind</groupId>
+                    	<artifactId>jaxb-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                    	<groupId>com.sun.xml.bind</groupId>
+                    	<artifactId>jaxb-xjc</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-common-utilities</artifactId>
+                <version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                    	<groupId>javax.xml.bind</groupId>
+                    	<artifactId>jaxb-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                    	<groupId>org.apache.geronimo.specs</groupId>
+                    	<artifactId>geronimo-stax-api_1.0_spec</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-bindings-soap</artifactId>
+                <version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                    	<groupId>com.sun.xml.bind</groupId>
+                    	<artifactId>jaxb-impl</artifactId>
+                    </exclusion>
+                    <exclusion>
+                    	<groupId>javax.xml.bind</groupId>
+                    	<artifactId>jaxb-api</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-core</artifactId>
+                <version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                    	<groupId>com.sun.xml.bind</groupId>
+                    	<artifactId>jaxb-impl</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-api</artifactId>
+                <version>${cxf.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>commons-logging</artifactId>
+                        <groupId>commons-logging</groupId>
+                    </exclusion>
+                    <exclusion>
+                    	<groupId>org.apache.geronimo.specs</groupId>
+                    	<artifactId>geronimo-activation_1.1_spec</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -884,20 +1036,17 @@
                 <version>${groovy.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.apache.derby</groupId>
-                <artifactId>derbynet</artifactId>
-                <version>${derby.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.derby</groupId>
-                <artifactId>derbyclient</artifactId>
-                <version>${derby.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
                 <version>${javamail.version}</version>
+                <exclusions>
+                    <exclusion>
+                    	<groupId>javax.activation</groupId>
+                    	<artifactId>activation</artifactId>
+                    </exclusion>
+               </exclusions>
             </dependency>
+            <!-- using nodep to resolve a problem with the asm dependency -->
             <dependency>
                 <groupId>cglib</groupId>
                 <artifactId>cglib-nodep</artifactId>

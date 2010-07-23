@@ -39,7 +39,15 @@
 
 
 	<dependencies>
-
+	    <dependency>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
+		</dependency>
+	
+       	<dependency>
+   			<groupId>aopalliance</groupId>
+   			<artifactId>aopalliance</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-api</artifactId>
@@ -85,7 +93,27 @@
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-databinding-aegis</artifactId>
 		</dependency>
-
+		
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-common-utilities</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-bindings-soap</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-core</artifactId>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-api</artifactId>
+        </dependency>
+        
 		<dependency>
 			<groupId>org.acegisecurity</groupId>
 			<artifactId>acegi-security</artifactId>
@@ -112,32 +140,13 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbynet</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyclient</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 		</dependency>
 
-		<!-- Use nodep version of cglib -->
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>jmeter</groupId>
-			<artifactId>jmeter</artifactId>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -220,17 +229,16 @@
             <artifactId>spring-orm</artifactId>
         </dependency>
         <dependency>
+        	<groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-            <scope>test</scope>
         </dependency>
 
 		<dependency>
@@ -248,10 +256,15 @@
 			<groupId>javax.transaction</groupId>
 			<artifactId>jta</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>javax.resource</groupId>
 			<artifactId>connector-api</artifactId>
+		</dependency>
+		
+		<dependency>
+        	<groupId>commons-validator</groupId>
+            <artifactId>commons-validator</artifactId>
 		</dependency>
 
 		<dependency>
@@ -262,12 +275,6 @@
 		<dependency>
 			<groupId>ojb</groupId>
 			<artifactId>db-ojb</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>cglib</groupId>
-					<artifactId>cglib</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 
 		<dependency>
@@ -303,11 +310,6 @@
 		<dependency>
 			<groupId>jotm</groupId>
 			<artifactId>jotm</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
 		</dependency>
 
 		<dependency>
@@ -423,6 +425,10 @@
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
 		</dependency>
-		
+
+		<dependency>
+		    <groupId>org.apache.ws.security</groupId>
+		    <artifactId>wss4j</artifactId>
+		</dependency>
 	</dependencies>
 </project>

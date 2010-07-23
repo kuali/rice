@@ -23,7 +23,7 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import org.apache.derby.drda.NetworkServerControl;
+//import org.apache.derby.drda.NetworkServerControl;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.test.BaseRiceTestCase;
@@ -46,9 +46,11 @@ public class MultipleDatabaseTransactionTest extends BaseRiceTestCase {
 
     private static final String TEST_TABLE = "TESTTABLE";
 
+
     @Test
     public void testTransactionRollbackAcrossTwoDatabases() throws Exception {
-        NetworkServerControl server = new NetworkServerControl(InetAddress.getByName("localhost"), 1925);
+    	/* commenting out as a part of the dependency cleanup
+    	NetworkServerControl server = new NetworkServerControl(InetAddress.getByName("localhost"), 1925);
         LOG.info("Starting server");
         server.start(null);
 
@@ -109,7 +111,7 @@ public class MultipleDatabaseTransactionTest extends BaseRiceTestCase {
         } finally {
             context.stop();
             server.shutdown();
-        }        
+        }
+        */      
     }
-
 }

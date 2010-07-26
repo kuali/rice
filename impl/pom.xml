@@ -14,11 +14,6 @@
             <artifactId>jcl-over-slf4j</artifactId>
        	</dependency>
 	
-	    <dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
-		</dependency>
-	
        	<dependency>
    			<groupId>aopalliance</groupId>
    			<artifactId>aopalliance</artifactId>
@@ -35,7 +30,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>bouncycastle</groupId>
+			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk16</artifactId>
 		</dependency>
 
@@ -346,7 +341,7 @@
 			<artifactId>htmlunit</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>opensymphony</groupId>
+			<groupId>org.opensymphony.quartz</groupId>
 			<artifactId>quartz</artifactId>
 		</dependency>
 		<dependency>

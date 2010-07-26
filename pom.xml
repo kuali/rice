@@ -46,60 +46,65 @@
 
 		<!-- project dependencies -->
 		<aopalliance.version>1.0</aopalliance.version>
-        <acegi.version>1.0.6</acegi.version>
-        <bcprov.version>140</bcprov.version>
+        <acegi.version>1.0.7</acegi.version>
+        <bcprov.version>1.45</bcprov.version>
         <bsf.version>2.4.0</bsf.version>
         <casclient.version>2.1.1</casclient.version>
         <cas-client-core.version>3.1.6</cas-client-core.version>
         <cglib.version>2.2</cglib.version>
-        <commons-beanutils.version>1.7.0</commons-beanutils.version>
-        <commons-codec.version>1.3</commons-codec.version>
-        <commons-collections.version>3.2</commons-collections.version>
-        <commons-validator.version>1.1.4</commons-validator.version>
-        <commons-dbcp.version>1.2.1</commons-dbcp.version>
+        <commons-beanutils.version>1.8.3</commons-beanutils.version>
+        <commons-codec.version>1.4</commons-codec.version>
+        <commons-collections.version>3.2.1</commons-collections.version>
+        <commons-validator.version>1.3.1</commons-validator.version>
+        <commons-dbcp.version>1.4</commons-dbcp.version>
         <commons-fileupload.version>1.2.1</commons-fileupload.version>
-        <commons-httpclient.version>3.0.1</commons-httpclient.version>
+        <commons-httpclient.version>3.1</commons-httpclient.version>
         <commons-io.version>1.4</commons-io.version>
-        <commons-lang.version>2.3</commons-lang.version>
-        <commons-pool.version>1.2</commons-pool.version>
+        <commons-lang.version>2.5</commons-lang.version>
+        <commons-pool.version>1.5.4</commons-pool.version>
         <connector-api.version>1.5</connector-api.version>
-        <cxf.version>2.1.5</cxf.version>
+        <cxf.version>2.2.9</cxf.version>
         <db-ojb.version>1.0.4-patch3</db-ojb.version>
-        <displaytag.version>1.1</displaytag.version>
+        <displaytag.version>1.2</displaytag.version>
         <dwr.version>1.1.3</dwr.version>
-        <groovy.version>1.5.4</groovy.version>
+        <groovy.version>1.5.8</groovy.version>
         <hibernate.version>3.5.1-Final</hibernate.version>               
         <htmlunit.version>1.13</htmlunit.version>
         <jasper-compiler-jdt.version>5.5.15</jasper-compiler-jdt.version>
         <jasper-compiler.version>5.5.15</jasper-compiler.version>
         <jasper-runtime.version>5.5.15</jasper-runtime.version>
-        <javamail.version>1.4</javamail.version>
+        <!-- 1.4.3 is not in maven central repo -->
+        <javamail.version>1.4.1</javamail.version>
         <jaxen.version>1.1.1</jaxen.version>
+        <!-- 1.1.1 is not in maven central repo -->
         <jdom.version>1.1</jdom.version>
         <jetty.version>6.1.1</jetty.version>
         <jotm.version>2.1.9</jotm.version>
         <jstl.version>1.1.2</jstl.version>
         <jta.version>1.1</jta.version>
-        <junit.version>4.4</junit.version>
+        <!-- 4.8.2 is not in maven central repo -->
+        <junit.version>4.8.1</junit.version>
         <log4j.version>1.2.16</log4j.version>
         <mysql-connector-java.version>5.1.5</mysql-connector-java.version>
         <ojdbc14.version>10.2.0.3.0</ojdbc14.version>
-        <oscache.version>2.3.2</oscache.version>
+        <!-- 2.4.1 is not in maven central repo -->
+        <oscache.version>2.4</oscache.version>
         <persistence.version>1.0.0.Final</persistence.version>
-        <quartz.version>1.6.0</quartz.version>
-        <reflections.version>0.9.5-RC1</reflections.version>
+        <quartz.version>1.6.1</quartz.version>
+        <reflections.version>0.9.5-RC2</reflections.version>
         <servlet-api.version>2.5</servlet-api.version>
-        <slf4j.version>1.5.10</slf4j.version>
+        <slf4j.version>1.6.1</slf4j.version>
         <spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
-        <spring.version>3.0.1.RELEASE</spring.version>
+        <spring.version>3.0.3.RELEASE</spring.version>
         <struts-el.version>1.3.10</struts-el.version>
         <struts.version>1.3.10</struts.version>
         <taglibs-standard.version>1.1.2</taglibs-standard.version>
         <xalan.version>2.7.0</xalan.version>
         <xapool.version>1.5.0-patch3</xapool.version>
+        <!-- 2.10 is not in maven central repo -->
         <xercesImpl.version>2.9.1</xercesImpl.version>
-        <xstream.version>1.2.2</xstream.version>
-        <wss4j.version>1.5.7</wss4j.version>
+        <xstream.version>1.3.1</xstream.version>
+        <wss4j.version>1.5.8</wss4j.version>
 		<ws.version>1.1.2</ws.version>
 
 		<!-- plugin dependencies -->
@@ -192,17 +197,16 @@
 							  <exclude>quartz</exclude>
 							  <exclude>jdom</exclude>
 							  <exclude>groovy</exclude>
+							  <exclude>bouncycastle</exclude>
 
 				              <!-- jcl-over-slf4j is an alternate implementation of commons-logging - excluding commons-logging -->
 				              <exclude>commons-logging</exclude>
 				              <!-- already including cglib-nodep -->
 			                  <exclude>cglib:cglib</exclude>
 			                  <!-- already including the jdk16 version -->
-			                  <exclude>bouncycastle:bcprov-jdk14</exclude>
+			                  <exclude>org.bouncycastle:bcprov-jdk14</exclude>
 			                  <!-- already including the jdk16 version -->
-			                  <exclude>bouncycastle:bcprov-jdk15</exclude>
-			                  <!-- already including javax.transaction -->
-			                  <exclude>org.ow2.spec.ee:ow2-jta-1.1-spec</exclude>
+			                  <exclude>org.bouncycastle:bcprov-jdk15</exclude>
 			                  
 			                  <!-- already including javax.mail -->
 			                  <exclude>javamail</exclude>
@@ -213,6 +217,13 @@
 			                  <exclude>org.apache.geronimo.specs:geronimo-javamail_1.4_spec</exclude>
 			                  <exclude>org.apache.geronimo.specs:geronimo-javamail_1.3.1_spec</exclude>
 			                  
+			                  <!-- already including javax.transation -->
+			                  <exclude>org.apache.geronimo.specs:geronimo-jta_1.1_spec</exclude>
+			             	  <exclude>org.apache.geronimo.specs:geronimo-jta_1.0.1B_spec</exclude>
+			             	  <exclude>geronimo-spec:geronimo-spec-jta</exclude>
+			             	  <exclude>org.ow2.spec.ee:ow2-jta-1.1-spec</exclude>
+			             	  <exclude>jta</exclude>
+			                  
 			                  <!-- aleady including the hibernate implementation -->
 			                  <exclude>javax.persistence</exclude>
 			                  
@@ -221,6 +232,10 @@
 			              	  <exclude>org.apache.geronimo.specs:geronimo-activation_1.0.2_spec</exclude>
 			              	  <exclude>org.apache.geronimo.specs:geronimo-activation_1.1_spec</exclude>
 			              	  
+			              	  <!-- metadata apis - in jdk 6 -->
+			              	  <exclude>javax.jws</exclude>
+			              	  <exclude>org.apache.geronimo.specs:geronimo-ws-metadata_2.0_spec</exclude>
+			             	  
 			              	  <!-- 
 			              	  These are repackaged parser apis - some of these apis are included in jdk 6.
 			              	  The non-jdk parsers can be added indivually if needed.
@@ -261,6 +276,7 @@
 							  <exclude>javax.xml.soap</exclude>
 							  <exclude>javax.xml.soap:saaj-api</exclude>
 							  <exclude>javax.xml.soap:saaj-impl</exclude>
+							  <exclude>com.sun.xml.messaging.saaj</exclude>
 							  <exclude>org.apache.geronimo.specs:geronimo-saaj_1.3_spec</exclude>
 							  <exclude>geronimo-spec:geronimo-spec-saaj</exclude>
 							  <exclude>org.apache.servicemix.specs:org.apache.servicemix.specs.saaj-api-1.3</exclude>
@@ -418,12 +434,13 @@
             <name>Kuali Repository</name>
             <url>https://test.kuali.org/maven</url>
         </repository>
+
         <repository>
             <id>reflections-repo</id>
             <name>Reflections Maven2 Repository</name>
             <url>http://reflections.googlecode.com/svn/repo</url>
         </repository>
-        <!-- for hibernate beta deps -->
+
         <repository>
             <id>Hibernate</id>
             <name>JBoss Repository</name>
@@ -439,13 +456,7 @@
     </pluginRepositories>
 
     <dependencyManagement>
-        <dependencies>
-	       	<dependency>
-				<groupId>org.apache.geronimo.specs</groupId>
-				<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
-				<version>${ws.version}</version>
-			</dependency>
-        
+        <dependencies>      
 	        <dependency>
 			    <groupId>org.apache.ws.security</groupId>
 			    <artifactId>wss4j</artifactId>
@@ -478,7 +489,6 @@
                 <artifactId>jcl-over-slf4j</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
-            <!-- Explictly define versions for each Spring module -->
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-core</artifactId>
@@ -743,6 +753,11 @@
                         <artifactId>commons-logging</artifactId>
                         <groupId>commons-logging</groupId>
                     </exclusion>
+                    <!-- excluding because struts requires a newer version than is brought in from  1.3.1 of commons-validator -->
+                    <exclusion>
+                      	<groupId>commons-digester</groupId>
+  						<artifactId>commons-digester</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -760,12 +775,6 @@
                 <groupId>commons-dbcp</groupId>
                 <artifactId>commons-dbcp</artifactId>
                 <version>${commons-dbcp.version}</version>
-                <exclusions>
-                	<exclusion>
-          				<groupId>xml-apis</groupId>
-          				<artifactId>xml-apis</artifactId>
-        			</exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>log4j</groupId>
@@ -773,6 +782,7 @@
                 <version>${log4j.version}</version>
             </dependency>
             <dependency>
+            	<!-- groupid was changed to com.experlog in later versions -->
                 <groupId>xapool</groupId>
                 <artifactId>xapool</artifactId>
                 <version>${xapool.version}</version>
@@ -830,10 +840,6 @@
                 <version>${hibernate.version}</version>
                 <exclusions>
                     <exclusion>
-                        <groupId>org.hibernate</groupId>
-                        <artifactId>hibernate</artifactId>
-                    </exclusion>
-                    <exclusion>
                     	<groupId>cglib</groupId>
                     	<artifactId>cglib</artifactId>
                     </exclusion>
@@ -853,10 +859,6 @@
                         <artifactId>commons-logging</artifactId>
                         <groupId>commons-logging</groupId>
                     </exclusion>
-                	<exclusion>
-          				<groupId>xml-apis</groupId>
-          				<artifactId>xml-apis</artifactId>
-        			</exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -891,10 +893,16 @@
                 <version>${xstream.version}</version>
             </dependency>
             <dependency>
-            	<!-- groupid will change to org.opensymphony.oscache if they ever release anotehr version -->
+            	<!-- groupid will change to org.opensymphony.oscache if they ever release another version -->
                 <groupId>opensymphony</groupId>
                 <artifactId>oscache</artifactId>
                 <version>${oscache.version}</version>
+                <exclusions>
+                	<exclusion>
+                		<artifactId>commons-logging</artifactId>
+                    	<groupId>commons-logging</groupId>
+                	</exclusion>
+                </exclusions>
             </dependency>
             <dependency>
             	<!-- groupid was changed to org.directwebremoting in later versions -->
@@ -930,11 +938,18 @@
           				<groupId>xerces</groupId>
           				<artifactId>xmlParserAPIs</artifactId>
         			</exclusion>
+        			<exclusion>
+          				<groupId>jdom</groupId>
+          				<artifactId>jdom</artifactId>
+        			</exclusion>
+        			<exclusion>
+          				<groupId>xml-apis</groupId>
+          				<artifactId>xml-apis</artifactId>
+        			</exclusion>
                 </exclusions>
             </dependency>
             <dependency>
-            	<!-- groupid was changed to org.opensymphony.quartz in later versions -->
-                <groupId>opensymphony</groupId>
+                <groupId>org.opensymphony.quartz</groupId>
                 <artifactId>quartz</artifactId>
                 <version>${quartz.version}</version>
             </dependency>
@@ -987,15 +1002,9 @@
                 <groupId>commons-pool</groupId>
                 <artifactId>commons-pool</artifactId>
                 <version>${commons-pool.version}</version>
-                <exclusions>
-                	<exclusion>
-          				<groupId>xml-apis</groupId>
-          				<artifactId>xml-apis</artifactId>
-        			</exclusion>
-                </exclusions>
             </dependency>
             <dependency>
-                <groupId>bouncycastle</groupId>
+                <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk16</artifactId>
                 <version>${bcprov.version}</version>
             </dependency>
@@ -1004,17 +1013,13 @@
                 <artifactId>cxf-rt-frontend-jaxws</artifactId>
                 <version>${cxf.version}</version>
                 <exclusions>
-                    <exclusion><!-- avoids conflict with javamail -->
-                        <groupId>org.apache.geronimo.specs</groupId>
-                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <artifactId>commons-logging</artifactId>
-                        <groupId>commons-logging</groupId>
-                    </exclusion>
                     <exclusion>
                     	<groupId>org.apache.geronimo.specs</groupId>
                     	<artifactId>geronimo-activation_1.1_spec</artifactId>
+                    </exclusion>
+                    <exclusion>
+                    	<groupId>org.apache.geronimo.specs</groupId>
+                    	<artifactId>geronimo-ws-metadata_2.0_spec</artifactId>
                     </exclusion>
                     <exclusion>
                     	<groupId>org.apache.geronimo.specs</groupId>
@@ -1025,8 +1030,8 @@
                     	<artifactId>saaj-api</artifactId>
                     </exclusion>
                     <exclusion>
-                    	<groupId>com.sun.xml.messaging.saaj</groupId>
-                    	<artifactId>saaj-impl</artifactId>
+                  		<groupId>com.sun.xml.messaging.saaj</groupId>
+  						<artifactId>saaj-impl</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>
@@ -1054,7 +1059,7 @@
                     	<artifactId>saaj-api</artifactId>
                     </exclusion>
                     <exclusion>
-                    	<groupId>bouncycastle</groupId>
+                    	<groupId>org.bouncycastle</groupId>
                     	<artifactId>bcprov-jdk15</artifactId>
                     </exclusion>
                 </exclusions>
@@ -1063,16 +1068,6 @@
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-databinding-aegis</artifactId>
                 <version>${cxf.version}</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>org.apache.geronimo.specs</groupId>
-                        <artifactId>geronimo-javamail_1.4_spec</artifactId>
-                    </exclusion>
-                    <exclusion>
-                        <groupId>jdom</groupId>
-                        <artifactId>jdom</artifactId>
-                    </exclusion>
-                </exclusions>
             </dependency>
             <dependency>
                 <groupId>org.apache.cxf</groupId>
@@ -1125,10 +1120,6 @@
                     <exclusion>
                     	<groupId>javax.xml.soap</groupId>
                     	<artifactId>saaj-api</artifactId>
-                    </exclusion>
-                    <exclusion>
-                    	<groupId>org.apache.geronimo.specs</groupId>
-                    	<artifactId>geronimo-activation_1.1_spec</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>

@@ -42,7 +42,7 @@
               <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberTypeCode}" horizontal="false" />
               <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberId}" horizontal="false" />
               <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberNamespaceCode}" horizontal="false" />
-              <c:if test='${KualiForm.member.memberTypeCode == "G"}'>
+              <c:if test='${KualiForm.member.memberTypeCode != "R" }'>
                 <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberName}" horizontal="false" /> 
               </c:if>   
               <kul:htmlAttributeHeaderCell attributeEntry="${roleMemberAttributes.memberFullName}" horizontal="false" />
@@ -90,7 +90,7 @@
                   </c:if>  
                 </div>
               </td>
-              <c:if test='${KualiForm.member.memberTypeCode == "G"}'>
+              <c:if test='${KualiForm.member.memberTypeCode == "G" || KualiForm.member.memberTypeCode == "P"}'>
                 <td class="infoline">   
                   <div align="center">                
                     <kul:htmlControlAttribute property="member.memberName" attributeEntry="${roleMemberAttributes.memberName}" readOnly="${!canModifyAssignees}" />

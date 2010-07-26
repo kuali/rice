@@ -86,12 +86,26 @@
 				</td>
 				<td class="infoline">   
                 <div align="center">
-					<kul:htmlControlAttribute property="delegationMember.memberNamespaceCode" attributeEntry="${delegationMemberAttributes.memberNamespaceCode}" readOnly="true" />
+                    <c:if test='${KualiForm.delegationMember.memberTypeCode == "R" || KualiForm.delegationMember.memberTypeCode == "P"}'>
+                      <kul:htmlControlAttribute property="delegationMember.memberNamespaceCode" attributeEntry="${delegationMemberAttributes.memberNamespaceCode}" readOnly="true" />
+                    </c:if>
+                    <c:if test='${KualiForm.delegationMember.memberTypeCode == "G"}'>
+                      <kul:htmlControlAttribute property="delegationMember.memberNamespaceCode" attributeEntry="${delegationMemberAttributes.memberNamespaceCode}" readOnly="${!canModifyAssignees}" />
+                    </c:if>
+					
 				</div>
 				</td>
 				<td class="infoline">   
                 <div align="center">
-					<kul:htmlControlAttribute property="delegationMember.memberName" attributeEntry="${delegationMemberAttributes.memberName}" readOnly="true" />
+                    <c:if test='${KualiForm.delegationMember.memberTypeCode == "G" || KualiForm.delegationMember.memberTypeCode == "P"}'>
+					  <kul:htmlControlAttribute property="delegationMember.memberName" attributeEntry="${delegationMemberAttributes.memberName}" readOnly="${!canModifyAssignees}" />
+					  <c:if test="${!readOnlyAssignees}" >
+		               	<kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
+		              </c:if>
+		            </c:if>
+		            <c:if test='${KualiForm.delegationMember.memberTypeCode == "R"}'>
+		              <kul:htmlControlAttribute property="delegationMember.memberName" attributeEntry="${delegationMemberAttributes.memberName}" readOnly="true" />	
+		            </c:if>
 				</div>
 				</td>
                 <td align="left" valign="middle" class="infoline">

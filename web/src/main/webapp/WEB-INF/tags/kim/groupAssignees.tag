@@ -41,8 +41,8 @@
 	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberId}" horizontal="false" />
 	        		<c:if test='${KualiForm.member.memberTypeCode == "G"}'>
 	        		  <kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberNamespaceCode}" horizontal="false" />
-	        		  <kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberName}" horizontal="false" />
-	        		</c:if>
+	        		</c:if>  
+	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.memberName}" horizontal="false" />
 	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeFromDate}" horizontal="false" />
 	        		<kul:htmlAttributeHeaderCell attributeEntry="${groupMemberAttributes.activeToDate}" horizontal="false" />
 					<c:if test="${canAssignGroup}">	
@@ -78,15 +78,16 @@
 						  <kul:htmlControlAttribute property="member.memberNamespaceCode" attributeEntry="${groupMemberAttributes.memberNamespaceCode}" readOnly="${readOnly}" />
 					    </div>
 					  </td>
-	                  <td class="infoline">   
-	                    <div align="center">             	
-						  <kul:htmlControlAttribute property="member.memberName" attributeEntry="${groupMemberAttributes.memberName}" readOnly="${readOnly}" />
-						  <c:if test="${!readOnly}">
-			               	  <kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
-		               	  </c:if>
-					    </div>
-					  </td>
 					</c:if>  
+	                <td class="infoline">    
+	                  <div align="center">             	
+					    <kul:htmlControlAttribute property="member.memberName" attributeEntry="${groupMemberAttributes.memberName}" readOnly="${readOnly}" />
+					    <c:if test="${!readOnly}">
+			              <kul:lookup boClassName="${bo}" fieldConversions="${fc}" anchor="${tabKey}" />
+		                </c:if>
+					  </div>
+					</td>
+					  
 	                <td align="left" valign="middle" class="infoline">
 	                <div align="center">
 	                	<kul:htmlControlAttribute property="member.activeFromDate" attributeEntry="${groupMemberAttributes.activeFromDate}" datePicker="true" readOnly="${readOnly}" />

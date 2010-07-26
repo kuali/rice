@@ -27,6 +27,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -182,6 +183,8 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     public ActionForward addMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
         GroupDocumentMember newMember = groupDocumentForm.getMember();
+        
+        //See if possible to add with just Group Details filled in (not returned from lookup)
         if (StringUtils.isEmpty(newMember.getMemberId()) 
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.isNotEmpty(newMember.getMemberNamespaceCode())
@@ -189,6 +192,16 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
         	if (tempGroup != null) {
         		newMember.setMemberId(tempGroup.getGroupId());
+        	}
+        }
+        
+        //See if possible to grab details for Principal
+        if (StringUtils.isEmpty(newMember.getMemberId()) 
+        		&& StringUtils.isNotEmpty(newMember.getMemberName())
+        		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
+        	if (principal != null) {
+        		newMember.setMemberId(principal.getPrincipalId());
         	}
         }
         if(checkKimDocumentGroupMember(newMember) && 

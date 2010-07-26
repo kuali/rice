@@ -36,7 +36,7 @@
 
 		<dependency>
 			<groupId>bouncycastle</groupId>
-			<artifactId>bcprov-jdk15</artifactId>
+			<artifactId>bcprov-jdk16</artifactId>
 		</dependency>
 
 		<dependency>
@@ -211,11 +211,6 @@
             <artifactId>spring-webmvc</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
-        </dependency>
-
 		<dependency>
 			<groupId>org.springmodules</groupId>
 			<artifactId>spring-modules-ojb</artifactId>
@@ -277,8 +272,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>jotm</groupId>
-			<artifactId>jotm</artifactId>
+			<groupId>org.ow2.jotm</groupId>
+			<artifactId>jotm-core</artifactId>
 		</dependency>
 
 		<dependency>
@@ -312,13 +307,23 @@
         </dependency>           
 
 		<dependency>
-			<groupId>struts</groupId>
-			<artifactId>struts</artifactId>
+			<groupId>org.apache.struts</groupId>
+			<artifactId>struts-core</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>struts</groupId>
+			<groupId>org.apache.struts</groupId>
 			<artifactId>struts-el</artifactId>
+		</dependency>
+		
+		<dependency>
+        	<groupId>org.apache.struts</groupId>
+            <artifactId>struts-extras</artifactId>
+		</dependency>
+		
+		<dependency>
+        	<groupId>org.apache.struts</groupId>
+            <artifactId>struts-taglib</artifactId>
 		</dependency>
 
 		<dependency>
@@ -361,7 +366,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>jdom</groupId>
+			<groupId>org.jdom</groupId>
 			<artifactId>jdom</artifactId>
 		</dependency>
 

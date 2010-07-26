@@ -427,7 +427,7 @@ public class WebUtils {
         }
 
         if (request instanceof MultipartRequestWrapper) {
-            request = ((MultipartRequestWrapper) request).getRequest();
+            request = (HttpServletRequest)((MultipartRequestWrapper) request).getRequest();
             e = request.getParameterNames();
             while (e.hasMoreElements()) {
                 String key = (String) e.nextElement();

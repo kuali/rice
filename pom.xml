@@ -139,10 +139,10 @@
             -->
             <testResource>
                 <filtering>true</filtering>
-                <directory>${basedir}/src/test/resources</directory>
+                <directory>${basedir}/src/test/resources/META-INF</directory>
                 <includes>
-                    <include>META-INF/${project.name}-test-config.xml</include>
-                    <include>META-INF/sample-app-test-config.xml</include>
+                    <include>${project.name}-test-config.xml</include>
+                    <include>sample-app-test-config.xml</include>
                 </includes>
             </testResource>
             <testResource>

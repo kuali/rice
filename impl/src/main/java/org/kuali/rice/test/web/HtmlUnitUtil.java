@@ -30,7 +30,7 @@ public class HtmlUnitUtil {
     public static final String BASE_URL = "http://localhost:" + getPort() + "/knstest";
     
     public static HtmlPage gotoPageAndLogin(String url) throws Exception {
-        final WebClient webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6_0);
+        final WebClient webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6);
         HtmlPage loginPage = (HtmlPage)webClient.getPage(new URL(url));
         HtmlForm htmlForm = (HtmlForm)loginPage.getForms().get(0);
         htmlForm.getInputByName("__login_user").setValueAttribute("quickstart");

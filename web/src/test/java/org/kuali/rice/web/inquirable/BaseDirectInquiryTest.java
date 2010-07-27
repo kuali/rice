@@ -36,7 +36,7 @@ public class BaseDirectInquiryTest extends ServerTestBase {
 
     @Test
     public void testDirectInquiry() throws Exception {
-	final WebClient webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6_0);
+	final WebClient webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6);
 	HtmlPage travelDocPage = gotoPageAndLogin(webClient, HtmlUnitUtil.BASE_URL
 		+ "/travelDocument2.do?methodToCall=docHandler&command=initiate&docTypeName=TravelRequest");
 	assertEquals("Kuali :: Travel Doc 2", travelDocPage.getTitleText());

@@ -35,7 +35,6 @@ import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.BaseFrame;
-import com.gargoylesoftware.htmlunit.html.ClickableElement;
 import com.gargoylesoftware.htmlunit.html.DomNode;
 import com.gargoylesoftware.htmlunit.html.FrameWindow;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
@@ -201,9 +200,8 @@ public abstract class WebTestBase extends ServerTestBase {
     protected final HtmlPage clickOn(HtmlPage page, String id, String nextPageTitle) throws IOException {
         HtmlElement element = getElement(page, id);
         assertTrue(id +" not found",element != null);
-        assertTrue(element instanceof ClickableElement);
 
-        return clickOn((ClickableElement) element, nextPageTitle);
+        return clickOn(element, nextPageTitle);
     }
 
     /**
@@ -237,10 +235,7 @@ public abstract class WebTestBase extends ServerTestBase {
      * @throws IOException
      */
     protected final HtmlPage clickOn(HtmlElement element, String nextPageTitle) throws IOException {
-        assertTrue(element instanceof ClickableElement);
-
-        ClickableElement clickable = (ClickableElement) element;
-        Page nextPage = clickable.click();
+        Page nextPage = element.click();
 
         assertTrue(nextPage != null);
         assertTrue(nextPage instanceof HtmlPage);
@@ -739,7 +734,7 @@ public abstract class WebTestBase extends ServerTestBase {
         HtmlElement field = getElement(page, id);
         assertTrue(field != null);
 
-        ClickableElement btn = (ClickableElement) this.getNextSibling(field);
+        HtmlElement btn = this.getNextSibling(field);
         assertTrue(btn != null);
 
         HtmlPage textPage = clickOn(btn);
@@ -774,7 +769,7 @@ public abstract class WebTestBase extends ServerTestBase {
 
         HtmlElement errorDiv = getElementByClass(panelDiv, "error");
         if (errorDiv != null) {
-            Iterator iterator = errorDiv.getAllHtmlChildElements();
+            Iterator iterator = errorDiv.getChildElements().iterator();
             while (iterator.hasNext()) {
                 HtmlElement child = (HtmlElement) iterator.next();
                 if (child instanceof HtmlListItem) {
@@ -872,12 +867,12 @@ public abstract class WebTestBase extends ServerTestBase {
      * @return the HTML element or null if not found.
      */
     private HtmlElement getElement(HtmlElement element, String name, String value, String title) {
-        Iterator iterator = element.getAllHtmlChildElements();
+        Iterator iterator = element.getChildElements().iterator();
         while (iterator.hasNext()) {
             HtmlElement child = (HtmlElement) iterator.next();
-            String nameValue = child.getAttributeValue("name");
-            String valueValue = child.getAttributeValue("value");
-            String titleValue = child.getAttributeValue("title");
+            String nameValue = child.getAttribute("name");
+            String valueValue = child.getAttribute("value");
+            String titleValue = child.getAttribute("title");
             if ((name == null || name.equals(nameValue)) &&
                 (value == null || value.equals(valueValue)) &&
                 (title == null || title.equals(titleValue))) {
@@ -1003,10 +998,10 @@ public abstract class WebTestBase extends ServerTestBase {
      * @return the HTML element or null if not found.
      */
     protected final HtmlElement getElementByName(HtmlElement element, String name, boolean startsWith) {
-        Iterator iterator = element.getAllHtmlChildElements();
+        Iterator iterator = element.getChildElements().iterator();
         while (iterator.hasNext()) {
             HtmlElement e = (HtmlElement) iterator.next();
-            String value = e.getAttributeValue("name");
+            String value = e.getAttribute("name");
             if (!startsWith && name.equals(value)) {
                 return e;
             } else if (startsWith && value != null && value.startsWith(name)) {
@@ -1050,10 +1045,10 @@ public abstract class WebTestBase extends ServerTestBase {
      * @return the HTML element or null if not found.
      */
     protected final HtmlElement getElementByTitle(HtmlElement element, String title) {
-        Iterator iterator = element.getAllHtmlChildElements();
+        Iterator iterator = element.getChildElements().iterator();
         while (iterator.hasNext()) {
             HtmlElement e = (HtmlElement) iterator.next();
-            String value = e.getAttributeValue("title");
+            String value = e.getAttribute("title");
             if (title.equals(value)) {
                 return e;
             }
@@ -1070,10 +1065,10 @@ public abstract class WebTestBase extends ServerTestBase {
      * @return the HTML element or null if not found.
      */
     protected final HtmlElement getElementByClass(HtmlElement element, String classname) {
-        Iterator iterator = element.getAllHtmlChildElements();
+        Iterator iterator = element.getChildElements().iterator();
         while (iterator.hasNext()) {
             HtmlElement e = (HtmlElement) iterator.next();
-            String value = e.getAttributeValue("class");
+            String value = e.getAttribute("class");
             if (classname.equals(value)) {
                 return e;
             }
@@ -1122,10 +1117,10 @@ public abstract class WebTestBase extends ServerTestBase {
      * @return the Lookup's HTML element or null if not found.
      */
     private final HtmlImageInput getLookup(HtmlElement element, String tag) {
-        for (Iterator<HtmlElement> iterator = element.getAllHtmlChildElements(); iterator.hasNext();) {
+        for (Iterator<HtmlElement> iterator = element.getChildElements().iterator(); iterator.hasNext();) {
             HtmlElement e = iterator.next();
             if (e instanceof HtmlImageInput) {
-                String name = e.getAttributeValue("name");
+                String name = e.getAttribute("name");
                 LOG.info("Found name attribute " + name);
                 if (name != null && name.startsWith("methodToCall.performLookup") && name.contains(tag)) {
                     return (HtmlImageInput) e;
@@ -1154,7 +1149,7 @@ public abstract class WebTestBase extends ServerTestBase {
             table = (HtmlTable) element;
         }
         else {
-            Iterator iterator = element.getAllHtmlChildElements();
+            Iterator iterator = element.getChildElements().iterator();
             while (iterator.hasNext()) {
                 HtmlElement e = (HtmlElement) iterator.next();
                 if (e instanceof HtmlTable) {
@@ -1197,11 +1192,11 @@ public abstract class WebTestBase extends ServerTestBase {
      * @return the HTML Anchor element or null if not found.
      */
     private HtmlAnchor getAnchor(HtmlElement element, String tag) {
-        Iterator iterator = element.getAllHtmlChildElements();
+        Iterator iterator = element.getChildElements().iterator();
         while (iterator.hasNext()) {
             HtmlElement e = (HtmlElement) iterator.next();
             if (e instanceof HtmlAnchor) {
-                String href = e.getAttributeValue("href");
+                String href = e.getAttribute("href");
                 if (href != null && href.contains(tag)) {
                     return (HtmlAnchor) e;
                 }
@@ -1240,11 +1235,11 @@ public abstract class WebTestBase extends ServerTestBase {
      */
     private List<HtmlAnchor> findHelpLinks(HtmlElement element) {
         List<HtmlAnchor> helpLinks = new ArrayList<HtmlAnchor>();
-        Iterator iterator = element.getAllHtmlChildElements();
+        Iterator iterator = element.getChildElements().iterator();
         while (iterator.hasNext()) {
             HtmlElement e = (HtmlElement) iterator.next();
             if (e instanceof HtmlAnchor) {
-                String target = e.getAttributeValue("target");
+                String target = e.getAttribute("target");
                 if (target != null && target.equals("helpWindow")) {
                     helpLinks.add((HtmlAnchor) e);
                 }
@@ -1288,10 +1283,10 @@ public abstract class WebTestBase extends ServerTestBase {
      */
     protected final List<HtmlElement> getAllElementsByName(HtmlElement element, String name, boolean startsWith) {
         List<HtmlElement> elements = new ArrayList<HtmlElement>();
-        Iterator iterator = element.getAllHtmlChildElements();
+        Iterator iterator = element.getChildElements().iterator();
         while (iterator.hasNext()) {
             HtmlElement e = (HtmlElement) iterator.next();
-            String value = e.getAttributeValue("name");
+            String value = e.getAttribute("name");
             if (!startsWith && name.equals(value)) {
                 elements.add(e);
             } else if (startsWith && value != null && value.startsWith(name)) {
@@ -1334,7 +1329,7 @@ public abstract class WebTestBase extends ServerTestBase {
      */
     protected final HtmlElement getFirstChild(HtmlElement element) {
         HtmlElement firstChild = null;
-        Iterator iterator = element.getChildElementsIterator();
+        Iterator iterator = element.getChildElements().iterator();
         if (iterator.hasNext()) {
             firstChild = (HtmlElement) iterator.next();
         }
@@ -1352,7 +1347,7 @@ public abstract class WebTestBase extends ServerTestBase {
         DomNode node = element.getParentNode();
         if (node instanceof HtmlElement) {
             HtmlElement parent = (HtmlElement) node;
-            Iterator iterator = parent.getChildElementsIterator();
+            Iterator iterator = parent.getChildElements().iterator();
             while (iterator.hasNext()) {
                 HtmlElement e = (HtmlElement) iterator.next();
                 if (e == element) {

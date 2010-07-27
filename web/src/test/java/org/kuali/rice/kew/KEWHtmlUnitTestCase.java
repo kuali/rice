@@ -29,6 +29,7 @@ import org.kuali.rice.web.test.ServerTestBase;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
 
@@ -120,7 +121,13 @@ public class KEWHtmlUnitTestCase extends ServerTestBase {
         HtmlForm loginForm = (HtmlForm) loginPage.getForms().get(0);
         HtmlTextInput textInput = (HtmlTextInput)loginForm.getInputByName("__login_user");
         textInput.setValueAttribute(loginUserNetworkId);
-        return (HtmlPage)loginForm.submit();
+        
+        HtmlSubmitInput loginBtn = (HtmlSubmitInput) loginForm.getInputByValue("Login");
+        HtmlPage newPage = (HtmlPage) loginBtn.click();
+        if (newPage.getTitleText().equals("Login")) {
+            newPage = (HtmlPage) loginBtn.click();
+        }
+        return newPage;
     }
 
     protected HtmlPage getPage(String urlActionSuffix) throws Exception {

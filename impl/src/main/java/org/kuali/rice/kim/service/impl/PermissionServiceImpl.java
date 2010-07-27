@@ -20,7 +20,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +27,6 @@ import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.MaxAgeSoftReference;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
@@ -38,16 +35,12 @@ import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
-import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimPermissionDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
@@ -55,12 +48,9 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
-import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -493,23 +483,22 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 
 	@SuppressWarnings("unchecked")
 	public List<KimPermissionInfo> lookupPermissions(Map<String, String> searchCriteria, boolean unbounded ){
-		Collection<KimPermissionImpl> baseResults = null; 
-		//Lookupable permissionLookupable = KNSServiceLocator.getLookupable(
-		//		KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
-		//		);
-		//permissionLookupable.setBusinessObjectClass(PermissionImpl.class);
-		//if ( unbounded ) {
-		//    baseResults = permissionLookupable.getSearchResultsUnbounded( searchCriteria );
-		    baseResults = (Collection<KimPermissionImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchHelper(KimPermissionImpl.class, searchCriteria, unbounded);
-		//} else {
-		//	baseResults = permissionLookupable.getSearchResults(searchCriteria);
-		//}
+		Collection baseResults = null;
+		Lookupable permissionLookupable = KNSServiceLocator.getLookupable(
+				KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
+				);
+		permissionLookupable.setBusinessObjectClass(PermissionImpl.class);
+		if ( unbounded ) {
+		    baseResults = permissionLookupable.getSearchResultsUnbounded( searchCriteria );
+		} else {
+			baseResults = permissionLookupable.getSearchResults(searchCriteria);
+		}
 		List<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>( baseResults.size() );
-		for ( KimPermissionImpl resp : (Collection<KimPermissionImpl>)baseResults ) {
+		for ( KimPermissionImpl resp : (Collection<PermissionImpl>)baseResults ) {
 			results.add( resp.toSimpleInfo() );
 		}
 		if ( baseResults instanceof CollectionIncomplete ) {
-			results = new CollectionIncomplete<KimPermissionInfo>( results, ((CollectionIncomplete<KimPermissionImpl>)baseResults).getActualSizeIfTruncated() ); 
+			results = new CollectionIncomplete<KimPermissionInfo>( results, ((CollectionIncomplete<KimPermissionInfo>)baseResults).getActualSizeIfTruncated() ); 
 		}		
 		return results;
 	}

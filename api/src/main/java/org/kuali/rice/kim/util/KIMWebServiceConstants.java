@@ -19,8 +19,8 @@ import org.kuali.rice.core.util.RiceConstants;
 
 
 /**
- * This class is used to hold constants that are used when exposing services to the bus 
- * 
+ * This class is used to hold constants that are used when exposing services to the bus
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -82,9 +82,15 @@ public class KIMWebServiceConstants {
 		public static final String WEB_SERVICE_PORT = "IdentityServicePort";
 	}
 
+	public static class IdentityManagementService {
+		public static final String WEB_SERVICE_NAME = "kimIdentityManagementServiceSOAP";
+		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.IdentityManagementService";
+		public static final String WEB_SERVICE_PORT = "IdentityManagementServicePort";
+	}
+
 	public static class IdentityManagementNotificationService {
 		public static final String WEB_SERVICE_NAME = "kimIdentityManagementNotificationServiceSOAP";
 	}
 
-	
+
 }

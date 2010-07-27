@@ -57,11 +57,11 @@
   <bean parent="kimLocalServiceExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker" />
     <property name="serviceDefinition">
-      <bean parent="kimService" 
-        p:service-ref="kimIdentityService" 
+      <bean parent="kimService"
+        p:service-ref="kimIdentityService"
         p:localServiceName="kimIdentityService" />
     </property>
-  </bean> 
+  </bean>
 
   <bean parent="kimLocalServiceExporter">
 	<property name="remotedServiceRegistry" ref="enServiceInvoker"/>
@@ -234,10 +234,30 @@
   </bean>
 
   <bean parent="kimLocalServiceExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimService"
+        p:service-ref="kimIdentityManagementService"
+        p:localServiceName="kimIdentityManagementService" />
+    </property>
+  </bean>
+
+  <bean parent="kimLocalServiceExporter">
+    <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
+    <property name="serviceDefinition">
+      <bean parent="kimSoapService"
+        p:service-ref="kimIdentityManagementService"
+        p:localServiceName="kimIdentityManagementServiceSOAP"
+        p:serviceInterface="org.kuali.rice.kim.service.IdentityManagementService" />
+    </property>
+    <property name="exportIf" value="kimIdentityManagementServiceSOAP.expose"/>
+  </bean>
+
+  <bean parent="kimLocalServiceExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker" />
     <property name="serviceDefinition">
-      <bean parent="kimService" 
-        p:service-ref="kimIdentityManagementNotificationService" 
+      <bean parent="kimService"
+        p:service-ref="kimIdentityManagementNotificationService"
         p:localServiceName="kimIdentityManagementNotificationService" />
     </property>
   </bean>

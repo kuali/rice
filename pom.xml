@@ -202,6 +202,10 @@
 											<!-- already including the jdk16 version -->
 											<exclude>org.bouncycastle:bcprov-jdk15</exclude>
 
+											<!-- excluding old jstl implementations which can cause hard-to-detect errors -->
+											<exclude>taglibs:standard</exclude>
+											<exclude>javax.servlet:jstl</exclude> <!-- allowing (including) a specific version below -->
+
 											<!-- already including javax.mail -->
 											<exclude>javamail</exclude>
 											<exclude>geronimo:geronimo-mail</exclude>
@@ -277,6 +281,9 @@
 										<includes>
 											<!-- including because the compiler is not standard in the jdk -->
 											<include>com.sun.xml.bind:jaxb-xjc</include>
+											
+											<!-- only allow in this specific version -->
+											<include>javax.servlet:jstl:1.2</include>
 										</includes>
 									</bannedDependencies>
 								</rules>
@@ -596,6 +603,10 @@
 						<artifactId>commons-logging</artifactId>
 						<groupId>commons-logging</groupId>
 					</exclusion>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>jstl</artifactId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 
@@ -644,6 +655,8 @@
 				<scope>runtime</scope>
 			</dependency>
 
+			<!-- this is already included in the glassfish jsp jar
+			used by jetty but is required for packaging purposes -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>jstl</artifactId>
@@ -661,6 +674,7 @@
 
 <!-- this should be included at provided scope once
 	 the embedded jetty in rice is extracted into a spearate module.
+	 Included in the glassfish jsp impl used by jetty.
 			<dependency>
 				<groupId>javax.servlet.jsp</groupId>
 				<artifactId>jsp-api</artifactId>
@@ -960,6 +974,16 @@
 				<groupId>org.apache.struts</groupId>
 				<artifactId>struts-el</artifactId>
 				<version>${struts.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>taglibs</groupId>
+						<artifactId>standard</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javax.servlet</groupId>
+						<artifactId>jstl</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -1235,12 +1259,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>taglibs</groupId>
-				<artifactId>standard</artifactId>
-				<version>${standard.version}</version>
-			</dependency>
-
-			<dependency>
 				<!-- groupid was changed to com.experlog in later versions -->
 				<groupId>xapool</groupId>
 				<artifactId>xapool</artifactId>
@@ -1288,6 +1306,7 @@
 						<additionalClasspathElement>/opt/java/drivers/ojdbc14-${ojdbc14.version}.jar</additionalClasspathElement>
 						<additionalClasspathElement>C:\java\drivers\ojdbc14.jar</additionalClasspathElement>
 					</additionalClasspathElements>
+					<useSystemClassLoader>false</useSystemClassLoader>
 					<useFile>false</useFile>
 					<failIfNoTests>false</failIfNoTests>
 					<includes>

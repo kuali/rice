@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.ken.services.ws.impl;
 
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ContextHandler;
+import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.kuali.rice.ken.test.KENTestCase;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.Context;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
@@ -58,7 +59,7 @@ public abstract class NotificationWebServiceTestCaseBase extends KENTestCase {
         Server server = new Server(port);
         
         // register the Spring application context in the servlet context as would the ContextLoaderListener, so our ServletEndpointSupport can find it
-        Context context = new Context(server, "/notification", Context.SESSIONS);
+        ContextHandler context = new ServletContextHandler(server, "/notification", ServletContextHandler.SESSIONS);
         GenericWebApplicationContext wac = new GenericWebApplicationContext();
         wac.setParent(getContext());
         context.getServletContext().setAttribute("contextConfigLocation", "");

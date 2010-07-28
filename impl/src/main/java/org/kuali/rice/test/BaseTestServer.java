@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.test;
 
+import org.eclipse.jetty.server.Server;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.mortbay.jetty.Server;
 
 /**
  * Abstract class to provide convenience methods for starting and stopping a

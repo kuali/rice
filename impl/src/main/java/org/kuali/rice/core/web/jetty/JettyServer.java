@@ -16,15 +16,14 @@
 package org.kuali.rice.core.web.jetty;
 
 import java.io.File;
-import java.lang.reflect.Field;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.servlet.Context;
-import org.mortbay.jetty.servlet.ServletHolder;
-import org.mortbay.jetty.webapp.WebAppContext;
 
 public class JettyServer implements Lifecycle {
 	
@@ -43,7 +42,7 @@ public class JettyServer implements Lifecycle {
 	private String relativeWebappRoot;
 	private Class servletClass;
 	private Server server;
-	private Context context;
+	private ServletContextHandler context;
 	private boolean failOnContextFailure;
 
 	/**
@@ -90,7 +89,7 @@ public class JettyServer implements Lifecycle {
 		return server;
 	}
 
-	public Context getContext() {
+	public ServletContextHandler getContext() {
 	    return context;
 	}
 
@@ -126,9 +125,9 @@ public class JettyServer implements Lifecycle {
 			webAppContext.setTempDirectory(tmpDir);
 			webAppContext.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
 			context = webAppContext;
-			server.addHandler(context);
+			server.setHandler(context);
 		} else {
-			Context root = new Context(server,"/",Context.SESSIONS);
+			ServletContextHandler root = new ServletContextHandler(server,"/",ServletContextHandler.SESSIONS);
 			root.addServlet(new ServletHolder(servletClass), getContextName());
 			root.setAttribute(JETTYSERVER_TESTMODE_ATTRIB, String.valueOf(isTestMode()));
 			context = root;
@@ -145,24 +144,9 @@ public class JettyServer implements Lifecycle {
 	private boolean useWebAppContext() {
 		return StringUtils.isNotBlank(this.relativeWebappRoot);
 	}
-	
-	/**
-	 * A hack for Jetty so that we can detect if context startup failed.  Jetty has no programatic
-	 * way available to detect if context startup failed.  Instead we have to use reflection to
-	 * check the value of a private variable.  See http://jira.codehaus.org/browse/JETTY-319
-	 * for more details on the issue.
-	 */
+
 	protected boolean contextStartupFailed() throws Exception {
-        /*
-		 * We can only tell if the context startup failed if the server is using a WebAppContext object since the
-		 * org.mortbay.jetty.servlet.Context object does not have a field named '_unavailable'
-		 */
-		if (useWebAppContext()) {
-			Field unavailableField = context.getClass().getDeclaredField("_unavailable");
-			unavailableField.setAccessible(true);
-			return unavailableField.getBoolean(context);
-		}
-		return false;
+        return !context.isAvailable();
 	}
 	
 	public String getRelativeWebappRoot() {

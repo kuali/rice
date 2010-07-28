@@ -1,4 +1,4 @@
-<%@ taglib uri="../../tld/c.tld" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <%-- This would be a good spot to use a tag library since this code is essentially verbatim from WorkgroupEntry.jsp --%>
 <c:set var="userDisplayName" value="${RemoveReplaceForm.user.displayName}"/>

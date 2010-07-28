@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.jasper.tagplugins.jstl.core.Url;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;

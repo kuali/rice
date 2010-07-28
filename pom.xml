@@ -75,17 +75,16 @@
 		<groovy.version>1.5.8</groovy.version>
 		<hibernate.version>3.5.1-Final</hibernate.version>
 		<htmlunit.version>2.7</htmlunit.version>
-		<jasper-compiler-jdt.version>5.5.15</jasper-compiler-jdt.version>
-		<jasper-compiler.version>5.5.15</jasper-compiler.version>
-		<jasper-runtime.version>5.5.15</jasper-runtime.version>
 		<!-- 1.4.3 is not in maven central repo -->
 		<javamail.version>1.4.1</javamail.version>
 		<jaxen.version>1.1.1</jaxen.version>
 		<!-- 1.1.1 is not in maven central repo -->
 		<jdom.version>1.1</jdom.version>
-		<jetty.version>6.1.24</jetty.version>
+		<jetty.version>7.1.5.v20100705</jetty.version>
 		<jotm.version>2.1.9</jotm.version>
-		<jstl.version>1.1.2</jstl.version>
+		<jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
+		<jsp-api.version>2.1</jsp-api.version>
+		<jstl.version>1.2</jstl.version>
 		<jta.version>1.1</jta.version>
 		<!-- 4.8.2 is not in maven central repo -->
 		<junit.version>4.8.1</junit.version>
@@ -649,15 +648,26 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>jstl</artifactId>
 				<version>${jstl.version}</version>
+				<!--  should be provided scope on newer containers like tomcat 7 --> 
+				<scope>compile</scope>
 			</dependency>
 
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>servlet-api</artifactId>
 				<version>${servlet-api.version}</version>
-				<!-- Force servlet-api to scope=provided -->
 				<scope>provided</scope>
 			</dependency>
+
+<!-- this should be included at provided scope once
+	 the embedded jetty in rice is extracted into a spearate module.
+			<dependency>
+				<groupId>javax.servlet.jsp</groupId>
+				<artifactId>jsp-api</artifactId>
+				<version>${jsp-api.version}</version>
+				<scope>provided</scope>
+			</dependency>
+-->
 
 			<dependency>
 				<groupId>javax.transaction</groupId>
@@ -993,6 +1003,30 @@
 			</dependency>
 
 			<dependency>
+			    <groupId>org.eclipse.jetty</groupId>
+			    <artifactId>jetty-deploy</artifactId>
+			    <version>${jetty.version}</version>
+			</dependency>
+
+			<dependency>
+			    <groupId>org.eclipse.jetty</groupId>
+			    <artifactId>jetty-jsp-2.1</artifactId>
+			    <version>${jetty.version}</version>
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.eclipse.jetty</groupId>
+			    <artifactId>jetty-server</artifactId>
+			    <version>${jetty.version}</version>
+			</dependency>
+			
+			<dependency>
+			    <groupId>org.eclipse.jetty</groupId>
+			    <artifactId>jetty-webapp</artifactId>
+			    <version>${jetty.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-annotations</artifactId>
 				<version>${hibernate.version}</version>
@@ -1047,13 +1081,12 @@
 				<artifactId>jdom</artifactId>
 				<version>${jdom.version}</version>
 			</dependency>
-
+			
+			<!-- the jsp libraries have not been moved over to eclipse as of jetty 7 - this is required for jetty 7 -->
 			<dependency>
-				<!-- groupid was changed to org.eclipse.jetty in later versions -->
 				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>jetty</artifactId>
-				<version>${jetty.version}</version>
-				<scope>compile</scope>
+				<artifactId>jsp-2.1-glassfish</artifactId>
+				<version>${jsp-2.1-glassfish.version}</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.mortbay.jetty</groupId>
@@ -1205,36 +1238,6 @@
 				<groupId>taglibs</groupId>
 				<artifactId>standard</artifactId>
 				<version>${standard.version}</version>
-			</dependency>
-
-			<dependency>
-				<!-- groupid was changed to org.apache.tomcat in later versions -->
-				<groupId>tomcat</groupId>
-				<artifactId>jasper-compiler</artifactId>
-				<version>${jasper-compiler.version}</version>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<!-- groupid was changed to org.apache.tomcat in later versions -->
-				<groupId>tomcat</groupId>
-				<artifactId>jasper-compiler-jdt</artifactId>
-				<version>${jasper-compiler-jdt.version}</version>
-				<scope>provided</scope>
-			</dependency>
-
-			<dependency>
-				<!-- groupid was changed to org.apache.tomcat in later versions -->
-				<groupId>tomcat</groupId>
-				<artifactId>jasper-runtime</artifactId>
-				<version>${jasper-runtime.version}</version>
-				<scope>provided</scope>
-				<exclusions>
-					<exclusion>
-						<artifactId>commons-logging</artifactId>
-						<groupId>commons-logging</groupId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 
 			<dependency>

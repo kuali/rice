@@ -14,10 +14,9 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.3//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_3.dtd">
 
 <struts-config>
-    <data-sources />
   
     <form-beans >
 	    <form-bean name="QuestionPromptForm" type="org.kuali.rice.kns.web.struts.form.QuestionPromptForm" />

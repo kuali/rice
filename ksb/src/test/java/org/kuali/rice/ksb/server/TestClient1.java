@@ -16,10 +16,10 @@
 package org.kuali.rice.ksb.server;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.webapp.WebAppContext;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.test.BaseTestServer;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.webapp.WebAppContext;
 
 public class TestClient1 extends BaseTestServer {
 	
@@ -37,7 +37,7 @@ public class TestClient1 extends BaseTestServer {
 		LOG.debug("#");
 		LOG.debug("#####################################");
 		WebAppContext context = new WebAppContext(location, CONTEXT);	
-		server.addHandler(context);
+		server.setHandler(context);
 		return server;
 	}
 }

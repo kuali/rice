@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.ken.util;
 
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.deployer.WebAppDeployer;
+import org.eclipse.jetty.deploy.WebAppDeployer;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerCollection;
 
 /**
  * Starts up Jetty pointing to an existing installation location.
@@ -39,14 +40,17 @@ public class NotificationServer {
         }
 
         Server server = new Server(port);
-
+        
+        HandlerCollection col = new HandlerCollection();
+        col.setServer(server);
+        
         WebAppDeployer webAppDeployer = new WebAppDeployer();
-        webAppDeployer.setContexts(server);
+        webAppDeployer.setContexts(col);
         webAppDeployer.setWebAppDir(webappDir);
         webAppDeployer.setParentLoaderPriority(false); 
         webAppDeployer.setExtract(true);
 
-        server.addLifeCycle(webAppDeployer);
+        server.addBean(webAppDeployer);
 
         server.setStopAtShutdown(true);
         server.setSendServerVersion(true); 

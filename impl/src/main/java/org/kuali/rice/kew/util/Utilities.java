@@ -21,6 +21,8 @@ import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -36,6 +38,7 @@ import java.util.Set;
 import org.apache.commons.collections.KeyValue;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -356,5 +359,18 @@ public class Utilities {
             map.put((T) kv.getKey(), kv);
         }
         return map;
+    }
+    
+    public static String enforceDateTimeYearRange(String dtString) throws ParseException{
+    	
+    	java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(dtString);
+    	SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+    	String f_date = dateFormatter.format(dt);
+    	if(f_date.split("/")[2].equals("1970")){
+    		String c_date = dateFormatter.format(new java.util.Date());
+    		f_date = f_date.replaceFirst("1970", c_date.split("/")[2]);
+    		dtString = f_date ;
+    	}
+    	return dtString;
     }
 }

@@ -1746,13 +1746,14 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         String searchVal = "";
 
     	if(fromDate != null && !"".equals(fromDate)) {
-    		try {
-    			KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(fromDate);
+    		try {   			
+    			fromDate = Utilities.enforceDateTimeYearRange(fromDate);    			
     		} catch (Exception exc) { throw new RiceRuntimeException("Invalid date format", exc); }
     	}
     	
         if(toDate != null && !"".equals(toDate)){
             try{
+            	toDate = Utilities.enforceDateTimeYearRange(toDate);
                 java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(toDate);
                 SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
@@ -1776,7 +1777,6 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
         if(searchVal == null || "".equals(searchVal))
             return "";
-
 
         Criteria crit = getSqlBuilder().createCriteria(colName, searchVal, tableName, tableAlias, java.sql.Date.class, true, true);
         return new StringBuffer(whereStatementClause + crit.buildWhere()).toString();

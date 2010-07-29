@@ -285,10 +285,7 @@
 											<exclude>org.apache.servicemix.specs:org.apache.servicemix.specs.saaj-api-1.3</exclude>
 										</excludes>
 
-										<includes>
-											<!-- including because the compiler is not standard in the jdk -->
-											<include>com.sun.xml.bind:jaxb-xjc</include>
-											
+										<includes>									
 											<!-- only allow in this specific version -->
 											<include>javax.servlet:jstl:1.2</include>
 										</includes>
@@ -889,6 +886,10 @@
 					<exclusion>
 						<groupId>com.sun.xml.bind</groupId>
 						<artifactId>jaxb-impl</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>com.sun.xml.bind</groupId>
+						<artifactId>jaxb-xjc</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>

@@ -50,6 +50,7 @@
 		<!-- no longer maintained - should use spring security instead -->
 		<acegi.version>1.0.7</acegi.version>
 		<aopalliance.version>1.0</aopalliance.version>
+		<asm.version>3.2</asm.version>
 		<bcprov.version>1.45</bcprov.version>
 		<!-- the 3.x codebase is completely different - switching will require rewriting much code -->
 		<bsf.version>2.4.0</bsf.version>
@@ -467,6 +468,14 @@
 				<groupId>aopalliance</groupId>
 				<artifactId>aopalliance</artifactId>
 				<version>${aopalliance.version}</version>
+			</dependency>
+
+			<!-- explicitly including asm to change version number from what maven 
+				would have resolved it to -->
+			<dependency>
+				<groupId>asm</groupId>
+				<artifactId>asm</artifactId>
+				<version>${asm.version}</version>
 			</dependency>
 
 			<dependency>

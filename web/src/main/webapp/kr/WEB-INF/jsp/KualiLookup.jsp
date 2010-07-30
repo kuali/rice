@@ -35,7 +35,8 @@
     var kualiElements = kualiForm.elements;
     </SCRIPT>
     <script type="text/javascript" src="${pageContext.request.contextPath}/dwr/interface/DocumentTypeService.js"></script>
-
+	
+	<c:if test="${KualiForm.headerBarEnabled}">
 	<div class="headerarea-small" id="headerarea-small">
 		<h1><c:out value="${KualiForm.lookupable.title}" /> <c:choose>
 			<c:when test="${KualiForm.fields.docTypeFullName != null}">
@@ -49,6 +50,8 @@
 		</c:choose></h1>
 	</div>
 	<kul:enterKey methodToCall="search" />
+	
+	</c:if>
 
 	<html-el:hidden name="KualiForm" property="backLocation" />
 	<html-el:hidden name="KualiForm" property="formKey" />
@@ -64,10 +67,12 @@
 	<html-el:hidden name="KualiForm" property="hasReturnableRow" />
 	<html-el:hidden name="KualiForm" property="docNum" />
 	<html-el:hidden name="KualiForm" property="showMaintenanceLinks" />
+	<html-el:hidden name="KualiForm" property="headerBarEnabled" />
 
 
 
 
+	<c:if test="${KualiForm.headerBarEnabled}">
 	<c:forEach items="${KualiForm.extraButtons}" varStatus="status">
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonSource" />
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonParams" />
@@ -93,7 +98,9 @@
 				</c:if>
 			</c:if>
 		</div>
+	
 	</c:if>
+	
 	<div class="right">
 		<div class="excol">
 		* required field
@@ -106,6 +113,7 @@
 	  </div>
     </div>
     <br/>
+    </c:if>
 
 	<table width="100%">
 	  <c:if test="${KualiForm.lookupCriteriaEnabled}">
@@ -186,8 +194,8 @@
 
 				<display:table class="datatable-100" cellspacing="0"
 				requestURIcontext="false" cellpadding="0" name="${reqSearchResults}"
-				id="row" export="true" pagesize="100" excludedParams="hasReturnableRow showMaintenanceLinks"
-				requestURI="lookup.do?methodToCall=viewResults&showMaintenanceLinks=${KualiForm.showMaintenanceLinks}&reqSearchResultsActualSize=${reqSearchResultsActualSize}&searchResultKey=${searchResultKey}&searchUsingOnlyPrimaryKeyValues=${KualiForm.searchUsingOnlyPrimaryKeyValues}&actionUrlsExist=${KualiForm.actionUrlsExist}&hasReturnableRow=${KualiForm.hasReturnableRow}">
+				id="row" export="true" pagesize="100"
+				requestURI="lookup.do?methodToCall=viewResults&reqSearchResultsActualSize=${reqSearchResultsActualSize}&searchResultKey=${searchResultKey}&searchUsingOnlyPrimaryKeyValues=${KualiForm.searchUsingOnlyPrimaryKeyValues}&actionUrlsExist=${KualiForm.actionUrlsExist}">
 
 				<%-- the param['d-16544-e'] parameter below is NOT null when we are in exporting mode, so this check disables rendering of return/action URLs when we are exporting to CSV, excel, xml, etc. --%>
 				<c:if test="${param['d-16544-e'] == null}">
@@ -236,7 +244,7 @@
 						<c:otherwise>
 							<display:column class="${colClass}" sortable="${column.sortable}"
 								title="${column.columnTitle}" comparator="${column.comparator}"
-								maxLength="${column.maxLength}" decorator="org.kuali.rice.kns.web.ui.FormatAwareDecorator"><c:out value="${column.propertyValue}"/></display:column>
+								maxLength="${column.maxLength}" decorator="org.kuali.rice.kns.web.ui.FormatAwareDecorator"><c:out value="${column.propertyValue}"/>&nbsp;</display:column>
                         </c:otherwise>
 					</c:choose>
 				</c:forEach>

@@ -32,7 +32,7 @@
 <script language="JavaScript" src="scripts/messagequeue-common.js"></script>
 </head>
 
-<body>
+<body bgcolor="#ffffff" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">
 
 <table width="100%" border=0 cellpadding=0 cellspacing=0 class="headercell1">
   <tr>
@@ -78,7 +78,8 @@
   </tr>
   <tr>
     <td width="20" height="20">&nbsp;</td>
-  	<td><input type="button" value="Refresh Service Registry" onclick="refreshServiceRegistry()"/></td>
+  	<td><input type="button" value="Refresh Service Registry" onclick="refreshServiceRegistry()"/>
+  	<input type="button" value="Delete localhost Entries" onclick="deleteLocalhostEntries()"/></td>
   	<td width="20" height="20">&nbsp;</td>
   <tr>
   	<td colspan="3">&nbsp;</td>

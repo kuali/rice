@@ -477,6 +477,13 @@
                         fieldLabel="${field.fieldLabel}" />
 
                     <td class="grid" style="width:${dataCellWidth}%;">
+                                            <c:choose>
+
+                            <c:when test="${isFieldReadOnly}">
+                                                          <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" isLookup="${isLookup}" />
+                            </c:when>
+                            <c:otherwise>
+                    
                         ${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
                         <select id='${field.propertyName}' name='${field.propertyName}'
                             onchange="document.forms[0].submit();" style="${textStyle}">
@@ -484,6 +491,10 @@
                             <kul:fieldSelectValues field="${field}"/>
 
                         </select>
+                            </c:otherwise>
+
+                        </c:choose>
+                        
                         &nbsp;
 
                         <kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />

@@ -15,11 +15,15 @@
  */
 package org.kuali.rice.web.maintainable;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 import org.kuali.rice.web.test.ServerTestBase;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -27,9 +31,23 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 @Ignore("KULRICE-3011")
 public class BaseMaintainableTest extends ServerTestBase {
     
+	private WebClient webClient;
+	
+	@Before
+	public void setupClient() {
+		webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6);
+	}
+	
+	@After
+	public void cleanupClient() {
+        if (webClient != null) {
+            webClient.closeAllWindows();
+        }
+        webClient = null;
+	}
 
     @Test public void testMaintainable() throws Exception {
-        HtmlPage maintPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/kr/maintenance.do?businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&methodToCall=start#topOfForm");        
+        HtmlPage maintPage = HtmlUnitUtil.gotoPageAndLogin(webClient, HtmlUnitUtil.BASE_URL + "/kr/maintenance.do?businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&methodToCall=start#topOfForm");        
         HtmlForm maintForm = (HtmlForm)maintPage.getFormByName("KualiForm");
         maintForm.getInputByName("document.documentHeader.documentDescription").setValueAttribute("description");
         maintForm.getInputByName("document.newMaintainableObject.number").setValueAttribute("a6");

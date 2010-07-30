@@ -98,6 +98,9 @@ public abstract class WebTestBase extends ServerTestBase {
         super.tearDown();
         GlobalVariables.setUserSession(null);
         documentService = null;
+        if (webClient != null) {
+            webClient.closeAllWindows();
+        }
         webClient = null;
     }
 

@@ -15,11 +15,15 @@
  */
 package org.kuali.rice.web.document;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 import org.kuali.rice.web.test.ServerTestBase;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -28,8 +32,23 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextArea;
 @Ignore("KULRICE-3011")
 public class BaseTransactionDocumentTest extends ServerTestBase {
 
+	private WebClient webClient;
+	
+	@Before
+	public void setupClient() {
+		webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6);
+	}
+	
+	@After
+	public void cleanupClient() {
+        if (webClient != null) {
+            webClient.closeAllWindows();
+        }
+        webClient = null;
+	}
+	
     @Test public void testTransactionDocumentRoute() throws Exception {
-        HtmlPage transDocPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/travelDocument2.do?methodToCall=docHandler&command=initiate&docTypeName=TravelRequest");
+        HtmlPage transDocPage = HtmlUnitUtil.gotoPageAndLogin(webClient, HtmlUnitUtil.BASE_URL + "/travelDocument2.do?methodToCall=docHandler&command=initiate&docTypeName=TravelRequest");
         HtmlForm form = transDocPage.getFormByName("KualiForm");
         form.getInputByName("document.documentHeader.documentDescription").setValueAttribute("description");
         ((HtmlTextArea)form.getTextAreasByName("document.documentHeader.explanation").get(0)).setText("justification");

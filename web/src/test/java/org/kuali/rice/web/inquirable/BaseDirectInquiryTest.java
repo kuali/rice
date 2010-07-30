@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.web.inquirable;
 
-import java.net.URL;
-
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.test.web.HtmlUnitUtil;
@@ -28,16 +28,29 @@ import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlImageInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 
 @Ignore("KULRICE-3011")
 public class BaseDirectInquiryTest extends ServerTestBase {
 
+	private WebClient webClient;
+	
+	@Before
+	public void setupClient() {
+		webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6);
+	}
+	
+	@After
+	public void cleanupClient() {
+        if (webClient != null) {
+            webClient.closeAllWindows();
+        }
+        webClient = null;
+	}
+	
     @Test
     public void testDirectInquiry() throws Exception {
-	final WebClient webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6);
-	HtmlPage travelDocPage = gotoPageAndLogin(webClient, HtmlUnitUtil.BASE_URL
+	HtmlPage travelDocPage = HtmlUnitUtil.gotoPageAndLogin(webClient, HtmlUnitUtil.BASE_URL
 		+ "/travelDocument2.do?methodToCall=docHandler&command=initiate&docTypeName=TravelRequest");
 	assertEquals("Kuali :: Travel Doc 2", travelDocPage.getTitleText());
 	final HtmlForm form = (HtmlForm) travelDocPage.getForms().get(0);
@@ -85,15 +98,6 @@ public class BaseDirectInquiryTest extends ServerTestBase {
 	final HtmlTextInput travelAcctNumber2 = (HtmlTextInput) form4.getInputByName("travelAccount.number");
 	assertEquals(travelAcctNumber2.getValueAttribute(), "");
 
-    }
-
-    private HtmlPage gotoPageAndLogin(WebClient webClient, String url) throws Exception {
-	// need webclient in the main test program, so create login here. not using from htmlutil
-	HtmlPage loginPage = (HtmlPage) webClient.getPage(new URL(url));
-	HtmlForm htmlForm = (HtmlForm) loginPage.getForms().get(0);
-	htmlForm.getInputByName("__login_user").setValueAttribute("admin");
-	HtmlSubmitInput button = (HtmlSubmitInput) htmlForm.getInputByValue("Login");
-	return (HtmlPage) button.click();
     }
 
 }

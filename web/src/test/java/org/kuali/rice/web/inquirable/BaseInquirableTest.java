@@ -12,17 +12,36 @@
  */
 package org.kuali.rice.web.inquirable;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 import org.kuali.rice.web.test.ServerTestBase;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class BaseInquirableTest extends ServerTestBase {
 
+	private WebClient webClient;
+	
+	@Before
+	public void setupClient() {
+		webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6);
+	}
+	
+	@After
+	public void cleanupClient() {
+        if (webClient != null) {
+            webClient.closeAllWindows();
+        }
+        webClient = null;
+	}
+	
 	@Test
 	public void testInquiryFetch() throws Exception {
-		HtmlPage inquiryPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/kr/inquiry.do?businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&number=a1&methodToCall=start");
+		HtmlPage inquiryPage = HtmlUnitUtil.gotoPageAndLogin(webClient, HtmlUnitUtil.BASE_URL + "/kr/inquiry.do?businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&number=a1&methodToCall=start");
 		assertEquals("Kuali :: Inquiry", inquiryPage.getTitleText());
 		assertTrue("Inquiry page should have 'Travel Account Inquiry' in title bar", HtmlUnitUtil.pageContainsText(inquiryPage, "Travel Account Inquiry"));
 	}

@@ -18,6 +18,8 @@ package org.kuali.rice.kew;
 import java.io.InputStream;
 import java.net.URL;
 
+import org.junit.After;
+import org.junit.Before;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.preferences.Preferences;
@@ -46,7 +48,19 @@ public class KEWHtmlUnitTestCase extends ServerTestBase {
     private WebClient webClient;
     private KimPrincipal adminPrincipal;
 
-    
+	
+	@Before
+	public void setupClient() {
+		webClient = new WebClient();
+	}
+	
+	@After
+	public void cleanupClient() {
+        if (webClient != null) {
+            webClient.closeAllWindows();
+        }
+        webClient = null;
+	}
     
     @Override
 	protected void setUpInternal() throws Exception {
@@ -56,7 +70,6 @@ public class KEWHtmlUnitTestCase extends ServerTestBase {
 
 	
     protected void setUpAfterDataLoad() throws Exception {
-        webClient = new WebClient();
 
         // Set the user preference refresh rate to 0 to prevent a <META HTTP-EQUIV="Refresh" .../> tag from being rendered.
         // If it is rendered than HtmlUnit will immediately redirect, causing an error to be thrown.
@@ -137,10 +150,6 @@ public class KEWHtmlUnitTestCase extends ServerTestBase {
 
     public WebClient getWebClient() {
         return this.webClient;
-    }
-
-    public void setWebClient(WebClient webClient) {
-        this.webClient = webClient;
     }
 
     public KimPrincipal getAdminPrincipal() {

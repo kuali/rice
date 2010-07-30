@@ -15,10 +15,14 @@
  */
 package org.kuali.rice.web.lookup;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 import org.kuali.rice.web.test.ServerTestBase;
 
+import com.gargoylesoftware.htmlunit.BrowserVersion;
+import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
@@ -28,9 +32,24 @@ import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 
 public class BaseLookupTest extends ServerTestBase {
 
+	private WebClient webClient;
+	
+	@Before
+	public void setupClient() {
+		webClient = new WebClient(BrowserVersion.INTERNET_EXPLORER_6);
+	}
+	
+	@After
+	public void cleanupClient() {
+        if (webClient != null) {
+            webClient.closeAllWindows();
+        }
+        webClient = null;
+	}
+	
     @Test public void testLookupable() throws Exception {
         
-        HtmlPage lookupPage = HtmlUnitUtil.gotoPageAndLogin(HtmlUnitUtil.BASE_URL + "/kr/lookup.do?methodToCall=start&businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=portal.do&hideReturnLink=true&docFormKey=88888888");
+        HtmlPage lookupPage = HtmlUnitUtil.gotoPageAndLogin(webClient, HtmlUnitUtil.BASE_URL + "/kr/lookup.do?methodToCall=start&businessObjectClassName=edu.sampleu.travel.bo.TravelAccount&returnLocation=portal.do&hideReturnLink=true&docFormKey=88888888");
         assertEquals("Kuali :: Lookup", lookupPage.getTitleText());
         
         HtmlForm lookupForm = (HtmlForm)lookupPage.getFormByName("KualiForm");

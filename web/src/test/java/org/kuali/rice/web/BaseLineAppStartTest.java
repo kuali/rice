@@ -17,6 +17,8 @@ package org.kuali.rice.web;
 
 import java.net.URL;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 import org.kuali.rice.web.test.ServerTestBase;
@@ -26,8 +28,22 @@ import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class BaseLineAppStartTest extends ServerTestBase {
 
+	private WebClient webClient;
+	
+	@Before
+	public void setupClient() {
+		webClient = new WebClient();
+	}
+	
+	@After
+	public void cleanupClient() {
+        if (webClient != null) {
+            webClient.closeAllWindows();
+        }
+        webClient = null;
+	}
+	
     @Test public void testHomePage() throws Exception {
-        final WebClient webClient = new WebClient();
         final URL url = new URL(HtmlUnitUtil.BASE_URL);
         final HtmlPage page = (HtmlPage)webClient.getPage(url);
         assertEquals(HTML_PAGE_TITLE_TEXT, page.getTitleText() );

@@ -32,7 +32,7 @@
         <c:set var="isOpen" value="${(currentTab == 'OPEN')}" />
     </c:when>
 </c:choose>
-<!-- if the section has errors, override and set isOpen to true -->
+<%-- if the section has errors, override and set isOpen to true --%>
 <c:if test="${!empty tabErrorKey}">
   <kul:checkErrors keyMatch="${tabErrorKey}" auditMatch="${tabAuditKey}"/>
   <c:set var="isOpen" value="${hasErrors ? true : isOpen}"/>
@@ -75,11 +75,11 @@
 <c:if test="${isOpen != 'true' && isOpen != 'TRUE'}"><div style="display: none;" id="tab-${tabKey}-div"></c:if>
 
         <c:if test="${! (empty tabErrorKey)}">
-          <!-- display errors for this tab -->
+          <%-- display errors for this tab --%>
           <div class="tab-container-error"><div class="left-errmsg-tab"><kul:errors keyMatch="${tabErrorKey}" errorTitle="Errors Found in Document:" /></div></div>
         </c:if>
-        <!-- Before the jsp:doBody of the kul:tab tag -->
+        <%-- Before the jsp:doBody of the kul:tab tag --%>
         <jsp:doBody/>
-        <!-- After the jsp:doBody of the kul:tab tag -->
+        <%-- After the jsp:doBody of the kul:tab tag --%>
 
 </div>

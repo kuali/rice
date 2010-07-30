@@ -983,18 +983,20 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         }
         List<String> initiatorPrincipalIds = new ArrayList<String>();
         initiatorPrincipalIds.addAll(initiatorPrincipalIdSet);
-        Map<String, KimEntityNamePrincipalNameInfo> entityNames = KIMServiceLocator.getIdentityService().getDefaultNamesForPrincipalIds(initiatorPrincipalIds);
-        for (DocSearchDTO docSearchRow : docList) {
-        	KimEntityNamePrincipalNameInfo name = entityNames.get(docSearchRow.getInitiatorWorkflowId());
-        	if (name != null) {
-        		docSearchRow.setInitiatorFirstName(name.getDefaultEntityName().getFirstName());
-        		docSearchRow.setInitiatorLastName(name.getDefaultEntityName().getLastName());
-        		docSearchRow.setInitiatorName(name.getDefaultEntityName().getFormattedName());
-        		docSearchRow.setInitiatorNetworkId(name.getPrincipalName());
-        		docSearchRow.setInitiatorTransposedName(name.getDefaultEntityName().getFormattedName());
-        		// it doesn't look like the doc search code even uses the initiator email address for anything
-        		docSearchRow.setInitiatorEmailAddress("");
-        	}
+        if(initiatorPrincipalIds != null && !initiatorPrincipalIds.isEmpty()){ // don't call the service if the search returned nothing.
+	        Map<String, KimEntityNamePrincipalNameInfo> entityNames = KIMServiceLocator.getIdentityService().getDefaultNamesForPrincipalIds(initiatorPrincipalIds);
+	        for (DocSearchDTO docSearchRow : docList) {
+	        	KimEntityNamePrincipalNameInfo name = entityNames.get(docSearchRow.getInitiatorWorkflowId());
+	        	if (name != null) {
+	        		docSearchRow.setInitiatorFirstName(name.getDefaultEntityName().getFirstName());
+	        		docSearchRow.setInitiatorLastName(name.getDefaultEntityName().getLastName());
+	        		docSearchRow.setInitiatorName(name.getDefaultEntityName().getFormattedName());
+	        		docSearchRow.setInitiatorNetworkId(name.getPrincipalName());
+	        		docSearchRow.setInitiatorTransposedName(name.getDefaultEntityName().getFormattedName());
+	        		// it doesn't look like the doc search code even uses the initiator email address for anything
+	        		docSearchRow.setInitiatorEmailAddress("");
+	        	}
+	        }
         }
         /**
          * End IU Customization

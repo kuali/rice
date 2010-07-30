@@ -1329,7 +1329,7 @@
 					</includes>
 					<forkMode>${maven.surefire.forkmode}</forkMode>
 					<reportFormat>plain</reportFormat>
-					<argLine>-Xmx1024m -XX:MaxPermSize=512m</argLine>
+					<argLine>-Xmx1536m -XX:MaxPermSize=512m</argLine>
 					<reportSets>
 						<reportSet>
 							<reports>

@@ -20,6 +20,7 @@
 <%@ attribute name="tabDescription" required="false" description="An explanatory description which will be rendered on the tab." %>
 <%@ attribute name="defaultOpen" required="true" description="Whether the tab should default to rendering as open." %>
 <%@ attribute name="tabErrorKey" required="false" description="The property key this tab should display errors associated with." %>
+<%@ attribute name="innerTabErrorKey" required="false" description="The error path for errors whose message should not be displayed in this tab.  Errors will cause the tab to be opened. Path can be wildcarded with and asterisk.  Multiple paths must be separated with a comma and no white spaces." %>
 <%@ attribute name="auditCluster" required="false" description="The error audit cluster associated with this page." %>
 <%@ attribute name="tabAuditKey" required="false" description="The property key this tab should display audit errors associated with." %>
 <%@ attribute name="tabItemCount" required="false" description="Expands the title to display this count alongside." %>
@@ -68,6 +69,11 @@
 <c:if test="${!empty tabErrorKey or not empty tabAuditKey}">
   <kul:checkErrors keyMatch="${tabErrorKey}" auditMatch="${tabAuditKey}"/>
   <c:set var="isOpen" value="${hasErrors ? true : isOpen}"/>
+</c:if>
+
+<c:if test="${isOpen != 'true' and !empty innerTabErrorKey}">
+    <kul:checkErrors keyMatch="${innerTabErrorKey}" />
+    <c:set var="isOpen" value="${hasErrors ? true : isOpen}" />
 </c:if>
 
 <c:if test="${hidden}">

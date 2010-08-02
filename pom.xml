@@ -34,7 +34,7 @@
 		<acegi.version>1.0.6</acegi.version>
 		<asm.version>2.2.3</asm.version>
 		<bcel.version>5.1</bcel.version>
-		<bcprov.version>133</bcprov.version>
+		<bcprov.version>1.45</bcprov.version>
 		<bsf.version>2.4.0</bsf.version>
 		<casclient.version>2.1.1</casclient.version>
 		<cas-client-core.version>3.1.6</cas-client-core.version>
@@ -51,7 +51,7 @@
 		<commons-pool.version>1.2</commons-pool.version>
 		<concurrent.version>1.3.4</concurrent.version>
 		<connector-api.version>1.5</connector-api.version>
-		<cxf.version>2.2.7</cxf.version>
+		<cxf.version>2.2.9</cxf.version>
 		<db-ojb.version>1.0.4-patch3</db-ojb.version>
 		<derby.version>10.2.2.0</derby.version>
 		<displaytag.version>1.1</displaytag.version>
@@ -80,7 +80,7 @@
 		<quartz.version>1.6.0</quartz.version>
 		<servlet-api.version>2.4</servlet-api.version>
 		<spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
-		<spring.version>2.0.4</spring.version>
+		<spring.version>2.5.6</spring.version>
 		<struts-el.version>1.2.9</struts-el.version>
 		<struts.version>1.2.9</struts.version>
 		<taglibs-standard.version>1.1.2</taglibs-standard.version>
@@ -314,70 +314,70 @@
 
 	<dependencyManagement>
 		<dependencies>
-			<!-- Explictly define versions for each Spring module -->
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-aop</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-beans</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-context</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-context-support</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-support</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-dao</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
+
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-jdbc</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.springframework</groupId>
-				<artifactId>spring-jpa</artifactId>
+				<artifactId>spring-orm</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.springframework</groupId>
-				<artifactId>spring-jmx</artifactId>
+				<artifactId>spring-test</artifactId>
 				<version>${spring.version}</version>
+				<scope>test</scope>
 			</dependency>
+
 			<dependency>
 				<groupId>org.springframework</groupId>
-				<artifactId>spring-remoting</artifactId>
+				<artifactId>spring-tx</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-web</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
-				<version>${spring.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-mock</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
 			<dependency>
@@ -568,6 +568,12 @@
 				<groupId>jotm</groupId>
 				<artifactId>jotm</artifactId>
 				<version>${jotm.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.resource</groupId>
+						<artifactId>connector</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.derby</groupId>
@@ -695,7 +701,7 @@
 				<version>${commons-pool.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>bouncycastle</groupId>
+				<groupId>org.bouncycastle</groupId>
 				<artifactId>bcprov-jdk15</artifactId>
 				<version>${bcprov.version}</version>
 			</dependency>
@@ -716,6 +722,21 @@
 					<exclusion>
 						<artifactId>geronimo-annotation_1.0_spec</artifactId>
 						<groupId>org.apache.geronimo.specs</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-common-utilities</artifactId>
+				<version>${cxf.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>javax.xml.bind</groupId>
+						<artifactId>jaxb-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.apache.geronimo.specs</groupId>
+						<artifactId>geronimo-stax-api_1.0_spec</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>

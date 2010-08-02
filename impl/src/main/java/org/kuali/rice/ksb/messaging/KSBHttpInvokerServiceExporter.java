@@ -30,6 +30,7 @@ public class KSBHttpInvokerServiceExporter extends HttpInvokerServiceExporter {
 	
 	private List<Class> serviceInterfaces;
 	private ServiceInfo serviceInfo;
+	private boolean registerTraceInterceptor = true;
 	
 	public ServiceInfo getServiceInfo() {
 		return this.serviceInfo;
@@ -37,6 +38,16 @@ public class KSBHttpInvokerServiceExporter extends HttpInvokerServiceExporter {
 
 	public void setServiceInfo(ServiceInfo serviceInfo) {
 		this.serviceInfo = serviceInfo;
+	}
+	
+	/**
+	 * @see org.springframework.remoting.support.RemoteExporter#setRegisterTraceInterceptor(boolean)
+	 */
+	@Override
+	public void setRegisterTraceInterceptor(boolean registerTraceInterceptor) {
+	    // HttpInvokerServiceExporter.registerTraceInterceptor is no longer exposed, capture its value if set
+	    this.registerTraceInterceptor = registerTraceInterceptor;
+	    super.setRegisterTraceInterceptor(registerTraceInterceptor);
 	}
 
 	protected Object getProxyForService() {
@@ -46,7 +57,7 @@ public class KSBHttpInvokerServiceExporter extends HttpInvokerServiceExporter {
 		for (Class serviceInterface : getServiceInterfaces()) {
 			proxyFactory.addInterface(serviceInterface);
 		}
-		if (isRegisterTraceInterceptor()) {
+		if (registerTraceInterceptor == true) {
 			proxyFactory.addAdvice(new RemoteInvocationTraceInterceptor(getExporterName()));
 		}
 		ClassLoader classLoader = serviceInfo.getServiceClassLoader();

@@ -258,6 +258,9 @@ delete from krim_entity_t where entity_id not in ('1', '1100' '1131')
 delete from krim_prncpl_t where prncpl_id not in ('1', 'admin', 'notsys')
 /
 
+delete from krim_role_perm_t where role_perm_id = '856'
+/
+
 -- #####################
 -- # Sample App Tables #
 -- #####################

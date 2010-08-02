@@ -1,11 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.kuali.rice</groupId>
 	<artifactId>rice</artifactId>
 	<packaging>pom</packaging>
 	<name>Kuali Rice</name>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3-KC-01</version>
 	<description>The Kuali Rice effort provides an enterprise class
 		middleware suite of integrated products that allows both Kuali and
 		non-Kuali applications to be built in an agile fashion, such that
@@ -892,11 +891,11 @@
 		</plugins>
 	</reporting>
 	<scm>
-		<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-1-br
+		<connection>scm:svn:https://test.kuali.org/svn/rice/tags/1.0.3-KC-01
 		</connection>
-		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-1-br
+		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/tags/1.0.3-KC-01
 		</developerConnection>
-		<url>https://test.kuali.org/fisheye/browse/rice</url>
+		<url>https://test.kuali.org/fisheye/browse/rice/tags/1.0.3-KC-01</url>
 	</scm>
 	<distributionManagement>
 		<repository>

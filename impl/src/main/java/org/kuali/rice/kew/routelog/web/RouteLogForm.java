@@ -48,6 +48,8 @@ public class RouteLogForm extends KualiForm {
     private String docId;
     private String returnUrlLocation = null;
     private boolean showCloseButton = false;
+    private String newRouteLogActionMessage;
+    private boolean enableLogAction = false;
 
     public boolean isShowCloseButton() {
         return showCloseButton;
@@ -139,6 +141,23 @@ public class RouteLogForm extends KualiForm {
 	public void setShowNotes(boolean showNotes) {
 		this.showNotes = showNotes;
 	}
+	
+	public String getNewRouteLogActionMessage() {
+		return this.newRouteLogActionMessage;
+	}
+	
+	public void setNewRouteLogActionMessage(String newRouteLogActionMessage) {
+		this.newRouteLogActionMessage = newRouteLogActionMessage;
+	}
+	
+	public boolean isEnableLogAction() {
+		return this.enableLogAction;
+	}
+	
+	public void setEnableLogAction(boolean enableLogAction) {
+		this.enableLogAction = enableLogAction;
+	}
+	
 	public String getHeaderMenuBar() {
 		Properties parameters = new Properties();
         parameters.put("showFuture", isShowFuture());

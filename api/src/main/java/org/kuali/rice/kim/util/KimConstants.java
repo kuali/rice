@@ -81,7 +81,8 @@ public class KimConstants {
     	public static final String ROUTE_DOCUMENT ="Route Document";
     	public static final String APPROVE_DOCUMENT = "Approve Document";
     	public static final String AD_HOC_REVIEW_DOCUMENT = "Ad Hoc Review Document";
-
+    	public static final String ADD_MESSAGE_TO_ROUTE_LOG = "Add Message to Route Log";
+    	
     	public static final String ADD_NOTE_ATTACHMENT = "Add Note / Attachment";
     	public static final String VIEW_NOTE_ATTACHMENT = "View Note / Attachment";
     	public static final String DELETE_NOTE_ATTACHMENT = "Delete Note / Attachment";

@@ -88,4 +88,10 @@ public interface DocumentTypePermissionService {
 	 */
 	public boolean canCancel(String principalId, String routeHeaderId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId);
 	
+	/**
+	 * Determines if the given principal can add route log messages for documents of the given DocumentRouteHeaderValue.  The permission check
+	 * also considers the document status and initiator of the document.
+	 */
+	public boolean canAddRouteLogMessage(String principalId, DocumentRouteHeaderValue documentRouteHeaderValue);
+	
 }

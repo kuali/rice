@@ -200,10 +200,11 @@ var safari = navigator.userAgent.toLowerCase().indexOf('safari');
 
 function setRouteLogIframeDimensions() {
   var routeLogFrame = document.getElementById("routeLogIFrame");
+  var routeLogFrame = document.getElementById("routeLogIFrame");
   var routeLogFrameWin = window.frames["routeLogIFrame"];
   var frameDocHeight = 0;
   try {
-    frameDocHeight = routeLogFrameWin.document.height;
+    frameDocHeight = routeLogFrameWin.document.documentElement.scrollHeight;
   } catch ( e ) {
     // unable to set due to cross-domain scripting
     frameDocHeight = 0;
@@ -212,7 +213,7 @@ function setRouteLogIframeDimensions() {
   if ( frameDocHeight > 0 ) {
 	  if (routeLogFrame && routeLogFrameWin) {
 	  	
-	    if ((Math.abs(frameDocHeight - currentHeight)) > 20 ) {
+	    if ((Math.abs(frameDocHeight - currentHeight)) > 30 ) {
 	      if (safari > -1) {
 	        if ((Math.abs(frameDocHeight - currentHeight)) > 59 ) {
 	          routeLogFrame.style.height = (frameDocHeight + 30) + "px";
@@ -223,11 +224,11 @@ function setRouteLogIframeDimensions() {
 	        currentHeight = frameDocHeight;
 	      }
 	    }
-	  
-	    if (routeLogResizeTimer == "" ) {
-	      routeLogResizeTimer = setInterval("resizeTheRouteLogFrame()",300);
-	    }
 	  }
+  }
+  
+  if (routeLogResizeTimer == "" ) {
+     routeLogResizeTimer = setInterval("resizeTheRouteLogFrame()",300);
   }
 }
 

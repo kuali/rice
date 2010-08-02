@@ -181,33 +181,33 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateDocumentStatus(documentStatus);
 		validatePrincipalId(initiatorPrincipalId);
 
-		if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_CANCEL)) {
-            List<AttributeSet> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
+			if (!documentType.isPolicyDefined(DocumentTypePolicyEnum.INITIATOR_MUST_CANCEL)) {
+				List<AttributeSet> permissionDetailList = buildDocumentTypePermissionDetails(documentType, routeNodeNames, documentStatus);
             AttributeSet roleQualifiers = buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, routeHeaderId);
 
-            boolean foundAtLeastOnePermission = false;
-			// loop over permission details, only one of them needs to be authorized
-			for (AttributeSet permissionDetails : permissionDetailList) {
-				if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails)) {
-					foundAtLeastOnePermission = true;
+				boolean foundAtLeastOnePermission = false;
+				// loop over permission details, only one of them needs to be authorized
+				for (AttributeSet permissionDetails : permissionDetailList) {
+					if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails)) {
+						foundAtLeastOnePermission = true;
 					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails, roleQualifiers)) {
-						return true;
+							return true;
+						}
 					}
 				}
+				// if we found defined KIM permissions, but not of them have authorized this user, return false
+				if (foundAtLeastOnePermission) {
+					return false;
+				}
 			}
-			// if we found defined KIM permissions, but not of them have authorized this user, return false
-			if (foundAtLeastOnePermission) {
-				return false;
-			}
-		}
-		
-		if (documentType.getInitiatorMustCancelPolicy().getPolicyValue()) {
+			
+			if (documentType.getInitiatorMustCancelPolicy().getPolicyValue()) {
 			return executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
-		} else {
+			} else {
 			return true;
-		}			
+			}			
 	}
-
+	
 	public boolean canInitiate(String principalId, DocumentType documentType) {
 		validatePrincipalId(principalId);
 		validateDocumentType(documentType);
@@ -247,6 +247,36 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			return executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
 		}
 		return true;
+	}
+
+	public boolean canAddRouteLogMessage(String principalId, DocumentRouteHeaderValue documentRouteHeaderValue) {
+		return canAddRouteLogMessage(principalId, documentRouteHeaderValue.getRouteHeaderId().toString(),
+				documentRouteHeaderValue.getDocumentType(), documentRouteHeaderValue.getDocRouteStatus(),
+				documentRouteHeaderValue.getInitiatorWorkflowId());
+	}
+
+	public boolean canAddRouteLogMessage(String principalId, String routeHeaderId, DocumentType documentType,
+			String documentStatus, String initiatorPrincipalId) {
+		validatePrincipalId(principalId);
+		validateDocumentType(documentType);
+		validateDocumentStatus(documentStatus);
+		validatePrincipalId(initiatorPrincipalId);
+
+		AttributeSet permissionDetails = buildDocumentTypeDocumentStatusPermissionDetails(documentType, documentStatus);
+		AttributeSet roleQualifiers = buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(documentType,
+				documentStatus, routeHeaderId);
+
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("Permission details values: " + permissionDetails.formattedDump(10));
+			LOG.debug("Role qualifiers values: " + roleQualifiers.formattedDump(10));
+		}
+
+		if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.ADD_MESSAGE_TO_ROUTE_LOG, permissionDetails)) {
+			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE,
+					KEWConstants.ADD_MESSAGE_TO_ROUTE_LOG, permissionDetails, roleQualifiers);
+		}
+
+		return false;
 	}
 
 	public boolean canSave(String principalId, String routeHeaderId, DocumentType documentType, List<String> routeNodeNames, String documentStatus, String initiatorPrincipalId) {

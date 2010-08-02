@@ -972,6 +972,8 @@ public class KEWConstants extends JSTLConstants {
 	public static final String INITIATE_PERMISSION = "Initiate Document";
 	public static final String ROUTE_PERMISSION = "Route Document";
 	public static final String SAVE_PERMISSION = "Save Document";
+	public static final String ADD_MESSAGE_TO_ROUTE_LOG = "Add Message to Route Log";
+	
 
     // signifies the delimiter character for ingested KIM groups
     public static final String KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER = ":";
@@ -1017,5 +1019,4 @@ public class KEWConstants extends JSTLConstants {
     // special user used when no other user is available
     public static final String SYSTEM_USER = "kr";
     public static final String ENABLE_KEN_NOTIFICATION = "rice.kew.enableKENNotification";
-
 }

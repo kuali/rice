@@ -290,5 +290,26 @@
         </div>
         </kul:tab>
         </c:if>
+        
+        <c:if test="${KualiForm.enableLogAction}">
+         <kul:tab
+          tabTitle="Log Action Message"
+          defaultOpen="true">
+           <div class="tab-container" align="center">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                 <tr>
+                   <kul:htmlAttributeHeaderCell scope="col" align="left"><bean-el:message key="routeLog.RouteLog.newActionMessage.label.actionMessage"/></kul:htmlAttributeHeaderCell>
+                   <td class="datacell">
+                       <html-el:hidden property="routeHeaderId" value="${routeHeader.routeHeaderId}" />
+                       <html-el:text property="newRouteLogActionMessage" size="40" />&nbsp;
+                       <html-el:image src="${ConfigProperties.kr.url}/images/buttonsmall_log.gif" property="methodToCall.logActionMessageInRouteLog" styleClass="tinybutton" />
+                   </td>
+                 </tr>
+            </table>
+           </div>
+          </kul:tab>
+        </c:if>
     <kul:panelFooter />
 </kul:page>
+
+

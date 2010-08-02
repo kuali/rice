@@ -40,7 +40,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.skip.packaging>false</maven.skip.packaging>
 		<maven.surefire.forkmode>once</maven.surefire.forkmode>
-
+		<maven.surefire.forkedProcessTimeoutInSeconds>7200</maven.surefire.forkedProcessTimeoutInSeconds>
+		
 		<!-- must provide an explicit pattern - surefire default does not work 
 			b/c of non-unit test classes that are included in default expression -->
 		<test.includes>**/*Test.java</test.includes>
@@ -1329,7 +1330,7 @@
 					</includes>
 					<forkMode>${maven.surefire.forkmode}</forkMode>
 					<reportFormat>plain</reportFormat>
-					<argLine>-Xmx1536m -XX:MaxPermSize=512m</argLine>
+					<argLine>-Xmx1536m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</argLine>
 					<reportSets>
 						<reportSet>
 							<reports>

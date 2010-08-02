@@ -26,7 +26,8 @@
 
   <properties>
   	<maven.skip.packaging>true</maven.skip.packaging>
-  	<maven.surefire.forkmode>pertest</maven.surefire.forkmode>
+  	<maven.surefire.forkmode>always</maven.surefire.forkmode>
+  	<maven.surefire.forkedProcessTimeoutInSeconds>300</maven.surefire.forkedProcessTimeoutInSeconds>
   </properties>
 
 	<dependencies>

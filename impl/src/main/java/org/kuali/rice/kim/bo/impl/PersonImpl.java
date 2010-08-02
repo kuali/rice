@@ -175,13 +175,16 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 		if(entity!=null){
 			KimEntityName entityName = entity.getDefaultName();
 			if ( entityName != null ) {
-				firstName = unNullify( entityName.getFirstNameUnmasked() );
-				middleName = unNullify( entityName.getMiddleNameUnmasked() );
-				lastName = unNullify( entityName.getLastNameUnmasked() );
+				firstName = unNullify( entityName.getFirstName());
+				middleName = unNullify( entityName.getMiddleName() );
+				lastName = unNullify( entityName.getLastName() );
 				if ( entityTypeCode.equals( KimConstants.EntityTypes.SYSTEM ) ) {
 					name = principal.getPrincipalName().toUpperCase();
 				} else {
-					name = unNullify( entityName.getFormattedNameUnmasked() );
+					name = unNullify( entityName.getFormattedName() );
+					if(name.equals("") || name == null){
+						name = lastName + ", " + firstName;					
+					}
 				}
 			} else {
 				firstName = "";

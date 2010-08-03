@@ -156,6 +156,7 @@ public class KEWConstants extends JSTLConstants {
     public static final String INITIATOR_MUST_BLANKET_APPROVE_POLICY = "INITIATOR_MUST_BLANKET_APPROVE";
     public static final String USE_KEW_SUPERUSER_DOCHANDLER = "USE_KEW_SUPERUSER_DOCHANDLER";
     public static final String SEND_NOTIFICATION_ON_SU_APPROVE_POLICY = "SEND_NOTIFICATION_ON_SU_APPROVE";
+    public static final String ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY = "ALLOW_SU_POSTPROCESSOR_OVERRIDE";
 
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE = "none";
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY = "any";

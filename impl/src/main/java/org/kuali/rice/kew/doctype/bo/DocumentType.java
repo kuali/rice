@@ -307,6 +307,13 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     }
     
     /**
+     * This method returns a DocumentTypePolicy object related to the DocumentStatusPolicy defined for this document type. 
+     */
+    public DocumentTypePolicy getSuPostprocessorOverridePolicy() {
+    	return getPolicyByName(DocumentTypePolicyEnum.ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY.getName(), Boolean.TRUE);
+    }
+    
+    /**
      * 
      * This method returns a boolean denoting whether the KEW Route Status is to be displayed.
      * The KEW Route Status is updated by the workflow engine regardless of whether it is to be displayed or not.

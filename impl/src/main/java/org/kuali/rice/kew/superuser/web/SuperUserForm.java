@@ -272,4 +272,7 @@ public class SuperUserForm extends KewRoutingKualiForm {
     public void setReturnLocation(String returnLocation) {
     	this.returnLocation = returnLocation;
     }
+    public boolean getActionRequestPostProcessorDisplayCheck(){
+    	return getDocumentType().getSuPostprocessorOverridePolicy().getPolicyValue().booleanValue();
+    }
 }

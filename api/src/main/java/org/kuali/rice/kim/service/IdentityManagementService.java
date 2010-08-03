@@ -89,7 +89,9 @@ public interface IdentityManagementService {
 			@WebParam(name="unbounded") boolean unbounded
 	);
 
-	int getMatchingEntityCount( @WebParam(name="searchCriteria") Map<String,String> searchCriteria );
+	int getMatchingEntityCount( @XmlJavaTypeAdapter(value = MapStringStringAdapter.class)
+			@WebParam(name="searchCriteria") Map<String,String> searchCriteria );
+
 	//KimEntityPrivacyPreferencesInfo getEntityPrivacyPreferences(String entityId);
 
 	KimEntityInfo getEntityInfo( @WebParam(name="entityId") String entityId );

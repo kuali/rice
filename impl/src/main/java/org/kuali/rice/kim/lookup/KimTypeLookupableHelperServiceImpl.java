@@ -37,6 +37,7 @@ import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.springframework.remoting.RemoteAccessException;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -138,6 +139,11 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 		} catch (RiceRemoteServiceConnectionException ex) {
 			LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), ex);
 		    return hasDerivedRoleTypeService;
+		}
+		// KULRICE-4403: catch org.springframework.remoting.RemoteAccessException
+		catch (RemoteAccessException rae) {
+			LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), rae);
+			return hasDerivedRoleTypeService;
 		}
 		return hasDerivedRoleTypeService;
 	}

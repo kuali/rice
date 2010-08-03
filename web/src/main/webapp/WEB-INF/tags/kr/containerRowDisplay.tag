@@ -26,7 +26,5 @@
 <%@ attribute name="rowsHidden" required="false"
               description="boolean that indicates whether the rows should be hidden or all fields are hidden" %>
 <%@ attribute name="rowsReadOnly" required="false"
-              description="boolean that indicates whether the rows should be rendered as read-only (note that rows will automatically be rendered as readonly if it is an inquiry or if it is a maintenance document in readOnly mode" %>             
-    <%-- cannot refer to recursive tag (rowDisplay) using kul alias or Jetty 7 will have jsp compilation errors on Linux --%>
-    <%-- this tag ends up being recursive b/c it is called by rowDisplay--%>
-    </WEB-INF/tags/kr:rowDisplay rows="${rows}" numberOfColumns="${numberOfColumns}" skipTheOldNewBar="${skipTheOldNewBar}" depth="${depth}" rowsHidden="${rowsHidden}" rowsReadOnly="${rowsReadOnly}"/>          
+              description="boolean that indicates whether the rows should be rendered as read-only (note that rows will automatically be rendered as readonly if it is an inquiry or if it is a maintenance document in readOnly mode" %>
+<kul:rowDisplay rows="${rows}" numberOfColumns="${numberOfColumns}" skipTheOldNewBar="${skipTheOldNewBar}" depth="${depth}" rowsHidden="${rowsHidden}" rowsReadOnly="${rowsReadOnly}"/>

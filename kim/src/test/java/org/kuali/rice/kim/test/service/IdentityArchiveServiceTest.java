@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.Test;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
@@ -32,7 +33,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Unit test for the IdentityArchiveService
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class IdentityArchiveServiceTest extends KIMTestCase {
@@ -48,70 +49,81 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 	}
 
 	/**
-	 * This tests 
+	 * This tests
 	 * <ol><li>trying to retrieve a non-existant {@link KimEntityDefaultInfo}
-	 * <li>saving a {@link KimEntityDefaultInfo} and immediately retrieving it. 
-	 * In our implementation, this will necessitate a flush of the write queue (on the miss) to retrieve it
+	 * <li>saving a {@link KimEntityDefaultInfo} and retrieving it.
 	 * </ol>
-	 * Although we know a bit about what's going on inside {@link IdentityArchiveServiceImpl}, 
-	 * This test should be implementation independent.
+	 * This test is specific to {@link IdentityArchiveServiceImpl}
 	 */
 	@Test
-	public void testForcedFlush(){
-		List<String> entityIds= new ArrayList<String>();
-		entityIds.add("p1");
-		entityIds.add("kuluser");
-		
-		MinimalKEDIBuilder builder = new MinimalKEDIBuilder("bogusUser");
-		KimEntityDefaultInfo bogusUserInfo = builder.build();
-		
-		KimEntityDefaultInfo retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalId(builder.getPrincipalId());
-		assertNull(retrieved);
-		retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalName(builder.getPrincipalName());
-		assertNull(retrieved);
-		retrieved = identityArchiveService.getEntityDefaultInfoFromArchive(builder.getEntityId());
-		assertNull(retrieved);
-		
-		identityArchiveService.saveDefaultInfoToArchive(bogusUserInfo);
+	public void testArchiveFlushesWhenQueueIsFull() throws Exception {
+		final int maxWriteQueueSize =
+			Integer.valueOf(ConfigContext.getCurrentContextConfig().getProperty("kim.identityArchiveServiceImpl.maxWriteQueueSize"));
 
-		// this won't be flushed yet, test a forced flush.
-		retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalId(builder.getPrincipalId());
-		assertTrue(builder.getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
+		List<KimEntityDefaultInfo> added = new ArrayList<KimEntityDefaultInfo>();
 
-		// retrieve it every way we can
-		retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalName(builder.getPrincipalName());
-		assertTrue(builder.getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
-		retrieved = identityArchiveService.getEntityDefaultInfoFromArchive(builder.getEntityId());
-		assertTrue(builder.getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
+		// exceed the max write queue size to initiate a flush
+		for (int i=1; i<=maxWriteQueueSize; i++) {
+			MinimalKEDIBuilder builder = new MinimalKEDIBuilder("bogusUser" + i);
+			builder.setEntityId("bogusUser" + i);
+			KimEntityDefaultInfo bogusUserInfo = builder.build();
+
+			KimEntityDefaultInfo retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalId(builder.getPrincipalId());
+			assertNull(retrieved);
+			retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalName(builder.getPrincipalName());
+			assertNull(retrieved);
+			retrieved = identityArchiveService.getEntityDefaultInfoFromArchive(builder.getEntityId());
+			assertNull(retrieved);
+
+			identityArchiveService.saveDefaultInfoToArchive(bogusUserInfo);
+			added.add(bogusUserInfo);
+		}
+
+		// give it a second to flush
+		log.info("Sleeping, hoping for a flush to occur!");
+		Thread.sleep(1000);
+		log.info("Done sleeping!");
+
+		// these should have been flushed by now, test retrieval
+
+		for (KimEntityDefaultInfo kedi : added) {
+			// retrieve it every way we can
+			KimEntityDefaultInfo retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalId(kedi.getPrincipals().get(0).getPrincipalId());
+			assertTrue(kedi.getPrincipals().get(0).getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
+			retrieved = identityArchiveService.getEntityDefaultInfoFromArchiveByPrincipalName(kedi.getPrincipals().get(0).getPrincipalName());
+			assertTrue(kedi.getPrincipals().get(0).getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
+			retrieved = identityArchiveService.getEntityDefaultInfoFromArchive(kedi.getEntityId());
+			assertTrue(kedi.getPrincipals().get(0).getPrincipalId().equals(retrieved.getPrincipals().get(0).getPrincipalId()));
+		}
 	}
-	
+
 	private static class MinimalKEDIBuilder {
 		private String entityId;
 		private String principalId;
 		private String principalName;
 		private Boolean active;
-		
+
 		public MinimalKEDIBuilder(String name) {
 			entityId = UUID.randomUUID().toString();
 			principalId = principalName = name;
 		}
-		
+
 		public KimEntityDefaultInfo build() {
 			if (entityId == null) entityId = UUID.randomUUID().toString();
 			if (principalId == null) principalId = UUID.randomUUID().toString();
 			if (principalName == null) principalName = principalId;
 			if (active == null) active = true;
-			
+
 			KimPrincipalInfo principal = new KimPrincipalInfo();
 			principal.setActive(active);
 			principal.setEntityId(entityId);
 			principal.setPrincipalId(principalId);
 			principal.setPrincipalName(principalName);
-			
+
 			KimEntityDefaultInfo kedi = new KimEntityDefaultInfo();
 			kedi.setPrincipals(Collections.singletonList(principal));
 			kedi.setEntityId(entityId);
-			
+
 			return kedi;
 		}
 
@@ -170,8 +182,8 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 		public void setActive(Boolean active) {
 			this.active = active;
 		}
-		
-		
+
+
 	}
 
 }

@@ -11,58 +11,58 @@
     <param name="rice.custom.ojb.properties" override="false">org/kuali/rice/core/ojb/RiceOJB.properties</param>
 
 	<!-- Database Config -->
-	
+
 	<!-- below used by atomikos data sources -->
     <!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
     <param name="datasource.pool.maxActive" override="false">50</param>
     <param name="datasource.minIdle" override="false">7</param>
     <param name="datasource.accessToUnderlyingConnectionAllowed" override="false">true</param>
     <param name="datasource.initialSize" override="false">7</param>
-	
+
 	<param name="datasource.pool.minSize" override="false">0</param>
     <param name="datasource.pool.maxSize" override="false">5</param>
     <param name="datasource.pool.size" override="false">5</param>
     <param name="datasource.pool.maxWait" override="false">30000</param>
-    
-    
+
+
     <param name="datasource.ojb.platform" override="false">Oracle9i</param>
-    
+
     <param name="datasource.driver.name.Oracle" override="false">oracle.jdbc.driver.OracleDriver</param>
     <param name="datasource.platform.Oracle" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle" override="false"></param>
     <param name="datasource.pool.validationQuery.Oracle" override="false">select 1 from dual</param>
-    
+
     <param name="datasource.driver.name.Oracle9i" override="false">oracle.jdbc.driver.OracleDriver</param>
     <param name="datasource.platform.Oracle9i" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle9i" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle9i" override="false"></param>
     <param name="datasource.pool.validationQuery.Oracle9i" override="false">select 1 from dual</param>
-    
+
     <param name="datasource.driver.name.MySQL" override="false">com.mysql.jdbc.Driver</param>
     <param name="datasource.platform.MySQL" override="false">org.kuali.rice.core.database.platform.MySQLDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
     <param name="datasource.ojb.sequenceManager.className.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
     <param name="datasource.pool.validationQuery.MySQL" override="false">select 1</param>
-    
+
     <param name="datasource.driver.name.Derby" override="false">org.apache.derby.jdbc.EmbeddedDriver</param>
     <param name="datasource.platform.Derby" override="false">org.kuali.rice.core.database.platform.DerbyDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Derby" override="false">** NEEDS IMPLEMENTED **</param>
     <param name="datasource.ojb.sequenceManager.className.Derby" override="false">** NEEDS IMPLEMENTED **</param>
     <param name="datasource.pool.validationQuery.Derby" override="false">values(1)</param>
-    
+
     <param name="datasource.driver.name.McKoi" override="false">com.mckoi.JDBCDriver</param>
     <param name="datasource.platform.McKoi" override="false">org.kuali.rice.core.database.platform.MckoiDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.McKoi" override="false">org.apache.ojb.broker.platforms.PlatformMckoiImpl</param>
     <param name="datasource.ojb.sequenceManager.className.McKoi" override="false">org.apache.ojb.broker.platforms.PlatformMckoiImpl</param>
     <param name="datasource.pool.validationQuery.McKoi" override="false">select 1 from dual</param>
-    
+
     <param name="datasource.driver.name" override="false">${datasource.driver.name.${datasource.ojb.platform}}</param>
     <param name="datasource.platform" override="false">${datasource.platform.${datasource.ojb.platform}}</param>
     <param name="datasource.ojb.sequenceManager" override="false">${datasource.ojb.sequenceManager.${datasource.ojb.platform}}</param>
     <param name="datasource.ojb.sequenceManager.className" override="false">${datasource.ojb.sequenceManager.className.${datasource.ojb.platform}}</param>
     <param name="datasource.pool.validationQuery" override="false">${datasource.pool.validationQuery.${datasource.ojb.platform}}</param>
-    
+
     <!-- Action List Outbox -->
     <param name="actionlist.outbox.default.preference.on" override="false">true</param>
     <param name="actionlist.outbox" override="false">true</param>
@@ -234,7 +234,7 @@
     <param name="kim.cache.person.max.size" override="false">3000</param>
     <param name="kim.cache.person.max.age.seconds" override="false">3600</param>
 
-    <param name="kim.identityArchiveServiceImpl.executionIntervalSeconds" override="false">600</param>
+    <param name="kim.identityArchiveServiceImpl.executionIntervalSeconds" override="false">300</param>
     <param name="kim.identityArchiveServiceImpl.maxWriteQueueSize" override="false">300</param>
 
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
@@ -259,7 +259,7 @@
     <param name="kcb.maxProcessAttempts" override="false">3</param>
     <param name="kcb.messaging.synchronous" override="false">false</param>
     <param name="kcb.smtp.host" override="false">${mail.smtp.host}</param>
-    
+
 	<param name="secure.workflowutility.soapservice.endpoint" override="false">true</param>
 	<param name="title.inquiry.url.value.prependtext" override="false"></param>
 	<param name="portal.show.sample.app" override="false">false</param>

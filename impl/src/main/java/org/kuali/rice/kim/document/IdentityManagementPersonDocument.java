@@ -63,7 +63,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     protected static final long serialVersionUID = -534993712085516925L;
     // principal data
     protected String principalId;
-    protected String principalName;
+    protected String principalName;   
     protected String entityId;
     protected String password;
 
@@ -117,8 +117,12 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         return this.principalName;
     }
 
+    /*
+     * sets the principal name.  
+     * Principal names are converted to lower case.
+     */
     public void setPrincipalName(String principalName) {
-        this.principalName = principalName;
+        this.principalName = principalName.toLowerCase();
     }
 
     public String getEntityId() {

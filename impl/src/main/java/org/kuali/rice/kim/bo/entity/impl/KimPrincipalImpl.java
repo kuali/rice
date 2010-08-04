@@ -74,7 +74,7 @@ public class KimPrincipalImpl extends PersistableBusinessObjectBase implements K
 	}
 
 	public void setPrincipalName(String principalName) {
-		this.principalName = principalName;
+		this.principalName = principalName.toLowerCase();
 	}
 
 	public String getEntityId() {

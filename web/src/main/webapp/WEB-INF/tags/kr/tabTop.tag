@@ -19,6 +19,8 @@
 <%@ attribute name="tabErrorKey" required="false" description="The property key this tab should display errors associated with." %>
 <%@ attribute name="boClassName" required="false" description="If present, makes the tab title an inquiry link using the business object class declared here.  Used with the keyValues attribute." %>
 <%@ attribute name="keyValues" required="false" description="If present, makes the tab title an inquiry link using the primary key values declared here.  Used with the boClassName attribute." %>
+<%@ attribute name="auditCluster" required="false" description="The error audit cluster associated with this page." %>
+<%@ attribute name="tabAuditKey" required="false" description="The property key this tab should display audit errors associated with." %>
 
 <c:set var="currentTabIndex" value="${KualiForm.currentTabIndex}"/>
 <c:set var="tabKey" value="${kfunc:generateTabKey(tabTitle)}"/>
@@ -33,7 +35,7 @@
     </c:when>
 </c:choose>
 <%-- if the section has errors, override and set isOpen to true --%>
-<c:if test="${!empty tabErrorKey}">
+<c:if test="${!empty tabErrorKey or !empty tabAuditKey}">
   <kul:checkErrors keyMatch="${tabErrorKey}" auditMatch="${tabAuditKey}"/>
   <c:set var="isOpen" value="${hasErrors ? true : isOpen}"/>
 </c:if>
@@ -74,10 +76,19 @@
 <c:if test="${isOpen == 'true' || isOpen == 'TRUE'}"><div style="display: block;" id="tab-${tabKey}-div"></c:if>
 <c:if test="${isOpen != 'true' && isOpen != 'TRUE'}"><div style="display: none;" id="tab-${tabKey}-div"></c:if>
 
-        <c:if test="${! (empty tabErrorKey)}">
-          <%-- display errors for this tab --%>
-          <div class="tab-container-error"><div class="left-errmsg-tab"><kul:errors keyMatch="${tabErrorKey}" errorTitle="Errors Found in Document:" /></div></div>
-        </c:if>
+        <c:if test="${! (empty tabAuditKey) or ! (empty tabErrorKey)}">
+        	<%-- display errors for this tab --%>
+        	<div class="tab-container-error"><div class="left-errmsg-tab">
+				<c:if test="${! (empty tabErrorKey)}">
+					<kul:errors keyMatch="${tabErrorKey}" errorTitle="Errors found in this Section:" />
+				</c:if>
+				<c:if test="${! (empty tabAuditKey)}">
+					<c:forEach items="${fn:split(auditCluster,',')}" var="cluster">
+	        	   		<kul:auditErrors cluster="${cluster}" keyMatch="${tabAuditKey}" isLink="false" includesTitle="true"/>
+					</c:forEach>
+				</c:if>
+        	</div></div>
+      	</c:if>
         <%-- Before the jsp:doBody of the kul:tab tag --%>
         <jsp:doBody/>
         <%-- After the jsp:doBody of the kul:tab tag --%>

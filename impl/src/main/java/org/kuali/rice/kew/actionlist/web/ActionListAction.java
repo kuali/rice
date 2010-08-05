@@ -261,25 +261,27 @@ public class ActionListAction extends KualiAction {
             }
 
             if (isOutboxMode(form, request, preferences)) {
-        	actionList = new ArrayList(actionListSrv.getOutbox(principalId, uSession.getActionListFilter()));
-        	form.setOutBoxEmpty(actionList.isEmpty());
+        	    actionList = new ArrayList(actionListSrv.getOutbox(principalId, uSession.getActionListFilter()));
+        	    form.setOutBoxEmpty(actionList.isEmpty());
             } else {
                 if (actionList == null) {
+                	//clear out old User Option records if they exist
+                	actionListSrv.refreshActionList(getUserSession(request).getPerson().getPrincipalId());
                 	// fetch the action list
                     actionList = new ArrayList(actionListSrv.getActionList(principalId, uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-            } else if (forceListRefresh) {
-                // force a refresh... usually based on filter change or parameter specifying refresh needed
+                } else if (forceListRefresh) {
+                	// force a refresh... usually based on filter change or parameter specifying refresh needed
                     actionList = new ArrayList(actionListSrv.getActionList(principalId, uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-            } else if (actionListSrv.refreshActionList(getUserSession(request).getPerson().getPrincipalId())) {
+                } else if (actionListSrv.refreshActionList(getUserSession(request).getPerson().getPrincipalId())) {
                     actionList = new ArrayList(actionListSrv.getActionList(principalId, uSession.getActionListFilter()));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-            } else {
-                if (!uSession.isUpdateActionList()) {
-                	freshActionList = false;
+                } else {
+                	if (!uSession.isUpdateActionList()) {
+                		freshActionList = false;
+                	}
                 }
-            }
                 request.getSession().setAttribute(ACTION_LIST_KEY, actionList);
             }
             // reset the requery action list key

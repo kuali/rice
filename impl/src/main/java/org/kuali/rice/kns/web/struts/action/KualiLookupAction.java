@@ -137,27 +137,32 @@ public class KualiLookupAction extends KualiAction {
 		}
 	}
 
-    @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP);
-        supressActionsIfNeeded(form);
-        suppressNonMaintActionsIfNeeded(form);
-        setCriteriaEnabled(form);
+	@Override
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		LookupForm lookupForm = (LookupForm) form;
 
-        hideHeaderBarIfNeeded(form, request);
+		request.setAttribute(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP);
+		supressActionsIfNeeded(form);
+		suppressNonMaintActionsIfNeeded(form);
+		setCriteriaEnabled(form);
 
+		hideHeaderBarIfNeeded(form, request);
 
-        BusinessObjectEntry boe = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(((LookupForm) form).getBusinessObjectClassName());
-        int numCols = boe.getLookupDefinition().getNumOfColumns();
-        if(numCols <= 0) numCols = KNSConstants.DEFAULT_NUM_OF_COLUMNS; // by default, always show one column.
-        ((LookupForm) form).setNumColumns(numCols);
-        return super.execute(mapping, form, request, response);
-    }
+		int numCols = KNSServiceLocator.getBusinessObjectDictionaryService().getLookupNumberOfColumns(
+				Class.forName(lookupForm.getBusinessObjectClassName()));
+		lookupForm.setNumColumns(numCols);
 
+		ActionForward forward = super.execute(mapping, form, request, response);
 
-	private void hideHeaderBarIfNeeded(ActionForm form,
-			HttpServletRequest request) {
-		if(!((LookupForm) form).isHeaderBarEnabled()){
+		// apply conditional logic after all setting of field values has been completed
+		lookupForm.getLookupable().applyConditionalLogicForFieldDisplay();
+
+		return forward;
+	}
+
+	private void hideHeaderBarIfNeeded(ActionForm form, HttpServletRequest request) {
+		if (!((LookupForm) form).isHeaderBarEnabled()) {
 			((LookupForm) form).setHeaderBarEnabled(false);
 		}
 	}

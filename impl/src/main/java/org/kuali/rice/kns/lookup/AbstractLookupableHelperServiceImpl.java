@@ -15,14 +15,24 @@
  */
 package org.kuali.rice.kns.lookup;
 
+import java.security.GeneralSecurityException;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.BusinessObjectRelationship;
-import org.kuali.rice.kns.bo.KualiCode;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -31,12 +41,27 @@ import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.InputHtmlData;
-import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.util.*;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.TypeUtils;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.cache.CopiedObject;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
-import org.kuali.rice.kns.web.format.BooleanFormatter;
-import org.kuali.rice.kns.web.format.CollectionFormatter;
 import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -45,10 +70,6 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
-
-import java.security.GeneralSecurityException;
-import java.sql.Date;
-import java.util.*;
 
 /**
  * This class declares many of the common spring injected properties, the get/set-ers for them,
@@ -998,48 +1019,42 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 	 }
 
-	 /**
-	  * Constructs the list of rows for the search fields. All properties for the field objects come from the DataDictionary.
-	  * To be called by setBusinessObject
-	  */
-	 protected void setRows() {
-		 List localRows = new ArrayList();
-		 List<String> lookupFieldAttributeList = null;
-		 if(getBusinessObjectMetaDataService().isLookupable(getBusinessObjectClass())) {
-			 lookupFieldAttributeList = getBusinessObjectMetaDataService().getLookupableFieldNames(getBusinessObjectClass());
-		 }
-		 if (lookupFieldAttributeList == null) {
-			 throw new RuntimeException("Lookup not defined for business object " + getBusinessObjectClass());
-		 }
+	/**
+	 * Constructs the list of rows for the search fields. All properties for the field objects come
+	 * from the DataDictionary. To be called by setBusinessObject
+	 */
+	protected void setRows() {
+		List<String> lookupFieldAttributeList = null;
+		if (getBusinessObjectMetaDataService().isLookupable(getBusinessObjectClass())) {
+			lookupFieldAttributeList = getBusinessObjectMetaDataService().getLookupableFieldNames(
+					getBusinessObjectClass());
+		}
+		if (lookupFieldAttributeList == null) {
+			throw new RuntimeException("Lookup not defined for business object " + getBusinessObjectClass());
+		}
 
-		 // construct field object for each search attribute
-		 List fields = new ArrayList();
-        int numCols;
-		 try {
-			 fields = FieldUtils.createAndPopulateFieldsForLookup(lookupFieldAttributeList, getReadOnlyFieldsList(), getBusinessObjectClass());
+		// construct field object for each search attribute
+		List fields = new ArrayList();
+		try {
+			fields = FieldUtils.createAndPopulateFieldsForLookup(lookupFieldAttributeList, getReadOnlyFieldsList(),
+					getBusinessObjectClass());
+		} catch (InstantiationException e) {
+			throw new RuntimeException("Unable to create instance of business object class" + e.getMessage());
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException("Unable to create instance of business object class" + e.getMessage());
+		}
 
-            BusinessObjectEntry boe = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
-            numCols = boe.getLookupDefinition().getNumOfColumns();
-
-		 }
-		 catch (InstantiationException e) {
-			 throw new RuntimeException("Unable to create instance of business object class" + e.getMessage());
-		 }
-		 catch (IllegalAccessException e) {
-			 throw new RuntimeException("Unable to create instance of business object class" + e.getMessage());
-		 }
-        if(numCols == 0) numCols = KNSConstants.DEFAULT_NUM_OF_COLUMNS;
-
-        this.rows = FieldUtils.wrapFields(fields, numCols);
-	 }
+		int numCols = getBusinessObjectDictionaryService().getLookupNumberOfColumns(this.getBusinessObjectClass());
+		
+		this.rows = FieldUtils.wrapFields(fields, numCols);
+	}
 
 	 public List<Row> getRows() {
 		 return rows;
 	 }
 
 	 public abstract List<? extends BusinessObject> getSearchResults(Map<String, String> fieldValues);
-
-
+	 
 	 /**
 	  * This implementation of this method throws an UnsupportedOperationException, since not every implementation
 	  * may actually want to use this operation.  Subclasses desiring other behaviors
@@ -1310,10 +1325,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 					 field.setDisplayMaskValue(null);
 					 field.setEncryptedValue(null);
 				 }
-				 if (!field.getFieldType().equals(Field.RADIO)) {
-					 field.setPropertyValue(field.getDefaultValue());
-				 }
-			 }
+
+				if (!field.getFieldType().equals(Field.RADIO)) {
+					field.setPropertyValue(field.getDefaultValue());
+				}
+			}
 		 }
 	 }
 
@@ -1412,4 +1428,105 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 			}
 		 }
 	 }
+
+	/**
+	 * Calls methods that can be overridden by child lookupables to implement conditional logic for setting
+	 * read-only, required, and hidden attributes. Called in the last part of the lookup lifecycle so the
+	 * fields values that will be sent will be correctly reflected in the rows (like after a clear).
+	 * 
+	 * @see #getConditionallyReadOnlyPropertyNames()
+	 * @see #getConditionallyRequiredPropertyNames()
+	 * @see #getConditionallyHiddenPropertyNames()
+	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#applyConditionalLogicForFieldDisplay()
+	 */
+	public void applyConditionalLogicForFieldDisplay() {
+		Set<String> readOnlyFields = getConditionallyReadOnlyPropertyNames();
+		Set<String> requiredFields = getConditionallyRequiredPropertyNames();
+		Set<String> hiddenFields = getConditionallyHiddenPropertyNames();
+
+		for (Iterator iter = this.getRows().iterator(); iter.hasNext();) {
+			Row row = (Row) iter.next();
+			for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
+				Field field = (Field) iterator.next();
+
+				if (readOnlyFields != null && readOnlyFields.contains(field.getPropertyName())) {
+					field.setReadOnly(true);
+				}
+
+				if (requiredFields != null && requiredFields.contains(field.getPropertyName())) {
+					field.setFieldRequired(true);
+				}
+
+				if (hiddenFields != null && hiddenFields.contains(field.getPropertyName())) {
+					field.setFieldType(Field.HIDDEN);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * @return Set of property names that should be set as read only based on the current search
+	 *         contents, note request parms containing search field values can be retrieved with
+	 *         {@link #getParameters()}
+	 */
+	public Set<String> getConditionallyReadOnlyPropertyNames() {
+		return new HashSet<String>();
+	}
+
+	/**
+	 * @return Set of property names that should be set as required based on the current search
+	 *         contents, note request parms containing search field values can be retrieved with
+	 *         {@link #getParameters()}
+	 */
+	public Set<String> getConditionallyRequiredPropertyNames() {
+		return new HashSet<String>();
+	}
+
+	/**
+	 * @return Set of property names that should be set as hidden based on the current search
+	 *         contents, note request parms containing search field values can be retrieved with
+	 *         {@link #getParameters()}
+	 */
+	public Set<String> getConditionallyHiddenPropertyNames() {
+		return new HashSet<String>();
+	}
+	 
+	/**
+	 * Helper method to get the value for a property out of the row-field graph. If property is
+	 * multi-value then the values will be joined by a semi-colon.
+	 * 
+	 * @param propertyName
+	 *            - name of property to retrieve value for
+	 * @return current property value as a String
+	 */
+	protected String getCurrentSearchFieldValue(String propertyName) {
+		String currentValue = null;
+
+		boolean fieldFound = false;
+		for (Iterator iter = this.getRows().iterator(); iter.hasNext();) {
+			Row row = (Row) iter.next();
+			for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
+				Field field = (Field) iterator.next();
+
+				if (StringUtils.equalsIgnoreCase(propertyName, field.getPropertyName())) {
+					if (Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+						currentValue = StringUtils.join(field.getPropertyValues(), ";");
+					} else {
+						currentValue = field.getPropertyValue();
+					}
+					fieldFound = true;
+				}
+
+				if (fieldFound) {
+					break;
+				}
+			}
+
+			if (fieldFound) {
+				break;
+			}
+		}
+
+		return currentValue;
+	}
 }

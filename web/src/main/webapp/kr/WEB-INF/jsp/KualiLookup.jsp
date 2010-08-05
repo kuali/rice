@@ -68,8 +68,7 @@
 	<html-el:hidden name="KualiForm" property="docNum" />
 	<html-el:hidden name="KualiForm" property="showMaintenanceLinks" />
 	<html-el:hidden name="KualiForm" property="headerBarEnabled" />
-
-
+    <html-el:hidden name="KualiForm" property="fieldNameToFocusOnAfterSubmit"/>
 
 
 	<c:if test="${KualiForm.headerBarEnabled}">

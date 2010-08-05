@@ -18,9 +18,11 @@ package org.kuali.rice.kns.web.ui;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -28,7 +30,6 @@ import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.CollectionDefinitionI;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.FieldDefinitionI;
@@ -52,7 +53,6 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -105,7 +105,7 @@ public class SectionBridge {
                 InquiryCollectionDefinition inquiryCollectionDefinition = (InquiryCollectionDefinition) fieldDefinition;
 
                 List<Row> sectionRows = new ArrayList();
-                sectionRows = getContainerRows(section, inquiryCollectionDefinition, o, null, null, new ArrayList(), new StringBuffer(section.getErrorKey()), inquiryCollectionDefinition.getNumberOfColumns(), inquirable);
+                sectionRows = getContainerRows(section, inquiryCollectionDefinition, o, null, null, new ArrayList(), new HashSet<String>(), new StringBuffer(section.getErrorKey()), inquiryCollectionDefinition.getNumberOfColumns(), inquirable);
                 section.setRows(sectionRows);
             }
             else if (fieldDefinition instanceof InquirySubSectionHeaderDefinition) {
@@ -199,8 +199,7 @@ public class SectionBridge {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public static final Section toSection(MaintainableSectionDefinition sd, BusinessObject o, Maintainable maintainable, Maintainable oldMaintainable, String maintenanceAction,  List<String> displayedFieldNames) throws InstantiationException, IllegalAccessException {
-    	
+    public static final Section toSection(MaintainableSectionDefinition sd, BusinessObject o, Maintainable maintainable, Maintainable oldMaintainable, String maintenanceAction,  List<String> displayedFieldNames, Set<String> conditionallyRequiredMaintenanceFields) throws InstantiationException, IllegalAccessException {
     	Section section = new Section();
 
         section.setSectionId( sd.getId() );
@@ -217,7 +216,7 @@ public class SectionBridge {
 
         for (Iterator iterator = maintItems.iterator(); iterator.hasNext();) {
             MaintainableItemDefinition item = (MaintainableItemDefinition) iterator.next();
-            Field field = FieldBridge.toField(item, sd, o, maintainable, section, displayedFieldNames);
+            Field field = FieldBridge.toField(item, sd, o, maintainable, section, displayedFieldNames, conditionallyRequiredMaintenanceFields);
             boolean skipAdd = false;
 
             // if CollectionDefiniton, then have a many section
@@ -226,7 +225,7 @@ public class SectionBridge {
                 section.getContainedCollectionNames().add(((MaintainableCollectionDefinition) item).getName());
 
                 StringBuffer containerRowErrorKey = new StringBuffer();
-                sectionRows = getContainerRows(section, definition, o, maintainable, oldMaintainable, displayedFieldNames, containerRowErrorKey, KNSConstants.DEFAULT_NUM_OF_COLUMNS, null);
+                sectionRows = getContainerRows(section, definition, o, maintainable, oldMaintainable, displayedFieldNames, conditionallyRequiredMaintenanceFields, containerRowErrorKey, KNSConstants.DEFAULT_NUM_OF_COLUMNS, null);
             }
             else if (item instanceof MaintainableSubSectionHeaderDefinition) {
                 MaintainableSubSectionHeaderDefinition definition = (MaintainableSubSectionHeaderDefinition) item;
@@ -266,8 +265,8 @@ public class SectionBridge {
      * @see #getContainerRows(Section, CollectionDefinitionI, BusinessObject, Maintainable, List<String>, StringBuffer, String,
      *      boolean, int)
      */
-    public static final List<Row> getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, Maintainable oldMaintainable, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, int numberOfColumns, Inquirable inquirable) {
-        return getContainerRows(s, collectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, "", false, numberOfColumns, inquirable);
+    public static final List<Row> getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, Maintainable oldMaintainable, List<String> displayedFieldNames, Set<String> conditionallyRequiredMaintenanceFields, StringBuffer containerRowErrorKey, int numberOfColumns, Inquirable inquirable) {
+        return getContainerRows(s, collectionDefinition, o, m, oldMaintainable, displayedFieldNames, conditionallyRequiredMaintenanceFields, containerRowErrorKey, "", false, numberOfColumns, inquirable);
     }
 
     /**
@@ -284,7 +283,7 @@ public class SectionBridge {
      * @param numberOfColumns In how many columns in the UI will the fields in the Container/Collection be shown?
      * @return
      */
-     public static final List<Row> getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, Maintainable oldMaintainable, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, String parents, boolean hideAdd, int numberOfColumns, Inquirable inquirable) {
+     public static final List<Row> getContainerRows(Section s, CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, Maintainable oldMaintainable, List<String> displayedFieldNames, Set<String> conditionallyRequiredMaintenanceFields, StringBuffer containerRowErrorKey, String parents, boolean hideAdd, int numberOfColumns, Inquirable inquirable) {
         List<Row> containerRows = new ArrayList<Row>();
         List<Field> collFields = new ArrayList<Field>();
         
@@ -304,7 +303,7 @@ public class SectionBridge {
             if (collectionDefinition.getIncludeAddLine()) {
 
 
-                newFormFields = FieldBridge.getNewFormFields(collectionDefinition, o, m, displayedFieldNames, containerRowErrorKey, parents, hideAdd, numberOfColumns);
+                newFormFields = FieldBridge.getNewFormFields(collectionDefinition, o, m, displayedFieldNames, conditionallyRequiredMaintenanceFields, containerRowErrorKey, parents, hideAdd, numberOfColumns);
 
 
             } else if(collectionDefinition instanceof MaintainableCollectionDefinition) {
@@ -330,7 +329,7 @@ public class SectionBridge {
                 }
             }
             // no colNum for add rows
-            containerRows.addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, parents + collectionDefinition.getName() + ".", true, subCollectionNumberOfColumn, inquirable));
+            containerRows.addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, conditionallyRequiredMaintenanceFields, containerRowErrorKey, parents + collectionDefinition.getName() + ".", true, subCollectionNumberOfColumn, inquirable));
         }
 
         // then we need to loop through the existing collection and add those fields
@@ -343,7 +342,7 @@ public class SectionBridge {
         if (StringUtils.isEmpty(collectionElementLabel)) {
             collectionElementLabel = getDataDictionaryService().getCollectionElementLabel(o.getClass().getName(), collectionDefinition.getName(), collectionDefinition.getBusinessObjectClass());
         }
-        
+
         boolean translateCodes = getMaintenanceDocumentDictionaryService().translateCodes(o.getClass());
 
         if (o != null) {
@@ -413,7 +412,7 @@ public class SectionBridge {
             					FieldUtils.setAdditionalDisplayPropertyForCodes(lineBusinessObject.getClass(), collField.getPropertyName(), collField);
             				}
                             
-                            FieldBridge.setupField(collField, fieldDefinition);
+                            FieldBridge.setupField(collField, fieldDefinition, conditionallyRequiredMaintenanceFields);
                             setPrimaryKeyFieldsReadOnly(collectionDefinition.getBusinessObjectClass(), collField);
 
                             //If the duplicateIdentificationFields were specified in the maint. doc. DD, we'll need
@@ -477,7 +476,7 @@ public class SectionBridge {
 								}
 							}
 							// END KULRICE-4024
-                                
+                            
                             // KULRICE-4024 - special handling for person fields, the values
                             // were being blanked out upon submission because these fields were
                             // rendered but not populated.  This caused the service to re-resolve the
@@ -585,7 +584,7 @@ public class SectionBridge {
                             if (subObj instanceof List) {
                                 /* recursively call this method to get the add row and exisiting members of the subCollections subcollections containerRows.addAll(getContainerRows(subCollectionDefinition,
                                    displayedFieldNames,containerRowErrorKey, parents+collectionDefinition.getName()+"["+i+"]"+".","[0]",false, subCollectionNumberOfColumn)); */
-                                containerField.getContainerRows().addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, containerRowErrorKey, parents + collectionDefinition.getName() + "[" + i + "]" + ".", false, subCollectionNumberOfColumns, inquirable));
+                                containerField.getContainerRows().addAll(getContainerRows(s, subCollectionDefinition, o, m, oldMaintainable, displayedFieldNames, conditionallyRequiredMaintenanceFields, containerRowErrorKey, parents + collectionDefinition.getName() + "[" + i + "]" + ".", false, subCollectionNumberOfColumns, inquirable));
                              
                                 // iterate over the fields
                                 for (int j = 0; j < ((List) subObj).size(); j++) {
@@ -625,14 +624,14 @@ public class SectionBridge {
 
                                         // construct Field UI object from definition
                                         Field subCollField = FieldUtils.getPropertyField(subCollectionDefinition.getBusinessObjectClass(), fieldDefinition.getName(), false);
-                                        
+
                                         String subCollectionFullName = collectionDefinition.getName() + "[" + i + "]" + "." + subCollectionDefinition.getName();
                                         
                         				if (translateCodes) {
                         					FieldUtils.setAdditionalDisplayPropertyForCodes(lineSubBusinessObject.getClass(), subCollField.getPropertyName(), subCollField);
                         				}
 
-                                        FieldBridge.setupField(subCollField, fieldDefinition);
+                                        FieldBridge.setupField(subCollField, fieldDefinition, conditionallyRequiredMaintenanceFields);
                                         setPrimaryKeyFieldsReadOnly(subCollectionDefinition.getBusinessObjectClass(), subCollField);
                                        
                                         // save the simple property name
@@ -659,7 +658,7 @@ public class SectionBridge {
             										subCollField.getAlternateDisplayPropertyName());
             								subCollField.setAlternateDisplayPropertyValue(alternateDisplayPropertyValue);
             							}
-            							
+                                        
             							if (StringUtils.isNotBlank(subCollField.getAdditionalDisplayPropertyName())) {
             								Object additionalDisplayPropertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject,
             										subCollField.getAdditionalDisplayPropertyName());
@@ -713,7 +712,7 @@ public class SectionBridge {
         return containerRows;
     }
 
-     /**
+    /**
       * Updates fields of type kualiuser sets the universal user id and/or name if required. 
       * 
       * @param field

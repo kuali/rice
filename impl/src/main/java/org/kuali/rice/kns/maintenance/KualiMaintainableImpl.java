@@ -44,6 +44,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.MaintenanceLock;
+import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationController;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
@@ -54,6 +55,7 @@ import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
@@ -100,6 +102,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     private static BusinessObjectMetaDataService businessObjectMetaDataService;
     private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
     private static MaintenanceDocumentService maintenanceDocumentService;
+    private static DocumentHelperService documentHelperService;
     
     /**
      * Default empty constructor
@@ -290,30 +293,30 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @return List of org.kuali.ui.Section objects
      */
     public List<Section> getCoreSections(MaintenanceDocument document, Maintainable oldMaintainable) {
-        
         List<Section> sections = new ArrayList<Section>();
         MaintenanceDocumentRestrictions maintenanceRestrictions = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(document, GlobalVariables.getUserSession().getPerson());
         
+        MaintenanceDocumentPresentationController maintenanceDocumentPresentationController = (MaintenanceDocumentPresentationController) getDocumentHelperService()
+		.getDocumentPresentationController(document);
+        Set<String> conditionallyRequiredFields = maintenanceDocumentPresentationController.getConditionallyRequiredPropertyNames(document);
+        
         List<MaintainableSectionDefinition> sectionDefinitions = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
-
         try {
             // iterate through section definitions and create Section UI object
             for (Iterator iter = sectionDefinitions.iterator(); iter.hasNext();) {
-                
                 MaintainableSectionDefinition maintSectionDef = (MaintainableSectionDefinition) iter.next();
 
                 List<String> displayedFieldNames = new ArrayList<String>();
                 if (!maintenanceRestrictions.isHiddenSectionId(maintSectionDef.getId())) {
                 	
                 	for (Iterator iter2 = maintSectionDef.getMaintainableItems().iterator(); iter2.hasNext();) {
-                    
                 		MaintainableItemDefinition item = (MaintainableItemDefinition) iter2.next();
                 		if (item instanceof MaintainableFieldDefinition) {
                 		    displayedFieldNames.add(((MaintainableFieldDefinition) item).getName());
                 		}
                 	}
                 	
-                	Section section = SectionBridge.toSection(maintSectionDef, getBusinessObject(), this, oldMaintainable, getMaintenanceAction(), displayedFieldNames);
+                	Section section = SectionBridge.toSection(maintSectionDef, getBusinessObject(), this, oldMaintainable, getMaintenanceAction(), displayedFieldNames, conditionallyRequiredFields);
                 	if(maintenanceRestrictions.isReadOnlySectionId(maintSectionDef.getId())){
                 		section.setReadOnly(true);
                 	}
@@ -1224,6 +1227,13 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     		maintenanceDocumentService = KNSServiceLocator.getMaintenanceDocumentService();
     	}
     	return maintenanceDocumentService;
+    }
+    
+    public static DocumentHelperService getDocumentHelperService() {
+    	if (documentHelperService == null) {
+    		documentHelperService = KNSServiceLocator.getDocumentHelperService();
+    	}
+    	return documentHelperService;
     }
     
 	/**

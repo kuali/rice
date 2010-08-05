@@ -78,6 +78,7 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     protected String alternateDisplayAttributeName;
     protected String additionalDisplayAttributeName;
     
+    protected boolean triggerOnChange;
     
     public MaintainableFieldDefinition() {}
 
@@ -184,7 +185,7 @@ required is true if the field must contain a non-null value
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getName())) {
             throw new AttributeValidationException("unable to find attribute or collection named '" + getName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
         }
-        
+
         if (StringUtils.isNotBlank(getAlternateDisplayAttributeName())) {
             if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAlternateDisplayAttributeName())) {
                 throw new AttributeValidationException("unable to find attribute or collection named '" + getName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
@@ -318,7 +319,7 @@ The defaultValueFinderClass specifies the java class that will be
 	public void setLookupReadOnly(boolean lookupReadOnly) {
     	this.lookupReadOnly = lookupReadOnly;
     }
-    
+	
 	/**
 	 * The alternateDisplayAttributeName is the name of the attribute whose value will be displayed instead
 	 * of the actual maintenance field attribute. Only applies when field is read-only.
@@ -341,6 +342,14 @@ The defaultValueFinderClass specifies the java class that will be
 
 	public void setAdditionalDisplayAttributeName(String additionalDisplayAttributeName) {
 		this.additionalDisplayAttributeName = additionalDisplayAttributeName;
+	}
+	
+	public boolean isTriggerOnChange() {
+		return this.triggerOnChange;
+	}
+
+	public void setTriggerOnChange(boolean triggerOnChange) {
+		this.triggerOnChange = triggerOnChange;
 	}
 
 	/**

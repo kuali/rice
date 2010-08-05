@@ -391,5 +391,11 @@ public class KualiLookupableImpl implements Lookupable {
 		this.extraOnLoad = extraOnLoad;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.lookup.Lookupable#applyConditionalLogicForFieldDisplay()
+	 */
+	public void applyConditionalLogicForFieldDisplay() {
+		getLookupableHelperService().applyConditionalLogicForFieldDisplay();
+	}
 
 }

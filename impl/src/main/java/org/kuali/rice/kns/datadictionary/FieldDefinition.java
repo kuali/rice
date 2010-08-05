@@ -60,6 +60,8 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     protected String alternateDisplayAttributeName;
     protected String additionalDisplayAttributeName;
 	
+	protected boolean triggerOnChange;
+	
     public FieldDefinition() {
     }
 
@@ -264,7 +266,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAttributeName())) {
             throw new AttributeValidationException("unable to find attribute '" + attributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
         }
-        
+
         if (StringUtils.isNotBlank(getAlternateDisplayAttributeName())) {
             if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAlternateDisplayAttributeName())) {
                 throw new AttributeValidationException("unable to find attribute named '" + getName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
@@ -467,7 +469,14 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 	}
+	
+	public boolean isTriggerOnChange() {
+		return this.triggerOnChange;
+	}
 
+	public void setTriggerOnChange(boolean triggerOnChange) {
+		this.triggerOnChange = triggerOnChange;
+	}
 
 	/**
 	 * @return the treatWildcardsAndOperatorsAsLiteralOnLookups

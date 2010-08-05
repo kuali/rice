@@ -151,14 +151,14 @@ public class BusinessObjectDictionaryServiceImpl implements
 
         return isMaintainable;
     }
-
+    
 
     /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isExportable(java.lang.Class)
 	 */
 	public Boolean isExportable(Class businessObjectClass) {
 		Boolean isExportable = Boolean.FALSE;
-
+		
 		BusinessObjectEntry entry = getBusinessObjectEntry(businessObjectClass);
         if (entry != null) {
             isExportable = entry.getExporterClass() != null;
@@ -245,7 +245,7 @@ public class BusinessObjectDictionaryServiceImpl implements
         return buttonParams;
     }
 
-
+    
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getSearchIconOverride(java.lang.Class)
      */
@@ -262,7 +262,7 @@ public class BusinessObjectDictionaryServiceImpl implements
         return iconUrl;
     }
 
-
+    
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupDefaultSortFieldName(java.lang.Class)
      */
@@ -323,7 +323,24 @@ public class BusinessObjectDictionaryServiceImpl implements
         }
     }
 
-    /**
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupNumberOfColumns(java.lang.Class)
+	 */
+	public Integer getLookupNumberOfColumns(Class businessObjectClass) {
+		// default to 1
+		int numberOfColumns = 1;
+
+		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+		if (lookupDefinition != null) {
+			if (lookupDefinition.getNumOfColumns() > 1) {
+				numberOfColumns = lookupDefinition.getNumOfColumns();
+			}
+		}
+
+		return numberOfColumns;
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupAttributeRequired(java.lang.Class,
 	 *      java.lang.String)
      */
@@ -340,8 +357,22 @@ public class BusinessObjectDictionaryServiceImpl implements
         return isRequired;
     }
 
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupAttributeReadOnly(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public Boolean getLookupAttributeReadOnly(Class businessObjectClass, String attributeName) {
+		Boolean readOnly = null;
 
-    /**
+		FieldDefinition definition = getLookupFieldDefinition(businessObjectClass, attributeName);
+		if (definition != null) {
+			readOnly = Boolean.valueOf(definition.isReadOnly());
+		}
+
+		return readOnly;
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryFieldNames(java.lang.Class,
 	 *      java.lang.String)
      */
@@ -449,7 +480,7 @@ public class BusinessObjectDictionaryServiceImpl implements
     public void performForceUppercase(BusinessObject bo) {
     	performForceUppercaseCycleSafe(bo, new HashSet<BusinessObject>());
     }
-
+    
     /**
      * Handles recursion for performForceUppercase in a cycle-safe manner,
      * keeping track of visited BusinessObjects to prevent infinite recursion.
@@ -936,7 +967,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 		FieldDefinition lookupFieldDefinition = getLookupFieldDefinition(businessObjectClass, attributeName);
 		return lookupFieldDefinition != null && lookupFieldDefinition.isTreatWildcardsAndOperatorsAsLiteral();
 	}
-
+	
 	/**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryFieldAdditionalDisplayAttributeName(java.lang.Class,
 	 *      java.lang.String)
@@ -996,7 +1027,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 
 		return alternateDisplayAttributeName;
 	}
-
+	
 	/**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#tranlateCodesInLookup(java.lang.Class)
 	 */
@@ -1022,5 +1053,18 @@ public class BusinessObjectDictionaryServiceImpl implements
 
 		return translateCodes;
 	}
-	
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isLookupFieldTriggerOnChange(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public boolean isLookupFieldTriggerOnChange(Class businessObjectClass, String attributeName) {
+		boolean triggerOnChange = false;
+		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+			triggerOnChange = getLookupFieldDefinition(businessObjectClass, attributeName).isTriggerOnChange();
+		}
+
+		return triggerOnChange;
+	}
+
 }

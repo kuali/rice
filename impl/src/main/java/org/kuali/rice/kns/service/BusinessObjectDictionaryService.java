@@ -29,7 +29,7 @@ import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
  */
 public interface BusinessObjectDictionaryService {
 	public <T extends BusinessObject> InquiryPresentationController getInquiryPresentationController(Class<T> businessObjectClass);
-
+	
 	public <T extends BusinessObject> InquiryAuthorizer getInquiryAuthorizer(Class<T> businessObjectClass);
 
     /**
@@ -60,7 +60,7 @@ public interface BusinessObjectDictionaryService {
      * indicates whether business object has an exporter defined
      */
     public Boolean isExportable(Class businessObjectClass);
-
+    
     /**
      * the list defined as lookup fields for the business object.
      */
@@ -77,7 +77,7 @@ public interface BusinessObjectDictionaryService {
      * menu bar html defined for the business object.
      */
     public String getLookupMenuBar(Class businessObjectClass);
-
+    
 
     /**
      * source for optional extra button
@@ -135,7 +135,7 @@ public interface BusinessObjectDictionaryService {
      * returns boolean indicating whether lookup search field marked to force an inquiry
      */
     public Boolean forceInquiryFieldLookup(Class businessObjectClass, String attributeName);
-
+    
     /**
      * returns boolean indicating whether lookup search field marked to not do a lookup
      */
@@ -192,6 +192,11 @@ public interface BusinessObjectDictionaryService {
      * returns String indicating the result set limit for the lookup
      */
     public Integer getLookupResultSetLimit(Class businessObjectClass);
+    
+    /**
+     * @return number of search columns configured for the lookup associated with the class
+     */
+    public Integer getLookupNumberOfColumns(Class businessObjectClass);
 
     /**
      * returns String indicating the location of the lookup icon.
@@ -202,6 +207,11 @@ public interface BusinessObjectDictionaryService {
      * indicates whether a field is required for a lookup
      */
     public Boolean getLookupAttributeRequired(Class businessObjectClass, String attributeName);
+    
+    /**
+     * indicates whether a field is read only for a lookup
+     */
+    public Boolean getLookupAttributeReadOnly(Class businessObjectClass, String attributeName);
 
 
     /**
@@ -258,7 +268,7 @@ public interface BusinessObjectDictionaryService {
 
     /**
      * returns whether on a lookup, field/attribute values with wildcards and operators should treat them as literal characters
-     *
+     * 
      * @param businessObjectClass
      * @param attributeName
      * @return
@@ -278,6 +288,7 @@ public interface BusinessObjectDictionaryService {
     /**
      * returns String giving additional display attribute name for lookup field if configured, or null
      */
+     
     public String getLookupFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName);
 
     /**
@@ -285,7 +296,7 @@ public interface BusinessObjectDictionaryService {
      */
     public String getInquiryFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName);
     
-    /**
+     /**
      * @param businessObjectClass - business object class for lookup definition
      * @return Boolean indicating whether translating of codes is configured to true in lookup definition  
      */
@@ -296,4 +307,13 @@ public interface BusinessObjectDictionaryService {
      * @return Boolean indicating whether translating of codes is configured to true in inquiry definition  
      */
     public Boolean tranlateCodesInInquiry(Class businessObjectClass);
+    
+    /**
+     * Indicates whether a lookup field has been configured to trigger on value change
+     * 
+     * @param businessObjectClass - Class for business object to lookup 
+     * @param attributeName - name of attribute in the business object to check configuration for
+     * @return true if field is configured to trigger on value change, false if not
+     */
+    public boolean isLookupFieldTriggerOnChange(Class businessObjectClass, String attributeName);
 }

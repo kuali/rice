@@ -60,6 +60,8 @@
 							<html:hidden property="document.oldMaintainableObject.inactiveRecordDisplay(${fn:replace(inactiveDisplay.key,'.','_')})" />
 						</c:forEach>
 						
+						<html:hidden property="fieldNameToFocusOnAfterSubmit"/>
+						
 						<kul:documentOverview editingMode="${KualiForm.editingMode}" />
 
 	<script type="text/javascript"><!--

@@ -63,10 +63,12 @@ public class KualiForm extends PojoFormBase {
     protected List<ExtraButton> extraButtons = new TypedArrayList( ExtraButton.class ) ;
 
     private boolean fieldLevelHelpEnabled;
-
+    
     private List<HeaderField> docInfo;
     private int numColumns = 2;
-
+    
+    private String fieldNameToFocusOnAfterSubmit;
+    
     /**
      * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#addRequiredNonEditableProperties()
      */
@@ -75,7 +77,7 @@ public class KualiForm extends PojoFormBase {
     	super.addRequiredNonEditableProperties();
     	registerRequiredNonEditableProperty(KNSConstants.REFRESH_CALLER);
     }
-
+    
     public int getNumColumns() {
         return this.numColumns;
     }
@@ -106,19 +108,19 @@ public class KualiForm extends PojoFormBase {
      */
     public void populate(HttpServletRequest request) {
         setMethodToCall(WebUtils.parseMethodToCall(this, request));
-
+        
         super.populate(request);
 
         populateBackLocation(request);
         populateFieldLevelHelpEnabled(request);
-
+        
         if (actionFormUtilMap instanceof ActionFormUtilMap) {
             ((ActionFormUtilMap) actionFormUtilMap).setCacheValueFinderResults(true);
         }
     }
-
+        
     private static Boolean ENABLE_FIELD_LEVEL_HELP_IND = null;
-
+    
     protected void populateBackLocation(HttpServletRequest request){
         if (getParameter(request, "returnLocation") != null) {
             setBackLocation(getParameter(request, "returnLocation"));
@@ -128,7 +130,7 @@ public class KualiForm extends PojoFormBase {
     /**
      * Populates whether the each field will have field-level help associated with it.  Depending on how the jsp/tags are implemented, the value
      * populated by this method may be overruled by other settings
-     *
+     * 
      * @param request
      */
     protected void populateFieldLevelHelpEnabled(HttpServletRequest request) {
@@ -244,8 +246,16 @@ public class KualiForm extends PojoFormBase {
     public int getNextArbitrarilyHighIndex() {
         return this.arbitrarilyHighIndex++;
     }
+    
+	public String getFieldNameToFocusOnAfterSubmit() {
+		return this.fieldNameToFocusOnAfterSubmit;
+	}
 
-    /**
+	public void setFieldNameToFocusOnAfterSubmit(String fieldNameToFocusOnAfterSubmit) {
+		this.fieldNameToFocusOnAfterSubmit = fieldNameToFocusOnAfterSubmit;
+	}
+
+	/**
      * @return Returns the validOptionsMap.
      */
     public Map getActionFormUtilMap() {
@@ -326,7 +336,7 @@ public class KualiForm extends PojoFormBase {
 
     /**
      * Returns whether field level help is enabled for this form.
-     *
+     * 
      * @return
      */
     public boolean isFieldLevelHelpEnabled() {
@@ -336,11 +346,11 @@ public class KualiForm extends PojoFormBase {
     public void setFieldLevelHelpEnabled(boolean fieldLevelHelpEnabled) {
         this.fieldLevelHelpEnabled = fieldLevelHelpEnabled;
     }
-
-
+    
+    
     /**
-     * Retrieves a value from the form for the purposes of passing it as a parameter into the lookup or inquiry frameworks
-     *
+     * Retrieves a value from the form for the purposes of passing it as a parameter into the lookup or inquiry frameworks 
+     * 
      * @param parameterName the name of the parameter, as expected by the lookup or inquiry frameworks
      * @param parameterValueLocation the name of the property containing the value of the parameter
      * @return the value of the parameter
@@ -359,12 +369,12 @@ public class KualiForm extends PojoFormBase {
 			return (String) value;
 		}
 		Formatter formatter = Formatter.getFormatter(value.getClass());
-		return (String) formatter.format(value);
+		return (String) formatter.format(value);	
     }
 
 	/**
 	 * This overridden method ...
-	 *
+	 * 
 	 * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#shouldPropertyBePopulatedInForm(java.lang.String, javax.servlet.http.HttpServletRequest)
 	 */
 	@Override
@@ -373,17 +383,17 @@ public class KualiForm extends PojoFormBase {
 		if (requestParameterName.startsWith(KNSConstants.TAB_STATES)) {
 			return true;
 		}
-
+		
 		if (requestParameterName.equals(KNSConstants.DISPATCH_REQUEST_PARAMETER)) {
 			String methodToCallParameterName = request.getParameter(KNSConstants.DISPATCH_REQUEST_PARAMETER);
 			if(StringUtils.equals(methodToCallParameterName, KNSConstants.RETURN_METHOD_TO_CALL)){
 				return true;
 			}
 		}
-
+		
 		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);
 	}
-
+    
     public boolean shouldMethodToCallParameterBeUsed(String methodToCallParameterName, String methodToCallParameterValue, HttpServletRequest request) {
     	if ("GET".equalsIgnoreCase(request.getMethod())) {
     		return true;
@@ -418,7 +428,7 @@ public class KualiForm extends PojoFormBase {
 	public void clearEditablePropertyInformation() {
 		super.clearEditablePropertyInformation();
 	}
-
+	
 	public void setDerivedValuesOnForm(HttpServletRequest request) {
 	}
 
@@ -431,6 +441,7 @@ public class KualiForm extends PojoFormBase {
 		if (extraButtons != null) {
 			extraButtons.clear();
 		}
+		//fieldNameToFocusOnAfterSubmit = "";
 		clearDisplayedMessages();
 	}
 
@@ -443,9 +454,10 @@ public class KualiForm extends PojoFormBase {
 		if (extraButtons != null) {
 			extraButtons.clear();
 		}
+		//fieldNameToFocusOnAfterSubmit = "";
 		clearDisplayedMessages();
 	}
-
+	
 	private void clearDisplayedMessages() {
 		if (displayedErrors != null) {
 			displayedErrors.clear();

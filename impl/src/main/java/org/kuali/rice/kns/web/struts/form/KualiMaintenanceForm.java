@@ -75,6 +75,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     	registerRequiredNonEditableProperty(KNSConstants.LOOKUP_RESULTS_BO_CLASS_NAME);
     	registerRequiredNonEditableProperty(KNSConstants.LOOKED_UP_COLLECTION_NAME);
     	registerRequiredNonEditableProperty(KNSConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER);
+    	registerRequiredNonEditableProperty(KNSConstants.FIELD_NAME_TO_FOCUS_ON_AFTER_SUBMIT);
     }
 
     /**

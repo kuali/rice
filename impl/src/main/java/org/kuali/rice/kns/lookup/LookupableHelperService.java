@@ -323,4 +323,10 @@ public interface LookupableHelperService extends Serializable{
     public Field getExtraField();
     
     public void applyFieldAuthorizationsFromNestedLookups(Field field);
+    
+    /**
+     * Performs conditional logic (based on current search values or other parameters) to
+     * override field hidden, read-only, and required attributes previously set.
+     */
+    public void applyConditionalLogicForFieldDisplay();
 }

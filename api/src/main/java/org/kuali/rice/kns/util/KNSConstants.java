@@ -35,7 +35,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String PARAM_MAINTENANCE_VIEW_MODE_MAINTENANCE = "maintenance";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_LOOKUP = "lookup";
     public static final String PARAM_MAINTENANCE_VIEW_MODE_INQUIRY = "inquiry";
-
+    
     public static final String KNS_NAMESPACE = "KR-NS";
     public static final String KUALI_RICE_SYSTEM_NAMESPACE = "KR-SYS";
     public static final String KUALI_RICE_WORKFLOW_NAMESPACE = "KR-WKFLW";
@@ -60,9 +60,9 @@ public class KNSConstants extends JSTLConstants {
     public static final String KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS = "canSendAdHocRequests";
     public static final String KUALI_ACTION_CAN_ADD_ADHOC_REQUESTS = "canAddAdHocRequests";
     public static final String KUALI_ACTION_CAN_SEND_NOTE_FYI = "canSendNoteFyi";
-    public static final String KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW = "canEditDocumentOverview";
+    public static final String KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW = "canEditDocumentOverview"; 
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
-
+    
     public static class DetailTypes {
         public static final String NA_PARM_DETAIL_TYPE = "N/A";
         public static final String ALL_DETAIL_TYPE = "All";
@@ -190,7 +190,7 @@ public class KNSConstants extends JSTLConstants {
 //    public static final String STAND_IN_BUSINESS_OBJECT_FOR_ATTRIBUTES = "AttributeReferenceDummy";
     public static final String OVERRIDE_KEYS = "overrideKeys";
     public static final String COPY_KEYS = "cpKys";
-
+    
     public static final String KNS_APPLICATION_DATASOURCE = "knsApplication.datasource";
     public static final String KNS_SERVER_DATASOURCE = "knsServer.datasource";
     public static final String KNS_APPLICATION_DATASOURCE_JNDI = "knsApplication.datasource.jndi.location";
@@ -215,7 +215,7 @@ public class KNSConstants extends JSTLConstants {
      */
     public static final String NOTE_ATTACHMENT_FILE_PROPERTY_NAME = "attachmentFile";
 
-
+    
     /**
      * Property name for enabling attachments to note, overriding the defaults defined by the document template - Value is
      * "enableNoteAttachments"
@@ -263,6 +263,8 @@ public class KNSConstants extends JSTLConstants {
 //    public static final String INQUIRY_IMPL_ATTRIBUTE_NAME = "inquirableImplServiceName";
     public static final String INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX = "previousPkValue_";
     public static final String INACTIVE_RECORD_DISPLAY_PARAM_PREFIX = "inactiveRecordDisplay_";
+    
+    public static final String FIELD_NAME_TO_FOCUS_ON_AFTER_SUBMIT = "fieldNameToFocusOnAfterSubmit";
 
     public static final String DEFAULT_APPLICATION_CODE = "KUALI";
     public static final String APPLICATION_CODE = "app.namespace";
@@ -349,8 +351,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String METHOD_TO_CALL_PARM14_LEFT_DEL = "(::::;";
     public static final String METHOD_TO_CALL_PARM14_RIGHT_DEL = ";::::)";
     // if more strings needed, then add more colons to the PARM11 strings above, e.g. (::; (:::;, etc.
-
-
+    
+    
     // Pessimistic Locking Constants
     public static final String SESSION_TIMEOUT_WARNING_MESSAGE_TIME_PARM_NM = "SESSION_TIMEOUT_WARNING_MESSAGE_TIME";
     public static final String SESSION_TIMEOUT_WARNING_MILLISECONDS = "SESSION_TIMEOUT_WARNING_MILLISECONDS";
@@ -407,7 +409,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String BO_ATTACHMENT_FILE_NAME = "fileName";
     public static final String BO_ATTACHMENT_FILE_CONTENT_TYPE = "fileContentType";
     public static final String BO_ATTACHMENT_FILE_CONTENT_FIELD = "fileContentBOField";
-
+    
 
     // specialized method 'delete' used only for PessimisticLocks currently
     public static final String DELETE_METHOD = "delete";
@@ -524,7 +526,7 @@ public class KNSConstants extends JSTLConstants {
 
         public static final String ENABLE_DIRECT_INQUIRIES_IND = "ENABLE_DIRECT_INQUIRIES_IND";
         public static final String DEFAULT_COUNTRY = "DEFAULT_COUNTRY";
-
+        
         public static final String STRING_TO_DATE_FORMATS = "STRING_TO_DATE_FORMATS";
         public static final String STRING_TO_TIMESTAMP_FORMATS = "STRING_TO_TIMESTAMP_FORMATS";
         public static final String DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE = "DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE";
@@ -554,7 +556,7 @@ public class KNSConstants extends JSTLConstants {
     }
 
     public static final String TAB_STATES = "tabStates";
-
+    
     public static final List<String> ALWAYS_VALID_PARAMETER_PREFIXES = new ArrayList<String>();
     static {
     	ALWAYS_VALID_PARAMETER_PREFIXES.add( TAB_STATES );
@@ -573,7 +575,7 @@ public class KNSConstants extends JSTLConstants {
     }
 
 	public static final String ENABLE_NONPRODUCTION_UNMASKING = "enable.nonproduction.data.unmasking";
-
+	
   	public static final String SINGLE_QUOTE = "'";
 
 }

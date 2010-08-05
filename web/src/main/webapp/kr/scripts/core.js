@@ -29,7 +29,7 @@ function toggleTab(doc, tabKey) {
 function expandAllTab() {
 	doToAllTabs(showTab);
 	return false;
-}
+	}
 
 /** collapses all tab by hiding them. */
 function collapseAllTab() {
@@ -55,7 +55,7 @@ function showTab(doc, tabKey) {
 		return false;
 	}
 	
-	// replaced 'block' with '' to make budgetExpensesRow.tag happy.
+    // replaced 'block' with '' to make budgetExpensesRow.tag happy.
     doc.getElementById('tab-' + tabKey + '-div').style.display = '';
     doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'OPEN';
     var image = doc.getElementById('tab-' + tabKey + '-imageToggle');
@@ -72,7 +72,7 @@ function hideTab(doc, tabKey) {
 		return false;
 	}
 	
-	doc.getElementById('tab-' + tabKey + '-div').style.display = 'none';
+    doc.getElementById('tab-' + tabKey + '-div').style.display = 'none';
     doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'CLOSE';
     var image = doc.getElementById('tab-' + tabKey + '-imageToggle');
     image.src = jsContextPath + '/kr/images/tinybutton-show.gif';
@@ -108,6 +108,36 @@ function hasFormAlreadyBeenSubmitted() {
 	       alert("Page has not finished loading.");
 	       return false;
 	} 
+}
+
+// Called when we want to submit the form from a field event and 
+// want focus to be placed on the next field according to the current tab order
+// when the page refreshes
+function setFieldToFocusAndSubmit(triggerElement) {
+	if(document.forms[0].fieldNameToFocusOnAfterSubmit) {
+		if (document.forms.length > 0) {
+			var nextTabField;
+			var field = document.forms[0];
+			for (i = 0; i < field.length; i++) {
+				if (field.elements[i].tabIndex > triggerElement.tabIndex) {
+					if (nextTabField) {
+						if (field.elements[i].tabIndex < nextTabField.tabIndex) {
+					       nextTabField = field.elements[i];
+			         	}
+					}
+		       	    else {
+				       nextTabField = field.elements[i];
+			        }
+				}	
+			}
+	
+	        if (nextTabField) {
+	        	document.forms[0].fieldNameToFocusOnAfterSubmit.value = nextTabField.name;
+	        }
+		}	
+	}
+	
+    document.forms[0].submit();
 }
 
 function submitForm() {
@@ -226,11 +256,11 @@ function setRouteLogIframeDimensions() {
 	    }
 	  }
   }
-  
-  if (routeLogResizeTimer == "" ) {
-     routeLogResizeTimer = setInterval("resizeTheRouteLogFrame()",300);
-  }
-}
+	  
+	    if (routeLogResizeTimer == "" ) {
+	      routeLogResizeTimer = setInterval("resizeTheRouteLogFrame()",300);
+	    }
+	  }
 
 function resizeTheRouteLogFrame() {
   setRouteLogIframeDimensions();
@@ -333,5 +363,33 @@ function getStyleObject(objectId) {
 	return document.layers[objectId];
    } else {
 	return false;
+   }
+}
+
+function placeFocus() {
+	if (document.forms.length > 0) {
+	  var fieldNameToFocus;
+	  if (document.forms[0].fieldNameToFocusOnAfterSubmit) {
+	    fieldNameToFocus = document.forms[0].fieldNameToFocusOnAfterSubmit.value;
+	  }
+	  
+	  var focusSet = false;
+	  var field = document.forms[0];
+	  for (i = 0; i < field.length; i++) {
+		if (fieldNameToFocus) {
+	  	  if (field.elements[i].name == fieldNameToFocus) {
+			  document.forms[0].elements[i].focus();
+			  focusSet = true;
+		  }	 
+		}
+		else if ((field.elements[i].type == "text") || (field.elements[i].type == "textarea")) {
+		  document.forms[0].elements[i].focus();
+		  focusSet = true;
+		}
+		
+		if (focusSet) {
+			break;
+		}
+	  }
    }
 }

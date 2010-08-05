@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -107,6 +108,213 @@ public class FieldUtils {
 
         field.setInquiryURL(inquiryHref);
     }
+    
+	/**
+	 * Sets the control on the field based on the data dictionary definition
+	 * 
+	 * @param businessObjectClass
+	 *            - business object class for the field attribute
+	 * @param attributeName
+	 *            - name of the attribute whose {@link Field} is being set
+	 * @param convertForLookup
+	 *            - whether the field is being build for lookup search which impacts the control chosen
+	 * @param field
+	 *            - {@link Field} to set control on
+	 */
+	public static void setFieldControl(Class businessObjectClass, String attributeName, boolean convertForLookup,
+			Field field) {
+		ControlDefinition control = getDataDictionaryService().getAttributeControlDefinition(businessObjectClass,
+				attributeName);
+		String fieldType = Field.TEXT;
+
+		if (control != null) {
+			if (control.isSelect()) {
+				if (control.getScript() != null && control.getScript().length() > 0) {
+					fieldType = Field.DROPDOWN_SCRIPT;
+					field.setScript(control.getScript());
+				} else {
+					fieldType = Field.DROPDOWN;
+				}
+			}
+
+			if (control.isMultiselect()) {
+				fieldType = Field.MULTISELECT;
+			}
+
+			if (control.isApcSelect()) {
+				fieldType = Field.DROPDOWN_APC;
+			}
+
+			if (control.isCheckbox()) {
+				fieldType = Field.CHECKBOX;
+			}
+
+			if (control.isRadio()) {
+				fieldType = Field.RADIO;
+			}
+
+			if (control.isHidden()) {
+				fieldType = Field.HIDDEN;
+			}
+
+			if (control.isKualiUser()) {
+				fieldType = Field.KUALIUSER;
+				KualiUserControlDefinition kualiUserControl = (KualiUserControlDefinition) control;
+				field.setUniversalIdAttributeName(kualiUserControl.getUniversalIdAttributeName());
+				field.setUserIdAttributeName(kualiUserControl.getUserIdAttributeName());
+				field.setPersonNameAttributeName(kualiUserControl.getPersonNameAttributeName());
+			}
+
+			if (control.isWorkflowWorkgroup()) {
+				fieldType = Field.WORKFLOW_WORKGROUP;
+			}
+
+			if (control.isFile()) {
+				fieldType = Field.FILE;
+			}
+
+			if (control.isTextarea() && !convertForLookup) {
+				fieldType = Field.TEXT_AREA;
+			}
+
+			if (control.isLookupHidden()) {
+				fieldType = Field.LOOKUP_HIDDEN;
+			}
+
+			if (control.isLookupReadonly()) {
+				fieldType = Field.LOOKUP_READONLY;
+			}
+
+			if (control.isCurrency()) {
+				fieldType = Field.CURRENCY;
+			}
+
+			if (control.isButton()) {
+				fieldType = Field.BUTTON;
+			}
+
+			if (control.isLink()) {
+				fieldType = Field.LINK;
+			}
+
+			if (Field.CURRENCY.equals(fieldType) && control instanceof CurrencyControlDefinition) {
+				CurrencyControlDefinition currencyControl = (CurrencyControlDefinition) control;
+				field.setStyleClass("amount");
+				field.setSize(currencyControl.getSize());
+				field.setFormattedMaxLength(currencyControl.getFormattedMaxLength());
+			}
+
+			// for text controls, set size attribute
+			if (Field.TEXT.equals(fieldType)) {
+				Integer size = control.getSize();
+				if (size != null) {
+					field.setSize(size.intValue());
+				} else {
+					field.setSize(30);
+				}
+				field.setDatePicker(control.isDatePicker());
+				field.setRanged(control.isRanged());
+			}
+
+			if (Field.WORKFLOW_WORKGROUP.equals(fieldType)) {
+				Integer size = control.getSize();
+				if (size != null) {
+					field.setSize(size.intValue());
+				} else {
+					field.setSize(30);
+				}
+			}
+
+			// for text area controls, set rows and cols attributes
+			if (Field.TEXT_AREA.equals(fieldType)) {
+				Integer rows = control.getRows();
+				if (rows != null) {
+					field.setRows(rows.intValue());
+				} else {
+					field.setRows(3);
+				}
+
+				Integer cols = control.getCols();
+				if (cols != null) {
+					field.setCols(cols.intValue());
+				} else {
+					field.setCols(40);
+				}
+				field.setExpandedTextArea(control.isExpandedTextArea());
+			}
+
+			// for dropdown and radio, get instance of specified KeyValuesFinder and set field values
+			if (Field.DROPDOWN.equals(fieldType) || Field.RADIO.equals(fieldType)
+					|| Field.DROPDOWN_SCRIPT.equals(fieldType) || Field.DROPDOWN_APC.equals(fieldType)
+					|| Field.MULTISELECT.equals(fieldType)) {
+				String keyFinderClassName = control.getValuesFinderClass();
+
+				if (StringUtils.isNotBlank(keyFinderClassName)) {
+					try {
+						Class keyFinderClass = ClassLoaderUtils.getClass(keyFinderClassName);
+						KeyValuesFinder finder = (KeyValuesFinder) keyFinderClass.newInstance();
+
+						if (finder != null) {
+							if (finder instanceof ApcValuesFinder && control instanceof ApcSelectControlDefinition) {
+								((ApcValuesFinder) finder).setParameterNamespace(((ApcSelectControlDefinition) control)
+										.getParameterNamespace());
+								((ApcValuesFinder) finder)
+										.setParameterDetailType(((ApcSelectControlDefinition) control)
+												.getParameterDetailType());
+								((ApcValuesFinder) finder).setParameterName(((ApcSelectControlDefinition) control)
+										.getParameterName());
+							} else if (finder instanceof PersistableBusinessObjectValuesFinder) {
+								((PersistableBusinessObjectValuesFinder) finder)
+										.setBusinessObjectClass(ClassLoaderUtils.getClass(control
+												.getBusinessObjectClass()));
+								((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(control
+										.getKeyAttribute());
+								((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(control
+										.getLabelAttribute());
+								if (control.getIncludeBlankRow() != null) {
+									((PersistableBusinessObjectValuesFinder) finder).setIncludeBlankRow(control
+											.getIncludeBlankRow());
+								}
+								((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(control
+										.getIncludeKeyInLabel());
+							}
+							field.setFieldValidValues(finder.getKeyValues());
+							field.setFieldInactiveValidValues(finder.getKeyValues(false));
+						}
+					} catch (InstantiationException e) {
+						LOG.error("Unable to get new instance of finder class: " + keyFinderClassName);
+						throw new RuntimeException("Unable to get new instance of finder class: " + keyFinderClassName);
+					} catch (IllegalAccessException e) {
+						LOG.error("Unable to get new instance of finder class: " + keyFinderClassName);
+						throw new RuntimeException("Unable to get new instance of finder class: " + keyFinderClassName);
+					}
+				}
+			}
+
+			if (Field.CHECKBOX.equals(fieldType) && convertForLookup) {
+				fieldType = Field.RADIO;
+				field.setFieldValidValues(IndicatorValuesFinder.INSTANCE.getKeyValues());
+			}
+
+			// for button control
+			if (Field.BUTTON.equals(fieldType)) {
+				ButtonControlDefinition buttonControl = (ButtonControlDefinition) control;
+				field.setImageSrc(buttonControl.getImageSrc());
+				field.setStyleClass(buttonControl.getStyleClass());
+			}
+
+			// for link control
+			if (Field.LINK.equals(fieldType)) {
+				LinkControlDefinition linkControl = (LinkControlDefinition) control;
+				field.setStyleClass(linkControl.getStyleClass());
+				field.setTarget(linkControl.getTarget());
+				field.setHrefText(linkControl.getHrefText());
+			}
+
+		}
+
+		field.setFieldType(fieldType);
+	}
 
 
     /**
@@ -122,192 +330,7 @@ public class FieldUtils {
         field.setPropertyName(attributeName);
         field.setFieldLabel(getDataDictionaryService().getAttributeLabel(businessObjectClass, attributeName));
 
-        // get control type for ui, depending on type set other field properties
-        ControlDefinition control = getDataDictionaryService().getAttributeControlDefinition(businessObjectClass, attributeName);
-        String fieldType = Field.TEXT;
-
-        if (control != null) {
-            if (control.isSelect()) {
-                if (control.getScript() != null && control.getScript().length() > 0) {
-                    fieldType = Field.DROPDOWN_SCRIPT;
-                    field.setScript(control.getScript());
-                }
-                else {
-                    fieldType = Field.DROPDOWN;
-                }
-            }
-
-            if (control.isMultiselect()) {
-                fieldType = Field.MULTISELECT;
-            }
-
-            if (control.isApcSelect()) {
-                fieldType = Field.DROPDOWN_APC;
-            }
-
-            if (control.isCheckbox()) {
-                fieldType = Field.CHECKBOX;
-            }
-
-            if (control.isRadio()) {
-                fieldType = Field.RADIO;
-            }
-
-            if (control.isHidden()) {
-                fieldType = Field.HIDDEN;
-            }
-
-            if (control.isKualiUser()) {
-                fieldType = Field.KUALIUSER;
-                KualiUserControlDefinition kualiUserControl = (KualiUserControlDefinition) control;
-                field.setUniversalIdAttributeName(kualiUserControl.getUniversalIdAttributeName());
-                field.setUserIdAttributeName(kualiUserControl.getUserIdAttributeName());
-                field.setPersonNameAttributeName(kualiUserControl.getPersonNameAttributeName());
-            }
-
-            if (control.isWorkflowWorkgroup()) {
-                fieldType = Field.WORKFLOW_WORKGROUP;
-            }
-
-            if (control.isFile()) {
-                fieldType = Field.FILE;
-            }
-
-            if (control.isTextarea() && !convertForLookup) {
-                fieldType = Field.TEXT_AREA;
-            }
-
-            if (control.isLookupHidden()) {
-                fieldType = Field.LOOKUP_HIDDEN;
-            }
-
-            if (control.isLookupReadonly()) {
-                fieldType = Field.LOOKUP_READONLY;
-            }
-
-            if (control.isCurrency()) {
-                fieldType = Field.CURRENCY;
-            }
-
-            if(control.isButton()){
-            	fieldType = Field.BUTTON;
-            }
-
-            if(control.isLink()){
-            	fieldType = Field.LINK;
-            }
-
-            if (Field.CURRENCY.equals(fieldType) && control instanceof CurrencyControlDefinition) {
-                CurrencyControlDefinition currencyControl = (CurrencyControlDefinition) control;
-                field.setStyleClass("amount");
-                field.setSize(currencyControl.getSize());
-                field.setFormattedMaxLength(currencyControl.getFormattedMaxLength());
-            }
-
-            // for text controls, set size attribute
-            if (Field.TEXT.equals(fieldType)) {
-                Integer size = control.getSize();
-                if (size != null) {
-                    field.setSize(size.intValue());
-                }
-                else {
-                    field.setSize(30);
-                }
-                field.setDatePicker(control.isDatePicker());
-                field.setRanged(control.isRanged());
-            }
-
-            if (Field.WORKFLOW_WORKGROUP.equals(fieldType)) {
-                Integer size = control.getSize();
-                if (size != null) {
-                    field.setSize(size.intValue());
-                }
-                else {
-                    field.setSize(30);
-                }
-            }
-
-            // for text area controls, set rows and cols attributes
-            if (Field.TEXT_AREA.equals(fieldType)) {
-                Integer rows = control.getRows();
-                if (rows != null) {
-                    field.setRows(rows.intValue());
-                }
-                else {
-                    field.setRows(3);
-                }
-
-                Integer cols = control.getCols();
-                if (cols != null) {
-                    field.setCols(cols.intValue());
-                }
-                else {
-                    field.setCols(40);
-                }
-                field.setExpandedTextArea(control.isExpandedTextArea());
-            }
-
-            // for dropdown and radio, get instance of specified KeyValuesFinder and set field values
-            if (Field.DROPDOWN.equals(fieldType) || Field.RADIO.equals(fieldType) || Field.DROPDOWN_SCRIPT.equals(fieldType) || Field.DROPDOWN_APC.equals(fieldType) || Field.MULTISELECT.equals(fieldType)) {
-                String keyFinderClassName = control.getValuesFinderClass();
-
-                if (StringUtils.isNotBlank(keyFinderClassName)) {
-                    try {
-                    	Class keyFinderClass = ClassLoaderUtils.getClass(keyFinderClassName);
-                        KeyValuesFinder finder = (KeyValuesFinder) keyFinderClass.newInstance();
-
-                        if (finder != null) {
-                            if (finder instanceof ApcValuesFinder && control instanceof ApcSelectControlDefinition) {
-                                ((ApcValuesFinder) finder).setParameterNamespace(((ApcSelectControlDefinition) control).getParameterNamespace());
-                                ((ApcValuesFinder) finder).setParameterDetailType(((ApcSelectControlDefinition) control).getParameterDetailType());
-                                ((ApcValuesFinder) finder).setParameterName(((ApcSelectControlDefinition) control).getParameterName());
-                            } else if (finder instanceof PersistableBusinessObjectValuesFinder) {
-                                ((PersistableBusinessObjectValuesFinder) finder).setBusinessObjectClass(ClassLoaderUtils.getClass(control.getBusinessObjectClass()));
-                                ((PersistableBusinessObjectValuesFinder) finder).setKeyAttributeName(control.getKeyAttribute());
-                                ((PersistableBusinessObjectValuesFinder) finder).setLabelAttributeName(control.getLabelAttribute());
-                                if (control.getIncludeBlankRow() != null) {
-                                	((PersistableBusinessObjectValuesFinder) finder).setIncludeBlankRow(control.getIncludeBlankRow());
-                                }
-                                ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(control.getIncludeKeyInLabel());
-                            }
-                            field.setFieldValidValues(finder.getKeyValues());
-                            field.setFieldInactiveValidValues(finder.getKeyValues(false));
-                        }
-                    }
-                    catch (InstantiationException e) {
-                        LOG.error("Unable to get new instance of finder class: " + keyFinderClassName);
-                        throw new RuntimeException("Unable to get new instance of finder class: " + keyFinderClassName);
-                    }
-                    catch (IllegalAccessException e) {
-                        LOG.error("Unable to get new instance of finder class: " + keyFinderClassName);
-                        throw new RuntimeException("Unable to get new instance of finder class: " + keyFinderClassName);
-                    }
-                }
-            }
-
-            if (Field.CHECKBOX.equals(fieldType) && convertForLookup) {
-                fieldType = Field.RADIO;
-                field.setFieldValidValues(IndicatorValuesFinder.INSTANCE.getKeyValues());
-            }
-
-            // for button control
-            if (Field.BUTTON.equals(fieldType)) {
-            	ButtonControlDefinition buttonControl = (ButtonControlDefinition) control;
-                field.setImageSrc(buttonControl.getImageSrc());
-                field.setStyleClass(buttonControl.getStyleClass());
-            }
-
-            // for link control
-            if (Field.LINK.equals(fieldType)) {
-            	LinkControlDefinition linkControl = (LinkControlDefinition) control;
-                field.setStyleClass(linkControl.getStyleClass());
-                field.setTarget(linkControl.getTarget());
-                field.setHrefText(linkControl.getHrefText());
-            }
-
-        }
-
-        field.setFieldType(fieldType);
+        setFieldControl(businessObjectClass, attributeName, convertForLookup, field);
 
         Boolean fieldRequired = getBusinessObjectDictionaryService().getLookupAttributeRequired(businessObjectClass, attributeName);
         if (fieldRequired != null) {
@@ -345,7 +368,7 @@ public class FieldUtils {
                 throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
             }
         }
-        
+
         // set Field help properties
         field.setBusinessObjectClassName(businessObjectClass.getName());
         field.setFieldHelpName(attributeName);
@@ -353,7 +376,7 @@ public class FieldUtils {
 
         return field;
     }
-    
+
 	/**
 	 * For attributes that are codes (determined by whether they have a
 	 * reference to a KualiCode bo and similar naming) sets the name as an
@@ -541,10 +564,10 @@ public class FieldUtils {
         }
         
         for (Iterator<Field> iter = fields.iterator(); iter.hasNext();) {
-            Field element = iter.next();            
+            Field element = iter.next();
             if (element.containsBOData()) {
                 String propertyName = element.getPropertyName();
-                
+
                 // See: https://test.kuali.org/jira/browse/KULCOA-1185
                 // Properties that could not possibly be set by the BusinessObject should be ignored.
                 // (https://test.kuali.org/jira/browse/KULRNE-4354; this code was killing the src attribute of IMAGE_SUBMITs).
@@ -1255,7 +1278,6 @@ public class FieldUtils {
             if (!Field.MULTISELECT.equals(field.getFieldType())) {
             	field.setMaxLength(100);
             }
-            fields.add(field);
 
             // if the attrib name is "active", and BO is Inactivatable, then set the default value to Y
             if (attributeName.equals(KNSPropertyConstants.ACTIVE) && Inactivateable.class.isAssignableFrom(businessObjectClass)) {
@@ -1283,13 +1305,17 @@ public class FieldUtils {
 
             populateQuickfinderDefaultsForLookup(businessObjectClass, attributeName, field);
 
-            if( isHiddenMap.containsKey(field.getPropertyName()) && isHiddenMap.get(field.getPropertyName()).booleanValue()){
-            	field.setFieldType(Field.HIDDEN);
-            	//field.setHidden(true);
-            }
+			if ((isHiddenMap.containsKey(field.getPropertyName()) && isHiddenMap.get(field.getPropertyName()).booleanValue())) {
+				field.setFieldType(Field.HIDDEN);
+			}
+            
+            boolean triggerOnChange = getBusinessObjectDictionaryService().isLookupFieldTriggerOnChange(businessObjectClass, attributeName);
+            field.setTriggerOnChange(triggerOnChange);
 
             field.setFieldLevelHelpEnabled(isLookupFieldLevelHelpEnabled(businessObjectClass, attributeName));
             field.setFieldLevelHelpDisabled(isLookupFieldLevelHelpDisabled(businessObjectClass, attributeName));
+            
+            fields.add(field);
         }
         return fields;
     }

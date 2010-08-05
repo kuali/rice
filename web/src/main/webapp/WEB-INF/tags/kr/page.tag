@@ -86,19 +86,7 @@
 					type="text/css" />
 			  </c:if>
 
-			  <!-- Set the focus to first text box on form -->
 			  <script type="text/javascript">
-			  function placeFocus() {
-				if (document.forms.length > 0) {
-				  var field = document.forms[0];
-				  for (i = 0; i < field.length; i++) {
-					if ((field.elements[i].type == "text") || (field.elements[i].type == "textarea")) {
-					  document.forms[0].elements[i].focus();
-					  break;
-					}
-				  }
-			   }
-			  }
 			  <!-- allow for custom lookup calls -->
 			  function customLookupChanged() {
 
@@ -159,6 +147,9 @@
 				<c:set var="anchorScript"
 					value="jumpToAnchor('${KualiForm.anchor}');" />
 			</c:if>
+		</c:if>
+		<c:if test="${empty anchorScript}">
+		  <c:set var="anchorScript" value="placeFocus();" />
 		</c:if>
 		<body onload="if ( !restoreScrollPosition() ) { ${anchorScript} }"
 			onKeyPress="return isReturnKeyAllowed('${Constants.DISPATCH_REQUEST_PARAMETER}.' , event);">

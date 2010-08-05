@@ -127,7 +127,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     private String fieldHelpUrl;
     private String propertyName; 
     private String propertyValue;
-    
+
     private String alternateDisplayPropertyName;
     private String alternateDisplayPropertyValue;
     private String additionalDisplayPropertyName;
@@ -197,6 +197,8 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     private String imageSrc;
     private String target;
     private String hrefText;
+    
+    private boolean triggerOnChange;
 
 
     /**
@@ -204,6 +206,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
      */
     public Field() {
         this.fieldLevelHelpEnabled = false;
+        this.triggerOnChange = false;
     }
 
     /**
@@ -220,6 +223,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
         this.keyField = false;
         this.secure = false;
         this.fieldLevelHelpEnabled = false;
+        this.triggerOnChange = false;
     }
 
     /**
@@ -253,6 +257,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
         this.upperCase = false;
         this.keyField = false;
         this.fieldLevelHelpEnabled = false;
+        this.triggerOnChange = false;
     }
 
     /**
@@ -298,6 +303,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
         this.isReadOnly = false;
         this.keyField = false;
         this.fieldLevelHelpEnabled = false;
+        this.triggerOnChange = false;
     }
 
 
@@ -943,10 +949,10 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
      */
     public void setPropertyValue(Object propertyValue) {
         String newPropertyValue = ObjectUtils.formatPropertyValue(propertyValue);
-        
-        if (isUpperCase()) {
-            newPropertyValue = newPropertyValue.toUpperCase();
-        }
+
+            if (isUpperCase()) {
+                newPropertyValue = newPropertyValue.toUpperCase();
+            }
 
         this.propertyValue = newPropertyValue;
     }
@@ -1487,6 +1493,14 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
 	 */
 	public void setFieldInactiveValidValues(List fieldInactiveValidValues) {
 		this.fieldInactiveValidValues = fieldInactiveValidValues;
+	}
+	
+	public boolean isTriggerOnChange() {
+		return this.triggerOnChange;
+	}
+
+	public void setTriggerOnChange(boolean triggerOnChange) {
+		this.triggerOnChange = triggerOnChange;
 	}
 
 	public boolean getHasLookupable() {

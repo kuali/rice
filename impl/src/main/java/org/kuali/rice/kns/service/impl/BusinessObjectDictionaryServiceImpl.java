@@ -885,6 +885,21 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultFieldTotal(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public Boolean getLookupResultFieldTotal(Class businessObjectClass, String attributeName) {
+		Boolean total = false;
+
+		if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
+			total = Boolean.valueOf(getLookupResultFieldDefinition(
+					businessObjectClass, attributeName).isTotal());
+		}
+
+		return total;
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#forceInquiryFieldInquiry(java.lang.Class,
 	 *      java.lang.String)
      */

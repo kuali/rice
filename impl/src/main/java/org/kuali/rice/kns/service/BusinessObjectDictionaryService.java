@@ -162,6 +162,11 @@ public interface BusinessObjectDictionaryService {
      * returns boolean indicating whether lookup result field to use shortLabel
      */
     public Boolean getLookupResultFieldUseShortLabel(Class businessObjectClass, String attributeName);
+    
+    /**
+     * returns boolean indicating whether lookup result field should be totaled
+     */
+    public Boolean getLookupResultFieldTotal(Class businessObjectClass, String attributeName);
 
     /**
      * returns String indicating the default search value for the lookup field

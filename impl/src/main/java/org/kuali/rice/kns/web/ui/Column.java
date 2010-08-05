@@ -35,6 +35,7 @@ public class Column implements java.io.Serializable, PropertyRenderingConfigElem
     private String sortable = "true";
     private String propertyName;
     private String propertyValue;
+    private Object unformattedPropertyValue;
     private String propertyURL;
     private HtmlData columnAnchor;
     private Formatter formatter;
@@ -43,6 +44,8 @@ public class Column implements java.io.Serializable, PropertyRenderingConfigElem
     
     private String alternateDisplayPropertyName;
     private String additionalDisplayPropertyName;
+    
+    private boolean total;
     
     /**
      * A comparator used to compare the propertyValue values
@@ -205,8 +208,7 @@ public class Column implements java.io.Serializable, PropertyRenderingConfigElem
     public void setPropertyValue(String propertyValue) {
         this.propertyValue = propertyValue;
     }
-
-
+    
     /**
      * @return Returns the formatter.
      */
@@ -276,6 +278,22 @@ public class Column implements java.io.Serializable, PropertyRenderingConfigElem
 
 	public void setAdditionalDisplayPropertyName(String additionalDisplayPropertyName) {
 		this.additionalDisplayPropertyName = additionalDisplayPropertyName;
+	}
+
+	public boolean isTotal() {
+		return this.total;
+	}
+
+	public void setTotal(boolean total) {
+		this.total = total;
+	}
+
+	public Object getUnformattedPropertyValue() {
+		return this.unformattedPropertyValue;
+	}
+
+	public void setUnformattedPropertyValue(Object unformattedPropertyValue) {
+		this.unformattedPropertyValue = unformattedPropertyValue;
 	}
 	
 }

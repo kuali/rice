@@ -193,7 +193,7 @@
 
 				<display:table class="datatable-100" cellspacing="0"
 				requestURIcontext="false" cellpadding="0" name="${reqSearchResults}"
-				id="row" export="true" pagesize="100"
+				id="row" export="true" pagesize="100" varTotals="totals" 
 				requestURI="lookup.do?methodToCall=viewResults&reqSearchResultsActualSize=${reqSearchResultsActualSize}&searchResultKey=${searchResultKey}&searchUsingOnlyPrimaryKeyValues=${KualiForm.searchUsingOnlyPrimaryKeyValues}&actionUrlsExist=${KualiForm.actionUrlsExist}">
 
 				<%-- the param['d-16544-e'] parameter below is NOT null when we are in exporting mode, so this check disables rendering of return/action URLs when we are exporting to CSV, excel, xml, etc. --%>
@@ -220,17 +220,37 @@
 					</logic:present>
 				</c:if>
 
+                <%-- needed for total line display --%>
+                <c:set var="columnNums" value=""/>
+                <c:set var="totalColumnNums" value=""/>
+                
 				<c:forEach items="${row.columns}" var="column" varStatus="loopStatus">
                     <c:set var="colClass" value="${ fn:startsWith(column.formatter, 'org.kuali.rice.kns.web.format.CurrencyFormatter') ? 'numbercell' : 'infocell' }" />
+              
+                    <c:if test="${!empty columnNums}" >
+                      <c:set var="columnNums" value="${columnNums},"/>
+                    </c:if>
+                    <c:set var="columnNums" value="${columnNums}column${loopStatus.count}"/>
+                    
+                    <c:set var="staticColumnValue" value="${column.propertyValue}" />
+                    <c:if test="${column.total}" >
+                      <c:set var="staticColumnValue" value="${column.unformattedPropertyValue}" />
+                      
+                      <c:if test="${!empty totalColumnNums}" >
+                        <c:set var="totalColumnNums" value="${totalColumnNums},"/>
+                      </c:if>
+                      <c:set var="totalColumnNums" value="${totalColumnNums}column${loopStatus.count}"/>
+                    </c:if>
+                    
 					<c:choose>
 						<%--NOTE: Check if exporting first, as this should be outputted without extra HTML formatting --%>
 						<c:when	test="${param['d-16544-e'] != null}">
 								<display:column class="${colClass}" sortable="${column.sortable}"
-									title="${column.columnTitle}" comparator="${column.comparator}"
+									title="${column.columnTitle}" comparator="${column.comparator}" total="${column.total}" value="${staticColumnValue}" 
 									maxLength="${column.maxLength}"><c:out value="${column.propertyValue}" escapeXml="false" default="" /></display:column>
 						</c:when>
 						<c:when	test="${!empty column.columnAnchor.href || column.multipleAnchors}">
-							<display:column class="${colClass}" sortable="${column.sortable}" title="${column.columnTitle}" comparator="${column.comparator}">
+							<display:column class="${colClass}" sortable="${column.sortable}" title="${column.columnTitle}" comparator="${column.comparator}" total="${column.total}" value="${staticColumnValue}" >
 <c:choose><c:when test="${column.multipleAnchors}"><c:set var="numberOfColumnAnchors" value="${column.numberOfColumnAnchors}" /><c:choose>
 <c:when test="${empty columnAnchor.target}"><c:set var="anchorTarget" value="_blank" /></c:when><c:otherwise><c:set var="anchorTarget" value="${columnAnchor.target}" /></c:otherwise></c:choose>
 <!-- Please don't change formatting of this logic:iterate block -->
@@ -242,14 +262,45 @@
 <%--NOTE: DO NOT FORMAT THIS FILE, DISPLAY:COLUMN WILL NOT WORK CORRECTLY IF IT CONTAINS LINE BREAKS --%>
 						<c:otherwise>
 							<display:column class="${colClass}" sortable="${column.sortable}"
-								title="${column.columnTitle}" comparator="${column.comparator}"
+								title="${column.columnTitle}" comparator="${column.comparator}" total="${column.total}" value="${staticColumnValue}" 
 								maxLength="${column.maxLength}" decorator="org.kuali.rice.kns.web.ui.FormatAwareDecorator"><c:out value="${column.propertyValue}"/>&nbsp;</display:column>
                         </c:otherwise>
 					</c:choose>
 				</c:forEach>
 
-												</display:table>
-			</c:if></td>
+               <%-- block for displaying the total line --%>
+               <c:if test="${!empty totalColumnNums}" >
+                 <display:footer>
+  	               <tr>
+  	                 <c:forTokens var="colNum" items="${columnNums}" delims="," varStatus="loopStatus">
+  	                   <c:set var="isTotalColumn" value="false"/>
+  	                   
+  	                   <c:forTokens var="totalNum" items="${totalColumnNums}" delims="," >
+  	                     <c:if test="${totalNum eq colNum}">
+  	                       <c:set var="isTotalColumn" value="true"/>
+  	                     </c:if>
+  	                   </c:forTokens>
+  	                   
+  	                   <c:choose>
+  	                    <c:when test="${isTotalColumn}" >
+  		                  <td><b><fmt:formatNumber type="currency" value="${totals[colNum]}"/></b></td>
+  		                </c:when>
+  		                <c:otherwise>
+  		                  <td>
+  		                    <c:if test="${loopStatus.first}">
+  		                      <b><bean-el:message key="lookup.total.row.label" /></b>
+  		                    </c:if>
+  		                  </td>
+  		                </c:otherwise>
+  		               </c:choose> 
+  		              
+  		             </c:forTokens>
+                   </tr>
+                </display:footer>
+              </c:if>
+              
+			</display:table>
+		 </c:if></td>
 			<td width="1%"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20"
 				height="20"></td>
 		</tr>

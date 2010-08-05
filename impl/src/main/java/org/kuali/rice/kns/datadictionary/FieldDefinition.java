@@ -28,8 +28,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  * Contains field-related information for DataDictionary entries.  Used by lookups and inquiries.
  *
  * Note: the setters do copious amounts of validation, to facilitate generating errors during the parsing process.
- *
- *
  */
 public class FieldDefinition extends DataDictionaryDefinitionBase implements FieldDefinitionI {
     private static final long serialVersionUID = -3426603523049661524L;
@@ -61,6 +59,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     protected String additionalDisplayAttributeName;
 	
 	protected boolean triggerOnChange;
+	protected boolean total = false;
 	
     public FieldDefinition() {
     }
@@ -512,6 +511,16 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
 
 	public void setAdditionalDisplayAttributeName(String additionalDisplayAttributeName) {
 		this.additionalDisplayAttributeName = additionalDisplayAttributeName;
+	}
+
+
+	public boolean isTotal() {
+		return this.total;
+	}
+
+
+	public void setTotal(boolean total) {
+		this.total = total;
 	}
 	
 }

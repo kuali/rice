@@ -35,7 +35,6 @@ import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
@@ -56,6 +55,7 @@ import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KualiDecimal;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
@@ -683,8 +683,10 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 						FieldUtils.setAdditionalDisplayPropertyForCodes(getBusinessObjectClass(), attributeName, column);
 					}	
 				}
+				
+				column.setTotal(getBusinessObjectDictionaryService().getLookupResultFieldTotal(getBusinessObjectClass(), attributeName));
 
-				 columns.add(column);
+				columns.add(column);
 			 }
 			 resultColumns = ObjectUtils.deepCopyForCaching(columns);
 			 return columns;
@@ -1120,7 +1122,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 			List<Column> columns = getColumns();
 			for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
 				Column col = (Column) iterator.next();
-
+				
 				String propValue = ObjectUtils.getFormattedPropertyValue(element, col.getPropertyName(), col.getFormatter());
 				Class propClass = getPropertyClass(element, col.getPropertyName());
 
@@ -1132,7 +1134,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 						businessObjectRestrictions);
 				col.setPropertyValue(propValue);
 
-				// if property value is masked, don't display additional or alternate properties
+				// if property value is masked, don't display additional or alternate properties, or allow totals
 				if (StringUtils.equals(propValueBeforePotientalMasking, propValue)) {
 					if (StringUtils.isNotBlank(col.getAlternateDisplayPropertyName())) {
 						String alternatePropertyValue = ObjectUtils.getFormattedPropertyValue(element, col
@@ -1145,6 +1147,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 								.getAdditionalDisplayPropertyName(), null);
 						col.setPropertyValue(col.getPropertyValue() + " *-* " + additionalPropertyValue);
 					}
+				}
+				else {
+					col.setTotal(false);
+				}
+				
+				if (col.isTotal()) {
+					Object unformattedPropValue = ObjectUtils.getPropertyValue(element, col.getPropertyName());
+					col.setUnformattedPropertyValue(unformattedPropValue);
 				}
 
 				if (StringUtils.isNotBlank(propValue)) {

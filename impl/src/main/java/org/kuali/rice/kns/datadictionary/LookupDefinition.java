@@ -78,6 +78,7 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
     protected String helpUrl;
     
     protected boolean translateCodes = false;
+    protected boolean disableSearchButtons = false;
 
     public LookupDefinition() {}
 
@@ -523,6 +524,14 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
 
 	public void setTranslateCodes(boolean translateCodes) {
 		this.translateCodes = translateCodes;
+	}
+
+	public boolean isDisableSearchButtons() {
+		return this.disableSearchButtons;
+	}
+
+	public void setDisableSearchButtons(boolean disableSearchButtons) {
+		this.disableSearchButtons = disableSearchButtons;
 	}
 	
 }

@@ -321,4 +321,15 @@ public interface BusinessObjectDictionaryService {
      * @return true if field is configured to trigger on value change, false if not
      */
     public boolean isLookupFieldTriggerOnChange(Class businessObjectClass, String attributeName);
+    
+	/**
+	 * Indicates whether the search and clear buttons should be disabled based on the data
+	 * dictionary configuration
+	 * 
+	 * @param businessObjectClass
+	 *            - business object class for lookup definition
+	 * @return Boolean indicating whether disable search buttons is configured to true in lookup
+	 *         definition
+	 */
+	public boolean disableSearchButtonsInLookup(Class businessObjectClass);
 }

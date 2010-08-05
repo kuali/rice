@@ -1082,4 +1082,17 @@ public class BusinessObjectDictionaryServiceImpl implements
 		return triggerOnChange;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#disableSearchButtonsInLookup(java.lang.Class)
+	 */
+	public boolean disableSearchButtonsInLookup(Class businessObjectClass) {
+		boolean disableSearchButtons = false;
+
+		if (getLookupDefinition(businessObjectClass) != null) {
+			disableSearchButtons = getLookupDefinition(businessObjectClass).isDisableSearchButtons();
+		}
+
+		return disableSearchButtons;
+	}
+
 }

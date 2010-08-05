@@ -31,8 +31,8 @@
 	htmlFormAction="lookup" >
 
 	<SCRIPT type="text/javascript">
-    var kualiForm = document.forms['KualiForm'];
-    var kualiElements = kualiForm.elements;
+      var kualiForm = document.forms['KualiForm'];
+      var kualiElements = kualiForm.elements;
     </SCRIPT>
     <script type="text/javascript" src="${pageContext.request.contextPath}/dwr/interface/DocumentTypeService.js"></script>
 	
@@ -49,9 +49,11 @@
 			</c:otherwise>
 		</c:choose></h1>
 	</div>
-	<kul:enterKey methodToCall="search" />
-	
 	</c:if>
+	
+	<c:if test="${KualiForm.renderSearchButtons}">
+	  <kul:enterKey methodToCall="search" />
+	</c:if>  
 
 	<html-el:hidden name="KualiForm" property="backLocation" />
 	<html-el:hidden name="KualiForm" property="formKey" />
@@ -97,7 +99,6 @@
 				</c:if>
 			</c:if>
 		</div>
-	
 	</c:if>
 	
 	<div class="right">
@@ -133,18 +134,26 @@
                 <kul:rowDisplay rows="${FieldRows}" skipTheOldNewBar="true" numberOfColumns="${numberOfColumns}" />
 
 				<tr align="center">
-					<td height="30" colspan="${headerColspan}"  class="infoline"><html:image
+					<td height="30" colspan="${headerColspan}"  class="infoline">
+					
+					<c:if test="${KualiForm.renderSearchButtons}">
+					  <html:image
 						property="methodToCall.search" value="search"
 						src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_search.gif" styleClass="tinybutton"
-						alt="search" title="search" border="0" /> <html:image
+						alt="search" title="search" border="0" /> 
+					  <html:image
 						property="methodToCall.clearValues" value="clearValues"
 						src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_clear.gif" styleClass="tinybutton"
-						alt="clear" title="clear" border="0" /> <c:if test="${KualiForm.formKey!=''}">
+						alt="clear" title="clear" border="0" /> 
+					</c:if>	
+					
+					<c:if test="${KualiForm.formKey!=''}">
 						<c:if test="${!empty KualiForm.backLocation}"><a
 							href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&docFormKey=${KualiForm.formKey}&anchor=${KualiForm.lookupAnchor}&docNum=${KualiForm.docNum}" />'  title="cancel"><img
 							src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" class="tinybutton" alt="cancel" title="cancel"
 							border="0" /></a></c:if>
 					</c:if>
+					
 					<!-- Optional extra buttons -->
 					<c:forEach items="${KualiForm.extraButtons}" var="extraButton" varStatus="status">
 						<c:if test="${!empty extraButton.extraButtonSource && !empty extraButton.extraButtonParams}">
@@ -180,7 +189,7 @@
 
 			<c:if test="${reqSearchResultsActualSize>0}">
 				<c:out value="${reqSearchResultsActualSize}" /> items found.  Please refine your search criteria to narrow down your search.
-          </c:if>
+            </c:if>
 			<c:if test="${!empty reqSearchResultsActualSize }">
 			    <c:if test="${KualiForm.searchUsingOnlyPrimaryKeyValues}">
 			    	<bean-el:message key="lookup.using.primary.keys" arg0="${KualiForm.primaryKeyFieldLabels}"/>

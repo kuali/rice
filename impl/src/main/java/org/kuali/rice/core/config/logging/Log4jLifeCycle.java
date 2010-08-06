@@ -44,7 +44,9 @@ import org.w3c.dom.Document;
  */
 public class Log4jLifeCycle extends BaseLifecycle {
 
-    /**
+    private static final String LOG4J_FILE_NOT_FOUND = "log4j settings file not found at location: ";
+
+	/**
      * Convenience constant representing a minute in milliseconds
      */
     private static final int MINUTE = 60 * 1000;
@@ -137,14 +139,25 @@ public class Log4jLifeCycle extends BaseLifecycle {
 	}
 
     /**
-	 * This method ...
+	 * Checks if the passed in file exists.
 	 *
-	 * @param log4jSettingsPath
+	 * @param log4jSettingsPath the file
+	 * @return true if exists
 	 */
 	private boolean checkPropertiesFileExists(String log4jSettingsPath) {
-		File log4jProps = new File(log4jSettingsPath);
-
-		return log4jProps.exists();
+		boolean exists;
+		
+		try {
+			exists = ResourceUtils.getFile(log4jSettingsPath).exists();
+		} catch (FileNotFoundException e) {
+			exists = false;
+		}
+		
+		if (!exists) {
+			System.out.println(LOG4J_FILE_NOT_FOUND + log4jSettingsPath);
+		}
+		
+		return exists;
 	}
 
 	/**

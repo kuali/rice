@@ -44,9 +44,9 @@ import java.util.*;
 /**
  * This is a description of what this class does - bhargavp don't forget to fill
  * this in.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ *
  */
 public class KimCommonUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimCommonUtils.class);
@@ -55,8 +55,10 @@ public class KimCommonUtils {
     private static Map<String,KimTypeService> kimTypeServiceCache = new HashMap<String,KimTypeService>();
     private static IdentityManagementService identityManagementService;
 
-	private KimCommonUtils() {}
-    
+	private KimCommonUtils() {
+        throw new AssertionError();
+    }
+
 	private static KualiModuleService getKualiModuleService() {
 		if (kualiModuleService == null) {
 			kualiModuleService = KNSServiceLocator.getKualiModuleService();
@@ -83,7 +85,7 @@ public class KimCommonUtils {
 			}
 		}
 	}
-	
+
 	public static boolean storedValueNotSpecifiedOrInputValueMatches(AttributeSet storedValues, AttributeSet inputValues, String attributeName) {
 		return ((storedValues == null) || (inputValues == null)) || !storedValues.containsKey(attributeName) || storedValues.get(attributeName).equals(inputValues.get(attributeName));
 	}
@@ -98,7 +100,7 @@ public class KimCommonUtils {
 		    requestedDetailsPropertyName = ""; // prevent NPE
 		}
 		return StringUtils.equals(requestedDetailsPropertyName, permissionDetailsPropertyName)
-				|| (requestedDetailsPropertyName.startsWith(permissionDetailsPropertyName+".")); 
+				|| (requestedDetailsPropertyName.startsWith(permissionDetailsPropertyName+"."));
 	}
 
 	public static AttributeSet getNamespaceAndComponentSimpleName( Class<? extends Object> clazz) {
@@ -114,7 +116,7 @@ public class KimCommonUtils {
 		attributeSet.put(KimAttributes.COMPONENT_NAME, getComponentFullName(clazz));
 		return attributeSet;
 	}
-	
+
 	public static AttributeSet getNamespaceAndActionClass( Class<? extends Object> clazz) {
 		AttributeSet attributeSet = new AttributeSet();
 		attributeSet.put(KimAttributes.NAMESPACE_CODE, getNamespaceCode(clazz));
@@ -137,13 +139,13 @@ public class KimCommonUtils {
 	public static String getComponentFullName(Class<? extends Object> clazz) {
 		return clazz.getName();
 	}
-	
+
 	public static boolean isAttributeSetEntryEquals( AttributeSet map1, AttributeSet map2, String key ) {
 		return StringUtils.equals( map1.get( key ), map2.get( key ) );
 	}
-	
+
 	public static final String DEFAULT_KIM_SERVICE_NAME = "kimTypeService";
-	
+
 	public static String getKimTypeServiceName(String kimTypeServiceName){
     	if (StringUtils.isBlank(kimTypeServiceName)) {
     		kimTypeServiceName = DEFAULT_KIM_SERVICE_NAME;
@@ -158,7 +160,7 @@ public class KimCommonUtils {
 		}
 		return getKimTypeService( KimCommonUtils.getKimTypeServiceName(kimType.getKimTypeServiceName() ) );
 	}
-	
+
 	public static KimTypeService getKimTypeService( String serviceName ) {
 		KimTypeService service = null;
 		if ( StringUtils.isNotBlank(serviceName) ) {
@@ -181,7 +183,7 @@ public class KimCommonUtils {
     	}
     	return service;
     }
-	
+
 	public static void copyProperties(Object targetToCopyTo, Object sourceToCopyFrom){
 		if(targetToCopyTo!=null && sourceToCopyFrom!=null)
 		try{
@@ -207,11 +209,12 @@ public class KimCommonUtils {
     		path = path.replace(kimActionName, kimContext+kimActionName);
     	return path;
 	}
-	
+
 	public static String stripEnd(String toStripFrom, String toStrip){
 		String stripped;
-		if(toStripFrom==null) stripped = null;
-		if(toStrip==null) stripped = toStripFrom;
+		if(toStripFrom==null) return null;
+		if(toStrip==null) return toStripFrom;
+        if(toStrip.length() > toStripFrom.length()) return toStripFrom;
 		if(toStripFrom.endsWith(toStrip)){
 			StringBuffer buffer = new StringBuffer(toStripFrom);
 			buffer.delete(buffer.length()-toStrip.length(), buffer.length());
@@ -222,15 +225,15 @@ public class KimCommonUtils {
 
 	protected static boolean canOverrideEntityPrivacyPreferences( String principalId ){
 		return getIdentityManagementService().isAuthorized(
-				GlobalVariables.getUserSession().getPrincipalId(), 
-				KimConstants.NAMESPACE_CODE, 
+				GlobalVariables.getUserSession().getPrincipalId(),
+				KimConstants.NAMESPACE_CODE,
 				KimConstants.PermissionNames.OVERRIDE_ENTITY_PRIVACY_PREFERENCES,
 				null,
 				new AttributeSet(KimAttributes.PRINCIPAL_ID, principalId) );
 	}
-	
+
 	public static boolean isSuppressName(String entityId) {
-	    KimEntityPrivacyPreferences privacy = null; 
+	    KimEntityPrivacyPreferences privacy = null;
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
@@ -246,9 +249,9 @@ public class KimCommonUtils {
                 && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
                 && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
     }
-  
+
     public static boolean isSuppressEmail(String entityId) {
-        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityPrivacyPreferences privacy = null;
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
@@ -264,9 +267,9 @@ public class KimCommonUtils {
                 && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
                 && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
     }
-   
+
     public static boolean isSuppressAddress(String entityId) {
-        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityPrivacyPreferences privacy = null;
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
@@ -282,9 +285,9 @@ public class KimCommonUtils {
                 && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
                 && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
     }
-   
+
     public static boolean isSuppressPhone(String entityId) {
-        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityPrivacyPreferences privacy = null;
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
@@ -300,9 +303,9 @@ public class KimCommonUtils {
                 && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
                 && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
     }
-    
+
     public static boolean isSuppressPersonal(String entityId) {
-        KimEntityPrivacyPreferences privacy = null; 
+        KimEntityPrivacyPreferences privacy = null;
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
@@ -334,7 +337,7 @@ public class KimCommonUtils {
 		}
 		return externalIdentifier;
     }
-    
+
     public static String decryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
         Map<String, String> criteria = new HashMap<String, String>();
 	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
@@ -357,8 +360,8 @@ public class KimCommonUtils {
 		}
 		return identityManagementService;
 	}
-	
-	
+
+
     public static GroupImpl copyInfoToGroup(Group info, GroupImpl group) {
         group.setActive(info.isActive());
         group.setGroupDescription(info.getGroupDescription());
@@ -378,23 +381,36 @@ public class KimCommonUtils {
      * @return a list of group attributes
      */
 
-    public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String,String> infoMap, String groupId, String kimTypeId)
-    {
-    	List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
+    public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String, String> infoMap, String groupId, String kimTypeId) {
+        List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
         List<KimTypeAttributeInfo> attributeInfoList = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitions();
-        for(KimTypeAttributeInfo attributeInfo : attributeInfoList)
-        {
-            if(infoMap.containsKey(attributeInfo.getAttributeName()))
-            {
+
+        for (String key : infoMap.keySet()) {
+            KimTypeAttributeInfo typeAttributeInfo = getAttributeInfo(attributeInfoList, key);
+
+            if (typeAttributeInfo != null) {
                 GroupAttributeDataImpl groupAttribute = new GroupAttributeDataImpl();
-                groupAttribute.setKimAttributeId(attributeInfo.getKimAttributeId());
-                groupAttribute.setAttributeValue(infoMap.get(attributeInfo.getAttributeName()));
+                groupAttribute.setKimAttributeId(typeAttributeInfo.getKimAttributeId());
+                groupAttribute.setAttributeValue(infoMap.get(typeAttributeInfo.getAttributeName()));
                 groupAttribute.setGroupId(groupId);
                 groupAttribute.setKimTypeId(kimTypeId);
                 attrList.add(groupAttribute);
+            } else {
+                throw new IllegalArgumentException("KimAttribute not found: " + key);
             }
         }
         return attrList;
     }
-        
+
+    private static KimTypeAttributeInfo getAttributeInfo(List<KimTypeAttributeInfo> attributeInfoList, String attributeName) {
+        KimTypeAttributeInfo kRet = null;
+        for (KimTypeAttributeInfo attributeInfo : attributeInfoList) {
+            if (attributeInfo.getAttributeName().equals(attributeName)) {
+                kRet = attributeInfo;
+                break;
+            }
+        }
+        return kRet;
+    }
+
 }

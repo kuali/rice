@@ -255,11 +255,11 @@
 						<%--NOTE: Check if exporting first, as this should be outputted without extra HTML formatting --%>
 						<c:when	test="${param['d-16544-e'] != null}">
 								<display:column class="${colClass}" sortable="${column.sortable}"
-									title="${column.columnTitle}" comparator="${column.comparator}" total="${column.total}" value="${staticColumnValue}" 
+									title="${column.columnTitle}" comparator="${column.comparator}" 
 									maxLength="${column.maxLength}"><c:out value="${column.propertyValue}" escapeXml="false" default="" /></display:column>
 						</c:when>
 						<c:when	test="${!empty column.columnAnchor.href || column.multipleAnchors}">
-							<display:column class="${colClass}" sortable="${column.sortable}" title="${column.columnTitle}" comparator="${column.comparator}" total="${column.total}" value="${staticColumnValue}" >
+							<display:column class="${colClass}" sortable="${column.sortable}" title="${column.columnTitle}" comparator="${column.comparator}"  >
 <c:choose><c:when test="${column.multipleAnchors}"><c:set var="numberOfColumnAnchors" value="${column.numberOfColumnAnchors}" /><c:choose>
 <c:when test="${empty columnAnchor.target}"><c:set var="anchorTarget" value="_blank" /></c:when><c:otherwise><c:set var="anchorTarget" value="${columnAnchor.target}" /></c:otherwise></c:choose>
 <!-- Please don't change formatting of this logic:iterate block -->
@@ -271,7 +271,7 @@
 <%--NOTE: DO NOT FORMAT THIS FILE, DISPLAY:COLUMN WILL NOT WORK CORRECTLY IF IT CONTAINS LINE BREAKS --%>
 						<c:otherwise>
 							<display:column class="${colClass}" sortable="${column.sortable}"
-								title="${column.columnTitle}" comparator="${column.comparator}" total="${column.total}" value="${staticColumnValue}" 
+								title="${column.columnTitle}" comparator="${column.comparator}"
 								maxLength="${column.maxLength}" decorator="org.kuali.rice.kns.web.ui.FormatAwareDecorator"><c:out value="${column.propertyValue}"/>&nbsp;</display:column>
                         </c:otherwise>
 					</c:choose>

@@ -105,8 +105,8 @@
     <param name="kim.url" override="false">${application.url}/kim</param>
     <param name="kew.url" override="false">${application.url}/kew</param>
 
-    <!-- TODO: doc this param -->
-    <param name="production.environment.code" override="false">PRD</param>
+    <!-- Code Options: (dev|snd|unt|reg|stg|trn|prd) -->
+    <param name="production.environment.code" override="false">prd</param>
      <!-- I think this is workflow related; everywhere it was specified as 'iu' so I'll just keep that for now -->
     <param name="institution" override="false">iu</param>
     <!-- TODO: doc these params -->

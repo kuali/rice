@@ -245,8 +245,8 @@
 		<copy todir="${dist.war.dir}">
 			<fileset dir="${war.config.src.dir}"/>
 		</copy>
-		<!-- change the environment code appropriately -->
-		<replaceregexp match="\b(dev|snd|unt|reg|stg|trn|prd)\b" replace="${rice.environment}" byline="true" flags="g">
+		<!-- change the environment code appropriately-->
+		<replaceregexp match="\b(dev|snd|unt|reg|stg|trn|prd)\b" replace="${rice.environment}" byline="true" flags="gi">
 			<fileset dir="${dist.war.dir}">
 				<include name="**/web.xml" />
 			</fileset>

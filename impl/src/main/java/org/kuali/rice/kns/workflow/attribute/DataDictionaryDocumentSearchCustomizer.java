@@ -25,68 +25,77 @@ import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.web.ui.Row;
 
-public class DataDictionaryDocumentSearchCustomizer extends StandardDocumentSearchResultProcessor implements SearchableAttribute, DocumentSearchGenerator {
-    // SEARCH GENERATOR IMPLEMENTATION
-    private StandardDocumentSearchGenerator documentSearchGenerator = new StandardDocumentSearchGenerator();
+public class DataDictionaryDocumentSearchCustomizer implements DocumentSearchResultProcessor, SearchableAttribute, DocumentSearchGenerator {
+    
+    private DocumentSearchGenerator documentSearchGenerator; 
+    private DocumentSearchResultProcessor documentSearchResultProcessor;
+    private SearchableAttribute searchableAttribute = new DataDictionarySearchableAttribute();
 
+    protected DocumentSearchGenerator getStandardDocumentSearchGenerator() { 
+	    if (documentSearchGenerator == null) { 
+	    	documentSearchGenerator = KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator(); 
+	    } 
+	    return documentSearchGenerator; 
+    } 
+
+    protected DocumentSearchResultProcessor getStandardDocumentSearchResultProcessor() { 
+	    if (documentSearchResultProcessor == null) { 
+	    	documentSearchResultProcessor = KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchResultProcessor(); 
+	    } 
+	    return documentSearchResultProcessor; 
+    } 
     public DocSearchCriteriaDTO clearSearch(DocSearchCriteriaDTO searchCriteria) {
-        return documentSearchGenerator.clearSearch(searchCriteria);
+        return getStandardDocumentSearchGenerator().clearSearch(searchCriteria);
     }
 
     public String generateSearchSql(DocSearchCriteriaDTO searchCriteria) {
-        return documentSearchGenerator.generateSearchSql(searchCriteria);
+        return getStandardDocumentSearchGenerator().generateSearchSql(searchCriteria);
     }
 
     public int getDocumentSearchResultSetLimit() {
-        return documentSearchGenerator.getDocumentSearchResultSetLimit();
+        return getStandardDocumentSearchGenerator().getDocumentSearchResultSetLimit();
     }
 
     public List<WorkflowServiceError> performPreSearchConditions(String principalId, DocSearchCriteriaDTO searchCriteria) {
-        return documentSearchGenerator.performPreSearchConditions(principalId, searchCriteria);
+        return getStandardDocumentSearchGenerator().performPreSearchConditions(principalId, searchCriteria);
     }
 
     public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet, DocSearchCriteriaDTO searchCriteria, String principalId) throws SQLException {
-        return documentSearchGenerator.processResultSet(searchAttributeStatement, resultSet, searchCriteria, principalId);
+        return getStandardDocumentSearchGenerator().processResultSet(searchAttributeStatement, resultSet, searchCriteria, principalId);
     }
 
     @Deprecated
     public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet, DocSearchCriteriaDTO searchCriteria) throws SQLException {
-        return documentSearchGenerator.processResultSet(searchAttributeStatement, resultSet, searchCriteria);
-    }
-
-    public void setSearchableAttributes(List<SearchableAttribute> searchableAttributes) {
-        documentSearchGenerator.setSearchableAttributes(searchableAttributes);
-    }
+        return getStandardDocumentSearchGenerator().processResultSet(searchAttributeStatement, resultSet, searchCriteria);
+    }    
 
     public void setSearchingUser(String principalId) {
-        documentSearchGenerator.setSearchingUser(principalId);
+    	getStandardDocumentSearchGenerator().setSearchingUser(principalId);
     }
 
     public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria) {
-        return documentSearchGenerator.validateSearchableAttributes(searchCriteria);
+        return getStandardDocumentSearchGenerator().validateSearchableAttributes(searchCriteria);
     }
 
     public boolean isProcessResultSet() {
-        return documentSearchGenerator.isProcessResultSet();
+        return getStandardDocumentSearchGenerator().isProcessResultSet();
     }
     public void setProcessResultSet(boolean isProcessResultSet){
-        documentSearchGenerator.setProcessResultSet(isProcessResultSet);
+    	getStandardDocumentSearchGenerator().setProcessResultSet(isProcessResultSet);
     }
     public MessageMap getMessageMap(DocSearchCriteriaDTO searchCriteria) {
-        return documentSearchGenerator.getMessageMap(searchCriteria);
+        return getStandardDocumentSearchGenerator().getMessageMap(searchCriteria);
     }
-
-    // SEARCHABLE ATTRIBUTE IMPLEMENTATION
-    private SearchableAttribute searchableAttribute = new DataDictionarySearchableAttribute();
 
     public String getSearchContent(DocumentSearchContext documentSearchContext) {
         return searchableAttribute.getSearchContent(documentSearchContext);
@@ -103,5 +112,22 @@ public class DataDictionaryDocumentSearchCustomizer extends StandardDocumentSear
     public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext searchContext) {
         return searchableAttribute.validateUserSearchInputs(paramMap, searchContext);
     }
+
+	public boolean isProcessFinalResults() {		
+		return getStandardDocumentSearchResultProcessor().isProcessFinalResults();
+	}
+
+	public DocumentSearchResultComponents processIntoFinalResults(
+			List<DocSearchDTO> docSearchResultRows,
+			DocSearchCriteriaDTO criteria, String principalId)
+			throws SQLException {
+		
+		return getStandardDocumentSearchResultProcessor().processIntoFinalResults(docSearchResultRows, criteria, principalId);
+	}
+
+	public void setProcessFinalResults(boolean isProcessFinalResults) {
+		getStandardDocumentSearchResultProcessor().setProcessFinalResults(isProcessFinalResults);
+		
+	}
 
 }

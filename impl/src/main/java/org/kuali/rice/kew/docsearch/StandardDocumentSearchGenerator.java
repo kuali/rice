@@ -1749,13 +1749,12 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     	if(fromDate != null && !"".equals(fromDate)) {
     		try {   			
-    			fromDate = Utilities.enforceDateTimeYearRange(fromDate);    			
+    			KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(fromDate);  			
     		} catch (Exception exc) { throw new RiceRuntimeException("Invalid date format", exc); }
     	}
     	
         if(toDate != null && !"".equals(toDate)){
             try{
-            	toDate = Utilities.enforceDateTimeYearRange(toDate);
                 java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(toDate);
                 SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 

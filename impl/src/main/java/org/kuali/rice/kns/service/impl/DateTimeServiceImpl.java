@@ -294,7 +294,7 @@ public class DateTimeServiceImpl implements DateTimeService {
 			dateFormat.setLenient(false);
 			ParsePosition parsePosition = new ParsePosition(0);
 			Date testDate = dateFormat.parse(dateString, parsePosition);
-
+			
 			// Ensure that the entire date String can be parsed by the current format.
 			if (testDate == null) {
 				throw new ParseException("The date that you provided is invalid.",parsePosition.getErrorIndex());
@@ -308,6 +308,13 @@ public class DateTimeServiceImpl implements DateTimeService {
 			testCalendar.setTime(testDate);
 			if (testCalendar.get(Calendar.YEAR) < 1000 || testCalendar.get(Calendar.YEAR) > 9999) {
 				throw new ParseException("The date that you provided is not between the years 1000 and 9999.",-1);
+			}
+			
+			if(testCalendar.get(Calendar.YEAR) == 1970 && (pattern.equals("MMMM dd") || pattern.equals("MMMM dd HH:mm:ss"))  ){		    	
+		    	Calendar curCalendar = Calendar.getInstance();
+		    	curCalendar.setTime(new java.util.Date());
+		    	testCalendar.set(Calendar.YEAR, curCalendar.get(Calendar.YEAR));
+				testDate = testCalendar.getTime();	
 			}
 			
 			return testDate;

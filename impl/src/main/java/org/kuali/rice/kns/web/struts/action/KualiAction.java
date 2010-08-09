@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -488,10 +489,11 @@ public abstract class KualiAction extends DispatchAction {
         if (StringUtils.isNotBlank(parameterFields)) {
             String[] lookupParams = parameterFields.split(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
             if ( LOG.isDebugEnabled() ) {
-                LOG.debug( "lookupParams: " + lookupParams );
+            	 LOG.debug( "lookupParams: " + Arrays.toString(lookupParams) ); 
             }
             for (int i = 0; i < lookupParams.length; i++) {
-                String[] keyValue = lookupParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+            	String[] keyValue = lookupParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR); 
+                if (keyValue.length != 2) throw new RuntimeException("malformed field conversion pair: " + Arrays.toString(keyValue)); 
 
                 String lookupParameterValue = retrieveLookupParameterValue(boClass, keyValue[1], keyValue[0], form, request);
                 if (StringUtils.isNotBlank(lookupParameterValue)) {

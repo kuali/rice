@@ -310,11 +310,11 @@ public class DateTimeServiceImpl implements DateTimeService {
 				throw new ParseException("The date that you provided is not between the years 1000 and 9999.",-1);
 			}
 			
-			if(testCalendar.get(Calendar.YEAR) == 1970 && (pattern.equals("MMMM dd") || pattern.equals("MMMM dd HH:mm:ss"))  ){		    	
+			if(testCalendar.get(Calendar.YEAR) == 1970 && !pattern.contains("y")){		    	
 		    	Calendar curCalendar = Calendar.getInstance();
 		    	curCalendar.setTime(new java.util.Date());
 		    	testCalendar.set(Calendar.YEAR, curCalendar.get(Calendar.YEAR));
-				testDate = testCalendar.getTime();	
+				testDate = testCalendar.getTime();
 			}
 			
 			return testDate;

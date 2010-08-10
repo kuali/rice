@@ -202,6 +202,9 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
         if (workflowDocument.stateIsInitiated() || workflowDocument.stateIsSaved()){
         	success &= documentAuthorizer.canCreateOrMaintain((MaintenanceDocument)document, GlobalVariables.getUserSession().getPerson());
+        	if (success == false) {
+        		GlobalVariables.getMessageMap().putError(KNSConstants.DOCUMENT_ERRORS, RiceKeyConstants.AUTHORIZATION_ERROR_DOCUMENT, new String[]{GlobalVariables.getUserSession().getPerson().getPrincipalName(), "Create/Maintain", this.getMaintDocDictionaryService().getDocumentTypeName(newBo.getClass())});
+        	}
         }
         // apply rules that are common across all maintenance documents, regardless of class
         success &= processGlobalRouteDocumentBusinessRules(maintenanceDocument);
@@ -1087,11 +1090,11 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
      */
     protected void showErrorMap() {
 
-        if (GlobalVariables.getMessageMap().isEmpty()) {
+        if (GlobalVariables.getMessageMap().hasNoErrors()) {
             return;
         }
 
-        for (Iterator i = GlobalVariables.getMessageMap().entrySet().iterator(); i.hasNext();) {
+        for (Iterator i = GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext();) {
             Map.Entry e = (Map.Entry) i.next();
 
             TypedArrayList errorList = (TypedArrayList) e.getValue();

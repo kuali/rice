@@ -56,7 +56,6 @@ public class KimCommonUtils {
     private static IdentityManagementService identityManagementService;
 
 	private KimCommonUtils() {
-        throw new AssertionError();
     }
 
 	private static KualiModuleService getKualiModuleService() {

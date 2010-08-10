@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.test.util;
 
-import org.apache.log4j.Logger;
+
 import org.junit.Test;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
@@ -36,7 +36,6 @@ import java.util.List;
  */
 
 public class KimCommonUtilsTest extends KIMTestCase {
-    private static final Logger LOG = Logger.getLogger(KimCommonUtilsTest.class);
 
     @Override
     protected String getModuleName() {
@@ -49,14 +48,24 @@ public class KimCommonUtilsTest extends KIMTestCase {
 
         GroupInfo groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 
-        assertTrue(groupInfo.getAttributes() != null);
-        assertTrue(groupInfo.getAttributes().size() > 0);
+        AttributeSet infoAttributes = groupInfo.getAttributes();
+        assertTrue(infoAttributes != null);
+        assertTrue(infoAttributes.size() > 0);
+        assertTrue(infoAttributes.containsKey("documentTypeName"));
+        assertTrue(infoAttributes.containsValue("Doc"));
         List<GroupAttributeDataImpl> attributeDataList;
         try {
         attributeDataList = KimCommonUtils.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), groupInfo.getGroupId(), groupInfo.getKimTypeId());
         assertTrue(attributeDataList != null);
         assertTrue(attributeDataList.size() > 0);
         assertTrue(attributeDataList.size() == groupInfo.getAttributes().size());
+        boolean hasAttributeValue = true;
+        for( GroupAttributeDataImpl attributeData : attributeDataList ) {
+        	if( !infoAttributes.containsValue(attributeData.getAttributeValue())) {
+        		hasAttributeValue = false;
+        	}	
+        }
+        assertTrue(hasAttributeValue);
         }
     	catch (IllegalArgumentException expectedException) {
     		assertTrue(expectedException.getMessage().contains("not found"));
@@ -104,7 +113,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
     	assertEquals("b", KimCommonUtils.stripEnd("b", "bb"));
     	assertEquals("wx", KimCommonUtils.stripEnd("wxyz", "yz"));
     	assertEquals("wx", KimCommonUtils.stripEnd("wxyz     ", "yz     "));
-    	assertEquals("abc", KimCommonUtils.stripEnd("wxyz", "abc"));
+    	assertEquals("wxyz", KimCommonUtils.stripEnd("wxyz", "abc"));
 
 
     }

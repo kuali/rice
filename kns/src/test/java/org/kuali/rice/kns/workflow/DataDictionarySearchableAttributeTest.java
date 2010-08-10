@@ -161,15 +161,14 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		
 		// Ensure that DD searchable attribute date fields function correctly when searched on.
 		// Note that dates with non-two-digit years outside the range of 1000 to 9999 will now fail validation.
-		// Also, note that dates in the format "MMMM dd" are currently interpreted as being in the year 1970.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountOpenDate",
 				new String[] {"!10/15/2009", "Unknown", "10/15/2009|10/21/2009", "10/22/????", "*/*/05", ">10/17/06", "<=12-31-09&&>=10/16/2009",
 						">101809&&<102012", ">=10/22/2054|<10/16/2009", ">2-29-12|<=10/21/09", "<2009", ">=10/19/2012|04/20/09", ">2/29/09", "2009..2008",
-						"10/15/2009..10/21/2009", "1/1/2009..10/20/2009|10/22/2054", "<=06/32/03", ">2008&&<2011|10/17/06", ">=October 15", "<May 02",
+						"10/15/2009..10/21/2009", "1/1/2009..10/20/2009|10/22/2054", "<=06/32/03", ">2008&&<2011|10/17/06", 
 						"<02/26/10500", ">05-07-333", ">=03/26/1001", "<=11-11-9900"},
 				new int[]    {-1           , -1       , 2                      , -1          , -1      , 7          , 3,
 						2                 , 4                         , 8                    , 1      , 3                      , -1        , -1,
-						4                       , 5                                , -1          , 6                      , 8             , 0,
+						4                       , 5                                , -1          , 6                      ,
 						-1            , -1          , 8             , 8});
 		
 		// Ensure that DD searchable attribute multi-select fields function correctly when searched on.
@@ -193,17 +192,16 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 		
 		// Ensure that DD searchable attribute timestamp fields function correctly when searched on.
 		// Note that timestamps with non-two-digit years outside the range of 1000 to 9999 will now fail validation.
-		// Also, note that timestamps in the format "MMMM dd HH:mm:ss" are currently interpreted as being in the year 1970.
 		assertDDSearchableAttributeWildcardsWork(docType, principalId, "accountUpdateDateTime",
 				new String[] {"!11/01/2009 00:00:00", "11/05/07*", "11/02/2015 00:00:00|11/06/2009 12:59:59", "11/??/2009 ??:??:??", ">110609 12:59:59",
-						"<=2009 1:2:3", ">=11/06/09 12:59:59", "<11/8/2008 12:00 PM", ">=February 28 18:19:20&&<11/6/09 12:59:59", "Blank",
-						"11/3/1900 00:00:00|>11-7-09 00:00:01", "<May 31 15:00:00|>=2015 23:00:00", "02/29/2008 07:00:00..11/04/2009 00:00:00",
-						"11/1/09 00:00:00..11/06/09 12:59:59|11/03/1900 00:00:00", ">February 29 00:00:00", "2009..2008", "2000..2009&&>=110507 12:4:38",
+						"<=2009 1:2:3", ">=11/06/09 12:59:59", "<11/8/2008 12:00 PM", "Blank",
+						"11/3/1900 00:00:00|>11-7-09 00:00:01", "02/29/2008 07:00:00..11/04/2009 00:00:00",
+						"11/1/09 00:00:00..11/06/09 12:59:59|11/03/1900 00:00:00", "2009..2008", "2000..2009&&>=110507 12:4:38",
 						"<=11/08/2008 12:00 AM", ">=01-01-1000 00:00:00", ">12/31/999 23:59:59", "<01-01-10000 00:00:00", "<=12/31/9999 23:59:59"},
 				new int[]    {-1                    , -1         , 2                                        , -1                   , 2,
-						3             , 3                    , 2                    , 4                                          , -1,
-						2                                     , 2                                 , 3,
-						4                                                        , -1                     , -1          , 2,
+						3             , 3                    , 2                    , -1,
+						2                                     , 3,
+						4                                                        , -1          , 2,
 						2                      , 8                      , -1                   , -1                     , 8});
 	}
     

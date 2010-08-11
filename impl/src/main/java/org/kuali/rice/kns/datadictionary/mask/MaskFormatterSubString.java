@@ -41,7 +41,7 @@ public class MaskFormatterSubString implements MaskFormatter {
         	return StringUtils.repeat(maskCharacter, maskLength);
         }
         if(maskLength >0){
-        	return StringUtils.repeat(maskCharacter, maskLength) + strValue.substring(maskLength - 1);
+        	return StringUtils.repeat(maskCharacter, maskLength) + strValue.substring(maskLength);
         }else{
         	return strValue;
         }
@@ -58,6 +58,8 @@ public class MaskFormatterSubString implements MaskFormatter {
 
     /**
      * Specify the character with which to mask the original value.
+     *
+     * @param maskCharacter for masking values
      */
     public void setMaskCharacter(String maskCharacter) {
         this.maskCharacter = maskCharacter;

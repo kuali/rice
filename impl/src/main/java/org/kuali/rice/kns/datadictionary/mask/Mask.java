@@ -30,12 +30,14 @@ public class Mask implements Serializable {
 
     /**
      * Masks a data value with the configured maskFormatter;
+     * @param value of the object
+     * @return string value of the masked object 
      */
     public String maskValue(Object value) {
         if (maskFormatter == null) {
             if (maskFormatterClass != null) {
                 try {
-                    maskFormatter = (MaskFormatter) maskFormatterClass.newInstance();
+                    maskFormatter = maskFormatterClass.newInstance();
                 } catch (Exception e) {
                     throw new RuntimeException("Unable to create instance of mask formatter class: " + maskFormatterClass.getName());
                 }
@@ -58,7 +60,8 @@ public class Mask implements Serializable {
     }
 
     /**
-     * Instance of an object implementing the MaskFormatter interface to be used for masking field values.
+     *
+     * @param maskFormatter instance to be used for masking field values.
      */
     public void setMaskFormatter(MaskFormatter maskFormatter) {
         this.maskFormatter = maskFormatter;
@@ -74,10 +77,10 @@ public class Mask implements Serializable {
     }
 
     /**
-      The maskFormatterClass element is used when a custom masking
-      algorithm is desired.  This element specifies the name of a
-      class that will perform the masking for unauthorized users.
-    */
+     * @param maskFormatterClass element is used when a custom masking
+     * algorithm is desired.  This element specifies the name of a
+     * class that will perform the masking for unauthorized users.
+     */
     public void setMaskFormatterClass(Class<? extends MaskFormatter> maskFormatterClass) {
         this.maskFormatterClass = maskFormatterClass;
     }

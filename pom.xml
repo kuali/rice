@@ -750,6 +750,11 @@
 				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
 				<version>${cxf.version}</version>
 				<exclusions>
+					<!-- avoids conflict with javamail -->
+					<exclusion>
+						<groupId>org.apache.geronimo.specs</groupId>
+						<artifactId>geronimo-javamail_1.4_spec</artifactId>
+					</exclusion>
 					<exclusion>
 						<artifactId>geronimo-stax-api_1.0_spec</artifactId>
 						<groupId>org.apache.geronimo.specs</groupId>

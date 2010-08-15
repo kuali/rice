@@ -87,7 +87,6 @@
 		<xalan.version>2.7.0</xalan.version>
 		<xapool.version>1.5.0-patch3</xapool.version>
 		<xercesImpl.version>2.9.1</xercesImpl.version>
-		<xml-apis.version>1.0.b2</xml-apis.version>
 		<xstream.version>1.2.2</xstream.version>
 		<build.plugins.plugin.version>1.0-beta-4</build.plugins.plugin.version>
 		<reporting.plugins.plugin.version>2.1.2</reporting.plugins.plugin.version>
@@ -210,15 +209,7 @@
 						</configuration>
 					</plugin>
 					<!--
-						<plugin> <artifactId>maven-clover-plugin</artifactId> <executions>
-						<execution> <id>main</id> <phase>verify</phase> <goals>
-						<goal>instrument</goal> <goal>aggregate</goal> <goal>log</goal>
-						</goals> </execution> <execution> <phase>pre-site</phase> <goals>
-						<goal>instrument</goal> <goal>aggregate</goal>
-						<goal>save-history</goal> </goals> </execution> </executions>
-						<configuration> <jdk>1.5</jdk>
-						<licenseLocation>kns/src/test/config/clover.license</licenseLocation>
-						</configuration> </plugin>
+						<plugin> <artifactId>maven-clover-plugin</artifactId> <executions> <execution> <id>main</id> <phase>verify</phase> <goals> <goal>instrument</goal> <goal>aggregate</goal> <goal>log</goal> </goals> </execution> <execution> <phase>pre-site</phase> <goals> <goal>instrument</goal> <goal>aggregate</goal> <goal>save-history</goal> </goals> </execution> </executions> <configuration> <jdk>1.5</jdk> <licenseLocation>kns/src/test/config/clover.license</licenseLocation> </configuration> </plugin>
 					-->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
@@ -261,6 +252,12 @@
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-eclipse-plugin</artifactId>
+						<!-- Note that the most recent version of eclipse:eclipse (2.8) cannot be used because it results in
+						     an error when trying to perform test resource filtering
+						     
+						     See here for details: http://jira.codehaus.org/browse/MECLIPSE-551
+						     
+						     -->
 						<version>2.6</version>
 					</plugin>
 				</plugins>
@@ -642,11 +639,25 @@
 				<groupId>dwr</groupId>
 				<artifactId>dwr</artifactId>
 				<version>${dwr.version}</version>
+				<exclusions>
+					<!-- avoids bringing in a bad version of xmlParserAPIs -->
+					<exclusion>
+						<groupId>xerces</groupId>
+						<artifactId>xmlParserAPIs</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>htmlunit</groupId>
 				<artifactId>htmlunit</artifactId>
 				<version>${htmlunit.version}</version>
+				<exclusions>
+					<!-- avoids bringing in a bad version of xmlParserAPIs -->
+					<exclusion>
+						<groupId>xerces</groupId>
+						<artifactId>xmlParserAPIs</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>opensymphony</groupId>
@@ -673,11 +684,6 @@
 				<groupId>xerces</groupId>
 				<artifactId>xercesImpl</artifactId>
 				<version>${xercesImpl.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>xml-apis</groupId>
-				<artifactId>xml-apis</artifactId>
-				<version>${xml-apis.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>jdom</groupId>
@@ -739,11 +745,11 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-            <dependency>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
-                <version>${cxf.version}</version>
-                <exclusions>
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+				<version>${cxf.version}</version>
+				<exclusions>
 					<exclusion>
 						<artifactId>geronimo-stax-api_1.0_spec</artifactId>
 						<groupId>org.apache.geronimo.specs</groupId>
@@ -753,7 +759,7 @@
 						<groupId>org.apache.geronimo.specs</groupId>
 					</exclusion>
 				</exclusions>
-            </dependency>
+			</dependency>
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
 				<artifactId>cxf-rt-frontend-simple</artifactId>

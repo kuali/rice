@@ -160,29 +160,6 @@
 		<property name="listItem" value="classpath:org/kuali/rice/kns/dwr-core.xml" />
 	</bean>
 
-	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
-
-	<bean id="transactionAdvisor" class="org.springframework.transaction.interceptor.TransactionAttributeSourceAdvisor">
-		<property name="classFilter" ref="transactionAdvisorClassFilter" />
-		<property name="transactionInterceptor" ref="transactionInterceptor" />
-	</bean>
-
-	<bean id="transactionAdvisorClassFilter" class="org.kuali.rice.kns.util.spring.ClassOrMethodAnnotationFilter">
-		<constructor-arg value="org.springframework.transaction.annotation.Transactional" />
-	</bean>
-
-	<bean id="transactionInterceptor" class="org.kuali.rice.core.database.KualiTransactionInterceptor">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-
-	<bean id="transactionAttributeSource" class="org.kuali.rice.kns.util.spring.AnnotationAndNameMatchingTransactionAttributeSource">
-		<property name="annotationTransactionAttributeSource" ref="annotationTransactionAttributeSource" />
-		<property name="transactionTimeout" value="${transaction.timeout}" />
-	</bean>
-
-	<bean id="annotationTransactionAttributeSource" class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
-
 	<bean id="dataDictionaryService" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl">
 		<constructor-arg>
 			<bean class="org.kuali.rice.kns.datadictionary.DataDictionary">
@@ -916,9 +893,6 @@
   <bean id="knsEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
   	<property name="entityManagerFactory" ref="knsEntityManagerFactory"/>
   </bean>
-
-  <!-- Used for @Transactional so you don't have to wire services up in here-->
-  <tx:annotation-driven transaction-manager="transactionManager"/>
 
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">

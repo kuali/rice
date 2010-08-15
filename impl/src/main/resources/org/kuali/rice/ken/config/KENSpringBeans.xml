@@ -320,9 +320,6 @@
   <bean id="kenEntityManager" class="org.springframework.orm.jpa.support.SharedEntityManagerBean">
   	<property name="entityManagerFactory" ref="kenEntityManagerFactory"/>
   </bean>
-
-  <!-- Used for @Transactional so you don't have to wire services up in here -->
-  <tx:annotation-driven transaction-manager="transactionManager"/>
   
     <!-- 
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">

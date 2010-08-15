@@ -534,8 +534,6 @@
   	<property name="entityManagerFactory" ref="kewEntityManagerFactory"/>
   </bean>
 
-  <tx:annotation-driven transaction-manager="transactionManager"/>
-
   <!-- END JPA CONFIGURATION -->
 
   <bean id="routeLogDerivedRoleTypeService" class="org.kuali.rice.kew.role.service.impl.RouteLogDerivedRoleTypeServiceImpl" />

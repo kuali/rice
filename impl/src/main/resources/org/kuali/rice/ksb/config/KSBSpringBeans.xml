@@ -182,9 +182,6 @@
   <!-- START JPA CONFIGURATION -->
 
   <!-- entity managers defined in KSBJPASpringBeans.xml so both can be controlled by rice.ksb.jpa.enabled -->
-
-  <!-- Used for @Transactional so you don't have to wire services up in here -->
-  <tx:annotation-driven transaction-manager="transactionManager"/>
   
   <!-- 
   <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">

@@ -37,7 +37,6 @@ import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.ErrorMap;

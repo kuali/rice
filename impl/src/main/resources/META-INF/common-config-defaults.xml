@@ -11,54 +11,62 @@
     <param name="rice.custom.ojb.properties" override="false">org/kuali/rice/core/ojb/RiceOJB.properties</param>
 
 	<!-- Database Config -->
-	    <param name="datasource.pool.minSize" override="false">0</param>
+
+	<!-- below used by atomikos data sources -->
+    <!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
+    <param name="datasource.pool.maxActive" override="false">50</param>
+    <param name="datasource.minIdle" override="false">7</param>
+    <param name="datasource.accessToUnderlyingConnectionAllowed" override="false">true</param>
+    <param name="datasource.initialSize" override="false">7</param>
+
+	<param name="datasource.pool.minSize" override="false">0</param>
     <param name="datasource.pool.maxSize" override="false">5</param>
     <param name="datasource.pool.size" override="false">5</param>
     <param name="datasource.pool.maxWait" override="false">30000</param>
-    
-    
+
+
     <param name="datasource.ojb.platform" override="false">Oracle9i</param>
-    
+
     <param name="datasource.driver.name.Oracle" override="false">oracle.jdbc.driver.OracleDriver</param>
     <param name="datasource.platform.Oracle" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle" override="false"></param>
     <param name="datasource.pool.validationQuery.Oracle" override="false">select 1 from dual</param>
-    
+
     <param name="datasource.driver.name.Oracle9i" override="false">oracle.jdbc.driver.OracleDriver</param>
     <param name="datasource.platform.Oracle9i" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle9i" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle9i" override="false"></param>
     <param name="datasource.pool.validationQuery.Oracle9i" override="false">select 1 from dual</param>
-    
+
     <param name="datasource.driver.name.MySQL" override="false">com.mysql.jdbc.Driver</param>
     <param name="datasource.platform.MySQL" override="false">org.kuali.rice.core.database.platform.MySQLDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
     <param name="datasource.ojb.sequenceManager.className.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
     <param name="datasource.pool.validationQuery.MySQL" override="false">select 1</param>
-    
+
     <param name="datasource.driver.name.Derby" override="false">org.apache.derby.jdbc.EmbeddedDriver</param>
     <param name="datasource.platform.Derby" override="false">org.kuali.rice.core.database.platform.DerbyDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Derby" override="false">** NEEDS IMPLEMENTED **</param>
     <param name="datasource.ojb.sequenceManager.className.Derby" override="false">** NEEDS IMPLEMENTED **</param>
     <param name="datasource.pool.validationQuery.Derby" override="false">values(1)</param>
-    
+
     <param name="datasource.driver.name.McKoi" override="false">com.mckoi.JDBCDriver</param>
     <param name="datasource.platform.McKoi" override="false">org.kuali.rice.core.database.platform.MckoiDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.McKoi" override="false">org.apache.ojb.broker.platforms.PlatformMckoiImpl</param>
     <param name="datasource.ojb.sequenceManager.className.McKoi" override="false">org.apache.ojb.broker.platforms.PlatformMckoiImpl</param>
     <param name="datasource.pool.validationQuery.McKoi" override="false">select 1 from dual</param>
-    
+
     <param name="datasource.driver.name" override="false">${datasource.driver.name.${datasource.ojb.platform}}</param>
     <param name="datasource.platform" override="false">${datasource.platform.${datasource.ojb.platform}}</param>
     <param name="datasource.ojb.sequenceManager" override="false">${datasource.ojb.sequenceManager.${datasource.ojb.platform}}</param>
     <param name="datasource.ojb.sequenceManager.className" override="false">${datasource.ojb.sequenceManager.className.${datasource.ojb.platform}}</param>
     <param name="datasource.pool.validationQuery" override="false">${datasource.pool.validationQuery.${datasource.ojb.platform}}</param>
-    
+
     <!-- Action List Outbox -->
     <param name="actionlist.outbox.default.preference.on" override="false">true</param>
     <param name="actionlist.outbox" override="false">true</param>
-	
+    <param name="ActionList.norefresh" override="false">false</param>
 
     <!--
       NOTE: The application.url parameter needs to be set by the client
@@ -68,6 +76,7 @@
      -->
     <param name="appserver.url" override="false">${application.http.scheme}://${application.host}:${http.port}</param>
     <param name="application.url" override="false">${appserver.url}/${app.context.name}</param>
+    <param name="rice.ksb.restfulServicePath" override="false">restful</param>
     <param name="serviceServletUrl" override="false">${application.url}/remoting/</param>
     <param name="workflow.url" override="false">${application.url}/kew</param>
     <param name="rice.url" override="false">${application.url}/kr</param>
@@ -81,6 +90,9 @@
     <param name="cas.validate.password" override="false">false</param>
     <param name="cas.rice.server.name" override="false">${appserver.url}</param>
 
+	<!-- Tells the StandaloneInitializeListener to look in another location for the Rice configuration. Comma separated list -->
+	<param name="additional.config.locations" override="false"></param>
+
     <!-- A comma separated list of additional spring files for the RiceConfigurer -->
     <param name="rice.additionalSpringFiles" override="false"></param>
 
@@ -93,8 +105,8 @@
     <param name="kim.url" override="false">${application.url}/kim</param>
     <param name="kew.url" override="false">${application.url}/kew</param>
 
-    <!-- TODO: doc this param -->
-    <param name="production.environment.code" override="false">PRD</param>
+    <!-- Code Options: (dev|snd|unt|reg|stg|trn|prd) -->
+    <param name="production.environment.code" override="false">prd</param>
      <!-- I think this is workflow related; everywhere it was specified as 'iu' so I'll just keep that for now -->
     <param name="institution" override="false">iu</param>
     <!-- TODO: doc these params -->
@@ -110,30 +122,6 @@
 
     <param name="portal.css.files" override="false">rice-portal/css/portal.css</param>
     <param name="portal.javascript.files" override="false">kr/scripts/my_common.js</param>
-
-
-
-
-    <!--
-        DATASOURCE RELATED PROPERTIES
-        to make our lives easier, common settings are all defaulted to Oracle
-    -->
-
-	<!-- below used by atomikos data sources -->
-    <!-- below are dbcp properties used for non-JTA datasources needed by KSB in some instances -->
-    <param name="datasource.pool.maxActive" override="false">50</param>
-    <param name="datasource.minIdle" override="false">7</param>
-    <param name="datasource.accessToUnderlyingConnectionAllowed" override="false">true</param>
-    <param name="datasource.initialSize" override="false">7</param>
-
-    <!-- NOT NEEDED B/C THEY ARE DEFAULTED BY WORK DONE IN KULRICE-1067
-  	<param name="datasource.pool.size" override="false">5</param>
-    <param name="datasource.pool.maxWait" override="false">30000</param>
-    <param name="datasource.ojb.platform" override="false">Oracle9i</param>
-    <param name="datasource.platform" override="false">org.kuali.<param name="rice.core.database.platform.OraclePlatform</param>
-    <param name="datasource.driver.name" override="false">oracle.jdbc.driver.OracleDriver</param>
-    <param name="datasource.pool.validationQuery" override="false">select 1 from dual</param>
-    -->
 
 	<!-- JPA-related parameters -->
 	<param name="rice.jpa.DatabasePlatform" override="false">org.hibernate.dialect.OracleDialect</param>
@@ -283,7 +271,7 @@
     <param name="kim.cache.person.max.size" override="false">3000</param>
     <param name="kim.cache.person.max.age.seconds" override="false">3600</param>
 
-    <param name="kim.identityArchiveServiceImpl.executionIntervalSeconds" override="false">600</param>
+    <param name="kim.identityArchiveServiceImpl.executionIntervalSeconds" override="false">300</param>
     <param name="kim.identityArchiveServiceImpl.maxWriteQueueSize" override="false">300</param>
 
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
@@ -325,4 +313,9 @@
 	<param name="rice.ken.jpa.GenerateDdl" override="false">true</param>
 	<!-- End KEN-specific JPA parameters -->
 
+	<param name="secure.workflowutility.soapservice.endpoint" override="false">true</param>
+	<param name="title.inquiry.url.value.prependtext" override="false"></param>
+	<param name="portal.show.sample.app" override="false">false</param>
+	<param name="bus.refresh.rate" override="false">30</param>
+	<param name="threadPool.size" override="false">5</param>
 </config>

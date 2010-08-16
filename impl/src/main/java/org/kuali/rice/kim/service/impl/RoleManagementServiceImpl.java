@@ -414,7 +414,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 			    try {
 			        shouldCacheRoleAnswer = new Boolean(roleType.shouldCacheRoleMembershipResults(roleInfo.getNamespaceCode(), roleInfo.getRoleName()));
 			        shouldCacheRoleCache.put(roleId, shouldCacheRoleAnswer);
-			    } catch (RiceRemoteServiceConnectionException e) {
+			    } catch (Exception e) {//was: RiceRemoteServiceConnectionException
 			        LOG.warn("Unable to connect to remote service for roleType " + roleInfo.getNamespaceCode() + "-" + roleInfo.getRoleName());
                     LOG.warn(e.getMessage());
 			        return Boolean.FALSE;

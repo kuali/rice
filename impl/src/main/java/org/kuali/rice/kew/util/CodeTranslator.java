@@ -19,8 +19,6 @@ package org.kuali.rice.kew.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kuali.rice.kew.util.KEWConstants;
-
 
 /**
  * Utility class to translate the various codes into labels and vice versa.
@@ -100,8 +98,8 @@ public class CodeTranslator {
 
     private static Map getActiveIndicatorLabels() {
         Map newActiveIndicatorLabels = new HashMap();
-        newActiveIndicatorLabels.put(new Boolean(true), KEWConstants.ACTIVE_LABEL_LOWER);
-        newActiveIndicatorLabels.put(new Boolean(false), KEWConstants.INACTIVE_LABEL_LOWER);
+        newActiveIndicatorLabels.put(Boolean.TRUE, KEWConstants.ACTIVE_LABEL_LOWER);
+        newActiveIndicatorLabels.put(Boolean.FALSE, KEWConstants.INACTIVE_LABEL_LOWER);
         return newActiveIndicatorLabels;
     }
 

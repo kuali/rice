@@ -23,13 +23,6 @@
     <h3>Ad Hoc Recipients</h3>
             <table cellpadding="0" cellspacing="0" class="datatable" summary="view/edit ad hoc recipients">
         <%-- first do the persons --%>
-              <kul:displayIfErrors keyMatch="${Constants.AD_HOC_ROUTE_PERSON_ERRORS}">
-          <tr>
-              <th colspan=4>
-                <kul:errors keyMatch="${Constants.AD_HOC_ROUTE_PERSON_ERRORS}" />
-              </th>
-            </tr>
-        </kul:displayIfErrors>
               <tr>
                 <td colspan=4 class="tab-subhead">Person Requests:</td>
               </tr>
@@ -116,13 +109,6 @@
                   </tr>
               </logic:iterate>
         <%-- next do the workgroups --%>
-        <kul:displayIfErrors keyMatch="${Constants.AD_HOC_ROUTE_WORKGROUP_ERRORS}">
-          <tr>
-              <th colspan=4>
-                <kul:errors keyMatch="${Constants.AD_HOC_ROUTE_WORKGROUP_ERRORS}" />
-              </th>
-            </tr>
-        </kul:displayIfErrors>
           <tr>
                 <td colspan=4 class="tab-subhead">Ad Hoc Group Requests:</td>
               </tr>

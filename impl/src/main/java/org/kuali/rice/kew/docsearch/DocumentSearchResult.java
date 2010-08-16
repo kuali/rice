@@ -16,14 +16,13 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -100,12 +99,13 @@ public class DocumentSearchResult implements Serializable {
      */
     public KeyValueSort getResultContainer(String key) {
     	if (key != null) {
-	    	for (Iterator iter = resultContainers.iterator(); iter.hasNext();) {
-				KeyValueSort pair = (KeyValueSort) iter.next();
-				if (key.equals((String)pair.getKey())) {
-					return pair;
-				}
-			}
+            for (KeyValueSort resultContainer : resultContainers)
+            {
+                if (key.equals(resultContainer.getKey()))
+                {
+                    return resultContainer;
+                }
+            }
     	}
     	return new KeyValueSort();
     }

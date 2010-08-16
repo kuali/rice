@@ -308,14 +308,48 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 	 * @see org.kuali.rice.kns.rule.SendAdHocRequestsRule#processSendAdHocRequests(org.kuali.rice.kns.document.Document)
 	 */
 	public boolean processSendAdHocRequests(Document document) {
-		// count on the generated events from 
-		return processCustomSendAdHocRequests(document);
+		boolean isValid = true;
+
+		isValid &= isAdHocRouteRecipientsValid(document);
+		isValid &= processCustomSendAdHocRequests(document);
+		
+		return isValid;
 	}
 
 	protected boolean processCustomSendAdHocRequests(Document document) {
 		return true;
 	}
-	
+
+	/**
+	 * Checks the adhoc route recipient list to ensure there are recipients or
+	 * else throws an error that at least one recipient is required.
+	 * 
+	 * @param document
+	 * @return
+	 */
+	protected boolean isAdHocRouteRecipientsValid(Document document) {
+		boolean isValid = true;
+		MessageMap errorMap = GlobalVariables.getMessageMap();
+
+		if (errorMap.getErrorPath().size() == 0) {
+			// add the error path keys on the stack
+			errorMap.addToErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
+		}
+
+		if ((document.getAdHocRoutePersons() == null || document
+				.getAdHocRoutePersons().isEmpty())
+				&& (document.getAdHocRouteWorkgroups() == null || document
+						.getAdHocRouteWorkgroups().isEmpty())) {
+
+			GlobalVariables.getMessageMap().putError(KNSPropertyConstants.ID, "error.adhoc.missing.recipients");
+			isValid = false;
+		}
+
+		// drop the error path keys off now
+		errorMap.removeFromErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
+
+		return isValid;
+	}	
 	/**
      * Verifies that the adHocRoutePerson's fields are valid - it does required and format checks.
      * 

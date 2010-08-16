@@ -16,22 +16,19 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.engine.node.NodeGraphSearchCriteria;
-import org.kuali.rice.kew.engine.node.NodeGraphSearchResult;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 
 public class RouteNodeServiceTest extends KEWTestCase {
@@ -99,7 +96,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
 			}
 		}
     	assertNotNull("Could not locate the Acknowledge1 node in the path.", ack1NodeInstance);
-    	List startNodes = new ArrayList();
+    	List<RouteNodeInstance> startNodes = new ArrayList<RouteNodeInstance>();
     	startNodes.add(ack1NodeInstance);
     	criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, startNodes, "WorkflowDocument");
     	result = routeNodeService.searchNodeGraph(criteria);
@@ -115,7 +112,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     	document.blanketApprove("", new String[] { "WorkflowDocument2", "WorkflowDocument3" });
     	List activeNodeInstances = routeNodeService.getActiveNodeInstances(document.getRouteHeaderId());
     	assertEquals("Should be 2 active nodes.", 2, activeNodeInstances.size());
-    	Set nodeNames = TestUtilities.createNodeInstanceNameSet(activeNodeInstances);
+    	Set<? extends String> nodeNames = TestUtilities.createNodeInstanceNameSet(activeNodeInstances);
     	assertTrue("Should be at WorkflowDocument2 node.", nodeNames.contains("WorkflowDocument2"));
     	assertTrue("Should be at the WorkflowDocument3 node.", nodeNames.contains("WorkflowDocument3"));
     	
@@ -153,7 +150,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     	assertNotNull("Could not locate WorkflowDocument3 node.", workflowDocument3Node);
     	
     	// now try searching backward for WorkflowDocument4 from WorkflowDocument2, this should keep us on the branch
-    	List startNodeInstances = new ArrayList();
+    	List<RouteNodeInstance> startNodeInstances = new ArrayList<RouteNodeInstance>();
     	startNodeInstances.add(workflowDocument2Node);
     	criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, activeNodeInstances, "WorkflowDocument4");
     	result = routeNodeService.searchNodeGraph(criteria);
@@ -167,7 +164,7 @@ public class RouteNodeServiceTest extends KEWTestCase {
     	assertTrue(nodeNames.contains("WorkflowDocument4"));
     	
     	// try searching backward for WorkflowDocument5
-    	startNodeInstances = new ArrayList();
+    	startNodeInstances = new ArrayList<RouteNodeInstance>();
     	startNodeInstances.add(workflowDocument3Node);
     	criteria = new NodeGraphSearchCriteria(NodeGraphSearchCriteria.SEARCH_DIRECTION_BACKWARD, activeNodeInstances, "WorkflowDocument5");
     	result = routeNodeService.searchNodeGraph(criteria);

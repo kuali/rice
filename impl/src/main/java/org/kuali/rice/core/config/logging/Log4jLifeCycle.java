@@ -44,7 +44,9 @@ import org.w3c.dom.Document;
  */
 public class Log4jLifeCycle extends BaseLifecycle {
 
-    /**
+    private static final String LOG4J_FILE_NOT_FOUND = "log4j settings file not found at location: ";
+
+	/**
      * Convenience constant representing a minute in milliseconds
      */
     private static final int MINUTE = 60 * 1000;
@@ -60,6 +62,11 @@ public class Log4jLifeCycle extends BaseLifecycle {
     private static final int DEFAULT_RELOAD_INTERVAL = 5 * MINUTE; // 5 minutes
 
     /**
+     * Does file at LOG4J_SETTINGS_PATH exist?
+     */
+    private boolean log4jFileExists;
+
+    /**
      * Non-static and non-final so that it can be reset after configuration is read
      */
     private Logger log = Logger.getLogger(getClass());
@@ -67,6 +74,8 @@ public class Log4jLifeCycle extends BaseLifecycle {
 	public void start() throws Exception {
         // obtain the root workflow config
 		Config config = ConfigContext.getRootConfig();
+
+		log4jFileExists = checkPropertiesFileExists(config.getProperty(Config.LOG4J_SETTINGS_PATH));
 
         // first check for in-line xml configuration
 		String log4jconfig = config.getProperty(Config.LOG4J_SETTINGS_XML);
@@ -91,8 +100,9 @@ public class Log4jLifeCycle extends BaseLifecycle {
 				log.error("Error loading Log4J configuration settings: " + log4jconfig, ioe);
 			}
         // check for an external file location specification
-		} else if ((log4jconfig = config.getProperty(Config.LOG4J_SETTINGS_PATH)) != null) {
+		} else if (log4jFileExists) {
 			log.info("Configuring Log4J logging.");
+			log4jconfig = config.getProperty(Config.LOG4J_SETTINGS_PATH);
 
             int reloadInterval = DEFAULT_RELOAD_INTERVAL;
 
@@ -129,6 +139,28 @@ public class Log4jLifeCycle extends BaseLifecycle {
 	}
 
     /**
+	 * Checks if the passed in file exists.
+	 *
+	 * @param log4jSettingsPath the file
+	 * @return true if exists
+	 */
+	private boolean checkPropertiesFileExists(String log4jSettingsPath) {
+		boolean exists;
+		
+		try {
+			exists = ResourceUtils.getFile(log4jSettingsPath).exists();
+		} catch (FileNotFoundException e) {
+			exists = false;
+		}
+		
+		if (!exists) {
+			System.out.println(LOG4J_FILE_NOT_FOUND + log4jSettingsPath);
+		}
+		
+		return exists;
+	}
+
+	/**
      * Uses reflection to attempt to obtain the ImplementationVersion of the org.apache.log4j
      * package from the jar manifest.
      * @return the value returned from Package.getPackage("org.apache.log4j").getImplementationVersion()
@@ -143,7 +175,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
     /**
      * Subclasses the Spring Log4jConfigurer to expose a static method which accepts an initial set of
      * properties (to use for variable substitution)
-     * 
+     *
  * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     private static final class WorkflowLog4j_1_2_13_Configurer extends Log4jConfigurer {
@@ -202,9 +234,9 @@ public class Log4jLifeCycle extends BaseLifecycle {
     public void stop() throws Exception {
     	// commenting out LogManager.shutdown() for now because it kills logging before shutdown of the rest of the system is complete
     	// so if there are other errors that are encountered during shutdown, they won't be logged!
-    	
+
     	// move this to the standalone initialize listener instead
-    	
+
 		//LogManager.shutdown();
 		super.stop();
 	}

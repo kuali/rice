@@ -42,6 +42,11 @@ import org.kuali.rice.kns.web.ui.HeaderField;
  */
 public class KualiForm extends PojoFormBase {
     private static final long serialVersionUID = 1L;
+
+    private static final String literalPrefixAndDelimiter =
+    	KNSConstants.LOOKUP_PARAMETER_LITERAL_PREFIX+KNSConstants.LOOKUP_PARAMETER_LITERAL_DELIMITER;
+
+    private String backLocation;
     private String methodToCall;
     private String refreshCaller;
     private String anchor;
@@ -61,6 +66,8 @@ public class KualiForm extends PojoFormBase {
     
     private List<HeaderField> docInfo;
     private int numColumns = 2;
+    
+    private String fieldNameToFocusOnAfterSubmit;
     
     /**
      * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#addRequiredNonEditableProperties()
@@ -104,6 +111,7 @@ public class KualiForm extends PojoFormBase {
         
         super.populate(request);
 
+        populateBackLocation(request);
         populateFieldLevelHelpEnabled(request);
         
         if (actionFormUtilMap instanceof ActionFormUtilMap) {
@@ -112,6 +120,12 @@ public class KualiForm extends PojoFormBase {
     }
         
     private static Boolean ENABLE_FIELD_LEVEL_HELP_IND = null;
+    
+    protected void populateBackLocation(HttpServletRequest request){
+        if (getParameter(request, "returnLocation") != null) {
+            setBackLocation(getParameter(request, "returnLocation"));
+        }
+    }
     
     /**
      * Populates whether the each field will have field-level help associated with it.  Depending on how the jsp/tags are implemented, the value
@@ -232,8 +246,16 @@ public class KualiForm extends PojoFormBase {
     public int getNextArbitrarilyHighIndex() {
         return this.arbitrarilyHighIndex++;
     }
+    
+	public String getFieldNameToFocusOnAfterSubmit() {
+		return this.fieldNameToFocusOnAfterSubmit;
+	}
 
-    /**
+	public void setFieldNameToFocusOnAfterSubmit(String fieldNameToFocusOnAfterSubmit) {
+		this.fieldNameToFocusOnAfterSubmit = fieldNameToFocusOnAfterSubmit;
+	}
+
+	/**
      * @return Returns the validOptionsMap.
      */
     public Map getActionFormUtilMap() {
@@ -334,6 +356,11 @@ public class KualiForm extends PojoFormBase {
      * @return the value of the parameter
      */
     public String retrieveFormValueForLookupInquiryParameters(String parameterName, String parameterValueLocation) {
+    	// dereference literal values by simply trimming of the prefix
+    	if (parameterValueLocation.startsWith(literalPrefixAndDelimiter)) {
+    		return parameterValueLocation.substring(literalPrefixAndDelimiter.length());
+    	}
+
     	Object value = ObjectUtils.getPropertyValue(this, parameterValueLocation);
 		if (value == null) {
 			return null;
@@ -414,6 +441,7 @@ public class KualiForm extends PojoFormBase {
 		if (extraButtons != null) {
 			extraButtons.clear();
 		}
+		//fieldNameToFocusOnAfterSubmit = "";
 		clearDisplayedMessages();
 	}
 
@@ -426,6 +454,7 @@ public class KualiForm extends PojoFormBase {
 		if (extraButtons != null) {
 			extraButtons.clear();
 		}
+		//fieldNameToFocusOnAfterSubmit = "";
 		clearDisplayedMessages();
 	}
 	
@@ -440,4 +469,19 @@ public class KualiForm extends PojoFormBase {
 			displayedInfo.clear();
 		}
 	}
+	
+    /**
+	 * @return the backLocation
+	 */
+	public String getBackLocation() {
+		return this.backLocation;
+	}
+
+	/**
+	 * @param backLocation the backLocation to set
+	 */
+	public void setBackLocation(String backLocation) {
+		this.backLocation = backLocation;
+	}
+
 }

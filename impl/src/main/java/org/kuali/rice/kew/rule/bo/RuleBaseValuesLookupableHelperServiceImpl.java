@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -31,9 +23,11 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.rule.OddSearchAttribute;
 import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
+import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -65,6 +59,9 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.sql.Date;
+import java.util.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -235,9 +232,9 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
         if (!activeParam.equals("")) {
             if (activeParam.equals("Y")) {
-                isActive = new Boolean(true);
+                isActive = Boolean.TRUE;
             } else {
-                isActive = new Boolean(false);
+                isActive = Boolean.FALSE;
             }
         }
 
@@ -296,15 +293,41 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 }
                 attribute.setRequired(false);
                 List<Row> searchRows = null;
+				long curExtId = 0;//debugging for EN-1682
                 if (attribute instanceof OddSearchAttribute) {
                     for (WorkflowServiceErrorImpl wsei : (List<WorkflowServiceErrorImpl>)((OddSearchAttribute)attribute).validateSearchData(fieldValues)) {
                         GlobalVariables.getMessageMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
+                    }                   
+                    try {
+						List<RuleExtension> curExts = ruleTemplateAttribute.getRuleExtensions();
+		                for (Iterator extIter = curExts.iterator(); extIter.hasNext();) {
+		                	RuleExtension curExt = (RuleExtension) iter.next();
+		                	curExtId = curExt.getRuleExtensionId();
+		                	RuleBaseValues curRule = curExt.getRuleBaseValues();
+							attribute.validateRuleData(WebRuleUtils.getFieldMapForRuleTemplateAttribute(curRule, ruleTemplateAttribute));
                     }
+					} catch (Exception e) {						
+						LOG.warn("Exception caught attempting to validate attribute data for extension id:" + curExtId + ". Reason: " + e.getCause());
+					}
+                    
                     searchRows = ((OddSearchAttribute) attribute).getSearchRows();
                 } else {
                     for (WorkflowServiceErrorImpl wsei : (List<WorkflowServiceErrorImpl>)attribute.validateRuleData(fieldValues)) {
                         GlobalVariables.getMessageMap().putError(wsei.getMessage(), RiceKeyConstants.ERROR_CUSTOM, wsei.getArg1());
                     }
+                   
+					try {
+						List<RuleExtension> curExts = ruleTemplateAttribute.getRuleExtensions();
+		                for (Iterator extIter = curExts.iterator(); extIter.hasNext();) {
+		                	RuleExtension curExt = (RuleExtension) iter.next();
+		                	curExtId = curExt.getRuleExtensionId();
+		                	RuleBaseValues curRule = curExt.getRuleBaseValues();
+							attribute.validateRuleData(WebRuleUtils.getFieldMapForRuleTemplateAttribute(curRule, ruleTemplateAttribute));
+		                }
+					} catch (Exception e) {						
+						LOG.warn("Exception caught attempting to validate attribute data for extension id:" + curExtId + ". Reason: " + e.getCause());
+					}
+                 
                     searchRows = attribute.getRuleRows();
                 }
                 for (Row row : searchRows) {
@@ -335,10 +358,11 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             ruleDescription = ruleDescription.replace('*', '%');
             ruleDescription = "%" + ruleDescription.trim() + "%";
         }
-
-        if (!errors.isEmpty()) {
+       
+        if (!GlobalVariables.getMessageMap().isEmpty()) {
             throw new ValidationException("errors in search criteria");
         }
+       
 
         Iterator rules = getRuleService().search(docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, isDelegateRule, isActive, attributes, userDirectiveParam).iterator();
         List displayList = new ArrayList();
@@ -347,7 +371,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             RuleBaseValues record = (RuleBaseValues) rules.next();
 
             if (Utilities.isEmpty(record.getDescription())) {
-                record.setDescription(KEWConstants.HTML_NON_BREAKING_SPACE);
+            	
+                record.setDescription("");
             }
 
             if (ruleTemplateNameParam != null && !ruleTemplateNameParam.trim().equals("") || ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam) && !"null".equals(ruleTemplateIdParam)) {
@@ -359,7 +384,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                     if (record.getRuleExtensionValue(new Long(pair.getLabel()), pair.getKey().toString()) != null) {
                         newPair.setLabel(record.getRuleExtensionValue(new Long(pair.getLabel()), pair.getKey().toString()).getValue());
                     } else {
-                        newPair.setLabel(KEWConstants.HTML_NON_BREAKING_SPACE);
+                        newPair.setLabel("");
                     }
                     myNewColumns.getColumns().add(newPair);
                     record.getFieldValues().put((String)newPair.key, newPair.label);
@@ -404,7 +429,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         // make sure that if we have either groupName or Namespace, that both are filled in
         String groupName = (String)fieldValues.get(GROUP_REVIEWER_NAME_PROPERTY_NAME);
         String groupNamespace = (String)fieldValues.get(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
-        String personId = (String)fieldValues.get(PERSON_REVIEWER_PROPERTY_NAME);
+        String principalName = (String)fieldValues.get(PERSON_REVIEWER_PROPERTY_NAME);
 
         if (Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
             String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
@@ -424,8 +449,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             }
         }
 
-        if  (!Utilities.isEmpty(personId)) {
-            Person person = KIMServiceLocator.getPersonService().getPerson(personId);
+        if  (!Utilities.isEmpty(principalName)) {
+            Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
             if (person == null) {
                 String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME);
                 GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);

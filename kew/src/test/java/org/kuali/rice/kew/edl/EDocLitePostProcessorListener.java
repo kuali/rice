@@ -17,13 +17,13 @@
 
 package org.kuali.rice.kew.edl;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 /**
  * Listens on a socket and reads EDocLitePostProcessor events
@@ -36,13 +36,13 @@ class EDocLitePostProcessorListener implements Runnable {
     private ServerSocket ss;
     private int port;
     private int timesCalled;
-    private Map context;
+    private Map<String, String> context;
 
-    public EDocLitePostProcessorListener(Map context) {
+    public EDocLitePostProcessorListener(Map<String, String> context) {
         this(8080, context);
     }
 
-    public EDocLitePostProcessorListener(int port, Map context) {
+    public EDocLitePostProcessorListener(int port, Map<String, String> context) {
         this.port = port;
         this.context = context;
         context.put(KEY, "0");

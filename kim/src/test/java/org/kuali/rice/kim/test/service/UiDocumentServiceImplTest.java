@@ -29,7 +29,6 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
@@ -57,8 +56,8 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
- * 
+ * This is a description of what this class does - shyu don't forget to fill this in.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -75,7 +74,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	public void testSaveToEntity() {
 	    Person adminPerson = KIMServiceLocator.getPersonService().getPersonByPrincipalName("admin");
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
-		
+
 		try {
             personDoc.getDocumentHeader().setWorkflowDocument(KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
         } catch (WorkflowException e) {
@@ -90,11 +89,10 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), (KimEntityEmailImpl)entityType.getEmailAddresses().get(0));
 		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), (KimEntityNameImpl)entity.getNames().get(0));
 		assertPrincipalTrue(personDoc, entity.getPrincipals().get(0));
-		assertExtIdTrue(personDoc, entity.getExternalIdentifiers());
-		
+
 		assertAffiliationTrue(personDoc.getAffiliations().get(0), entity.getAffiliations().get(0));
 		assertEmpInfoTrue(personDoc.getAffiliations().get(0).getEmpInfos().get(0), entity.getEmploymentInformation().get(0));
-	
+
 		//verify that update doesn't cause external identifier to be encrypted twice
 		// and that update doesn't cause any problems
 		uiDocumentService.saveEntityPerson(personDoc);
@@ -106,10 +104,9 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
         assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), (KimEntityEmailImpl)entityType2.getEmailAddresses().get(0));
         assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), (KimEntityNameImpl)entity2.getNames().get(0));
         assertPrincipalTrue(personDoc, entity2.getPrincipals().get(0));
-        assertExtIdTrue(personDoc, entity2.getExternalIdentifiers());
-		
-		
-		
+
+
+
 		//		List<String> groupIds = groupService.getDirectMemberGroupIds("g1");
 //		System.out.println( groupIds );
 //		assertTrue( "g1 must contain group g2", groupIds.contains( "g2" ) );
@@ -119,12 +116,12 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 //		System.out.println( groupIds );
 //		assertTrue( "g2 must contain group g3", groupIds.contains( "g3" ) );
 //		assertFalse( "g2 must not contain group g4 (inactive)", groupIds.contains( "g4" ) );
-		
+
 	}
-	
+
 	@Test
 	public void testLoadToPersonDocument() {
-		
+
 		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getService("kimIdentityDelegateService")).getEntityImpl("entity123eId");
 		assertNotNull(entity);
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
@@ -136,12 +133,11 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEmailTrue((PersonDocumentEmail)personDoc.getEmails().get(0), (KimEntityEmailImpl)entityType.getEmailAddresses().get(0));
 		assertNameTrue((PersonDocumentName)personDoc.getNames().get(0), (KimEntityNameImpl)entity.getNames().get(0));
 		//assertPrincipalTrue(personDoc, entity.getPrincipals().get(0));
-		assertExtIdTrue(personDoc, entity.getExternalIdentifiers());
 		assertAffiliationTrue(personDoc.getAffiliations().get(0), entity.getAffiliations().get(0));
 		assertEmpInfoTrue(personDoc.getAffiliations().get(0).getEmpInfos().get(0), entity.getEmploymentInformation().get(0));
 
 	}
-	
+
 	// test principal membership
 	@Test
 	@Ignore
@@ -167,7 +163,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 			}
 		}
 	}
-	
+
 	private PersonDocumentRole initPersonDocRole() {
 //		Map pkMap = new HashMap();
 //		pkMap.put("roleId", "r1");
@@ -192,17 +188,17 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 //		attr1.setKimAttributeId("kimAttrDefn3");
 //		attr1.setSortCode("b");
 //		attr1.setKimTypeAttributeId("kimAttr4");
-		
+
 		pkMap.put("kimTypeAttributeId", "kimAttr4");
 		KimTypeAttributeImpl attr2 = (KimTypeAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
 
 		attributeDefinitions.add(attr2);
 		kimType.setAttributeDefinitions(attributeDefinitions);
 		docRole.setKimRoleType(kimType.toInfo());
-		
+
 		return docRole;
 	}
-	
+
 	// init section
 	private IdentityManagementPersonDocument initPersonDoc() {
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
@@ -210,7 +206,6 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		personDoc.setDocumentNumber("1");
 		personDoc.setPrincipalId("pid123");
 		personDoc.setPrincipalName("test");
-		personDoc.setTaxId("12345-67");
 //		personDoc.setUnivId("1234567890");
 		personDoc.setAffiliations(initAffiliations());
 		personDoc.setNames(initNames());
@@ -218,10 +213,10 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		//personDoc.setRoles(initRoles());
 		//personDoc.setGroups();
 		personDoc.setPhones(initPhones());
-		personDoc.setEmails(initEmails());	
+		personDoc.setEmails(initEmails());
 		return personDoc;
 	}
-	
+
 	private List<PersonDocumentName> initNames() {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();
 			PersonDocumentName docName = new PersonDocumentName();
@@ -237,7 +232,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 			docNames.add(docName);
 		return docNames;
 	}
-	
+
 	private List<PersonDocumentAffiliation> initAffiliations() {
 		List<PersonDocumentAffiliation> docAffiliations = new ArrayList<PersonDocumentAffiliation>();
 			PersonDocumentAffiliation docAffiliation = new PersonDocumentAffiliation();
@@ -246,7 +241,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 			docAffiliation.setCampusCode("BL");
 			docAffiliation.setActive(true);
 			docAffiliation.setDflt(true);
-			
+
 			// EntityAffiliationImpl does not define empinfos as collection
 			docAffiliations.add(docAffiliation);
 			List<PersonDocumentEmploymentInfo> docEmploymentInformations = new ArrayList<PersonDocumentEmploymentInfo>();
@@ -262,7 +257,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 				docEmpInfo.setActive(true);
 				docEmploymentInformations.add(docEmpInfo);
 			docAffiliation.setEmpInfos(docEmploymentInformations);
-		
+
 		return docAffiliations;
 
 	}
@@ -304,7 +299,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 			emails.add(docEmail);
 		return emails;
 	}
-	
+
 	private  List<PersonDocumentAddress> initAddresses() {
 		List<PersonDocumentAddress> docAddresses = new ArrayList<PersonDocumentAddress>();
 			PersonDocumentAddress docAddress = new PersonDocumentAddress();
@@ -323,20 +318,6 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	}
 
 // assert section
-	
-	private void assertExtIdTrue(IdentityManagementPersonDocument personDoc, List<KimEntityExternalIdentifierImpl> extIds) {
-		for (KimEntityExternalIdentifierImpl extId : extIds) {
-			if (extId.getExternalIdentifierTypeCode().equals("TAX")) {
-				assertEquals(personDoc.getTaxId(), extId.getExternalId());
-				
-			}
-//			else if (extId.getExternalIdentifierTypeCode().equals("LOGON")) {
-//				assertEquals(personDoc.getUnivId(), extId.getExternalId());
-//				
-//			}
-			
-		}
-	}
 
 	private void assertPrincipalTrue(IdentityManagementPersonDocument personDoc, KimPrincipalImpl principal) {
 		assertEquals(personDoc.getPrincipalId(), principal.getPrincipalId());
@@ -374,7 +355,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		assertEquals(docName.getSuffix(), entityName.getSuffix());
 		assertEquals(docName.getTitle(), entityName.getTitle());
 	}
-	
+
 	private void assertAffiliationTrue(PersonDocumentAffiliation docAffln, KimEntityAffiliationImpl entityAffln) {
 		assertEquals(docAffln.getAffiliationTypeCode(), entityAffln.getAffiliationTypeCode());
 		assertEquals(docAffln.getCampusCode(), entityAffln.getCampusCode());

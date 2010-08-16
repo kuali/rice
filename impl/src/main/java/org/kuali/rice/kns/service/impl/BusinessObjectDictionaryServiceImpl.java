@@ -42,6 +42,7 @@ import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
 import org.kuali.rice.kns.inquiry.InquiryAuthorizerBase;
 import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.inquiry.InquiryPresentationControllerBase;
+import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -322,7 +323,24 @@ public class BusinessObjectDictionaryServiceImpl implements
         }
     }
 
-    /**
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupNumberOfColumns(java.lang.Class)
+	 */
+	public Integer getLookupNumberOfColumns(Class businessObjectClass) {
+		// default to 1
+		int numberOfColumns = 1;
+
+		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+		if (lookupDefinition != null) {
+			if (lookupDefinition.getNumOfColumns() > 1) {
+				numberOfColumns = lookupDefinition.getNumOfColumns();
+			}
+		}
+
+		return numberOfColumns;
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupAttributeRequired(java.lang.Class,
 	 *      java.lang.String)
      */
@@ -339,8 +357,22 @@ public class BusinessObjectDictionaryServiceImpl implements
         return isRequired;
     }
 
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupAttributeReadOnly(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public Boolean getLookupAttributeReadOnly(Class businessObjectClass, String attributeName) {
+		Boolean readOnly = null;
 
-    /**
+		FieldDefinition definition = getLookupFieldDefinition(businessObjectClass, attributeName);
+		if (definition != null) {
+			readOnly = Boolean.valueOf(definition.isReadOnly());
+		}
+
+		return readOnly;
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryFieldNames(java.lang.Class,
 	 *      java.lang.String)
      */
@@ -853,6 +885,21 @@ public class BusinessObjectDictionaryServiceImpl implements
 	}
 
 	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupResultFieldTotal(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public Boolean getLookupResultFieldTotal(Class businessObjectClass, String attributeName) {
+		Boolean total = false;
+
+		if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
+			total = Boolean.valueOf(getLookupResultFieldDefinition(
+					businessObjectClass, attributeName).isTotal());
+		}
+
+		return total;
+	}
+
+	/**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#forceInquiryFieldInquiry(java.lang.Class,
 	 *      java.lang.String)
      */
@@ -896,11 +943,21 @@ public class BusinessObjectDictionaryServiceImpl implements
      * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldDefaultValueFinderClass(java.lang.Class,
      *      java.lang.String)
      */
-	public Class getLookupFieldDefaultValueFinderClass(
+	public Class<? extends ValueFinder> getLookupFieldDefaultValueFinderClass(
 			Class businessObjectClass, String attributeName) {
 		return getLookupFieldDefinition(businessObjectClass, attributeName)
 				.getDefaultValueFinderClass();
     }
+
+	/** {@inheritDoc} */
+	public String getLookupFieldQuickfinderParameterString(Class businessObjectClass, String attributeName) {
+		return getLookupFieldDefinition(businessObjectClass, attributeName).getQuickfinderParameterString();
+	}
+
+	/** {@inheritDoc} */
+	public Class<? extends ValueFinder> getLookupFieldQuickfinderParameterStringBuilderClass(Class businessObjectClass, String attributeName) {
+		return getLookupFieldDefinition(businessObjectClass, attributeName).getQuickfinderParameterStringBuilderClass();
+	}
 
 	public void setPersistenceStructureService(
 			PersistenceStructureService persistenceStructureService) {
@@ -925,4 +982,117 @@ public class BusinessObjectDictionaryServiceImpl implements
 		FieldDefinition lookupFieldDefinition = getLookupFieldDefinition(businessObjectClass, attributeName);
 		return lookupFieldDefinition != null && lookupFieldDefinition.isTreatWildcardsAndOperatorsAsLiteral();
 	}
+	
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryFieldAdditionalDisplayAttributeName(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public String getInquiryFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName) {
+		String additionalDisplayAttributeName = null;
+
+		if (getInquiryFieldDefinition(businessObjectClass, attributeName) != null) {
+			additionalDisplayAttributeName = getInquiryFieldDefinition(businessObjectClass, attributeName)
+					.getAdditionalDisplayAttributeName();
+		}
+
+		return additionalDisplayAttributeName;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getInquiryFieldAlternateDisplayAttributeName(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public String getInquiryFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName) {
+		String alternateDisplayAttributeName = null;
+
+		if (getInquiryFieldDefinition(businessObjectClass, attributeName) != null) {
+			alternateDisplayAttributeName = getInquiryFieldDefinition(businessObjectClass, attributeName)
+					.getAlternateDisplayAttributeName();
+		}
+
+		return alternateDisplayAttributeName;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldAdditionalDisplayAttributeName(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public String getLookupFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName) {
+		String additionalDisplayAttributeName = null;
+
+		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+			additionalDisplayAttributeName = getLookupFieldDefinition(businessObjectClass, attributeName)
+					.getAdditionalDisplayAttributeName();
+		}
+
+		return additionalDisplayAttributeName;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getLookupFieldAlternateDisplayAttributeName(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public String getLookupFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName) {
+		String alternateDisplayAttributeName = null;
+
+		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+			alternateDisplayAttributeName = getLookupFieldDefinition(businessObjectClass, attributeName)
+					.getAlternateDisplayAttributeName();
+		}
+
+		return alternateDisplayAttributeName;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#tranlateCodesInLookup(java.lang.Class)
+	 */
+	public Boolean tranlateCodesInLookup(Class businessObjectClass) {
+		boolean translateCodes = false;
+
+		if (getLookupDefinition(businessObjectClass) != null) {
+			translateCodes = getLookupDefinition(businessObjectClass).isTranslateCodes();
+		}
+
+		return translateCodes;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#tranlateCodesInInquiry(java.lang.Class)
+	 */
+	public Boolean tranlateCodesInInquiry(Class businessObjectClass) {
+		boolean translateCodes = false;
+
+		if (getInquiryDefinition(businessObjectClass) != null) {
+			translateCodes = getInquiryDefinition(businessObjectClass).isTranslateCodes();
+		}
+
+		return translateCodes;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#isLookupFieldTriggerOnChange(java.lang.Class,
+	 *      java.lang.String)
+	 */
+	public boolean isLookupFieldTriggerOnChange(Class businessObjectClass, String attributeName) {
+		boolean triggerOnChange = false;
+		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+			triggerOnChange = getLookupFieldDefinition(businessObjectClass, attributeName).isTriggerOnChange();
+		}
+
+		return triggerOnChange;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#disableSearchButtonsInLookup(java.lang.Class)
+	 */
+	public boolean disableSearchButtonsInLookup(Class businessObjectClass) {
+		boolean disableSearchButtons = false;
+
+		if (getLookupDefinition(businessObjectClass) != null) {
+			disableSearchButtons = getLookupDefinition(businessObjectClass).isDisableSearchButtons();
+		}
+
+		return disableSearchButtons;
+	}
+
 }

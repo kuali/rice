@@ -52,10 +52,10 @@ public class DocumentRequeuerTest extends KEWTestCase {
        assertEquals("Should be 2 requests.", 2, requests.length);
        // save off request ids
        Set<Long> requestIds = new HashSet<Long>();
-       for (int index = 0; index < requests.length; index++) {
-           ActionRequestDTO requestVO = requests[index];
-           requestIds.add(requestVO.getActionRequestId());
-       }
+        for (ActionRequestDTO requestVO : requests)
+        {
+            requestIds.add(requestVO.getActionRequestId());
+        }
 
        DocumentRouteHeaderValue documentH = KEWServiceLocator.getRouteHeaderService().getRouteHeader(document.getRouteHeaderId());
        DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(documentH.getDocumentType().getServiceNamespace(), documentH.getRouteHeaderId(), 0);
@@ -85,15 +85,17 @@ public class DocumentRequeuerTest extends KEWTestCase {
        assertEquals("Should be 2 requests.", 2, requests.length);
        // there should only be one pending request to rkirkend
        boolean pendingToRkirkend = false;
-       for (int index = 0; index < requests.length; index++) {
-           ActionRequestDTO requestVO = requests[index];
-           if (requestVO.getPrincipalId().equals(getPrincipalIdForName("rkirkend")) && requestVO.isActivated()) {
-               assertFalse("rkirkend has too many requests!", pendingToRkirkend);
-               pendingToRkirkend = true;
-           } else {
-               assertTrue("previous request to all others should be done.", requestVO.isDone());
-           }
-       }
+        for (ActionRequestDTO requestVO : requests)
+        {
+            if (requestVO.getPrincipalId().equals(getPrincipalIdForName("rkirkend")) && requestVO.isActivated())
+            {
+                assertFalse("rkirkend has too many requests!", pendingToRkirkend);
+                pendingToRkirkend = true;
+            } else
+            {
+                assertTrue("previous request to all others should be done.", requestVO.isDone());
+            }
+        }
        assertTrue(document.isApprovalRequested());
    }
 

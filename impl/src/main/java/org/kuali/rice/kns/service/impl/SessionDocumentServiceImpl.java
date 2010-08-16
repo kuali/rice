@@ -209,8 +209,9 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 	    	    	businessObjectService.save(sessionDocument);
 		    	  
 		        } catch(Exception e) {
-		        	 LOG.error("setDocumentForm failed for SessId/DocNum/PrinId/IP:"
-		        			 + userSession.getKualiSessionId()+"/"+documentNumber+"/"+userSession.getPrincipalId()+"/"+ipAddress, e);
+		        	 final String className = form != null ? form.getClass().getName() : "null";
+		        	 LOG.error("setDocumentForm failed for SessId/DocNum/PrinId/IP/class:"
+		        			 + userSession.getKualiSessionId()+"/"+documentNumber+"/"+userSession.getPrincipalId()+"/"+ipAddress+"/"+className , e);
 		        }
 		    } else {
 		    	LOG.warn("documentNumber is null on form's document: " + form);

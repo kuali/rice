@@ -51,7 +51,6 @@ public class InquiryForm extends KualiForm {
     private List sections;
     private String businessObjectClassName;
     private Map editingMode;
-    private String backLocation;
     private String formKey;
     private boolean canExport;
 
@@ -364,14 +363,6 @@ public class InquiryForm extends KualiForm {
 
     public void setFormKey(String formKey) {
         this.formKey = formKey;
-    }
-
-    public String getBackLocation() {
-        return this.backLocation;
-    }
-
-    public void setBackLocation(String backLocation) {
-        this.backLocation = backLocation;
     }
 
 	/**

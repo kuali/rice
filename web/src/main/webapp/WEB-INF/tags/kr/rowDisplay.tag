@@ -69,7 +69,10 @@
 
     <c:set var="rowHidden" value="${rowsHidden || row.hidden}" />
 
-    <tr>
+	<c:choose>
+		<c:when test="${rowHidden}"><tr style="display: none;"></c:when>
+		<c:otherwise><tr></c:otherwise>
+	</c:choose>
 
         <c:forEach items="${row.fields}" var="field" varStatus="fieldVarStatus">
             <c:set var="isFieldAContainer" value="${field.fieldType eq field.CONTAINER}" />
@@ -78,6 +81,9 @@
             <c:set var="headerColspan" value="${numberOfColumns * 2}" />
             <c:set var="dataCellWidth" value="${100 / (numberOfColumns * ((isMaintenance || requestedAction eq 'addLine') ? 4 : 2))}" />
 
+            <c:set var="tabIndex" value="${KualiForm.currentTabIndex}"/>
+            <c:set var="dummyIncrementVar" value="${kfunc:incrementTabIndex(KualiForm, tabIndex)}" />
+    
             <%--
                 ######################
                 # SHOW THE OLD/NEW BAR
@@ -145,19 +151,24 @@
 
             <c:if test="${!(empty field.webOnBlurHandler)}">
 
+				<c:set var="onblurParameters" value="" />
                 <c:choose>
 
                     <c:when test="${!(empty field.webOnBlurHandlerCallback)}">
-                        <c:set var="onblur" value="${field.webOnBlurHandler}( this, ${field.webOnBlurHandlerCallback} );" />
+                        <c:set var="onblurParameters" value="this, ${field.webOnBlurHandlerCallback}" />
                     </c:when>
 
                     <c:otherwise>
-                        <c:set var="onblur" value="${field.webOnBlurHandler}( this );" />
+                        <c:set var="onblurParameters" value="this" />
                     </c:otherwise>
 
                 </c:choose>
-
-                <c:set var="onblurcall" value="onblur='${onblur}'" />
+                <c:if test="${!(empty field.webUILeaveFieldFunctionParameters)}">
+					<c:set var="onblurParameters" value="${onblurParameters},${field.webUILeaveFieldFunctionParametersString}" />					
+				</c:if>
+                
+				<c:set var="onblur" value="${field.webOnBlurHandler}( ${onblurParameters} );" />
+                <c:set var="onblurcall" value='onblur="${onblur}"' />
 
             </c:if>
 
@@ -168,6 +179,16 @@
                 </c:when>
 
             </c:choose>
+            
+            <%-- Set onchange to submit form if field configured to trigger on change --%>
+            <c:set var="onchange" value="" />
+            <c:set var="onchangecall" value="" />
+            
+            <c:if test="${field.triggerOnChange}">
+                <c:set var="onchange" value="setFieldToFocusAndSubmit(this);" />
+                <c:set var="onchangecall" value='onchange="${onchange}"' />
+            </c:if>
+          
 
             <%--
                 ###########################################################
@@ -207,7 +228,10 @@
 
                 <c:when test="${isFieldAContainer}">
                   <c:if test="${rowHidden}">
-                    <kul:containerRowDisplay rows="${field.containerRows}" numberOfColumns="${isMaintenance ? numberOfColumns : field.numberOfColumnsForCollection}" depth="${depth + 1}" rowsHidden="true"/>
+                    <%-- cannot refer to recursive tag (containerRowDisplay) using kul alias or Jetty 7 will have jsp compilation errors on Linux --%>
+    				<%-- this tag ends up being recursive b/c it calls rowDisplay--%>
+                    <%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul2"%>
+                    <kul2:containerRowDisplay rows="${field.containerRows}" numberOfColumns="${isMaintenance ? numberOfColumns : field.numberOfColumnsForCollection}" depth="${depth + 1}" rowsHidden="true"/>
                   </c:if>
 
                   <c:if test="${!rowHidden}">
@@ -229,8 +253,10 @@
                         <kul:subtab noShowHideButton="${isFieldAddingToACollection or empty field.containerRows}" subTabTitle="${kfunc:scrubWhitespace(subTabTitle)}" buttonAlt="${kfunc:scrubWhitespace(subTabButtonAlt)}" width="${width}" highlightTab="${tabHighlight}"
                                 boClassName="${field.multipleValueLookupClassName}" lookedUpBODisplayName="${field.multipleValueLookupClassLabel}" lookedUpCollectionName="${field.multipleValueLookedUpCollectionName}" >
                             <table style="width: ${width}; text-align: left; margin-left: auto; margin-right: auto;" class="datatable" cellpadding="0" cellspacing="0" align="center">
-                                <%--<c:out value="numberOfColumns is ${numberOfColumns}, field.numberOfColumnsForCollection is ${field.numberOfColumnsForCollection}<br/>" escapeXml="false" />--%>
-                                <kul:containerRowDisplay rows="${field.containerRows}" numberOfColumns="${isMaintenance ? numberOfColumns : field.numberOfColumnsForCollection}" depth="${depth + 1}" rowsReadOnly="${rowsReadOnly}"/>
+                                <%-- cannot refer to recursive tag (containerRowDisplay) using kul alias or Jetty 7 will have jsp compilation errors on Linux --%>
+    							<%-- this tag ends up being recursive b/c it calls rowDisplay--%>
+                                <%@ taglib tagdir="/WEB-INF/tags/kr" prefix="kul2"%>
+                                <kul2:containerRowDisplay rows="${field.containerRows}" numberOfColumns="${isMaintenance ? numberOfColumns : field.numberOfColumnsForCollection}" depth="${depth + 1}" rowsReadOnly="${rowsReadOnly}"/>
                             </table>
                         </kul:subtab>
                     </td>
@@ -283,8 +309,8 @@
                                     value='<c:out value="${fieldValue}"/>'
                                     size='${field.size}'
                                     maxlength='${field.formattedMaxLength}'
-                                    style="${textStyle}" ${onblurcall}
-                                    class="${field.styleClass }"/>
+                                    style="${textStyle}" ${onblurcall} ${onchangecall}
+                                    class="${field.styleClass}" tabIndex="${tabIndex}" />
 
                                 <kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
 
@@ -317,8 +343,8 @@
                                     value='<c:out value="${fieldValue}"/>'
                                     size='${field.size}'
                                     maxlength='${field.maxLength}'
-                                    style="${textStyle}" ${onblurcall}
-                                    class="${field.styleClass}"/>
+                                    style="${textStyle}" ${onblurcall} ${onchangecall}
+                                    class="${field.styleClass}" tabIndex="${tabIndex}"/>
 
                                 <c:if test="${field.datePicker eq true}">
 
@@ -381,9 +407,9 @@
                                 <textarea id='${field.propertyName}' name='${field.propertyName}'
                                     rows='${field.rows}'
                                     cols='${field.cols}'
-                                    style="${textStyle}" ${onblurcall}
-                                    maxlength='${field.maxLength}' ><c:out
-                                    value="${fieldValue}"/></textarea>
+                                    style="${textStyle}" ${onblurcall} ${onchangecall}
+                                    maxlength='${field.maxLength}' tabIndex="${tabIndex}"><c:out
+                                    value="${fieldValue}" /></textarea>
 
                                 <kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
 
@@ -417,7 +443,7 @@
                                 ${kfunc:registerEditableProperty(KualiForm, checkboxPresentOnFormAnnotationFieldName)}
                                 <input type="checkbox" id='${field.propertyName}' name="${field.propertyName}"
                                     ${field.propertyValue eq 'Yes' || field.propertyValue eq 'YES' ? 'checked="checked"' : ''}
-                                    ${onblurcall} />
+                                    ${onblurcall} ${onchangecall} tabIndex="${tabIndex}"/>
                                 <input type="hidden" name="${checkboxPresentOnFormAnnotationFieldName}" value="present"/>
 
                             </c:otherwise>
@@ -446,7 +472,7 @@
 
                             <c:otherwise>
                                 ${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
-                                <select id='${field.propertyName}' name='${field.propertyName}' style="${textStyle}" ${onblurcall}>
+                                <select id='${field.propertyName}' name='${field.propertyName}' style="${textStyle}" ${onblurcall} ${onchangecall} tabIndex="${tabIndex}">
                                     <c:if test="${!field.hasBlankValidValue and !field.skipBlankValidValue}">
                                         <option value=""></option>
                                     </c:if>
@@ -469,13 +495,24 @@
                         fieldLabel="${field.fieldLabel}" />
 
                     <td class="grid" style="width:${dataCellWidth}%;">
+                                            <c:choose>
+
+                            <c:when test="${isFieldReadOnly}">
+                                                          <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" isLookup="${isLookup}" />
+                            </c:when>
+                            <c:otherwise>
+                    
                         ${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
                         <select id='${field.propertyName}' name='${field.propertyName}'
-                            onchange="document.forms[0].submit();" style="${textStyle}">
+                            onchange="document.forms[0].submit();" style="${textStyle}" tabIndex="${tabIndex}">
 
                             <kul:fieldSelectValues field="${field}"/>
 
                         </select>
+                            </c:otherwise>
+
+                        </c:choose>
+                        
                         &nbsp;
 
                         <kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
@@ -496,9 +533,14 @@
                                 <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" isLookup="${isLookup}" />
                             </c:when>
                             <c:otherwise>
+                                <c:set var="fieldScript" value="${field.script}" />
+                                <c:if test="${!fn:endsWith(fieldScript,';')}" >
+                                   <c:set var="fieldScript" value="${fieldScript};" />
+                                </c:if>
+                                
                                 ${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
                                 <select id='${field.propertyName}' name='${field.propertyName}'
-                                        onchange="${field.script}" style="${textStyle}">
+                                        onchange="${fieldScript}${onchangecall}" style="${textStyle}" tabIndex="${tabIndex}">
                                     <kul:fieldSelectValues field="${field}"/>
                                 </select>
                             </c:otherwise>
@@ -526,7 +568,7 @@
 
                             <c:otherwise>
                                 ${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
-                                <select multiple="${true}" id='${field.propertyName}' name='${field.propertyName}' size="${field.maxLength}" style="${textStyle}" ${onblurcall}>
+                                <select multiple="${true}" id='${field.propertyName}' name='${field.propertyName}' size="${field.maxLength}" style="${textStyle}" ${onblurcall} ${onchangecall} tabIndex="${tabIndex}">
                                     <%--<c:if test="${!field.hasBlankValidValue}">
                                         <option value=""></option>
                                     </c:if> --%>
@@ -543,7 +585,6 @@
                 </c:when>
 
                 <c:when test="${field.fieldType eq field.RADIO}">
-
                     <kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}"
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                         fieldLabel="${field.fieldLabel}" />
@@ -551,25 +592,16 @@
                     <td class="grid" style="width:${dataCellWidth}%;">
 
                         <c:choose>
-
                             <c:when test="${isFieldReadOnly}">
-
                                 <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" isLookup="${isLookup}" />
-
                             </c:when>
 
                             <c:otherwise>
-
-                                <kul:fieldRadioValues field="${field}"/>
-
+                                <kul:fieldRadioValues field="${field}" onblur="${onblur}" onchange="${onchange}" tabIndex="${tabIndex}"/>
                                 <kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
-
                             </c:otherwise>
-
                         </c:choose>
-
                     </td>
-
                 </c:when>
 
                 <c:when test="${field.fieldType eq field.KUALIUSER}">
@@ -596,7 +628,9 @@
                                   hasErrors="${hasErrors}"
                                   readOnly="${field.keyField || isFieldReadOnly}"
                                   onblur="${onblur}"
-                                  highlight="${addHighlighting && field.highlightField}">
+                                  onchange="${onchange}"
+                                  highlight="${addHighlighting && field.highlightField}"
+                                  tabIndex="${tabIndex}">
                             <jsp:attribute name="helpLink" trim="true">
                                 <c:if test="${field.fieldLevelHelpEnabled || (!field.fieldLevelHelpDisabled && KualiForm.fieldLevelHelpEnabled)}">
                                 <kul:help
@@ -630,8 +664,8 @@
                                     value='<c:out value="${fieldValue}"/>'
                                     size='${field.size}'
                                     maxlength='${field.maxLength}'
-                                    style="${textStyle}" ${onblurcall}
-                                    class="${field.styleClass}"/>
+                                    style="${textStyle}" ${onblurcall} ${onchangecall}
+                                    class="${field.styleClass}" tabIndex="${tabIndex}"/>
 
                                 <!--  adding a lookup here because it goes to workflow as opposed to Kuali -->
                                 <kul:workflowWorkgroupLookup fieldConversions="workgroupName:${field.propertyName}" />
@@ -666,7 +700,7 @@
                                             <input type="file" name='${field.propertyName}'
                                                 id='${field.propertyName}'
                                                 size='${field.size}'
-                                                class="${field.styleClass}"/>
+                                                class="${field.styleClass}" tabIndex="${tabIndex}"/>
                                             </c:if>
                                         </c:when>
                                         <c:otherwise>
@@ -690,7 +724,7 @@
                                             <input type="file" name='${field.propertyName}'
                                                 id='${field.propertyName}'
                                                 size='${field.size}'
-                                                class="${field.styleClass}"/>
+                                                class="${field.styleClass}" tabIndex="${tabIndex}"/>
                                         </div>
                                         </c:otherwise>
                                     </c:choose>
@@ -769,7 +803,7 @@
                         ${kfunc:registerEditableProperty(KualiForm, imageButtonName)}
                         <input type="image"
                             id='${field.propertyName}' name='${imageButtonName}'
-                            src='<c:out value="${fieldValue}"/>'/>
+                            src='<c:out value="${fieldValue}"/>' tabIndex="${tabIndex}"/>
                         <kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="false"/>
                     </th>
                 </c:when>

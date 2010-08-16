@@ -94,10 +94,11 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
    	 	return (RouteNodeInstance) query.getSingleResult(); 		
     }
 
-    public List getActiveNodeInstances(Long documentId) {
+    @SuppressWarnings("unchecked")
+    public List<RouteNodeInstance> getActiveNodeInstances(Long documentId) {
     	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindActiveNodeInstances");
     	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
-    	return (List)query.getResultList();
+    	return (List<RouteNodeInstance>)query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
@@ -106,7 +107,7 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
 		
 		//FIXME: Can we do this better using just the JPQL query?  
-		List terminalNodes = new ArrayList();
+		List<RouteNodeInstance> terminalNodes = new ArrayList<RouteNodeInstance>();
 		List<RouteNodeInstance> routeNodeInstances = (List<RouteNodeInstance>) query.getResultList();
 		for (RouteNodeInstance routeNodeInstance : routeNodeInstances) {
 		    if (routeNodeInstance.getNextNodeInstances().isEmpty()) {
@@ -157,10 +158,10 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     }
 
     public void deleteLinksToPreNodeInstances(RouteNodeInstance routeNodeInstance) {
-		List preNodeInstances = routeNodeInstance.getPreviousNodeInstances();
-		for (Iterator preNodeInstanceIter = preNodeInstances.iterator(); preNodeInstanceIter.hasNext();) {
+		List<RouteNodeInstance> preNodeInstances = routeNodeInstance.getPreviousNodeInstances();
+		for (Iterator<RouteNodeInstance> preNodeInstanceIter = preNodeInstances.iterator(); preNodeInstanceIter.hasNext();) {
 		    RouteNodeInstance preNodeInstance = (RouteNodeInstance) preNodeInstanceIter.next();
-		    List nextInstances = preNodeInstance.getNextNodeInstances();
+		    List<RouteNodeInstance> nextInstances = preNodeInstance.getNextNodeInstances();
 		    nextInstances.remove(routeNodeInstance);
 		    entityManager.merge(preNodeInstance);
 		}

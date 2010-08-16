@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.web;
 
-import java.net.URL;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -44,8 +42,7 @@ public class BaseLineAppStartTest extends ServerTestBase {
 	}
 	
     @Test public void testHomePage() throws Exception {
-        final URL url = new URL(HtmlUnitUtil.BASE_URL);
-        final HtmlPage page = (HtmlPage)webClient.getPage(url);
+        final HtmlPage page = HtmlUnitUtil.gotoPageAndLogin(webClient, HtmlUnitUtil.BASE_URL);
         assertEquals(HTML_PAGE_TITLE_TEXT, page.getTitleText() );
     }
     

@@ -25,6 +25,7 @@ import java.util.Properties;
 import java.util.Random;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.useroptions.dao.UserOptionsDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.annotation.Transactional;
@@ -112,7 +113,7 @@ public class UserOptionsServiceImpl implements UserOptionsService {
     public boolean refreshActionList(String principalId) {
         List<UserOptions> options = findByUserQualified(principalId, KEWConstants.RELOAD_ACTION_LIST + "%");
         boolean refresh = ! options.isEmpty();
-        if (refresh && principalId != null && !"".equals(principalId)) {
+        if (refresh && StringUtils.isNotEmpty(principalId)) {
             getUserOptionsDAO().deleteByUserQualified(principalId, KEWConstants.RELOAD_ACTION_LIST + "%");
         }
         return refresh;

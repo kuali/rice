@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
@@ -40,6 +32,8 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.util.*;
 
 
 public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleDelegationDAO {
@@ -105,6 +99,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                                                                principalId, activeInd,
                                                                extensionValues, workflowIdDirective));
 
+        crit.addLessThanField("rownum", ((Integer)KEWConstants.MAX_RETURNED_ROWS).toString());
         return (List<RuleDelegation>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit, true));
     }
 
@@ -135,6 +130,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                                                                ruleDescription, workgroupIds,
                                                                workflowId, activeInd,
                                                                extensionValues, actionRequestCodes));
+        crit.addLessThanField("rownum", ((Integer)KEWConstants.MAX_RETURNED_ROWS).toString());
         return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit, true));
     }
 
@@ -165,6 +161,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             Map extensionValues, Collection actionRequestCodes) {
         Criteria crit = getSearchCriteria(docTypeName, ruleTemplateId, ruleDescription, activeInd, extensionValues);
         crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, workflowId, actionRequestCodes, (workflowId != null), ((workgroupIds != null) && !workgroupIds.isEmpty())));
+        crit.addEqualTo("delegateRule", 1);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleBaseValues.class, crit);
         query.setAttributes(new String[] { "ruleBaseValuesId" });
         return query;
@@ -184,7 +181,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         List<String> workgroupIds = new ArrayList<String>();
         Boolean searchUser = Boolean.FALSE;
         Boolean searchUserInWorkgroups = Boolean.FALSE;
-        if (!Utilities.isEmpty(workflowIdDirective)) {
+        if (workflowIdDirective != null) {/** IU patch EN-1552 */
             if ("group".equals(workflowIdDirective)) {
                 searchUserInWorkgroups = Boolean.TRUE;
             } else if ("".equals(workflowIdDirective)) {
@@ -205,7 +202,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
             workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
         crit.addIn("responsibilities.ruleBaseValuesId", getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups));
-
+        crit.addEqualTo("delegateRule", 1);
         ReportQueryByCriteria query = QueryFactory.newReportQuery(RuleBaseValues.class, crit);
         query.setAttributes(new String[] { "ruleBaseValuesId" });
         return query;
@@ -277,8 +274,8 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
 
     private Criteria getSearchCriteria(String docTypeName, Long ruleTemplateId, String ruleDescription, Boolean activeInd, Map extensionValues) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("currentInd", new Boolean(true));
-        crit.addEqualTo("templateRuleInd", new Boolean(false));
+        crit.addEqualTo("currentInd", Boolean.TRUE);
+        crit.addEqualTo("templateRuleInd", Boolean.FALSE);
         if (activeInd != null) {
             crit.addEqualTo("activeInd", activeInd);
         }

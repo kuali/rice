@@ -16,19 +16,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.StringTokenizer;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
@@ -45,6 +32,12 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -71,7 +64,7 @@ public class DocSearchUtils {
     private static final String DATE_REGEX_WHOLENUM_LARGE_SPLIT = "(\\d{2})(\\d{2})(\\d{4})";
 
     private static final String TIME_REGEX = "([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])";
-	private static final Map REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION = new HashMap();
+	private static final Map<String, String> REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION = new HashMap<String, String>();
 	static {
 //		REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION.put(DATE_REGEX_PASS, DATE_REGEX_PASS_SPLIT);
 		REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION.put(DATE_REGEX_SMALL_TWO_DIGIT_YEAR, DATE_REGEX_SMALL_TWO_DIGIT_YEAR_SPLIT);
@@ -81,12 +74,13 @@ public class DocSearchUtils {
 		REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION.put(DATE_REGEX_WHOLENUM_LARGE,DATE_REGEX_WHOLENUM_LARGE_SPLIT);
 	}
 
-    public static final List DOCUMENT_SEARCH_DATE_VALIDATION_REGEX_EXPRESSIONS = Arrays.asList(new String[]{DATE_REGEX_SMALL_FOUR_DIGIT_YEAR, DATE_REGEX_SMALL_FOUR_DIGIT_YEAR_FIRST});
+    public static final List DOCUMENT_SEARCH_DATE_VALIDATION_REGEX_EXPRESSIONS = Arrays.asList(DATE_REGEX_SMALL_FOUR_DIGIT_YEAR, DATE_REGEX_SMALL_FOUR_DIGIT_YEAR_FIRST);
 
     public static List<SearchableAttributeValue> getSearchableAttributeValueObjectTypes() {
         List<SearchableAttributeValue> searchableAttributeValueClasses = new ArrayList<SearchableAttributeValue>();
-        for (Iterator iter = SearchableAttribute.SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST.iterator(); iter.hasNext();) {
-            Class searchAttributeValueClass = (Class) iter.next();
+        for (Object aSEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST : SearchableAttribute.SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST)
+        {
+            Class searchAttributeValueClass = (Class) aSEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST;
             ObjectDefinition objDef = new ObjectDefinition(searchAttributeValueClass);
             SearchableAttributeValue attributeValue = (SearchableAttributeValue) ObjectDefinitionResolver.createObject(objDef, ClassLoaderUtils.getDefaultClassLoader(), false);
             searchableAttributeValueClasses.add(attributeValue);
@@ -99,10 +93,12 @@ public class DocSearchUtils {
         if (StringUtils.isBlank(dataType)) {
             return returnableValue;
         }
-        for (Iterator iter = getSearchableAttributeValueObjectTypes().iterator(); iter.hasNext();) {
-            SearchableAttributeValue attValue = (SearchableAttributeValue) iter.next();
-            if (dataType.equalsIgnoreCase(attValue.getAttributeDataType())) {
-                if (returnableValue != null) {
+        for (SearchableAttributeValue attValue : getSearchableAttributeValueObjectTypes())
+        {
+            if (dataType.equalsIgnoreCase(attValue.getAttributeDataType()))
+            {
+                if (returnableValue != null)
+                {
                     String errorMsg = "Found two SearchableAttributeValue objects with same data type string ('" + dataType + "' while ignoring case):  " + returnableValue.getClass().getName() + " and " + attValue.getClass().getName();
                     LOG.error("getSearchableAttributeValueByDataTypeString() " + errorMsg);
                     throw new RuntimeException(errorMsg);
@@ -140,7 +136,7 @@ public class DocSearchUtils {
     public static String getEntryFormattedDate(String date) {
         Pattern p = Pattern.compile(TIME_REGEX);
         Matcher util = p.matcher(date);
-        if (util.find() == true) {
+        if (util.find()) {
             date = StringUtils.substringBeforeLast(date, " ");
         }
         DateComponent dc = formatDateToDateComponent(date, DOCUMENT_SEARCH_DATE_VALIDATION_REGEX_EXPRESSIONS);
@@ -188,7 +184,7 @@ public class DocSearchUtils {
             StringBuffer dateBuf = new StringBuffer();
             Integer year = new Integer(util.group(3));
 
-            if (year.intValue() <= 50) {
+            if (year <= 50) {
                 yearBuf.append("20").append(util.group(3));
             } else if (util.group(3).length() < 3) {
                 yearBuf.append("19").append(util.group(3));
@@ -259,7 +255,7 @@ public class DocSearchUtils {
             StringBuffer yearBuf = new StringBuffer();
             Integer year = new Integer(util.group(3));
 
-            if (year.intValue() < 50) {
+            if (year < 50) {
                 yearBuf.append("20");
             } else {
                 yearBuf.append("19");
@@ -283,7 +279,7 @@ public class DocSearchUtils {
     public static Timestamp convertStringDateToTimestamp(String dateWithoutTime) {
         Pattern p = Pattern.compile(TIME_REGEX);
         Matcher util = p.matcher(dateWithoutTime);
-        if (util.find() == true) {
+        if (util.find()) {
             dateWithoutTime = StringUtils.substringBeforeLast(dateWithoutTime, " ");
         }
         DateComponent formattedDate = formatDateToDateComponent(dateWithoutTime, Arrays.asList(REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION.keySet().toArray()));
@@ -292,9 +288,9 @@ public class DocSearchUtils {
         }
         Calendar c = Calendar.getInstance();
         c.clear();
-        c.set(Calendar.MONTH, Integer.valueOf(formattedDate.getMonth()).intValue() - 1);
-        c.set(Calendar.DATE, Integer.valueOf(formattedDate.getDate()).intValue());
-        c.set(Calendar.YEAR, Integer.valueOf(formattedDate.getYear()).intValue());
+        c.set(Calendar.MONTH, Integer.valueOf(formattedDate.getMonth()) - 1);
+        c.set(Calendar.DATE, Integer.valueOf(formattedDate.getDate()));
+        c.set(Calendar.YEAR, Integer.valueOf(formattedDate.getYear()));
         return Utilities.convertCalendar(c);
     }
 
@@ -329,11 +325,12 @@ public class DocSearchUtils {
      *
      * @param searchableAttributeString
      *            String representation of searchable attributes
+     * @param documentTypeName document type name
      * @return searchable attributes list
      */
     public static List<SearchAttributeCriteriaComponent> buildSearchableAttributesFromString(String searchableAttributeString, String documentTypeName) {
         List<SearchAttributeCriteriaComponent> searchableAttributes = new ArrayList<SearchAttributeCriteriaComponent>();
-        Map criteriaComponentsByKey = new HashMap();
+        Map<String, SearchAttributeCriteriaComponent> criteriaComponentsByKey = new HashMap<String, SearchAttributeCriteriaComponent>();
 
         DocumentType docType = getDocumentType(documentTypeName);
 
@@ -345,15 +342,14 @@ public class DocSearchUtils {
                 		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
                     for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
                         if (field instanceof Field) {
-                            Field dsField = (Field)field;
-                            SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dsField.getFieldDataType());
-                            SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getPropertyName(), searchableAttributeValue);
-                            sacc.setRangeSearch(dsField.isMemberOfRange());
-                            sacc.setSearchInclusive(dsField.isInclusive());
-                            sacc.setSearchable(dsField.isIndexedForSearch());
-                            sacc.setLookupableFieldType(dsField.getFieldType());
-                            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(dsField.getFieldType()));
-                            criteriaComponentsByKey.put(dsField.getPropertyName(), sacc);
+                            SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
+                            SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getPropertyName(), searchableAttributeValue);
+                            sacc.setRangeSearch(field.isMemberOfRange());
+                            sacc.setSearchInclusive(field.isInclusive());
+                            sacc.setSearchable(field.isIndexedForSearch());
+                            sacc.setLookupableFieldType(field.getFieldType());
+                            sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+                            criteriaComponentsByKey.put(field.getPropertyName(), sacc);
                         } else {
                             throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kew.docsearch.Field");
                         }
@@ -424,10 +420,11 @@ public class DocSearchUtils {
 
                 }
             }
-            for (Iterator iter = searchableAttributes.iterator(); iter.hasNext();) {
-                SearchAttributeCriteriaComponent criteriaComponent = (SearchAttributeCriteriaComponent) iter.next();
-                if (criteriaComponent.isCanHoldMultipleValues()) {
-                    List values = (List) checkForMultiValueSearchableAttributes.get(criteriaComponent.getFormKey());
+            for (SearchAttributeCriteriaComponent criteriaComponent : searchableAttributes)
+            {
+                if (criteriaComponent.isCanHoldMultipleValues())
+                {
+                    List<String> values = (List<String>) checkForMultiValueSearchableAttributes.get(criteriaComponent.getFormKey());
                     criteriaComponent.setValue(null);
                     criteriaComponent.setValues(values);
                 }
@@ -513,22 +510,21 @@ public class DocSearchUtils {
 //                docSearchForm.setSearchableAttributes(null);
             }
             if (!propertyFields.isEmpty()) {
-                Map criteriaComponentsByFormKey = new HashMap();
+                Map<String, SearchAttributeCriteriaComponent> criteriaComponentsByFormKey = new HashMap<String, SearchAttributeCriteriaComponent>();
                 for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
                 	//KFSMI-1466 - DocumentSearchContext
                     for (Row row : searchableAttribute.getSearchingRows(
                     		DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
                         for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
                             if (field instanceof Field) {
-                                Field dsField = (Field)field;
-                                SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dsField.getFieldDataType());
-                                SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getPropertyName(), searchableAttributeValue);
-                                sacc.setRangeSearch(dsField.isMemberOfRange());
-                                sacc.setSearchInclusive(dsField.isInclusive());
-                                sacc.setLookupableFieldType(dsField.getFieldType());
-                                sacc.setSearchable(dsField.isIndexedForSearch());
-                                sacc.setCanHoldMultipleValues(dsField.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-                                criteriaComponentsByFormKey.put(dsField.getPropertyName(), sacc);
+                                SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
+                                SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getPropertyName(), searchableAttributeValue);
+                                sacc.setRangeSearch(field.isMemberOfRange());
+                                sacc.setSearchInclusive(field.isInclusive());
+                                sacc.setLookupableFieldType(field.getFieldType());
+                                sacc.setSearchable(field.isIndexedForSearch());
+                                sacc.setCanHoldMultipleValues(field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+                                criteriaComponentsByFormKey.put(field.getPropertyName(), sacc);
                             } else {
                                 throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kew.docsearch.Field");
                             }

@@ -542,11 +542,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 			//                maintCollection.add(templatedBo);
 			//            }
 			document.getNewMaintainableObject().addMultipleValueLookupResults(document, collectionName, rawValues, false, document.getNewMaintainableObject().getBusinessObject());
-
-			System.out.println("*******************************************************");
-			System.out.println("********************doing editing 3 in refersh()***********************.");
-			System.out.println("*******************************************************");
-			
+			if (LOG.isInfoEnabled()) {
+				LOG.info("********************doing editing 3 in refersh()***********************.");
+			}
 			boolean isEdit = KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceForm.getMaintenanceAction());
 			boolean isCopy = KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceForm.getMaintenanceAction());
 
@@ -684,6 +682,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 		// link up the user fields, if any
 		getBusinessObjectService().linkUserFields(addBO);
 
+		//KULRICE-4264 - a hook to change the state of the business object, which is the "new line" of a collection, before it is validated
+		newMaintainable.processBeforeAddLine(collectionName, collectionClass, addBO);
+		
 		// apply rules to the addBO
 		boolean rulePassed = false;
 		if (LOG.isDebugEnabled()) {
@@ -693,10 +694,9 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
 		// if the rule evaluation passed, let's add it
 		if (rulePassed) {
-
-			System.out.println("*******************************************************");
-			System.out.println("********************doing editing 4 in addline()***********************.");
-			System.out.println("*******************************************************");
+			if (LOG.isInfoEnabled()) {
+				LOG.info("********************doing editing 4 in addline()***********************.");
+			}
 			// if edit or copy action, just add empty instance to old maintainable
 			boolean isEdit = KNSConstants.MAINTENANCE_EDIT_ACTION.equals(maintenanceForm.getMaintenanceAction());
 			boolean isCopy = KNSConstants.MAINTENANCE_COPY_ACTION.equals(maintenanceForm.getMaintenanceAction());

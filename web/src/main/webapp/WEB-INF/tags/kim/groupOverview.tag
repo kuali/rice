@@ -26,7 +26,14 @@
 			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.groupId}"  /></div></th>
 	 		<td><kul:htmlControlAttribute property="document.groupId" attributeEntry="${groupAttributes.groupId}" readOnly="true" /></td>
     		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupTypeAttributes.name}"  /></div></th>
-	 		<td><kul:htmlControlAttribute property="document.groupTypeName" attributeEntry="${groupTypeAttributes.name}" readOnly="true" /></td>
+	 		<td>
+	 		    <kul:htmlControlAttribute property="document.groupTypeName" attributeEntry="${groupTypeAttributes.name}" readOnly="true" />
+				<c:if test="${!readOnly}">
+	            	<c:set var="bo" value="${KualiForm.kimTypeClass}"/>
+	               	<kul:lookup boClassName="${bo}" 
+	               	   fieldConversions=""  />
+	           	</c:if>
+	 		</td>
 	 		<html:hidden property="document.groupTypeId" />
 	 	</tr>
 	 	<tr>
@@ -45,8 +52,10 @@
 	 	<tr>
 			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.active}"  /></div></th>
 	 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${groupAttributes.active}" readOnly="${readOnly}" /></td>
-	 		<th>&nbsp;</th>
-            <td>&nbsp;</td>
+	 		
+			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${groupAttributes.groupDescription}"  /></div></th>
+		    <td><kul:htmlControlAttribute property="document.groupDescription" attributeEntry="${groupAttributes.groupDescription}" readOnly="${readOnly}" /></td>
+		    
 	 	</tr>
 	</table> 
 </div>

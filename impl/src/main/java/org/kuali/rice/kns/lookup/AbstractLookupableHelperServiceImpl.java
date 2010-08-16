@@ -20,6 +20,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,6 @@ import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
@@ -55,14 +55,13 @@ import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KualiDecimal;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.cache.CopiedObject;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
-import org.kuali.rice.kns.web.format.BooleanFormatter;
-import org.kuali.rice.kns.web.format.CollectionFormatter;
 import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -128,21 +127,21 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 /**
 	  * This implementation always returns false.
 	  *
-	  * @see org.kuali.core.lookup.LookupableHelperService#checkForAdditionalFields(java.util.Map)
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#checkForAdditionalFields(java.util.Map)
 	  */
 	 public boolean checkForAdditionalFields(Map fieldValues) {
 		 return false;
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#getBusinessObjectClass()
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#getBusinessObjectClass()
 	  */
 	 public Class getBusinessObjectClass() {
 		 return businessObjectClass;
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#setBusinessObjectClass(java.lang.Class)
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#setBusinessObjectClass(java.lang.Class)
 	  */
 	 public void setBusinessObjectClass(Class businessObjectClass) {
 		 this.businessObjectClass = businessObjectClass;
@@ -150,14 +149,14 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#getParameters()
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#getParameters()
 	  */
 	 public Map getParameters() {
 		 return parameters;
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#setParameters(java.util.Map)
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#setParameters(java.util.Map)
 	  */
 	 public void setParameters(Map parameters) {
 		 this.parameters = parameters;
@@ -350,7 +349,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * It calls the method getCustomActionUrls to get html data, calls getMaintenanceUrl to get the actual html tag,
 	  * and returns a formatted/concatenated string of action urls.
 	  *
-	  * @see org.kuali.core.lookup.LookupableHelperService#getActionUrls(org.kuali.core.bo.BusinessObject)
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#getActionUrls(org.kuali.rice.kns.bo.BusinessObject)
 	  */
 	 final public String getActionUrls(BusinessObject businessObject, List pkNames, BusinessObjectRestrictions businessObjectRestrictions) {
 		 StringBuffer actions = new StringBuffer();
@@ -484,6 +483,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         // TODO: why is this not using the businessObject parmeter's class?
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
 		 parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
+		 if (StringUtils.isNotBlank(getReturnLocation())) {
+			 parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+		 }
 		 return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
 	 }
 
@@ -663,8 +665,28 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 						 throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
 					 }
 				 }
+				 
+				String alternateDisplayPropertyName = getBusinessObjectDictionaryService()
+						.getLookupFieldAlternateDisplayAttributeName(getBusinessObjectClass(), attributeName);
+				if (StringUtils.isNotBlank(alternateDisplayPropertyName)) {
+					column.setAlternateDisplayPropertyName(alternateDisplayPropertyName);
+				}
 
-				 columns.add(column);
+				String additionalDisplayPropertyName = getBusinessObjectDictionaryService()
+						.getLookupFieldAdditionalDisplayAttributeName(getBusinessObjectClass(), attributeName);
+				if (StringUtils.isNotBlank(additionalDisplayPropertyName)) {
+					column.setAdditionalDisplayPropertyName(additionalDisplayPropertyName);
+				}
+				else {
+					boolean translateCodes = getBusinessObjectDictionaryService().tranlateCodesInLookup(getBusinessObjectClass());
+					if (translateCodes) {
+						FieldUtils.setAdditionalDisplayPropertyForCodes(getBusinessObjectClass(), attributeName, column);
+					}	
+				}
+				
+				column.setTotal(getBusinessObjectDictionaryService().getLookupResultFieldTotal(getBusinessObjectClass(), attributeName));
+
+				columns.add(column);
 			 }
 			 resultColumns = ObjectUtils.deepCopyForCaching(columns);
 			 return columns;
@@ -704,7 +726,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#getReturnLocation()
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#getReturnLocation()
 	  */
 	 public String getReturnLocation() {
 		 return backLocation;
@@ -743,7 +765,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 
 	 /**
-	  * @see org.kuali.core.lookup.LookupableHelperService#getReturnUrl(org.kuali.core.bo.BusinessObject, java.util.Map, java.lang.String)
+	  * @see org.kuali.rice.kns.lookup.LookupableHelperService#getReturnUrl(org.kuali.core.bo.BusinessObject, java.util.Map, java.lang.String)
 	  */
 	 public HtmlData getReturnUrl(BusinessObject businessObject, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions) {
 		 Properties parameters = getParameters(
@@ -999,48 +1021,42 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 	 }
 
-	 /**
-	  * Constructs the list of rows for the search fields. All properties for the field objects come from the DataDictionary.
-	  * To be called by setBusinessObject
-	  */
-	 protected void setRows() {
-		 List localRows = new ArrayList();
-		 List<String> lookupFieldAttributeList = null;
-		 if(getBusinessObjectMetaDataService().isLookupable(getBusinessObjectClass())) {
-			 lookupFieldAttributeList = getBusinessObjectMetaDataService().getLookupableFieldNames(getBusinessObjectClass());
-		 }
-		 if (lookupFieldAttributeList == null) {
-			 throw new RuntimeException("Lookup not defined for business object " + getBusinessObjectClass());
-		 }
+	/**
+	 * Constructs the list of rows for the search fields. All properties for the field objects come
+	 * from the DataDictionary. To be called by setBusinessObject
+	 */
+	protected void setRows() {
+		List<String> lookupFieldAttributeList = null;
+		if (getBusinessObjectMetaDataService().isLookupable(getBusinessObjectClass())) {
+			lookupFieldAttributeList = getBusinessObjectMetaDataService().getLookupableFieldNames(
+					getBusinessObjectClass());
+		}
+		if (lookupFieldAttributeList == null) {
+			throw new RuntimeException("Lookup not defined for business object " + getBusinessObjectClass());
+		}
 
-		 // construct field object for each search attribute
-		 List fields = new ArrayList();
-        int numCols;
-		 try {
-			 fields = FieldUtils.createAndPopulateFieldsForLookup(lookupFieldAttributeList, getReadOnlyFieldsList(), getBusinessObjectClass());
+		// construct field object for each search attribute
+		List fields = new ArrayList();
+		try {
+			fields = FieldUtils.createAndPopulateFieldsForLookup(lookupFieldAttributeList, getReadOnlyFieldsList(),
+					getBusinessObjectClass());
+		} catch (InstantiationException e) {
+			throw new RuntimeException("Unable to create instance of business object class" + e.getMessage());
+		} catch (IllegalAccessException e) {
+			throw new RuntimeException("Unable to create instance of business object class" + e.getMessage());
+		}
 
-            BusinessObjectEntry boe = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
-            numCols = boe.getLookupDefinition().getNumOfColumns();
-
-		 }
-		 catch (InstantiationException e) {
-			 throw new RuntimeException("Unable to create instance of business object class" + e.getMessage());
-		 }
-		 catch (IllegalAccessException e) {
-			 throw new RuntimeException("Unable to create instance of business object class" + e.getMessage());
-		 }
-        if(numCols == 0) numCols = KNSConstants.DEFAULT_NUM_OF_COLUMNS;
-
-        this.rows = FieldUtils.wrapFields(fields, numCols);
-	 }
+		int numCols = getBusinessObjectDictionaryService().getLookupNumberOfColumns(this.getBusinessObjectClass());
+		
+		this.rows = FieldUtils.wrapFields(fields, numCols);
+	}
 
 	 public List<Row> getRows() {
 		 return rows;
 	 }
 
 	 public abstract List<? extends BusinessObject> getSearchResults(Map<String, String> fieldValues);
-
-
+	 
 	 /**
 	  * This implementation of this method throws an UnsupportedOperationException, since not every implementation
 	  * may actually want to use this operation.  Subclasses desiring other behaviors
@@ -1052,146 +1068,152 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 throw new UnsupportedOperationException("Lookupable helper services do not always support getSearchResultsUnbounded");
 	 }
 
-	 /**
-	  *
-	  * This method performs the lookup and returns a collection of lookup items
-	  * @param lookupForm
-	  * @param kualiLookupable
-	  * @param resultTable
-	  * @param bounded
-	  * @return
-	  */
-	 public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
-		 Map lookupFormFields = lookupForm.getFieldsForLookup();
+	/**
+	 * Performs the lookup and returns a collection of lookup items
+	 * 
+	 * @param lookupForm
+	 * @param resultTable
+	 * @param bounded
+	 * @return
+	 */
+	public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
+		Map lookupFormFields = lookupForm.getFieldsForLookup();
 
-		 setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
-		 setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
-		 Collection displayList;
+		setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
+		setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
+		Collection displayList;
 
+		preprocessDateFields(lookupFormFields);
 
-		 preprocessDateFields(lookupFormFields);
+		Map fieldsForLookup = new HashMap(lookupForm.getFieldsForLookup());
+		// call search method to get results
+		if (bounded) {
+			displayList = getSearchResults(lookupForm.getFieldsForLookup());
+		} else {
+			displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
+		}
 
-		 Map fieldsForLookup = new HashMap(lookupForm.getFieldsForLookup());
-		 // call search method to get results
-		 if (bounded) {
-			 displayList = getSearchResults(lookupForm.getFieldsForLookup());
-		 }
-		 else {
-			 displayList = getSearchResultsUnbounded(lookupForm.getFieldsForLookup());
-		 }
+		boolean hasReturnableRow = false;
 
-		 HashMap<String,Class> propertyTypes = new HashMap<String, Class>();
+		List returnKeys = getReturnKeys();
+		List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
+		Person user = GlobalVariables.getUserSession().getPerson();
 
-		 boolean hasReturnableRow = false;
+		// iterate through result list and wrap rows with return url and action
+		// urls
+		for (Iterator iter = displayList.iterator(); iter.hasNext();) {
+			BusinessObject element = (BusinessObject) iter.next();
 
-		 List returnKeys = getReturnKeys();
-		 List pkNames = getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(getBusinessObjectClass());
-		 Person user = GlobalVariables.getUserSession().getPerson();
+			final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(element);
+			if (lookupId != null) {
+				lookupForm.setLookupObjectId(lookupId);
+			}
 
-		 // iterate through result list and wrap rows with return url and action urls
-		 for (Iterator iter = displayList.iterator(); iter.hasNext();) {
-			 BusinessObject element = (BusinessObject) iter.next();
-			 
-			 final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(element);
-			 if(lookupId != null){
-				 lookupForm.setLookupObjectId(lookupId);
-			 }
+			BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService()
+					.getLookupResultRestrictions(element, user);
 
-			 BusinessObjectRestrictions businessObjectRestrictions = getBusinessObjectAuthorizationService().getLookupResultRestrictions(element, user);
+			HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
+			String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
+			// Fix for JIRA - KFSMI-2417
+			if ("".equals(actionUrls)) {
+				actionUrls = ACTION_URLS_EMPTY;
+			}
 
-			 HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
+			List<Column> columns = getColumns();
+			for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+				Column col = (Column) iterator.next();
+				
+				String propValue = ObjectUtils.getFormattedPropertyValue(element, col.getPropertyName(), col.getFormatter());
+				Class propClass = getPropertyClass(element, col.getPropertyName());
 
-			 String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
-			 //Fix for JIRA - KFSMI-2417
-			 if("".equals(actionUrls)){
-				 actionUrls = ACTION_URLS_EMPTY;
-			 }
+				col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
+				col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
 
-			 List<Column> columns = getColumns();
-			 for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+				String propValueBeforePotientalMasking = propValue;
+				propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue,
+						businessObjectRestrictions);
+				col.setPropertyValue(propValue);
 
-				 Column col = (Column) iterator.next();
-				 Formatter formatter = col.getFormatter();
+				// if property value is masked, don't display additional or alternate properties, or allow totals
+				if (StringUtils.equals(propValueBeforePotientalMasking, propValue)) {
+					if (StringUtils.isNotBlank(col.getAlternateDisplayPropertyName())) {
+						String alternatePropertyValue = ObjectUtils.getFormattedPropertyValue(element, col
+								.getAlternateDisplayPropertyName(), null);
+						col.setPropertyValue(alternatePropertyValue);
+					}
 
-				 // pick off result column from result list, do formatting
-				 String propValue = KNSConstants.EMPTY_STRING;
-				 Object prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
+					if (StringUtils.isNotBlank(col.getAdditionalDisplayPropertyName())) {
+						String additionalPropertyValue = ObjectUtils.getFormattedPropertyValue(element, col
+								.getAdditionalDisplayPropertyName(), null);
+						col.setPropertyValue(col.getPropertyValue() + " *-* " + additionalPropertyValue);
+					}
+				}
+				else {
+					col.setTotal(false);
+				}
+				
+				if (col.isTotal()) {
+					Object unformattedPropValue = ObjectUtils.getPropertyValue(element, col.getPropertyName());
+					col.setUnformattedPropertyValue(unformattedPropValue);
+				}
 
-				 // set comparator and formatter based on property type
-				 Class propClass = propertyTypes.get(col.getPropertyName());
-				 if ( propClass == null ) {
-					 try {
-						 propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
-						 propertyTypes.put( col.getPropertyName(), propClass );
-					 } catch (Exception e) {
-						 throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
-					 }
-				 }
+				if (StringUtils.isNotBlank(propValue)) {
+					col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
+				}
+			}
 
-				 // formatters
-				 if (prop != null) {
-					 // for Booleans, always use BooleanFormatter
-					 if (prop instanceof Boolean) {
-						 formatter = new BooleanFormatter();
-					 }
+			ResultRow row = new ResultRow(columns, returnUrl.constructCompleteHtmlTag(), actionUrls);
+			row.setRowId(returnUrl.getName());
+			row.setReturnUrlHtmlData(returnUrl);
 
-					 // for Dates, always use DateFormatter
-					 if (prop instanceof Date) {
-						 formatter = new DateFormatter();
-					 }
+			// because of concerns of the BO being cached in session on the
+			// ResultRow,
+			// let's only attach it when needed (currently in the case of
+			// export)
+			if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
+				row.setBusinessObject(element);
+			}
 
-					 // for collection, use the list formatter if a formatter hasn't been defined yet
-					 if (prop instanceof Collection && formatter == null) {
-						 formatter = new CollectionFormatter();
-					 }
+			if (lookupId != null) {
+				row.setObjectId(lookupId);
+			}
 
-					 if (formatter != null) {
-						 propValue = (String) formatter.format(prop);
-					 }
-					 else {
-						 propValue = prop.toString();
-					 }
-				 }
+			boolean rowReturnable = isResultReturnable(element);
+			row.setRowReturnable(rowReturnable);
+			if (rowReturnable) {
+				hasReturnableRow = true;
+			}
+			resultTable.add(row);
+		}
 
-				 // comparator
-				 col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
-				 col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
+		lookupForm.setHasReturnableRow(hasReturnableRow);
 
-				 propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue, businessObjectRestrictions);
+		return displayList;
+	}
 
-				 col.setPropertyValue(propValue);
+	/**
+	 * Gets the Class for the property in the given BusinessObject instance, if
+	 * property is not accessible then runtime exception is thrown
+	 * 
+	 * @param element
+	 *            BusinessObject instance that contains property
+	 * @param propertyName
+	 *            Name of property in BusinessObject to get class for
+	 * @return Type for property as Class
+	 */
+	protected Class getPropertyClass(BusinessObject element, String propertyName) {
+		Class propClass = null;
 
-				 if (StringUtils.isNotBlank(propValue)) {
-					 col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
+		try {
+			propClass = ObjectUtils.getPropertyType(element, propertyName, getPersistenceStructureService());
 
-				 }
-			 }
+		} catch (Exception e) {
+			throw new RuntimeException("Cannot access PropertyType for property " + "'" + propertyName + "' "
+					+ " on an instance of '" + element.getClass().getName() + "'.", e);
+		}
 
-			 ResultRow row = new ResultRow(columns, returnUrl.constructCompleteHtmlTag(), actionUrls);
-			 row.setRowId(returnUrl.getName());
-			 row.setReturnUrlHtmlData(returnUrl);
-			 // because of concerns of the BO being cached in session on the ResultRow,
-			 // let's only attach it when needed (currently in the case of export)
-			 if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
-				 row.setBusinessObject(element);
-			 }
-			 if(lookupId != null){
-				 row.setObjectId(lookupId);
-			 }
-
-
-			 boolean rowReturnable = isResultReturnable(element);
-			 row.setRowReturnable(rowReturnable);
-			 if (rowReturnable) {
-				 hasReturnableRow = true;
-			 }
-			 resultTable.add(row);
-		 }
-
-		 lookupForm.setHasReturnableRow(hasReturnableRow);
-
-		 return displayList;
-	 }
+		return propClass;
+	}
 
 	 /**
 	  * changes from/to dates into the range operators the lookupable dao expects ("..",">" etc)
@@ -1313,10 +1335,11 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 					 field.setDisplayMaskValue(null);
 					 field.setEncryptedValue(null);
 				 }
-				 if (!field.getFieldType().equals(Field.RADIO)) {
-					 field.setPropertyValue(field.getDefaultValue());
-				 }
-			 }
+
+				if (!field.getFieldType().equals(Field.RADIO)) {
+					field.setPropertyValue(field.getDefaultValue());
+				}
+			}
 		 }
 	 }
 
@@ -1415,4 +1438,105 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 			}
 		 }
 	 }
+
+	/**
+	 * Calls methods that can be overridden by child lookupables to implement conditional logic for setting
+	 * read-only, required, and hidden attributes. Called in the last part of the lookup lifecycle so the
+	 * fields values that will be sent will be correctly reflected in the rows (like after a clear).
+	 * 
+	 * @see #getConditionallyReadOnlyPropertyNames()
+	 * @see #getConditionallyRequiredPropertyNames()
+	 * @see #getConditionallyHiddenPropertyNames()
+	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#applyConditionalLogicForFieldDisplay()
+	 */
+	public void applyConditionalLogicForFieldDisplay() {
+		Set<String> readOnlyFields = getConditionallyReadOnlyPropertyNames();
+		Set<String> requiredFields = getConditionallyRequiredPropertyNames();
+		Set<String> hiddenFields = getConditionallyHiddenPropertyNames();
+
+		for (Iterator iter = this.getRows().iterator(); iter.hasNext();) {
+			Row row = (Row) iter.next();
+			for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
+				Field field = (Field) iterator.next();
+
+				if (readOnlyFields != null && readOnlyFields.contains(field.getPropertyName())) {
+					field.setReadOnly(true);
+				}
+
+				if (requiredFields != null && requiredFields.contains(field.getPropertyName())) {
+					field.setFieldRequired(true);
+				}
+
+				if (hiddenFields != null && hiddenFields.contains(field.getPropertyName())) {
+					field.setFieldType(Field.HIDDEN);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * @return Set of property names that should be set as read only based on the current search
+	 *         contents, note request parms containing search field values can be retrieved with
+	 *         {@link #getParameters()}
+	 */
+	public Set<String> getConditionallyReadOnlyPropertyNames() {
+		return new HashSet<String>();
+	}
+
+	/**
+	 * @return Set of property names that should be set as required based on the current search
+	 *         contents, note request parms containing search field values can be retrieved with
+	 *         {@link #getParameters()}
+	 */
+	public Set<String> getConditionallyRequiredPropertyNames() {
+		return new HashSet<String>();
+	}
+
+	/**
+	 * @return Set of property names that should be set as hidden based on the current search
+	 *         contents, note request parms containing search field values can be retrieved with
+	 *         {@link #getParameters()}
+	 */
+	public Set<String> getConditionallyHiddenPropertyNames() {
+		return new HashSet<String>();
+	}
+	 
+	/**
+	 * Helper method to get the value for a property out of the row-field graph. If property is
+	 * multi-value then the values will be joined by a semi-colon.
+	 * 
+	 * @param propertyName
+	 *            - name of property to retrieve value for
+	 * @return current property value as a String
+	 */
+	protected String getCurrentSearchFieldValue(String propertyName) {
+		String currentValue = null;
+
+		boolean fieldFound = false;
+		for (Iterator iter = this.getRows().iterator(); iter.hasNext();) {
+			Row row = (Row) iter.next();
+			for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
+				Field field = (Field) iterator.next();
+
+				if (StringUtils.equalsIgnoreCase(propertyName, field.getPropertyName())) {
+					if (Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
+						currentValue = StringUtils.join(field.getPropertyValues(), ";");
+					} else {
+						currentValue = field.getPropertyValue();
+					}
+					fieldFound = true;
+				}
+
+				if (fieldFound) {
+					break;
+				}
+			}
+
+			if (fieldFound) {
+				break;
+			}
+		}
+
+		return currentValue;
+	}
 }

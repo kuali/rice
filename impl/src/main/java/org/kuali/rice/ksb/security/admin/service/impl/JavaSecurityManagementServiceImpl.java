@@ -25,6 +25,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
+import java.security.Security;
 import java.security.UnrecoverableEntryException;
 import java.security.cert.Certificate;
 import java.util.ArrayList;
@@ -189,6 +190,11 @@ public class JavaSecurityManagementServiceImpl implements JavaSecurityManagement
     }
     
     protected Certificate generateCertificate(KeyPair keyPair, String alias) throws GeneralSecurityException {
+      
+      //test that Bouncy Castle provider is present and add it if it's not
+      if( Security.getProvider(org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME) == null) {
+    	  Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+      }
       X509V3CertificateGenerator certificateGenerator = new X509V3CertificateGenerator();
 //      X509Name nameInfo = new X509Name(false,"CN=" + alias);
       certificateGenerator.setSignatureAlgorithm("MD5WithRSA");
@@ -201,7 +207,7 @@ public class JavaSecurityManagementServiceImpl implements JavaSecurityManagement
       c.add(Calendar.DATE, CLIENT_CERT_EXPIRATION_DAYS);
       certificateGenerator.setNotAfter(c.getTime());
       certificateGenerator.setPublicKey(keyPair.getPublic());
-      return certificateGenerator.generateX509Certificate(keyPair.getPrivate());
+      return certificateGenerator.generate(keyPair.getPrivate(), org.bouncycastle.jce.provider.BouncyCastleProvider.PROVIDER_NAME);
     }
     
     protected KeyStore generateKeyStore(Certificate cert, PrivateKey privateKey, String alias, String keyStorePassword) throws GeneralSecurityException, IOException {

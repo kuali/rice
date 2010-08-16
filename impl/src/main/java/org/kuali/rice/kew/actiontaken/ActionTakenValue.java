@@ -20,14 +20,11 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -47,7 +44,6 @@ import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -105,7 +101,7 @@ public class ActionTakenValue implements WorkflowPersistable {
     @Fetch(value = FetchMode.SELECT)
 	private Collection<ActionRequestValue> actionRequests;
     @Column(name="CUR_IND")
-    private Boolean currentIndicator = new Boolean(true);
+    private Boolean currentIndicator = Boolean.TRUE;
     @Transient
     private String actionDateString;
 

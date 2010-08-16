@@ -440,6 +440,8 @@
       <enumeration value="use_kew_superuser_dochandler"/>
       <enumeration value="DOCUMENT_STATUS_POLICY"/>
       <enumeration value="document_status_policy"/>
+      <enumeration value="ALLOW_SU_POSTPROCESSOR_OVERRIDE"/>
+      <enumeration value="allow_su_postprocessor_override"/>
     </restriction>
   </simpleType>
 

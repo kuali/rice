@@ -17,6 +17,7 @@ package org.kuali.rice.kim.document;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
@@ -86,7 +87,9 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 			details.put( KimAttributes.ROUTE_NODE_NAME, resp.getRouteNodeName() );
 			details.put( KimAttributes.REQUIRED, resp.isRequired()?"true":"false" );
 			details.put( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL, resp.isActionDetailsAtRoleMemberLevel()?"true":"false" );
-			details.put( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
+			if ( StringUtils.isNotBlank(resp.getQualifierResolverProvidedIdentifier()) ) {
+				details.put( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
+			}
 			
 			KIMServiceLocator.getResponsibilityUpdateService().saveResponsibility( resp.getResponsibilityId(), 
 					reviewTemplateId,

@@ -17,18 +17,19 @@
 package org.kuali.rice.ksb.messaging.servlet;
 
 import java.io.IOException;
+import java.util.List;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.namespace.QName;
 
 import org.apache.cxf.Bus;
-import org.apache.cxf.transport.servlet.CXFServlet;
+import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.transport.servlet.ServletController;
 import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
@@ -82,9 +83,27 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		this.httpInvokerHandler = new KSBHttpInvokerHandler();
 		
         Bus bus = KSBServiceLocator.getCXFBus();
+
+        List<Interceptor> inInterceptors = KSBServiceLocator.getInInterceptors();
+        if(inInterceptors != null) {
+        	List<Interceptor> busInInterceptors = bus.getInInterceptors();
+        	busInInterceptors.addAll(inInterceptors);
+        }
+       
+        List<Interceptor> outInterceptors = KSBServiceLocator.getOutInterceptors();
+        if(outInterceptors != null) {
+        	List<Interceptor> busOutInterceptors = bus.getOutInterceptors();
+        	busOutInterceptors.addAll(outInterceptors);
+        }
+        
 		ServletTransportFactory servletTransportFactory = KSBServiceLocator.getCXFServletTransportFactory();
 				
 		this.cxfServletController = new ServletController(servletTransportFactory, this.getServletConfig(), this.getServletContext(), bus);
+		
+		if (!ConfigContext.getCurrentContextConfig().getDevMode()) {
+		    // disable handling of URLs ending in /services which display CXF generated service lists
+		    this.cxfServletController.setHideServiceList(true);
+		}
 		
 		this.setPublishEvents(false);
 	}

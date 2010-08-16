@@ -15,6 +15,7 @@
         <ref bean="DocRoleMember-qualifiersToDisplay"/>
         <ref bean="DocRoleMember-activeFromDate"/>
         <ref bean="DocRoleMember-activeToDate"/>
+         <ref bean="DocRoleMember-memberFullName"/>
       </list>
     </property>
     
@@ -49,6 +50,13 @@
   
   <bean id="DocRoleMember-memberName" parent="DocRoleMember-memberName-parentBean"/>
   <bean id="DocRoleMember-memberName-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberName" p:forceUppercase="false" p:label="Member Name" p:shortLabel="Name" p:maxLength="100" p:required="false">
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="10"/>
+    </property>
+  </bean>
+  
+  <bean id="DocRoleMember-memberFullName" parent="DocRoleMember-memberFullName-parentBean"/>
+  <bean id="DocRoleMember-memberFullName-parentBean" parent="AttributeDefinition" abstract="true" p:name="memberFullName" p:forceUppercase="false" p:label="Member Full Name" p:shortLabel="FullName" p:maxLength="100" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="10"/>
     </property>

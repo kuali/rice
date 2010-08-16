@@ -176,6 +176,9 @@ public class RiceKeyConstants {
     public static final String ERROR_DELEGATE_ROLE_MEMBER_ASSOCIATION = "error.delegation.notassociatedwith.rolemember";
     public static final String ERROR_DELEGATION_TO_AMOUNT_GREATER = "error.delegation.toamount.greater";
     public static final String ERROR_DELEGATION_FROM_AMOUNT_LESSER = "error.delegation.fromamount.lesser";
+    public static final String ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR = "error.assign.role.member.circular";
+    
+    
     //parameter document
     public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
     

@@ -32,9 +32,9 @@ public class ZipXmlDocCollection extends BaseXmlDocCollection {
     public ZipXmlDocCollection(File file) throws IOException {
         super(file);
         zipFile = new ZipFile(file);
-        Enumeration e = zipFile.entries();
+        Enumeration<? extends ZipEntry> e = zipFile.entries();
         while (e.hasMoreElements()) {
-            ZipEntry zipEntry = (ZipEntry) e.nextElement();
+            ZipEntry zipEntry = e.nextElement();
             if (!zipEntry.isDirectory() && zipEntry.getName().toLowerCase().endsWith(".xml")) {
                 xmlDocs.add(new ZipXmlDoc(zipFile, zipEntry, this));
             }

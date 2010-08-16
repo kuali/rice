@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:complexType name="attributeSet">
+    <xs:complexContent>
+      <xs:extension base="hashMap">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="hashMap">
+    <xs:complexContent>
+      <xs:extension base="abstractMap">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="abstractMap" abstract="true">
+    <xs:sequence/>
+  </xs:complexType>
+</xs:schema>
+

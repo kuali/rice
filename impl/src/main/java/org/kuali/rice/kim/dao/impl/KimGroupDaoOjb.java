@@ -20,15 +20,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.apache.ojb.broker.query.ReportQueryByCriteria;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.dao.KimGroupDao;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -41,7 +44,9 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  *
  */
 public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupDao {
-	
+	// KULRICE-4248 Adding logger
+	private static final Logger LOG = Logger.getLogger(KimGroupDaoOjb.class);
+
     public List<GroupImpl> getGroups(Map<String,String> fieldValues) {
         Criteria crit = new Criteria();
         BusinessObjectEntry boEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.impl.GroupImpl");
@@ -70,6 +75,30 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         				crit.addLike(entry.getKey(), value);
         			} else {
         				if (entry.getKey().equals(KIMPropertyConstants.Person.PRINCIPAL_NAME)) {
+        					
+        					// KULRICE-4248: Retrieve Principal using the Identity Management Service
+        					Criteria memberSubCrit = new Criteria();
+        					memberSubCrit.addEqualToField(KIMPropertyConstants.Group.GROUP_ID, Criteria.PARENT_QUERY_PREFIX + KIMPropertyConstants.Group.GROUP_ID);
+        					// Get the passed-in Principal Name
+        					String principalName = entry.getValue();
+        					// Search for the Principal using the Identity Management service 
+        					LOG.debug("Searching on Principal Name: " + entry.getValue());
+        					KimPrincipalInfo principalInfo = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        					// If a Principal is returned, plug in the Principal ID as the Member ID
+        					if (principalInfo != null)
+        					{
+        						LOG.debug("Retrieved Principal: " + principalInfo.getPrincipalName());
+        						String principalId = principalInfo.getPrincipalId();
+        						LOG.debug("Plugging in Principal ID: " + principalId + "as Member ID");
+        						memberSubCrit.addLike(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
+        					}
+        					// Otherwise, plug in a blank string as the Member ID
+        					else
+                	        {
+        						LOG.debug("No Principal ID, plugging in blank string as Member ID");
+        						memberSubCrit.addLike(KIMPropertyConstants.GroupMember.MEMBER_ID, "");
+                	        }
+        					/*
                 	        Criteria subCrit = new Criteria();
                 			String principalName = entry.getValue().replace('*', '%');
                 			subCrit.addLike(KIMPropertyConstants.Person.PRINCIPAL_NAME, principalName );
@@ -78,6 +107,7 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
                 	        Criteria memberSubCrit = new Criteria();
                 	        memberSubCrit.addEqualToField(KIMPropertyConstants.Group.GROUP_ID, Criteria.PARENT_QUERY_PREFIX + KIMPropertyConstants.Group.GROUP_ID);
                 	        memberSubCrit.addExists(subQuery);
+                	        */
                 			ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(GroupMemberImpl.class, memberSubCrit);
                 			crit.addExists(memberSubQuery);        					
         				}

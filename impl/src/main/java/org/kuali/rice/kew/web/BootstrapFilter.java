@@ -17,13 +17,13 @@
 package org.kuali.rice.kew.web;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -61,9 +61,9 @@ public class BootstrapFilter implements Filter {
 
 	private FilterConfig config;
 
-	private final Map filters = new HashMap();
+	private final Map<String, Filter> filters = new HashMap<String, Filter>();
 
-	private final SortedSet filterMappings = new TreeSet();
+	private final SortedSet<FilterMapping> filterMappings = new TreeSet<FilterMapping>();
 
 	private boolean initted = false;
 
@@ -71,7 +71,7 @@ public class BootstrapFilter implements Filter {
 		this.config = cfg;
 	}
 
-	private void addFilter(String name, String classname, Properties props) throws ServletException {
+	private void addFilter(String name, String classname, Map<String, String> props) throws ServletException {
 		LOG.debug("Adding filter: " + name + "=" + classname);
 		Object filterObject = GlobalResourceLoader.getResourceLoader().getObject(new ObjectDefinition(classname));
 		if (filterObject == null) {
@@ -84,16 +84,14 @@ public class BootstrapFilter implements Filter {
 		}
 		Filter filter = (Filter) filterObject;
 		BootstrapFilterConfig fc = new BootstrapFilterConfig(config.getServletContext(), name);
-		Iterator it = props.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry entry = (Map.Entry) it.next();
+		for (Map.Entry<String, String> entry : props.entrySet()) {
 			String key = entry.getKey().toString();
 			final String prefix = FILTER_PREFIX + name + ".";
 			if (!key.startsWith(prefix) || key.equals(FILTER_PREFIX + name + CLASS_SUFFIX)) {
 				continue;
 			}
 			String paramName = key.substring(prefix.length());
-			fc.addInitParameter(paramName, (String) entry.getValue());
+			fc.addInitParameter(paramName, entry.getValue());
 		}
 		try {
 			filter.init(fc);
@@ -108,14 +106,16 @@ public class BootstrapFilter implements Filter {
 	}
 
 	private synchronized void init() throws ServletException {
-		if (initted)
+		if (initted) {
 			return;
+		}
 		LOG.debug("initializing...");
-		Config cfg = ConfigContext.getRootConfig();
-		Properties p = cfg.getProperties();
-		Iterator entries = p.entrySet().iterator();
-		while (entries.hasNext()) {
-			Map.Entry entry = (Map.Entry) entries.next();
+		Config cfg = ConfigContext.getCurrentContextConfig();
+		
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		final Map<String, String> p = new HashMap<String, String>((Map) cfg.getProperties());
+		
+		for (Map.Entry<String, String> entry : p.entrySet()) {
 			String key = entry.getKey().toString();
 			if (key.startsWith(FILTER_MAPPING_PREFIX)) {
 				String[] values = key.split("\\.");
@@ -124,11 +124,11 @@ public class BootstrapFilter implements Filter {
 				}
 				String filterName = values[1];
 				String orderNumber = (values.length == 2 ? "0" : values[2]);
-				String value = (String) entry.getValue();
+				String value = entry.getValue();
 				addFilterMapping(filterName, orderNumber, value);
 			} else if (key.startsWith(FILTER_PREFIX) && key.endsWith(CLASS_SUFFIX)) {
 				String name = key.substring(FILTER_PREFIX.length(), key.length() - CLASS_SUFFIX.length());
-				String value = (String) entry.getValue();
+				String value = entry.getValue();
 				// ClassLoader cl =
 				// SpringServiceLocator.getPluginRegistry().getInstitutionPlugin().getClassLoader();
 				// addFilter(name, value, cl, p);
@@ -136,8 +136,7 @@ public class BootstrapFilter implements Filter {
 			}
 		}
 		// do a diff log a warn if any filter has no mappings
-		for (Iterator iter = filters.keySet().iterator(); iter.hasNext();) {
-			String filterName = (String) iter.next();
+		for (String filterName : filters.keySet()) {
 			if (!hasFilterMapping(filterName)) {
 				LOG.warn("NO FILTER MAPPING DETECTED.  Filter " + filterName + " has no mapping and will not be called.");
 			}
@@ -146,8 +145,7 @@ public class BootstrapFilter implements Filter {
 	}
 
 	private boolean hasFilterMapping(String filterName) {
-		for (Iterator iter = filterMappings.iterator(); iter.hasNext();) {
-			FilterMapping filterMapping = (FilterMapping) iter.next();
+		for (FilterMapping filterMapping : filterMappings) {
 			if (filterMapping.getFilterName().equals(filterName)) {
 				return true;
 			}
@@ -167,43 +165,11 @@ public class BootstrapFilter implements Filter {
 
 	}
 
-	// private static void initializeServiceThreadLocal() {
-	// servicesToRemove.set(new ArrayList());
-	// }
-	//
-	// private static void cleanUpServiceThreadLocal() {
-	// LOG.debug("cleaning up services from Boostrap Filter Thread: " +
-	// Thread.currentThread().getName());
-	// try {
-	// List services = (List) servicesToRemove.get();
-	// for (Iterator iter = services.iterator(); iter.hasNext();) {
-	// String serviceName = (String) iter.next();
-	// SpringServiceLocator.getMessageHelper().sendMessage(MessageServiceNames.SERVICE_REMOVER_SERVICE,
-	// serviceName);
-	// }
-	// } finally {
-	// servicesToRemove.set(null);
-	// }
-	// }
-
-	// public static boolean isDoingServiceCleanup() {
-	// return servicesToRemove.get() != null;
-	// }
-
-	// public static void addServiceForCleanUp(String serviceName) {
-	// if (! isDoingServiceCleanup()) {
-	// throw new WorkflowRuntimeException("This service is not being accessed
-	// from the web layer");
-	// }
-	// ((List)servicesToRemove.get()).add(serviceName);
-	// }
-
 	private FilterChain buildChain(HttpServletRequest request, FilterChain targetChain) {
 		BootstrapFilterChain chain = new BootstrapFilterChain(targetChain, ClassLoaderUtils.getDefaultClassLoader());
 		String requestPath = request.getServletPath();
-		for (Iterator iter = filterMappings.iterator(); iter.hasNext();) {
-			FilterMapping mapping = (FilterMapping) iter.next();
-			Filter filter = (Filter) filters.get(mapping.getFilterName());
+		for (FilterMapping mapping : filterMappings) {
+			Filter filter = filters.get(mapping.getFilterName());
 			if (!chain.containsFilter(filter) && matchFiltersURL(mapping.getUrlPattern(), requestPath)) {
 				chain.addFilter(filter);
 			}
@@ -212,9 +178,7 @@ public class BootstrapFilter implements Filter {
 	}
 
 	public void destroy() {
-		Iterator it = filters.values().iterator();
-		while (it.hasNext()) {
-			Filter filter = (Filter) it.next();
+		for (Filter filter : filters.values()) {
 			try {
 				filter.destroy();
 			} catch (Exception e) {
@@ -228,20 +192,24 @@ public class BootstrapFilter implements Filter {
 	 */
 	private boolean matchFiltersURL(String urlPattern, String requestPath) {
 
-		if (requestPath == null)
+		if (requestPath == null) {
 			return (false);
+		}
 
 		// Match on context relative request path
-		if (urlPattern == null)
+		if (urlPattern == null) {
 			return (false);
+		}
 
 		// Case 1 - Exact Match
-		if (urlPattern.equals(requestPath))
+		if (urlPattern.equals(requestPath)) {
 			return (true);
+		}
 
 		// Case 2 - Path Match ("/.../*")
-		if (urlPattern.equals("/*") || urlPattern.equals("*"))
+		if (urlPattern.equals("/*") || urlPattern.equals("*")) {
 			return (true);
+		}
 		if (urlPattern.endsWith("/*")) {
 			if (urlPattern.regionMatches(0, requestPath, 0, urlPattern.length() - 2)) {
 				if (requestPath.length() == (urlPattern.length() - 2)) {
@@ -277,11 +245,11 @@ public class BootstrapFilter implements Filter {
  */
 class BootstrapFilterChain implements FilterChain {
 
-	private final List filters = new LinkedList();
+	private final List<Filter> filters = new LinkedList<Filter>();
 
 	private final FilterChain target;
 
-	private Iterator filterIterator;
+	private Iterator<Filter> filterIterator;
 
 	private ClassLoader originalClassLoader;
 
@@ -295,7 +263,7 @@ class BootstrapFilterChain implements FilterChain {
 			filterIterator = filters.iterator();
 		}
 		if (filterIterator.hasNext()) {
-			((Filter) filterIterator.next()).doFilter(request, response, this);
+			(filterIterator.next()).doFilter(request, response, this);
 		} else {
 			// reset the CCL to the original classloader before calling the non
 			// workflow configured filter - this makes it so our
@@ -331,7 +299,7 @@ class BootstrapFilterConfig implements FilterConfig {
 
 	private final String filterName;
 
-	private final Properties initParameters = new Properties();
+	private final Map<String, String> initParameters = new HashMap<String, String>();
 
 	public BootstrapFilterConfig() {
 		this(null, "");
@@ -359,20 +327,20 @@ class BootstrapFilterConfig implements FilterConfig {
 	}
 
 	public void addInitParameter(String name, String value) {
-		this.initParameters.setProperty(name, value);
+		this.initParameters.put(name, value);
 	}
 
 	public String getInitParameter(String name) {
-		return this.initParameters.getProperty(name);
+		return this.initParameters.get(name);
 	}
 
-	public Enumeration getInitParameterNames() {
-		return this.initParameters.keys();
+	public Enumeration<String> getInitParameterNames() {
+		return Collections.enumeration(this.initParameters.keySet());
 	}
 
 }
 
-class FilterMapping implements Comparable {
+class FilterMapping implements Comparable<FilterMapping> {
 
 	private String filterName;
 
@@ -386,8 +354,8 @@ class FilterMapping implements Comparable {
 		this.urlPattern = urlPattern;
 	}
 
-	public int compareTo(Object object) {
-		return orderValue.compareTo(((FilterMapping) object).orderValue);
+	public int compareTo(FilterMapping object) {
+		return orderValue.compareTo(object.orderValue);
 	}
 
 	public String getFilterName() {

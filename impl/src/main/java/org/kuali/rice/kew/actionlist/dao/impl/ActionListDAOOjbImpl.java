@@ -187,7 +187,9 @@ public class ActionListDAOOjbImpl extends PersistenceBrokerDaoSupport implements
 
         filter.setGroupId(null);
         if (filter.getGroupIdString() != null && !"".equals(filter.getGroupIdString().trim()) && !filter.getGroupIdString().trim().equals(KEWConstants.NO_FILTERING)) {
-            filter.setGroupId(filter.getGroupId());
+
+            filter.setGroupId(filter.getGroupIdString().trim());
+          
             if (filter.isExcludeGroupId()) {
                 Criteria critNotEqual = new Criteria();
                 critNotEqual.addNotEqualTo("groupId", filter.getGroupId());

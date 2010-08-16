@@ -15,7 +15,8 @@
  */
 package org.kuali.rice.kns.web.ui;
 
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -28,14 +29,16 @@ import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.web.format.BooleanFormatter;
-import org.kuali.rice.kns.web.format.DateFormatter;
+import org.kuali.rice.kns.util.KNSUtils;
+import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.Formatter;
 
 /**
- * This class represents a field render on the ui.
+ * Represents a Field (form field or read only)
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class Field implements java.io.Serializable {
+public class Field implements java.io.Serializable, PropertyRenderingConfigElement {
     private static final long serialVersionUID = 6549897986355019202L;
     public static final int DEFAULT_MAXLENGTH = 30;
     public static final int DEFAULT_SIZE = 30;
@@ -125,6 +128,11 @@ public class Field implements java.io.Serializable {
     private String propertyName; 
     private String propertyValue;
 
+    private String alternateDisplayPropertyName;
+    private String alternateDisplayPropertyValue;
+    private String additionalDisplayPropertyName;
+    private String additionalDisplayPropertyValue;  
+
     private List<KeyLabelPair> fieldValidValues;
     private String quickFinderClassNameImpl;
     private String baseLookupUrl;
@@ -166,13 +174,16 @@ public class Field implements java.io.Serializable {
     private boolean secure;
     private String webOnBlurHandler;
     private String webOnBlurHandlerCallback;
+    protected List<String> webUILeaveFieldFunctionParameters = new ArrayList<String>();
     private String styleClass;
     private int formattedMaxLength;
     private String containerName;
     private String containerElementName;
     private List<Field> containerDisplayFields;
     private boolean isDatePicker;
-    private boolean expandedTextArea;
+    private boolean ranged;
+
+	private boolean expandedTextArea;
     private String referencesToRefresh;
     private int numberOfColumnsForCollection;
     public String cellAlign;
@@ -186,6 +197,8 @@ public class Field implements java.io.Serializable {
     private String imageSrc;
     private String target;
     private String hrefText;
+    
+    private boolean triggerOnChange;
 
 
     /**
@@ -193,6 +206,7 @@ public class Field implements java.io.Serializable {
      */
     public Field() {
         this.fieldLevelHelpEnabled = false;
+        this.triggerOnChange = false;
     }
 
     /**
@@ -209,6 +223,7 @@ public class Field implements java.io.Serializable {
         this.keyField = false;
         this.secure = false;
         this.fieldLevelHelpEnabled = false;
+        this.triggerOnChange = false;
     }
 
     /**
@@ -242,6 +257,7 @@ public class Field implements java.io.Serializable {
         this.upperCase = false;
         this.keyField = false;
         this.fieldLevelHelpEnabled = false;
+        this.triggerOnChange = false;
     }
 
     /**
@@ -287,6 +303,7 @@ public class Field implements java.io.Serializable {
         this.isReadOnly = false;
         this.keyField = false;
         this.fieldLevelHelpEnabled = false;
+        this.triggerOnChange = false;
     }
 
 
@@ -391,7 +408,15 @@ public class Field implements java.io.Serializable {
         this.isDatePicker = isDatePicker;
     }
     
-    public boolean isExpandedTextArea() {
+    public boolean isRanged() {
+		return this.ranged;
+	}
+
+	public void setRanged(boolean ranged) {
+		this.ranged = ranged;
+	}
+
+	public boolean isExpandedTextArea() {
         return expandedTextArea;
     }
 
@@ -528,6 +553,27 @@ public class Field implements java.io.Serializable {
     public String getFieldConversions() {
         return fieldConversions;
     }
+
+
+    public Map<String, String> getFieldConversionMap() {
+    	Map<String, String> fieldConversionMap = new HashMap<String, String>();
+    	if (!StringUtils.isBlank(fieldConversions)) {
+    		String[] splitFieldConversions = fieldConversions.split(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
+    		for (String fieldConversion : splitFieldConversions) {
+    			if (!StringUtils.isBlank(fieldConversion)) {
+    				String[] splitFieldConversion = fieldConversion.split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
+    				String originalFieldName = splitFieldConversion[0];
+    				String convertedFieldName = "";
+    				if (splitFieldConversion.length > 1) {
+    					convertedFieldName = splitFieldConversion[1];
+    				}
+    				fieldConversionMap.put(originalFieldName, convertedFieldName);
+    			}
+    		}
+    	}
+    	return fieldConversionMap;
+    }
+
 
     /**
      * @return Returns the fieldHelpUrl.
@@ -902,31 +948,11 @@ public class Field implements java.io.Serializable {
      * @param propertyValue The propertyValue to set.
      */
     public void setPropertyValue(Object propertyValue) {
-        String newPropertyValue = KNSConstants.EMPTY_STRING;
+        String newPropertyValue = ObjectUtils.formatPropertyValue(propertyValue);
 
-        if (propertyValue != null) {
-            // for Booleans always use BooleanFormatter
-            if (propertyValue instanceof Boolean) {
-                setFormatter(new BooleanFormatter());
-            }
-
-            // for Dates, always use DateFormatter
-            if (propertyValue instanceof Date) {
-                formatter = new DateFormatter();
-            }
-
-            if (formatter != null && !(propertyValue instanceof String)) {
-                newPropertyValue = (String) formatter.format(propertyValue);
-            }
-            else {
-                newPropertyValue = propertyValue.toString();
-            }
-
-            // uppercase
             if (isUpperCase()) {
                 newPropertyValue = newPropertyValue.toUpperCase();
             }
-        }
 
         this.propertyValue = newPropertyValue;
     }
@@ -1468,6 +1494,14 @@ public class Field implements java.io.Serializable {
 	public void setFieldInactiveValidValues(List fieldInactiveValidValues) {
 		this.fieldInactiveValidValues = fieldInactiveValidValues;
 	}
+	
+	public boolean isTriggerOnChange() {
+		return this.triggerOnChange;
+	}
+
+	public void setTriggerOnChange(boolean triggerOnChange) {
+		this.triggerOnChange = triggerOnChange;
+	}
 
 	public boolean getHasLookupable() {
 	    if (quickFinderClassNameImpl == null) {
@@ -1477,6 +1511,42 @@ public class Field implements java.io.Serializable {
 	    }
 	}
 	
+	public String getAlternateDisplayPropertyName() {
+		return this.alternateDisplayPropertyName;
+	}
+
+	public void setAlternateDisplayPropertyName(String alternateDisplayPropertyName) {
+		this.alternateDisplayPropertyName = alternateDisplayPropertyName;
+	}
+
+	public String getAlternateDisplayPropertyValue() {
+		return this.alternateDisplayPropertyValue;
+	}
+
+	public void setAlternateDisplayPropertyValue(Object alternateDisplayPropertyValue) {
+        String formattedValue = ObjectUtils.formatPropertyValue(alternateDisplayPropertyValue);
+
+		this.alternateDisplayPropertyValue = formattedValue;
+	}
+
+	public String getAdditionalDisplayPropertyName() {
+		return this.additionalDisplayPropertyName;
+	}
+
+	public void setAdditionalDisplayPropertyName(String additionalDisplayPropertyName) {
+		this.additionalDisplayPropertyName = additionalDisplayPropertyName;
+	}
+
+	public String getAdditionalDisplayPropertyValue() {
+		return this.additionalDisplayPropertyValue;
+	}
+
+	public void setAdditionalDisplayPropertyValue(Object additionalDisplayPropertyValue) {
+		String formattedValue = ObjectUtils.formatPropertyValue(additionalDisplayPropertyValue);
+		
+		this.additionalDisplayPropertyValue = formattedValue;
+	}
+
 	//#BEGIN DOC SEARCH RELATED
     public boolean isIndexedForSearch() {
         return this.isIndexedForSearch;
@@ -1610,7 +1680,25 @@ public class Field implements java.io.Serializable {
 		this.baseLookupUrl = baseLookupURL;
 	}
 
+    /**
+	 * @return the webUILeaveFieldFunctionParameters
+	 */
+	public List<String> getWebUILeaveFieldFunctionParameters() {
+		return this.webUILeaveFieldFunctionParameters;
+	}
+
+	/**
+	 * @param webUILeaveFieldFunctionParameters the webUILeaveFieldFunctionParameters to set
+	 */
+	public void setWebUILeaveFieldFunctionParameters(
+			List<String> webUILeaveFieldFunctionParameters) {
+		this.webUILeaveFieldFunctionParameters = webUILeaveFieldFunctionParameters;
+	}
 	
+  	public String getWebUILeaveFieldFunctionParametersString() {
+  		return KNSUtils.joinWithQuotes(getWebUILeaveFieldFunctionParameters());
+  	}
+
 	
     //#END DOC SEARCH RELATED
 }

@@ -16,22 +16,6 @@
  */
 package org.kuali.rice.core.config;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Properties;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.XmlJotter;
 import org.w3c.dom.Document;
@@ -39,6 +23,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.*;
 
 /**
  * A configuration parser that can get properties already parsed passed in and
@@ -125,7 +120,7 @@ class HierarchicalConfigParser {
             }
             Element param = (Element) node;
             String name = param.getAttribute("name");
-            Boolean override = new Boolean(true);
+            Boolean override = Boolean.TRUE;
             if (param.getAttribute("override") != null && param.getAttribute("override").trim().length() > 0) {
                 override = new Boolean(param.getAttribute("override"));
             }
@@ -148,7 +143,7 @@ class HierarchicalConfigParser {
                     throw new RuntimeException(e);
                 }
                 if (name.equals("config.location")) {
-                    if (contentValue.indexOf(ALTERNATE_BUILD_LOCATION_KEY) < 0) {
+                    if (!contentValue.contains(ALTERNATE_BUILD_LOCATION_KEY)) {
                         parse(contentValue, fileProperties, false);
                     }
                 } else {
@@ -212,7 +207,7 @@ class HierarchicalConfigParser {
     private String resolvePropertyTokens(String content, Map<String, Object> properties) {
         // TODO: consider implementing with iteration instead of recursion, and using the jakarta commons support for
         // parameter expansion
-        if (content.indexOf(VAR_START_TOKEN) > -1) {
+        if (content.contains(VAR_START_TOKEN)) {
             int tokenStart = content.indexOf(VAR_START_TOKEN);
             int tokenEnd = content.indexOf(VAR_END_TOKEN, tokenStart + VAR_START_TOKEN.length());
             if (tokenEnd == -1) {
@@ -253,7 +248,7 @@ class HierarchicalConfigParser {
             }
 
             if (tokenValue == null) {
-                if (token.indexOf(ALTERNATE_BUILD_LOCATION_KEY) > -1) {
+                if (token.contains(ALTERNATE_BUILD_LOCATION_KEY)) {
                     return token;
                 }
                 LOG.debug("Did not find token " + token + " in local properties.  Looking in parent.");

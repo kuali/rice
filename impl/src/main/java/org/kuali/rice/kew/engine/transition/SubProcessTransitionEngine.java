@@ -16,18 +16,13 @@
  */
 package org.kuali.rice.kew.engine.transition;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.Process;
-import org.kuali.rice.kew.engine.node.ProcessResult;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.engine.node.SubProcessNode;
-import org.kuali.rice.kew.engine.node.SubProcessResult;
+import org.kuali.rice.kew.engine.node.*;
 import org.kuali.rice.kew.exception.WorkflowException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -63,16 +58,16 @@ public class SubProcessTransitionEngine extends TransitionEngine {
         processInstance.setComplete(true);
 		SubProcessNode node = (SubProcessNode)getNode(processInstance.getRouteNode(), SubProcessNode.class);
 		SubProcessResult result = node.process(context);
-		List nextNodeInstances = new ArrayList();
+		List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
 		if (result.isComplete()) {
-			List nextNodes = processInstance.getRouteNode().getNextNodes();
-	        for (Iterator iterator = nextNodes.iterator(); iterator.hasNext();) {
-	            RouteNode nextNode = (RouteNode) iterator.next();
-	            RouteNodeInstance nextNodeInstance = getRouteHelper().getNodeFactory().createRouteNodeInstance(processInstance.getDocumentId(), nextNode);
-	            nextNodeInstance.setBranch(processInstance.getBranch());
-	            nextNodeInstance.setProcess(processInstance.getProcess());
-	            nextNodeInstances.add(nextNodeInstance);
-	        }
+			List<RouteNode> nextNodes = processInstance.getRouteNode().getNextNodes();
+            for (RouteNode nextNode : nextNodes)
+            {
+                RouteNodeInstance nextNodeInstance = getRouteHelper().getNodeFactory().createRouteNodeInstance(processInstance.getDocumentId(), nextNode);
+                nextNodeInstance.setBranch(processInstance.getBranch());
+                nextNodeInstance.setProcess(processInstance.getProcess());
+                nextNodeInstances.add(nextNodeInstance);
+            }
 		}
 		return new Transition(nextNodeInstances);
 	}

@@ -20,7 +20,7 @@
 	</target>
 
 	<target name="init">
-		<path id="maven-ant-tasks.classpath" path="scripts/maven-ant-tasks/maven-ant-tasks-2.0.10.jar" />
+		<path id="maven-ant-tasks.classpath" path="scripts/maven-ant-tasks/maven-ant-tasks-2.1.1.jar" />
 		<typedef resource="org/apache/maven/artifact/ant/antlib.xml"
 		           uri="antlib:org.apache.maven.artifact.ant"
 		           classpathref="maven-ant-tasks.classpath" />
@@ -148,7 +148,7 @@
 		-->
 		
 		<echo message="(COVERAGE): installing clean version of rice to maven repo" />
-		<maven goals="clean install" options="-Dmaven.repo.local=${M2_REPO} -DskipTests -Dalt.config.location=${env.WORKSPACE}/${alt.config.location} -Dalt.log4j.config.location=${env.WORKSPACE}/${alt.log4j.config.location}"/>
+		<maven goals="clean install" options="-Dmaven.repo.local='${M2_REPO}' -DskipTests -Dalt.config.location=${env.WORKSPACE}/${alt.config.location} -Dalt.log4j.config.location=${env.WORKSPACE}/${alt.log4j.config.location}"/>
 
 		<echo message="(COVERAGE): copying repository files into alt repo" />
 		<copy todir="${coverage.m2repo}">
@@ -208,8 +208,8 @@
 			<arg value="${project.dir}/scripts/merge_module_classpaths.groovy"/>
 			<arg value="${project.dir}"/>
 			<classpath>
-				<fileset dir="${project.dir}/scripts/">
-					<include name="groovy-*/lib/*.jar" />
+                <fileset dir="${env.GROOVY_HOME}/lib">
+                    <include name="*.jar" />
 				</fileset>
 			</classpath>
 		</java>
@@ -245,7 +245,7 @@
 			<fileset dir="${war.config.src.dir}"/>
 		</copy>
 		<!-- change the environment code appropriately -->
-		<replaceregexp match="\b(dev|snd|unt|reg|stg|trn|prd)\b" replace="${rice.environment}" byline="true" flags="g">
+		<replaceregexp match="\b(dev|snd|unt|reg|stg|trn|prd)\b" replace="${rice.environment}" byline="true" flags="gi">
 			<fileset dir="${dist.war.dir}">
 				<include name="**/web.xml" />
 			</fileset>
@@ -555,13 +555,13 @@ in order to package the various Rice datasets.
 		<copy file="target/${rice.app.code}-${rice.environment}.war" todir="${basedir}"/>
 	</target>
 
-	<target name="prepare-new-version" depends="init" description="Prompts for a new version to change the POM and groovy scripts to">
+	<target name="prepare-new-version" depends="init" description="Prompts for a new version to change the POM to">
 		<input message="Detected current version in POM file of '${maven.project.version}'.  Please enter new version: "
 			defaultvalue="${maven.project.version}"
 			addproperty="project.new.version"/>
-		<echo>Re-versioning POM files and groovy scripts to version '${project.new.version}'</echo>
+		<echo>Re-versioning POM files to version '${project.new.version}'</echo>
 		<replaceregexp match="\b${maven.project.version}\b" replace="${project.new.version}" byline="true" flags="g">
-			<fileset dir="." includes="**/pom.xml, **/*.groovy"/>
+			<fileset dir="." includes="**/pom.xml, **/*.groovy,.project,scripts/launch/*.launch"/>
 		</replaceregexp>
 	</target>
 
@@ -577,7 +577,7 @@ in order to package the various Rice datasets.
 	</target>
 
 	<target name="prepare-unit-test-environment" depends="init" description="Generate common-test-config.xml">
-		<property name="common-test-config" value="${user.home}/kuali/test2/${rice.environment}/common-test-config.xml"/>
+		<property name="common-test-config" value="${user.home}/kuali/test/${rice.environment}/common-test-config.xml"/>
 		<available property="common-test-config.exists" file="${common-test-config}"/>
 		<fail if="common-test-config.exists" message="The file ${common-test-config} already exists!  You must delete it first if you want it to be recreated."/>
 		<copy file="config/templates/common-test-config.template.xml" tofile="${common-test-config}"/>

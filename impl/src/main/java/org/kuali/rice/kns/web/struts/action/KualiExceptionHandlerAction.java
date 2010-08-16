@@ -16,6 +16,8 @@
 
 package org.kuali.rice.kns.web.struts.action;
 
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -108,8 +110,14 @@ public class KualiExceptionHandlerAction extends Action {
 					// An instance of the ExceptionIncident is created by
 					// the
 					// ExceptionIncidentService
+					Map reducedMap = new HashMap();
+					Enumeration<String> names = request.getParameterNames();
+					while (names.hasMoreElements()) {
+						String name = names.nextElement();
+						reducedMap.put(name, request.getParameter(name));
+					}
 					KualiExceptionIncident exceptionIncident = reporterService
-							.getExceptionIncident(formObject.toMap());
+							.getExceptionIncident(reducedMap);
 					// Report the incident
 					reporterService.report(exceptionIncident);
 				} else {

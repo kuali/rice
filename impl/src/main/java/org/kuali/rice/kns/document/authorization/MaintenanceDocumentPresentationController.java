@@ -30,4 +30,7 @@ public interface MaintenanceDocumentPresentationController extends
 
 	public Set<String> getConditionallyReadOnlySectionIds(
 			MaintenanceDocument document);
+	
+	public Set<String> getConditionallyRequiredPropertyNames(
+			MaintenanceDocument document);
 }

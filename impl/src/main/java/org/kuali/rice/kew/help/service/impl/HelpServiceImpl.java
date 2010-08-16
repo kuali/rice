@@ -80,7 +80,7 @@ public class HelpServiceImpl implements HelpService {
 
         if (helpEntry.getHelpKey() == null || "".equals(helpEntry.getHelpKey().trim())) {
             GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_EMPTY);
-        } else if (helpEntry.getHelpKey().indexOf("'") >= 0) {
+        } else if (helpEntry.getHelpKey().contains("'")) {
             GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_ILLEGAL, "'");
         } else {
             helpEntry.setHelpKey(helpEntry.getHelpKey().trim());
@@ -117,7 +117,7 @@ public class HelpServiceImpl implements HelpService {
 
         if (helpEntry.getHelpKey() == null || "".equals(helpEntry.getHelpKey().trim())) {
             GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_EMPTY);
-        } else if (helpEntry.getHelpKey().indexOf("'") >= 0){
+        } else if (helpEntry.getHelpKey().contains("'")){
             GlobalVariables.getMessageMap().putError(HELP_KEY_KEY, KEY_ILLEGAL, "'");
         } else {
             helpEntry.setHelpKey(helpEntry.getHelpKey().trim());

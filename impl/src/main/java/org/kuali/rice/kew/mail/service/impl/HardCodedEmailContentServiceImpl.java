@@ -58,7 +58,7 @@ public class HardCodedEmailContentServiceImpl extends BaseEmailContentServiceImp
     public EmailContent generateImmediateReminder(Person person, ActionItem actionItem, DocumentType documentType) {
         String docHandlerUrl = documentType.getDocHandlerUrl();
         if (StringUtils.isNotBlank(docHandlerUrl)) {
-            if (docHandlerUrl.indexOf("?") == -1) {
+            if (!docHandlerUrl.contains("?")) {
                 docHandlerUrl += "?";
             } else {
                 docHandlerUrl += "&";

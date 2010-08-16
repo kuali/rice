@@ -21,6 +21,10 @@ import org.kuali.rice.kew.mail.EmailFrom;
 import org.kuali.rice.kew.mail.EmailSubject;
 import org.kuali.rice.kew.mail.EmailTo;
 
+import org.kuali.rice.kew.mail.service.impl.EmailBcList;
+import org.kuali.rice.kew.mail.service.impl.EmailCcList;
+import org.kuali.rice.kew.mail.service.impl.EmailToList;
+
 /**
  * A service for sending email messages.
  * 
@@ -29,5 +33,8 @@ import org.kuali.rice.kew.mail.EmailTo;
 public interface EmailService {
 	
     public void sendEmail(EmailFrom from, EmailTo to, EmailSubject subject, EmailBody body, boolean htmlMessage);
+
+    public void sendEmail(EmailFrom from, EmailToList to, EmailSubject subject, EmailBody body, EmailCcList cc, EmailBcList bc, boolean htmlMessage);
+
     
 }

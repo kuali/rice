@@ -28,6 +28,7 @@ import javax.jws.WebService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
@@ -46,6 +47,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
+import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -481,23 +483,22 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 
 	@SuppressWarnings("unchecked")
 	public List<KimPermissionInfo> lookupPermissions(Map<String, String> searchCriteria, boolean unbounded ){
-		Collection<KimPermissionImpl> baseResults = null; 
-		//Lookupable permissionLookupable = KNSServiceLocator.getLookupable(
-		//		KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
-		//		);
-		//permissionLookupable.setBusinessObjectClass(PermissionImpl.class);
-		//if ( unbounded ) {
-		//    baseResults = permissionLookupable.getSearchResultsUnbounded( searchCriteria );
-		    baseResults = (Collection<KimPermissionImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchHelper(KimPermissionImpl.class, searchCriteria, unbounded);
-		//} else {
-		//	baseResults = permissionLookupable.getSearchResults(searchCriteria);
-		//}
+		Collection baseResults = null;
+		Lookupable permissionLookupable = KNSServiceLocator.getLookupable(
+				KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
+				);
+		permissionLookupable.setBusinessObjectClass(PermissionImpl.class);
+		if ( unbounded ) {
+		    baseResults = permissionLookupable.getSearchResultsUnbounded( searchCriteria );
+		} else {
+			baseResults = permissionLookupable.getSearchResults(searchCriteria);
+		}
 		List<KimPermissionInfo> results = new ArrayList<KimPermissionInfo>( baseResults.size() );
-		for ( KimPermissionImpl resp : (Collection<KimPermissionImpl>)baseResults ) {
+		for ( KimPermissionImpl resp : (Collection<PermissionImpl>)baseResults ) {
 			results.add( resp.toSimpleInfo() );
 		}
 		if ( baseResults instanceof CollectionIncomplete ) {
-			results = new CollectionIncomplete<KimPermissionInfo>( results, ((CollectionIncomplete<KimPermissionImpl>)baseResults).getActualSizeIfTruncated() ); 
+			results = new CollectionIncomplete<KimPermissionInfo>( results, ((CollectionIncomplete<KimPermissionInfo>)baseResults).getActualSizeIfTruncated() ); 
 		}		
 		return results;
 	}

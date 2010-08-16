@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.web.struts.form;
 
-import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -24,14 +23,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.spring.AutoPopulatingList;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -44,7 +41,6 @@ public class LookupForm extends KualiForm {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupForm.class);
 
     private String formKey;
-    private String backLocation;
     private Map<String, String> fields;
     private Map fieldsForLookup;
     private String lookupableImplServiceName;
@@ -69,6 +65,8 @@ public class LookupForm extends KualiForm {
     private boolean supplementalActionsEnabled = false;
     private boolean actionUrlsExist = false;
     private boolean ddExtraButton = false;
+	private boolean headerBarEnabled = true;
+	private boolean disableSearchButtons = false;
     
     /**
      * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
@@ -264,6 +262,7 @@ public class LookupForm extends KualiForm {
 
             		field.setPropertyValue(LookupUtils.forceUppercase(boClass, field.getPropertyName(), field.getPropertyValue()));
                 	fieldValues.put(field.getPropertyName(), field.getPropertyValue());
+                	//LOG.info("field name/value added was: " + field.getPropertyName() + field.getPropertyValue());
                 	localLookupable.applyFieldAuthorizationsFromNestedLookups(field);
                 }
             }
@@ -292,6 +291,7 @@ public class LookupForm extends KualiForm {
                         fieldValues.put(field.getPropertyName(), field.getPropertyValue());
                     }
                 }
+               
             }
             fieldValues.put(KNSConstants.DOC_FORM_KEY, this.getFormKey());
             fieldValues.put(KNSConstants.BACK_LOCATION, this.getBackLocation());
@@ -319,8 +319,8 @@ public class LookupForm extends KualiForm {
 
             // if showMaintenanceLinks is not already true, only show maintenance links if the lookup was called from the portal (or index.html for the generated applications)
             if (!isShowMaintenanceLinks()) {
-            	if (StringUtils.contains(backLocation, "/"+KNSConstants.PORTAL_ACTION) 
-            			|| StringUtils.contains(backLocation, "/index.html")) {
+            	if (StringUtils.contains(getBackLocation(), "/"+KNSConstants.PORTAL_ACTION) 
+            			|| StringUtils.contains(getBackLocation(), "/index.html")) {
             		showMaintenanceLinks = true;
             	}
             }
@@ -343,21 +343,6 @@ public class LookupForm extends KualiForm {
      */
     public void setLookupableImplServiceName(String lookupableImplServiceName) {
         this.lookupableImplServiceName = lookupableImplServiceName;
-    }
-
-
-    /**
-     * @return Returns the backLocation.
-     */
-    public String getBackLocation() {
-        return backLocation;
-    }
-
-    /**
-     * @param backLocation The backLocation to set.
-     */
-    public void setBackLocation(String backLocation) {
-        this.backLocation = backLocation;
     }
 
     /**
@@ -696,5 +681,39 @@ public class LookupForm extends KualiForm {
 	 */
 	public void setDdExtraButton(boolean ddExtraButton) {
 		this.ddExtraButton = ddExtraButton;
+	}
+
+	public boolean isHeaderBarEnabled() {
+		return headerBarEnabled;
+	}
+
+	public void setHeaderBarEnabled(boolean headerBarEnabled) {
+		this.headerBarEnabled = headerBarEnabled;
+	}	
+
+	public boolean isDisableSearchButtons() {
+		return this.disableSearchButtons;
+	}
+
+	public void setDisableSearchButtons(boolean disableSearchButtons) {
+		this.disableSearchButtons = disableSearchButtons;
+	}
+	
+	/**
+	 * Determines whether the search/clear buttons should be rendering based on the form property
+	 * and what is configured in the data dictionary for the lookup
+	 * 
+	 * @return boolean true if the buttons should be rendered, false if they should not be
+	 */
+	public boolean getRenderSearchButtons() {
+		boolean renderSearchButtons = true;
+
+		if (disableSearchButtons
+				|| KNSServiceLocator.getBusinessObjectDictionaryService().disableSearchButtonsInLookup(
+						getLookupable().getBusinessObjectClass())) {
+			renderSearchButtons = false;
+		}
+
+		return renderSearchButtons;
 	}
 }

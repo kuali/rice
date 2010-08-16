@@ -16,12 +16,6 @@
  */
 package org.kuali.rice.kew.actiontaken.service.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
@@ -35,6 +29,11 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -62,7 +61,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
     {
         IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
         ActionTakenValue foundActionTaken = null;
-        List<String> principalIds = new ArrayList();
+        List<String> principalIds = new ArrayList<String>();
         if (actionRequest.isGroupRequest()) {
             principalIds.addAll( ims.getGroupMemberPrincipalIds(actionRequest.getGroup().getGroupId()));
         } else if (actionRequest.isUserRequest()) {
@@ -100,7 +99,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         return getActionTakenDAO().findByDocIdAndAction(docId, action);
     }
 
-    public Collection findByRouteHeaderId(Long routeHeaderId) {
+    public Collection<ActionTakenValue> findByRouteHeaderId(Long routeHeaderId) {
         return getActionTakenDAO().findByRouteHeaderId(routeHeaderId);
     }
 
@@ -138,7 +137,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
 
     public void validateActionTaken(ActionTakenValue actionTaken){
         LOG.debug("Enter validateActionTaken(..)");
-        List errors = new ArrayList();
+        List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();
 
         Long routeHeaderId = actionTaken.getRouteHeaderId();
         if(routeHeaderId == null){
@@ -186,14 +185,15 @@ public class ActionTakenServiceImpl implements ActionTakenService {
     public Timestamp getLastApprovedDate(Long routeHeaderId)
     {
     	Timestamp dateLastApproved = null;
-    	List actionsTaken=(List)getActionTakenDAO().findByDocIdAndAction(routeHeaderId, KEWConstants.ACTION_TAKEN_APPROVED_CD);
-    	for (Iterator iter = actionsTaken.iterator(); iter.hasNext();) {
-    		ActionTakenValue actionTaken = (ActionTakenValue) iter.next();
-    		// search for the most recent approval action
-    		if (dateLastApproved == null || dateLastApproved.compareTo(actionTaken.getActionDate()) <= -1) {
-    			dateLastApproved = actionTaken.getActionDate();
-    		}
-		}
+    	Collection<ActionTakenValue> actionsTaken= getActionTakenDAO().findByDocIdAndAction(routeHeaderId, KEWConstants.ACTION_TAKEN_APPROVED_CD);
+        for (ActionTakenValue actionTaken : actionsTaken)
+        {
+            // search for the most recent approval action
+            if (dateLastApproved == null || dateLastApproved.compareTo(actionTaken.getActionDate()) <= -1)
+            {
+                dateLastApproved = actionTaken.getActionDate();
+            }
+        }
     	LOG.info("Exit getLastApprovedDate("+routeHeaderId+") "+dateLastApproved);
     	return dateLastApproved;
     }

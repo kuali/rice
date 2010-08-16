@@ -18,10 +18,15 @@ package org.kuali.rice.kew.rule.bo;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
+import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.web.ui.Section;
 
 /**
@@ -31,6 +36,9 @@ import org.kuali.rice.kns.web.ui.Section;
  *
  */
 public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
+
+	public static final String ROUTE_HEADER_ID = "routeHeaderId";
+
 
 	/**
 	 * This overridden method ...
@@ -50,7 +58,36 @@ public class RuleBaseValuesInquirableImpl extends KualiInquirableImpl {
 	 */
 	public List getSections(BusinessObject bo) {
 		List<Section> sections = super.getSections(bo);
-		return WebRuleUtils.customizeSections((RuleBaseValues)bo, sections);
+
+		return WebRuleUtils.customizeSections((RuleBaseValues)bo, sections, false);
+
 	}
+	
+   	
+	/**
+     * @see org.kuali.kfs.sys.businessobject.inquiry.KfsInquirableImpl#getInquiryUrl(org.kuali.rice.kns.bo.BusinessObject,
+     *      java.lang.String, boolean)
+     */
+    @Override
+    public HtmlData getInquiryUrl(BusinessObject businessObject, String attributeName, boolean forceInquiry) {
+    	
+		if(ROUTE_HEADER_ID.equals(attributeName)) {
+
+			AnchorHtmlData link = new AnchorHtmlData();
+			RuleBaseValues rule = (RuleBaseValues)businessObject;
+
+			Long routeHeaderId = rule.getRouteHeaderId();
+			link.setDisplayText(routeHeaderId+"");
+
+			String href = ConfigContext.getCurrentContextConfig().getKEWBaseURL() + "/" +
+			KEWConstants.DOC_HANDLER_REDIRECT_PAGE + "?" + KEWConstants.COMMAND_PARAMETER + "=" +
+			KEWConstants.DOCSEARCH_COMMAND + "&" + KEWConstants.ROUTEHEADER_ID_PARAMETER + "=" + routeHeaderId;
+
+			link.setHref(href);
+
+			return link;
+		}		
+        return super.getInquiryUrl(businessObject, attributeName, forceInquiry);
+    }
 
 }

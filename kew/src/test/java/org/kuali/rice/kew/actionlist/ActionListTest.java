@@ -100,7 +100,7 @@ public class ActionListTest extends KEWTestCase {
 
     @Test public void testRouteHeaderDelete() throws Exception {
     	setUpOldSchool();
-        Collection actionItems = getActionListService().findByRouteHeaderId(routeHeader1.getRouteHeaderId());
+        Collection<ActionItem> actionItems = getActionListService().findByRouteHeaderId(routeHeader1.getRouteHeaderId());
         assertEquals("Route header " + routeHeader1.getRouteHeaderId() + " should have action items.", AUTHENTICATION_IDS.length, actionItems.size());
         getActionListService().deleteByRouteHeaderId(routeHeader1.getRouteHeaderId());
         actionItems = getActionListService().findByRouteHeaderId(routeHeader1.getRouteHeaderId());
@@ -133,7 +133,7 @@ public class ActionListTest extends KEWTestCase {
                                 } else {
                                     throw new Exception("WorkflowId " + workflowId + " didn't return a count.  Test SQL invalid.");
                                 }
-                                Collection actionList = getActionListService().findByPrincipalId(workflowId);
+                                Collection<ActionItem> actionList = getActionListService().findByPrincipalId(workflowId);
                                 assertEquals("ActionItemService returned incorrect number of ActionItems for user " + workflowId + " ActionList", emplIdCnt, actionList.size());
                                 ps1.close();
                                 rsWorkflowIdCnt.close();
@@ -181,17 +181,17 @@ public class ActionListTest extends KEWTestCase {
     	excludeSecondaryFilter.setExcludeDelegationType(true);
     	ActionListFilter secondaryFilter = new ActionListFilter();
     	secondaryFilter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
-    	Collection actionItems = null;
+    	Collection<ActionItem> actionItems = null;
     	ActionItem actionItem = null;
 
     	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, excludeSecondaryFilter);
     	assertEquals("bmcgough should have 0 items in his primary action list.", 0, actionItems.size());
     	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, secondaryFilter);
     	assertEquals("bmcgough should have 1 item in his secondary action list.", 1, actionItems.size());
-        actionItem = (ActionItem)actionItems.iterator().next();
+        actionItem = actionItems.iterator().next();
         assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
         assertEquals("Should be a secondary delegation request.", KEWConstants.DELEGATION_SECONDARY, actionItem.getDelegationType());
-    	actionItem = (ActionItem)actionItems.iterator().next();
+    	actionItem = actionItems.iterator().next();
     	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
     	assertEquals("Should be a secondary delegation request.", KEWConstants.DELEGATION_SECONDARY, actionItem.getDelegationType());
     	actionItems = getActionListService().getActionList(bmcgoughPrincipalId, noFilter);
@@ -209,7 +209,7 @@ public class ActionListTest extends KEWTestCase {
     	// check that user1's approve comes out as their action item from the action list
     	actionItems = getActionListService().getActionList(user1PrincipalId, noFilter);
     	assertEquals("user1 should have 1 item in his primary action list.", 1, actionItems.size());
-    	actionItem = (ActionItem)actionItems.iterator().next();
+    	actionItem = actionItems.iterator().next();
     	assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
     	assertEquals("Should be to a workgroup.", NonSIT.getGroupId(), actionItem.getGroupId());
     	// check that user1 acknowledge shows up when filtering
@@ -222,15 +222,16 @@ public class ActionListTest extends KEWTestCase {
     	assertNull("Should not be to a workgroup.", actionItem.getGroupId());
 
     	// all members of NonSIT should have a single primary Approve Request
-    	for (Iterator iterator = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getGroupId()).iterator(); iterator.hasNext(); ) {
-			String userId = (String)iterator.next();
-			//will want to convert to Kim Principal
-			actionItems = getActionListService().getActionList(userId, excludeSecondaryFilter);
-			assertEquals("Workgroup Member " + userId + " should have 1 action item.", 1, actionItems.size());
-			actionItem = (ActionItem)actionItems.iterator().next();
-			assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
-			assertEquals("Should be to a workgroup.", NonSIT.getGroupId(), actionItem.getGroupId());
-		}
+        List<String> memberPrincipalIds = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getGroupId());
+        for (String memberPrincipalId : memberPrincipalIds)
+        {
+            //will want to convert to Kim Principal
+            actionItems = getActionListService().getActionList(memberPrincipalId, excludeSecondaryFilter);
+            assertEquals("Workgroup Member " + memberPrincipalId + " should have 1 action item.", 1, actionItems.size());
+            actionItem = (ActionItem) actionItems.iterator().next();
+            assertEquals("Should be an approve request.", KEWConstants.ACTION_REQUEST_APPROVE_REQ, actionItem.getActionRequestCd());
+            assertEquals("Should be to a workgroup.", NonSIT.getGroupId(), actionItem.getGroupId());
+        }
 
         document = new WorkflowDocument(new NetworkIdDTO("jhopf"), "ActionListDocumentType_PrimaryDelegate");
         document.routeDocument("");
@@ -309,7 +310,7 @@ public class ActionListTest extends KEWTestCase {
 
     	ActionListFilter showPrimaryFilter = new ActionListFilter();
     	showPrimaryFilter.setDelegationType(KEWConstants.DELEGATION_PRIMARY);
-    	Collection actionItems = null;
+    	Collection<ActionItem> actionItems = null;
     	ActionItem actionItem = null;
 
     	// make sure showing primary delegations show primary delegated action items
@@ -421,11 +422,11 @@ public class ActionListTest extends KEWTestCase {
         routeHeader.setApprovedDate(null);
         routeHeader.setCreateDate(new Timestamp(new Date().getTime()));
         routeHeader.setDocContent("test");
-        routeHeader.setDocRouteLevel(new Integer(1));
+        routeHeader.setDocRouteLevel(1);
         routeHeader.setDocRouteStatus(KEWConstants.ROUTE_HEADER_ENROUTE_CD);
         routeHeader.setDocTitle("Test");
-        routeHeader.setDocumentTypeId(new Long(1));
-        routeHeader.setDocVersion(new Integer(KEWConstants.CURRENT_DOCUMENT_VERSION));
+        routeHeader.setDocumentTypeId((long) 1);
+        routeHeader.setDocVersion(KEWConstants.CURRENT_DOCUMENT_VERSION);
         routeHeader.setRouteStatusDate(new Timestamp(new Date().getTime()));
         routeHeader.setStatusModDate(new Timestamp(new Date().getTime()));
         routeHeader.setInitiatorWorkflowId("someone");
@@ -435,7 +436,7 @@ public class ActionListTest extends KEWTestCase {
     private ActionItem generateActionItem(DocumentRouteHeaderValue routeHeader, String actionRequested, String authenticationId, String groupId) {
         ActionItem actionItem = new ActionItem();
         actionItem.setActionRequestCd(actionRequested);
-        actionItem.setActionRequestId(new Long(1));
+        actionItem.setActionRequestId((long) 1);
         actionItem.setPrincipalId(getPrincipalIdForName(authenticationId));
         actionItem.setRouteHeaderId(routeHeader.getRouteHeaderId());
         actionItem.setDateAssigned(new Timestamp(new Date().getTime()));
@@ -449,7 +450,7 @@ public class ActionListTest extends KEWTestCase {
     }
 
     private ActionListService getActionListService() {
-        return (ActionListService) KEWServiceLocator.getActionListService();
+        return KEWServiceLocator.getActionListService();
     }
 
     private RouteHeaderService getRouteHeaderService() {

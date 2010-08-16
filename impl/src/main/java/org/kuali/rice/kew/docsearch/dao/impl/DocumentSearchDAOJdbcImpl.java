@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.docsearch.dao.impl;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
@@ -38,6 +30,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 /**
  *
@@ -58,7 +57,7 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
     }
 
     public List<DocSearchDTO> getList(DocumentSearchGenerator documentSearchGenerator, DocSearchCriteriaDTO criteria, String principalId) {
-        return getList(documentSearchGenerator, criteria, Integer.valueOf(getSearchResultCap(documentSearchGenerator)), principalId);
+        return getList(documentSearchGenerator, criteria, getSearchResultCap(documentSearchGenerator), principalId);
     }
 
     public void setDataSource(DataSource ds) {
@@ -77,9 +76,9 @@ public class DocumentSearchDAOJdbcImpl implements DocumentSearchDAO {
                     try {
                         criteria.setThreshold(searchResultCap);
                         if (searchResultCap != null) {
-                            final int fetchLimit = getFetchMoreIterationLimit() * searchResultCap.intValue();
+                            final int fetchLimit = getFetchMoreIterationLimit() * searchResultCap;
                             criteria.setFetchLimit(fetchLimit);
-                            statement.setFetchSize(searchResultCap.intValue() + 1);
+                            statement.setFetchSize(searchResultCap + 1);
                             statement.setMaxRows(fetchLimit + 1);
                         } else {
                             criteria.setFetchLimit(null);

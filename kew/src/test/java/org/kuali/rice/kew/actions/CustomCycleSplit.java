@@ -16,14 +16,14 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.SplitNode;
 import org.kuali.rice.kew.engine.node.SplitResult;
 import org.kuali.rice.kew.util.Utilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CustomCycleSplit implements SplitNode {
@@ -34,7 +34,7 @@ public class CustomCycleSplit implements SplitNode {
     private static int timesCycled = 0;
     
     public SplitResult process(RouteContext context, RouteHelper helper) throws Exception {
-        List branchNames = new ArrayList();
+        List<String> branchNames = new ArrayList<String>();
         if (Utilities.isEmpty(cycleBranchName) || Utilities.isEmpty(nonCycleBranchName)) {
             throw new Exception("Must specify cycle and non-cycle branch names.");
         }

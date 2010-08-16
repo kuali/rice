@@ -76,7 +76,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 public interface IdentityService {
 	    
 	/** 
-	 * Get the principal with the given unique principal ID 
+	 * Get the principal with the given unique principal ID. Returns null if not found. 
 	 */
 	KimPrincipalInfo getPrincipal( @WebParam(name="principalId") String principalId );
 	

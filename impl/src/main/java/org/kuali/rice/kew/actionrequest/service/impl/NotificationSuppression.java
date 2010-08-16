@@ -168,8 +168,10 @@ public class NotificationSuppression {
 	
     /**
      * Builds keys for action requests used for notification suppression.
-     * <p>NOTE: This method needs to stay in sync with {@link #getSuppressNotifyNodeStateKey(ActionRequestValue)}.
+     * <p>NOTE: This method needs to stay in sync with {@link #getSuppressNotifyNodeStateKeys(org.kuali.rice.kew.dto.ActionRequestDTO)}
      * Any changes here must be made there as well!
+     * @param a
+     * @return List
      */
 	protected List<String> getSuppressNotifyNodeStateKeys(ActionRequestDTO a) {
 		List<String> results = Collections.emptyList(); 
@@ -184,8 +186,10 @@ public class NotificationSuppression {
 
     /**
      * Builds keys for action requests used for notification suppression.
-     * <p>NOTE: This method needs to stay in sync with {@link #getSuppressNotifyNodeStateKey(ActionRequestDTO)}.
+     * <p>NOTE: This method needs to stay in sync with {@link #getSuppressNotifyNodeStateKeys(org.kuali.rice.kew.actionrequest.ActionRequestValue)}
      * Any changes here must be made there as well!
+     * @param a
+     * @return List
      */
 	protected List<String> getSuppressNotifyNodeStateKeys(ActionRequestValue a) {
 		List<String> results = Collections.emptyList(); 

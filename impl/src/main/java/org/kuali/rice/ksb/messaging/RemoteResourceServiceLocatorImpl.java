@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,8 +32,8 @@ import javax.xml.namespace.QName;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoaderContainer;
@@ -43,9 +45,6 @@ import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnectorFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer implements Runnable, RemoteResourceServiceLocator {
 
@@ -209,7 +208,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 					Map<QName, List<RemotedServiceHolder>> x = this.getClients();
 					if (x != null) {
 						for (QName b : x.keySet()) {
-							System.out.println(b.getNamespaceURI() + " " + b.getLocalPart());
+							LOG.debug(b.getNamespaceURI() + " " + b.getLocalPart());
 						}
 					}
 				}

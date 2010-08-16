@@ -16,15 +16,15 @@
  */
 package org.kuali.rice.kew.lifecycle;
 
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.lifecycle.BaseLifecycle;
-import org.kuali.rice.kew.batch.XmlPollerService;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.kew.batch.XmlPollerService;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 public class XmlPipelineLifeCycle extends BaseLifecycle {
 

@@ -16,18 +16,12 @@
  */
 package org.kuali.rice.kew.engine.transition;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.engine.node.Branch;
-import org.kuali.rice.kew.engine.node.ProcessResult;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.engine.node.SplitNode;
-import org.kuali.rice.kew.engine.node.SplitResult;
+import org.kuali.rice.kew.engine.node.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -47,17 +41,18 @@ public class SplitTransitionEngine extends TransitionEngine {
 	public Transition transitionFrom(RouteContext context, ProcessResult processResult)
 			throws Exception {
 		RouteNodeInstance splitInstance = context.getNodeInstance();
-		List nextNodeInstances = new ArrayList();
+		List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
         SplitResult result = (SplitResult)processResult;
-		for (Iterator iterator = result.getBranchNames().iterator(); iterator.hasNext(); ) {
-			String branchName = (String)iterator.next();
-			for (Iterator nodeIt = splitInstance.getRouteNode().getNextNodes().iterator(); nodeIt.hasNext(); ) {
-				RouteNode routeNode = (RouteNode) nodeIt.next();
-				if (routeNode.getBranch() != null && routeNode.getBranch().getName().equals(branchName)) {
-				    nextNodeInstances.add(createSplitChild(branchName, routeNode, splitInstance));
-				}
-			}
-		}
+        for (String branchName : result.getBranchNames())
+        {
+            for (RouteNode routeNode : splitInstance.getRouteNode().getNextNodes())
+            {
+                if (routeNode.getBranch() != null && routeNode.getBranch().getName().equals(branchName))
+                {
+                    nextNodeInstances.add(createSplitChild(branchName, routeNode, splitInstance));
+                }
+            }
+        }
 		return new Transition(nextNodeInstances);
 	}
 	

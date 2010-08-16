@@ -417,4 +417,11 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 	 */
 	public void validateSearchParameters(Map fieldValues) {}
 
+	/**
+	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#applyConditionalLogicForFieldDisplay()
+	 */
+	public void applyConditionalLogicForFieldDisplay() {
+		
+	}
+	
 }

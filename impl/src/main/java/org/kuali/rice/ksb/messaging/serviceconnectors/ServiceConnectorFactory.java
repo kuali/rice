@@ -19,6 +19,7 @@ import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.security.credentials.CredentialsSource;
 import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
+import org.kuali.rice.ksb.messaging.RESTServiceDefinition;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
@@ -60,7 +61,9 @@ public class ServiceConnectorFactory {
 	    serviceConnector = new HttpInvokerConnector(serviceInfo);
 	} else if (serviceDefinition instanceof SOAPServiceDefinition) {
 	    serviceConnector = new SOAPConnector(serviceInfo);
-	}
+    } else if (serviceDefinition instanceof RESTServiceDefinition) {
+        serviceConnector = new RESTConnector(serviceInfo);
+    }
 
 	if (serviceConnector == null) {
 	    throw new RiceRuntimeException("Don't support service type of " + serviceInfo.getServiceDefinition());

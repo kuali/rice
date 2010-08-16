@@ -43,6 +43,7 @@ import org.kuali.rice.ksb.messaging.AlternateEndpoint;
 import org.kuali.rice.ksb.messaging.AlternateEndpointLocation;
 import org.kuali.rice.ksb.messaging.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
+import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.Scheduler;
@@ -295,6 +296,11 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 	
 	public void stop() throws Exception {
+		try {
+			HttpInvokerConnector.shutdownIdleConnectionTimeout();
+		} catch (Exception e) {
+			LOG.error("Failed to shutdown idle connection timeout evictor thread.", e);
+		}
 	    super.stop();
 	    cleanUpConfiguration();
 	}

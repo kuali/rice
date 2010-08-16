@@ -20,6 +20,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -41,16 +42,19 @@ public class PluginConfig extends BaseConfig {
 	private List listeners = new ArrayList();
 	private Properties parentProperties;
 	private Map parentObjects;
+	private Config parentConfig;
 
 	public PluginConfig(URL url, Config parentConfig) {
 		super(url.toString());
 		this.parentProperties = parentConfig.getProperties();
 		this.parentObjects = parentConfig.getObjects();
+		this.parentConfig = parentConfig;
 	}
 
 	public PluginConfig(File configFile, Config parentConfig) throws MalformedURLException {
 		this(configFile.toURL(), parentConfig);
 	}
+	
 
 	public Properties getBaseProperties() {
 		return this.parentProperties;
@@ -78,5 +82,32 @@ public class PluginConfig extends BaseConfig {
 
     public String toString() {
         return "[PluginConfig: resourceLoaderClassname: " + getResourceLoaderClassname() + "]";
-    }    
+    }
+    
+	 
+	@Override
+	public Object getObject(String key) {
+		Object object = super.getObject(key);
+		if (object == null && parentConfig != null) {
+			object = parentConfig.getObject(key);
+		}
+		return object;
+	}
+
+	@Override
+	public Map<String, Object> getObjects() {
+		Map<String, Object> finalObjects = new HashMap<String, Object>(super.getObjects());
+		if (parentConfig != null) {
+			Map<String, Object> parentObjects = parentConfig.getObjects();
+			for (String key : parentObjects.keySet()) {
+				if (!finalObjects.containsKey(key)) {
+					finalObjects.put(key, parentObjects.get(key));
+				}
+			}
+		}
+		
+		return finalObjects;
+	}
+	
+
 }

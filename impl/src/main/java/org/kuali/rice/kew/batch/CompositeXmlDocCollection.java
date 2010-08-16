@@ -19,7 +19,6 @@ package org.kuali.rice.kew.batch;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,8 +29,8 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class CompositeXmlDocCollection implements XmlDocCollection {
-    protected Collection collections; 
-    public CompositeXmlDocCollection(Collection xmlDocCollections) {
+    protected Collection<XmlDocCollection> collections;
+    public CompositeXmlDocCollection(Collection<XmlDocCollection> xmlDocCollections) {
         collections = xmlDocCollections;
     }
 
@@ -39,30 +38,27 @@ public class CompositeXmlDocCollection implements XmlDocCollection {
         return null;
     }
 
-    public List getXmlDocs() {
-        List docs = new LinkedList();
-        Iterator collectionIt = collections.iterator();
-        while (collectionIt.hasNext()) {
-            XmlDocCollection coll = (XmlDocCollection) collectionIt.next();
-            docs.addAll(coll.getXmlDocs());
+    public List<? extends XmlDoc> getXmlDocs() {
+        List<XmlDoc> docs = new LinkedList<XmlDoc>();
+        for (XmlDocCollection collection : collections)
+        {
+            docs.addAll(collection.getXmlDocs());
         }
         return docs;
     }
 
     public void close() throws IOException {
-        Iterator collectionIt = collections.iterator();
-        while (collectionIt.hasNext()) {
-            XmlDocCollection coll = (XmlDocCollection) collectionIt.next();
-            coll.close();
+        for (XmlDocCollection collection : collections)
+        {
+            collection.close();
         }
     }
 
     public String toString() {
         StringBuffer sb = new StringBuffer("[CompositeXmlDocCollection: ");
-        Iterator collectionIt = collections.iterator();
-        while (collectionIt.hasNext()) {
-            XmlDocCollection coll = (XmlDocCollection) collectionIt.next();
-            sb.append(coll.toString() + ", ");
+        for (XmlDocCollection collection : collections)
+        {
+            sb.append(collection.toString()).append(", ");
         }
         if (collections.size() > 0) {
             sb.setLength(sb.length() - 2);

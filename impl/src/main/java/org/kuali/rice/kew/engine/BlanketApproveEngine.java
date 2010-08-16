@@ -16,13 +16,6 @@
  */
 package org.kuali.rice.kew.engine;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -40,6 +33,8 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+
+import java.util.*;
 
 
 /**
@@ -72,8 +67,8 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         this(createBlanketApproveConfig(nodeNames, actionTaken));
     }
 
-    private static Set wrapInSet(String nodeName) {
-        Set nodeNames = new HashSet();
+    private static Set<String> wrapInSet(String nodeName) {
+        Set<String> nodeNames = new HashSet<String>();
         if (!Utilities.isEmpty(nodeName)) {
             nodeNames.add(nodeName);
         }
@@ -108,7 +103,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
                 LOG.debug("Document not routable so returning with doing no action");
                 return;
             }
-            List activeNodeInstances = new ArrayList();
+            List<RouteNodeInstance> activeNodeInstances = new ArrayList<RouteNodeInstance>();
             if (nodeInstanceId == null) {
                 activeNodeInstances.addAll(getRouteNodeService().getActiveNodeInstances(documentId));
             } else {
@@ -118,7 +113,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
                 }
                 activeNodeInstances.add(instanceNode);
             }
-            List nodeInstancesToProcess = determineNodeInstancesToProcess(activeNodeInstances, config.getDestinationNodeNames());
+            List<RouteNodeInstance> nodeInstancesToProcess = determineNodeInstancesToProcess(activeNodeInstances, config.getDestinationNodeNames());
 
 
             context.setDoNotSendApproveNotificationEmails(true);
@@ -130,15 +125,16 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             }
             lockAdditionalDocuments(document);
             try {
-                List processingQueue = new LinkedList();
-                for (Iterator iterator = nodeInstancesToProcess.iterator(); iterator.hasNext();) {
-                    processingQueue.add(new ProcessEntry((RouteNodeInstance) iterator.next()));
+                List<ProcessEntry> processingQueue = new LinkedList<ProcessEntry>();
+                for (RouteNodeInstance nodeInstancesToProcesses : nodeInstancesToProcess)
+                {
+                    processingQueue.add(new ProcessEntry((RouteNodeInstance) nodeInstancesToProcesses));
                 }
-                Set nodesCompleted = new HashSet();
+                Set<String> nodesCompleted = new HashSet<String>();
                 // check the processingQueue for cases where there are no dest. nodes otherwise check if we've reached
                 // the dest. nodes
                 while (!processingQueue.isEmpty() && !isReachedDestinationNodes(config.getDestinationNodeNames(), nodesCompleted)) {
-                    ProcessEntry entry = (ProcessEntry) processingQueue.remove(0);
+                    ProcessEntry entry = processingQueue.remove(0);
                     // TODO document magical join node workage (ask Eric)
                     // TODO this has been set arbitrarily high because the implemented processing model here will probably not work for
                     // large parallel object graphs. This needs to be re-evaluated, see KULWF-459.
@@ -183,15 +179,16 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
     /**
      * @return true if all destination node are active but not yet complete - ready for the standard engine to take over the activation process for requests
      */
-    private boolean isReachedDestinationNodes(Set destinationNodesNames, Set nodeNamesCompleted) {
+    private boolean isReachedDestinationNodes(Set destinationNodesNames, Set<String> nodeNamesCompleted) {
         return !destinationNodesNames.isEmpty() && nodeNamesCompleted.equals(destinationNodesNames);
     }
 
-    private void addToProcessingQueue(List processingQueue, RouteNodeInstance nodeInstance) {
+    private void addToProcessingQueue(List<ProcessEntry> processingQueue, RouteNodeInstance nodeInstance) {
         // first, detect if it's already there
-        for (Iterator iterator = processingQueue.iterator(); iterator.hasNext();) {
-            ProcessEntry entry = (ProcessEntry) iterator.next();
-            if (entry.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())) {
+        for (ProcessEntry entry : processingQueue)
+        {
+            if (entry.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId()))
+            {
                 entry.setNodeInstance(nodeInstance);
                 return;
             }
@@ -202,12 +199,12 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
     /**
      * If there are multiple paths, we need to figure out which ones we need to follow for blanket approval. This method will throw an exception if a node with the given name could not be located in the routing path. This method is written in such a way that it should be impossible for there to be an infinite loop, even if there is extensive looping in the node graph.
      */
-    private List determineNodeInstancesToProcess(List activeNodeInstances, Set nodeNames) throws Exception {
+    private List<RouteNodeInstance> determineNodeInstancesToProcess(List<RouteNodeInstance> activeNodeInstances, Set nodeNames) throws Exception {
         if (nodeNames.isEmpty()) {
             return activeNodeInstances;
         }
-        List nodeInstancesToProcess = new ArrayList();
-        for (Iterator iterator = activeNodeInstances.iterator(); iterator.hasNext();) {
+        List<RouteNodeInstance> nodeInstancesToProcess = new ArrayList<RouteNodeInstance>();
+        for (Iterator<RouteNodeInstance> iterator = activeNodeInstances.iterator(); iterator.hasNext();) {
             RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
             if (isNodeNameInPath(nodeNames, nodeInstance)) {
                 nodeInstancesToProcess.add(nodeInstance);
@@ -221,17 +218,18 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
 
     private boolean isNodeNameInPath(Set nodeNames, RouteNodeInstance nodeInstance) throws Exception {
         boolean isInPath = false;
-        for (Iterator nodeNameIt = nodeNames.iterator(); nodeNameIt.hasNext();) {
-            String nodeName = (String) nodeNameIt.next();
-            for (Iterator iterator = nodeInstance.getRouteNode().getNextNodes().iterator(); iterator.hasNext();) {
-                RouteNode nextNode = (RouteNode) iterator.next();
-                isInPath = isInPath || isNodeNameInPath(nodeName, nextNode, new HashSet());
+        for (Object nodeName1 : nodeNames)
+        {
+            String nodeName = (String) nodeName1;
+            for (RouteNode nextNode : nodeInstance.getRouteNode().getNextNodes())
+            {
+                isInPath = isInPath || isNodeNameInPath(nodeName, nextNode, new HashSet<Long>());
             }
         }
         return isInPath;
     }
 
-    private boolean isNodeNameInPath(String nodeName, RouteNode node, Set inspected) throws Exception {
+    private boolean isNodeNameInPath(String nodeName, RouteNode node, Set<Long> inspected) throws Exception {
         boolean isInPath = !inspected.contains(node.getRouteNodeId()) && node.getRouteNodeName().equals(nodeName);
         inspected.add(node.getRouteNodeId());
         if (helper.isSubProcessNode(node)) {
@@ -239,8 +237,8 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
             RouteNode subNode = subProcess.getInitialRouteNode();
             isInPath = isInPath || isNodeNameInPath(nodeName, subNode, inspected);
         }
-        for (Iterator iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
-            RouteNode nextNode = (RouteNode) iterator.next();
+        for (RouteNode nextNode : node.getNextNodes())
+        {
             isInPath = isInPath || isNodeNameInPath(nodeName, nextNode, inspected);
         }
         return isInPath;
@@ -262,7 +260,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
     private void invokeBlanketApproval(ActionTakenValue actionTaken, RouteNodeInstance nodeInstance, NotificationContext notifyContext) {
         List actionRequests = getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(nodeInstance.getDocumentId(), nodeInstance.getRouteNodeInstanceId());
         actionRequests = getActionRequestService().getRootRequests(actionRequests);
-        List requestsToNotify = new ArrayList();
+        List<ActionRequestValue> requestsToNotify = new ArrayList<ActionRequestValue>();
         for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
             ActionRequestValue request = (ActionRequestValue) iterator.next();
             if (request.isApproveOrCompleteRequest()) {
@@ -276,7 +274,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
         	if (actionTaken.getDelegatorPrincipal() != null) {
         		delegatorRecipient = new KimPrincipalRecipient(actionTaken.getDelegatorPrincipal());
         	}
-        	List notificationRequests = arFactory.generateNotifications(requestsToNotify, notifyContext.getPrincipalTakingAction(), delegatorRecipient, notifyContext.getNotificationRequestCode(), notifyContext.getActionTakenCode());
+        	List<ActionRequestValue> notificationRequests = arFactory.generateNotifications(requestsToNotify, notifyContext.getPrincipalTakingAction(), delegatorRecipient, notifyContext.getNotificationRequestCode(), notifyContext.getActionTakenCode());
         	getActionRequestService().activateRequests(notificationRequests);
         }
     }

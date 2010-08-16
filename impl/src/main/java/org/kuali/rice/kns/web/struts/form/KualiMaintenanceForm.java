@@ -75,6 +75,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     	registerRequiredNonEditableProperty(KNSConstants.LOOKUP_RESULTS_BO_CLASS_NAME);
     	registerRequiredNonEditableProperty(KNSConstants.LOOKED_UP_COLLECTION_NAME);
     	registerRequiredNonEditableProperty(KNSConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER);
+    	registerRequiredNonEditableProperty(KNSConstants.FIELD_NAME_TO_FOCUS_ON_AFTER_SUBMIT);
     }
 
     /**
@@ -562,6 +563,9 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 				StringUtils.equals(methodToCallActionName, KNSConstants.MAINTENANCE_DELETE_METHOD_TO_CALL)) {
 			return true;
 		}
+		if ( StringUtils.indexOf(methodToCallActionName, KNSConstants.TOGGLE_INACTIVE_METHOD ) == 0 ) {
+			return true;
+		}
 		return super.shouldPropertyBePopulatedInForm(requestParameterName, request);
 	}
 
@@ -580,6 +584,9 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL) ||
 				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_NEWWITHEXISTING_ACTION) ||
 				StringUtils.equals(methodToCallParameterValue, KNSConstants.MAINTENANCE_DELETE_METHOD_TO_CALL)) {
+			return true;
+		}
+		if ( StringUtils.indexOf(methodToCallParameterName, KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TOGGLE_INACTIVE_METHOD ) == 0 ) {
 			return true;
 		}
 		return super.shouldMethodToCallParameterBeUsed(methodToCallParameterName,

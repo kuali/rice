@@ -54,7 +54,7 @@ public class OjbCharBooleanConversion implements FieldConversion {
             if (source instanceof String) {
                 if (source != null) {
                     String s = (String) source;
-                    return Boolean.valueOf("YT1".indexOf(s) >= 0);
+                    return "YT1".contains(s);
                 }
                 else {
                     return null;

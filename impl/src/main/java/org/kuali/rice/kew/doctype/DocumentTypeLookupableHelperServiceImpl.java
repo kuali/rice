@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -29,6 +23,8 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import java.util.*;
 
 /**
  * This is a description of what this class does - chb don't forget to fill this in.
@@ -88,9 +84,9 @@ public class DocumentTypeLookupableHelperServiceImpl extends
         String serviceNamespace = (String) fieldValues.get(KEWPropertyConstants.SERVICE_NAMESPACE);
 
         if ("Y".equals(activeIndicator)) {
-            documentType.setActive(new Boolean(true));
+            documentType.setActive(Boolean.TRUE);
         } else if ("N".equals(activeIndicator)) {
-            documentType.setActive(new Boolean(false));
+            documentType.setActive(Boolean.FALSE);
         } else {
             documentType.setActive(null);
         }

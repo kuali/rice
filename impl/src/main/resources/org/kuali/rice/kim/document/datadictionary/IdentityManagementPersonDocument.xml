@@ -7,7 +7,7 @@
     <property name="documentClass" value="org.kuali.rice.kim.document.IdentityManagementPersonDocument"/>
     <property name="businessRulesClass" value="org.kuali.rice.kim.document.rule.IdentityManagementPersonDocumentRule"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kim.document.authorization.IdentityManagementKimDocumentAuthorizer"/>
-    <property name="documentPresentationControllerClass" value="org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationControllerBase"/> 
+    <property name="documentPresentationControllerClass" value="org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationControllerBase"/>
     <property name="encryptDocumentDataInPersistentSessionStorage" value="true"/>
     <!-- <property name="documentTypeCode" value="IMPN" /> -->
     <property name="allowsCopy" value="true"/>
@@ -22,7 +22,6 @@
         <ref bean="IdentityManagementPersonDocument-documentNumber"/>
         <ref bean="IdentityManagementPersonDocument-entityId"/>
         <ref bean="IdentityManagementPersonDocument-password"/>
-        <ref bean="IdentityManagementPersonDocument-taxId"/>
         <ref bean="IdentityManagementPersonDocument-univId"/>
         <ref bean="IdentityManagementPersonDocument-principalId"/>
         <ref bean="IdentityManagementPersonDocument-principalName"/>
@@ -32,7 +31,7 @@
   </bean>
 
   <!-- TODO: use campus parent bean once imported into Rice -->
-<!-- 
+<!--
   <bean id="IdentityManagementPersonDocument-campusCode" parent="IdentityManagementPersonDocument-campusCode-parentBean" />
   <bean id="IdentityManagementPersonDocument-campusCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="campusCode"
@@ -67,27 +66,12 @@
       <bean parent="TextControlDefinition" p:size="14"/>
     </property>
   </bean>
-  
+
   <bean id="IdentityManagementPersonDocument-password" parent="IdentityManagementPersonDocument-password-parentBean"/>
   <bean id="IdentityManagementPersonDocument-password-parentBean" parent="AttributeDefinition" abstract="true" p:name="password" p:forceUppercase="false" p:label="Principal Password" p:shortLabel="Password" p:maxLength="400" p:required="false">
     <property name="control">
       <bean parent="HiddenControlDefinition"/>
     </property>
-  </bean>
-
-  <bean id="IdentityManagementPersonDocument-taxId" parent="IdentityManagementPersonDocument-taxId-parentBean"/>
-  <bean id="IdentityManagementPersonDocument-taxId-parentBean" parent="AttributeDefinition" abstract="true" p:name="taxId" p:forceUppercase="true" p:label="Tax Identification Number" p:shortLabel="Tax Id" p:maxLength="100" p:required="false">
-    <property name="control">
-      <bean parent="TextControlDefinition" p:size="20"/>
-    </property>
-    <property name="attributeSecurity">
-		<bean parent="AttributeSecurity">
-  			<property name="mask" value="true"/> 
-			<property name="maskFormatter">
-  			<bean parent="MaskFormatterLiteral" p:literal="*********"/> 
-  			</property>
-  		</bean>
-  	</property>
   </bean>
 
   <bean id="IdentityManagementPersonDocument-univId" parent="IdentityManagementPersonDocument-univId-parentBean"/>
@@ -97,7 +81,7 @@
     </property>
   </bean>
 
-<!-- 
+<!--
   <bean id="IdentityManagementPersonDocument-name" parent="IdentityManagementPersonDocument-name-parentBean" />
   <bean id="IdentityManagementPersonDocument-name-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="name"
@@ -141,7 +125,7 @@
       <bean parent="TextControlDefinition" p:size="20" />
     </property>
   </bean>
-  
+
   <bean id="IdentityManagementPersonDocument-employeeStatusCode" parent="IdentityManagementPersonDocument-employeeStatusCode-parentBean" />
   <bean id="IdentityManagementPersonDocument-employeeStatusCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="employeeStatusCode"
@@ -154,7 +138,7 @@
       <bean parent="TextControlDefinition" p:size="20" />
     </property>
   </bean>
-  
+
   <bean id="IdentityManagementPersonDocument-employeeTypeCode" parent="IdentityManagementPersonDocument-employeeTypeCode-parentBean" />
   <bean id="IdentityManagementPersonDocument-employeeTypeCode-parentBean" parent="AttributeDefinition" abstract="true"
         p:name="employeeTypeCode"

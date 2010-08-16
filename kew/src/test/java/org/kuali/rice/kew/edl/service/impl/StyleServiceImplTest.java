@@ -17,20 +17,7 @@
 package org.kuali.rice.kew.edl.service.impl;
 
 
-import java.io.ByteArrayInputStream;
-import java.io.FileNotFoundException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.Writer;
-
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import junit.framework.AssertionFailedError;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -41,6 +28,13 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
+
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.*;
 
 
 /**
@@ -159,7 +153,7 @@ public class StyleServiceImplTest extends KEWTestCase {
         } catch (RuntimeException re) {
             // should probably use type system to detect type of error, not just message string...
             // maybe we need general parsing or "semantic" validation exception
-            assertTrue("Wrong exception occurred: " + re, re.getMessage().indexOf("Style 'style' element must contain a 'xsl:stylesheet' child element") != -1);
+            assertTrue("Wrong exception occurred: " + re, re.getMessage().contains("Style 'style' element must contain a 'xsl:stylesheet' child element"));
         }
     }
 

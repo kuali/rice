@@ -16,16 +16,6 @@
  */
 package org.kuali.rice.kew.docsearch.service.impl;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
@@ -33,17 +23,7 @@ import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocSearchDTO;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
-import org.kuali.rice.kew.docsearch.SavedSearchResult;
-import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchResultProcessor;
+import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -65,6 +45,9 @@ import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.util.GlobalVariables;
+
+import java.text.MessageFormat;
+import java.util.*;
 
 
 public class DocumentSearchServiceImpl implements DocumentSearchService {
@@ -96,12 +79,14 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
 	public void clearNamedSearches(String principalId) {
 		String[] clearListNames = { NAMED_SEARCH_ORDER_BASE + "%", LAST_SEARCH_BASE_NAME + "%", LAST_SEARCH_ORDER_OPTION + "%" };
-		for (int i = 0; i < clearListNames.length; i++) {
-			List records = userOptionsService.findByUserQualified(principalId, clearListNames[i]);
-			for (Iterator iter = records.iterator(); iter.hasNext();) {
-				userOptionsService.deleteUserOptions((UserOptions) iter.next());
-			}
-		}
+        for (String clearListName : clearListNames)
+        {
+            List<UserOptions> records = userOptionsService.findByUserQualified(principalId, clearListName);
+            for (Iterator<UserOptions> iter = records.iterator(); iter.hasNext();)
+            {
+                userOptionsService.deleteUserOptions((UserOptions) iter.next());
+            }
+        }
 	}
 
 	public SavedSearchResult getSavedSearchResults(String principalId, String savedSearchName) {
@@ -457,24 +442,30 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		if (order != null && order.getOptionVal() != null && !"".equals(order.getOptionVal())) {
 			List<UserOptions> mostRecentSearches = userOptionsService.findByUserQualified(principalId, LAST_SEARCH_BASE_NAME + "%");
 			String[] ordered = order.getOptionVal().split(",");
-			for (int i = 0; i < ordered.length; i++) {
-				UserOptions matchingOption = null;
-				for (UserOptions option : mostRecentSearches) {
-					if (ordered[i].equals(option.getOptionId())) {
-						matchingOption = option;
-						break;
-					}
-				}
-				if (matchingOption != null) {
-                    try {
-                        sortedMostRecentSearches.add(new KeyValue(ordered[i], getCriteriaFromSavedSearch(matchingOption).getDocumentSearchAbbreviatedString()));
+            for (String anOrdered : ordered)
+            {
+                UserOptions matchingOption = null;
+                for (UserOptions option : mostRecentSearches)
+                {
+                    if (anOrdered.equals(option.getOptionId()))
+                    {
+                        matchingOption = option;
+                        break;
                     }
-                    catch (Exception e) {
+                }
+                if (matchingOption != null)
+                {
+                    try
+                    {
+                        sortedMostRecentSearches.add(new KeyValue(anOrdered, getCriteriaFromSavedSearch(matchingOption).getDocumentSearchAbbreviatedString()));
+                    }
+                    catch (Exception e)
+                    {
                         String errorMessage = "Error found atttempting to get 'recent search' using user (principal id " + principalId + ") with option having id " + matchingOption.getOptionId() + " and value '" + matchingOption.getOptionVal() + "'";
-                        LOG.error("getMostRecentSearches() " + errorMessage,e);
+                        LOG.error("getMostRecentSearches() " + errorMessage, e);
                     }
-				}
-			}
+                }
+            }
 		}
 		return sortedMostRecentSearches;
 	}
@@ -493,7 +484,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
             RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(new Long(criteria.getDocRouteNodeId()));
             // this block will result in NPE if routeNode is not found; is the intent to preserve the requested criteria? if so, then the following line fixes it
             //savedSearchString.append(",,docRouteNodeId=" + (routeNode != null ? routeNode.getRouteNodeId() : criteria.getDocRouteNodeId()));
-            savedSearchString.append(",,docRouteNodeId=" + routeNode.getRouteNodeId());
+            savedSearchString.append(",,docRouteNodeId=");
+            savedSearchString.append(routeNode.getRouteNodeId());
             savedSearchString.append(criteria.getDocRouteNodeLogic() == null || "".equals(criteria.getDocRouteNodeLogic()) ? "" : ",,docRouteNodeLogic=" + criteria.getDocRouteNodeLogic());
         }
 
@@ -541,24 +533,28 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 							newOrder[i + 1] = currentOrder[i];
 						}
 						String newSearchOrder = "";
-						for (int i = 0; i < newOrder.length; i++) {
-							if (!"".equals(newSearchOrder)) {
-								newSearchOrder += ",";
-							}
-							newSearchOrder += newOrder[i];
-						}
+                        for (String aNewOrder : newOrder)
+                        {
+                            if (!"".equals(newSearchOrder))
+                            {
+                                newSearchOrder += ",";
+                            }
+                            newSearchOrder += aNewOrder;
+                        }
 						userOptionsService.save(principalId, searchName, savedSearchString.toString());
 						userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
 					} else {
 						// here we need to do a push so identify the highest used number which is from the
 						// first one in the array, and then add one to it, and push the rest back one
 						int absMax = 0;
-						for (int i = 0; i < currentOrder.length; i++) {
-							int current = new Integer(currentOrder[i].substring(LAST_SEARCH_BASE_NAME.length(), currentOrder[i].length())).intValue();
-							if (current > absMax) {
-								absMax = current;
-							}
-						}
+                        for (String aCurrentOrder : currentOrder)
+                        {
+                            int current = new Integer(aCurrentOrder.substring(LAST_SEARCH_BASE_NAME.length(), aCurrentOrder.length()));
+                            if (current > absMax)
+                            {
+                                absMax = current;
+                            }
+                        }
 
 						String searchName = LAST_SEARCH_BASE_NAME + ++absMax;
 						String[] newOrder = new String[currentOrder.length + 1];
@@ -567,12 +563,14 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 							newOrder[i + 1] = currentOrder[i];
 						}
 						String newSearchOrder = "";
-						for (int i = 0; i < newOrder.length; i++) {
-							if (!"".equals(newSearchOrder)) {
-								newSearchOrder += ",";
-							}
-							newSearchOrder += newOrder[i];
-						}
+                        for (String aNewOrder : newOrder)
+                        {
+                            if (!"".equals(newSearchOrder))
+                            {
+                                newSearchOrder += ",";
+                            }
+                            newSearchOrder += aNewOrder;
+                        }
 						userOptionsService.save(principalId, searchName, savedSearchString.toString());
 						userOptionsService.save(principalId, LAST_SEARCH_ORDER_OPTION, newSearchOrder);
 					}
@@ -815,11 +813,13 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		String value = userOption.getOptionVal();
 		if (value != null) {
 			String[] fields = value.split(",,");
-			for (int i = 0; i < fields.length; i++) {
-				if (fields[i].startsWith(fieldName + "=")) {
-					return new String(fields[i].substring(fields[i].indexOf(fieldName) + fieldName.length() + 1, fields[i].length()));
-				}
-			}
+            for (String field : fields)
+            {
+                if (field.startsWith(fieldName + "="))
+                {
+                    return field.substring(field.indexOf(fieldName) + fieldName.length() + 1, field.length());
+                }
+            }
 		}
 		return null;
 	}

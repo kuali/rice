@@ -37,6 +37,7 @@ import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
+import org.springframework.remoting.RemoteAccessException;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -81,6 +82,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     	String href = "";
     	//TODO: clean this up.
     	boolean showReturnHref = true;
+    	boolean refreshMe = false;
     	String docTypeName = "";
     	String docTypeAction = "";
     	if(KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY.equals(lookupForm.getFormKey())){
@@ -97,12 +99,15 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     	} else{
     		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
     		docTypeAction = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION;
-    		showReturnHref = kimType!=null;
+//    		showReturnHref = kimType!=null;
+    		refreshMe = true;
     	}
     	if(showReturnHref){
-	    	parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
-	    	parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
-	    	parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
+    		if (!refreshMe){
+    			parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+    			parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+    			parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
+    		}
 	    	href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+docTypeAction, parameters);
     	}
         return href;
@@ -134,6 +139,11 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 		} catch (RiceRemoteServiceConnectionException ex) {
 			LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), ex);
 		    return hasDerivedRoleTypeService;
+		}
+		// KULRICE-4403: catch org.springframework.remoting.RemoteAccessException
+		catch (RemoteAccessException rae) {
+			LOG.warn("Not able to retrieve KimTypeService from remote system for KIM Type: " + kimType.getName(), rae);
+			return hasDerivedRoleTypeService;
 		}
 		return hasDerivedRoleTypeService;
 	}

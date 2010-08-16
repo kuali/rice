@@ -26,8 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
@@ -64,7 +62,7 @@ public class MetadataManager {
 	private MetadataManager() {}
 
 	public static EntityDescriptor getEntityDescriptor(Class clazz) {
-		if (clazz != null && clazz.getName().indexOf("$$EnhancerByCGLIB") > -1) {
+		if (clazz != null && clazz.getName().contains("$$EnhancerByCGLIB")) {
 			try {
 				clazz = Class.forName(clazz.getName().substring(0, clazz.getName().indexOf("$$EnhancerByCGLIB")));
 			} catch (Exception e) {

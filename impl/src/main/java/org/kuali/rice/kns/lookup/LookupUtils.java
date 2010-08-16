@@ -32,7 +32,6 @@ import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
@@ -340,16 +339,30 @@ public class LookupUtils {
      * Sets a fields quickfinder class and field conversions for an attribute.
      */
     public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index,
-            String attributeName, Field field, List displayedFieldNames) {
+                                            String attributeName, Field field, List displayedFieldNames) {
+        boolean noLookup = false;
         if (businessObject == null) {
             return field;
         }
 
         Boolean noLookupField = businessObjectDictionaryService.noLookupFieldLookup(businessObject.getClass(), attributeName);
-        if (noLookupField != null && noLookupField.booleanValue()) {
+        if (noLookupField != null && noLookupField) {
+            noLookup = true;
+        }
+
+         return setFieldQuickfinder(businessObject, collectionName, addLine, index, attributeName, field, displayedFieldNames, noLookup);
+
+    }
+
+    public static Field setFieldQuickfinder(BusinessObject businessObject, String collectionName, boolean addLine, int index, String attributeName, Field field, List displayedFieldNames, boolean noLookupField)
+    {
+         if (businessObject == null) {
             return field;
         }
 
+        if (noLookupField) {
+            return field;
+        }
         BusinessObjectRelationship relationship = null;
         if ( LOG.isDebugEnabled() ) {
             LOG.debug( "setFieldQuickfinder("+businessObject.getClass().getName()+","+attributeName+","+field+","+displayedFieldNames+")" );
@@ -406,7 +419,7 @@ public class LookupUtils {
 
         return field;
     }
-    
+
     private static String BASE_LOOKUP_ACTION_URL = null;
     private static String BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL = null;
     private static String BASE_INQUIRY_ACTION_URL = null;
@@ -475,7 +488,8 @@ public class LookupUtils {
 
                     for (int l = 0; l < conversions.length; l++) {
                         String conversion = conversions[l];
-                        String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                        //String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+                        String[] conversionPair = StringUtils.split(conversion, KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR, 2);
                         String conversionFrom = conversionPair[0];
                         String conversionTo = conversionPair[1];
                         newInquiryParameters += (conversionTo + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + conversionFrom);
@@ -538,8 +552,11 @@ public class LookupUtils {
             } else {
             	//KFSMI-709: Make Inquiry Framework use BusinessObjectMetadataService instead of just PersistenceStructureService
             	referenceClasses = businessObjectMetaDataService.getReferencesForForeignKey(businessObject, attributeName);
-            	if(referenceClasses==null || referenceClasses.isEmpty())
-            		referenceClasses = persistenceStructureService.getReferencesForForeignKey(businessObject.getClass(), attributeName);
+            	if(referenceClasses==null || referenceClasses.isEmpty()) {
+            	    if ( persistenceStructureService.isPersistable(businessObject.getClass()) ) {
+            	        referenceClasses = persistenceStructureService.getReferencesForForeignKey(businessObject.getClass(), attributeName);
+            	    }
+            	}
                 propMap.put(attributeName, referenceClasses);
             }
         } catch ( ClassNotPersistableException ex ) {
@@ -701,8 +718,8 @@ public class LookupUtils {
     }
 
 
-    private static String translateToDisplayedField(Class businessObjectClass, String fieldName, List displayedFieldNames) {
-        if ( PersistableBusinessObject.class.isAssignableFrom( businessObjectClass ) ) {
+    private static String translateToDisplayedField(Class businessObjectClass, String fieldName, List displayedFieldNames) {        
+        if ( persistenceStructureService.isPersistable(businessObjectClass) ) {
             Map nestedFkMap = persistenceStructureService.getNestedForeignKeyMap(businessObjectClass);
 
             // translate to primitive fk if nested

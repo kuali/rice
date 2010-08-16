@@ -275,14 +275,14 @@ public class KualiExceptionIncidentForm extends KualiForm {
     /**
 	 * @return the principalName
 	 */
-	public String getPersonUserIdentifier() {
+	public String getPrincipalName() {
 		return this.principalName;
 	}
 
 	/**
 	 * @param principalName the principalName to set
 	 */
-	public void setPersonUserIdentifier(String principalName) {
+	public void setPrincipalName(String principalName) {
 		this.principalName = principalName;
 	}
 

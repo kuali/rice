@@ -185,7 +185,7 @@ public class HardCodedActionListEmailServiceImpl extends ActionListEmailServiceI
 			ActionItem actionItem, DocumentType documentType) {
 		String docHandlerUrl = documentType.getDocHandlerUrl();
 		if (StringUtils.isNotBlank(docHandlerUrl)) {
-    		if (docHandlerUrl.indexOf("?") == -1) {
+    		if (!docHandlerUrl.contains("?")) {
     			docHandlerUrl += "?";
     		} else {
     			docHandlerUrl += "&";

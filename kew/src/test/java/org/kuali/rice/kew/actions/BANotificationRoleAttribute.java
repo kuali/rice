@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -27,6 +23,10 @@ import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.user.AuthenticationUserId;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -44,7 +44,7 @@ public class BANotificationRoleAttribute extends AbstractRoleAttribute {
     }
 
     public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
-        List qualifiedRoleNames = new ArrayList();
+        List<String> qualifiedRoleNames = new ArrayList<String>();
         if (roleName.equals("Notify") || roleName.equals("Notify2")) {
             qualifiedRoleNames.add("jitrue");    
         } else throw new RuntimeException("Bad Role " + roleName);        
@@ -55,7 +55,7 @@ public class BANotificationRoleAttribute extends AbstractRoleAttribute {
         if (roleName.equals("Notify") || roleName.equals("Notify2")) {
             return new ResolvedQualifiedRole(roleName, Arrays.asList(new Id[] { new AuthenticationUserId(qualifiedRole) }));
         } else if (roleName.equals("NotifyDelegate")) {
-            List recipients = new ArrayList();
+            List<Id> recipients = new ArrayList<Id>();
             recipients.add(new AuthenticationUserId("natjohns"));
             recipients.add(new AuthenticationUserId("shenl"));
             return new ResolvedQualifiedRole(roleName, recipients);

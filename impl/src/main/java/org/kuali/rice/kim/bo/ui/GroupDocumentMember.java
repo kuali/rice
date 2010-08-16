@@ -59,6 +59,8 @@ public class GroupDocumentMember extends KimDocumentBoActiveToFromBase {
 	@Transient
 	protected String memberNamespaceCode;
 	
+	protected String memberFullName;
+
 	//TODO: remove the default
 	@Column(name="MBR_TYP_CD")
 	protected String memberTypeCode = KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE;
@@ -147,5 +149,19 @@ public class GroupDocumentMember extends KimDocumentBoActiveToFromBase {
 	 */
 	public void setMemberNamespaceCode(String memberNamespaceCode) {
 		this.memberNamespaceCode = memberNamespaceCode;
+	}
+	
+	/**
+	 * @return the memberFullName
+	 */
+	public String getMemberFullName() {
+		return this.memberFullName;
+	}
+
+	/**
+	 * @param memberFullName the memberFullName to set
+	 */
+	public void setMemberFullName(String memberFullName) {
+		this.memberFullName = memberFullName;
 	}
 }

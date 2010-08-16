@@ -16,14 +16,13 @@
  */
 package org.kuali.rice.kew.batch;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.XmlLoader;
+
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 
 /**
@@ -45,11 +44,11 @@ public class XmlDigesterServiceImpl implements XmlDigesterService {
     }
 
     public void digest(XmlLoader xmlLoader, XmlDocCollection xmlDocCollection, String principalId) throws IOException {
-        Iterator<? extends XmlDoc> it = xmlDocCollection.getXmlDocs().iterator();
-        while (it.hasNext()) {
-            XmlDoc xmlDoc = (XmlDoc) it.next();
+        for (XmlDoc xmlDoc : xmlDocCollection.getXmlDocs())
+        {
             InputStream inputStream = null;
-            try {
+            try
+            {
                 inputStream = new BufferedInputStream(xmlDoc.getStream());
                 // NOTE: do we need XmlLoader to return a boolean to indicate
                 // whether the document was handled at all, now that we are handing
@@ -66,19 +65,25 @@ public class XmlDigesterServiceImpl implements XmlDigesterService {
 
                 // should only be set on successful loading
                 xmlDoc.setProcessed(true);
-            } catch (Exception e) {
+            } catch (Exception e)
+            {
                 xmlDoc.setProcessed(false);
                 addProcessingException(xmlDoc, "Caught Exception loading xml data from " + xmlDoc + ".  Will move associated file to problem dir.", e);
                 LOG.error("Caught Exception loading xml data from " + xmlDoc + ".  Will move associated file to problem dir.", e);
-                if (e instanceof RuntimeException) {
+                if (e instanceof RuntimeException)
+                {
                     throw (RuntimeException) e;
-                } else if (e instanceof IOException) {
+                } else if (e instanceof IOException)
+                {
                     throw (IOException) e;
                 }
-            } finally {
-                if (inputStream != null) try {
+            } finally
+            {
+                if (inputStream != null) try
+                {
                     inputStream.close();
-                } catch (IOException ioe) {
+                } catch (IOException ioe)
+                {
                     LOG.warn("Error closing stream for xml doc: " + xmlDoc, ioe);
                 }
             }

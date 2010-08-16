@@ -69,9 +69,8 @@
 	<c:set var="fieldName" value ="${attributeEntry.name}" />
     <c:set var="displayMask" value="${kfunc:canPartiallyUnmaskField(className, fieldName,KualiForm)? 'false' : 'true'}" />
 	<c:set var="readOnly" value="${displayMask || readOnly}"/>
-	<c:set var="displayMaskValue" value="${kfunc:getPartiallyMaskedValue(className, fieldName, KualiForm, property)}" />
 	<c:if test="${displayMask}">
-		<c:set var="displayMaskValue" value="${kfunc:getFullyMaskedValue(className, fieldName, KualiForm, property)}" />
+		<c:set var="displayMaskValue" value="${kfunc:getPartiallyMaskedValue(className, fieldName, KualiForm, property)}" />
 	</c:if>
 </c:if>
 
@@ -100,8 +99,8 @@
     <c:set var="tabindex" value="${tabindexOverride}"/>
   </c:when>
   <c:otherwise>
-    <%-- Can't "not" assign a tab index, so if there is no override we set it to 0 per default --%>
-    <c:set var="tabindex" value="0"/>
+    <c:set var="tabindex" value="${KualiForm.currentTabIndex}"/>
+    <c:set var="dummyIncrementVar" value="${kfunc:incrementTabIndex(KualiForm, tabKey)}" />
   </c:otherwise>
 </c:choose>
 

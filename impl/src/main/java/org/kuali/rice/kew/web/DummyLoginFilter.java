@@ -63,21 +63,19 @@ public class DummyLoginFilter implements Filter {
                 final String password = request.getParameter("__login_pw");
                 if (user != null) {
                 	// Very simple password checking. Nothing hashed or encrypted. This is strictly for demonstration purposes only.
-                    if (showPassword) {
-        				KimPrincipal principal = auth.getPrincipalByPrincipalNameAndPassword( user, password );
-        				if (principal == null ) {
-        					request.setAttribute("invalidPassword", Boolean.TRUE);
-        					request.getRequestDispatcher(loginPath).forward(request, response);
-                        	return;
-        				}
-                    }
-                    // wrap the request with the remote user
-                    // UserLoginFilter and WebAuthenticationService will create the session
-                    request = new HttpServletRequestWrapper(hsreq) {
-                        public String getRemoteUser() {
-                            return user;
-                        }
-                    };
+                	final KimPrincipal principal = showPassword ? auth.getPrincipalByPrincipalNameAndPassword(user, password) : auth.getPrincipalByPrincipalName(user);
+                	if (principal == null) {
+                		handleInvalidLogin(request, response);	
+                		return;
+                	} else {
+                        // wrap the request with the remote user
+                        // UserLoginFilter and WebAuthenticationService will create the session
+                        request = new HttpServletRequestWrapper(hsreq) {
+                            public String getRemoteUser() {
+                                return user;
+                            }
+                        };	
+                	}
                 } else {
                     // no session has been established and this is not a login form submission, so forward to login page
                     request.getRequestDispatcher(loginPath).forward(request, response);
@@ -87,6 +85,19 @@ public class DummyLoginFilter implements Filter {
         }
         chain.doFilter(request, response);
     }
+	
+	/**
+	 * Handles and invalid login attempt.
+	 *  
+	 * @param request the incoming request
+	 * @param response the outgoing response
+	 * @throws ServletException if unable to handle the invalid login
+	 * @throws IOException if unable to handle the invalid login
+	 */
+	private void handleInvalidLogin(ServletRequest request, ServletResponse response) throws ServletException, IOException {
+		request.setAttribute("invalidAuth", Boolean.TRUE);
+		request.getRequestDispatcher(loginPath).forward(request, response);
+	}
 
     public void destroy() {
     }

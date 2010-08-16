@@ -39,15 +39,17 @@ public interface XmlIngesterService {
      * Ingest a list of xml doc collections
      * @param xmlDocCollections the list of {@link XmlDocCollection}s
      * @return failed xml doc collections
+     * @throws Exception if failed to ingest
      */
-    Collection ingest(List<XmlDocCollection> xmlDocCollections) throws Exception;
+    Collection<XmlDocCollection> ingest(List<XmlDocCollection> xmlDocCollections) throws Exception;
 
     /**
      * Ingest a list of xml doc collections, but it routing is supported by any of the services ultimately being called
      * route the xml data with user being the initiator of any documents created.
-     * @param xmlDocCollections
-     * @param user
+     * @param xmlDocCollections list
+     * @param principalId of user
      * @return failed xml doc collections
+     * @throws Exception  if failed to ingest
      */
-    Collection ingest(List<XmlDocCollection> xmlDocCollections, String principalId) throws Exception;
+    Collection<XmlDocCollection> ingest(List<XmlDocCollection> xmlDocCollections, String principalId) throws Exception;
 }

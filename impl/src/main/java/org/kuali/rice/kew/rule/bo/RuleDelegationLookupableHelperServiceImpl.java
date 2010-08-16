@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -64,6 +56,9 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.sql.Date;
+import java.util.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -192,7 +187,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         String parentRuleBaseValueId = (String) fieldValues.get(PARENT_RULE_ID_PROPERTY_NAME);
         String parentResponsibilityId = (String) fieldValues.get(PARENT_RESPONSIBILITY_ID_PROPERTY_NAME);
         String docTypeNameParam = (String) fieldValues.get(DOC_TYP_NAME_PROPERTY_NAME);
-        String ruleTemplateIdParam = (String) fieldValues.get(RULE_TEMPLATE_ID_PROPERTY_NAME);
+        String ruleTemplateIdParam = null;//(String) fieldValues.get(RULE_TEMPLATE_ID_PROPERTY_NAME);
         String ruleTemplateNameParam = (String) fieldValues.get(RULE_TEMPLATE_PROPERTY_NAME);
         String groupIdParam = (String) fieldValues.get(GROUP_REVIEWER_PROPERTY_NAME);
         String groupNameParam = (String) fieldValues.get(GROUP_REVIEWER_NAME_PROPERTY_NAME);
@@ -223,9 +218,9 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
         if (!activeParam.equals("")) {
             if (activeParam.equals("Y")) {
-                isActive = new Boolean(true);
+                isActive = Boolean.TRUE;
             } else {
-                isActive = new Boolean(false);
+                isActive = Boolean.FALSE;
             }
         }
 
@@ -262,6 +257,12 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             } else {
                 ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateNameParam.trim());
                 ruleTemplateId = new Long(ruleTemplate.getRuleTemplateId().longValue());
+            }
+
+            if(ruleTemplate == null){
+                rows.clear();
+                LOG.info("Returning empty result set for Delegation Rule Lookup because a RuleTemplate Name or ID was provided, but no valid RuleTemplates were retrieved by the service.");
+                return new ArrayList<RuleDelegation>();
             }
 
             attributes = new HashMap();
@@ -319,6 +320,11 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
         if (!errors.isEmpty()) {
             throw new ValidationException("errors in search criteria");
+        }
+
+        if(!Utilities.isEmpty(networkIdParam)){
+        workflowId = networkIdParam;
+        workflowId = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkIdParam).getPrincipalId();
         }
 
         Iterator<RuleDelegation> rules = getRuleDelegationService().search(parentRuleBaseValueId, parentResponsibilityId, docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, delegationParam, isActive, attributes, userDirectiveParam).iterator();
@@ -407,7 +413,8 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         }
 
         if  (!Utilities.isEmpty(personId)) {
-            Person person = KIMServiceLocator.getPersonService().getPerson(personId);
+            //Person person = KIMServiceLocator.getPersonService().getPerson(personId);
+            Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(personId);/** IU fix EN-1552 */
             if (person == null) {
                 String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME);
                 GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
@@ -464,6 +471,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
 
                 Column col = (Column) iterator.next();
+                String curPropName = col.getPropertyName();
                 Formatter formatter = col.getFormatter();
 
                 // pick off result column from result list, do formatting
@@ -472,21 +480,21 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 boolean skipPropTypeCheck = false;
                 //try to get value elsewhere
                 if (element instanceof RuleDelegation) {
-                    prop = ((RuleDelegation)element).getDelegationRuleBaseValues().getFieldValues().get(col.getPropertyName());
+                    prop = ((RuleDelegation)element).getDelegationRuleBaseValues().getFieldValues().get(curPropName);
                     skipPropTypeCheck = true;
                 }
                 if (prop == null) {
-                    prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
+                    prop = ObjectUtils.getPropertyValue(element, curPropName);
                 }
 
                 // set comparator and formatter based on property type
-                Class propClass = propertyTypes.get(col.getPropertyName());
+                Class propClass = propertyTypes.get(curPropName);
                 if ( propClass == null && !skipPropTypeCheck) {
                     try {
-                        propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
-                        propertyTypes.put( col.getPropertyName(), propClass );
+                        propClass = ObjectUtils.getPropertyType( element, curPropName, getPersistenceStructureService() );
+                        propertyTypes.put( curPropName, propClass );
                     } catch (Exception e) {
-                        throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
+                        throw new RuntimeException("Cannot access PropertyType for property " + "'" + curPropName + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
                     }
                 }
 
@@ -519,12 +527,12 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 col.setComparator(CellComparatorHelper.getAppropriateComparatorForPropertyClass(propClass));
                 col.setValueComparator(CellComparatorHelper.getAppropriateValueComparatorForPropertyClass(propClass));
 
-                propValue = maskValueIfNecessary(element.getClass(), col.getPropertyName(), propValue, businessObjectRestrictions);
+                propValue = maskValueIfNecessary(element.getClass(), curPropName, propValue, businessObjectRestrictions);
 
                 col.setPropertyValue(propValue);
 
                 if (StringUtils.isNotBlank(propValue)) {
-                    col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
+                    col.setColumnAnchor(getInquiryUrl(element, curPropName));
 
                 }
             }

@@ -31,11 +31,12 @@
 	htmlFormAction="lookup" >
 
 	<SCRIPT type="text/javascript">
-    var kualiForm = document.forms['KualiForm'];
-    var kualiElements = kualiForm.elements;
+      var kualiForm = document.forms['KualiForm'];
+      var kualiElements = kualiForm.elements;
     </SCRIPT>
     <script type="text/javascript" src="${pageContext.request.contextPath}/dwr/interface/DocumentTypeService.js"></script>
-
+	
+	<c:if test="${KualiForm.headerBarEnabled}">
 	<div class="headerarea-small" id="headerarea-small">
 		<h1><c:out value="${KualiForm.lookupable.title}" /> <c:choose>
 			<c:when test="${KualiForm.fields.docTypeFullName != null}">
@@ -48,7 +49,11 @@
 			</c:otherwise>
 		</c:choose></h1>
 	</div>
-	<kul:enterKey methodToCall="search" />
+	</c:if>
+	
+	<c:if test="${KualiForm.renderSearchButtons}">
+	  <kul:enterKey methodToCall="search" />
+	</c:if>  
 
 	<html-el:hidden name="KualiForm" property="backLocation" />
 	<html-el:hidden name="KualiForm" property="formKey" />
@@ -64,10 +69,11 @@
 	<html-el:hidden name="KualiForm" property="hasReturnableRow" />
 	<html-el:hidden name="KualiForm" property="docNum" />
 	<html-el:hidden name="KualiForm" property="showMaintenanceLinks" />
+	<html-el:hidden name="KualiForm" property="headerBarEnabled" />
+    <html-el:hidden name="KualiForm" property="fieldNameToFocusOnAfterSubmit"/>
 
 
-
-
+	<c:if test="${KualiForm.headerBarEnabled}">
 	<c:forEach items="${KualiForm.extraButtons}" varStatus="status">
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonSource" />
 		<html-el:hidden name="KualiForm" property="extraButtons[${status.index}].extraButtonParams" />
@@ -94,6 +100,7 @@
 			</c:if>
 		</div>
 	</c:if>
+	
 	<div class="right">
 		<div class="excol">
 		* required field
@@ -106,6 +113,7 @@
 	  </div>
     </div>
     <br/>
+    </c:if>
 
 	<table width="100%">
 	  <c:if test="${KualiForm.lookupCriteriaEnabled}">
@@ -126,18 +134,26 @@
                 <kul:rowDisplay rows="${FieldRows}" skipTheOldNewBar="true" numberOfColumns="${numberOfColumns}" />
 
 				<tr align="center">
-					<td height="30" colspan="${headerColspan}"  class="infoline"><html:image
+					<td height="30" colspan="${headerColspan}"  class="infoline">
+					
+					<c:if test="${KualiForm.renderSearchButtons}">
+					  <html:image
 						property="methodToCall.search" value="search"
 						src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_search.gif" styleClass="tinybutton"
-						alt="search" title="search" border="0" /> <html:image
+						alt="search" title="search" border="0" /> 
+					  <html:image
 						property="methodToCall.clearValues" value="clearValues"
 						src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_clear.gif" styleClass="tinybutton"
-						alt="clear" title="clear" border="0" /> <c:if test="${KualiForm.formKey!=''}">
+						alt="clear" title="clear" border="0" /> 
+					</c:if>	
+					
+					<c:if test="${KualiForm.formKey!=''}">
 						<c:if test="${!empty KualiForm.backLocation}"><a
 							href='<c:out value="${KualiForm.backLocation}?methodToCall=refresh&docFormKey=${KualiForm.formKey}&anchor=${KualiForm.lookupAnchor}&docNum=${KualiForm.docNum}" />'  title="cancel"><img
 							src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" class="tinybutton" alt="cancel" title="cancel"
 							border="0" /></a></c:if>
 					</c:if>
+					
 					<!-- Optional extra buttons -->
 					<c:forEach items="${KualiForm.extraButtons}" var="extraButton" varStatus="status">
 						<c:if test="${!empty extraButton.extraButtonSource && !empty extraButton.extraButtonParams}">
@@ -173,7 +189,7 @@
 
 			<c:if test="${reqSearchResultsActualSize>0}">
 				<c:out value="${reqSearchResultsActualSize}" /> items found.  Please refine your search criteria to narrow down your search.
-          </c:if>
+            </c:if>
 			<c:if test="${!empty reqSearchResultsActualSize }">
 			    <c:if test="${KualiForm.searchUsingOnlyPrimaryKeyValues}">
 			    	<bean-el:message key="lookup.using.primary.keys" arg0="${KualiForm.primaryKeyFieldLabels}"/>
@@ -186,8 +202,8 @@
 
 				<display:table class="datatable-100" cellspacing="0"
 				requestURIcontext="false" cellpadding="0" name="${reqSearchResults}"
-				id="row" export="true" pagesize="100" excludedParams="hasReturnableRow showMaintenanceLinks"
-				requestURI="lookup.do?methodToCall=viewResults&showMaintenanceLinks=${KualiForm.showMaintenanceLinks}&reqSearchResultsActualSize=${reqSearchResultsActualSize}&searchResultKey=${searchResultKey}&searchUsingOnlyPrimaryKeyValues=${KualiForm.searchUsingOnlyPrimaryKeyValues}&actionUrlsExist=${KualiForm.actionUrlsExist}&hasReturnableRow=${KualiForm.hasReturnableRow}">
+				id="row" export="true" pagesize="100" varTotals="totals" 
+				requestURI="lookup.do?methodToCall=viewResults&reqSearchResultsActualSize=${reqSearchResultsActualSize}&searchResultKey=${searchResultKey}&searchUsingOnlyPrimaryKeyValues=${KualiForm.searchUsingOnlyPrimaryKeyValues}&actionUrlsExist=${KualiForm.actionUrlsExist}">
 
 				<%-- the param['d-16544-e'] parameter below is NOT null when we are in exporting mode, so this check disables rendering of return/action URLs when we are exporting to CSV, excel, xml, etc. --%>
 				<c:if test="${param['d-16544-e'] == null}">
@@ -213,17 +229,37 @@
 					</logic:present>
 				</c:if>
 
+                <%-- needed for total line display --%>
+                <c:set var="columnNums" value=""/>
+                <c:set var="totalColumnNums" value=""/>
+                
 				<c:forEach items="${row.columns}" var="column" varStatus="loopStatus">
                     <c:set var="colClass" value="${ fn:startsWith(column.formatter, 'org.kuali.rice.kns.web.format.CurrencyFormatter') ? 'numbercell' : 'infocell' }" />
+              
+                    <c:if test="${!empty columnNums}" >
+                      <c:set var="columnNums" value="${columnNums},"/>
+                    </c:if>
+                    <c:set var="columnNums" value="${columnNums}column${loopStatus.count}"/>
+                    
+                    <c:set var="staticColumnValue" value="${column.propertyValue}" />
+                    <c:if test="${column.total}" >
+                      <c:set var="staticColumnValue" value="${column.unformattedPropertyValue}" />
+                      
+                      <c:if test="${!empty totalColumnNums}" >
+                        <c:set var="totalColumnNums" value="${totalColumnNums},"/>
+                      </c:if>
+                      <c:set var="totalColumnNums" value="${totalColumnNums}column${loopStatus.count}"/>
+                    </c:if>
+                    
 					<c:choose>
 						<%--NOTE: Check if exporting first, as this should be outputted without extra HTML formatting --%>
 						<c:when	test="${param['d-16544-e'] != null}">
 								<display:column class="${colClass}" sortable="${column.sortable}"
-									title="${column.columnTitle}" comparator="${column.comparator}"
+									title="${column.columnTitle}" comparator="${column.comparator}" 
 									maxLength="${column.maxLength}"><c:out value="${column.propertyValue}" escapeXml="false" default="" /></display:column>
 						</c:when>
 						<c:when	test="${!empty column.columnAnchor.href || column.multipleAnchors}">
-							<display:column class="${colClass}" sortable="${column.sortable}" title="${column.columnTitle}" comparator="${column.comparator}">
+							<display:column class="${colClass}" sortable="${column.sortable}" title="${column.columnTitle}" comparator="${column.comparator}"  >
 <c:choose><c:when test="${column.multipleAnchors}"><c:set var="numberOfColumnAnchors" value="${column.numberOfColumnAnchors}" /><c:choose>
 <c:when test="${empty columnAnchor.target}"><c:set var="anchorTarget" value="_blank" /></c:when><c:otherwise><c:set var="anchorTarget" value="${columnAnchor.target}" /></c:otherwise></c:choose>
 <!-- Please don't change formatting of this logic:iterate block -->
@@ -236,13 +272,44 @@
 						<c:otherwise>
 							<display:column class="${colClass}" sortable="${column.sortable}"
 								title="${column.columnTitle}" comparator="${column.comparator}"
-								maxLength="${column.maxLength}" decorator="org.kuali.rice.kns.web.ui.FormatAwareDecorator"><c:out value="${column.propertyValue}"/></display:column>
+								maxLength="${column.maxLength}" decorator="org.kuali.rice.kns.web.ui.FormatAwareDecorator"><c:out value="${column.propertyValue}"/>&nbsp;</display:column>
                         </c:otherwise>
 					</c:choose>
 				</c:forEach>
 
-												</display:table>
-			</c:if></td>
+               <%-- block for displaying the total line --%>
+               <c:if test="${!empty totalColumnNums}" >
+                 <display:footer>
+  	               <tr>
+  	                 <c:forTokens var="colNum" items="${columnNums}" delims="," varStatus="loopStatus">
+  	                   <c:set var="isTotalColumn" value="false"/>
+  	                   
+  	                   <c:forTokens var="totalNum" items="${totalColumnNums}" delims="," >
+  	                     <c:if test="${totalNum eq colNum}">
+  	                       <c:set var="isTotalColumn" value="true"/>
+  	                     </c:if>
+  	                   </c:forTokens>
+  	                   
+  	                   <c:choose>
+  	                    <c:when test="${isTotalColumn}" >
+  		                  <td><b><fmt:formatNumber type="currency" value="${totals[colNum]}"/></b></td>
+  		                </c:when>
+  		                <c:otherwise>
+  		                  <td>
+  		                    <c:if test="${loopStatus.first}">
+  		                      <b><bean-el:message key="lookup.total.row.label" /></b>
+  		                    </c:if>
+  		                  </td>
+  		                </c:otherwise>
+  		               </c:choose> 
+  		              
+  		             </c:forTokens>
+                   </tr>
+                </display:footer>
+              </c:if>
+              
+			</display:table>
+		 </c:if></td>
 			<td width="1%"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20"
 				height="20"></td>
 		</tr>

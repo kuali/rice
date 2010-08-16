@@ -18,6 +18,7 @@ package org.kuali.rice.kim.lookup;
 import java.util.Properties;
 
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -40,11 +41,11 @@ public class GroupLookupableImpl extends KualiLookupableImpl {
         String url = "";
         if((getLookupableHelperService()).allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME)){
             Properties parameters = new Properties();
-            parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, KimTypeImpl.class.getName());
-            parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, KNSConstants.PORTAL_ACTION);
-            parameters.put(KNSConstants.DOC_FORM_KEY, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_SHORT_KEY);
-            url = getCreateNewUrl(UrlFactory.parameterizeUrl(KNSConstants.LOOKUP_ACTION, parameters));
-            //String url = "lookup.do?businessObjectClassName=org.kuali.rice.kim.bo.types.impl.KimTypeImpl&returnLocation=portal.do&docFormKey="+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_SHORT_KEY;
+	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
+	        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
+	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
+            url = getCreateNewUrl(UrlFactory.parameterizeUrl(
+            		KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters));            		
         }
         return url;
     }

@@ -33,7 +33,7 @@ public interface DocumentTypeQueryService extends XmlLoader {
     
     public DocumentType findByName(String name);
 
-    public Collection find(DocumentType documentType, String docGroupName, boolean climbHierarchy);
+    public Collection<DocumentType> find(DocumentType documentType, String docGroupName, boolean climbHierarchy);
     
     public DocumentType findRootDocumentType(DocumentType docType);
     

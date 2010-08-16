@@ -40,7 +40,7 @@ public interface ActionListDAO {
      *
      * Retrieves {@link OutboxItemActionListExtension} items for the given user
      *
-     * @param workflowUser
+     * @param principalId
      * @param filter
      * @return
      */

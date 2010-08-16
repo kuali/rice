@@ -51,6 +51,7 @@ import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
+import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -59,6 +60,11 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.exception.AuthorizationException;
 
 
 /**
@@ -89,14 +95,8 @@ public class RouteLogAction extends KewKualiAction {
         if (!security.routeLogAuthorized(getUserSession(request), routeHeader, new SecuritySession(UserSession.getAuthenticatedUser()))) {
           return mapping.findForward("NotAuthorized");
         }
-
-        for (ActionTakenValue actionTaken : routeHeader.getActionsTaken()) {
-            Collections.sort((List<ActionRequestValue>) actionTaken.getActionRequests(), ROUTE_LOG_ACTION_REQUEST_SORTER);
-            // FIXME: For some reason, this is causing the action requests to appear twice under
-            // the  actions taken section
-            actionTaken.setActionRequests( switchActionRequestPositionsIfPrimaryDelegatesPresent( actionTaken.getActionRequests() ) );
-        }
-
+        
+        fixActionRequestsPositions(routeHeader);
         populateRouteLogFormActionRequests(rlForm, routeHeader);
 
         rlForm.setLookFuture(routeHeader.getDocumentType().getLookIntoFuturePolicy().getPolicyValue().booleanValue());
@@ -111,6 +111,17 @@ public class RouteLogAction extends KewKualiAction {
             }
         }
         request.setAttribute("routeHeader", routeHeader);
+        
+		// check whether action message logging should be enabled, user must
+		// have KIM permission for doc type 
+        boolean isAuthorizedToAddRouteLogMessage = KEWServiceLocator.getDocumentTypePermissionService()
+				.canAddRouteLogMessage(UserSession.getAuthenticatedUser().getPrincipalId(), routeHeader);
+		if (isAuthorizedToAddRouteLogMessage) {
+			rlForm.setEnableLogAction(true);
+		} else {
+			rlForm.setEnableLogAction(false);
+		}
+        
         return super.execute(mapping, rlForm, request, response);
     }
 
@@ -118,7 +129,7 @@ public class RouteLogAction extends KewKualiAction {
 	public void populateRouteLogFormActionRequests(RouteLogForm rlForm, DocumentRouteHeaderValue routeHeader) {
         List<ActionRequestValue> rootRequests = getActionRequestService().getRootRequests(routeHeader.getActionRequests());
         Collections.sort(rootRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
-        rootRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(rootRequests);
+        
         int arCount = 0;
         for ( ActionRequestValue actionRequest : rootRequests ) {
             if (actionRequest.isPending()) {
@@ -134,14 +145,22 @@ public class RouteLogAction extends KewKualiAction {
         rlForm.setRootRequests(rootRequests);
         rlForm.setPendingActionRequestCount(arCount);
     }
+    
+    @SuppressWarnings("unchecked")
+    private void fixActionRequestsPositions(DocumentRouteHeaderValue routeHeader) {
+        for (ActionTakenValue actionTaken : routeHeader.getActionsTaken()) {
+            Collections.sort((List<ActionRequestValue>) actionTaken.getActionRequests(), ROUTE_LOG_ACTION_REQUEST_SORTER);
+            actionTaken.setActionRequests( actionTaken.getActionRequests() );
+        }
+    }
 
     @SuppressWarnings("unchecked")
 	private ActionRequestValue switchActionRequestPositionIfPrimaryDelegatePresent( ActionRequestValue actionRequest ) {
-    	List<ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
+    	List<? super ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
     	if ( primaryDelegateRequests.isEmpty() ) {
     		return actionRequest;
     	}
-    	ActionRequestValue primaryDelegateRequest = primaryDelegateRequests.get(0);
+    	ActionRequestValue primaryDelegateRequest = (ActionRequestValue) primaryDelegateRequests.get(0);
 		primaryDelegateRequest.setChildrenRequests(actionRequest.getChildrenRequests());
 		primaryDelegateRequest.getChildrenRequests().add(0, actionRequest);
 		primaryDelegateRequest.getChildrenRequests().remove(primaryDelegateRequest);
@@ -185,7 +204,7 @@ public class RouteLogAction extends KewKualiAction {
         	reconstituteActionRequestValues(documentDetail, preexistingActionRequestIds);
 
         Collections.sort(futureActionRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
-        futureActionRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(futureActionRequests);
+        
         int pendingActionRequestCount = 0;
         for (ActionRequestValue actionRequest: futureActionRequests) {
             if (actionRequest.isPending()) {
@@ -466,5 +485,52 @@ public class RouteLogAction extends KewKualiAction {
     	}
 
     } // end inner class FutureRouteNodeInstanceFabricator
+
+    /**
+     * Logs a new message to the route log for the current document, then refreshes the action taken list to display
+     * back the new message in the route log tab. User must have permission to log a message for the doc type and the
+     * request must be coming from the route log tab display (not the route log page).
+     */
+	public ActionForward logActionMessageInRouteLog(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		RouteLogForm routeLogForm = (RouteLogForm) form;
+
+		Long routeHeaderId = null;
+		if (!Utilities.isEmpty(routeLogForm.getRouteHeaderId())) {
+			routeHeaderId = new Long(routeLogForm.getRouteHeaderId());
+		} else if (!Utilities.isEmpty(routeLogForm.getDocId())) {
+			routeHeaderId = new Long(routeLogForm.getDocId());
+		} else {
+			throw new WorkflowRuntimeException("No paramater provided to fetch document");
+		}
+		
+		DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
+		
+		// check user has permission to add a route log message
+		boolean isAuthorizedToAddRouteLogMessage = KEWServiceLocator.getDocumentTypePermissionService()
+				.canAddRouteLogMessage(UserSession.getAuthenticatedUser().getPrincipalId(), routeHeader);
+
+		if (!isAuthorizedToAddRouteLogMessage) {
+			throw new InvalidActionTakenException("Principal with name '"
+					+ UserSession.getAuthenticatedUser().getPrincipalName()
+					+ "' is not authorized to add route log messages for documents of type '"
+					+ routeHeader.getDocumentType().getName());
+		}
+
+		LOG.info("Logging new action message for user " + UserSession.getAuthenticatedUser().getPrincipalName()
+				+ ", route header id " + routeHeader);
+		KEWServiceLocator.getWorkflowDocumentService().logDocumentAction(
+				UserSession.getAuthenticatedUser().getPrincipalId(), routeHeader,
+				routeLogForm.getNewRouteLogActionMessage());
+
+		routeLogForm.setNewRouteLogActionMessage("");
+
+		// retrieve routeHeader again to pull new action taken
+		routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId, true);
+		fixActionRequestsPositions(routeHeader);
+		request.setAttribute("routeHeader", routeHeader);
+
+		return mapping.findForward(getDefaultMapping());
+	}
     
 }

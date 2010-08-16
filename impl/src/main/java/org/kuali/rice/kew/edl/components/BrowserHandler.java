@@ -17,6 +17,8 @@
 package org.kuali.rice.kew.edl.components;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLModelComponent;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
@@ -32,6 +34,8 @@ import org.w3c.dom.Element;
  */
 public class BrowserHandler implements EDLModelComponent {
 
+	private static final Log LOG = LogFactory.getLog(BrowserHandler.class);
+	
 	public static final String BROWSER_EL = "requestBrowser";
 	
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
@@ -48,9 +52,11 @@ public class BrowserHandler implements EDLModelComponent {
 
 	private void setBrowser(Document dom, String bStr) {
 	    if (!StringUtils.isBlank(bStr)) {
-		Element currentPageElement = EDLXmlUtils.getOrCreateChildElement(dom.getDocumentElement(), BROWSER_EL, true);
-		currentPageElement.appendChild(dom.createTextNode(bStr));
-		System.out.println("Appended" + bStr + " to XML field " + currentPageElement.getNodeName());
+	    	Element currentPageElement = EDLXmlUtils.getOrCreateChildElement(dom.getDocumentElement(), BROWSER_EL, true);
+	    	currentPageElement.appendChild(dom.createTextNode(bStr));
+	    	if (LOG.isInfoEnabled()) {
+	    		LOG.info("Appended" + bStr + " to XML field " + currentPageElement.getNodeName());
+	    	}
 	    }
 	}
 	
@@ -66,6 +72,8 @@ public class BrowserHandler implements EDLModelComponent {
 		res = "Firefox";
 	    }else if(saf > 0 && chr < 0){
 		res = "Safari";
+	    }else if(saf > 0 && chr > 0){
+	    res = "Chrome";
 	    }else{
 		res = "Other";
 	    }	    

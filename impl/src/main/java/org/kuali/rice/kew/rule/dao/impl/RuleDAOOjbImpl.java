@@ -16,18 +16,6 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
@@ -46,6 +34,11 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleDAO {
@@ -70,10 +63,10 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		Criteria crit = new Criteria();
 		crit.addIn("docTypeName", documentTypes);
 		crit.addEqualTo("ruleTemplateId", ruleTemplateId);
-		crit.addEqualTo("currentInd", new Boolean(true));
-		crit.addEqualTo("activeInd", new Boolean(true));
-		crit.addEqualTo("delegateRule", new Boolean(false));
-		crit.addEqualTo("templateRuleInd", new Boolean(false));
+		crit.addEqualTo("currentInd", Boolean.TRUE);
+		crit.addEqualTo("activeInd", Boolean.TRUE);
+		crit.addEqualTo("delegateRule", Boolean.FALSE);
+		crit.addEqualTo("templateRuleInd", Boolean.FALSE);
 
 		crit.addAndCriteria(generateFromToDateCriteria(new Date()));
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
@@ -83,9 +76,9 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		Criteria crit = new Criteria();
 		crit.addIn("docTypeName", documentTypes);
 		crit.addEqualTo("ruleTemplateId", ruleTemplateId);
-		crit.addEqualTo("activeInd", new Boolean(true));
-		crit.addEqualTo("delegateRule", new Boolean(false));
-		crit.addEqualTo("templateRuleInd", new Boolean(false));
+		crit.addEqualTo("activeInd", Boolean.TRUE);
+		crit.addEqualTo("delegateRule", Boolean.FALSE);
+		crit.addEqualTo("templateRuleInd", Boolean.FALSE);
 		if (effectiveDate != null) {
 			crit.addLessOrEqualThan("activationDate", effectiveDate);
 			crit.addGreaterThan("deactivationDate", effectiveDate);
@@ -123,8 +116,8 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	public List fetchAllRules(boolean currentRules) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("currentInd", new Boolean(currentRules));
-		crit.addEqualTo("templateRuleInd", new Boolean(false));
-		// crit.addEqualTo("delegateRule", new Boolean(false));
+		crit.addEqualTo("templateRuleInd", Boolean.FALSE);
+		// crit.addEqualTo("delegateRule", Boolean.FALSE);
 
 		QueryByCriteria query = new QueryByCriteria(RuleBaseValues.class, crit);
 		query.addOrderByDescending("activationDate");
@@ -200,21 +193,34 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	}
 
 	public List findRuleBaseValuesByObjectGraph(RuleBaseValues ruleBaseValues) {
-		ruleBaseValues.setCurrentInd(new Boolean(true));
+		ruleBaseValues.setCurrentInd(Boolean.TRUE);
 		ruleBaseValues.setTemplateRuleInd(Boolean.FALSE);
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(ruleBaseValues));
 	}
 
 	public RuleResponsibility findRuleResponsibility(Long responsibilityId) {
-		Criteria crit = new Criteria();
-		crit.addEqualTo("responsibilityId", responsibilityId);
-		Collection responsibilities = this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleResponsibility.class, crit));
-		for (Iterator iterator = responsibilities.iterator(); iterator.hasNext();) {
-			RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
-			if (responsibility.getRuleBaseValues().getCurrentInd().booleanValue()) {
-				return responsibility;
+				
+		ReportQueryByCriteria subQuery;
+		Criteria subCrit = new Criteria();
+		Criteria crit2 = new Criteria();
+		subCrit.addLike("responsibilityId", responsibilityId);
+		subQuery = QueryFactory.newReportQuery(RuleResponsibility.class, subCrit);
+		subQuery.setColumns(new String[] {"RULE_ID"});
+		crit2.addIn("ruleBaseValuesId", subQuery);
+		crit2.addEqualTo("currentInd", 1);
+		QueryByCriteria outerQuery = QueryFactory.newQuery(RuleBaseValues.class, crit2);
+		RuleBaseValues rbv = (RuleBaseValues)this.getPersistenceBrokerTemplate().getObjectByQuery(outerQuery);
+		Criteria finalCrit = new Criteria();
+		finalCrit.addEqualTo("responsibilityId", responsibilityId);
+		finalCrit.addEqualTo("ruleBaseValuesId", rbv.getRuleBaseValuesId());
+		RuleResponsibility rResp = (RuleResponsibility)this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(RuleResponsibility.class, finalCrit));
+		
+		if(rResp != null){
+			if(rResp.getRuleBaseValuesId().equals(rbv.getRuleBaseValuesId())){
+				return rResp;
 			}
-		}
+		}	
+	
 		return null;
 	}
 
@@ -329,8 +335,8 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 
     private Criteria getSearchCriteria(String docTypeName, Long ruleTemplateId, String ruleDescription, Boolean delegateRule, Boolean activeInd, Map extensionValues) {
         Criteria crit = new Criteria();
-        crit.addEqualTo("currentInd", new Boolean(true));
-        crit.addEqualTo("templateRuleInd", new Boolean(false));
+        crit.addEqualTo("currentInd", Boolean.TRUE);
+        crit.addEqualTo("templateRuleInd", Boolean.FALSE);
         if (activeInd != null) {
             crit.addEqualTo("activeInd", activeInd);
         }
@@ -422,7 +428,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 	public RuleBaseValues findDefaultRuleByRuleTemplateId(Long ruleTemplateId) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("ruleTemplateId", ruleTemplateId);
-		crit.addEqualTo("templateRuleInd", new Boolean(true));
+		crit.addEqualTo("templateRuleInd", Boolean.TRUE);
 		List rules = (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleBaseValues.class, crit));
 		if (rules != null && !rules.isEmpty()) {
 			return (RuleBaseValues) rules.get(0);

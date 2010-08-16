@@ -16,28 +16,37 @@
 package org.kuali.rice.kns.bo;
 
 /**
- * 
+ * Represents a simple code-description business object
  */
-public interface KualiCode extends Summarizable, Inactivateable {
-    
-    /**
-     * @param code - Setter for the Code.
-     */
-    public void setCode(String code);
+public interface KualiCode extends Inactivateable {
 
+	/**
+	 * @param code - Setter for the Code.
+	 */
+	public void setCode(String code);
 
-    /**
-     * @param name - Setter for the name.
-     */
-    public void setName(String name);
+	/**
+	 * @return code value as string
+	 */
+	public String getCode();
 
-    /**
-     * @return Getter for the active field.
-     */
-    public boolean isActive();
+	/**
+	 * @param name - Setter for the name.
+	 */
+	public void setName(String name);
 
-    /**
-     * @param name - Setter for the active field.
-     */
-    public void setActive(boolean a);
+	/**
+	 * @return name value as String
+	 */
+	public String getName();
+
+	/**
+	 * @return Getter for the active field.
+	 */
+	public boolean isActive();
+
+	/**
+	 * @param name - Setter for the active field.
+	 */
+	public void setActive(boolean a);
 }

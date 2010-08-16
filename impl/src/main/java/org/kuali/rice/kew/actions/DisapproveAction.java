@@ -52,7 +52,7 @@ public class DisapproveAction extends ActionTakenEvent {
 
     /**
      * @param rh RouteHeader for the document upon which the action is taken.
-     * @param user User taking the action.
+     * @param principal User taking the action.
      */
     public DisapproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
         super(KEWConstants.ACTION_TAKEN_DENIED_CD, rh, principal);
@@ -60,7 +60,7 @@ public class DisapproveAction extends ActionTakenEvent {
 
     /**
      * @param rh RouteHeader for the document upon which the action is taken.
-     * @param user User taking the action.
+     * @param principal User taking the action.
      * @param annotation User comment on the action taken
      */
     public DisapproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {
@@ -190,14 +190,15 @@ public class DisapproveAction extends ActionTakenEvent {
             }
         }
         ActionRequestFactory arFactory = new ActionRequestFactory(getRouteHeader(), notificationNodeInstance);
-        Collection actions = KEWServiceLocator.getActionTakenService().findByRouteHeaderId(getRouteHeaderId());
+        Collection<ActionTakenValue> actions = KEWServiceLocator.getActionTakenService().findByRouteHeaderId(getRouteHeaderId());
         //one notification per person
         Set<String> usersNotified = new HashSet<String>();
-        for (Iterator iter = actions.iterator(); iter.hasNext();)
+        for (ActionTakenValue action : actions)
         {
-            ActionTakenValue     action = (ActionTakenValue) iter.next();
-            if ((action.isApproval() || action.isCompletion()) && ! usersNotified.contains(action.getPrincipalId())) {
-                if (!systemPrincipalIds.contains(action.getPrincipalId())) {
+            if ((action.isApproval() || action.isCompletion()) && !usersNotified.contains(action.getPrincipalId()))
+            {
+                if (!systemPrincipalIds.contains(action.getPrincipalId()))
+                {
                     ActionRequestValue request = arFactory.createNotificationRequest(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, action.getPrincipal(), getActionTakenCode(), getPrincipal(), getActionTakenCode());
                     KEWServiceLocator.getActionRequestService().activateRequest(request);
                     usersNotified.add(request.getPrincipalId());

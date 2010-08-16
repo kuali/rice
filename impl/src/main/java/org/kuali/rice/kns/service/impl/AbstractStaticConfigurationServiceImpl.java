@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.Iterator;
 import java.util.Properties;
 
 import org.kuali.rice.core.config.ConfigContext;
@@ -49,7 +48,7 @@ public abstract class AbstractStaticConfigurationServiceImpl {
     }
     
     public boolean isProductionEnvironment() {
-	return getPropertyString(KNSConstants.PROD_ENVIRONMENT_CODE_KEY).equals(
+	return getPropertyString(KNSConstants.PROD_ENVIRONMENT_CODE_KEY).equalsIgnoreCase(
 		getPropertyString(KNSConstants.ENVIRONMENT_KEY));
     }
 

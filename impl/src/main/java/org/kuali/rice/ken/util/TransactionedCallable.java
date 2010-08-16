@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.ken.util;
 
+import java.util.concurrent.Callable;
+
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import java.util.concurrent.Callable;
 
 /**
  * A Callable that performs work within a transaction and returns the

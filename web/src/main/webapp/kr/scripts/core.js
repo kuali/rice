@@ -25,21 +25,36 @@ function toggleTab(doc, tabKey) {
 	return false;
 }
 
-function expandAllTab(doc, tabStatesSize) {
-	for (var tabIndex = 0; tabIndex <= tabStatesSize.value; tabIndex++) {
-        showTab(doc, tabIndex);
+/** expands all tabs by unhiding them. */
+function expandAllTab() {
+	doToAllTabs(showTab);
+	return false;
 	}
+
+/** collapses all tab by hiding them. */
+function collapseAllTab() {
+	doToAllTabs(hideTab);
 	return false;
 }
 
-function collapseAllTab(doc, tabStatesSize) {
-	for (var tabIndex = 0; tabIndex <= tabStatesSize.value; tabIndex++) {
-        hideTab(doc, tabIndex);
+/** executes a function on all tabs.  The function will be passed a document & partial tab name. */
+function doToAllTabs(func) {
+	var elements = document.getElementsByTagName('div');
+	
+	for (var x in elements) {
+		if (elements[x].id && elements[x].id.substring(0, 4) === 'tab-' 
+			&& elements[x].id.substring(elements[x].id.length - 4, elements[x].id.length) === '-div') {
+			func(document, elements[x].id.substring(4, elements[x].id.length - 4));
+		}
 	}
 	return false;
 }
 
 function showTab(doc, tabKey) {
+    if (!doc.getElementById('tab-' + tabKey + '-div') || !doc.getElementById('tab-' + tabKey + '-imageToggle')) {
+		return false;
+	}
+	
     // replaced 'block' with '' to make budgetExpensesRow.tag happy.
     doc.getElementById('tab-' + tabKey + '-div').style.display = '';
     doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'OPEN';
@@ -53,6 +68,10 @@ function showTab(doc, tabKey) {
 }
 
 function hideTab(doc, tabKey) {
+    if (!doc.getElementById('tab-' + tabKey + '-div') || !doc.getElementById('tab-' + tabKey + '-imageToggle')) {
+		return false;
+	}
+	
     doc.getElementById('tab-' + tabKey + '-div').style.display = 'none';
     doc.forms[0].elements['tabStates(' + tabKey + ')'].value = 'CLOSE';
     var image = doc.getElementById('tab-' + tabKey + '-imageToggle');
@@ -89,6 +108,36 @@ function hasFormAlreadyBeenSubmitted() {
 	       alert("Page has not finished loading.");
 	       return false;
 	} 
+}
+
+// Called when we want to submit the form from a field event and 
+// want focus to be placed on the next field according to the current tab order
+// when the page refreshes
+function setFieldToFocusAndSubmit(triggerElement) {
+	if(document.forms[0].fieldNameToFocusOnAfterSubmit) {
+		if (document.forms.length > 0) {
+			var nextTabField;
+			var field = document.forms[0];
+			for (i = 0; i < field.length; i++) {
+				if (field.elements[i].tabIndex > triggerElement.tabIndex) {
+					if (nextTabField) {
+						if (field.elements[i].tabIndex < nextTabField.tabIndex) {
+					       nextTabField = field.elements[i];
+			         	}
+					}
+		       	    else {
+				       nextTabField = field.elements[i];
+			        }
+				}	
+			}
+	
+	        if (nextTabField) {
+	        	document.forms[0].fieldNameToFocusOnAfterSubmit.value = nextTabField.name;
+	        }
+		}	
+	}
+	
+    document.forms[0].submit();
 }
 
 function submitForm() {
@@ -181,10 +230,11 @@ var safari = navigator.userAgent.toLowerCase().indexOf('safari');
 
 function setRouteLogIframeDimensions() {
   var routeLogFrame = document.getElementById("routeLogIFrame");
+  var routeLogFrame = document.getElementById("routeLogIFrame");
   var routeLogFrameWin = window.frames["routeLogIFrame"];
   var frameDocHeight = 0;
   try {
-    frameDocHeight = routeLogFrameWin.document.height;
+    frameDocHeight = routeLogFrameWin.document.documentElement.scrollHeight;
   } catch ( e ) {
     // unable to set due to cross-domain scripting
     frameDocHeight = 0;
@@ -193,7 +243,7 @@ function setRouteLogIframeDimensions() {
   if ( frameDocHeight > 0 ) {
 	  if (routeLogFrame && routeLogFrameWin) {
 	  	
-	    if ((Math.abs(frameDocHeight - currentHeight)) > 20 ) {
+	    if ((Math.abs(frameDocHeight - currentHeight)) > 30 ) {
 	      if (safari > -1) {
 	        if ((Math.abs(frameDocHeight - currentHeight)) > 59 ) {
 	          routeLogFrame.style.height = (frameDocHeight + 30) + "px";
@@ -204,13 +254,13 @@ function setRouteLogIframeDimensions() {
 	        currentHeight = frameDocHeight;
 	      }
 	    }
+	  }
+  }
 	  
 	    if (routeLogResizeTimer == "" ) {
 	      routeLogResizeTimer = setInterval("resizeTheRouteLogFrame()",300);
 	    }
 	  }
-  }
-}
 
 function resizeTheRouteLogFrame() {
   setRouteLogIframeDimensions();
@@ -313,5 +363,33 @@ function getStyleObject(objectId) {
 	return document.layers[objectId];
    } else {
 	return false;
+   }
+}
+
+function placeFocus() {
+	if (document.forms.length > 0) {
+	  var fieldNameToFocus;
+	  if (document.forms[0].fieldNameToFocusOnAfterSubmit) {
+	    fieldNameToFocus = document.forms[0].fieldNameToFocusOnAfterSubmit.value;
+	  }
+	  
+	  var focusSet = false;
+	  var field = document.forms[0];
+	  for (i = 0; i < field.length; i++) {
+		if (fieldNameToFocus) {
+	  	  if (field.elements[i].name == fieldNameToFocus) {
+			  document.forms[0].elements[i].focus();
+			  focusSet = true;
+		  }	 
+		}
+		else if ((field.elements[i].type == "text") || (field.elements[i].type == "textarea")) {
+		  document.forms[0].elements[i].focus();
+		  focusSet = true;
+		}
+		
+		if (focusSet) {
+			break;
+		}
+	  }
    }
 }

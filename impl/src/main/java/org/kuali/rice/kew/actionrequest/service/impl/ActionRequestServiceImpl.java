@@ -13,15 +13,6 @@
  */
 package org.kuali.rice.kew.actionrequest.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
@@ -34,6 +25,7 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.actiontaken.service.ActionTakenService;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
@@ -43,15 +35,13 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kew.util.ResponsibleParty;
-import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.*;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import java.util.*;
 
 
 /**
@@ -74,6 +64,10 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     
     /**
      * Returns a Map of actions that are requested for the given principalId in the given list of action requests.
+     * @param principalId
+     * @param actionRequests
+     * @param completeAndApproveTheSame
+     * @return
      */
     protected AttributeSet getActionsRequested(String principalId, List<ActionRequestValue> actionRequests, boolean completeAndApproveTheSame) {
     	AttributeSet actionsRequested = new AttributeSet();
@@ -124,8 +118,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     private void propagatePropertiesToRequestGraph(ActionRequestValue actionRequest, DocumentRouteHeaderValue document,
             RouteNodeInstance nodeInstance) {
         setPropertiesToRequest(actionRequest, document, nodeInstance);
-        for (Iterator iterator = actionRequest.getChildrenRequests().iterator(); iterator.hasNext();) {
-            propagatePropertiesToRequestGraph((ActionRequestValue) iterator.next(), document, nodeInstance);
+        for (ActionRequestValue actionRequestValue : actionRequest.getChildrenRequests())
+        {
+            propagatePropertiesToRequestGraph(actionRequestValue, document, nodeInstance);
         }
     }
 
@@ -156,7 +151,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if ( LOG.isInfoEnabled() ) {
         	performanceLogger = new PerformanceLogger();
         }
-        activationContext.setGeneratedActionItems(new ArrayList());
+        activationContext.setGeneratedActionItems(new ArrayList<ActionItem>());
         activateRequestsInternal(actionRequests, activationContext);
         if (!activationContext.isSimulation()) {
             KEWServiceLocator.getNotificationService().notify(activationContext.getGeneratedActionItems());
@@ -187,7 +182,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public List activateRequestNoNotification(ActionRequestValue actionRequest, ActivationContext activationContext) {
-        activationContext.setGeneratedActionItems(new ArrayList());
+        activationContext.setGeneratedActionItems(new ArrayList<ActionItem>());
         activateRequestInternal(actionRequest, activationContext);
         return activationContext.getGeneratedActionItems();
     }
@@ -195,6 +190,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     /**
      * Internal helper method for activating a Collection of action requests and their children. Maintains an accumulator
      * for generated action items.
+     * @param actionRequests
+     * @param activationContext
      */
     private void activateRequestsInternal(Collection actionRequests, ActivationContext activationContext) {
         if (actionRequests == null) {
@@ -204,10 +201,6 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         for (int i = 0; i < actionRequestList.size(); i++) {
         	activateRequestInternal((ActionRequestValue) actionRequestList.get(i), activationContext);
         }
-        /*for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
-            activateRequestInternal(actionRequest, activationContext);
-        }*/
     }
 
     /**
@@ -235,7 +228,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         activateRequestInternal(actionRequest.getParentActionRequest(), activationContext);
         if ( LOG.isInfoEnabled() ) {
         	if (activationContext.isSimulation()) {
-	            performanceLogger.log("Time to simulate activation of request.");
+                performanceLogger.log("Time to simulate activation of request.");
 	        } else {
 	            performanceLogger.log("Time to activate action request with id " + actionRequest.getActionRequestId());
 	        }
@@ -245,6 +238,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     /**
      * Generates ActionItems for the given ActionRequest and returns the List of generated Action Items.
      *
+     * @param actionRequest
+     * @param activationContext
      * @return the List of generated ActionItems
      */
     private List<ActionItem> generateActionItems(ActionRequestValue actionRequest, ActivationContext activationContext) {
@@ -423,14 +418,18 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      * Returns true if we are dealing with an 'All Approve' request, the requester of the deactivation is a child of the
      * 'All Approve' request, and all of the children have not been deactivated. If all of the children are already
      * deactivated or a non-child request initiated deactivation, then this method returns false. false otherwise.
+     * @param actionRequest
+     * @param deactivationRequester
+     * @return
      */
     private boolean haltForAllApprove(ActionRequestValue actionRequest, ActionRequestValue deactivationRequester) {
         if (KEWConstants.APPROVE_POLICY_ALL_APPROVE.equals(actionRequest.getApprovePolicy())
                 && actionRequest.hasChild(deactivationRequester)) {
             boolean allDeactivated = true;
-            for (Iterator iterator = actionRequest.getChildrenRequests().iterator(); iterator.hasNext();) {
-                ActionRequestValue childRequest = (ActionRequestValue) iterator.next();
-                if (!(allDeactivated = allDeactivated && childRequest.isDeactivated())) {
+            for (ActionRequestValue childRequest : actionRequest.getChildrenRequests())
+            {
+                if (!(allDeactivated = childRequest.isDeactivated()))
+                {
                     return true;
                 }
             }
@@ -438,23 +437,26 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return false;
     }
 
-    public List getRootRequests(Collection actionRequests) {
-        Set unsavedRequests = new HashSet();
-        Map requestMap = new HashMap();
-        for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+    public List<ActionRequestValue> getRootRequests(Collection<ActionRequestValue> actionRequests) {
+            Set<ActionRequestValue> unsavedRequests = new HashSet<ActionRequestValue>();
+            Map<Long, ActionRequestValue> requestMap = new HashMap<Long, ActionRequestValue>();
+        for (ActionRequestValue actionRequest1 : actionRequests)
+        {
+            ActionRequestValue actionRequest = (ActionRequestValue) actionRequest1;
             ActionRequestValue rootRequest = getRoot(actionRequest);
-            if (rootRequest.getActionRequestId() != null) {
+            if (rootRequest.getActionRequestId() != null)
+            {
                 requestMap.put(rootRequest.getActionRequestId(), rootRequest);
-            } else {
+            } else
+            {
                 unsavedRequests.add(rootRequest);
             }
         }
-        List requests = new ArrayList();
-        requests.addAll(requestMap.values());
-        requests.addAll(unsavedRequests);
-        return requests;
-    }
+            List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
+            requests.addAll(requestMap.values());
+            requests.addAll(unsavedRequests);
+            return requests;
+        }
 
     public ActionRequestValue getRoot(ActionRequestValue actionRequest) {
         if (actionRequest == null) {
@@ -473,8 +475,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
      */
     public List<ActionRequestValue> findAllPendingRequests(Long routeHeaderId) {
     	ActionRequestDAO arDAO = getActionRequestDAO();
-        Collection pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, routeHeaderId);
-        return (List<ActionRequestValue>)pendingArs;
+        List<ActionRequestValue> pendingArs = arDAO.findByStatusAndDocId(KEWConstants.ACTION_REQUEST_ACTIVATED, routeHeaderId);
+        return pendingArs;
     }
 
     public List findAllValidRequests(String principalId, Long routeHeaderId, String requestCode) {
@@ -527,7 +529,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     	}
         Collection documentsAffected = getRouteHeaderService().findPendingByResponsibilityIds(responsibilityIds);
         String cacheWaitValue = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CACHE_REQUEUE_DELAY);
-        Long cacheWait = new Long(KEWConstants.DEFAULT_CACHE_REQUEUE_WAIT_TIME);
+        Long cacheWait = KEWConstants.DEFAULT_CACHE_REQUEUE_WAIT_TIME;
         if (!Utilities.isEmpty(cacheWaitValue)) {
             try {
                 cacheWait = Long.valueOf(cacheWaitValue);
@@ -537,13 +539,22 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
         if ( LOG.isInfoEnabled() ) {
         	LOG.info("Scheduling requeue of " + documentsAffected.size() + " documents, affected by " + responsibilityIds.size()
-                    + " responsibility changes.  Installing a processing wait time of " + cacheWait.longValue()
+                    + " responsibility changes.  Installing a processing wait time of " + cacheWait
                     + " milliseconds to avoid stale rule cache.");
         }
-        for (Iterator iterator = documentsAffected.iterator(); iterator.hasNext();) {
-            Long routeHeaderId = (Long) iterator.next();
-            String serviceNamespace = KEWServiceLocator.getRouteHeaderService().getServiceNamespaceByDocumentId(routeHeaderId);
-            if (serviceNamespace == null) {
+        for (Object aDocumentsAffected : documentsAffected)
+        {
+            Long routeHeaderId = (Long) aDocumentsAffected;
+
+             String serviceNamespace = null;
+             DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByDocumentId(routeHeaderId);
+                    
+             if (documentType != null) {
+                serviceNamespace = documentType.getServiceNamespace();
+             }
+
+            if (serviceNamespace == null)
+            {
                 serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
             }
             DocumentRequeuerService documentRequeuer = MessageServiceNames.getDocumentRequeuerService(serviceNamespace,
@@ -563,7 +574,11 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         deleteActionItems(actionRequest);
         if (actionRequest.getActionTakenId() != null) {
             ActionTakenValue actionTaken = getActionTakenService().findByActionTakenId(actionRequest.getActionTakenId());
+
+            if(actionTaken != null){//iu patch
             getActionTakenService().delete(actionTaken);
+            }//iu patch
+           
         }
         getActionRequestDAO().delete(actionRequest.getActionRequestId());
         for (ActionRequestValue child: actionRequest.getChildrenRequests()) {
@@ -651,9 +666,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public void saveActionRequest(ActionRequestValue actionRequest) {
-
-        if (actionRequest.isGroupRequest() && !actionRequest.getGroup().isActive()) {
-            throw new RuntimeException("Routing to inactive workgroup.  Putting document in exception routing.");
+        if (actionRequest.isGroupRequest() && (!actionRequest.getGroup().isActive() 
+        		|| KIMServiceLocator.getGroupService().getMemberPrincipalIds(actionRequest.getGroup().getGroupId()).size() == 0 )) {
+        	throw new RuntimeException("Routing to inactive workgroup.  Putting document in exception routing.");
         }
         getActionRequestDAO().saveActionRequest(actionRequest);
     }
@@ -663,13 +678,16 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public List findPendingByDocRequestCdRouteLevel(Long routeHeaderId, String requestCode, Integer routeLevel) {
-        List requests = new ArrayList();
-        for (Iterator iter = getActionRequestDAO().findAllPendingByDocId(routeHeaderId).iterator(); iter.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            if (ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), requestCode, true) > 0) {
+        List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
+        for (Object object : getActionRequestDAO().findAllPendingByDocId(routeHeaderId))
+        {
+            ActionRequestValue actionRequest = (ActionRequestValue) object;
+            if (ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), requestCode, true) > 0)
+            {
                 continue;
             }
-            if (actionRequest.getRouteLevel().intValue() == routeLevel.intValue()) {
+            if (actionRequest.getRouteLevel().intValue() == routeLevel.intValue())
+            {
                 requests.add(actionRequest);
             }
         }
@@ -677,13 +695,16 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public List findPendingByDocRequestCdNodeName(Long routeHeaderId, String requestCode, String nodeName) {
-        List requests = new ArrayList();
-        for (Iterator iter = getActionRequestDAO().findAllPendingByDocId(routeHeaderId).iterator(); iter.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            if (ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), requestCode, true) > 0) {
+        List<ActionRequestValue> requests = new ArrayList<ActionRequestValue>();
+        for (Object object : getActionRequestDAO().findAllPendingByDocId(routeHeaderId))
+        {
+            ActionRequestValue actionRequest = (ActionRequestValue) object;
+            if (ActionRequestValue.compareActionCode(actionRequest.getActionRequested(), requestCode, true) > 0)
+            {
                 continue;
             }
-            if (actionRequest.getNodeInstance() != null && actionRequest.getNodeInstance().getName().equals(nodeName)) {
+            if (actionRequest.getNodeInstance() != null && actionRequest.getNodeInstance().getName().equals(nodeName))
+            {
                 requests.add(actionRequest);
             }
         }
@@ -714,17 +735,18 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         return (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
     }
 
-    public List findByStatusAndDocId(String statusCd, Long routeHeaderId) {
+    public List<ActionRequestValue> findByStatusAndDocId(String statusCd, Long routeHeaderId) {
         return getActionRequestDAO().findByStatusAndDocId(statusCd, routeHeaderId);
     }
 
     public void alterActionRequested(List actionRequests, String actionRequestCd) {
-        for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
+        for (Object actionRequest1 : actionRequests)
+        {
+            ActionRequestValue actionRequest = (ActionRequestValue) actionRequest1;
 
             actionRequest.setActionRequested(actionRequestCd);
-            for (Iterator iterator = actionRequest.getActionItems().iterator(); iterator.hasNext();) {
-                ActionItem item = (ActionItem) iterator.next();
+            for (ActionItem item : actionRequest.getActionItems())
+            {
                 item.setActionRequestCd(actionRequestCd);
             }
 
@@ -734,9 +756,8 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     // TODO this still won't work in certain cases when checking from the root
     public boolean isDuplicateRequest(ActionRequestValue actionRequest) {
-        List requests = findAllRootActionRequestsByRouteHeaderId(actionRequest.getRouteHeaderId());
-        for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
-            ActionRequestValue existingRequest = (ActionRequestValue) iterator.next();
+        List<ActionRequestValue> requests = findAllRootActionRequestsByRouteHeaderId(actionRequest.getRouteHeaderId());
+        for (ActionRequestValue existingRequest : requests) {
             if (existingRequest.getStatus().equals(KEWConstants.ACTION_REQUEST_DONE_STATE)
                     && existingRequest.getRouteLevel().equals(actionRequest.getRouteLevel())
                     && ObjectUtils.equals(existingRequest.getPrincipalId(), actionRequest.getPrincipalId())
@@ -753,11 +774,14 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     public Recipient findDelegator(List actionRequests) {
         Recipient delegator = null;
         String requestCode = KEWConstants.ACTION_REQUEST_FYI_REQ;
-        for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+        for (Object actionRequest1 : actionRequests)
+        {
+            ActionRequestValue actionRequest = (ActionRequestValue) actionRequest1;
             ActionRequestValue delegatorRequest = findDelegatorRequest(actionRequest);
-            if (delegatorRequest != null) {
-                if (ActionRequestValue.compareActionCode(delegatorRequest.getActionRequested(), requestCode, true) >= 0) {
+            if (delegatorRequest != null)
+            {
+                if (ActionRequestValue.compareActionCode(delegatorRequest.getActionRequested(), requestCode, true) >= 0)
+                {
                     delegator = delegatorRequest.getRecipient();
                     requestCode = delegatorRequest.getActionRequested();
                 }
@@ -793,7 +817,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
 
     public void validateActionRequest(ActionRequestValue actionRequest) {
         LOG.debug("Enter validateActionRequest(..)");
-        List errors = new ArrayList();
+        List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();
 
         String actionRequestCd = actionRequest.getActionRequested();
         if (actionRequestCd == null || actionRequestCd.trim().equals("")) {
@@ -805,7 +829,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         }
 
         Long routeHeaderId = actionRequest.getRouteHeaderId();
-        if (routeHeaderId == null || routeHeaderId.longValue() == 0) {
+        if (routeHeaderId == null || routeHeaderId == 0) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest Document id empty.", "actionrequest.routeheaderid.empty",
                     actionRequest.getActionRequestId().toString()));
         } else if (getRouteHeaderService().getRouteHeader(routeHeaderId) == null) {
@@ -842,7 +866,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (routeLevel == null) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest route level null.", "actionrequest.routelevel.empty",
                     actionRequest.getActionRequestId().toString()));
-        } else if (routeLevel.intValue() < -1) {
+        } else if (routeLevel < -1) {
             errors.add(new WorkflowServiceErrorImpl("ActionRequest route level invalid.",
                     "actionrequest.routelevel.invalid", actionRequest.getActionRequestId().toString()));
         }
@@ -898,17 +922,18 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public List getDelegateRequests(ActionRequestValue actionRequest) {
-        List delegateRequests = new ArrayList();
+        List<ActionRequestValue> delegateRequests = new ArrayList<ActionRequestValue>();
         List requests = getTopLevelRequests(actionRequest);
-        for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
-            ActionRequestValue parentActionRequest = (ActionRequestValue) iterator.next();
+        for (Object request : requests)
+        {
+            ActionRequestValue parentActionRequest = (ActionRequestValue) request;
             delegateRequests.addAll(parentActionRequest.getChildrenRequests());
         }
         return delegateRequests;
     }
 
     public List getTopLevelRequests(ActionRequestValue actionRequest) {
-        List topLevelRequests = new ArrayList();
+        List<ActionRequestValue> topLevelRequests = new ArrayList<ActionRequestValue>();
         if (actionRequest.isRoleRequest()) {
             topLevelRequests.addAll(actionRequest.getChildrenRequests());
         } else {

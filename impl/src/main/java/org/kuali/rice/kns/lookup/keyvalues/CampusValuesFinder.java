@@ -54,5 +54,9 @@ public class CampusValuesFinder extends KeyValuesBase {
     	}
     	return campusCache;
     }
-
+    
+    @Override
+    public void clearInternalCache() {
+    	campusCache = null;
+    }
 }

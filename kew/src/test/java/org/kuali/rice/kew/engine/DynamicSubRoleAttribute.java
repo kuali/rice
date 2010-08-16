@@ -16,21 +16,21 @@
  */
 package org.kuali.rice.kew.engine;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
+import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DynamicSubRoleAttribute extends AbstractRoleAttribute {
 
     private static final long serialVersionUID = 5147874690575620616L;
-	private List roleNames = new ArrayList();
+	private List<String> roleNames = new ArrayList<String>();
     
     public DynamicSubRoleAttribute() {
         roleNames.add("DynamicSub");
@@ -41,7 +41,7 @@ public class DynamicSubRoleAttribute extends AbstractRoleAttribute {
     }
 
     public List getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
-        List qualifiedRoleNames = new ArrayList();
+        List<String> qualifiedRoleNames = new ArrayList<String>();
         qualifiedRoleNames.add(roleName);
         return qualifiedRoleNames;
     }
@@ -53,7 +53,7 @@ public class DynamicSubRoleAttribute extends AbstractRoleAttribute {
         }
         String networkId = nodeState.getValue();
         String label = "role " + networkId;
-        List recipients = new ArrayList();
+        List<Id> recipients = new ArrayList<Id>();
         recipients.add(new AuthenticationUserId(networkId));
         return new ResolvedQualifiedRole(label, recipients);
     }   

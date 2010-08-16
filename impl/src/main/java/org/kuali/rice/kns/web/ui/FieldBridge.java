@@ -19,13 +19,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.Summarizable;
 import org.kuali.rice.kns.datadictionary.CollectionDefinitionI;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.datadictionary.FieldDefinitionI;
@@ -40,32 +39,34 @@ import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.maintenance.Maintainable;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.web.format.BooleanFormatter;
 import org.kuali.rice.kns.web.format.Formatter;
-import org.kuali.rice.kns.web.format.SummarizableFormatter;
 
 public class FieldBridge {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FieldBridge.class);
     private static DataDictionaryService dataDictionaryService;
     private static PersistenceStructureService persistenceStructureService;
+    private static BusinessObjectDictionaryService businessObjectDictionaryService;
+    private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
     /**
-     * This method creates a Field for an Inquiry Screen.
+     * Sets additional properties for MaintainableField(s)
      *
      * @param field The field to populate.
      * @param definition The DD specification for the field.
      */
-    public static final void setupField(Field field, FieldDefinitionI definition) {
+    public static final void setupField(Field field, FieldDefinitionI definition, Set<String> conditionallyRequiredMaintenanceFields) {
         if (definition instanceof MaintainableFieldDefinition) {
-
             MaintainableFieldDefinition maintainableFieldDefinition = ((MaintainableFieldDefinition) definition);
+            
             field.setFieldRequired(maintainableFieldDefinition.isRequired());
             field.setReadOnly(maintainableFieldDefinition.isUnconditionallyReadOnly());
             if (maintainableFieldDefinition.isLookupReadOnly()) {
@@ -81,19 +82,36 @@ public class FieldBridge {
                 field.setWebOnBlurHandlerCallback(maintainableFieldDefinition.getWebUILeaveFieldCallbackFunction());
             }
 
-        }
+            if (maintainableFieldDefinition.getWebUILeaveFieldFunctionParameters()!=null) {
+                field.setWebUILeaveFieldFunctionParameters(maintainableFieldDefinition.getWebUILeaveFieldFunctionParameters());
+            }
+            
+			if (StringUtils.isNotBlank(maintainableFieldDefinition.getAlternateDisplayAttributeName())) {
+				field.setAlternateDisplayPropertyName(maintainableFieldDefinition.getAlternateDisplayAttributeName());
+			}
 
-        /* setup security of field (sensitive data) if needed, note this will always be true on old maintainables since
-         * maintenanceAction is not set
-         */
-        //field.setAttributeSecurity(definition.getAttributeSecurity());
+			if (StringUtils.isNotBlank(maintainableFieldDefinition.getAdditionalDisplayAttributeName())) {
+				field.setAdditionalDisplayPropertyName(maintainableFieldDefinition.getAdditionalDisplayAttributeName());
+			}
+            
+            if (conditionallyRequiredMaintenanceFields != null && conditionallyRequiredMaintenanceFields.contains(field.getPropertyName())) {
+            	field.setFieldRequired(true);
+            }
+            
+            if (((MaintainableFieldDefinition) definition).isTriggerOnChange()) {
+            	field.setTriggerOnChange(true);
+            }
+        }
     }
 
     /**
-     * Uses reflection to populate the rows of the inquiry from the business object value. Also formats if needed.
+	 * Uses reflection to populate the rows of the inquiry from the business
+	 * object value. Also formats if needed.
      *
-     * @param field The Field to populate.
-     * @param bo The BusinessObject from which the Field will be popualated.
+	 * @param field
+	 *            The Field to populate.
+	 * @param bo
+	 *            The BusinessObject from which the Field will be popualated.
      */
     public static final void populateFieldFromBusinessObject(Field field, BusinessObject bo) {
         if (bo == null) {
@@ -106,52 +124,43 @@ public class FieldBridge {
         String propertyName = field.getPropertyName();
 
         // get the field type for the property
-        ControlDefinition fieldControl = getDataDictionaryService().getAttributeControlDefinition(bo.getClass(), propertyName);
-
+		ControlDefinition fieldControl = getDataDictionaryService().getAttributeControlDefinition(bo.getClass(),
+				propertyName);
         try {
-            String propValue = null;
             Object prop = ObjectUtils.getPropertyValue(bo, field.getPropertyName());
 
-            // for boolean types always use BooleanFormatter
-            if (prop != null && prop instanceof Boolean) {
-                formatter = new BooleanFormatter();
-            }
-
-            if (formatter == null && prop != null) {
-                Map<String, Class> references = getPersistenceStructureService().getReferencesForForeignKey(bo.getClass(), propertyName);
-                if (references != null && references.size() > 0) {
-                    for (String fieldName : references.keySet()) {
-                        if (propertyName.startsWith(fieldName)) {
-                            Class referenceClass = references.get(fieldName);
-                            if (Summarizable.class.isAssignableFrom(referenceClass)) {
-                                prop = ObjectUtils.getPropertyValue(bo, fieldName); // replace key with referenced object
-                                formatter = new SummarizableFormatter();
-                            }
-                        }
-                    }
-                }
-            }
-
-            // for select fields, display the associated label (unless we've got a formatter from the reference found just above...)
-            if (fieldControl != null && fieldControl.isSelect() && formatter == null) {
-                Class<KeyValuesFinder> keyValuesFinderName = ClassLoaderUtils.getClass(fieldControl.getValuesFinderClass());
+			// for select fields, display the associated label (unless we are
+			// already display an additonal attribute)
+			String propValue = KNSConstants.EMPTY_STRING;
+			if (fieldControl != null && fieldControl.isSelect()
+					&& StringUtils.isBlank(field.getAdditionalDisplayPropertyName())
+					&& StringUtils.isBlank(field.getAlternateDisplayPropertyName())) {
+				Class<KeyValuesFinder> keyValuesFinderName = ClassLoaderUtils.getClass(fieldControl
+						.getValuesFinderClass());
                 KeyValuesFinder finder = keyValuesFinderName.newInstance();
 
                 propValue = lookupFinderValue(fieldControl, prop, finder);
             } else {
-                if (!ObjectUtils.isNull(prop)) {
-                    if (formatter != null) {
-                        propValue = (String) formatter.format(prop);
-                    } else {
-                        propValue = prop.toString();
+				propValue = ObjectUtils.getFormattedPropertyValue(bo, field.getPropertyName(), formatter);
                     }
-                } else {
-                    propValue = KNSConstants.EMPTY_STRING;
+			field.setPropertyValue(propValue);
+			
+			// set additional or alternate display property values if property
+			// name is specified
+			if (StringUtils.isNotBlank(field.getAlternateDisplayPropertyName())) {
+				String alternatePropertyValue = ObjectUtils.getFormattedPropertyValue(bo, field
+						.getAlternateDisplayPropertyName(), null);
+				field.setAlternateDisplayPropertyValue(alternatePropertyValue);
                 }
 
+			if (StringUtils.isNotBlank(field.getAdditionalDisplayPropertyName())) {
+				String additionalPropertyValue = ObjectUtils.getFormattedPropertyValue(bo, field
+						.getAdditionalDisplayPropertyName(), null);
+				field.setAdditionalDisplayPropertyValue(additionalPropertyValue);
             }
-            field.setPropertyValue(propValue);
-            // for user fields, attempt to pull the principal ID and person's name from the source object
+
+			// for user fields, attempt to pull the principal ID and person's
+			// name from the source object
             if ( fieldControl != null && fieldControl.isKualiUser() ) {
             	// this is supplemental, so catch and log any errors 
             	try {
@@ -172,14 +181,10 @@ public class FieldBridge {
             	}
             }
             FieldUtils.setInquiryURL(field, bo, propertyName);
-
-            // populatedColumns.add(col);
-        }
-        catch (InstantiationException e) {
+		} catch (InstantiationException e) {
             LOG.error("Unable to get instance of KeyValuesFinder: " + e.getMessage());
             throw new RuntimeException("Unable to get instance of KeyValuesFinder: " + e.getMessage());
-        }
-        catch (IllegalAccessException e) {
+		} catch (IllegalAccessException e) {
             LOG.error("Unable to set columns: " + e.getMessage());
             throw new RuntimeException("Unable to set columns: " + e.getMessage());
         }
@@ -291,7 +296,7 @@ public class FieldBridge {
      * @throws InstantiationException
      * @throws IllegalAccessException
      */
-    public static final Field toField(MaintainableItemDefinition id, MaintainableSectionDefinition sd, BusinessObject o, Maintainable m, Section s, List<String> displayedFieldNames) throws InstantiationException, IllegalAccessException {
+    public static final Field toField(MaintainableItemDefinition id, MaintainableSectionDefinition sd, BusinessObject o, Maintainable m, Section s, List<String> displayedFieldNames, Set<String> conditionallyRequiredMaintenanceFields) throws InstantiationException, IllegalAccessException {
         Field field = new Field();
 
         // if FieldDefiniton, simply add a Field UI object
@@ -299,7 +304,12 @@ public class FieldBridge {
             MaintainableFieldDefinition maintainableFieldDefinition = (MaintainableFieldDefinition) id;
             field = FieldUtils.getPropertyField(o.getClass(), maintainableFieldDefinition.getName(), false);
 
-            setupField(field, maintainableFieldDefinition);
+			boolean translateCodes = getMaintenanceDocumentDictionaryService().translateCodes(o.getClass());
+			if (translateCodes) {
+				FieldUtils.setAdditionalDisplayPropertyForCodes(o.getClass(), field.getPropertyName(), field);
+			}
+
+            setupField(field, maintainableFieldDefinition, conditionallyRequiredMaintenanceFields);
 
             MaintenanceUtils.setFieldQuickfinder(o, field.getPropertyName(), maintainableFieldDefinition, field, displayedFieldNames, m);
             MaintenanceUtils.setFieldDirectInquiry(o, field.getPropertyName(), maintainableFieldDefinition, field, displayedFieldNames);
@@ -351,6 +361,7 @@ public class FieldBridge {
      *
      * @param collectionDefinition The DD definition for the Collection.
      * @param o The BusinessObject form which the new Fields will be populated.
+     * @param document MaintenanceDocument instance which we ar building fields for
      * @param m
      * @param displayedFieldNames What Fields are being displayed on the form in the UI?
      * @param containerRowErrorKey The error key for the Container/Collection used for displaying error messages.
@@ -360,7 +371,7 @@ public class FieldBridge {
      *
      * @return The List of new Fields.
      */
-    public static final List<Field> getNewFormFields(CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, String parents, boolean hideAdd, int numberOfColumns) {
+    public static final List<Field> getNewFormFields(CollectionDefinitionI collectionDefinition, BusinessObject o, Maintainable m, List<String> displayedFieldNames, Set<String> conditionallyRequiredMaintenanceFields, StringBuffer containerRowErrorKey, String parents, boolean hideAdd, int numberOfColumns) {
         LOG.debug( "getNewFormFields" );
         String collName = collectionDefinition.getName();
 
@@ -381,7 +392,7 @@ public class FieldBridge {
                 Field collField = FieldUtils.getPropertyField(collectionDefinition.getBusinessObjectClass(), fieldDefinition.getName(), false);
 
                 if (fieldDefinition instanceof MaintainableFieldDefinition) {
-                    setupField(collField, (MaintainableFieldDefinition)fieldDefinition);
+                    setupField(collField, (MaintainableFieldDefinition)fieldDefinition, conditionallyRequiredMaintenanceFields);
                 }
                 //generate the error key for the add row
                 String[] nameParts = StringUtils.split(collField.getPropertyName(), ".");
@@ -494,9 +505,9 @@ public class FieldBridge {
      *
      * @see #getNewFormFields(CollectionDefinitionI, BusinessObject, Maintainable, List, StringBuffer, String, boolean, int)
      */
-    public static final List<Field> getNewFormFields(MaintainableCollectionDefinition collectionDefinition, BusinessObject o, Maintainable m, List<String> displayedFieldNames, StringBuffer containerRowErrorKey, int numberOfColumns) {
+    public static final List<Field> getNewFormFields(MaintainableCollectionDefinition collectionDefinition, BusinessObject o, Maintainable m, List<String> displayedFieldNames, Set<String> conditionallyRequiredMaintenanceFields, StringBuffer containerRowErrorKey, int numberOfColumns) {
         String parent = "";
-        return getNewFormFields(collectionDefinition, o, m, displayedFieldNames, containerRowErrorKey, parent, false, numberOfColumns);
+        return getNewFormFields(collectionDefinition, o, m, displayedFieldNames, conditionallyRequiredMaintenanceFields, containerRowErrorKey, parent, false, numberOfColumns);
     }
 
     /**
@@ -530,6 +541,24 @@ public class FieldBridge {
             }
         }
 
+		String alternateDisplayPropertyName = getBusinessObjectDictionaryService()
+				.getInquiryFieldAlternateDisplayAttributeName(o.getClass(), d.getAttributeName());
+		if (StringUtils.isNotBlank(alternateDisplayPropertyName)) {
+			field.setAlternateDisplayPropertyName(alternateDisplayPropertyName);
+		}
+
+		String additionalDisplayPropertyName = getBusinessObjectDictionaryService()
+				.getInquiryFieldAdditionalDisplayAttributeName(o.getClass(), d.getAttributeName());
+		if (StringUtils.isNotBlank(additionalDisplayPropertyName)) {
+			field.setAdditionalDisplayPropertyName(additionalDisplayPropertyName);
+		}
+		else {
+			boolean translateCodes = getBusinessObjectDictionaryService().tranlateCodesInInquiry(o.getClass());
+			if (translateCodes) {
+				FieldUtils.setAdditionalDisplayPropertyForCodes(o.getClass(), d.getAttributeName(), field);
+			}
+		}
+
         populateFieldFromBusinessObject(field, o);
 
         return field;
@@ -548,6 +577,20 @@ public class FieldBridge {
     		persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
     	}
 		return persistenceStructureService;
+	}
+
+	public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
+    	if (businessObjectDictionaryService == null) {
+    		businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+    	}
+		return businessObjectDictionaryService; 
+	}
+	
+	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
+    	if (maintenanceDocumentDictionaryService == null) {
+    		maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+    	}
+		return maintenanceDocumentDictionaryService; 
 	}
 
 }

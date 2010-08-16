@@ -16,17 +16,16 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ValidActionsDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class ValidActionsTest extends KEWTestCase {
@@ -139,7 +138,7 @@ public class ValidActionsTest extends KEWTestCase {
     private WorkflowDocument checkActions(String networkId,Long routeHeaderId,String[] validActionsAllowed,String[] invalidActionsNotAllowed) throws Exception {
         WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO(networkId), routeHeaderId);
         ValidActionsDTO validActions = document.getRouteHeader().getValidActions();
-        Set validActionsSet = (validActions.getValidActionCodesAllowed() != null) ? new HashSet(Arrays.asList(validActions.getValidActionCodesAllowed())) : new HashSet();
+        Set<String> validActionsSet = (validActions.getValidActionCodesAllowed() != null) ? new HashSet<String>(Arrays.asList(validActions.getValidActionCodesAllowed())) : new HashSet<String>();
 
         for (int i = 0; i < validActionsAllowed.length; i++) {
             String actionAllowed = validActionsAllowed[i];

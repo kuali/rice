@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kew.batch;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
@@ -68,6 +67,7 @@ public class KEWXmlDataLoaderLifecycle extends BaseLifecycle {
 
     /**
      * Does the work of loading the data
+     * @throws Exception
      */
     protected void loadData() throws Exception {
         KEWXmlDataLoader.loadXmlResource(filename);

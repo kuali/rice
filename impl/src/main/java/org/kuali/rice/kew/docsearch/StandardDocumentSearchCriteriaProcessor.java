@@ -15,16 +15,10 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.util.*;
 
 
 /**
@@ -49,7 +43,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     }
 
     /**
-     * @param searchingUser the searchingUser to set
+     * @param principalId the searchingUser to set
      */
     public void setSearchingUser(String principalId) {
         this.searchingUser = searchingUser;
@@ -99,6 +93,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
      * This method returns a map of the standard criteria field containers by key.  The values
      * for the keys are constants in the {@link DocumentSearchCriteriaProcessor} class using
      * the name format CRITERIA_KEY_XXXXXXX.
+     * @return map of standard critera field containers by key
      */
     public Map<String,StandardDocSearchCriteriaFieldContainer> getStandardCriteriaFieldContainerMap() {
     	Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey = new HashMap<String,StandardDocSearchCriteriaFieldContainer>();
@@ -170,12 +165,12 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
         if (hiddenKeys.isEmpty()) {
             return searchableAttributeRows;
         }
-        for (Iterator iterator = searchableAttributeRows.iterator(); iterator.hasNext();) {
-            Row row = (Row) iterator.next();
-            for (Iterator iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
-                Field field = (Field) iterator2.next();
+        for (Row searchableAttributeRow : searchableAttributeRows)
+        {
+            for (Field field : searchableAttributeRow.getFields())
+            {
                 // set hidden field to true if hiddenKeys is not empty and if hiddenKeys contains either the field's propertyName value or savablePropertyName value
-                field.setHidden( (!hiddenKeys.isEmpty()) && ((hiddenKeys.contains(field.getPropertyName())) || (hiddenKeys.contains(field.getPropertyName()))) );
+                field.setHidden((!hiddenKeys.isEmpty()) && ((hiddenKeys.contains(field.getPropertyName())) || (hiddenKeys.contains(field.getPropertyName()))));
             }
         }
         return searchableAttributeRows;
@@ -211,6 +206,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     /**
      * This method returns the number of columns that should exist on a basic search
      * before the searchable attributes display in the criteria section.
+     * @return one
      */
     public static int getBasicSearchPreSearchAttributesColumnSize() {
         return 1;
@@ -219,6 +215,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     /**
      * This method returns the number of columns that should exist on a basic search
      * after the searchable attributes display in the criteria section.
+     * @return one
      */
     public static int getBasicSearchPostSearchAttributesColumnSize() {
         return 1;
@@ -259,11 +256,12 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     public List<StandardDocSearchCriteriaFieldContainer> getBasicSearchContainerList(Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey, Set<String> hiddenKeys, List<String> fieldKeys) {
         List<StandardDocSearchCriteriaFieldContainer> containers = new ArrayList<StandardDocSearchCriteriaFieldContainer>();
         boolean setWidth = false;
-        for (Iterator iterator = fieldKeys.iterator(); iterator.hasNext();) {
-            String fieldKey = (String) iterator.next();
+        for (String fieldKey : fieldKeys)
+        {
             StandardDocSearchCriteriaFieldContainer container = new StandardDocSearchCriteriaFieldContainer(containersByKey.get(fieldKey));
             container.hideFieldsIfNecessary(hiddenKeys);
-            if ( (!setWidth) && (!container.isHidden()) ) {
+            if ((!setWidth) && (!container.isHidden()))
+            {
                 container.setLabelFieldWidthValue("22%");
                 container.setDataFieldWidthValue("78%");
                 setWidth = true;
@@ -326,6 +324,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     /**
      * This method returns the number of columns that should exist on a advanced search
      * before the searchable attributes display in the criteria section.
+     * @return two
      */
     public static int getAdvancedSearchPreSearchAttributesColumnSize() {
         return 2;
@@ -334,6 +333,7 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
     /**
      * This method returns the number of columns that should exist on a advanced search
      * after the searchable attributes display in the criteria section.
+     * @return one
      */
     public static int getAdvancedSearchPostSearchAttributesColumnSize() {
         return 1;
@@ -373,8 +373,8 @@ public class StandardDocumentSearchCriteriaProcessor implements DocumentSearchCr
 
     public List<StandardDocSearchCriteriaFieldContainer> getAdvancedSearchContainerList(Map<String,StandardDocSearchCriteriaFieldContainer> containersByKey, Set<String> hiddenKeys, List<String> fieldKeys) {
         List<StandardDocSearchCriteriaFieldContainer> containers = new ArrayList<StandardDocSearchCriteriaFieldContainer>();
-        for (Iterator iterator = fieldKeys.iterator(); iterator.hasNext();) {
-            String fieldKey = (String) iterator.next();
+        for (String fieldKey : fieldKeys)
+        {
             StandardDocSearchCriteriaFieldContainer container = new StandardDocSearchCriteriaFieldContainer(containersByKey.get(fieldKey));
             container.hideFieldsIfNecessary(hiddenKeys);
             containers.add(container);

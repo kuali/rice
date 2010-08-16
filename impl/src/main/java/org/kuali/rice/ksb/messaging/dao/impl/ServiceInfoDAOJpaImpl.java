@@ -111,7 +111,7 @@ public class ServiceInfoDAOJpaImpl implements ServiceInfoDAO {
     	}
     }
 
-    public EntityManager getEntityManager() {
+	public EntityManager getEntityManager() {
         return this.entityManager;
     }
 

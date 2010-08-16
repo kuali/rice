@@ -31,6 +31,7 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
@@ -295,6 +296,20 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
     public ActionForward addGroup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentGroup newGroup = personDocumentForm.getNewGroup();
+        if (newGroup.getGroupName() == null 
+        		&& newGroup.getNamespaceCode() == null 
+        		&& newGroup.getGroupId() != null) {
+        	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroup(newGroup.getGroupId());
+        	newGroup.setGroupName(tempGroup.getGroupName());
+	        newGroup.setNamespaceCode(tempGroup.getNamespaceCode());
+	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
+        } else if (newGroup.getGroupName() != null 
+        		&& newGroup.getNamespaceCode() != null 
+        		&& newGroup.getGroupId() == null) {
+        	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newGroup.getNamespaceCode(), newGroup.getGroupName());
+        	newGroup.setGroupId(tempGroup.getGroupId());
+	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
+        }
         if (getKualiRuleService().applyRules(new AddGroupEvent("",personDocumentForm.getPersonDocument(), newGroup))) {
 	        GroupImpl groupImpl = (GroupImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, newGroup.getGroupId());
 	        newGroup.setGroupName(groupImpl.getGroupName());

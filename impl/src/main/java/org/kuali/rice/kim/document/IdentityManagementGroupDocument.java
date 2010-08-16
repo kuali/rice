@@ -18,8 +18,6 @@ package org.kuali.rice.kim.document;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.AssociationOverride;
-import javax.persistence.AssociationOverrides;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
@@ -75,6 +73,8 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	protected String groupNamespace;
 	@Column(name="GRP_NM")
 	protected String groupName;
+	@Column(name="GRP_DESC")
+	protected String groupDescription;
 	@Type(type="yes_no")
 	@Column(name="ACTV_IND")
 	protected boolean active = true;
@@ -230,6 +230,14 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 		this.groupName = groupName;
 	}
 
+	public String getGroupDescription() {
+		return this.groupDescription;
+	}
+
+	public void setGroupDescription(String groupDescription) {
+		this.groupDescription = groupDescription;
+	}
+	
 	/**
 	 * @return the groupNamespace
 	 */

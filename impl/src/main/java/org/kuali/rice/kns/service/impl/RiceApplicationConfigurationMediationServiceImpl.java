@@ -206,14 +206,20 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
 			for ( QName serviceName : serviceNames ) {
 				racService = findRiceApplicationConfigurationService(serviceName);
 				if ( racService != null ) {
-					if ( racService.isResponsibleForPackage(packageOrClassName) ) {
-			        	if ( LOG.isDebugEnabled() ) {
-			        		LOG.debug( "Found responsible class on bus with name: " + serviceName );
-			        	}    		
-						responsibleServiceByPackageClass.put(packageOrClassName, new MaxAgeSoftReference<RiceApplicationConfigurationService>( configurationParameterCacheMaxAgeSeconds, racService) );
-						break;
-					} else {
-						racService = null; // null it out in case this is the last iteration
+				
+					try {
+						if ( racService.isResponsibleForPackage(packageOrClassName) ) {
+				        	if ( LOG.isDebugEnabled() ) {
+				        		LOG.debug( "Found responsible class on bus with name: " + serviceName );
+				        	}    		
+							responsibleServiceByPackageClass.put(packageOrClassName, new MaxAgeSoftReference<RiceApplicationConfigurationService>( configurationParameterCacheMaxAgeSeconds, racService) );
+							break;
+						} else {
+							racService = null; // null it out in case this is the last iteration
+						}
+					} catch (Exception e) {
+						LOG.warn( "Assuming this racService is not responsible for the package or class.  racService: "  +
+								racService.toString() + " ;  packageOrClassName: " + packageOrClassName);
 					}
 				}
 			}

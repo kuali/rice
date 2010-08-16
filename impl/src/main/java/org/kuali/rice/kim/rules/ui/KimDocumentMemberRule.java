@@ -44,7 +44,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  */
 public class KimDocumentMemberRule extends DocumentRuleBase implements AddMemberRule {
 
-	private static final String ERROR_PATH = "document.member.memberId";
+	private static final String ERROR_PATH = "member.memberId";
 
 	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
@@ -61,6 +61,20 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
     		return false;
 		AttributeSet validationErrors = new AttributeSet();
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( document.getKimType() );
+        
+        Long newMemberFromTime = newMember.getActiveFromDate() == null ? 0L : newMember.getActiveFromDate().getTime();
+        Long newMemberToTime = newMember.getActiveToDate() == null ? Long.MAX_VALUE : newMember.getActiveToDate().getTime();
+        for (KimDocumentRoleMember currentMember : document.getMembers()) {
+        	Long memberFromTime = currentMember.getActiveFromDate() == null ? 0L : currentMember.getActiveFromDate().getTime();
+            Long memberToTime = currentMember.getActiveToDate() == null ? Long.MAX_VALUE : currentMember.getActiveToDate().getTime();
+        	if (newMember.getMemberId().equals(currentMember.getMemberId())
+        			&& newMember.getMemberTypeCode().equals(currentMember.getMemberTypeCode())
+        			&& ((newMemberFromTime >= memberFromTime && newMemberFromTime < memberToTime) 
+        					|| (newMemberToTime >= memberFromTime && newMemberToTime <= memberToTime))) {
+	        	GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
+	            return false;
+        	}
+        }
 
 		boolean attributesUnique;
 		AttributeSet errorsAttributesAgainstExisting;
@@ -73,14 +87,14 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
 	    	errorsAttributesAgainstExisting = kimTypeService.validateAttributesAgainstExisting(
 	    			document.getKimType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
 			validationErrors.putAll( 
-					attributeValidationHelper.convertErrorsForMappedFields("member.memberId", errorsAttributesAgainstExisting));
+					attributeValidationHelper.convertErrorsForMappedFields(ERROR_PATH, errorsAttributesAgainstExisting));
 
 	    	attributesUnique = kimTypeService.validateUniqueAttributes(
 	    			document.getKimType().getKimTypeId(), newMemberQualifiers, oldMemberQualifiers);
 	    	if (!attributesUnique && (member.getMemberId().equals(newMember.getMemberId()) && 
 	    			member.getMemberTypeCode().equals(newMember.getMemberTypeCode()))){
 	            rulePassed = false;
-	            GlobalVariables.getMessageMap().putError("member.memberId", RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
+	            GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_DUPLICATE_ENTRY, new String[] {"Member"});
 	            break;
 	    	}
 	    	i++;

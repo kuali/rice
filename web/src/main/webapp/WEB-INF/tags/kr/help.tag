@@ -24,6 +24,7 @@
 <%@ attribute name="parameterName" required="false" description="The name of the parameter which will be used with the securityGroup name attribute; together, the found parameter has the URL for the help text." %>
 <%@ attribute name="searchDocumentTypeName" required="false" description="The document type name of a document being looked up to display help for." %>
 <%@ attribute name="lookupBusinessObjectClassName" required="false" description="The business object looked up on the lookup page, which needs to have specific help displayed for it." %>
+<%@ attribute name="alternativeHelp" required="false"%>
 
 <%--
   this tag is formatted to prevent any spaces occuring between the <a>/</a> tags and the <img> tag representing the help icon.  Internet
@@ -31,6 +32,9 @@
   spaces from occuring.  
 --%>
 <c:choose><
+  c:when test="${(!empty alternativeHelp)}"
+    ><a href="${alternativeHelp}"  target="_blank" title="[Help]${altText}"></c:when
+><
   c:when test="${! empty resourceKey }"
     ><a href="${ConfigProperties.application.url}/kr/help.do?methodToCall=getResourceHelpText&amp;resourceKey=${resourceKey}" tabindex="${KualiForm.nextArbitrarilyHighIndex}" target="helpWindow" title="[Help]${altText}"></c:when
   ><
@@ -54,5 +58,6 @@
 ><
   c:when test="${(!empty lookupBusinessObjectClassName)}"
     ><a href="${ConfigProperties.application.url}/kr/help.do?methodToCall=getLookupHelpText&amp;lookupBusinessObjectClassName=${lookupBusinessObjectClassName}" tabindex="${KualiForm.nextArbitrarilyHighIndex}" target="helpWindow" title="[Help]${altText}"></c:when
-></c:choose
+>
+</c:choose
 ><img src="${ConfigProperties.kr.externalizable.images.url}my_cp_inf.gif" alt="[Help]${altText}" hspace=5 border=0  align="middle"></a>

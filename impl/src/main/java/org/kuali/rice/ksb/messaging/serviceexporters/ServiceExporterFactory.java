@@ -18,6 +18,7 @@ package org.kuali.rice.ksb.messaging.serviceexporters;
 
 
 import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
+import org.kuali.rice.ksb.messaging.RESTServiceDefinition;
 import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.service.KSBContextServiceLocator;
@@ -34,6 +35,8 @@ public class ServiceExporterFactory {
 			return new HttpInvokerServiceExporter(serviceInfo);
 		} else if (serviceInfo.getServiceDefinition() instanceof SOAPServiceDefinition) {
 			return new SOAPServiceExporter(serviceInfo, serviceLocator);
+		} else if (serviceInfo.getServiceDefinition() instanceof RESTServiceDefinition) {
+			return new RESTServiceExporter(serviceInfo, serviceLocator);
 		}
 		
 		throw new RuntimeException("ServiceDefinition type not supported " + serviceInfo.getServiceDefinition());

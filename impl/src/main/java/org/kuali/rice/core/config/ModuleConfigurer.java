@@ -51,6 +51,8 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
     protected boolean testMode;
     protected String springFileLocations = "";
     protected String resourceLoaderName;
+    protected boolean exposeServicesOnBus = true;
+    protected boolean includeUserInterfaceComponents = true;
 	
 	/**
 	 * 
@@ -281,6 +283,23 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	 */
 	public void setWebModuleBaseUrl(String webModuleBaseUrl) {
 		this.webModuleBaseUrl = webModuleBaseUrl;
+	}
+
+	public boolean isExposeServicesOnBus() {
+		return this.exposeServicesOnBus;
+	}
+
+	public void setExposeServicesOnBus(boolean exposeServicesOnBus) {
+		this.exposeServicesOnBus = exposeServicesOnBus;
+	}
+
+	public boolean isIncludeUserInterfaceComponents() {
+		return this.includeUserInterfaceComponents;
+	}
+
+	public void setIncludeUserInterfaceComponents(
+			boolean includeUserInterfaceComponents) {
+		this.includeUserInterfaceComponents = includeUserInterfaceComponents;
 	}
 
 }

@@ -680,7 +680,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
      */
     public boolean isValidActionToTake(String actionCd) {
         String actions = (String) legalActions.get(docRouteStatus);
-        if (actions.indexOf(actionCd) == -1) {
+        if (!actions.contains(actionCd)) {
             return false;
         } else {
             return true;
@@ -688,7 +688,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
     }
 
     public boolean isValidStatusChange(String newStatus) {
-    	return ((String) stateTransitionMap.get(getDocRouteStatus())).indexOf(newStatus) >= 0;
+    	return ((String) stateTransitionMap.get(getDocRouteStatus())).contains(newStatus);
     }
 
     public void setRouteStatus(String newStatus, boolean finalState) throws InvalidActionTakenException {
@@ -696,7 +696,7 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
             // only modify the status mod date if the status actually changed
             setRouteStatusDate(new Timestamp(System.currentTimeMillis()));
         }
-        if (((String) stateTransitionMap.get(getDocRouteStatus())).indexOf(newStatus) >= 0) {
+        if (((String) stateTransitionMap.get(getDocRouteStatus())).contains(newStatus)) {
             LOG.debug("changing status");
             setDocRouteStatus(newStatus);
         } else {

@@ -87,4 +87,12 @@ public abstract class KeyValuesBase implements KeyValuesFinder {
     public List getKeyValues(boolean includeActiveOnly){
     	return new ArrayList();
     }
+    
+    /**
+     * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#clearInternalCache()
+     */
+	public void clearInternalCache() {
+		// do nothing
+	}
+
 }

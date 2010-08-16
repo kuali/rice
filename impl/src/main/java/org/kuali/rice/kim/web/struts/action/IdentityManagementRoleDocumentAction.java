@@ -29,8 +29,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.Role;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -265,6 +269,27 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     public ActionForward addMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRoleMember newMember = roleDocumentForm.getMember();
+        
+        //See if possible to add with just Group Details filled in (not returned from lookup)
+        if (StringUtils.isEmpty(newMember.getMemberId()) 
+        		&& StringUtils.isNotEmpty(newMember.getMemberName())
+        		&& StringUtils.isNotEmpty(newMember.getMemberNamespaceCode())
+        		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
+        	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
+        	if (tempGroup != null) {
+        		newMember.setMemberId(tempGroup.getGroupId());
+        	}
+        }
+        
+        //See if possible to grab details for Principal
+        if (StringUtils.isEmpty(newMember.getMemberId()) 
+        		&& StringUtils.isNotEmpty(newMember.getMemberName())
+        		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
+        	if (principal != null) {
+        		newMember.setMemberId(principal.getPrincipalId());
+        	}
+        }
         if(checkKimDocumentRoleMember(newMember) &&
         		KNSServiceLocator.getKualiRuleService().applyRules(new AddMemberEvent("", roleDocumentForm.getRoleDocument(), newMember))){
         	newMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
@@ -276,24 +301,48 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     }
 
     protected boolean checkKimDocumentRoleMember(KimDocumentRoleMember newMember){
+    	boolean memberExists = false;
+        String memberName = null;
+        String memberNamespace = null;
+         
         if(StringUtils.isBlank(newMember.getMemberTypeCode()) || StringUtils.isBlank(newMember.getMemberId())){
         	GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_EMPTY_ENTRY,
         			new String[] {"Member Type Code and Member ID"});
         	return false;
 		}
-    	BusinessObject member = getUiDocumentService().getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
-        if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE) 
-        		&& !validateRole(newMember.getMemberId(), (RoleImpl)member, "document.member.memberId", "Role")){
+                      
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(newMember.getMemberTypeCode())){        	
+        	KimPrincipal pi = this.getIdentityService().getPrincipal(newMember.getMemberId());
+        	if(pi != null){
+        		memberExists = true;
+        		memberName = pi.getPrincipalName();
+        		memberNamespace = "";
+        	}
+        }else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(newMember.getMemberTypeCode())){        	
+        	Group gi = KIMServiceLocator.getGroupService().getGroupInfo(newMember.getMemberId());
+        	if(gi != null){
+        		memberExists = true;
+        		memberName = gi.getGroupName();
+        		memberNamespace = gi.getNamespaceCode();
+        	}
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
+        	Role ri = KIMServiceLocator.getRoleService().getRole(newMember.getMemberId());
+        	if(!validateRole(newMember.getMemberId(), ri, "document.member.memberId", "Role")){        	
         	return false;
+    		}else{
+    			memberExists = true;
+           		memberName = ri.getRoleName();
+           		memberNamespace = ri.getNamespaceCode();
         }
+        }             	
 
-        if(member==null){
+        if(!memberExists){
         	GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
         			new String[] {newMember.getMemberId()});
         	return false;
 		}
-        newMember.setMemberName(getUiDocumentService().getMemberName(newMember.getMemberTypeCode(), member));
-        newMember.setMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(newMember.getMemberTypeCode(), member));
+        newMember.setMemberName(memberName);
+        newMember.setMemberNamespaceCode(memberNamespace);
         return true;
     }
 
@@ -330,6 +379,28 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     public ActionForward addDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         RoleDocumentDelegationMember newDelegationMember = roleDocumentForm.getDelegationMember();
+        
+      //See if possible to add with just Group Details filled in (not returned from lookup)
+        if (StringUtils.isEmpty(newDelegationMember.getMemberId()) 
+        		&& StringUtils.isNotEmpty(newDelegationMember.getMemberName())
+        		&& StringUtils.isNotEmpty(newDelegationMember.getMemberNamespaceCode())
+        		&& StringUtils.equals(newDelegationMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
+        	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newDelegationMember.getMemberNamespaceCode(), newDelegationMember.getMemberName());
+        	if (tempGroup != null) {
+        		newDelegationMember.setMemberId(tempGroup.getGroupId());
+        	}
+        }
+        
+        //See if possible to grab details for Principal
+        if (StringUtils.isEmpty(newDelegationMember.getMemberId()) 
+        		&& StringUtils.isNotEmpty(newDelegationMember.getMemberName())
+        		&& StringUtils.equals(newDelegationMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newDelegationMember.getMemberName());
+        	if (principal != null) {
+        		newDelegationMember.setMemberId(principal.getPrincipalId());
+        	}
+        }
+        
         if (checkDelegationMember(newDelegationMember) && KNSServiceLocator.getKualiRuleService().applyRules(
         		new AddDelegationMemberEvent("", roleDocumentForm.getRoleDocument(), newDelegationMember))) {
         	newDelegationMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());

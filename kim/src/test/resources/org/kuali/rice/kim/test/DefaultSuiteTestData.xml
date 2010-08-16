@@ -76,6 +76,25 @@
 	</users>
 	<groups xmlns="ns:workflow/Group" xsi:schemaLocation="ns:workflow/Group resource:Group">
 		<group>
+			<id>g9</id>
+			<name>GroupNine</name>
+			<namespace>KR-WKFLW</namespace>
+			<description>Group Nine</description>
+			<type>
+                <namespace>KR-WKFLW</namespace>
+                <name>Document Type, Routing Node &amp; Action Information</name>
+            </type>
+            <attributes>
+                <attribute key="documentTypeName" value="Doc"/>
+                <attribute key="routeNodeName" value="P"/>
+                <attribute key="required" value="false"/>
+                <attribute key="actionDetailsAtRoleMemberLevel" value="false"/>
+            </attributes>
+			<members>
+				<principalName>principal10</principalName>
+			</members>
+		</group>
+		<group>
 			<id>g8</id>
 			<name>GroupEight</name>
 			<namespace>KUALI</namespace>

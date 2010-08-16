@@ -45,5 +45,8 @@ public interface RuleDelegationService extends XmlLoader, XmlExporter {
      * responsibility id.
      */
     public List<RuleDelegation> findByResponsibilityId(Long responsibilityId);
+    
+
+    public void flushRuleDlgnCache();
 
 }

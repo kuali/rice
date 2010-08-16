@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.actions;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.MDC;
@@ -87,14 +86,15 @@ public class RevokeAdHocAction extends ActionTakenEvent {
 
         LOG.debug("Revoking adhoc request : " + annotation);
 
-        List requestsToRevoke = new ArrayList();
-        List actionRequests = getActionRequestService().findPendingRootRequestsByDocId(getRouteHeaderId());
-        for (Iterator iterator = actionRequests.iterator(); iterator.hasNext();) {
-			ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
-			if (revoke.matchesActionRequest(actionRequest)) {
-				requestsToRevoke.add(actionRequest);
-			}
-		}
+        List<ActionRequestValue> requestsToRevoke = new ArrayList<ActionRequestValue>();
+        List<ActionRequestValue> actionRequests = getActionRequestService().findPendingRootRequestsByDocId(getRouteHeaderId());
+        for (ActionRequestValue actionRequest : actionRequests)
+        {
+            if (revoke.matchesActionRequest(actionRequest))
+            {
+                requestsToRevoke.add(actionRequest);
+            }
+        }
         if (requestsToRevoke.isEmpty() && revoke.getActionRequestId() != null) {
         	throw new InvalidActionTakenException("Failed to revoke action request with id " + revoke.getActionRequestId() +
         			".  ID does not represent a valid ad hoc request!");

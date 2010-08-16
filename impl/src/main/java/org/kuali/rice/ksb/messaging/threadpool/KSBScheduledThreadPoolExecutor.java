@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 package org.kuali.rice.ksb.messaging.threadpool;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.ksb.util.KSBConstants;
-
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.log4j.Logger;
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.ksb.util.KSBConstants;
 
 public class KSBScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor implements KSBScheduledPool {
 

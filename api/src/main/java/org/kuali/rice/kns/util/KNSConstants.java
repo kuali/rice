@@ -126,7 +126,6 @@ public class KNSConstants extends JSTLConstants {
     public static final String WORKFLOW_URL_KEY = "workflow.url";
     public static final String KUALI_RICE_URL_KEY = "kr.url";
     public static final String PROD_ENVIRONMENT_CODE_KEY = "production.environment.code";
-    public static final String MAINTAIN_USERS_LOCALLY_KEY = "maintain.users.locally";
     public static final String DOC_HANDLER_ACTION = "DocHandler.do";
     public static final String DOCHANDLER_DO_URL = "/" + DOC_HANDLER_ACTION + "?docId=";
     public static final String DOCHANDLER_URL_CHUNK = "&command=displayDocSearchView";
@@ -264,6 +263,8 @@ public class KNSConstants extends JSTLConstants {
 //    public static final String INQUIRY_IMPL_ATTRIBUTE_NAME = "inquirableImplServiceName";
     public static final String INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX = "previousPkValue_";
     public static final String INACTIVE_RECORD_DISPLAY_PARAM_PREFIX = "inactiveRecordDisplay_";
+    
+    public static final String FIELD_NAME_TO_FOCUS_ON_AFTER_SUBMIT = "fieldNameToFocusOnAfterSubmit";
 
     public static final String DEFAULT_APPLICATION_CODE = "KUALI";
     public static final String APPLICATION_CODE = "app.namespace";
@@ -287,6 +288,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String LOOKUP_DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL = "To";
     public static final String LOOKUP_RANGE_LOWER_BOUND_PROPERTY_PREFIX = "rangeLowerBoundKeyPrefix_";
     public static final String LOOKUP_RANGE_UPPER_BOUND_PROPERTY_PREFIX = "rangeUpperBoundKeyPrefix_";
+    public static final String LOOKUP_PARAMETER_LITERAL_PREFIX = "literal";
+    public static final String LOOKUP_PARAMETER_LITERAL_DELIMITER = "=";
 
     public static final String METHOD_DISPLAY_DOC_SEARCH_VIEW = "displayDocSearchView";
     public static final String MAINTENANCE_ACTION = "maintenance.do";
@@ -319,8 +322,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String METHOD_TO_CALL_BOPARM_RIGHT_DEL = "!!)";
     public static final String METHOD_TO_CALL_PARM1_LEFT_DEL = "(((";
     public static final String METHOD_TO_CALL_PARM1_RIGHT_DEL = ")))";
-    public static final String METHOD_TO_CALL_PARM2_LEFT_DEL = "((#";
-    public static final String METHOD_TO_CALL_PARM2_RIGHT_DEL = "#))";
+    public static final String METHOD_TO_CALL_PARM2_LEFT_DEL = "((`";
+    public static final String METHOD_TO_CALL_PARM2_RIGHT_DEL = "`))";
     public static final String METHOD_TO_CALL_PARM3_LEFT_DEL = "((<";
     public static final String METHOD_TO_CALL_PARM3_RIGHT_DEL = ">))";
     public static final String METHOD_TO_CALL_PARM4_LEFT_DEL = "(([";
@@ -572,4 +575,7 @@ public class KNSConstants extends JSTLConstants {
     }
 
 	public static final String ENABLE_NONPRODUCTION_UNMASKING = "enable.nonproduction.data.unmasking";
+	
+  	public static final String SINGLE_QUOTE = "'";
+
 }

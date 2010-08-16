@@ -29,17 +29,21 @@ public interface Extension {
 
 	/**
 	 * Return the name of the attribute which defines the properties of this Extension.
-	 */
+     * @return String
+     */
 	public String getAttributeName();
 
 	/**
 	 * Return the data associated with this Extension.
-	 */
+     * @return List of Extension Data
+     */
 	public List<ExtensionData> getData();
 
 	/**
 	 * Returns the value of the ExtensionData with the specified key.
-	 */
+     * @param key for data value
+     * @return String
+     */
 	public String getDataValue(String key);
 
 }

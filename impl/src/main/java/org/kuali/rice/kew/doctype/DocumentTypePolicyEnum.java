@@ -89,6 +89,13 @@ public final class DocumentTypePolicyEnum {
      */
     public static final DocumentTypePolicyEnum DOCUMENT_STATUS_POLICY = new DocumentTypePolicyEnum(KEWConstants.DOCUMENT_STATUS_POLICY);
 
+    /**
+     * This document type policy allows us to configure if the "Perform Post Processor Logic" for the super user action on action requests is displayed.  
+     * KULRICE-3584
+     */
+    public static final DocumentTypePolicyEnum ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY = new DocumentTypePolicyEnum(KEWConstants.ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY);
+
+    
     private final String name;
 
     public DocumentTypePolicyEnum(String name) {
@@ -133,6 +140,8 @@ public final class DocumentTypePolicyEnum {
             return USE_KEW_SUPERUSER_DOCHANDLER;
         } else if (DOCUMENT_STATUS_POLICY.name.equalsIgnoreCase(name)) {
         	return DOCUMENT_STATUS_POLICY;
+        }else if (ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY.name.equalsIgnoreCase(name)) {
+        	return ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY;
         } else {
             throw new IllegalArgumentException("Invalid Document type policy: '" + name + "'");
         }

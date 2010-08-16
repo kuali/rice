@@ -15,25 +15,17 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 /**
  * Helper class Used for building a Document Search criteria for the lookup
@@ -46,7 +38,7 @@ public class DocumentLookupCriteriaBuilder  {
 	/**
 	 * This method populates the criteria given a map of fields from the lookup
 	 *
-	 * @param lookupForm
+	 * @param fieldsForLookup map of fields
 	 * @return constructed criteria
 	 */
 	public static DocSearchCriteriaDTO populateCriteria(Map<String,String[]> fieldsForLookup) {
@@ -107,59 +99,65 @@ public class DocumentLookupCriteriaBuilder  {
 			}
 			criteria.getSearchableAttributes().clear();
 			if (!propertyFields.isEmpty()) {
-				Map criteriaComponentsByFormKey = new HashMap();
+				Map<String, SearchAttributeCriteriaComponent> criteriaComponentsByFormKey = new HashMap<String, SearchAttributeCriteriaComponent>();
 				for (SearchableAttribute searchableAttribute : docType.getSearchableAttributes()) {
 					for (Row row : searchableAttribute.getSearchingRows(
 							DocSearchUtils.getDocumentSearchContext("", docType.getName(), ""))) {
 						for (org.kuali.rice.kns.web.ui.Field field : row.getFields()) {
 							if (field instanceof Field) {
-								Field dsField = (Field)field;
-								SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(dsField.getFieldDataType());
-								SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(dsField.getPropertyName(), null, dsField.getPropertyName(), searchableAttributeValue);
-								sacc.setRangeSearch(dsField.isMemberOfRange());
-								sacc.setCaseSensitive(!dsField.isUpperCase());
+                                SearchableAttributeValue searchableAttributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(field.getFieldDataType());
+								SearchAttributeCriteriaComponent sacc = new SearchAttributeCriteriaComponent(field.getPropertyName(), null, field.getPropertyName(), searchableAttributeValue);
+								sacc.setRangeSearch(field.isMemberOfRange());
+								sacc.setCaseSensitive(!field.isUpperCase());
 
 								//FIXME: don't force this when dd changes are in, instead delete line 1 row below and uncomment one two lines below
 								sacc.setAllowInlineRange(true);
 //								sacc.setAllowInlineRange(dsField.isAllowInlineRange());
 
-								sacc.setSearchInclusive(dsField.isInclusive());
-								sacc.setLookupableFieldType(dsField.getFieldType());
-								sacc.setSearchable(dsField.isIndexedForSearch());
-								sacc.setCanHoldMultipleValues(dsField.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
-								criteriaComponentsByFormKey.put(dsField.getPropertyName(), sacc);
+								sacc.setSearchInclusive(field.isInclusive());
+								sacc.setLookupableFieldType(field.getFieldType());
+								sacc.setSearchable(field.isIndexedForSearch());
+								sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+								criteriaComponentsByFormKey.put(field.getPropertyName(), sacc);
 							} else {
 								throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kew.docsearch.Field");
 							}
 						}
 					}
 				}
-				for (Iterator iterator = propertyFields.keySet().iterator(); iterator.hasNext();) {
-					String propertyField = (String) iterator.next();
-					SearchAttributeCriteriaComponent sacc = (SearchAttributeCriteriaComponent) criteriaComponentsByFormKey.get(propertyField);
-					if (sacc != null) {
-						if (sacc.getSearchableAttributeValue() == null) {
-							String errorMsg = "Searchable attribute with form field key " + sacc.getFormKey() + " does not have a valid SearchableAttributeValue";
-							//                            LOG.error("addSearchableAttributesToCriteria() " + errorMsg);
-							throw new RuntimeException(errorMsg);
-						}
-							String[] values = propertyFields.get(propertyField);
-							if (Field.MULTI_VALUE_FIELD_TYPES.contains(sacc.getLookupableFieldType())) {
-								// set the multivalue lookup indicator
-								sacc.setCanHoldMultipleValues(true);
-								if (propertyField == null) {
-									sacc.setValues(new ArrayList<String>());
-								} else {
-									if(values!=null) {
-										sacc.setValues(Arrays.asList(values));
-									}
-								}
-							} else {
-								sacc.setValue(values[0]);
-							}
-							criteria.addSearchableAttribute(sacc);
-						}
-				}
+                for (String propertyField : propertyFields.keySet())
+                {
+                    SearchAttributeCriteriaComponent sacc = (SearchAttributeCriteriaComponent) criteriaComponentsByFormKey.get(propertyField);
+                    if (sacc != null)
+                    {
+                        if (sacc.getSearchableAttributeValue() == null)
+                        {
+                            String errorMsg = "Searchable attribute with form field key " + sacc.getFormKey() + " does not have a valid SearchableAttributeValue";
+                            //                            LOG.error("addSearchableAttributesToCriteria() " + errorMsg);
+                            throw new RuntimeException(errorMsg);
+                        }
+                        String[] values = propertyFields.get(propertyField);
+                        if (Field.MULTI_VALUE_FIELD_TYPES.contains(sacc.getLookupableFieldType()))
+                        {
+                            // set the multivalue lookup indicator
+                            sacc.setCanHoldMultipleValues(true);
+                            if (propertyField == null)
+                            {
+                                sacc.setValues(new ArrayList<String>());
+                            } else
+                            {
+                                if (values != null)
+                                {
+                                    sacc.setValues(Arrays.asList(values));
+                                }
+                            }
+                        } else
+                        {
+                            sacc.setValue(values[0]);
+                        }
+                        criteria.addSearchableAttribute(sacc);
+                    }
+                }
 			}
 		}
 	}

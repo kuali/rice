@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns1:group xmlns:ns1="http://rice.kuali.org/xsd/kim/group">
+    <ns1:groupName>MyGroup</ns1:groupName>
+    <ns1:groupDescription>Group Import unit test</ns1:groupDescription>
+    <ns1:active>badvalue</ns1:active>
+    <ns1:attributes>
+        <ns1:attribute ns1:key="actionDetailsAtRoleMemberLevel" ns1:value="false"/>
+        <ns1:attribute ns1:key="documentTypeName" ns1:value="Doc"/>
+        <ns1:attribute ns1:key="required" ns1:value="false"/>
+        <ns1:attribute ns1:key="routeNodeName" ns1:value="P"/>
+    </ns1:attributes>
+    <ns1:members>
+        <ns1:member>
+            <ns1:memberId>ewestfal</ns1:memberId>
+            <ns1:memberTypeCode>P</ns1:memberTypeCode>
+        </ns1:member>
+        <ns1:member>
+            <ns1:memberId>rkirkend</ns1:memberId>
+            <ns1:memberTypeCode>P</ns1:memberTypeCode>
+        </ns1:member>
+        <ns1:member>
+            <ns1:memberId>TestWorkgroup</ns1:memberId>
+            <ns1:memberTypeCode>G</ns1:memberTypeCode>
+        </ns1:member>
+    </ns1:members>
+</ns1:group>

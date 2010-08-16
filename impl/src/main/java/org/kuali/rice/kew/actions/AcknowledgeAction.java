@@ -49,7 +49,7 @@ public class AcknowledgeAction extends ActionTakenEvent {
     /**
      * @param rh
      *            RouteHeader for the document upon which the action is taken.
-     * @param user
+     * @param principal
      *            User taking the action.
      */
     public AcknowledgeAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
@@ -59,10 +59,8 @@ public class AcknowledgeAction extends ActionTakenEvent {
     /**
      * @param rh
      *            RouteHeader for the document upon which the action is taken.
-     * @param user
+     * @param principal
      *            User taking the action.
-     * @param delegator
-     *            Delegator who delegated this action authority to the user.
      * @param annotation
      *            User comment on the action taken
      */

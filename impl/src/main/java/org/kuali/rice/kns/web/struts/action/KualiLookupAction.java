@@ -32,15 +32,12 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -140,23 +137,37 @@ public class KualiLookupAction extends KualiAction {
 		}
 	}
 
-    @Override
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        request.setAttribute(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP);
-        supressActionsIfNeeded(form);
-        suppressNonMaintActionsIfNeeded(form);
-        setCriteriaEnabled(form);
+	@Override
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		LookupForm lookupForm = (LookupForm) form;
 
+		request.setAttribute(KNSConstants.PARAM_MAINTENANCE_VIEW_MODE, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_LOOKUP);
+		supressActionsIfNeeded(form);
+		suppressNonMaintActionsIfNeeded(form);
+		setCriteriaEnabled(form);
 
+		hideHeaderBarIfNeeded(form, request);
 
-        BusinessObjectEntry boe = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(((LookupForm) form).getBusinessObjectClassName());
-        int numCols = boe.getLookupDefinition().getNumOfColumns();
-        if(numCols <= 0) numCols = KNSConstants.DEFAULT_NUM_OF_COLUMNS; // by default, always show one column.
-        ((LookupForm) form).setNumColumns(numCols);
-        return super.execute(mapping, form, request, response);
-    }
+		int numCols = KNSServiceLocator.getBusinessObjectDictionaryService().getLookupNumberOfColumns(
+				Class.forName(lookupForm.getBusinessObjectClassName()));
+		lookupForm.setNumColumns(numCols);
 
+		ActionForward forward = super.execute(mapping, form, request, response);
 
+		// apply conditional logic after all setting of field values has been completed
+		lookupForm.getLookupable().applyConditionalLogicForFieldDisplay();
+
+		return forward;
+	}
+
+	private void hideHeaderBarIfNeeded(ActionForm form, HttpServletRequest request) {
+		if (!((LookupForm) form).isHeaderBarEnabled()) {
+			((LookupForm) form).setHeaderBarEnabled(false);
+		}
+	}
+
+	
 	/**
      * Entry point to lookups, forwards to jsp for search render.
      */
@@ -169,6 +180,15 @@ public class KualiLookupAction extends KualiAction {
      */
     public ActionForward search(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LookupForm lookupForm = (LookupForm) form;
+		        
+       
+		String methodToCall = findMethodToCall(form, request);
+		if (methodToCall.equalsIgnoreCase("search")) {
+			GlobalVariables.getUserSession().removeObjectsByPrefix(KNSConstants.SEARCH_METHOD);
+		}
+		
+
+		
         Lookupable kualiLookupable = lookupForm.getLookupable();
         if (kualiLookupable == null) {
             LOG.error("Lookupable is null.");
@@ -215,8 +235,9 @@ public class KualiLookupAction extends KualiAction {
         if (request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY) != null) {
             GlobalVariables.getUserSession().removeObject(request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY));
         }
-        request.setAttribute(KNSConstants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObject(resultTable, KNSConstants.SEARCH_LIST_KEY_PREFIX));
-
+        
+     	request.setAttribute(KNSConstants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObject(resultTable, KNSConstants.SEARCH_LIST_KEY_PREFIX));
+      	        
         String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);

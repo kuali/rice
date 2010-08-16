@@ -83,7 +83,8 @@
     
     
    <bean id="DocEmploymentInfo-entityEmploymentId" parent="DocEmploymentInfo-entityEmploymentId-parentBean"/>
-  <bean id="DocEmploymentInfo-entityEmploymentId-parentBean" parent="AttributeDefinition" abstract="true" p:name="entityEmploymentId" p:forceUppercase="true" p:label="Employment Id" p:shortLabel="Employment Id" p:maxLength="40" p:required="false">
+  <!-- KULRICE-4357: Mark Employee ID with an asterisk so that users know it is a required field -->
+  <bean id="DocEmploymentInfo-entityEmploymentId-parentBean" parent="AttributeDefinition" abstract="true" p:name="entityEmploymentId" p:forceUppercase="true" p:label="Employment Id" p:shortLabel="Employment Id" p:maxLength="40" p:required="true">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>

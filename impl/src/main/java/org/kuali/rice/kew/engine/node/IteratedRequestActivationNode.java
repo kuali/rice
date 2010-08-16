@@ -16,11 +16,6 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -32,6 +27,11 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -206,7 +206,7 @@ public class IteratedRequestActivationNode implements SimpleNode {
         MDC.put("docId", document.getRouteHeaderId());
         PerformanceLogger performanceLogger = new PerformanceLogger(document.getRouteHeaderId());
         List generatedActionItems = new ArrayList();
-        List requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
+        List<ActionRequestValue> requests = KEWServiceLocator.getActionRequestService().findPendingRootRequestsByDocIdAtRouteNode(document.getRouteHeaderId(), nodeInstance.getRouteNodeInstanceId());
         if (context.isSimulation()) {
             requests.addAll(context.getEngineState().getGeneratedRequests());
         }

@@ -125,5 +125,13 @@ public interface WorkflowDocumentActions {
      * @since 0.9.3
      */
     public void superUserActionRequestApproveAction(String principalId, Long documentId, Long actionRequestId, String annotation, boolean runPostProcessor) throws WorkflowException;
-
+    
+    /**
+     * 
+     * This method This mehtod indexes a document based on the documentId.
+     * 
+     * @param documentId
+     */
+    public void indexDocument(Long documentId);
+        
 }

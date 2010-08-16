@@ -23,7 +23,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.IdentityService;
@@ -102,6 +102,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
     	return KimCommonUtils.getPathWithKimContext(returnLocation, getActionName());
     }
 
+	@Override
     protected ActionForward returnToSender(HttpServletRequest request, ActionMapping mapping, KualiDocumentFormBase form) {
         ActionForward dest = null;
         if (form.isReturnToActionList()) {
@@ -109,12 +110,14 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
             String actionListUrl = workflowBase + "/ActionList.do";
 
             dest = new ActionForward(actionListUrl, true);
-        }
-        else {
+        } else if (StringUtils.isNotBlank(form.getBackLocation())){
+        	dest = new ActionForward(form.getBackLocation(), true);
+        } else {
         	dest = mapping.findForward(KNSConstants.MAPPING_PORTAL);
             ActionForward newDest = new ActionForward();
+            //why is this being done?
             KimCommonUtils.copyProperties(newDest, dest);
-            newDest.setPath(getBasePath(request));
+            newDest.setPath(getApplicationBaseUrl());
             return newDest;
         }
 
@@ -129,7 +132,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         if(!canSave(form) || getQuestion(request)!=null){
 	        ActionForward newDest = new ActionForward();
 	        KimCommonUtils.copyProperties(newDest, dest);
-	        newDest.setPath(getBasePath(request));
+	        newDest.setPath(getApplicationBaseUrl());
 	        return newDest;
         }
         return dest;
@@ -154,7 +157,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 	protected ActionForward getBasePathForward(HttpServletRequest request, ActionForward forward){
 		ActionForward newDest = new ActionForward();
         KimCommonUtils.copyProperties(newDest, forward);
-        newDest.setPath(getBasePath(request));
+        newDest.setPath(getApplicationBaseUrl());
         return newDest;
     }
 
@@ -177,12 +180,14 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         memberTableMetadata.jumpToPage(memberTableMetadata.getViewedPageNumber(), idmForm.getMemberRows().size(), idmForm.getRecordsPerPage());
     }
 
-    protected boolean validateRole( String roleId, RoleImpl roleImpl, String propertyName, String message){
-    	if ( roleImpl == null ) {
+    protected boolean validateRole( String roleId, Role role, String propertyName, String message){
+    	if ( role == null ) {
         	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_INVALID_ROLE, roleId );
     		return false;
     	}
-    	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(roleImpl.getKimRoleType())){
+    	KimTypeInfo typeInfo = KIMServiceLocator.getTypeInfoService().getKimType(role.getKimTypeId());
+    	
+    	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(typeInfo)){
         	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_CANT_ADD_DERIVED_ROLE, message);
         	return false;
         }

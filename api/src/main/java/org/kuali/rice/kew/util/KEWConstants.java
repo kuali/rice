@@ -36,6 +36,9 @@ public class KEWConstants extends JSTLConstants {
     
     public static final String WEBAPP_DIRECTORY = "/kew";
 
+    public static final String USE_OUT_BOX = "USE_OUT_BOX%";
+
+
     /**
      * Node state key under which rule selector can be specified on a per-nodeinstance basis
      */
@@ -65,6 +68,7 @@ public class KEWConstants extends JSTLConstants {
 
     public static final String KEW_URL_HOST = "kew.url.host";
     public static final String HTTP_SERVICE_PORT = "http.service.port";
+	public static final String KEW_SERVER_CONTEXT = "kew.server.context";
 
     public static final String RELOAD_ACTION_LIST = "RELOAD_ACTION_LIST";
     public static final String DELEGATION_WIZARD = "delegationWizard";
@@ -152,6 +156,7 @@ public class KEWConstants extends JSTLConstants {
     public static final String INITIATOR_MUST_BLANKET_APPROVE_POLICY = "INITIATOR_MUST_BLANKET_APPROVE";
     public static final String USE_KEW_SUPERUSER_DOCHANDLER = "USE_KEW_SUPERUSER_DOCHANDLER";
     public static final String SEND_NOTIFICATION_ON_SU_APPROVE_POLICY = "SEND_NOTIFICATION_ON_SU_APPROVE";
+    public static final String ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY = "ALLOW_SU_POSTPROCESSOR_OVERRIDE";
 
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE = "none";
     public static final String DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY = "any";
@@ -968,6 +973,8 @@ public class KEWConstants extends JSTLConstants {
 	public static final String INITIATE_PERMISSION = "Initiate Document";
 	public static final String ROUTE_PERMISSION = "Route Document";
 	public static final String SAVE_PERMISSION = "Save Document";
+	public static final String ADD_MESSAGE_TO_ROUTE_LOG = "Add Message to Route Log";
+	
 
     // signifies the delimiter character for ingested KIM groups
     public static final String KIM_GROUP_NAMESPACE_NAME_DELIMITER_CHARACTER = ":";

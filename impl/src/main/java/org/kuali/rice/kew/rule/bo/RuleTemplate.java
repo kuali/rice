@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import java.net.URLEncoder;
+ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -212,12 +212,14 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
     /**
      * Returns a List of only the active RuleTemplateAttributes on the RuleTemplate
      * sorted according to display order (ascending).
+     * @return
      */
     public List<RuleTemplateAttribute> getActiveRuleTemplateAttributes() {
         List<RuleTemplateAttribute> activeAttributes = new ArrayList<RuleTemplateAttribute>();
-        for (Iterator<RuleTemplateAttribute> iterator = getRuleTemplateAttributes().iterator(); iterator.hasNext();) {
-            RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iterator.next();
-            if (templateAttribute.isActive()) {
+        for (RuleTemplateAttribute templateAttribute : getRuleTemplateAttributes())
+        {
+            if (templateAttribute.isActive())
+            {
                 activeAttributes.add(templateAttribute);
             }
         }
@@ -417,22 +419,25 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
     
     /**
      * Returns a List of Roles from all RoleAttributes attached to this template.
+     * @return list of roles
      */
     public List<Role> getRoles() {
     	List<Role> roles = new ArrayList<Role>();
-    	List ruleTemplateAttributes = getActiveRuleTemplateAttributes();
+    	List<RuleTemplateAttribute> ruleTemplateAttributes = getActiveRuleTemplateAttributes();
 		Collections.sort(ruleTemplateAttributes);
-		for (Iterator iter = ruleTemplateAttributes.iterator(); iter.hasNext();) {
-			RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
-			if (!ruleTemplateAttribute.isWorkflowAttribute()) {
-				continue;
-			}
-			WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
-			if (workflowAttribute instanceof RoleAttribute) {
-				RoleAttribute roleAttribute = (RoleAttribute) workflowAttribute;
-				roles.addAll(roleAttribute.getRoleNames());
-			}
-		}
+        for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplateAttributes)
+        {
+            if (!ruleTemplateAttribute.isWorkflowAttribute())
+            {
+                continue;
+            }
+            WorkflowAttribute workflowAttribute = ruleTemplateAttribute.getWorkflowAttribute();
+            if (workflowAttribute instanceof RoleAttribute)
+            {
+                RoleAttribute roleAttribute = (RoleAttribute) workflowAttribute;
+                roles.addAll(roleAttribute.getRoleNames());
+            }
+        }
 		return roles;
     }
     

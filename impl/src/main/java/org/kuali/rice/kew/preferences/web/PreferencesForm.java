@@ -18,6 +18,7 @@ package org.kuali.rice.kew.preferences.web;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.exception.ValidationException;
@@ -96,6 +97,7 @@ public class PreferencesForm extends KualiForm {
 	}
 
     public void validatePreferences() {
+     
         try {
             new Integer(preferences.getRefreshRate().trim());
         } catch (NumberFormatException e) {
@@ -106,11 +108,15 @@ public class PreferencesForm extends KualiForm {
 
         try {
             new Integer(preferences.getPageSize().trim());
+            if(new Integer(preferences.getPageSize().trim()) == 0){
+            	 GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Page Size must be non-zero ");
+            }    
         } catch (NumberFormatException e) {
-            GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
+            GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Page Size must be in whole minutes");
         } catch (NullPointerException e1) {
-            GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Refresh Rate must be in whole minutes");
+            GlobalVariables.getMessageMap().putError(ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM, "general.message", "ActionList Page Size must be in whole minutes");
         }
+      
         if (GlobalVariables.getMessageMap().hasErrors()) {
             throw new ValidationException("errors in preferences");
         }

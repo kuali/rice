@@ -155,7 +155,9 @@ public class UserSession implements Serializable {
 
     /**
      * allows adding an arbitrary object to the session and returns a string key that can be used to later access this object from
-     * the session using the retrieveObject method in this class
+     * the session using the retrieveObject method in this class. This allows for a prefix to be placed in front of the 
+     * incremented key. So if the prefix is "searchResults" and the nextObjectKey (local int that holds the key value) is 2 then
+     * the new key will be "searchResults3". "searchResults3" will be returned from the method.
      * 
      * @param object
      */
@@ -181,7 +183,8 @@ public class UserSession implements Serializable {
 
     /**
      * allows adding an arbitrary object to the session and returns a string key that can be used to later access this object from
-     * the session using the retrieveObject method in this class
+     * the session using the retrieveObject method in this class. The key is generated from an integer and incremented for every 
+     * object added.  So the first object added with have a key of "1".  This key will be returned from the method.
      * 
      * @param object
      */

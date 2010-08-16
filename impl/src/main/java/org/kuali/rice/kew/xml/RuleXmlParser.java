@@ -398,6 +398,10 @@ public class RuleXmlParser implements XmlConstants {
         if (responsibilityNameAndType == null) {
         	throw new InvalidXmlException("Could not locate a valid responsibility declaration on a responsibility on rule with description '" + rule.getDescription() + "'");
         }
+        if (responsibilityNameAndType.getRuleResponsibilityType().equals(KEWConstants.RULE_RESPONSIBILITY_GROUP_ID)
+        		&& responsibility.getApprovePolicy().equals(KEWConstants.APPROVE_POLICY_ALL_APPROVE)) {
+        	throw new InvalidXmlException("Invalid approve policy '" + approvePolicy + "'.  This policy is not supported with Groups.");
+        }
         responsibility.setRuleResponsibilityName(responsibilityNameAndType.getRuleResponsibilityName());
         responsibility.setRuleResponsibilityType(responsibilityNameAndType.getRuleResponsibilityType());
         

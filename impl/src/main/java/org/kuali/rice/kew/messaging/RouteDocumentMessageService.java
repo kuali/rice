@@ -66,7 +66,7 @@ public class RouteDocumentMessageService implements KSBXMLService {
 		}
 		private static final String SPLIT = "::~~::";
 		public static RouteMessageXmlElement construct(String content) {
-			if (content.indexOf(SPLIT) != -1) {
+			if (content.contains(SPLIT)) {
 				String[] values = content.split(SPLIT);
 				if (values.length == 3) {
 					return new RouteMessageXmlElement(Long.valueOf(values[0]), Boolean.valueOf(values[1]), Boolean.valueOf(values[2]));

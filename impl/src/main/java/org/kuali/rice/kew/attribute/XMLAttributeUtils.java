@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kew.attribute;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.kuali.rice.kns.web.ui.Field;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class provides some common shared utility methods shared by the XML-based

@@ -15,24 +15,10 @@
  */
 package org.kuali.rice.kew.bo.lookup;
 
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
-import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter;
-import org.kuali.rice.kew.docsearch.DocumentSearchResult;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
+import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -42,8 +28,8 @@ import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -57,6 +43,10 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
+import java.util.*;
 
 /**
  * This is a description of what this class does - chris don't forget to fill this in.
@@ -160,67 +150,76 @@ KualiLookupableHelperServiceImpl {
 //            HtmlData returnUrl = getReturnUrl(element, lookupForm, returnKeys, businessObjectRestrictions);
 //          String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
 //ADDED (4 lines)
-        for (Iterator iter = result.iterator(); iter.hasNext();) {
-        	DocumentSearchResult docSearchResult = (DocumentSearchResult)iter.next();
-//TODO: where to get these from?
-        	HtmlData returnUrl = new AnchorHtmlData();
-        	String actionUrls = "";
+        for (DocumentSearchResult aResult : result)
+        {
+            //TODO: where to get these from?
+            HtmlData returnUrl = new AnchorHtmlData();
+            String actionUrls = "";
 
 //TODO: convert columns either here or in the getColumns method
 //ADDED (3)
             List<? extends Column> columns = components.getColumns();//getColumns();
-            List<KeyValueSort> keyValues = docSearchResult.getResultContainers();
-            for (int i = 0; i < columns.size(); i++) {
+            List<KeyValueSort> keyValues = aResult.getResultContainers();
+            for (int i = 0; i < columns.size(); i++)
+            {
 
 //            for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
 
 //                Column col = (Column) iterator.next();
 //ADDED 3
-            	  Column col = (Column) columns.get(i);
-            	  KeyValueSort keyValue = keyValues.get(i);
+                Column col = (Column) columns.get(i);
+                KeyValueSort keyValue = keyValues.get(i);
 //Set values from keyvalue on column
-            	  col.setPropertyValue(keyValue.getUserDisplayValue());
+                col.setPropertyValue(keyValue.getUserDisplayValue());
 
-            	Formatter formatter = col.getFormatter();
+                Formatter formatter = col.getFormatter();
 
                 // pick off result column from result list, do formatting
                 String propValue = KNSConstants.EMPTY_STRING;
 //                Object prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
 //ADDED
-                Object prop=col.getPropertyValue();
+                Object prop = col.getPropertyValue();
 
                 // set comparator and formatter based on property type
                 Class propClass = propertyTypes.get(col.getPropertyName());
-                if ( propClass == null ) {
-                    try {
+                if (propClass == null)
+                {
+                    try
+                    {
 //                    	propClass = ObjectUtils.getPropertyType( element, col.getPropertyName(), getPersistenceStructureService() );
 //                    	propertyTypes.put( col.getPropertyName(), propClass );
-                    } catch (Exception e) {
+                    } catch (Exception e)
+                    {
 //                        throw new RuntimeException("Cannot access PropertyType for property " + "'" + col.getPropertyName() + "' " + " on an instance of '" + element.getClass().getName() + "'.", e);
                     }
                 }
 
                 // formatters
-                if (prop != null) {
+                if (prop != null)
+                {
                     // for Booleans, always use BooleanFormatter
-                    if (prop instanceof Boolean) {
+                    if (prop instanceof Boolean)
+                    {
                         formatter = new BooleanFormatter();
                     }
 
                     // for Dates, always use DateFormatter
-                    if (prop instanceof Date) {
+                    if (prop instanceof Date)
+                    {
                         formatter = new DateFormatter();
                     }
 
                     // for collection, use the list formatter if a formatter hasn't been defined yet
-                    if (prop instanceof Collection && formatter == null) {
-                	formatter = new CollectionFormatter();
+                    if (prop instanceof Collection && formatter == null)
+                    {
+                        formatter = new CollectionFormatter();
                     }
 
-                    if (formatter != null) {
+                    if (formatter != null)
+                    {
                         propValue = (String) formatter.format(prop);
-                    }
-                    else {
+                    } else
+                    {
                         propValue = prop.toString();
                     }
                 }
@@ -233,25 +232,28 @@ KualiLookupableHelperServiceImpl {
 
                 col.setPropertyValue(propValue);
 
-                if (StringUtils.isNotBlank(propValue)) {
+                if (StringUtils.isNotBlank(propValue))
+                {
 //                    col.setColumnAnchor(getInquiryUrl(element, col.getPropertyName()));
 //ADDED (3 lines)
-                	AnchorHtmlData anchor = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
-                	//TODO: change to grab URL from config variable
-                	if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getkey())) {
-                		anchor.setHref(StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "docId=")+"docId="+keyValue.getUserDisplayValue());
+                    AnchorHtmlData anchor = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
+                    //TODO: change to grab URL from config variable
+                    if (StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getkey()))
+                    {
+                        anchor.setHref(StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "docId=") + "docId=" + keyValue.getUserDisplayValue());
                         col.setMaxLength(100); //for now force this
-                	}
+                    }
 
-                	col.setColumnAnchor(anchor);
+                    col.setColumnAnchor(anchor);
                 }
             }
 
-            ResultRow row = new ResultRow((List<Column>)columns, returnUrl.constructCompleteHtmlTag(), actionUrls);
+            ResultRow row = new ResultRow((List<Column>) columns, returnUrl.constructCompleteHtmlTag(), actionUrls);
             row.setRowId(returnUrl.getName());
-        	// because of concerns of the BO being cached in session on the ResultRow,
-        	// let's only attach it when needed (currently in the case of export)
-            if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass())) {
+            // because of concerns of the BO being cached in session on the ResultRow,
+            // let's only attach it when needed (currently in the case of export)
+            if (getBusinessObjectDictionaryService().isExportable(getBusinessObjectClass()))
+            {
 //            	row.setBusinessObject(element);
             }
 
@@ -259,7 +261,8 @@ KualiLookupableHelperServiceImpl {
 //ADDED
             boolean rowReturnable = true;
             row.setRowReturnable(rowReturnable);
-            if (rowReturnable) {
+            if (rowReturnable)
+            {
                 hasReturnableRow = true;
             }
             resultTable.add(row);

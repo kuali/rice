@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.ExceptionIncident;
 import org.kuali.rice.kns.exception.KualiException;
 import org.kuali.rice.kns.exception.KualiExceptionIncident;
@@ -114,9 +116,17 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         
         // Copy input message reference for creating an instance of mail message
         MailMessage msg=new MailMessage();
+        
+        Person actualUser = UserSession.getAuthenticatedUser().getActualPerson();
+        String fromEmail = actualUser.getEmailAddress();
+        if ((fromEmail != null) && (fromEmail != "")) {
+        	msg.setFromAddress(fromEmail);
+    	} else {
+        	msg.setFromAddress(messageTemplate.getFromAddress());
+    	}
+    	
         msg.setBccAddresses(messageTemplate.getBccAddresses());
         msg.setCcAddresses(messageTemplate.getCcAddresses());
-        msg.setFromAddress(messageTemplate.getFromAddress());
         // First check if message template already define mailing list
         Set emails=messageTemplate.getToAddresses();
         if (emails == null || emails.isEmpty()) {

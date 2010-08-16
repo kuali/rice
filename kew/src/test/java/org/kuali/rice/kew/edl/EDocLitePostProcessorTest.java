@@ -97,7 +97,7 @@ public class EDocLitePostProcessorTest extends KEWTestCase {
     }
 
     private void testForStringExistence(String dataDescriptor, String dataToFind) {
-        assertTrue(dataDescriptor = " should come back as part of the post data but didn't", EDocLiteTestServlet.postData.indexOf(dataToFind) != -1);
+        assertTrue(dataDescriptor = " should come back as part of the post data but didn't", EDocLiteTestServlet.postData.contains(dataToFind));
     }
 
     public static boolean waitForData(int maxWaitMilliseconds, int pauseMilliseconds) {

@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.test;
 
-import java.io.File;
-import java.sql.DriverManager;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+
+import java.io.File;
+import java.sql.DriverManager;
 
 public class DerbyDBCreationLifecycle implements Lifecycle {
 	
@@ -81,7 +81,7 @@ public class DerbyDBCreationLifecycle implements Lifecycle {
 		if (dbDriverName == null) {
 			throw new ConfigurationException("No property '" + Config.DATASOURCE_DRIVER_NAME + "' found");
 		}
-		return dbDriverName.toLowerCase().indexOf("derby") > -1;
+		return dbDriverName.toLowerCase().contains("derby");
 	}
 
 	public String getSqlFile() {

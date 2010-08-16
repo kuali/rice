@@ -28,7 +28,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kns.util.IncidentReportUtils;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
 
 
 /**
@@ -69,8 +77,18 @@ public class EDLServlet extends HttpServlet {
 		    if (edlName == null) {
 		        documentId = requestParser.getParameterValue("docId");
 		        if (documentId == null) {
-		            throw new WorkflowRuntimeException("No edl name or document id detected");
+		        	String docFormKey = requestParser.getParameterValue(KNSConstants.DOC_FORM_KEY);
+		        	if (docFormKey != null) {
+		        		Document document = (Document) UserSession.getAuthenticatedUser().retrieveObject(docFormKey);
+		        		Element documentState = EDLXmlUtils.getDocumentStateElement(document);
+		        		documentId = EDLXmlUtils.getChildElementTextValue(documentState, "docId");
+		        		requestParser.setAttribute(KNSConstants.DOC_FORM_KEY, docFormKey);
+		        	}
+		        	if (documentId == null) {
+		        		throw new WorkflowRuntimeException("No edl name or document id detected");
+		        	}
 		        }
+		        requestParser.setAttribute("docId", documentId);
 		        edlController = KEWServiceLocator.getEDocLiteService().getEDLController(new Long(documentId));
 		    } else {
 		        edlController = KEWServiceLocator.getEDocLiteService().getEDLController(edlName);
@@ -78,7 +96,6 @@ public class EDLServlet extends HttpServlet {
 
 		    EDLControllerChain controllerChain = new EDLControllerChain();
 		    controllerChain.addEdlController(edlController);
-		    response.setContentType("text/html; charset=UTF-8");
 		    controllerChain.renderEDL(requestParser, response);
 
 		} catch (Exception e) {

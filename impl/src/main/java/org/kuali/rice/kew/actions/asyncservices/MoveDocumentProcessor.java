@@ -16,14 +16,14 @@
  */
 package org.kuali.rice.kew.actions.asyncservices;
 
-import java.util.Set;
-
 import org.kuali.rice.kew.actions.MoveDocumentAction;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
+import java.util.Set;
 
 
 /**
@@ -35,7 +35,7 @@ public class MoveDocumentProcessor implements MoveDocumentService {
     
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MoveDocumentProcessor.class);
 
-	public void moveDocument(String principalId, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set nodeNames) {
+	public void moveDocument(String principalId, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set<String> nodeNames) {
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(document.getRouteHeaderId(), true);
 		KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(principalId);
 		MoveDocumentAction moveAction = new MoveDocumentAction(document, principal, "", null);

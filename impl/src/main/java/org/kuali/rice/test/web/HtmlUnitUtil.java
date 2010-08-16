@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.test.web;
 
-import java.net.URL;
-
-import org.kuali.rice.core.config.ConfigContext;
-
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
+import org.kuali.rice.core.config.ConfigContext;
+
+import java.net.URL;
 
 public class HtmlUnitUtil {
 
@@ -37,7 +36,7 @@ public class HtmlUnitUtil {
     }
     
     public static boolean pageContainsText(HtmlPage page, String text) {
-        return page.asText().indexOf(text) >= 0;
+        return page.asText().contains(text);
     }
     
     public static Integer getPort() {

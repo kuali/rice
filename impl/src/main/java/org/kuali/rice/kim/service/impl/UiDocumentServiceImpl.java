@@ -31,18 +31,28 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
+import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityAddressInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEmailInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
@@ -165,7 +175,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		boolean inactivatingPrincipal = false;
 		if(canModifyEntity(initiatorPrincipalId, identityManagementPersonDocument.getPrincipalId())){
 			inactivatingPrincipal = setupPrincipal(identityManagementPersonDocument, kimEntity, origEntity.getPrincipals());
-			setupExtId(identityManagementPersonDocument, kimEntity, origEntity.getExternalIdentifiers());
 			setupAffiliation(identityManagementPersonDocument, kimEntity, origEntity.getAffiliations(), origEntity.getEmploymentInformation());
 			setupName(identityManagementPersonDocument, kimEntity, origEntity.getNames());
 		// entitytype
@@ -204,7 +213,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			setupPrivacy(identityManagementPersonDocument, kimEntity, origEntity.getPrivacyPreferences());
 		} else {
 			if(ObjectUtils.isNotNull(origEntity.getPrivacyPreferences())) {
-			//	copyPrivacy(identityManagementPersonDocument, kimEntity, origEntity.getPrivacyPreferences());
 				kimEntity.setPrivacyPreferences(origEntity.getPrivacyPreferences());
 			}
 		}
@@ -259,7 +267,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	//						.getDataDictionaryAttributeDefinition();
 					ControlDefinition control = definition.getControl();
 					if (control.isSelect()) {
-						Map<String,Object> controlMap = new HashMap<String,Object>();						
+						Map<String,Object> controlMap = new HashMap<String,Object>();
 			            controlMap.put("select", "true");
 			            controlMap.put("valuesFinder", control.getValuesFinderClass());
 			            if (control.getBusinessObjectClass() != null) {
@@ -308,7 +316,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @see org.kuali.rice.kim.service.UiDocumentService#loadEntityToPersonDoc(IdentityManagementPersonDocument, String)
 	 */
 	public void loadEntityToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId) {
-        KimPrincipalImpl principal = getPrincipalImpl(principalId);
+		KimPrincipalInfo principal = this.getIdentityService().getPrincipal(principalId);
         if(principal==null)
         	throw new RuntimeException("Principal does not exist for principal id:"+principalId);
 
@@ -316,7 +324,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         identityManagementPersonDocument.setPrincipalName(principal.getPrincipalName());
         identityManagementPersonDocument.setPassword(principal.getPassword());
         identityManagementPersonDocument.setActive(principal.isActive());
-		KimEntityImpl kimEntity = getEntityImpl(principal.getEntityId());
+        KimEntityInfo kimEntity = this.getIdentityService().getEntityInfo(principal.getEntityId());
 		identityManagementPersonDocument.setEntityId(kimEntity.getEntityId());
 		if ( ObjectUtils.isNotNull( kimEntity.getPrivacyPreferences() ) ) {
 			identityManagementPersonDocument.setPrivacy(loadPrivacyReferences(kimEntity.getPrivacyPreferences()));
@@ -324,18 +332,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		//identityManagementPersonDocument.setActive(kimEntity.isActive());
 		identityManagementPersonDocument.setAffiliations(loadAffiliations(kimEntity.getAffiliations(),kimEntity.getEmploymentInformation()));
 		identityManagementPersonDocument.setNames(loadNames( identityManagementPersonDocument, principalId, kimEntity.getNames(), identityManagementPersonDocument.getPrivacy().isSuppressName() ));
-		KimEntityEntityTypeImpl entityType = null;
-		for (KimEntityEntityTypeImpl type : kimEntity.getEntityTypes()) {
+		KimEntityEntityTypeInfo entityType = null;
+		for (KimEntityEntityTypeInfo type : kimEntity.getEntityTypes()) {
 			if (KimConstants.EntityTypes.PERSON.equals(type.getEntityTypeCode())) {
 				entityType = type;
 			}
 		}
 
-		for (KimEntityExternalIdentifierImpl extId : kimEntity.getExternalIdentifiers()){
-			if (KimConstants.PersonExternalIdentifierTypes.TAX.equals(extId.getExternalIdentifierTypeCode())) {
-				identityManagementPersonDocument.setTaxId(extId.getExternalId());
-			}
-		}
 		if(entityType!=null){
 			identityManagementPersonDocument.setEmails(loadEmails(identityManagementPersonDocument, principalId, entityType.getEmailAddresses(), identityManagementPersonDocument.getPrivacy().isSuppressEmail()));
 			identityManagementPersonDocument.setPhones(loadPhones(identityManagementPersonDocument, principalId, entityType.getPhoneNumbers(), identityManagementPersonDocument.getPrivacy().isSuppressPhone()));
@@ -570,7 +573,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected AttributeDefinitionMap getAttributeDefinitionsForRole(PersonDocumentRole role) {
     	KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( role.getKimRoleType() );
-    	//it is possible that the the kimTypeService is coming from a remote application 
+    	//it is possible that the the kimTypeService is coming from a remote application
         // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
         try {
         	if ( kimTypeService != null ) {
@@ -633,7 +636,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         }
         return empInfos;
 	}
-	
+
 	private KimEntityImpl getEntityImpl(String entityId) {
 		KimEntityImpl entityImpl = (KimEntityImpl)getBusinessObjectService().findBySinglePrimaryKey(KimEntityImpl.class, entityId);
         //TODO - remove this hack... This is here because currently jpa only seems to be going 2 levels deep on the eager fetching.
@@ -644,7 +647,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         }
 		return entityImpl;
 	}
-	
+
     @SuppressWarnings("unchecked")
 	protected List<RoleImpl> getRolesForPrincipal(String principalId) {
 		if ( principalId == null ) {
@@ -725,12 +728,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						if (attrDefId!=null && StringUtils.equals(attrDefId, qualifier.getKimAttributeId())) {
 				    		KimDocumentRoleQualifier docRoleQualifier = new KimDocumentRoleQualifier();
 				    		docRoleQualifier.setAttrDataId(qualifier.getAttributeDataId());
-				    		docRoleQualifier.setAttrVal(qualifier.getAttributeValue()); 
+				    		docRoleQualifier.setAttrVal(qualifier.getAttributeValue());
 				    		docRoleQualifier.setKimAttrDefnId(qualifier.getKimAttributeId());
 				    		docRoleQualifier.setKimAttribute(qualifier.getKimAttribute());
 				    		docRoleQualifier.setKimTypId(qualifier.getKimTypeId());
 				    		docRoleQualifier.setRoleMemberId(qualifier.getRoleMemberId());
-				    		docRoleQualifier.setEdit(true);  
+				    		docRoleQualifier.setEdit(true);
 				    		formatAttrValIfNecessary(docRoleQualifier);
 				    		docRoleQualifiers.add(docRoleQualifier);
 				    		qualifierFound = true;
@@ -747,7 +750,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				}
 			}
 			// If all of the qualifiers are empty, return an empty list
-			// This is to prevent dynamic qualifiers from appearing in the 
+			// This is to prevent dynamic qualifiers from appearing in the
 			// person maintenance roles tab.  see KULRICE-3989 for more detail
 			int qualCount = 0;
 			for (KimDocumentRoleQualifier qual : docRoleQualifiers){
@@ -757,19 +760,19 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 			if (qualCount == docRoleQualifiers.size()){
 				return new ArrayList <KimDocumentRoleQualifier>();
-			}				
+			}
 		}
     	return docRoleQualifiers;
     }
 
-    protected List<PersonDocumentName> loadNames( IdentityManagementPersonDocument personDoc, String principalId, List <KimEntityNameImpl> names, boolean suppressDisplay ) {
+    protected List<PersonDocumentName> loadNames( IdentityManagementPersonDocument personDoc, String principalId, List <KimEntityNameInfo> names, boolean suppressDisplay ) {
 		List<PersonDocumentName> docNames = new ArrayList<PersonDocumentName>();
 		if(ObjectUtils.isNotNull(names)){
-			for (KimEntityNameImpl name: names) {
+			for (KimEntityNameInfo name: names) {
 				if(name.isActive()){
 					PersonDocumentName docName = new PersonDocumentName();
 					docName.setNameTypeCode(name.getNameTypeCode());
-					docName.setEntityNameType(name.getEntityNameType());
+					
 					//We do not need to check the privacy setting here - The UI should care of it
 					docName.setFirstName(name.getFirstNameUnmasked());
 					docName.setLastName(name.getLastNameUnmasked());
@@ -816,17 +819,17 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getRoleNamespace());
         additionalPermissionDetails.put(KimAttributes.ROLE_NAME, document.getRoleName());
 		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
-				document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE, 
+				document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE,
 				initiatorPrincipalId, additionalPermissionDetails, null)){
             rulePassed = false;
 		}
 		return rulePassed;
 	}
-	
-    protected List<PersonDocumentAffiliation> loadAffiliations(List <KimEntityAffiliationImpl> affiliations, List<KimEntityEmploymentInformationImpl> empInfos) {
+
+	protected List<PersonDocumentAffiliation> loadAffiliations(List <KimEntityAffiliationInfo> affiliations, List<KimEntityEmploymentInformationInfo> empInfos) {
 		List<PersonDocumentAffiliation> docAffiliations = new ArrayList<PersonDocumentAffiliation>();
 		if(ObjectUtils.isNotNull(affiliations)){
-			for (KimEntityAffiliationImpl affiliation: affiliations) {
+			for (KimEntityAffiliation affiliation: affiliations) {
 				if(affiliation.isActive()){
 					PersonDocumentAffiliation docAffiliation = new PersonDocumentAffiliation();
 					docAffiliation.setAffiliationTypeCode(affiliation.getAffiliationTypeCode());
@@ -841,7 +844,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					// employment informations
 					List<PersonDocumentEmploymentInfo> docEmploymentInformations = new ArrayList<PersonDocumentEmploymentInfo>();
 					if(ObjectUtils.isNotNull(empInfos)){
-						for (KimEntityEmploymentInformationImpl empInfo: empInfos) {
+						for (KimEntityEmploymentInformationInfo empInfo: empInfos) {
 							if (empInfo.isActive() && StringUtils.equals(docAffiliation.getEntityAffiliationId(), empInfo.getEntityAffiliationId())) {
 								PersonDocumentEmploymentInfo docEmpInfo = new PersonDocumentEmploymentInfo();
 								docEmpInfo.setEntityEmploymentId(empInfo.getEntityEmploymentId());
@@ -854,7 +857,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 								docEmpInfo.setActive(empInfo.isActive());
 								docEmpInfo.setPrimary(empInfo.isPrimary());
 								docEmpInfo.setEntityAffiliationId(empInfo.getEntityAffiliationId());
-								docEmpInfo.setVersionNumber(empInfo.getVersionNumber());
+								// there is no version number on KimEntityEmploymentInformationInfo
+								//docEmpInfo.setVersionNumber(empInfo.getVersionNumber());
 								docEmpInfo.setEdit(true);
 								docEmpInfo.refreshReferenceObject("employmentType");
 								docEmploymentInformations.add(docEmpInfo);
@@ -895,26 +899,6 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return inactivatingPrincipal;
 	}
 
-    protected void setupExtId(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<KimEntityExternalIdentifierImpl> origExtIds) {
-    	if(StringUtils.isNotEmpty(identityManagementPersonDocument.getTaxId())){
-			List<KimEntityExternalIdentifierImpl> extIds = new ArrayList<KimEntityExternalIdentifierImpl>();
-			KimEntityExternalIdentifierImpl extId = new KimEntityExternalIdentifierImpl();
-			extId.setEntityId(identityManagementPersonDocument.getEntityId());
-			extId.setExternalId(identityManagementPersonDocument.getTaxId());
-			extId.setExternalIdentifierTypeCode(KimConstants.PersonExternalIdentifierTypes.TAX);
-			if(ObjectUtils.isNotNull(origExtIds)){
-				for (KimEntityExternalIdentifierImpl origExtId : origExtIds) {
-					if (origExtId.getExternalIdentifierTypeCode()!=null && StringUtils.equals(origExtId.getExternalIdentifierTypeCode(), extId.getExternalIdentifierTypeCode())) {
-						extId.setVersionNumber(origExtId.getVersionNumber());
-						extId.setEntityExternalIdentifierId(origExtId.getEntityExternalIdentifierId());
-					}
-				}
-			}
-			extIds.add(extId);
-			kimEntity.setExternalIdentifiers(extIds);
-    	}
-	}
-
     protected void setupPrivacy(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, KimEntityPrivacyPreferencesImpl origPrivacy) {
 		KimEntityPrivacyPreferencesImpl privacyPreferences = new KimEntityPrivacyPreferencesImpl();
 		privacyPreferences.setEntityId(identityManagementPersonDocument.getEntityId());
@@ -928,23 +912,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		kimEntity.setPrivacyPreferences(privacyPreferences);
 	}
-    
-    protected void copyPrivacy(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, KimEntityPrivacyPreferencesImpl origPrivacy) {
-		if (ObjectUtils.isNull(origPrivacy)) {
-			setupPrivacy(identityManagementPersonDocument, kimEntity, origPrivacy);
-		} else {
-	    	KimEntityPrivacyPreferencesImpl privacyPreferences = new KimEntityPrivacyPreferencesImpl();
-			privacyPreferences.setEntityId(identityManagementPersonDocument.getEntityId());
-			privacyPreferences.setSuppressAddress(origPrivacy.isSuppressAddress());
-			privacyPreferences.setSuppressEmail(origPrivacy.isSuppressEmail());
-			privacyPreferences.setSuppressName(origPrivacy.isSuppressName());
-			privacyPreferences.setSuppressPhone(origPrivacy.isSuppressPhone());
-			privacyPreferences.setSuppressPersonal(origPrivacy.isSuppressPersonal());
-			privacyPreferences.setVersionNumber(origPrivacy.getVersionNumber());
-			kimEntity.setPrivacyPreferences(privacyPreferences);
-		}
-	}
-    protected PersonDocumentPrivacy loadPrivacyReferences(KimEntityPrivacyPreferencesImpl privacyPreferences) {
+    protected PersonDocumentPrivacy loadPrivacyReferences(KimEntityPrivacyPreferences privacyPreferences) {
 		PersonDocumentPrivacy docPrivacy = new PersonDocumentPrivacy();
 		docPrivacy.setSuppressAddress(privacyPreferences.isSuppressAddress());
 		docPrivacy.setSuppressEmail(privacyPreferences.isSuppressEmail());
@@ -956,7 +924,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
     protected void setupName(IdentityManagementPersonDocument identityManagementPersonDocument, KimEntityImpl kimEntity, List<KimEntityNameImpl> origNames) {
-    	if ( !identityManagementPersonDocument.getPrivacy().isSuppressName() || 
+    	if ( !identityManagementPersonDocument.getPrivacy().isSuppressName() ||
     			canOverrideEntityPrivacyPreferences( getInitiatorPrincipalId(identityManagementPersonDocument), identityManagementPersonDocument.getPrincipalId() ) ) {
 	    	List<KimEntityNameImpl> entityNames = new ArrayList<KimEntityNameImpl>();
 			if(CollectionUtils.isNotEmpty(identityManagementPersonDocument.getNames())){
@@ -1107,14 +1075,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	}
 	}
 
-    protected List<PersonDocumentPhone> loadPhones(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityPhone> entityPhones, boolean suppressDisplay ) {
+    protected List<PersonDocumentPhone> loadPhones(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityPhoneInfo> entityPhones, boolean suppressDisplay ) {
 		List<PersonDocumentPhone> docPhones = new ArrayList<PersonDocumentPhone>();
 		if(ObjectUtils.isNotNull(entityPhones)){
 			for (KimEntityPhone phone: entityPhones) {
 				if(phone.isActive()){
 					PersonDocumentPhone docPhone = new PersonDocumentPhone();
 					docPhone.setPhoneTypeCode(phone.getPhoneTypeCode());
-					docPhone.setPhoneType(((KimEntityPhoneImpl)phone).getPhoneType());
+					//docPhone.setPhoneType(((KimEntityPhoneImpl)phone).getPhoneType());
 					docPhone.setEntityTypeCode(phone.getEntityTypeCode());
 					//We do not need to check the privacy setting here - The UI should care of it
 					docPhone.setPhoneNumber(phone.getPhoneNumberUnmasked());
@@ -1161,7 +1129,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			entityType.setEmailAddresses(entityEmails);
     	}
 	}
-    protected List<PersonDocumentEmail> loadEmails(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityEmail> entityEmails, boolean suppressDisplay ) {
+    protected List<PersonDocumentEmail> loadEmails(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityEmailInfo> entityEmails, boolean suppressDisplay ) {
 		List<PersonDocumentEmail> emails = new ArrayList<PersonDocumentEmail>();
 		if(ObjectUtils.isNotNull(entityEmails)){
 			for (KimEntityEmail email: entityEmails) {
@@ -1170,7 +1138,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					//docEmail.setEntityId(email.getEntityId());
 					docEmail.setEntityTypeCode(email.getEntityTypeCode());
 					docEmail.setEmailTypeCode(email.getEmailTypeCode());
-					docEmail.setEmailType(((KimEntityEmailImpl)email).getEmailType());
+					// EmailType not on info object. 
+					//docEmail.setEmailType(((KimEntityEmailImpl)email).getEmailType());
 					//We do not need to check the privacy setting here - The UI should care of it
 					docEmail.setEmailAddress(email.getEmailAddressUnmasked());
 
@@ -1220,7 +1189,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	}
 	}
 
-    protected List<PersonDocumentAddress> loadAddresses(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityAddress> entityAddresses, boolean suppressDisplay ) {
+    protected List<PersonDocumentAddress> loadAddresses(IdentityManagementPersonDocument identityManagementPersonDocument, String principalId, List<KimEntityAddressInfo> entityAddresses, boolean suppressDisplay ) {
 		List<PersonDocumentAddress> docAddresses = new ArrayList<PersonDocumentAddress>();
 		if(ObjectUtils.isNotNull(entityAddresses)){
 			for (KimEntityAddress address: entityAddresses) {
@@ -1228,7 +1197,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					PersonDocumentAddress docAddress = new PersonDocumentAddress();
 					docAddress.setEntityTypeCode(address.getEntityTypeCode());
 					docAddress.setAddressTypeCode(address.getAddressTypeCode());
-					docAddress.setAddressType(((KimEntityAddressImpl)address).getAddressType());
+					
 					//We do not need to check the privacy setting here - The UI should care of it
 					docAddress.setLine1(address.getLine1Unmasked());
 					docAddress.setLine2(address.getLine2Unmasked());
@@ -1334,9 +1303,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 										attribute.setKimAttributeId(qualifier.getKimAttrDefnId());
 										attribute.setRoleMemberId(qualifier.getRoleMemberId());
 										attribute.setKimTypeId(qualifier.getKimTypId());
-										
+
 										updateAttrValIfNecessary(attribute);
-										
+
 										if(ObjectUtils.isNotNull(origAttributes)){
 											for (RoleMemberAttributeDataImpl origAttribute : origAttributes) {
 												if (origAttribute.getAttributeDataId()!=null && StringUtils.equals(origAttribute.getAttributeDataId(), qualifier.getAttrDataId())) {
@@ -1627,6 +1596,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setMemberId(member.getMemberId());
 					pndMember.setMemberNamespaceCode(getMemberNamespaceCode(member.getMemberTypeCode(), member.getMemberId()));
 					pndMember.setMemberName(getMemberName(member.getMemberTypeCode(), member.getMemberId()));
+					pndMember.setMemberFullName(getMemberFullName(member.getMemberTypeCode(), member.getMemberId()));
 					pndMember.setMemberTypeCode(member.getMemberTypeCode());
 					pndMember.setQualifiers(loadRoleMemberQualifiers(identityManagementRoleDocument, member.getAttributes()));
 					pndMember.setEdit(true);
@@ -1714,12 +1684,25 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
 			String fakeName = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId).getPrincipalName();
-			if(fakeName == null || fakeName.equals("")) {	
+			if(fakeName == null || fakeName.equals("")) {
 				return "";
 			}
 			return fakeName;
 		}
 		return getMemberName(memberTypeCode, member);
+	}
+
+	public String getMemberFullName(String memberTypeCode, String memberId){
+		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
+		BusinessObject member = getMember(memberTypeCode, memberId);
+		if (member == null) { //not a REAL principal, try to fake the name
+			String fakeName = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId).getPrincipalName();
+			if(fakeName == null || fakeName.equals("")) {
+				return "";
+			}
+			return fakeName;
+		}
+		return getFullMemberName(memberTypeCode, member);
 	}
 
 	public String getMemberNamespaceCode(String memberTypeCode, String memberId){
@@ -1756,6 +1739,20 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         return roleMemberName;
     }
 
+    public String getFullMemberName(String memberTypeCode, BusinessObject member){
+    	String roleMemberName = "";
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	String principalName = ((KimPrincipalImpl)member).getPrincipalName();
+        	Person psn = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        	roleMemberName = psn.getFirstName() + " " + psn.getLastName();
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	roleMemberName = ((GroupImpl)member).getGroupName();
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	roleMemberName = ((RoleImpl)member).getRoleName();
+        }
+        return roleMemberName;
+    }
+
     public String getMemberNamespaceCode(String memberTypeCode, BusinessObject member){
     	String roleMemberNamespaceCode = "";
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
@@ -1772,7 +1769,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			List<RoleMemberAttributeDataImpl> attributeDataList){
 		List<KimDocumentRoleQualifier> pndMemberRoleQualifiers = new ArrayList<KimDocumentRoleQualifier>();
 		KimDocumentRoleQualifier pndMemberRoleQualifier = new KimDocumentRoleQualifier();
-		
+
 		// add all attributes from attributeDataList
 		if(attributeDataList!=null){
 			for(RoleMemberAttributeDataImpl memberRoleQualifier: attributeDataList){
@@ -1790,7 +1787,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		// also add any attributes already in the document that are not in the attributeDataList
 		int countOfOriginalAttributesNotPresent = 0;
 		List<KimDocumentRoleQualifier> fillerRoleQualifiers = new ArrayList<KimDocumentRoleQualifier>();
-		
+
 		AttributeDefinitionMap origAttributes = identityManagementRoleDocument.getDefinitions();
 		if ( origAttributes != null ) {
 			for(String key: origAttributes.keySet()) {
@@ -1812,7 +1809,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					fillerRoleQualifiers.add(pndMemberRoleQualifier);
 				}
 			}
-			
+
 			if(countOfOriginalAttributesNotPresent != origAttributes.size()) {
 				pndMemberRoleQualifiers.addAll(fillerRoleQualifiers);
 			}
@@ -2125,44 +2122,54 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		return roleRspActions;
 	}
 
-	protected List<RoleMemberImpl> getRoleMembers(IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberImpl> origRoleMembers){
-		List<RoleMemberImpl> roleMembers = new ArrayList<RoleMemberImpl>();
-		RoleMemberImpl newRoleMember;
-		RoleMemberImpl origRoleMemberImplTemp = null;
-		List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
-		boolean activatingInactive = false;
-		String newRoleMemberIdAssigned = "";
-		if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getMembers())){
-			for(KimDocumentRoleMember documentRoleMember: identityManagementRoleDocument.getMembers()){
-				newRoleMember = new RoleMemberImpl();
-				KimCommonUtils.copyProperties(newRoleMember, documentRoleMember);
-				newRoleMember.setRoleId(identityManagementRoleDocument.getRoleId());
-				if(ObjectUtils.isNotNull(origRoleMembers)){
-					for(RoleMemberImpl origRoleMemberImpl: origRoleMembers){
-						if((origRoleMemberImpl.getRoleId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleId(), newRoleMember.getRoleId())) &&
-							(origRoleMemberImpl.getMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getMemberId(), newRoleMember.getMemberId())) &&
-							!origRoleMemberImpl.isActive()){
-							//TODO: verify if you want to add  && newRoleMember.isActive() condition to if...
-							newRoleMemberIdAssigned = newRoleMember.getRoleMemberId();
-							newRoleMember.setRoleMemberId(origRoleMemberImpl.getRoleMemberId());
-							activatingInactive = true;
-						}
-						if(origRoleMemberImpl.getRoleMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleMemberId(), newRoleMember.getRoleMemberId())){
-							newRoleMember.setVersionNumber(origRoleMemberImpl.getVersionNumber());
-							origRoleMemberImplTemp = origRoleMemberImpl;
-						}
-					}
-				}
-				origAttributes = (origRoleMemberImplTemp==null || origRoleMemberImplTemp.getAttributes()==null)?
-									new ArrayList<RoleMemberAttributeDataImpl>():origRoleMemberImplTemp.getAttributes();
-				newRoleMember.setAttributes(getRoleMemberAttributeData(documentRoleMember.getQualifiers(), origAttributes, activatingInactive, newRoleMemberIdAssigned));
-				newRoleMember.setRoleRspActions(getRoleMemberResponsibilityActions(documentRoleMember, origRoleMemberImplTemp, activatingInactive, newRoleMemberIdAssigned));
-				roleMembers.add(newRoleMember);
-				activatingInactive = false;
-			}
-		}
-		return roleMembers;
-	}
+    protected List<RoleMemberImpl> getRoleMembers(IdentityManagementRoleDocument identityManagementRoleDocument, List<RoleMemberImpl> origRoleMembers){
+        List<RoleMemberImpl> roleMembers = new ArrayList<RoleMemberImpl>();
+        RoleMemberImpl newRoleMember;
+        RoleMemberImpl origRoleMemberImplTemp = null;
+        List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
+        boolean activatingInactive = false;
+        String newRoleMemberIdAssigned = "";
+
+        identityManagementRoleDocument.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()));
+        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( identityManagementRoleDocument.getKimType() );
+
+        if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getMembers())){
+            for(KimDocumentRoleMember documentRoleMember: identityManagementRoleDocument.getMembers()){
+                origRoleMemberImplTemp = null;
+
+                newRoleMember = new RoleMemberImpl();
+                KimCommonUtils.copyProperties(newRoleMember, documentRoleMember);
+                newRoleMember.setRoleId(identityManagementRoleDocument.getRoleId());
+                if(ObjectUtils.isNotNull(origRoleMembers)){
+                    for(RoleMemberImpl origRoleMemberImpl: origRoleMembers){
+                        if((origRoleMemberImpl.getRoleId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleId(), newRoleMember.getRoleId())) &&
+                            (origRoleMemberImpl.getMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getMemberId(), newRoleMember.getMemberId())) &&
+                            (origRoleMemberImpl.getMemberTypeCode()!=null && StringUtils.equals(origRoleMemberImpl.getMemberTypeCode(), newRoleMember.getMemberTypeCode())) &&
+                            !origRoleMemberImpl.isActive() &&
+                            !kimTypeService.validateUniqueAttributes(identityManagementRoleDocument.getKimType().getKimTypeId(),
+                                    documentRoleMember.getQualifierAsAttributeSet(), origRoleMemberImpl.getQualifier())){
+                            //TODO: verify if you want to add  && newRoleMember.isActive() condition to if...
+
+                            newRoleMemberIdAssigned = newRoleMember.getRoleMemberId();
+                            newRoleMember.setRoleMemberId(origRoleMemberImpl.getRoleMemberId());
+                            activatingInactive = true;
+                        }
+                        if(origRoleMemberImpl.getRoleMemberId()!=null && StringUtils.equals(origRoleMemberImpl.getRoleMemberId(), newRoleMember.getRoleMemberId())){
+                            newRoleMember.setVersionNumber(origRoleMemberImpl.getVersionNumber());
+                            origRoleMemberImplTemp = origRoleMemberImpl;
+                        }
+                    }
+                }
+                origAttributes = (origRoleMemberImplTemp==null || origRoleMemberImplTemp.getAttributes()==null)?
+                                    new ArrayList<RoleMemberAttributeDataImpl>():origRoleMemberImplTemp.getAttributes();
+                newRoleMember.setAttributes(getRoleMemberAttributeData(documentRoleMember.getQualifiers(), origAttributes, activatingInactive, newRoleMemberIdAssigned));
+                newRoleMember.setRoleRspActions(getRoleMemberResponsibilityActions(documentRoleMember, origRoleMemberImplTemp, activatingInactive, newRoleMemberIdAssigned));
+                roleMembers.add(newRoleMember);
+                activatingInactive = false;
+            }
+        }
+        return roleMembers;
+    }
 
 	protected List<RoleResponsibilityActionImpl> getRoleMemberResponsibilityActions(
 			KimDocumentRoleMember documentRoleMember, RoleMemberImpl origRoleMemberImplTemp, boolean activatingInactive, String newRoleMemberIdAssigned){
@@ -2212,9 +2219,9 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					newRoleMemberAttributeData.setRoleMemberId(memberRoleQualifier.getRoleMemberId());
 					newRoleMemberAttributeData.setKimTypeId(memberRoleQualifier.getKimTypId());
 					newRoleMemberAttributeData.setKimAttributeId(memberRoleQualifier.getKimAttrDefnId());
-					
+
 					updateAttrValIfNecessary(newRoleMemberAttributeData);
-					
+
 					if(ObjectUtils.isNotNull(origAttributes)){
 						for(RoleMemberAttributeDataImpl origAttribute: origAttributes){
 							if(activatingInactive && StringUtils.equals(origAttribute.getKimAttributeId(), newRoleMemberAttributeData.getKimAttributeId()) &&
@@ -2233,11 +2240,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		return roleMemberAttributeDataList;
 	}
-	
+
 	/**
 	 * Determines if the attribute value on the attribute data should be updated; if so, it performs some attribute value formatting.
 	 * In the default implementation, this method formats checkbox controls
-	 * 
+	 *
 	 * @param roleMemberAttributeData a role member qualifier attribute to update
 	 */
 	protected void updateAttrValIfNecessary(RoleMemberAttributeDataImpl roleMemberAttributeData) {
@@ -2248,7 +2255,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 		}
 	}
-	
+
 	protected void formatAttrValIfNecessary(KimDocumentRoleQualifier roleQualifier) {
 		final AttributeDefinition attributeDefinition = getKNSAttributeDefinition(roleQualifier.getKimTypId(), roleQualifier.getKimAttrDefnId());
 		if (attributeDefinition != null) {
@@ -2257,18 +2264,18 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			}
 		}
 	}
-	
+
 	protected void formatCheckboxAttributeData(KimDocumentRoleQualifier roleQualifier) {
 		if (roleQualifier.getAttrVal().equals(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE)) {
 			roleQualifier.setAttrVal(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE_DISPLAY);
-		} else if (roleQualifier.getAttrVal().equals(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE)) {  
-			roleQualifier.setAttrVal(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY);     
-		}  
+		} else if (roleQualifier.getAttrVal().equals(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE)) {
+			roleQualifier.setAttrVal(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY);
+		}
 	}
-	
+
 	/**
 	 * Finds the KNS attribute used to render the given KimAttributeData
-	 * 
+	 *
 	 * @param roleMemberAttributeData a qualifier's attribute information
 	 * @return the KNS attribute used to render that qualifier, or null if the AttributeDefinition cannot be determined
 	 */
@@ -2288,16 +2295,16 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Formats the attribute value on this checkbox attribute, changing "on" to "Y" and "off" to "N"
-	 * 
-	 * @param roleMemberAttributeData the attribute data to format the attribute value of 
+	 *
+	 * @param roleMemberAttributeData the attribute data to format the attribute value of
 	 */
 	protected void convertCheckboxAttributeData(RoleMemberAttributeDataImpl roleMemberAttributeData) {
 		if (roleMemberAttributeData.getAttributeValue().equalsIgnoreCase(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE_DISPLAY)) {
 			roleMemberAttributeData.setAttributeValue(KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE);
-		} else if (roleMemberAttributeData.getAttributeValue().equalsIgnoreCase(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY)) { 
+		} else if (roleMemberAttributeData.getAttributeValue().equalsIgnoreCase(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY)) {
 			roleMemberAttributeData.setAttributeValue(KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE);
 		}
 	}
@@ -2419,6 +2426,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		identityManagementGroupDocument.setGroupTypeName(kimGroupImpl.getKimTypeInfo().getName());
 		identityManagementGroupDocument.setGroupTypeId(kimGroupImpl.getKimTypeInfo().getKimTypeId());
 		identityManagementGroupDocument.setGroupName(kimGroupImpl.getGroupName());
+		identityManagementGroupDocument.setGroupDescription(kimGroupImpl.getGroupDescription());
 		identityManagementGroupDocument.setActive(kimGroupImpl.isActive());
 		identityManagementGroupDocument.setGroupNamespace(kimGroupImpl.getNamespaceCode());
 		identityManagementGroupDocument.setMembers(loadGroupMembers(identityManagementGroupDocument, kimGroupImpl.getMembers()));
@@ -2453,6 +2461,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 					pndMember.setGroupId(member.getGroupId());
 					pndMember.setMemberId(member.getMemberId());
 					pndMember.setMemberName(getMemberName(member.getMemberTypeCode(), member.getMemberId()));
+					pndMember.setMemberFullName(getMemberFullName(member.getMemberTypeCode(), member.getMemberId()));
 					pndMember.setMemberTypeCode(member.getMemberTypeCode());
 					pndMember.setEdit(true);
 					pndMembers.add(pndMember);
@@ -2531,6 +2540,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		kimGroup.setKimTypeId(kimType.getKimTypeId());
 		kimGroup.setNamespaceCode(identityManagementGroupDocument.getGroupNamespace());
 		kimGroup.setGroupName(identityManagementGroupDocument.getGroupName());
+		kimGroup.setGroupDescription(identityManagementGroupDocument.getGroupDescription());
 		kimGroup.setGroupAttributes(getGroupAttributeData(identityManagementGroupDocument, origGroup.getGroupAttributes()));
 
 		List<String> oldIds = null;

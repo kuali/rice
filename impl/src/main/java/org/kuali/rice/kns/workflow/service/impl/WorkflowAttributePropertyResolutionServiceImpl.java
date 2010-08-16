@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
-import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
@@ -45,16 +44,20 @@ import org.kuali.rice.kns.datadictionary.RoutingTypeDefinition;
 import org.kuali.rice.kns.datadictionary.SearchingTypeDefinition;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KualiDecimal;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
+import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 
 /**
  * The default implementation of the WorkflowAttributePropertyResolutionServiceImpl
  */
 public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowAttributePropertyResolutionService {
     private PersistenceStructureService persistenceStructureService;
+    private BusinessObjectMetaDataService businessObjectMetaDataService;
 
     /**
      * Using the proper RoutingTypeDefinition for the current routing node of the document, aardvarks out the proper routing type qualifiers
@@ -450,7 +453,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
         final String tail = splitPath[1];
         
         if (object instanceof PersistableBusinessObject && tail != null) {
-            if (persistenceStructureService.hasReference(object.getClass(), head)) {
+            if (getBusinessObjectMetaDataService().getBusinessObjectRelationship((BusinessObject) object, head) != null) {
                 ((PersistableBusinessObject)object).refreshReferenceObject(head);
 
             }
@@ -605,5 +608,12 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
             currentRoutingAttributeIndex = 0;
             checkPoints.clear();
         }
+    }
+
+    protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
+        if ( businessObjectMetaDataService == null ) {
+            businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+        }
+        return businessObjectMetaDataService;
     }
 }

@@ -62,23 +62,22 @@ public class DataDictionary {
 	// logger
 	private static final Log LOG = LogFactory.getLog(DataDictionary.class);
 
-	// keyed by BusinessObject class
-	private Map<String, BusinessObjectEntry> businessObjectEntries;
-	// keyed by documentTypeName
-	private Map<String, DocumentEntry> documentEntries;
-	// keyed by other things
-	private Map<Class, DocumentEntry> documentEntriesByBusinessObjectClass;
-	private Map<Class, DocumentEntry> documentEntriesByMaintainableClass;
-	private Map<String, DataDictionaryEntry> entriesByJstlKey;
-	
-	// keyed by a class object, and the value is a set of classes that may block the class represented by the key from inactivation 
-	private Map<Class, Set<InactivationBlockingMetadata>> inactivationBlockersForClass;
-	
+	/**
+	 * The encapsulation of DataDictionary indices
+	 */
+	private DataDictionaryIndex ddIndex = new DataDictionaryIndex(ddBeans);
+
+	/**
+	 * The DataDictionaryMapper
+	 * The default mapper simply consults the initialized indices
+	 * on workflow document type
+	 */
+	private DataDictionaryMapper ddMapper = new DataDictionaryIndexMapper();
+
 	private List<String> configFileLocations = new ArrayList<String>();
 
-    public DataDictionary() {}
-    
-	
+    public DataDictionary() { }
+
 	public List<String> getConfigFileLocations() {
         return this.configFileLocations;
     }
@@ -91,6 +90,14 @@ public class DataDictionary {
         indexSource( location );
     }
 
+    /**
+     * Sets the DataDictionaryMapper
+     * @param mapper the datadictionary mapper
+     */
+    public void setDataDictionaryMapper(DataDictionaryMapper mapper) {
+    	this.ddMapper = mapper;
+    }
+    
     private void indexSource(String sourceName) throws IOException {        
         if (sourceName == null) {
             throw new DataDictionaryException("Source Name given is null");
@@ -151,100 +158,13 @@ public class DataDictionary {
         }
         LOG.info( "Completed DD XML File Load" );
         if ( allowConcurrentValidation ) {
-            Thread t = new Thread( new DDValidationRunnable() );
+            Thread t = new Thread(ddIndex);
             t.start();
         } else {
-            new DDValidationRunnable().run();
+            ddIndex.run();
         }
     }
-	
-    private class DDValidationRunnable implements Runnable {
-
-        public void run() {
-            LOG.info( "Starting DD Index Building" );
-            buildDDIndicies();
-            LOG.info( "Completed DD Index Building" );
-//            LOG.info( "Starting DD Validation" );
-//            validateDD();
-//            LOG.info( "Ending DD Validation" );
-            LOG.info( "Started DD Inactivation Blocking Index Building" );
-            buildDDInactivationBlockingIndices();
-            LOG.info( "Completed DD Inactivation Blocking Index Building" );
-        }
-        
-    }
-    
-    private void buildDDIndicies() {
-        // primary indices
-        businessObjectEntries = new HashMap<String, BusinessObjectEntry>();
-        documentEntries = new HashMap<String, DocumentEntry>();
-
-        // alternate indices
-        documentEntriesByBusinessObjectClass = new HashMap<Class, DocumentEntry>();
-        documentEntriesByMaintainableClass = new HashMap<Class, DocumentEntry>();
-        entriesByJstlKey = new HashMap<String, DataDictionaryEntry>();
-        
-        // loop over all beans in the context
-        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
-        for ( BusinessObjectEntry entry : boBeans.values() ) {
-            //String entryName = (entry.getBaseBusinessObjectClass() != null) ? entry.getBaseBusinessObjectClass().getName() : entry.getBusinessObjectClass().getName();
-            if ((businessObjectEntries.get(entry.getJstlKey()) != null) 
-                    && !((BusinessObjectEntry)businessObjectEntries.get(entry.getJstlKey())).getBusinessObjectClass().equals(entry.getBusinessObjectClass())) {
-                throw new DataDictionaryException(new StringBuffer("Two business object classes may not share the same jstl key: this=").append(entry.getBusinessObjectClass()).append(" / existing=").append(((BusinessObjectEntry)businessObjectEntries.get(entry.getJstlKey())).getBusinessObjectClass()).toString());
-            }
-
-            businessObjectEntries.put(entry.getBusinessObjectClass().getName(), entry);
-            businessObjectEntries.put(entry.getBusinessObjectClass().getSimpleName(), entry);
-            // If a "base" class is defined for the entry, index the entry by that class as well.
-            if (entry.getBaseBusinessObjectClass() != null) {
-                businessObjectEntries.put(entry.getBaseBusinessObjectClass().getName(), entry);
-                businessObjectEntries.put(entry.getBaseBusinessObjectClass().getSimpleName(), entry);
-            }
-            entriesByJstlKey.put(entry.getJstlKey(), entry);
-        }
-        Map<String,DocumentEntry> docBeans = ddBeans.getBeansOfType(DocumentEntry.class);
-        for ( DocumentEntry entry : docBeans.values() ) {
-            String entryName = entry.getDocumentTypeName();
-
-            if ((entry instanceof TransactionalDocumentEntry) 
-                    && (documentEntries.get(entry.getFullClassName()) != null) 
-                    && !((DocumentEntry)documentEntries.get(entry.getFullClassName())).getDocumentTypeName()
-                            .equals(entry.getDocumentTypeName())) {
-                throw new DataDictionaryException(new StringBuffer("Two transactional document types may not share the same document class: this=")
-                        .append(entry.getDocumentTypeName())
-                        .append(" / existing=")
-                        .append(((DocumentEntry)documentEntries.get(entry.getDocumentClass().getName())).getDocumentTypeName()).toString());
-            }
-            if ((entriesByJstlKey.get(entry.getJstlKey()) != null) && !((DocumentEntry)documentEntries.get(entry.getJstlKey())).getDocumentTypeName().equals(entry.getDocumentTypeName())) {
-                throw new DataDictionaryException(new StringBuffer("Two document types may not share the same jstl key: this=").append(entry.getDocumentTypeName()).append(" / existing=").append(((DocumentEntry)documentEntries.get(entry.getJstlKey())).getDocumentTypeName()).toString());
-            }
-
-            documentEntries.put(entryName, entry);
-            //documentEntries.put(entry.getFullClassName(), entry);
-            documentEntries.put(entry.getDocumentClass().getName(), entry);
-            if (entry.getBaseDocumentClass() != null) {
-            	documentEntries.put(entry.getBaseDocumentClass().getName(), entry);
-            }
-            entriesByJstlKey.put(entry.getJstlKey(), entry);
-
-            if (entry instanceof TransactionalDocumentEntry) {
-                TransactionalDocumentEntry tde = (TransactionalDocumentEntry) entry;
-
-                documentEntries.put(tde.getDocumentClass().getSimpleName(), entry);
-                if (tde.getBaseDocumentClass() != null) {
-                	documentEntries.put(tde.getBaseDocumentClass().getSimpleName(), entry);
-                }
-            }
-            if (entry instanceof MaintenanceDocumentEntry) {
-                MaintenanceDocumentEntry mde = (MaintenanceDocumentEntry) entry;
-
-                documentEntriesByBusinessObjectClass.put(mde.getBusinessObjectClass(), entry);
-                documentEntriesByMaintainableClass.put(mde.getMaintainableClass(), entry);
-                documentEntries.put(mde.getBusinessObjectClass().getSimpleName() + "MaintenanceDocument", entry);
-            }
-        }
-    }
-    
+	    
     static boolean validateEBOs = true;
     
     public void validateDD( boolean validateEbos ) {
@@ -276,22 +196,7 @@ public class DataDictionary {
 	 * @return BusinessObjectEntry for the named class, or null if none exists
 	 */
 	public BusinessObjectEntry getBusinessObjectEntry(String className ) {
-		BusinessObjectEntry entry = getBusinessObjectEntryForConcreteClass(className);
-		if (entry == null) {
-			Class boClass = null;
-			try{
-				boClass = Class.forName(className);
-				ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(boClass);
-				if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)) {
-					return responsibleModuleService.getExternalizableBusinessObjectDictionaryEntry(boClass);
-				}
-			} catch(ClassNotFoundException cnfex){
-			}
-			return null;
-		}
-		else {
-			return entry;
-		}
+		return ddMapper.getBusinessObjectEntry(ddIndex, className);
 	}
 
 	/**
@@ -301,34 +206,21 @@ public class DataDictionary {
 	 * @return
 	 */
 	public BusinessObjectEntry getBusinessObjectEntryForConcreteClass(String className){
-		if (StringUtils.isBlank(className)) {
-			throw new IllegalArgumentException("invalid (blank) className");
-		}
-		if ( LOG.isDebugEnabled() ) {
-		    LOG.debug("calling getBusinessObjectEntry '" + className + "'");
-		}
-		int index = className.indexOf("$$");
-		if (index >= 0) {
-			className = className.substring(0, index);
-		}
-		return businessObjectEntries.get(className);
+		return ddMapper.getBusinessObjectEntryForConcreteClass(ddIndex, className);
 	}
 	
 	/**
 	 * @return List of businessObject classnames
 	 */
 	public List<String> getBusinessObjectClassNames() {
-		List classNames = new ArrayList();
-		classNames.addAll(businessObjectEntries.keySet());
-
-		return Collections.unmodifiableList(classNames);
+		return ddMapper.getBusinessObjectClassNames(ddIndex);
 	}
 
 	/**
 	 * @return Map of (classname, BusinessObjectEntry) pairs
 	 */
 	public Map<String, BusinessObjectEntry> getBusinessObjectEntries() {
-		return businessObjectEntries;
+		return ddMapper.getBusinessObjectEntries(ddIndex);
 	}
 
 	/**
@@ -337,53 +229,26 @@ public class DataDictionary {
 	 *         exists
 	 */
 	public DataDictionaryEntry getDictionaryObjectEntry(String className) {
-		if (StringUtils.isBlank(className)) {
-			throw new IllegalArgumentException("invalid (blank) className");
-		}
-		if ( LOG.isDebugEnabled() ) {
-		    LOG.debug("calling getDictionaryObjectEntry '" + className + "'");
-		}
-		int index = className.indexOf("$$");
-		if (index >= 0) {
-			className = className.substring(0, index);
-		}
-
-		// look in the JSTL key cache
-		DataDictionaryEntry entry = entriesByJstlKey.get(className);
-		// check the BO list
-		if ( entry == null ) {
-		    entry = getBusinessObjectEntry(className);
-		}
-		// check the document list
-		if ( entry == null ) {
-		    entry = getDocumentEntry(className);
-		}
-		return entry;
+		return ddMapper.getDictionaryObjectEntry(ddIndex, className);
 	}
 
+	/**
+	 * Returns the KNS document entry for the given lookup key.  The documentTypeDDKey is interpreted
+	 * successively in the following ways until a mapping is found (or none if found):
+	 * <ol>
+	 * <li>KEW/workflow document type</li>
+	 * <li>business object class name</li>
+	 * <li>maintainable class name</li>
+	 * </ol>
+	 * This mapping is compiled when DataDictionary files are parsed on startup (or demand).  Currently this
+	 * means the mapping is static, and one-to-one (one KNS document maps directly to one and only
+	 * one key).
+	 * 
+	 * @param documentTypeDDKey the KEW/workflow document type name
+	 * @return the KNS DocumentEntry if it exists
+	 */
 	public DocumentEntry getDocumentEntry(String documentTypeDDKey ) {
-		if (StringUtils.isBlank(documentTypeDDKey)) {
-			throw new IllegalArgumentException("invalid (blank) documentTypeName");
-		}
-		if ( LOG.isDebugEnabled() ) {
-		    LOG.debug("calling getDocumentEntry by documentTypeName '" + documentTypeDDKey + "'");
-		}
-
-		DocumentEntry de = documentEntries.get(documentTypeDDKey);	
-		
-		if ( de == null ) {
-		    try {
-    		    Class clazz = Class.forName( documentTypeDDKey );
-    		    de = documentEntriesByBusinessObjectClass.get(clazz);
-    		    if ( de == null ) {
-    		        de = documentEntriesByMaintainableClass.get(clazz);
-    		    }
-		    } catch ( ClassNotFoundException ex ) {
-		        LOG.warn( "Unable to find document entry for key: " + documentTypeDDKey );
-		    }
-		}
-		
-        return de;
+		return ddMapper.getDocumentEntry(ddIndex, documentTypeDDKey);
 	}
 
 	/**
@@ -397,18 +262,11 @@ public class DataDictionary {
 	 *         is none
 	 */
 	public MaintenanceDocumentEntry getMaintenanceDocumentEntryForBusinessObjectClass(Class businessObjectClass) {
-		if (businessObjectClass == null) {
-			throw new IllegalArgumentException("invalid (null) businessObjectClass");
-		}
-		if ( LOG.isDebugEnabled() ) {
-		    LOG.debug("calling getDocumentEntry by businessObjectClass '" + businessObjectClass + "'");
-		}
-
-		return (MaintenanceDocumentEntry) documentEntriesByBusinessObjectClass.get(businessObjectClass);
+		return ddMapper.getMaintenanceDocumentEntryForBusinessObjectClass(ddIndex, businessObjectClass);
 	}
 
 	public Map<String, DocumentEntry> getDocumentEntries() {
-		return Collections.unmodifiableMap(this.documentEntries);
+		return ddMapper.getDocumentEntries(ddIndex);
 	}
 
     /**
@@ -744,33 +602,7 @@ public class DataDictionary {
         return p;
     }
 
-    private void buildDDInactivationBlockingIndices() {
-        inactivationBlockersForClass = new HashMap<Class, Set<InactivationBlockingMetadata>>();
-        Map<String,BusinessObjectEntry> boBeans = ddBeans.getBeansOfType(BusinessObjectEntry.class);
-        for ( BusinessObjectEntry entry : boBeans.values() ) {
-            List<InactivationBlockingDefinition> inactivationBlockingDefinitions = entry.getInactivationBlockingDefinitions();
-            if (inactivationBlockingDefinitions != null && !inactivationBlockingDefinitions.isEmpty()) {
-                for (InactivationBlockingDefinition inactivationBlockingDefinition : inactivationBlockingDefinitions) {
-                    registerInactivationBlockingDefinition(inactivationBlockingDefinition);
-                }
-            }
-        }
-    }
-    
-    
-    private void registerInactivationBlockingDefinition(InactivationBlockingDefinition inactivationBlockingDefinition) {
-        Set<InactivationBlockingMetadata> inactivationBlockingDefinitions = inactivationBlockersForClass.get(inactivationBlockingDefinition.getBlockedBusinessObjectClass());
-        if (inactivationBlockingDefinitions == null) {
-            inactivationBlockingDefinitions = new HashSet<InactivationBlockingMetadata>();
-            inactivationBlockersForClass.put(inactivationBlockingDefinition.getBlockedBusinessObjectClass(), inactivationBlockingDefinitions);
-        }
-        boolean duplicateAdd = ! inactivationBlockingDefinitions.add(inactivationBlockingDefinition);
-        if (duplicateAdd) {
-            throw new DataDictionaryException("Detected duplicate InactivationBlockingDefinition for class " + inactivationBlockingDefinition.getBlockingReferenceBusinessObjectClass().getClass().getName());
-        }
-    }
-    
     public Set<InactivationBlockingMetadata> getAllInactivationBlockingMetadatas(Class blockedClass) {
-        return inactivationBlockersForClass.get(blockedClass);
+    	return ddMapper.getAllInactivationBlockingMetadatas(ddIndex, blockedClass);
     }
 }

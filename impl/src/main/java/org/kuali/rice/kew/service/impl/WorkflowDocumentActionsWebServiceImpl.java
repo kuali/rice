@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.ArrayUtils;
+import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
@@ -28,6 +29,7 @@ import org.kuali.rice.kew.dto.ReturnPointDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocumentActions;
@@ -389,6 +391,16 @@ public class WorkflowDocumentActionsWebServiceImpl implements WorkflowDocumentAc
 
 	public void superUserReturnToPreviousNode(String principalId, Long documentId, String destinationNodeName, String annotation) throws WorkflowException {
 		superUserReturnToPreviousNode(principalId, documentId, destinationNodeName, annotation, true);
+	}
+
+	/**
+	 * This mehtod indexes a document based on the documentId
+	 * 
+	 * @see org.kuali.rice.kew.service.WorkflowDocumentActions#indexDocument(java.lang.Long)
+	 */	
+	public void indexDocument(Long documentId) {
+		SearchableAttributeProcessingService searchableAttService = (SearchableAttributeProcessingService) MessageServiceNames.getSearchableAttributeService(KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId));
+		searchableAttService.indexDocument(documentId);		
 	}
 
 }

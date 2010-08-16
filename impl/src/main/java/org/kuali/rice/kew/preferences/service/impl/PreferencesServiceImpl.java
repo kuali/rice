@@ -76,8 +76,8 @@ public class PreferencesServiceImpl implements PreferencesService {
     private static final String PRIMARY_DELEGATE_FILTER_KEY = "PRIMARY_DELEGATE_FILTER";
     public static final String USE_OUT_BOX = "USE_OUT_BOX";
     private static final String COLUMN_LAST_APPROVED_DATE_KEY = "LAST_APPROVED_DATE_COL_SHOW_NEW";
-    public static final String COLUMN_CURRENT_NODE_KEY = "LAST_APPROVED_DATE_COL_SHOW_NEW";
 
+    public static final String COLUMN_CURRENT_NODE_KEY = "CURRENT_NODE_COL_SHOW_NEW";
 
     public Preferences getPreferences(String principalId) {
         if ( LOG.isDebugEnabled() ) {
@@ -211,6 +211,7 @@ public class PreferencesServiceImpl implements PreferencesService {
 
     private void validate(Preferences preferences) {
         LOG.debug("validating preferences");
+        
         Collection errors = new ArrayList();
         try {
             new Integer(preferences.getRefreshRate().trim());
@@ -223,14 +224,17 @@ public class PreferencesServiceImpl implements PreferencesService {
         }
 
         try {
-            new Integer(preferences.getPageSize().trim());
+            if(new Integer(preferences.getPageSize().trim()) == 0){
+            	errors.add(new WorkflowServiceErrorImpl("ActionList Page Size must be non-zero ", ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM));
+            }            
         } catch (NumberFormatException e) {
-            errors.add(new WorkflowServiceErrorImpl("ActionList Refresh Rate must be in whole " +
+            errors.add(new WorkflowServiceErrorImpl("ActionList Page Size must be in whole " +
                     "minutes", ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM));
         } catch (NullPointerException e1) {
-            errors.add(new WorkflowServiceErrorImpl("ActionList Refresh Rate must be in whole " +
+            errors.add(new WorkflowServiceErrorImpl("ActionList Page Size must be in whole " +
                     "minutes", ERR_KEY_ACTION_LIST_PAGE_SIZE_WHOLE_NUM));
         }
+      
         LOG.debug("end validating preferences");
         if (! errors.isEmpty()) {
             throw new WorkflowServiceErrorException("Preference Validation Error", errors);

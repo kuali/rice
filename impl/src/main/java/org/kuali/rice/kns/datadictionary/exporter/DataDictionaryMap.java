@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.kns.datadictionary.exporter;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.kns.service.DataDictionaryService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DataDictionaryMap extends DataDictionaryMapBase {
 
@@ -48,7 +48,7 @@ public class DataDictionaryMap extends DataDictionaryMapBase {
                 if ( subMap == null ) { // recheck in case it was loaded by another thread while this one was blocked
                     DataDictionaryEntry entry = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry( key.toString() );
                     // if that fails try just using the simple name if a full class name was passed
-                    if ( entry == null && key.toString().indexOf( "." ) != -1 ) {
+                    if ( entry == null && key.toString().contains(".")) {
                     	entry = dataDictionaryService.getDataDictionary().getDictionaryObjectEntry( StringUtils.substringAfterLast( key.toString(), "." ) );
                     }
                     if ( entry != null ) {

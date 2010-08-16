@@ -311,6 +311,24 @@ public interface DictionaryValidationService {
      * 
      */
     public boolean validateDefaultExistenceChecks(BusinessObject bo);
+    
+	/**
+	 * 
+	 * Does an existence check against all references configured as a default existence check in the maintenance
+	 * document data dictionary file for the given business object
+	 * 
+	 * Appropriate errors will also be placed in the GlobalVariables.ErrorMap.
+	 * 
+	 * This method assumes that you already have the errorPath set exactly as desired, and adds new errors to the errorMap with no
+	 * prefix, other than what has already been pushed onto the errorMap.
+	 * 
+	 * @param bo parent business object instance to retrieve default checks for
+	 * @param newCollectionItem new collection line to validate
+	 * @param collectionName name of the collection in the parent
+	 * @return true if all passed existence tests, false if any failed
+	 * 
+	 */
+	public boolean validateDefaultExistenceChecksForNewCollectionItem(BusinessObject bo, BusinessObject newCollectionItem, String collectionName);
 
 	/**
 	 * 

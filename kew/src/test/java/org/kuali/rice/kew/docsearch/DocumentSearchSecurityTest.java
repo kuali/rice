@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -42,6 +34,8 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+
+import java.util.*;
 
 /**
  * This is a test class to test the document search security and row filtering
@@ -338,8 +332,8 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("One row should have been filtered due to security", 1, criteria.getSecurityFilteredRows());
     }
 
-    private Map<String,List> constructRulesByUserNetworkId() {
-        Map<String,List> rolesByUserNetworkId = new HashMap<String,List>();
+    private Map<String, List<String>> constructRulesByUserNetworkId() {
+        Map<String, List<String>> rolesByUserNetworkId = new HashMap<String, List<String>>();
         // user with no roles to test general user access
         rolesByUserNetworkId.put("user1",Arrays.asList(new String[]{}));
         // users with single role only
@@ -413,7 +407,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         assertEquals("Should retrive one record from search", 1, resultComponents.getSearchResults().size());
         assertEquals("No rows should have been filtered due to security", 0, criteria.getSecurityFilteredRows());
 
-        Map<String,List> rolesByNetworkId = constructRulesByUserNetworkId();
+        Map<String, List<String>> rolesByNetworkId = constructRulesByUserNetworkId();
         for (String networkId : rolesByNetworkId.keySet()) {
             searchUserNetworkId = networkId;
             userRoles = rolesByNetworkId.get(networkId);

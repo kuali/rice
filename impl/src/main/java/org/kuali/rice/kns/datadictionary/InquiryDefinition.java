@@ -41,6 +41,8 @@ public class InquiryDefinition extends DataDictionaryDefinitionBase {
     protected Class<? extends Inquirable> inquirableClass;
     protected Class<? extends InquiryPresentationController> presentationControllerClass;
     protected Class<? extends InquiryAuthorizer> authorizerClass;
+    
+    protected boolean translateCodes = true;
 
     public InquiryDefinition() {
     }
@@ -164,4 +166,15 @@ public class InquiryDefinition extends DataDictionaryDefinitionBase {
 			Class<? extends InquiryAuthorizer> authorizerClass) {
 		this.authorizerClass = authorizerClass;
 	}
+
+
+	public boolean isTranslateCodes() {
+		return this.translateCodes;
+	}
+
+
+	public void setTranslateCodes(boolean translateCodes) {
+		this.translateCodes = translateCodes;
+	}
+	
 }

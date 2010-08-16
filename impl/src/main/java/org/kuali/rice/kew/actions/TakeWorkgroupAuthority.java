@@ -47,7 +47,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
     
     /**
      * @param routeHeader
-     * @param user
+     * @param principal
      */
     public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal) {
         super(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, principal);
@@ -55,9 +55,9 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
 
     /**
      * @param routeHeader
-     * @param user
+     * @param principal
      * @param annotation
-     * @param workgroup
+     * @param groupId
      */
     public TakeWorkgroupAuthority(DocumentRouteHeaderValue routeHeader, KimPrincipal principal, String annotation, String groupId) {
         super(KEWConstants.ACTION_TAKEN_TAKE_WORKGROUP_AUTHORITY_CD, routeHeader, principal, annotation);
@@ -90,11 +90,12 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
 //            throw new InvalidActionTakenException(getUser().getAuthenticationUserId() + " not a member of workgroup " + workgroup.getDisplayName());
 //        }
 
-        List documentRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
-        List workgroupRequests = new ArrayList();
-        for (Iterator iter = documentRequests.iterator(); iter.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
-            if (actionRequest.isGroupRequest() && actionRequest.getGroup().getGroupId().equals(groupId)) {
+        List<ActionRequestValue> documentRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
+        List<ActionRequestValue> workgroupRequests = new ArrayList<ActionRequestValue>();
+        for (ActionRequestValue actionRequest : documentRequests)
+        {
+            if (actionRequest.isGroupRequest() && actionRequest.getGroup().getGroupId().equals(groupId))
+            {
                 workgroupRequests.add(actionRequest);
             }
         }
@@ -103,12 +104,13 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
         notifyActionTaken(actionTaken);
 
         ActionListService actionListService = KEWServiceLocator.getActionListService();
-        Collection actionItems = actionListService.findByRouteHeaderId(getRouteHeaderId());
-        for (Iterator iter = actionItems.iterator(); iter.hasNext();) {
-            ActionItem actionItem = (ActionItem) iter.next();
+        Collection<ActionItem> actionItems = actionListService.findByRouteHeaderId(getRouteHeaderId());
+        for (ActionItem actionItem : actionItems)
+        {
             //delete all requests for this workgroup on this document not to this user
             if (actionItem.isWorkgroupItem() && actionItem.getGroupId().equals(groupId) &&
-                    ! actionItem.getPrincipalId().equals(getPrincipal().getPrincipalId())) {
+                    !actionItem.getPrincipalId().equals(getPrincipal().getPrincipalId()))
+            {
                 actionListService.deleteActionItem(actionItem);
             }
         }

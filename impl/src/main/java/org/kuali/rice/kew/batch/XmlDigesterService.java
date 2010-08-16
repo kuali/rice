@@ -16,9 +16,9 @@
  */
 package org.kuali.rice.kew.batch;
 
-import java.io.IOException;
-
 import org.kuali.rice.kew.xml.XmlLoader;
+
+import java.io.IOException;
 
 
 /**
@@ -42,8 +42,8 @@ public interface XmlDigesterService {
      * as that user if the loader supports it.
      *
      * @param xmlLoader
-     * @param xmlDoc
-     * @param user
+     * @param xmlDocCollection
+     * @param principalId
      * @throws IOException
      */
     public void digest(XmlLoader xmlLoader, XmlDocCollection xmlDocCollection, String principalId) throws IOException;

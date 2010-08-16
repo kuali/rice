@@ -17,13 +17,6 @@
 package org.kuali.rice.kew.engine;
 
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -32,6 +25,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+
+import java.util.*;
 
 
 public class ParallelRoutingTest extends KEWTestCase {
@@ -202,7 +197,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         assertTrue("Document should be initiated", document.stateIsInitiated());
         assertEquals("Should be no action requests.", 0, document.getActionRequests().length);
         assertEquals("Invalid route level.", new Integer(0), document.getRouteHeader().getDocRouteLevel());
-        Collection nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
+        Collection<? extends Object> nodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(document.getRouteHeaderId());
         assertEquals("Wrong number of active nodes.", 1, nodeInstances.size());
         document.routeDocument("");
         
@@ -269,7 +264,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         
         // at this point the document should pass the split, and end up at the WorkflowDocument2 node and the AdHocApproversJoin node
         // after bypassing the AdHocJoinPoint
-        Set nodeNames = new HashSet(Arrays.asList(document.getNodeNames()));
+        Set<? extends String> nodeNames = new HashSet<String>(Arrays.asList(document.getNodeNames()));
         assertEquals("There should be two node names.", 2, nodeNames.size());
         assertTrue("Should be at WorkflowDocument2 node.", nodeNames.contains("WorkflowDocument2"));
         assertTrue("Should be at WorkflowDocument2 node.", nodeNames.contains("AdHocApproversJoin"));
@@ -281,7 +276,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         document.approve("");
         
         // the document should still be at the same nodes
-        nodeNames = new HashSet(Arrays.asList(document.getNodeNames()));
+        nodeNames = new HashSet<String>(Arrays.asList(document.getNodeNames()));
         assertEquals("There should be two node names.", 2, nodeNames.size());
         assertTrue("Should be at WorkflowDocument2 node.", nodeNames.contains("WorkflowDocument2"));
         assertTrue("Should be at WorkflowDocument2 node.", nodeNames.contains("AdHocApproversJoin"));
@@ -292,7 +287,7 @@ public class ParallelRoutingTest extends KEWTestCase {
         document.approve("");
         
         // the document should now be at WorkflowDocumentFinal with a request to xqi
-        nodeNames = new HashSet(Arrays.asList(document.getNodeNames()));
+        nodeNames = new HashSet<String>(Arrays.asList(document.getNodeNames()));
         assertEquals("There should be one node name.", 1, nodeNames.size());
         assertTrue("Should be at WorkflowDocumentFinal node.", nodeNames.contains("WorkflowDocumentFinal"));
         

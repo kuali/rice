@@ -190,12 +190,12 @@ public class ModuleServiceBase implements ModuleService {
 	}
 
 	protected String getInquiryUrl(Class inquiryBusinessObjectClass){
-		String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.KUALI_RICE_URL_KEY);
+		String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
 		String inquiryUrl = riceBaseUrl;
 		if (!inquiryUrl.endsWith("/")) {
 			inquiryUrl = inquiryUrl + "/";
 		}
-		return inquiryUrl + KNSConstants.INQUIRY_ACTION;
+		return inquiryUrl + "kr/" + KNSConstants.INQUIRY_ACTION;
 	}
 
 	/**
@@ -206,16 +206,16 @@ public class ModuleServiceBase implements ModuleService {
 	public String getExternalizableBusinessObjectLookupUrl(Class inquiryBusinessObjectClass, Map<String, String> parameters) {
 		Properties urlParameters = new Properties();
 
-		String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.KUALI_RICE_URL_KEY);
+		String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
 		String lookupUrl = riceBaseUrl;
 		if (!lookupUrl.endsWith("/")) {
 			lookupUrl = lookupUrl + "/";
 		}
 		if (parameters.containsKey(KNSConstants.MULTIPLE_VALUE)) {
-			lookupUrl = lookupUrl + KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
+			lookupUrl = lookupUrl + "kr/" + KNSConstants.MULTIPLE_VALUE_LOOKUP_ACTION;
 		}
 		else {
-			lookupUrl = lookupUrl + KNSConstants.LOOKUP_ACTION;
+			lookupUrl = lookupUrl + "kr/" + KNSConstants.LOOKUP_ACTION;
 		}
 		for (String paramName : parameters.keySet()) {
 			urlParameters.put(paramName, parameters.get(paramName));

@@ -53,6 +53,8 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
     
     // for issue KULRice3070, to enable deleting a db record using maintenance doc
     protected boolean allowsRecordDeletion = false;
+    
+    protected boolean translateCodes = false;
 
 	public MaintenanceDocumentEntry() {
         super();
@@ -326,8 +328,13 @@ public class MaintenanceDocumentEntry extends DocumentEntry {
 	public void setAllowsRecordDeletion(boolean allowsRecordDeletion) {
 		this.allowsRecordDeletion = allowsRecordDeletion;
 	}
-	
 
+	public boolean isTranslateCodes() {
+		return this.translateCodes;
+	}
 
+	public void setTranslateCodes(boolean translateCodes) {
+		this.translateCodes = translateCodes;
+	}
 
 }

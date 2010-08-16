@@ -15,11 +15,16 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.converters.MarshallingContext;
+import com.thoughtworks.xstream.converters.UnmarshallingContext;
+import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
+import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
+import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
+import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
+import com.thoughtworks.xstream.io.HierarchicalStreamReader;
+import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
+import com.thoughtworks.xstream.mapper.Mapper;
 import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.kuali.rice.kns.document.Document;
@@ -32,16 +37,10 @@ import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluat
 import org.kuali.rice.kns.util.documentserializer.PropertyType;
 import org.kuali.rice.kns.util.documentserializer.SerializationState;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.converters.MarshallingContext;
-import com.thoughtworks.xstream.converters.UnmarshallingContext;
-import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
-import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
-import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
-import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
-import com.thoughtworks.xstream.io.HierarchicalStreamReader;
-import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
-import com.thoughtworks.xstream.mapper.Mapper;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Default implementation of the {@link DocumentSerializerService}.  If no &lt;workflowProperties&gt; have been defined in the
@@ -75,7 +74,7 @@ public abstract class SerializerServiceBase implements SerializerService  {
             super(mapper, reflectionProvider);
         }
         public boolean canConvert(Class clazz) {
-            return clazz.getName().indexOf("CGLIB") > -1 || clazz.getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
+            return clazz.getName().contains("CGLIB") || clazz.getName().equals("org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl");
         }
 
         public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {

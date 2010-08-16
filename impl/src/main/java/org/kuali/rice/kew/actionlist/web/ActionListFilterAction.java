@@ -34,6 +34,7 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
+import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -142,10 +143,10 @@ public class ActionListFilterAction extends KualiAction {
         }
     }
 
-    private List getUserWorkgroupsDropDownList(String principalId) {
+    private List<? extends KeyValue> getUserWorkgroupsDropDownList(String principalId) {
     	List<String> userWorkgroups =
             KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
-        List<KeyValue> sortedUserWorkgroups = new ArrayList();
+        List<KeyValue> sortedUserWorkgroups = new ArrayList<KeyValue>();
     	KeyValue keyValue = null;
     	keyValue = new KeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
     	sortedUserWorkgroups.add(keyValue);
@@ -163,10 +164,11 @@ public class ActionListFilterAction extends KualiAction {
     	return sortedUserWorkgroups;
     }
 
-    private List getWebFriendlyRecipients(Collection recipients) {
-        Collection newRecipients = new ArrayList(recipients.size());
-        for (Iterator iterator = recipients.iterator(); iterator.hasNext();) {
-            newRecipients.add(new WebFriendlyRecipient( iterator.next()));
+    private List getWebFriendlyRecipients(Collection<Recipient> recipients) {
+        Collection<Recipient> newRecipients = new ArrayList<Recipient>(recipients.size());
+        for (Recipient recipient : recipients)
+        {
+            newRecipients.add(new WebFriendlyRecipient(recipient));
         }
         List recipientList = new ArrayList(newRecipients);
         Collections.sort(recipientList, new Comparator() {

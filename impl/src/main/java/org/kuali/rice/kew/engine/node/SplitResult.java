@@ -27,18 +27,18 @@ import java.util.List;
  */
 public class SplitResult extends SimpleResult {
 
-	private List branchNames = new ArrayList();
+	private List<String> branchNames = new ArrayList<String>();
 	
-	public SplitResult(List branchNames) {
+	public SplitResult(List<String> branchNames) {
 		super(true);
 		this.branchNames = branchNames;
 	}
 
-	public List getBranchNames() {
+	public List<String> getBranchNames() {
 		return branchNames;
 	}
 
-	protected void setBranchNames(List branchNames) {
+	protected void setBranchNames(List<String> branchNames) {
 		this.branchNames = branchNames;
 	}
 	

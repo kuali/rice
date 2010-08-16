@@ -17,10 +17,8 @@
 package org.kuali.rice.kew.messaging.exceptionhandling;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 
@@ -113,7 +111,6 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
             if (exceptionRequests.isEmpty()) {
             	throw new RiceRuntimeException("Failed to generate exception requests for exception routing!");
             }
-            
             activateExceptionRequests(routeContext, exceptionRequests, errorMessage);
             KSBServiceLocator.getRouteQueueService().delete(persistedMessage);
         } finally {
@@ -149,24 +146,42 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     	RoleRouteModule roleRouteModule = new RoleRouteModule();
     	roleRouteModule.setNamespace(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE);
     	roleRouteModule.setResponsibilityTemplateName(KEWConstants.EXCEPTION_ROUTING_RESPONSIBILITY_TEMPLATE_NAME);
-    	
-    	List<ActionRequestValue> exceptionRequests = roleRouteModule.findActionRequests(routeContext);
-    	Deque<Iterator<ActionRequestValue>> childRequestIters = new ArrayDeque<Iterator<ActionRequestValue>>();
-    	Iterator<ActionRequestValue> tempIter = exceptionRequests.iterator();
-    	while (tempIter != null) {
-    		while (tempIter.hasNext()) {
-    			ActionRequestValue childRequest = tempIter.next();
-    			childRequest.setNodeInstance(null);
-    			if (!childRequest.getChildrenRequests().isEmpty()) {
-    				childRequestIters.offerFirst(tempIter);
-    				tempIter = childRequest.getChildrenRequests().iterator();
-    			}
-    		}
-    		tempIter = childRequestIters.pollFirst();
-    	}
-    	
-    	return exceptionRequests;
+    	List<ActionRequestValue> requests = roleRouteModule.findActionRequests(routeContext);
+    	processExceptionRequests(requests);
+    	return requests;
     }
+    
+    
+    
+    /**
+     * Takes the given list of Action Requests and ensures their attributes are set properly for exception
+     * routing requests.  Namely, this ensures that all "force action" values are set to "true".
+     */
+    protected void processExceptionRequests(List<ActionRequestValue> exceptionRequests) {
+    	if (exceptionRequests != null) {
+    		for (ActionRequestValue actionRequest : exceptionRequests) {
+    			processExceptionRequest(actionRequest);
+    		}
+    	}
+    }
+    
+    /**
+     * Processes a single exception request, ensuring that it's force action flag is set to true and it's node instance is set to null.
+     * It then recurses through any children requests.
+     */
+    protected void processExceptionRequest(ActionRequestValue actionRequest) {
+    	actionRequest.setForceAction(true);
+    	actionRequest.setNodeInstance(null);
+    	processExceptionRequests(actionRequest.getChildrenRequests());
+    }
+    
+    /**
+     * End IU Customization
+     * @param routeContext
+     * @param exceptionRequests
+     * @param exceptionMessage
+     * @throws Exception
+     */
     
     protected void activateExceptionRequests(RouteContext routeContext, List<ActionRequestValue> exceptionRequests, String exceptionMessage) throws Exception {
     	setExceptionAnnotations(exceptionRequests, exceptionMessage);

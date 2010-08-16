@@ -16,18 +16,11 @@
  */
 package org.kuali.rice.kew.engine;
 
+import org.kuali.rice.kew.engine.node.*;
+import org.kuali.rice.kew.exception.WorkflowException;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.engine.node.Branch;
-import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.engine.node.DynamicNode;
-import org.kuali.rice.kew.engine.node.DynamicResult;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.exception.WorkflowException;
 
 
 public class DynamicSplitTestNode implements DynamicNode {
@@ -36,7 +29,7 @@ public class DynamicSplitTestNode implements DynamicNode {
     private static final String[] ROLES = new String[] { "Sub1", "Sub2", "Sub3" };
     
     public DynamicResult transitioningInto(RouteContext context, RouteNodeInstance process, RouteHelper helper) throws Exception {
-        List nextNodeInstances = new ArrayList();
+        List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
         for (int index = 0; index < ROLES.length; index++) {
             String roleName = ROLES[index];
             RouteNode node = helper.getNodeFactory().getRouteNode(context, NEXT_NODE_NAME);

@@ -74,6 +74,7 @@
 							<td class="thnormal" align="right">Action Request Id</td>
 							<td class="datacell" align="left"><c:out value="${actionRequest.actionRequestId}" />&nbsp;</td>
 						</tr>
+						<c:if test="${SuperUserForm.actionRequestPostProcessorDisplayCheck}">
 						<tr>
 							<td class="thnormal" align="right">Perform Post Processor Logic</td>
 							<td class="datacell" align="left">
@@ -92,7 +93,8 @@
 							  </c:choose>
 						      <input type="checkbox" name="actionRequestRunPostProcessorCheck" value="${actionRequest.actionRequestId}" <c:if test="${foundMatchingValue}">checked="checked"</c:if> />
 							</td>
-						</tr>
+						</tr>	
+						</c:if>											
 						<tr>
 	                        <td height="30" colspan="2" class="headercell1" align="center">
 	                          <c:choose>
@@ -106,19 +108,19 @@
 	                          <c:choose>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_ACKNOWLEDGE_REQ}">
 	                          		<html-el:image src="${resourcePath}images/buttonsmall_acknowledge.gif" styleClass="tinybutton"
-	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((#${username}#)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%acknowledge%))" />
+	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((`${username}`)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%acknowledge%))" />
                                 </c:when>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_FYI_REQ}">
 	                          		<html-el:image src="${resourcePath}images/buttonsmall_fyi.gif" styleClass="tinybutton"
-	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((#${username}#)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%FYI%))" />
+	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((`${username}`)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%FYI%))" />
 	                          	</c:when>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_COMPLETE_REQ}">
 	                          		<html-el:image src="${resourcePath}images/buttonsmall_complete.gif" styleClass="tinybutton"
-	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((#${username}#)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%complete%))" />
+	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((`${username}`)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%complete%))" />
 	                          	</c:when>
 	                          	<c:when test="${actionRequest.actionRequested == Constants.ACTION_REQUEST_APPROVE_REQ}">
 	                          		<html-el:image src="${resourcePath}images/buttonsmall_approve.gif" styleClass="tinybutton"
-	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((#${username}#)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%approved%))" />
+	                          			property="methodToCall.actionRequestApprove.(((${actionRequest.recipientTypeCd}))).((`${username}`)).(([${actionRequest.groupId}])).((*${actionRequest.actionRequestId}*)).((%approved%))" />
 	                          	</c:when>
 	                         </c:choose>
 	                        </td>

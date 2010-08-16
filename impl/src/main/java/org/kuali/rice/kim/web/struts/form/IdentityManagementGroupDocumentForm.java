@@ -22,6 +22,7 @@ import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -79,7 +80,7 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode))
 			return "roleId:member.memberId,roleName:member.memberName";
 		else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode))
-			return "groupId:member.memberId,groupName:member.memberName";
+			return "groupId:member.memberId,groupName:member.memberName,namespaceCode:member.memberNamespaceCode";
 		return "";
 	}
 
@@ -102,6 +103,9 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 		else return kimType;
 	}
 
+	public String getKimTypeClass(){
+		return KimTypeImpl.class.getName();
+	}
 	/**
 	 * @return the canAssignGroup
 	 */

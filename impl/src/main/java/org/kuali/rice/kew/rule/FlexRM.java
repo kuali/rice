@@ -16,24 +16,12 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.lang.reflect.Method;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
-import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
-import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.actionrequest.*;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.NodeState;
@@ -53,6 +41,13 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
+
+import java.lang.reflect.Method;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -243,7 +238,7 @@ public class FlexRM {
 	private void makeActionRequests(ActionRequestFactory arFactory, RouteContext context, RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, ActionRequestValue parentRequest, RuleDelegation ruleDelegation)
 			throws WorkflowException {
 
-		List responsibilities = rule.getResponsibilities();
+		List<RuleResponsibility> responsibilities = rule.getResponsibilities();
 		makeActionRequests(arFactory, responsibilities, context, rule, routeHeader, parentRequest, ruleDelegation);
 	}
 
@@ -251,33 +246,37 @@ public class FlexRM {
 			throws WorkflowException {
 
 		//	Set actionRequests = new HashSet();
-		for (Iterator iter = responsibilities.iterator(); iter.hasNext();) {
-			RuleResponsibility resp = (RuleResponsibility) iter.next();
-			//	    arFactory = new ActionRequestFactory(routeHeader);
+        for (RuleResponsibility responsibility : responsibilities)
+        {
+            //	    arFactory = new ActionRequestFactory(routeHeader);
 
-			if (resp.isUsingRole()) {
-				makeRoleActionRequests(arFactory, context, rule, resp, routeHeader, parentRequest, ruleDelegation);
-			} else {
-				makeActionRequest(arFactory, context, rule, routeHeader, resp, parentRequest, ruleDelegation);
-			}
-			//	    if (arFactory.getRequestGraph() != null) {
-			//	    actionRequests.add(arFactory.getRequestGraph());
-			//	    }
-		}
+            if (responsibility.isUsingRole())
+            {
+                makeRoleActionRequests(arFactory, context, rule, responsibility, routeHeader, parentRequest, ruleDelegation);
+            } else
+            {
+                makeActionRequest(arFactory, context, rule, routeHeader, responsibility, parentRequest, ruleDelegation);
+            }
+            //	    if (arFactory.getRequestGraph() != null) {
+            //	    actionRequests.add(arFactory.getRequestGraph());
+            //	    }
+        }
 	}
 
 	private void buildDelegationGraph(ActionRequestFactory arFactory, RouteContext context, 
 			RuleBaseValues delegationRule, DocumentRouteHeaderValue routeHeaderValue, ActionRequestValue parentRequest, RuleDelegation ruleDelegation) throws WorkflowException {
 		context.setActionRequest(parentRequest);
 		if (delegationRule.isActive(new Date())) {
-			for (Iterator iter = delegationRule.getResponsibilities().iterator(); iter.hasNext();) {
-				RuleResponsibility delegationResp = (RuleResponsibility) iter.next();
-				if (delegationResp.isUsingRole()) {
-					makeRoleActionRequests(arFactory, context, delegationRule, delegationResp, routeHeaderValue, parentRequest, ruleDelegation);
-				} else if (delegationRule.isMatch(context.getDocumentContent())) {
-					makeActionRequest(arFactory, context, delegationRule, routeHeaderValue, delegationResp, parentRequest, ruleDelegation);
-				}
-			}
+            for (RuleResponsibility delegationResp : delegationRule.getResponsibilities())
+            {
+                if (delegationResp.isUsingRole())
+                {
+                    makeRoleActionRequests(arFactory, context, delegationRule, delegationResp, routeHeaderValue, parentRequest, ruleDelegation);
+                } else if (delegationRule.isMatch(context.getDocumentContent()))
+                {
+                    makeActionRequest(arFactory, context, delegationRule, routeHeaderValue, delegationResp, parentRequest, ruleDelegation);
+                }
+            }
 		}
 	}
 
@@ -297,17 +296,19 @@ public class FlexRM {
 		} else {
 			qualifiedRoleNames.addAll(roleAttribute.getQualifiedRoleNames(roleName, context.getDocumentContent()));
 		}
-		for (Iterator iter = qualifiedRoleNames.iterator(); iter.hasNext();) {
-			String qualifiedRoleName = (String) iter.next();
-			if (parentRequest == null && isDuplicateActionRequestDetected(routeHeader, context.getNodeInstance(), resp, qualifiedRoleName)) {
-				continue;
-			}
+        for (String qualifiedRoleName : qualifiedRoleNames)
+        {
+            if (parentRequest == null && isDuplicateActionRequestDetected(routeHeader, context.getNodeInstance(), resp, qualifiedRoleName))
+            {
+                continue;
+            }
 
-			ResolvedQualifiedRole resolvedRole = roleAttribute.resolveQualifiedRole(context, roleName, qualifiedRoleName);
-			RoleRecipient recipient = new RoleRecipient(roleName, qualifiedRoleName, resolvedRole);
-			if (parentRequest == null) {
-				ActionRequestValue roleRequest = arFactory.addRoleRequest(recipient, resp.getActionRequestedCd(), resp.getApprovePolicy(), resp.getPriority(), resp.getResponsibilityId(), rule
-						.getForceAction(), rule.getDescription(), rule.getRuleBaseValuesId());
+            ResolvedQualifiedRole resolvedRole = roleAttribute.resolveQualifiedRole(context, roleName, qualifiedRoleName);
+            RoleRecipient recipient = new RoleRecipient(roleName, qualifiedRoleName, resolvedRole);
+            if (parentRequest == null)
+            {
+                ActionRequestValue roleRequest = arFactory.addRoleRequest(recipient, resp.getActionRequestedCd(), resp.getApprovePolicy(), resp.getPriority(), resp.getResponsibilityId(), rule
+                        .getForceAction(), rule.getDescription(), rule.getRuleBaseValuesId());
 // Old, pre 1.0 delegate code, commenting out for now
 //
 //				if (resp.isDelegating()) {
@@ -320,24 +321,27 @@ public class FlexRM {
 //						}
 //					}
 //				}
-				
-				// new Rice 1.0 delegate rule code
-				
-				List<RuleDelegation> ruleDelegations = getRuleDelegationService().findByResponsibilityId(resp.getResponsibilityId());
-				if (ruleDelegations != null && !ruleDelegations.isEmpty()) {
-					// create delegations for all the children
-					for (Iterator iterator = roleRequest.getChildrenRequests().iterator(); iterator.hasNext();) {
-						ActionRequestValue request = (ActionRequestValue) iterator.next();
-						for (RuleDelegation childRuleDelegation : ruleDelegations) {
-							buildDelegationGraph(arFactory, context, childRuleDelegation.getDelegationRuleBaseValues(), routeHeader, request, childRuleDelegation);
-						}
-					}
-				}
-				
-			} else {
-				arFactory.addDelegationRoleRequest(parentRequest, resp.getApprovePolicy(), recipient, resp.getResponsibilityId(), rule.getForceAction(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
-			}
-		}
+
+                // new Rice 1.0 delegate rule code
+
+                List<RuleDelegation> ruleDelegations = getRuleDelegationService().findByResponsibilityId(resp.getResponsibilityId());
+                if (ruleDelegations != null && !ruleDelegations.isEmpty())
+                {
+                    // create delegations for all the children
+                    for (ActionRequestValue request : roleRequest.getChildrenRequests())
+                    {
+                        for (RuleDelegation childRuleDelegation : ruleDelegations)
+                        {
+                            buildDelegationGraph(arFactory, context, childRuleDelegation.getDelegationRuleBaseValues(), routeHeader, request, childRuleDelegation);
+                        }
+                    }
+                }
+
+            } else
+            {
+                arFactory.addDelegationRoleRequest(parentRequest, resp.getApprovePolicy(), recipient, resp.getResponsibilityId(), rule.getForceAction(), ruleDelegation.getDelegationType(), rule.getDescription(), rule.getRuleBaseValuesId());
+            }
+        }
 			}
 
 	/**
@@ -355,25 +359,29 @@ public class FlexRM {
 		// find the RuleAttribute by looking through the RuleTemplate
 		RuleTemplate ruleTemplate = rule.getRuleTemplate();
 		if (ruleTemplate != null) {
-			for (Iterator iterator = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iterator.hasNext();) {
-				RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iterator.next();
-				RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
-				if (ruleAttribute.getClassName().equals(roleAttributeName)) {
-					// this is our RuleAttribute!
-					try {
-						setRuleAttributeMethod.invoke(roleAttribute, ruleAttribute);
-						break;
-					} catch (Exception e) {
-						throw new WorkflowRuntimeException("Failed to set RuleAttribute on our RoleAttribute!", e);
-					}
-				}
-			}
+            for (RuleTemplateAttribute ruleTemplateAttribute : ruleTemplate.getActiveRuleTemplateAttributes())
+            {
+                RuleAttribute ruleAttribute = ruleTemplateAttribute.getRuleAttribute();
+                if (ruleAttribute.getClassName().equals(roleAttributeName))
+                {
+                    // this is our RuleAttribute!
+                    try
+                    {
+                        setRuleAttributeMethod.invoke(roleAttribute, ruleAttribute);
+                        break;
+                    } catch (Exception e)
+                    {
+                        throw new WorkflowRuntimeException("Failed to set RuleAttribute on our RoleAttribute!", e);
+                    }
+                }
+            }
 		}
 	}
 
 	/**
 	 * Generates action requests for a non-role responsibility, either a user or workgroup
-	 */
+     * @throws org.kuali.rice.kew.exception.WorkflowException
+     */
 	private void makeActionRequest(ActionRequestFactory arFactory, RouteContext context, RuleBaseValues rule, DocumentRouteHeaderValue routeHeader, RuleResponsibility resp, ActionRequestValue parentRequest,
 			RuleDelegation ruleDelegation) throws WorkflowException {
 		if (parentRequest == null && isDuplicateActionRequestDetected(routeHeader, context.getNodeInstance(), resp, null)) {
@@ -423,15 +431,16 @@ public class FlexRM {
 	}
 
 	private boolean isDuplicateActionRequestDetected(DocumentRouteHeaderValue routeHeader, RouteNodeInstance nodeInstance, RuleResponsibility resp, String qualifiedRoleName) {
-		List requests = getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, routeHeader.getRouteHeaderId());
-		for (Iterator iterator = requests.iterator(); iterator.hasNext();) {
-			ActionRequestValue request = (ActionRequestValue) iterator.next();
-			if (((nodeInstance != null && request.getNodeInstance() != null && request.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())) || request
-					.getRouteLevel().equals(routeHeader.getDocRouteLevel()))
-					&& request.getResponsibilityId().equals(resp.getResponsibilityId()) && ObjectUtils.equals(request.getQualifiedRoleName(), qualifiedRoleName)) {
-				return true;
-			}
-		}
+		List<ActionRequestValue> requests = getActionRequestService().findByStatusAndDocId(KEWConstants.ACTION_REQUEST_DONE_STATE, routeHeader.getRouteHeaderId());
+        for (ActionRequestValue request : requests)
+        {
+            if (((nodeInstance != null && request.getNodeInstance() != null && request.getNodeInstance().getRouteNodeInstanceId().equals(nodeInstance.getRouteNodeInstanceId())) || request
+                    .getRouteLevel().equals(routeHeader.getDocRouteLevel()))
+                    && request.getResponsibilityId().equals(resp.getResponsibilityId()) && ObjectUtils.equals(request.getQualifiedRoleName(), qualifiedRoleName))
+            {
+                return true;
+            }
+        }
 		return false;
 	}
 

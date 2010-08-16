@@ -61,6 +61,11 @@ public class MaintenanceDocumentPresentationControllerBase extends
 			MaintenanceDocument document) {
 		return new HashSet<String>();
 	}
+	
+	public Set<String> getConditionallyRequiredPropertyNames(
+			MaintenanceDocument document) {
+		return new HashSet<String>();
+	}	
 
 	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if (maintenanceDocumentDictionaryService == null) {

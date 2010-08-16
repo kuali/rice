@@ -22,6 +22,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.edl.EDLContext;
@@ -39,6 +45,8 @@ import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import org.kuali.rice.kew.service.KEWServiceLocator;
 
 
 /**
@@ -83,7 +91,9 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			boolean documentEditable = false;
 			if (document != null) {
 				List validActions = determineValidActions(document);
-				documentEditable = isEditable(validActions);
+				
+				documentEditable = isEditable(edlContext, validActions);
+	
 				edlContext.getTransformer().setParameter("readOnly", String.valueOf(documentEditable));
 				addActions(dom, documentState, validActions);
 				boolean isAnnotatable = isAnnotatable(validActions);
@@ -181,10 +191,27 @@ public class WorkflowDocumentState implements EDLModelComponent {
 	}
 
 
+	
+	public static boolean isEditable(EDLContext edlContext, List actions) {
+	    boolean editable = false;
+	    editable = listContainsItems(actions, UserAction.EDITABLE_ACTIONS);
+	    // reset editable flag to true if edoclite specifies <param name="alwaysEditable">true</param>
+	    Document edlDom = KEWServiceLocator.getEDocLiteService().getDefinitionXml(edlContext.getEdocLiteAssociation());
+	    // use xpath to check for attribute value on Config param element.
+	    XPath xpath = XPathFactory.newInstance().newXPath();
+	    String xpathExpression = "//config/param[@name='alwaysEditable']"; 
+	    try {
+		String match = (String) xpath.evaluate(xpathExpression, edlDom, XPathConstants.STRING);
+		if (!StringUtils.isBlank(match) && match.equals("true")) {
+		    return true;
+		}
+	    } catch (XPathExpressionException e) {
+		throw new WorkflowRuntimeException("Unable to evaluate xpath expression " + xpathExpression, e);
+	        }
 
-	public static boolean isEditable(List actions) {
-		return listContainsItems(actions, UserAction.EDITABLE_ACTIONS);
+	    return editable;
 	}
+	
 
     public static void addActions(Document dom, Element documentState, List actions) {
         Element actionsPossible = EDLXmlUtils.getOrCreateChildElement(documentState, "actionsPossible", true);

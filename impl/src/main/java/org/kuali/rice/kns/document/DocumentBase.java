@@ -388,8 +388,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             ObjectUtils.setObjectPropertyDeep(this, KNSPropertyConstants.DOCUMENT_NUMBER, documentNumber.getClass(), newDoc.getDocumentNumber());
         }
         catch (Exception e) {
-            LOG.error("Unable to set document number property in copied document " + e.getMessage());
-            throw new RuntimeException("Unable to set document number property in copied document " + e.getMessage());
+            LOG.error("Unable to set document number property in copied document " + e.getMessage(),e);
+            throw new RuntimeException("Unable to set document number property in copied document " + e.getMessage(),e);
         }
 
         // replace current documentHeader with new documentHeader
@@ -408,7 +408,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         }
         catch (Exception e) {
          logErrors();
-         throw new RuntimeException("Couldn't create note on copy or error");
+         throw new RuntimeException("Couldn't create note on copy or error",e);
         }
         KNSServiceLocator.getDocumentService().addNoteToDocument(this, note);
     }
@@ -567,7 +567,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     public void validateBusinessRules(KualiDocumentEvent event) {
-        if (!GlobalVariables.getMessageMap().isEmpty()) {
+        if (GlobalVariables.getMessageMap().hasErrors()) {
             logErrors();
             throw new ValidationException("errors occured before business rule");
         }
@@ -584,7 +584,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             // needed here
             throw new ValidationException("business rule evaluation failed");
         }
-        else if (!GlobalVariables.getMessageMap().isEmpty()) {
+        else if (GlobalVariables.getMessageMap().hasErrors()) {
             logErrors();
             throw new ValidationException("Unreported errors occured during business rule evaluation (rule developer needs to put meaningful error messages into global ErrorMap)");
         }
@@ -597,9 +597,9 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     protected void logErrors() {
     	if ( LOG.isInfoEnabled() ) {
-	        if (!GlobalVariables.getMessageMap().isEmpty()) {
+	        if (GlobalVariables.getMessageMap().hasErrors()) {
 	
-	            for (Iterator i = GlobalVariables.getMessageMap().entrySet().iterator(); i.hasNext();) {
+	            for (Iterator i = GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext();) {
 	                Map.Entry e = (Map.Entry) i.next();
 	
 	                StringBuffer logMessage = new StringBuffer();

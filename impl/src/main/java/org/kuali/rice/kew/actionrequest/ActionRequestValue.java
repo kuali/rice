@@ -129,7 +129,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     @Column(name="ACTN_TKN_ID", insertable=false, updatable=false)
 	private Long actionTakenId;
     @Column(name="DOC_VER_NBR")
-    private Integer docVersion = new Integer(1);
+    private Integer docVersion = 1;
 	@Column(name="CRTE_DT")
 	private java.sql.Timestamp createDate;
     @Column(name="RSP_DESC_TXT")
@@ -172,7 +172,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     //@OneToMany(fetch=FetchType.LAZY,mappedBy="actionRequestId")
     //private List<ActionItem> actionItems = new ArrayList<ActionItem>();
     @Column(name="CUR_IND")
-    private Boolean currentIndicator = new Boolean(true);
+    private Boolean currentIndicator = true;
     @Transient
     private String createDateString;
     @Transient
@@ -214,7 +214,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     public String getRouteLevelName() {
         // this is for backward compatibility of requests which have not been converted
         if (CompatUtils.isRouteLevelRequest(this)) {
-            int routeLevelInt = getRouteLevel().intValue();
+            int routeLevelInt = getRouteLevel();
             if (routeLevelInt == KEWConstants.EXCEPTION_ROUTE_LEVEL) {
                 return "Exception";
             }
@@ -575,10 +575,10 @@ public class ActionRequestValue implements WorkflowPersistable {
     	}
 
 
-    	for (Iterator iter = getChildrenRequests().iterator(); iter.hasNext();) {
-    		ActionRequestValue childRequest = (ActionRequestValue) iter.next();
-    		isRecipientInGraph = isRecipientInGraph || childRequest.isRecipientRoutedRequest(principalId);
-    	}
+        for (ActionRequestValue childRequest : getChildrenRequests())
+        {
+            isRecipientInGraph = isRecipientInGraph || childRequest.isRecipientRoutedRequest(principalId);
+        }
 
     	return isRecipientInGraph;
     }
@@ -612,10 +612,10 @@ public class ActionRequestValue implements WorkflowPersistable {
     	}
 
 
-    	for (Iterator iter = getChildrenRequests().iterator(); iter.hasNext();) {
-    		ActionRequestValue childRequest = (ActionRequestValue) iter.next();
-    		isRecipientInGraph = isRecipientInGraph || childRequest.isRecipientRoutedRequest(recipient);
-    	}
+        for (ActionRequestValue childRequest : getChildrenRequests())
+        {
+            isRecipientInGraph = isRecipientInGraph || childRequest.isRecipientRoutedRequest(recipient);
+        }
 
     	return isRecipientInGraph;
     }
@@ -649,6 +649,7 @@ public class ActionRequestValue implements WorkflowPersistable {
      *
      * @param code1
      * @param code2
+     * @param completeAndApproveTheSame
      * @return -1 if less than, 0 if equal, 1 if greater than
      */
     public static int compareActionCode(String code1, String code2, boolean completeAndApproveTheSame) {
@@ -657,8 +658,8 @@ public class ActionRequestValue implements WorkflowPersistable {
     		// hacked so that APPROVE and COMPLETE are equal
     		cutoff = ACTION_CODE_RANK.length() - 3;
     	}
-        Integer code1Index = new Integer(Math.min(ACTION_CODE_RANK.indexOf(code1), cutoff));
-        Integer code2Index = new Integer(Math.min(ACTION_CODE_RANK.indexOf(code2), cutoff));
+        Integer code1Index = Math.min(ACTION_CODE_RANK.indexOf(code1), cutoff);
+        Integer code2Index = Math.min(ACTION_CODE_RANK.indexOf(code2), cutoff);
         return code1Index.compareTo(code2Index);
     }
 
@@ -670,8 +671,8 @@ public class ActionRequestValue implements WorkflowPersistable {
      * @return -1 if less than, 0 if equal, 1 if greater than
      */
     public static int compareRecipientType(String type1, String type2) {
-        Integer type1Index = new Integer(RECIPIENT_TYPE_RANK.indexOf(type1));
-        Integer type2Index = new Integer(RECIPIENT_TYPE_RANK.indexOf(type2));
+        Integer type1Index = RECIPIENT_TYPE_RANK.indexOf(type1);
+        Integer type2Index = RECIPIENT_TYPE_RANK.indexOf(type2);
         return type1Index.compareTo(type2Index);
     }
 
@@ -682,8 +683,8 @@ public class ActionRequestValue implements WorkflowPersistable {
     	if (StringUtils.isEmpty(type2)) {
     		type2 = "N";
     	}
-    	Integer type1Index = new Integer(DELEGATION_TYPE_RANK.indexOf(type1));
-        Integer type2Index = new Integer(DELEGATION_TYPE_RANK.indexOf(type2));
+    	Integer type1Index = DELEGATION_TYPE_RANK.indexOf(type1);
+        Integer type2Index = DELEGATION_TYPE_RANK.indexOf(type2);
         return type1Index.compareTo(type2Index);
     }
 
@@ -786,8 +787,8 @@ public class ActionRequestValue implements WorkflowPersistable {
         if (actionRequest == null)
             return false;
         Long actionRequestId = actionRequest.getActionRequestId();
-        for (Iterator iter = getChildrenRequests().iterator(); iter.hasNext();) {
-            ActionRequestValue childRequest = (ActionRequestValue) iter.next();
+        for (Iterator<ActionRequestValue> iter = getChildrenRequests().iterator(); iter.hasNext();) {
+            ActionRequestValue childRequest = iter.next();
             if (childRequest.equals(actionRequest) || (actionRequestId != null && actionRequestId.equals(childRequest.getActionRequestId()))) {
                 return true;
             }
@@ -859,8 +860,8 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     public boolean isPrimaryDelegator() {
         boolean primaryDelegator = false;
-        for (Iterator iter = childrenRequests.iterator(); iter.hasNext();) {
-            ActionRequestValue childRequest = (ActionRequestValue) iter.next();
+        for (Iterator<ActionRequestValue> iter = childrenRequests.iterator(); iter.hasNext();) {
+            ActionRequestValue childRequest = iter.next();
             primaryDelegator = KEWConstants.DELEGATION_PRIMARY.equals(childRequest.getDelegationType()) || primaryDelegator;
         }
         return primaryDelegator;
@@ -873,16 +874,20 @@ public class ActionRequestValue implements WorkflowPersistable {
      *
      * @return primary delgate requests
      */
-    public List getPrimaryDelegateRequests() {
-        List primaryDelegateRequests = new ArrayList();
-        for (Iterator iter = childrenRequests.iterator(); iter.hasNext();) {
-            ActionRequestValue childRequest = (ActionRequestValue) iter.next();
-            if (KEWConstants.DELEGATION_PRIMARY.equals(childRequest.getDelegationType())) {
-                if (childRequest.isRoleRequest()) {
-                    for (Iterator iterator = childRequest.getChildrenRequests().iterator(); iterator.hasNext();) {
-                        primaryDelegateRequests.add(iterator.next());
+    public List<? super ActionRequestValue> getPrimaryDelegateRequests() {
+        List<ActionRequestValue> primaryDelegateRequests = new ArrayList<ActionRequestValue>();
+        for (ActionRequestValue childRequest : childrenRequests)
+        {
+            if (KEWConstants.DELEGATION_PRIMARY.equals(childRequest.getDelegationType()))
+            {
+                if (childRequest.isRoleRequest())
+                {
+                    for (ActionRequestValue actionRequestValue : childRequest.getChildrenRequests())
+                    {
+                        primaryDelegateRequests.add(actionRequestValue);
                     }
-                } else {
+                } else
+                {
                 	primaryDelegateRequests.add(childRequest);
                 }
             }
@@ -890,7 +895,7 @@ public class ActionRequestValue implements WorkflowPersistable {
         return primaryDelegateRequests;
     }
 
-    public boolean isAdHocRequest() {
+    public boolean isAdHocRequest() {                                          
     	return KEWConstants.ADHOC_REQUEST_RESPONSIBILITY_ID.equals(getResponsibilityId());
     }
 
@@ -903,7 +908,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     }
 
     public boolean isRouteModuleRequest() {
-    	return getResponsibilityId().longValue() > 0;
+    	return getResponsibilityId() > 0;
     }
 
     public String toString() {

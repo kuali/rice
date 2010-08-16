@@ -17,14 +17,14 @@
 
 package org.kuali.rice.kew.docsearch;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 
 public class MockSearchableAttribute implements SearchableAttribute {
@@ -44,7 +44,7 @@ public class MockSearchableAttribute implements SearchableAttribute {
     }
 
     public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
-        List fields = new ArrayList();
+        List<Field> fields = new ArrayList<Field>();
         Field myField = new Field("MockSearchableAttributeKey","title");
         myField.setFieldDataType((new SearchableAttributeStringValue()).getAttributeDataType());
         fields.add(myField);

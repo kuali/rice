@@ -65,13 +65,14 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
     private DocumentTypeDAO documentTypeDAO;
 
-    public Collection find(DocumentType documentType, String docTypeParentName, boolean climbHierarchy) {
+    public Collection<DocumentType> find(DocumentType documentType, String docTypeParentName, boolean climbHierarchy) {
         DocumentType docTypeParent = this.findByName(docTypeParentName);
-        Collection documentTypes = getDocumentTypeDAO().find(documentType, docTypeParent, climbHierarchy);
+        Collection<DocumentType> documentTypes = getDocumentTypeDAO().find(documentType, docTypeParent, climbHierarchy);
         //since we're here put them in the cache
-        for (Iterator iter = documentTypes.iterator(); iter.hasNext();) {
-			insertIntoCache((DocumentType)iter.next());
-		}
+        for (Object documentType1 : documentTypes)
+        {
+            insertIntoCache((DocumentType) documentType1);
+        }
         return documentTypes;
     }
 
@@ -96,19 +97,52 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
 
     public DocumentType findByName(String name) {
-    	return this.findByName(name, true);
+    	return this.findByName(name, true, true);
     }
 
     public DocumentType findByNameCaseInsensitive(String name) {
-    	return this.findByName(name, false);
+    	return this.findByName(name, false,true);
     }
 
-
+    /**
+     * 
+     * This method seaches for a DocumentType by document name.
+     * 
+     * @param name
+     * @param caseSensitive
+     * @deprecated Use findByName(String name, boolean caseSensitive, boolean checkCache)
+     * @return
+     */
     protected DocumentType findByName(String name, boolean caseSensitive) {
     	if (name == null) {
     		return null;
     	}
     	DocumentType documentType = fetchFromCacheByName(name);
+        if (documentType == null) {
+        	documentType = getDocumentTypeDAO().findByName(name, caseSensitive);
+        	insertIntoCache(documentType);
+        }
+    	return documentType;
+    }
+
+    /**
+     * 
+     * This method seaches for a DocumentType by document name.
+     * 
+     * @param name DocumentType name
+     * @param caseSensitive If false, case will be ignored
+     * @param checkCache if false the cache will not be checked.
+     * @return
+     */
+    protected DocumentType findByName(String name, boolean caseSensitive, boolean checkCache) {
+    	if (name == null) {
+    		return null;
+    	}
+    	
+    	DocumentType documentType = null;
+    	if(checkCache){
+    		documentType = fetchFromCacheByName(name);
+    	}
         if (documentType == null) {
         	documentType = getDocumentTypeDAO().findByName(name, caseSensitive);
         	insertIntoCache(documentType);
@@ -251,8 +285,8 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     			throw new RuntimeException("DocumentType configured for update and not versioning which we support");
     		}
 
-    		// flush the old document type from the cache so we get a
-    		DocumentType oldDocumentType = findByName(documentType.getName());
+    		// grab the old document. Don't Use Cached Version!
+    		DocumentType oldDocumentType = findByName(documentType.getName(), true, false);
     		// reset the children on the oldDocumentType
     		//oldDocumentType.resetChildren();
     		Long existingDocTypeId = null;

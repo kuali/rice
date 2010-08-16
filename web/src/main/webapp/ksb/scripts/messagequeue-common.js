@@ -35,3 +35,11 @@ function refreshServiceRegistry()
 	document.forms[0].elements['methodToCall'].value = 'refreshServiceRegistry';
    	document.forms[0].submit();
 }
+
+
+function deleteLocalhostEntries()
+{
+	document.forms[0].elements['methodToCall'].value = 'deleteLocalhostEntries';
+   	document.forms[0].submit();
+}
+

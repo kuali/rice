@@ -19,5 +19,6 @@ package org.kuali.rice.kns.datadictionary;
 public interface FieldDefinitionI {
     public String getName();
     public boolean isReadOnlyAfterAdd();
-
+    public String getAlternateDisplayAttributeName();
+    public String getAdditionalDisplayAttributeName();
 }

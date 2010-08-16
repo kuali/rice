@@ -16,9 +16,6 @@
  */
 package org.kuali.rice.kew.routing.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -33,6 +30,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.session.UserSession;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -59,7 +59,7 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
             if (StringUtils.isBlank(docHandler)) {
                 throw new WorkflowRuntimeException("Document Type '" + routeHeader.getDocumentType().getName() + "' does not have a document handler url set (attempted to open document handler url for document id " + routeHeader.getRouteHeaderId() + ")");
             }
-            if (docHandler.indexOf("?") == -1) {
+            if (!docHandler.contains("?")) {
                 docHandler += "?";
             } else {
                 docHandler += "&";
@@ -72,7 +72,7 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
             if (StringUtils.isBlank(docHandler)) {
                 throw new WorkflowRuntimeException("Cannot find document handler url for document type '" + documentType.getName() + "'");
             }
-            if (docHandler.indexOf("?") == -1) {
+            if (!docHandler.contains("?")) {
                 docHandler += "?";
             } else {
                 docHandler += "&";

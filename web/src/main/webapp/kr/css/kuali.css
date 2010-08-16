@@ -16,13 +16,13 @@
 body
 {
 	font-size: 71%;
-	margin: 0;
+	margin: 0px;
 }
 
-form { margin: 0; }
+form { margin: 0px; }
 
 pre {
-	margin: 0;
+	margin: 0px;
 }
 
 li,td,div,th,table,span,body,pre
@@ -736,35 +736,26 @@ div.excol { padding-right: 22px; }
 	background-position: top;
 }
 
-.headerarea
+.headerarea, .headerarea-small
 {
 	background-color: #e4e4e4;
-	padding-bottom: 0px;
-	padding-left: 10px;
-	height: 55px;
-	padding-right: 0px;
+	padding: 0px 0px 0px 10px;
 	background-image: url("../images/masthead1.gif");
 	margin: 0px;
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
 	border-bottom-color: #999999;
+}
+
+.headerarea {
+	height: 55px;
 }
 
 .headerarea-small
 {
-	background-color: #e4e4e4;
-	padding-bottom: 0px;
-	padding-left: 10px;
 	height: 30px;
-	padding-right: 0px;
-	background-image: url("../images/masthead1.gif");
-	margin: 0px;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	border-bottom-color: #999999;
 }
-
-#headerarea-small h1
+#headerarea-small h1, #headerarea h1
 {
 	font-size: 150%;
 	margin: 0px;
@@ -772,7 +763,10 @@ div.excol { padding-right: 22px; }
 	font-family: "Arial Narrow";
 	font-weight: bold;
 	position: absolute;
-	left: 12px;
+}
+
+#headerarea-small h1
+{
 	top: 4px;
 }
 
@@ -798,13 +792,6 @@ div.excol { padding-right: 22px; }
 
 #headerarea h1
 {
-	font-size: 150%;
-	margin: 0px;
-	padding: 0px;
-	font-family: "Arial Narrow";
-	font-weight: bold;
-	position: absolute;
-	left: 12px;
 	top: 12px;
 }
 
@@ -1040,5 +1027,5 @@ td.infoline
 #row tr.even { background-color: #f4f4f4; }
 
 .page-main {
-	float:left;
+	padding: 0px 0px 0px 15px;
 }

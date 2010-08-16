@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kns.workflow.service.impl;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -44,6 +39,11 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -108,7 +108,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             document.getRouteHeaderId();
         }
         catch (WorkflowException e) {
-            if (e.getMessage().indexOf("Could not locate the given document type name") != -1) {
+            if (e.getMessage().contains("Could not locate the given document type name")) {
                 throw new DocumentTypeNotFoundException("unknown document type '" + documentTypeId + "'");
             }
             else {

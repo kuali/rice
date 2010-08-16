@@ -21,7 +21,7 @@
 <link href="${ConfigProperties.kr.url}/css/kuali.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="scripts/en-common.js"></script>
 </head>
-<body bgcolor="#ffffff" marginheight="0" marginwidth="0" topmargin="0" leftmargin="0">
+<body>
 
 <div id="headerarea-small" class="headerarea-small">
   <h1>Search Help Entry</h1>

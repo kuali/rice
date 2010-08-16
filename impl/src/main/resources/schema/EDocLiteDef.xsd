@@ -190,6 +190,17 @@
         </complexType>
       </element>
 
+      <element name="lookup" minOccurs="0" maxOccurs="1">
+        <complexType>
+          <sequence>
+            <element name="businessObjectClassName" type="c:LongStringType" minOccurs="1" maxOccurs="1"/>
+            <element name="lookupParameters" type="c:LongStringType" minOccurs="0" maxOccurs="1"/>
+            <element name="fieldConversions" type="c:LongStringType" minOccurs="0" maxOccurs="1"/>
+            <element name="lookupReadOnly" type="c:ShortStringType" minOccurs="0" maxOccurs="1"/>
+          </sequence>
+        </complexType>
+      </element>
+      
       <element name="validation" type="ed:ValidationType" minOccurs="0">
       	<annotation>
       		<documentation>

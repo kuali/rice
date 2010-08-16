@@ -85,10 +85,12 @@ public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent i
 					}
 				}
 				// validate if they are taking an action on the document (i.e. it's annotatable)
+				boolean curAttrValid = true;
 				if (edlContext.getUserAction().isValidatableAction()) {
 					WorkflowAttributeValidationErrorDTO[] errors = document.validateAttributeDefinition(attributeDef);
 					if (errors.length > 0) {
 						edlContext.setInError(true);
+						curAttrValid = false;
 					}
 					Map<String, String> fieldErrors = (Map<String, String>)edlContext.getRequestParser().getAttribute(RequestParser.GLOBAL_FIELD_ERRORS_KEY);
 					for (int atIndex = 0; atIndex < errors.length; atIndex++) {
@@ -96,6 +98,25 @@ public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent i
 						fieldErrors.put(error.getKey(), error.getMessage());
 					}
 				}
+				
+
+				if(curAttrValid){
+					document.addAttributeDefinition(attributeDef );
+					for (int fIndex = 0; fIndex < fieldNodes.getLength(); fIndex++) {
+						Element fieldElem = (Element)fieldNodes.item(fIndex);
+						String edlField = fieldElem.getAttribute("edlField");
+						String attributeField = fieldElem.getAttribute("attributeField");
+						PropertyDefinitionDTO property = attributeDef.getProperty(attributeField);
+						String value = requestParser.getParameterValue(edlField);
+						if (property == null) {
+							property = new PropertyDefinitionDTO(attributeField, value);
+							attributeDef.addProperty(property);
+						} else {
+							property.setValue(value);
+						}
+					}
+				}
+
 			}
 		} catch (Exception e) {
 			if (e instanceof RuntimeException) {
@@ -114,7 +135,6 @@ public class GlobalAttributeComponent extends SimpleWorkflowEDLConfigComponent i
 			}
 		}
 		WorkflowAttributeDefinitionDTO workflowAttributeDef = new WorkflowAttributeDefinitionDTO(attributeName);
-		document.addAttributeDefinition(workflowAttributeDef);
 		return workflowAttributeDef;
 	}
 

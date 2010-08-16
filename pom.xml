@@ -457,6 +457,11 @@
 			<id>kuali</id>
 			<url>https://test.kuali.org/maven</url>
 		</pluginRepository>
+		<pluginRepository>
+			<id>maven-repository.dev.java.net</id>
+			<name>Java.net Maven 2 Repository</name>
+			<url>http://download.java.net/maven/2</url>
+		</pluginRepository>
 	</pluginRepositories>
 
 	<dependencyManagement>
@@ -847,6 +852,27 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.apache.cxf</groupId>
+				<artifactId>cxf-rt-frontend-jaxrs</artifactId>
+				<version>${cxf.version}</version>
+				<exclusions>
+					<!-- avoids conflict with javamail -->
+					<exclusion>
+						<groupId>org.apache.geronimo.specs</groupId>
+						<artifactId>geronimo-javamail_1.4_spec</artifactId>
+					</exclusion>
+					<exclusion>
+						<artifactId>geronimo-stax-api_1.0_spec</artifactId>
+						<groupId>org.apache.geronimo.specs</groupId>
+					</exclusion>
+					<exclusion>
+						<artifactId>geronimo-annotation_1.0_spec</artifactId>
+						<groupId>org.apache.geronimo.specs</groupId>
+					</exclusion>
+				</exclusions>
+			</dependency>
 
 			<dependency>
 				<groupId>org.apache.cxf</groupId>
@@ -920,6 +946,11 @@
 				<artifactId>cxf-rt-frontend-jaxws</artifactId>
 				<version>${cxf.version}</version>
 				<exclusions>
+					<!-- avoids conflict with javamail -->
+					<exclusion>
+						<groupId>org.apache.geronimo.specs</groupId>
+						<artifactId>geronimo-javamail_1.4_spec</artifactId>
+					</exclusion>
 					<exclusion>
 						<groupId>org.apache.geronimo.specs</groupId>
 						<artifactId>geronimo-activation_1.1_spec</artifactId>
@@ -931,6 +962,10 @@
 					<exclusion>
 						<groupId>org.apache.geronimo.specs</groupId>
 						<artifactId>geronimo-jaxws_2.1_spec</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.apache.geronimo.specs</groupId>
+						<artifactId>geronimo-annotation_1.0_spec</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>javax.xml.soap</groupId>
@@ -961,8 +996,16 @@
 				<version>${cxf.version}</version>
 				<exclusions>
 					<exclusion>
-						<artifactId>commons-logging</artifactId>
+						<groupId>org.apache.geronimo.specs</groupId>
+						<artifactId>geronimo-stax-api_1.0_spec</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.apache.geronimo.specs</groupId>
+						<artifactId>geronimo-annotation_1.0_spec</artifactId>
+					</exclusion>
+					<exclusion>
 						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>javax.xml.soap</groupId>

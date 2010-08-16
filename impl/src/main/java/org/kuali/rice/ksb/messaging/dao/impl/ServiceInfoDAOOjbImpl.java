@@ -99,6 +99,14 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     	return (ServiceInfo) getPersistenceBrokerTemplate().getObjectById(ServiceInfo.class, serviceInfoId);
     }
 
+	public FlattenedServiceDefinition findFlattenedServiceDefinition(Long flattenedServiceDefinitionId) {
+		Criteria crit = new Criteria();
+    	crit.addEqualTo("flattenedServiceDefinitionId", flattenedServiceDefinitionId);
+    	return (FlattenedServiceDefinition) getPersistenceBrokerTemplate().getObjectByQuery(
+    			new QueryByCriteria(FlattenedServiceDefinition.class, crit));
+
+	}
+
     public void removeLocallyPublishedServices(String ipNumber, String serviceNamespace) {
     	List<ServiceInfo> localServices = findLocallyPublishedServices(ipNumber, serviceNamespace);
     	for (ServiceInfo serviceInfo : localServices) {
@@ -109,10 +117,5 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     	crit.addEqualTo("serviceNamespace", serviceNamespace);
     	getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(ServiceInfo.class, crit));*/
     }
-
-	public FlattenedServiceDefinition findFlattenedServiceDefinition(Long flattenedServiceDefinitionId) {
-		// Not implemented here because we're removing OJB support for the 1.1 release.
-		return null;
-	}
 
 }

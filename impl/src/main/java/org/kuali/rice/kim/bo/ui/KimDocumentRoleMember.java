@@ -74,6 +74,8 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 	protected String memberName;
 	@Transient
 	protected String memberNamespaceCode;
+	
+	protected String memberFullName;
 
 	@OneToMany(fetch=FetchType.LAZY,cascade=CascadeType.ALL)
 	@JoinColumns({
@@ -248,6 +250,20 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 	 */
 	public void setQualifiersToDisplay(String qualifiersToDisplay) {
 		this.qualifiersToDisplay = qualifiersToDisplay;
+	}
+	
+	/**
+	 * @return the memberFullName
+	 */
+	public String getMemberFullName() {
+		return this.memberFullName;
+	}
+
+	/**
+	 * @param memberFullName the memberFullName to set
+	 */
+	public void setMemberFullName(String memberFullName) {
+		this.memberFullName = memberFullName;
 	}
 
 }

@@ -16,11 +16,6 @@
  */
 package org.kuali.rice.kew.engine.transition;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.jdom.Document;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.ProcessResult;
@@ -30,6 +25,10 @@ import org.kuali.rice.kew.engine.node.SimpleResult;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.XmlHelper;
+
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -49,7 +48,7 @@ public class LoopTransitionEngine extends TransitionEngine {
      * has next nodes instances (i.e. a dynamic node), then those will be returned.  Otherwise
      * it will resolve the next nodes from the RouteNode prototype.
      */
-    protected List resolveNextNodeInstances(RouteNodeInstance nodeInstance, List nextRouteNodes) {
+    protected List<RouteNodeInstance> resolveNextNodeInstances(RouteNodeInstance nodeInstance, List<RouteNode> nextRouteNodes) {
     	
     	try {
 			Document doc = XmlHelper.buildJDocument(new StringReader(nodeInstance.getRouteNode().getContentFragment()));
@@ -60,10 +59,10 @@ public class LoopTransitionEngine extends TransitionEngine {
 		}
     	
     	
-        List nextNodeInstances = new ArrayList();
-        for (Iterator iterator = nextRouteNodes.iterator(); iterator.hasNext();) {
-            RouteNode nextNode = (RouteNode) iterator.next();
-            RouteNodeInstance nextNodeInstance = getRouteHelper().getNodeFactory().createRouteNodeInstance(nodeInstance.getDocumentId(), nextNode);
+        List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
+        for (RouteNode nextRouteNode : nextRouteNodes)
+        {
+            RouteNodeInstance nextNodeInstance = getRouteHelper().getNodeFactory().createRouteNodeInstance(nodeInstance.getDocumentId(), nextRouteNode);
             nextNodeInstance.setBranch(nodeInstance.getBranch());
             nextNodeInstance.setProcess(nodeInstance.getProcess());
             nextNodeInstances.add(nextNodeInstance);

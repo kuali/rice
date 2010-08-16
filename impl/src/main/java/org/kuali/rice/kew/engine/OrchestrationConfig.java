@@ -16,11 +16,11 @@
  */
 package org.kuali.rice.kew.engine;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.util.KEWConstants;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -32,13 +32,13 @@ public class OrchestrationConfig {
 
     private boolean sendNotifications = true;
     private String notificationType = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
-    private Set destinationNodeNames = new HashSet();
+    private Set<String> destinationNodeNames = new HashSet<String>();
     private ActionTakenValue cause;
     
-    public Set getDestinationNodeNames() {
+    public Set<? extends String> getDestinationNodeNames() {
         return destinationNodeNames;
     }
-    public void setDestinationNodeNames(Set destinationNodeNames) {
+    public void setDestinationNodeNames(Set<String> destinationNodeNames) {
         this.destinationNodeNames = destinationNodeNames;
     }
     public String getNotificationType() {

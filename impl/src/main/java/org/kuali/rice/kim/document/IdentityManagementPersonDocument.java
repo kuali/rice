@@ -37,8 +37,6 @@ import javax.persistence.Transient;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.PersistenceBrokerException;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
@@ -65,7 +63,6 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.UiDocumentService;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -75,9 +72,9 @@ import org.kuali.rice.kns.util.GlobalVariables;
 /**
  * This is a description of what this class does - shyu don't forget to fill
  * this in.
- * 
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
+ *
  */
 @Entity
 @AttributeOverrides({
@@ -111,11 +108,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     @Type(type="org.kuali.rice.kns.util.HibernateKualiHashType")
     @Column(name="PRNCPL_PSWD")
     protected String password;
-    
-    // ext id - now hard coded for "tax id" & "univ id"
-    @Column(name="TAX_ID")
-    protected String taxId = "";
-    @Column(name="UNIV_ID")
+
     protected String univId = "";
     // affiliation data
     @OneToMany(targetEntity=PersonDocumentAffiliation.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
@@ -193,8 +186,12 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         return this.principalName;
     }
 
+    /*
+     * sets the principal name.  
+     * Principal names are converted to lower case.
+     */
     public void setPrincipalName(String principalName) {
-        this.principalName = principalName;
+        this.principalName = principalName.toLowerCase();
     }
 
     public String getEntityId() {
@@ -301,14 +298,6 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         return this.groups;
     }
 
-    public String getTaxId() {
-        return taxId = KimCommonUtils.decryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-    }
-
-    public void setTaxId(String taxId) {
-        this.taxId = taxId;
-    }
-
     public String getUnivId() {
         return this.univId;
     }
@@ -333,7 +322,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
             this.entityId = getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_ENTITY_ID_S).toString();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public List buildListOfDeletionAwareLists() {
@@ -367,7 +356,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         }
     }
 
-    
+
     @Override
     public void prepareForSave(){
         if (StringUtils.isBlank(getPrivacy().getDocumentNumber())) {
@@ -518,40 +507,6 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         //addDelegationRoleKimTypeAttributeHelper(roleId, helper);
     }
 
-    @Override
-	public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-		super.beforeInsert(persistenceBroker);
-        taxId = KimCommonUtils.encryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-	}
-	
-	@Override
-	public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-		beforeUpdate();
-	}
-	
-	@Override
-	public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        super.afterLookup(persistenceBroker);
-        taxId = KimCommonUtils.decryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-	}
-	
-	@Override
-	public void beforeInsert() {
-		super.beforeInsert();
-		taxId = KimCommonUtils.encryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-    }
-
-	@Override
-	public void beforeUpdate() {
-		super.beforeUpdate();
-        taxId = KimCommonUtils.encryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-	}
-	
-	@javax.persistence.PostLoad 
-	public void afterLookup(){
-        taxId = KimCommonUtils.decryptExternalIdentifier(taxId, KimConstants.PersonExternalIdentifierTypes.TAX);
-	}
-	
 	public void setIfRolesEditable(){
 		if(CollectionUtils.isNotEmpty(getRoles())){
 			for(PersonDocumentRole role: getRoles()){
@@ -582,7 +537,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 	protected transient DocumentHelperService documentHelperService;
 	@Transient
 	protected transient UiDocumentService uiDocumentService;
-		
+
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
 	        documentHelperService = KNSServiceLocator.getDocumentHelperService();

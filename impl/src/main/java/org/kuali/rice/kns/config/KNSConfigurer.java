@@ -40,6 +40,7 @@ public class KNSConfigurer extends ModuleConfigurer {
     private String serverDataSourceJndiName;
 
 	private static final String KNS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml";
+	private static final String KNS_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSServiceBusSpringBeans.xml";
 
 	public KNSConfigurer() {
 	    super();
@@ -58,7 +59,9 @@ public class KNSConfigurer extends ModuleConfigurer {
 
 	@Override
 	public String getSpringFileLocations(){
-		// TODO: check the run mode and include only the appropriate spring bean files
+		if ( exposeServicesOnBus ) {
+			return KNS_SPRING_BEANS_PATH + "," + KNS_KSB_SPRING_BEANS_PATH;
+		}
 		return KNS_SPRING_BEANS_PATH;
 	}
 

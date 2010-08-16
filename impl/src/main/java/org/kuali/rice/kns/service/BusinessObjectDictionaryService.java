@@ -17,10 +17,11 @@ package org.kuali.rice.kns.service;
 
 import java.util.List;
 
-import org.kuali.rice.kns.authorization.BusinessObjectAuthorizer;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
 import org.kuali.rice.kns.inquiry.InquiryPresentationController;
+import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 
 
 /**
@@ -161,6 +162,11 @@ public interface BusinessObjectDictionaryService {
      * returns boolean indicating whether lookup result field to use shortLabel
      */
     public Boolean getLookupResultFieldUseShortLabel(Class businessObjectClass, String attributeName);
+    
+    /**
+     * returns boolean indicating whether lookup result field should be totaled
+     */
+    public Boolean getLookupResultFieldTotal(Class businessObjectClass, String attributeName);
 
     /**
      * returns String indicating the default search value for the lookup field
@@ -173,11 +179,29 @@ public interface BusinessObjectDictionaryService {
      */
     public Class getLookupFieldDefaultValueFinderClass(Class businessObjectClass, String attributeName);
 
+    /**
+     * See {@link FieldDefinition#getQuickfinderParameterString()}.
+     * returns String indicating the default search value for the lookup field.
+     */
+    public String getLookupFieldQuickfinderParameterString(Class businessObjectClass, String attributeName);
+
+
+    /**
+     * returns Class used to generate quickfinder lookup field default values.
+     * See {@link FieldDefinition#getQuickfinderParameterStringBuilderClass()}.
+     */
+    public Class<? extends ValueFinder> getLookupFieldQuickfinderParameterStringBuilderClass(Class businessObjectClass, String attributeName);
+
 
     /**
      * returns String indicating the result set limit for the lookup
      */
     public Integer getLookupResultSetLimit(Class businessObjectClass);
+    
+    /**
+     * @return number of search columns configured for the lookup associated with the class
+     */
+    public Integer getLookupNumberOfColumns(Class businessObjectClass);
 
     /**
      * returns String indicating the location of the lookup icon.
@@ -188,6 +212,11 @@ public interface BusinessObjectDictionaryService {
      * indicates whether a field is required for a lookup
      */
     public Boolean getLookupAttributeRequired(Class businessObjectClass, String attributeName);
+    
+    /**
+     * indicates whether a field is read only for a lookup
+     */
+    public Boolean getLookupAttributeReadOnly(Class businessObjectClass, String attributeName);
 
 
     /**
@@ -250,4 +279,57 @@ public interface BusinessObjectDictionaryService {
      * @return
      */
     public boolean isLookupFieldTreatWildcardsAndOperatorsAsLiteral(Class businessObjectClass, String attributeName);
+    
+    /**
+     * returns String giving alternate display attribute name for lookup field if configured, or null
+     */
+    public String getLookupFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName);
+
+    /**
+     * returns String giving alternate display attribute name for inquiry field if configured, or null
+     */
+    public String getInquiryFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName);
+    
+    /**
+     * returns String giving additional display attribute name for lookup field if configured, or null
+     */
+     
+    public String getLookupFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName);
+
+    /**
+     * returns String giving additional display attribute name for inquiry field if configured, or null
+     */
+    public String getInquiryFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName);
+    
+     /**
+     * @param businessObjectClass - business object class for lookup definition
+     * @return Boolean indicating whether translating of codes is configured to true in lookup definition  
+     */
+    public Boolean tranlateCodesInLookup(Class businessObjectClass);
+
+    /**
+     * @param businessObjectClass - business object class for inquiry definition
+     * @return Boolean indicating whether translating of codes is configured to true in inquiry definition  
+     */
+    public Boolean tranlateCodesInInquiry(Class businessObjectClass);
+    
+    /**
+     * Indicates whether a lookup field has been configured to trigger on value change
+     * 
+     * @param businessObjectClass - Class for business object to lookup 
+     * @param attributeName - name of attribute in the business object to check configuration for
+     * @return true if field is configured to trigger on value change, false if not
+     */
+    public boolean isLookupFieldTriggerOnChange(Class businessObjectClass, String attributeName);
+    
+	/**
+	 * Indicates whether the search and clear buttons should be disabled based on the data
+	 * dictionary configuration
+	 * 
+	 * @param businessObjectClass
+	 *            - business object class for lookup definition
+	 * @return Boolean indicating whether disable search buttons is configured to true in lookup
+	 *         definition
+	 */
+	public boolean disableSearchButtonsInLookup(Class businessObjectClass);
 }

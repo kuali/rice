@@ -32,11 +32,13 @@
 <%@ attribute name="hasErrors" required="false" description="Whether an error icon should be displayed by the field or not." %>
 <%@ attribute name="readOnly" required="false" description="Whether this field should be displayed as read only or not." %>
 <%@ attribute name="onblur" required="false" description="Javascript code which will be executed with the input field's onblur event is triggered." %>
+<%@ attribute name="onchange" required="false" description="Javascript code which will be executed with the input field's onchange event is triggered." %>
 
 <%@ attribute name="helpLink" required="false" description="HTML - not just a URL - to be displayed next to the input field, presumably linking to a help resource." %>
 
 <%@ attribute name="highlight" required="false"
               description="boolean indicating if this field is rendered as highlighted (to indicate old/new value change)" %> 
+<%@ attribute name="tabIndex" required="false" description="Tab index to use for next field" %>
 
 <%-- if the universal user ID field is a key field on this document, lock-down the user ID field --%>
 <c:choose>
@@ -50,7 +52,7 @@
     title='${DataDictionary.PersonImpl.attributes.principalName.label}'
     size='${DataDictionary.PersonImpl.attributes.principalName.control.size}' 
     maxlength='${DataDictionary.PersonImpl.attributes.principalName.maxLength}' style="${textStyle}"
-    onBlur="loadUserInfo( '${userIdFieldName}', '${universalIdFieldName}', '${userNameFieldName}' );${onblur}" />
+    onBlur="loadUserInfo( '${userIdFieldName}', '${universalIdFieldName}', '${userNameFieldName}' );${onblur}" onchange="${onchange}" tabIndex="${tabIndex}"/>
     <c:if test="${hasErrors}">
      <kul:fieldShowErrorIcon />
     </c:if>

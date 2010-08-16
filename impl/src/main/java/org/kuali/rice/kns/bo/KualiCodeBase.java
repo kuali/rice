@@ -96,10 +96,24 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
     /**
      * @return Returns the code and description in format: xx - xxxxxxxxxxxxxxxx
      */
-    public String getCodeAndDescription() {
-        String theString = getCode() + " - " + getName();
-        return theString;
-    }
+    public String getCodeAndDescription() { 
+    	return KualiCodeBase.getCodeAndDescription(getCode(), getName()); 
+    } 
+
+    /**
+     * Static helper method to allow other classes to provide consistent "code and description"
+     * behavior, even if not extending from this class.
+     */
+	public static String getCodeAndDescription(String code, String desc) {
+		if (code != null) {
+			if (desc == null) {
+				return code;
+			} else {
+				return code + " - " + desc;
+			}
+		}
+		return "";
+	}
 
     /**
      * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()

@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.security.soap;
 
 import java.util.Properties;
 
-import javax.xml.ws.handler.MessageContext;
+//import javax.xml.ws.handler.MessageContext;
 
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;

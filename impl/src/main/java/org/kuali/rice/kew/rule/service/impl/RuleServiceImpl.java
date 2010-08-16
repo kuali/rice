@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.xml.namespace.QName;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -63,6 +64,7 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.rule.dao.RuleResponsibilityDAO;
 import org.kuali.rice.kew.rule.service.RuleCacheProcessor;
+import org.kuali.rice.kew.rule.service.RuleDelegationCacheProcessor;
 import org.kuali.rice.kew.rule.service.RuleDelegationService;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.rule.service.RuleTemplateService;
@@ -85,6 +87,7 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 public class RuleServiceImpl implements RuleService {
@@ -373,21 +376,36 @@ public class RuleServiceImpl implements RuleService {
         	responsibilityIds.addAll(getModifiedResponsibilityIds(oldRule, rule));
         	rule.setVersionNbr(getNextVersionNumber(oldRule));
         }
-        Map<String, Long> notifyMap = new HashMap<String, Long>();
+               
+
+        boolean isRuleDelegation = ruleDelegation != null;
+        
+        Map<String, Long> notifyMap = new HashMap<String, Long>(); 
+        
         for (RuleBaseValues ruleToSave : rulesToSave.values()) {        	
         	getRuleDAO().save(ruleToSave);
         	performanceLogger.log("Saved rule: " + ruleToSave.getRuleBaseValuesId());
-            installNotification(ruleToSave, notifyMap);
+            if (!isRuleDelegation) {
+                installNotification(ruleToSave, notifyMap);
+            } 
         }
-        if (ruleDelegation != null) {
+        if (isRuleDelegation) {
         	responsibilityIds.add(ruleDelegation.getResponsibilityId());
         	ruleDelegation.setDelegateRuleId(rule.getRuleBaseValuesId());
         	getRuleDelegationService().save(ruleDelegation);
+        	installDelegationNotification(ruleDelegation.getResponsibilityId(), notifyMap);
         }
         LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
         for (Iterator iterator = notifyMap.values().iterator(); iterator.hasNext();) {
-            queueRuleCache((Long)iterator.next());
+            if (isRuleDelegation) {
+                queueDelegationRuleCache((Long)iterator.next());
+            } else {
+                queueRuleCache((Long)iterator.next());
+            } 
         }
+        
+
+        
         if (isGenerateRuleArs) {
             getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
         }
@@ -428,6 +446,23 @@ public class RuleServiceImpl implements RuleService {
     	}
     }
 
+    private void queueDelegationRuleCache(Long responsibilityId) {
+        RuleDelegationCacheProcessor ruleDelegationCacheProcessor = (RuleDelegationCacheProcessor)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("RuleDelegationCacheProcessorService"), null, null, null, null);        
+        ruleDelegationCacheProcessor.clearRuleDelegationFromCache(responsibilityId);    	
+    }
+    
+    private void installDelegationNotification(Long responsibilityId, Map<String, Long> notifyMap) {
+    	// don't notify the cache if it's a "template" rule!
+    	String key = getRuleDlgnCacheKey(responsibilityId);
+    	if (!notifyMap.containsKey(key)) {
+    		notifyMap.put(key, responsibilityId);
+    	}
+    }
+
+	protected String getRuleDlgnCacheKey(Long responsibilityId) {
+		return "RuleDlgnCache:" + responsibilityId;
+	}
+	
     public RuleBaseValues getParentRule(Long ruleBaseValuesId) {
         return getRuleDAO().getParentRule(ruleBaseValuesId);
     }
@@ -476,6 +511,8 @@ public class RuleServiceImpl implements RuleService {
 
     public void notifyCacheOfRuleChange(RuleBaseValues rule, DocumentType documentType) {
         Boolean cachingRules = Boolean.valueOf(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, USING_RULE_CACHE_IND));
+
+        LOG.info("Entering notifyCacheOfRuleChange.  CachingRules: " + cachingRules + " ; ruleID: " + rule.getRuleBaseValuesId());
         if (!cachingRules.booleanValue()) {
             return;
         }
@@ -525,6 +562,10 @@ public class RuleServiceImpl implements RuleService {
 //          }
             notifyCacheOfRuleChange(rule, childDocumentType);
         }
+        LOG.info("Leaving notifyCacheOfRuleChange.  CachingRules: " + cachingRules + " ; ruleID: " + rule.getRuleBaseValuesId() + " ; documentType: " + documentType.getDocumentTypeId());
+
+
+
     }
 
     /**

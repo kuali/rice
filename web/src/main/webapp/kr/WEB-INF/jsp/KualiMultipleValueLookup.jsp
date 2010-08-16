@@ -54,6 +54,7 @@
 	<html-el:hidden name="KualiForm" property="resultsLimitedSize" />
 	<html-el:hidden name="KualiForm" property="hasReturnableRow" />
 	<html-el:hidden name="KualiForm" property="docNum" />
+	<html-el:hidden name="KualiForm" property="fieldNameToFocusOnAfterSubmit"/>
 
 	<kul:errors errorTitle="Errors found in Search Criteria:" />
 	<kul:messages/>

@@ -15,15 +15,19 @@
  */
 package org.kuali.rice.kns.lookup;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.RandomAccess;
 
 
-public class CollectionIncomplete<T> implements List<T> {
-    private List<T> list;
+public class CollectionIncomplete<T> implements List<T>, RandomAccess, Serializable {
+
+    private static final long serialVersionUID = 8683452581122892189L;
+	private final List<T> list;
     private Long actualSizeIfTruncated;
 
 

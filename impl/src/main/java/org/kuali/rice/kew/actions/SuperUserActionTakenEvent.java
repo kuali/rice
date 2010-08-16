@@ -77,7 +77,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
         String errorMessage = validateActionRules();
         if (!Utilities.isEmpty(errorMessage)) {
             LOG.info("User not authorized");
-            List errors = new ArrayList();
+            List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();
             errors.add(new WorkflowServiceErrorImpl(errorMessage, AUTHORIZATION));
             throw new WorkflowServiceErrorException(errorMessage, errors);
         }
@@ -108,10 +108,10 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
 
         ActionTakenValue actionTaken = saveActionTaken();
 
-        List actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
+        List<ActionRequestValue> actionRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());
 
-        for (Iterator iter = actionRequests.iterator(); iter.hasNext();) {
-            ActionRequestValue actionRequest = (ActionRequestValue) iter.next();
+        for (ActionRequestValue actionRequest : actionRequests)
+        {
             getActionRequestService().deactivateRequest(actionTaken, actionRequest);
         }
 

@@ -112,7 +112,7 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
             super(mapper, reflectionProvider);
         }
         public boolean canConvert(Class clazz) {
-            return clazz.getName().indexOf("CGLIB") > -1;
+            return clazz.getName().contains("CGLIB");
         }
 
         public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {

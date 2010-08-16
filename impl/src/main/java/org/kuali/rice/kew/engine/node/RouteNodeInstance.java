@@ -152,7 +152,7 @@ public class RouteNodeInstance implements Serializable {
     public void setDocumentId(Long routeHeaderId) {
         this.documentId = routeHeaderId;
     }
-    public List getNextNodeInstances() {
+    public List<RouteNodeInstance> getNextNodeInstances() {
         return nextNodeInstances;
     }
     public RouteNodeInstance getNextNodeInstance(int index) {

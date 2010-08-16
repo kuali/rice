@@ -39,7 +39,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
 
     /**
      * @param rh RouteHeader for the document upon which the action is taken.
-     * @param user User taking the action.
+     * @param principal User taking the action.
      */
     public LogDocumentActionAction(DocumentRouteHeaderValue rh, KimPrincipal principal) {
         super(KEWConstants.ACTION_TAKEN_LOG_DOCUMENT_ACTION_CD, rh, principal);
@@ -47,7 +47,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
 
     /**
      * @param rh RouteHeader for the document upon which the action is taken.
-     * @param user User taking the action.
+     * @param principal User taking the action.
      * @param annotation User comment on the action taken
      */
     public LogDocumentActionAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation) {

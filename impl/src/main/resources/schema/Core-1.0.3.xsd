@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xs:schema version="1.0" xmlns:ns1="http://rice.kuali.org/xsd/kim/group" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:import namespace="http://rice.kuali.org/xsd/kim/group" schemaLocation="schema1.xsd"/>
+
+  <xs:element name="attributeSetList" type="ns1:AttributeSetListType"/>
+
+
+  <xs:complexType name="attributeEntry">
+    <xs:sequence/>
+    <xs:attribute ref="ns1:value"/>
+    <xs:attribute ref="ns1:key"/>
+  </xs:complexType>
+</xs:schema>
+

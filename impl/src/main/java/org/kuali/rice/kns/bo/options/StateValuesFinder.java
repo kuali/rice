@@ -57,4 +57,8 @@ public class StateValuesFinder extends KeyValuesBase {
         return labels;
     }
 
+    @Override
+    public void clearInternalCache() {
+    	labels = null;
+    }
 }

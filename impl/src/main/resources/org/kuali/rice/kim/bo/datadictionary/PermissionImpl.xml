@@ -168,6 +168,9 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:size="40"/>
     </property>
+    <property name="validationPattern">
+			<bean parent="AlphaNumericValidationPattern" p:allowWhitespace="true" p:allowUnderscore="true" p:allowPeriod="true" p:allowParenthesis="true" p:allowDollar="true" p:allowForwardSlash="true"/>
+	</property>
   </bean>
 
   <bean id="PermissionImpl-description" parent="PermissionImpl-description-parentBean"/>

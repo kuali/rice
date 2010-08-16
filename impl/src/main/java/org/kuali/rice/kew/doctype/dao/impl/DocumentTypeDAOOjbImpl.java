@@ -16,15 +16,6 @@
  */
 package org.kuali.rice.kew.doctype.dao.impl;
 
-import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
@@ -39,6 +30,15 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.util.Utilities;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implements DocumentTypeDAO {
@@ -66,7 +66,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		}else{
 			crit.addEqualTo("name", name);
 		}
-		crit.addEqualTo("currentInd", new Boolean(true));
+		crit.addEqualTo("currentInd", Boolean.TRUE);
 		DocumentType docType = (DocumentType) this.getPersistenceBrokerTemplate().getObjectByQuery(new QueryByCriteria(DocumentType.class, crit));
 		return docType;
 	}
@@ -76,7 +76,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	}
 
 	public List getChildDocumentTypeIds(Long parentDocumentTypeId) {
-		List childrenIds = new ArrayList();
+		List<Long> childrenIds = new ArrayList<Long>();
 		PersistenceBroker broker = getPersistenceBroker(false);
 		Connection conn = null;
 		Statement st = null;
@@ -138,7 +138,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
 	}
 
-	public Collection find(DocumentType documentType, DocumentType docTypeParent, boolean climbHierarchy) {
+	public Collection<DocumentType> find(DocumentType documentType, DocumentType docTypeParent, boolean climbHierarchy) {
 		LOG.debug("documentType: "+ documentType);
 		LOG.debug("docTypeParent: "+ docTypeParent);
 		LOG.debug("climbHierarchy: " + climbHierarchy);
@@ -186,7 +186,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 			}
 		}
 		crit.addEqualTo("currentInd", Boolean.TRUE);
-		return this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
+		return (Collection<DocumentType>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
 	}
 
     private void addParentIdOrCriteria(Long parentId, Criteria mainCriteria) {
@@ -242,13 +242,13 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
         return findAll(crit);
     }
 
-    private List findAllCurrent(Criteria crit) {
+    private List<DocumentType> findAllCurrent(Criteria crit) {
         crit.addEqualTo("currentInd", Boolean.TRUE);
         return findAll(crit);
     }
 
-    private List findAll(Criteria crit) {
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
+    private List<DocumentType> findAll(Criteria crit) {
+        return (List<DocumentType>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(DocumentType.class, crit));
     }
 
     public List findDocumentTypeAttributes(RuleAttribute ruleAttribute) {

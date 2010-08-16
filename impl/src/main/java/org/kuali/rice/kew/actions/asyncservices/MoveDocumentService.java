@@ -16,10 +16,10 @@
  */
 package org.kuali.rice.kew.actions.asyncservices;
 
-import java.util.Set;
-
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+
+import java.util.Set;
 
 
 /**
@@ -30,6 +30,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
  */
 public interface MoveDocumentService {
 
-	public void moveDocument(String principalId, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set nodeNames);
+	public void moveDocument(String principalId, DocumentRouteHeaderValue document, ActionTakenValue actionTaken, Set<String> nodeNames);
 	
 }

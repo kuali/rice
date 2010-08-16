@@ -35,8 +35,9 @@ public class DirectoryXmlDocCollection extends BaseXmlDocCollection {
         super(dir);
         File[] xmlDataFiles = file.listFiles(FILTER);
         if (xmlDataFiles != null) {
-            for (int i = 0; i < xmlDataFiles.length; i++) {
-                xmlDocs.add(new FileXmlDoc(xmlDataFiles[i], this));
+            for (File xmlDataFile : xmlDataFiles)
+            {
+                xmlDocs.add(new FileXmlDoc(xmlDataFile, this));
             }
         }
     }

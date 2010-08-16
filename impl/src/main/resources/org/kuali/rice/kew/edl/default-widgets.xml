@@ -135,6 +135,8 @@
 										</td>
 									</tr>
 								-->
+                                
+                                
 								<xsl:choose>
 									<xsl:when test="$input_type='text'">
 										<xsl:comment>* input_type 'text'</xsl:comment>						
@@ -149,7 +151,12 @@
 											<xsl:with-param name="customValidator" select="$customValidator"/>
 											<xsl:with-param name="message" select="$message"/>
 											<xsl:with-param name="validation_required" select="$validation_required"/>
-											<xsl:with-param name="readOnly" select="$readOnly"/>
+											<xsl:with-param name="readOnly">
+                                                <xsl:choose>
+                                                    <xsl:when test="//fieldDef[@name=$fieldName]/lookup/lookupReadOnly = 'true'">true</xsl:when>
+                                                    <xsl:otherwise><xsl:value-of select="$readOnly"/></xsl:otherwise>
+                                                </xsl:choose>
+                                            </xsl:with-param>
 											<xsl:with-param name="customFunction" select="$customFunction" />
 										</xsl:call-template>
 									</xsl:when>
@@ -285,6 +292,10 @@
 									</xsl:when>
 								</xsl:choose>
 								<xsl:if test="$renderCmd='all' or $renderCmd='input'">
+                                    <xsl:call-template name="lookup">
+                                      <xsl:with-param name="fieldName" select="$fieldName"/>
+                                      <xsl:with-param name="readOnly" select="$readOnly"/>
+                                    </xsl:call-template>
 									<span id="{@name}_messageHeaderCell" class="{$type}Message">
 										<xsl:text> </xsl:text><xsl:value-of select="$type"/><xsl:text>: </xsl:text>
 									</span>
@@ -1509,7 +1520,15 @@
 						</table>
 					</xsl:if>
 				</xsl:template> 
-
+                <xsl:template name="lookup">
+                  <xsl:param name="fieldName"/>
+                  <xsl:param name="readOnly"/>
+                  <xsl:if test="$globalReadOnly != 'true' and $readOnly != 'true'">
+                    <xsl:if test="//fieldDef[@name=$fieldName]/lookup">
+                      <input name="userAction" value="performLookup.{$fieldName}" type="image" onclick="buttonClick('performLookup');" src="images/searchicon.gif"/>
+                    </xsl:if>
+                  </xsl:if>
+                </xsl:template>
 			</xsl:stylesheet>
 		</style>
 	</edoclite>

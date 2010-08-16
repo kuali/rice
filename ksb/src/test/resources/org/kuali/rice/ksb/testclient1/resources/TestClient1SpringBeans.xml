@@ -77,8 +77,6 @@
 	<bean id="jaxwsService" class="org.kuali.rice.ksb.testclient1.JaxWsEchoServiceImpl" />
     <bean id="baseballCardCollectionService" class="org.kuali.rice.ksb.testclient1.BaseballCardCollectionServiceImpl"/>
 
-	<bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
-	
 	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.security.credentials.CredentialsSourceFactory" />
 
 	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">

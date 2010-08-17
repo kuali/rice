@@ -597,16 +597,16 @@ public class XmlHelper {
         Class c = o.getClass();
         org.w3c.dom.Element wrapper = doc.createElement(elementName);
         Method[] methods = c.getMethods();
-        for (int i = 0; i < methods.length; i++) {
-            String name = methods[i].getName();
+        for (Method method : methods) {
+            String name = method.getName();
             if ("getClass".equals(name)) continue;
             if (!name.startsWith("get") ||
-                methods[i].getParameterTypes().length > 0) continue;
+                    method.getParameterTypes().length > 0) continue;
             name = name.substring("get".length());
             name = StringUtils.uncapitalize(name);
             String value = null;
             try {
-                Object result = methods[i].invoke(o, null);
+                Object result = method.invoke(o, null);
                 if (result == null) {
                     LOG.debug("value of " + name + " method on object " + o.getClass() + " is null");
                     value = "";
@@ -617,10 +617,10 @@ public class XmlHelper {
                 fieldE.appendChild(doc.createTextNode(value));
                 wrapper.appendChild(fieldE);
             } catch (RuntimeException e) {
-                LOG.error("Error accessing method '" + methods[i].getName() + "' of instance of " + c);
+                LOG.error("Error accessing method '" + method.getName() + "' of instance of " + c);
                 throw e;
             } catch (Exception e) {
-                LOG.error("Error accessing method '" + methods[i].getName() + "' of instance of " + c);
+                LOG.error("Error accessing method '" + method.getName() + "' of instance of " + c);
             }
         }
         return wrapper;

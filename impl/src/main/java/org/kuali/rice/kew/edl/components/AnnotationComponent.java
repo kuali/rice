@@ -76,7 +76,9 @@ public class AnnotationComponent implements EDLModelComponent {
                         LOG.debug("Adding annotation: " + annotation);
                         Person person = KIMServiceLocator.getPersonService().getPerson(actionTaken.getPrincipalId());
                         EDLXmlUtils.createTextElementOnParent(currentVersion, "annotation", person.getName() + ": " + annotation);
-                        LOG.debug("dom: " + XmlHelper.jotNode(dom));
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("dom: " + XmlHelper.jotNode(dom));
+                        }
                     }
                 }
             }

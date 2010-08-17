@@ -61,7 +61,9 @@ public class EDLDatabasePostProcessor extends EDocLitePostProcessor {
 	        super.postEvent(event.getRouteHeaderId(), event, "statusChange");
 	        DocumentRouteHeaderValue val = KEWServiceLocator.getRouteHeaderService().getRouteHeader(event.getRouteHeaderId());
 	        Document doc = getEDLContent(val);
-	        LOG.debug("Submitting doc: " + XmlHelper.jotNode(doc));
+	        if (LOG.isDebugEnabled()) {
+                LOG.debug("Submitting doc: " + XmlHelper.jotNode(doc));
+            }
 			DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(event.getRouteHeaderId());
 			extractEDLData(routeHeader, getNodeNames(event.getRouteHeaderId()));
 	        return super.doRouteStatusChange(event);
@@ -91,7 +93,9 @@ public class EDLDatabasePostProcessor extends EDocLitePostProcessor {
 	        super.postEvent(event.getRouteHeaderId(), event, "routeLevelChange");
 	        DocumentRouteHeaderValue val = KEWServiceLocator.getRouteHeaderService().getRouteHeader(event.getRouteHeaderId());
 	        Document doc = getEDLContent(val);
-	        LOG.debug("Submitting doc: " + XmlHelper.jotNode(doc));
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Submitting doc: " + XmlHelper.jotNode(doc));
+            }
 			DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(event.getRouteHeaderId());
 			extractEDLData(routeHeader, new String[] {event.getNewNodeName()});
 	        return super.doRouteLevelChange(event);

@@ -255,7 +255,7 @@
 						<%--NOTE: Check if exporting first, as this should be outputted without extra HTML formatting --%>
 						<c:when	test="${param['d-16544-e'] != null}">
 								<display:column class="${colClass}" sortable="${column.sortable}"
-									title="${column.columnTitle}" comparator="${column.comparator}" 
+									title="${column.columnTitle}" comparator="${column.comparator}" total="${column.total}" value="${staticColumnValue}" 
 									maxLength="${column.maxLength}"><c:out value="${column.propertyValue}" escapeXml="false" default="" /></display:column>
 						</c:when>
 						<c:when	test="${!empty column.columnAnchor.href || column.multipleAnchors}">
@@ -271,7 +271,7 @@
 <%--NOTE: DO NOT FORMAT THIS FILE, DISPLAY:COLUMN WILL NOT WORK CORRECTLY IF IT CONTAINS LINE BREAKS --%>
 						<c:otherwise>
 							<display:column class="${colClass}" sortable="${column.sortable}"
-								title="${column.columnTitle}" comparator="${column.comparator}"
+								title="${column.columnTitle}" comparator="${column.comparator}" total="${column.total}" value="${staticColumnValue}" 
 								maxLength="${column.maxLength}" decorator="org.kuali.rice.kns.web.ui.FormatAwareDecorator"><c:out value="${column.propertyValue}"/>&nbsp;</display:column>
                         </c:otherwise>
 					</c:choose>

@@ -20,6 +20,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -76,8 +77,8 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             getPersistenceBrokerTemplate().store(routeHeader.getDocumentContent());
         } catch ( RuntimeException ex ) {
             if ( ex.getCause() instanceof OptimisticLockException ) {
-                LOG.error( "Optimistic Locking Exception saving document header or content. Offending object: " + ((OptimisticLockException)ex.getCause()).getSourceObject() );
-                throw ex;
+                 LOG.error( "Optimistic Locking Exception saving document header or content. Offending object: " + ((OptimisticLockException)ex.getCause()).getSourceObject() 
+                 + "; RouteHeaderID = " + routeHeader.getRouteHeaderId() + " ;  Version Number = " + routeHeader.getVersionNumber());
             }
             LOG.error( "Unable to save document header or content. Route Header: " + routeHeader, ex );
             throw ex;
@@ -186,6 +187,7 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
         }
         PersistenceBroker broker = null;
         Connection conn = null;
+        Statement statement = null;
         ResultSet rs = null;
         try {
             broker = getPersistenceBroker(false);
@@ -204,11 +206,11 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             	KEWConstants.ACTION_REQUEST_ACTIVATED+
             	"') AND RSP_ID IN "+respIds;
             LOG.debug("Query to find pending documents for requeue: " + query);
-            rs = conn.createStatement().executeQuery(query);
+            statement = conn.createStatement();
+            rs = statement.executeQuery(query);
             while (rs.next()) {
                 routeHeaderIds.add(new Long(rs.getLong(1)));
             }
-            rs.close();
         } catch (SQLException sqle) {
             LOG.error("SQLException: " + sqle.getMessage(), sqle);
             throw new WorkflowRuntimeException(sqle);
@@ -216,6 +218,20 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             LOG.error("LookupException: " + le.getMessage(), le);
             throw new WorkflowRuntimeException(le);
         } finally {
+        	if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    LOG.warn("Could not close result set.");
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    LOG.warn("Could not close statement.");
+                }
+            }
             try {
                 if (broker != null) {
                     OjbFactoryUtils.releasePersistenceBroker(broker, this.getPersistenceBrokerTemplate().getPbKey());
@@ -267,7 +283,6 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
                 	serviceNamespace = null;
                 }
             }
-            rs.close();
         } catch (SQLException sqle) {
             LOG.error("SQLException: " + sqle.getMessage(), sqle);
             throw new WorkflowRuntimeException(sqle);
@@ -275,6 +290,20 @@ public class DocumentRouteHeaderDAOOjbImpl extends PersistenceBrokerDaoSupport i
             LOG.error("LookupException: " + le.getMessage(), le);
             throw new WorkflowRuntimeException(le);
         } finally {
+        	if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    LOG.warn("Could not close result set.");
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    LOG.warn("Could not close statement.");
+                }
+            }
             try {
                 if (broker != null) {
                     OjbFactoryUtils.releasePersistenceBroker(broker, this.getPersistenceBrokerTemplate().getPbKey());

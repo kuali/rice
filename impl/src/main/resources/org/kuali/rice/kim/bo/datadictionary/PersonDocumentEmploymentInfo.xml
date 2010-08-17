@@ -67,7 +67,7 @@
   </bean>
     
    <bean id="DocEmploymentInfo-employeeId" parent="DocEmploymentInfo-employeeId-parentBean"/>
-  <bean id="DocEmploymentInfo-employeeId-parentBean" parent="AttributeDefinition" abstract="true" p:name="employeeId" p:forceUppercase="true" p:label="Employee Id" p:shortLabel="Employee Id" p:maxLength="40" p:required="false">
+  <bean id="DocEmploymentInfo-employeeId-parentBean" parent="AttributeDefinition" abstract="true" p:name="employeeId" p:forceUppercase="true" p:label="Employee Id" p:shortLabel="Employee Id" p:maxLength="40" p:required="true">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>
@@ -83,8 +83,8 @@
     
     
    <bean id="DocEmploymentInfo-entityEmploymentId" parent="DocEmploymentInfo-entityEmploymentId-parentBean"/>
-  <!-- KULRICE-4357: Mark Employee ID with an asterisk so that users know it is a required field -->
-  <bean id="DocEmploymentInfo-entityEmploymentId-parentBean" parent="AttributeDefinition" abstract="true" p:name="entityEmploymentId" p:forceUppercase="true" p:label="Employment Id" p:shortLabel="Employment Id" p:maxLength="40" p:required="true">
+  <!-- KULRICE-4430: Set back to false; Employee ID is the required field, not Employement ID -->
+  <bean id="DocEmploymentInfo-entityEmploymentId-parentBean" parent="AttributeDefinition" abstract="true" p:name="entityEmploymentId" p:forceUppercase="true" p:label="Employment Id" p:shortLabel="Employment Id" p:maxLength="40" p:required="false">
     <property name="control">
       <bean parent="TextControlDefinition" p:size="20"/>
     </property>

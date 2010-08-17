@@ -1029,3 +1029,117 @@ td.infoline
 .page-main {
 	padding: 0px 0px 0px 15px;
 }
+
+div.innerTab-head{
+	background-color:#939393;
+	border-bottom:1px solid #B2B2B2;
+	border-left:0px solid #999999;
+	color:#FFFFFF;
+	font-weight:bold;
+	font-size: 100%;
+	height:18px;
+	padding-left:10px;
+	text-align:left;
+}
+div.innerTab-container{	
+	background-color: #e4e4e4;
+	border-left-width: 0px;
+	background-image: url('../images/tab-sideright1.gif');
+	background-repeat: repeat-y;
+}
+
+div.inner-subhead
+{
+	font-weight: bold;
+	background-color: #C3C3C3;
+	padding: 2px;
+	height: 18px;
+	text-align: left;
+	padding-left:15px;
+	border-bottom:0px solid #B2B2B2;
+	border-left: 0px solid #999999;
+}
+
+.horz-links-bkgrnd
+{
+	width: 100%;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+	border-bottom-color: #999999;
+	height: 19px;
+	background-color: #D8D8D8;
+	padding-top: 12px;
+	margin-bottom: 20px;
+}
+
+#horz-links input:hover
+ {
+	color: #FFFFFF;
+	
+}
+
+#horz-links input.selected
+{
+	color: #FFFFFF;
+	background-image: url('../images/navhover.gif');
+	background-position: top;
+}
+
+#tabs {
+	position:relative;
+	height:20px;
+	z-index:10;
+	white-space: nowrap;
+}
+#tabs dl {
+	margin:0px 0px 0px 10px;
+	padding:0px;
+	list-style:none;
+	height:20px;
+	white-space: nowrap;
+}
+#tabs dt {
+	float:left;
+	background:url('../images/tab-top-left-gray.gif') no-repeat left top;
+	padding:0px 0px 0px 5px;
+	border-bottom:1px solid #C0C0C0;
+	margin-top: 0px;
+	margin-right: 3px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+}
+#tabs dt.licurrent {
+	background:url('../images/tab-top-left.gif') no-repeat left top;
+	border-bottom:#fff 1px solid;
+}
+#tabs .tabright {
+	float:left;
+	display:block;
+	background:url('../images/tab-top-right-gray.gif') no-repeat right top;
+	position:relative;
+	width:auto;
+}
+#tabs .tabcurrent {
+	background:url('../images/tab-top-right.gif') no-repeat right top;
+}
+#tabs input {
+	background:none;
+	border:none;
+	cursor:pointer;
+	width:auto;
+	padding:2px 9px 3px 0px;
+	font-weight:bold;
+	margin-bottom:-1px;
+	height:20px;
+}
+#tabs input:hover {
+	color:#990000;
+	font-weight: bold;
+}
+#tabs > dl .tabright {
+	width:auto;
+}
+
+#tabs .tabright {
+	float:none;
+}

@@ -49,6 +49,7 @@
 		<!-- project dependencies -->
 
 		<!-- no longer maintained - should use spring security instead -->
+		<abdera.version>1.0</abdera.version>
 		<acegi.version>1.0.7</acegi.version>
 		<aopalliance.version>1.0</aopalliance.version>
 		<asm.version>3.2</asm.version>
@@ -1014,6 +1015,34 @@
 					<exclusion>
 						<groupId>org.bouncycastle</groupId>
 						<artifactId>bcprov-jdk15</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.abdera</groupId>
+				<artifactId>abdera-core</artifactId>
+				<version>${abdera.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.apache.geronimo.specs</groupId>
+						<artifactId>geronimo-activation_1.0.2_spec</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.abdera</groupId>
+				<artifactId>abdera-parser</artifactId>
+				<version>${abdera.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>commons-logging</groupId>
+						<artifactId>commons-logging</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>

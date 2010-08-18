@@ -71,7 +71,6 @@
 		<property name="properties">
 			<props>
 				<prop key="plugin.registry.enabled">true</prop>
-				<prop key="kew.standalone.server">true</prop>
 			</props>
 		</property>
 		<property name="ksbConfigurer">

@@ -36,6 +36,8 @@ import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
@@ -158,6 +160,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
         setDocumentActions(new HashMap());
         suppressAllButtons = false;
+        
+        initializeHeaderNavigationTabs();
     }
 
     /**
@@ -869,7 +873,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	
 	protected void instantiateDocument() {
 		if (document == null && StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
-			Class<? extends Document> documentClass = KNSServiceLocator.getDataDictionaryService().getDocumentClassByTypeName(getDefaultDocumentTypeName());
+			Class<? extends Document> documentClass = getDocumentClass();
 			try {
 				Document document = documentClass.newInstance();
 				setDocument(document);
@@ -879,4 +883,17 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 			}
 		}
 	}
+	
+	/** gets the document class from the datadictionary. */
+	private Class<? extends Document> getDocumentClass() {
+		return KNSServiceLocator.getDataDictionaryService().getDocumentClassByTypeName(getDefaultDocumentTypeName());
+	}
+	
+	/**initializes the header tabs from what is defined in the datadictionary. */
+    protected void initializeHeaderNavigationTabs() {
+        final DocumentEntry docEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(getDocumentClass().getName());
+        final List<HeaderNavigation> navList = docEntry.getHeaderNavigationList();
+        final HeaderNavigation[] list = new HeaderNavigation[navList.size()];
+        super.setHeaderNavigationTabs(navList.toArray(list));
+    } 
 }

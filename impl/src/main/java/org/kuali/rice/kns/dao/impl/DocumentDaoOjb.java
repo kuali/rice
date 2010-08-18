@@ -31,6 +31,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.service.DocumentAdHocService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.OjbCollectionAware;
@@ -42,6 +43,7 @@ import org.springframework.dao.DataAccessException;
 public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentDao, OjbCollectionAware{
     private static Logger LOG = Logger.getLogger(DocumentDaoOjb.class);
     private BusinessObjectDao businessObjectDao;
+    private DocumentAdHocService documentAdHocService;
 
 
     public DocumentDaoOjb() {
@@ -96,7 +98,7 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
 
         QueryByCriteria query = QueryFactory.newQuery(clazz, criteria);
         ArrayList <Document> tempList = new ArrayList(this.getPersistenceBrokerTemplate().getCollectionByQuery(query));
-        for (Document doc : tempList) addAdHocs(doc);
+        for (Document doc : tempList) documentAdHocService.addAdHocs(doc);
         return tempList;
     }
 
@@ -112,36 +114,6 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
          */
         KNSServiceLocator.getPersistenceService().linkObjects(businessObject);
         this.getPersistenceBrokerTemplate().store(businessObject);
-    }
-
-
-    public Document addAdHocs(Document document){
-        /* Instead of reading the doc header to see if doc is in saved status
-         * its probably easier and faster to just do this all the time and
-         * store a null when appropriate.
-         */
-        List<AdHocRoutePerson> adHocRoutePersons;
-        List<AdHocRouteWorkgroup> adHocRouteWorkgroups;
-        HashMap criteriaPerson = new HashMap();
-        HashMap criteriaWorkgroup = new HashMap();
-
-        criteriaPerson.put("documentNumber", document.getDocumentNumber());
-        criteriaPerson.put("type", AdHocRoutePerson.PERSON_TYPE);
-        adHocRoutePersons = (List) businessObjectDao.findMatching(AdHocRoutePerson.class, criteriaPerson);
-        criteriaWorkgroup.put("documentNumber", document.getDocumentNumber());
-        criteriaWorkgroup.put("type", AdHocRouteWorkgroup.WORKGROUP_TYPE);
-        adHocRouteWorkgroups = (List) businessObjectDao.findMatching(AdHocRouteWorkgroup.class, criteriaWorkgroup);
-
-        //populate group namespace and names on adHocRoutWorkgroups
-        for (AdHocRouteWorkgroup adHocRouteWorkgroup : adHocRouteWorkgroups) {
-            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(adHocRouteWorkgroup.getId());
-            adHocRouteWorkgroup.setRecipientName(group.getGroupName());
-            adHocRouteWorkgroup.setRecipientNamespaceCode(group.getNamespaceCode());
-        }
-        document.setAdHocRoutePersons(adHocRoutePersons);
-        document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
-
-        return document;
     }
 
     /**
@@ -162,6 +134,14 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      */
     public synchronized void setBusinessObjectDao(BusinessObjectDao businessObjectDao) {
         this.businessObjectDao = businessObjectDao;
+    }
+
+    /**
+     * Setter for injecting the DocumentAdHocService
+     * @param dahs
+     */
+    public void setDocumentAdHocService(DocumentAdHocService dahs) {
+    	this.documentAdHocService = dahs;
     }
 
 }

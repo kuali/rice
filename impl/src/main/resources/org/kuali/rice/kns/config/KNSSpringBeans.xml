@@ -144,7 +144,7 @@
 			   <entry key="org.kuali.rice.kns.bo.State" value="org.kuali.rice.kns.bo.StateImpl" />
 			   <entry key="org.kuali.rice.kns.bo.PostalCode" value="org.kuali.rice.kns.bo.PostalCodeImpl" />
 			   <entry key="org.kuali.rice.kns.bo.County" value="org.kuali.rice.kns.bo.CountyImpl" />
-			   <entry key="org.kuali.rice.kns.bo.Campus" value="org.kuali.rice.kns.bo.CampusImpl" />			   
+			   <entry key="org.kuali.rice.kns.bo.Campus" value="org.kuali.rice.kns.bo.CampusImpl" />
 			   <entry key="org.kuali.rice.kns.bo.CampusType" value="org.kuali.rice.kns.bo.CampusTypeImpl" />
             </map>
         </property>
@@ -421,12 +421,12 @@
         <property name="dataSource" ref="knsApplicationDataSource" />
         <property name="dbPlatform" ref="dbPlatform" />
     </bean>
-        
+
 	<bean id="persistenceDaoJpa" class="org.kuali.rice.kns.dao.impl.PersistenceDaoJpa" />
 
     <bean id="persistenceDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.PersistenceDaoOjb">
         <property name="jcdAlias" value="knsApplicationDataSource" />
-        <property name="dbPlatform" ref="dbPlatform" />    
+        <property name="dbPlatform" ref="dbPlatform" />
     </bean>
 
 	<bean id="dictionaryValidationService" class="org.kuali.rice.kns.service.impl.DictionaryValidationServiceImpl">
@@ -541,13 +541,13 @@
 			<ref bean="persistableBusinessObjectLookupResultsSupportStrategyService" />
 		</property>
 	</bean>
-	
+
 	<bean id="dataDictionaryLookupResultsSupportStrategyService" class="org.kuali.rice.kns.lookup.DataDictionaryLookupResultsSupportStrategy">
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
 		</property>
 	</bean>
-	
+
 	<bean id="persistableBusinessObjectLookupResultsSupportStrategyService" class="org.kuali.rice.kns.lookup.PersistableBusinessObjectLookupResultsSupportStrategyImpl">
 		<property name="businessObjectService">
 			<ref bean="businessObjectService" />
@@ -613,8 +613,8 @@
 		</property>
 	</bean>
     <bean id="namespaceService" class="org.kuali.rice.kns.service.impl.NamespaceServiceImpl">
-    </bean>	
-    
+    </bean>
+
 	<bean id="parameterService" class="org.kuali.rice.kns.service.impl.ParameterServiceProxyImpl"/>
 	<bean id="parameterServerService" class="org.kuali.rice.kns.service.impl.ParameterServiceImpl">
 		<property name="dataDictionaryService" ref="dataDictionaryService" />
@@ -758,6 +758,8 @@
 		</property>
 	</bean>
 
+    <bean id="documentAdHocService" class="org.kuali.rice.kns.service.impl.DocumentAdHocServiceImpl"/>
+
 	<bean id="documentDao" class="org.kuali.rice.kns.dao.proxy.DocumentDaoProxy">
 		<property name="businessObjectDao" ref="businessObjectDao" />
     <property name="documentDaoJpa" ref="documentDaoJpa" />
@@ -767,10 +769,12 @@
   <bean id="documentDaoJpa" class="org.kuali.rice.kns.dao.impl.DocumentDaoJpa">
     <property name="businessObjectDao" ref="businessObjectDao" />
     <property name="entityManager" ref="knsEntityManager"/>
+    <property name="documentAdHocService" ref="documentAdHocService"/>
   </bean>
 
   <bean id="documentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.DocumentDaoOjb">
     <property name="businessObjectDao" ref="businessObjectDao" />
+    <property name="documentAdHocService" ref="documentAdHocService"/>
   </bean>
 
   <bean id="documentHeaderDao" class="org.kuali.rice.kns.dao.proxy.DocumentHeaderDaoProxy">
@@ -1031,15 +1035,15 @@
             <list>
                 <value>org.kuali.rice</value>
             </list>
-        </property>	
+        </property>
 	</bean>
 
 	<bean id="businessObjectAuthorizationService" class="org.kuali.rice.kns.service.impl.BusinessObjectAuthorizationServiceImpl"/>
-	 
+
     <bean id="workflowAttributesPropertyResolutionService" class="org.kuali.rice.kns.workflow.service.impl.WorkflowAttributePropertyResolutionServiceImpl">
     	<property name="persistenceStructureService"><ref bean="persistenceStructureService" /></property>
     </bean>
-    
+
     <bean id="campusGroupTypeService" class="org.kuali.rice.kns.service.impl.CampusGroupTypeServiceImpl" />
-    
+
 </beans>

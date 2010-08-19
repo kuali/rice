@@ -24,6 +24,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
@@ -66,7 +67,7 @@ public class DocumentHeader extends PersistableBusinessObjectBase {
      */
     public KualiWorkflowDocument getWorkflowDocument() {
         if (workflowDocument == null) {
-            throw new RuntimeException("transient workflowDocument is null - this should never happen");
+            throw new RiceRuntimeException("The workflow document is null.  This indicates that the DocumentHeader has not been initialized properly.  This can be caused by not retrieving a document using the DocumentService.");
         }
 
         return workflowDocument;

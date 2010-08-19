@@ -24,6 +24,7 @@ import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
@@ -68,12 +69,19 @@ public class RiceConfigurer extends RiceConfigurerBase {
 	private KEWConfigurer kewConfigurer;
 	private KENConfigurer kenConfigurer;
 	
+
+	private static Boolean isStarted = false;
+
+	
 	/***
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#start()
 	 */
 	public void start() throws Exception {
 		//Add the configurers to modules list in the desired sequence.
 		// and at the beginning if any other modules were specified
+
+		if(!isStarted) {
+		
 		int index = 0;
 		if(getKsbConfigurer()!=null) getModules().add(index++,getKsbConfigurer());
 		if(getKnsConfigurer()!=null) getModules().add(index++,getKnsConfigurer());
@@ -83,10 +91,17 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		if(getKenConfigurer()!=null) getModules().add(index++,getKenConfigurer());
 		// now execute the super class's start method which will initialize configuration and resource loaders
 		super.start();
+
 		
 		//automatically requeue documents sitting with status of 'R'
 		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
 		KSBServiceLocator.getThreadPool().execute(messageFetcher);
+
+		isStarted=true;
+
+		} else {
+			throw new RiceRuntimeException("Attempted to initialize a RiceConfigurer when one has already been initiatlized!");
+		}
 	}
 	
 

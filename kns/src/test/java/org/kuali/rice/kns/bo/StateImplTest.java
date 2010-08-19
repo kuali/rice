@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.kns.bo;
 
+import java.util.LinkedHashMap;
+
 import org.junit.Test;
-import org.kuali.rice.kns.bo.State;
 import org.kuali.rice.kns.bo.StateImpl;
 import org.kuali.test.KNSTestCase;
 
@@ -29,7 +30,7 @@ import org.kuali.test.KNSTestCase;
  */
 public class StateImplTest extends KNSTestCase{
 	
-	State dummyState;
+	StateImpl dummyState;
 
 	@Override
 	public void setUp() throws Exception {
@@ -72,4 +73,19 @@ public class StateImplTest extends KNSTestCase{
 		dummyState.setActive(true);
 		assertTrue("Testing ActiveCode in StateImplTest", dummyState.isActive());
 	}
+	
+	@Test
+	public void testCountry(){
+		Country dummyCountry = new CountryImpl();
+		dummyState.setCountry(dummyCountry);
+		assertEquals("Testing Country in StateImpl",dummyCountry,dummyState.getCountry());
+	}
+
+	@Test
+	public void testToStringMapper(){
+		dummyState.setPostalStateCode("C111");
+		LinkedHashMap dummyMap =  dummyState.toStringMapper();
+		assertEquals("Testing toStringMapper of NoteType",dummyState.getPostalStateCode() , dummyMap.get("postalStateCode"));
+	}
+	
 }

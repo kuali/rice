@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.kns.bo;
 
+import java.util.LinkedHashMap;
+
 import org.junit.Test;
-import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.CampusImpl;
 import org.kuali.rice.kns.bo.CampusType;
 import org.kuali.rice.kns.bo.CampusTypeImpl;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.test.KNSTestCase;
 
 /**
@@ -30,54 +32,61 @@ import org.kuali.test.KNSTestCase;
  */
 public class CampusImplTest extends KNSTestCase{
 
-	Campus campusOne;
+	CampusImpl dummyCampus;
 	
 
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		campusOne = new CampusImpl();
+		dummyCampus = new CampusImpl();
 		
 	}
 
 	@Override
 	public void tearDown() throws Exception {
 		super.tearDown();
-		campusOne = null;
+		dummyCampus = null;
 	}
 	
 	@Test
 	public void testCampusCode(){
-		campusOne.setCampusCode("OSU");
-		assertEquals("Testing CampusCode in CampusImplTest", "OSU",campusOne.getCampusCode());	
+		dummyCampus.setCampusCode("OSU");
+		assertEquals("Testing CampusCode in CampusImplTest", "OSU",dummyCampus.getCampusCode());	
 	}
 	@Test
 	public void testCampusName(){
-		campusOne.setCampusName("Ohio State University-Columbus");
-		assertEquals("Testing CampusName in CampusImplTest","Ohio State University-Columbus",campusOne.getCampusName());	
+		dummyCampus.setCampusName("Ohio State University-Columbus");
+		assertEquals("Testing CampusName in CampusImplTest","Ohio State University-Columbus",dummyCampus.getCampusName());	
 	}
 	@Test
 	public void testCampusShortName(){
-		campusOne.setCampusShortName("OSU");
-		assertEquals("Testing CampusShortName in CamplusImplTest","OSU",campusOne.getCampusShortName());	
+		dummyCampus.setCampusShortName("OSU");
+		assertEquals("Testing CampusShortName in CamplusImplTest","OSU",dummyCampus.getCampusShortName());	
 	}
 	@Test
 	public void testCampusTypeCode(){
-		campusOne.setCampusTypeCode("College");
-		assertEquals("Testing CampustypeCode in CampusImplTest","College",campusOne.getCampusTypeCode());	
+		dummyCampus.setCampusTypeCode("College");
+		assertEquals("Testing CampustypeCode in CampusImplTest","College",dummyCampus.getCampusTypeCode());	
 	}
 	@Test
 	public void testActive(){
-		campusOne.setActive(true);
-		assertTrue("Testing Active in CampusImplTest",campusOne.isActive());	
+		dummyCampus.setActive(true);
+		assertTrue("Testing Active in CampusImplTest",dummyCampus.isActive());	
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testCampusType(){
 		CampusType dummyCampusType = new CampusTypeImpl();
 		
-		campusOne.setCampusType(dummyCampusType);
-		assertTrue("Testing CampusType in CampusImplTest", campusOne.getCampusType().equals(dummyCampusType));
+		dummyCampus.setCampusType(dummyCampusType);
+		assertTrue("Testing CampusType in CampusImplTest", dummyCampus.getCampusType().equals(dummyCampusType));
 	}
 	
+	@Test
+	public void testToStringMapper(){
+		dummyCampus.setCampusCode("campusCode");
+		LinkedHashMap dummyMap =  dummyCampus.toStringMapper();
+		assertEquals("Testing toStringMapper of CampusImpl",dummyCampus.getCampusCode() , dummyMap.get(KNSPropertyConstants.CAMPUS_CODE));
+	}
 }

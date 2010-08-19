@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.bo;
 
 
+import java.util.LinkedHashMap;
 import org.junit.Test;
 import org.kuali.rice.kns.bo.NoteType;
 import org.kuali.test.KNSTestCase;
@@ -62,6 +63,11 @@ public class NoteTypeTest extends KNSTestCase{
 		assertTrue("Testing setNoteTypeActiveIndicator in NoteTypeTest",dummyNoteType.isNoteTypeActiveIndicator());
 	}
 	
-	
+	@Test
+	public void testToStringMapper(){
+		dummyNoteType.setNoteTypeCode("C111");
+		LinkedHashMap dummyMap =  dummyNoteType.toStringMapper();
+		assertEquals("Testing toStringMapper of NoteType",dummyNoteType.getNoteTypeCode() , dummyMap.get("noteTypeCode"));
+	}
 	
 }

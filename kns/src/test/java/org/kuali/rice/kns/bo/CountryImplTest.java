@@ -2,8 +2,9 @@ package org.kuali.rice.kns.bo;
 
 
 
+import java.util.LinkedHashMap;
+
 import org.junit.Test;
-import org.kuali.rice.kns.bo.Country;
 import org.kuali.rice.kns.bo.CountryImpl;
 import org.kuali.test.KNSTestCase;
 
@@ -16,39 +17,39 @@ import org.kuali.test.KNSTestCase;
  */
 public class CountryImplTest extends KNSTestCase{
 
-	Country countryOne;
-	Country countryTwo;
+	CountryImpl dummyCountryOne;
+	CountryImpl dummyCountrytwo;
 
 	
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		countryOne = new CountryImpl();
-		countryTwo = new CountryImpl();
+		dummyCountryOne = new CountryImpl();
+		dummyCountrytwo = new CountryImpl();
 	}
 
 	
 	@Override
 	public void tearDown() throws Exception {
 		super.tearDown();
-		countryOne = null;
-		countryTwo = null;
+		dummyCountryOne = null;
+		dummyCountrytwo = null;
 	}
 	
 	@Test
 	public void testPostalCountryCode(){
-		countryOne.setPostalCountryCode("USA");
+		dummyCountryOne.setPostalCountryCode("USA");
 		
-		assertEquals("Testing set and get PostalCountryCode for USA", "USA",countryOne.getPostalCountryCode());
-		assertNull("Testing should get null ",countryTwo.getPostalCountryCode());
+		assertEquals("Testing set and get PostalCountryCode for USA", "USA",dummyCountryOne.getPostalCountryCode());
+		assertNull("Testing should get null ",dummyCountrytwo.getPostalCountryCode());
 	}
 	
 	@Test
 	public void testPostalCountryName(){
-		countryOne.setPostalCountryName("America");
+		dummyCountryOne.setPostalCountryName("America");
 		
-		assertEquals("Testing set and get PostalCountryName for Amercia", "America",countryOne.getPostalCountryName());
-		assertNull("Testing should get null ", countryTwo.getPostalCountryName());
+		assertEquals("Testing set and get PostalCountryName for Amercia", "America",dummyCountryOne.getPostalCountryName());
+		assertNull("Testing should get null ", dummyCountrytwo.getPostalCountryName());
 	}
 
 	
@@ -58,19 +59,25 @@ public class CountryImplTest extends KNSTestCase{
 	
 	@Test
 	public void testPostalCountryRestrictedIndicator(){
-		countryOne.setPostalCountryRestrictedIndicator(true);
+		dummyCountryOne.setPostalCountryRestrictedIndicator(true);
 			
-		assertTrue("Testing set and check PostalCountryRestrictedIndicator ",countryOne.isPostalCountryRestrictedIndicator());
-		assertFalse("Testing get should get default PostalCountryRestrictedIndicator vaue",countryTwo.isPostalCountryRestrictedIndicator());
+		assertTrue("Testing set and check PostalCountryRestrictedIndicator ",dummyCountryOne.isPostalCountryRestrictedIndicator());
+		assertFalse("Testing get should get default PostalCountryRestrictedIndicator vaue",dummyCountrytwo.isPostalCountryRestrictedIndicator());
 	}
 
 	@Test
 	public void testActive(){
-		countryOne.setActive(true);
+		dummyCountryOne.setActive(true);
 			
-		assertTrue("Testing set and check Active ",countryOne.isActive());
-		assertFalse("Testing get should get default Active",countryTwo.isActive());
+		assertTrue("Testing set and check Active ",dummyCountryOne.isActive());
+		assertFalse("Testing get should get default Active",dummyCountrytwo.isActive());
 	}
 	
+	@Test
+	public void testToStringMapper(){
+		dummyCountryOne.setPostalCountryCode("US1101");
+		LinkedHashMap dummyMap =  dummyCountryOne.toStringMapper();
+		assertEquals("Testing toStringMapper of CountryImpl",dummyCountryOne.getPostalCountryCode() , dummyMap.get("postalCountryCode"));
+	}
 
 }

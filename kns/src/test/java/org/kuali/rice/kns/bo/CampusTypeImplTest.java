@@ -16,8 +16,8 @@
 package org.kuali.rice.kns.bo;
 
 
+import java.util.LinkedHashMap;
 import org.junit.Test;
-import org.kuali.rice.kns.bo.CampusType;
 import org.kuali.rice.kns.bo.CampusTypeImpl;
 import org.kuali.test.KNSTestCase;
 
@@ -30,7 +30,7 @@ import org.kuali.test.KNSTestCase;
  */
 public class CampusTypeImplTest extends KNSTestCase{
 	
-	CampusType dummyCampusType;
+	CampusTypeImpl dummyCampusType;
 	
 	
 	@Override
@@ -66,6 +66,14 @@ public class CampusTypeImplTest extends KNSTestCase{
 	
 	@Test
 	public void testDataObjectMaintenanceCodeActiveIndicator(){
+		dummyCampusType.setDataObjectMaintenanceCodeActiveIndicator(true);
 		assertTrue("Testing DataObjectMaintenanceCodeActiveIndicator in CampusTypeImplTest",dummyCampusType.getDataObjectMaintenanceCodeActiveIndicator());
+	}
+	
+	@Test
+	public void testToStringMapper(){
+		dummyCampusType.setCampusTypeCode("campusTypeCode");
+		LinkedHashMap dummyMap =  dummyCampusType.toStringMapper();
+		assertEquals("Testing toStringMapper of CampusImpl",dummyCampusType.getCampusTypeCode() , dummyMap.get("campusTypeCode"));
 	}
 }

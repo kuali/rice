@@ -82,13 +82,6 @@ public class DefaultEmailService implements EmailService, InitializingBean {
 
 
 	public void sendEmail(EmailFrom from, EmailToList to, EmailSubject subject, EmailBody body, EmailCcList cc, EmailBcList bc, boolean htmlMessage) {
-		if(mailer == null){
-			try {
-				this.afterPropertiesSet();
-			} catch (Exception e) {
-				LOG.error("Error initializing mailer for multi-recipient email.", e);
-			}
-		}
 		if (to.getToAddresses().isEmpty()) {
 			LOG.error("List of To addresses must contain at least one entry.");
 		} else {

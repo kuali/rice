@@ -41,9 +41,9 @@ import org.springframework.dao.DataAccessException;
  * This class is the OJB implementation of the DocumentDao interface.
  */
 public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentDao, OjbCollectionAware{
-    private static Logger LOG = Logger.getLogger(DocumentDaoOjb.class);
-    private BusinessObjectDao businessObjectDao;
-    private DocumentAdHocService documentAdHocService;
+    private static final Logger LOG = Logger.getLogger(DocumentDaoOjb.class);
+    protected BusinessObjectDao businessObjectDao;
+    protected DocumentAdHocService documentAdHocService;
 
 
     public DocumentDaoOjb() {

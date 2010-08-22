@@ -12,16 +12,19 @@
     <param name="datasource.platform.Oracle" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle" override="false"></param>
+    <param name="rice.jpa.DatasourcePlatform.Oracle" override="false">org.kuali.rice.core.jpa.dialect.OracleDialect</param>
     
     <param name="datasource.driver.name.Oracle9i" override="false">oracle.jdbc.driver.OracleDriver</param>
     <param name="datasource.platform.Oracle9i" override="false">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.Oracle9i" override="false"></param>
     <param name="datasource.ojb.sequenceManager.className.Oracle9i" override="false"></param>
+    <param name="rice.jpa.DatasourcePlatform.Oracle9i" override="false">org.kuali.rice.core.jpa.dialect.OracleDialect</param>
     
     <param name="datasource.driver.name.MySQL" override="false">com.mysql.jdbc.Driver</param>
     <param name="datasource.platform.MySQL" override="false">org.kuali.rice.core.database.platform.MySQLDatabasePlatform</param>
     <param name="datasource.ojb.sequenceManager.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
     <param name="datasource.ojb.sequenceManager.className.MySQL" override="false">org.apache.ojb.broker.platforms.KualiMySQLSequenceManagerImpl</param>
+    <param name="rice.jpa.DatasourcePlatform.MySQL" override="false">org.kuali.rice.core.jpa.dialect.MySQLDialect</param>
     
     <param name="datasource.driver.name.Derby" override="false">org.apache.derby.jdbc.EmbeddedDriver</param>
     <param name="datasource.platform.Derby" override="false">org.kuali.rice.core.database.platform.DerbyDatabasePlatform</param>

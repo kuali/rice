@@ -41,7 +41,8 @@ public class RegexValidationPattern extends CharacterLevelValidationPattern {
      * 
      * @see org.kuali.rice.kns.datadictionary.validation.CharacterLevelValidationPattern#extendExportMap(org.kuali.rice.kns.datadictionary.exporter.ExportMap)
      */
-    public void extendExportMap(ExportMap exportMap) {
+    @Override
+	public void extendExportMap(ExportMap exportMap) {
         if (LOG.isTraceEnabled()) {
             String message=String.format("ENTRY %s",
                     (exportMap==null)?"null":exportMap.toString());
@@ -90,7 +91,8 @@ public class RegexValidationPattern extends CharacterLevelValidationPattern {
      * 
      * @see org.kuali.rice.kns.datadictionary.validation.ValidationPattern#getRegexString()
      */
-    protected String getRegexString() {
+    @Override
+	protected String getRegexString() {
         if (LOG.isTraceEnabled()) {
             String message=String.format("ENTRY %s",
                     (pattern==null)?"null":pattern.toString());
@@ -146,7 +148,7 @@ public class RegexValidationPattern extends CharacterLevelValidationPattern {
 	public void completeValidation() {
 		super.completeValidation();
 		if (StringUtils.isBlank(validationErrorMessageKey)) {
-			throw new RuntimeException("Regex Validation Patterns must have a validation error message key defined");
+			throw new ValidationPatternException("Regex Validation Patterns must have a validation error message key defined");
 		}
 	}
 }

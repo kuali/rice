@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.kns.datadictionary.validation.fieldlevel;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.kuali.test.KNSTestCase;
+import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
+import org.kuali.rice.test.BaseRiceTestCase;
 
-public class FixedPointValidationPatternTest extends KNSTestCase {
+public class FixedPointValidationPatternTest extends BaseRiceTestCase {
     // Unlike its superclass, FixedPointValidationPattern does not use Spring.
     FixedPointValidationPattern pattern;
 
-    @Override
-    @Test public final void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public final void setUp() throws Exception {
 
         pattern = new FixedPointValidationPattern();
         pattern.setPrecision(2);
@@ -202,6 +203,28 @@ public class FixedPointValidationPatternTest extends KNSTestCase {
         pattern.setAllowNegative(true);
 
         assertFalse(pattern.matches(".123"));
+    }
+    
+    @Test(expected=ValidationPattern.ValidationPatternException.class)
+    public final void testZero_Percision_And_Scale_invalid8() {
+        //what happens when precision & scale are not set in DD
+    	pattern.setPrecision(0);
+        pattern.setScale(0);
+        pattern.completeValidation();
+    }
+    
+    @Test(expected=ValidationPattern.ValidationPatternException.class)
+    public final void testPrecision_Less_Than_Scale_invalid9() {
+    	pattern.setPrecision(1);
+        pattern.setScale(3);
+        pattern.completeValidation();
+    }
+    
+    @Test(expected=ValidationPattern.ValidationPatternException.class)
+    public final void testPrecision_And_Scale_Negative_invalid10() {
+    	pattern.setPrecision(-3);
+        pattern.setScale(-1);
+        pattern.completeValidation();
     }
 
 }

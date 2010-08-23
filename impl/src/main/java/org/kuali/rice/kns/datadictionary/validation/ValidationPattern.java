@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kns.datadictionary.exporter.ExportMap;
 
 /**
@@ -127,6 +128,28 @@ abstract public class ValidationPattern implements Serializable {
      * This method throws an exception if it is not configured properly
      * 
      */
-    public void completeValidation() {
+    public void completeValidation() throws ValidationPatternException {
+    }
+    
+    /** exception thrown when a ValidationPattern is in an incorrect state. */
+    public static class ValidationPatternException extends RiceRuntimeException {
+
+    	private static final long serialVersionUID = 2012770642382150523L;
+        
+        public ValidationPatternException(String message) {
+            super(message);
+        }
+
+        public ValidationPatternException() {
+            super();
+        }
+
+        public ValidationPatternException(String message, Throwable cause) {
+            super(message, cause);
+        }
+
+        public ValidationPatternException(Throwable cause) {
+            super(cause);
+        }
     }
 }

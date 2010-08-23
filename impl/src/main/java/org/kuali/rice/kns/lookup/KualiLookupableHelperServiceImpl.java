@@ -280,7 +280,16 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
             	}
             	// run search against attached EBO's module service
             	ModuleService eboModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName) );
-        		List eboResults = eboModuleService.getExternalizableBusinessObjectsListForLookup( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName), (Map)eboFieldValues, unbounded);
+            	// KULRICE-4401 made eboResults an empty list and only filled if service is found.
+         	 	List eboResults = Collections.emptyList();
+         	 	if (eboModuleService==null) 
+         	 	{
+         	 		LOG.debug( "EBO ModuleService is null: " + eboPropertyName );
+         	 	}
+         	 		else
+         	 	{
+         	 			eboResults = eboModuleService.getExternalizableBusinessObjectsListForLookup( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName), (Map)eboFieldValues, unbounded);
+         	 	}
         		// get the mapping/relationship between the EBO object and it's parent object
         		// use that to adjust the fieldValues
 

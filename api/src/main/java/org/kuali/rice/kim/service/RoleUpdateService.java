@@ -70,7 +70,7 @@ public interface RoleUpdateService {
 	 * namespace code and name with the supplied set of qualifications.
 	 */
     RoleMemberCompleteInfo saveRoleMemberForRole(@WebParam(name="roleMemberId") String roleMemberId,
-    		@WebParam(name="roleId") String memberId,
+    		@WebParam(name="memberId") String memberId,
     		@WebParam(name="memberTypeCode") String memberTypeCode, 
     		@WebParam(name="roleId") String roleId, 
     		@WebParam(name="qualifications") @XmlJavaTypeAdapter(value = AttributeSetAdapter.class) AttributeSet qualifications, 

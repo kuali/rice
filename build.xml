@@ -228,7 +228,7 @@
 
 	<target name="install-rice-jars" depends="init">
 		<echo message="${environment.path.variable}"/>
-		<maven goals="install" options="-e -Dmaven.test.skip=true" />
+		<maven goals="source:jar install" options="-e -Dmaven.test.skip=true" />
 	</target>
 
 	<target name="prepare-lib" depends="install-rice-jars">

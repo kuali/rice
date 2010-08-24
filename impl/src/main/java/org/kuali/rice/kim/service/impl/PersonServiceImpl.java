@@ -69,6 +69,8 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	protected static final String ENTITY_NAME_PROPERTY_PREFIX = "names.";
 	protected static final String PRINCIPAL_PROPERTY_PREFIX = "principals.";
 	protected static final String ENTITY_EMPLOYEE_ID_PROPERTY_PREFIX = "employmentInformation.";
+	// KULRICE-4442 Special handling for extension objects
+	protected static final String EXTENSION = "extension";
 	
 	private IdentityManagementService identityManagementService;	
 	private RoleManagementService roleManagementService;
@@ -795,6 +797,11 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
                             	processedFieldValues.remove( propertyName );
                         		String fieldPrefix = StringUtils.substringBeforeLast( StringUtils.substringBeforeLast( propertyName, "." + KIMPropertyConstants.Person.PRINCIPAL_NAME ), "." );
                                 String relatedPrincipalIdPropertyName = fieldPrefix + "." + parentAttribute;
+                                // KR-683 Special handling for extension objects
+                         	 	if(EXTENSION.equals(StringUtils.substringAfterLast(fieldPrefix, ".")) && EXTENSION.equals(StringUtils.substringBefore(parentAttribute, ".")))
+                         	 	{
+                         	 		relatedPrincipalIdPropertyName = fieldPrefix + "." + StringUtils.substringAfter(parentAttribute, ".");
+                         	 	}
                                 String currRelatedPersonPrincipalId = processedFieldValues.get(relatedPrincipalIdPropertyName);
                                 if ( StringUtils.isBlank( currRelatedPersonPrincipalId ) ) {
                                 	KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );

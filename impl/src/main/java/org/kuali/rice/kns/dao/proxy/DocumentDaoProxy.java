@@ -31,6 +31,7 @@ import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.dao.impl.DocumentDaoJpa;
 import org.kuali.rice.kns.dao.impl.DocumentDaoOjb;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.service.DocumentAdHocService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
@@ -47,6 +48,8 @@ public class DocumentDaoProxy implements DocumentDao {
 
     private static KualiModuleService kualiModuleService;
     private static Map<String, DocumentDao> documentDaoValues = new ConcurrentHashMap<String, DocumentDao>();
+
+    private static final String DOCUMENT_AD_HOC_SERVICE_NAME = "documentAdHocService";
 
     private DocumentDao getDao(Class clazz) {
     	ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
@@ -69,6 +72,7 @@ public class DocumentDaoProxy implements DocumentDao {
                         if (entityManager != null) {
                             documentDaoJpa.setEntityManager(entityManager);
                             documentDaoJpa.setBusinessObjectDao(businessObjectDao);
+                            documentDaoJpa.setDocumentAdHocService((DocumentAdHocService)KNSServiceLocator.getService(DOCUMENT_AD_HOC_SERVICE_NAME));
                             documentDaoValues.put(dataSourceName, documentDaoJpa);
                             return documentDaoJpa;
                         } else {
@@ -80,6 +84,7 @@ public class DocumentDaoProxy implements DocumentDao {
                     	DocumentDaoOjb documentDaoOjb = new DocumentDaoOjb();
                         documentDaoOjb.setJcdAlias(dataSourceName);
                         documentDaoOjb.setBusinessObjectDao(businessObjectDao);
+                        documentDaoOjb.setDocumentAdHocService((DocumentAdHocService)KNSServiceLocator.getService(DOCUMENT_AD_HOC_SERVICE_NAME));
                         documentDaoValues.put(dataSourceName, documentDaoOjb);
                         return documentDaoOjb;
                     }

@@ -61,7 +61,8 @@ public class UserSession implements Serializable {
 		this.kualiSessionId = kualiSessionId;
 	}
 
-	private transient Map<String,KualiWorkflowDocument> workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
+	// KULRICE-4443 Allow workflow sessions to fail over between nodes to prevent document loss by removing transient modifier
+	private Map<String,KualiWorkflowDocument> workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
 
     /**
      * Take in a netid, and construct the user from that.

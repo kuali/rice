@@ -474,7 +474,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         while (getAdHocRoutePersons().size() <= index) {
             getAdHocRoutePersons().add(new AdHocRoutePerson());
         }
-        return (AdHocRoutePerson) getAdHocRoutePersons().get(index);
+        return getAdHocRoutePersons().get(index);
     }
 
     /**
@@ -487,7 +487,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         while (getAdHocRouteWorkgroups().size() <= index) {
             getAdHocRouteWorkgroups().add(new AdHocRouteWorkgroup());
         }
-        return (AdHocRouteWorkgroup) getAdHocRouteWorkgroups().get(index);
+        return getAdHocRouteWorkgroups().get(index);
     }
 
     /**
@@ -871,6 +871,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 		return "";
 	}
 	
+	/** will instatiate a new document setting it on the form if {@link KualiDocumentFormBase#getDefaultDocumentTypeName()} is overriden to return a valid value. */
 	protected void instantiateDocument() {
 		if (document == null && StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
 			Class<? extends Document> documentClass = getDocumentClass();
@@ -884,16 +885,18 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 		}
 	}
 	
-	/** gets the document class from the datadictionary. */
+	/** gets the document class from the datadictionary if {@link KualiDocumentFormBase#getDefaultDocumentTypeName()} is overriden to return a valid value otherwise behavior is nondeterministic. */
 	private Class<? extends Document> getDocumentClass() {
 		return KNSServiceLocator.getDataDictionaryService().getDocumentClassByTypeName(getDefaultDocumentTypeName());
 	}
 	
-	/**initializes the header tabs from what is defined in the datadictionary. */
+	/**initializes the header tabs from what is defined in the datadictionary if {@link KualiDocumentFormBase#getDefaultDocumentTypeName()} is overriden to return a valid value. */
     protected void initializeHeaderNavigationTabs() {
-        final DocumentEntry docEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(getDocumentClass().getName());
-        final List<HeaderNavigation> navList = docEntry.getHeaderNavigationList();
-        final HeaderNavigation[] list = new HeaderNavigation[navList.size()];
-        super.setHeaderNavigationTabs(navList.toArray(list));
+    	if (StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
+    		final DocumentEntry docEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(getDocumentClass().getName());
+    		final List<HeaderNavigation> navList = docEntry.getHeaderNavigationList();
+    		final HeaderNavigation[] list = new HeaderNavigation[navList.size()];
+    		super.setHeaderNavigationTabs(navList.toArray(list));
+    	}
     } 
 }

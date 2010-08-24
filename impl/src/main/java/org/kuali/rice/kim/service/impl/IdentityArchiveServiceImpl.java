@@ -16,11 +16,13 @@
 package org.kuali.rice.kim.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
@@ -29,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
@@ -39,13 +42,13 @@ import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.config.event.RiceConfigEventListener;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.service.IdentityArchiveService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.mortbay.log.Log;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -166,27 +169,68 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 		// flag used to prevent multiple processes from being submitted at once
 		AtomicBoolean currentlySubmitted = new AtomicBoolean(false);
 
+		private final Comparator<Comparable> nullSafeComparator = new Comparator<Comparable>() {
+			public int compare(Comparable i1, Comparable i2) {
+				if (i1 != null && i2 != null) {
+					return i1.compareTo(i2);
+				} else if (i1 == null) {
+					if (i2 == null) {
+						return 0;
+					} else {
+						return -1;
+					}
+				} else { // if (entityId2 == null) {
+					return 1;
+				}
+			};
+		};
+
+		/**
+		 * Comparator that attempts to impose a total ordering on KimEntityDefaultInfo instances
+		 */
 		private final Comparator<KimEntityDefaultInfo> kediComparator = new Comparator<KimEntityDefaultInfo>() {
 			/**
 			 * compares by entityId value
 			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 			 */
 			public int compare(KimEntityDefaultInfo o1, KimEntityDefaultInfo o2) {
-				String id1 = (o1 == null) ? null : o1.getEntityId();
-				String id2 = (o2 == null) ? null : o2.getEntityId();
+				String entityId1 = (o1 == null) ? null : o1.getEntityId();
+				String entityId2 = (o2 == null) ? null : o2.getEntityId();
 
-				// this really shouldn't be needed because KEDI entity ids shouldn't be null;
-				if (id1 == null) {
-					if (id2 == null) {
-						return 0;
-					} else {
-						return -1;
-					}
-				} else if (id2 == null) {
-					return 1;
+				int result = nullSafeComparator.compare(entityId1, entityId2);
+
+				if (result == 0) {
+					result = getPrincipalIdsString(o1).compareTo(getPrincipalIdsString(o2));
 				}
 
-				return id1.compareTo(id2);
+				return result;
+			}
+
+			/**
+			 * This method builds a newline delimited String containing the entity's principal IDs in sorted order
+			 *
+			 * @param entity
+			 * @return
+			 */
+			private String getPrincipalIdsString(KimEntityDefaultInfo entity) {
+				String result = "";
+				if (entity != null) {
+					List<KimPrincipalInfo> principals = entity.getPrincipals();
+					if (principals != null) {
+						if (principals.size() == 1) { // one
+							result = principals.get(0).getPrincipalId();
+						} else { // multiple
+							String [] ids = new String [principals.size()];
+							int insertIndex = 0;
+							for (KimPrincipalInfo principal : principals) {
+								ids[insertIndex++] = principal.getPrincipalId();
+							}
+							Arrays.sort(ids);
+							result = StringUtils.join(ids, "\n");
+						}
+					}
+				}
+				return result;
 			}
 		};
 

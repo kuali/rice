@@ -143,20 +143,43 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		return createServiceInfoAndServiceInfoCopy(serviceDefinition);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	public void registerService(ServiceDefinition serviceDefinition, boolean forceRegistryRefresh) {
 		if (serviceDefinition == null) {
 			throw new RuntimeException("Service Definition is null");
 		}
-		List services = (List) ConfigContext.getCurrentContextConfig().getObject(Config.BUS_DEPLOYED_SERVICES);
+		final Config config = ConfigContext.getCurrentContextConfig();
+		
+		@SuppressWarnings("unchecked")
+		List<ServiceDefinition> services = (List<ServiceDefinition>) config.getObject(Config.BUS_DEPLOYED_SERVICES);
 		if (services == null) {
-			services = new ArrayList();
-			ConfigContext.getCurrentContextConfig().putObject(Config.BUS_DEPLOYED_SERVICES, services);
+			services = new ArrayList<ServiceDefinition>();
+			config.putObject(Config.BUS_DEPLOYED_SERVICES, services);
 		}
+		
+		//removing any existing services already registered with the same QName - allows client apps to override rice pushlished services
+		removeServicesWithName(serviceDefinition.getServiceName(), services);
 		services.add(serviceDefinition);
+		
 		// force an immediate registry of the service
 		if (forceRegistryRefresh) {
 			run();
+		}
+	}
+	
+	/**
+	 * removes any services from the list with the same QName.
+	 * 
+	 * @param name the QName to search for
+	 * @param services the list of services
+	 */
+	private void removeServicesWithName(QName name, List<ServiceDefinition> services) {
+		for (Iterator<ServiceDefinition> i = services.iterator(); i.hasNext(); ) {
+			final ServiceDefinition service = i.next();
+			if (service.getServiceName().equals(name)) {
+				LOG.debug("removing existing service with QName: " + service.getServiceName());
+				i.remove();
+			}
 		}
 	}
 

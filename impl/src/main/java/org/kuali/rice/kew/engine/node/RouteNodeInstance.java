@@ -235,7 +235,7 @@ public class RouteNodeInstance implements Serializable {
     }
     
     public DocumentType getDocumentType() {
-        return KEWServiceLocator.getDocumentTypeService().findById(getDocumentId());
+        return KEWServiceLocator.getDocumentTypeService().findByDocumentId(getDocumentId());
     }
     
     /*

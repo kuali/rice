@@ -30,6 +30,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
@@ -175,18 +176,25 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
         if (hasDocumentId()) {
             // populate workflowDocument in documentHeader, if needed
+        	// KULRICE-4444 Obtain Document Header using the Workflow Service to minimize overhead
             try {
-                if (GlobalVariables.getUserSession().getWorkflowDocument(getDocument().getDocumentNumber()) != null) {
-                    workflowDocument = GlobalVariables.getUserSession().getWorkflowDocument(getDocument().getDocumentNumber());
-                } else {
+            	workflowDocument = GlobalVariables.getUserSession().getWorkflowDocument(getDocument().getDocumentNumber());
+         	 	if ( workflowDocument == null)
+         	 	{
                     // gets the workflow document from doc service, doc service will also set the workflow document in the
                     // user's session
-                    Document retrievedDocument = KNSServiceLocator.getDocumentService().getByDocumentHeaderId(getDocument().getDocumentNumber());
-                    if (retrievedDocument == null) {
-                        throw new WorkflowException("Unable to get retrieve document # " + getDocument().getDocumentNumber() + " from document service getByDocumentHeaderId");
-                    }
-                    workflowDocument = retrievedDocument.getDocumentHeader().getWorkflowDocument();
-                }
+         	 		Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
+         	 	 	workflowDocument = KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(getDocument().getDocumentNumber()), person);
+         	 	 	GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
+         	 	 	if (workflowDocument == null)
+         	 	 	{
+         	 	 		throw new WorkflowException("Unable to retrieve workflow document # " + getDocument().getDocumentNumber() + " from workflow document service createWorkflowDocument");
+         	 	 	}
+         	 	 	else
+         	 	 	{
+         	 	 	LOG.debug("Retrieved workflow Document ID: " + workflowDocument.getRouteHeaderId().toString());
+         	 	 	}
+         	 	}
 
                 getDocument().getDocumentHeader().setWorkflowDocument(workflowDocument);
             } catch (WorkflowException e) {

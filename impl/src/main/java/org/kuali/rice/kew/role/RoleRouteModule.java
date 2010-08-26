@@ -50,10 +50,10 @@ import org.kuali.rice.kim.service.ResponsibilityService;
 public class RoleRouteModule implements RouteModule {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RoleRouteModule.class);
 	
-	protected static final String QUALIFIER_RESOLVER_ELEMENT = "qualifierResolver";
-	protected static final String QUALIFIER_RESOLVER_CLASS_ELEMENT = "qualifierResolverClass";
-	protected static final String RESPONSIBILITY_TEMPLATE_NAME_ELEMENT = "responsibilityTemplateName";
-	protected static final String NAMESPACE_ELEMENT = "namespace";
+	protected static final String QUALIFIER_RESOLVER_ELEMENT = KEWConstants.ROLEROUTE_QUALIFIER_RESOLVER_ELEMENT;
+	protected static final String QUALIFIER_RESOLVER_CLASS_ELEMENT = KEWConstants.ROLEROUTE_QUALIFIER_RESOLVER_CLASS_ELEMENT;
+	protected static final String RESPONSIBILITY_TEMPLATE_NAME_ELEMENT = KEWConstants.ROLEROUTE_RESPONSIBILITY_TEMPLATE_NAME_ELEMENT;
+	protected static final String NAMESPACE_ELEMENT = KEWConstants.ROLEROUTE_NAMESPACE_ELEMENT;
 	
 	private static ResponsibilityService responsibilityService;
 	

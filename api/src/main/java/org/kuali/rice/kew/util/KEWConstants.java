@@ -1020,4 +1020,9 @@ public class KEWConstants extends JSTLConstants {
     // special user used when no other user is available
     public static final String SYSTEM_USER = "kr";
     public static final String ENABLE_KEN_NOTIFICATION = "rice.kew.enableKENNotification";
+    
+	public static final String ROLEROUTE_QUALIFIER_RESOLVER_ELEMENT = "qualifierResolver";
+	public static final String ROLEROUTE_QUALIFIER_RESOLVER_CLASS_ELEMENT = "qualifierResolverClass";
+	public static final String ROLEROUTE_RESPONSIBILITY_TEMPLATE_NAME_ELEMENT = "responsibilityTemplateName";
+	public static final String ROLEROUTE_NAMESPACE_ELEMENT = "namespace";
 }

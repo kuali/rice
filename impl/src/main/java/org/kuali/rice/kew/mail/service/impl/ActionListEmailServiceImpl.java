@@ -558,7 +558,7 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 	    }
 
 	    String weeklyCron = ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.WEEKLY_EMAIL_CRON_EXPRESSION);
-	    if (!StringUtils.isBlank(dailyCron)) {
+	    if (!StringUtils.isBlank(weeklyCron)) {
 		LOG.info("Scheduling Weekly Email batch with cron expression: " + weeklyCron);
 		CronTrigger weeklyTrigger = new CronTrigger(WEEKLY_TRIGGER_NAME, emailBatchGroup, weeklyCron);
 		JobDetail weeklyJobDetail = new JobDetail(WEEKLY_JOB_NAME, emailBatchGroup, WeeklyEmailJob.class);

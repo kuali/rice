@@ -36,7 +36,7 @@ public class LazyLoadSecurityAttribute implements SecurityAttribute {
 		return getSecurityAttribute().routeLogAuthorized(currentUser, docTypeName, documentId, initiatorPrincipalId);
 	}
 	
-	protected synchronized SecurityAttribute getSecurityAttribute() {
+	protected SecurityAttribute getSecurityAttribute() {
 		ObjectDefinition objDef = new ObjectDefinition(className, serviceNamespace);
 		return (SecurityAttribute)GlobalResourceLoader.getObject(objDef);
 	}

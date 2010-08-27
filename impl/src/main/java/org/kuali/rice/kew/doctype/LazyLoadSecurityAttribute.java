@@ -20,7 +20,6 @@ public class LazyLoadSecurityAttribute implements SecurityAttribute {
 
 	private String className;
 	private String serviceNamespace;
-	private transient SecurityAttribute delegate;
 	
 	public LazyLoadSecurityAttribute(String className, String serviceNamespace) {
 		this.className = className;
@@ -38,12 +37,8 @@ public class LazyLoadSecurityAttribute implements SecurityAttribute {
 	}
 	
 	protected synchronized SecurityAttribute getSecurityAttribute() {
-		if (delegate != null) {
-			return delegate;
-		}
 		ObjectDefinition objDef = new ObjectDefinition(className, serviceNamespace);
-		this.delegate = (SecurityAttribute)GlobalResourceLoader.getObject(objDef);
-		return delegate;
+		return (SecurityAttribute)GlobalResourceLoader.getObject(objDef);
 	}
 
 }

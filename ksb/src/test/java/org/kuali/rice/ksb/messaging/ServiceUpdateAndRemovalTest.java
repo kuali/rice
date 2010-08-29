@@ -26,6 +26,7 @@ import org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue;
 import org.kuali.rice.ksb.messaging.service.ServiceRegistry;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.test.TransactionalTest;
 
 /**
@@ -43,7 +44,7 @@ public class ServiceUpdateAndRemovalTest extends KSBTestCase {
 	 */
 	@Test
 	public void testRemovalOfAllLocalServices() throws Exception {
-		ServiceRegistry serviceRegistry = KSBServiceLocator.getIPTableService();
+		ServiceRegistry serviceRegistry = KSBServiceLocator.getServiceRegistry();
 		String ipNumber = RiceUtilities.getIpNumber();
 		String serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
 		List<ServiceInfo> serviceInfos = serviceRegistry.findLocallyPublishedServices(ipNumber, serviceNamespace);
@@ -62,7 +63,7 @@ public class ServiceUpdateAndRemovalTest extends KSBTestCase {
 	public void testModificationOfLocalServices() throws Exception {
 		RemotedServiceRegistry remotedServiceRegistry = KSBServiceLocator.getServiceDeployer();
 		QName serviceName = new QName("KEW", "serviceForTestingModifications");
-		QName forwardServiceName = new QName("KEW", "serviceForTestingModifications" + RemotedServiceRegistry.FORWARD_HANDLER_SUFFIX);
+		QName forwardServiceName = new QName("KEW", "serviceForTestingModifications" + KSBConstants.FORWARD_HANDLER_SUFFIX);
 		ServiceInfo regularInfo = null;
 		ServiceInfo forwardInfo = null;
 		// Create and deploy a simple test service.

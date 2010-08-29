@@ -117,7 +117,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
     			serviceToRemove.getServiceInfo().setAlive(false);
     			List<ServiceInfo> serviceInfos = new ArrayList<ServiceInfo>();
     			serviceInfos.add(serviceToRemove.getServiceInfo());
-    			KSBServiceLocator.getIPTableService().markServicesDead(serviceInfos);
+    			KSBServiceLocator.getServiceRegistry().markServicesDead(serviceInfos);
 		    }
 		    return serviceList.removeAll(servicesToRemove);
 		}
@@ -234,7 +234,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 				servicesOnBus.add(remoteServiceHolder.getServiceInfo());
 			}
 		} else {
-			servicesOnBus = KSBServiceLocator.getIPTableService().fetchAllActive();
+			servicesOnBus = KSBServiceLocator.getServiceRegistry().fetchAllActive();
 		}
 
 		synchronized ( clientsMutex ) {

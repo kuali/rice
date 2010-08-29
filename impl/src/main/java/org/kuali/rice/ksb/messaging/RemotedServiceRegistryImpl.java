@@ -81,7 +81,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 
 	private ScheduledFuture future;
 
-	protected ServiceRegistry enRoutingTableService;
+	protected ServiceRegistry serviceRegistry;
 	
 	protected KSBContextServiceLocator serviceLocator;
 	
@@ -127,9 +127,9 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		ServiceDefinition serviceDefinition = new JavaServiceDefinition();
 		serviceDefinition.setBusSecurity(serviceDef.getBusSecurity());
 		if (serviceDef.getLocalServiceName() == null && serviceDef.getServiceName() != null) {
-			serviceDefinition.setServiceName(new QName(serviceDef.getServiceName().getNamespaceURI(), serviceDef.getServiceName().getLocalPart() + FORWARD_HANDLER_SUFFIX));
+			serviceDefinition.setServiceName(new QName(serviceDef.getServiceName().getNamespaceURI(), serviceDef.getServiceName().getLocalPart() + KSBConstants.FORWARD_HANDLER_SUFFIX));
 		} else {
-			serviceDefinition.setLocalServiceName(serviceDef.getLocalServiceName() + FORWARD_HANDLER_SUFFIX);
+			serviceDefinition.setLocalServiceName(serviceDef.getLocalServiceName() + KSBConstants.FORWARD_HANDLER_SUFFIX);
 			serviceDefinition.setServiceNameSpaceURI(serviceDef.getServiceNameSpaceURI());
 		}
 		serviceDefinition.setMessageExceptionHandler(serviceDef.getMessageExceptionHandler());
@@ -305,7 +305,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			fetchedServices = new ArrayList<ServiceInfo>();
 		} else {
 			//TODO we are not verifying that this read is not being done in dev mode in a test
-			fetchedServices = this.getServiceInfoService().findLocallyPublishedServices(RiceUtilities.getIpNumber(), serviceNamespace);
+			fetchedServices = this.getServiceRegistry().findLocallyPublishedServices(RiceUtilities.getIpNumber(), serviceNamespace);
 		}
 		
 		RoutingTableDiffCalculator diffCalc = new RoutingTableDiffCalculator();
@@ -317,8 +317,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	 	 		updateSRegTable = false;
 	 	 	}
 	 	 	if (updateSRegTable) {
-				getServiceInfoService().save(diffCalc.getServicesNeedUpdated());
-				getServiceInfoService().remove(diffCalc.getServicesNeedRemoved());
+				getServiceRegistry().save(diffCalc.getServicesNeedUpdated());
+				getServiceRegistry().remove(diffCalc.getServicesNeedRemoved());
 			}
 			this.publishedServices.clear();
 			this.serviceInfoCopies.clear();
@@ -372,8 +372,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			}
 			this.future = null;
 		}
-		List<ServiceInfo> fetchedServices = this.getServiceInfoService().findLocallyPublishedServices(RiceUtilities.getIpNumber(), ConfigContext.getCurrentContextConfig().getServiceNamespace());
-		this.getServiceInfoService().markServicesDead(fetchedServices);
+		List<ServiceInfo> fetchedServices = this.getServiceRegistry().findLocallyPublishedServices(RiceUtilities.getIpNumber(), ConfigContext.getCurrentContextConfig().getServiceNamespace());
+		this.getServiceRegistry().markServicesDead(fetchedServices);
 		this.publishedServices.clear();
 		this.getPublishedTempServices().clear();
 		this.serviceInfoCopies.clear();
@@ -394,8 +394,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		return content;
 	}
 
-	public ServiceRegistry getServiceInfoService() {
-		return enRoutingTableService==null?KSBServiceLocator.getIPTableService():enRoutingTableService;
+	public ServiceRegistry getServiceRegistry() {
+		return serviceRegistry == null ? KSBServiceLocator.getServiceRegistry() : serviceRegistry;
 	}
 
 	public Map<QName, ServerSideRemotedServiceHolder> getPublishedServices() {
@@ -413,18 +413,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		return this.publishedTempServices;
 	}
 
-	/**
-	 * @return the enRoutingTableService
-	 */
-	public ServiceRegistry getEnRoutingTableService() {
-		return this.enRoutingTableService;
-	}
-
-	/**
-	 * @param enRoutingTableService the enRoutingTableService to set
-	 */
-	public void setEnRoutingTableService(ServiceRegistry enRoutingTableService) {
-		this.enRoutingTableService = enRoutingTableService;
+	public void setServiceRegistry(ServiceRegistry serviceRegistry) {
+		this.serviceRegistry = serviceRegistry;
 	}
 
 	/**

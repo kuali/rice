@@ -236,7 +236,7 @@ public class ServiceInfo implements Serializable {
 
 	public FlattenedServiceDefinition getSerializedServiceNamespace() {
 		if (this.serializedServiceNamespace == null && this.getFlattenedServiceDefinitionId() != null) {
-			this.serializedServiceNamespace = KSBServiceLocator.getIPTableService().getFlattenedServiceDefinition(this.getFlattenedServiceDefinitionId());
+			this.serializedServiceNamespace = KSBServiceLocator.getServiceRegistry().getFlattenedServiceDefinition(this.getFlattenedServiceDefinitionId());
 		}
 		return this.serializedServiceNamespace;
 	}

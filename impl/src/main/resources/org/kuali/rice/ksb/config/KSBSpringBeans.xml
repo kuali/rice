@@ -95,7 +95,7 @@
 			<list>
 				<idref local="bamService" />
 				<idref local="enRouteQueueService" />
-				<idref local="enRoutingTableService" />
+				<idref local="serviceRegistry" />
 				<idref local="exceptionMessagingService" />
 				<idref local="ksbScheduler" />
 			</list>
@@ -114,7 +114,7 @@
 	<bean id="enMessageHelper" class="org.kuali.rice.ksb.messaging.MessageHelperImpl" lazy-init="true" />
 
 	<bean id="enServiceInvoker" class="org.kuali.rice.ksb.messaging.RemotedServiceRegistryImpl" lazy-init="true" >
-		<property name="enRoutingTableService" ref="enRoutingTableService"></property>
+		<property name="serviceRegistry" ref="serviceRegistry"></property>
 		<property name="serviceLocator" ref="ksbContextServiceLocator"></property>
 	</bean>
 	
@@ -122,7 +122,7 @@
 		<property name="messageQueueDAO" ref="messageQueueDao" />
 	</bean>
 
-	<bean id="enRoutingTableService" class="org.kuali.rice.ksb.messaging.service.impl.ServiceRegistryImpl" lazy-init="true">
+	<bean id="serviceRegistry" class="org.kuali.rice.ksb.messaging.service.impl.ServiceRegistryImpl" lazy-init="true">
 		<property name="serviceLocator" ref="ksbContextServiceLocator"></property>
 		<property name="dao" ref="serviceInfoDao" />
 	</bean>

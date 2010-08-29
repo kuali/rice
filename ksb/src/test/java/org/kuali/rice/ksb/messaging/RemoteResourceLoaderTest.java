@@ -74,7 +74,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
     @Test
     public void testMarkingInactiveWorksAtDBLevel() throws Exception {
 	this.rrl.removeResourceLoader(this.testTopicName);
-	ServiceInfo testTopicInfo = this.findServiceInfo(this.testTopicName, KSBServiceLocator.getIPTableService()
+	ServiceInfo testTopicInfo = this.findServiceInfo(this.testTopicName, KSBServiceLocator.getServiceRegistry()
 		.fetchAll());
 	assertTrue("Service should be marked inactive at the db", testTopicInfo.getAlive());
     }
@@ -84,7 +84,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
          */
     @Test
     public void testChangedServicePickedUpOnRefresh() throws Exception {
-	ServiceInfo testTopicInfo = this.findServiceInfo(this.testTopicName, KSBServiceLocator.getIPTableService()
+	ServiceInfo testTopicInfo = this.findServiceInfo(this.testTopicName, KSBServiceLocator.getServiceRegistry()
 		.fetchAll());
 	testTopicInfo.setAlive(false);
 	this.saveServiceInfo(testTopicInfo, 0);
@@ -104,7 +104,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
          */
     @Test
     public void testChangedServicePickedUpOnStartup() throws Exception {
-	ServiceInfo testTopicInfo = this.findServiceInfo(this.testTopicName, KSBServiceLocator.getIPTableService()
+	ServiceInfo testTopicInfo = this.findServiceInfo(this.testTopicName, KSBServiceLocator.getServiceRegistry()
 		.fetchAll());
 	testTopicInfo.setAlive(false);
 	this.saveServiceInfo(testTopicInfo, 0);
@@ -186,7 +186,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
      * @throws Exception
      */
     @Test public void testInactiveServiceDoesntForceRefresh() throws Exception {
-	ServiceInfo testTopicInfo = this.findServiceInfo(this.testTopicName, KSBServiceLocator.getIPTableService()
+	ServiceInfo testTopicInfo = this.findServiceInfo(this.testTopicName, KSBServiceLocator.getServiceRegistry()
 		.fetchAll());
 	testTopicInfo.setAlive(false);
 	this.saveServiceInfo(testTopicInfo, 0);
@@ -202,15 +202,15 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
     }
 
     @Test public void testAddingServiceWithDifferentIPSameURL() throws Exception {
-	KSBServiceLocator.getIPTableService().remove(KSBServiceLocator.getIPTableService().fetchAll());
-	assertTrue(KSBServiceLocator.getIPTableService().fetchAll().isEmpty());
+	KSBServiceLocator.getServiceRegistry().remove(KSBServiceLocator.getServiceRegistry().fetchAll());
+	assertTrue(KSBServiceLocator.getServiceRegistry().fetchAll().isEmpty());
 	ServiceDefinition serviceDef = addServiceToDB();
 	
 //	ServiceInfo servInfo1 = new ServiceInfo(serviceDef);
 	ServiceInfo servInfo2 = new ServiceInfo(serviceDef);
 	servInfo2.setServerIp("somethingnew");
 	
-	List<ServiceInfo> fetchedServices = KSBServiceLocator.getIPTableService().fetchAll();
+	List<ServiceInfo> fetchedServices = KSBServiceLocator.getServiceRegistry().fetchAll();
 	assertEquals(1, fetchedServices.size());
 //	fetchedServices.add(servInfo1);
 	List<ServiceInfo> configuredServices = new ArrayList<ServiceInfo>();
@@ -219,9 +219,9 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
 	RoutingTableDiffCalculator diffCalc = new RoutingTableDiffCalculator();
 	diffCalc.calculateServerSideUpdateLists(configuredServices, fetchedServices);
 	diffCalc.getMasterServiceList();
-	KSBServiceLocator.getIPTableService().save(diffCalc.getServicesNeedUpdated());
+	KSBServiceLocator.getServiceRegistry().save(diffCalc.getServicesNeedUpdated());
 	
-	assertEquals(1, KSBServiceLocator.getIPTableService().fetchAll().size());
+	assertEquals(1, KSBServiceLocator.getServiceRegistry().fetchAll().size());
     }
     
     private ServiceInfo findServiceInfo(QName serviceName, List<ServiceInfo> serviceInfos) {
@@ -238,7 +238,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
 	    throw new RiceRuntimeException("saveServiceInfo called 5 times and received opt lock exception each time");
 	}
 	try {
-	    KSBServiceLocator.getIPTableService().saveEntry(serviceInfo);
+	    KSBServiceLocator.getServiceRegistry().saveEntry(serviceInfo);
 	} catch (Exception e) {
 	    if (DataAccessUtils.isOptimisticLockFailure(e)) {
 		saveServiceInfo(serviceInfo, count);

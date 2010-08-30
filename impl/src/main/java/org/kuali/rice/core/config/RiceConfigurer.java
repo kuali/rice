@@ -16,7 +16,9 @@
  */
 package org.kuali.rice.core.config;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
@@ -28,6 +30,7 @@ import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kcb.config.KCBConfigurer;
 import org.kuali.rice.ken.config.KENConfigurer;
@@ -68,11 +71,7 @@ public class RiceConfigurer extends RiceConfigurerBase {
 	private KCBConfigurer kcbConfigurer;
 	private KEWConfigurer kewConfigurer;
 	private KENConfigurer kenConfigurer;
-	
-
-	private static Boolean isStarted = false;
-
-	
+		
 	/***
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#start()
 	 */
@@ -80,8 +79,6 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		//Add the configurers to modules list in the desired sequence.
 		// and at the beginning if any other modules were specified
 
-		if(!isStarted) {
-		
 		int index = 0;
 		if(getKsbConfigurer()!=null) getModules().add(index++,getKsbConfigurer());
 		if(getKnsConfigurer()!=null) getModules().add(index++,getKnsConfigurer());
@@ -97,14 +94,8 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
 		KSBServiceLocator.getThreadPool().execute(messageFetcher);
 
-		isStarted=true;
-
-		} else {
-			throw new RiceRuntimeException("Attempted to initialize a RiceConfigurer when one has already been initiatlized!");
-		}
 	}
 	
-
 	/**
 	 * 
 	 * This method decides the sequence of module resource loaders to be added to global resource loader (GRL).
@@ -379,5 +370,5 @@ public class RiceConfigurer extends RiceConfigurerBase {
 	public void setKsbConfigurer(KSBConfigurer ksbConfigurer) {
 		this.ksbConfigurer = ksbConfigurer;
 	}
-	
+
 }

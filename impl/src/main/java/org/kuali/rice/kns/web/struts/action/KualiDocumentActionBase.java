@@ -816,7 +816,11 @@ public class KualiDocumentActionBase extends KualiAction {
 
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         doProcessingAfterPost( kualiDocumentFormBase, request );
-        getDocumentService().cancelDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation());
+        // KULRICE-4447 Call cancelDocument() only if the document exists
+        if ( getDocumentService().documentExists(kualiDocumentFormBase.getDocId()))
+        {
+        	getDocumentService().cancelDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation());
+        }
 
         return returnToSender(request, mapping, kualiDocumentFormBase);
     }

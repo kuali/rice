@@ -22,13 +22,16 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.util.KimConstants;
@@ -189,6 +192,8 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		List<ResponsibilityImpl> tempResponsibilities;
 		List<String> collectedResponsibilityIds = new ArrayList<String>();
 		Map<String, String> responsibilityCriteria;
+		String memberIdLookupString = "";
+		
 		for(RoleImpl roleImpl: roleSearchResults){
 			responsibilityCriteria = new HashMap<String, String>();
 			responsibilityCriteria.put("roleResponsibilities.roleId", roleImpl.getRoleId());
@@ -200,6 +205,18 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 					collectedResponsibilityIds.add(responsibility.getResponsibilityId());
 					responsibilities.add(responsibility);
 				}
+				for (RoleMemberImpl memberImpl : roleImpl.getMembers()) {
+					if (memberImpl.getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE)) {
+						memberIdLookupString += memberImpl.getMemberId() + "&&";
+					}
+				}
+			}
+			if (StringUtils.isNotEmpty(memberIdLookupString)) {
+				Map<String, String> roleSearchCriteria = new HashMap<String, String>();
+				roleSearchCriteria.put("roleId", memberIdLookupString);
+				List<RoleImpl> memberRoles = this.searchRoles(roleSearchCriteria, unbounded);
+				//get all member responsibilities and merge with parent roles responsibilities
+				responsibilities = mergeResponsibilityLists(responsibilities, getResponsibilitiesForRoleSearchResults(memberRoles, unbounded));
 			}
 		}
 		return new CollectionIncomplete<ResponsibilityImpl>(responsibilities, actualSizeIfTruncated);
@@ -277,4 +294,17 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		return lookupService;
 	}
  
+	private List<ResponsibilityImpl> mergeResponsibilityLists(List<ResponsibilityImpl> perm1, List<ResponsibilityImpl> perm2) {
+		List<ResponsibilityImpl> returnList = new ArrayList<ResponsibilityImpl>(perm1);
+		List<String> responsibilityIds = new ArrayList<String>(perm1.size());
+		for (ResponsibilityImpl perm : returnList) {
+			responsibilityIds.add(perm.getResponsibilityId());
+		}
+		for (int i=0; i<perm2.size(); i++) {
+		    if (!responsibilityIds.contains(perm2.get(i).getResponsibilityId())) {
+		    	returnList.add(perm2.get(i));
+		    }
+		}
+		return returnList;
+	}
 }

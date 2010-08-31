@@ -558,7 +558,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	    StandardResponse results;	    
        	try {
 			WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId);
-			workflowDocument.adHocRouteDocumentToPrincipal(actionRequested, annotation, principalId, responsibilityDesc, true);
+			workflowDocument.adHocRouteDocumentToPrincipal(actionRequested, annotation, recipientPrincipalId, responsibilityDesc, true);
 			results = createResults(workflowDocument);
 		} catch (WorkflowException e) {
 			results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());

@@ -320,6 +320,15 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	    }
 	    return null;
 	}
+	
+	public String getGroupAttributeValueById(String attributeId) {
+	    for (GroupAttributeDataImpl gad : getGroupAttributes()) {
+	        if (gad.getKimAttributeId().equals(attributeId.trim())) {
+	            return gad.getAttributeValue();
+	        }
+	    }
+	    return null;
+	}
 
     public KimTypeInfo getKimTypeInfo() {
         return KIMServiceLocator.getTypeInfoService().getKimType(this.kimTypeId);

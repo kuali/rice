@@ -304,10 +304,17 @@ public class BusinessObjectDictionaryServiceImpl implements
      */
 	public Integer getLookupResultFieldMaxLength(Class businessObjectClass,
 			String resultFieldName) {
-        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		FieldDefinition field = lookupDefinition
-				.getResultField(resultFieldName);
-        return field.getMaxLength();
+		Integer resultFieldMaxLength = null;
+
+		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+		if (lookupDefinition != null) {
+			FieldDefinition field = lookupDefinition.getResultField(resultFieldName);
+			if (field != null) {
+				resultFieldMaxLength = field.getMaxLength();
+			}
+		}
+
+		return resultFieldMaxLength;
     }
 
     /**
@@ -1095,4 +1102,6 @@ public class BusinessObjectDictionaryServiceImpl implements
 		return disableSearchButtons;
 	}
 
+
+	
 }

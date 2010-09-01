@@ -818,7 +818,7 @@
     <field-descriptor name="baseSalaryAmount" column="BASE_SLRY_AMT" jdbc-type="DECIMAL" conversion="org.kuali.rice.kns.util.OjbKualiDecimalFieldConversion" />
     <field-descriptor name="primary" column="PRMRY_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
-    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="false"  />
+    <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true"  />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true"  />
     <field-descriptor name="employeeId" column="EMP_ID" jdbc-type="VARCHAR"  />
     <field-descriptor name="employmentRecordId" column="EMP_REC_ID" jdbc-type="VARCHAR"  />

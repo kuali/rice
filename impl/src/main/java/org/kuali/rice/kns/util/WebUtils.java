@@ -44,7 +44,6 @@ import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionServletWrapper;
-import org.apache.struts.config.ModuleConfig;
 import org.apache.struts.upload.CommonsMultipartRequestHandler;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.upload.MultipartRequestHandler;
@@ -67,13 +66,10 @@ import org.kuali.rice.kns.web.struts.action.KualiMultipartRequestHandler;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
-import org.kuali.rice.kns.web.struts.form.QuestionPromptForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 
 /**
  * General helper methods for handling requests.
- * 
- * 
  */
 public class WebUtils {
     private static final Logger LOG = Logger.getLogger(WebUtils.class);
@@ -639,7 +635,10 @@ public class WebUtils {
      * <li> [X] and [/X], where X represents any 1 or 2 letter string may be used to specify the equivalent tag in HTML (i.e. &lt;X&gt; and &lt;/X&gt;)
      * <li> [font COLOR], where COLOR represents any valid html color (i.e. color name or hexcode preceeded by #) will be filtered into &lt;font color="COLOR"/&gt;
      * <li> [/font] will be filtered into &lt;/font&gt;
-     *  
+     * <li> [table CLASS], where CLASS gives the style class to use, will be filter into &lt;table class="CLASS"/&gt;
+     * <li> [/table] will be filtered into &lt;/table&gt;
+     * <li> [td CLASS], where CLASS gives the style class to use, will be filter into &lt;td class="CLASS"/&gt;
+     * 
      * @param inputString
      * @return
      */
@@ -662,6 +661,12 @@ public class WebUtils {
     	// filter the font tag
     	findAndReplacePatterns.put("\\[font (#[0-9A-Fa-f]{1,6}|[A-Za-z]+)\\]", "<font color=\"$1\">");
     	findAndReplacePatterns.put("\\[/font\\]", "</font>");
+    	// filter the table tag
+    	findAndReplacePatterns.put("\\[table\\]", "<table>");
+    	findAndReplacePatterns.put("\\[table ([A-Za-z]+)\\]", "<table class=\"$1\">");
+    	findAndReplacePatterns.put("\\[/table\\]", "</table>");
+    	// fiter td with class
+    	findAndReplacePatterns.put("\\[td ([A-Za-z]+)\\]", "<td class=\"$1\">");
     	
     	for (String findPattern : findAndReplacePatterns.keySet()) {
     		Pattern p = Pattern.compile(findPattern);

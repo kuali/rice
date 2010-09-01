@@ -1143,3 +1143,22 @@ div.inner-subhead
 #tabs .tabright {
 	float:none;
 }
+
+table.questionTable {
+	border-collapse: collapse;
+	horizontal-align: center;
+}
+
+td.leftTd {
+	border-bottom:1px solid #000000; 
+	border-right:1px solid #000000; 
+	padding:3px; 
+	width:300px;
+}
+
+td.rightTd {
+	border-bottom:1px solid #000000; 
+	border-left:1px solid #000000; 
+	padding:3px; 
+	width:300px;
+}	

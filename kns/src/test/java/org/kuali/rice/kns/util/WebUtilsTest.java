@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.util;
 
+import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
 
@@ -44,4 +45,59 @@ public class WebUtilsTest extends KNSTestCase {
 		assertNotSame("the test1 image should not be the default", test1Image, test1DefaultImage);
 		assertEquals("/test/images/test1.png", test1Image);
 	}
+	
+	/**
+	 * Tests the filterHtmlAndReplaceRiceMarkup method
+	 */
+	@Test
+	public void testFilterHtmlAndReplaceRiceMarkup() {
+		String questionText = "";
+		
+		// verify script markup does not make it through
+		questionText = "<script> function () </script>";
+		String filteredText = WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+		assertTrue("Script tags not filtered out", !StringUtils.equals(questionText, filteredText));
+		
+		// verify supported tags get translated
+		questionText = "[p][/p]";
+		filteredText = WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+		assertEquals("Paragraph tag not translated to markup", "<p></p>", filteredText);
+		
+		questionText = "[b][/b]";
+		filteredText = WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+		assertEquals("Bold tag not translated to markup", "<b></b>", filteredText);
+		
+		questionText = "[br][/br]";
+		filteredText = WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+		assertEquals("Break tag not translated to markup", "<br></br>", filteredText);
+		
+		questionText = "[tr][/tr]";
+		filteredText = WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+		assertEquals("Table row tag not translated to markup", "<tr></tr>", filteredText);
+		
+		questionText = "[td][/td]";
+		filteredText = WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+		assertEquals("Table cell tag not translated to markup", "<td></td>", filteredText);
+		
+		questionText = "[font #000000][/font]";
+		filteredText = WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+		assertEquals("Font with hex color tag not translated to markup", "<font color=\"#000000\"></font>", filteredText);
+		
+		questionText = "[font red][/font]";
+		filteredText = WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+		assertEquals("Font with color name tag not translated to markup", "<font color=\"red\"></font>", filteredText);
+		
+		questionText = "[table][/table]";
+		filteredText = WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+		assertEquals("Table tag not translated to markup", "<table></table>", filteredText);
+	
+		questionText = "[table questionTable][/table]";
+		filteredText = WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+		assertEquals("Table with class tag not translated to markup", "<table class=\"questionTable\"></table>", filteredText);
+		
+		questionText = "[td leftTd][/td]";
+		filteredText = WebUtils.filterHtmlAndReplaceRiceMarkup(questionText);
+		assertEquals("Table cell with class tag not translated to markup", "<td class=\"leftTd\"></td>", filteredText);
+	}
+
 }

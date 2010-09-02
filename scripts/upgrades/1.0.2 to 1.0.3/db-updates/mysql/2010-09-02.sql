@@ -1,4 +1,4 @@
--- KULRICE-4517 - Needed for effective dating
+-- KULRICE-4517 - Needed for effective dating. This is a travel app table
 CREATE TABLE TRV_ACCT_USE_RT_T ( 
     ID VARCHAR(40) NOT NULL, 
     ACCT_NUM VARCHAR(10) NOT NULL, 

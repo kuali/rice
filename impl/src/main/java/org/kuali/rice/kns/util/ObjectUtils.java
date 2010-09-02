@@ -1046,4 +1046,64 @@ public class ObjectUtils {
 		}
     }
 
+	/**
+	 * Return whether or not an attribute is writeable. This method is aware that that Collections may be involved and handles them
+	 * consistently with the way in which OJB handles specifying the attributes of elements of a Collection.
+	 * 
+	 * @param o
+	 * @param p
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public static boolean isWriteable(Object o, String p, PersistenceStructureService persistenceStructureService)
+			throws IllegalArgumentException {
+		if (null == o || null == p) {
+			throw new IllegalArgumentException("Cannot check writeable status with null arguments.");
+		}
+
+		boolean b = false;
+
+		// Try the easy way.
+		if (!(PropertyUtils.isWriteable(o, p))) {
+			// If that fails lets try to be a bit smarter, understanding that Collections may be involved.
+			if (-1 != p.indexOf('.')) {
+				String[] parts = p.split("\\.");
+
+				// Get the type of the attribute.
+				Class c = ObjectUtils.getPropertyType(o, parts[0], persistenceStructureService);
+
+				if (c != null) {
+					Object i = null;
+
+					// If the next level is a Collection, look into the collection, to find out what type its elements are.
+					if (Collection.class.isAssignableFrom(c)) {
+						Map<String, Class> m = persistenceStructureService.listCollectionObjectTypes(o.getClass());
+						c = m.get(parts[0]);
+					}
+
+					// Look into the attribute class to see if it is writeable.
+					try {
+						i = c.newInstance();
+
+						StringBuffer sb = new StringBuffer();
+						for (int x = 1; x < parts.length; x++) {
+							sb.append(1 == x ? "" : ".").append(parts[x]);
+						}
+						b = isWriteable(i, sb.toString(), persistenceStructureService);
+
+					} catch (Exception ex) {
+						LOG.error("Skipping Criteria: " + p + " - Unable to instantiate class : " + c.getName(), ex);
+					}
+				} else {
+					LOG.error("Skipping Criteria: " + p + " - Unable to determine class for object: "
+							+ o.getClass().getName() + " - " + parts[0]);
+				}
+			}
+
+		} else {
+			b = true;
+		}
+
+		return b;
+	}
 }

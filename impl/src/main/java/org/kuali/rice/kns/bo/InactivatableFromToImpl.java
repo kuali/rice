@@ -13,15 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.impl;
+package org.kuali.rice.kns.bo;
 
 import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-
-import org.kuali.rice.kns.bo.InactivateableFromTo;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import javax.persistence.Transient;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -30,19 +28,32 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 public abstract class InactivatableFromToImpl extends PersistableBusinessObjectBase implements InactivateableFromTo {
 
 	private static final long serialVersionUID = 1L;
-	
-	@Column(name="ACTV_FRM_DT")
+
+	@Column(name = "ACTV_FRM_DT")
 	protected Date activeFromDate;
-	@Column(name="ACTV_TO_DT")
+	@Column(name = "ACTV_TO_DT")
 	protected Date activeToDate;
-	
+	@Transient
+	protected Date activeAsOfDate;
+	@Transient
+	protected boolean current;
+
 	/**
-	 * Returns active if the current time is between the from and to dates.  Null dates are 
-	 * considered to indicate an open range.
+	 * Returns active if the {@link #getActiveAsOfDate()} (current time used if not set) is between
+	 * the from and to dates. Null dates are considered to indicate an open range.
 	 */
 	public boolean isActive() {
-		long now = System.currentTimeMillis();		
-		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
+		long asOfDate = System.currentTimeMillis();
+		if (activeAsOfDate != null) {
+			asOfDate = activeAsOfDate.getTime();
+		}
+
+		return (activeFromDate == null || asOfDate >= activeFromDate.getTime())
+				&& (activeToDate == null || asOfDate < activeToDate.getTime());
+	}
+	
+	public void setActive(boolean active) {
+		// do nothing
 	}
 
 	public void setActiveFromDate(Date from) {
@@ -61,4 +72,19 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 		return this.activeToDate;
 	}
 
+	public Date getActiveAsOfDate() {
+		return this.activeAsOfDate;
+	}
+
+	public void setActiveAsOfDate(Date activeAsOfDate) {
+		this.activeAsOfDate = activeAsOfDate;
+	}
+
+	public boolean isCurrent() {
+		return this.current;
+	}
+
+	public void setCurrent(boolean current) {
+		this.current = current;
+	}
 }

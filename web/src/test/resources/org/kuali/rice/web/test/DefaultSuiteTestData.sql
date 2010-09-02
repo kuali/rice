@@ -43,3 +43,13 @@ insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a2')
 ;
 insert into TRV_DOC_ACCT (DOC_HDR_ID, ACCT_NUM) values (1, 'a3')
 ;
+insert into trv_acct_use_rt_t (id, acct_num, rate, actv_frm_dt, actv_to_dt) values ('1', 'a1', '1.5', '2010-01-01', '2011-01-01')
+;
+insert into trv_acct_use_rt_t (id, acct_num, rate, actv_frm_dt, actv_to_dt) values ('2', 'a2', '1.5', '2010-01-01', '2011-01-01')
+;
+insert into trv_acct_use_rt_t (id, acct_num, rate, actv_frm_dt, actv_to_dt) values ('3', 'a2', '1.5', '2010-03-01', '2011-01-01')
+;
+insert into trv_acct_use_rt_t (id, acct_num, rate, actv_frm_dt, actv_to_dt) values ('4', 'a2', '1.5', '2012-01-01', '2013-01-01')
+;
+insert into trv_acct_use_rt_t (id, acct_num, rate, actv_frm_dt, actv_to_dt) values ('5', 'a3', '1.5', '2010-01-01', '2010-06-01')
+;

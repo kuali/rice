@@ -345,4 +345,9 @@ public class Criteria {
 	    
 	    return attribute;
 	}
+
+	public String getAlias() {
+		return this.alias;
+	}
+	
 }

@@ -478,6 +478,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String OR_LOGICAL_OPERATOR = "|";
     public static final String NOT_LOGICAL_OPERATOR = "!";
     public static final String BETWEEN_OPERATOR = "..";
+    public static final String NULL_OPERATOR = "NULL";
 //    // add AND operator to thest if it is uncommented below
 //    public static final String[] LOGICAL_OPERATORS = {OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR};
     public static final String[] QUERY_CHARACTERS = {"*", "?", "%", ">", "<", BETWEEN_OPERATOR, OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR, "="};

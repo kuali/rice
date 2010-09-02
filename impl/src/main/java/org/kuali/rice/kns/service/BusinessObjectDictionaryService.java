@@ -332,4 +332,13 @@ public interface BusinessObjectDictionaryService {
 	 *         definition
 	 */
 	public boolean disableSearchButtonsInLookup(Class businessObjectClass);
+	
+	/**
+	 * Returns the list of attributes that should be used for grouping when determing the current
+	 * status of a business object that implements InactivateableFromTo
+	 * 
+	 * @param businessObjectClass - business object class to get configured list for
+	 * @return List of string attribute names that gives the group by list
+	 */
+	public List<String> getGroupByAttributesForEffectiveDating(Class businessObjectClass);
 }

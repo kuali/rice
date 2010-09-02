@@ -27,6 +27,9 @@ public class KNSPropertyConstants extends JSTLConstants {
 	private static final long serialVersionUID = 8521031610189566393L;
 
 	public static final String ACTIVE = "active";
+	public static final String ACTIVE_FROM_DATE = "activeFromDate";
+	public static final String ACTIVE_TO_DATE = "activeToDate";
+	public static final String ACTIVE_AS_OF_DATE = "activeAsOfDate";
 	public static final String ACTION_REQUESTED = "actionRequested";
 	public static final String ACTIVE_INDICATOR = "activeIndicator";
 	public static final String AD_HOC_ROUTE_PERSONS = "adHocRoutePersons";
@@ -48,6 +51,7 @@ public class KNSPropertyConstants extends JSTLConstants {
 	public static final String CAMPUS_TYPE_CODE = "campusTypeCode";
 	public static final String CREATE_DATE = "createDate";
 	public static final String CODE = "code";
+	public static final String CURRENT = "current";
 	public static final String DATA_OBJECT_MAINTENANCE_CODE_ACTIVE_INDICATOR = "dataObjectMaintenanceCodeActiveIndicator";
 	public static final String DESCRIPTION = "description";
 	public static final String DICTIONARY_BUSINESS_OBJECT_NAME = "dictionaryBusinessObjectName";

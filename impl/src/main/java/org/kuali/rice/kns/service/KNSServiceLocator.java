@@ -490,4 +490,10 @@ public class KNSServiceLocator<T extends Object> {
     	return (WorkflowAttributePropertyResolutionService) getService(WORKFLOW_ATTRIBUTE_PROPERTY_RESOLUTION_SERVICE);
     }
     
+    public static final String INACTIVATEABLE_FROM_TO_SERVICE = "inactivateableFromToService";
+    
+    public static InactivateableFromToService getInactivateableFromToService() {
+    	return (InactivateableFromToService) getService(INACTIVATEABLE_FROM_TO_SERVICE);
+    }
+    
 }

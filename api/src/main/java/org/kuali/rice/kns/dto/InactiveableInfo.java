@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.bo.role.dto;
+package org.kuali.rice.kns.dto;
 
 import java.sql.Date;
 
@@ -23,25 +23,32 @@ import org.kuali.rice.core.jaxb.SqlDateAdapter;
 import org.kuali.rice.kns.bo.InactivateableFromTo;
 
 /**
- * This is a description of what this class does - bhargavp don't forget to fill this in. 
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class InactiveableInfo implements InactivateableFromTo {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	protected Date activeFromDate;
 	protected Date activeToDate;
-	
+	protected Date activeAsOfDate;
+
 	/**
-	 * Returns active if the current time is between the from and to dates.  Null dates are 
-	 * considered to indicate an open range.
+	 * Returns active if the {@link #getActiveAsOfDate()} (current time used if not set) is between
+	 * the from and to dates. Null dates are considered to indicate an open range.
 	 */
 	public boolean isActive() {
-		long now = System.currentTimeMillis();		
-		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
+		long asOfDate = System.currentTimeMillis();
+		if (activeAsOfDate != null) {
+			asOfDate = activeAsOfDate.getTime();
+		}
+
+		return (activeFromDate == null || asOfDate > activeFromDate.getTime())
+				&& (activeToDate == null || asOfDate < activeToDate.getTime());
+	}
+
+	public void setActive(boolean active) {
+		// do nothing
 	}
 
 	public void setActiveFromDate(Date from) {
@@ -52,6 +59,10 @@ public class InactiveableInfo implements InactivateableFromTo {
 		this.activeToDate = to;
 	}
 
+	public void setActiveAsOfDate(Date activeAsOfDate) {
+		this.activeAsOfDate = activeAsOfDate;
+	}
+
 	@XmlJavaTypeAdapter(SqlDateAdapter.class)
 	public Date getActiveFromDate() {
 		return this.activeFromDate;
@@ -60,6 +71,11 @@ public class InactiveableInfo implements InactivateableFromTo {
 	@XmlJavaTypeAdapter(SqlDateAdapter.class)
 	public Date getActiveToDate() {
 		return this.activeToDate;
+	}
+	
+	@XmlJavaTypeAdapter(SqlDateAdapter.class)
+	public Date getActiveAsOfDate() {
+		return this.activeAsOfDate;
 	}
 
 }

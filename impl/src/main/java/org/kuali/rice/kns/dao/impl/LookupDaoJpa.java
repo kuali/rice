@@ -17,6 +17,7 @@ package org.kuali.rice.kns.dao.impl;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,22 +31,27 @@ import javax.persistence.PersistenceException;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.jpa.metadata.FieldDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
+import org.kuali.rice.kns.bo.InactivateableFromTo;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.dao.LookupDao;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.LookupUtils;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.OjbCharBooleanConversion;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -57,16 +63,12 @@ public class LookupDaoJpa implements LookupDao {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDao.class);
 
 	private DateTimeService dateTimeService;
-
 	private PersistenceStructureService persistenceStructureService;
+	private BusinessObjectDictionaryService businessObjectDictionaryService;
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
-		this.persistenceStructureService = persistenceStructureService;
-	}
-	
     public Long findCountByMap(Object example, Map formProps) {
 		Criteria criteria = new Criteria(example.getClass().getName());
 
@@ -138,12 +140,12 @@ public class LookupDaoJpa implements LookupDao {
 			if (formProps.get(propertyName) instanceof Collection) {
 				Iterator iter = ((Collection) formProps.get(propertyName)).iterator();
 				while (iter.hasNext()) {
-					if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria)) {
+					if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps)) {
 						throw new RuntimeException("Invalid value in Collection");
 					}
 				}
 			} else {
-				if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria)) {
+				if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps)) {
 					continue;
 				}
 			}
@@ -298,8 +300,12 @@ public class LookupDaoJpa implements LookupDao {
 	public boolean createCriteria(Object example, String searchValue, String propertyName, Object criteria) {
 		return createCriteria(example, searchValue, propertyName, false, false, criteria);
 	}
+	
+    public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria) {
+    	return createCriteria( example, searchValue, propertyName, false, false, criteria, null );
+    }
 
-	public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria) {
+	public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria, Map searchValues) {
 		// if searchValue is empty and the key is not a valid property ignore
 		if (!(criteria instanceof Criteria) || StringUtils.isBlank(searchValue) || !isWriteable(example, propertyName)) {
 			return false;
@@ -312,7 +318,20 @@ public class LookupDaoJpa implements LookupDao {
 		}
 
 		// build criteria
-		addCriteria(propertyName, searchValue, propertyType, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, (Criteria)criteria);
+		if (example instanceof InactivateableFromTo) {
+			if (KNSPropertyConstants.ACTIVE.equals(propertyName)) {
+				addInactivateableFromToActiveCriteria(example, searchValue, (Criteria) criteria, searchValues);
+			} else if (KNSPropertyConstants.CURRENT.equals(propertyName)) {
+				addInactivateableFromToCurrentCriteria(example, searchValue, (Criteria) criteria, searchValues);
+			} else if (!KNSPropertyConstants.ACTIVE_AS_OF_DATE.equals(propertyName)) {
+				addCriteria(propertyName, searchValue, propertyType, caseInsensitive,
+						treatWildcardsAndOperatorsAsLiteral, (Criteria) criteria);
+			}
+		} else {
+			addCriteria(propertyName, searchValue, propertyType, caseInsensitive, treatWildcardsAndOperatorsAsLiteral,
+					(Criteria) criteria);
+		}
+		
 		return true;
 	}
 
@@ -361,7 +380,15 @@ public class LookupDaoJpa implements LookupDao {
 			return;
 		}
 
-		if (TypeUtils.isStringClass(propertyType)) {
+        if (StringUtils.containsIgnoreCase(propertyValue, KNSConstants.NULL_OPERATOR)) {
+        	if (StringUtils.contains(propertyValue, KNSConstants.NOT_LOGICAL_OPERATOR)) {
+        		criteria.notNull(propertyName);
+        	}
+        	else {
+        		criteria.isNull(propertyName);
+        	}
+        }
+        else if (TypeUtils.isStringClass(propertyType)) {
 			// KULRICE-85 : made string searches case insensitive - used new
 			// DBPlatform function to force strings to upper case
 			if (caseInsensitive) {
@@ -396,6 +423,126 @@ public class LookupDaoJpa implements LookupDao {
 		} else {
 			LOG.error("not adding criterion for: " + propertyName + "," + propertyType + "," + propertyValue);
 		}
+	}
+	
+    
+    /**
+     * Translates criteria for active status to criteria on the active from and to fields
+     * 
+     * @param example - business object being queried on
+     * @param activeSearchValue - value for the active search field, should convert to boolean
+     * @param criteria - Criteria object being built
+     * @param searchValues - Map containing all search keys and values
+     */
+    protected void addInactivateableFromToActiveCriteria(Object example, String activeSearchValue, Criteria criteria, Map searchValues) {
+    	// determine the date we should use for the criteria on active from/to
+		Date activeDate = dateTimeService.getCurrentSqlDate();
+		if (searchValues.containsKey(KNSPropertyConstants.ACTIVE_AS_OF_DATE)) {
+			String activeAsOfDate = (String) searchValues.get(KNSPropertyConstants.ACTIVE_AS_OF_DATE);
+			if (StringUtils.isNotBlank(activeAsOfDate)) {
+				try {
+					activeDate = dateTimeService.convertToSqlDate(ObjectUtils.clean(activeAsOfDate));
+				} catch (ParseException e) {
+					throw new RuntimeException("Unable to convert date: " + activeAsOfDate);
+				}
+			}
+		}
+		
+    	String activeBooleanStr = (String) (new OjbCharBooleanConversion()).javaToSql(activeSearchValue);
+    	if (OjbCharBooleanConversion.DATABASE_BOOLEAN_TRUE_STRING_REPRESENTATION.equals(activeBooleanStr)) {
+    		// (active from date <= date or active from date is null) and (date < active to date or active to date is null)
+    		Criteria criteriaBeginDate = new Criteria(example.getClass().getName());
+    		criteriaBeginDate.lte(KNSPropertyConstants.ACTIVE_FROM_DATE, activeDate);
+    		
+    		Criteria criteriaBeginDateNull = new Criteria(example.getClass().getName());
+    		criteriaBeginDateNull.isNull(KNSPropertyConstants.ACTIVE_FROM_DATE);
+    		criteriaBeginDate.or(criteriaBeginDateNull);
+    		
+    		criteria.and(criteriaBeginDate);
+    		
+    		Criteria criteriaEndDate = new Criteria(example.getClass().getName());
+    		criteriaEndDate.gt(KNSPropertyConstants.ACTIVE_TO_DATE, activeDate);
+    	
+    		Criteria criteriaEndDateNull = new Criteria(example.getClass().getName());
+    		criteriaEndDateNull.isNull(KNSPropertyConstants.ACTIVE_TO_DATE);
+    		criteriaEndDate.or(criteriaEndDateNull);
+    		
+    		criteria.and(criteriaEndDate);
+    	}
+    	else if (OjbCharBooleanConversion.DATABASE_BOOLEAN_FALSE_STRING_REPRESENTATION.equals(activeBooleanStr)) {
+    		// (date < active from date) or (active from date is null) or (date >= active to date) 
+    		Criteria criteriaNonActive = new Criteria(example.getClass().getName());
+    		criteriaNonActive.gt(KNSPropertyConstants.ACTIVE_FROM_DATE, activeDate);
+    		
+    		Criteria criteriaBeginDateNull = new Criteria(example.getClass().getName());
+    		criteriaBeginDateNull.isNull(KNSPropertyConstants.ACTIVE_FROM_DATE);
+    		criteriaNonActive.or(criteriaBeginDateNull);
+    		
+    		Criteria criteriaEndDate = new Criteria(example.getClass().getName());
+    		criteriaEndDate.lte(KNSPropertyConstants.ACTIVE_TO_DATE, activeDate);
+    		criteriaNonActive.or(criteriaEndDate);
+    		
+    		criteria.and(criteriaNonActive);
+    	}
+    }
+    
+    /**
+     * Translates criteria for current status to a sub-query on active begin date
+     * 
+     * @param example - business object being queried on
+     * @param currentSearchValue - value for the current search field, should convert to boolean
+     * @param criteria - Criteria object being built
+     */
+	protected void addInactivateableFromToCurrentCriteria(Object example, String currentSearchValue, Criteria criteria, Map searchValues) {
+    	// determine the date we should use for the criteria on active from/to
+		Date activeDate = dateTimeService.getCurrentSqlDate();
+		if (searchValues.containsKey(KNSPropertyConstants.ACTIVE_AS_OF_DATE)) {
+			String activeAsOfDate = (String) searchValues.get(KNSPropertyConstants.ACTIVE_AS_OF_DATE);
+			if (StringUtils.isNotBlank(activeAsOfDate)) {
+				try {
+					activeDate = dateTimeService.convertToSqlDate(ObjectUtils.clean(activeAsOfDate));
+				} catch (ParseException e) {
+					throw new RuntimeException("Unable to convert date: " + activeAsOfDate);
+				}
+			}
+		}
+		
+		List<String> groupByFieldList = businessObjectDictionaryService.getGroupByAttributesForEffectiveDating(example
+				.getClass());
+		if (groupByFieldList == null) {
+			return;
+		}
+
+		String alias = "c";
+
+		String jpql = " (select max(" + alias + "." + KNSPropertyConstants.ACTIVE_FROM_DATE + ") from "
+				+ example.getClass().getName() + " as " + alias + " where ";
+		String activeDateDBStr = KNSServiceLocator.getDatabasePlatform().getDateSQL(dateTimeService.toDateString(activeDate), null);
+		jpql += alias + "." + KNSPropertyConstants.ACTIVE_FROM_DATE + " <= '" + activeDateDBStr + "'";
+
+		// join back to main query with the group by fields
+		boolean firstGroupBy = true;
+		String groupByJpql = "";
+		for (String groupByField : groupByFieldList) {
+			if (!firstGroupBy) {
+				groupByJpql += ", ";
+			}
+
+			jpql += " AND " + alias + "." + groupByField + " = " + criteria.getAlias() + "." + groupByField + " ";
+			groupByJpql += alias + "." + groupByField;
+			firstGroupBy = false;
+		}
+
+		jpql += " group by " + groupByJpql + " )";
+
+		String currentBooleanStr = (String) (new OjbCharBooleanConversion()).javaToSql(currentSearchValue);
+		if (OjbCharBooleanConversion.DATABASE_BOOLEAN_TRUE_STRING_REPRESENTATION.equals(currentBooleanStr)) {
+			jpql = criteria.getAlias() + "." + KNSPropertyConstants.ACTIVE_FROM_DATE + " in " + jpql;
+		} else if (OjbCharBooleanConversion.DATABASE_BOOLEAN_FALSE_STRING_REPRESENTATION.equals(currentBooleanStr)) {
+			jpql = criteria.getAlias() + "." + KNSPropertyConstants.ACTIVE_FROM_DATE + " not in " + jpql;
+		}
+
+		criteria.rawJpql(jpql);
 	}
 
 	private void addOrCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria) {
@@ -545,5 +692,13 @@ public class LookupDaoJpa implements LookupDao {
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+    
+	public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
+		this.persistenceStructureService = persistenceStructureService;
+	}
+
+	public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
+		this.businessObjectDictionaryService = businessObjectDictionaryService;
+	}
 	
 }

@@ -20,6 +20,7 @@ import java.sql.Date;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kns.dto.InactiveableInfo;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

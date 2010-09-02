@@ -38,6 +38,10 @@
         <ref bean="AttributeReferenceDummy-percent"/>
         <ref bean="AttributeReferenceDummy-newCollectionRecord"/>
         <ref bean="AttributeReferenceDummy-workflowDocumentStatus"/>
+        <ref bean="AttributeReferenceDummy-activeFromDate"/>
+        <ref bean="AttributeReferenceDummy-activeToDate"/>
+        <ref bean="AttributeReferenceDummy-activeAsOfDate"/>
+        <ref bean="AttributeReferenceDummy-current"/>
       </list>
     </property>
     <property name="objectLabel" value="Attribute Reference Dummy"/>
@@ -315,5 +319,54 @@
     <property name="name" value="workflowDocumentStatus"/>
     <property name="label" value="Document Status"/>
     <property name="description" value="This represents the status of this document."/>
+  </bean>
+  
+  <bean id="AttributeReferenceDummy-activeFromDate" parent="AttributeReferenceDummy-activeFromDate-parentBean"/>
+  <bean id="AttributeReferenceDummy-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="activeFromDate"/>
+    <property name="label" value="Active From Date"/>
+    <property name="shortLabel" value="Active From Dt"/>
+    <property name="required" value="false"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:datePicker="true" p:size="10" p:ranged="false"/>
+    </property>    
+    <property name="summary" value="Start Date"/>
+    <property name="description" value="Start Date"/>
+  </bean>
+
+  <bean id="AttributeReferenceDummy-activeToDate" parent="AttributeReferenceDummy-activeToDate-parentBean"/>
+  <bean id="AttributeReferenceDummy-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="activeToDate"/>
+    <property name="label" value="Active To Date"/>
+    <property name="shortLabel" value="Active To Dt"/>
+    <property name="required" value="false"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:datePicker="true" p:size="10" p:ranged="false"/>
+    </property>
+    <property name="summary" value="End Date"/>
+    <property name="description" value="End Date"/>
+  </bean>
+
+  <bean id="AttributeReferenceDummy-activeAsOfDate" parent="AttributeReferenceDummy-activeAsOfDate-parentBean"/>
+  <bean id="AttributeReferenceDummy-activeAsOfDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="activeAsOfDate"/>
+    <property name="label" value="Active As Of Date"/>
+    <property name="shortLabel" value="Active Of Dt"/>
+    <property name="required" value="false"/>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:datePicker="true" p:size="10" p:ranged="false"/>
+    </property>    
+    <property name="summary" value="Date for which a record is determined active or inactive."/>
+    <property name="description" value="Date for which a record is determined active or inactive."/>
+  </bean>
+  
+  <bean id="AttributeReferenceDummy-current" parent="AttributeReferenceDummy-current-parentBean"/>
+  <bean id="AttributeReferenceDummy-current-parentBean" abstract="true" parent="AttributeReferenceDummy-genericBoolean">
+    <property name="name" value="current"/>
+    <property name="label" value="Current"/>
+    <property name="shortLabel" value="Current"/>
+    <property name="required" value="false"/>
+    <property name="summary" value="Indicator for the most current effective dated records."/>
+    <property name="description" value="Indicator for the most current effective dated records."/>
   </bean>
 </beans>

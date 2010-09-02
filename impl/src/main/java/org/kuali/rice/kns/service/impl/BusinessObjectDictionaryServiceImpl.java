@@ -1102,6 +1102,17 @@ public class BusinessObjectDictionaryServiceImpl implements
 		return disableSearchButtons;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getGroupByAttributesForEffectiveDating(java.lang.Class)
+	 */
+	public List<String> getGroupByAttributesForEffectiveDating(Class businessObjectClass) {
+		List<String> groupByList = null;
 
+		if (getBusinessObjectEntry(businessObjectClass) != null) {
+			groupByList = getBusinessObjectEntry(businessObjectClass).getGroupByAttributesForEffectiveDating();
+		}
+
+		return groupByList;
+	}
 	
 }

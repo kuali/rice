@@ -72,6 +72,8 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
     protected List<InactivationBlockingDefinition> inactivationBlockingDefinitions;
 
     protected List<String> primaryKeys;
+    
+    protected List<String> groupByAttributesForEffectiveDating;
 
     public BusinessObjectEntry() {}
 
@@ -374,10 +376,16 @@ public class BusinessObjectEntry extends DataDictionaryEntryBase {
 	public void setPrimaryKeys(List<String> primaryKeys) {
 		this.primaryKeys = primaryKeys;
 	}
+	
+	public List<String> getGroupByAttributesForEffectiveDating() {
+		return this.groupByAttributesForEffectiveDating;
+	}
+
+	public void setGroupByAttributesForEffectiveDating(List<String> groupByAttributesForEffectiveDating) {
+		this.groupByAttributesForEffectiveDating = groupByAttributesForEffectiveDating;
+	}
 
 	/**
-     * This overridden method ...
-     *
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase#afterPropertiesSet()
      */
     @SuppressWarnings("unchecked")

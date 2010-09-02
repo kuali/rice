@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.dao.impl;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,8 +28,10 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
+import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.InactivateableFromTo;
 import org.kuali.rice.kns.dao.LookupDao;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.LookupUtils;
@@ -38,24 +41,22 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.OjbCharBooleanConversion;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springmodules.orm.ojb.OjbOperationException;
 
 /**
- * This class is the OJB implementation of the LookupDao interface.
+ * OJB implementation of the LookupDao interface
  */
 public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupDaoOjb.class);
     private DateTimeService dateTimeService;
     private PersistenceStructureService persistenceStructureService;
     private BusinessObjectDictionaryService businessObjectDictionaryService;
-    
-    public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
-        this.persistenceStructureService = persistenceStructureService;
-    }
 
     public Collection findCollectionBySearchHelper(Class businessObjectClass, Map formProps, boolean unbounded, boolean usePrimaryKeyValuesOnly) {
         return findCollectionBySearchHelper( businessObjectClass, formProps, unbounded, usePrimaryKeyValuesOnly, null );
@@ -66,14 +67,14 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         if (usePrimaryKeyValuesOnly) {
         	return executeSearch(businessObjectClass, getCollectionCriteriaFromMapUsingPrimaryKeysOnly(businessObjectClass, formProps), unbounded);
         }
-        else {
-            Criteria crit = getCollectionCriteriaFromMap(businessObject, formProps);
-            if ( additionalCriteria != null && additionalCriteria instanceof Criteria ) {
-                crit.addAndCriteria( (Criteria)additionalCriteria );
-            }
-            return executeSearch(businessObjectClass, crit, unbounded);
-        }
-    }
+        
+		Criteria crit = getCollectionCriteriaFromMap(businessObject, formProps);
+		if (additionalCriteria != null && additionalCriteria instanceof Criteria) {
+			crit.addAndCriteria((Criteria) additionalCriteria);
+		}
+
+		return executeSearch(businessObjectClass, crit, unbounded);
+	}
 
     /**
      * Builds up criteria object based on the object and map.
@@ -94,13 +95,13 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             if (formProps.get(propertyName) instanceof Collection) {
                 Iterator iter = ((Collection) formProps.get(propertyName)).iterator();
                 while (iter.hasNext()) {
-                    if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria )) {
+                    if (!createCriteria(example, (String) iter.next(), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps )) {
                         throw new RuntimeException("Invalid value in Collection");
                     }
                 }
             }
             else {
-                if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria)) {
+                if (!createCriteria(example, (String) formProps.get(propertyName), propertyName, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria, formProps)) {
                     continue;
                 }
             }
@@ -173,86 +174,18 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     	}
     	return new CollectionIncomplete(searchResults, matchingResultsCount);
     }
-    
-    /**
-     * Return whether or not an attribute is writeable. This method is aware that that Collections
-     * may be involved and handles them consistently with the way in which OJB handles specifying
-     * the attributes of elements of a Collection.
-     *
-     * @param o
-     * @param p
-     * @return
-     * @throws IllegalArgumentException
-     */
-    private boolean isWriteable(Object o, String p) throws IllegalArgumentException {
-
-        if(null == o || null == p) {
-
-            throw new IllegalArgumentException("Cannot check writeable status with null arguments.");
-
-        }
-
-        boolean b = false;
-
-        // Try the easy way.
-        if(!(PropertyUtils.isWriteable(o, p))) {
-
-            // If that fails lets try to be a bit smarter, understanding that Collections may be involved.
-            if(-1 != p.indexOf('.')) {
-
-                String[] parts = p.split("\\.");
-
-                // Get the type of the attribute.
-                Class c = ObjectUtils.getPropertyType(o, parts[0], persistenceStructureService);
-
-                if ( c != null ) {
-	                Object i = null;
-	
-	                // If the next level is a Collection, look into the collection, to find out what type its elements are.
-	                if(Collection.class.isAssignableFrom(c)) {
-	
-	                    Map<String, Class> m = persistenceStructureService.listCollectionObjectTypes(o.getClass());
-	                    c = m.get(parts[0]);
-	
-	                }
-	
-	                // Look into the attribute class to see if it is writeable.
-	                try {
-	
-	                    i = c.newInstance();
-	
-	                    StringBuffer sb = new StringBuffer();
-	                    for(int x = 1; x < parts.length; x++) {
-	                        sb.append(1 == x ? "" : ".").append(parts[x]);
-	                    }
-	                    b = isWriteable(i, sb.toString());
-	
-	                } catch(Exception ex) {
-	                	LOG.error( "Skipping Criteria: " + p + " - Unable to instantiate class : " + c.getName(), ex );
-	                }
-                } else {
-                	LOG.error( "Skipping Criteria: " + p + " - Unable to determine class for object: " + o.getClass().getName() + " - " + parts[0] );
-                }
-
-            }
-
-        } else {
-
-            b = true;
-
-        }
-
-        return b;
-
-    }
 
     public boolean createCriteria(Object example, String searchValue, String propertyName, Object criteria) {
     	return createCriteria( example, searchValue, propertyName, false, false, criteria );
     }
-
+    
     public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria) {
+    	return createCriteria( example, searchValue, propertyName, false, false, criteria, null );
+    }
+
+    public boolean createCriteria(Object example, String searchValue, String propertyName, boolean caseInsensitive, boolean treatWildcardsAndOperatorsAsLiteral, Object criteria, Map searchValues) {
         // if searchValue is empty and the key is not a valid property ignore
-        if (!(criteria instanceof Criteria) || StringUtils.isBlank(searchValue) || !isWriteable(example, propertyName)) {
+        if (!(criteria instanceof Criteria) || StringUtils.isBlank(searchValue) || !ObjectUtils.isWriteable(example, propertyName, persistenceStructureService)) {
             return false;
         }
 
@@ -262,8 +195,21 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             return false;
         }
 
-        // build criteria
-        addCriteria(propertyName, searchValue, propertyType, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, (Criteria)criteria);
+		// build criteria
+		if (example instanceof InactivateableFromTo) {
+			if (KNSPropertyConstants.ACTIVE.equals(propertyName)) {
+				addInactivateableFromToActiveCriteria(example, searchValue, (Criteria) criteria, searchValues);
+			} else if (KNSPropertyConstants.CURRENT.equals(propertyName)) {
+				addInactivateableFromToCurrentCriteria(example, searchValue, (Criteria) criteria, searchValues);
+			} else if (!KNSPropertyConstants.ACTIVE_AS_OF_DATE.equals(propertyName)) {
+				addCriteria(propertyName, searchValue, propertyType, caseInsensitive,
+						treatWildcardsAndOperatorsAsLiteral, (Criteria) criteria);
+			}
+		} else {
+			addCriteria(propertyName, searchValue, propertyType, caseInsensitive, treatWildcardsAndOperatorsAsLiteral,
+					(Criteria) criteria);
+		}
+        
         return true;
     }
 
@@ -357,7 +303,15 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             return;
         }
 
-        if (TypeUtils.isStringClass(propertyType)) {
+        if (StringUtils.containsIgnoreCase(propertyValue, KNSConstants.NULL_OPERATOR)) {
+        	if (StringUtils.contains(propertyValue, KNSConstants.NOT_LOGICAL_OPERATOR)) {
+        		criteria.addColumnNotNull(propertyName);
+        	}
+        	else {
+        		criteria.addColumnIsNull(propertyName);
+        	}
+        }
+        else if (TypeUtils.isStringClass(propertyType)) {
         	// KULRICE-85 : made string searches case insensitive - used new DBPlatform function to force strings to upper case
         	if ( caseInsensitive ) {
         		propertyName = getDbPlatform().getUpperCaseFunction() + "(" + propertyName + ")";
@@ -387,6 +341,115 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             LOG.error("not adding criterion for: " + propertyName + "," + propertyType + "," + propertyValue);
         }
     }
+    
+    /**
+     * Translates criteria for active status to criteria on the active from and to fields
+     * 
+     * @param example - business object being queried on
+     * @param activeSearchValue - value for the active search field, should convert to boolean
+     * @param criteria - Criteria object being built
+     * @param searchValues - Map containing all search keys and values
+     */
+    protected void addInactivateableFromToActiveCriteria(Object example, String activeSearchValue, Criteria criteria, Map searchValues) {
+    	// determine the date we should use for the criteria on active from/to
+		Date activeDate = dateTimeService.getCurrentSqlDate();
+		if (searchValues.containsKey(KNSPropertyConstants.ACTIVE_AS_OF_DATE)) {
+			String activeAsOfDate = (String) searchValues.get(KNSPropertyConstants.ACTIVE_AS_OF_DATE);
+			if (StringUtils.isNotBlank(activeAsOfDate)) {
+				try {
+					activeDate = dateTimeService.convertToSqlDate(ObjectUtils.clean(activeAsOfDate));
+				} catch (ParseException e) {
+					throw new RuntimeException("Unable to convert date: " + activeAsOfDate);
+				}
+			}
+		}
+		
+    	String activeBooleanStr = (String) (new OjbCharBooleanConversion()).javaToSql(activeSearchValue);
+    	if (OjbCharBooleanConversion.DATABASE_BOOLEAN_TRUE_STRING_REPRESENTATION.equals(activeBooleanStr)) {
+    		// (active from date <= date or active from date is null) and (date < active to date or active to date is null)
+    		Criteria criteriaBeginDate = new Criteria();
+    		criteriaBeginDate.addLessOrEqualThan(KNSPropertyConstants.ACTIVE_FROM_DATE, activeDate);
+    		
+    		Criteria criteriaBeginDateNull = new Criteria();
+    		criteriaBeginDateNull.addIsNull(KNSPropertyConstants.ACTIVE_FROM_DATE);
+    		criteriaBeginDate.addOrCriteria(criteriaBeginDateNull);
+    		
+    		criteria.addAndCriteria(criteriaBeginDate);
+    		
+    		Criteria criteriaEndDate = new Criteria();
+    		criteriaEndDate.addGreaterThan(KNSPropertyConstants.ACTIVE_TO_DATE, activeDate);
+    	
+    		Criteria criteriaEndDateNull = new Criteria();
+    		criteriaEndDateNull.addIsNull(KNSPropertyConstants.ACTIVE_TO_DATE);
+    		criteriaEndDate.addOrCriteria(criteriaEndDateNull);
+    		
+    		criteria.addAndCriteria(criteriaEndDate);
+    	}
+    	else if (OjbCharBooleanConversion.DATABASE_BOOLEAN_FALSE_STRING_REPRESENTATION.equals(activeBooleanStr)) {
+    		// (date < active from date) or (active from date is null) or (date >= active to date) 
+    		Criteria criteriaNonActive = new Criteria();
+    		criteriaNonActive.addGreaterThan(KNSPropertyConstants.ACTIVE_FROM_DATE, activeDate);
+    		
+    		Criteria criteriaEndDate = new Criteria();
+    		criteriaEndDate.addLessOrEqualThan(KNSPropertyConstants.ACTIVE_TO_DATE, activeDate);
+    		criteriaNonActive.addOrCriteria(criteriaEndDate);
+    		
+    		criteria.addAndCriteria(criteriaNonActive);
+    	}
+    }
+    
+    /**
+     * Translates criteria for current status to criteria on the active from field
+     * 
+     * @param example - business object being queried on
+     * @param currentSearchValue - value for the current search field, should convert to boolean
+     * @param criteria - Criteria object being built
+     */
+	protected void addInactivateableFromToCurrentCriteria(Object example, String currentSearchValue, Criteria criteria, Map searchValues) {
+		Criteria maxBeginDateCriteria = new Criteria();
+		
+    	// determine the date we should use for the criteria on active from/to
+		Date activeDate = dateTimeService.getCurrentSqlDate();
+		if (searchValues.containsKey(KNSPropertyConstants.ACTIVE_AS_OF_DATE)) {
+			String activeAsOfDate = (String) searchValues.get(KNSPropertyConstants.ACTIVE_AS_OF_DATE);
+			if (StringUtils.isNotBlank(activeAsOfDate)) {
+				try {
+					activeDate = dateTimeService.convertToSqlDate(ObjectUtils.clean(activeAsOfDate));
+				} catch (ParseException e) {
+					throw new RuntimeException("Unable to convert date: " + activeAsOfDate);
+				}
+			}
+		}
+		maxBeginDateCriteria.addLessOrEqualThan(KNSPropertyConstants.ACTIVE_FROM_DATE, activeDate);
+
+		List<String> groupByFieldList = businessObjectDictionaryService.getGroupByAttributesForEffectiveDating(example
+				.getClass());
+		if (groupByFieldList == null) {
+			return;
+		}
+
+		// join back to main query with the group by fields
+		String[] groupBy = new String[groupByFieldList.size()];
+		for (int i = 0; i < groupByFieldList.size(); i++) {
+			String groupByField = groupByFieldList.get(i);
+			groupBy[i] = groupByField;
+
+			maxBeginDateCriteria.addEqualToField(groupByField, Criteria.PARENT_QUERY_PREFIX + groupByField);
+		}
+
+		String[] columns = new String[1];
+		columns[0] = "max(" + KNSPropertyConstants.ACTIVE_FROM_DATE + ")";
+
+		QueryByCriteria query = QueryFactory.newReportQuery(example.getClass(), columns, maxBeginDateCriteria, true);
+		query.addGroupBy(groupBy);
+
+		String currentBooleanStr = (String) (new OjbCharBooleanConversion()).javaToSql(currentSearchValue);
+		if (OjbCharBooleanConversion.DATABASE_BOOLEAN_TRUE_STRING_REPRESENTATION.equals(currentBooleanStr)) {
+			criteria.addIn(KNSPropertyConstants.ACTIVE_FROM_DATE, query);
+		} else if (OjbCharBooleanConversion.DATABASE_BOOLEAN_FALSE_STRING_REPRESENTATION.equals(currentBooleanStr)) {
+			criteria.addNotIn(KNSPropertyConstants.ACTIVE_FROM_DATE, query);
+		}
+	}
 
     /**
      * @param propertyName
@@ -563,18 +626,16 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         }
     }
 
-	/**
-	 * @param dateTimeService the dateTimeService to set
-	 */
 	public void setDateTimeService(DateTimeService dateTimeService) {
 		this.dateTimeService = dateTimeService;
 	}
 
-	/**
-	 * @param businessObjectDictionaryService the businessObjectDictionaryService to set
-	 */
-	public void setBusinessObjectDictionaryService(
-			BusinessObjectDictionaryService businessObjectDictionaryService) {
+	public void setBusinessObjectDictionaryService(BusinessObjectDictionaryService businessObjectDictionaryService) {
 		this.businessObjectDictionaryService = businessObjectDictionaryService;
 	}
+	
+    public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
+        this.persistenceStructureService = persistenceStructureService;
+    }
+
 }

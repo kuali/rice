@@ -22,23 +22,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.SessionTicket;
 import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
 /**
- * This class represents a User Session
- * 
- * 
+ * Holds info about the User Session
  */
 public class UserSession implements Serializable {
 
     private static final long serialVersionUID = 4532616762540067557L;
-
-//    private static final Logger LOG = Logger.getLogger(UserSession.class);
 
     private Person person;
     private Person backdoorUser;
@@ -279,5 +277,86 @@ public class UserSession implements Serializable {
     public EditablePropertiesHistoryHolder getEditablePropertiesHistoryHolder() {
     	return editablePropertiesHistoryHolder;
     }
+    
+	/**
+	 * Adds the given SessionTicket to the objectMap and returns the associated key
+	 * 
+	 * @param ticket
+	 *            - SessionTicket to add
+	 * @return the objectMap key for the ticket as a String
+	 */
+	public String putSessionTicket(SessionTicket ticket) {
+		return addObject(ticket);
+	}
 
+	/**
+	 * Retrieves all SessionTicket instances currently in the UserSession#objectMap
+	 * 
+	 * @return List<SessionTicket> contained in user session
+	 */
+	public List<SessionTicket> getAllSessionTickets() {
+		List<SessionTicket> sessionTickets = new ArrayList<SessionTicket>();
+
+		for (Object object : objectMap.values()) {
+			if (object instanceof SessionTicket) {
+				sessionTickets.add((SessionTicket) object);
+			}
+		}
+
+		return sessionTickets;
+	}
+
+	/**
+	 * Retrieves all SessionTicket instances currently in the UserSession#objectMap that are of a given ticket type
+	 * 
+	 * @return List<SessionTicket> contained in user session
+	 */
+	public List<SessionTicket> getAllSessionTicketsByType(String ticketTypeName) {
+		List<SessionTicket> sessionTickets = new ArrayList<SessionTicket>();
+
+		for (SessionTicket ticket : getAllSessionTickets()) {
+			if (StringUtils.equalsIgnoreCase(ticket.getTicketTypeName(), ticketTypeName)) {
+				sessionTickets.add(ticket);
+			}
+		}
+
+		return sessionTickets;
+	}
+
+	/**
+	 * Determines if the UserSession contains a ticket of the given type that matches the given context. To match context the ticket must
+	 * contain all the same keys at the given context and the values must be equal with the exception of case
+	 * 
+	 * @param ticketTypeName
+	 *            - Name of the ticket type to match
+	 * @param matchContext
+	 *            - Map on context parameters to match on
+	 * @return true if a ticket was found in the UserSession that matches the request, false if one was not found
+	 */
+	public boolean hasMatchingSessionTicket(String ticketTypeName, Map<String, String> matchContext) {
+		boolean hasTicket = false;
+
+		for (SessionTicket ticket : getAllSessionTicketsByType(ticketTypeName)) {
+			Map<String, String> ticketContext = ticket.getTicketContext();
+
+			boolean keySetMatch = ticketContext.keySet().equals(matchContext.keySet());
+			if (keySetMatch) {
+				boolean valuesMatch = true;
+				for (String contextKey : ticketContext.keySet()) {
+					String ticketValue = ticketContext.get(contextKey);
+					String matchValue = matchContext.get(contextKey);
+					if (!StringUtils.equalsIgnoreCase(ticketValue, matchValue)) {
+						valuesMatch = false;
+					}
+				}
+
+				if (valuesMatch) {
+					hasTicket = true;
+					break;
+				}
+			}
+		}
+
+		return hasTicket;
+	}
 }

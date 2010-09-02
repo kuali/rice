@@ -134,6 +134,7 @@ public class RiceKeyConstants {
     
     
     public static final String QUESTION_DISAPPROVE_DOCUMENT = "document.question.disapprove.text";
+    public static final String QUESTION_SENSITIVE_DATA_DOCUMENT = "document.question.sensitiveData.text";
 
     public static final String ERROR_MISSING = "error.missing";
     

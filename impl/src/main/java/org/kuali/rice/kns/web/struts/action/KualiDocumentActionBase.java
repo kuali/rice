@@ -15,6 +15,21 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+import javax.persistence.EntityManagerFactory;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.OptimisticLockException;
@@ -32,7 +47,13 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.bo.*;
+import org.kuali.rice.kns.bo.AdHocRoutePerson;
+import org.kuali.rice.kns.bo.AdHocRouteRecipient;
+import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
+import org.kuali.rice.kns.bo.Attachment;
+import org.kuali.rice.kns.bo.DocumentHeader;
+import org.kuali.rice.kns.bo.Note;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.document.Document;
@@ -46,22 +67,39 @@ import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
-import org.kuali.rice.kns.rule.event.*;
-import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.util.*;
+import org.kuali.rice.kns.rule.event.AddAdHocRoutePersonEvent;
+import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
+import org.kuali.rice.kns.rule.event.AddNoteEvent;
+import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
+import org.kuali.rice.kns.rule.event.SendAdHocRequestsEvent;
+import org.kuali.rice.kns.service.AttachmentService;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.DocumentService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.KualiRuleService;
+import org.kuali.rice.kns.service.NoteService;
+import org.kuali.rice.kns.service.ParameterConstants;
+import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.service.PessimisticLockService;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.SessionTicket;
+import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.BlankFormFile;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.springmodules.orm.ojb.OjbOperationException;
-
-import javax.persistence.EntityManagerFactory;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.*;
 
 
 /**
@@ -534,6 +572,11 @@ public class KualiDocumentActionBase extends KualiAction {
         //get any possible changes to to adHocWorkgroups
         refreshAdHocRoutingWorkgroupLookups(request, kualiDocumentFormBase);
         Document document = kualiDocumentFormBase.getDocument();
+        
+        ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response, KNSPropertyConstants.DOCUMENT_EXPLANATION, document.getDocumentHeader().getExplanation(), "save", "");
+        if (forward != null) {
+        	return forward;
+        }
 
         // save in workflow
         getDocumentService().saveDocument(document);
@@ -552,6 +595,76 @@ public class KualiDocumentActionBase extends KualiAction {
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
+    
+	/**
+	 * Checks if the given value matches patterns that indicate sensitive data and if configured to give a warning for sensitive data will
+	 * prompt the user to continue
+	 * 
+	 * @param mapping
+	 * @param form
+	 * @param request
+	 * @param response
+	 * @param fieldName - name of field with value being checked
+	 * @param fieldValue
+	 *            - value to check for sensitive data
+	 * @param caller - method that should be called back from question
+	 * @param context - additional context that needs to be passed back with the question response
+	 * @return ActionForward which contains the question forward, or basic forward if user select no to prompt, otherwise will return null
+	 *         to indicate processing should continue
+	 * @throws Exception
+	 */
+	protected ActionForward checkAndWarnAboutSensitiveData(ActionMapping mapping, ActionForm form,
+			HttpServletRequest request, HttpServletResponse response, String fieldName, String fieldValue, String caller, String context)
+			throws Exception {
+		KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+		Document document = kualiDocumentFormBase.getDocument();
+
+		boolean containsSensitiveData = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
+
+		// check if warning is configured in which case we will prompt, or if not business rules will thrown an error
+		boolean warnForSensitiveData = KNSServiceLocator.getParameterService().getIndicatorParameter(
+				KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+				KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
+
+		// determine if the question has been asked yet
+		Map<String, String> ticketContext = new HashMap<String, String>();
+		ticketContext.put(KNSPropertyConstants.DOCUMENT_NUMBER, document.getDocumentNumber());
+		ticketContext.put(KNSConstants.CALLING_METHOD, caller);
+		ticketContext.put(KNSPropertyConstants.NAME, fieldName);
+
+		boolean questionAsked = GlobalVariables.getUserSession().hasMatchingSessionTicket(
+				KNSConstants.SENSITIVE_DATA_QUESTION_SESSION_TICKET, ticketContext);
+
+		// start in logic for confirming the sensitive data
+		if (containsSensitiveData && warnForSensitiveData && !questionAsked) {
+			Object question = request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
+			if (question == null || !KNSConstants.DOCUMENT_SENSITIVE_DATA_QUESTION.equals(question)) {
+
+				// question hasn't been asked, prompt to continue
+				return this.performQuestionWithoutInput(mapping, form, request, response,
+						KNSConstants.DOCUMENT_SENSITIVE_DATA_QUESTION, getKualiConfigurationService()
+								.getPropertyString(RiceKeyConstants.QUESTION_SENSITIVE_DATA_DOCUMENT),
+						KNSConstants.CONFIRMATION_QUESTION, caller, context);
+			}
+
+			Object buttonClicked = request.getParameter(KNSConstants.QUESTION_CLICKED_BUTTON);
+			if (question != null && KNSConstants.DOCUMENT_SENSITIVE_DATA_QUESTION.equals(question)) {
+				// if no button clicked just reload the doc
+				if (ConfirmationQuestion.NO.equals(buttonClicked)) {
+
+					return mapping.findForward(RiceConstants.MAPPING_BASIC);
+				}
+				
+				// answered yes, create session ticket so we not to ask question again if there are further question requests
+				SessionTicket ticket = new SessionTicket(KNSConstants.SENSITIVE_DATA_QUESTION_SESSION_TICKET);
+				ticket.setTicketContext(ticketContext);
+				GlobalVariables.getUserSession().putSessionTicket(ticket);
+			}
+		}
+
+		// return null to indicate processing should continue (no redirect)
+		return null;
+	}
 
     /**
      * This method will verify that the form is representing a {@link PessimisticLock} object and delete it if possible
@@ -660,6 +773,11 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         Document document = kualiDocumentFormBase.getDocument();
+        
+        ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response, KNSPropertyConstants.DOCUMENT_EXPLANATION, document.getDocumentHeader().getExplanation(), "route", "");
+        if (forward != null) {
+        	return forward;
+        }
 
         getDocumentService().routeDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_SUCCESSFUL);
@@ -689,7 +807,14 @@ public class KualiDocumentActionBase extends KualiAction {
             return preRulesForward;
         }
         
-        getDocumentService().blanketApproveDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        Document document = kualiDocumentFormBase.getDocument();
+        
+        ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response, KNSPropertyConstants.DOCUMENT_EXPLANATION, document.getDocumentHeader().getExplanation(), "blanketApprove", "");
+        if (forward != null) {
+        	return forward;
+        }
+        
+        getDocumentService().blanketApproveDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_APPROVED);
         kualiDocumentFormBase.setAnnotation("");
         return returnToSender(request, mapping, kualiDocumentFormBase);
@@ -715,7 +840,14 @@ public class KualiDocumentActionBase extends KualiAction {
             return preRulesForward;
         }
         
-        getDocumentService().approveDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
+        Document document = kualiDocumentFormBase.getDocument();
+        
+        ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response, KNSPropertyConstants.DOCUMENT_EXPLANATION, document.getDocumentHeader().getExplanation(), "approve", "");
+        if (forward != null) {
+        	return forward;
+        }
+        
+        getDocumentService().approveDocument(document, kualiDocumentFormBase.getAnnotation(), combineAdHocRecipients(kualiDocumentFormBase));
         GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_APPROVED);
         kualiDocumentFormBase.setAnnotation("");
         return returnToSender(request, mapping, kualiDocumentFormBase);
@@ -731,61 +863,96 @@ public class KualiDocumentActionBase extends KualiAction {
      * @return ActionForward
      * @throws Exception
      */
-    public ActionForward disapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Object question = request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
-        String reason = request.getParameter(KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME);
-        String disapprovalNoteText = "";
+	public ActionForward disapprove(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		Object question = request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
+		String reason = request.getParameter(KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME);
+		
+		if (StringUtils.isBlank(reason)) {
+			String context = request.getParameter(KNSConstants.QUESTION_CONTEXT);
+			if (context != null && StringUtils.contains(context, KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=")) {
+				reason = StringUtils.substringAfter(context, KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=");
+			}
+		}
+		
+		String disapprovalNoteText = "";
 
-        // start in logic for confirming the disapproval
-        if (question == null) {
-            // ask question if not already asked
-            return this.performQuestionWithInput(mapping, form, request, response, KNSConstants.DOCUMENT_DISAPPROVE_QUESTION, getKualiConfigurationService().getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT), KNSConstants.CONFIRMATION_QUESTION, KNSConstants.MAPPING_DISAPPROVE, "");
-        }
-        else {
-            Object buttonClicked = request.getParameter(KNSConstants.QUESTION_CLICKED_BUTTON);
-            if ((KNSConstants.DOCUMENT_DISAPPROVE_QUESTION.equals(question)) && ConfirmationQuestion.NO.equals(buttonClicked)) {
-                // if no button clicked just reload the doc
-                return mapping.findForward(RiceConstants.MAPPING_BASIC);
-            }
-            else {
-                // have to check length on value entered
-                String introNoteMessage = getKualiConfigurationService().getPropertyString(RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO) + KNSConstants.BLANK_SPACE;
+		// start in logic for confirming the disapproval
+		if (question == null) {
+			// ask question if not already asked
+			return this.performQuestionWithInput(mapping, form, request, response,
+					KNSConstants.DOCUMENT_DISAPPROVE_QUESTION,
+					getKualiConfigurationService().getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
+					KNSConstants.CONFIRMATION_QUESTION, KNSConstants.MAPPING_DISAPPROVE, "");
+		}
+		Object buttonClicked = request.getParameter(KNSConstants.QUESTION_CLICKED_BUTTON);
+		if ((KNSConstants.DOCUMENT_DISAPPROVE_QUESTION.equals(question))
+				&& ConfirmationQuestion.NO.equals(buttonClicked)) {
+			// if no button clicked just reload the doc
+			return mapping.findForward(RiceConstants.MAPPING_BASIC);
+		}
+		
+		// have to check length on value entered
+		String introNoteMessage = getKualiConfigurationService().getPropertyString(
+				RiceKeyConstants.MESSAGE_DISAPPROVAL_NOTE_TEXT_INTRO)
+				+ KNSConstants.BLANK_SPACE;
 
-                // build out full message
-                disapprovalNoteText = introNoteMessage + reason;
-                int disapprovalNoteTextLength = disapprovalNoteText.length();
+		// build out full message
+		disapprovalNoteText = introNoteMessage + reason;
+		
+		// check for sensitive data in note
+		boolean warnForSensitiveData = KNSServiceLocator.getParameterService().getIndicatorParameter(
+				KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+				KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
+		if (warnForSensitiveData) {
+			String context = KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME + "=" + reason;
+			ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response,
+					KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME, disapprovalNoteText, "disapprove", context);
+			if (forward != null) {
+				return forward;
+			}
+		} else {
+			if (WebUtils.containsSensitiveDataPatternMatch(disapprovalNoteText)) {
+				return this
+						.performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
+								KNSConstants.DOCUMENT_DISAPPROVE_QUESTION, getKualiConfigurationService()
+										.getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
+								KNSConstants.CONFIRMATION_QUESTION, KNSConstants.MAPPING_DISAPPROVE, "", reason,
+								RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA,
+								KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME, "reason");
+			}
+		}
 
-                // get note text max length from DD
-                int noteTextMaxLength = getDataDictionaryService().getAttributeMaxLength(Note.class, KNSConstants.NOTE_TEXT_PROPERTY_NAME).intValue();
+		int disapprovalNoteTextLength = disapprovalNoteText.length();
+		
+		// get note text max length from DD
+		int noteTextMaxLength = getDataDictionaryService().getAttributeMaxLength(Note.class,
+				KNSConstants.NOTE_TEXT_PROPERTY_NAME).intValue();
 
-                if (StringUtils.isBlank(reason) || (disapprovalNoteTextLength > noteTextMaxLength)) {
-                    // figure out exact number of characters that the user can enter
-                    int reasonLimit = noteTextMaxLength - disapprovalNoteTextLength;
+		if (StringUtils.isBlank(reason) || (disapprovalNoteTextLength > noteTextMaxLength)) {
+			// figure out exact number of characters that the user can enter
+			int reasonLimit = noteTextMaxLength - disapprovalNoteTextLength;
 
-                    if (reason == null) {
-                        // prevent a NPE by setting the reason to a blank string
-                        reason = "";
-                    }
-                    return this.performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response, KNSConstants.DOCUMENT_DISAPPROVE_QUESTION, getKualiConfigurationService().getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT), KNSConstants.CONFIRMATION_QUESTION, KNSConstants.MAPPING_DISAPPROVE, "", reason, RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED, KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME, new Integer(reasonLimit).toString());
-                }
-                
-                if (WebUtils.containsSensitiveDataPatternMatch(disapprovalNoteText)) {
-                	return this.performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response, 
-                			KNSConstants.DOCUMENT_DISAPPROVE_QUESTION, getKualiConfigurationService().getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT), 
-                			KNSConstants.CONFIRMATION_QUESTION, KNSConstants.MAPPING_DISAPPROVE, "", reason, RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA,
-                			KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME, "reason");
-                }
-            }
-        }
+			if (reason == null) {
+				// prevent a NPE by setting the reason to a blank string
+				reason = "";
+			}
+			return this.performQuestionWithInputAgainBecauseOfErrors(mapping, form, request, response,
+					KNSConstants.DOCUMENT_DISAPPROVE_QUESTION,
+					getKualiConfigurationService().getPropertyString(RiceKeyConstants.QUESTION_DISAPPROVE_DOCUMENT),
+					KNSConstants.CONFIRMATION_QUESTION, KNSConstants.MAPPING_DISAPPROVE, "", reason,
+					RiceKeyConstants.ERROR_DOCUMENT_DISAPPROVE_REASON_REQUIRED,
+					KNSConstants.QUESTION_REASON_ATTRIBUTE_NAME, new Integer(reasonLimit).toString());
+		}
 
-        KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
-        doProcessingAfterPost( kualiDocumentFormBase, request );
-        getDocumentService().disapproveDocument(kualiDocumentFormBase.getDocument(), disapprovalNoteText);
-        GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED);
-        kualiDocumentFormBase.setAnnotation("");
+		KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
+		doProcessingAfterPost(kualiDocumentFormBase, request);
+		getDocumentService().disapproveDocument(kualiDocumentFormBase.getDocument(), disapprovalNoteText);
+		GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_ROUTE_DISAPPROVED);
+		kualiDocumentFormBase.setAnnotation("");
 
-        return returnToSender(request, mapping, kualiDocumentFormBase);
-    }
+		return returnToSender(request, mapping, kualiDocumentFormBase);
+	}
 
     /**
      * Calls the document service to cancel the document
@@ -819,7 +986,7 @@ public class KualiDocumentActionBase extends KualiAction {
         // KULRICE-4447 Call cancelDocument() only if the document exists
         if ( getDocumentService().documentExists(kualiDocumentFormBase.getDocId()))
         {
-        	getDocumentService().cancelDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation());
+        getDocumentService().cancelDocument(kualiDocumentFormBase.getDocument(), kualiDocumentFormBase.getAnnotation());
         }
 
         return returnToSender(request, mapping, kualiDocumentFormBase);
@@ -1218,6 +1385,11 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // create a new note from the data passed in
         Note tmpNote = getNoteService().createNote(newNote, noteParent);
+        
+        ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response, KNSPropertyConstants.NOTE, tmpNote.getNoteText(), "insertBONote", "");
+        if (forward != null) {
+        	return forward;
+        }
 
         // validate the note
         boolean rulePassed = getKualiRuleService().applyRules(new AddNoteEvent(document, tmpNote));

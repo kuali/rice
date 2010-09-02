@@ -168,6 +168,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String DOCUMENT_CANCEL_QUESTION = "DocCancel";
 //    public static final String DOCUMENT_DELETE_QUESTION = "DocDelete";
     public static final String DOCUMENT_DISAPPROVE_QUESTION = "DocDisapprove";
+    public static final String DOCUMENT_SENSITIVE_DATA_QUESTION = "DocSensitiveDataQuestion";
 //    public static final String DOCUMENT_HEADER_ID = "documentHeaderId";
     public static final String DOCUMENT_HEADER_PROPERTY_NAME = "documentHeader";
     public static final String DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION = "DocSaveBeforeClose";
@@ -534,6 +535,7 @@ public class KNSConstants extends JSTLConstants {
         public static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
         public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME";
         public static final String SENSITIVE_DATA_PATTERNS = "SENSITIVE_DATA_PATTERNS";
+        public static final String SENSITIVE_DATA_PATTERNS_WARNING_IND = "SENSITIVE_DATA_PATTERNS_WARNING_IND";
     }
 
     public static class Maintenance {
@@ -577,5 +579,7 @@ public class KNSConstants extends JSTLConstants {
 	public static final String ENABLE_NONPRODUCTION_UNMASKING = "enable.nonproduction.data.unmasking";
 	
   	public static final String SINGLE_QUOTE = "'";
+  	
+  	public static final String SENSITIVE_DATA_QUESTION_SESSION_TICKET = "SENSITIVE_DATA_QUESTION_SESSION_TICKET";
 
 }

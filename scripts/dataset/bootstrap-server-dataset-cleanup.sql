@@ -281,8 +281,12 @@ drop table trv_doc_2
 /
 drop table trv_doc_acct
 /
+drop table TRV_ACCT_USE_RT_T
+/
 drop sequence trv_fo_id_s
 /
+
+
 
 drop table kr_kim_test_bo
 /

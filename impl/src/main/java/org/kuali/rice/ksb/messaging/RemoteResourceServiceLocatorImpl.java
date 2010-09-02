@@ -192,6 +192,9 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		return remotedServices.get(this.randomNumber.nextInt(remotedServices.size()));
 	}
 
+	/**
+	 * Returns an immutable list of services.
+	 */
 	public List<RemotedServiceHolder> getAllServices(QName qName) {
 		List<RemotedServiceHolder> clientProxies = this.getClients().get(qName);
 		if (clientProxies == null) {
@@ -215,7 +218,8 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 				throw new RiceRemoteServiceConnectionException("No remote services available for client access when attempting to lookup '" + qName + "'");
 			}
 		}
-		return clientProxies;
+		// be sure to return an immutable copy of the list
+		return Collections.unmodifiableList(new ArrayList<RemotedServiceHolder>(clientProxies));
 	}
 
 	public void refresh() {

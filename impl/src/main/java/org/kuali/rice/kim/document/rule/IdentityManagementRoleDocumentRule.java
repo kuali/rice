@@ -629,7 +629,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 							if (docRoleId.equals(member.getMemberId())){
 								ok = false;
 								MessageMap errorMap = GlobalVariables.getMessageMap();
-								errorMap.putError("member.memberId", RiceKeyConstants.ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR, new String[] {member.getMemberId()});        	
+								errorMap.putError("member.memberId", RiceKeyConstants.ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR, new String[] {roleId});        	
 								return false;
 							}
 						}

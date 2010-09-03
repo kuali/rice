@@ -593,7 +593,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	 * creates a circular reference.
 	 * 
 	 * @param addMemberEvent
-	 * @return
+	 * @return true  - ok to assign, no circular references
+	 *         false - do not make assignment, will create circular reference.
 	 */
 	protected boolean checkForCircularRoleMembership(AddMemberEvent addMemberEvent)
 	{

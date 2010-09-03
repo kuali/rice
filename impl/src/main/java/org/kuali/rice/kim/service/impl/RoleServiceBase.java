@@ -49,6 +49,7 @@ import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityInternalService;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -58,7 +59,10 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.MessageMap;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -1209,6 +1213,38 @@ public class RoleServiceBase {
     		}
 		}
 		return false;
+	}
+
+	/**
+	 * 
+	 * This method tests to see if assigning a role to another role will create a circular reference.
+	 * The Role is checked to see if it is a member (direct or nested) of the role to be assigned as a member.
+	 * 
+	 * @param newMemberId
+	 * @param role
+	 * @return true  - assignment is allowed, no circular reference will be created.
+	 *         false - illegal assignment, it will create a circular membership
+	 */
+	protected boolean checkForCircularRoleMembership( String newMemberId, RoleImpl role ) {
+		boolean ok = true;
+		List<RoleMemberImpl> newRoleMembers = null;
+		try {
+			// get all nested role members that are of type role
+			newRoleMembers = getRoleTypeRoleMembers(newMemberId);
+		} catch (Exception ex){
+			ok = false;
+		}
+		// If the existing role is a member of the role to be assigned,
+		// Then this would create a circular role membership.
+		String roleId = role.getRoleId();
+		for (RoleMemberImpl member : newRoleMembers) {
+			if (org.kuali.rice.kim.bo.Role.ROLE_MEMBER_TYPE.equals(member.getMemberTypeCode())){
+				if (roleId.equals(member.getMemberId())){
+					ok = false;
+				}
+			}
+		}
+		return ok;
 	}
 	
 	// TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map

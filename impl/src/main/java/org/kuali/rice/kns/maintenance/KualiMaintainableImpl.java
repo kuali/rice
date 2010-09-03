@@ -199,12 +199,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
    
         Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), newFieldValues);
         performForceUpperCase(newFieldValues);
-        //getBusinessObjectDictionaryService().performForceUppercase(getBusinessObject());
+        
         return cachedValues;
     }
     
- 
-
     /**
      * Special hidden parameters are set on the maintenance jsp starting with a prefix that tells us which fields have been
      * encrypted. This field finds the those parameters in the map, whose value gives us the property name that has an encrypted

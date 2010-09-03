@@ -148,14 +148,14 @@ public class FieldBridge {
 			// set additional or alternate display property values if property
 			// name is specified
 			if (StringUtils.isNotBlank(field.getAlternateDisplayPropertyName())) {
-				String alternatePropertyValue = ObjectUtils.getFormattedPropertyValue(bo, field
-						.getAlternateDisplayPropertyName(), null);
+				String alternatePropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(bo, field
+						.getAlternateDisplayPropertyName());
 				field.setAlternateDisplayPropertyValue(alternatePropertyValue);
                 }
 
 			if (StringUtils.isNotBlank(field.getAdditionalDisplayPropertyName())) {
-				String additionalPropertyValue = ObjectUtils.getFormattedPropertyValue(bo, field
-						.getAdditionalDisplayPropertyName(), null);
+				String additionalPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(bo, field
+						.getAdditionalDisplayPropertyName());
 				field.setAdditionalDisplayPropertyValue(additionalPropertyValue);
             }
 
@@ -521,25 +521,8 @@ public class FieldBridge {
      */
     public static Field toField(FieldDefinition d, BusinessObject o, Section s) {
         Field field = FieldUtils.getPropertyField(o.getClass(), d.getAttributeName(), false);
-        field.setPropertyName(d.getAttributeName());
-        field.setBusinessObjectClassName(o.getClass().getName());
-        field.setFieldLabel(getDataDictionaryService().getAttributeLabel(o.getClass(), d.getAttributeName()));
+        
         FieldUtils.setInquiryURL(field, o, field.getPropertyName());
-
-        Class<? extends Formatter> formatterClass = getDataDictionaryService().getAttributeFormatter(o.getClass(), d.getAttributeName());
-        if (formatterClass != null) {
-            try {
-                field.setFormatter((Formatter) formatterClass.newInstance());
-            }
-            catch (InstantiationException e) {
-                LOG.error("Unable to get new instance of formatter class: " + formatterClass.getName());
-                throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
-            }
-            catch (IllegalAccessException e) {
-                LOG.error("Unable to get new instance of formatter class: " + formatterClass.getName());
-                throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
-            }
-        }
 
 		String alternateDisplayPropertyName = getBusinessObjectDictionaryService()
 				.getInquiryFieldAlternateDisplayAttributeName(o.getClass(), d.getAttributeName());
@@ -562,7 +545,6 @@ public class FieldBridge {
         populateFieldFromBusinessObject(field, o);
 
         return field;
-
     }
 
 	public static DataDictionaryService getDataDictionaryService() {

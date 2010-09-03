@@ -441,17 +441,17 @@ public class SectionBridge {
                                 LookupUtils.setFieldDirectInquiry(lineBusinessObject, name, collField);
                             }
 
-                            Object propertyValue = ObjectUtils.getPropertyValue(lineBusinessObject, fieldDefinition.getName());
+                            String propertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject, fieldDefinition.getName());
                             collField.setPropertyValue(propertyValue);
                             
 							if (StringUtils.isNotBlank(collField.getAlternateDisplayPropertyName())) {
-								Object alternateDisplayPropertyValue = ObjectUtils.getPropertyValue(lineBusinessObject,
+								String alternateDisplayPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject,
 										collField.getAlternateDisplayPropertyName());
 								collField.setAlternateDisplayPropertyValue(alternateDisplayPropertyValue);
 							}
 							
 							if (StringUtils.isNotBlank(collField.getAdditionalDisplayPropertyName())) {
-								Object additionalDisplayPropertyValue = ObjectUtils.getPropertyValue(lineBusinessObject,
+								String additionalDisplayPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject,
 										collField.getAdditionalDisplayPropertyName());
 								collField.setAdditionalDisplayPropertyValue(additionalDisplayPropertyValue);
 							}
@@ -650,17 +650,17 @@ public class SectionBridge {
                                             LookupUtils.setFieldDirectInquiry(lineBusinessObject, name, subCollField);
                                         }
 
-                                        Object propertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject, fieldDefinition.getName());
+                                        String propertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineSubBusinessObject, fieldDefinition.getName());
                                         subCollField.setPropertyValue(propertyValue);
                                         
             							if (StringUtils.isNotBlank(subCollField.getAlternateDisplayPropertyName())) {
-            								Object alternateDisplayPropertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject,
+            								String alternateDisplayPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineSubBusinessObject,
             										subCollField.getAlternateDisplayPropertyName());
             								subCollField.setAlternateDisplayPropertyValue(alternateDisplayPropertyValue);
             							}
                                         
             							if (StringUtils.isNotBlank(subCollField.getAdditionalDisplayPropertyName())) {
-            								Object additionalDisplayPropertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject,
+            								String additionalDisplayPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineSubBusinessObject,
             										subCollField.getAdditionalDisplayPropertyName());
             								subCollField.setAdditionalDisplayPropertyValue(additionalDisplayPropertyValue);
             							}

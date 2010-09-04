@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.kim.util;
 
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.namespace.QName;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -37,9 +46,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
-
-import java.security.GeneralSecurityException;
-import java.util.*;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill
@@ -143,44 +149,31 @@ public class KimCommonUtils {
 		return StringUtils.equals( map1.get( key ), map2.get( key ) );
 	}
 
-	public static final String DEFAULT_KIM_SERVICE_NAME = "kimTypeService";
-
-	public static String getKimTypeServiceName(String kimTypeServiceName){
-    	if (StringUtils.isBlank(kimTypeServiceName)) {
-    		kimTypeServiceName = DEFAULT_KIM_SERVICE_NAME;
-    	}
-    	return kimTypeServiceName;
-	}
-
-	public static KimTypeService getKimTypeService(KimType kimType){
-		if( kimType == null ) {
-			LOG.warn( "null KimType passed into getKimTypeService" );
-			return null;
+	/**
+	 * Resolves the given kim type service name represented as a String to the appropriate QName.
+	 * If the value given is empty or null, then it will resolve to the default KimTypeService name.
+	 */
+	public static QName resolveKimTypeServiceName(String kimTypeServiceName) {
+		if (StringUtils.isBlank(kimTypeServiceName)) {
+			return resolveKimTypeServiceName(KimConstants.DEFAULT_KIM_TYPE_SERVICE);
 		}
-		return getKimTypeService( KimCommonUtils.getKimTypeServiceName(kimType.getKimTypeServiceName() ) );
+		return QName.valueOf(kimTypeServiceName);
 	}
 
+	/**
+	 * @deprecated Please use KIMServiceLocator.getKimTypeService(KimType) instead
+	 */
+	@Deprecated
+	public static KimTypeService getKimTypeService(KimType kimType){
+		return KIMServiceLocator.getKimTypeService(kimType);
+	}
+
+	/**
+	 * @deprecated Please use KIMServiceLocator.getKimTypeService(QName) instead
+	 */
+	@Deprecated
 	public static KimTypeService getKimTypeService( String serviceName ) {
-		KimTypeService service = null;
-		if ( StringUtils.isNotBlank(serviceName) ) {
-	    	service = kimTypeServiceCache.get( serviceName );
-	    	if ( service == null && !kimTypeServiceCache.containsKey( serviceName ) ) {
-    			try {
-    				service = (KimTypeService)KIMServiceLocator.getService( serviceName );
-    			} catch ( Exception ex ) {
-    				LOG.error( "Unable to find KIM type service with name: " + serviceName, ex );
-    				service = null;
-    			}
-    		}
-	    	if (service != null) {
-	    	synchronized (kimTypeServiceCache) {
-				kimTypeServiceCache.put(serviceName, service);
-			}
-	    	}
-    	} else {
-    		LOG.warn( "Blank service name passed into getKimTypeService" );
-    	}
-    	return service;
+		return KIMServiceLocator.getKimTypeService(resolveKimTypeServiceName(serviceName));
     }
 
 	public static void copyProperties(Object targetToCopyTo, Object sourceToCopyFrom){

@@ -38,7 +38,7 @@ public class EditablePropertiesHistoryHolder implements java.io.Serializable {
 	private Integer maxLength = null;
 	private Queue<String> historyOrder;
 	private static final String EDITABLE_PROPERTIES_HISTORY_SIZE_PROPERTY_NAME = "kns.editable.properties.history.size";
-	private KualiConfigurationService configurationService;
+	private transient KualiConfigurationService configurationService;
 	
 	/**
 	 * Constructs the EditablePropertiesHistoryHolder

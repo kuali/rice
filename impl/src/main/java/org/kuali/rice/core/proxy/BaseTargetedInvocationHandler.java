@@ -36,5 +36,9 @@ public abstract class BaseTargetedInvocationHandler extends BaseInvocationHandle
 	public Object getTarget() {
 		return this.target;
 	}
+	
+	public void setTarget(Object target) {
+		this.target = target;
+	}
 
 }

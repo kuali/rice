@@ -53,19 +53,19 @@ public class ServiceInfoDAOOjbImpl extends PersistenceBrokerDaoSupport implement
     }
 
     @SuppressWarnings("unchecked")
-	    public List<ServiceInfo> fetchActiveByName(String serviceName) {
+	    public List<ServiceInfo> fetchActiveByNameLocalPart(String localPart) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("alive", Boolean.TRUE);
-		crit.addLike("serviceName", "{%}"+serviceName);
+		crit.addLike("serviceName", "{%}"+localPart);
 		return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
 				new QueryByCriteria(ServiceInfo.class, crit));
     }
     
     @SuppressWarnings("unchecked")
-    public List<ServiceInfo> fetchActiveByQName(QName qname) {
+    public List<ServiceInfo> fetchActiveByName(QName serviceName) {
 		Criteria crit = new Criteria();
 		crit.addEqualTo("alive", Boolean.TRUE);
-		crit.addEqualTo("serviceName", qname.toString());
+		crit.addEqualTo("serviceName", serviceName.toString());
 		return (List<ServiceInfo>) getPersistenceBrokerTemplate().getCollectionByQuery(
 				new QueryByCriteria(ServiceInfo.class, crit));
     }

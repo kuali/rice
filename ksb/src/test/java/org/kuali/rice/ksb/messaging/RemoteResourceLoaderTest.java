@@ -202,7 +202,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
     }
 
     @Test public void testAddingServiceWithDifferentIPSameURL() throws Exception {
-	KSBServiceLocator.getServiceRegistry().remove(KSBServiceLocator.getServiceRegistry().fetchAll());
+	KSBServiceLocator.getServiceRegistry().removeEntries(KSBServiceLocator.getServiceRegistry().fetchAll());
 	assertTrue(KSBServiceLocator.getServiceRegistry().fetchAll().isEmpty());
 	ServiceDefinition serviceDef = addServiceToDB();
 	
@@ -219,7 +219,7 @@ public class RemoteResourceLoaderTest extends KSBTestCase {
 	RoutingTableDiffCalculator diffCalc = new RoutingTableDiffCalculator();
 	diffCalc.calculateServerSideUpdateLists(configuredServices, fetchedServices);
 	diffCalc.getMasterServiceList();
-	KSBServiceLocator.getServiceRegistry().save(diffCalc.getServicesNeedUpdated());
+	KSBServiceLocator.getServiceRegistry().saveEntries(diffCalc.getServicesNeedUpdated());
 	
 	assertEquals(1, KSBServiceLocator.getServiceRegistry().fetchAll().size());
     }

@@ -317,8 +317,8 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	 	 		updateSRegTable = false;
 	 	 	}
 	 	 	if (updateSRegTable) {
-				getServiceRegistry().save(diffCalc.getServicesNeedUpdated());
-				getServiceRegistry().remove(diffCalc.getServicesNeedRemoved());
+				getServiceRegistry().saveEntries(diffCalc.getServicesNeedUpdated());
+				getServiceRegistry().removeEntries(diffCalc.getServicesNeedRemoved());
 			}
 			this.publishedServices.clear();
 			this.serviceInfoCopies.clear();

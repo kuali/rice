@@ -82,19 +82,17 @@ public class KIMServiceLocatorTest extends KIMTestCase {
 		KimTypeService typeService1 = KIMServiceLocator.getKimTypeService(new QName("badNamespace", "badServiceName"));
 		assertNull("A null KimTypeService should have been returned.", typeService1);
 		
-		// test by passing a QName for a valid service, but not one which is a KimTypeService
+		// test by passing a QName for a valid service, but not one which is a KimTypeService, null should be returned
 		
-		try {
-			// fetch the group service instead
-			KIMServiceLocator.getKimTypeService(new QName(KIMServiceLocator.KIM_GROUP_SERVICE));
-			fail("A ClassCastException should have been thrown.");
-		} catch (ClassCastException e) {}
-		
+		// fetch the group service instead
+		KimTypeService typeService2 = KIMServiceLocator.getKimTypeService(new QName(KIMServiceLocator.KIM_GROUP_SERVICE));
+		assertNull("A null KimTypeService should have been returned.", typeService2);
+
 		// test by passing the QName for the Permission TypeService
 		
 		QName permissionServiceName = new QName("permissionPermissionTypeService");
-		KimTypeService typeService2 = KIMServiceLocator.getKimTypeService(permissionServiceName);
-		assertNotNull("permission type service should have been found", typeService2);
+		KimTypeService typeService3 = KIMServiceLocator.getKimTypeService(permissionServiceName);
+		assertNotNull("permission type service should have been found", typeService3);
 		
 	}
 	

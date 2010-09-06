@@ -93,6 +93,10 @@
 		<build.plugins.plugin.version>1.0-beta-4</build.plugins.plugin.version>
 		<reporting.plugins.plugin.version>2.1.2</reporting.plugins.plugin.version>
 		<surefire.report.plugin.version>2.5</surefire.report.plugin.version>
+		
+		<jdbc.drivers.location>/opt/java/drivers</jdbc.drivers.location>
+		<mysql-connector-java.jar.location>${jdbc.drivers.location}/mysql-connector-java-${mysql-connector-java.version}.jar</mysql-connector-java.jar.location>
+		<ojdbc14.jar.location>${jdbc.drivers.location}/ojdbc14-${ojdbc14.version}.jar</ojdbc14.jar.location>
 	</properties>
 
 	<profiles>
@@ -150,8 +154,8 @@
 						<version>2.4.2</version>
 						<configuration>
 							<additionalClasspathElements>
-								<additionalClasspathElement>/opt/java/drivers/mysql-connector-java-${mysql-connector-java.version}.jar</additionalClasspathElement>
-								<additionalClasspathElement>/opt/java/drivers/ojdbc14-${ojdbc14.version}.jar</additionalClasspathElement>
+								<additionalClasspathElement>${mysql-connector-java.jar.location}</additionalClasspathElement>
+								<additionalClasspathElement>${ojdbc14.jar.location}</additionalClasspathElement>
 							</additionalClasspathElements>
 							<useFile>false</useFile>
 							<failIfNoTests>false</failIfNoTests>
@@ -281,6 +285,7 @@
 		<module>api</module>
 		<module>impl</module>
 		<module>web</module>
+		<module>sampleapp</module>
 		<module>ksb</module>
 		<module>kcb</module>
 		<module>kns</module>

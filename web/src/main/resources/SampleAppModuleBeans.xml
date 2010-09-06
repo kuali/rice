@@ -21,7 +21,14 @@
         <property name="initializeDataDictionary" value="true"/>
         <property name="dataDictionaryPackages">
             <list>
-                <value>classpath:edu/sampleu/travel/datadictionary</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/TravelAccount.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountExtension.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountMaintenanceDocument.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountType.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountUseRate.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/TravelRequestDocument.xml</value>
             </list>
         </property>
         <property name="databaseRepositoryFilePaths">

@@ -20,10 +20,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -54,6 +53,16 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
     }
 
     /**
+	 * @see org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase#populate(javax.servlet.http.HttpServletRequest)
+	 */
+    @SuppressWarnings("unchecked")
+	@Override
+	public void populate(HttpServletRequest request) {
+		super.populate(request);
+		populateFalseCheckboxes(request);
+	}
+
+	/**
      * This method retrieves an instance of the form.
      * 
      * @return
@@ -108,30 +117,27 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
     }
     
     /**
-     * Override reset to reset checkboxes if they are present on the requesting page
-     * @see org.kuali.core.web.struts.form.KualiDocumentFormBase#reset(org.apache.struts.action.ActionMapping, javax.servlet.http.HttpServletRequest)
+     * Uses the "checkboxToReset" parameter to find checkboxes which had not been
+     * populated in the request and attempts to populate them
+     * 
+     * @param request the request to populate
      */
-    public void reset(ActionMapping mapping, HttpServletRequest request) {
-        super.reset(mapping, request);
-        // fix for KULRICE-2525
-        if (request.getParameter("checkboxToReset") != null) {
-            String[] checkboxesToReset = request.getParameterValues("checkboxToReset");
+    protected void populateFalseCheckboxes(HttpServletRequest request) {
+    	Map<String, String[]> parameterMap = request.getParameterMap();
+    	if (parameterMap.get("checkboxToReset") != null) {
+    		final String[] checkboxesToReset = request.getParameterValues("checkboxToReset");
             if(checkboxesToReset != null && checkboxesToReset.length > 0) {
                 for (int i = 0; i < checkboxesToReset.length; i++) {
                     String propertyName = (String) checkboxesToReset[i];
-                    if ( StringUtils.isNotBlank(propertyName) ) {
-	                    try {
-	                        PropertyUtils.setNestedProperty(this, propertyName, false);
-	                    } catch (Exception ex) {
-	                    	LOG.warn("Invalid property name present in the 'checkboxToReset' fields." );
-	                    	LOG.warn("Class: " + this.getClass().getName() + " Property: '" + propertyName + "'", ex );
-	                    }
-                    } else {
-                    	LOG.warn( "Blank property name present in the 'checkboxToReset' fields." );
+                    if ( !StringUtils.isBlank(propertyName) && parameterMap.get(propertyName) == null ) {
+                    	populateForProperty(propertyName, KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY, parameterMap);
+                    }  
+                    else if ( !StringUtils.isBlank(propertyName) && parameterMap.get(propertyName) != null && parameterMap.get(propertyName).length >= 1 && parameterMap.get(propertyName)[0].equalsIgnoreCase("on") ) {
+                    	populateForProperty(propertyName, KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE_DISPLAY, parameterMap); 
                     }
                 }
             }
-        }
+    	}
     }
 
     @SuppressWarnings("unchecked")

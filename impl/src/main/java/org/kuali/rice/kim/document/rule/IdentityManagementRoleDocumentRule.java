@@ -631,23 +631,18 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 								ok = false;
 								MessageMap errorMap = GlobalVariables.getMessageMap();
 								errorMap.putError("member.memberId", RiceKeyConstants.ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR, new String[] {roleId});        	
-								return false;
+								return ok;
 							}
 						}
 					}
 				}
 			}
 		}
-		if (ok != true){
+		if (ok == false){
 			MessageMap errorMap = GlobalVariables.getMessageMap();
 			errorMap.putError("member.memberId", RiceKeyConstants.ERROR_INVALID_ROLE, new String[] {""});        	
 		}
 		return ok;
-	}
-	
-	protected ArrayList getNestedRoleTypeMembers(ArrayList foundMembers){
-		
-		return foundMembers;
 	}
 	
 	/**

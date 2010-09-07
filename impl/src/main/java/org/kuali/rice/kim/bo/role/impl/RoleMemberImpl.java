@@ -18,12 +18,16 @@ package org.kuali.rice.kim.bo.role.impl;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
@@ -166,5 +170,58 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 		}
 		return roleMemberCompleteInfo;
 	}
+	
+	/**
+	 * @see java.lang.Object#equals(Object)
+	 */
+	public boolean equals(Object object) {
+		if (object == null) { return false; }
+		if (object == this) { return true; }
+		if (object.getClass() != getClass()) {
+			return false;
+		}
+		RoleMemberImpl rhs = (RoleMemberImpl)object;
+		EqualsBuilder eb = new EqualsBuilder()
+			.append( this.roleId, rhs.getRoleId() )
+			.append( this.memberId, rhs.getMemberId())
+			.append( this.memberTypeCode, rhs.getMemberTypeCode());
+
+		AttributeSet rhsAttributes = rhs.getQualifier();
+		AttributeSet myAttributes = this.getQualifier();
+		if (myAttributes == null && rhsAttributes == null){
+			return eb.isEquals();
+		}
+		if (myAttributes == null || rhsAttributes == null) { return false; }
+		if (myAttributes.size() != rhsAttributes.size()) { return false; }
+		Set<String> myKeys = myAttributes.keySet();
+		for (String key : myKeys) {
+			if (!rhsAttributes.containsKey(key)) {return false;}
+			eb = eb.append( myAttributes.get(key), rhsAttributes.get(key));
+		}	
+			
+		return eb.isEquals();
+	}
+
+
+	/**
+	 * @see java.lang.Object#hashCode()
+	 */
+	public int hashCode() {
+		HashCodeBuilder hcb = new HashCodeBuilder( -462227871, 742215189 )
+			.append( this.roleId )
+			.append( this.memberId )
+			.append( this.memberTypeCode );
+		AttributeSet myAttributes = this.getQualifier();
+		if (myAttributes == null || myAttributes.isEmpty()){
+			return hcb.toHashCode();
+		}
+		Set<String> myKeys = myAttributes.keySet();
+		for (String key : myKeys) {
+			hcb.append( myAttributes.get(key));
+		}
+		return hcb.toHashCode();
+	}
+
+
 
 }

@@ -57,6 +57,23 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 		MessageExceptionHandler exceptionHandler = remoteResourceServiceLocator.getMessageExceptionHandler(methodCall.getServiceInfo().getQname());
 		exceptionHandler.handleException(throwable, message, service);
 	}
+	
+	public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessage message, Object service) throws Exception {
+		LOG.error("Exception caught processing message " + message.getRouteQueueId() + " " + message.getServiceName() + ": " + throwable);
+		
+		RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
+		AsynchronousCall methodCall = null;
+		if (message.getMethodCall() != null) {
+			methodCall = message.getMethodCall();
+		} else {
+			methodCall = message.getPayload().getMethodCall();
+		}
+		message.setMethodCall(methodCall);
+		MessageExceptionHandler exceptionHandler = remoteResourceServiceLocator.getMessageExceptionHandler(methodCall.getServiceInfo().getQname());
+		exceptionHandler.handleExceptionLastDitchEffort(throwable, message, service);
+	}
+	
+	
 
 	public void scheduleExecution(Throwable throwable, PersistedMessage message, String description) throws Exception {
 		KSBServiceLocator.getRouteQueueService().delete(message);

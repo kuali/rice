@@ -21,30 +21,38 @@ import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHan
 import org.kuali.rice.ksb.messaging.exceptionhandling.MessageExceptionHandler;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
-
 /**
- * A {@link MessageExceptionHandler} which handles putting documents into exception routing.
+ * A {@link MessageExceptionHandler} which handles putting documents into
+ * exception routing.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentMessageExceptionHandler extends DefaultMessageExceptionHandler {
 
-    @Override
-    protected void placeInException(Throwable throwable, PersistedMessage message) throws Exception {
-	KEWServiceLocator.getExceptionRoutingService()
-		.placeInExceptionRouting(throwable, message, getRouteHeaderId(message));
-    }
-
-    @Override
-    protected void scheduleExecution(Throwable throwable, PersistedMessage message) throws Exception {
-	String description = "DocumentId: " + getRouteHeaderId(message);
-	KSBServiceLocator.getExceptionRoutingService().scheduleExecution(throwable, message, description);
-    }
-
-    protected Long getRouteHeaderId(PersistedMessage message) {
-	if (!StringUtils.isEmpty(message.getValue1()) && StringUtils.isNumeric(message.getValue1())) {
-	    return Long.valueOf(message.getValue1());
+	@Override
+	protected void placeInException(Throwable throwable, PersistedMessage message) throws Exception {
+		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, message, getRouteHeaderId(message));
 	}
-	throw new WorkflowRuntimeException("Unable to put this message in exception routing service name " + message.getServiceName());
-    }
+	
+	
+
+	@Override
+	public void handleExceptionLastDitchEffort(Throwable throwable, PersistedMessage message, Object service) throws Exception {
+		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRoutingLastDitchEffort(throwable, message, getRouteHeaderId(message));
+	}
+
+
+
+	@Override
+	protected void scheduleExecution(Throwable throwable, PersistedMessage message) throws Exception {
+		String description = "DocumentId: " + getRouteHeaderId(message);
+		KSBServiceLocator.getExceptionRoutingService().scheduleExecution(throwable, message, description);
+	}
+
+	protected Long getRouteHeaderId(PersistedMessage message) {
+		if (!StringUtils.isEmpty(message.getValue1()) && StringUtils.isNumeric(message.getValue1())) {
+			return Long.valueOf(message.getValue1());
+		}
+		throw new WorkflowRuntimeException("Unable to put this message in exception routing service name " + message.getServiceName());
+	}
 }

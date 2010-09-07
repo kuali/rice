@@ -26,5 +26,6 @@ public interface WorkflowDocumentExceptionRoutingService {
 	
 	public void placeInExceptionRouting(String errorMessage, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception;
 	public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception;
-
+	public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception;
+	
 }

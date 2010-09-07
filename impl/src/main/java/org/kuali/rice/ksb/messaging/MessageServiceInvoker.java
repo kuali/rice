@@ -107,7 +107,11 @@ public class MessageServiceInvoker implements Runnable {
             throwable = t;
         }
         try {
-            KSBServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, this.message, service);
+        	try {
+        		KSBServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, this.message, service);
+        	} catch (Throwable t1) {
+        		KSBServiceLocator.getExceptionRoutingService().placeInExceptionRoutingLastDitchEffort(throwable, this.message, service);
+        	}
         } catch (Throwable t2) {
             LOG.error("An error was encountered when invoking exception handler for message. Attempting to change message status to EXCEPTION.", t2);
             message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);

@@ -45,7 +45,11 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
         }
     }
 
-    public boolean isInException(PersistedMessage message) {
+    public void handleExceptionLastDitchEffort(Throwable throwable, PersistedMessage message, Object service) throws Exception {
+		LOG.error("Complete failure when attempting to put message into exception routing!  Message was: " + message, throwable);
+	}
+
+	public boolean isInException(PersistedMessage message) {
         ServiceInfo serviceInfo = message.getMethodCall().getServiceInfo();
 
         if (getImmediateExceptionRouting()) {

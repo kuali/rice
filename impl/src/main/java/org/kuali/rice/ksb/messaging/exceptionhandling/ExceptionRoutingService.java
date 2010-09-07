@@ -26,6 +26,7 @@ import org.kuali.rice.ksb.messaging.PersistedMessage;
 public interface ExceptionRoutingService {
 
     public void placeInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) throws Exception;
+    public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessage message, Object service) throws Exception;
     public void scheduleExecution(Throwable throwable, PersistedMessage message, String description) throws Exception;
     
 }

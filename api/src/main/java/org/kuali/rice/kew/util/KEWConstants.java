@@ -1004,6 +1004,7 @@ public class KEWConstants extends JSTLConstants {
     public static final String SHOW_ATTACHMENTS_IND = "SHOW_ATTACHMENTS_IND";
     public static final String RULE_CACHE_REQUEUE_DELAY = "RULE_CACHE_REQUEUE_DELAY";
     public static final String ACTIONLIST_EMAIL_TEST_ADDRESS = "EMAIL_NOTIFICATION_TEST_ADDRESS";
+    public static final String SECURE_ATTACHMENTS_PARAM = "SECURED_ATTACHMENT_SERVLET";
 
     //System parameter value comparisons
     public static final String ACTION_LIST_SEND_EMAIL_NOTIFICATION_VALUE = "Y";

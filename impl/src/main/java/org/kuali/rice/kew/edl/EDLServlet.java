@@ -28,15 +28,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kns.util.IncidentReportUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.bootstrap.DOMImplementationRegistry;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
 
 
 /**

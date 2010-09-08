@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.test.service;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
@@ -71,6 +72,20 @@ public class RoleServiceTest extends KIMTestCase {
 		assertTrue( "p2 is assigned to g1 and g1 assigned to r2", getRoleService().principalHasRole("p2", roleIds, null ));		
 	}
 
+	@Test
+	public void testGetPrincipalsFromCircularRoles() {
+		// "p2" is in "g1" and "g1" assigned to "r2"
+		List <String>roleIds = new ArrayList<String>();
+		Collection <String>rolePrincipalIds = null;
+		roleIds.add("r101");
+		rolePrincipalIds = getRoleService().getRoleMemberPrincipalIds("ADDL_ROLES_TESTS", "Role A", null);
+		assertNotNull(rolePrincipalIds);
+		assertEquals("RoleTwo should have 6 principal ids", 6, rolePrincipalIds.size());
+//		assertTrue( "p3 must belong to role", memberPrincipalIds.contains(principal3Id) );
+//		assertTrue( "p2 must belong to role (assigned via group)", memberPrincipalIds.contains(principal2Id) );
+//		assertTrue( "p1 must belong to r2 (via r1)", memberPrincipalIds.contains(principal1Id) );
+	}
+	
 	public RoleService getRoleService() {
 		return this.roleService;
 	}

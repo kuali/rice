@@ -60,6 +60,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 	protected void loadSuiteTestData() throws Exception {
 		super.loadSuiteTestData();
 		new SQLDataLoader("classpath:org/kuali/rice/kim/test/DefaultSuiteTestData.sql", "/").runSql();
+		new SQLDataLoader("classpath:org/kuali/rice/kim/test/CircularRolesTestData.sql", "/").runSql();
 	}
 	
 	@Override

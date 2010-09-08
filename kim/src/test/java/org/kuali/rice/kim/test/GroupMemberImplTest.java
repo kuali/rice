@@ -19,8 +19,6 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.impl.GroupMemberImpl;
-//import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 
@@ -31,6 +29,7 @@ import org.kuali.rice.kim.test.KIMTestCase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
  public class GroupMemberImplTest extends KIMTestCase {
+	 /**
 	private GroupMemberImpl groupMember;
 	
 	@Override
@@ -56,5 +55,6 @@ import org.kuali.rice.kim.test.KIMTestCase;
 		String groupIds = groupService.getGroupId("g222");
 		assertEquals("g222", groupMember.getGroupMemberId());
 	}
+	**/
 }
 	

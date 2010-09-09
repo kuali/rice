@@ -65,12 +65,14 @@ import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
+import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.kns.rule.event.AddNoteEvent;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
+import org.kuali.rice.kns.rule.event.SaveDocumentEvent;
 import org.kuali.rice.kns.rule.event.SendAdHocRequestsEvent;
 import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
@@ -1006,7 +1008,7 @@ public class KualiDocumentActionBase extends KualiAction {
     public ActionForward close(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         KualiDocumentFormBase docForm = (KualiDocumentFormBase) form;
         doProcessingAfterPost( docForm, request );
-
+        Document document = docForm.getDocument();
         // only want to prompt them to save if they already can save
         if (canSave(docForm)) {
             Object question = getQuestion(request);
@@ -1019,7 +1021,12 @@ public class KualiDocumentActionBase extends KualiAction {
                 Object buttonClicked = request.getParameter(KNSConstants.QUESTION_CLICKED_BUTTON);
                 if ((KNSConstants.DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION.equals(question)) && ConfirmationQuestion.YES.equals(buttonClicked)) {
                     // if yes button clicked - save the doc
-                    getDocumentService().saveDocument(docForm.getDocument());
+                	ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response, KNSPropertyConstants.DOCUMENT_EXPLANATION, document.getDocumentHeader().getExplanation(), "save", "");
+                    if (forward != null) {
+                    	return forward;
+                    }
+
+               		getDocumentService().saveDocument(docForm.getDocument());
                 }
                 // else go to close logic below
             }

@@ -16,6 +16,7 @@
 
 package org.kuali.rice.kns.web.struts.action;
 
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,6 +83,10 @@ public class QuestionPromptAction extends KualiAction {
 
         Properties parameters = new Properties();
 
+        Map parameterMap = request.getParameterMap();
+        for (Object parameterName : parameterMap.keySet()) {
+        	parameters.put(parameterName, parameterMap.get(parameterName));
+        }
         parameters.put(KNSConstants.DOC_FORM_KEY, questionPromptForm.getFormKey());
         parameters.put(KNSConstants.QUESTION_CLICKED_BUTTON, getSelectedButton(request));
         parameters.put(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, questionPromptForm.getCaller());
@@ -111,6 +116,7 @@ public class QuestionPromptAction extends KualiAction {
         String returnUrl = UrlFactory.parameterizeUrl(questionPromptForm.getBackLocation(), parameters);
 
         return new ActionForward(returnUrl, true);
+        //return new ActionForward()
     }
 
     /**

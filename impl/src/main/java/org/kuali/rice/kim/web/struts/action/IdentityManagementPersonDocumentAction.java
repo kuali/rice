@@ -17,6 +17,7 @@ package org.kuali.rice.kim.web.struts.action;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Properties;
 
@@ -323,7 +324,10 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
     
     public ActionForward deleteGroup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
-        personDocumentForm.getPersonDocument().getGroups().remove(getLineToDelete(request));
+        PersonDocumentGroup inactivedGroupMembership = personDocumentForm.getPersonDocument().getGroups().get(getLineToDelete(request));
+        Calendar cal = Calendar.getInstance();
+        inactivedGroupMembership.setActiveToDate(new java.sql.Date(cal.getTimeInMillis()));        
+        personDocumentForm.getPersonDocument().getGroups().set(getLineToDelete(request), inactivedGroupMembership);
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
 

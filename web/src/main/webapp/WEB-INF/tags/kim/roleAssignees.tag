@@ -246,17 +246,10 @@
                 </c:forEach>
             <c:if test="${canModifyAssignees}"> 
                 <td>
-                    <div align="center">&nbsp;
-                        <c:choose>
-							<c:when test="${member.edit or readOnlyAssignees}">
-                                <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
-                            </c:when>
-                            <c:otherwise>
-                                <html:image property='methodToCall.deleteMember.line${statusMember.index}.anchor${currentTabIndex}'
-                                src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
-                            </c:otherwise>
-                        </c:choose>  
-                    &nbsp;</div>
+                    <div align=center>&nbsp;			
+                        <html:image property='methodToCall.deleteMember.line${statusMember.index}.anchor${currentTabIndex}'
+                        src='${ConfigProperties.kr.externalizable.images.url}tinybutton-inactivate.gif' styleClass='tinybutton'/> 
+					</div>
                 </td>
             </c:if>    
             </tr>

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -238,7 +239,10 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     
     public ActionForward deleteMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
-        groupDocumentForm.getGroupDocument().getMembers().remove(getLineToDelete(request));
+        GroupDocumentMember memberToBeInactivated = groupDocumentForm.getGroupDocument().getMembers().get(getLineToDelete(request));    
+        Calendar cal = Calendar.getInstance();
+        memberToBeInactivated.setActiveToDate(new java.sql.Date(cal.getTimeInMillis()));        
+        groupDocumentForm.getGroupDocument().getMembers().set(getLineToDelete(request), memberToBeInactivated);   
         groupDocumentForm.setMember(groupDocumentForm.getGroupDocument().getBlankMember());
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }

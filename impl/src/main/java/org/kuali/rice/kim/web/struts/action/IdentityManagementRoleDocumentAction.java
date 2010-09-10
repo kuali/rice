@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.web.struts.action;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,10 +30,10 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
@@ -348,11 +349,13 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 
     public ActionForward deleteMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
-        roleDocumentForm.getRoleDocument().getMembers().remove(getLineToDelete(request));
-        roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
+        KimDocumentRoleMember inactivatedRoleMember = roleDocumentForm.getRoleDocument().getMembers().get(getLineToDelete(request));
+        Calendar cal = Calendar.getInstance();
+        inactivatedRoleMember.setActiveToDate(new java.sql.Date(cal.getTimeInMillis()));
+        roleDocumentForm.getRoleDocument().getMembers().set(getLineToDelete(request), inactivatedRoleMember);
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
-
+   
     public ActionForward deletePermission(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         roleDocumentForm.getRoleDocument().getPermissions().remove(getLineToDelete(request));

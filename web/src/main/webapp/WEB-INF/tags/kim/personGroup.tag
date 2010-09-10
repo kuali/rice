@@ -117,16 +117,9 @@
 				</td>
            		<c:if test="${not inquiry}">						
 					<td>
-						<div align=center>&nbsp;
-		        	     <c:choose>
-		        	       <c:when test="${group.edit  or readOnly}">
-		        	          <img class='nobord' src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete2.gif' styleClass='tinybutton'/>
-		        	       </c:when>
-		        	       <c:otherwise>
-		        	          <html:image property='methodToCall.deleteGroup.line${status.index}.anchor${currentTabIndex}'
-									src='${ConfigProperties.kr.externalizable.images.url}tinybutton-delete1.gif' styleClass='tinybutton'/>
-		        	       </c:otherwise>
-		        	     </c:choose>  
+						<div align=center>&nbsp;			
+                            <html:image property='methodToCall.deleteGroup.line${status.index}.anchor${currentTabIndex}'
+                            src='${ConfigProperties.kr.externalizable.images.url}tinybutton-inactivate.gif' styleClass='tinybutton'/> 
 						</div>
 	                </td>
 	            </c:if>    

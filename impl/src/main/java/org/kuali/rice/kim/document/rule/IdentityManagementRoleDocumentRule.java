@@ -101,6 +101,9 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	
 	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
+	// KULRICE-4153
+	protected ActiveRoleMemberHelper activeRoleMemberHelper = new ActiveRoleMemberHelper();
+	
     public IdentityService getIdentityService() {
         if ( identityService == null) {
             identityService = KIMServiceLocator.getIdentityService();
@@ -125,7 +128,13 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         validateRoleAssigneesAndDelegations &= validAssignRole(roleDoc);
         if(validateRoleAssigneesAndDelegations){
 	        //valid &= validAssignRole(roleDoc);
-	        valid &= validateRoleQualifier(roleDoc.getMembers(), roleDoc.getKimType());
+        	// KULRICE-4153
+			// Use the Active Role Member Helper to retrieve only those Role Members that are active
+        	// If a member is active on a Role, and they have an inactive Role Qualifier, Role Qualifier validation will fail
+        	// If a member is inactive on a Role, and they have an inactive Role Qualifier, Role Qualifier validation will pass
+        	List<KimDocumentRoleMember> activeRoleMembers = activeRoleMemberHelper.getActiveRoleMembers(roleDoc.getMembers());
+			
+	        valid &= validateRoleQualifier(activeRoleMembers, roleDoc.getKimType());
 	        valid &= validRoleMemberActiveDates(roleDoc.getMembers());
 	        valid &= validateDelegationMemberRoleQualifier(roleDoc.getMembers(), roleDoc.getDelegationMembers(), roleDoc.getKimType());
 	        valid &= validDelegationMemberActiveDates(roleDoc.getDelegationMembers());

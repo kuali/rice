@@ -194,22 +194,22 @@ public class RoleServiceBase {
 		return convertedQualification;
 	}
 	
-    public List<RoleMemberImpl> getRoleTypeRoleMembers( String roleId ){
-    	List<RoleMemberImpl> results = new ArrayList();
-    	getNestedRoleTypeMembers( roleId, results);
+    public Set<String> getRoleTypeRoleMemberIds( String roleId ){
+    	Set<String> results = new HashSet();
+    	getNestedRoleTypeMemberIds( roleId, results);
     	return results;
     }
 
-    protected void getNestedRoleTypeMembers( String roleId, List members) throws RuntimeException
+    protected void getNestedRoleTypeMemberIds( String roleId, Set members) throws RuntimeException
     {
     	ArrayList<String> roleList = new ArrayList<String>( 1 );
 		roleList.add( roleId );
 		List<RoleMemberImpl> firstLevelMembers = getStoredRoleMembersForRoleIds(roleList, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, null);
 		for (RoleMemberImpl member : firstLevelMembers) {
 			if (KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(member.getMemberTypeCode())){
-				if (!members.contains(member)){
-					members.add(member);
-					getNestedRoleTypeMembers( member.getMemberId(), members);
+				if (!members.contains(member.getMemberId())){
+					members.add(member.getMemberId());
+					getNestedRoleTypeMemberIds( member.getMemberId(), members);
 				}
 			}
     	}    	
@@ -1213,25 +1213,12 @@ public class RoleServiceBase {
 	 *         false - illegal assignment, it will create a circular membership
 	 */
 	protected boolean checkForCircularRoleMembership( String newMemberId, RoleImpl role ) {
-		boolean ok = true;
-		List<RoleMemberImpl> newRoleMembers = null;
-		try {
-			// get all nested role members that are of type role
-			newRoleMembers = getRoleTypeRoleMembers(newMemberId);
-		} catch (Exception ex){
-			ok = false;
+		// get all nested role members that are of type role
+		Set<String> newRoleMemberIds = getRoleTypeRoleMemberIds(newMemberId);
+		if (newRoleMemberIds.contains(role.getRoleId())){
+					return false;
 		}
-		// If the existing role is a member of the role to be assigned,
-		// Then this would create a circular role membership.
-		String roleId = role.getRoleId();
-		for (RoleMemberImpl member : newRoleMembers) {
-			if (org.kuali.rice.kim.bo.Role.ROLE_MEMBER_TYPE.equals(member.getMemberTypeCode())){
-				if (roleId.equals(member.getMemberId())){
-					ok = false;
-				}
-			}
-		}
-		return ok;
+		return true;
 	}
 	
 	// TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map

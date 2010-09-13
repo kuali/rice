@@ -607,51 +607,30 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	 */
 	protected boolean checkForCircularRoleMembership(AddMemberEvent addMemberEvent)
 	{
-		boolean ok = true;
 		KimDocumentRoleMember newMember = addMemberEvent.getMember();
 		if (newMember == null || StringUtils.isBlank(newMember.getMemberId())){
-			ok = false;
+			MessageMap errorMap = GlobalVariables.getMessageMap();
+			errorMap.putError("member.memberId", RiceKeyConstants.ERROR_INVALID_ROLE, new String[] {""});
+			return false;
 		} else {
-			List<RoleMemberImpl> roleMembers = null;
+			Set<String> roleMemberIds = null;
 			// if the role member is a role, check to make sure we won't be creating a circular reference.
 			// Verify that the new role is not already related to the role either directly or indirectly
 			if (newMember.isRole()){
-				// get all nested role members that are of type role
-				try {
-					RoleService roleService = KIMServiceLocator.getRoleService();
-					roleMembers = ((RoleServiceBase) roleService).getRoleTypeRoleMembers(newMember.getMemberId());
-				} catch (Exception ex){
-					ok = false;
-				}
+				// get all nested role member ids that are of type role
+				RoleService roleService = KIMServiceLocator.getRoleService();
+				roleMemberIds = ((RoleServiceBase) roleService).getRoleTypeRoleMemberIds(newMember.getMemberId());
 
 				// check to see if the document role is not a member of the new member role
 				IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addMemberEvent.getDocument();
-				String docRoleNamespace = document.getRoleNamespace();
-				String docRoleName = document.getRoleName();
-				String docRoleId = document.getRoleId();
-				String roleId = KIMServiceLocator.getRoleService().getRoleIdByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
-				if (StringUtils.isEmpty(roleId)){
-					ok = false;   // if role doesn't exist, return false
-				} else {
-
-					for (RoleMemberImpl member : roleMembers) {
-						if (org.kuali.rice.kim.bo.Role.ROLE_MEMBER_TYPE.equals(member.getMemberTypeCode())){
-							if (docRoleId.equals(member.getMemberId())){
-								ok = false;
-								MessageMap errorMap = GlobalVariables.getMessageMap();
-								errorMap.putError("member.memberId", RiceKeyConstants.ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR, new String[] {roleId});        	
-								return ok;
-							}
-						}
-					}
+				if (roleMemberIds.contains(document.getRoleId())){
+					MessageMap errorMap = GlobalVariables.getMessageMap();
+					errorMap.putError("member.memberId", RiceKeyConstants.ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR, new String[] {newMember.getMemberId()});        	
+					return false;
 				}
 			}
 		}
-		if (ok == false){
-			MessageMap errorMap = GlobalVariables.getMessageMap();
-			errorMap.putError("member.memberId", RiceKeyConstants.ERROR_INVALID_ROLE, new String[] {""});        	
-		}
-		return ok;
+		return true;
 	}
 	
 	/**

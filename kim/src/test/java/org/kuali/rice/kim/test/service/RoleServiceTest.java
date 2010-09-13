@@ -81,9 +81,6 @@ public class RoleServiceTest extends KIMTestCase {
 		rolePrincipalIds = getRoleService().getRoleMemberPrincipalIds("ADDL_ROLES_TESTS", "Role A", null);
 		assertNotNull(rolePrincipalIds);
 		assertEquals("RoleTwo should have 6 principal ids", 6, rolePrincipalIds.size());
-//		assertTrue( "p3 must belong to role", memberPrincipalIds.contains(principal3Id) );
-//		assertTrue( "p2 must belong to role (assigned via group)", memberPrincipalIds.contains(principal2Id) );
-//		assertTrue( "p1 must belong to r2 (via r1)", memberPrincipalIds.contains(principal1Id) );
 	}
 	
 	public RoleService getRoleService() {

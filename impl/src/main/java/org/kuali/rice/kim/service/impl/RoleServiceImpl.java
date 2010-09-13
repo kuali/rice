@@ -329,7 +329,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
      * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
     public List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
-    	List<String> foundRoleTypeMembers = new ArrayList();
+    	Set<String> foundRoleTypeMembers = new HashSet<String>();
     	return getRoleMembers(roleIds, qualification, true, foundRoleTypeMembers);
     }
 
@@ -337,7 +337,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 
 	public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification) {
 		Set<String> principalIds = new HashSet<String>();
-    	List<String> foundRoleTypeMembers = new ArrayList();
+    	Set<String> foundRoleTypeMembers = new HashSet<String>();
 		List<String> roleIds = Collections.singletonList(getRoleIdByName(namespaceCode, roleName));
     	for (RoleMembershipInfo roleMembershipInfo : getRoleMembers(roleIds, qualification, false, foundRoleTypeMembers)) {
     		if (Role.GROUP_MEMBER_TYPE.equals(roleMembershipInfo.getMemberTypeCode())) {
@@ -350,7 +350,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	return principalIds;
 	}
 
-	protected Collection<RoleMembershipInfo> getNestedRoleMembers( AttributeSet qualification, RoleMembershipInfo rm, List<String> foundRoleTypeMembers ) {
+	protected Collection<RoleMembershipInfo> getNestedRoleMembers( AttributeSet qualification, RoleMembershipInfo rm, Set<String> foundRoleTypeMembers ) {
 		// If this role has already been traversed, skip it
 		if (foundRoleTypeMembers.contains(rm.getMemberId())){
 			return new ArrayList<RoleMembershipInfo>();  // return an empty list
@@ -376,7 +376,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 	/**
      * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
-    protected List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations, List<String> foundRoleTypeMembers ) {
+    protected List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations, Set<String> foundRoleTypeMembers ) {
     	List<RoleMembershipInfo> results = new ArrayList<RoleMembershipInfo>();
     	Set<String> allRoleIds = new HashSet<String>();
     	for ( String roleId : roleIds ) {
@@ -712,7 +712,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
      * further KIM requests are not needed.
      */
     protected void resolveDelegationMembers( List<RoleMembershipInfo> results,
-    		AttributeSet qualification, List<String> foundRoleTypeMembers ) {
+    		AttributeSet qualification, Set<String> foundRoleTypeMembers ) {
 
 		// check delegations assigned to this role
 		for ( RoleMembershipInfo mi : results ) {

@@ -38,8 +38,8 @@ import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
- * 
+ * This is a description of the KimGroupDaoOjb class.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -63,7 +63,7 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         		if (entry.getKey().contains(".")) {
         	        Criteria subCrit = new Criteria();
         			String value = entry.getValue().replace('*', '%');
-        	        
+
         			subCrit.addLike("attributeValue",value);
         			subCrit.addEqualTo("kimAttributeId",entry.getKey().substring(entry.getKey().indexOf(".")+1, entry.getKey().length()));
         			subCrit.addEqualTo("kimTypeId", kimTypeId);
@@ -72,16 +72,21 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         		} else {
         			if (lookupNames.contains(entry.getKey())) {
             			String value = entry.getValue().replace('*', '%');
-        				crit.addLike(entry.getKey(), value);
+        				if(entry.getKey().equalsIgnoreCase(KIMPropertyConstants.Group.GROUP_NAME)) {
+        					crit.addLike(getDbPlatform().getUpperCaseFunction() + "(" + entry.getKey() + ")", value.toUpperCase());
+        				}
+        				else {
+                            crit.addLike((entry.getKey()), value);
+        				}
         			} else {
         				if (entry.getKey().equals(KIMPropertyConstants.Person.PRINCIPAL_NAME)) {
-        					
+
         					// KULRICE-4248: Retrieve Principal using the Identity Management Service
         					Criteria memberSubCrit = new Criteria();
         					memberSubCrit.addEqualToField(KIMPropertyConstants.Group.GROUP_ID, Criteria.PARENT_QUERY_PREFIX + KIMPropertyConstants.Group.GROUP_ID);
         					// Get the passed-in Principal Name
         					String principalName = entry.getValue();
-        					// Search for the Principal using the Identity Management service 
+        					// Search for the Principal using the Identity Management service
         					LOG.debug("Searching on Principal Name: " + entry.getValue());
         					KimPrincipalInfo principalInfo = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
         					// If a Principal is returned, plug in the Principal ID as the Member ID
@@ -109,14 +114,14 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
                 	        memberSubCrit.addExists(subQuery);
                 	        */
                 			ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(GroupMemberImpl.class, memberSubCrit);
-                			crit.addExists(memberSubQuery);        					
+                			crit.addExists(memberSubQuery);
         				}
         			}
         		}
         	}
         }
         Query q = QueryFactory.newQuery(GroupImpl.class, crit);
-        
+
         return (List)getPersistenceBrokerTemplate().getCollectionByQuery(q);
     }
 

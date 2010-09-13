@@ -113,7 +113,8 @@
   <!--
         Group Services
   -->
-  <bean id="kimGroupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl"/>
+  <bean id="kimGroupService" class="org.kuali.rice.kim.service.impl.GroupServiceImpl"
+          p:kimGroupDao-ref="kimGroupDao"/>
   <bean id="kimGroupUpdateService" class="org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl"/>
 
   <!--

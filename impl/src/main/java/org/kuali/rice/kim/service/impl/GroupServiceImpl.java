@@ -1,12 +1,12 @@
 /*
  * Copyright 2007-2009 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,6 +34,7 @@ import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
@@ -43,7 +44,8 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 @WebService(endpointInterface = KIMWebServiceConstants.GroupService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.GroupService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.GroupService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
-	   
+    private KimGroupDao kimGroupDao;
+
 	/**
      * @see org.kuali.rice.kim.service.GroupService#getGroupIdsForPrincipal(java.lang.String)
      */
@@ -190,7 +192,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 	 */
     @SuppressWarnings("unchecked")
 	public List<? extends Group> lookupGroups(Map<String, String> searchCriteria) {
-		return this.toGroupInfo((List<GroupImpl>)this.getLookupService().findCollectionBySearchHelper(GroupImpl.class, searchCriteria, true));
+    	return this.toGroupInfo( kimGroupDao.getGroups(searchCriteria));
 	}
 
 	/**
@@ -264,7 +266,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 	}
 
 
-	
+
 
 
 	/**
@@ -362,7 +364,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		return false;
 	}
 
-	
+
 
 	/**
 	 * @see org.kuali.rice.kim.service.GroupService#getGroupAttributes(java.lang.String)
@@ -382,11 +384,11 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		return attributes;
     }
 
-    
 
-    
 
-    
+
+
+
 
     public Collection<GroupMembershipInfo> getGroupMembers( List<String> groupIds ) {
 		if ( groupIds == null ) {
@@ -428,5 +430,11 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return groupMemberinfo;
     }
 
-    
+    public KimGroupDao getKimGroupDao() {
+        return kimGroupDao;
+    }
+
+    public void setKimGroupDao(KimGroupDao kimGroupDao) {
+        this.kimGroupDao = kimGroupDao;
+    }
 }

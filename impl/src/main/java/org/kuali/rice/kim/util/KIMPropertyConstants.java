@@ -70,6 +70,7 @@ public class KIMPropertyConstants extends JSTLConstants {
 	
 	public static class Group {
 	    public static final String GROUP_ID = "groupId";
+        public static final String GROUP_NAME = "groupName";
 	}
 	
 	public static class KimType {

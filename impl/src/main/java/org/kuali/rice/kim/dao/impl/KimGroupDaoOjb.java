@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.dao.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -96,6 +97,29 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         						String principalId = principalInfo.getPrincipalId();
         						LOG.debug("Plugging in Principal ID: " + principalId + "as Member ID");
         						memberSubCrit.addLike(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
+
+                   	        	// KULRICE-4232: Only return groups that the principal is an active member of.
+                   	        	Timestamp now = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
+                   	        	Criteria afterActiveFromSubCrit = new Criteria();
+                   	        	afterActiveFromSubCrit.addLessOrEqualThan(KIMPropertyConstants.GroupMember.ACTIVE_FROM_DATE, now);
+                    	        Criteria nullActiveFromSubCrit = new Criteria();
+                    	        nullActiveFromSubCrit.addIsNull(KIMPropertyConstants.GroupMember.ACTIVE_FROM_DATE);
+                    	        
+                    	        Criteria ActiveMemberSubCrit1 = new Criteria();
+                    	        ActiveMemberSubCrit1.addOrCriteria(afterActiveFromSubCrit);
+                    	        ActiveMemberSubCrit1.addOrCriteria(nullActiveFromSubCrit);
+                    	        
+                    	       	Criteria afterActiveToSubCrit = new Criteria();
+                   	        	afterActiveToSubCrit.addGreaterOrEqualThan(KIMPropertyConstants.GroupMember.ACTIVE_TO_DATE, now);
+                    	        Criteria nullActiveToSubCrit = new Criteria();
+                    	        nullActiveToSubCrit.addIsNull(KIMPropertyConstants.GroupMember.ACTIVE_TO_DATE);
+                    	        
+                    	        Criteria ActiveMemberSubCrit2 = new Criteria();
+                    	        ActiveMemberSubCrit2.addOrCriteria(afterActiveToSubCrit);
+                    	        ActiveMemberSubCrit2.addOrCriteria(nullActiveToSubCrit);
+                   	        	
+                    	        memberSubCrit.addAndCriteria(ActiveMemberSubCrit1);
+                    	        memberSubCrit.addAndCriteria(ActiveMemberSubCrit2);			
         					}
         					// Otherwise, plug in a blank string as the Member ID
         					else

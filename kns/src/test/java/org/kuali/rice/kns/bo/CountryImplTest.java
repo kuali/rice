@@ -45,6 +45,14 @@ public class CountryImplTest extends KNSTestCase{
 	}
 	
 	@Test
+	public void testAlternatePostalCountryCode(){
+		dummyCountryOne.setAlternatePostalCountryCode("USA");
+		
+		assertEquals("Testing set and get AlternatePostalCountryCode for USA", "USA",dummyCountryOne.getAlternatePostalCountryCode());
+		assertNull("Testing should get null ",dummyCountrytwo.getAlternatePostalCountryCode());
+	}
+	
+	@Test
 	public void testPostalCountryName(){
 		dummyCountryOne.setPostalCountryName("America");
 		

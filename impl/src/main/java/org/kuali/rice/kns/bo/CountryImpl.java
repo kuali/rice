@@ -27,6 +27,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 public class CountryImpl extends PersistableBusinessObjectBase implements Inactivateable, Country{
 
     private String postalCountryCode;
+    private String alternatePostalCountryCode;
     private String postalCountryName;
     private boolean postalCountryRestrictedIndicator;
     private boolean active;
@@ -51,6 +52,20 @@ public class CountryImpl extends PersistableBusinessObjectBase implements Inacti
      */
     public String getPostalCountryCode() {
         return postalCountryCode;
+    }
+
+    /**
+     * @param alternatePostalCountryCode - The alternatePostalCountryCode to set
+     */
+    public void setAlternatePostalCountryCode(String alternatePostalCountryCode) {
+        this.alternatePostalCountryCode = alternatePostalCountryCode;
+    }
+
+    /**
+     * @return Returns the alternatePostalCountryCode
+     */
+    public String getAlternatePostalCountryCode() {
+    	return alternatePostalCountryCode;
     }
 
     /**

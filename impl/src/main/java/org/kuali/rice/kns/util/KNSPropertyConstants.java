@@ -98,6 +98,7 @@ public class KNSPropertyConstants extends JSTLConstants {
 	public static final String LAST_UPDATED_DATE = "lastUpdatedDate";	
 	public static final String POSTAL_COUNTRY_RESTRICTED_INDICATOR = "postalCountryRestrictedIndicator";
 	public static final String POSTAL_COUNTRY_CODE = "postalCountryCode";
+	public static final String ALTERNATE_POSTAL_COUNTRY_CODE = "extendedPostalCountryCode";
 	public static final String STATE_CODE = "stateCode";
     public static final String COUNTY_CODE = "countyCode";
     public static final String POSTAL_ZIP_CODE = "postalZipCode";

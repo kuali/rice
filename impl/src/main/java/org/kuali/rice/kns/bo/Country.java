@@ -31,6 +31,16 @@ public interface Country extends ExternalizableBusinessObject {
     public abstract String getPostalCountryCode();
 
     /**
+     * @param alternatePostalCountryCode - The alternatePostalCountryCode to set
+     */
+    public abstract void setAlternatePostalCountryCode(String alternatePostalCountryCode);
+
+    /**
+     * @return Returns the alternatePostalCountryCode
+     */
+    public abstract String getAlternatePostalCountryCode();
+
+    /**
      * @param postalCountryName - The postalCountryName to set
      */
     public abstract void setPostalCountryName(String postalCountryName);

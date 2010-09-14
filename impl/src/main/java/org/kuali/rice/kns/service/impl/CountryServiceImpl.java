@@ -59,6 +59,41 @@ public class CountryServiceImpl implements CountryService {
         return this.getByPrimaryId(postalCountryCode);
     }
 
+	/**
+	 * @see org.kuali.rice.kns.service.CountryService#getByAlternatePostalCountryCode(java.lang.String)
+	 */
+	public Country getByAlternatePostalCountryCode(String alternatePostalCountryCode) {
+        if (StringUtils.isBlank(alternatePostalCountryCode)) {
+            LOG.debug("The alternatePostalCountryCode cannot be empty String.");
+            return null;
+        }
+
+        Map<String, Object> postalCountryMap = new HashMap<String, Object>();
+        postalCountryMap.put(KNSPropertyConstants.ALTERNATE_POSTAL_COUNTRY_CODE, alternatePostalCountryCode);
+
+        List<Country> countryList = kualiModuleService.getResponsibleModuleService(Country.class).getExternalizableBusinessObjectsList(Country.class, postalCountryMap);
+        if (countryList == null || countryList.isEmpty()) {
+        	return null;
+        }
+        else if (countryList.size() == 1) {
+        	return countryList.get(0);
+        }
+        else throw new IllegalStateException("Multiple countries found with same alternatePostalCountryCode");
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.service.CountryService#getByAlternatePostalCountryCodeIfNecessary(java.lang.String, org.kuali.rice.kns.bo.Country)
+	 */
+	public Country getByAlternatePostalCountryCodeIfNecessary(String alternatePostalCountryCode, Country existingCountry) {
+		if (existingCountry != null) {
+			if (StringUtils.equals(alternatePostalCountryCode, existingCountry.getAlternatePostalCountryCode())) {
+				return existingCountry;
+			}
+		}
+		
+		return this.getByAlternatePostalCountryCode(alternatePostalCountryCode);
+	}
+    
     /**
      * @see org.kuali.kfs.sys.service.CountryService#getDefaultCountry()
      */
@@ -98,5 +133,5 @@ public class CountryServiceImpl implements CountryService {
     public void setKualiModuleService(KualiModuleService kualiModuleService) {
         this.kualiModuleService = kualiModuleService;
     }
-    
+
 }

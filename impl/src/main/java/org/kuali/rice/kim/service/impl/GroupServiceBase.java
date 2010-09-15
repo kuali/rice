@@ -204,6 +204,84 @@ public abstract class GroupServiceBase {
 			}
 		}
 	}
+	
+	public List<String> getMemberPrincipalIds(String groupId) {
+		if ( groupId == null ) {
+			return Collections.emptyList();
+		}
+		Set<String> ids = new HashSet<String>();
+		Set<String> groupIds = new HashSet<String>();
+		
+		GroupImpl group = getGroupImpl(groupId);
+		if ( group == null ) {
+			return Collections.emptyList();
+		}
+
+		ids.addAll( group.getMemberPrincipalIds() );
+		groupIds.add(group.getGroupId());
+
+		for (String memberGroupId : group.getMemberGroupIds()) {
+			if (!groupIds.contains(memberGroupId)){
+				ids.addAll(getMemberPrincipalIds(memberGroupId));
+			}
+		}
+
+		return new ArrayList<String>(ids);
+	}
+
+	protected List<String> getMemberPrincipalIdsInternal(String groupId, Set<String> visitedGroupIds) {
+		if ( groupId == null ) {
+			return Collections.emptyList();
+		}
+		Set<String> ids = new HashSet<String>();	
+		GroupImpl group = getGroupImpl(groupId);
+		if ( group == null ) {
+			return Collections.emptyList();
+		}
+
+		ids.addAll( group.getMemberPrincipalIds() );
+		visitedGroupIds.add(group.getGroupId());
+
+		for (String memberGroupId : group.getMemberGroupIds()) {
+			if (!visitedGroupIds.contains(memberGroupId)){
+				ids.addAll(getMemberPrincipalIdsInternal(memberGroupId, visitedGroupIds));
+			}
+		}
+
+		return new ArrayList<String>(ids);
+	}
+
+	public boolean isMemberOfGroupInternal(String principalId, String groupId, Set<String> visitedGroupIds) {
+		if ( principalId == null || groupId == null ) {
+			return false;
+		}
+		// we could call the getMemberPrincipalIds method, but this will be more efficient
+		// when group traversal is not needed
+		GroupImpl group = getGroupImpl(groupId);
+		if ( group == null || !group.isActive() ) {
+			return false;
+		}
+		// check the immediate group
+		for (String groupPrincipalId : group.getMemberPrincipalIds() ) {
+			if (groupPrincipalId.equals(principalId)) {
+				return true;
+			}
+		}
+
+		// check each contained group, returning as soon as a match is found
+		for ( String memberGroupId : group.getMemberGroupIds() ) {
+			if (!visitedGroupIds.contains(memberGroupId)){
+				visitedGroupIds.add(memberGroupId);
+				if ( isMemberOfGroupInternal( principalId, memberGroupId, visitedGroupIds ) ) {
+					return true;
+				}
+			}
+		}
+
+		// no match found, return false
+		return false;
+	}
+
 	protected IdentityManagementNotificationService getIdentityManagementNotificationService() {
         return (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
     }

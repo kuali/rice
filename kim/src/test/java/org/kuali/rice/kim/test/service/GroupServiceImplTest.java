@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kim.test.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -22,6 +24,7 @@ import javax.xml.namespace.QName;
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.service.impl.GroupServiceImpl;
 import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
@@ -88,5 +91,60 @@ public class GroupServiceImplTest extends KIMTestCase {
 		assertTrue( "p4 should be reported as a member of g2 (now that g4 is active)", groupService.isMemberOfGroup("p4", "g2") );
 		
 	}
+
+	// test the various get methods, to verify that they work correctly against
+	// circular group memberships.
+	@Test
+	public void testCircularGetMembers() {
+		// get all principals from a circular group reference
+		List<String> pIds = groupService.getMemberPrincipalIds("g101");
+		assertTrue( "group A should have 3 members", pIds.size() == 3 );		
+		assertTrue( "group A should have member p1", pIds.contains( "p1" ) );
+		assertTrue( "group A should have member p3", pIds.contains( "p3" ) );
+		assertTrue( "group A should have member p5", pIds.contains( "p5" ) );
+
+		// traverse completely through a circular group reference looking
+		// for a principal that is not a member of the group.
+		boolean isIt = groupService.isMemberOfGroup("p2", "g101");
+		assertFalse( "p2 should not be a member of Group A", isIt );
+		
+		List<String> gIds = groupService.getGroupIdsForPrincipal("p1");
+		assertTrue( "p1 should be a member of Group A", gIds.contains("g101"));
+		assertTrue( "p1 should be a member of Group B", gIds.contains("g102"));
+		assertTrue( "p1 should be a member of Group C", gIds.contains("g103"));
+		
+		gIds = groupService.getGroupIdsForPrincipalByNamespace("p1", "ADDL_GROUPS_TESTS");
+		assertTrue( "p1 should be a member of Group A", gIds.contains("g101"));
+		assertTrue( "p1 should be a member of Group B", gIds.contains("g102"));
+		assertTrue( "p1 should be a member of Group C", gIds.contains("g103"));
+		
+		List<String> inList = new ArrayList<String>();
+		inList.add("g101");
+		inList.add("g102");
+		Collection<GroupMembershipInfo> gMembership = groupService.getGroupMembers(inList);
+		assertTrue( "Should return 4 members total.", gMembership.size() == 4);
+		
+		gMembership = groupService.getGroupMembersOfGroup("g102");
+		assertTrue( "Group B should have 2 members.", gMembership.size() == 2);
+		
+		List<GroupInfo> gInfo = groupService.getGroupsForPrincipal("p1");
+		assertTrue( "p1 should be a member of at least 3 groups.", gInfo.size() >= 3);
+		
+		gInfo = groupService.getGroupsForPrincipalByNamespace("p1", "ADDL_GROUPS_TESTS");
+		assertTrue( "p1 should be a member of exactly 3 groups with namespace = ADDL_GROUPS_TESTS.", gInfo.size() == 3);
+		
+		gIds = groupService.getMemberGroupIds("g101");
+		assertTrue( "Group A should have 3 member groups", gIds.size() == 3);
+		assertTrue( "Group B should be a member Group of Group A", gIds.contains("g102"));
+		assertTrue( "Group C should be a member Group of Group A", gIds.contains("g103"));
+		assertTrue( "Since these groups have a circular membership, Group A should have itself as a group member", gIds.contains("g101"));
+		
+		gIds = groupService.getParentGroupIds("g101");
+		assertTrue( "Group A should have 3 parent groups", gIds.size() == 3);
+		assertTrue( "Group B should be a parent of Group A", gIds.contains("g102"));
+		assertTrue( "Group C should be a parent of Group A", gIds.contains("g103"));
+		assertTrue( "Since these groups have a circular membership, Group A should be a parent of itself", gIds.contains("g101"));
+	}
+
 	
 }

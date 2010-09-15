@@ -217,20 +217,8 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		if ( groupId == null ) {
 			return Collections.emptyList();
 		}
-		Set<String> ids = new HashSet<String>();
-
-		GroupImpl group = getGroupImpl(groupId);
-		if ( group == null ) {
-			return Collections.emptyList();
-		}
-
-		ids.addAll( group.getMemberPrincipalIds() );
-
-		for (String memberGroupId : group.getMemberGroupIds()) {
-			ids.addAll(getMemberPrincipalIds(memberGroupId));
-		}
-
-		return new ArrayList<String>(ids);
+		Set<String> visitedGroupIds = new HashSet<String>();
+		return getMemberPrincipalIdsInternal(groupId, visitedGroupIds);
 	}
 
 	/**
@@ -241,33 +229,9 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		if ( principalId == null || groupId == null ) {
 			return false;
 		}
-		// we could call the getMemberPrincipalIds method, but this will be more efficient
-		// when group traversal is not needed
-		GroupImpl group = getGroupImpl(groupId);
-		if ( group == null || !group.isActive() ) {
-			return false;
-		}
-		// check the immediate group
-		for (String groupPrincipalId : group.getMemberPrincipalIds() ) {
-			if (groupPrincipalId.equals(principalId)) {
-				return true;
-			}
-		}
-
-		// check each contained group, returning as soon as a match is found
-		for ( String memberGroupId : group.getMemberGroupIds() ) {
-			if ( isMemberOfGroup( principalId, memberGroupId ) ) {
-				return true;
-			}
-		}
-
-		// no match found, return false
-		return false;
+		Set<String> visitedGroupIds = new HashSet<String>();
+		return isMemberOfGroupInternal(principalId, groupId, visitedGroupIds);
 	}
-
-
-
-
 
 	/**
      * @see org.kuali.rice.kim.service.GroupService#getDirectParentGroupIds(java.lang.String)
@@ -365,7 +329,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 	}
 
 
-
 	/**
 	 * @see org.kuali.rice.kim.service.GroupService#getGroupAttributes(java.lang.String)
 	 */
@@ -383,9 +346,6 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		}
 		return attributes;
     }
-
-
-
 
 
 

@@ -178,6 +178,7 @@ public class RiceKeyConstants {
     public static final String ERROR_DELEGATION_TO_AMOUNT_GREATER = "error.delegation.toamount.greater";
     public static final String ERROR_DELEGATION_FROM_AMOUNT_LESSER = "error.delegation.fromamount.lesser";
     public static final String ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR = "error.assign.role.member.circular";
+    public static final String ERROR_ASSIGN_GROUP_MEMBER_CIRCULAR = "error.assign.group.member.circular";
     
     
     //parameter document

@@ -24,7 +24,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
-import java.sql.Date;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -44,9 +43,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.cache.CopiedObject;
-import org.kuali.rice.kns.web.format.BooleanFormatter;
 import org.kuali.rice.kns.web.format.CollectionFormatter;
-import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 
@@ -339,7 +336,7 @@ public class ObjectUtils {
 			propValue = formatPropertyValue(prop);
 		}
 		else {
-			propValue = (String) formatter.format(prop);
+			propValue = String.valueOf(formatter.format(prop));
 		}
 
 		return propValue;
@@ -370,7 +367,7 @@ public class ObjectUtils {
 	 * @return formatted value as a String
 	 */
 	public static String formatPropertyValue(Object propertyValue) {
-		String propValue = KNSConstants.EMPTY_STRING;
+		Object propValue = KNSConstants.EMPTY_STRING;
 
 		Formatter formatter = null;
 		if (propertyValue != null) {
@@ -380,14 +377,10 @@ public class ObjectUtils {
 				formatter = Formatter.getFormatter(propertyValue.getClass());
 			}
 
-			if (formatter != null) {
-				propValue = (String) formatter.format(propertyValue);
-			} else {
-				propValue = propertyValue.toString();
-			}
+			propValue = formatter != null ? formatter.format(propertyValue) : propertyValue;
 		}
 
-		return propValue;
+		return String.valueOf(propValue);
 	}
     
     /**

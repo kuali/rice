@@ -41,8 +41,14 @@
 		</li>		
 		<li>
 		<portal:portalLink displayTitle="true" title="Configuration Viewer"
-			url="${ConfigProperties.ksb.url}/ConfigViewer.do" />
+			url="${ConfigProperties.application.url}/ksb/ConfigViewer.do" />
 		</li>
+		<c:if test="${ConfigProperties.rice.portal.links.showRiceServerConfig == 'true'}">
+		  <li>
+			<portal:portalLink displayTitle="true" title="Rice Configuration Viewer"
+				url="${ConfigProperties.ksb.url}/ConfigViewer.do" />
+		  </li>
+		</c:if>
 	</ul>
 
 </div>

@@ -96,6 +96,12 @@
     <!-- A comma separated list of additional spring files for the RiceConfigurer -->
     <param name="rice.additionalSpringFiles" override="false"></param>
 
+	<!-- Portal display parameters -->
+	<!-- rice.portal.links.showRiceServerConfig determines if a second config viewer link will be shown.  
+	     This is helpful for client apps using the rice portal, because both client and rice config params 
+	     can be linked to -->
+	<param name="rice.portal.links.showRiceServerConfig" override="false">false</param>
+	
     <!-- App specific parameters -->
     <param name="externalizable.help.url" override="false">/${app.context.name}/kr/static/help/</param>
     <param name="externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>

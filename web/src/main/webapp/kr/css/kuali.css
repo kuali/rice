@@ -1147,6 +1147,7 @@ div.inner-subhead
 table.questionTable {
 	border-collapse: collapse;
 	horizontal-align: center;
+	text-align: center;
 }
 
 td.leftTd {

@@ -33,6 +33,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
+import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -51,6 +52,7 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
 
     protected void loadTestData() throws Exception {
         loadXmlFile("SearchAttributeConfig.xml");
+        loadXmlFile("SearchableTrimTest.xml");
     }
 
 //    private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,String value,Boolean isLowerBoundValue,DocumentType docType) {
@@ -538,6 +540,8 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
         }
     }
     
+    
+    
     /**
      * Per KULRICE-3681, tests that StandardGenericXMLSearchableAttribute throws no cast class exception when it shouldn't
      */
@@ -585,5 +589,17 @@ public class SearchableAttributeTest extends DocumentSearchTestBase {
     	}
     	assertNotNull("Found exception "+caughtException, caughtException);
     	assertTrue("Found errors "+errors, (errors.size() == 0));
+    }
+    
+    @Test
+    public void testSearchableAttributeTrim() {
+    	RuleAttribute trimAttribute = KEWServiceLocator.getRuleAttributeService().findByName("TrimSearchableAttribute");
+    	assert(trimAttribute.getName().equals("TrimSearchableAttribute"));
+    	assert(trimAttribute.getClassName().equals("org.kuali.rice.kew.docsearch.xml.StandardGenericXMLSearchableAttribute"));
+    	assert(trimAttribute.getLabel().equals("Unit111"));
+    	assert(trimAttribute.getType().equals("SearchableXmlAttribute"));
+    	assert(trimAttribute.getDescription().equals("Unit111"));
+    	assert(trimAttribute.getServiceNamespace().equals("NSTrimSearchableTest"));
+    	//System.out.println(trimAttribute.getName());
     }
 }

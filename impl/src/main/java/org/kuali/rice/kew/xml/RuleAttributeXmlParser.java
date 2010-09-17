@@ -143,15 +143,19 @@ public class RuleAttributeXmlParser implements XmlConstants {
 			//throw new InvalidXmlException("RuleAttribute must have an attribute type");
 		}
 		RuleAttribute ruleAttribute = new RuleAttribute();
-		ruleAttribute.setName(name);
-		ruleAttribute.setClassName(className);
-		ruleAttribute.setType(type);
-		ruleAttribute.setLabel(label);
+		ruleAttribute.setName(name.trim());
+		ruleAttribute.setClassName(className.trim());
+		ruleAttribute.setType(type.trim());
+		ruleAttribute.setLabel(label.trim());
 //		 default description to label
         if (StringUtils.isEmpty(description)) {
             description = label;
         }
-		ruleAttribute.setDescription(description);
+		ruleAttribute.setDescription(description.trim());
+		if (serviceNamespace != null)
+		{
+			serviceNamespace = serviceNamespace.trim();
+		}
 		ruleAttribute.setServiceNamespace(serviceNamespace);
 		
 		if(xmlConfig != null){

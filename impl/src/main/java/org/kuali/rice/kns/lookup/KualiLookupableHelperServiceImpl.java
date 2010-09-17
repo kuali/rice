@@ -40,14 +40,11 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * This class...
- */
 @Transactional
 public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperServiceImpl {
 
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableHelperServiceImpl.class);
-    private boolean searchUsingOnlyPrimaryKeyValues = false;
+    protected boolean searchUsingOnlyPrimaryKeyValues = false;
 
 
     /**

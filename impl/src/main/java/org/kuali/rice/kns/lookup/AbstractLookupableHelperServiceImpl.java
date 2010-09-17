@@ -55,7 +55,6 @@ import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KualiDecimal;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.TypeUtils;
@@ -87,24 +86,24 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
 	protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(AbstractLookupableHelperServiceImpl.class);
 
-	private Class businessObjectClass;
-	private Map parameters;
-	private BusinessObjectDictionaryService businessObjectDictionaryService;
-	private BusinessObjectMetaDataService businessObjectMetaDataService;
-	private DataDictionaryService dataDictionaryService;
-	private PersistenceStructureService persistenceStructureService;
-	private EncryptionService encryptionService;
-	private List<String> readOnlyFieldsList;
-	private String backLocation;
-	private String docFormKey;
-	private Map fieldConversions;
-	private LookupService lookupService;
-	private List<Row> rows;
-	private String referencesToRefresh;
-	private SequenceAccessorService sequenceAccessorService;
-	private BusinessObjectService businessObjectService;
-	private LookupResultsService lookupResultsService;
-	private String docNum;
+	protected Class businessObjectClass;
+	protected Map parameters;
+	protected BusinessObjectDictionaryService businessObjectDictionaryService;
+	protected BusinessObjectMetaDataService businessObjectMetaDataService;
+	protected DataDictionaryService dataDictionaryService;
+	protected PersistenceStructureService persistenceStructureService;
+	protected EncryptionService encryptionService;
+	protected List<String> readOnlyFieldsList;
+	protected String backLocation;
+	protected String docFormKey;
+	protected Map fieldConversions;
+	protected LookupService lookupService;
+	protected List<Row> rows;
+	protected String referencesToRefresh;
+	protected SequenceAccessorService sequenceAccessorService;
+	protected BusinessObjectService businessObjectService;
+	protected LookupResultsService lookupResultsService;
+	protected String docNum;
 
 	/**
 	 * @return the docNum
@@ -242,7 +241,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 this.encryptionService = encryptionService;
 	 }
 
-	 private MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+	 protected MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
 
 	 public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		 if ( maintenanceDocumentDictionaryService == null ) {
@@ -251,7 +250,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 return maintenanceDocumentDictionaryService;
 	 }
 
-	 private BusinessObjectAuthorizationService businessObjectAuthorizationService;
+	 protected BusinessObjectAuthorizationService businessObjectAuthorizationService;
 
 	 public BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
 		 if ( businessObjectAuthorizationService == null ) {
@@ -260,7 +259,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 return businessObjectAuthorizationService;
 	 }
 
-	 private Inquirable kualiInquirable;
+	 protected Inquirable kualiInquirable;
 
 	 public Inquirable getKualiInquirable() {
 		 if ( kualiInquirable == null ) {
@@ -277,7 +276,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 this.kualiInquirable = kualiInquirable;
 	 }
 
-    private KualiConfigurationService configurationService;
+	 protected KualiConfigurationService configurationService;
 
 	 public KualiConfigurationService getKualiConfigurationService() {
     if ( configurationService == null ) {
@@ -290,7 +289,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
         this.configurationService = configurationService;
     }
 
-    private ParameterService parameterService;
+    protected ParameterService parameterService;
 
     public ParameterService getParameterService() {
 	if ( parameterService == null ) {
@@ -403,7 +402,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * for KULRice 3070
 	  * @return
 	  */
-	 private boolean allowsMaintenanceDeleteAction(BusinessObject businessObject) {
+	 protected boolean allowsMaintenanceDeleteAction(BusinessObject businessObject) {
 
 		 boolean allowsMaintain = false;
 		 boolean allowsDelete = false;
@@ -573,9 +572,9 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 this.readOnlyFieldsList = readOnlyFieldsList;
 	 }
 
-	 private HashMap<String,Boolean> noLookupResultFieldInquiryCache = new HashMap<String, Boolean>();
-	 private HashMap<Class,Class> inquirableClassCache = new HashMap<Class, Class>();
-	 private HashMap<String,Boolean> forceLookupResultFieldInquiryCache = new HashMap<String, Boolean>();
+	 protected HashMap<String,Boolean> noLookupResultFieldInquiryCache = new HashMap<String, Boolean>();
+	 protected HashMap<Class,Class> inquirableClassCache = new HashMap<Class, Class>();
+	 protected HashMap<String,Boolean> forceLookupResultFieldInquiryCache = new HashMap<String, Boolean>();
 	 /**
 	  * Returns the inquiry url for a field if one exist.
 	  *
@@ -629,7 +628,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 return inquiryUrl;
 	 }
 
-	 private CopiedObject<ArrayList<Column>> resultColumns = null;
+	 protected CopiedObject<ArrayList<Column>> resultColumns = null;
 
 	 /**
 	  * Constructs the list of columns for the search results. All properties for the column objects come from the DataDictionary.
@@ -688,7 +687,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 return resultColumns.getContent();
 	 }
 
-	 private static Integer RESULTS_DEFAULT_MAX_COLUMN_LENGTH = null;
+	 protected static Integer RESULTS_DEFAULT_MAX_COLUMN_LENGTH = null;
 
 	 protected int getColumnMaxLength(String attributeName) {
 		 Integer fieldDefinedMaxLength = getBusinessObjectDictionaryService().getLookupResultFieldMaxLength(getBusinessObjectClass(), attributeName);

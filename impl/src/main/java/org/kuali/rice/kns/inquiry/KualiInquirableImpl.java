@@ -28,7 +28,6 @@ import java.util.Properties;
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -38,8 +37,8 @@ import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.InquirySectionDefinition;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
+import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.BusinessObjectService;
@@ -68,18 +67,18 @@ import org.kuali.rice.kns.web.ui.SectionBridge;
 public class KualiInquirableImpl implements Inquirable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiInquirableImpl.class);
 
-    private LookupService lookupService;
-    private BusinessObjectDictionaryService businessObjectDictionaryService;
-    private BusinessObjectMetaDataService businessObjectMetaDataService;
-    private PersistenceStructureService persistenceStructureService;
-    private DataDictionaryService dataDictionaryService;
-    private EncryptionService encryptionService;
-    private KualiConfigurationService kualiConfigurationService;
-	private static BusinessObjectService businessObjectService;
+    protected LookupService lookupService;
+    protected BusinessObjectDictionaryService businessObjectDictionaryService;
+    protected BusinessObjectMetaDataService businessObjectMetaDataService;
+    protected PersistenceStructureService persistenceStructureService;
+    protected DataDictionaryService dataDictionaryService;
+    protected EncryptionService encryptionService;
+    protected KualiConfigurationService kualiConfigurationService;
+    protected static BusinessObjectService businessObjectService;
 
-    private Class businessObjectClass;
+    protected Class businessObjectClass;
 
-    private Map<String, Boolean> inactiveRecordDisplay;
+    protected Map<String, Boolean> inactiveRecordDisplay;
 
     /**
      * A list that can be used to define classes that are superclasses or superinterfaces of kuali objects where those
@@ -87,6 +86,7 @@ public class KualiInquirableImpl implements Inquirable {
      * (see {@link RiceConstants#BUSINESS_OBJECT_CLASS_ATTRIBUTE)
      */
     public static List<Class> SUPER_CLASS_TRANSLATOR_LIST = new ArrayList<Class>();
+    public static final String INQUIRY_TITLE_PREFIX = "title.inquiry.url.value.prependtext";
 
     /**
      * Default constructor, initializes services from spring
@@ -348,7 +348,6 @@ public class KualiInquirableImpl implements Inquirable {
         return getHyperLink(inquiryBusinessObjectClass, fieldList, UrlFactory.parameterizeUrl(KNSConstants.INQUIRY_ACTION, parameters));
     }
 
-    public static final String INQUIRY_TITLE_PREFIX = "title.inquiry.url.value.prependtext";
     protected AnchorHtmlData getHyperLink(Class inquiryClass, Map<String,String> fieldList, String inquiryUrl){
     	AnchorHtmlData a = new AnchorHtmlData(inquiryUrl, KNSConstants.EMPTY_STRING);
     	a.setTitle(HtmlData.getTitleText(this.createTitleText(inquiryClass), inquiryClass, fieldList));
@@ -361,7 +360,7 @@ public class KualiInquirableImpl implements Inquirable {
      * @param boClass the BO class
      * @return the title text
      */
-    private String createTitleText(Class<? extends BusinessObject> boClass) {
+    protected String createTitleText(Class<? extends BusinessObject> boClass) {
     	String titleText = "";
     	
     	final String titlePrefixProp = getKualiConfigurationService().getPropertyString(
@@ -553,5 +552,6 @@ public class KualiInquirableImpl implements Inquirable {
                         " ", inquiryClass, fieldList));
     	return a;
     }
+
 
 }

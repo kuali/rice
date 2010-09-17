@@ -33,17 +33,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Kuali lookup implementation. Implements methods necessary to render the lookup and provides search and return methods.
- *
- *
  */
 @Transactional
 public class KualiLookupableImpl implements Lookupable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableImpl.class);
-    private static final String[] IGNORE_LIST = { KNSConstants.DOC_FORM_KEY, KNSConstants.BACK_LOCATION };
+    protected static final String[] IGNORE_LIST = { KNSConstants.DOC_FORM_KEY, KNSConstants.BACK_LOCATION };
 
-    private Class businessObjectClass;
-    private LookupableHelperService lookupableHelperService;
-    private String extraOnLoad = ""; // This is supposed to be a javascript function.
+    protected Class businessObjectClass;
+    protected LookupableHelperService lookupableHelperService;
+    protected String extraOnLoad = ""; // This is supposed to be a javascript function.
 
     /**
      * Default constructor initializes services from spring

@@ -20,11 +20,17 @@
 			<artifactId>rice-sampleapp</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-test</artifactId>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <!--  dependency>
+            <groupId>taglibs</groupId>
+            <artifactId>standard</artifactId>
+            <version>1.1.2</version>
+            <scope>compile</scope>
+        </dependency -->
 	</dependencies>
 
 	<build>
@@ -60,11 +66,12 @@
 				</configuration>
 			</plugin>
             <!-- set up JSP compliation for validation purposes (*not* for inclusion in the war) -->
-            <plugin>
+            <!-- plugin>
                 <groupId>org.codehaus.mojo.jspc</groupId>
                 <artifactId>jspc-maven-plugin</artifactId>
                 <configuration>
                     <includeInProject>false</includeInProject>
+                    <source>1.5</source>
                 </configuration>
                 <executions>
                     <execution>
@@ -74,7 +81,6 @@
                     </execution>
                 </executions>
 
-                <!-- Use the Tomcat 6 JSP compiler -->
                 <dependencies>
                     <dependency>
                         <groupId>org.codehaus.mojo.jspc</groupId>
@@ -82,7 +88,7 @@
                         <version>2.0-alpha-3</version>
                     </dependency>
                 </dependencies>
-            </plugin>
+            </plugin -->
 		</plugins>
 	</build>
 

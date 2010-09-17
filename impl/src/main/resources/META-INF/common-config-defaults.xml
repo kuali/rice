@@ -272,4 +272,32 @@
 	<param name="portal.show.sample.app" override="false">false</param>
 	<param name="bus.refresh.rate" override="false">30</param>
 	<param name="threadPool.size" override="false">5</param>
+	
+	<!-- Default Option for Action List User Preferences. -->
+	<param name="userOptions.default.color" override="false">white</param>
+	<!-- email options: no, daily, weekly, immediate -->
+	<param name="userOptions.default.email" override="false">immediate</param>
+	<param name="userOptions.default.notifyPrimary" override="false">yes</param>
+	<param name="userOptions.default.notifySecondary" override="false">no</param>
+	<param name="userOptions.default.openNewWindow" override="false">yes</param>
+	<param name="userOptions.default.actionListSize" override="false">10</param>
+	<param name="userOptions.default.refreshRate" override="false">15</param>
+	<param name="userOptions.default.showActionRequired" override="false">yes</param>
+	<param name="userOptions.default.showDateCreated" override="false">yes</param>
+	<param name="userOptions.default.showDocumentType" override="false">yes</param>
+	<param name="userOptions.default.showDocumentStatus" override="false">yes</param>
+	<param name="userOptions.default.showInitiator" override="false">yes</param>
+	<param name="userOptions.default.showDelegator" override="false">yes</param>
+	<param name="userOptions.default.showTitle" override="false">yes</param>
+	<param name="userOptions.default.showWorkgroupRequest" override="false">yes</param>
+	<param name="userOptions.default.showClearFYI" override="false">yes</param>
+	<param name="userOptions.default.showLastApprovedDate" override="false">no</param>
+	<param name="userOptions.default.showCurrentNode" override="false">no</param>
+	<param name="userOptions.default.useOutBox" override="false">yes</param>
+	<!-- delegatorFilterOnActionList: "Secondary Delegators on Action List Page" or "Secondary Delegators only on Filter Page" -->
+	<param name="userOptions.default.delegatorFilterOnActionList" override="false">Secondary Delegators on Action List Page</param>
+	<param name="userOptions.default.primaryDelegatorFilterOnActionList" override="false">Primary Delegates on Action List Page</param>
+	
+	
+	
 </config>

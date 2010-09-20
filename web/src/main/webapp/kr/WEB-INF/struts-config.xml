@@ -29,6 +29,7 @@
         <form-bean name="MultipleValueLookupForm" type="org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm" />
         <form-bean name="KualiForm" type="org.kuali.rice.kns.web.struts.form.KualiForm" />
         <form-bean name="KualiExceptionIncidentForm" type="org.kuali.rice.kns.web.struts.form.KualiExceptionIncidentForm" />
+        <form-bean name="AuthorizationExceptionForm" type="org.kuali.rice.kns.web.struts.form.AuthorizationExceptionForm" />
         <form-bean name="DisplayInactivationBlockersForm" type="org.kuali.rice.kns.web.struts.form.DisplayInactivationBlockersForm" />
     </form-beans>
 
@@ -36,6 +37,9 @@
 		<exception type="java.lang.Throwable"
 			handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler"
 			key="meaningless" />
+		<exception type="org.kuali.rice.kns.exception.AuthorizationException"
+            handler="org.kuali.rice.kns.web.struts.pojo.AuthorizationExceptionHandler"
+            key="meaningless" />
 	</global-exceptions>
     
     <global-forwards >
@@ -45,7 +49,12 @@
         <forward name="portal" path="/index.jsp" redirect="true" />
         <forward name="route_report" path="/WEB-INF/jsp/RoutingReportForward.jsp"/>
         <forward name="updateTextArea" path="/WEB-INF/jsp/TextArea.jsp" />
+        
+        <!-- just so you can use exceptionIncidentHandler.do or kualiExceptionIncidentReport.do...
+        should probably clean this up so we don't need to global forward
+        -->
         <forward name="exceptionIncidentHandler" path="/kualiExceptionIncidentReport.do" />
+        <forward name="authorizationExceptionHandler" path="/authorizationExceptionReport.do" />
     </global-forwards>
 
     <action-mappings>
@@ -60,6 +69,12 @@
                 attribute="KualiForm"
                 type="org.kuali.rice.kns.web.struts.action.KualiExceptionHandlerAction">
             <forward name="basic" path="/WEB-INF/jsp/KualiExceptionIncident.jsp" />
+        </action>
+        <action path="/authorizationExceptionReport"
+                name="AuthorizationExceptionForm"
+                attribute="KualiForm"
+                type="org.kuali.rice.kns.web.struts.action.AuthorizationExceptionAction">
+            <forward name="basic" path="/WEB-INF/jsp/AuthorizationException.jsp" />
         </action>
    	    <action path="/lookup" name="LookupForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.kns.web.struts.action.KualiLookupAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiLookup.jsp" />

@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.exception;
 
+import java.util.Collections;
+import java.util.Map;
+
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -27,7 +30,11 @@ public class DocumentTypeAuthorizationException extends AuthorizationException {
     private static final long serialVersionUID = 1548057953855152103L;
 
     public DocumentTypeAuthorizationException(String userId, String action, String documentType) {
-        super(userId, action, documentType);
+        this(userId, action, documentType, Collections.<String, Object>emptyMap());
+    }
+    
+    public DocumentTypeAuthorizationException(String userId, String action, String documentType, Map<String, Object> requestAuthDetails) {
+        super(userId, action, documentType, requestAuthDetails);
     }
 
     /**

@@ -31,8 +31,11 @@
 
   <global-exceptions>
     <exception type="java.lang.Throwable"
-handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler"
-key="meaningless" />
+		handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler"
+		key="meaningless" />
+	<exception type="org.kuali.rice.kns.exception.AuthorizationException"
+    	handler="org.kuali.rice.kns.web.struts.pojo.AuthorizationExceptionHandler"
+        key="meaningless" /> 
   </global-exceptions>
 
   <global-forwards>
@@ -43,18 +46,12 @@ key="meaningless" />
     <forward name="portal" path="/portal.jsp" redirect="true" />
     <forward name="route_report" path="/WEB-INF/jsp/RoutingReportForward.jsp"/>
     <forward name="updateTextArea" path="/kr/WEB-INF/jsp/TextArea.jsp" />
-    <forward name="exceptionIncidentHandler" path="/kualiExceptionIncidentReport.do" />
+    <forward name="exceptionIncidentHandler" path="/kr/kualiExceptionIncidentReport.do" contextRelative="true"/>
+	<forward name="authorizationExceptionHandler" path="/kr/authorizationExceptionReport.do" contextRelative="true"/>
     <!-- End required KNS forwards -->
   </global-forwards>
 
   <action-mappings>
-    <!-- Rice Pass-through Actions : These delegate to the Rice (kr) struts module -->
-    <action path="/kualiExceptionIncidentReport"
-            type="org.kuali.rice.kns.web.struts.action.KualiExceptionHandlerAction">
-      <forward name="basic" path="/kr/kualiExceptionIncidentReport.do" />
-    </action>        
-    <!-- End Rice Pass-through Actions -->
-
     <!-- Begin required KNS mappings -->
     <action path="/portal" name="KualiForm"
      type="org.kuali.rice.kns.web.struts.action.KualiSimpleAction">

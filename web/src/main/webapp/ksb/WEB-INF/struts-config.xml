@@ -19,6 +19,9 @@
 		<exception type="java.lang.Throwable"
 			handler="org.kuali.rice.kns.web.struts.pojo.StrutsExceptionIncidentHandler"
 			key="meaningless" />
+		<exception type="org.kuali.rice.kns.exception.AuthorizationException"
+            handler="org.kuali.rice.kns.web.struts.pojo.AuthorizationExceptionHandler"
+            key="meaningless" /> 
 		<!-- End required KNS exceptions -->
 	</global-exceptions>
 
@@ -31,6 +34,7 @@
 		<forward name="route_report" path="/WEB-INF/jsp/RoutingReportForward.jsp" />
 		<forward name="updateTextArea" path="/../kr/WEB-INF/jsp/TextArea.jsp"/>
         <forward name="exceptionIncidentHandler" path="/kr/kualiExceptionIncidentReport.do" contextRelative="true"/>
+		<forward name="authorizationExceptionHandler" path="/kr/authorizationExceptionReport.do" contextRelative="true"/>
 		<!-- End required KNS forwards -->
 	</global-forwards>
 

@@ -852,4 +852,14 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     public void saveRole(String roleId, String roleName, String roleDescription, boolean active, String kimTypeId, String namespaceCode) throws UnsupportedOperationException {
         getRoleUpdateService().saveRole(roleId, roleName, roleDescription, active, kimTypeId, namespaceCode);
     }
+
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.kuali.rice.kim.service.RoleService#getMemberParentRoleIds(java.lang.String, java.lang.String)
+	 */
+	public List<String> getMemberParentRoleIds(String memberType,
+			String memberId) {
+		return getRoleService().getMemberParentRoleIds(memberType, memberId);
+	}
 }

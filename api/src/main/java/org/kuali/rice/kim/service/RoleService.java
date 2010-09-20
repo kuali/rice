@@ -206,6 +206,13 @@ public interface RoleService {
 	 */
 	List<RoleMembershipInfo> findRoleMembers(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues);
 
+	/**
+	 * 
+	 * Gets a list of Roles that the given member belongs to.  
+	 * 
+	 */
+	List<String> getMemberParentRoleIds(String memberType, String memberId);
+	
 	List<RoleMemberCompleteInfo> findRoleMembersCompleteInfo(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues);
 
 	List<DelegateMemberCompleteInfo> findDelegateMembersCompleteInfo(@XmlJavaTypeAdapter(value = MapStringStringAdapter.class) @WebParam(name="fieldValues") java.util.Map<String, String> fieldValues);

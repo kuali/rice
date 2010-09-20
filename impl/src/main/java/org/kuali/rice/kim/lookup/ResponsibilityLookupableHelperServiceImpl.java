@@ -26,14 +26,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
@@ -192,7 +191,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		List<ResponsibilityImpl> tempResponsibilities;
 		List<String> collectedResponsibilityIds = new ArrayList<String>();
 		Map<String, String> responsibilityCriteria;
-		String memberIdLookupString = "";
+		String parentRoleIdsLookupString = "";
 		
 		for(RoleImpl roleImpl: roleSearchResults){
 			responsibilityCriteria = new HashMap<String, String>();
@@ -205,18 +204,18 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 					collectedResponsibilityIds.add(responsibility.getResponsibilityId());
 					responsibilities.add(responsibility);
 				}
-				for (RoleMemberImpl memberImpl : roleImpl.getMembers()) {
-					if (memberImpl.getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE)) {
-						memberIdLookupString += memberImpl.getMemberId() + "&&";
-					}
+				//need to find roles that current role is a member of and build search string
+				List<String> parentRoleIds = KIMServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
+				for (String parentRoleId : parentRoleIds) {
+					parentRoleIdsLookupString += parentRoleId + "&&";
 				}
 			}
-			if (StringUtils.isNotEmpty(memberIdLookupString)) {
+			//find roles that have roles in roleSearchResults as a member
+			if (StringUtils.isNotEmpty(parentRoleIdsLookupString)) {
 				Map<String, String> roleSearchCriteria = new HashMap<String, String>();
-				roleSearchCriteria.put("roleId", memberIdLookupString);
-				List<RoleImpl> memberRoles = this.searchRoles(roleSearchCriteria, unbounded);
-				//get all member responsibilities and merge with parent roles responsibilities
-				responsibilities = mergeResponsibilityLists(responsibilities, getResponsibilitiesForRoleSearchResults(memberRoles, unbounded));
+				roleSearchCriteria.put("roleId", parentRoleIdsLookupString);
+				//get all parent role permissions and merge them with current permissions
+				responsibilities = mergeResponsibilityLists(responsibilities, getResponsibilitiesWithRoleSearchCriteria(roleSearchCriteria, unbounded));
 			}
 		}
 		return new CollectionIncomplete<ResponsibilityImpl>(responsibilities, actualSizeIfTruncated);

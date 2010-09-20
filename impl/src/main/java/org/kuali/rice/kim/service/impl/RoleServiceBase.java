@@ -49,7 +49,6 @@ import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityInternalService;
-import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -59,10 +58,7 @@ import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -213,6 +209,17 @@ public class RoleServiceBase {
 				}
 			}
     	}    	
+    }
+    
+    public List<String> getMemberParentRoleIds(String memberType, String memberId) {	
+		List<RoleMemberImpl> parentRoleMembers = roleDao.getRoleMembershipsForMemberId(memberType, memberId, null);
+
+		List<String> parentRoleIds = new ArrayList<String>(parentRoleMembers.size());
+		for (RoleMemberImpl parentRoleMember: parentRoleMembers) {
+			parentRoleIds.add(parentRoleMember.getRoleId());
+		}
+		
+    	return parentRoleIds;
     }
     
 	/**

@@ -59,6 +59,8 @@ public interface KimRoleDao {
 	
 	List<RoleMemberImpl> getRoleMembershipsForRoleIdsAsMembers(Collection<String> roleIds, AttributeSet qualification );
 
+	List<RoleMemberImpl> getRoleMembershipsForMemberId(String memberType, String memberId, AttributeSet qualification);
+	
 	List<RoleMemberImpl> getRoleMembersForRoleIdsWithFilters( Collection<String> roleIds, String principalId, List<String> groupIds, AttributeSet qualification );
 	
 	Map<String,List<KimDelegationMemberImpl>> getDelegationMembersForDelegationIds( List<String> delegationIds );

@@ -319,6 +319,34 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 		}
 		return results;
 	}
+	
+	/**
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembersForRoleIds(Collection, String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	@SuppressWarnings("unchecked")
+	public List<RoleMemberImpl> getRoleMembershipsForMemberId(String memberType, String memberId, AttributeSet qualification) {
+		Criteria c = new Criteria();
+		List<RoleMemberImpl> parentRoleMembers = new ArrayList<RoleMemberImpl>();
+
+		if(StringUtils.isEmpty(memberId)
+				|| StringUtils.isEmpty(memberType)) {
+			return parentRoleMembers;
+		}
+		
+		c.addEqualTo(KIMPropertyConstants.RoleMember.MEMBER_ID, memberId);
+		c.addEqualTo( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, memberType);
+		addSubCriteriaBasedOnRoleQualification(c, qualification);
+		
+		Query query = QueryFactory.newQuery(RoleMemberImpl.class, c);
+		Collection<RoleMemberImpl> coll = getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		ArrayList<RoleMemberImpl> results = new ArrayList<RoleMemberImpl>( coll.size() );
+		for ( RoleMemberImpl rm : coll ) {
+			if ( rm.isActive() ) {
+				results.add(rm);
+			}
+		}
+		return results;
+	}
 
 	@SuppressWarnings("unchecked")
 	public List<RoleMemberImpl> getRoleMembersForRoleIdsWithFilters( Collection<String> roleIds, String principalId, List<String> groupIds, AttributeSet qualification) {
@@ -423,6 +451,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         return (List)getPersistenceBrokerTemplate().getCollectionByQuery(q);
     }
 
+    
     private List<String> getPrincipalIdsForPrincipalName(String principalName){
     	Map<String, String> criteria = new HashMap<String, String>();
         criteria.put("principals.principalName", principalName);

@@ -29,7 +29,6 @@ import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -177,7 +176,8 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		List<PermissionImpl> tempPermissions;
 		List<String> collectedPermissionIds = new ArrayList<String>();
 		Map<String, String> permissionCriteria;
-		String memberIdLookupString = "";
+		String parentRoleIdsLookupString = "";
+		 
 		
 		for(RoleImpl roleImpl: roleSearchResults){
 			permissionCriteria = new HashMap<String, String>();
@@ -191,18 +191,18 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 					permissions.add(permission);
 				}
 			}
-			for (RoleMemberImpl memberImpl : roleImpl.getMembers()) {
-				if (memberImpl.getMemberTypeCode().equals(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE)) {
-					memberIdLookupString += memberImpl.getMemberId() + "&&";
-				}
+			//need to find roles that current role is a member of and build search string
+			List<String> parentRoleIds = KIMServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
+			for (String parentRoleId : parentRoleIds) {
+				parentRoleIdsLookupString += parentRoleId + "&&";
 			}
 		}
-		if (StringUtils.isNotEmpty(memberIdLookupString)) {
+		//find roles that have roles in roleSearchResults as a member
+		if (StringUtils.isNotEmpty(parentRoleIdsLookupString)) {
 			Map<String, String> roleSearchCriteria = new HashMap<String, String>();
-			roleSearchCriteria.put("roleId", memberIdLookupString);
-			List<RoleImpl> memberRoles = this.searchRoles(roleSearchCriteria, unbounded);
-			//get all member permissions and merge them with parent roles permissions
-			permissions = mergePermissionLists(permissions, getPermissionsForRoleSearchResults(memberRoles, unbounded));
+			roleSearchCriteria.put("roleId", parentRoleIdsLookupString);
+			//get all parent role permissions and merge them with current permissions
+			permissions = mergePermissionLists(permissions, getPermissionsWithRoleSearchCriteria(roleSearchCriteria, unbounded));
 		}
 		return new CollectionIncomplete<PermissionImpl>(permissions, actualSizeIfTruncated);
 	}

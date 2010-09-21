@@ -334,9 +334,11 @@ public class ObjectUtils {
 		Object prop = ObjectUtils.getPropertyValue(businessObject, propertyName);
 		if (formatter == null) {
 			propValue = formatPropertyValue(prop);
-		}
-		else {
-			propValue = String.valueOf(formatter.format(prop));
+		} else {
+			final Object formattedValue = formatter.format(prop);
+			if (formattedValue != null) {
+				propValue = String.valueOf(formattedValue);
+			}
 		}
 
 		return propValue;
@@ -380,7 +382,7 @@ public class ObjectUtils {
 			propValue = formatter != null ? formatter.format(propertyValue) : propertyValue;
 		}
 
-		return String.valueOf(propValue);
+		return propValue != null ? String.valueOf(propValue) : KNSConstants.EMPTY_STRING;
 	}
     
     /**

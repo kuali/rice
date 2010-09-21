@@ -61,8 +61,8 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
 	protected boolean required = false;
     protected boolean unconditionallyReadOnly = false;
     protected boolean readOnlyAfterAdd = false;
-    private boolean noLookup = false;
-    private boolean lookupReadOnly = false;
+    protected boolean noLookup = false;
+    protected boolean lookupReadOnly = false;
     
     protected String defaultValue;
     protected String template;
@@ -79,6 +79,9 @@ public class MaintainableFieldDefinition extends MaintainableItemDefinition impl
     protected String additionalDisplayAttributeName;
     
     protected boolean triggerOnChange;
+    
+    protected Boolean showFieldLevelHelp = null; // use default from system
+    protected String fieldLevelHelpUrl = null;
     
     public MaintainableFieldDefinition() {}
 
@@ -318,6 +321,22 @@ The defaultValueFinderClass specifies the java class that will be
     
 	public void setLookupReadOnly(boolean lookupReadOnly) {
     	this.lookupReadOnly = lookupReadOnly;
+    }
+	
+    public Boolean isShowFieldLevelHelp() {
+        return showFieldLevelHelp;
+    }
+
+    public void setShowFieldLevelHelp(Boolean showFieldLevelHelp) {
+        this.showFieldLevelHelp = showFieldLevelHelp;
+    }
+
+    public String getFieldLevelHelpUrl() {
+        return fieldLevelHelpUrl;
+    }
+
+    public void setFieldLevelHelpUrl(String fieldLevelHelpUrl) {
+        this.fieldLevelHelpUrl = fieldLevelHelpUrl;
     }
 	
 	/**

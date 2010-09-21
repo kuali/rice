@@ -259,6 +259,11 @@ public class FieldBridge {
      * affects the enablement of field level help
      */
     protected static boolean isMaintenanceFieldLevelHelpEnabled(Maintainable m, MaintainableFieldDefinition fieldDefinition) {
+        if ( fieldDefinition != null ) {
+            if ( fieldDefinition.isShowFieldLevelHelp() != null && fieldDefinition.isShowFieldLevelHelp() ) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -276,6 +281,11 @@ public class FieldBridge {
      * affects the enablement of field level help
      */
     protected static boolean isMaintenanceFieldLevelHelpDisabled(Maintainable m, MaintainableFieldDefinition fieldDefinition) {
+        if ( fieldDefinition != null ) {
+            if ( fieldDefinition.isShowFieldLevelHelp() != null && !fieldDefinition.isShowFieldLevelHelp() ) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -349,6 +359,7 @@ public class FieldBridge {
 			*/
             field.setFieldLevelHelpEnabled(isMaintenanceFieldLevelHelpEnabled(m, maintainableFieldDefinition));
             field.setFieldLevelHelpDisabled(isMaintenanceFieldLevelHelpDisabled(m, maintainableFieldDefinition));
+            field.setFieldLevelHelpUrl(maintainableFieldDefinition.getFieldLevelHelpUrl());
         }
 
         return field;

@@ -636,7 +636,8 @@
                                 <kul:help
                                     businessObjectClassName="${field.businessObjectClassName}"
                                     attributeName="${field.fieldHelpName}"
-                                    altText="${field.fieldHelpSummary}" />
+                                    altText="${field.fieldHelpSummary}" 
+                                    alternativeHelp="${field.fieldLevelHelpUrl}"/>
                                 </c:if>
                             </jsp:attribute>
                         </kul:user>

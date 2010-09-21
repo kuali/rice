@@ -109,6 +109,9 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
         parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
         parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
         parameters.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupImpl.getGroupId());
+        if (StringUtils.isNotBlank(getReturnLocation())) {
+        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+		}
         href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters);
         
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 

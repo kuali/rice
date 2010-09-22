@@ -1027,7 +1027,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	public String getLookupFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName) {
 		String additionalDisplayAttributeName = null;
 
-		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+		if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
 			additionalDisplayAttributeName = getLookupFieldDefinition(businessObjectClass, attributeName)
 					.getAdditionalDisplayAttributeName();
 		}
@@ -1042,7 +1042,7 @@ public class BusinessObjectDictionaryServiceImpl implements
 	public String getLookupFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName) {
 		String alternateDisplayAttributeName = null;
 
-		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
+		if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
 			alternateDisplayAttributeName = getLookupFieldDefinition(businessObjectClass, attributeName)
 					.getAlternateDisplayAttributeName();
 		}

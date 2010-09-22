@@ -27,10 +27,12 @@ import java.util.List;
 import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.NoteDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -212,8 +214,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		String docId = "";
 
 		try {
-			WorkflowIdDTO principalIdVO = new WorkflowIdDTO(initiatorPrincipalId);
-			WorkflowDocument workflowDocument = new WorkflowDocument(principalIdVO, docType);
+			WorkflowDocument workflowDocument = new WorkflowDocument(initiatorPrincipalId, docType);
 			workflowDocument.setTitle(docTitle);
 			workflowDocument.setAppDocId(appDocId);
 			workflowDocument.saveRoutingData();
@@ -222,16 +223,28 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 			if (workflowDocument.getRouteHeaderId() != null) {
 				docId = workflowDocument.getRouteHeaderId().toString();
 			}
+	        DocumentResponse docResponse = new DocumentResponse(results);
+	        docResponse.setDocId(docId);
+	        docResponse.setDocContent(workflowDocument.getApplicationContent());
+	        docResponse.setTitle(workflowDocument.getTitle());
+	        docResponse.setNotes(new ArrayList<NoteDetail>());
+            if (workflowDocument.isApprovalRequested()) {
+                docResponse.setActionRequested(KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
+            } else if (workflowDocument.isAcknowledgeRequested()) {
+                docResponse.setActionRequested(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
+            } else if (workflowDocument.isFYIRequested()) {
+                docResponse.setActionRequested(KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
+            } else if (workflowDocument.isCompletionRequested()) {
+                // TODO: how do we want to handle a "Complete" request?
+                docResponse.setActionRequested(KEWConstants.ACTION_REQUEST_COMPLETE_REQ_LABEL);
+            }
+	        return docResponse;
 		} catch (WorkflowException e) {
 			results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+	        DocumentResponse docResponse = new DocumentResponse(results);
+	        docResponse.setDocId(docId);
+	        return docResponse;
 		}
-
-		DocumentResponse docResponse = new DocumentResponse(results);
-		docResponse.setDocId(docId);
-		//results.put(DOC_ID_LABEL, docId);
-
-		
-		return docResponse;
 	}
 
 	/**
@@ -860,6 +873,175 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		return results;
     }
 
+    /**
+     * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#revokeAdHocRequestsByNodeName(java.lang.String,
+     *      java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public StandardResponse revokeAdHocRequestsByNodeName(String docId, String principalId, String docTitle, String docContent, String nodeName, String annotation) {
+        StandardResponse results;
+
+        try {
+            WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
+            AdHocRevokeDTO revokeDTO = new AdHocRevokeDTO();
+            revokeDTO.setNodeName(nodeName);
+            workflowDocument.revokeAdHocRequests(revokeDTO, annotation);
+            results = createResults(workflowDocument);
+        } catch (WorkflowException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        }
+
+        return results;
+    }
+
+    /**
+     * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#revokeAdHocRequestsByPrincipalId(java.lang.String,
+     *      java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public StandardResponse revokeAdHocRequestsByPrincipalId(String docId, String principalId, String docTitle, String docContent, String adhocPrincipalId, String annotation) {
+        StandardResponse results;
+
+        try {
+            WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
+            AdHocRevokeDTO revokeDTO = new AdHocRevokeDTO();
+            revokeDTO.setPrincipalId(adhocPrincipalId);
+            workflowDocument.revokeAdHocRequests(revokeDTO, annotation);
+            results = createResults(workflowDocument);
+        } catch (WorkflowException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        }
+
+        return results;
+    }
+
+    /**
+     * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#revokeAdHocRequestsByGroupId(java.lang.String,
+     *      java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public StandardResponse revokeAdHocRequestsByGroupId(String docId, String principalId, String docTitle, String docContent, String groupId, String annotation) {
+        StandardResponse results;
+
+        try {
+            WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
+            AdHocRevokeDTO revokeDTO = new AdHocRevokeDTO();
+            revokeDTO.setGroupId(groupId);
+            workflowDocument.revokeAdHocRequests(revokeDTO, annotation);
+            results = createResults(workflowDocument);
+        } catch (WorkflowException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        }
+
+        return results;
+    }
+
+    /**
+     * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#revokeAdHocRequestsByActionRequestId(java.lang.String,
+     *      java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public StandardResponse revokeAdHocRequestsByActionRequestId(String docId, String principalId, String docTitle, String docContent, String actionRequestId, String annotation) {
+        StandardResponse results;
+
+        try {
+            WorkflowDocument workflowDocument = setupWorkflowDocument(docId, principalId, docTitle, docContent);
+            AdHocRevokeDTO revokeDTO = new AdHocRevokeDTO();
+            revokeDTO.setActionRequestId(Long.valueOf(actionRequestId));
+            workflowDocument.revokeAdHocRequests(revokeDTO, annotation);
+            results = createResults(workflowDocument);
+        } catch (WorkflowException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        }
+
+        return results;
+    }
+
+    /**
+     * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#superUserApprove(java.lang.String,
+     *      java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public StandardResponse superUserApprove(String docId, String superUserPrincipalId, String docTitle, String docContent, String annotation) {
+        StandardResponse results;
+
+        try {
+            WorkflowDocument workflowDocument = setupWorkflowDocument(docId, superUserPrincipalId, docTitle, docContent);
+
+            workflowDocument.superUserApprove(annotation);
+            results = createResults(workflowDocument);
+        } catch (WorkflowServiceErrorException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        } catch (WorkflowException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        }
+
+        return results;
+    }
+
+    /**
+     * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#superUserDisapprove(java.lang.String,
+     *      java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public StandardResponse superUserDisapprove(String docId, String superUserPrincipalId, String docTitle, String docContent, String annotation) {
+        StandardResponse results;
+
+        try {
+            WorkflowDocument workflowDocument = setupWorkflowDocument(docId, superUserPrincipalId, docTitle, docContent);
+
+            workflowDocument.superUserDisapprove(annotation);
+            results = createResults(workflowDocument);
+        } catch (WorkflowServiceErrorException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        } catch (WorkflowException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        }
+
+        return results;
+    }
+
+    /**
+     * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#superUserCancel(java.lang.String,
+     *      java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+     */
+    public StandardResponse superUserCancel(String docId, String superUserPrincipalId, String docTitle, String docContent, String annotation) {
+        StandardResponse results;
+
+        try {
+            WorkflowDocument workflowDocument = setupWorkflowDocument(docId, superUserPrincipalId, docTitle, docContent);
+
+            workflowDocument.superUserCancel(annotation);
+            results = createResults(workflowDocument);
+        } catch (WorkflowServiceErrorException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        } catch (WorkflowException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        }
+
+        return results;
+    }
+
+    public StandardResponse superUserReturnToPrevious(String docId, String superUserPrincipalId, String docTitle, String docContent, String nodeName, String annotation) {
+        StandardResponse results;
+
+        try {
+            // verify that the doc id has been sent in correctly
+            if (StringUtils.isBlank(docId)) {
+                throw new WorkflowException("Invalid Parameter: docId is required but was blank");
+            }
+            // if the docTitle or docContent has been updated then update it with a saveRoutingData call
+            if (StringUtils.isNotEmpty(docTitle) || StringUtils.isNotEmpty(docContent)) {
+                WorkflowDocument workflowDocument = setupWorkflowDocument(docId, superUserPrincipalId, docTitle, docContent);
+                workflowDocument.saveRoutingData();
+            }
+            // perform the return to previous
+            KEWServiceLocator.getWorkflowDocumentActionsService().superUserReturnToPreviousNode(superUserPrincipalId, Long.valueOf(docId), nodeName, annotation);
+            // refetch the WorkflowDocument after the return to previous is completed
+            results = createResults(new WorkflowDocument(superUserPrincipalId, Long.decode(docId)));
+        } catch (WorkflowServiceErrorException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        } catch (WorkflowException e) {
+            results = createErrorResults("Workflow Error: " + e.getLocalizedMessage());
+        }
+
+        return results;
+    }
+
     private NoteDTO getNote(NoteDTO[] notes, String noteId) {
     	NoteDTO note = null;
 
@@ -898,8 +1080,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @throws WorkflowException if something goes wrong
 	 */
 	private WorkflowDocument setupWorkflowDocument(String docId, String principalId, String docTitle, String docContent) throws WorkflowException {
-		WorkflowIdDTO principalIdVO = new WorkflowIdDTO(principalId);
-		WorkflowDocument workflowDocument = new WorkflowDocument(principalIdVO, Long.decode(docId));
+		WorkflowDocument workflowDocument = new WorkflowDocument(principalId, Long.decode(docId));
 		if (StringUtils.isNotEmpty(docTitle)) {
 			workflowDocument.setTitle(docTitle);
 		}

@@ -460,4 +460,150 @@ public interface SimpleDocumentActionsWebService {
                                                                 @WebParam(name = "docTitle") String docTitle,
                                                                 @WebParam(name = "docContent") String docContent);
 
+    /**
+     * This method revokes all AdHoc requests set on the document at the specified node.
+     * 
+     * @param docId
+     *            KEW document id of the document
+     * @param principalId
+     *            principal id of the user who is revoking the requests
+     * @param docTitle
+     *            title for this document (updated if non-null)
+     * @param docContent
+     *            xml content for this document (updated if non-null)
+     * @param nodeName
+     *            name of the route node that adhoc requests should be revoked from
+     * @param annotation
+     *            a comment associated with this request
+     * @return StandardResponse including the standard set of return values
+     */
+    public StandardResponse revokeAdHocRequestsByNodeName(String docId, String principalId, String docTitle, String docContent, String nodeName, String annotation);
+
+    /**
+     * This method revokes all AdHoc requests set on the document for the specified principal.
+     * 
+     * @param docId
+     *            KEW document id of the document
+     * @param principalId
+     *            principal id of the user who is revoking the requests
+     * @param docTitle
+     *            title for this document (updated if non-null)
+     * @param docContent
+     *            xml content for this document (updated if non-null)
+     * @param adhocPrincipalId
+     *            principal ID of the principal that should have all their adhoc requests revoked
+     * @param annotation
+     *            a comment associated with this request
+     * @return StandardResponse including the standard set of return values
+     */
+    public StandardResponse revokeAdHocRequestsByPrincipalId(String docId, String principalId, String docTitle, String docContent, String adhocPrincipalId, String annotation);
+
+    /**
+     * This method revokes all AdHoc requests set on the document for a specified group.
+     * 
+     * @param docId
+     *            KEW document id of the document that is being returned
+     * @param principalId
+     *            principal id of the user who is revoking the requests
+     * @param docTitle
+     *            title for this document (updated if non-null)
+     * @param docContent
+     *            xml content for this document (updated if non-null)
+     * @param groupId
+     *            groupId of the group that should have adhoc requests revoked
+     * @param annotation
+     *            a comment associated with this request
+     * @return StandardResponse including the standard set of return values
+     */
+    public StandardResponse revokeAdHocRequestsByGroupId(String docId, String principalId, String docTitle, String docContent, String groupId, String annotation);
+
+    /**
+     * This method revokes the AdHoc request set on the document for the specified action request.
+     * 
+     * @param docId
+     *            KEW document id of the document
+     * @param principalId
+     *            principal id of the user who is revoking the requests
+     * @param docTitle
+     *            title for this document (updated if non-null)
+     * @param docContent
+     *            xml content for this document (updated if non-null)
+     * @param actionRequestId
+     *            the id of the adhoc request to be revoked
+     * @param annotation
+     *            a comment associated with this request
+     * @return StandardResponse including the standard set of return values
+     */
+    public StandardResponse revokeAdHocRequestsByActionRequestId(String docId, String principalId, String docTitle, String docContent, String actionRequestId, String annotation);
+
+    /**
+     * This method will super user approve the document.
+     * 
+     * @param docId
+     *            KEW document id of the document
+     * @param superUserPrincipalId
+     *            principal id of the super user who is taking the action
+     * @param docTitle
+     *            title for this document (updated if non-null)
+     * @param docContent
+     *            xml content for this document (updated if non-null)
+     * @param annotation
+     *            a comment associated with this request
+     * @return StandardResponse including the standard set of return values
+     */
+    public StandardResponse superUserApprove(String docId, String superUserPrincipalId, String docTitle, String docContent, String annotation);
+
+    /**
+     * This method will super user disapprove the document.
+     * 
+     * @param docId
+     *            KEW document id of the document
+     * @param superUserPrincipalId
+     *            principal id of the super user who is taking the action
+     * @param docTitle
+     *            title for this document (updated if non-null)
+     * @param docContent
+     *            xml content for this document (updated if non-null)
+     * @param annotation
+     *            a comment associated with this request
+     * @return StandardResponse including the standard set of return values
+     */
+    public StandardResponse superUserDisapprove(String docId, String superUserPrincipalId, String docTitle, String docContent, String annotation);
+
+    /**
+     * This method will super user cancel the document.
+     * 
+     * @param docId
+     *            KEW document id of the document
+     * @param superUserPrincipalId
+     *            principal id of the super user who is taking the action
+     * @param docTitle
+     *            title for this document (updated if non-null)
+     * @param docContent
+     *            xml content for this document (updated if non-null)
+     * @param annotation
+     *            a comment associated with this request
+     * @return StandardResponse including the standard set of return values
+     */
+    public StandardResponse superUserCancel(String docId, String superUserPrincipalId, String docTitle, String docContent, String annotation);
+
+    /**
+     * Return a KEW document to a previous route node. This method should be used with caution.
+     * 
+     * @param docId
+     *            KEW document id of the document to return to a previous node
+     * @param superUserPrincipalId
+     *            principal id of the super user who is requesting this action
+     * @param docTitle
+     *            title for this document (updated if non-null)
+     * @param docContent
+     *            xml content for this document (updated if non-null)
+     * @param nodeName
+     *            name of the route node to return to
+     * @param annotation
+     *            a comment associated with this request
+     * @return StandardResponse including the standard set of return values
+     */
+    public StandardResponse superUserReturnToPrevious(String docId, String superUserPrincipalId, String docTitle, String docContent, String nodeName, String annotation);
+
 }

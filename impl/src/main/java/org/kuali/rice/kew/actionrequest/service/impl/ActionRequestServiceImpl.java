@@ -13,9 +13,19 @@
  */
 package org.kuali.rice.kew.actionrequest.service.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -35,13 +45,15 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.*;
+import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.PerformanceLogger;
+import org.kuali.rice.kew.util.ResponsibleParty;
+import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
-
-import java.util.*;
 
 
 /**
@@ -220,6 +232,9 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         if (deactivateOnActionAlreadyTaken(actionRequest, activationContext)) {
             return;
         }
+        if (deactivateOnEmptyGroup(actionRequest, activationContext)) {
+        	return;
+        }
         actionRequest.setStatus(KEWConstants.ACTION_REQUEST_ACTIVATED);
         if (!activationContext.isSimulation()) {
             saveActionRequest(actionRequest);
@@ -311,7 +326,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     	}
     }
 
-    private boolean deactivateOnActionAlreadyTaken(ActionRequestValue actionRequestToActivate,
+    protected boolean deactivateOnActionAlreadyTaken(ActionRequestValue actionRequestToActivate,
             ActivationContext activationContext) {
 
         FutureRequestDocumentStateManager futureRequestStateMngr = null;
@@ -356,6 +371,21 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         	LOG.debug("Forcing action for action request " + actionRequestToActivate.getActionRequestId());
         }
         return false;
+    }
+    
+    /**
+     * Checks if the action request which is being activated has a group with no members.  If this is the case then it will immediately
+     * initiate de-activation on the request since a group with no members will result in no action items being generated so should be
+     * effectively skipped.
+     */
+    protected boolean deactivateOnEmptyGroup(ActionRequestValue actionRequestToActivate, ActivationContext activationContext) {
+    	if (actionRequestToActivate.isGroupRequest()) {
+    		 if (KIMServiceLocator.getGroupService().getMemberPrincipalIds(actionRequestToActivate.getGroup().getGroupId()).isEmpty()) {
+    			 deactivateRequest(null, actionRequestToActivate, null, activationContext);
+    			 return true;
+         	}
+    	}
+    	return false;
     }
 
     public void deactivateRequest(ActionTakenValue actionTaken, ActionRequestValue actionRequest) {
@@ -665,9 +695,10 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public void saveActionRequest(ActionRequestValue actionRequest) {
-        if (actionRequest.isGroupRequest() && (!actionRequest.getGroup().isActive() 
-        		|| KIMServiceLocator.getGroupService().getMemberPrincipalIds(actionRequest.getGroup().getGroupId()).size() == 0 )) {
-        	throw new RuntimeException("Routing to inactive workgroup.  Putting document in exception routing.");
+        if (actionRequest.isGroupRequest()) {
+        	if (!actionRequest.getGroup().isActive()) {
+        		throw new RiceRuntimeException("Attempted to save an action request with an inactive group.");
+        	}
         }
         getActionRequestDAO().saveActionRequest(actionRequest);
     }

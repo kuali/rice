@@ -17,12 +17,11 @@
 package org.kuali.rice.kew.routing;
 
 import org.junit.Test;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.exception.InvalidActionTakenException;
-import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 public class RoutingWithEmptyWorkGroupTest extends KEWTestCase {
 
@@ -39,23 +38,28 @@ public class RoutingWithEmptyWorkGroupTest extends KEWTestCase {
 		WorkflowDocument doc = new WorkflowDocument(user1PrincipalId, "EmptyWorkgroupDocType");
 
 		doc = new WorkflowDocument("user1", doc.getRouteHeaderId());
-		try {
-			doc.routeDocument("");
-			fail("document should have thrown routing exception");
-		} catch (Exception e) {
 
-		}
-		TestUtilities.getExceptionThreader().join();//wait for doc to go into exception routing
-		doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
-		assertTrue("Document should be in exception routing because workgroup is empty", doc.stateIsException());
+		doc.routeDocument("");
 
-		try {
-			doc.routeDocument("routing a document that is in exception routing");
-			fail("Succeeded in routing document that is in exception routing");
-		} catch (InvalidActionTakenException iate) {
-			log.info("Expected exception occurred: " + iate);
-		} catch (WorkflowException we) {
-			fail("Attempt at routing document in exception routing succeeded, when it should have been an InvalidActionTakenException");
+		// the document should skip node 1 because it is routing to user1, it should
+		// skip node 2 (effectively) because that node is using a group with no members,
+		// and then it should land on node 3 being in user 2's action list
+		
+		doc = new WorkflowDocument(user2PrincipalId, doc.getRouteHeaderId());
+		
+		assertTrue("Document should be enroute", doc.stateIsEnroute());
+		TestUtilities.assertAtNode(doc, "Node3");
+		
+		TestUtilities.assertInActionList(user2PrincipalId, doc.getRouteHeaderId());
+		
+		// verify that an action request was generated at Node 2 to the "EmptyWorkgroup" but was immediately deactivated
+		ActionRequestDTO[] actionRequests = doc.getActionRequests();
+		for (ActionRequestDTO actionRequest : actionRequests) {
+			if ("Node2".equals(actionRequest.getNodeName())) {
+				assertTrue("action request should be for a group", actionRequest.isGroupRequest());
+				assertTrue("action request should be marked as \"done\"", actionRequest.isDone());
+				assertTrue("Group should have no members.", KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId()).isEmpty());
+			}
 		}
 	}
 }

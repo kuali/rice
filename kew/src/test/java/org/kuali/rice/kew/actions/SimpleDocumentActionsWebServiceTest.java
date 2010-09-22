@@ -109,7 +109,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 		DocumentResponse dr = simpleService.create(getPrincipalIdForName("admin"),"doc1", "BlanketApproveSequentialTest", "Doc1Title");
 		assertTrue(StringUtils.isEmpty(dr.getErrorMessage()));
 		// verify document content is empty
-        assertTrue("doc content should be empty", ((dr.getDocContent() == null) || (dr.getDocContent().isEmpty())));
+        assertTrue("doc content should be empty", ((dr.getDocContent() == null) || (StringUtils.isBlank(dr.getDocContent()))));
         assertEquals("doc title is wrong", docTitle1, dr.getTitle());
         String docId = dr.getDocId();
         String docContent = "<foo>bar</foo>";
@@ -341,7 +341,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         String notSuperUserPrincipalName = "fred";
         verifyNotSuperUser(simpleService, docId, notSuperUserPrincipalName);
         StandardResponse sr = simpleService.superUserApprove(docId, getPrincipalIdForName(notSuperUserPrincipalName), null, null, "");
-        if ( (sr.getErrorMessage() == null) || (sr.getErrorMessage().isEmpty()) ) {
+        if ( (sr.getErrorMessage() == null) || StringUtils.isBlank(sr.getErrorMessage()) ) {
             fail("document was successfully approved by invalid super user");
         }
 
@@ -370,7 +370,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         String notSuperUserPrincipalName = "fred";
         verifyNotSuperUser(simpleService, docId, notSuperUserPrincipalName);
         StandardResponse sr = simpleService.superUserDisapprove(docId, getPrincipalIdForName(notSuperUserPrincipalName), null, null, "");
-        if ( (sr.getErrorMessage() == null) || (sr.getErrorMessage().isEmpty()) ) {
+        if ( (sr.getErrorMessage() == null) || StringUtils.isBlank(sr.getErrorMessage()) ) {
             fail("document was successfully disapproved by invalid super user");
         }
 
@@ -398,7 +398,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
         String notSuperUserPrincipalName = "fred";
         verifyNotSuperUser(simpleService, docId, notSuperUserPrincipalName);
         StandardResponse sr = simpleService.superUserCancel(docId, getPrincipalIdForName(notSuperUserPrincipalName), null, null, "");
-        if ( (sr.getErrorMessage() == null) || (sr.getErrorMessage().isEmpty()) ) {
+        if ( (sr.getErrorMessage() == null) || StringUtils.isBlank(sr.getErrorMessage()) ) {
             fail("document was successfully cancelled by invalid super user");
         }
 
@@ -435,7 +435,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
         // attempt to return document to previous with invalid user
         sr = simpleService.returnToPreviousNodeWithUpdates(docId, getPrincipalIdForName("delyea"), "", "WorkflowDocument", null, null);
-        if ( (sr.getErrorMessage() == null) || (sr.getErrorMessage().isEmpty()) ) {
+        if ( (sr.getErrorMessage() == null) || StringUtils.isBlank(sr.getErrorMessage())) {
             fail("document was successfully returned to previous by invalid user");
         }
 
@@ -472,7 +472,7 @@ public class SimpleDocumentActionsWebServiceTest extends KEWTestCase {
 
         // attempt to return document to previous with invalid user
         sr = simpleService.superUserReturnToPrevious(docId, getPrincipalIdForName("delyea"), null, null, "WorkflowDocument", "");
-        if ( (sr.getErrorMessage() == null) || (sr.getErrorMessage().isEmpty()) ) {
+        if ( (sr.getErrorMessage() == null) || StringUtils.isBlank(sr.getErrorMessage())) {
             fail("document was successfully returned to previous by invalid user");
         }
 

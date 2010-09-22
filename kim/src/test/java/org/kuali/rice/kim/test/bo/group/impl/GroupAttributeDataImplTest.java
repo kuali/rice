@@ -36,8 +36,7 @@ public class GroupAttributeDataImplTest extends KIMTestCase {
 	
 	public void setUp() throws Exception {
 		super.setUp();
-		grpAttDataImpl = (GroupAttributeDataImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupService"));
-		//groupUpdateService = (GroupUpdateServiceImpl)GlobalResourceLoader.getService(new QName("KIM", "kimGroupUpdateService"));
+		
 	}
 	@Override
     protected String getModuleName() {

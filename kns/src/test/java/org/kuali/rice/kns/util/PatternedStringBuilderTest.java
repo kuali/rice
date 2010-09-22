@@ -13,11 +13,12 @@ public class PatternedStringBuilderTest extends KNSTestCase{
  
  @Test
  public void testSprintf(){
-  PatternedStringBuilder patterenedStringBuilder = new PatternedStringBuilder("int");
+  double pi = Math.PI;
+  PatternedStringBuilder patterenedStringBuilder = new PatternedStringBuilder("pi = %5.3f");
   
-  patterenedStringBuilder.setPattern("int");
-  String expectedVal = patterenedStringBuilder.sprintf(5);
-  assertEquals("5",expectedVal);
+  //patterenedStringBuilder.setPattern("int");
+  String expectedVal = patterenedStringBuilder.sprintf(pi);
+  assertEquals("pi = 3.142",expectedVal);
  }
  
 

@@ -16,6 +16,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -28,6 +29,7 @@ import org.kuali.rice.kim.test.KIMTestCase;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Ignore
  public class GroupMemberImplTest extends KIMTestCase {
 	 /**
 	private GroupMemberImpl groupMember;

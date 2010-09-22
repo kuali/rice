@@ -27,7 +27,7 @@
                            http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
                            http://www.springframework.org/schema/context
-                           http://www.springframework.org/schema/context/spring-context-2.5.xsd	
+                           http://www.springframework.org/schema/context/spring-context-2.5.xsd
                            http://www.springframework.org/schema/lang
                            http://www.springframework.org/schema/lang/spring-lang-2.5.xsd
                            http://www.springframework.org/schema/tx
@@ -770,20 +770,21 @@
     <bean id="documentAdHocService" class="org.kuali.rice.kns.service.impl.DocumentAdHocServiceImpl"/>
 
 	<bean id="documentDao" class="org.kuali.rice.kns.dao.proxy.DocumentDaoProxy">
-		<property name="businessObjectDao" ref="businessObjectDao" />
-    <property name="documentDaoJpa" ref="documentDaoJpa" />
-    <property name="documentDaoOjb" ref="documentDaoOjb" />
+      <property name="documentDaoJpa" ref="documentDaoJpa" />
+      <property name="documentDaoOjb" ref="documentDaoOjb" />
 	</bean>
 
   <bean id="documentDaoJpa" class="org.kuali.rice.kns.dao.impl.DocumentDaoJpa">
-    <property name="businessObjectDao" ref="businessObjectDao" />
-    <property name="entityManager" ref="knsEntityManager"/>
-    <property name="documentAdHocService" ref="documentAdHocService"/>
+    <!-- Constructor injection only please to help enforce completeness of instances -->
+    <constructor-arg ref="businessObjectDao" />
+    <constructor-arg ref="documentAdHocService"/>
+    <constructor-arg  ref="knsEntityManager"/>
   </bean>
 
   <bean id="documentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.DocumentDaoOjb">
-    <property name="businessObjectDao" ref="businessObjectDao" />
-    <property name="documentAdHocService" ref="documentAdHocService"/>
+    <!-- Constructor injection only please to help enforce completeness of instances -->
+    <constructor-arg ref="businessObjectDao" />
+    <constructor-arg ref="documentAdHocService"/>
   </bean>
 
   <bean id="documentHeaderDao" class="org.kuali.rice.kns.dao.proxy.DocumentHeaderDaoProxy">
@@ -848,17 +849,20 @@
   <bean id="attachmentDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.AttachmentDaoOjb" />
 
   <bean id="businessObjectDao" class="org.kuali.rice.kns.dao.proxy.BusinessObjectDaoProxy">
+    <!-- Constructor injection only please to help enforce completeness of instances -->
     <property name="businessObjectDaoJpa" ref="businessObjectDaoJpa" />
     <property name="businessObjectDaoOjb" ref="businessObjectDaoOjb" />
   </bean>
 
   <bean id="businessObjectDaoJpa" class="org.kuali.rice.kns.dao.impl.BusinessObjectDaoJpa">
-    <property name="persistenceStructureService" ref="persistenceStructureService" />
-    <property name="entityManager" ref="knsEntityManager"/>
+    <!-- Constructor injection only please to help enforce completeness of instances -->
+    <constructor-arg ref="knsEntityManager"/>
+    <constructor-arg ref="persistenceStructureService" />
   </bean>
 
 	<bean id="businessObjectDaoOjb" parent="platformAwareDao" class="org.kuali.rice.kns.dao.impl.BusinessObjectDaoOjb">
-		<property name="persistenceStructureService" ref="persistenceStructureService" />
+        <!-- Constructor injection only please to help enforce completeness of instances -->
+		<constructor-arg ref="persistenceStructureService" />
 	</bean>
 
 	<bean id="sessionDocumentDao" class="org.kuali.rice.kns.dao.proxy.SessionDocumentDaoProxy">
@@ -1051,7 +1055,7 @@
     </bean>
 
     <bean id="campusGroupTypeService" class="org.kuali.rice.kns.service.impl.CampusGroupTypeServiceImpl" />
-    
+
     <bean id="inactivateableFromToService" class="org.kuali.rice.kns.service.impl.InactivateableFromToServiceImpl">
     	<property name="dateTimeService"><ref bean="dateTimeService" /></property>
     	<property name="businessObjectDictionaryService"><ref bean="businessObjectDictionaryService" /></property>

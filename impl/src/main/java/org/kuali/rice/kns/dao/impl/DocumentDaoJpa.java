@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kim.bo.Group;
@@ -48,8 +49,11 @@ public class DocumentDaoJpa implements DocumentDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-    public DocumentDaoJpa() {
+    public DocumentDaoJpa(EntityManager entityManager, BusinessObjectDao businessObjectDao, DocumentAdHocService documentAdHocService) {
         super();
+        this.entityManager = entityManager;
+        this.businessObjectDao = businessObjectDao;
+        this.documentAdHocService = documentAdHocService;
     }
 
     /*
@@ -142,6 +146,13 @@ public class DocumentDaoJpa implements DocumentDao {
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
+    /**
+	 * @return the documentAdHocService
+	 */
+	public DocumentAdHocService getDocumentAdHocService() {
+		return this.documentAdHocService;
+	}
 
     /**
      * Setter for injecting the DocumentAdHocService

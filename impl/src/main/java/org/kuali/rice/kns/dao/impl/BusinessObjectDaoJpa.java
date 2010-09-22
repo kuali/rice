@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2008 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,6 +48,11 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 	private OjbCollectionHelper ojbCollectionHelper;
 
+	public BusinessObjectDaoJpa(EntityManager entityManager, PersistenceStructureService persistenceStructureService) {
+		this.entityManager = entityManager;
+		this.persistenceStructureService = persistenceStructureService;
+	}
+
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
 	 */
@@ -59,7 +64,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class,
 	 *      java.util.Map)
 	 */
-	public PersistableBusinessObject findByPrimaryKey(Class clazz, Map primaryKeys) { 
+	public PersistableBusinessObject findByPrimaryKey(Class clazz, Map primaryKeys) {
 		PersistableBusinessObject bo = null;
 		try {
 			bo = (PersistableBusinessObject) new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildJpaCriteria(clazz, primaryKeys)).toQuery().getSingleResult();
@@ -69,7 +74,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 	/**
 	 * Retrieves all of the records for a given class name.
-	 * 
+	 *
 	 * @param clazz -
 	 *            the name of the object being used, either KualiCodeBase or a
 	 *            subclass
@@ -92,7 +97,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 	/**
 	 * This is the default impl that comes with Kuali - uses OJB.
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(java.lang.Class,
 	 *      java.util.Map)
 	 */
@@ -113,7 +118,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	public Collection findAllInactive(Class clazz) {
 		return new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, buildInactiveJpaCriteria(clazz)).toQuery().getResultList();
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAllActiveOrderBy(java.lang.Class,
 	 *      java.lang.String, boolean)
@@ -136,7 +141,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 	/**
 	 * This is the default impl that comes with Kuali - uses OJB.
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#countMatching(java.lang.Class,
 	 *      java.util.Map)
 	 */
@@ -146,7 +151,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 	/**
 	 * This is the default impl that comes with Kuali - uses OJB.
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#countMatching(java.lang.Class,
 	 *      java.util.Map, java.util.Map)
 	 */
@@ -158,7 +163,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 	/**
 	 * This is the default impl that comes with Kuali - uses OJB.
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(java.lang.Class,
 	 *      java.util.Map)
 	 */
@@ -170,7 +175,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 	/**
 	 * Saves a business object.
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#save(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
 	public void save(PersistableBusinessObject bo) throws DataAccessException {
@@ -192,12 +197,12 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 		*/
 		reattachAndSave(bo);
 	}
-	
-		
+
+
 
 	/**
 	 * Saves a business object.
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#save(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
 	public void save(List businessObjects) throws DataAccessException {
@@ -209,14 +214,14 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 	/**
 	 * Deletes the business object passed in.
-	 * 
+	 *
 	 * @param bo
 	 * @throws DataAccessException
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#delete(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
 	public void delete(PersistableBusinessObject bo) {
 		// TODO: Check for an extension object and delete it if exists
-		entityManager.remove(entityManager.merge(bo));		
+		entityManager.remove(entityManager.merge(bo));
 	}
 
 	/**
@@ -299,7 +304,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 	/**
 	 * Gets the persistenceStructureService attribute.
-	 * 
+	 *
 	 * @return Returns the persistenceStructureService.
 	 */
 	protected PersistenceStructureService getPersistenceStructureService() {
@@ -308,7 +313,7 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 
 	/**
 	 * Sets the persistenceStructureService attribute value.
-	 * 
+	 *
 	 * @param persistenceStructureService
 	 *            The persistenceStructureService to set.
 	 */
@@ -348,5 +353,5 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
-	
+
 }

@@ -42,7 +42,6 @@ public class DocumentDaoProxy implements DocumentDao {
 
 	private static Logger LOG = Logger.getLogger(DocumentDaoProxy.class);
 
-    private BusinessObjectDao businessObjectDao;
     private DocumentDao documentDaoJpa;
     private DocumentDao documentDaoOjb;
 
@@ -68,12 +67,13 @@ public class DocumentDaoProxy implements DocumentDao {
                 } else {
                     if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
                         //using JPA
-                    	DocumentDaoJpa documentDaoJpa = new DocumentDaoJpa();
                         if (entityManager != null) {
-                            documentDaoJpa.setEntityManager(entityManager);
-                            documentDaoJpa.setBusinessObjectDao(businessObjectDao);
-                            documentDaoJpa.setDocumentAdHocService((DocumentAdHocService)KNSServiceLocator.getService(DOCUMENT_AD_HOC_SERVICE_NAME));
-                            documentDaoValues.put(dataSourceName, documentDaoJpa);
+                        	// we set the entity manager directly in the constructor
+                        	DocumentDaoJpa documentDaoJpa =
+                        		new DocumentDaoJpa(entityManager, this.documentDaoJpa.getBusinessObjectDao(),
+                        				this.documentDaoJpa.getDocumentAdHocService());
+
+                        	documentDaoValues.put(dataSourceName, documentDaoJpa);
                             return documentDaoJpa;
                         } else {
                             throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
@@ -81,10 +81,14 @@ public class DocumentDaoProxy implements DocumentDao {
 
                     } else {
                         //using OJB
-                    	DocumentDaoOjb documentDaoOjb = new DocumentDaoOjb();
-                        documentDaoOjb.setJcdAlias(dataSourceName);
-                        documentDaoOjb.setBusinessObjectDao(businessObjectDao);
-                        documentDaoOjb.setDocumentAdHocService((DocumentAdHocService)KNSServiceLocator.getService(DOCUMENT_AD_HOC_SERVICE_NAME));
+                    	DocumentDaoOjb documentDaoOjb =
+                    		new DocumentDaoOjb(
+                    			this.documentDaoOjb.getBusinessObjectDao(),
+                    			this.documentDaoOjb.getDocumentAdHocService());
+
+                    	// set the data source alias
+                    	documentDaoOjb.setJcdAlias(dataSourceName);
+
                         documentDaoValues.put(dataSourceName, documentDaoOjb);
                         return documentDaoOjb;
                     }
@@ -114,12 +118,23 @@ public class DocumentDaoProxy implements DocumentDao {
 	 * @see org.kuali.rice.kns.dao.DocumentDao#getBusinessObjectDao()
 	 */
 	public BusinessObjectDao getBusinessObjectDao() {
-		return businessObjectDao;
+		if (OrmUtils.isJpaEnabled()) {
+			return documentDaoJpa.getBusinessObjectDao();
+		} else {
+			return documentDaoOjb.getBusinessObjectDao();
+		}
 	}
 
-	public void setBusinessObjectDao(BusinessObjectDao businessObjectDao) {
-        this.businessObjectDao = businessObjectDao;
-    }
+	/**
+	 * @see org.kuali.rice.kns.dao.DocumentDao#getDocumentAdHocService()
+	 */
+	public DocumentAdHocService getDocumentAdHocService() {
+		if (OrmUtils.isJpaEnabled()) {
+			return documentDaoJpa.getDocumentAdHocService();
+		} else {
+			return documentDaoOjb.getDocumentAdHocService();
+		}
+	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.DocumentDao#save(org.kuali.rice.kns.document.Document)

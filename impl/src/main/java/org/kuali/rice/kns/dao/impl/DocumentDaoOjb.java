@@ -46,8 +46,10 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
     protected DocumentAdHocService documentAdHocService;
 
 
-    public DocumentDaoOjb() {
+    public DocumentDaoOjb(BusinessObjectDao businessObjectDao, DocumentAdHocService documentAdHocService) {
         super();
+        this.businessObjectDao = businessObjectDao;
+        this.documentAdHocService = documentAdHocService;
     }
 
     /*
@@ -117,14 +119,11 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
     }
 
     /**
-     * Returns the {@link BusinessObjectDao}, lazily initializing if necessary
+     * Returns the {@link BusinessObjectDao}
      * @see org.kuali.rice.kns.dao.DocumentDao#getBusinessObjectDao()
      * @return the {@link BusinessObjectDao}
      */
-    public synchronized BusinessObjectDao getBusinessObjectDao() {
-        if (this.businessObjectDao == null) {
-            this.businessObjectDao = KNSServiceLocator.getBusinessObjectDao();
-        }
+    public BusinessObjectDao getBusinessObjectDao() {
         return businessObjectDao;
     }
 
@@ -132,9 +131,16 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      * Sets the {@link BusinessObjectDao}
      * @param businessObjectDao ths {@link BusinessObjectDao}
      */
-    public synchronized void setBusinessObjectDao(BusinessObjectDao businessObjectDao) {
+    public void setBusinessObjectDao(BusinessObjectDao businessObjectDao) {
         this.businessObjectDao = businessObjectDao;
     }
+
+    /**
+	 * @return the documentAdHocService
+	 */
+	public DocumentAdHocService getDocumentAdHocService() {
+		return this.documentAdHocService;
+	}
 
     /**
      * Setter for injecting the DocumentAdHocService
@@ -143,5 +149,7 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
     public void setDocumentAdHocService(DocumentAdHocService dahs) {
     	this.documentAdHocService = dahs;
     }
+
+
 
 }

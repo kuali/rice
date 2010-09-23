@@ -266,6 +266,10 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
                                 
                 if (name.equals(IMPORT_NAME)) {
                     String configLocation = parseValue(p.getValue(), new HashSet<String>());
+                    // Remove new lines and white space.
+                    if(configLocation != null){
+                    	configLocation = configLocation.trim();
+                    }
                     parseConfig(configLocation, unmarshaller, depth + 1);
                 } else if(p.isSystem()){
                 	if (p.isOverride() || !(System.getProperty(name) != null)){

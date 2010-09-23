@@ -21,6 +21,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -115,7 +117,20 @@ public class PreferencesServiceImpl implements PreferencesService {
         String defaultShowCurrentNode = kcs.getPropertyString("userOptions.default.showCurrentNode");                                                                               
         String defaultDelegatorFilterOnActionList = kcs.getPropertyString("userOptions.default.delegatorFilterOnActionList");                                                       
         String defaultPrimaryDelegatorFilterOnActionList = kcs.getPropertyString("userOptions.default.primaryDelegatorFilterOnActionList");                                         
-        String defaultUseOutBox = kcs.getPropertyString("userOptions.default.useOutBox");                                                                                           
+        
+        // TODO: remove the old deprecated OUT_BOX_DEFAULT_PREFERENCE_ON usage in a future version
+        // see KULRICE-4582
+        
+        String defaultUseOutBox = ConfigContext.getCurrentContextConfig().getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON);
+        if (!StringUtils.isBlank(defaultUseOutBox)) {
+        	if (Boolean.valueOf(defaultUseOutBox)) {
+        		defaultUseOutBox = "yes";
+        	} else {
+        		defaultUseOutBox = "no";
+        	}
+        } else {
+        	defaultUseOutBox = kcs.getPropertyString("userOptions.default.useOutBox");
+        }
                                                                                                                                                                                     
         Preferences preferences = new Preferences();                                                                                                                                
         preferences.setColorApproved(getOption(optionMap,APPROVED_DOC_COLOR, defaultColor, principalId, preferences).getOptionVal());                                               

@@ -271,7 +271,8 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 
 	public void refreshReferenceObject(String referenceObjectName) {
 		if ( StringUtils.isNotBlank(referenceObjectName) && !StringUtils.equals(referenceObjectName, "extension")) {
-            if ( getPersistenceStructureService().hasReference(this.getClass(), referenceObjectName)) {
+			final PersistenceStructureService pss = getPersistenceStructureService();
+			if ( pss.hasReference(this.getClass(), referenceObjectName) || pss.hasCollection(this.getClass(), referenceObjectName)) {
             	getPersistenceService().retrieveReferenceObject( this, referenceObjectName);
 			} else {
                 LOG.warn( "refreshReferenceObject() called with non-reference property: " + referenceObjectName );

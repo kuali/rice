@@ -83,13 +83,6 @@ public class QuestionPromptAction extends KualiAction {
 
         Properties parameters = new Properties();
 
-        Map parameterMap = request.getParameterMap();
-        for (Object parameterName : parameterMap.keySet()) {
-        	//ensures that the current methodToCall is not added to the url...this is a bit hacky
-        	if (!((String)parameterName).startsWith("methodToCall.processAnswer")) {
-        		parameters.put(parameterName, parameterMap.get(parameterName));	
-        	}
-        }
         parameters.put(KNSConstants.DOC_FORM_KEY, questionPromptForm.getFormKey());
         parameters.put(KNSConstants.QUESTION_CLICKED_BUTTON, getSelectedButton(request));
         parameters.put(KNSConstants.METHOD_TO_CALL_ATTRIBUTE, questionPromptForm.getCaller());

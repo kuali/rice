@@ -534,8 +534,11 @@ public class KualiRequestProcessor extends RequestProcessor {
 			saveAuditErrors(request);
 			
 			if (form instanceof PojoForm) {
-				final String guid = GlobalVariables.getUserSession().getEditablePropertiesHistoryHolder().addEditablePropertiesToHistory(((PojoForm)form).getEditableProperties());
-				((PojoForm)form).setActionEditablePropertiesGuid(guid);
+				if (((PojoForm)form).getEditableProperties() == null 
+						|| ((PojoForm)form).getEditableProperties().isEmpty()) {
+				    final String guid = GlobalVariables.getUserSession().getEditablePropertiesHistoryHolder().addEditablePropertiesToHistory(((PojoForm)form).getEditableProperties());
+				    ((PojoForm)form).setActionEditablePropertiesGuid(guid);
+				}
 			}
 			
 			return forward;

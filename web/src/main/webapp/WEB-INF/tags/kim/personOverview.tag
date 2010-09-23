@@ -29,7 +29,12 @@
 		 	</tr>
 			<tr>
      			<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.principalName}"  /></div></th>
-		 		<td><kul:htmlControlAttribute property="document.principalName" attributeEntry="${personAttributes.principalName}" readOnly="${readOnlyEntity}" /></td>
+		 		<td><kul:htmlControlAttribute property="document.principalName" attributeEntry="${personAttributes.principalName}" readOnly="${readOnlyEntity}" />		 			
+		 			<c:if test="${not readOnlyEntity}">
+		 				<br/>
+			 		    <label class="fineprint">(${personAttributes.principalName.label} must be lower case)</label>
+			 		</c:if>		 			
+		 		</td>
 		 		<th><div align="right"><kul:htmlAttributeLabel attributeEntry="${personAttributes.active}"  /></div></th>
 		 		<td><kul:htmlControlAttribute property="document.active" attributeEntry="${personAttributes.active}" readOnly="${readOnlyEntity}" /></td>
 		 	</tr>

@@ -31,6 +31,8 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
     protected boolean allowParenthesis = false;
     protected boolean allowDollar = false;
     protected boolean allowForwardSlash = false;
+    protected boolean lowerCase = false;
+    
     /**
      * @return allowPeriod
      */
@@ -122,13 +124,33 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
     public void setAllowUnderscore(boolean allowUnderscore) {
         this.allowUnderscore = allowUnderscore;
     }
+   
+    /**
+	 * @return the lowerCase
+	 */
+	public boolean isLowerCase() {
+		return this.lowerCase;
+	}
 
-
+	/**
+	 * @param lowerCase the lowerCase to set
+	 */
+	public void setLowerCase(boolean lowerCase) {
+		this.lowerCase = lowerCase;
+	}
+    
     /**
      * @see org.kuali.rice.kns.datadictionary.validation.ValidationPattern#getRegexString()
      */
     protected String getRegexString() {
     	StringBuilder regexString = new StringBuilder("[A-Za-z0-9");
+    	
+    	/*
+    	 * This check must be first because we are removing the base 'A-Z' if lowerCase == true
+    	 */
+    	if(lowerCase){
+    		regexString = new StringBuilder("[a-z0-9");
+    	}
 
         if (allowWhitespace) {
             regexString.append("\\s");
@@ -161,6 +183,9 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
     public void extendExportMap(ExportMap exportMap) {
         exportMap.set("type", "alphaNumeric");
 
+        if (lowerCase) {
+            exportMap.set("allowUpperCase", "true");
+        }
         if (allowWhitespace) {
             exportMap.set("allowWhitespace", "true");
         }
@@ -188,6 +213,9 @@ public class AlphaNumericValidationPattern extends CharacterLevelValidationPatte
 	protected String getValidationErrorMessageKeyOptions() {
 		final StringBuilder opts = new StringBuilder();
 
+		if (lowerCase) {
+			opts.append(".lowerCase");
+		}
 		if (allowWhitespace) {
 			opts.append(".allowWhitespace");
 		}

@@ -154,7 +154,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
     public void validateSearchParameters(Map fieldValues) {
         super.validateSearchParameters(fieldValues);
         if (StringUtils.isNotEmpty((String)fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME))) {
-            Person person = KIMServiceLocator.getPersonService().getPerson((String)fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME));
+            Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName((String)fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME));
             if (person == null) {
                 String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), OWNER_PRINCIPAL_NAME_PROPERTY_NAME);
                 GlobalVariables.getMessageMap().putError(OWNER_PRINCIPAL_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_EXISTENCE, attributeLabel);

@@ -70,7 +70,6 @@
                               userNameFieldName="newAdHocRoutePerson.name"
                               userName="${KualiForm.newAdHocRoutePerson.name}"
                               readOnly="${displayReadOnly}"
-                              renderOtherFields="true"
                               fieldConversions="principalName:newAdHocRoutePerson.id,name:newAdHocRoutePerson.name"
                               lookupParameters="newAdHocRoutePerson.id:principalName"
                               hasErrors="${hasErrors}" />
@@ -98,7 +97,6 @@
                               userNameFieldName="adHocRoutePerson[${ctr}].name"
                               userName="${KualiForm.document.adHocRoutePersons[ctr].name}"
                               readOnly="${displayReadOnly}"
-                              renderOtherFields="true"
                               fieldConversions="principalName:adHocRoutePerson[${ctr}].id,name:adHocRoutePerson[${ctr}].name"
                               lookupParameters="adHocRoutePerson[${ctr}].id:principalName"
 							  hasErrors="${hasErrors}" />

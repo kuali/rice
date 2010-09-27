@@ -27,8 +27,6 @@
 <%@ attribute name="lookupParameters" required="false" description="On return from lookup, these parameters describe which attributes of the business object to populate in the lookup parent." %>
 <%@ attribute name="referencesToRefresh" required="false" description="On return from the lookup, the references on the parent business object which will be refreshed." %>
 
-<%@ attribute name="renderOtherFields" required="false" description="If true, renders the principal id and the principal name as hidden fields." %>
-
 <%@ attribute name="hasErrors" required="false" description="Whether an error icon should be displayed by the field or not." %>
 <%@ attribute name="readOnly" required="false" description="Whether this field should be displayed as read only or not." %>
 <%@ attribute name="onblur" required="false" description="Javascript code which will be executed with the input field's onblur event is triggered." %>
@@ -78,7 +76,7 @@
         <span id="${userNameFieldName}.div">${userName}&nbsp;</span>
     </c:when>
     <c:otherwise><%-- guess at the name if the name field is not being rendered --%>
-        <span id="${fn:replace( userIdFieldName, ".principalName", ".name" )}.div">${userName}&nbsp;</span>
+        <span id='${fn:replace( userIdFieldName, ".principalName", ".name" )}.div'>${userName}&nbsp;</span>
         <%-- When the user name field is not set, most likely, the name is not passed through
              (It is also not available to be passed in, since only the Field objects are present
              for use by rowDisplay.tag.  So, we fire off the needed JS to update the name. --%>
@@ -88,15 +86,13 @@
     </c:otherwise>
 </c:choose>
   
-<c:if test="${renderOtherFields && !readOnly}">
-  <c:if test="${!empty universalIdFieldName}">
-    ${kfunc:registerEditableProperty(KualiForm, universalIdFieldName)}
-    <input type="hidden" name="${universalIdFieldName}" id="${universalIdFieldName}" value="${universalId}" />
-  </c:if>
-  <c:if test="${!empty userNameFieldName}">
-    ${kfunc:registerEditableProperty(KualiForm, userNameFieldName)}
-    <input type="hidden" name="${userNameFieldName}" id="${userNameFieldName}" value="${userName}" />
-  </c:if>
+<c:if test="${!empty universalIdFieldName}">
+  ${kfunc:registerEditableProperty(KualiForm, universalIdFieldName)}
+  <input type="hidden" name="${universalIdFieldName}" id="${universalIdFieldName}" value="${universalId}" />
+</c:if>
+<c:if test="${!empty userNameFieldName}">
+  ${kfunc:registerEditableProperty(KualiForm, userNameFieldName)}
+  <input type="hidden" name="${userNameFieldName}" id="${userNameFieldName}" value="${userName}" />
 </c:if>
 
 <c:if test="${highlight}">

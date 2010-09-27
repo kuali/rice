@@ -110,6 +110,17 @@ public class KualiExceptionIncidentForm extends KualiForm {
         
         super.populate(request);
         
+        // KULRICE-4402: ie explorer needs this.
+        if(notNull(request.getParameter(KNSConstants.CANCEL_METHOD + ".x")) && notNull(request.getParameter(KNSConstants.CANCEL_METHOD + ".y"))){
+        	this.setCancel(true);
+        }                
+    }
+    
+    private boolean notNull(String s){
+    	if(s != null && !"".equals(s)){
+    		return true;
+    	}else 
+    		return false;
     }
 
     /*

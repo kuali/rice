@@ -42,15 +42,14 @@ public class DefaultEmailService implements EmailService, InitializingBean {
 	public static final String USERNAME_PROPERTY = "mail.smtp.username";
 	public static final String PASSWORD_PROPERTY = "mail.smtp.password";
 	
-	private Mailer mailer;
+	protected Mailer mailer;
 	
+	/**
+	 * This method is called by Spring on initialization.  
+	 */
 	public void afterPropertiesSet() throws Exception {
-		String username = ConfigContext.getCurrentContextConfig().getProperty(USERNAME_PROPERTY);
-		String password = ConfigContext.getCurrentContextConfig().getProperty(PASSWORD_PROPERTY);
-		if (username != null && password != null) {
-			mailer = new Mailer(getConfigProperties(), username, password);
-		} else {
-			mailer = new Mailer(getConfigProperties());
+		if(getMailer() == null){
+			mailer = createMailer();
 		}
 	}
 
@@ -69,7 +68,7 @@ public class DefaultEmailService implements EmailService, InitializingBean {
             return;
         }
 		try {
-			mailer.sendMessage(
+			getMailer().sendMessage(
                         from.getFromAddress(),
                         to.getToAddress(),
                         subject.getSubject(),
@@ -82,11 +81,18 @@ public class DefaultEmailService implements EmailService, InitializingBean {
 
 
 	public void sendEmail(EmailFrom from, EmailToList to, EmailSubject subject, EmailBody body, EmailCcList cc, EmailBcList bc, boolean htmlMessage) {
+		if(getMailer() == null){
+			try {
+				mailer = createMailer();
+			} catch (Exception e) {
+				LOG.error("Error initializing mailer for multi-recipient email.", e);
+			}
+		}
 		if (to.getToAddresses().isEmpty()) {
 			LOG.error("List of To addresses must contain at least one entry.");
 		} else {
 			try {
-				mailer.sendMessage(
+				getMailer().sendMessage(
 						from.getFromAddress(), 
 						to.getToAddressesAsAddressArray(), 
 						subject.getSubject(), 
@@ -98,6 +104,37 @@ public class DefaultEmailService implements EmailService, InitializingBean {
 				LOG.error("Error sending email to multiple recipients.", e);
 			}
 		}
+	}
+
+	/**
+	 * @return the mailer
+	 */
+	public Mailer getMailer() {
+		return mailer;
+	}
+
+	/**
+	 * @param mailer the mailer to set
+	 * 
+	 * Note: If you want to test locally and not have a smtp server, you can, via spring,
+	 * inject the MockMailer. That class just prints the email via Log.info
+	 */
+	public void setMailer(Mailer mailer) {
+		this.mailer = mailer;
+	}
+	
+	protected Mailer createMailer(){
+		Mailer cMailer = null;
+		String username = ConfigContext.getCurrentContextConfig().getProperty(USERNAME_PROPERTY);
+		String password = ConfigContext.getCurrentContextConfig().getProperty(PASSWORD_PROPERTY);
+		if (username != null && password != null) {
+			cMailer = new Mailer(getConfigProperties(), username, password);
+			LOG.info("Rice Mailer being used. Username and Pass were found");
+		} else {
+			cMailer = new Mailer(getConfigProperties());
+			LOG.info("Rice Mailer being used. Username and Pass were not found");
+		}
+		return cMailer;
 	}
 
 }

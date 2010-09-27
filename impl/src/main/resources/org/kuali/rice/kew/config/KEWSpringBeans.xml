@@ -307,8 +307,16 @@
       <property name="extraOnLoad" value="storeCurrentDocTypeNameOnLoad()"/>
     </bean>
 
-	<bean id="enEmailService" class="org.kuali.rice.kew.mail.service.impl.DefaultEmailService"  lazy-init="true"/>
-
+	<!-- If you wanted to set up a mockMailer, you would uncomment the following 
+	<bean id="mockMailer" class="mocks.MockMailer">
+  		<constructor-arg index="0"><null/></constructor-arg>
+  	</bean>
+	<bean id="enEmailService" class="org.kuali.rice.kew.mail.service.impl.DefaultEmailService"  lazy-init="true">
+	 	<property name="mailer" ref="mockMailer"/>
+    </bean>
+    -->
+    <bean id="enEmailService" class="org.kuali.rice.kew.mail.service.impl.DefaultEmailService"  lazy-init="true" />
+    
 	<bean id="enEmailContentService" class="org.kuali.rice.kew.mail.service.impl.StyleableEmailContentServiceImpl" lazy-init="true">
         <property name="styleService" ref="enStyleService"/>
     </bean>

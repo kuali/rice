@@ -1669,10 +1669,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
-			String fakeName = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId).getPrincipalName();
-			if(fakeName == null || fakeName.equals("")) {
-				return "";
+			String fakeName = "";
+			KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
+			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
+				fakeName = kp.getPrincipalName();
 			}
+			
 			return fakeName;
 		}
 		return getMemberName(memberTypeCode, member);
@@ -1682,10 +1684,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
-			String fakeName = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId).getPrincipalName();
-			if(fakeName == null || fakeName.equals("")) {
-				return "";
-			}
+			String fakeName = "";
+			KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
+			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
+				fakeName = kp.getPrincipalName();
+			}			
 			return fakeName;
 		}
 		return getFullMemberName(memberTypeCode, member);

@@ -24,6 +24,7 @@ import java.util.List;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
+import org.jdom.output.Format.TextMode;
 import org.jdom.output.XMLOutputter;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -56,7 +57,10 @@ public class XmlExporterServiceImpl implements XmlExporterService, XmlConstants 
             appendIfNotEmpty(rootElement, exporter.export(dataSet));
         }
 
-        XMLOutputter outputer = new XMLOutputter(Format.getPrettyFormat());
+        Format f = Format.getRawFormat();
+        f.setExpandEmptyElements(false);
+        f.setTextMode(Format.TextMode.PRESERVE);
+        XMLOutputter outputer = new XMLOutputter(f);
         StringWriter writer = new StringWriter();
         try {
             outputer.output(document, writer);

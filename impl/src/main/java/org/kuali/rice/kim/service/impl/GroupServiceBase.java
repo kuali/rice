@@ -147,6 +147,9 @@ public abstract class GroupServiceBase {
 	protected boolean isGroupMemberOfGroupInternal(String groupMemberId, String groupId) {
 
 	    GroupImpl group = getGroupImpl(groupId);
+	    if (group == null) {
+	    	return false;
+	    }
 	    if( !group.isActive() ) {
 	        return false;
 	    }

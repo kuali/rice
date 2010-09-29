@@ -1117,7 +1117,7 @@
 												<xsl:choose>
 													<xsl:when test="attachments/attachment">
 														<xsl:for-each select="attachments/attachment">
-															<xsl:value-of select="fileName"/>  &#160;
+															<xsl:value-of select="fileName"/>  
 	                    												<input type="hidden" name="idInEdit">
 																<xsl:attribute name="value"><xsl:value-of select="../../noteId"/></xsl:attribute>
 															</input>
@@ -1127,7 +1127,7 @@
 																	<a href="javascript: document.forms[0].elements['methodToCall'].value = 'deleteAttachment'; document.forms[0].submit();">
 	
 	delete</a> 
-	                    												 &#160;
+	                    												
 	                    												<xsl:variable name="hrefStr">attachment?attachmentId=<xsl:value-of select="attachmentId"/>
 																</xsl:variable>
 																<a href="{$hrefStr}">
@@ -1158,7 +1158,7 @@
 													<xsl:choose>
 														<xsl:when test="$readOnly = 'true'"></xsl:when>
 														<xsl:otherwise>
-															<xsl:value-of select="fileName"/>  &#160;
+															<xsl:value-of select="fileName"/>
 	                    												<xsl:variable name="hrefStr">attachment?attachmentId=<xsl:value-of select="attachmentId"/>
 														</xsl:variable>
 														<a href="{$hrefStr}">
@@ -1247,6 +1247,13 @@
 	</xsl:template> 
 </xsl:stylesheet>
 </style>
+<!-- 
+<association>
+      <docType>eDoc.widgets</docType>
+      <style>widgets</style>
+      <active>true</active>
+</association>
+-->
 </edoclite>
 </data>
 

@@ -18,10 +18,13 @@ package org.kuali.rice.kew.batch;
 
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -31,11 +34,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.custommonkey.xmlunit.DetailedDiff;
 import org.custommonkey.xmlunit.Diff;
+import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Assert;
 import org.junit.Test;
+import org.kuali.rice.core.exception.InvalidXmlException;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -46,6 +55,8 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.FileCopyUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 
 /**
@@ -154,6 +165,8 @@ public class XmlIngestionTest extends KEWTestCase {
         // now export that xml into a file
         File reingestFile = File.createTempFile("widgetsTestOutput", ".xml");		
         FileUtils.writeByteArrayToFile(reingestFile, xmlBytes);
+        String ingestedString = FileUtils.readFileToString(ingestedFile);
+        String reingestedString = FileUtils.readFileToString(reingestFile);
         //assertTrue(FileUtils.contentEquals(ingestedFile, reingestFile));
         // TODO: EIther grab the XMLUnit lib from the interwebs and include it as part of the dependency package for KEW
         // or extend out comparisons for xml within rice and include that as part of the unit testing framework
@@ -162,6 +175,7 @@ public class XmlIngestionTest extends KEWTestCase {
 //
 //        byte[] ingestedbuffer = new byte[(int) ingestedFile.length()];
 //        byte[] reingestedbuffer = new byte[(int) reingestFile.length()];
+        
 //        BufferedInputStream ingestedData = null;
 //        BufferedInputStream reingestedData = null;
 //        try {
@@ -182,9 +196,19 @@ public class XmlIngestionTest extends KEWTestCase {
         // Start using the xmlunit for testing that the xml looks similar
         
         // this is the sample: see if this works first:
-//        Diff d = new Diff("<a><b/><c/></a>", "<a><c/><b/></a>");
+        
+
+//        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+//        Document ingestedDoc = builder.newDocument();
+//        Document reingestedDoc = builder.newDocument();
+//        InputStream ingestedStream = new BufferedInputStream(new FileInputStream(ingestedFile.getPath()));
+//        ingestedDoc = builder.parse(ingestedStream);
+//        reingestedDoc = builder.parse(reingestFile); 
+        XMLUnit.setIgnoreWhitespace(false);
+
+        Diff d = new Diff(ingestedString, reingestedString);
 //        assertFalse(d.identical()); // CHILD_NODELIST_SEQUENCE Difference
-//        assertTrue(d.similar());
+        assertTrue(d.similar());
         
         
         // end sample :diff:
@@ -195,6 +219,19 @@ public class XmlIngestionTest extends KEWTestCase {
 //        XMLUnit.setIgnoreWhitespace(true);
         assertTrue(true);
         
+//        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+//    	Document document = builder.newDocument();
+//    	Element rootElem = document.createElement("root");
+//    	rootElem.setAttribute("test", "stringlength($value) > 0");
+//    	document.appendChild(rootElem);
+//
+//    	System.out.println(XmlHelper.writeNode(document, true));
+//
+//    	DOMBuilder domBuilder = new DOMBuilder();
+//    	org.jdom.Document document2 = domBuilder.build(document);
+//    	System.out.println(XmlHelper.jotDocument(document2));
+//    	List<XmlDocCollection> collections = new ArrayList<XmlDocCollection>();
+//        
 
     }
 

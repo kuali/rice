@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<edoclite xmlns="ns:workflow/EDocLite" xsi:schemaLocation="ns:workflow/EDocLite resource:EDocLite">
+		<style name="testing">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:template name="textbox_render">
+		<xsl:param name="fieldName"/>
+		<xsl:param name="renderCmd"/>
+		<xsl:param name="align"/>
+		<xsl:param name="value"/>
+		<xsl:param name="regex"/>
+		<xsl:param name="message"/>
+		<xsl:param name="validation_required"/>
+		<xsl:if test="$renderCmd='all' or  $renderCmd='title'">
+			<xsl:value-of select="current()/@title"/>
+		</xsl:if>
+		<xsl:if test="$renderCmd='all'">
+			<xsl:if test="$align ='horizontal'">
+				<xsl:text>          </xsl:text>
+			</xsl:if>
+			<xsl:if test="$align='vertical'">
+				<br/>
+			</xsl:if>
+		</xsl:if>
+		<xsl:if test="$renderCmd='all' or $renderCmd='input'">
+			<input value="{$value}">
+				<xsl:if test="$readOnly = 'true'">
+					<xsl:attribute name="disabled">disabled</xsl:attribute>
+				</xsl:if>
+				<xsl:attribute name="type"><xsl:value-of select="current()/display/type"/></xsl:attribute>
+				<xsl:attribute name="name"><xsl:value-of select="$fieldName"/></xsl:attribute>
+				<xsl:for-each select="current()/display/meta">
+					<xsl:variable name="attrName">
+						<xsl:value-of select="name"/>
+					</xsl:variable>
+					<xsl:variable name="attrValue">
+						<xsl:value-of select="value"/>
+					</xsl:variable>
+					<xsl:attribute name="{$attrName}"><xsl:value-of select="$attrValue"/></xsl:attribute>
+				</xsl:for-each>
+			</input>
+		</xsl:if>
+	</xsl:template>
+	</xsl:stylesheet>
+</style>
+<association>
+      <docType>eDoc.testing</docType>
+      <style>testing</style>
+      <active>true</active>
+</association>
+</edoclite>
+</data>

@@ -163,6 +163,7 @@
 	<classpathentry kind="var" path="M2_REPO/xapool/xapool/1.5.0-patch3/xapool-1.5.0-patch3.jar"/>
 	<classpathentry kind="var" path="M2_REPO/xerces/xercesImpl/2.9.1/xercesImpl-2.9.1.jar"/>
 	<classpathentry kind="var" path="M2_REPO/xml-resolver/xml-resolver/1.2/xml-resolver-1.2.jar" sourcepath="M2_REPO/xml-resolver/xml-resolver/1.2/xml-resolver-1.2-sources.jar"/>
+    <classpathentry kind="var" path="M2_REPO/xmlunit/xmlunit/1.3/xmlunit-1.3.jar" sourcepath="/XMLUNIT_SRC/willy/Downloads/xmlunit-1.3/src"/>
 	<classpathentry kind="var" path="M2_REPO/xom/xom/1.1/xom-1.1.jar" sourcepath="M2_REPO/xom/xom/1.1/xom-1.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/xpp3/xpp3_min/1.1.3.4.O/xpp3_min-1.1.3.4.O.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>

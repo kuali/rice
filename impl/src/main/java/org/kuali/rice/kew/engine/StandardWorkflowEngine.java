@@ -82,15 +82,15 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			if ( LOG.isInfoEnabled() ) {
 				LOG.info("Aquired lock on document " + documentId);
 			}
-						
+
 			DocumentRouteHeaderValue document = getRouteHeaderService().getRouteHeader(documentId);
 			context.setDocument(document);
 			lockAdditionalDocuments(document);
-			
+
 			if ( LOG.isInfoEnabled() ) {
 				LOG.info("Processing document: " + documentId + " : " + nodeInstanceId);
 			}
-			
+
 			try {
 	            document = notifyPostProcessorBeforeProcess(document, nodeInstanceId);
 	            context.setDocument(document);
@@ -102,17 +102,17 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 				LOG.debug("Document not routable so returning with doing no action");
 				return;
 			}
-			List nodeInstancesToProcess = new LinkedList();			
+			List nodeInstancesToProcess = new LinkedList();
 			if (nodeInstanceId == null) {
 				// pulls the node instances from the passed in document
-				nodeInstancesToProcess.addAll(RouteNodeUtils.getActiveNodeInstances(document));				
-			} else {				
+				nodeInstancesToProcess.addAll(RouteNodeUtils.getActiveNodeInstances(document));
+			} else {
 				RouteNodeInstance instanceNode = RouteNodeUtils.findRouteNodeInstanceById(nodeInstanceId,document);
 				if (instanceNode == null) {
 					throw new IllegalArgumentException("Invalid node instance id: " + nodeInstanceId);
 				}
 				nodeInstancesToProcess.add(instanceNode);
-			}			
+			}
 
 			context.setEngineState(new EngineState());
 			ProcessContext processContext = new ProcessContext(true, nodeInstancesToProcess);
@@ -176,7 +176,11 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			// list which we put in the next node before doing work.
 			List<RouteNodeInstance> nodesToActivate = new ArrayList<RouteNodeInstance>();
 			if (!nextNodeCandidates.isEmpty()) {
-				nodeInstance.setNextNodeInstances(new ArrayList<RouteNodeInstance>());
+				// KULRICE-4274: Hierarchy Routing Node issues
+				// No longer change nextNodeInstances in place, instead we create a local and assign our local list below
+				// the loop so the post processor doesn't save a RouteNodeInstance in an intermediate state
+				ArrayList<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
+
 				for (Iterator nextIt = nextNodeCandidates.iterator(); nextIt.hasNext();) {
 					RouteNodeInstance nextNodeInstance = (RouteNodeInstance) nextIt.next();
 					transitionEngine = TransitionEngineFactory.createTransitionEngine(nextNodeInstance);
@@ -197,14 +201,17 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 					// to check for the existence of the link and moving on
 					// if it's been established.
 					nextNodeInstance.getPreviousNodeInstances().remove(nodeInstance);
-					nodeInstance.addNextNodeInstance(nextNodeInstance);
+					nextNodeInstances.add(nextNodeInstance);
 					handleBackwardCompatibility(context, nextNodeInstance);
 					// call the post processor
 					notifyNodeChange(context, nextNodeInstance);
 					nodesToActivate.add(nextNodeInstance);
 					// TODO update document content on context?
 				}
+				// assign our local list here so the post processor doesn't save a RouteNodeInstance in an intermediate state
+				nodeInstance.setNextNodeInstances(nextNodeInstances);
 			}
+
 			// deactive the current active node
 			nodeInstance.setComplete(true);
 			nodeInstance.setActive(false);
@@ -219,7 +226,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		saveNode(context, nodeInstance);
 		return new ProcessContext(nodeInstance.isComplete(), nodeInstance.getNextNodeInstances());
 	}
-	
+
 	/**
 	 * Checks various assertions regarding the processing of the current node.
 	 * If this method returns true, then the node will not be processed.
@@ -305,11 +312,11 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 			if (nextStatus != null && nextStatus.length() > 0){
 				context.getDocument().updateAppDocStatus(nextStatus);
 			}
-			
+
 			DocumentRouteLevelChange event = new DocumentRouteLevelChange(context.getDocument().getRouteHeaderId(), context.getDocument().getAppDocId(), CompatUtils.getLevelForNode(context.getDocument().getDocumentType(), context.getNodeInstance()
 					.getRouteNode().getRouteNodeName()), CompatUtils.getLevelForNode(context.getDocument().getDocumentType(), nextNodeInstance.getRouteNode().getRouteNodeName()), nodeInstance.getRouteNode().getRouteNodeName(), nextNodeInstance
 					.getRouteNode().getRouteNodeName(), nodeInstance.getRouteNodeInstanceId(), nextNodeInstance.getRouteNodeInstanceId());
-			context.setDocument(notifyPostProcessor(context.getDocument(), nodeInstance, event));			
+			context.setDocument(notifyPostProcessor(context.getDocument(), nodeInstance, event));
 		}
 	}
 
@@ -603,7 +610,7 @@ public class StandardWorkflowEngine implements WorkflowEngine {
         }
         return document;
     }
-    
+
     protected void lockAdditionalDocuments(DocumentRouteHeaderValue document) throws Exception {
 		DocumentLockingEvent lockingEvent = new DocumentLockingEvent(document.getRouteHeaderId(), document.getAppDocId());
 		// TODO this shows up in a few places and could totally be extracted to a method

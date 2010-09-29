@@ -77,6 +77,7 @@
     <param name="appserver.url" override="false">${application.http.scheme}://${application.host}:${http.port}</param>
     <param name="application.url" override="false">${appserver.url}/${app.context.name}</param>
     <param name="rice.ksb.restfulServicePath" override="false">restful</param>
+    <param name="rice.default.soap.service" override="false">false</param>
     <param name="serviceServletUrl" override="false">${application.url}/remoting/</param>
     <param name="workflow.url" override="false">${application.url}/kew</param>
     <param name="rice.url" override="false">${application.url}/kr</param>

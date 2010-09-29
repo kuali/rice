@@ -24,6 +24,7 @@ import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.jaxb.AttributeSetAdapter;
+import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
@@ -127,7 +128,7 @@ public interface ResponsibilityService {
    	/**
    	 * Lookup responsibility objects.
    	 */
-   	List<? extends KimResponsibilityInfo> lookupResponsibilityInfo( @WebParam(name="searchCriteria") Map<String,String> searchCriteria, 
+   	List<? extends KimResponsibilityInfo> lookupResponsibilityInfo( @WebParam(name="searchCriteria") @XmlJavaTypeAdapter(value = MapStringStringAdapter.class) Map<String,String> searchCriteria, 
    																	@WebParam(name="unbounded") boolean unbounded );
    	
    	/**

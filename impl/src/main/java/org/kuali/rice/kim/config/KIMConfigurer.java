@@ -32,6 +32,7 @@ public class KIMConfigurer extends ModuleConfigurer {
 	private static final String KIM_INTERFACE_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMInterfaceSpringBeans.xml";
 	private static final String KIM_IMPL_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMImplementationSpringBeans.xml";
 	private static final String KIM_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMServiceBusSpringBeans.xml";
+	private static final String KIM_KSB_SOAP_DEFAULT_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMServiceBusSOAPDefaultSpringBeans.xml";
 	private static final String KIM_UI_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMUserInterfaceSpringBeans.xml";
 	
 	private List<RiceConfigEventListener> configEventListeners = new ArrayList<RiceConfigEventListener>();
@@ -53,7 +54,11 @@ public class KIMConfigurer extends ModuleConfigurer {
 			springFileLocations.append(',').append(KIM_IMPL_SPRING_BEANS_PATH);
 		}
 		if ( exposeServicesOnBus ) {
-			springFileLocations.append(',').append(KIM_KSB_SPRING_BEANS_PATH);
+			if (setSOAPServicesAsDefault) {
+				springFileLocations.append(',').append(KIM_KSB_SOAP_DEFAULT_SPRING_BEANS_PATH);
+			} else {
+				springFileLocations.append(',').append(KIM_KSB_SPRING_BEANS_PATH);
+			}
 		}
 		if ( includeUserInterfaceComponents ) {
 			springFileLocations.append(',').append(KIM_UI_SPRING_BEANS_PATH);

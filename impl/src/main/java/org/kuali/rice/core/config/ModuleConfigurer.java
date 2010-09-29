@@ -52,6 +52,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
     protected String springFileLocations = "";
     protected String resourceLoaderName;
     protected boolean exposeServicesOnBus = true;
+    protected boolean setSOAPServicesAsDefault = false;
     protected boolean includeUserInterfaceComponents = true;
 	
 	/**
@@ -302,4 +303,13 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 		this.includeUserInterfaceComponents = includeUserInterfaceComponents;
 	}
 
+	public boolean isSetSOAPServicesAsDefault() {
+		return this.setSOAPServicesAsDefault;
+	}
+
+	public void setSetSOAPServicesAsDefault(boolean setSOAPServicesAsDefault) {
+		this.setSOAPServicesAsDefault = setSOAPServicesAsDefault;
+	}
+
+	
 }

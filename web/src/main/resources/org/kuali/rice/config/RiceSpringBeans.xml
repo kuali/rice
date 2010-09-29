@@ -59,6 +59,7 @@
 	        <bean class="org.kuali.rice.kim.config.KIMConfigurer" 
                   p:runMode="${kim.mode}"
                   p:exposeServicesOnBus="true"
+                  p:setSOAPServicesAsDefault="${rice.default.soap.service}"
                   p:includeUserInterfaceComponents="true"
                   p:webModuleConfigurationFiles="${rice.kim.struts.config.files}" />
 		</property>
@@ -69,6 +70,7 @@
 			<bean class="org.kuali.rice.kew.config.KEWConfigurer"
                 p:runMode="${kew.mode}" 
                 p:exposeServicesOnBus="true"
+                p:setSOAPServicesAsDefault="${rice.default.soap.service}"
                 p:webModuleConfigurationFiles="${rice.kew.struts.config.files}" />
 		</property>
 		<property name="kenConfigurer">

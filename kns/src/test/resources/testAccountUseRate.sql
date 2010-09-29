@@ -21,3 +21,4 @@ insert into trv_acct_use_rt_t (id, acct_num, rate, actv_frm_dt, actv_to_dt) valu
 insert into trv_acct_use_rt_t (id, acct_num, rate, actv_frm_dt, actv_to_dt) values ('6', 'a4', '1.5', null, '2011-01-01');
 insert into trv_acct_use_rt_t (id, acct_num, rate, actv_frm_dt, actv_to_dt) values ('7', 'a5', '1.5', '2010-01-01', null);
 insert into trv_acct_use_rt_t (id, acct_num, rate, actv_frm_dt, actv_to_dt) values ('8', 'a6', '1.5', null, null);
+insert into trv_acct_use_rt_t (id, acct_num, rate, actv_frm_dt, actv_to_dt) values ('9', 'b1', '3', '2010-01-01 12:30:00', '2010-06-01 15:30:00');

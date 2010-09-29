@@ -727,6 +727,9 @@
 			<ref bean="businessObjectMetaDataService" />
 		</property>
         <property name="kualiConfigurationService" ref="kualiConfigurationService" />
+        <property name="dateTimeService">
+            <ref bean="dateTimeService" />
+        </property>
 	</bean>
 
 	<bean id="kualiInquirable" class="org.kuali.rice.kns.inquiry.KualiInquirableImpl" scope="prototype">

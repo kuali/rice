@@ -18,6 +18,7 @@ package org.kuali.rice.kns.dao.impl;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -435,24 +436,13 @@ public class LookupDaoJpa implements LookupDao {
      * @param searchValues - Map containing all search keys and values
      */
     protected void addInactivateableFromToActiveCriteria(Object example, String activeSearchValue, Criteria criteria, Map searchValues) {
-    	// determine the date we should use for the criteria on active from/to
-		Date activeDate = dateTimeService.getCurrentSqlDate();
-		if (searchValues.containsKey(KNSPropertyConstants.ACTIVE_AS_OF_DATE)) {
-			String activeAsOfDate = (String) searchValues.get(KNSPropertyConstants.ACTIVE_AS_OF_DATE);
-			if (StringUtils.isNotBlank(activeAsOfDate)) {
-				try {
-					activeDate = dateTimeService.convertToSqlDate(ObjectUtils.clean(activeAsOfDate));
-				} catch (ParseException e) {
-					throw new RuntimeException("Unable to convert date: " + activeAsOfDate);
-				}
-			}
-		}
+    	Timestamp activeTimestamp = LookupUtils.getActiveDateTimestampForCriteria(searchValues);
 		
     	String activeBooleanStr = (String) (new OjbCharBooleanConversion()).javaToSql(activeSearchValue);
     	if (OjbCharBooleanConversion.DATABASE_BOOLEAN_TRUE_STRING_REPRESENTATION.equals(activeBooleanStr)) {
     		// (active from date <= date or active from date is null) and (date < active to date or active to date is null)
     		Criteria criteriaBeginDate = new Criteria(example.getClass().getName());
-    		criteriaBeginDate.lte(KNSPropertyConstants.ACTIVE_FROM_DATE, activeDate);
+    		criteriaBeginDate.lte(KNSPropertyConstants.ACTIVE_FROM_DATE, activeTimestamp);
     		
     		Criteria criteriaBeginDateNull = new Criteria(example.getClass().getName());
     		criteriaBeginDateNull.isNull(KNSPropertyConstants.ACTIVE_FROM_DATE);
@@ -461,7 +451,7 @@ public class LookupDaoJpa implements LookupDao {
     		criteria.and(criteriaBeginDate);
     		
     		Criteria criteriaEndDate = new Criteria(example.getClass().getName());
-    		criteriaEndDate.gt(KNSPropertyConstants.ACTIVE_TO_DATE, activeDate);
+    		criteriaEndDate.gt(KNSPropertyConstants.ACTIVE_TO_DATE, activeTimestamp);
     	
     		Criteria criteriaEndDateNull = new Criteria(example.getClass().getName());
     		criteriaEndDateNull.isNull(KNSPropertyConstants.ACTIVE_TO_DATE);
@@ -472,14 +462,14 @@ public class LookupDaoJpa implements LookupDao {
     	else if (OjbCharBooleanConversion.DATABASE_BOOLEAN_FALSE_STRING_REPRESENTATION.equals(activeBooleanStr)) {
     		// (date < active from date) or (active from date is null) or (date >= active to date) 
     		Criteria criteriaNonActive = new Criteria(example.getClass().getName());
-    		criteriaNonActive.gt(KNSPropertyConstants.ACTIVE_FROM_DATE, activeDate);
+    		criteriaNonActive.gt(KNSPropertyConstants.ACTIVE_FROM_DATE, activeTimestamp);
     		
     		Criteria criteriaBeginDateNull = new Criteria(example.getClass().getName());
     		criteriaBeginDateNull.isNull(KNSPropertyConstants.ACTIVE_FROM_DATE);
     		criteriaNonActive.or(criteriaBeginDateNull);
     		
     		Criteria criteriaEndDate = new Criteria(example.getClass().getName());
-    		criteriaEndDate.lte(KNSPropertyConstants.ACTIVE_TO_DATE, activeDate);
+    		criteriaEndDate.lte(KNSPropertyConstants.ACTIVE_TO_DATE, activeTimestamp);
     		criteriaNonActive.or(criteriaEndDate);
     		
     		criteria.and(criteriaNonActive);
@@ -494,18 +484,7 @@ public class LookupDaoJpa implements LookupDao {
      * @param criteria - Criteria object being built
      */
 	protected void addInactivateableFromToCurrentCriteria(Object example, String currentSearchValue, Criteria criteria, Map searchValues) {
-    	// determine the date we should use for the criteria on active from/to
-		Date activeDate = dateTimeService.getCurrentSqlDate();
-		if (searchValues.containsKey(KNSPropertyConstants.ACTIVE_AS_OF_DATE)) {
-			String activeAsOfDate = (String) searchValues.get(KNSPropertyConstants.ACTIVE_AS_OF_DATE);
-			if (StringUtils.isNotBlank(activeAsOfDate)) {
-				try {
-					activeDate = dateTimeService.convertToSqlDate(ObjectUtils.clean(activeAsOfDate));
-				} catch (ParseException e) {
-					throw new RuntimeException("Unable to convert date: " + activeAsOfDate);
-				}
-			}
-		}
+		Timestamp activeTimestamp = LookupUtils.getActiveDateTimestampForCriteria(searchValues);
 		
 		List<String> groupByFieldList = businessObjectDictionaryService.getGroupByAttributesForEffectiveDating(example
 				.getClass());
@@ -517,7 +496,7 @@ public class LookupDaoJpa implements LookupDao {
 
 		String jpql = " (select max(" + alias + "." + KNSPropertyConstants.ACTIVE_FROM_DATE + ") from "
 				+ example.getClass().getName() + " as " + alias + " where ";
-		String activeDateDBStr = KNSServiceLocator.getDatabasePlatform().getDateSQL(dateTimeService.toDateString(activeDate), null);
+		String activeDateDBStr = KNSServiceLocator.getDatabasePlatform().getDateSQL(dateTimeService.toDateTimeString(activeTimestamp), null);
 		jpql += alias + "." + KNSPropertyConstants.ACTIVE_FROM_DATE + " <= '" + activeDateDBStr + "'";
 
 		// join back to main query with the group by fields

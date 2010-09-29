@@ -14,9 +14,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.web.backdoor;
+package org.kuali.rice.kns.web.struts.form;
 
-import org.kuali.rice.kns.web.struts.form.KualiForm;
+import org.kuali.rice.kns.web.struts.action.BackdoorAction;
 
 /**
  * A Struts ActionForm for the {@link BackdoorAction}.

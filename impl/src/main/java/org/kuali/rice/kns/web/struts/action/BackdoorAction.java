@@ -14,23 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.web.backdoor;
+package org.kuali.rice.kns.web.struts.action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.web.struts.form.BackdoorForm;
 
 
 /**
@@ -39,7 +41,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class BackdoorAction extends KewKualiAction {
+public class BackdoorAction extends KualiAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BackdoorAction.class);
 
@@ -52,9 +54,7 @@ public class BackdoorAction extends KewKualiAction {
     }
 
     public ActionForward menu(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        LOG.debug("start");
-        BackdoorForm backdoorForm = (BackdoorForm) form;
-        //backdoorForm.setTargetName(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.BACKDOOR_TARGET_FRAME_NAME));
+        LOG.debug("menu");
         return mapping.findForward("basic");
     }
 
@@ -70,43 +70,57 @@ public class BackdoorAction extends KewKualiAction {
 
     public ActionForward portal(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception{
     	LOG.debug("portal started");
-    	BackdoorForm backdoorForm=(BackdoorForm)form;
-    	//backdoorForm.setTargetName(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.BACKDOOR_TARGET_FRAME_NAME));
-    	//LOG.debug(backdoorForm.getGraphic());
     	return mapping.findForward("viewPortal");
     }
 
     public ActionForward administration(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("administration");
-        BackdoorForm backdoorForm = (BackdoorForm) form;
-        //backdoorForm.setTargetName(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.BACKDOOR_TARGET_FRAME_NAME));
         return mapping.findForward("administration");
     }
 
     public ActionForward logout(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("logout");
+        
+        String forward = "viewPortal";
         UserSession uSession = getUserSession(request);
-        uSession.clearBackdoor();
-        setFormGroupPermission((BackdoorForm)form, request);
-        //request.setAttribute("reloadPage","true");
-        return mapping.findForward("viewPortal");
-
+        
+        if (uSession.isBackdoorInUse()) {
+            uSession.clearBackdoor();
+            setFormGroupPermission((BackdoorForm)form, request);
+            //request.setAttribute("reloadPage","true");
+            
+            org.kuali.rice.kns.UserSession KnsUserSession;
+            KnsUserSession = GlobalVariables.getUserSession();
+            KnsUserSession.clearBackdoorUser();
+        }
+        else {
+            forward = "logout";
+        }
+        
+        return mapping.findForward(forward);
     }
 
     public ActionForward login(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("login");
         UserSession uSession = getUserSession(request);
         BackdoorForm backdoorForm = (BackdoorForm) form;
-        if (!uSession.establishBackdoorWithPrincipalName(backdoorForm.getBackdoorId())) {
-			request.setAttribute("badbackdoor", "Invalid backdoor Id given '" + backdoorForm.getBackdoorId() + "'");
-			//return defaultDispatch(mapping, form, request, response);
-			return mapping.findForward("portal");
+
+        //if backdoor Id is empty or equal to currently logged in user, clear backdoor id
+        if (uSession.isBackdoorInUse() &&
+                (StringUtils.isEmpty(backdoorForm.getBackdoorId())
+                || uSession.getActualPrincipal().getPrincipalName().equals(backdoorForm.getBackdoorId()))) {
+            return logout(mapping, form, request, response);
         }
+        
+        if (!uSession.establishBackdoorWithPrincipalName(backdoorForm.getBackdoorId())) {
+            request.setAttribute("badbackdoor", "Invalid backdoor Id given '" + backdoorForm.getBackdoorId() + "'");
+            return mapping.findForward("portal");
+        }
+        
         uSession.getAuthentications().clear();
         setFormGroupPermission(backdoorForm, request);
-        //return defaultDispatch(mapping, form, request, response);
+        
         return mapping.findForward("portal");
-
     }
 
     private void setFormGroupPermission(BackdoorForm backdoorForm, HttpServletRequest request) {
@@ -122,9 +136,7 @@ public class BackdoorAction extends KewKualiAction {
     public void initForm(HttpServletRequest request, ActionForm form) throws Exception {
     	BackdoorForm backdoorForm = (BackdoorForm) form;
 
-    	// default to true if not defined
-    	Boolean showBackdoorLogin = new Boolean(Utilities.getKNSParameterBooleanValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND));
-
+    	Boolean showBackdoorLogin = KNSServiceLocator.getParameterService().getIndicatorParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
         backdoorForm.setShowBackdoorLogin(showBackdoorLogin);
         setFormGroupPermission(backdoorForm, request);
         if (backdoorForm.getGraphic() != null) {

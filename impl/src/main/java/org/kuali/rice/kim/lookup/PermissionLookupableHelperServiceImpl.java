@@ -87,6 +87,9 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
         parameters.put(KNSConstants.OVERRIDE_KEYS, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
         parameters.put(KNSConstants.COPY_KEYS, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
+        if (StringUtils.isNotBlank(getReturnLocation())) {
+        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+		}
         parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
         return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
     }

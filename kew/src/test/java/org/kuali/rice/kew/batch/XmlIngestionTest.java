@@ -40,8 +40,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.custommonkey.xmlunit.DetailedDiff;
-import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.core.exception.InvalidXmlException;
@@ -204,9 +202,9 @@ public class XmlIngestionTest extends KEWTestCase {
 //        InputStream ingestedStream = new BufferedInputStream(new FileInputStream(ingestedFile.getPath()));
 //        ingestedDoc = builder.parse(ingestedStream);
 //        reingestedDoc = builder.parse(reingestFile); 
-        XMLUnit.setIgnoreWhitespace(false);
-
-        Diff d = new Diff(ingestedString, reingestedString);
+//        XMLUnit.setIgnoreWhitespace(false);
+//
+//        Diff d = new Diff(ingestedString, reingestedString);
 //        assertFalse(d.identical()); // CHILD_NODELIST_SEQUENCE Difference
         assertTrue(d.similar());
         

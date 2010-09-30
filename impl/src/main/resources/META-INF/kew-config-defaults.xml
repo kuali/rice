@@ -4,11 +4,13 @@
 <config>
 
   <!-- Daily emails every day at 1 AM -->
-  <param name="dailyEmail.cronExpression">0 0 1 * * ?</param>
+  <!--  By disabling the cronExpression below, that disables the related scheduled email -->
+  <!--<param name="dailyEmail.cronExpression">0 0 1 * * ?</param>-->
   <param name="dailyEmail.active">true</param>
 
   <!-- Weekly emails every Monday at 2 AM -->
-  <param name="weeklyEmail.cronExpression">0 0 2 ? * 2</param>
+  <!--  By disabling the cronExpression below, that disables the related scheduled email -->
+  <!--<param name="weeklyEmail.cronExpression">0 0 2 ? * 2</param>-->
   <param name="weeklyEmail.active">true</param>
 
   <param name="message.delivery" override="false">async</param>

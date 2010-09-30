@@ -18,7 +18,7 @@ package org.kuali.rice.kns.datadictionary;
 import java.util.List;
 
 /**
- * This interface is used to specify and perform overrides on the content of a Data Dictionary bean. 
+ * Performs overrides on the fields of a Data Dictionary bean. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.datadictionary;
 
 /**
- * This interface is used to override properties in a Data Dictionary bean. 
+ * Performs overrides on properties of fields in a Data Dictionary bean. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

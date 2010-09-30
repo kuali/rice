@@ -214,5 +214,39 @@
 	<bean id="DocumentCollectionPath"
 		class="org.kuali.rice.kns.datadictionary.DocumentCollectionPath"
 		abstract="true" />
+	
+	<bean id="DataDictionaryBeanOverride" class="org.kuali.rice.kns.datadictionary.impl.BeanOverrideImpl" abstract="true">
+	  	<property name="beanName" value="" />
+	  	<property name="fieldOverrides">
+	  		<list />
+	  	</property>
+	</bean>
+  		
+	<bean id="FieldOverrideForValueReplace" class="org.kuali.rice.kns.datadictionary.impl.FieldOverrideForValueReplaceImpl" abstract="true">
+		<property name="propertyName" value="" />
+		<property name="value" value="" />
+	</bean>  		
+
+	<bean id="FieldOverrideForListElementDelete" class="org.kuali.rice.kns.datadictionary.impl.FieldOverrideForListElementDeleteImpl" abstract="true">
+		<property name="propertyNameForElementCompare" value="name" />
+		<property name="propertyName" value="" />
+		<property name="element" value="" />
+	</bean>  		
+
+	<bean id="FieldOverrideForListElementInsert" class="org.kuali.rice.kns.datadictionary.impl.FieldOverrideForListElementInsertImpl" abstract="true">
+		<property name="propertyNameForElementCompare" value="name" />
+		<property name="propertyName"><null /></property>
+		<property name="element"><null /></property>
+		<property name="insertAfter"><null /></property>
+		<property name="insertBefore"><null /></property>
+	</bean>  		
+
+	<bean id="FieldOverrideForListElementReplace" class="org.kuali.rice.kns.datadictionary.impl.FieldOverrideForListElementReplaceImpl" abstract="true">
+		<property name="propertyNameForElementCompare" value="name" />
+		<property name="propertyName"><null /></property>
+		<property name="element"><null /></property>
+		<property name="replaceWith"><null /></property>
+	</bean>  
+	
 </beans>
 

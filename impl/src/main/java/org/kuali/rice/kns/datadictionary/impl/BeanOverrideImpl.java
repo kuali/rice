@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kns.datadictionary.BeanOverride;
 import org.kuali.rice.kns.datadictionary.FieldOverride;
 
@@ -30,8 +31,8 @@ import org.kuali.rice.kns.datadictionary.FieldOverride;
  *
  */
 public class BeanOverrideImpl implements BeanOverride {
-
-    private String beanName;
+	private static final Logger LOG = Logger.getLogger(BeanOverrideImpl.class);
+	private String beanName;
     private List<FieldOverride> fieldOverrides;
 
     /**

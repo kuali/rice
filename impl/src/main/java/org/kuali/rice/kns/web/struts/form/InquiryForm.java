@@ -20,7 +20,6 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -182,14 +181,12 @@ public class InquiryForm extends KualiForm {
 
             altKeys.add(boPKeys);
             boolean bFound = false;
-            for(Iterator<List<String>> keyIter = altKeys.iterator();  keyIter.hasNext(); ){
+            for(List<String> boKeys : altKeys ){
             	if(bFound)
             		break;
-	            List<String> boKeys = keyIter.next();
 	            int keyCount = boKeys.size();
 	            int foundCount = 0;
-	            for (Iterator iter = boKeys.iterator(); iter.hasNext();) {
-	                String realPkFieldName = (String) iter.next();
+	            for (String realPkFieldName : boKeys) {
 	                String pkParamName = realPkFieldName;
 	                if (passedFromPreviousInquiry) {
 	                    pkParamName = KNSConstants.INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX + pkParamName;
@@ -199,6 +196,10 @@ public class InquiryForm extends KualiForm {
 	                	foundCount++;
 	                	String parameter = (String) request.getParameter(pkParamName);
 
+	                	if (dataDictionaryService.getAttributeForceUppercase(businessObjectClass, pkParamName)) {
+	                		parameter = parameter.toUpperCase();
+	                	}
+	                
 	                	inquiryPrimaryKeys.put(realPkFieldName, parameter);
 	                    if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, realPkFieldName)) {
                             try {

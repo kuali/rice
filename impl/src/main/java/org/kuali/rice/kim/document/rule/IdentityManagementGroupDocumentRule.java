@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.document.rule;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -150,7 +150,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
     	}
     }
     
-	protected boolean validateActiveDate(String errorPath, Date activeFromDate, Date activeToDate) {
+	protected boolean validateActiveDate(String errorPath, Timestamp activeFromDate, Timestamp activeToDate) {
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;
 		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {

@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -503,8 +504,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						if (groupMember.isActive() && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
 							StringUtils.equals(groupMember.getMemberTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
 							docGroup.setGroupMemberId(groupMember.getGroupMemberId());
-							docGroup.setActiveFromDate(groupMember.getActiveFromDate());
-							docGroup.setActiveToDate(groupMember.getActiveToDate());
+							if (groupMember.getActiveFromDate() != null) {
+								docGroup.setActiveFromDate(new Timestamp(groupMember.getActiveFromDate().getTime()));
+							}
+							if (groupMember.getActiveToDate() != null) {
+								docGroup.setActiveToDate(new Timestamp(groupMember.getActiveToDate().getTime()));
+							}
 							break;
 						}
 					}
@@ -1212,8 +1217,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for (PersonDocumentGroup group : identityManagementPersonDocument.getGroups()) {
 				GroupMemberImpl groupPrincipalImpl = new GroupMemberImpl();
 				groupPrincipalImpl.setGroupId(group.getGroupId());
-				groupPrincipalImpl.setActiveFromDate(group.getActiveFromDate());
-				groupPrincipalImpl.setActiveToDate(group.getActiveToDate());
+				if (group.getActiveFromDate() != null) {
+					groupPrincipalImpl.setActiveFromDate(new java.sql.Timestamp(group.getActiveFromDate().getTime()));
+				}
+				if (group.getActiveToDate() != null) {
+					groupPrincipalImpl.setActiveToDate(new java.sql.Timestamp(group.getActiveToDate().getTime()));
+				}
 				groupPrincipalImpl.setGroupMemberId(group.getGroupMemberId());
 				groupPrincipalImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
 				groupPrincipalImpl.setMemberTypeCode(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
@@ -1268,8 +1277,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							roleMemberImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
 							roleMemberImpl.setMemberTypeCode(RoleImpl.PRINCIPAL_MEMBER_TYPE);
 							roleMemberImpl.setRoleMemberId(roleMember.getRoleMemberId());
-							roleMemberImpl.setActiveFromDate(roleMember.getActiveFromDate());
-							roleMemberImpl.setActiveToDate(roleMember.getActiveToDate());
+							if (roleMember.getActiveFromDate() != null) {
+								roleMemberImpl.setActiveFromDate(new java.sql.Timestamp(roleMember.getActiveFromDate().getTime()));
+							}
+							if (roleMember.getActiveToDate() != null) {
+								roleMemberImpl.setActiveToDate(new java.sql.Timestamp(roleMember.getActiveToDate().getTime()));
+							}		
 							List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
 							if(ObjectUtils.isNotNull(origRoleMembers)){
 								for (RoleMemberImpl origMember : origRoleMembers) {

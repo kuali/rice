@@ -55,10 +55,6 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 	@Transient
 	protected transient KimTypeInfo kimGroupType = new KimTypeInfo();
 	protected String kimTypeId;
-	@Column(name="ACTV_FRM_DT")
-	protected Date activeFromDate;
-	@Column(name="ACTV_TO_DT")
-	protected Date activeToDate;
 
 	/**
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
@@ -134,30 +130,6 @@ public class PersonDocumentGroup extends KimDocumentBoBase {
 
 	public void setNamespaceCode(String namespaceCode) {
 		this.namespaceCode = namespaceCode;
-	}
-
-	public Date getActiveFromDate() {
-		return this.activeFromDate;
-	}
-
-	public void setActiveFromDate(Date activeFromDate) {
-		this.activeFromDate = activeFromDate;
-	}
-
-	public Date getActiveToDate() {
-		return this.activeToDate;
-	}
-
-	public void setActiveToDate(Date activeToDate) {
-		this.activeToDate = activeToDate;
-	}
-	/**
-	 * Returns active if the current time is between the from and to dates.  Null dates are 
-	 * considered to indicate an open range.
-	 */
-	public boolean isActive() {
-		long now = System.currentTimeMillis();		
-		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
 	}
 
 }

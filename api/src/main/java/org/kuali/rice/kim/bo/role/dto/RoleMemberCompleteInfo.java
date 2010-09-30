@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.bo.role.dto;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;

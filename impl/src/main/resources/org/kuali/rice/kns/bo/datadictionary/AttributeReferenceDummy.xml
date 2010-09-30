@@ -322,20 +322,21 @@
   </bean>
   
   <bean id="AttributeReferenceDummy-activeFromDate" parent="AttributeReferenceDummy-activeFromDate-parentBean"/>
-  <bean id="AttributeReferenceDummy-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="AttributeReferenceDummy-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericTimestamp">
     <property name="name" value="activeFromDate"/>
     <property name="label" value="Active From Date"/>
     <property name="shortLabel" value="Active From Dt"/>
     <property name="required" value="false"/>
     <property name="control">
       <bean parent="TextControlDefinition" p:datePicker="true" p:size="10" p:ranged="false"/>
-    </property>    
+    </property>  
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.DateDisplayTimestampObjectFormatter"/>  
     <property name="summary" value="Start Date"/>
     <property name="description" value="Start Date"/>
   </bean>
 
   <bean id="AttributeReferenceDummy-activeToDate" parent="AttributeReferenceDummy-activeToDate-parentBean"/>
-  <bean id="AttributeReferenceDummy-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="AttributeReferenceDummy-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericTimestamp">
     <property name="name" value="activeToDate"/>
     <property name="label" value="Active To Date"/>
     <property name="shortLabel" value="Active To Dt"/>
@@ -343,19 +344,21 @@
     <property name="control">
       <bean parent="TextControlDefinition" p:datePicker="true" p:size="10" p:ranged="false"/>
     </property>
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.DateDisplayTimestampObjectFormatter"/>  
     <property name="summary" value="End Date"/>
     <property name="description" value="End Date"/>
   </bean>
 
   <bean id="AttributeReferenceDummy-activeAsOfDate" parent="AttributeReferenceDummy-activeAsOfDate-parentBean"/>
-  <bean id="AttributeReferenceDummy-activeAsOfDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="AttributeReferenceDummy-activeAsOfDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericTimestamp">
     <property name="name" value="activeAsOfDate"/>
     <property name="label" value="Active As Of Date"/>
     <property name="shortLabel" value="Active Of Dt"/>
     <property name="required" value="false"/>
     <property name="control">
       <bean parent="TextControlDefinition" p:datePicker="true" p:size="10" p:ranged="false"/>
-    </property>    
+    </property> 
+    <property name="formatterClass" value="org.kuali.rice.kns.web.format.DateDisplayTimestampObjectFormatter"/>     
     <property name="summary" value="Date for which a record is determined active or inactive."/>
     <property name="description" value="Date for which a record is determined active or inactive."/>
   </bean>

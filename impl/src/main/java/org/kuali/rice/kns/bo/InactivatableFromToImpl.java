@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -30,11 +30,11 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "ACTV_FRM_DT")
-	protected Date activeFromDate;
+	protected Timestamp activeFromDate;
 	@Column(name = "ACTV_TO_DT")
-	protected Date activeToDate;
+	protected Timestamp activeToDate;
 	@Transient
-	protected Date activeAsOfDate;
+	protected Timestamp activeAsOfDate;
 	@Transient
 	protected boolean current;
 
@@ -56,27 +56,27 @@ public abstract class InactivatableFromToImpl extends PersistableBusinessObjectB
 		// do nothing
 	}
 
-	public void setActiveFromDate(Date from) {
+	public void setActiveFromDate(Timestamp from) {
 		this.activeFromDate = from;
 	}
 
-	public void setActiveToDate(Date to) {
+	public void setActiveToDate(Timestamp to) {
 		this.activeToDate = to;
 	}
 
-	public Date getActiveFromDate() {
+	public Timestamp getActiveFromDate() {
 		return this.activeFromDate;
 	}
 
-	public Date getActiveToDate() {
+	public Timestamp getActiveToDate() {
 		return this.activeToDate;
 	}
 
-	public Date getActiveAsOfDate() {
+	public Timestamp getActiveAsOfDate() {
 		return this.activeAsOfDate;
 	}
 
-	public void setActiveAsOfDate(Date activeAsOfDate) {
+	public void setActiveAsOfDate(Timestamp activeAsOfDate) {
 		this.activeAsOfDate = activeAsOfDate;
 	}
 

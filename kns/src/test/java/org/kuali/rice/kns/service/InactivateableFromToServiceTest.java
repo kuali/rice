@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.service;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -95,15 +96,15 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 		useRate = (TravelAccountUseRate) results.get(0);
 		assertTrue("Incorrect active record returned, does not match expected id", "1".equals(useRate.getId()));
 		
-//		fieldValues = new HashMap();
-//		fieldValues.put(KNSPropertyConstants.ACTIVE_AS_OF_DATE, "01/01/2010 01:31 PM");
-//		fieldValues.put("number", "b1");
-//
-//		results = inactivateableFromToService.findMatchingActive(TravelAccountUseRate.class, fieldValues);
-//		assertEquals(1, results.size());
-//
-//		useRate = (TravelAccountUseRate) results.get(0);
-//		assertTrue("Incorrect active record returned, does not match expected id", "9".equals(useRate.getId()));
+		fieldValues = new HashMap();
+		fieldValues.put(KNSPropertyConstants.ACTIVE_AS_OF_DATE, "01/01/2010 01:31 PM");
+		fieldValues.put("number", "b1");
+
+		results = inactivateableFromToService.findMatchingActive(TravelAccountUseRate.class, fieldValues);
+		assertEquals(1, results.size());
+
+		useRate = (TravelAccountUseRate) results.get(0);
+		assertTrue("Incorrect active record returned, does not match expected id", "9".equals(useRate.getId()));
 	}
 	
 	/**
@@ -299,10 +300,10 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 		useRate.setId(id);
 		useRate.setNumber(number);
 		if (fromDate != null) {
-			useRate.setActiveFromDate(dateTimeService.convertToSqlDate(fromDate));
+			useRate.setActiveFromDate(new Timestamp(dateTimeService.convertToSqlDate(fromDate).getTime()));
 		}
 		if (toDate != null) {
-			useRate.setActiveToDate(dateTimeService.convertToSqlDate(toDate));
+			useRate.setActiveToDate(new Timestamp(dateTimeService.convertToSqlDate(toDate).getTime()));
 		}
 
 		return useRate;

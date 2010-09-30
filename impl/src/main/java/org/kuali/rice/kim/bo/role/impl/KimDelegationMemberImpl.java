@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -79,11 +79,11 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 		return (activeFromDate == null || activeFromDate.getTime() < now) && (activeToDate == null || activeToDate.getTime() > now);
 	}
 
-	public void setActiveFromDate(Date from) {
+	public void setActiveFromDate(Timestamp from) {
 		this.activeFromDate = from;
 	}
 
-	public void setActiveToDate(Date to) {
+	public void setActiveToDate(Timestamp to) {
 		this.activeToDate = to;
 	}
 

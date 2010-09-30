@@ -31,6 +31,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.TableRenderUtil;
+import org.kuali.rice.kns.web.format.DateDisplayTimestampObjectFormatter;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -63,7 +64,16 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 		delegationMember.getQualifiers().add(new RoleDocumentDelegationMemberQualifier());
 	}
 	protected String roleId;
-    
+
+
+	public IdentityManagementRoleDocumentForm() {
+        super();
+        setFormatterType("document.members.activeFromDate", DateDisplayTimestampObjectFormatter.class);
+        setFormatterType("document.delegationMembers.activeFromDate", DateDisplayTimestampObjectFormatter.class);
+        setFormatterType("document.members.activeToDate", DateDisplayTimestampObjectFormatter.class);
+        setFormatterType("document.delegationMembers.activeToDate", DateDisplayTimestampObjectFormatter.class);
+    }
+	
     /**
 	 * @return the delegationMember
 	 */
@@ -77,10 +87,6 @@ public class IdentityManagementRoleDocumentForm extends IdentityManagementDocume
 	public void setDelegationMember(RoleDocumentDelegationMember delegationMember) {
 		this.delegationMember = delegationMember;
 	}
-
-	public IdentityManagementRoleDocumentForm() {
-        super();
-    }
 
 	@Override
 	public String getDefaultDocumentTypeName(){

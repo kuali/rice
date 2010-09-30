@@ -144,8 +144,8 @@
 		<field-descriptor name="id" column="ID" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" />
 		<field-descriptor name="rate" column="rate" jdbc-type="DECIMAL" conversion="org.kuali.rice.kns.util.OjbKualiPercentFieldConversion"/>
-		<field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="DATE" />
-		<field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="DATE" />
+		<field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+		<field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
 	</class-descriptor>
 	
 </descriptor-repository>

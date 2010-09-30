@@ -82,7 +82,7 @@ public class InactivateableFromToServiceImpl implements InactivateableFromToServ
 		List<InactivateableFromTo> filteredList = new ArrayList<InactivateableFromTo>();
 
 		for (InactivateableFromTo inactivateable : filterList) {
-			inactivateable.setActiveAsOfDate(new java.sql.Date(activeAsOfDate.getTime()));
+			inactivateable.setActiveAsOfDate(new java.sql.Timestamp(activeAsOfDate.getTime()));
 			if (inactivateable.isActive()) {
 				filteredList.add(inactivateable);
 			}

@@ -15,18 +15,13 @@
  */
 package org.kuali.rice.kns.dto;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.jaxb.SqlDateAdapter;
-import org.kuali.rice.kns.bo.InactivateableFromTo;
 
-/**
- * @author Kuali Rice Team (rice.collab@kuali.org)
- */
-public class InactiveableInfo implements InactivateableFromTo {
-
+public class InactiveableInfo {
 	private static final long serialVersionUID = 1L;
 
 	protected Date activeFromDate;
@@ -63,17 +58,14 @@ public class InactiveableInfo implements InactivateableFromTo {
 		this.activeAsOfDate = activeAsOfDate;
 	}
 
-	@XmlJavaTypeAdapter(SqlDateAdapter.class)
 	public Date getActiveFromDate() {
 		return this.activeFromDate;
 	}
 
-	@XmlJavaTypeAdapter(SqlDateAdapter.class)
 	public Date getActiveToDate() {
 		return this.activeToDate;
 	}
 	
-	@XmlJavaTypeAdapter(SqlDateAdapter.class)
 	public Date getActiveAsOfDate() {
 		return this.activeAsOfDate;
 	}

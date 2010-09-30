@@ -475,8 +475,8 @@
     <field-descriptor name="memberTypeCode" column="MBR_TYP_CD" jdbc-type="CHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="DATE" />
-    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="DATE" />
+    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl" table="KRIM_GRP_ATTR_DATA_T">
@@ -519,8 +519,8 @@
     <field-descriptor name="memberTypeCode" column="MBR_TYP_CD" jdbc-type="CHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="DATE" />
-    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="DATE" />
+    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
     <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="roleMemberId" />
     </collection-descriptor>
@@ -564,8 +564,8 @@
     <field-descriptor name="memberTypeCode" column="MBR_TYP_CD" jdbc-type="CHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="DATE" />
-    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="DATE" />
+    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="roleMemberId" column="ROLE_MBR_ID" jdbc-type="VARCHAR" />
     <collection-descriptor name="attributes" element-class-ref="org.kuali.rice.kim.bo.role.impl.KimDelegationMemberAttributeDataImpl" collection-class="org.apache.ojb.broker.util.collections.ManageableArrayList" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
       <inverse-foreignkey field-ref="delegationMemberId" />
@@ -948,8 +948,8 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
-    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="DATE" />
-    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="DATE" />
+    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
 <!--
      <reference-descriptor name="personDocument" class-ref="org.kuali.rice.kim.document.IdentityManagementPersonDocument" auto-retrieve="true" auto-update="none" auto-delete="none" proxy="true">
@@ -1014,8 +1014,8 @@
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
     <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
-    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="DATE" />
-    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="DATE" />
+    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
     <field-descriptor name="edit" column="EDIT_FLAG" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
     <field-descriptor name="namespaceCode" column="NMSPC_CD" jdbc-type="VARCHAR" />
   </class-descriptor>
@@ -1098,8 +1098,8 @@
       <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
       <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
       <field-descriptor name="active" column="ACTV_IND" jdbc-type="VARCHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion"  />
-      <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="DATE" />
-      <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="DATE" />
+      <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+      <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
       <collection-descriptor name="qualifiers" element-class-ref="org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier" auto-retrieve="true" auto-update="object" auto-delete="object" proxy="true">
         <inverse-foreignkey field-ref="documentNumber" />
         <inverse-foreignkey field-ref="delegationMemberId" />
@@ -1153,8 +1153,8 @@
     <field-descriptor name="memberName" column="MBR_NM" jdbc-type="VARCHAR" />
     <field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
     <field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="DATE" />
-    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="DATE" />
+    <field-descriptor name="activeFromDate" column="ACTV_FRM_DT" jdbc-type="TIMESTAMP" />
+    <field-descriptor name="activeToDate" column="ACTV_TO_DT" jdbc-type="TIMESTAMP" />
   </class-descriptor>
 
   <class-descriptor class="org.kuali.rice.kim.bo.ui.GroupDocumentQualifier" table="KRIM_PND_GRP_ATTR_DATA_T">

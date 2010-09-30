@@ -1132,7 +1132,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     private void inactivateRoleMemberships(List<String> roleIds, Timestamp yesterday){
     	List<RoleMemberImpl> roleMembers = getStoredRoleMembersForRoleIds(roleIds, null, null);
     	for(RoleMemberImpl rm: roleMembers){
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    		rm.setActiveToDate(yesterday);
     	}
     	getBusinessObjectService().save(roleMembers);
     	getIdentityManagementNotificationService().roleUpdated();
@@ -1141,7 +1141,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     private void inactivateMembershipsForRoleAsMember(List<String> roleIds, Timestamp yesterday){
     	List<RoleMemberImpl> roleMembers = getStoredRoleMembershipsForRoleIdsAsMembers(roleIds, null);
     	for(RoleMemberImpl rm: roleMembers){
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    		rm.setActiveToDate(yesterday);
     	}
     	getBusinessObjectService().save(roleMembers);
     	getIdentityManagementNotificationService().roleUpdated();
@@ -1152,7 +1152,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	for(KimDelegationImpl delegation: delegations){
     		delegation.setActive(false);
     		for(KimDelegationMemberImpl delegationMember: delegation.getMembers()){
-    			delegationMember.setActiveToDate(new Date(yesterday.getTime()));
+    			delegationMember.setActiveToDate(yesterday);
     		}
     	}
     	getBusinessObjectService().save(delegations);
@@ -1208,7 +1208,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	List<RoleMemberImpl> roleMembers = getStoredRolePrincipalsForPrincipalIdAndRoleIds(null, principalId, null);
     	Set<String> roleIds = new HashSet<String>( roleMembers.size() );
     	for ( RoleMemberImpl rm : roleMembers ) {
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    		rm.setActiveToDate(yesterday);
     		roleIds.add(rm.getRoleId()); // add to the set of IDs
     	}
     	getBusinessObjectService().save(roleMembers);
@@ -1241,7 +1241,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     protected void inactivatePrincipalDelegations(String principalId, Timestamp yesterday){
     	List<KimDelegationMemberImpl> delegationMembers = getStoredDelegationPrincipalsForPrincipalIdAndDelegationIds(null, principalId);
     	for ( KimDelegationMemberImpl rm : delegationMembers ) {
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    		rm.setActiveToDate(yesterday);
     	}
     	getBusinessObjectService().save(delegationMembers);
     	getIdentityManagementNotificationService().delegationUpdated();
@@ -1284,7 +1284,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     protected void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday){
     	List<RoleMemberImpl> roleMembersOfGroupType = getStoredRoleGroupsForGroupIdsAndRoleIds(null, groupIds, null);
     	for(RoleMemberImpl rm: roleMembersOfGroupType){
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    		rm.setActiveToDate(yesterday);
     	}
     	getBusinessObjectService().save(roleMembersOfGroupType);
     	getIdentityManagementNotificationService().roleUpdated();
@@ -1299,8 +1299,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             groupMemberImpl.setGroupMemberId(kimGroupMember.getGroupMemberId());
             groupMemberImpl.setMemberId(kimGroupMember.getMemberId());
             groupMemberImpl.setMemberTypeCode(kimGroupMember.getMemberTypeCode());
-            groupMemberImpl.setActiveFromDate(kimGroupMember.getActiveFromDate());
-            groupMemberImpl.setActiveToDate(kimGroupMember.getActiveToDate());
+			if (kimGroupMember.getActiveFromDate() != null) {
+				groupMemberImpl.setActiveFromDate(new java.sql.Timestamp(kimGroupMember.getActiveFromDate().getTime()));
+			}
+			if (kimGroupMember.getActiveToDate() != null) {
+				groupMemberImpl.setActiveToDate(new java.sql.Timestamp(kimGroupMember.getActiveToDate().getTime()));
+			}
             groupMemberImpl.setVersionNumber(kimGroupMember.getVersionNumber());
         }
 

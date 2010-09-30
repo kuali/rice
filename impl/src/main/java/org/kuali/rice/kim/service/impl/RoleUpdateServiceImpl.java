@@ -222,8 +222,12 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     	newDelegationMember.setDelegationId(delegation.getDelegationId());
     	newDelegationMember.setRoleMemberId(roleMemberId);
     	newDelegationMember.setMemberTypeCode(memberTypeCode);
-    	newDelegationMember.setActiveFromDate(activeFromDate);
-    	newDelegationMember.setActiveToDate(activeToDate);
+		if (activeFromDate != null) {
+			newDelegationMember.setActiveFromDate(new java.sql.Timestamp(activeFromDate.getTime()));
+		}
+		if (activeToDate != null) {
+			newDelegationMember.setActiveToDate(new java.sql.Timestamp(activeToDate.getTime()));
+		}
 
     	// build role member attribute objects from the given AttributeSet
     	addDelegationMemberAttributeData( newDelegationMember, qualifications, role.getKimTypeId() );
@@ -271,8 +275,12 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     	newRoleMember.setRoleId(role.getRoleId());
     	newRoleMember.setMemberId( memberId );
     	newRoleMember.setMemberTypeCode( memberTypeCode );
-    	newRoleMember.setActiveFromDate(activeFromDate);
-    	newRoleMember.setActiveToDate(activeToDate);
+		if (activeFromDate != null) {
+			newRoleMember.setActiveFromDate(new java.sql.Timestamp(activeFromDate.getTime()));
+		}
+		if (activeToDate != null) {
+			newRoleMember.setActiveToDate(new java.sql.Timestamp(activeToDate.getTime()));
+		}
     	// build role member attribute objects from the given AttributeSet
     	addMemberAttributeData( newRoleMember, qualifications, role.getKimTypeId() );
 

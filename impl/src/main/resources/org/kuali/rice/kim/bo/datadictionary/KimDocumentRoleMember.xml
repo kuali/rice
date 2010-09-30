@@ -70,7 +70,7 @@
   </bean>
 
   <bean id="DocRoleMember-activeFromDate" parent="DocRoleMember-activeFromDate-parentBean"/>
-  <bean id="DocRoleMember-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocRoleMember-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-activeFromDate">
     <property name="name" value="activeFromDate"/>
     <property name="label" value="Active From Date"/>
     <property name="shortLabel" value="Active From Dt"/>
@@ -80,7 +80,7 @@
   </bean>
 
   <bean id="DocRoleMember-activeToDate" parent="DocRoleMember-activeToDate-parentBean"/>
-  <bean id="DocRoleMember-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocRoleMember-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-activeToDate">
     <property name="name" value="activeToDate"/>
     <property name="label" value="Active To Date"/>
     <property name="shortLabel" value="Active To Dt"/>

@@ -27,6 +27,7 @@ import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.web.format.DateDisplayTimestampObjectFormatter;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -49,6 +50,8 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
     
 	public IdentityManagementGroupDocumentForm() {
         super();
+        setFormatterType("document.members.activeFromDate", DateDisplayTimestampObjectFormatter.class);
+        setFormatterType("document.members.activeToDate", DateDisplayTimestampObjectFormatter.class);
     }
 
 	@Override

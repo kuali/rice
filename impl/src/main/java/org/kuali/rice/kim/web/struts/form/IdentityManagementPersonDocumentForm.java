@@ -28,6 +28,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.web.format.DateDisplayTimestampObjectFormatter;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -83,6 +84,8 @@ public class IdentityManagementPersonDocumentForm extends IdentityManagementDocu
         this.setNewPhone(new PersonDocumentPhone());
         this.setNewEmail(new PersonDocumentEmail());
         this.setNewDelegationMember(new RoleDocumentDelegationMember());
+        setFormatterType("document.groups.activeFromDate", DateDisplayTimestampObjectFormatter.class);
+        setFormatterType("document.groups.activeToDate", DateDisplayTimestampObjectFormatter.class);
     }
 
 	@Override

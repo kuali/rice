@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -351,7 +352,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRoleMember inactivatedRoleMember = roleDocumentForm.getRoleDocument().getMembers().get(getLineToDelete(request));
         Calendar cal = Calendar.getInstance();
-        inactivatedRoleMember.setActiveToDate(new java.sql.Date(cal.getTimeInMillis()));
+        inactivatedRoleMember.setActiveToDate(new Timestamp(cal.getTimeInMillis()));
         roleDocumentForm.getRoleDocument().getMembers().set(getLineToDelete(request), inactivatedRoleMember);
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }

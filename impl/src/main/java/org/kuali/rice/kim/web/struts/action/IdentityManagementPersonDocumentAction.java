@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.web.struts.action;
 
+import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -326,7 +327,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentGroup inactivedGroupMembership = personDocumentForm.getPersonDocument().getGroups().get(getLineToDelete(request));
         Calendar cal = Calendar.getInstance();
-        inactivedGroupMembership.setActiveToDate(new java.sql.Date(cal.getTimeInMillis()));        
+        inactivedGroupMembership.setActiveToDate(new Timestamp(cal.getTimeInMillis()));        
         personDocumentForm.getPersonDocument().getGroups().set(getLineToDelete(request), inactivedGroupMembership);
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }

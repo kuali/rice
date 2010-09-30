@@ -92,7 +92,7 @@
   </bean>
 
   <bean id="DocGroup-activeFromDate" parent="DocGroup-activeFromDate-parentBean"/>
-  <bean id="DocGroup-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocGroup-activeFromDate-parentBean" abstract="true" parent="AttributeReferenceDummy-activeFromDate">
     <property name="name" value="activeFromDate"/>
     <property name="label" value="Active From Date"/>
     <property name="shortLabel" value="Active From Dt"/>
@@ -102,7 +102,7 @@
   </bean>
 
   <bean id="DocGroup-activeToDate" parent="DocGroup-activeToDate-parentBean"/>
-  <bean id="DocGroup-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-genericDate">
+  <bean id="DocGroup-activeToDate-parentBean" abstract="true" parent="AttributeReferenceDummy-activeToDate">
     <property name="name" value="activeToDate"/>
     <property name="label" value="Active To Date"/>
     <property name="shortLabel" value="Active To Dt"/>

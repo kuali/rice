@@ -108,7 +108,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
        List<String> memberPrincipalsBefore = KIMServiceLocator.getGroupService().getMemberPrincipalIds(groupId);
 
        Collection<GroupMemberImpl> toDeactivate = getActiveGroupMembers(groupId, null, null);
-       java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
+       java.sql.Timestamp today = new java.sql.Timestamp(System.currentTimeMillis());
 
        // Set principals as inactive
         for (GroupMemberImpl aToDeactivate : toDeactivate) {
@@ -133,7 +133,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
      * @see org.kuali.rice.kim.service.GroupService#removeGroupFromGroup(java.lang.String, java.lang.String)
      */
     public boolean removeGroupFromGroup(String childId, String parentId) {
-    	java.sql.Date today = new java.sql.Date(System.currentTimeMillis());
+    	java.sql.Timestamp today = new java.sql.Timestamp(System.currentTimeMillis());
 
     	List<GroupMemberImpl> groupMembers =
     		getActiveGroupMembers(parentId, childId, KimGroupMemberTypes.GROUP_MEMBER_TYPE);
@@ -159,7 +159,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
         if(groupMembers.size() == 1) {
         	GroupMemberImpl member = groupMembers.iterator().next();
-        	member.setActiveToDate(new java.sql.Date(System.currentTimeMillis()));
+        	member.setActiveToDate(new java.sql.Timestamp(System.currentTimeMillis()));
         	getBusinessObjectService().save(member);
             KIMServiceLocator.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(), member.getGroupId());
             getIdentityManagementNotificationService().groupUpdated();
@@ -211,7 +211,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
 			if (oldGroup != null) {
 				// Inactivate and re-add members no longer in the group (in order to preserve history).
-				java.sql.Date activeTo = new java.sql.Date(System.currentTimeMillis());
+				java.sql.Timestamp activeTo = new java.sql.Timestamp(System.currentTimeMillis());
 				List<GroupMemberImpl> toReAdd = null;
 
 				if (oldGroup.getMembers() != null) for (GroupMemberImpl member : oldGroup.getMembers()) {

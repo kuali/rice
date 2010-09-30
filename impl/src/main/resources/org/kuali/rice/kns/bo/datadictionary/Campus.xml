@@ -63,7 +63,6 @@
   <bean id="Campus-campusName" parent="Campus-campusName-parentBean"/>
 
   <bean id="Campus-campusName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true"/>
     <property name="shortLabel" value="Name"/>
     <property name="maxLength" value="40"/>
     <property name="required" value="true"/>
@@ -78,7 +77,6 @@
   <bean id="Campus-campusShortName" parent="Campus-campusShortName-parentBean"/>
 
   <bean id="Campus-campusShortName-parentBean" abstract="true" parent="AttributeDefinition">
-    <property name="forceUppercase" value="true"/>
     <property name="shortLabel" value="Short Name"/>
     <property name="maxLength" value="12"/>
     <property name="required" value="true"/>

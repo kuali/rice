@@ -36,6 +36,10 @@
     </build>
 
   <dependencies>
+ 	<dependency>
+		<groupId>xmlunit</groupId>
+		<artifactId>xmlunit</artifactId>
+	</dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-impl</artifactId>

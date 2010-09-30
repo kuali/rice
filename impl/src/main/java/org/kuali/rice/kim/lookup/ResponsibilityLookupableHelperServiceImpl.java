@@ -194,7 +194,6 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		List<ResponsibilityImpl> tempResponsibilities;
 		List<String> collectedResponsibilityIds = new ArrayList<String>();
 		Map<String, String> responsibilityCriteria;
-		String parentRoleIdsLookupString = "";
 		
 		for(RoleImpl roleImpl: roleSearchResults){
 			responsibilityCriteria = new HashMap<String, String>();
@@ -210,15 +209,11 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 				//need to find roles that current role is a member of and build search string
 				List<String> parentRoleIds = KIMServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
 				for (String parentRoleId : parentRoleIds) {
-					parentRoleIdsLookupString += parentRoleId + "&&";
+					Map<String, String> roleSearchCriteria = new HashMap<String, String>();
+					roleSearchCriteria.put("roleId", parentRoleId);
+					//get all parent role permissions and merge them with current permissions
+					responsibilities = mergeResponsibilityLists(responsibilities, getResponsibilitiesWithRoleSearchCriteria(roleSearchCriteria, unbounded));
 				}
-			}
-			//find roles that have roles in roleSearchResults as a member
-			if (StringUtils.isNotEmpty(parentRoleIdsLookupString)) {
-				Map<String, String> roleSearchCriteria = new HashMap<String, String>();
-				roleSearchCriteria.put("roleId", parentRoleIdsLookupString);
-				//get all parent role permissions and merge them with current permissions
-				responsibilities = mergeResponsibilityLists(responsibilities, getResponsibilitiesWithRoleSearchCriteria(roleSearchCriteria, unbounded));
 			}
 		}
 		return new CollectionIncomplete<ResponsibilityImpl>(responsibilities, actualSizeIfTruncated);

@@ -179,8 +179,6 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		List<PermissionImpl> tempPermissions;
 		List<String> collectedPermissionIds = new ArrayList<String>();
 		Map<String, String> permissionCriteria;
-		String parentRoleIdsLookupString = "";
-		 
 		
 		for(RoleImpl roleImpl: roleSearchResults){
 			permissionCriteria = new HashMap<String, String>();
@@ -197,16 +195,13 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 			//need to find roles that current role is a member of and build search string
 			List<String> parentRoleIds = KIMServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
 			for (String parentRoleId : parentRoleIds) {
-				parentRoleIdsLookupString += parentRoleId + "&&";
+				Map<String, String> roleSearchCriteria = new HashMap<String, String>();
+				roleSearchCriteria.put("roleId", parentRoleId);
+				//get all parent role permissions and merge them with current permissions
+				permissions = mergePermissionLists(permissions, getPermissionsWithRoleSearchCriteria(roleSearchCriteria, unbounded));
 			}
 		}
-		//find roles that have roles in roleSearchResults as a member
-		if (StringUtils.isNotEmpty(parentRoleIdsLookupString)) {
-			Map<String, String> roleSearchCriteria = new HashMap<String, String>();
-			roleSearchCriteria.put("roleId", parentRoleIdsLookupString);
-			//get all parent role permissions and merge them with current permissions
-			permissions = mergePermissionLists(permissions, getPermissionsWithRoleSearchCriteria(roleSearchCriteria, unbounded));
-		}
+		
 		return new CollectionIncomplete<PermissionImpl>(permissions, actualSizeIfTruncated);
 	}
 	

@@ -22,6 +22,7 @@
         <property name="dataDictionaryPackages">
             <list>
                 <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer.xml</value>
+                <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficer-Extension.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/FiscalOfficerMaintenanceDocument.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccount.xml</value>
                 <value>classpath:edu/sampleu/travel/datadictionary/TravelAccountExtension.xml</value>

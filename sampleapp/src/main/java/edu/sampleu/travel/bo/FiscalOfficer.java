@@ -49,9 +49,26 @@ public class FiscalOfficer extends PersistableBusinessObjectBase {
 	
 	@Column(name="acct_fo_user_name")
 	private String userName;
+	
+	@Column(name="acct_fo_user_name")
+	private String firstName;
 
 	@OneToMany(cascade={CascadeType.PERSIST, CascadeType.MERGE}, fetch=FetchType.EAGER, mappedBy="fiscalOfficer")
 	private List<TravelAccount> accounts;
+
+	/**
+	 * @return the firstName
+	 */
+	public String getFirstName() {
+		return this.firstName;
+	}
+
+	/**
+	 * @param firstName the firstName to set
+	 */
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
 
 	public void setUserName(String userId) {
 		userName = userId;

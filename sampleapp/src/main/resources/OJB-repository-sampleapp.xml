@@ -89,6 +89,7 @@
 	<class-descriptor class="edu.sampleu.travel.bo.FiscalOfficer" table="TRV_ACCT_FO">
 		<field-descriptor name="id" column="acct_fo_id" jdbc-type="BIGINT" primarykey="true" autoincrement="true" sequence-name="TRV_FO_ID_S" />
 		<field-descriptor name="userName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
+		<field-descriptor name="firstName" column="acct_fo_user_name" jdbc-type="VARCHAR" />
 
 		<collection-descriptor name="accounts" element-class-ref="edu.sampleu.travel.bo.TravelAccount" auto-retrieve="true" auto-update="true" auto-delete="false" >
 			<inverse-foreignkey field-ref="foId" />

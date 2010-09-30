@@ -4,7 +4,7 @@
 	<artifactId>rice</artifactId>
 	<packaging>pom</packaging>
 	<name>Kuali Rice</name>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3-08</version>
 	<description>The Kuali Rice effort provides an enterprise class
 		middleware suite of integrated products that allows both Kuali and
 		non-Kuali applications to be built in an agile fashion, such that
@@ -899,11 +899,9 @@
 		</plugins>
 	</reporting>
 	<scm>
-		<connection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-1-br
-		</connection>
-		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/branches/rice-release-1-0-1-1-br
-		</developerConnection>
-		<url>https://test.kuali.org/fisheye/browse/rice</url>
+		<connection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-1.0.3-08</connection>
+		<developerConnection>scm:svn:https://test.kuali.org/svn/rice/tags/rice-1.0.3-08</developerConnection>
+		<url>https://test.kuali.org/fisheye/browse/rice/tags/rice-1.0.3-08</url>
 	</scm>
 	<distributionManagement>
 		<repository>

@@ -206,7 +206,7 @@ public class XmlIngestionTest extends KEWTestCase {
 //
 //        Diff d = new Diff(ingestedString, reingestedString);
 //        assertFalse(d.identical()); // CHILD_NODELIST_SEQUENCE Difference
-        assertTrue(d.similar());
+//        assertTrue(d.similar());
         
         
         // end sample :diff:

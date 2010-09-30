@@ -149,7 +149,25 @@
       		</c:if>
 
       		<c:if test="${not empty extraButtonSource}">
-      		  <td class="tabtable1-mid1">${extraButtonSource}</td>
+				<c:forTokens items="${extraButtonSource}" delims=";" var="token">
+					<c:choose>
+						<c:when test="${fn:contains(token, 'property=')}" >
+							<c:set var="ebProperty" value="${fn:substringAfter(token, 'property=')}"/>
+						</c:when>
+						<c:when test="${fn:contains(token, 'src=')}" >
+							<c:set var="ebSrc" value="${fn:substringAfter(token, 'src=')}"/>
+						</c:when>
+						<c:when test="${fn:contains(token, 'title=')}" >
+							<c:set var="ebTitle" value="${fn:substringAfter(token, 'title=')}"/>
+						</c:when>
+						<c:when test="${fn:contains(token, 'alt=')}" >
+							<c:set var="ebAlt" value="${fn:substringAfter(token, 'alt=')}"/>
+						</c:when>
+					</c:choose>
+				</c:forTokens>
+				<td class="tabtable1-mid1">
+					<html:image property="${ebProperty}" src="${ConfigProperties.kr.externalizable.images.url}${ebSrc}" title="${ebTitle}" alt="${ebAlt}" styleClass="tinybutton"/>
+				</td>
       		</c:if>
 
             <td class="${midTabClass}">

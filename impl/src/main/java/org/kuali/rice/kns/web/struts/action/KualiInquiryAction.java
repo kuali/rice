@@ -235,9 +235,51 @@ public class KualiInquiryAction extends KualiAction {
         
         populateSections(mapping, request, inquiryForm, bo);
         
+        if (showInactive) {
+        	reopenInactiveRecords(inquiryForm, collectionName);
+        }
+        
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
     
+    /**
+     * Attempts to reopen sub tabs which would have been closed for inactive records
+     * 
+     * @param inquiryForm the form to reopen records on
+     * @param collectionName the name of the collection reopening
+     */
+    protected void reopenInactiveRecords(InquiryForm inquiryForm, String collectionName) {
+    	for (Object sectionAsObject : inquiryForm.getSections()) {
+    		final Section section = (Section)sectionAsObject;
+    		for (Row row: section.getRows()) {
+    			for (Field field : row.getFields()) {
+    				if (field.getFieldType().equals(Field.CONTAINER) && field.getContainerName().startsWith(collectionName)) {
+    					final String tabKey = WebUtils.generateTabKey(generateCollectionSubTabName(field));
+    					inquiryForm.getTabStates().put(tabKey, "OPEN");
+    				}
+    			}
+    		}
+    	}
+    }
+    
+    /**
+     * Finds a container field's sub tab name
+     * 
+     * @param field the collection sub tab name to  
+     * @return the sub tab name
+     */
+    protected String generateCollectionSubTabName(Field field) {
+    	final String containerName = field.getContainerElementName();
+    	final String cleanedContainerName = 
+    		(containerName == null) ?
+    				"" :
+    				containerName.replaceAll("\\d+", "");
+    	StringBuilder subTabName = new StringBuilder(cleanedContainerName);
+    	for (Field containerField : field.getContainerDisplayFields()) {
+    		subTabName.append(containerField.getPropertyValue());
+    	}
+    	return subTabName.toString();
+    }
     
     @Override
     public ActionForward toggleTab(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {

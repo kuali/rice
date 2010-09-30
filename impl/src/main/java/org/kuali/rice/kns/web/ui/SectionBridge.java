@@ -170,18 +170,26 @@ public class SectionBridge {
     
     //This method is used to remove hidden fields (To fix JIRA KFSMI-2449)
     private static final List<Row> reArrangeRows(List<Row> rows, int numberOfColumns){
-    	List<Field> fields = new ArrayList();
+    	List<Row> rearrangedRows = new ArrayList<Row>();
+    	
     	for (Row row : rows) {
+    		List<Field> fields = new ArrayList<Field>();
     		List<Field> rowFields = row.getFields();
     		for (Field field : rowFields) {
     			if(!Field.HIDDEN.equals(field.getFieldType()) && !Field.BLANK_SPACE.equals(field.getFieldType())){
     				fields.add(field);
     			}
     		}
+    		List<Row> rewrappedFieldRows = FieldUtils.wrapFields(fields, numberOfColumns);
+    		if (row.isHidden()) {
+    			for (Row rewrappedRow : rewrappedFieldRows) {
+    				rewrappedRow.setHidden(true);
+    			}
+    		}
+    		rearrangedRows.addAll(rewrappedFieldRows);
     	}
     	
-    	return FieldUtils.wrapFields(fields, numberOfColumns);
-    	
+    	return rearrangedRows;
     }
 
     
@@ -730,17 +738,13 @@ public class SectionBridge {
      * @return Field - of type IMAGE_SUBMIT
      */
     private static final void addShowInactiveButtonField(Section section, String collectionName, boolean showInactive) {
-        String showInactiveButton = "<a name=\"showInactive" + collectionName + "\"><input type=\"image\" name=\"" + KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TOGGLE_INACTIVE_METHOD + "." + collectionName.replace( '.', '_' );
-        showInactiveButton += "." + KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + showInactive  + ".anchorshowInactive" + collectionName + "\" src=\"";
-        
-        if (showInactive) {
-            showInactiveButton += "images/tinybutton-showinact.gif";
-        }
-        else {
-            showInactiveButton += "images/tinybutton-hideinact.gif";
-        }
+    	String methodName = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TOGGLE_INACTIVE_METHOD + "." + collectionName.replace( '.', '_' );
+        methodName += "." + KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + showInactive + ".anchorshowInactive." + collectionName + KNSConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL;
+           
+        String imageSource = showInactive ? "tinybutton-showinact.gif" : "tinybutton-hideinact.gif";
 
-        showInactiveButton += "\" alt=\"show(hide) inactive\" class=\"tinybutton\" /></a>";
+        String showInactiveButton = "property=" + methodName + ";src=" + imageSource + ";alt=show(hide) inactive" + ";title=show(hide) inactive";
+
         section.setExtraButtonSource(showInactiveButton);
     }
     

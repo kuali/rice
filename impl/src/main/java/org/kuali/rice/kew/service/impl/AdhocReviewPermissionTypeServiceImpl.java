@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl;
 
 /**
@@ -31,7 +32,7 @@ import org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
+public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl implements KimPermissionTypeService{
 	
 	{
 		requiredAttributes.add( KimAttributes.ACTION_REQUEST_CD );

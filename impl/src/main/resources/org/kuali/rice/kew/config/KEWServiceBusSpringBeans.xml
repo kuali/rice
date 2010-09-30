@@ -315,6 +315,7 @@
 		<property name="serviceDefinition">
         <bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
           <property name="service">
+          <!-- this should be replaced with enMoveDocumentSerice in the 1.1 release of rice -->
             <ref bean="enMoveDocumentService" />
           </property>
           <property name="localServiceName" value="MoveDocumentProcessor" />

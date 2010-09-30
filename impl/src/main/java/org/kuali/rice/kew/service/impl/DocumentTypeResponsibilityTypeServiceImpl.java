@@ -25,6 +25,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase;
 import org.kuali.rice.kim.util.KimCommonUtils;
 
@@ -32,7 +33,7 @@ import org.kuali.rice.kim.util.KimCommonUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class DocumentTypeResponsibilityTypeServiceImpl extends
-		KimResponsibilityTypeServiceBase {
+		KimResponsibilityTypeServiceBase implements KimResponsibilityTypeService {
 	DocumentTypeService documentTypeService;
 	protected String exactMatchStringAttributeName;
 

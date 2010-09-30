@@ -27,6 +27,8 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.support.KimDelegationTypeService;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 /**
@@ -35,7 +37,7 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
  * 
  */
 public class ActionRequestDerivedRoleTypeServiceImpl extends
-		KimDerivedRoleTypeServiceBase {
+		KimDerivedRoleTypeServiceBase implements KimRoleTypeService, KimDelegationTypeService{
 	private static final String NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Non-Ad Hoc Approve Request Recipient";
 	private static final String APPROVE_REQUEST_RECIPIENT_ROLE_NAME = "Approve Request Recipient";
 	private static final String ACKNOWLEDGE_REQUEST_RECIPIENT_ROLE_NAME = "Acknowledge Request Recipient";

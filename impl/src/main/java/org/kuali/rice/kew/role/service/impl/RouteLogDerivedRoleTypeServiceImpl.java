@@ -25,6 +25,8 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.support.KimDelegationTypeService;
+import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 /**
@@ -32,7 +34,7 @@ import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase {
+public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServiceBase implements KimRoleTypeService, KimDelegationTypeService {
     public static final String INITIATOR_ROLE_NAME = "Initiator";
     public static final String INITIATOR_OR_REVIEWER_ROLE_NAME = "Initiator or Reviewer";
     public static final String ROUTER_ROLE_NAME = "Router";

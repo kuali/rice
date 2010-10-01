@@ -34,6 +34,7 @@ import java.util.regex.Pattern;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.PageContext;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -484,10 +485,12 @@ public class WebUtils {
     }
     
     public static ActionForm getKualiForm(HttpServletRequest request){
-    	if(request.getAttribute(KEY_KUALI_FORM_IN_SESSION)!=null)
+    	if(request.getAttribute(KEY_KUALI_FORM_IN_SESSION)!=null) {
     		return (ActionForm)request.getAttribute(KEY_KUALI_FORM_IN_SESSION);
-    	else
-    		return (ActionForm)request.getSession().getAttribute(KEY_KUALI_FORM_IN_SESSION);
+    	} else {
+    		final HttpSession session = request.getSession(false);
+    		return session != null ? (ActionForm) session.getAttribute(KEY_KUALI_FORM_IN_SESSION) : null;
+    	}
     }
     
     public static boolean isPropertyEditable(Set<String> editableProperties, String propertyName){

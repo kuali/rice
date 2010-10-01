@@ -738,26 +738,13 @@
                         fieldLabel="${field.fieldLabel}" />
 
                     <td class="grid" style="width:${dataCellWidth}%;">
-                        <input type="hidden" name='${field.propertyName}' value='<c:out value="${fieldValue}"/>' />
-
-                        <c:choose>
-                          <c:when test="${isInquiry && not (empty field.inquiryURL.href || empty field.propertyValue)}">
-                             <a title="<c:out value="${field.inquiryURL.title}"/>" href="<c:out value="${field.inquiryURL.href}"/>" target="_blank">
-                               <c:out value="${fieldValue}"/>
-                             </a>
-                           </c:when>
-                           <c:otherwise>
-                             <c:out value="${fieldValue}"/>
-                           </c:otherwise>
-                        </c:choose>
-
-                        &nbsp;
+                        <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" isLookup="${isLookup}" />
 
                         <kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
-
                     </td>
 
                 </c:when>
+                
                 <c:when test="${field.fieldType eq field.LOOKUP_HIDDEN}">
 
                   <kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}"

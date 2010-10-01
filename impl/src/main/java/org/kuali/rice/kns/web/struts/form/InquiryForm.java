@@ -150,14 +150,14 @@ public class InquiryForm extends KualiForm {
 
     /**
      * Gets the alt keys for a class.  Will not return null but and empty list if no keys exist.
-     * 
+     *
      * @param clazz the class.
      * @return the alt keys
      */
     private List<List<String>> getAltkeys(Class<?> clazz) {
     	final KualiModuleService kualiModuleService = KNSServiceLocator.getKualiModuleService();
     	final ModuleService moduleService = kualiModuleService.getResponsibleModuleService(clazz);
-    	
+
         List<List<String>> altKeys = null;
         if (moduleService != null) {
         	altKeys = moduleService.listAlternatePrimaryKeyFieldNames(clazz);
@@ -165,14 +165,14 @@ public class InquiryForm extends KualiForm {
 
         return altKeys != null ? altKeys : new ArrayList<List<String>>();
     }
-    
+
     protected void populatePKFieldValues(HttpServletRequest request, String boClassName, boolean passedFromPreviousInquiry) {
         try {
             EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
             DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
             BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
             BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
-            
+
             Class businessObjectClass = Class.forName(boClassName);
 
             // build list of key values from request, if all keys not given throw error
@@ -186,37 +186,46 @@ public class InquiryForm extends KualiForm {
             		break;
 	            int keyCount = boKeys.size();
 	            int foundCount = 0;
-	            for (String realPkFieldName : boKeys) {
-	                String pkParamName = realPkFieldName;
+                for (String boKey : boKeys) {
+                    String pkParamName = boKey;
 	                if (passedFromPreviousInquiry) {
 	                    pkParamName = KNSConstants.INQUIRY_PK_VALUE_PASSED_FROM_PREVIOUS_REQUEST_PREFIX + pkParamName;
 	                }
 
 	                if (request.getParameter(pkParamName) != null) {
 	                	foundCount++;
-	                	String parameter = (String) request.getParameter(pkParamName);
+	                	String parameter = request.getParameter(pkParamName);
 
-	                	if (dataDictionaryService.getAttributeForceUppercase(businessObjectClass, pkParamName)) {
+
+                        Boolean forceUppercase = Boolean.TRUE;
+                        // this throws org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException
+                        try{
+                        forceUppercase = dataDictionaryService.getAttributeForceUppercase(businessObjectClass, pkParamName);
+                        }
+                        catch(Exception e){
+                          LOG.error("Can't instantiate class: " + boClassName, e);
+                        }
+                        if (forceUppercase) {
 	                		parameter = parameter.toUpperCase();
 	                	}
-	                
-	                	inquiryPrimaryKeys.put(realPkFieldName, parameter);
-	                    if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, realPkFieldName)) {
+
+                        inquiryPrimaryKeys.put(boKey, parameter);
+                        if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(businessObjectClass, boKey)) {
                             try {
-	                            inquiryDecryptedPrimaryKeys.put(realPkFieldName, encryptionService.decrypt(parameter));
-							} catch (GeneralSecurityException e) {
-								LOG.error("BO class " + businessObjectClassName + " property " + realPkFieldName + " should have been encrypted, but there was a problem decrypting it.");
-								throw e;
-	                        }
-	                    }
-	                    else {
-	                	inquiryDecryptedPrimaryKeys.put(realPkFieldName, parameter);
-	                    }
-	                }
-	            }
-	            if(foundCount == keyCount){
-	            	bFound = true;
-	            }
+                                inquiryDecryptedPrimaryKeys.put(boKey, encryptionService.decrypt(parameter));
+                            } catch (GeneralSecurityException e) {
+                                LOG.error("BO class " + businessObjectClassName + " property " + boKey + " should have been encrypted, but there was a problem decrypting it.");
+                                throw e;
+                            }
+                        }
+                        else {
+                            inquiryDecryptedPrimaryKeys.put(boKey, parameter);
+                        }
+                    }
+                }
+                if (foundCount == keyCount) {
+                    bFound = true;
+                }
             }
             if(!bFound){
                 LOG.error("All keys not given to lookup for bo class name " + businessObjectClass.getName());

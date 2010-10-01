@@ -57,9 +57,15 @@ public class XmlExporterServiceImpl implements XmlExporterService, XmlConstants 
             appendIfNotEmpty(rootElement, exporter.export(dataSet));
         }
 
-        Format f = Format.getRawFormat();
-        f.setExpandEmptyElements(false);
-        f.setTextMode(Format.TextMode.PRESERVE);
+        // TODO: KULRICE-4420 - this needs cleanup
+        Format f;
+        if (!dataSet.getEdocLites().isEmpty() || !dataSet.getStyles().isEmpty()) {
+            f = Format.getRawFormat();
+            f.setExpandEmptyElements(false);
+            f.setTextMode(Format.TextMode.PRESERVE);
+        } else {
+            f = Format.getPrettyFormat();
+        }
         XMLOutputter outputer = new XMLOutputter(f);
         StringWriter writer = new StringWriter();
         try {

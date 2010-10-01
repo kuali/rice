@@ -197,7 +197,7 @@ public class InquiryForm extends KualiForm {
 	                	String parameter = request.getParameter(pkParamName);
 
 
-                        Boolean forceUppercase = Boolean.TRUE;
+                        Boolean forceUppercase = Boolean.FALSE;
                         // this throws org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException
                         try{
                         forceUppercase = dataDictionaryService.getAttributeForceUppercase(businessObjectClass, pkParamName);

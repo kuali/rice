@@ -16,9 +16,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -28,6 +25,11 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCard;
 import org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService;
+import org.kuali.rice.ksb.messaging.remotedservices.Inbox;
+import org.kuali.rice.ksb.messaging.remotedservices.InboxResource;
+import org.kuali.rice.ksb.messaging.remotedservices.Message;
+import org.kuali.rice.ksb.messaging.remotedservices.MessageResource;
+import org.kuali.rice.ksb.messaging.serviceconnectors.ResourceFacade;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
 
@@ -38,7 +40,9 @@ import org.kuali.rice.ksb.test.KSBTestCase;
  */
 public class RESTServiceTest extends KSBTestCase {
 
-    private static final String SERVICE = "baseballCardCollectionService";
+    private static final String BBCARD_SERVICE = "baseballCardCollectionService";
+    private static final String KMS_SERVICE = "kms";
+    private static final String KMS_MESSAGE_RESOURCE = "kms::message";
     private static final String NAMESPACE = "test";
 
 
@@ -53,13 +57,64 @@ public class RESTServiceTest extends KSBTestCase {
     }
 
     private String getEndpointUrl() {
-        return getBaseBusUrl() + SERVICE;
+        return getBaseBusUrl() + BBCARD_SERVICE;
     }
 
 
     private String getClient1Port() {
         return ConfigContext.getCurrentContextConfig().getProperty("ksb.client1.port");
     }
+
+    @Test
+    public void testMessagingService() throws Exception {
+    	ResourceFacade kmsService =
+            (ResourceFacade) GlobalResourceLoader.getService(
+                new QName(NAMESPACE, KMS_SERVICE));
+
+    	// Get service by resource name
+    	InboxResource inboxResource = kmsService.getResource("inbox");
+//    	kmsService.getRe...
+    	// Get service by resource class
+    	MessageResource messageResource = kmsService.getResource(MessageResource.class);
+
+    	exerciseMessagingService(inboxResource, messageResource);
+    }
+
+    /**
+	 * This method ...
+	 *
+	 * @param inboxResource
+	 * @param messageResource
+	 */
+	private void exerciseMessagingService(InboxResource inboxResource,
+			MessageResource messageResource) {
+		Inbox inbox = new Inbox();
+    	inbox.setOwner("Joe Q. Tester");
+
+    	inbox = inboxResource.createInbox(inbox);
+
+    	Message message = new Message();
+    	message.setRecipient("Joe Q. Tester");
+    	message.setSubject("Hello new world!");
+    	message.setText("This is a test message.");
+
+    	Message createdMessage = messageResource.createMessage(message);
+
+    	List<String> messages = inbox.getMessages();
+    	messages.add(createdMessage.getId());
+
+    	inboxResource.updateInbox(inbox);
+
+    	inbox = inboxResource.retrieveInbox(inbox.getId());
+
+    	List<String> updatedMessages = inbox.getMessages();
+
+    	String updatedMessageId = updatedMessages.get(0);
+
+    	Message retrievedMessage = messageResource.retrieve(updatedMessageId);
+
+    	assertTrue(retrievedMessage.getSubject().equals("Hello new world!"));
+	}
 
     /**
      * Exercise our RESTful {@link BaseballCardCollectionService} over the KSB
@@ -73,7 +128,7 @@ public class RESTServiceTest extends KSBTestCase {
 
         BaseballCardCollectionService service = 
             (BaseballCardCollectionService) GlobalResourceLoader.getService(
-                    new QName(NAMESPACE, SERVICE)
+                    new QName(NAMESPACE, BBCARD_SERVICE)
             );
 
         // test @POST
@@ -128,7 +183,7 @@ public class RESTServiceTest extends KSBTestCase {
      * 
      * @throws Exception
      */
-    @Test
+   /* @Test
     public void testCXFServiceListIsDisabled() throws Exception {
         // if CXF's service list is enabled, this URL will return the service list
         URL url = new URL(getEndpointUrl()+"/services");
@@ -139,6 +194,6 @@ public class RESTServiceTest extends KSBTestCase {
         } catch (IOException e) {
             // this is what should happen
         }
-    }
+    }*/
 
 }

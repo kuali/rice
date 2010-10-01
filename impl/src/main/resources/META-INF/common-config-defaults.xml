@@ -76,7 +76,6 @@
      -->
     <param name="appserver.url" override="false">${application.http.scheme}://${application.host}:${http.port}</param>
     <param name="application.url" override="false">${appserver.url}/${app.context.name}</param>
-    <param name="rice.ksb.restfulServicePath" override="false">restful</param>
     <param name="rice.default.soap.service" override="false">false</param>
     <param name="serviceServletUrl" override="false">${application.url}/remoting/</param>
     <param name="workflow.url" override="false">${application.url}/kew</param>
@@ -98,12 +97,12 @@
     <param name="rice.additionalSpringFiles" override="false"></param>
 
 	<!-- Portal display parameters -->
-	<!-- rice.portal.links.showRiceServerConfig determines if a second config viewer link will be shown.  
-	     This is helpful for client apps using the rice portal, because both client and rice config params 
+	<!-- rice.portal.links.showRiceServerConfig determines if a second config viewer link will be shown.
+	     This is helpful for client apps using the rice portal, because both client and rice config params
 	     can be linked to -->
 	<param name="rice.portal.links.showRiceServerConfig" override="false">false</param>
 	<param name="rice.portal.logout.redirectUrl">${application.url}/portal.do</param>
-	
+
     <!-- App specific parameters -->
     <param name="externalizable.help.url" override="false">/${app.context.name}/kr/static/help/</param>
     <param name="externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
@@ -274,7 +273,7 @@
 	<param name="portal.show.sample.app" override="false">false</param>
 	<param name="bus.refresh.rate" override="false">30</param>
 	<param name="threadPool.size" override="false">5</param>
-	
+
 	<!-- Default Option for Action List User Preferences. -->
 	<param name="userOptions.default.color" override="false">white</param>
 	<!-- email options: no, daily, weekly, immediate -->
@@ -299,7 +298,7 @@
 	<!-- delegatorFilterOnActionList: "Secondary Delegators on Action List Page" or "Secondary Delegators only on Filter Page" -->
 	<param name="userOptions.default.delegatorFilterOnActionList" override="false">Secondary Delegators on Action List Page</param>
 	<param name="userOptions.default.primaryDelegatorFilterOnActionList" override="false">Primary Delegates on Action List Page</param>
-	
-	
-	
+
+
+
 </config>

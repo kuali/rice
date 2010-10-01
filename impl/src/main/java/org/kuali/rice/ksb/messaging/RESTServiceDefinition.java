@@ -16,14 +16,15 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.util.Set;
-import java.util.Map.Entry;
+import java.util.List;
+import java.util.Map;
 
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
+import javax.ws.rs.Path;
+
+import org.apache.commons.collections.BidiMap;
+import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.ksb.util.KSBConstants;
 
 /**
  * Service definition for RESTful services.  A JAX-WS service has a resource class, which is the class or
@@ -36,28 +37,17 @@ public class RESTServiceDefinition extends ServiceDefinition {
     private static final long serialVersionUID = 5892163789061959602L;
 
 	private String resourceClass;
+	transient private List<Object> resources;
+	private BidiMap resourceToClassNameMap;
+	transient private List<Object> providers;
+	transient private Map<Object, Object> extensionMappings;
+	transient private Map<Object, Object> languageMappings;
 
 	/**
 	 * Default constructor.  Sets bus security to FALSE.
 	 */
 	public RESTServiceDefinition() {
 		super(Boolean.FALSE);
-
-		Config config = ConfigContext.getCurrentContextConfig();
-		if (config == null) {
-		    // Kludge, at the point in Rice initialization for KSB unit tests where RESTServiceDefinitionS are first
-		    // constructed, ConfigContext.getCurrentContextConfig() returns null.  The following worked.
-		    config = ConfigContext.getConfig(RESTServiceDefinition.class.getClassLoader());
-		    // In rare cases in the Rice tests the above doesn't work either.  Sigh...
-		    if (config == null) {
-				Set<Entry<ClassLoader,Config>> configs = ConfigContext.getConfigs();
-				if (configs.size() == 1) config = configs.iterator().next().getValue();
-		    }
-		}
-
-		String restfulServicePath = config.getProperty(KSBConstants.Config.RESTFUL_SERVICE_PATH);
-
-		super.setServicePath(restfulServicePath);
 	}
 
 	/**
@@ -73,17 +63,6 @@ public class RESTServiceDefinition extends ServiceDefinition {
 	        		"for RESTful services");
 	    }
 	    super.setBusSecurity(busSecurity);
-	}
-
-	/**
-	 * overriding to prohibit changing of the service path
-	 *
-	 * @see org.kuali.rice.ksb.messaging.ServiceDefinition#setServicePath(java.lang.String)
-	 */
-	@Override
-	public void setServicePath(String servicePath) {
-	    throw new UnsupportedOperationException("the "+ KSBConstants.Config.RESTFUL_SERVICE_PATH +
-	            " configuration parameter sets the RESTServiceDefinition's service path, and can not be overridden");
 	}
 
 	/**
@@ -121,11 +100,55 @@ public class RESTServiceDefinition extends ServiceDefinition {
 	@Override
 	public void validate() {
 
+		List<Object> resources = getResources();
+
+		if (resources != null && !resources.isEmpty()) {
+			resourceToClassNameMap = new DualHashBidiMap();
+			for (Object resource : resources) {
+				// If there is no service set then we have to assume that it's the first resource
+				if (getService() == null) {
+					setService(resource);
+				}
+
+				Class resourceClass = resource.getClass();
+				if (resourceClass != null) {
+					Class[] interfaces = null;
+
+					if (resourceClass.isInterface()) {
+						interfaces = new Class[1];
+						interfaces[0] = resourceClass;
+					} else {
+						interfaces = resourceClass.getInterfaces();
+					}
+
+					if (interfaces != null) {
+						for (Class iface : interfaces) {
+							Path pathAnnotation = (Path)iface.getAnnotation(Path.class);
+							if (pathAnnotation != null) {
+								String pathAnnotationValue = pathAnnotation.value();
+								String resourceId = pathAnnotationValue == null || pathAnnotationValue.equals("/") ? iface.getSimpleName() : pathAnnotationValue;
+								resourceToClassNameMap.put(resourceId, iface.getName());
+							} else {
+								// If no path annotation exists, use the simple class name
+								resourceToClassNameMap.put(iface.getSimpleName(), iface.getName());
+							}
+						}
+					}
+				}
+			}
+
+		}
+
 		super.validate();
+
 		// if interface is null, set it to the service class
 		if (getResourceClass() == null) {
-		    throw new ConfigurationException(
-            "resource class must be set to export a REST service");
+			Class[] interfaces = getService().getClass().getInterfaces();
+			if (interfaces != null && interfaces.length > 0) {
+				setResourceClass(interfaces[0].getName());
+			} else {
+			    throw new ConfigurationException("resource class must be set to export a REST service");
+			}
 		}
 
 		// Validate that the JAX-WS annotated class / interface is available to the classloader.
@@ -152,7 +175,101 @@ public class RESTServiceDefinition extends ServiceDefinition {
 		if (!same) {
 			return same;
 		}
-		return ((RESTServiceDefinition) serviceDefinition)
-				.getResourceClass().equals(this.getResourceClass());
+
+		RESTServiceDefinition otherServiceDefinition = (RESTServiceDefinition) serviceDefinition;
+
+		// To be the same, they have to have the same resource class name
+		if (!otherServiceDefinition.getResourceClass().equals(this.getResourceClass()))
+			return false;
+
+		// If neither has multiple resources, then they are the same
+		if (otherServiceDefinition.getResourceToClassNameMap() == null && getResourceToClassNameMap() == null)
+			return true;
+
+		// If one of them has multiple resources and the other doesn't, then they're not the same
+		if ((otherServiceDefinition.getResourceToClassNameMap() == null &&
+				getResourceToClassNameMap() != null)
+				||
+		    (otherServiceDefinition.getResourceToClassNameMap() != null &&
+						getResourceToClassNameMap() == null))
+			return false;
+
+		return otherServiceDefinition.getResourceToClassNameMap().equals(getResourceToClassNameMap());
 	}
+
+	/**
+	 * @return the resources
+	 */
+	public List<Object> getResources() {
+		return this.resources;
+	}
+
+	/**
+	 * @param resources the resources to set
+	 */
+	public void setResources(List<Object> resources) {
+		this.resources = resources;
+	}
+
+	/**
+	 * @return the resourceToClassNameMap
+	 */
+	@SuppressWarnings("unchecked")
+	public Map<String, String> getResourceToClassNameMap() {
+		return this.resourceToClassNameMap;
+	}
+
+	/**
+	 * @param className
+	 * @return true if this service contains a resource for the given class name
+	 */
+	public boolean hasClass(String className) {
+		if (resourceToClassNameMap == null) return false;
+		return resourceToClassNameMap.containsValue(className);
+	}
+
+	/**
+	 * @return the providers
+	 */
+	public List<Object> getProviders() {
+		return this.providers;
+	}
+
+	/**
+	 * @param providers the providers to set
+	 */
+	public void setProviders(List<Object> providers) {
+		this.providers = providers;
+	}
+
+	/**
+	 * @return the extensionMappings
+	 */
+	public Map<Object, Object> getExtensionMappings() {
+		return this.extensionMappings;
+	}
+
+	/**
+	 * @param extensionMappings the extensionMappings to set
+	 */
+	public void setExtensionMappings(Map<Object, Object> extensionMappings) {
+		this.extensionMappings = extensionMappings;
+	}
+
+	/**
+	 * @return the languageMappings
+	 */
+	public Map<Object, Object> getLanguageMappings() {
+		return this.languageMappings;
+	}
+
+	/**
+	 * @param languageMappings the languageMappings to set
+	 */
+	public void setLanguageMappings(Map<Object, Object> languageMappings) {
+		this.languageMappings = languageMappings;
+	}
+
+
+
 }

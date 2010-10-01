@@ -93,7 +93,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		ServerSideRemotedServiceHolder serviceHolder = ServiceExporterFactory.getServiceExporter(entry, serviceLocator).getServiceExporter(serviceImpl);
 		this.publishedServices.put(entry.getQname(), serviceHolder);
 		this.serviceInfoCopies.put(entry.getQname(), this.serviceInfoCopyHolder.get(entry.getQname()));
-		this.publishedServiceNameFinder.put(entry.getEndpointUrl(), entry.getQname());
+		this.publishedServiceNameFinder.register(entry, entry.getQname());
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 			ServerSideRemotedServiceHolder serviceHolder = 
 				ServiceExporterFactory.getServiceExporter(serviceInfo, serviceLocator).getServiceExporter(service);
 			this.publishedTempServices.put(serviceInfo.getQname(), serviceHolder);
-			this.publishedTempServiceNameFinder.put(serviceInfo.getEndpointUrl(), serviceInfo.getQname());
+			this.publishedTempServiceNameFinder.register(serviceInfo, serviceInfo.getQname());
 			
 			LOG.debug("Registered temp service " + serviceDefinition.getServiceName());
 		} catch (Exception e) {
@@ -252,11 +252,11 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	 */
 	public QName getServiceName(String url){
 		QName qname = null;
-		qname = this.publishedServiceNameFinder.get(url);
+		qname = this.publishedServiceNameFinder.lookup(url);
 
 		// try temp services map
 		if (qname == null) {
-			qname = this.publishedTempServiceNameFinder.get(url);
+			qname = this.publishedTempServiceNameFinder.lookup(url);
 		}
 			
 		return qname;
@@ -441,16 +441,12 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 	 */
 	private static class ServiceNameFinder {
 	    
-	    // the subpath used for matching within RESTful service urls to isolate the service name
-	    private String restfulSubPath = 
-	        ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.RESTFUL_SERVICE_PATH) 
-	        + "/";
-	    
 		/**
 		 * A service path to service QName map
 		 */
 		private Map<String, QName> servicePathToQName = Collections.synchronizedMap(new HashMap<String, QName>());
 		
+
 		/**
 		 * This method trims the endpoint url base ({@link Config#getEndPointUrl()}) base off of the full service URL, e.g.
 		 * "http://kuali.edu/kr-dev/remoting/SomeService" -> "SomeService".  It makes an effort to do so even if the host
@@ -479,14 +475,6 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 				trimmedUrl = StringUtils.removeStart(reqPath, basePath);
 			}
 			
-
-			// if it's a RESTful url, it should have some special additional path tagged on
-			if (trimmedUrl.contains(restfulSubPath)) {
-			    trimmedUrl = trimmedUrl.substring(restfulSubPath.length());
-			    if (trimmedUrl.contains("/")) {
-			        trimmedUrl = trimmedUrl.substring(0, trimmedUrl.indexOf("/"));
-			    }
-			}
 			return trimmedUrl;
 		}
 		
@@ -496,8 +484,13 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		 * @param serviceUrl
 		 * @param serviceName
 		 */
-		public void put(String serviceUrl, QName serviceName) {
-			servicePathToQName.put(trimServiceUrlBase(serviceUrl), serviceName);
+		public void register(ServiceInfo entry, QName serviceName) {
+			String serviceUrlBase = trimServiceUrlBase(entry.getEndpointUrl());
+
+			if (serviceUrlBase.endsWith("/"))
+				serviceUrlBase = StringUtils.chop(serviceUrlBase);
+
+			servicePathToQName.put(serviceUrlBase, serviceName);
 		}
 		
 		/**
@@ -515,8 +508,26 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		 * @param serviceUrl
 		 * @return
 		 */
-		public QName get(String serviceUrl) {
-			return servicePathToQName.get(trimServiceUrlBase(serviceUrl));
+		public QName lookup(String serviceUrl) {
+			String serviceUrlBase = trimServiceUrlBase(serviceUrl);
+
+			// First, make sure we don't have any query params
+			if (serviceUrlBase.length() > 0 && serviceUrlBase.lastIndexOf('?') != -1) {
+				serviceUrlBase = serviceUrlBase.substring(0, serviceUrlBase.lastIndexOf('?'));
+			}
+
+			QName qname = null;
+			// Now, iterate backwards through the url, stripping off pieces until you match -- this should work for rest too
+			while (qname == null) {
+				qname = servicePathToQName.get(serviceUrlBase);
+
+				int lastSeparatorIndex = serviceUrlBase.lastIndexOf('/');
+				if (lastSeparatorIndex == -1)
+					break;
+				serviceUrlBase = serviceUrlBase.substring(0, lastSeparatorIndex);
+			}
+
+			return qname;
 		}
 
 	}

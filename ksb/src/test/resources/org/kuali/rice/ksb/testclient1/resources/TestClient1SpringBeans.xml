@@ -95,6 +95,15 @@
 	<bean id="jaxwsService" class="org.kuali.rice.ksb.testclient1.JaxWsEchoServiceImpl" />
     <bean id="baseballCardCollectionService" class="org.kuali.rice.ksb.testclient1.BaseballCardCollectionServiceImpl"/>
 
+    <bean id="kmsStorage" class="org.kuali.rice.ksb.testclient1.Storage"/>
+    <bean id="inboxResource" class="org.kuali.rice.ksb.testclient1.InboxResourceImpl">
+    	<property name="storage" ref="kmsStorage"/>
+    	<property name="messageResource" ref="messageResource"/>
+    </bean>
+    <bean id="messageResource" class="org.kuali.rice.ksb.testclient1.MessageResourceImpl">
+    	<property name="storage" ref="kmsStorage"/>
+    </bean>
+
 	<bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
 	
 	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.security.credentials.CredentialsSourceFactory" />
@@ -110,6 +119,7 @@
 		<property name="properties">
 			<props>
 				<prop key="plugin.registry.enabled">true</prop>
+				<prop key="kew.standalone.server">true</prop>
 			</props>
 		</property>
 		<property name="ksbConfigurer">
@@ -172,12 +182,21 @@
                         <bean class="org.kuali.rice.ksb.messaging.RESTServiceDefinition">
                             <property name="serviceNameSpaceURI" value="test" />
                             <property name="service" ref="baseballCardCollectionService" />
-                            <property name="resourceClass" 
-                                value="org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService" />
                             <property name="localServiceName" value="baseballCardCollectionService" />
+                            <property name="resourceClass" value="org.kuali.rice.ksb.messaging.remotedservices.BaseballCardCollectionService" />
                         </bean>
                         
-                        
+                        <bean class="org.kuali.rice.ksb.messaging.RESTServiceDefinition">
+                            <property name="serviceNameSpaceURI" value="test" />
+                            <property name="localServiceName" value="kms" />
+                            <property name="resources">
+                            	<list>
+                            		<ref bean="inboxResource"/>
+                            		<ref bean="messageResource"/>
+                            	</list>
+                            </property>
+                        	<property name="servicePath" value="/" />
+                        </bean>
                         
 						<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition">
 							<property name="service">

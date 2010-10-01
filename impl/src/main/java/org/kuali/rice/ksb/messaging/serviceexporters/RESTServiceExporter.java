@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.ksb.messaging.serviceexporters;
 
+import java.util.List;
+
 import org.apache.cxf.binding.BindingFactoryManager;
 import org.apache.cxf.endpoint.Server;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
@@ -37,52 +39,67 @@ import org.kuali.rice.ksb.service.KSBContextServiceLocator;
 public class RESTServiceExporter extends AbstractWebServiceExporter implements ServiceExporter {
 
 	private static final Logger LOG = Logger.getLogger(RESTServiceExporter.class);
-	
+
 	private ServiceInfo serviceInfo;
 	private KSBContextServiceLocator serviceLocator;
 
 	public RESTServiceExporter(ServiceInfo serviceInfo) {
 		this(serviceInfo, null);
 	}
-	
+
 	public RESTServiceExporter(ServiceInfo serviceInfo, KSBContextServiceLocator serviceLocator) {
 	    super(serviceInfo, serviceLocator);
 	}
 
 	/**
 	 * This publishes the cxf service onto the cxf bus.
-	 * 
+	 *
 	 * @param serviceImpl
 	 * @throws Exception
 	 */
 	@Override
 	public void publishService(ServiceDefinition serviceDef, Object serviceImpl, String address) throws Exception{
 		RESTServiceDefinition restServiceDef = (RESTServiceDefinition)serviceDef;
-		
+
 		LOG.info("Creating JAXRSService " + (getServiceInfo().getQname()));
 		JAXRSServerFactoryBean svrFactory = new JAXRSServerFactoryBean();
         svrFactory.setBus(getCXFBus());
-		
+
+        List<Object> resources = restServiceDef.getResources();
+        if (resources != null && !resources.isEmpty()) {
+        	svrFactory.setServiceBeans(resources);
+        } else {
         Class<?> resourceClass = this.getClass().getClassLoader().loadClass(restServiceDef.getResourceClass());
-		
 		svrFactory.setResourceClasses(resourceClass);
 		svrFactory.setResourceProvider(resourceClass, new SingletonResourceProvider(serviceImpl));
+        }
+
+        svrFactory.setServiceName(getServiceInfo().getQname());
         svrFactory.setAddress(address);
-                
+        svrFactory.setExtensionMappings(restServiceDef.getExtensionMappings());
+        svrFactory.setLanguageMappings(restServiceDef.getLanguageMappings());
+
+        List<Object> providers = restServiceDef.getProviders();
+        if (providers != null)
+        	svrFactory.setProviders(providers);
+
         BindingFactoryManager bindingFactoryManager = getCXFBus().getExtension(BindingFactoryManager.class);
         JAXRSBindingFactory bindingFactory = new JAXRSBindingFactory();
         bindingFactory.setBus(getCXFBus());
         bindingFactoryManager.registerBindingFactory(JAXRSBindingFactory.JAXRS_BINDING_ID, bindingFactory);
-        
+
 		//Set logging interceptors
-        svrFactory.getInInterceptors().add(new LoggingInInterceptor());
+        if (LOG.isDebugEnabled()) {
+        	svrFactory.getInInterceptors().add(new LoggingInInterceptor());
+        }
 //        svrFactory.getInInterceptors().add(new RESTConnector.VerifyingInInterceptor());
-		svrFactory.getOutInterceptors().add(new LoggingOutInterceptor());
+        if (LOG.isDebugEnabled()) {
+        	svrFactory.getOutInterceptors().add(new LoggingOutInterceptor());
+        }
 //		svrFactory.getOutInterceptors().add(new RESTConnector.SigningOutInterceptor());
 
 		svrFactory.setPublishedEndpointUrl(getServiceInfo().getActualEndpointUrl());
 		Server server = svrFactory.create();
-		
 	}
 
 }

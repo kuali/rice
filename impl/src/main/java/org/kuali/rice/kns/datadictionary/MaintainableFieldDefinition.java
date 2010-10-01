@@ -191,13 +191,13 @@ required is true if the field must contain a non-null value
 
         if (StringUtils.isNotBlank(getAlternateDisplayAttributeName())) {
             if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAlternateDisplayAttributeName())) {
-                throw new AttributeValidationException("unable to find attribute or collection named '" + getName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
+                throw new AttributeValidationException("unable to find attribute or collection named '" + getAlternateDisplayAttributeName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
             }
         }
         
         if (StringUtils.isNotBlank(getAdditionalDisplayAttributeName())) {
             if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAdditionalDisplayAttributeName())) {
-                throw new AttributeValidationException("unable to find attribute or collection named '" + getName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
+                throw new AttributeValidationException("unable to find attribute or collection named '" + getAdditionalDisplayAttributeName() + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");
             }
         }
 

@@ -15,45 +15,36 @@
  */
 package org.kuali.rice.kim.test.bo.group.impl;
 
-import javax.xml.namespace.QName;
-
+import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
-import org.kuali.rice.kim.service.impl.GroupServiceImpl;
-import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 /**
- * This is a description of what this class does - Isha don't forget to fill this in. 
- * 
+ * This is a very simple unit test to make the code coverage tool happy :)
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class GroupAttributeDataImplTest extends KIMTestCase {
 
-	GroupAttributeDataImpl grpAttDataImpl = new GroupAttributeDataImpl();
-	
-	public void setUp() throws Exception {
+	GroupAttributeDataImpl grpAttDataImpl;
+
+    @Before
+    public void setUp() throws Exception {
 		super.setUp();
-		
+        grpAttDataImpl = new GroupAttributeDataImpl();
 	}
-	@Override
-    protected String getModuleName() {
-        return "kim";
+
+    public void tearDown() throws Exception {
+        super.tearDown();
+        grpAttDataImpl = null;
     }
-	
-	@Test
-	public void testGroupAttDataImpl(){		
-		String groupId = "Test";		
-		grpAttDataImpl.setGroupId(groupId);		
-		assertEquals("Checking the getter and setter for groupID",grpAttDataImpl.getGroupId(), groupId);
-	}
-	
-	@Test
-	public void testToStringMapper(){
-		//Test the protected toStringMapper method here 
-	}
-	
-	
+
+    @Test
+    public void testGroupId() {
+        grpAttDataImpl.setGroupId("Test");
+		assertEquals("Checking the getter and setter for groupID", grpAttDataImpl.getGroupId(), "Test");
+
+    }
 }

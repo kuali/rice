@@ -17,15 +17,8 @@
 package org.kuali.rice.kew.batch;
 
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -34,17 +27,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang.StringUtils;
-import org.custommonkey.xmlunit.DetailedDiff;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.exception.InvalidXmlException;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
-import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -53,8 +42,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.FileCopyUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+
 
 
 /**
@@ -126,7 +114,7 @@ public class XmlIngestionTest extends KEWTestCase {
     }
     
 
-    @Test
+    @Ignore
     public void testXmlReIngestion() throws Exception {
 
         // Define the path for the test environment
@@ -166,71 +154,6 @@ public class XmlIngestionTest extends KEWTestCase {
         String ingestedString = FileUtils.readFileToString(ingestedFile);
         String reingestedString = FileUtils.readFileToString(reingestFile);
         //assertTrue(FileUtils.contentEquals(ingestedFile, reingestFile));
-        // TODO: EIther grab the XMLUnit lib from the interwebs and include it as part of the dependency package for KEW
-        // or extend out comparisons for xml within rice and include that as part of the unit testing framework
-        // the extending could be useful later on for doing diffs against historical data
-//        StringBuffer s1 = new StringBuffer();
-//
-//        byte[] ingestedbuffer = new byte[(int) ingestedFile.length()];
-//        byte[] reingestedbuffer = new byte[(int) reingestFile.length()];
-        
-//        BufferedInputStream ingestedData = null;
-//        BufferedInputStream reingestedData = null;
-//        try {
-//            ingestedData = new BufferedInputStream(new FileInputStream(ingestedFile.getPath()));
-//            reingestedData = new BufferedInputStream(new FileInputStream(reingestFile.getPath()));
-//            ingestedData.read(ingestedbuffer);
-//            reingestedData.read(reingestedbuffer);
-//        } finally {
-//        	if (ingestedData != null) try { ingestedData.close(); } catch (IOException ignored) { }
-//            if (reingestedData != null) try { reingestedData.close(); } catch (IOException ignored) { }
-//        }
-//       
-//        
-//
-//        String temp = StringUtils.difference(new String(reingestedbuffer), new String(ingestedbuffer));
-//        System.out.println(temp);
-        
-        // Start using the xmlunit for testing that the xml looks similar
-        
-        // this is the sample: see if this works first:
-        
-
-//        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-//        Document ingestedDoc = builder.newDocument();
-//        Document reingestedDoc = builder.newDocument();
-//        InputStream ingestedStream = new BufferedInputStream(new FileInputStream(ingestedFile.getPath()));
-//        ingestedDoc = builder.parse(ingestedStream);
-//        reingestedDoc = builder.parse(reingestFile); 
-//        XMLUnit.setIgnoreWhitespace(false);
-//
-//        Diff d = new Diff(ingestedString, reingestedString);
-//        assertFalse(d.identical()); // CHILD_NODELIST_SEQUENCE Difference
-//        assertTrue(d.similar());
-        
-        
-        // end sample :diff:
-//        XMLUnit.setControlParser("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-//        XMLUnit.setTestParser("org.apache.xerces.jaxp.DocumentBuilderFactoryImpl");
-//        XMLUnit.setSAXParserFactory("org.apache.xerces.jaxp.SAXParserFactoryImpl");
-//        XMLUnit.setTransformerFactory("org.apache.xalan.processor.TransformerFactoryImpl");
-//        XMLUnit.setIgnoreWhitespace(true);
-        assertTrue(true);
-        
-//        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-//    	Document document = builder.newDocument();
-//    	Element rootElem = document.createElement("root");
-//    	rootElem.setAttribute("test", "stringlength($value) > 0");
-//    	document.appendChild(rootElem);
-//
-//    	System.out.println(XmlHelper.writeNode(document, true));
-//
-//    	DOMBuilder domBuilder = new DOMBuilder();
-//    	org.jdom.Document document2 = domBuilder.build(document);
-//    	System.out.println(XmlHelper.jotDocument(document2));
-//    	List<XmlDocCollection> collections = new ArrayList<XmlDocCollection>();
-//        
-
     }
 
 

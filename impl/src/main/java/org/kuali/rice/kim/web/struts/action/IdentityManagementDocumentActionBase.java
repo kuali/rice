@@ -123,36 +123,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 
         setupDocumentExit();
         return dest;
-    }
-    
-	
-	@Override
-	public ActionForward close(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        ActionForward dest = super.close(mapping, form, request, response);
-        if(!canSave(form) || getQuestion(request)!=null){
-	        ActionForward newDest = new ActionForward();
-	        KimCommonUtils.copyProperties(newDest, dest);
-	        newDest.setPath(getApplicationBaseUrl());
-	        return newDest;
-        }
-        return dest;
-    }
-	
-	public ActionForward cancel(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		ActionForward forward = super.cancel(mapping, form, request, response);
-        Object question = request.getParameter(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME);
-        boolean forwardToBasePath = false;
-        if(question!=null){
-        	Object buttonClicked = request.getParameter(KNSConstants.QUESTION_CLICKED_BUTTON);
-        	if ((KNSConstants.DOCUMENT_CANCEL_QUESTION.equals(question)) && ConfirmationQuestion.YES.equals(buttonClicked)){
-        		forwardToBasePath = true;
-        	}
-        }
-        if(forwardToBasePath)
-        	return getBasePathForward(request, forward);
-        else
-        	return forward;
-    }
+    }    
 
 	protected ActionForward getBasePathForward(HttpServletRequest request, ActionForward forward){
 		ActionForward newDest = new ActionForward();

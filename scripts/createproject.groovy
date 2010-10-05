@@ -9,7 +9,7 @@
  */
 
 if (args.length < 2 || args.length > 9) { 
-	println 'usage: groovy createproject.groovy -name PROJECT_NAME [-pdir PROJECT_DIR] [-rdir RICE_DIR] [-mdir MAVEN_HOME] [-sampleapp]'
+	println 'usage: groovy createproject.groovy -name PROJECT_NAME [-pdir PROJECT_DIR] [-rdir RICE_DIR] [-mdir MAVEN_HOME] [-sampleapp] [-standalone]'
 	System.exit(1)	
 }
 
@@ -17,6 +17,7 @@ PROJECT_DIR = '/java/projects'
 RICE_DIR = '/java/projects/rice'
 MAVEN_HOME = ''
 SAMPLEAPP = false
+STANDALONE = false
 
 count = 0
 for (arg in args) {
@@ -25,6 +26,7 @@ for (arg in args) {
 	if (arg == '-rdir') RICE_DIR = args[count + 1]
 	if (arg == '-mdir') MAVEN_HOME = args[count + 1]
 	if (arg == '-sampleapp') SAMPLEAPP = true
+	if (arg == '-standalone') STANDALONE = true
 	count++
 }	
 
@@ -111,10 +113,15 @@ if (SAMPLEAPP) {
  
 ant.copy(file:RICE_DIR + "/impl/src/main/resources/org/kuali/rice/core/RiceJTASpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceJTASpringBeans.xml")
-ant.copy(file:RICE_DIR + "/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml",
+if (STANDALONE) {
+    new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceStandaloneClientSpringBeans.xml.template'))
+	new File(PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml") << templateReplace(new File(RICE_DIR + '/web/src/main/resources/org/kuali/rice/config/RiceStandaloneClientSpringBeans.xml.template'))
+} else {
+	ant.copy(file:RICE_DIR + "/impl/src/main/resources/org/kuali/rice/core/RiceDataSourceSpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceDataSourceSpringBeans.xml")
-ant.copy(file:RICE_DIR + "/web/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml",
+	ant.copy(file:RICE_DIR + "/web/src/main/resources/org/kuali/rice/config/RiceSpringBeans.xml",
 		 tofile:PROJECT_PATH + "/src/main/resources/${PROJECT_NAME}-RiceSpringBeans.xml")
+}
 
 if (SAMPLEAPP) {
     // [tbradford] TODO: There are some classes in the web portion of rice that
@@ -183,7 +190,6 @@ config = new File("${System.getProperty('user.home')}/kuali/main/dev/${PROJECT_N
 config << userhomeconfigtext()
 
 // execute variable replacement on sample-app-config.xml and rename the file
-
 config = new File(PROJECT_PATH + '/src/main/resources/META-INF/sample-app-config.xml')
 configtext = ""
 config.eachLine { line -> configtext += line.replace('sample-app', "${PROJECT_NAME}") + "\n" }
@@ -307,7 +313,11 @@ def launchtext() {
 }
 
 def userhomeconfigtext() {
-	return templateReplace(new File(RICE_DIR + '/config/templates/createproject.config.template.xml'))
+	if (STANDALONE) {
+		return templateReplace(new File(RICE_DIR + '/config/templates/createproject.standalone.config.template.xml'))
+	} else {
+		return templateReplace(new File(RICE_DIR + '/config/templates/createproject.config.template.xml'))
+	}
 }
 
 def templateReplace(file) {

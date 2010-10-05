@@ -353,14 +353,18 @@ public class FieldUtils {
         if (upperCase != null) {
             field.setUpperCase(upperCase.booleanValue());
         }
-
-		try {
-			field.setFormatter(ObjectUtils.getFormatterWithDataDictionary(businessObjectClass.newInstance(),
-					attributeName));
-		} catch (Exception e) {
-			LOG.error("Unable to get new instance of business object class: " + businessObjectClass.getName(), e);
-			throw new RuntimeException("Unable to get new instance of business object class: "
-					+ businessObjectClass.getName(), e);
+        
+		if (!businessObjectClass.isInterface()) {
+			try {
+				field.setFormatter(ObjectUtils.getFormatterWithDataDictionary(businessObjectClass.newInstance(),
+						attributeName));
+			} catch (InstantiationException e) {
+				LOG.info("Unable to get new instance of business object class: " + businessObjectClass.getName(), e);
+				// just swallow exception and leave formatter blank
+			} catch (IllegalAccessException e) {
+				LOG.info("Unable to get new instance of business object class: " + businessObjectClass.getName(), e);
+				// just swallow exception and leave formatter blank
+			}
 		}
 
         // set Field help properties

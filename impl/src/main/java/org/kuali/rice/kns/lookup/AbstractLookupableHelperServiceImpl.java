@@ -650,13 +650,17 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 				 column.setColumnTitle(columnTitle);
 				 column.setMaxLength(getColumnMaxLength(attributeName));
 
-				try {
-					column.setFormatter(ObjectUtils.getFormatterWithDataDictionary(getBusinessObjectClass()
-							.newInstance(), attributeName));
-				} catch (Exception e) {
-					LOG.error("Unable to get new instance of business object class: " + businessObjectClass.getName(), e);
-					throw new RuntimeException("Unable to get new instance of business object class: "
-							+ businessObjectClass.getName(), e);
+				if (!businessObjectClass.isInterface()) {
+					try {
+						column.setFormatter(ObjectUtils.getFormatterWithDataDictionary(getBusinessObjectClass()
+								.newInstance(), attributeName));
+					} catch (InstantiationException e) {
+						LOG.info("Unable to get new instance of business object class: " + businessObjectClass.getName(),e);
+						// just swallow exception and leave formatter blank
+					} catch (IllegalAccessException e) {
+						LOG.info("Unable to get new instance of business object class: " + businessObjectClass.getName(),e);
+						// just swallow exception and leave formatter blank
+					}
 				}
 				 
 				String alternateDisplayPropertyName = getBusinessObjectDictionaryService()

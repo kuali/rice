@@ -206,13 +206,15 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 					// call the post processor
 					notifyNodeChange(context, nextNodeInstance);
 					nodesToActivate.add(nextNodeInstance);
-					// TODO update document content on context?
+ 					// TODO update document content on context?
+ 				}
+ 				// assign our local list here so the post processor doesn't save a RouteNodeInstance in an intermediate state
+				for (RouteNodeInstance nextNodeInstance : nextNodeInstances) {
+					nodeInstance.addNextNodeInstance(nextNodeInstance);
 				}
-				// assign our local list here so the post processor doesn't save a RouteNodeInstance in an intermediate state
-				nodeInstance.setNextNodeInstances(nextNodeInstances);
-			}
-
-			// deactive the current active node
+ 			}
+ 
+ 			// deactive the current active node
 			nodeInstance.setComplete(true);
 			nodeInstance.setActive(false);
 			// active the nodes we're transitioning into

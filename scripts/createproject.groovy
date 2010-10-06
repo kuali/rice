@@ -96,6 +96,11 @@ if (SAMPLEAPP) {
     	fileset(dir:RICE_DIR + '/web/src/test/resources', includes:'configurationServiceData.xml, *Resources.properties, OJB-*.xml')
     }
 	
+	// copy the Sample Application scripts. Like database create sql
+	ant.copy(todir:PROJECT_PATH + '/scripts') {
+		fileset(dir:RICE_DIR + '/sampleapp/scripts')
+	}
+	
 	springTemplateFile = new File(RICE_DIR + '/config/templates/createproject.SampleAppBeans.template.xml')
 } else {
 	// copy an empty java file to /src/main/java

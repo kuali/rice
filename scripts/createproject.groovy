@@ -76,10 +76,14 @@ def springTemplateFile = null;
 if (SAMPLEAPP) {
 	// copy the Sample Application Files
 	ant.copy(todir:PROJECT_PATH + '/src/main/java') { 
-    	fileset(dir:RICE_DIR + '/web/src/test/java')
+    	fileset(dir:RICE_DIR + '/sampleapp/src/main/java')
 	}
 	ant.copy(todir:PROJECT_PATH + '/src/main/resources') {
 		fileset(dir:RICE_DIR + '/web/src/test/resources') 
+	}
+	
+	ant.copy(todir:PROJECT_PATH + '/src/main/resources') {
+		fileset(dir:RICE_DIR + '/sampleapp/src/main/resources') 
 	}
 	
 	// copy sample-app-config.xml

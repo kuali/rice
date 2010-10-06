@@ -22,21 +22,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-// TODO KULRICE-4249
-// import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-// import org.kuali.rice.kim.bo.impl.GroupImpl;
-// import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -150,31 +144,35 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         */
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "null" })
 	protected Map<String, String> buildRoleSearchCriteria(Map<String, String> fieldValues){
        	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
     	Map<String, String> searchCriteria;
-    	List<KimPrincipalImpl> principals = null;
+    	List<KimPrincipalInfo> principals = null;
         if(StringUtils.isNotEmpty(assignedToPrincipalName)){
         	searchCriteria = new HashMap<String, String>();
         	searchCriteria.put("principalName", WILDCARD+assignedToPrincipalName+WILDCARD);
-        	principals = 
-        		(List<KimPrincipalImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(KimPrincipalImpl.class, searchCriteria);
-        	if(principals==null || principals.isEmpty())
+        	List<KimEntityInfo> kimEntityInfoList = KIMServiceLocator.getIdentityManagementService().lookupEntityInfo(searchCriteria, true);
+        	if(kimEntityInfoList == null || kimEntityInfoList.isEmpty()) {
         		return null;
+        	}
+        	else {
+        		for (KimEntityInfo kimEntityInfo : kimEntityInfoList) {
+        			principals.addAll(kimEntityInfo.getPrincipals());
+        		}
+        	}
         }
         String assignedToGroupNamespaceCode = fieldValues.get(ASSIGNED_TO_GROUP_NAMESPACE_CODE);
         String assignedToGroupName = fieldValues.get(ASSIGNED_TO_GROUP_NAME);
-        List<GroupImpl> groupImpls = null;
+        List<GroupInfo> groups = null;
         if(StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isEmpty(assignedToGroupName) ||
         		StringUtils.isEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName) ||
         		StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName)){
         	searchCriteria = new HashMap<String, String>();
         	searchCriteria.put(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode));
         	searchCriteria.put(GROUP_NAME, getQueryString(assignedToGroupName));
-        	groupImpls = 
-        		(List<GroupImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(GroupImpl.class, searchCriteria);
-        	if(groupImpls==null || groupImpls.size()==0)
+        	groups = (List<GroupInfo>)KIMServiceLocator.getGroupService().lookupGroups(searchCriteria);
+        	if(groups==null || groups.size()==0)
         		return null;
         }
 
@@ -190,18 +188,18 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     	StringBuffer memberQueryString = null;
         if(principals!=null){
         	memberQueryString = new StringBuffer();
-        	for(KimPrincipalImpl principal: principals){
+        	for(KimPrincipalInfo principal: principals){
         		memberQueryString.append(principal.getPrincipalId()+KimConstants.KimUIConstants.OR_OPERATOR);
         	}
             if(memberQueryString.toString().endsWith(KimConstants.KimUIConstants.OR_OPERATOR))
             	memberQueryString.delete(memberQueryString.length()-KimConstants.KimUIConstants.OR_OPERATOR.length(), memberQueryString.length());
         }
-        if(groupImpls!=null){
+        if(groups!=null){
         	if(memberQueryString==null)
         		memberQueryString = new StringBuffer();
         	else if(StringUtils.isNotEmpty(memberQueryString.toString()))
         		memberQueryString.append(KimConstants.KimUIConstants.OR_OPERATOR);
-        	for(GroupImpl group: groupImpls){
+        	for(GroupInfo group: groups){
         		memberQueryString.append(group.getGroupId()+KimConstants.KimUIConstants.OR_OPERATOR);
         	}
             if(memberQueryString.toString().endsWith(KimConstants.KimUIConstants.OR_OPERATOR))

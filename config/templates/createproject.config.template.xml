@@ -9,9 +9,9 @@
 	<param name="institution">iu</param>
 	<param name="version">03/19/2007 01:59 PM</param>
 
-	<param name="datasource.url"></param>
-	<param name="datasource.username"></param>
-	<param name="datasource.password"></param>
+	<param name="datasource.url">jdbc:oracle:thin:@localhost:1521:XE</param>
+	<param name="datasource.username">rice</param>
+	<param name="datasource.password">*** password ***</param>
 	<param name="datasource.ojb.platform">Oracle9i</param>
 	<param name="datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
 	<param name="datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>

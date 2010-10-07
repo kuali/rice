@@ -59,7 +59,7 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
 	@Override
 	public void populate(HttpServletRequest request) {
 		super.populate(request);
-		populateFalseCheckboxes(request);
+		populationSpecialEmptyFields (request);
 	}
 
 	/**
@@ -138,6 +138,35 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
                 }
             }
     	}
+    }
+    
+    /**
+     * Uses the "checkboxToReset" parameter to find checkboxes which had not been
+     * populated in the request and attempts to populate them
+     * 
+     * @param request the request to populate
+     */
+    protected void populateEmptyMultiSelect(HttpServletRequest request) {
+    	Map<String, String[]> parameterMap = request.getParameterMap();
+    	if (parameterMap.get("multiSelectToReset") != null) {
+    		final String[] multiSelectToReset = request.getParameterValues("multiSelectToReset");
+            if(multiSelectToReset != null && multiSelectToReset.length > 0) {
+                for (int i = 0; i < multiSelectToReset.length; i++) {
+                    String propertyName = (String) multiSelectToReset[i];
+                    if ( !StringUtils.isBlank(propertyName) && parameterMap.get(propertyName) == null ) {
+                    	populateForProperty(propertyName, "", parameterMap);
+                    }  
+                    else if ( !StringUtils.isBlank(propertyName) && parameterMap.get(propertyName) != null && parameterMap.get(propertyName).length >= 1 && parameterMap.get(propertyName)[0].equalsIgnoreCase("on") ) {
+                    	populateForProperty(propertyName, request.getParameter(propertyName), parameterMap); 
+                    }
+                }
+            }
+    	}
+    }
+    
+    protected void populationSpecialEmptyFields (HttpServletRequest request) {
+    	populateFalseCheckboxes(request);
+		populateEmptyMultiSelect(request);
     }
 
     @SuppressWarnings("unchecked")

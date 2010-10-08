@@ -162,7 +162,9 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
     protected static void postEvent(Long docId, Object event, String eventName) throws Exception {
         DocumentRouteHeaderValue val = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId);
         Document doc = getEDLContent(val);
-        LOG.info("Submitting doc: " + XmlHelper.jotNode(doc));
+        if(LOG.isDebugEnabled()){
+        	LOG.debug("Submitting doc: " + XmlHelper.jotNode(doc));
+        }
 
         String urlstring = getURL(doc);
         if (Utilities.isEmpty(urlstring)) {

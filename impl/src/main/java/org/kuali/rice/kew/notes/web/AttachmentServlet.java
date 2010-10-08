@@ -62,15 +62,15 @@ public class AttachmentServlet extends HttpServlet {
 			throw new ServletException("No 'attachmentId' was specified.");
 		}
 		
-		boolean secureChecks = false;
+		boolean secureChecks = true;
 		String secureAttachmentsParam = null;
 		try {
 			secureAttachmentsParam = KNSServiceLocator.getParameterService().getParameterValue(KEWConstants.KEW_NAMESPACE, "All", KEWConstants.SECURE_ATTACHMENTS_PARAM);
 		} catch (Exception e) {
 			LOG.info("Attempted to retrieve parameter value, but could not. Defaulting to unsecured attachment retrieval. " + e.getMessage());
 		}
-		if (secureAttachmentsParam != null && secureAttachmentsParam.equals("Y")) {
-			secureChecks = true;
+		if (secureAttachmentsParam != null && secureAttachmentsParam.equals("N")) {
+			secureChecks = false;
 		}
 		try {
 			UserSession userSession = (UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);

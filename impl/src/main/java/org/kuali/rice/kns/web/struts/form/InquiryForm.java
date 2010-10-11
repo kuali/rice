@@ -195,16 +195,8 @@ public class InquiryForm extends KualiForm {
 	                if (request.getParameter(pkParamName) != null) {
 	                	foundCount++;
 	                	String parameter = request.getParameter(pkParamName);
-
-
-                        Boolean forceUppercase = Boolean.FALSE;
-                        // this throws org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException
-                        try{
-                        forceUppercase = dataDictionaryService.getAttributeForceUppercase(businessObjectClass, pkParamName);
-                        }
-                        catch(Exception e){
-                          LOG.error("Can't instantiate class: " + boClassName, e);
-                        }
+                        
+                        Boolean forceUppercase = dataDictionaryService.getAttributeForceUppercase(businessObjectClass, boKey);
                         if (forceUppercase) {
 	                		parameter = parameter.toUpperCase();
 	                	}

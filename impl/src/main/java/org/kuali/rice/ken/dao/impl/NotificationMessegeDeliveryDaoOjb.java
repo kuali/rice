@@ -47,7 +47,7 @@ public class NotificationMessegeDeliveryDaoOjb extends PersistenceBrokerDaoSuppo
 	@Override
 	public Collection getUndeliveredMessageDelivers(GenericDao businessObjectDao) {
 		
-		LOG.info("************************calling OJBNotificationMessegeDeliveryDao.getUndeliveredMessageDelivers************************ ");
+		//LOG.info("************************calling OJBNotificationMessegeDeliveryDao.getUndeliveredMessageDelivers************************ ");
 		
         Criteria criteria = new Criteria();
         criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.MESSAGE_DELIVERY_STATUS, NotificationConstants.MESSAGE_DELIVERY_STATUS.UNDELIVERED);
@@ -65,7 +65,7 @@ public class NotificationMessegeDeliveryDaoOjb extends PersistenceBrokerDaoSuppo
 	@Override
 	public Collection<NotificationMessageDelivery> getMessageDeliveriesForAutoRemoval(Timestamp tm, GenericDao businessObjectDao) {
 		
-		LOG.info("************************calling OJBNotificationMessegeDeliveryDao.getMessageDeliveriesForAutoRemoval************************ ");
+		//LOG.info("************************calling OJBNotificationMessegeDeliveryDao.getMessageDeliveriesForAutoRemoval************************ ");
 		
         // get all UNDELIVERED/DELIVERED notification notification message delivery records with associated notifications that have and autoRemovalDateTime <= current
         Criteria criteria_STATUS = new Criteria();

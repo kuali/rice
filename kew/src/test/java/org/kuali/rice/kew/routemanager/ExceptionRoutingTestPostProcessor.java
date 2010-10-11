@@ -40,6 +40,7 @@ public class ExceptionRoutingTestPostProcessor implements PostProcessor {
     public static boolean THROW_AFTER_PROCESS_EXCEPTION;
     public static boolean THROW_DOCUMENT_LOCKING_EXCEPTION;
 	public static boolean TRANSITIONED_OUT_OF_EXCEPTION_ROUTING = false;
+	public static boolean BLOW_UP_ON_TRANSITION_INTO_EXCEPTION = false;
 	
 	public ProcessDocReport doRouteStatusChange(DocumentRouteStatusChange statusChangeEvent) throws Exception {
 	        // defend against re-entrancy by only throwing the route status change exception if the status change we are undergoing is not a transition into exception state!
@@ -49,6 +50,9 @@ public class ExceptionRoutingTestPostProcessor implements PostProcessor {
                                                       KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equals(statusChangeEvent.getNewRouteStatus()); 
 		if (THROW_ROUTE_STATUS_CHANGE_EXCEPTION && !transitioningIntoException) {
 			throw new RuntimeException("I am the doRouteStatusChange exploder");
+		}
+		if (BLOW_UP_ON_TRANSITION_INTO_EXCEPTION && transitioningIntoException) {
+			throw new RuntimeException("Throwing an exception when transitioning into exception status.");
 		}
 		if (KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equals(statusChangeEvent.getOldRouteStatus())) {
 			TRANSITIONED_OUT_OF_EXCEPTION_ROUTING = true;

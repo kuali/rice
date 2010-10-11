@@ -1307,5 +1307,5 @@ public class Criteria {
      */
     public String getEntityName() {
     	return this.initialEntityName;
-    }
+    }	
 }

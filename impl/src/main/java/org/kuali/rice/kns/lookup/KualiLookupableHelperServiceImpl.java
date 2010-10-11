@@ -40,14 +40,11 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * This class...
- */
 @Transactional
 public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperServiceImpl {
 
     protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiLookupableHelperServiceImpl.class);
-    private boolean searchUsingOnlyPrimaryKeyValues = false;
+    protected boolean searchUsingOnlyPrimaryKeyValues = false;
 
 
     /**
@@ -280,7 +277,16 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
             	}
             	// run search against attached EBO's module service
             	ModuleService eboModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName) );
-        		List eboResults = eboModuleService.getExternalizableBusinessObjectsListForLookup( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName), (Map)eboFieldValues, unbounded);
+            	// KULRICE-4401 made eboResults an empty list and only filled if service is found.
+         	 	List eboResults = Collections.emptyList();
+         	 	if (eboModuleService != null) 
+         	 	{
+         	 		eboResults = eboModuleService.getExternalizableBusinessObjectsListForLookup( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName), (Map)eboFieldValues, unbounded);
+         	 	}
+         	 		else
+         	 	{
+         	 		LOG.debug( "EBO ModuleService is null: " + eboPropertyName );
+         	 	}
         		// get the mapping/relationship between the EBO object and it's parent object
         		// use that to adjust the fieldValues
 
@@ -309,33 +315,37 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
         			LOG.debug( "Obtained RelationshipDefinition for " + eboPropertyName );
         			LOG.debug( rd );
         		}
+
         		// copy the needed properties (primary only) to the field values
+        		// KULRICE-4446 do so only if the relationship definition exists
         		// NOTE: this will work only for single-field PK unless the ORM layer is directly involved
         		// (can't make (field1,field2) in ( (v1,v2),(v3,v4) ) style queries in the lookup framework
-        		if ( rd.getPrimitiveAttributes().size() > 1 ) {
-        			throw new RuntimeException( "EBO Links don't work for relationships with multiple-field primary keys." );
-        		}
-        		String boProperty = rd.getPrimitiveAttributes().get( 0 ).getSourceName();
-        		String eboProperty = rd.getPrimitiveAttributes().get( 0 ).getTargetName();
-        		StringBuffer boPropertyValue = new StringBuffer();
-        		// loop over the results, making a string that the lookup DAO will convert into an
-        		// SQL "IN" clause
-        		for ( Object ebo : eboResults ) {
-        			if ( boPropertyValue.length() != 0 ) {
-        				boPropertyValue.append( "|" );
-        			}
-        			try {
-        				boPropertyValue.append( PropertyUtils.getProperty( ebo, eboProperty ).toString() );
-        			} catch ( Exception ex ) {
-        				LOG.warn( "Unable to get value for " + eboProperty + " on " + ebo );
-        			}
-        		}
-        		if ( eboParentPropertyName == null ) {
-        			// non-nested property containing the EBO
-        			nonEboFieldValues.put( boProperty, boPropertyValue.toString() );
-        		} else {
-        			// property nested within the main searched-for BO that contains the EBO
-        			nonEboFieldValues.put( eboParentPropertyName + "." + boProperty, boPropertyValue.toString() );
+        		if ( ObjectUtils.isNotNull(rd)) {
+	        		if ( rd.getPrimitiveAttributes().size() > 1 ) {
+	        			throw new RuntimeException( "EBO Links don't work for relationships with multiple-field primary keys." );
+	        		}
+	        		String boProperty = rd.getPrimitiveAttributes().get( 0 ).getSourceName();
+	        		String eboProperty = rd.getPrimitiveAttributes().get( 0 ).getTargetName();
+	        		StringBuffer boPropertyValue = new StringBuffer();
+	        		// loop over the results, making a string that the lookup DAO will convert into an
+	        		// SQL "IN" clause
+	        		for ( Object ebo : eboResults ) {
+	        			if ( boPropertyValue.length() != 0 ) {
+	        				boPropertyValue.append( "|" );
+	        			}
+	        			try {
+	        				boPropertyValue.append( PropertyUtils.getProperty( ebo, eboProperty ).toString() );
+	        			} catch ( Exception ex ) {
+	        				LOG.warn( "Unable to get value for " + eboProperty + " on " + ebo );
+	        			}
+	        		}
+	        		if ( eboParentPropertyName == null ) {
+	        			// non-nested property containing the EBO
+	        			nonEboFieldValues.put( boProperty, boPropertyValue.toString() );
+	        		} else {
+	        			// property nested within the main searched-for BO that contains the EBO
+	        			nonEboFieldValues.put( eboParentPropertyName + "." + boProperty, boPropertyValue.toString() );
+	        		}
         		}
         	}
         	if ( LOG.isDebugEnabled() ) {

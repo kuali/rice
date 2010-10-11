@@ -34,6 +34,7 @@ import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
@@ -43,6 +44,7 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 @WebService(endpointInterface = KIMWebServiceConstants.GroupService.INTERFACE_CLASS, serviceName = KIMWebServiceConstants.GroupService.WEB_SERVICE_NAME, portName = KIMWebServiceConstants.GroupService.WEB_SERVICE_PORT, targetNamespace = KIMWebServiceConstants.MODULE_TARGET_NAMESPACE)
 public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 
+    private KimGroupDao kimGroupDao;
 	   
 	/**
      * @see org.kuali.rice.kim.service.GroupService#getGroupIdsForPrincipal(java.lang.String)
@@ -190,7 +192,7 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 	 */
     @SuppressWarnings("unchecked")
 	public List<? extends Group> lookupGroups(Map<String, String> searchCriteria) {
-		return this.toGroupInfo((List<GroupImpl>)this.getLookupService().findCollectionBySearchHelper(GroupImpl.class, searchCriteria, true));
+    	return this.toGroupInfo( kimGroupDao.getGroups(searchCriteria));
 	}
 
 	/**
@@ -215,23 +217,21 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
 		if ( groupId == null ) {
 			return Collections.emptyList();
 		}
-		Set<String> ids = new HashSet<String>();
-
-		GroupImpl group = getGroupImpl(groupId);
-		if ( group == null ) {
-			return Collections.emptyList();
+		Set<String> visitedGroupIds = new HashSet<String>();
+		return getMemberPrincipalIdsInternal(groupId, visitedGroupIds);
 		}
 
-		ids.addAll( group.getMemberPrincipalIds() );
-
-		for (String memberGroupId : group.getMemberGroupIds()) {
-			ids.addAll(getMemberPrincipalIds(memberGroupId));
+	/**
+	 * @see org.kuali.rice.kim.service.GroupService#isMemberOfGroup(java.lang.String,
+	 *      java.lang.String)
+	 */
+	public boolean isMemberOfGroup(String principalId, String groupId) {
+		if ( principalId == null || groupId == null ) {
+			return false;
 		}
-
-		return new ArrayList<String>(ids);
+		Set<String> visitedGroupIds = new HashSet<String>();
+		return isMemberOfGroupInternal(principalId, groupId, visitedGroupIds);
 	}
-	
-
 
 	/**
      * @see org.kuali.rice.kim.service.GroupService#getDirectParentGroupIds(java.lang.String)
@@ -394,5 +394,11 @@ public class GroupServiceImpl extends GroupServiceBase implements GroupService {
         return groupMemberinfo;
     }
 
+    public KimGroupDao getKimGroupDao() {
+        return kimGroupDao;
+    }
     
+    public void setKimGroupDao(KimGroupDao kimGroupDao) {
+        this.kimGroupDao = kimGroupDao;
+    }
 }

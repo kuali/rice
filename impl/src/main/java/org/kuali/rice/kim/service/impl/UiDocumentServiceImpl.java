@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.service.impl;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -345,7 +346,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			identityManagementPersonDocument.setAddrs(loadAddresses(identityManagementPersonDocument, principalId, entityType.getAddresses(), identityManagementPersonDocument.getPrivacy().isSuppressAddress()));
 		}
 
-		List<? extends Group> groups = getGroupService().getGroupsForPrincipal(identityManagementPersonDocument.getPrincipalId());
+		List<? extends Group> groups = getGroupsByIds(getGroupService().getDirectGroupIdsForPrincipal(identityManagementPersonDocument.getPrincipalId()));
 		loadGroupToPersonDoc(identityManagementPersonDocument, groups);
 		loadRoleToPersonDoc(identityManagementPersonDocument);
 		loadDelegationsToPersonDoc(identityManagementPersonDocument);
@@ -489,41 +490,38 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	protected void loadGroupToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, List<? extends Group> groups) {
 		List <PersonDocumentGroup> docGroups = new ArrayList <PersonDocumentGroup>();
 		if(ObjectUtils.isNotNull(groups)){
-			List<String> directMemberPrincipalIds;
 			Collection<GroupMembershipInfo> groupMemberships;
 			for (Group group: groups) {
-				directMemberPrincipalIds = getGroupService().getDirectMemberPrincipalIds(group.getGroupId());
-				if(ObjectUtils.isNotNull(directMemberPrincipalIds)){
-					for (String memberId: directMemberPrincipalIds) {
-						// other more direct methods for this ?
-						// can't cast group to 'GroupImpl' because list is GroupInfo type
-						if (StringUtils.equals(memberId, identityManagementPersonDocument.getPrincipalId())) {
-							PersonDocumentGroup docGroup = new PersonDocumentGroup();
-							docGroup.setGroupId(group.getGroupId());
-							docGroup.setGroupName(group.getGroupName());
-							docGroup.setNamespaceCode(group.getNamespaceCode());
-							docGroup.setPrincipalId(memberId);
-							List<String> groupIds = new ArrayList<String>();
-							groupIds.add(group.getGroupId());
-							groupMemberships = getGroupService().getGroupMembers(groupIds);
-							if(ObjectUtils.isNotNull(groupMemberships)){
-								for (GroupMembershipInfo groupMember: groupMemberships) {
-									if (groupMember.isActive() && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
-										StringUtils.equals(groupMember.getMemberTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-										docGroup.setGroupMemberId(groupMember.getGroupMemberId());
-										docGroup.setActiveFromDate(groupMember.getActiveFromDate());
-										docGroup.setActiveToDate(groupMember.getActiveToDate());
-									}
-								}
+				PersonDocumentGroup docGroup = new PersonDocumentGroup();
+				docGroup.setGroupId(group.getGroupId());
+				docGroup.setGroupName(group.getGroupName());
+				docGroup.setNamespaceCode(group.getNamespaceCode());
+				docGroup.setPrincipalId(identityManagementPersonDocument.getPrincipalId());
+				
+				List<String> groupIds = new ArrayList<String>();
+				groupIds.add(group.getGroupId());
+				groupMemberships = getGroupService().getGroupMembers(groupIds);
+				if(ObjectUtils.isNotNull(groupMemberships)){
+					for (GroupMembershipInfo groupMember: groupMemberships) {
+						if (groupMember.isActive() && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
+							StringUtils.equals(groupMember.getMemberTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+							docGroup.setGroupMemberId(groupMember.getGroupMemberId());
+							if (groupMember.getActiveFromDate() != null) {
+								docGroup.setActiveFromDate(new Timestamp(groupMember.getActiveFromDate().getTime()));
 							}
-							docGroup.setEdit(true);
-							//docGroup.setGroupMemberId(((GroupImpl));
-							if(docGroup.isActive())
-								docGroups.add(docGroup);
+							if (groupMember.getActiveToDate() != null) {
+								docGroup.setActiveToDate(new Timestamp(groupMember.getActiveToDate().getTime()));
+							}
+							break;
 						}
 					}
 				}
-			}
+				docGroup.setEdit(true);
+				//docGroup.setGroupMemberId(((GroupImpl));
+				if(docGroup.isActive()) {
+					docGroups.add(docGroup);
+				}	
+			}	
 		}
 		identityManagementPersonDocument.setGroups(docGroups);
 	}
@@ -1226,8 +1224,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for (PersonDocumentGroup group : identityManagementPersonDocument.getGroups()) {
 				GroupMemberImpl groupPrincipalImpl = new GroupMemberImpl();
 				groupPrincipalImpl.setGroupId(group.getGroupId());
-				groupPrincipalImpl.setActiveFromDate(group.getActiveFromDate());
-				groupPrincipalImpl.setActiveToDate(group.getActiveToDate());
+				if (group.getActiveFromDate() != null) {
+					groupPrincipalImpl.setActiveFromDate(new java.sql.Timestamp(group.getActiveFromDate().getTime()));
+				}
+				if (group.getActiveToDate() != null) {
+					groupPrincipalImpl.setActiveToDate(new java.sql.Timestamp(group.getActiveToDate().getTime()));
+				}
 				groupPrincipalImpl.setGroupMemberId(group.getGroupMemberId());
 				groupPrincipalImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
 				groupPrincipalImpl.setMemberTypeCode(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
@@ -1282,8 +1284,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							roleMemberImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
 							roleMemberImpl.setMemberTypeCode(RoleImpl.PRINCIPAL_MEMBER_TYPE);
 							roleMemberImpl.setRoleMemberId(roleMember.getRoleMemberId());
-							roleMemberImpl.setActiveFromDate(roleMember.getActiveFromDate());
-							roleMemberImpl.setActiveToDate(roleMember.getActiveToDate());
+							if (roleMember.getActiveFromDate() != null) {
+								roleMemberImpl.setActiveFromDate(new java.sql.Timestamp(roleMember.getActiveFromDate().getTime()));
+							}
+							if (roleMember.getActiveToDate() != null) {
+								roleMemberImpl.setActiveToDate(new java.sql.Timestamp(roleMember.getActiveToDate().getTime()));
+							}		
 							List<RoleMemberAttributeDataImpl> origAttributes = new ArrayList<RoleMemberAttributeDataImpl>();
 							if(ObjectUtils.isNotNull(origRoleMembers)){
 								for (RoleMemberImpl origMember : origRoleMembers) {
@@ -1683,10 +1689,12 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
-			String fakeName = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId).getPrincipalName();
-			if(fakeName == null || fakeName.equals("")) {
-				return "";
+			String fakeName = "";
+			KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
+			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
+				fakeName = kp.getPrincipalName();
 			}
+			
 			return fakeName;
 		}
 		return getMemberName(memberTypeCode, member);
@@ -1696,10 +1704,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
-			String fakeName = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId).getPrincipalName();
-			if(fakeName == null || fakeName.equals("")) {
-				return "";
-			}
+			String fakeName = "";
+			KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
+			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
+				fakeName = kp.getPrincipalName();
+			}			
 			return fakeName;
 		}
 		return getFullMemberName(memberTypeCode, member);
@@ -2571,6 +2580,20 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	}
 
+	/**
+	* Looks up GroupInfo objects for each group id passed in
+	* @param groupIds the List of group ids to look up GroupInfo records on
+	* @return a List of GroupInfo records
+	*/
+	protected List<? extends Group> getGroupsByIds(List<String> groupIds) {
+		List<GroupInfo> groups = new ArrayList<GroupInfo>();
+		Map<String, GroupInfo> groupInfoMap = getGroupService().getGroupInfos(groupIds);
+		for (String groupId : groupInfoMap.keySet()) {
+			groups.add(groupInfoMap.get(groupId));
+		}
+		return groups;
+	} 
+	
 	protected List<GroupMemberImpl> getGroupMembers(IdentityManagementGroupDocument identityManagementGroupDocument, List<GroupMemberImpl> origGroupMembers){
 		List<GroupMemberImpl> groupMembers = new ArrayList<GroupMemberImpl>();
 		GroupMemberImpl newGroupMember;

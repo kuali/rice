@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -108,7 +107,11 @@ public class MessageServiceInvoker implements Runnable {
             throwable = t;
         }
         try {
-            KSBServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, this.message, service);
+        	try {
+        		KSBServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, this.message, service);
+        	} catch (Throwable t1) {
+        		KSBServiceLocator.getExceptionRoutingService().placeInExceptionRoutingLastDitchEffort(throwable, this.message, service);
+        	}
         } catch (Throwable t2) {
             LOG.error("An error was encountered when invoking exception handler for message. Attempting to change message status to EXCEPTION.", t2);
             message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
@@ -136,7 +139,7 @@ public class MessageServiceInvoker implements Runnable {
         if (ConfigContext.getCurrentContextConfig().getStoreAndForward() && !methodCall.isIgnoreStoreAndForward()) {
             QName serviceName = serviceInfo.getQname();
             RemoteResourceServiceLocator remoteResourceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-            QName storeAndForwardName = new QName(serviceName.getNamespaceURI(), serviceName.getLocalPart() + RemotedServiceRegistry.FORWARD_HANDLER_SUFFIX);
+            QName storeAndForwardName = new QName(serviceName.getNamespaceURI(), serviceName.getLocalPart() + KSBConstants.FORWARD_HANDLER_SUFFIX);
             List<RemotedServiceHolder> forwardServices = remoteResourceLocator.getAllServices(storeAndForwardName);
             if (forwardServices.isEmpty()) {
                 LOG.warn("Could not find store and forward service " + storeAndForwardName + ".  Defaulting to regular messaging.");

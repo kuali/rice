@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.exception;
 
+import java.util.Collections;
+
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -27,7 +29,7 @@ public class InactiveDocumentTypeAuthorizationException extends DocumentTypeAuth
     private static final long serialVersionUID = 1L;
 
     public InactiveDocumentTypeAuthorizationException(String action, String documentType) {
-        super("anybody", action, documentType);
+        super("anybody", action, documentType, Collections.<String, Object>emptyMap());
     }
 
     /**

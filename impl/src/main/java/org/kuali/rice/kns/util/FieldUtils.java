@@ -353,21 +353,19 @@ public class FieldUtils {
         if (upperCase != null) {
             field.setUpperCase(upperCase.booleanValue());
         }
-
-        Class<? extends Formatter> formatterClass = getDataDictionaryService().getAttributeFormatter(businessObjectClass, attributeName);
-        if (formatterClass != null) {
-            try {
-                field.setFormatter(formatterClass.newInstance());
-            }
-            catch (InstantiationException e) {
-                LOG.error("Unable to get new instance of formatter class: " + formatterClass.getName());
-                throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
-            }
-            catch (IllegalAccessException e) {
-                LOG.error("Unable to get new instance of formatter class: " + formatterClass.getName());
-                throw new RuntimeException("Unable to get new instance of formatter class: " + formatterClass.getName());
-            }
-        }
+        
+		if (!businessObjectClass.isInterface()) {
+			try {
+				field.setFormatter(ObjectUtils.getFormatterWithDataDictionary(businessObjectClass.newInstance(),
+						attributeName));
+			} catch (InstantiationException e) {
+				LOG.info("Unable to get new instance of business object class: " + businessObjectClass.getName(), e);
+				// just swallow exception and leave formatter blank
+			} catch (IllegalAccessException e) {
+				LOG.info("Unable to get new instance of business object class: " + businessObjectClass.getName(), e);
+				// just swallow exception and leave formatter blank
+			}
+		}
 
         // set Field help properties
         field.setBusinessObjectClassName(businessObjectClass.getName());
@@ -579,14 +577,14 @@ public class FieldUtils {
                 }
                 
     			if (StringUtils.isNotBlank(element.getAlternateDisplayPropertyName())) {
-    				String alternatePropertyValue = ObjectUtils.getFormattedPropertyValue(bo, element
-    						.getAlternateDisplayPropertyName(), null);
+    				String alternatePropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(bo, element
+    						.getAlternateDisplayPropertyName());
     				element.setAlternateDisplayPropertyValue(alternatePropertyValue);
     			}
 
     			if (StringUtils.isNotBlank(element.getAdditionalDisplayPropertyName())) {
-    				String additionalPropertyValue = ObjectUtils.getFormattedPropertyValue(bo, element
-    						.getAdditionalDisplayPropertyName(), null);
+    				String additionalPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(bo, element
+    						.getAdditionalDisplayPropertyName());
     				element.setAdditionalDisplayPropertyValue(additionalPropertyValue);
     			}
             }
@@ -597,9 +595,11 @@ public class FieldUtils {
     }
 
     public static void populateReadableField(Field field, BusinessObject businessObject){
-        Object obj = ObjectUtils.getNestedValue(businessObject, field.getPropertyName());
-        if (obj != null) {
-        	field.setPropertyValue(obj);
+		Object obj = ObjectUtils.getNestedValue(businessObject, field.getPropertyName());
+		if (obj != null) {
+			String formattedValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(businessObject, field.getPropertyName());
+			field.setPropertyValue(formattedValue);
+        	
             // for user fields, attempt to pull the principal ID and person's name from the source object
             if ( field.getFieldType().equals(Field.KUALIUSER) ) {
             	// this is supplemental, so catch and log any errors
@@ -621,6 +621,7 @@ public class FieldUtils {
             	}
             }
         }
+        
         populateSecureField(field, obj);
     }
 
@@ -760,11 +761,7 @@ public class FieldUtils {
                     // if the field propertyName is a valid property on the bo class
                     Class type = ObjectUtils.easyGetPropertyType(bo, propertyName);
                     try {
-                    	//convert to upperCase based on data dictionary
-                    	Class businessObjectClass = bo.getClass();
-
                     	Object fieldValue = fieldValues.get(propertyName);
-
                         ObjectUtils.setObjectProperty(bo, propertyName, type, fieldValue);
                     }
                     catch (FormatException e) {

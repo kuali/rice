@@ -78,8 +78,9 @@ public class FixedPointValidationPattern extends FieldLevelValidationPattern {
      * 
      * @see org.kuali.rice.kns.datadictionary.validation.ValidationPattern#getRegexString()
      */
-    protected String getRegexString() {
-        StringBuffer regex = new StringBuffer();
+    @Override
+	protected String getRegexString() {    	
+    	final StringBuilder regex = new StringBuilder();
 
         if (allowNegative) {
             regex.append("-?");
@@ -97,7 +98,8 @@ public class FixedPointValidationPattern extends FieldLevelValidationPattern {
     /**
      * @see org.kuali.rice.kns.datadictionary.validation.FieldLevelValidationPattern#getPatternTypeName()
      */
-    protected String getPatternTypeName() {
+    @Override
+	protected String getPatternTypeName() {
         return "fixedPoint";
     }
 
@@ -105,7 +107,8 @@ public class FixedPointValidationPattern extends FieldLevelValidationPattern {
     /**
      * @see org.kuali.rice.kns.datadictionary.validation.ValidationPattern#buildExportMap(java.lang.String)
      */
-    public ExportMap buildExportMap(String exportKey) {
+    @Override
+	public ExportMap buildExportMap(String exportKey) {
         ExportMap exportMap = super.buildExportMap(exportKey);
 
         if (allowNegative) {
@@ -138,5 +141,19 @@ public class FixedPointValidationPattern extends FieldLevelValidationPattern {
 	@Override
 	public String[] getValidationErrorMessageParameters(String attributeLabel) {
 		return new String[] {attributeLabel, String.valueOf(precision), String.valueOf(scale)};
+	}
+	
+	@Override
+	public void completeValidation() throws ValidationPatternException {
+		super.completeValidation();
+		
+    	final boolean valid =
+    		(getPrecision() >= 1) &&
+    		(getScale() >= 0) &&
+    		(getPrecision() >= getScale());
+    	
+    	if (!valid) {
+    		throw new ValidationPatternException("The precision must be >= 1.  The scale must be >= 0.  The precision must be >= scale. Precision: " + getPrecision() + " Scale: " + getScale());
+    	}
 	}
 }

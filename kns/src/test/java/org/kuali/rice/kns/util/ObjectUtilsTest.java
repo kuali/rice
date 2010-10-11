@@ -17,7 +17,17 @@ package org.kuali.rice.kns.util;
 
 import org.junit.Test;
 import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.web.format.BooleanFormatter;
+import org.kuali.rice.kns.web.format.DateFormatter;
+import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.web.format.IntegerFormatter;
+import org.kuali.rice.kns.web.format.PercentageFormatter;
 import org.kuali.test.KNSTestCase;
+
+import edu.sampleu.travel.bo.TravelAccountUseRate;
 
 /**
  * ObjectUtilsTest
@@ -39,4 +49,35 @@ public class ObjectUtilsTest extends KNSTestCase {
         equalsResult = ObjectUtils.equalByKeys(parameterInDB, parameterNew);
         assertFalse(equalsResult);
     }
+    
+	@Test
+	public void testGetFormatterWithDataDictionary() throws Exception {
+		// test formatter getting correctly pulled from data dictionary
+		TravelAccountUseRate useRate = new TravelAccountUseRate();
+		Formatter formatter = ObjectUtils.getFormatterWithDataDictionary(useRate, "active");
+		assertTrue("Incorrect formatter returned for active property", formatter instanceof BooleanFormatter);
+
+		changeAttributeDefinitionFormatter(useRate.getClass(), "active", IntegerFormatter.class);
+		formatter = ObjectUtils.getFormatterWithDataDictionary(useRate, "active");
+		assertTrue("Incorrect formatter returned for active property", formatter instanceof IntegerFormatter);
+		
+		// test formatter getting correctly pulled by data type
+		formatter = ObjectUtils.getFormatterWithDataDictionary(useRate, "activeFromDate");
+		assertTrue("Incorrect formatter returned for date type", formatter instanceof DateFormatter);
+		
+		formatter = ObjectUtils.getFormatterWithDataDictionary(useRate, "rate");
+		assertTrue("Incorrect formatter returned for percent type", formatter instanceof PercentageFormatter);
+		
+		formatter = ObjectUtils.getFormatterWithDataDictionary(useRate, "number");
+		assertTrue("Incorrect formatter returned for string type", formatter.getClass().getName().equals("org.kuali.rice.kns.web.format.Formatter"));
+	}
+
+	private void changeAttributeDefinitionFormatter(Class boClass, String attributeName, Class formatterClass) {
+		DataDictionaryEntryBase entry = (DataDictionaryEntryBase) KNSServiceLocator.getDataDictionaryService()
+				.getDataDictionary().getDictionaryObjectEntry(boClass.getName());
+		if (entry != null) {
+			AttributeDefinition attributeDefinition = entry.getAttributeDefinition(attributeName);
+			attributeDefinition.setFormatterClass(formatterClass.getName());
+		}
+	}
 }

@@ -170,18 +170,26 @@ public class SectionBridge {
     
     //This method is used to remove hidden fields (To fix JIRA KFSMI-2449)
     private static final List<Row> reArrangeRows(List<Row> rows, int numberOfColumns){
-    	List<Field> fields = new ArrayList();
+    	List<Row> rearrangedRows = new ArrayList<Row>();
+    	
     	for (Row row : rows) {
+    		List<Field> fields = new ArrayList<Field>();
     		List<Field> rowFields = row.getFields();
     		for (Field field : rowFields) {
     			if(!Field.HIDDEN.equals(field.getFieldType()) && !Field.BLANK_SPACE.equals(field.getFieldType())){
     				fields.add(field);
     			}
     		}
+    		List<Row> rewrappedFieldRows = FieldUtils.wrapFields(fields, numberOfColumns);
+    		if (row.isHidden()) {
+    			for (Row rewrappedRow : rewrappedFieldRows) {
+    				rewrappedRow.setHidden(true);
+    			}
+    		}
+    		rearrangedRows.addAll(rewrappedFieldRows);
     	}
     	
-    	return FieldUtils.wrapFields(fields, numberOfColumns);
-    	
+    	return rearrangedRows;
     }
 
     
@@ -441,62 +449,23 @@ public class SectionBridge {
                                 LookupUtils.setFieldDirectInquiry(lineBusinessObject, name, collField);
                             }
 
-                            Object propertyValue = ObjectUtils.getPropertyValue(lineBusinessObject, fieldDefinition.getName());
+                            String propertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject, fieldDefinition.getName());
                             collField.setPropertyValue(propertyValue);
                             
 							if (StringUtils.isNotBlank(collField.getAlternateDisplayPropertyName())) {
-								Object alternateDisplayPropertyValue = ObjectUtils.getPropertyValue(lineBusinessObject,
+								String alternateDisplayPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject,
 										collField.getAlternateDisplayPropertyName());
 								collField.setAlternateDisplayPropertyValue(alternateDisplayPropertyValue);
 							}
 							
 							if (StringUtils.isNotBlank(collField.getAdditionalDisplayPropertyName())) {
-								Object additionalDisplayPropertyValue = ObjectUtils.getPropertyValue(lineBusinessObject,
+								String additionalDisplayPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineBusinessObject,
 										collField.getAdditionalDisplayPropertyName());
 								collField.setAdditionalDisplayPropertyValue(additionalDisplayPropertyValue);
 							}
                                 
-                            // KULRICE-4024 - special handling for person fields, the values
-                            // were being blanked out upon submission because these fields were
-                            // rendered but not populated.  This caused the service to re-resolve the
-                            // blank principal ID hidden field to overwrite the one populated
-                            // based on the principal Name field on the UI
-							if (StringUtils.isNotBlank(collField.getUniversalIdAttributeName())) {
-								Object principalId = ObjectUtils.getNestedValue(lineBusinessObject,collField
-										.getUniversalIdAttributeName());
-								if (principalId != null) {
-									collField.setUniversalIdValue(principalId.toString());
-								}
-							}
-							if (StringUtils.isNotBlank(collField.getPersonNameAttributeName())) {
-								Object personName = ObjectUtils.getNestedValue(lineBusinessObject, collField
-										.getPersonNameAttributeName());
-								if (personName != null) {
-									collField.setPersonNameValue(personName.toString());
-								}
-							}
-							// END KULRICE-4024
-                            
-                            // KULRICE-4024 - special handling for person fields, the values
-                            // were being blanked out upon submission because these fields were
-                            // rendered but not populated.  This caused the service to re-resolve the
-                            // blank principal ID hidden field to overwrite the one populated
-                            // based on the principal Name field on the UI
-							if (StringUtils.isNotBlank(collField.getUniversalIdAttributeName())) {
-								Object principalId = ObjectUtils.getNestedValue(lineBusinessObject,collField
-										.getUniversalIdAttributeName());
-								if (principalId != null) {
-									collField.setUniversalIdValue(principalId.toString());
-								}
-							}
-							if (StringUtils.isNotBlank(collField.getPersonNameAttributeName())) {
-								Object personName = ObjectUtils.getNestedValue(lineBusinessObject, collField
-										.getPersonNameAttributeName());
-								if (personName != null) {
-									collField.setPersonNameValue(personName.toString());
-								}
-							}
-							// END KULRICE-4024
+							//update user fields with universal id and/or name
+							updateUserFields(collField, lineBusinessObject);
                                 
                             // the the field as read only (if appropriate)
                             if (fieldDefinition.isReadOnlyAfterAdd()) {
@@ -650,17 +619,17 @@ public class SectionBridge {
                                             LookupUtils.setFieldDirectInquiry(lineBusinessObject, name, subCollField);
                                         }
 
-                                        Object propertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject, fieldDefinition.getName());
+                                        String propertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineSubBusinessObject, fieldDefinition.getName());
                                         subCollField.setPropertyValue(propertyValue);
                                         
             							if (StringUtils.isNotBlank(subCollField.getAlternateDisplayPropertyName())) {
-            								Object alternateDisplayPropertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject,
+            								String alternateDisplayPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineSubBusinessObject,
             										subCollField.getAlternateDisplayPropertyName());
             								subCollField.setAlternateDisplayPropertyValue(alternateDisplayPropertyValue);
             							}
                                         
             							if (StringUtils.isNotBlank(subCollField.getAdditionalDisplayPropertyName())) {
-            								Object additionalDisplayPropertyValue = ObjectUtils.getPropertyValue(lineSubBusinessObject,
+            								String additionalDisplayPropertyValue = ObjectUtils.getFormattedPropertyValueUsingDataDictionary(lineSubBusinessObject,
             										subCollField.getAdditionalDisplayPropertyName());
             								subCollField.setAdditionalDisplayPropertyValue(additionalDisplayPropertyValue);
             							}
@@ -769,17 +738,13 @@ public class SectionBridge {
      * @return Field - of type IMAGE_SUBMIT
      */
     private static final void addShowInactiveButtonField(Section section, String collectionName, boolean showInactive) {
-        String showInactiveButton = "<a name=\"showInactive" + collectionName + "\"><input type=\"image\" name=\"" + KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TOGGLE_INACTIVE_METHOD + "." + collectionName.replace( '.', '_' );
-        showInactiveButton += "." + KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + showInactive  + ".anchorshowInactive" + collectionName + "\" src=\"";
-        
-        if (showInactive) {
-            showInactiveButton += "images/tinybutton-showinact.gif";
-        }
-        else {
-            showInactiveButton += "images/tinybutton-hideinact.gif";
-        }
+    	String methodName = KNSConstants.DISPATCH_REQUEST_PARAMETER + "." + KNSConstants.TOGGLE_INACTIVE_METHOD + "." + collectionName.replace( '.', '_' );
+        methodName += "." + KNSConstants.METHOD_TO_CALL_BOPARM_LEFT_DEL + showInactive + ".anchorshowInactive." + collectionName + KNSConstants.METHOD_TO_CALL_BOPARM_RIGHT_DEL;
+           
+        String imageSource = showInactive ? "tinybutton-showinact.gif" : "tinybutton-hideinact.gif";
 
-        showInactiveButton += "\" alt=\"show(hide) inactive\" class=\"tinybutton\" /></a>";
+        String showInactiveButton = "property=" + methodName + ";src=" + imageSource + ";alt=show(hide) inactive" + ";title=show(hide) inactive";
+
         section.setExtraButtonSource(showInactiveButton);
     }
     

@@ -76,6 +76,6 @@ public class DevModeTest extends KSBTestCase {
 		service.invoke();
 		assertTrue("No calls to dev defined service", GenericTestService.NUM_CALLS > 1);
 
-		assertTrue("should be no registered services", KSBServiceLocator.getIPTableService().fetchAll().size() == 0);
+		assertTrue("should be no registered services", KSBServiceLocator.getServiceRegistry().fetchAll().size() == 0);
 	}
 }

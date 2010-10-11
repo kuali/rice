@@ -17,8 +17,13 @@
 
 <%@ attribute name="channelTitle" required="true" %>
 <%@ attribute name="channelUrl" required="true" %>
+<%@ attribute name="frameHeight" required="false" %>
 
-<iframe src="${channelUrl}" onload='<c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>' name="iframeportlet" id="iframeportlet" style="height: 500px; width: 100%" title="E-Doc" frameborder="0" height="500px" scrolling="auto" width="100%"></iframe>                   
+<c:if test="${empty frameHeight || frameHeight == 0}">
+  <c:set var="frameHeight" value="500"/>
+</c:if>
+
+<iframe src="${channelUrl}" onload='<c:if test="${ConfigProperties.test.mode ne 'true'}">setIframeAnchor("iframeportlet")</c:if>' name="iframeportlet" id="iframeportlet" style="height: ${frameHeight}px; width: 100%" title="E-Doc" frameborder="0" height="${frameHeight}px" scrolling="auto" width="100%"></iframe>                   
 
 <%-- 
   May want to move this to a script a js file at some point.
@@ -61,19 +66,23 @@
     /** sets the portlet container's height. */
     function setContainerHeight() {
       //reset the height to shrink the scroll height.  For the usecase where the portlet's contents got smaller.
-      getPortlet().style.height = '0px';
-      getPortlet().height = '0px';
+      getPortlet().style.height = '${frameHeight}px';
+   	  getPortlet().height = '${frameHeight}px';
       
-      var height = '500';
+      var height = '${frameHeight}';
       try {
          height = getFrameHeight(getPortlet());
       } catch (e) {
         //fallback for crossdomain permission problems.
-        height = '500';
+        height = '${frameHeight}';
       }
 
       //set the portlet & portlet container to be the same height - not using 100% for the portlet to avoid the inner scrollbar
-      getPortletContainer().style.height = height + 'px';
+      try {
+      	getPortletContainer().style.height = height + 'px';
+      } catch ( ex ) {
+          // do nothing, we can't get to the container
+      }
       getPortlet().style.height = (height + getHorScrollBarHeight()) + 'px';
       getPortlet().height = (height + getHorScrollBarHeight()) + 'px';
     }
@@ -86,12 +95,13 @@
      */
     function hasContainerHeightChanged() {
       var height;
+      var conHeight;
       try {
         height = getFrameHeight(getPortlet());
+        conHeight = getPortletContainer().style.height;
       } catch (e) {
       	return true;
       }
-      var conHeight = getPortletContainer().style.height;
       return conHeight != height + 'px';
     }
 

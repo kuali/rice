@@ -233,7 +233,9 @@ public class KualiHelpAction extends KualiAction {
             DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(entry.getDocumentTypeName());
             label = docType.getDocTypeLabel();
             description = docType.getDocTypeDescription();
-            apcHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getHelpDefinitionUrl();
+            if (StringUtils.isNotBlank(docType.getHelpDefinitionUrl())) {
+            	apcHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getHelpDefinitionUrl();
+            }
         }
 
         if ( StringUtils.isNotBlank(apcHelpUrl) ) {

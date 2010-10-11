@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.kim.document.rule;
 
-import java.sql.Date;
-import java.util.ArrayList;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,7 +28,6 @@ import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -101,6 +99,9 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	
 	protected AttributeValidationHelper attributeValidationHelper = new AttributeValidationHelper();
 	
+	// KULRICE-4153
+	protected ActiveRoleMemberHelper activeRoleMemberHelper = new ActiveRoleMemberHelper();
+	
     public IdentityService getIdentityService() {
         if ( identityService == null) {
             identityService = KIMServiceLocator.getIdentityService();
@@ -125,7 +126,13 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         validateRoleAssigneesAndDelegations &= validAssignRole(roleDoc);
         if(validateRoleAssigneesAndDelegations){
 	        //valid &= validAssignRole(roleDoc);
-	        valid &= validateRoleQualifier(roleDoc.getMembers(), roleDoc.getKimType());
+        	// KULRICE-4153
+			// Use the Active Role Member Helper to retrieve only those Role Members that are active
+        	// If a member is active on a Role, and they have an inactive Role Qualifier, Role Qualifier validation will fail
+        	// If a member is inactive on a Role, and they have an inactive Role Qualifier, Role Qualifier validation will pass
+        	List<KimDocumentRoleMember> activeRoleMembers = activeRoleMemberHelper.getActiveRoleMembers(roleDoc.getMembers());
+			
+	        valid &= validateRoleQualifier(activeRoleMembers, roleDoc.getKimType());
 	        valid &= validRoleMemberActiveDates(roleDoc.getMembers());
 	        valid &= validateDelegationMemberRoleQualifier(roleDoc.getMembers(), roleDoc.getDelegationMembers(), roleDoc.getKimType());
 	        valid &= validDelegationMemberActiveDates(roleDoc.getDelegationMembers());
@@ -575,7 +582,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
     	return equalSoFar;
     }
     
-	protected boolean validateActiveDate(String errorPath, Date activeFromDate, Date activeToDate) {
+	protected boolean validateActiveDate(String errorPath, Timestamp activeFromDate, Timestamp activeToDate) {
 		// TODO : do not have detail bus rule yet, so just check this for now.
 		boolean valid = true;
 		if (activeFromDate != null && activeToDate !=null && activeToDate.before(activeFromDate)) {
@@ -593,60 +600,35 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	 * creates a circular reference.
 	 * 
 	 * @param addMemberEvent
-	 * @return
+	 * @return true  - ok to assign, no circular references
+	 *         false - do not make assignment, will create circular reference.
 	 */
 	protected boolean checkForCircularRoleMembership(AddMemberEvent addMemberEvent)
 	{
-		boolean ok = true;
 		KimDocumentRoleMember newMember = addMemberEvent.getMember();
 		if (newMember == null || StringUtils.isBlank(newMember.getMemberId())){
-			ok = false;
+			MessageMap errorMap = GlobalVariables.getMessageMap();
+			errorMap.putError("member.memberId", RiceKeyConstants.ERROR_INVALID_ROLE, new String[] {""});
+			return false;
 		} else {
-			List<RoleMemberImpl> roleMembers = null;
+			Set<String> roleMemberIds = null;
 			// if the role member is a role, check to make sure we won't be creating a circular reference.
 			// Verify that the new role is not already related to the role either directly or indirectly
 			if (newMember.isRole()){
-				// get all nested role members that are of type role
-				try {
-					RoleService roleService = KIMServiceLocator.getRoleService();
-					roleMembers = ((RoleServiceBase) roleService).getRoleTypeRoleMembers(newMember.getMemberId());
-				} catch (Exception ex){
-					ok = false;
-				}
+				// get all nested role member ids that are of type role
+				RoleService roleService = KIMServiceLocator.getRoleService();
+				roleMemberIds = ((RoleServiceBase) roleService).getRoleTypeRoleMemberIds(newMember.getMemberId());
 
 				// check to see if the document role is not a member of the new member role
 				IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addMemberEvent.getDocument();
-				String docRoleNamespace = document.getRoleNamespace();
-				String docRoleName = document.getRoleName();
-				String docRoleId = document.getRoleId();
-				String roleId = KIMServiceLocator.getRoleService().getRoleIdByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
-				if (StringUtils.isEmpty(roleId)){
-					ok = false;   // if role doesn't exist, return false
-				} else {
-
-					for (RoleMemberImpl member : roleMembers) {
-						if (org.kuali.rice.kim.bo.Role.ROLE_MEMBER_TYPE.equals(member.getMemberTypeCode())){
-							if (docRoleId.equals(member.getMemberId())){
-								ok = false;
-								MessageMap errorMap = GlobalVariables.getMessageMap();
-								errorMap.putError("member.memberId", RiceKeyConstants.ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR, new String[] {member.getMemberId()});        	
-								return false;
-							}
-						}
-					}
+				if (roleMemberIds.contains(document.getRoleId())){
+					MessageMap errorMap = GlobalVariables.getMessageMap();
+					errorMap.putError("member.memberId", RiceKeyConstants.ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR, new String[] {newMember.getMemberId()});        	
+					return false;
 				}
 			}
 		}
-		if (ok != true){
-			MessageMap errorMap = GlobalVariables.getMessageMap();
-			errorMap.putError("member.memberId", RiceKeyConstants.ERROR_INVALID_ROLE, new String[] {""});        	
-		}
-		return ok;
-	}
-	
-	protected ArrayList getNestedRoleTypeMembers(ArrayList foundMembers){
-		
-		return foundMembers;
+		return true;
 	}
 	
 	/**

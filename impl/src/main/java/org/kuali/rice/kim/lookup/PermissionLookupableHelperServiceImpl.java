@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
@@ -30,6 +31,8 @@ import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
@@ -52,6 +55,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	private static final Logger LOG = Logger.getLogger( PermissionLookupableHelperServiceImpl.class );
 	
 	private static LookupService lookupService;
+	private static RoleService roleService;
 
 	private static boolean genericPermissionDocumentTypeNameLoaded = false;
 	private static String genericPermissionDocumentTypeName = null;
@@ -83,6 +87,9 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
         parameters.put(KNSConstants.OVERRIDE_KEYS, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
         parameters.put(KNSConstants.COPY_KEYS, KimConstants.PrimaryKeyConstants.PERMISSION_ID);
+        if (StringUtils.isNotBlank(getReturnLocation())) {
+        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+		}
         parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
         return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
     }
@@ -172,6 +179,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		List<PermissionImpl> tempPermissions;
 		List<String> collectedPermissionIds = new ArrayList<String>();
 		Map<String, String> permissionCriteria;
+		
 		for(RoleImpl roleImpl: roleSearchResults){
 			permissionCriteria = new HashMap<String, String>();
 			permissionCriteria.put("rolePermissions.roleId", roleImpl.getRoleId());
@@ -184,9 +192,19 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 					permissions.add(permission);
 				}
 			}
+			//need to find roles that current role is a member of and build search string
+			List<String> parentRoleIds = KIMServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
+			for (String parentRoleId : parentRoleIds) {
+				Map<String, String> roleSearchCriteria = new HashMap<String, String>();
+				roleSearchCriteria.put("roleId", parentRoleId);
+				//get all parent role permissions and merge them with current permissions
+				permissions = mergePermissionLists(permissions, getPermissionsWithRoleSearchCriteria(roleSearchCriteria, unbounded));
+			}
 		}
+		
 		return new CollectionIncomplete<PermissionImpl>(permissions, actualSizeIfTruncated);
 	}
+	
 
 	private void populateAssignedToRoles(PermissionImpl permission){
 		AttributeSet criteria;
@@ -262,5 +280,24 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 		return lookupService;
 	}
 
+	public RoleService getRoleService() {
+		if (roleService == null) {
+			roleService = KIMServiceLocator.getRoleService();
+		}
+		return roleService;
+	}
 
+	private List<PermissionImpl> mergePermissionLists(List<PermissionImpl> perm1, List<PermissionImpl> perm2) {
+		List<PermissionImpl> returnList = new ArrayList<PermissionImpl>(perm1);
+		List<String> permissionIds = new ArrayList<String>(perm1.size());
+		for (PermissionImpl perm : returnList) {
+			permissionIds.add(perm.getPermissionId());
+		}
+		for (int i=0; i<perm2.size(); i++) {
+		    if (!permissionIds.contains(perm2.get(i).getPermissionId())) {
+		    	returnList.add(perm2.get(i));
+		    }
+		}
+		return returnList;
+	}
 }

@@ -193,6 +193,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     public boolean fieldLevelHelpEnabled;
 
     public boolean fieldLevelHelpDisabled;
+    public String fieldLevelHelpUrl;
 
     private String imageSrc;
     private String target;
@@ -1680,6 +1681,14 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
 		this.baseLookupUrl = baseLookupURL;
 	}
 
+    public String getFieldLevelHelpUrl() {
+        return fieldLevelHelpUrl;
+    }
+
+    public void setFieldLevelHelpUrl(String fieldLevelHelpUrl) {
+        this.fieldLevelHelpUrl = fieldLevelHelpUrl;
+    }
+	
     /**
 	 * @return the webUILeaveFieldFunctionParameters
 	 */

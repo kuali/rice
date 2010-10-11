@@ -931,4 +931,32 @@ public class KimRoleDaoJpa implements KimRoleDao {
 			}
 		}
 	}
+
+	/**
+	 * 
+	 * @see org.kuali.rice.kim.dao.KimRoleDao#getRoleMembershipsForMemberId(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 */
+	public List<RoleMemberImpl> getRoleMembershipsForMemberId(
+			String memberType, String memberId, AttributeSet qualification) {
+		Criteria c = new Criteria(RoleMemberImpl.class.getName());
+		List<RoleMemberImpl> parentRoleMembers = new ArrayList<RoleMemberImpl>();
+
+		if(StringUtils.isEmpty(memberId)
+				|| StringUtils.isEmpty(memberType)) {
+			return parentRoleMembers;
+		}
+		
+		c.eq(KIMPropertyConstants.RoleMember.MEMBER_ID, memberId);
+		c.eq( KIMPropertyConstants.RoleMember.MEMBER_TYPE_CODE, memberType);
+		addSubCriteriaBasedOnRoleQualification(c, qualification);
+		
+		Collection<RoleMemberImpl> coll = (Collection<RoleMemberImpl>) new QueryByCriteria(entityManager, c).toQuery().getResultList();
+		ArrayList<RoleMemberImpl> results = new ArrayList<RoleMemberImpl>( coll.size() );
+		for ( RoleMemberImpl rm : coll ) {
+			if ( rm.isActive() ) {
+				results.add(rm);
+			}
+		}
+		return results;
+	}
 }

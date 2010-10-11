@@ -257,6 +257,9 @@
            	  </c:choose>
               <html:optionsCollection property="${methodAndParms}" label="label" value="key"/>
             </html:select>
+            <c:if test="${disableField == false}">
+              <input type="hidden" name="multiSelectToReset" value="${property}"/> 
+            </c:if> 
 	</c:when>
     <%-- radio --%>
     <c:when test="${attributeEntry.control.radio == true}">

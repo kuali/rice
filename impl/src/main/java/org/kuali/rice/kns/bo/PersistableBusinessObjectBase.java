@@ -37,6 +37,7 @@ import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.service.PersistenceService;
+import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.Guid;
 
 /**
@@ -64,6 +65,8 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     
     private static transient AttachmentService attachmentService;
     private static transient PersistenceService persistenceService;
+    private static transient PersistenceStructureService persistenceStructureService;
+    @Transient
     private static transient NoteService noteService;
     
     // This is only a flag if a @Sequence is used and is set up explicitly on Maint Doc creation
@@ -292,9 +295,16 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
         getPersistenceService().refreshAllNonUpdatingReferences(this);
     }
 
-    public void refreshReferenceObject(String referenceObjectName) {
-        getPersistenceService().retrieveReferenceObject(this, referenceObjectName);
-    }
+	public void refreshReferenceObject(String referenceObjectName) {
+		if ( StringUtils.isNotBlank(referenceObjectName) && !StringUtils.equals(referenceObjectName, "extension")) {
+			final PersistenceStructureService pss = getPersistenceStructureService();
+			if ( pss.hasReference(this.getClass(), referenceObjectName) || pss.hasCollection(this.getClass(), referenceObjectName)) {
+            	getPersistenceService().retrieveReferenceObject( this, referenceObjectName);
+			} else {
+                LOG.warn( "refreshReferenceObject() called with non-reference property: " + referenceObjectName );
+			}
+		}
+	}
 
     /**
      * @see org.kuali.rice.kns.bo.PersistableBusinessObject#buildListOfDeletionAwareLists()
@@ -373,7 +383,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 	public PersistableBusinessObjectExtension getExtension() {
 		if ( extension == null ) {
 			try {
-				Class extensionClass = KNSServiceLocator.getPersistenceStructureService().getBusinessObjectAttributeClass( getClass(), "extension" );
+				Class extensionClass = getPersistenceStructureService().getBusinessObjectAttributeClass( getClass(), "extension" );
 				if ( extensionClass != null ) {
 					extension = (PersistableBusinessObjectExtension)extensionClass.newInstance();
 				}
@@ -399,7 +409,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 	/**
 	 * @return the attachmentService
 	 */
-	private static AttachmentService getAttachmentService() {
+	protected static AttachmentService getAttachmentService() {
 		if ( attachmentService == null ) {
 			attachmentService = KNSServiceLocator.getAttachmentService();
 		}
@@ -409,17 +419,24 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 	/**
 	 * @return the persistenceService
 	 */
-	private static PersistenceService getPersistenceService() {
+	protected static PersistenceService getPersistenceService() {
 		if ( persistenceService == null ) {
 			persistenceService = KNSServiceLocator.getPersistenceService();
 		}
 		return persistenceService;
 	}
 
+	protected static PersistenceStructureService getPersistenceStructureService() {
+		if ( persistenceStructureService == null ) {
+			persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
+		}
+		return persistenceStructureService;
+	}
+	
 	/**
 	 * @return the noteService
 	 */
-	private static NoteService getNoteService() {
+	protected static NoteService getNoteService() {
 		if ( noteService == null ) {
 			noteService = KNSServiceLocator.getNoteService();
 		}

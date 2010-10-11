@@ -56,8 +56,6 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 	@Override
     public void populate(HttpServletRequest request) {
         super.populate(request);
-        
-        populateFalseCheckboxes(request);
 
         memberTableMetadata = new KualiTableRenderFormMetadata();
 
@@ -68,30 +66,6 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
                 throw new RuntimeException("Couldn't find page number");
             }
         }
-    }
-    
-    /**
-     * Uses the "checkboxToReset" parameter to find checkboxes which had not been
-     * populated in the request and attempts to populate them
-     * 
-     * @param request the request to populate
-     */
-    protected void populateFalseCheckboxes(HttpServletRequest request) {
-    	Map<String, String[]> parameterMap = request.getParameterMap();
-    	if (parameterMap.get("checkboxToReset") != null) {
-    		final String[] checkboxesToReset = request.getParameterValues("checkboxToReset");
-            if(checkboxesToReset != null && checkboxesToReset.length > 0) {
-                for (int i = 0; i < checkboxesToReset.length; i++) {
-                    String propertyName = (String) checkboxesToReset[i];
-                    if ( !StringUtils.isBlank(propertyName) && parameterMap.get(propertyName) == null ) {
-                    	populateForProperty(propertyName, KimConstants.KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE_DISPLAY, parameterMap);
-                    }  
-                    else if ( !StringUtils.isBlank(propertyName) && parameterMap.get(propertyName) != null && parameterMap.get(propertyName).length >= 1 && parameterMap.get(propertyName)[0].equalsIgnoreCase("on") ) {
-                    	populateForProperty(propertyName, KimConstants.KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE_DISPLAY, parameterMap); 
-                    }
-                }
-            }
-    	}
     }
 
 	public KualiTableRenderFormMetadata getMemberTableMetadata() {

@@ -112,6 +112,11 @@
 
 		<!-- plugin dependencies -->
 		<cobertura-maven-plugin.version>2.4</cobertura-maven-plugin.version>
+		
+		<!-- database drivers location -->
+		<jdbc.drivers.location>/opt/java/drivers</jdbc.drivers.location>
+		<mysql-connector-java.jar.location>${jdbc.drivers.location}/mysql-connector-java-${mysql-connector-java.version}.jar</mysql-connector-java.jar.location>
+		<ojdbc14.jar.location>${jdbc.drivers.location}/ojdbc14-${ojdbc14.version}.jar</ojdbc14.jar.location>
 	</properties>
 
 	<!-- what is the point of this profile? -->
@@ -424,6 +429,7 @@
 		<module>api</module>
 		<module>impl</module>
 		<module>web</module>
+		<module>sampleapp</module>
 		<module>ksb</module>
 		<module>kcb</module>
 		<module>kns</module>
@@ -1391,9 +1397,8 @@
 				<version>2.6</version>
 				<configuration>
 					<additionalClasspathElements>
-						<additionalClasspathElement>/opt/java/drivers/mysql-connector-java-${mysql-connector-java.version}.jar</additionalClasspathElement>
-						<additionalClasspathElement>/opt/java/drivers/ojdbc14-${ojdbc14.version}.jar</additionalClasspathElement>
-						<additionalClasspathElement>C:\java\drivers\ojdbc14.jar</additionalClasspathElement>
+						<additionalClasspathElement>${mysql-connector-java.jar.location}</additionalClasspathElement>
+						<additionalClasspathElement>${ojdbc14.jar.location}</additionalClasspathElement>
 					</additionalClasspathElements>
 					<useSystemClassLoader>false</useSystemClassLoader>
 					<useFile>false</useFile>

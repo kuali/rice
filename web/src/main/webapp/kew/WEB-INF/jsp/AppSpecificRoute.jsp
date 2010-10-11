@@ -56,7 +56,7 @@
 								are the ones that actually use that field for storing real namespace codes). --%>
 					<kul:user userIdFieldName="appSpecificRouteRecipient.id" userId="${KewRoutingKualiForm.appSpecificRouteRecipient.id}"
 							universalIdFieldName="" universalId="" userNameFieldName="appSpecificRouteRecipient.namespaceCode"
-							userName="${KewRoutingKualiForm.appSpecificRouteRecipient.namespaceCode}" readOnly="${displayReadOnly}" renderOtherFields="true"
+							userName="${KewRoutingKualiForm.appSpecificRouteRecipient.namespaceCode}" readOnly="${displayReadOnly}"
 							fieldConversions="principalName:appSpecificRouteRecipient.id,name:appSpecificRouteRecipient.namespaceCode"
 							lookupParameters="appSpecificRouteRecipient.id:principalName" />
 				</td>

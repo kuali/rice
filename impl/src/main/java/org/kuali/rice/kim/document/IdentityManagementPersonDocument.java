@@ -191,7 +191,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
      * Principal names are converted to lower case.
      */
     public void setPrincipalName(String principalName) {
-        this.principalName = principalName.toLowerCase();
+        this.principalName = principalName; // != null ? principalName.toLowerCase() : principalName ;
     }
 
     public String getEntityId() {

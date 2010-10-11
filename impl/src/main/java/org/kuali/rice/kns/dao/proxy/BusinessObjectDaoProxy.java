@@ -64,10 +64,10 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
                 } else {
                 	if (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) {
                         //using JPA
-                		BusinessObjectDaoJpa boDaoJpa = new BusinessObjectDaoJpa();
                 		if (entityManager != null) {
-                			boDaoJpa.setEntityManager(entityManager);
-                			boDaoJpa.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                            BusinessObjectDaoJpa boDaoJpa =
+                            	new BusinessObjectDaoJpa(entityManager, KNSServiceLocator.getPersistenceStructureService());
+                            // add to our cache of bo daos
                 			boDaoValues.put(dataSourceName, boDaoJpa);
                 			return boDaoJpa;
                 		} else {
@@ -75,9 +75,9 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
                 		}
                 	} else {	
                 	    //using OJB
-                        BusinessObjectDaoOjb boDaoOjb = new BusinessObjectDaoOjb();
+                        BusinessObjectDaoOjb boDaoOjb = new BusinessObjectDaoOjb(KNSServiceLocator.getPersistenceStructureService());
                         boDaoOjb.setJcdAlias(dataSourceName);
-                        boDaoOjb.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
+                        // add to our cache of bo daos
                         boDaoValues.put(dataSourceName, boDaoOjb);
                         return boDaoOjb;
                     }    

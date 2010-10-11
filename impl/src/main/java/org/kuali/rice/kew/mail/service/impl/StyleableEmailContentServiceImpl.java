@@ -103,7 +103,9 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     protected static void addObjectXML(Document doc, Object o, Node node, String name) throws Exception {
         Element element = XmlHelper.propertiesToXml(doc, o, name);
 
-        LOG.debug(XmlHelper.jotNode(element));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug(XmlHelper.jotNode(element));
+        }
 
         if (node == null) {
             node = doc;
@@ -447,7 +449,9 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     		docContentElement.removeChild(docContentElement.getFirstChild());
     	}
     	
-    	LOG.debug(XmlHelper.jotNode(element));
+    	if (LOG.isDebugEnabled()) {
+            LOG.debug(XmlHelper.jotNode(element));
+        }
 
         node.appendChild(element);
     }

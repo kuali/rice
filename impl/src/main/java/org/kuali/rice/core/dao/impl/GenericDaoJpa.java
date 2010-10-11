@@ -304,7 +304,7 @@ public class GenericDaoJpa implements GenericDao{
 			org.apache.ojb.broker.query.Criteria criteria,
 			boolean selectForUpdate, long wait) {
 		// TODO g1zhang - THIS METHOD NEEDS JAVADOCS
-		LOG.info("*************calling OJB********************************");
+		//LOG.info("*************calling OJB********************************");
 		return null;
 	}
 	

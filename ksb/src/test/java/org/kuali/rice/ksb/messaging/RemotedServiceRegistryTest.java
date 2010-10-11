@@ -133,11 +133,11 @@ public class RemotedServiceRegistryTest extends KSBTestCase {
 	 */
 	@Test public void testRestartServiceModified() throws Exception {
 		KSBServiceLocator.getServiceDeployer().stop();
-		ServiceInfo testTopic = findServiceInfo(this.testTopicName, KSBServiceLocator.getIPTableService().fetchAll());
+		ServiceInfo testTopic = findServiceInfo(this.testTopicName, KSBServiceLocator.getServiceRegistry().fetchAll());
 		testTopic.setAlive(false);
-		KSBServiceLocator.getIPTableService().saveEntry(testTopic);
+		KSBServiceLocator.getServiceRegistry().saveEntry(testTopic);
 		KSBServiceLocator.getServiceDeployer().start();
-		testTopic = findServiceInfo(this.testTopicName, KSBServiceLocator.getIPTableService().fetchAll());
+		testTopic = findServiceInfo(this.testTopicName, KSBServiceLocator.getServiceRegistry().fetchAll());
 		assertTrue("test topic should now be marked as alive", testTopic.getAlive());
 	}
 	
@@ -151,11 +151,11 @@ public class RemotedServiceRegistryTest extends KSBTestCase {
 //		stop the registry so we thread pool doesn't mess up the result
 		KSBServiceLocator.getServiceDeployer().stop();
 		KSBServiceLocator.getThreadPool().stop();
-		ServiceInfo testTopic = findServiceInfo(this.testTopicName, KSBServiceLocator.getIPTableService().fetchAll());
+		ServiceInfo testTopic = findServiceInfo(this.testTopicName, KSBServiceLocator.getServiceRegistry().fetchAll());
 		testTopic.setAlive(false);
-		KSBServiceLocator.getIPTableService().saveEntry(testTopic);
+		KSBServiceLocator.getServiceRegistry().saveEntry(testTopic);
 		((Runnable)KSBServiceLocator.getServiceDeployer()).run();
-		testTopic = findServiceInfo(this.testTopicName, KSBServiceLocator.getIPTableService().fetchAll());
+		testTopic = findServiceInfo(this.testTopicName, KSBServiceLocator.getServiceRegistry().fetchAll());
 		assertTrue("test topic should now be marked as alive", testTopic.getAlive());
 	}
 	
@@ -182,7 +182,7 @@ public class RemotedServiceRegistryTest extends KSBTestCase {
 		assertNull("Service should be removed from memory", serviceHolder);
 		
 		//should be gone from table
-		List<ServiceInfo> serviceInfos = KSBServiceLocator.getIPTableService().fetchAll();
+		List<ServiceInfo> serviceInfos = KSBServiceLocator.getServiceRegistry().fetchAll();
 		for (ServiceInfo info : serviceInfos) {
 			if (info.getQname().equals(this.testTopicName)) {
 				fail("This service should no longer be present in the service def table");

@@ -19,13 +19,14 @@ import org.kuali.rice.kns.dao.impl.DocumentDaoOjb;
 
 /**
  * Test client implementation of Rice/KNS DocumentDaoObj.
- * Modelled from KFS's FinancialSystemDocumentDaoOjb 
+ * Modelled from KFS's FinancialSystemDocumentDaoOjb
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ClientDocumentDaoOjb extends DocumentDaoOjb {
     public static ClientDocumentDaoOjb me;
 
     public ClientDocumentDaoOjb() {
+    	super(null, null);
         // DaoSupport makes afterPropertiesSet final...
         // fine, be that way
         me = this;

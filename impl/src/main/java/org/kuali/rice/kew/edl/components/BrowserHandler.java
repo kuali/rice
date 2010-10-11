@@ -54,8 +54,8 @@ public class BrowserHandler implements EDLModelComponent {
 	    if (!StringUtils.isBlank(bStr)) {
 	    	Element currentPageElement = EDLXmlUtils.getOrCreateChildElement(dom.getDocumentElement(), BROWSER_EL, true);
 	    	currentPageElement.appendChild(dom.createTextNode(bStr));
-	    	if (LOG.isInfoEnabled()) {
-	    		LOG.info("Appended" + bStr + " to XML field " + currentPageElement.getNodeName());
+	    	if (LOG.isDebugEnabled()) {
+	    		LOG.debug("Appended" + bStr + " to XML field " + currentPageElement.getNodeName());
 	    	}
 	    }
 	}

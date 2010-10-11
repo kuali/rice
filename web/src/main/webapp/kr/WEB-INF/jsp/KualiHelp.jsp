@@ -31,6 +31,15 @@
 			<td width="10%"></td>
 			<td>${KualiForm.helpDescription}</td>
 		</tr>
+		<c:if test="${! empty KualiForm.helpSummary }">
+			<tr>
+				<td colspan="2">&nbsp;</td>
+			</tr>
+			<tr>
+				<td width="10%"></td>
+				<td>${KualiForm.helpSummary}</td>
+			</tr>
+		</c:if>
 	</table>
 	<br />
 	<br />

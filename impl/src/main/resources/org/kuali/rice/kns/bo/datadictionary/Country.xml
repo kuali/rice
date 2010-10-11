@@ -31,6 +31,7 @@
       <list>
         <ref bean="Country-postalCountryCode"/>
         <ref bean="Country-postalCountryName"/>
+        <ref bean="Country-alternatePostalCountryCode"/>
         <ref bean="Country-postalCountryRestrictedIndicator"/>
         <ref bean="Country-active"/>
       </list>
@@ -58,6 +59,26 @@
     <property name="summary" value="Postal Country Code"/>
     <property name="description" value="The code uniquely identify a country."/>
   </bean>
+
+  <bean id="Country-alternatePostalCountryCode" parent="Country-alternatePostalCountryCode-parentBean"/>
+
+  <bean id="Country-alternatePostalCountryCode-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="name" value="alternatePostalCountryCode"/>
+    <property name="forceUppercase" value="true"/>
+    <property name="label" value="Alternate Country Code"/>
+    <property name="shortLabel" value="Alt Country Code"/>
+    <property name="maxLength" value="2"/>
+    <property name="validationPattern">
+      <bean parent="AlphaNumericValidationPattern"/>
+    </property>
+    <property name="control">
+      <bean parent="TextControlDefinition" p:size="3"/>
+    </property>
+    <property name="summary" value="Alternate Postal Country Code"/>
+    <property name="description" value="The code uniquely identify a country."/>
+  </bean>
+
+
   <bean id="Country-postalCountryName" parent="Country-postalCountryName-parentBean"/>
 
   <bean id="Country-postalCountryName-parentBean" abstract="true" parent="AttributeDefinition">
@@ -105,6 +126,7 @@
             <list>
               <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
               <bean parent="FieldDefinition" p:attributeName="postalCountryName"/>
+              <bean parent="FieldDefinition" p:attributeName="alternatePostalCountryCode"/>
               <bean parent="FieldDefinition" p:attributeName="postalCountryRestrictedIndicator"/>
               <bean parent="FieldDefinition" p:attributeName="active"/>
             </list>
@@ -135,6 +157,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
         <bean parent="FieldDefinition" p:attributeName="postalCountryName"/>
+        <bean parent="FieldDefinition" p:attributeName="alternatePostalCountryCode"/>
         <bean parent="FieldDefinition" p:defaultValue="N" p:attributeName="postalCountryRestrictedIndicator"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>
@@ -143,6 +166,7 @@
       <list>
         <bean parent="FieldDefinition" p:attributeName="postalCountryCode"/>
         <bean parent="FieldDefinition" p:attributeName="postalCountryName"/>
+        <bean parent="FieldDefinition" p:attributeName="alternatePostalCountryCode"/>
         <bean parent="FieldDefinition" p:attributeName="postalCountryRestrictedIndicator"/>
         <bean parent="FieldDefinition" p:attributeName="active"/>
       </list>

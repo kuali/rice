@@ -18,6 +18,7 @@ package org.kuali.rice.kns.dao;
 import java.util.List;
 
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.service.DocumentAdHocService;
 
 /**
  * This is the data access interface for Document objects.
@@ -32,5 +33,7 @@ public interface DocumentDao {
 	public List findByDocumentHeaderIds(Class clazz, List idList);
 
 	public BusinessObjectDao getBusinessObjectDao();
+
+	public DocumentAdHocService getDocumentAdHocService();
 
 }

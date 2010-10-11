@@ -114,7 +114,6 @@ public interface WorkflowUtility {
 			@WebParam(name = "documentId") Long documentId)
 			throws WorkflowException;
 
-	// TODO delyea
 	public WorkflowAttributeValidationErrorDTO[] validateWorkflowAttributeDefinitionVO(
 			@WebParam(name = "definition") WorkflowAttributeDefinitionDTO definition)
 			throws WorkflowException;
@@ -144,7 +143,6 @@ public interface WorkflowUtility {
 			@WebParam(name = "qualifiedRoleNameLabel") String qualifiedRoleNameLabel)
 			throws WorkflowException;
 
-	// TODO delyea
 	public DocumentDetailDTO routingReport(
 			@WebParam(name = "reportCriteria") ReportCriteriaDTO reportCriteria)
 			throws WorkflowException;
@@ -162,12 +160,10 @@ public interface WorkflowUtility {
 	public String getAppDocId(
 			@WebParam(name = "documentId") Long documentId);
 	
-	// TODO delyea
 	public DocumentSearchResultDTO performDocumentSearch(
 			@WebParam(name = "criteriaVO") DocumentSearchCriteriaDTO criteriaVO)
 			throws WorkflowException;
 
-	// TODO delyea
 	public DocumentSearchResultDTO performDocumentSearchWithPrincipal(
 			@WebParam(name = "principalId") String principalId,
 			@WebParam(name = "criteriaVO") DocumentSearchCriteriaDTO criteriaVO)
@@ -175,7 +171,6 @@ public interface WorkflowUtility {
 
 	// new in 2.3
 
-	// TODO delyea
 	public RuleDTO[] ruleReport(
 			@WebParam(name = "ruleReportCriteria") RuleReportCriteriaDTO ruleReportCriteria)
 			throws WorkflowException;
@@ -236,7 +231,6 @@ public interface WorkflowUtility {
 			throws WorkflowException;
 
 	// 2.4
-	// TODO delyea
 	public boolean documentWillHaveAtLeastOneActionRequest(
 			@WebParam(name = "reportCriteriaDTO") ReportCriteriaDTO reportCriteriaDTO,
 			@WebParam(name = "actionRequestedCodes") String[] actionRequestedCodes,

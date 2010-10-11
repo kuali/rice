@@ -190,38 +190,36 @@ public class RoleServiceBase {
 		return convertedQualification;
 	}
 	
-    public List<RoleMemberImpl> getRoleTypeRoleMembers( String roleId ){
-    	List<RoleMemberImpl> results = new ArrayList();
-    	ArrayList<String> roleList = new ArrayList<String>( 1 );
-		roleList.add( roleId );
-    	List<RoleMemberImpl> firstLevelMembers = getStoredRoleMembersForRoleIds(roleList, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, null);
-		for (RoleMemberImpl member : firstLevelMembers) {
-			if (KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(member.getMemberTypeCode())){
-				results.add(member);
-				getNestedRoleTypeMembers( member.getRoleId(), results, 0);
-			}
-    	}
-		
+    public Set<String> getRoleTypeRoleMemberIds( String roleId ){
+    	Set<String> results = new HashSet();
+    	getNestedRoleTypeMemberIds( roleId, results);
     	return results;
     }
 
-    protected void getNestedRoleTypeMembers( String roleId, List members, long depth ) throws RuntimeException
+    protected void getNestedRoleTypeMemberIds( String roleId, Set members) throws RuntimeException
     {
-    	long MAX_DEPTH = 1000;  // testing
-    	depth++;
-    	if (depth > MAX_DEPTH){
-    		throw new RuntimeException("Max Depth of "+MAX_DEPTH+" Exceeded.");
-    	}
     	ArrayList<String> roleList = new ArrayList<String>( 1 );
 		roleList.add( roleId );
 		List<RoleMemberImpl> firstLevelMembers = getStoredRoleMembersForRoleIds(roleList, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, null);
 		for (RoleMemberImpl member : firstLevelMembers) {
 			if (KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(member.getMemberTypeCode())){
-				members.add(member);
-				getNestedRoleTypeMembers( member.getMemberId(), members, depth);
+				if (!members.contains(member.getMemberId())){
+					members.add(member.getMemberId());
+					getNestedRoleTypeMemberIds( member.getMemberId(), members);
+				}
 			}
-    	}
-    	
+    	}    	
+    }
+    
+    public List<String> getMemberParentRoleIds(String memberType, String memberId) {	
+		List<RoleMemberImpl> parentRoleMembers = roleDao.getRoleMembershipsForMemberId(memberType, memberId, null);
+
+		List<String> parentRoleIds = new ArrayList<String>(parentRoleMembers.size());
+		for (RoleMemberImpl parentRoleMember: parentRoleMembers) {
+			parentRoleIds.add(parentRoleMember.getRoleId());
+		}
+		
+    	return parentRoleIds;
     }
     
 	/**
@@ -1209,6 +1207,25 @@ public class RoleServiceBase {
     		}
 		}
 		return false;
+	}
+
+	/**
+	 * 
+	 * This method tests to see if assigning a role to another role will create a circular reference.
+	 * The Role is checked to see if it is a member (direct or nested) of the role to be assigned as a member.
+	 * 
+	 * @param newMemberId
+	 * @param role
+	 * @return true  - assignment is allowed, no circular reference will be created.
+	 *         false - illegal assignment, it will create a circular membership
+	 */
+	protected boolean checkForCircularRoleMembership( String newMemberId, RoleImpl role ) {
+		// get all nested role members that are of type role
+		Set<String> newRoleMemberIds = getRoleTypeRoleMemberIds(newMemberId);
+		if (newRoleMemberIds.contains(role.getRoleId())){
+					return false;
+		}
+		return true;
 	}
 	
 	// TODO: pulling attribute IDs repeatedly is inefficient - consider caching the entire list as a map

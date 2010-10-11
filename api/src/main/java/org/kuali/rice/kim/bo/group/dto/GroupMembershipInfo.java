@@ -16,28 +16,17 @@
 package org.kuali.rice.kim.bo.group.dto;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.Date;
 
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import org.kuali.rice.kns.dto.InactiveableInfo;
 
-import org.kuali.rice.core.jaxb.SqlDateAdapter;
-
-
-/**
- * This is a description of what this class does - shyu don't forget to fill this in. 
- * 
- * @author Kuali Rice Team (rice.collab@kuali.org)
- *
- */
-public class GroupMembershipInfo implements Serializable {
+public class GroupMembershipInfo extends InactiveableInfo implements Serializable {
 	private static final long serialVersionUID = 8480290118998280178L;
 	protected String groupId;
 	protected String groupMemberId;
 	protected String memberId;
 	protected String memberTypeCode;
 	protected Long versionNumber;
-	protected Date activeFromDate;
-	protected Date activeToDate;
 
 	public GroupMembershipInfo(String groupId, String groupMemberId, String memberId, String memberTypeCode, Date activeFromDate, Date activeToDate) {
 		super();
@@ -100,32 +89,6 @@ public class GroupMembershipInfo implements Serializable {
 
 	public void setVersionNumber(Long versionNumber) {
 		this.versionNumber = versionNumber;
-	}
-
-
-	@XmlJavaTypeAdapter(value = SqlDateAdapter.class) 
-	public Date getActiveFromDate() {
-		return this.activeFromDate;
-	}
-
-
-	public void setActiveFromDate(Date activeFromDate) {
-		this.activeFromDate = activeFromDate;
-	}
-
-
-	@XmlJavaTypeAdapter(value = SqlDateAdapter.class) 
-	public Date getActiveToDate() {
-		return this.activeToDate;
-	}
-
-	public void setActiveToDate(Date activeToDate) {
-		this.activeToDate = activeToDate;
-	}
-
-	public boolean isActive() {
-		long now = System.currentTimeMillis();		
-		return (activeFromDate == null || now > activeFromDate.getTime()) && (activeToDate == null || now < activeToDate.getTime());
 	}
 
 }

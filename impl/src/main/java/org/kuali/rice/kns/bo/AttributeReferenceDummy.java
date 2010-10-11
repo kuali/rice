@@ -44,6 +44,10 @@ public class AttributeReferenceDummy extends PersistableBusinessObjectBase {
     private String workflowDocumentStatus;
     private Date createDate;
     private String initiatorNetworkId;
+    private Date activeFromDate;
+    private Date activeToDate;
+    private Date activeAsOfDate;
+    private boolean current;
 
     /**
      * 
@@ -299,8 +303,40 @@ public class AttributeReferenceDummy extends PersistableBusinessObjectBase {
     public void setWorkflowDocumentStatus(String workflowDocumentStatus) {
         this.workflowDocumentStatus = workflowDocumentStatus;
     }
+    
+    public Date getActiveFromDate() {
+		return this.activeFromDate;
+	}
 
-    /**
+	public void setActiveFromDate(Date activeFromDate) {
+		this.activeFromDate = activeFromDate;
+	}
+
+	public Date getActiveToDate() {
+		return this.activeToDate;
+	}
+
+	public void setActiveToDate(Date activeToDate) {
+		this.activeToDate = activeToDate;
+	}
+
+	public Date getActiveAsOfDate() {
+		return this.activeAsOfDate;
+	}
+
+	public void setActiveAsOfDate(Date activeAsOfDate) {
+		this.activeAsOfDate = activeAsOfDate;
+	}
+	
+	public boolean isCurrent() {
+		return this.current;
+	}
+
+	public void setCurrent(boolean current) {
+		this.current = current;
+	}
+
+	/**
      * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
      */
     protected LinkedHashMap toStringMapper() {

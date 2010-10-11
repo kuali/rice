@@ -22,11 +22,12 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibilityTypeServiceImpl {
+public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibilityTypeServiceImpl implements KimResponsibilityTypeService{
 	{
 		exactMatchStringAttributeName = KimAttributes.ROUTE_NODE_NAME;
 		requiredAttributes.add( KimAttributes.ROUTE_NODE_NAME );

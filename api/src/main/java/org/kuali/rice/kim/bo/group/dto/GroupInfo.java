@@ -23,6 +23,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlElement;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
@@ -130,4 +132,22 @@ public class GroupInfo implements Group, Serializable {
     	
     }
 
+	public boolean equals(Object object) {
+		if (object == null) { return false; }
+		if (object == this) { return true; }
+		if (object.getClass() != getClass()) {
+			return false;
+		}
+		GroupInfo rhs = (GroupInfo)object;
+		EqualsBuilder eb = new EqualsBuilder()
+			.append( this.groupId, rhs.getGroupId() );
+		return eb.isEquals();
+	}
+
+	public int hashCode() {
+		return new HashCodeBuilder( -462347871, 744315189 )
+			.append( this.groupId )
+			.toHashCode();
+	}
+    
 }

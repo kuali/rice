@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -31,6 +32,7 @@ import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
@@ -88,6 +90,9 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, businessObject.getClass().getName());
         parameters.put(KNSConstants.OVERRIDE_KEYS, KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID);
         parameters.put(KNSConstants.COPY_KEYS, KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID);
+        if (StringUtils.isNotBlank(getReturnLocation())) {
+        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+		}
         parameters.putAll(getParametersFromPrimaryKey(businessObject, pkNames));
         return UrlFactory.parameterizeUrl(KNSConstants.MAINTENANCE_ACTION, parameters);
     }
@@ -189,6 +194,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		List<ResponsibilityImpl> tempResponsibilities;
 		List<String> collectedResponsibilityIds = new ArrayList<String>();
 		Map<String, String> responsibilityCriteria;
+		
 		for(RoleImpl roleImpl: roleSearchResults){
 			responsibilityCriteria = new HashMap<String, String>();
 			responsibilityCriteria.put("roleResponsibilities.roleId", roleImpl.getRoleId());
@@ -199,6 +205,14 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 					populateAssignedToRoles(responsibility);
 					collectedResponsibilityIds.add(responsibility.getResponsibilityId());
 					responsibilities.add(responsibility);
+				}
+				//need to find roles that current role is a member of and build search string
+				List<String> parentRoleIds = KIMServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
+				for (String parentRoleId : parentRoleIds) {
+					Map<String, String> roleSearchCriteria = new HashMap<String, String>();
+					roleSearchCriteria.put("roleId", parentRoleId);
+					//get all parent role permissions and merge them with current permissions
+					responsibilities = mergeResponsibilityLists(responsibilities, getResponsibilitiesWithRoleSearchCriteria(roleSearchCriteria, unbounded));
 				}
 			}
 		}
@@ -277,4 +291,17 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 		return lookupService;
 	}
  
+	private List<ResponsibilityImpl> mergeResponsibilityLists(List<ResponsibilityImpl> perm1, List<ResponsibilityImpl> perm2) {
+		List<ResponsibilityImpl> returnList = new ArrayList<ResponsibilityImpl>(perm1);
+		List<String> responsibilityIds = new ArrayList<String>(perm1.size());
+		for (ResponsibilityImpl perm : returnList) {
+			responsibilityIds.add(perm.getResponsibilityId());
+		}
+		for (int i=0; i<perm2.size(); i++) {
+		    if (!responsibilityIds.contains(perm2.get(i).getResponsibilityId())) {
+		    	returnList.add(perm2.get(i));
+		    }
+		}
+		return returnList;
+	}
 }

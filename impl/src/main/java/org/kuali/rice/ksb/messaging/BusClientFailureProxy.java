@@ -82,9 +82,13 @@ public class BusClientFailureProxy extends BaseTargetedInvocationHandler {
 					remoteResourceLocator.removeService(this.serviceInfo);
 	
 					service = remoteResourceLocator.getService(this.serviceInfo.getQname());
-				
+									
 					if (service != null) {
 						LOG.info("Refetched replacement service for service " + this.serviceInfo.getQname());
+						
+						// as per KULRICE-4287, reassign target to the new service we just fetched, hopefully this one works better!
+						setTarget(service);
+						
 					} else {
 						LOG.error("Didn't find replacement service throwing exception");
 						throw throwable;					

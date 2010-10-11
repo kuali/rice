@@ -53,7 +53,9 @@ public class EmailStyleHelper {
 
         Node node = result.getNode();
         
-        LOG.debug("Email document: " + XmlHelper.jotNode(document));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Email document: " + XmlHelper.jotNode(document));
+        }
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();
         try {

@@ -52,6 +52,7 @@ public class ExceptionRoutingTest extends KEWTestCase {
 		ExceptionRoutingTestPostProcessor.THROW_ROUTE_STATUS_CHANGE_EXCEPTION = false;
 		ExceptionRoutingTestPostProcessor.THROW_ROUTE_STATUS_LEVEL_EXCEPTION = false;
 		ExceptionRoutingTestPostProcessor.TRANSITIONED_OUT_OF_EXCEPTION_ROUTING = false;
+		ExceptionRoutingTestPostProcessor.BLOW_UP_ON_TRANSITION_INTO_EXCEPTION = false;
 	}
 
     @Test public void testSequentialExceptionRouting() throws Exception {
@@ -64,6 +65,9 @@ public class ExceptionRoutingTest extends KEWTestCase {
 
         TestUtilities.getExceptionThreader().join();//this is necessary to ensure that the exception request will be generated.
 
+        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
+        assertTrue("Document should be in exception status", doc.stateIsException());
+        
         WorkflowInfo info = new WorkflowInfo();
         ActionRequestDTO[] actionRequests = info.getActionRequests(doc.getRouteHeaderId());
 
@@ -79,9 +83,32 @@ public class ExceptionRoutingTest extends KEWTestCase {
             assertFalse("annotation cannot be empty", "".equals(actionRequest.getAnnotation()));
         }
 
-        doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
-        assertTrue("Document should be in exception status", doc.stateIsException());
     }
+    
+    /**
+     * This tests the solution for KULRICE-4493.  Essentially, the problem was that when the workflow engine
+     * would transition the document to exception status it would invoke the post processor.  If invoking
+     * the post processor raised an exception, that would cause the transaction to get rolled back and the
+     * document would get "stuck" in the ENROUTE state with no pending requests.
+     */
+//    @Test public void testExceptionRouting_BlowUpOnStatusChangeToException() throws Exception {
+//    	
+//    	// first, configure the post processor so that it throws an exception when we call doRouteStatusChange on transition into exception status
+//    	ExceptionRoutingTestPostProcessor.BLOW_UP_ON_TRANSITION_INTO_EXCEPTION = true;
+//    	    	
+//    	WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "AlwaysExplodeTestDocument");
+//    	try {
+//    		doc.routeDocument("");
+//    		fail("We should be in exception routing");
+//    	} catch (Exception e) {
+//    	}
+//
+//    	TestUtilities.getExceptionThreader().join();//this is necessary to ensure that the exception request will be generated.
+//    	
+//    	doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), doc.getRouteHeaderId());
+//    	assertTrue("document should be in exception routing", doc.stateIsException());
+//
+//    }
 
 	@Test public void testInvalidActionsInExceptionRouting() throws Exception {
         WorkflowDocument doc = new WorkflowDocument(new NetworkIdDTO("rkirkend"), "ExceptionRoutingSequentialDoc");

@@ -19,14 +19,17 @@
               description="The rows of fields that we'll iterate to display." %>
 <%@ attribute name="numberOfColumns" required="false" 
               description="The # of fields in this row." %>
-<%@ attribute name="skipTheOldNewBar" required="false" 
-              description="boolean that indicates whether the old and new bar should be skipped" %>
 <%@ attribute name="depth" required="false" 
               description="the recursion depth number" %>
 <%@ attribute name="rowsHidden" required="false"
               description="boolean that indicates whether the rows should be hidden or all fields are hidden" %>
 <%@ attribute name="rowsReadOnly" required="false"
               description="boolean that indicates whether the rows should be rendered as read-only (note that rows will automatically be rendered as readonly if it is an inquiry or if it is a maintenance document in readOnly mode" %>             
-    <%-- cannot refer to recursive tag (rowDisplay) using kul alias or Jetty 7 will have jsp compilation errors on Linux --%>
-    <%-- this tag ends up being recursive b/c it is called by rowDisplay--%>
-    </WEB-INF/tags/kr:rowDisplay rows="${rows}" numberOfColumns="${numberOfColumns}" skipTheOldNewBar="${skipTheOldNewBar}" depth="${depth}" rowsHidden="${rowsHidden}" rowsReadOnly="${rowsReadOnly}"/>          
+
+<%-- Tomcat 5.5.30 and 5.5.31 had problems with the recursive tag, this is the workaround: --%>
+<c:set var="_rows" value="${rows}" scope="request" />
+<c:set var="_numberOfColumns" value="${numberOfColumns}" scope="request" />
+<c:set var="_depth" value="${depth}" scope="request" />
+<c:set var="_rowsHidden" value="${rowsHidden}" scope="request" />
+<c:set var="_rowsReadOnly" value="${rowsReadOnly}" scope="request" />
+<c:import url="/WEB-INF/jsp/recurseRowDisplay.jsp" />

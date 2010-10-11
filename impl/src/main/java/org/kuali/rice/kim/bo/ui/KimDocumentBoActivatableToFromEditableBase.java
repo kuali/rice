@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.bo.ui;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -46,9 +47,9 @@ public class KimDocumentBoActivatableToFromEditableBase  extends KimDocumentBoBa
 
 	
 	@Column(name="ACTV_FRM_DT")
-	protected Date activeFromDate;
+	protected Timestamp activeFromDate;
 	@Column(name="ACTV_TO_DT")
-	protected Date activeToDate;
+	protected Timestamp activeToDate;
 
 	public boolean isActive() {
 		long now = System.currentTimeMillis();		
@@ -70,28 +71,28 @@ public class KimDocumentBoActivatableToFromEditableBase  extends KimDocumentBoBa
 	/**
 	 * @return the activeFromDate
 	 */
-	public Date getActiveFromDate() {
+	public Timestamp getActiveFromDate() {
 		return this.activeFromDate;
 	}
 
 	/**
 	 * @param activeFromDate the activeFromDate to set
 	 */
-	public void setActiveFromDate(Date activeFromDate) {
+	public void setActiveFromDate(Timestamp activeFromDate) {
 		this.activeFromDate = activeFromDate;
 	}
 
 	/**
 	 * @return the activeToDate
 	 */
-	public Date getActiveToDate() {
+	public Timestamp getActiveToDate() {
 		return this.activeToDate;
 	}
 
 	/**
 	 * @param activeToDate the activeToDate to set
 	 */
-	public void setActiveToDate(Date activeToDate) {
+	public void setActiveToDate(Timestamp activeToDate) {
 		this.activeToDate = activeToDate;
 	}
 

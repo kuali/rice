@@ -40,6 +40,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.springframework.dao.DataAccessException;
 
 /**
@@ -52,6 +53,13 @@ public class BusinessObjectDaoJpa implements BusinessObjectDao {
 	private EntityManager entityManager;
 
 	private PersistenceStructureService persistenceStructureService;
+
+	private OjbCollectionHelper ojbCollectionHelper;
+
+	public BusinessObjectDaoJpa(EntityManager entityManager, PersistenceStructureService persistenceStructureService) {
+		this.entityManager = entityManager;
+		this.persistenceStructureService = persistenceStructureService;
+	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)

@@ -16,15 +16,7 @@
  */
 package org.kuali.rice.ksb.messaging.serviceconnectors;
 
-import org.apache.cxf.binding.BindingFactoryManager;
-import org.apache.cxf.interceptor.LoggingInInterceptor;
-import org.apache.cxf.interceptor.LoggingOutInterceptor;
-import org.apache.cxf.jaxrs.JAXRSBindingFactory;
-import org.apache.cxf.jaxrs.client.JAXRSClientFactoryBean;
-import org.kuali.rice.ksb.messaging.RESTServiceDefinition;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.ksb.security.soap.CredentialsOutHandler;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 
 /**
@@ -38,38 +30,18 @@ public class RESTConnector extends AbstractServiceConnector {
         super(serviceInfo);
     }
 
-
     /**
-     * @return a CXF client proxy for web service corresponding to the ServiceInfo passed in on construction.
+     * @return a resource facade that wraps the CXF client proxies for these resources
      * @see org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnector#getService()
      */
     public Object getService() throws Exception {
-        Class<?> resourceClass = Class.forName(((RESTServiceDefinition) getServiceInfo().getServiceDefinition()).getResourceClass());
+    	ResourceFacadeImpl resourceFacade = new ResourceFacadeImpl(getServiceInfo());
+    	resourceFacade.setCredentialsSource(getCredentialsSource());
 
-        JAXRSClientFactoryBean clientFactory;
+    	if (resourceFacade.isSingleResourceService())
+    		return resourceFacade.getResource((String)null);
 
-        clientFactory = new JAXRSClientFactoryBean();
-        clientFactory.setBus(KSBServiceLocator.getCXFBus());
-
-        clientFactory.setResourceClass(resourceClass);
-        clientFactory.setAddress(getServiceInfo().getActualEndpointUrl());
-        BindingFactoryManager bindingFactoryManager = KSBServiceLocator.getCXFBus().getExtension(BindingFactoryManager.class);
-        JAXRSBindingFactory bindingFactory = new JAXRSBindingFactory();
-        bindingFactory.setBus(KSBServiceLocator.getCXFBus());
-
-        bindingFactoryManager.registerBindingFactory(JAXRSBindingFactory.JAXRS_BINDING_ID, bindingFactory);
-
-        //Set logging and security interceptors
-        clientFactory.getOutInterceptors().add(new LoggingOutInterceptor());
-//        clientFactory.getOutInterceptors().add(new SigningOutInterceptor());
-        if (getCredentialsSource() != null) {
-            clientFactory.getOutInterceptors().add(new CredentialsOutHandler(getCredentialsSource(), getServiceInfo()));
-        }
-        clientFactory.getInInterceptors().add(new LoggingInInterceptor());
-//        clientFactory.getInInterceptors().add(new VerifyingInInterceptor());
-
-        Object service = clientFactory.create();
-        return getServiceProxyWithFailureMode(service, this.getServiceInfo());
+        return resourceFacade;
     }	
 
 }

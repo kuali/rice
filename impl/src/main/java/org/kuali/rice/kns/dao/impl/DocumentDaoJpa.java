@@ -23,6 +23,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kim.bo.Group;
@@ -33,6 +34,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.service.DocumentAdHocService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.dao.DataAccessException;
 
@@ -42,12 +44,16 @@ import org.springframework.dao.DataAccessException;
 public class DocumentDaoJpa implements DocumentDao {
     private static Logger LOG = Logger.getLogger(DocumentDaoJpa.class);
     private BusinessObjectDao businessObjectDao;
+    private DocumentAdHocService documentAdHocService;
 
 	@PersistenceContext
 	private EntityManager entityManager;
 
-    public DocumentDaoJpa() {
+    public DocumentDaoJpa(EntityManager entityManager, BusinessObjectDao businessObjectDao, DocumentAdHocService documentAdHocService) {
         super();
+        this.entityManager = entityManager;
+        this.businessObjectDao = businessObjectDao;
+        this.documentAdHocService = documentAdHocService;
     }
 
     /*
@@ -97,7 +103,7 @@ public class DocumentDaoJpa implements DocumentDao {
 			e.printStackTrace();
 		}
         for (Document doc : list) {
-        	addAdHocs(doc);
+        	documentAdHocService.addAdHocs(doc);
 			entityManager.refresh(doc);
         }
 		return list;
@@ -111,36 +117,6 @@ public class DocumentDaoJpa implements DocumentDao {
     @Deprecated
     public void saveMaintainableBusinessObject(PersistableBusinessObject businessObject) {
     	throw new UnsupportedOperationException("Don't use this depricated method.");
-    }
-
-
-    public Document addAdHocs(Document document){
-        /* Instead of reading the doc header to see if doc is in saved status
-         * its probably easier and faster to just do this all the time and
-         * store a null when appropriate.
-         */
-        List<AdHocRoutePerson> adHocRoutePersons;
-        List<AdHocRouteWorkgroup> adHocRouteWorkgroups;
-        HashMap criteriaPerson = new HashMap();
-        HashMap criteriaWorkgroup = new HashMap();
-
-        criteriaPerson.put("documentNumber", document.getDocumentNumber());
-        criteriaPerson.put("type", AdHocRoutePerson.PERSON_TYPE);
-        adHocRoutePersons = (List) businessObjectDao.findMatching(AdHocRoutePerson.class, criteriaPerson);
-        criteriaWorkgroup.put("documentNumber", document.getDocumentNumber());
-        criteriaWorkgroup.put("type", AdHocRouteWorkgroup.WORKGROUP_TYPE);
-        adHocRouteWorkgroups = (List<AdHocRouteWorkgroup>) businessObjectDao.findMatching(AdHocRouteWorkgroup.class, criteriaWorkgroup);
-
-        //populate group namespace and names on adHocRoutWorkgroups
-        for (AdHocRouteWorkgroup adHocRouteWorkgroup : adHocRouteWorkgroups) {
-            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(adHocRouteWorkgroup.getId());
-            adHocRouteWorkgroup.setRecipientName(group.getGroupName());
-            adHocRouteWorkgroup.setRecipientNamespaceCode(group.getNamespaceCode());
-        }
-        document.setAdHocRoutePersons(adHocRoutePersons);
-        document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
-
-        return document;
     }
 
     public BusinessObjectDao getBusinessObjectDao() {
@@ -163,6 +139,21 @@ public class DocumentDaoJpa implements DocumentDao {
      */
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    /**
+	 * @return the documentAdHocService
+	 */
+	public DocumentAdHocService getDocumentAdHocService() {
+		return this.documentAdHocService;
+	}
+
+    /**
+     * Setter for injecting the DocumentAdHocService
+     * @param dahs
+     */
+    public void setDocumentAdHocService(DocumentAdHocService dahs) {
+    	this.documentAdHocService = dahs;
     }
 
 }

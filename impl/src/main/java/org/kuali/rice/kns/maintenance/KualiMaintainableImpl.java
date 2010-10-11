@@ -91,18 +91,18 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     
     protected String docTypeName;
 
-    private static PersistenceStructureService persistenceStructureService;
+    protected static PersistenceStructureService persistenceStructureService;
     
-    private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
-    private static DataDictionaryService dataDictionaryService;
-    private static BusinessObjectService businessObjectService;
-    private static BusinessObjectDictionaryService businessObjectDictionaryService;
-    private static EncryptionService encryptionService;
-    private static org.kuali.rice.kim.service.PersonService personService;
-    private static BusinessObjectMetaDataService businessObjectMetaDataService;
-    private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
-    private static MaintenanceDocumentService maintenanceDocumentService;
-    private static DocumentHelperService documentHelperService;
+    protected static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
+    protected static DataDictionaryService dataDictionaryService;
+    protected static BusinessObjectService businessObjectService;
+    protected static BusinessObjectDictionaryService businessObjectDictionaryService;
+    protected static EncryptionService encryptionService;
+    protected static org.kuali.rice.kim.service.PersonService personService;
+    protected static BusinessObjectMetaDataService businessObjectMetaDataService;
+    protected static BusinessObjectAuthorizationService businessObjectAuthorizationService;
+    protected static MaintenanceDocumentService maintenanceDocumentService;
+    protected static DocumentHelperService documentHelperService;
     
     /**
      * Default empty constructor
@@ -199,12 +199,10 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
    
         Map cachedValues = FieldUtils.populateBusinessObjectFromMap(getBusinessObject(), newFieldValues);
         performForceUpperCase(newFieldValues);
-        //getBusinessObjectDictionaryService().performForceUppercase(getBusinessObject());
+        
         return cachedValues;
     }
     
- 
-
     /**
      * Special hidden parameters are set on the maintenance jsp starting with a prefix that tells us which fields have been
      * encrypted. This field finds the those parameters in the map, whose value gives us the property name that has an encrypted
@@ -213,7 +211,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      * @param fieldValues - possibly with encrypted values
      * @return Map fieldValues - with no encrypted values
      */
-    private Map<String, String> decryptEncryptedData(Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument, String methodToCall) {
+    protected Map<String, String> decryptEncryptedData(Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument, String methodToCall) {
     	try {
     		MaintenanceDocumentRestrictions auths = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
 	        for (Iterator<String> iter = fieldValues.keySet().iterator(); iter.hasNext();) {
@@ -618,7 +616,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     /**
      * Retrieves the document type name from the data dictionary based on business object class
      */
-    private String getDocumentTypeName() {
+    protected String getDocumentTypeName() {
         return getMaintenanceDocumentDictionaryService().getDocumentTypeName(boClass);
     }
 
@@ -1253,7 +1251,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 		}
 	}
 	
-	private void clearCollectionRestrictedValues(String fieldNamePrefix, BusinessObject businessObject, MaintainableCollectionDefinition collectionDefinition, MaintenanceDocumentRestrictions maintenanceDocumentRestrictions) {
+	protected void clearCollectionRestrictedValues(String fieldNamePrefix, BusinessObject businessObject, MaintainableCollectionDefinition collectionDefinition, MaintenanceDocumentRestrictions maintenanceDocumentRestrictions) {
 		String collectionName = fieldNamePrefix + collectionDefinition.getName();
 		Collection<BusinessObject> collection = (Collection<BusinessObject>) ObjectUtils.getPropertyValue(businessObject, collectionDefinition.getName());
 		
@@ -1273,7 +1271,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 		}
 	}
 	
-	private void clearFieldRestrictedValues(String fieldNamePrefix, BusinessObject businessObject, MaintainableFieldDefinition fieldDefinition, MaintenanceDocumentRestrictions maintenanceDocumentRestrictions) {
+	protected void clearFieldRestrictedValues(String fieldNamePrefix, BusinessObject businessObject, MaintainableFieldDefinition fieldDefinition, MaintenanceDocumentRestrictions maintenanceDocumentRestrictions) {
 		String fieldName = fieldNamePrefix + fieldDefinition.getName();
 		
 		FieldRestriction fieldRestriction = maintenanceDocumentRestrictions.getFieldRestriction(fieldName);
@@ -1300,7 +1298,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 		}
 	}
 	
-	private void performForceUpperCase(Map fieldValues) {
+	protected void performForceUpperCase(Map fieldValues) {
 	    	List<MaintainableSectionDefinition> sections = getMaintenanceDocumentDictionaryService().getMaintainableSections(docTypeName);
 	        for (MaintainableSectionDefinition sectionDefinition : sections) {
 	        	for (MaintainableItemDefinition itemDefinition :  sectionDefinition.getMaintainableItems()) {
@@ -1315,7 +1313,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	        }
 	  }
 	    
-	  private void performFieldForceUpperCase(String fieldNamePrefix, BusinessObject bo, MaintainableFieldDefinition fieldDefinition, Map fieldValues) {
+	protected void performFieldForceUpperCase(String fieldNamePrefix, BusinessObject bo, MaintainableFieldDefinition fieldDefinition, Map fieldValues) {
 	    	MessageMap errorMap = GlobalVariables.getMessageMap();
 	    	String fieldName = fieldDefinition.getName();
 	    	String mapKey = fieldNamePrefix + fieldName; 
@@ -1359,7 +1357,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	      }
 	  }
 
-	  private void performCollectionForceUpperCase(String fieldNamePrefix, BusinessObject bo, MaintainableCollectionDefinition collectionDefinition, Map fieldValues) {
+	protected void performCollectionForceUpperCase(String fieldNamePrefix, BusinessObject bo, MaintainableCollectionDefinition collectionDefinition, Map fieldValues) {
 	    	String collectionName = fieldNamePrefix + collectionDefinition.getName();
 	    	Collection<BusinessObject> collection = (Collection<BusinessObject>)ObjectUtils.getPropertyValue(bo, collectionDefinition.getName());
 	    	if (collection != null) {
@@ -1379,7 +1377,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 	        }
 	  }
 	  
-	  private void performFieldForceUpperCase(BusinessObject bo, Map fieldValues) {
+	protected void performFieldForceUpperCase(BusinessObject bo, Map fieldValues) {
 	      MessageMap errorMap = GlobalVariables.getMessageMap();
 
 	      try {

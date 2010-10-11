@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kim.dao.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,8 +39,8 @@ import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
- * This is a description of what this class does - shyu don't forget to fill this in. 
- * 
+ * This is a description of the KimGroupDaoOjb class.
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
@@ -63,7 +64,7 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         		if (entry.getKey().contains(".")) {
         	        Criteria subCrit = new Criteria();
         			String value = entry.getValue().replace('*', '%');
-        	        
+
         			subCrit.addLike("attributeValue",value);
         			subCrit.addEqualTo("kimAttributeId",entry.getKey().substring(entry.getKey().indexOf(".")+1, entry.getKey().length()));
         			subCrit.addEqualTo("kimTypeId", kimTypeId);
@@ -72,16 +73,21 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         		} else {
         			if (lookupNames.contains(entry.getKey())) {
             			String value = entry.getValue().replace('*', '%');
-        				crit.addLike(entry.getKey(), value);
+        				if(entry.getKey().equalsIgnoreCase(KIMPropertyConstants.Group.GROUP_NAME)) {
+        					crit.addLike(getDbPlatform().getUpperCaseFunction() + "(" + entry.getKey() + ")", value.toUpperCase());
+        				}
+        				else {
+                            crit.addLike((entry.getKey()), value);
+        				}
         			} else {
         				if (entry.getKey().equals(KIMPropertyConstants.Person.PRINCIPAL_NAME)) {
-        					
+
         					// KULRICE-4248: Retrieve Principal using the Identity Management Service
         					Criteria memberSubCrit = new Criteria();
         					memberSubCrit.addEqualToField(KIMPropertyConstants.Group.GROUP_ID, Criteria.PARENT_QUERY_PREFIX + KIMPropertyConstants.Group.GROUP_ID);
         					// Get the passed-in Principal Name
         					String principalName = entry.getValue();
-        					// Search for the Principal using the Identity Management service 
+        					// Search for the Principal using the Identity Management service
         					LOG.debug("Searching on Principal Name: " + entry.getValue());
         					KimPrincipalInfo principalInfo = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
         					// If a Principal is returned, plug in the Principal ID as the Member ID
@@ -91,6 +97,29 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         						String principalId = principalInfo.getPrincipalId();
         						LOG.debug("Plugging in Principal ID: " + principalId + "as Member ID");
         						memberSubCrit.addLike(KIMPropertyConstants.GroupMember.MEMBER_ID, principalId);
+
+                   	        	// KULRICE-4232: Only return groups that the principal is an active member of.
+                   	        	Timestamp now = KNSServiceLocator.getDateTimeService().getCurrentTimestamp();
+                   	        	Criteria afterActiveFromSubCrit = new Criteria();
+                   	        	afterActiveFromSubCrit.addLessOrEqualThan(KIMPropertyConstants.GroupMember.ACTIVE_FROM_DATE, now);
+                    	        Criteria nullActiveFromSubCrit = new Criteria();
+                    	        nullActiveFromSubCrit.addIsNull(KIMPropertyConstants.GroupMember.ACTIVE_FROM_DATE);
+                    	        
+                    	        Criteria ActiveMemberSubCrit1 = new Criteria();
+                    	        ActiveMemberSubCrit1.addOrCriteria(afterActiveFromSubCrit);
+                    	        ActiveMemberSubCrit1.addOrCriteria(nullActiveFromSubCrit);
+                    	        
+                    	       	Criteria afterActiveToSubCrit = new Criteria();
+                   	        	afterActiveToSubCrit.addGreaterOrEqualThan(KIMPropertyConstants.GroupMember.ACTIVE_TO_DATE, now);
+                    	        Criteria nullActiveToSubCrit = new Criteria();
+                    	        nullActiveToSubCrit.addIsNull(KIMPropertyConstants.GroupMember.ACTIVE_TO_DATE);
+                    	        
+                    	        Criteria ActiveMemberSubCrit2 = new Criteria();
+                    	        ActiveMemberSubCrit2.addOrCriteria(afterActiveToSubCrit);
+                    	        ActiveMemberSubCrit2.addOrCriteria(nullActiveToSubCrit);
+                   	        	
+                    	        memberSubCrit.addAndCriteria(ActiveMemberSubCrit1);
+                    	        memberSubCrit.addAndCriteria(ActiveMemberSubCrit2);			
         					}
         					// Otherwise, plug in a blank string as the Member ID
         					else
@@ -109,14 +138,14 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
                 	        memberSubCrit.addExists(subQuery);
                 	        */
                 			ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(GroupMemberImpl.class, memberSubCrit);
-                			crit.addExists(memberSubQuery);        					
+                			crit.addExists(memberSubQuery);
         				}
         			}
         		}
         	}
         }
         Query q = QueryFactory.newQuery(GroupImpl.class, crit);
-        
+
         return (List)getPersistenceBrokerTemplate().getCollectionByQuery(q);
     }
 

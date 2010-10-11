@@ -27,7 +27,8 @@
         <kul:help
             businessObjectClassName="${field.businessObjectClassName}"
             attributeName="${field.fieldHelpName}"
-            altText="${field.fieldLabel}" />
+            altText="${field.fieldLabel}"
+            alternativeHelp="${field.fieldLevelHelpUrl}" />
         
 	</c:if>
     

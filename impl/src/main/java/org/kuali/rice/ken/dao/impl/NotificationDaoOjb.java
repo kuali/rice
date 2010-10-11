@@ -50,7 +50,7 @@ public class NotificationDaoOjb extends PersistenceBrokerDaoSupport implements N
 	@Override
 	public Collection findMatchedNotificationsForResolution(Timestamp tm, GenericDao dao) {
 
-		LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForResolution(************************ ");
+		//LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForResolution(************************ ");
 		
 		Criteria criteria = new Criteria();
 		criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.PROCESSING_FLAG, NotificationConstants.PROCESSING_FLAGS.UNRESOLVED);
@@ -70,7 +70,7 @@ public class NotificationDaoOjb extends PersistenceBrokerDaoSupport implements N
 	@Override
 	public Collection findMatchedNotificationsForUnlock(Notification not, GenericDao dao) {
 
-		LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForForUnlock************************ ");
+		//LOG.info("************************calling OJBNotificationDao.findMatchedNotificationsForForUnlock************************ ");
 		
 		Criteria criteria = new Criteria();
 		criteria.addEqualTo(NotificationConstants.BO_PROPERTY_NAMES.ID, not.getId());

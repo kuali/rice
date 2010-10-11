@@ -105,6 +105,19 @@ public class RoleServiceImplTest extends KIMTestCase {
 	}
 	
 	/**
+	 * Tests to ensure that a circular role membership cannot be created via the RoleUpdateService.
+	 * 
+	 * @throws Exception
+	 */
+	@Test (expected=IllegalArgumentException.class)
+	public void testCircularRoleAssignment() {
+		AttributeSet attributeSet = new AttributeSet();
+		List <String>roleIds = new ArrayList<String>();
+		roleIds.add("r1");
+		roleUpdateService.assignRoleToRole("r5", "AUTH_SVC_TEST2", "RoleThree", attributeSet);
+	}
+	
+	/**
 	 * A convenience interface for reducing duplicated code when comparing KIM objects and testing certain KIM-object-caching capabilities.
 	 * 
 	 * @author Kuali Rice Team (rice.collab@kuali.org)

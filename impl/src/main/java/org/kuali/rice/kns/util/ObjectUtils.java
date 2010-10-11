@@ -24,7 +24,6 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.security.MessageDigest;
-import java.sql.Date;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -47,9 +46,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.cache.CopiedObject;
-import org.kuali.rice.kns.web.format.BooleanFormatter;
 import org.kuali.rice.kns.web.format.CollectionFormatter;
-import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 
@@ -242,68 +239,54 @@ public class ObjectUtils {
      * @return Object will be null if any parent property for the given property is null.
      */
     public static Class getPropertyType(Object object, String propertyName, PersistenceStructureService persistenceStructureService) {
+		if (object == null || propertyName == null) {
+			throw new RuntimeException("Business object and property name can not be null");
+		}
 
-        if (object == null || propertyName == null) {
-            throw new RuntimeException("Business object and property name can not be null");
-        }
+		Class propertyType = null;
+		try {
+			try {
+				// Try to simply use the default or simple way of getting the property type.
+				propertyType = PropertyUtils.getPropertyType(object, propertyName);
+			} catch (IllegalArgumentException ex) {
+				// swallow the exception, propertyType stays null
+			} catch (NoSuchMethodException nsme) {
+				// swallow the exception, propertyType stays null
+			}
 
-        Class propertyType = null;
+			// if the property type as determined from the object is PersistableBusinessObject,
+			// then this must be an extension attribute -- attempt to get the property type from the
+			// persistence structure service
+			if (propertyType != null && propertyType.equals(PersistableBusinessObjectExtension.class)) {
+				propertyType = persistenceStructureService.getBusinessObjectAttributeClass(
+						ProxyHelper.getRealClass(object), propertyName);
+			}
 
-        try {
+			// If the easy way didn't work ...
+			if (null == propertyType && -1 != propertyName.indexOf('.')) {
+				if (null == persistenceStructureService) {
+					LOG.info("PropertyType couldn't be determined simply and no PersistenceStructureService was given. If you pass in a PersistenceStructureService I can look in other places to try to determine the type of the property.");
+				} else {
+					String prePeriod = StringUtils.substringBefore(propertyName, ".");
+					String postPeriod = StringUtils.substringAfter(propertyName, ".");
 
-            try {
+					Class prePeriodClass = getPropertyType(object, prePeriod, persistenceStructureService);
+					Object prePeriodClassInstance = prePeriodClass.newInstance();
+					propertyType = getPropertyType(prePeriodClassInstance, postPeriod, persistenceStructureService);
+				}
 
-                // Try to simply use the default or simple way of getting the property type.
-                propertyType = PropertyUtils.getPropertyType(object, propertyName);
-                
-            } catch(IllegalArgumentException ex) {
-                // swallow the exception, propertyType stays null
-            } catch(NoSuchMethodException nsme) {
-                // swallow the exception, propertyType stays null
-            }
+			} else if (Collection.class.isAssignableFrom(propertyType)) {
+				Map<String, Class> map = persistenceStructureService.listCollectionObjectTypes(object.getClass());
+				propertyType = map.get(propertyName);
+			}
 
-            // if the property type as determined from the object is PersistableBusinessObject,
-            // then this must be an extension attribute -- attempt to get the property type from the
-            // persistence structure service
-            if ( propertyType != null && propertyType.equals( PersistableBusinessObjectExtension.class ) ) {
-            	propertyType = persistenceStructureService.getBusinessObjectAttributeClass( ProxyHelper.getRealClass( object ), propertyName );
-            }
-            
-            // If the easy way didn't work ...
-            if (null == propertyType && -1 != propertyName.indexOf('.')) {
+		} catch (Exception e) {
+			LOG.debug("unable to get property type for " + propertyName + " " + e.getMessage());
+			// continue and return null for propertyType
+		}
 
-                if (null == persistenceStructureService) {
-
-                    LOG.info("PropertyType couldn't be determined simply and no PersistenceStructureService was given. If you pass in a PersistenceStructureService I can look in other places to try to determine the type of the property.");
-
-                } else {
-                    
-                    String prePeriod = StringUtils.substringBefore(propertyName, ".");
-                    String postPeriod = StringUtils.substringAfter(propertyName, ".");
-                    
-                    Class prePeriodClass = getPropertyType(object, prePeriod, persistenceStructureService);
-                    Object prePeriodClassInstance = prePeriodClass.newInstance();
-                    propertyType = getPropertyType(prePeriodClassInstance, postPeriod, persistenceStructureService);
-
-                } 
-
-            } else if(Collection.class.isAssignableFrom(propertyType)) {
-                
-                Map<String, Class> map = persistenceStructureService.listCollectionObjectTypes(object.getClass());
-                propertyType = map.get(propertyName);
-                
-            }
-
-        }
-        catch (Exception e) {
-
-            LOG.debug("unable to get property type for " + propertyName + " " + e.getMessage());
-            // continue and return null for propertyType
-
-        }
-
-        return propertyType;
-    }
+		return propertyType;
+	}
 
     /**
      * Returns the value of the property in the object.
@@ -354,12 +337,30 @@ public class ObjectUtils {
 		Object prop = ObjectUtils.getPropertyValue(businessObject, propertyName);
 		if (formatter == null) {
 			propValue = formatPropertyValue(prop);
-		}
-		else {
-			propValue = (String) formatter.format(prop);
+		} else {
+			final Object formattedValue = formatter.format(prop);
+			if (formattedValue != null) {
+				propValue = String.valueOf(formattedValue);
+			}
 		}
 
 		return propValue;
+	}
+	
+	/**
+	 * References the data dictionary to find any registered formatter class then if not found checks for associated formatter for the
+	 * property type. Value is then formatted using the found Formatter
+	 * 
+	 * @param element
+	 *            BusinessObject instance that contains the property
+	 * @param propertyName
+	 *            Name of property in BusinessObject to get value for
+	 * @return Formatted property value as String, or empty string if value is null
+	 */
+	public static String getFormattedPropertyValueUsingDataDictionary(BusinessObject businessObject, String propertyName) {
+		Formatter formatter = getFormatterWithDataDictionary(businessObject, propertyName);
+
+		return getFormattedPropertyValue(businessObject, propertyName, formatter);
 	}
 
 	/**
@@ -371,34 +372,20 @@ public class ObjectUtils {
 	 * @return formatted value as a String
 	 */
 	public static String formatPropertyValue(Object propertyValue) {
-		String propValue = KNSConstants.EMPTY_STRING;
+		Object propValue = KNSConstants.EMPTY_STRING;
 
 		Formatter formatter = null;
 		if (propertyValue != null) {
-			// for Booleans, always use BooleanFormatter
-			if (propertyValue instanceof Boolean) {
-				formatter = new BooleanFormatter();
-			}
-
-			// for Dates, always use DateFormatter
-			if (propertyValue instanceof Date) {
-				formatter = new DateFormatter();
-			}
-
-			// for collection, use the list formatter if a formatter hasn't been
-			// defined yet
-			if (propertyValue instanceof Collection && formatter == null) {
+			if (propertyValue instanceof Collection) {
 				formatter = new CollectionFormatter();
+			} else {
+				formatter = Formatter.getFormatter(propertyValue.getClass());
 			}
 
-			if (formatter != null) {
-				propValue = (String) formatter.format(propertyValue);
-			} else {
-				propValue = propertyValue.toString();
-			}
+			propValue = formatter != null ? formatter.format(propertyValue) : propertyValue;
 		}
 
-		return propValue;
+		return propValue != null ? String.valueOf(propValue) : KNSConstants.EMPTY_STRING;
 	}
     
     /**
@@ -411,46 +398,46 @@ public class ObjectUtils {
     }
 
 
-    /**
-     * Sets the property of an object with the given value. Converts using the formatter of the given type if one is found.
-     * 
-     * @param bo
-     * @param propertyName
-     * @param propertyType
-     * @param propertyValue
-     * 
-     * @throws NoSuchMethodException
-     * @throws InvocationTargetException
-     * @throws IllegalAccessException
-     */
-    public static void setObjectProperty(Object bo, String propertyName, Class propertyType, Object propertyValue) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-        // reformat propertyValue, if necessary
-        boolean reformat = false;
-        if ( propertyType != null ) {
-	        if (propertyValue != null && propertyType.isAssignableFrom(String.class)) {
-	            // always reformat if the destination is a String
-	            reformat = true;
-	        }
-	        else if (propertyValue != null && !propertyType.isAssignableFrom(propertyValue.getClass())) {
-	            // otherwise, only reformat if the propertyValue can't be assigned into the property
-	            reformat = true;
-	        }
-	        
-	        // attempting to set boolean fields to null throws an exception, set to false instead
-	        if (boolean.class.isAssignableFrom(propertyType) && propertyValue == null) {
-	            propertyValue = false;
-	        }
-        }
-        if (reformat && Formatter.findFormatter(propertyType) != null) {
-            Formatter formatter = Formatter.getFormatter(propertyType);
-            LOG.debug("reformatting propertyValue using Formatter " + formatter.getClass().getName());
-            propertyValue = formatter.convertFromPresentationFormat(propertyValue);
-        }
+	/**
+	 * Sets the property of an object with the given value. Converts using the formatter of the given type if one is found.
+	 * 
+	 * @param bo
+	 * @param propertyName
+	 * @param propertyType
+	 * @param propertyValue
+	 * 
+	 * @throws NoSuchMethodException
+	 * @throws InvocationTargetException
+	 * @throws IllegalAccessException
+	 */
+	public static void setObjectProperty(Object bo, String propertyName, Class propertyType, Object propertyValue)
+			throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		// reformat propertyValue, if necessary
+		boolean reformat = false;
+		if (propertyType != null) {
+			if (propertyValue != null && propertyType.isAssignableFrom(String.class)) {
+				// always reformat if the destination is a String
+				reformat = true;
+			} else if (propertyValue != null && !propertyType.isAssignableFrom(propertyValue.getClass())) {
+				// otherwise, only reformat if the propertyValue can't be assigned into the property
+				reformat = true;
+			}
 
+			// attempting to set boolean fields to null throws an exception, set to false instead
+			if (boolean.class.isAssignableFrom(propertyType) && propertyValue == null) {
+				propertyValue = false;
+			}
+		}
 
-        // set property in the object
-        PropertyUtils.setNestedProperty(bo, propertyName, propertyValue);
-    }
+		Formatter formatter = getFormatterWithDataDictionary(bo, propertyName);
+		if (reformat && formatter != null) {
+			LOG.debug("reformatting propertyValue using Formatter " + formatter.getClass().getName());
+			propertyValue = formatter.convertFromPresentationFormat(propertyValue);
+		}
+
+		// set property in the object
+		PropertyUtils.setNestedProperty(bo, propertyName, propertyValue);
+	}
 
 
     /**
@@ -477,6 +464,37 @@ public class ObjectUtils {
         PropertyUtils.setNestedProperty(bo, propertyName, propertyValue);
     }
 
+	/**
+	 * Returns a Formatter instance for the given property name in the given given business object. First checks if a formatter is defined
+	 * for the attribute in the data dictionary, is not found then returns the registered formatter for the property type in Formatter
+	 * 
+	 * @param bo
+	 *            - business object instance with property to get formatter for
+	 * @param propertyName
+	 *            - name of property to get formatter for
+	 * @return Formatter instance
+	 */
+	public static Formatter getFormatterWithDataDictionary(Object bo, String propertyName) {
+		Formatter formatter = null;
+
+		Class<? extends Formatter> formatterClass = KNSServiceLocator.getDataDictionaryService().getAttributeFormatter(
+				bo.getClass(), propertyName);
+		if (formatterClass == null) {
+			formatterClass = Formatter.findFormatter(getPropertyType(bo, propertyName,
+					KNSServiceLocator.getPersistenceStructureService()));
+		}
+
+		if (formatterClass != null) {
+			try {
+				formatter = formatterClass.newInstance();
+			} catch (Exception e) {
+				throw new RuntimeException(
+						"cannot create new instance of formatter class " + formatterClass.toString(), e);
+			}
+		}
+
+		return formatter;
+	}
 
     /**
      * Recursive; sets all occurences of the property in the object, its nested objects and its object lists with the given value.
@@ -1081,4 +1099,64 @@ public class ObjectUtils {
 		}
     }
 
+	/**
+	 * Return whether or not an attribute is writeable. This method is aware that that Collections may be involved and handles them
+	 * consistently with the way in which OJB handles specifying the attributes of elements of a Collection.
+	 * 
+	 * @param o
+	 * @param p
+	 * @return
+	 * @throws IllegalArgumentException
+	 */
+	public static boolean isWriteable(Object o, String p, PersistenceStructureService persistenceStructureService)
+			throws IllegalArgumentException {
+		if (null == o || null == p) {
+			throw new IllegalArgumentException("Cannot check writeable status with null arguments.");
+		}
+
+		boolean b = false;
+
+		// Try the easy way.
+		if (!(PropertyUtils.isWriteable(o, p))) {
+			// If that fails lets try to be a bit smarter, understanding that Collections may be involved.
+			if (-1 != p.indexOf('.')) {
+				String[] parts = p.split("\\.");
+
+				// Get the type of the attribute.
+				Class c = ObjectUtils.getPropertyType(o, parts[0], persistenceStructureService);
+
+				if (c != null) {
+					Object i = null;
+
+					// If the next level is a Collection, look into the collection, to find out what type its elements are.
+					if (Collection.class.isAssignableFrom(c)) {
+						Map<String, Class> m = persistenceStructureService.listCollectionObjectTypes(o.getClass());
+						c = m.get(parts[0]);
+					}
+
+					// Look into the attribute class to see if it is writeable.
+					try {
+						i = c.newInstance();
+
+						StringBuffer sb = new StringBuffer();
+						for (int x = 1; x < parts.length; x++) {
+							sb.append(1 == x ? "" : ".").append(parts[x]);
+						}
+						b = isWriteable(i, sb.toString(), persistenceStructureService);
+
+					} catch (Exception ex) {
+						LOG.error("Skipping Criteria: " + p + " - Unable to instantiate class : " + c.getName(), ex);
+					}
+				} else {
+					LOG.error("Skipping Criteria: " + p + " - Unable to determine class for object: "
+							+ o.getClass().getName() + " - " + parts[0]);
+				}
+			}
+
+		} else {
+			b = true;
+		}
+
+		return b;
+	}
 }

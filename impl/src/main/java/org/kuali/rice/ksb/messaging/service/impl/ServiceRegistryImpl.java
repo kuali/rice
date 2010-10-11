@@ -76,12 +76,12 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 	    return dao.fetchAllActive();
 	}
 
-	public List<ServiceInfo> fetchActiveByName(String serviceName) {
-		return getDao().fetchActiveByName(serviceName);
+	public List<ServiceInfo> fetchActiveByNameLocalPart(String localPart) {
+		return getDao().fetchActiveByNameLocalPart(localPart);
 	}
 	
-	public List<ServiceInfo> fetchActiveByQName(QName qname) {
-		return getDao().fetchActiveByQName(qname);		
+	public List<ServiceInfo> fetchActiveByName(QName serviceName) {
+		return getDao().fetchActiveByName(serviceName);		
 	}
 	
 	public List<ServiceInfo> fetchActiveByNamespace(String serviceNamespace) {
@@ -111,13 +111,13 @@ public class ServiceRegistryImpl implements ServiceRegistry {
 		this.dao = dao;
 	}
 
-	public void remove(List<ServiceInfo> serviceEntries) {
+	public void removeEntries(List<ServiceInfo> serviceEntries) {
 		for (ServiceInfo info : serviceEntries) {
 			removeEntry(info);
 		}
 	}
 
-	public void save(List<ServiceInfo> serviceEntries) {
+	public void saveEntries(List<ServiceInfo> serviceEntries) {
 		for (ServiceInfo info : serviceEntries) {
 			saveEntry(info);
 		}

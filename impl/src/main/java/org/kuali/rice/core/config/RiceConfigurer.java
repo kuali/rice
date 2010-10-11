@@ -16,7 +16,9 @@
  */
 package org.kuali.rice.core.config;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
@@ -24,9 +26,11 @@ import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kcb.config.KCBConfigurer;
 import org.kuali.rice.ken.config.KENConfigurer;
@@ -67,13 +71,14 @@ public class RiceConfigurer extends RiceConfigurerBase {
 	private KCBConfigurer kcbConfigurer;
 	private KEWConfigurer kewConfigurer;
 	private KENConfigurer kenConfigurer;
-	
+		
 	/***
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#start()
 	 */
 	public void start() throws Exception {
 		//Add the configurers to modules list in the desired sequence.
 		// and at the beginning if any other modules were specified
+
 		int index = 0;
 		if(getKsbConfigurer()!=null) getModules().add(index++,getKsbConfigurer());
 		if(getKnsConfigurer()!=null) getModules().add(index++,getKnsConfigurer());
@@ -83,13 +88,14 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		if(getKenConfigurer()!=null) getModules().add(index++,getKenConfigurer());
 		// now execute the super class's start method which will initialize configuration and resource loaders
 		super.start();
+
 		
 		//automatically requeue documents sitting with status of 'R'
 		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
 		KSBServiceLocator.getThreadPool().execute(messageFetcher);
+
 	}
 	
-
 	/**
 	 * 
 	 * This method decides the sequence of module resource loaders to be added to global resource loader (GRL).
@@ -364,5 +370,5 @@ public class RiceConfigurer extends RiceConfigurerBase {
 	public void setKsbConfigurer(KSBConfigurer ksbConfigurer) {
 		this.ksbConfigurer = ksbConfigurer;
 	}
-	
+
 }

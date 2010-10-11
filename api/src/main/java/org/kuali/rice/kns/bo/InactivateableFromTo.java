@@ -15,14 +15,59 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
-public interface InactivateableFromTo {
-    
-    boolean isActive();
+/**
+ * Business objects that have effective dating (from to dates) should implement this interface. This
+ * translates the effective dates in terms of active/inactive status so the features built for
+ * {@link Inactivateable} in the frameworks can be taken advantage of
+ */
+public interface InactivateableFromTo extends Inactivateable {
 
-    void setActiveFromDate(Date from);
-
-	void setActiveToDate(Date to);    
+	/**
+	 * Sets the date for which record will be active
+	 * 
+	 * @param from
+	 *            - Timestamp value to set
+	 */
+	public void setActiveFromDate(Timestamp from);
 	
+	/**
+	 * Gets the date for which the record become active
+	 * 
+	 * @return Timestamp
+	 */
+	public Timestamp getActiveFromDate();
+
+	/**
+	 * Sets the date for which record will be active to
+	 * 
+	 * @param from
+	 *            - Timestamp value to set
+	 */
+	public void setActiveToDate(Timestamp to);
+	
+	/**
+	 * Gets the date for which the record become inactive
+	 * 
+	 * @return Timestamp
+	 */
+	public Timestamp getActiveToDate();
+
+	/**
+	 * Gets the date for which the record is being compared to in determining active/inactive
+	 * 
+	 * @return Timestamp
+	 */
+	public Timestamp getActiveAsOfDate();
+
+	/**
+	 * Sets the date for which the record should be compared to in determining active/inactive, if
+	 * not set then the current date will be used
+	 * 
+	 * @param activeAsOfDate
+	 *            - Timestamp value to set
+	 */
+	public void setActiveAsOfDate(Timestamp activeAsOfDate);
+
 }

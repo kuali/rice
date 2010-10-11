@@ -117,7 +117,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
     			serviceToRemove.getServiceInfo().setAlive(false);
     			List<ServiceInfo> serviceInfos = new ArrayList<ServiceInfo>();
     			serviceInfos.add(serviceToRemove.getServiceInfo());
-    			KSBServiceLocator.getIPTableService().markServicesDead(serviceInfos);
+    			KSBServiceLocator.getServiceRegistry().markServicesDead(serviceInfos);
 		    }
 		    return serviceList.removeAll(servicesToRemove);
 		}
@@ -192,6 +192,9 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		return remotedServices.get(this.randomNumber.nextInt(remotedServices.size()));
 	}
 
+	/**
+	 * Returns an immutable list of services.
+	 */
 	public List<RemotedServiceHolder> getAllServices(QName qName) {
 		List<RemotedServiceHolder> clientProxies = this.getClients().get(qName);
 		if (clientProxies == null) {
@@ -215,7 +218,8 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 				throw new RiceRemoteServiceConnectionException("No remote services available for client access when attempting to lookup '" + qName + "'");
 			}
 		}
-		return clientProxies;
+		// be sure to return an immutable copy of the list
+		return Collections.unmodifiableList(new ArrayList<RemotedServiceHolder>(clientProxies));
 	}
 
 	public void refresh() {
@@ -234,7 +238,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 				servicesOnBus.add(remoteServiceHolder.getServiceInfo());
 			}
 		} else {
-			servicesOnBus = KSBServiceLocator.getIPTableService().fetchAllActive();
+			servicesOnBus = KSBServiceLocator.getServiceRegistry().fetchAllActive();
 		}
 
 		synchronized ( clientsMutex ) {

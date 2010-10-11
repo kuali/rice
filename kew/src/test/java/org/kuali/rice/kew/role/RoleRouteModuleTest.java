@@ -16,11 +16,16 @@
 package org.kuali.rice.kew.role;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
@@ -29,6 +34,7 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
+import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
@@ -38,11 +44,14 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
 
 /**
  * Tests Role-based routing integration between KEW and KIM.
@@ -53,7 +62,8 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 
 public class RoleRouteModuleTest extends KEWTestCase {
 
-	private String namespace = KEWConstants.KEW_NAMESPACE;
+	private static final String NAMESPACE = KEWConstants.KEW_NAMESPACE;
+	private static final String ROLE_NAME = "RoleRouteModuleTestRole";
 	
 	private static boolean suiteDataInitialized = false;
 	private static boolean suiteCreateDelegateInitialized = false;
@@ -80,7 +90,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimAttributeImpl chartAttribute = new KimAttributeImpl();
         chartAttribute.setKimAttributeId("" + chartAttributeId);
         chartAttribute.setAttributeName("chart");
-        chartAttribute.setNamespaceCode(namespace);
+        chartAttribute.setNamespaceCode(NAMESPACE);
         chartAttribute.setAttributeLabel("chart");
         chartAttribute.setActive(true);
         chartAttribute = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(chartAttribute);
@@ -90,7 +100,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimAttributeImpl orgAttribute = new KimAttributeImpl();
         orgAttribute.setKimAttributeId("" + orgAttributeId);
         orgAttribute.setAttributeName("org");
-        orgAttribute.setNamespaceCode(namespace);
+        orgAttribute.setNamespaceCode(NAMESPACE);
         orgAttribute.setAttributeLabel("org");
         orgAttribute.setActive(true);
         orgAttribute = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(orgAttribute);
@@ -100,7 +110,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimTypeImpl kimType = new KimTypeImpl();
         kimType.setKimTypeId("" + kimTypeId);
         kimType.setName("ChartOrg");
-        kimType.setNamespaceCode(namespace);
+        kimType.setNamespaceCode(NAMESPACE);
         kimType.setKimTypeServiceName("testBaseRoleTypeService"); // do we need to set the kim type service yet? we shall see...
         kimType.setActive(true);
         kimType = (KimTypeImpl) KNSServiceLocator.getBusinessObjectService().save(kimType);
@@ -130,9 +140,9 @@ public class RoleRouteModuleTest extends KEWTestCase {
         String roleId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_ROLE_ID_S");
         RoleImpl role = new RoleImpl();
         role.setRoleId(roleId);
-        role.setNamespaceCode(namespace);
+        role.setNamespaceCode(NAMESPACE);
         role.setRoleDescription("");
-        role.setRoleName("RoleRouteModuleTestRole");
+        role.setRoleName(ROLE_NAME);
         role.setActive(true);
         role.setKimTypeId(kimType.getKimTypeId());
 
@@ -261,7 +271,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimAttributeImpl documentTypeAttribute = new KimAttributeImpl();
         documentTypeAttribute.setKimAttributeId("" + documentTypeAttributeId);
         documentTypeAttribute.setAttributeName(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL);
-        documentTypeAttribute.setNamespaceCode(namespace);
+        documentTypeAttribute.setNamespaceCode(NAMESPACE);
         documentTypeAttribute.setAttributeLabel("documentType");
         documentTypeAttribute.setActive(true);
         documentTypeAttribute = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(documentTypeAttribute);
@@ -271,7 +281,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimAttributeImpl nodeNameAttribute = new KimAttributeImpl();
         nodeNameAttribute.setKimAttributeId("" + nodeNameAttributeId);
         nodeNameAttribute.setAttributeName(KEWConstants.ROUTE_NODE_NAME_DETAIL);
-        nodeNameAttribute.setNamespaceCode(namespace);
+        nodeNameAttribute.setNamespaceCode(NAMESPACE);
         nodeNameAttribute.setAttributeLabel("nodeName");
         nodeNameAttribute.setActive(true);
         nodeNameAttribute = (KimAttributeImpl) KNSServiceLocator.getBusinessObjectService().save(nodeNameAttribute);
@@ -281,7 +291,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimTypeImpl kimRespType = new KimTypeImpl();
         kimRespType.setKimTypeId("" + kimRespTypeId);
         kimRespType.setName("RespDetails");
-        kimRespType.setNamespaceCode(namespace);
+        kimRespType.setNamespaceCode(NAMESPACE);
         kimRespType.setKimTypeServiceName("testBaseResponsibilityTypeService");
         kimRespType.setActive(true);
         kimRespType = (KimTypeImpl) KNSServiceLocator.getBusinessObjectService().save(kimRespType);
@@ -319,7 +329,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         String templateId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_RSP_TMPL_ID_S");
     	KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
         template.setResponsibilityTemplateId(templateId);
-        template.setNamespaceCode(namespace);
+        template.setNamespaceCode(NAMESPACE);
         template.setName("Review");
         template.setKimTypeId(kimRespType.getKimTypeId());
         template.setActive(true);
@@ -367,7 +377,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         responsibility.setDescription("resp1");
         responsibility.setDetailObjects(detailObjects);
         responsibility.setName("VoluntaryReview");
-        responsibility.setNamespaceCode(namespace);
+        responsibility.setNamespaceCode(NAMESPACE);
         responsibility.setResponsibilityId(responsibilityId);
         responsibility.setTemplate(template);
         responsibility.setTemplateId(template.getResponsibilityTemplateId());
@@ -431,7 +441,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         String templateId = "" + KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber("KRIM_RSP_TMPL_ID_S");
     	KimResponsibilityTemplateImpl template = new KimResponsibilityTemplateImpl();
         template.setResponsibilityTemplateId(templateId);
-        template.setNamespaceCode(namespace);
+        template.setNamespaceCode(NAMESPACE);
         template.setName("AllApproveReview");
         template.setKimTypeId(kimRespType.getKimTypeId());
         template.setActive(true);
@@ -478,7 +488,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         responsibility.setDescription("resp2");
         responsibility.setDetailObjects(detailObjects);
         responsibility.setName("VoluntaryReview");
-        responsibility.setNamespaceCode(namespace);
+        responsibility.setNamespaceCode(NAMESPACE);
         responsibility.setResponsibilityId(responsibilityId);
         responsibility.setTemplate(template);
         responsibility.setTemplateId(template.getResponsibilityTemplateId());
@@ -543,7 +553,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         KimTypeImpl kimDlgnType = new KimTypeImpl();
         kimDlgnType.setKimTypeId("" + kimDlgnTypeId);
         kimDlgnType.setName("TestBaseDelegationType");
-        kimDlgnType.setNamespaceCode(namespace);
+        kimDlgnType.setNamespaceCode(NAMESPACE);
         kimDlgnType.setKimTypeServiceName("testBaseDelegationTypeService");
         kimDlgnType.setActive(true);
         kimDlgnType = (KimTypeImpl) KNSServiceLocator.getBusinessObjectService().save(kimDlgnType);
@@ -562,7 +572,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		 * Assign it a role that was created above.  This should mean that every
 		 * principle in the role can have the delegate added below as a delegate
 		 */
-		KimRoleInfo role = KIMServiceLocator.getRoleService().getRoleByName(namespace, "RoleRouteModuleTestRole");
+		KimRoleInfo role = KIMServiceLocator.getRoleService().getRoleByName(NAMESPACE, ROLE_NAME);
 		assertNotNull("Role should exist.", role);
 		delegate.setRoleId(role.getRoleId());
 		delegate = (KimDelegationImpl) KNSServiceLocator.getBusinessObjectService().save(delegate);
@@ -738,6 +748,54 @@ public class RoleRouteModuleTest extends KEWTestCase {
 		document.approve("");
 
 		assertTrue("Document should have been approved by the delegate.", document.stateIsFinal());
+	}
+	
+	@Test
+	public void testRoleWithNoMembers() throws Exception {
+		getTransactionTemplate().execute(new TransactionCallback() {
+			public Object doInTransaction(TransactionStatus status) {
+				
+				try {
+				
+					// first let's clear all of the members out of our role
+				
+					KimRoleInfo role = KIMServiceLocator.getRoleManagementService().getRoleByName(NAMESPACE, ROLE_NAME);
+					Map<String, String> criteria = new HashMap<String, String>();
+					criteria.put("roleId", role.getRoleId());
+					List<RoleMemberImpl> roleMembers = (List<RoleMemberImpl>)KNSServiceLocator.getBusinessObjectService().findMatching(RoleMemberImpl.class, criteria);
+					assertFalse("role member list should not currently be empty", roleMembers.isEmpty());
+					for (RoleMemberImpl roleMember : roleMembers) {
+						//String roleMemberId = roleMember.getRoleMemberId();
+						//RoleMemberImpl roleMemberImpl = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(RoleMemberImpl.class, roleMemberId);
+						assertNotNull("Role Member should exist.", roleMember);
+						KNSServiceLocator.getBusinessObjectService().delete(roleMember);
+					}
+				
+					List<RoleMembershipInfo> roleMemberInfos = KIMServiceLocator.getRoleService().getRoleMembers(Collections.singletonList(role.getRoleId()), new AttributeSet());
+					assertEquals("role member list should be empty now", 0, roleMemberInfos.size());
+				
+					// now that we've removed all members from the Role, let's trying routing the doc!
+					WorkflowDocument document = new WorkflowDocument(new NetworkIdDTO("ewestfal"), "RoleRouteModuleTest1");
+					document.routeDocument("");
+					
+					// the document should be final now, because the role has no members so all nodes should have been skipped for routing purposes
+					
+					assertTrue("document should now be in final status", document.stateIsFinal());
+					
+					// verify that the document went through the appropriate route path
+					
+					RouteNodeInstanceDTO[] routeNodeInstances = document.getRouteNodeInstances();
+					assertEquals("Document should have 2 route node instances", 2, routeNodeInstances.length);
+					
+					return null;
+				} catch (WorkflowException e) {
+					throw new RuntimeException(e);
+				} finally {
+					status.setRollbackOnly();
+				}
+			}
+		});
+		
 	}
 
 }

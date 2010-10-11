@@ -171,7 +171,7 @@ public class MessageQueueAction extends KSBAction {
 
     private ForwardedCallHandler getAdminServiceToForwardTo(PersistedMessage message, MessageQueueForm form) {
 	String ip = form.getIpAddress();
-	List<ServiceInfo> services = KSBServiceLocator.getIPTableService().fetchAll();
+	List<ServiceInfo> services = KSBServiceLocator.getServiceRegistry().fetchAll();
 	for (ServiceInfo service : services) {
 	    if (service.getQname().getLocalPart().equals(
 		    QName.valueOf(message.getServiceName()).getLocalPart() + "-forwardHandler")
@@ -325,7 +325,7 @@ public class MessageQueueAction extends KSBAction {
 	routeQueueForm.setMessagePersistence(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE));
 	routeQueueForm.setMessageDelivery(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY));
 	routeQueueForm.setMessageOff(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF));
-	List<ServiceInfo> services = KSBServiceLocator.getIPTableService().fetchAll();
+	List<ServiceInfo> services = KSBServiceLocator.getServiceRegistry().fetchAll();
 	if (routeQueueForm.getMessageId() != null) {
 	    PersistedMessage rq = getRouteQueueService().findByRouteQueueId(routeQueueForm.getMessageId());
 	    if (rq != null) {

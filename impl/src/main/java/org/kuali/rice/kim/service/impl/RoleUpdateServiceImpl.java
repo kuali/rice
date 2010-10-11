@@ -17,7 +17,6 @@ package org.kuali.rice.kim.service.impl;
 
 import java.sql.Date;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +37,6 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.service.RoleUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
@@ -117,6 +115,10 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     	// check that identical member does not already exist
     	if ( doAnyMemberRecordsMatch( role.getMembers(), roleId, Role.ROLE_MEMBER_TYPE, qualifier ) ) {
     		return;
+    	}
+    	// Check to make sure this doesn't create a circular membership
+    	if ( !checkForCircularRoleMembership( roleId, role) ){
+            throw new IllegalArgumentException("Circular role reference.");
     	}
     	// create the new role member object
     	RoleMemberImpl newRoleMember = new RoleMemberImpl();
@@ -220,8 +222,12 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     	newDelegationMember.setDelegationId(delegation.getDelegationId());
     	newDelegationMember.setRoleMemberId(roleMemberId);
     	newDelegationMember.setMemberTypeCode(memberTypeCode);
-    	newDelegationMember.setActiveFromDate(activeFromDate);
-    	newDelegationMember.setActiveToDate(activeToDate);
+		if (activeFromDate != null) {
+			newDelegationMember.setActiveFromDate(new java.sql.Timestamp(activeFromDate.getTime()));
+		}
+		if (activeToDate != null) {
+			newDelegationMember.setActiveToDate(new java.sql.Timestamp(activeToDate.getTime()));
+		}
 
     	// build role member attribute objects from the given AttributeSet
     	addDelegationMemberAttributeData( newDelegationMember, qualifications, role.getKimTypeId() );
@@ -269,8 +275,12 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
     	newRoleMember.setRoleId(role.getRoleId());
     	newRoleMember.setMemberId( memberId );
     	newRoleMember.setMemberTypeCode( memberTypeCode );
-    	newRoleMember.setActiveFromDate(activeFromDate);
-    	newRoleMember.setActiveToDate(activeToDate);
+		if (activeFromDate != null) {
+			newRoleMember.setActiveFromDate(new java.sql.Timestamp(activeFromDate.getTime()));
+		}
+		if (activeToDate != null) {
+			newRoleMember.setActiveToDate(new java.sql.Timestamp(activeToDate.getTime()));
+		}
     	// build role member attribute objects from the given AttributeSet
     	addMemberAttributeData( newRoleMember, qualifications, role.getKimTypeId() );
 

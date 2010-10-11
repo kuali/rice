@@ -187,8 +187,8 @@ public class KSBServiceLocator {
         return (KSBScheduledPool) getService(KSBConstants.ServiceNames.SCHEDULED_THREAD_POOL_SERVICE);
     }
 
-    public static ServiceRegistry getIPTableService() {
-        return (ServiceRegistry) getService(KSBConstants.ServiceNames.ROUTING_TABLE_SERVICE);
+    public static ServiceRegistry getServiceRegistry() {
+        return (ServiceRegistry) getService(KSBConstants.ServiceNames.SERVICE_REGISTRY);
     }
 
     public static Bus getCXFBus(){

@@ -30,12 +30,15 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
+import org.kuali.rice.kns.datadictionary.DocumentEntry;
+import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
@@ -158,6 +161,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
         setDocumentActions(new HashMap());
         suppressAllButtons = false;
+        
+        initializeHeaderNavigationTabs();
     }
 
     /**
@@ -171,18 +176,25 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
         if (hasDocumentId()) {
             // populate workflowDocument in documentHeader, if needed
+        	// KULRICE-4444 Obtain Document Header using the Workflow Service to minimize overhead
             try {
-                if (GlobalVariables.getUserSession().getWorkflowDocument(getDocument().getDocumentNumber()) != null) {
-                    workflowDocument = GlobalVariables.getUserSession().getWorkflowDocument(getDocument().getDocumentNumber());
-                } else {
+            	workflowDocument = GlobalVariables.getUserSession().getWorkflowDocument(getDocument().getDocumentNumber());
+         	 	if ( workflowDocument == null)
+         	 	{
                     // gets the workflow document from doc service, doc service will also set the workflow document in the
                     // user's session
-                    Document retrievedDocument = KNSServiceLocator.getDocumentService().getByDocumentHeaderId(getDocument().getDocumentNumber());
-                    if (retrievedDocument == null) {
-                        throw new WorkflowException("Unable to get retrieve document # " + getDocument().getDocumentNumber() + " from document service getByDocumentHeaderId");
-                    }
-                    workflowDocument = retrievedDocument.getDocumentHeader().getWorkflowDocument();
-                }
+         	 		Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
+         	 	 	workflowDocument = KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(getDocument().getDocumentNumber()), person);
+         	 	 	GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
+         	 	 	if (workflowDocument == null)
+         	 	 	{
+         	 	 		throw new WorkflowException("Unable to retrieve workflow document # " + getDocument().getDocumentNumber() + " from workflow document service createWorkflowDocument");
+         	 	 	}
+         	 	 	else
+         	 	 	{
+         	 	 	LOG.debug("Retrieved workflow Document ID: " + workflowDocument.getRouteHeaderId().toString());
+         	 	 	}
+         	 	}
 
                 getDocument().getDocumentHeader().setWorkflowDocument(workflowDocument);
             } catch (WorkflowException e) {
@@ -470,7 +482,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         while (getAdHocRoutePersons().size() <= index) {
             getAdHocRoutePersons().add(new AdHocRoutePerson());
         }
-        return (AdHocRoutePerson) getAdHocRoutePersons().get(index);
+        return getAdHocRoutePersons().get(index);
     }
 
     /**
@@ -483,7 +495,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         while (getAdHocRouteWorkgroups().size() <= index) {
             getAdHocRouteWorkgroups().add(new AdHocRouteWorkgroup());
         }
-        return (AdHocRouteWorkgroup) getAdHocRouteWorkgroups().get(index);
+        return getAdHocRouteWorkgroups().get(index);
     }
 
     /**
@@ -867,9 +879,10 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 		return "";
 	}
 	
+	/** will instatiate a new document setting it on the form if {@link KualiDocumentFormBase#getDefaultDocumentTypeName()} is overriden to return a valid value. */
 	protected void instantiateDocument() {
 		if (document == null && StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
-			Class<? extends Document> documentClass = KNSServiceLocator.getDataDictionaryService().getDocumentClassByTypeName(getDefaultDocumentTypeName());
+			Class<? extends Document> documentClass = getDocumentClass();
 			try {
 				Document document = documentClass.newInstance();
 				setDocument(document);
@@ -879,4 +892,19 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 			}
 		}
 	}
+	
+	/** gets the document class from the datadictionary if {@link KualiDocumentFormBase#getDefaultDocumentTypeName()} is overriden to return a valid value otherwise behavior is nondeterministic. */
+	private Class<? extends Document> getDocumentClass() {
+		return KNSServiceLocator.getDataDictionaryService().getDocumentClassByTypeName(getDefaultDocumentTypeName());
+	}
+	
+	/**initializes the header tabs from what is defined in the datadictionary if {@link KualiDocumentFormBase#getDefaultDocumentTypeName()} is overriden to return a valid value. */
+    protected void initializeHeaderNavigationTabs() {
+    	if (StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
+    		final DocumentEntry docEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(getDocumentClass().getName());
+    		final List<HeaderNavigation> navList = docEntry.getHeaderNavigationList();
+    		final HeaderNavigation[] list = new HeaderNavigation[navList.size()];
+    		super.setHeaderNavigationTabs(navList.toArray(list));
+    	}
+    } 
 }

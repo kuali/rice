@@ -91,7 +91,11 @@ public class KEWConfigurer extends ModuleConfigurer {
     	}
 
         if ( exposeServicesOnBus ) {
-        	springLocation += "," + "classpath:org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml";
+        	if (setSOAPServicesAsDefault) {
+        		springLocation += "," + "classpath:org/kuali/rice/kew/config/KEWServiceBusSOAPDefaultSpringBeans.xml";
+        	} else {
+        		springLocation += "," + "classpath:org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml";
+        	}
         }
 
     	springLocation += SpringLoader.SPRING_SEPARATOR_CHARACTER;

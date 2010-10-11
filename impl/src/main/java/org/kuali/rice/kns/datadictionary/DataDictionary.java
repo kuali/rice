@@ -77,7 +77,7 @@ public class DataDictionary {
 	private List<String> configFileLocations = new ArrayList<String>();
 
     public DataDictionary() { }
-
+    
 	public List<String> getConfigFileLocations() {
         return this.configFileLocations;
     }
@@ -604,5 +604,24 @@ public class DataDictionary {
 
     public Set<InactivationBlockingMetadata> getAllInactivationBlockingMetadatas(Class blockedClass) {
     	return ddMapper.getAllInactivationBlockingMetadatas(ddIndex, blockedClass);
+    }
+    
+    /**
+     * This method gathers beans of type BeanOverride and invokes each one's performOverride() method.
+     */
+    // KULRICE-4513
+    public void performBeanOverrides()
+    {
+    	Collection<BeanOverride> beanOverrides = ddBeans.getBeansOfType(BeanOverride.class).values();
+    	
+    	if (beanOverrides.isEmpty()){
+    		LOG.info("DataDictionary.performOverrides(): No beans to override");
+    	}
+		for (BeanOverride beanOverride : beanOverrides) {
+			
+			Object bean = ddBeans.getBean(beanOverride.getBeanName());
+			beanOverride.performOverride(bean);
+			LOG.info("DataDictionary.performOverrides(): Performing override on bean: " + bean.toString());
+		}
     }
 }

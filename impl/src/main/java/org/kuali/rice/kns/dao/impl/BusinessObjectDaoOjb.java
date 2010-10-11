@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2007 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,6 +48,13 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     private PersistenceStructureService persistenceStructureService;
 
     /**
+	 * This constructs a {@link BusinessObjectDaoOjb}
+	 */
+	public BusinessObjectDaoOjb(PersistenceStructureService persistenceStructureService) {
+		this.persistenceStructureService = persistenceStructureService;
+	}
+
+    /**
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#findBySinglePrimaryKey(java.lang.Class, java.lang.Object)
 	 */
 	public <T extends BusinessObject> T findBySinglePrimaryKey(Class<T> clazz, Object primaryKey) {
@@ -64,7 +71,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 	        return (T) getPersistenceBrokerTemplate().getObjectByQuery(QueryFactory.newQuery(clazz, criteria));
 		}
 	}
-    
+
     /**
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#findByPrimaryKey(java.lang.Class, java.util.Map)
      */
@@ -76,7 +83,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 
     /**
      * Retrieves all of the records for a given class name.
-     * 
+     *
      * @param clazz - the name of the object being used, either KualiCodeBase or a subclass
      * @return Collection
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#findAll(java.lang.Class)
@@ -103,7 +110,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 
     /**
      * This is the default impl that comes with Kuali - uses OJB.
-     * 
+     *
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(java.lang.Class, java.util.Map)
      */
     public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, ?> fieldValues) {
@@ -111,7 +118,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 
         return (Collection<T>)getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(clazz, criteria));
     }
-    
+
 
     /**
 	 * Throws an UnsupportedOperationException
@@ -157,13 +164,13 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     public <T extends BusinessObject> Collection<T> findMatchingActive(Class<T> clazz, Map<String, ?> fieldValues) {
         Criteria criteria = buildCriteria(fieldValues);
         criteria.addAndCriteria(buildActiveCriteria());
-        
+
         return (Collection<T>)getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(clazz, criteria));
     }
 
     /**
      * This is the default impl that comes with Kuali - uses OJB.
-     * 
+     *
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#countMatching(java.lang.Class, java.util.Map)
      */
     public int countMatching(Class clazz, Map<String, ?> fieldValues) {
@@ -174,7 +181,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 
     /**
      * This is the default impl that comes with Kuali - uses OJB.
-     * 
+     *
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#countMatching(java.lang.Class, java.util.Map, java.util.Map)
      */
     public int countMatching(Class clazz, Map<String, ?> positiveFieldValues, Map<String, ?> negativeFieldValues) {
@@ -184,10 +191,10 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
         return getPersistenceBrokerTemplate().getCount(QueryFactory.newQuery(clazz, criteria));
     }
 
-    
+
     /**
      * This is the default impl that comes with Kuali - uses OJB.
-     * 
+     *
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#findMatching(java.lang.Class, java.util.Map)
      */
     public <T extends BusinessObject> Collection<T> findMatchingOrderBy(Class<T> clazz, Map<String, ?> fieldValues, String sortField, boolean sortAscending) {
@@ -206,7 +213,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 
 	/**
 	 * Saves a business object.
-	 * 
+	 *
 	 * @see org.kuali.rice.kns.dao.BusinessObjectDao#save(org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
 	public PersistableBusinessObject save(PersistableBusinessObject bo) throws DataAccessException {
@@ -223,16 +230,16 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 					savedBo.refreshReferenceObject(boCollection);
 				}
 			}
-            KNSServiceLocator.getOjbCollectionHelper().processCollections(this, bo, savedBo); 
+            KNSServiceLocator.getOjbCollectionHelper().processCollections(this, bo, savedBo);
         }
-        
-		getPersistenceBrokerTemplate().store(bo);	
+
+		getPersistenceBrokerTemplate().store(bo);
 		return bo;
 	}
-    
+
     /**
      * Saves a business object.
-     * 
+     *
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#save(org.kuali.rice.kns.bo.PersistableBusinessObject)
      */
     public List<? extends PersistableBusinessObject> save(List businessObjects) throws DataAccessException {
@@ -252,7 +259,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 
     /**
      * Deletes the business object passed in.
-     * 
+     *
      * @param bo
      * @throws DataAccessException
      * @see org.kuali.rice.kns.dao.BusinessObjectDao#delete(org.kuali.rice.kns.bo.PersistableBusinessObject)
@@ -309,7 +316,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 
 	/**
      * This method will build out criteria in the key-value paradigm (attribute-value).
-     * 
+     *
      * @param fieldValues
      * @return
      */
@@ -330,7 +337,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 
         return criteria;
     }
-    
+
     
     private Criteria buildCriteria(Object primaryKey) {
     	Map<String, Object> fieldValues = new HashMap<String, Object>();
@@ -364,10 +371,10 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     private Criteria buildActiveCriteria(){
         Criteria criteria = new Criteria();
         criteria.addEqualTo(KNSPropertyConstants.ACTIVE, true);
-        
+
         return criteria;
     }
-    
+
     /**
      * Builds a Criteria object for active field set to true
      * @return Criteria
@@ -375,16 +382,16 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     private Criteria buildInactiveCriteria(){
         Criteria criteria = new Criteria();
         criteria.addEqualTo(KNSPropertyConstants.ACTIVE, false);
-        
+
         return criteria;
     }
-    
+
     /**
      * This method will build out criteria in the key-value paradigm (attribute-value).
-     * 
+     *
      * @param negativeFieldValues
      * @return
-     */    
+     */
     private Criteria buildNegativeCriteria(Map<String, ?> negativeFieldValues) {
         Criteria criteria = new Criteria();
         for (Iterator i = negativeFieldValues.entrySet().iterator(); i.hasNext();) {
@@ -400,11 +407,11 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
             }
         }
 
-        return criteria;            
+        return criteria;
     }
 
     /**
-     * Gets the persistenceStructureService attribute. 
+     * Gets the persistenceStructureService attribute.
      * @return Returns the persistenceStructureService.
      */
     protected PersistenceStructureService getPersistenceStructureService() {
@@ -418,5 +425,5 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
     public void setPersistenceStructureService(PersistenceStructureService persistenceStructureService) {
         this.persistenceStructureService = persistenceStructureService;
     }
-    
+
 }

@@ -141,4 +141,6 @@ public class PersonDocumentGroup extends KimDocumentBoActivatableToFromEditableB
 	public void setNamespaceCode(String namespaceCode) {
 		this.namespaceCode = namespaceCode;
 	}
+
+
 }

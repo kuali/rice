@@ -39,6 +39,7 @@ import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.ParameterConstants;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -493,15 +494,23 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     }
 
     protected boolean validateSensitiveDataValue(String fieldName, String fieldValue, String fieldLabel) {
+    	boolean dataValid = true;
+    	
     	if (fieldValue == null) {
-    		return true;
+    		return dataValid;
     	}
+    	
     	boolean patternFound = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
-    	if (patternFound) {
+		boolean warnForSensitiveData = KNSServiceLocator.getParameterService().getIndicatorParameter(
+				KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
+				KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
+    	if (patternFound && !warnForSensitiveData) {
+    		dataValid = false;
     		GlobalVariables.getMessageMap().putError(fieldName,
     					RiceKeyConstants.ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA, fieldLabel);
     	}
-    	return !patternFound;
+    	
+    	return dataValid;
     }
     
     protected DataDictionaryService getDataDictionaryService() {

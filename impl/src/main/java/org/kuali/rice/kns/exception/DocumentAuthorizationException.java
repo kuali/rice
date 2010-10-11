@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.exception;
 
+import java.util.Collections;
+import java.util.Map;
+
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -33,7 +36,11 @@ public class DocumentAuthorizationException extends AuthorizationException {
      * @param documentId
      */
     public DocumentAuthorizationException(String userId, String action, String documentId) {
-        super(userId, action, documentId.toString(), "user '" + userId + "' is not authorized to " + action + " document '" + documentId + "'");
+        this(userId, action, documentId, Collections.<String, Object>emptyMap());
+    }
+    
+    public DocumentAuthorizationException(String userId, String action, String documentId, Map<String, Object> requestAuthDetails) {
+        super(userId, action, documentId, "user '" + userId + "' is not authorized to " + action + " document '" + documentId + "'", requestAuthDetails);
     }
 
     /**

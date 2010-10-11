@@ -28,15 +28,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kns.util.IncidentReportUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.bootstrap.DOMImplementationRegistry;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
 
 
 /**
@@ -94,8 +90,19 @@ public class EDLServlet extends HttpServlet {
 		        edlController = KEWServiceLocator.getEDocLiteService().getEDLController(edlName);
 		    }
 
+		    //TODO Fix this in a better way (reworking the command structure maybe?)
+		    //fix for KULRICE-4057 to make sure we don't destory docContent on empty command params
+		    if(inputCommand == null && requestParser.getParameterValue("docId") != null && !"POST".equals(request.getMethod())){
+		    	//make sure these are the only params on the request (paging passed undefined input command as well...
+		    	if(!(request.getParameterMap().size() > 2)){//ensures ONLY documentId was passed
+		    		requestParser.setParameterValue("command", "displayDocSearchView");
+		    		LOG.info("command parameter was not passed with the request, and only document ID was. Defaulted command to 'displayDocSearchView' to ensure docContent remains.");
+		    	}
+		    }
+
 		    EDLControllerChain controllerChain = new EDLControllerChain();
 		    controllerChain.addEdlController(edlController);
+			//TODO Do we not want to set the content type for the response?		   
 		    controllerChain.renderEDL(requestParser, response);
 
 		} catch (Exception e) {

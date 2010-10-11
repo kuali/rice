@@ -18,6 +18,7 @@ package org.kuali.rice.kns.util;
 import javax.servlet.ServletException;
 
 import org.apache.commons.logging.Log;
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 /**
@@ -34,7 +35,9 @@ public class ExceptionUtils {
      * @param t
      */
     public static void logStackTrace(Logger logger, Throwable t) {
-        logger.error(buildStackTraceString(t));
+        if (logger.isEnabledFor(Level.ERROR)) {
+    		logger.error(getStackLogMessage(t));
+    	}
     }
 
     /**
@@ -44,13 +47,15 @@ public class ExceptionUtils {
      * @param t
      */
     public static void logStackTrace(Log log, Throwable t) {
-        log.error(buildStackTraceString(t));
+        if (log.isErrorEnabled()) {
+        	log.error(getStackLogMessage(t));
+        }
     }
 
     /**
      * This method builds a stack trace String from a Throwable
      */
-    private static String buildStackTraceString(Throwable t) {
+    private static String getStackLogMessage(Throwable t) {
         StackTraceElement[] elements = t.getStackTrace();
 
         StringBuffer trace = new StringBuffer();

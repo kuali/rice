@@ -22,10 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-// TODO KULRICE-4249
-// import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
-// import org.kuali.rice.kim.bo.impl.GroupImpl;
-// import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -147,61 +144,37 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         */
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "null" })
 	protected Map<String, String> buildRoleSearchCriteria(Map<String, String> fieldValues){
-    	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
+       	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
     	Map<String, String> searchCriteria;
-    	
-    	// KULRICE-4249
-    	// Refactor to get Principals through Identity Management Service to take into account that 
-    	// institutions may override with their own implementations, and therefore the source system 
-    	// from which Principals should be retrieved. 
     	List<KimPrincipalInfo> principals = null;
-    	if(StringUtils.isNotEmpty(assignedToPrincipalName)){
-        	principals = 
-        		(List<KimPrincipalInfo>)KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(WILDCARD+assignedToPrincipalName+WILDCARD);
-        	if(principals==null || principals.isEmpty())
-        		return null;
-    	}
-    	/*
-    	List<KimPrincipalImpl> principals = null;
         if(StringUtils.isNotEmpty(assignedToPrincipalName)){
         	searchCriteria = new HashMap<String, String>();
         	searchCriteria.put("principalName", WILDCARD+assignedToPrincipalName+WILDCARD);
-        	principals = 
-        		(List<KimPrincipalImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(KimPrincipalImpl.class, searchCriteria);
-        	if(principals==null || principals.isEmpty())
+        	List<KimEntityInfo> kimEntityInfoList = KIMServiceLocator.getIdentityManagementService().lookupEntityInfo(searchCriteria, true);
+        	if(kimEntityInfoList == null || kimEntityInfoList.isEmpty()) {
         		return null;
+        	}
+        	else {
+        		for (KimEntityInfo kimEntityInfo : kimEntityInfoList) {
+        			principals.addAll(kimEntityInfo.getPrincipals());
+        		}
+        	}
         }
-        */
-        
         String assignedToGroupNamespaceCode = fieldValues.get(ASSIGNED_TO_GROUP_NAMESPACE_CODE);
         String assignedToGroupName = fieldValues.get(ASSIGNED_TO_GROUP_NAME);
-        
-        // KULRICE-4249
-        // Refactor to get Groups through Group Service to take into account that institutions 
-    	// may override with their own implementations, and therefore the source system from which
-    	// Groups should be retrieved.
         List<GroupInfo> groups = null;
-        if(StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isEmpty(assignedToGroupName) ||
-        		StringUtils.isEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName) ||
-        		StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName)){
-        	groups = (List<GroupInfo>)KIMServiceLocator.getGroupService().getGroupInfoByName(getQueryString(assignedToGroupNamespaceCode), getQueryString(assignedToGroupName));
-        }
-        /*
-        List<GroupImpl> groupImpls = null;
         if(StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isEmpty(assignedToGroupName) ||
         		StringUtils.isEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName) ||
         		StringUtils.isNotEmpty(assignedToGroupNamespaceCode) && StringUtils.isNotEmpty(assignedToGroupName)){
         	searchCriteria = new HashMap<String, String>();
         	searchCriteria.put(NAMESPACE_CODE, getQueryString(assignedToGroupNamespaceCode));
         	searchCriteria.put(GROUP_NAME, getQueryString(assignedToGroupName));
-        	groupImpls = 
-        		(List<GroupImpl>)KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded(GroupImpl.class, searchCriteria);
-        	if(groupImpls==null || groupImpls.size()==0)
+        	groups = (List<GroupInfo>)KIMServiceLocator.getGroupService().lookupGroups(searchCriteria);
+        	if(groups==null || groups.size()==0)
         		return null;
         }
-        */
 
         String assignedToRoleNamespaceCode = fieldValues.get(ASSIGNED_TO_NAMESPACE_FOR_LOOKUP);
         String assignedToRoleName = fieldValues.get(ASSIGNED_TO_ROLE_NAME);
@@ -215,9 +188,6 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     	StringBuffer memberQueryString = null;
         if(principals!=null){
         	memberQueryString = new StringBuffer();
-        	// KULRICE-4249
-        	// Use KimPrincipalInfo instead of KimPrincipalImpl, since that is what is returned by the Identity Management Service
-        	// for(KimPrincipalImpl principal: principals){
         	for(KimPrincipalInfo principal: principals){
         		memberQueryString.append(principal.getPrincipalId()+KimConstants.KimUIConstants.OR_OPERATOR);
         	}
@@ -229,9 +199,6 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         		memberQueryString = new StringBuffer();
         	else if(StringUtils.isNotEmpty(memberQueryString.toString()))
         		memberQueryString.append(KimConstants.KimUIConstants.OR_OPERATOR);
-        	// KULRICE-4249
-        	// // Use GroupInfo instead of GroupImpl, since that is what is returned by the Group Service
-        	// for(GroupImpl group: groups){
         	for(GroupInfo group: groups){
         		memberQueryString.append(group.getGroupId()+KimConstants.KimUIConstants.OR_OPERATOR);
         	}

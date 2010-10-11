@@ -25,6 +25,8 @@ import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.StandardDocumentSearchGenerator;
@@ -34,74 +36,170 @@ import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.web.ui.Row;
 
-public class DataDictionaryDocumentSearchCustomizer extends StandardDocumentSearchResultProcessor implements SearchableAttribute, DocumentSearchGenerator {
+public class DataDictionaryDocumentSearchCustomizer implements SearchableAttribute, DocumentSearchGenerator, DocumentSearchResultProcessor {
     // SEARCH GENERATOR IMPLEMENTATION
-    private StandardDocumentSearchGenerator documentSearchGenerator = new StandardDocumentSearchGenerator();
-
+    protected StandardDocumentSearchGenerator documentSearchGenerator = null;
+    // SEARCHABLE ATTRIBUTE IMPLEMENTATION
+    protected SearchableAttribute searchableAttribute = null;
+    // SEARCH RESULT PROCESSOR IMPLEMENTATION
+    protected DocumentSearchResultProcessor searchResultProcessor = null;
+    
     public DocSearchCriteriaDTO clearSearch(DocSearchCriteriaDTO searchCriteria) {
-        return documentSearchGenerator.clearSearch(searchCriteria);
+        return getDocumentSearchGenerator().clearSearch(searchCriteria);
     }
 
     public String generateSearchSql(DocSearchCriteriaDTO searchCriteria) {
-        return documentSearchGenerator.generateSearchSql(searchCriteria);
+        return getDocumentSearchGenerator().generateSearchSql(searchCriteria);
     }
 
     public int getDocumentSearchResultSetLimit() {
-        return documentSearchGenerator.getDocumentSearchResultSetLimit();
+        return getDocumentSearchGenerator().getDocumentSearchResultSetLimit();
     }
 
     public List<WorkflowServiceError> performPreSearchConditions(String principalId, DocSearchCriteriaDTO searchCriteria) {
-        return documentSearchGenerator.performPreSearchConditions(principalId, searchCriteria);
+        return getDocumentSearchGenerator().performPreSearchConditions(principalId, searchCriteria);
     }
 
     public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet, DocSearchCriteriaDTO searchCriteria, String principalId) throws SQLException {
-        return documentSearchGenerator.processResultSet(searchAttributeStatement, resultSet, searchCriteria, principalId);
+        return getDocumentSearchGenerator().processResultSet(searchAttributeStatement, resultSet, searchCriteria, principalId);
     }
 
     @Deprecated
     public List<DocSearchDTO> processResultSet(Statement searchAttributeStatement, ResultSet resultSet, DocSearchCriteriaDTO searchCriteria) throws SQLException {
-        return documentSearchGenerator.processResultSet(searchAttributeStatement, resultSet, searchCriteria);
-    }
-
-    public void setSearchableAttributes(List<SearchableAttribute> searchableAttributes) {
-        documentSearchGenerator.setSearchableAttributes(searchableAttributes);
-    }
+        return getDocumentSearchGenerator().processResultSet(searchAttributeStatement, resultSet, searchCriteria);
+    }    
 
     public void setSearchingUser(String principalId) {
-        documentSearchGenerator.setSearchingUser(principalId);
+    	getDocumentSearchGenerator().setSearchingUser(principalId);
     }
 
     public List<WorkflowServiceError> validateSearchableAttributes(DocSearchCriteriaDTO searchCriteria) {
-        return documentSearchGenerator.validateSearchableAttributes(searchCriteria);
+        return getDocumentSearchGenerator().validateSearchableAttributes(searchCriteria);
     }
 
     public boolean isProcessResultSet() {
-        return documentSearchGenerator.isProcessResultSet();
+        return getDocumentSearchGenerator().isProcessResultSet();
     }
     public void setProcessResultSet(boolean isProcessResultSet){
-        documentSearchGenerator.setProcessResultSet(isProcessResultSet);
+    	getDocumentSearchGenerator().setProcessResultSet(isProcessResultSet);
     }
     public MessageMap getMessageMap(DocSearchCriteriaDTO searchCriteria) {
-        return documentSearchGenerator.getMessageMap(searchCriteria);
-    }
-
-    // SEARCHABLE ATTRIBUTE IMPLEMENTATION
-    private SearchableAttribute searchableAttribute = new DataDictionarySearchableAttribute();
+        return getDocumentSearchGenerator().getMessageMap(searchCriteria);
+    }    
 
     public String getSearchContent(DocumentSearchContext documentSearchContext) {
-        return searchableAttribute.getSearchContent(documentSearchContext);
+        return getSearchableAttribute().getSearchContent(documentSearchContext);
     }
 
     public List<Row> getSearchingRows(DocumentSearchContext documentSearchContext) {
-        return searchableAttribute.getSearchingRows(documentSearchContext);
+        return getSearchableAttribute().getSearchingRows(documentSearchContext);
     }
 
     public List<SearchableAttributeValue> getSearchStorageValues(DocumentSearchContext documentSearchContext) {
-        return searchableAttribute.getSearchStorageValues(documentSearchContext);
+        return getSearchableAttribute().getSearchStorageValues(documentSearchContext);
     }
 
     public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext searchContext) {
-        return searchableAttribute.validateUserSearchInputs(paramMap, searchContext);
+        return getSearchableAttribute().validateUserSearchInputs(paramMap, searchContext);
     }
+
+	/**
+	 * This overridden method calls the currently set searchResultProcessor's processIntoFinalResults
+	 * 
+	 * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#processIntoFinalResults(java.util.List, org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO, java.lang.String)
+	 */
+	public DocumentSearchResultComponents processIntoFinalResults(
+			List<DocSearchDTO> docSearchResultRows,
+			DocSearchCriteriaDTO criteria, String principalId)
+			throws SQLException {
+		
+		return this.getSearchResultProcessor().processIntoFinalResults(docSearchResultRows, criteria, principalId);
+	}
+
+	/**
+	 * This overridden method returns the searchResultProcessor
+	 * 
+	 * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#setProcessFinalResults(boolean)
+	 */
+	public void setProcessFinalResults(boolean isProcessFinalResults) {
+		this.getSearchResultProcessor().setProcessFinalResults(isProcessFinalResults);
+		
+	}
+
+	/**
+	 * This overridden method returns if the searchResultProcessor has processed final results
+	 * 
+	 * @see org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor#isProcessFinalResults()
+	 */
+	public boolean isProcessFinalResults() {
+		return this.getSearchResultProcessor().isProcessFinalResults();
+	}
+	
+	/**
+	 * @param documentSearchGenerator the documentSearchGenerator to set
+	 */
+	public void setDocumentSearchGenerator(
+			StandardDocumentSearchGenerator documentSearchGenerator) {
+		this.documentSearchGenerator = documentSearchGenerator;
+	}
+	
+	/**
+	 * @param searchResultProcessor the searchResultProcessor to set
+	 */
+	public void setSearchResultProcessor(
+			DocumentSearchResultProcessor searchResultProcessor) {
+		this.searchResultProcessor = searchResultProcessor;
+	}
+
+	/**
+	 * 
+	 * This method sets a list of searchable attributes on the DocumentSearchGenerator.
+	 * Do not confuse this with "setSearchableAttribute"
+	 * 
+	 * @param searchableAttributes
+	 */
+	public void setSearchableAttributes(List<SearchableAttribute> searchableAttributes) {
+		getDocumentSearchGenerator().setSearchableAttributes(searchableAttributes);
+    }
+	
+	/**
+	 * @param searchableAttribute the searchableAttribute to set
+	 */
+	public void setSearchableAttribute(SearchableAttribute searchableAttribute) {
+		this.searchableAttribute = searchableAttribute;
+	}
+	
+	/**
+	 * @return the searchableAttribute
+	 */
+	public SearchableAttribute getSearchableAttribute() {
+		if(this.searchableAttribute == null){
+			this.searchableAttribute = new DataDictionarySearchableAttribute();
+		}
+		return this.searchableAttribute;
+	}
+
+	/**
+	 * @return the documentSearchGenerator
+	 */
+	public StandardDocumentSearchGenerator getDocumentSearchGenerator() {
+		if(this.documentSearchGenerator == null){
+			this.documentSearchGenerator = new StandardDocumentSearchGenerator();
+		}
+		return this.documentSearchGenerator;
+	}
+
+	/**
+	 * @return the searchResultProcessor
+	 */
+	public DocumentSearchResultProcessor getSearchResultProcessor() {
+		if(this.searchResultProcessor == null){
+			this.searchResultProcessor = new StandardDocumentSearchResultProcessor();
+		}
+		return this.searchResultProcessor;
+	}
+
+	
+	
 
 }

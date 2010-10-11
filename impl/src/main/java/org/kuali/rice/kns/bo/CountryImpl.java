@@ -33,6 +33,8 @@ public class CountryImpl extends PersistableBusinessObjectBase implements Inacti
 	@Id
 	@Column(name="POSTAL_CNTRY_CD")
     private String postalCountryCode;
+    @Column(name="ALT_POSTAL_CNTRY_CD")
+	private String alternatePostalCountryCode;
 	@Column(name="POSTAL_CNTRY_NM")
     private String postalCountryName;
 	@Type(type="yes_no")
@@ -62,6 +64,20 @@ public class CountryImpl extends PersistableBusinessObjectBase implements Inacti
      */
     public String getPostalCountryCode() {
         return postalCountryCode;
+    }
+
+    /**
+     * @param alternatePostalCountryCode - The alternatePostalCountryCode to set
+     */
+    public void setAlternatePostalCountryCode(String alternatePostalCountryCode) {
+        this.alternatePostalCountryCode = alternatePostalCountryCode;
+    }
+
+    /**
+     * @return Returns the alternatePostalCountryCode
+     */
+    public String getAlternatePostalCountryCode() {
+    	return alternatePostalCountryCode;
     }
 
     /**

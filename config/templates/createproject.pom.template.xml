@@ -54,7 +54,19 @@
 			<groupId>org.kuali.rice</groupId>
 			<artifactId>rice-impl</artifactId>
 			<version>${RICE_VERSION}</version>
-		</dependency>		
+        </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc14</artifactId>
+            <version>10.2.0.3.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.5</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 	<repositories>
 		<repository>

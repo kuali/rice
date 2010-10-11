@@ -109,6 +109,9 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
         parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
         parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
         parameters.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupImpl.getGroupId());
+        if (StringUtils.isNotBlank(getReturnLocation())) {
+        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+		}
         href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters);
         
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
@@ -130,6 +133,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
     	for(Group g : groupInfoObjs){    		
     		GroupImpl impl = new GroupImpl();
     		impl = KimCommonUtils.copyInfoToGroup(g, impl);
+    		impl.setGroupAttributes(KimCommonUtils.copyInfoAttributesToGroupAttributes(g.getAttributes(), g.getGroupId(), g.getKimTypeId()));
     		groupImplList.add(impl);    		
     	}
     	return groupImplList;
@@ -227,7 +231,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
             for (Field field : row.getFields()) {
                 Column newColumn = new Column();
                 newColumn.setColumnTitle(field.getFieldLabel());
-                newColumn.setMaxLength(field.getMaxLength());
+                newColumn.setMaxLength(getColumnMaxLength(field.getPropertyName()));
                 newColumn.setPropertyName(field.getPropertyName());
                 newColumn.setFormatter((Formatter) field.getFormatter());
                 columns.add(newColumn);
@@ -286,7 +290,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                 boolean skipPropTypeCheck = false;
                 if (col.getPropertyName().matches("\\w+\\.\\d+$")) {
                     String id = col.getPropertyName().substring(col.getPropertyName().lastIndexOf('.') + 1); //.split("\\d+$"))[1];
-                    prop = ((GroupImpl)element).getGroupAttributeById(id);
+                    prop = ((GroupImpl)element).getGroupAttributeValueById(id);
                 }
                 if (prop == null) {
                     prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());

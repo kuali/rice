@@ -15,7 +15,11 @@
  */
 package org.kuali.rice.kns.lookup;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -39,10 +43,12 @@ import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.comparator.NullValueComparator;
 import org.kuali.rice.kns.web.ui.Field;
@@ -61,6 +67,7 @@ public class LookupUtils {
     private static BusinessObjectDictionaryService businessObjectDictionaryService;
     private static BusinessObjectMetaDataService businessObjectMetaDataService;
     private static KualiConfigurationService kualiConfigurationService;
+    private static DateTimeService dateTimeService;
 
     public LookupUtils() {
         // default constructor for Spring to call to start up initialization process
@@ -82,7 +89,11 @@ public class LookupUtils {
         LookupUtils.kualiConfigurationService = kualiConfigurationService;
     }
 
-    /**
+    public void setDateTimeService(DateTimeService dateTimeService) {
+		LookupUtils.dateTimeService = dateTimeService;
+	}
+
+	/**
      * Sets the businessObjectMetaDataService attribute value.
      * @param businessObjectMetaDataService The businessObjectMetaDataService to set.
      */
@@ -857,5 +868,51 @@ public class LookupUtils {
                 }
             }
         }
-    }
+	}
+
+    /**
+     * Determines what Timestamp should be used for active queries on effective dated records. Determination made as
+     * follows:
+     * <ul>
+     *   <li>Use activeAsOfDate value from search values Map if value is not empty</li>
+     *   <li>If search value given, try to convert to sql date, if conversion fails, try to convert to Timestamp</li>
+     *   <li>If search value empty, use current Date</li>
+     *   <li>If Timestamp value not given, create Timestamp from given Date setting the time as 1 second before midnight
+     * </ul>
+     * 
+     * @param searchValues - Map containing search key/value pairs
+     * @return Timestamp to be used for active criteria
+     */
+	public static Timestamp getActiveDateTimestampForCriteria(Map searchValues) {
+		Date activeDate = dateTimeService.getCurrentSqlDate();
+		Timestamp activeTimestamp = null;
+		if (searchValues.containsKey(KNSPropertyConstants.ACTIVE_AS_OF_DATE)) {
+			String activeAsOfDate = (String) searchValues.get(KNSPropertyConstants.ACTIVE_AS_OF_DATE);
+			if (StringUtils.isNotBlank(activeAsOfDate)) {
+				try {
+					activeDate = dateTimeService.convertToSqlDate(ObjectUtils.clean(activeAsOfDate));
+				} catch (ParseException e) {
+					// try to parse as timestamp
+					try {
+						activeTimestamp = dateTimeService.convertToSqlTimestamp(ObjectUtils.clean(activeAsOfDate));
+					} catch (ParseException e1) {
+						throw new RuntimeException("Unable to convert date: " + ObjectUtils.clean(activeAsOfDate));
+					}
+				}
+			}
+		}
+
+		// if timestamp not given set to 1 second before midnight on the given date
+		if (activeTimestamp == null) {
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(activeDate);
+			cal.set(Calendar.HOUR, cal.getMaximum(Calendar.HOUR));
+			cal.set(Calendar.MINUTE, cal.getMaximum(Calendar.MINUTE));
+			cal.set(Calendar.SECOND, cal.getMaximum(Calendar.SECOND));
+
+			activeTimestamp = new Timestamp(cal.getTime().getTime());
+		}
+
+		return activeTimestamp;
+	}
 }

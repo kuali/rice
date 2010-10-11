@@ -67,6 +67,8 @@ public class KSBConstants extends JSTLConstants {
     public static final Integer ROUTE_QUEUE_DEFAULT_PRIORITY = new Integer(5);
     public static final String ROUTE_QUEUE_FILTER_SUFFIX = "Filter";
 
+    public static final String FORWARD_HANDLER_SUFFIX = "-forwardHandler";
+    
     // custom http header keys
     public static final String DIGITAL_SIGNATURE_HEADER = "KEW_DIGITAL_SIGNATURE";
     public static final String KEYSTORE_ALIAS_HEADER = "KEW_KEYSTORE_ALIAS";
@@ -96,7 +98,7 @@ public class KSBConstants extends JSTLConstants {
     	public static final String REMOTED_SERVICE_REGISTRY = "enServiceInvoker";
         public static final String REPEAT_TOPIC_INVOKING_QUEUE = "enRepeatTopicInvokerQueue";
         public static final String ROUTE_QUEUE_SERVICE = "enRouteQueueService";
-        public static final String ROUTING_TABLE_SERVICE = "enRoutingTableService";
+        public static final String SERVICE_REGISTRY = "serviceRegistry";
         public static final String SCHEDULED_THREAD_POOL_SERVICE = "enScheduledThreadPool";
         public static final String SCHEDULER = "ksbScheduler";
         public static final String SERVICE_REMOVER_SERVICE = "RemoteClassRemoverService";

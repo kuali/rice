@@ -55,6 +55,7 @@
       <list>
         <bean parent="MaintainableFieldDefinition" p:name="postalCountryCode" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:name="postalCountryName" p:required="true"/>
+        <bean parent="MaintainableFieldDefinition" p:name="alternatePostalCountryCode"/>
         <bean parent="MaintainableFieldDefinition" p:name="postalCountryRestrictedIndicator" p:defaultValue="false" p:required="true"/>
         <bean parent="MaintainableFieldDefinition" p:defaultValue="true" p:name="active"/>
       </list>

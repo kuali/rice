@@ -329,15 +329,17 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
      * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
     public List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
-    	return getRoleMembers(roleIds, qualification, true);
+    	Set<String> foundRoleTypeMembers = new HashSet<String>();
+    	return getRoleMembers(roleIds, qualification, true, foundRoleTypeMembers);
     }
 
     
 
 	public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification) {
 		Set<String> principalIds = new HashSet<String>();
+    	Set<String> foundRoleTypeMembers = new HashSet<String>();
 		List<String> roleIds = Collections.singletonList(getRoleIdByName(namespaceCode, roleName));
-    	for (RoleMembershipInfo roleMembershipInfo : getRoleMembers(roleIds, qualification, false)) {
+    	for (RoleMembershipInfo roleMembershipInfo : getRoleMembers(roleIds, qualification, false, foundRoleTypeMembers)) {
     		if (Role.GROUP_MEMBER_TYPE.equals(roleMembershipInfo.getMemberTypeCode())) {
     			principalIds.addAll(getIdentityManagementService().getGroupMemberPrincipalIds(roleMembershipInfo.getMemberId()));
     		}
@@ -348,11 +350,18 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	return principalIds;
 	}
 
-    protected Collection<RoleMembershipInfo> getNestedRoleMembers( AttributeSet qualification, RoleMembershipInfo rm ) {
+	protected Collection<RoleMembershipInfo> getNestedRoleMembers( AttributeSet qualification, RoleMembershipInfo rm, Set<String> foundRoleTypeMembers ) {
+		// If this role has already been traversed, skip it
+		if (foundRoleTypeMembers.contains(rm.getMemberId())){
+			return new ArrayList<RoleMembershipInfo>();  // return an empty list
+		}
+		foundRoleTypeMembers.add(rm.getMemberId());
+
 		ArrayList<String> roleIdList = new ArrayList<String>( 1 );
 		roleIdList.add( rm.getMemberId() );
+
 		// get the list of members from the nested role - ignore delegations on those sub-roles
-		Collection<RoleMembershipInfo> nestedRoleMembers = getRoleMembers( roleIdList, qualification, false );
+		Collection<RoleMembershipInfo> nestedRoleMembers = getRoleMembers( roleIdList, qualification, false, foundRoleTypeMembers );
 		// add the roles  whose members matched to the list for delegation checks later
 		for ( RoleMembershipInfo rmi : nestedRoleMembers ) {
 			// use the member ID of the parent role (needed for responsibility joining)
@@ -362,12 +371,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 			rmi.setEmbeddedRoleId( rm.getMemberId() );
 		}
 		return nestedRoleMembers;
-    }
+	}
 
 	/**
      * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
      */
-    protected List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations ) {
+    protected List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations, Set<String> foundRoleTypeMembers ) {
     	List<RoleMembershipInfo> results = new ArrayList<RoleMembershipInfo>();
     	Set<String> allRoleIds = new HashSet<String>();
     	for ( String roleId : roleIds ) {
@@ -424,7 +433,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 						                 qualification );
 					}
 					if ( isRoleActive( rm.getRoleId() ) ) {
-						Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi );
+						Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi, foundRoleTypeMembers );
 						if ( !nestedRoleMembers.isEmpty() ) {
 							results.addAll( nestedRoleMembers );
 							matchingRoleIds.add( rm.getRoleId() );
@@ -470,7 +479,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	                                memberRole.getNamespaceCode(),
     	                                memberRole.getRoleName(),
     	    					        qualification );
-    	    					Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi );
+    	    					Collection<RoleMembershipInfo> nestedRoleMembers = getNestedRoleMembers( nestedRoleQualification, mi, foundRoleTypeMembers );
     	    					if ( !nestedRoleMembers.isEmpty() ) {
     	    						results.addAll( nestedRoleMembers );
     	    						matchingRoleIds.add( mi.getRoleId() );
@@ -516,7 +525,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 	    	Map<String,KimDelegationImpl> delegations = getStoredDelegationImplMapFromRoleIds(matchingRoleIds);
 
 	    	matchDelegationsToRoleMembers( results, delegations.values() );
-	    	resolveDelegationMembers( results, qualification );
+	    	resolveDelegationMembers( results, qualification, foundRoleTypeMembers );
     	}
 
     	// sort the results if a single role type service can be identified for
@@ -703,7 +712,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
      * further KIM requests are not needed.
      */
     protected void resolveDelegationMembers( List<RoleMembershipInfo> results,
-    		AttributeSet qualification ) {
+    		AttributeSet qualification, Set<String> foundRoleTypeMembers ) {
 
 		// check delegations assigned to this role
 		for ( RoleMembershipInfo mi : results ) {
@@ -724,7 +733,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
         				roleIdTempList.add( di.getMemberId() );
 
         				// get the members of this role
-            			Collection<RoleMembershipInfo> delegateMembers = getRoleMembers(roleIdTempList, qualification, false);
+            			Collection<RoleMembershipInfo> delegateMembers = getRoleMembers(roleIdTempList, qualification, false, foundRoleTypeMembers);
             			// loop over the role members and create the needed DelegationInfo objects
             			for ( RoleMembershipInfo rmi : delegateMembers ) {
             				i.add(
@@ -1123,7 +1132,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     private void inactivateRoleMemberships(List<String> roleIds, Timestamp yesterday){
     	List<RoleMemberImpl> roleMembers = getStoredRoleMembersForRoleIds(roleIds, null, null);
     	for(RoleMemberImpl rm: roleMembers){
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    		rm.setActiveToDate(yesterday);
     	}
     	getBusinessObjectService().save(roleMembers);
     	getIdentityManagementNotificationService().roleUpdated();
@@ -1132,7 +1141,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     private void inactivateMembershipsForRoleAsMember(List<String> roleIds, Timestamp yesterday){
     	List<RoleMemberImpl> roleMembers = getStoredRoleMembershipsForRoleIdsAsMembers(roleIds, null);
     	for(RoleMemberImpl rm: roleMembers){
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    		rm.setActiveToDate(yesterday);
     	}
     	getBusinessObjectService().save(roleMembers);
     	getIdentityManagementNotificationService().roleUpdated();
@@ -1143,7 +1152,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	for(KimDelegationImpl delegation: delegations){
     		delegation.setActive(false);
     		for(KimDelegationMemberImpl delegationMember: delegation.getMembers()){
-    			delegationMember.setActiveToDate(new Date(yesterday.getTime()));
+    			delegationMember.setActiveToDate(yesterday);
     		}
     	}
     	getBusinessObjectService().save(delegations);
@@ -1199,7 +1208,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	List<RoleMemberImpl> roleMembers = getStoredRolePrincipalsForPrincipalIdAndRoleIds(null, principalId, null);
     	Set<String> roleIds = new HashSet<String>( roleMembers.size() );
     	for ( RoleMemberImpl rm : roleMembers ) {
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    		rm.setActiveToDate(yesterday);
     		roleIds.add(rm.getRoleId()); // add to the set of IDs
     	}
     	getBusinessObjectService().save(roleMembers);
@@ -1232,7 +1241,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     protected void inactivatePrincipalDelegations(String principalId, Timestamp yesterday){
     	List<KimDelegationMemberImpl> delegationMembers = getStoredDelegationPrincipalsForPrincipalIdAndDelegationIds(null, principalId);
     	for ( KimDelegationMemberImpl rm : delegationMembers ) {
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    		rm.setActiveToDate(yesterday);
     	}
     	getBusinessObjectService().save(delegationMembers);
     	getIdentityManagementNotificationService().delegationUpdated();
@@ -1275,7 +1284,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     protected void inactivateGroupRoleMemberships(List<String> groupIds, Timestamp yesterday){
     	List<RoleMemberImpl> roleMembersOfGroupType = getStoredRoleGroupsForGroupIdsAndRoleIds(null, groupIds, null);
     	for(RoleMemberImpl rm: roleMembersOfGroupType){
-    		rm.setActiveToDate( new Date(yesterday.getTime()) );
+    		rm.setActiveToDate(yesterday);
     	}
     	getBusinessObjectService().save(roleMembersOfGroupType);
     	getIdentityManagementNotificationService().roleUpdated();
@@ -1290,8 +1299,12 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
             groupMemberImpl.setGroupMemberId(kimGroupMember.getGroupMemberId());
             groupMemberImpl.setMemberId(kimGroupMember.getMemberId());
             groupMemberImpl.setMemberTypeCode(kimGroupMember.getMemberTypeCode());
-            groupMemberImpl.setActiveFromDate(kimGroupMember.getActiveFromDate());
-            groupMemberImpl.setActiveToDate(kimGroupMember.getActiveToDate());
+			if (kimGroupMember.getActiveFromDate() != null) {
+				groupMemberImpl.setActiveFromDate(new java.sql.Timestamp(kimGroupMember.getActiveFromDate().getTime()));
+			}
+			if (kimGroupMember.getActiveToDate() != null) {
+				groupMemberImpl.setActiveToDate(new java.sql.Timestamp(kimGroupMember.getActiveToDate().getTime()));
+			}
             groupMemberImpl.setVersionNumber(kimGroupMember.getVersionNumber());
         }
 

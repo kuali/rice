@@ -304,10 +304,17 @@ public class BusinessObjectDictionaryServiceImpl implements
      */
 	public Integer getLookupResultFieldMaxLength(Class businessObjectClass,
 			String resultFieldName) {
-        LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
-		FieldDefinition field = lookupDefinition
-				.getResultField(resultFieldName);
-        return field.getMaxLength();
+		Integer resultFieldMaxLength = null;
+
+		LookupDefinition lookupDefinition = getLookupDefinition(businessObjectClass);
+		if (lookupDefinition != null) {
+			FieldDefinition field = lookupDefinition.getResultField(resultFieldName);
+			if (field != null) {
+				resultFieldMaxLength = field.getMaxLength();
+			}
+		}
+
+		return resultFieldMaxLength;
     }
 
     /**
@@ -1020,8 +1027,8 @@ public class BusinessObjectDictionaryServiceImpl implements
 	public String getLookupFieldAdditionalDisplayAttributeName(Class businessObjectClass, String attributeName) {
 		String additionalDisplayAttributeName = null;
 
-		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
-			additionalDisplayAttributeName = getLookupFieldDefinition(businessObjectClass, attributeName)
+		if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
+			additionalDisplayAttributeName = getLookupResultFieldDefinition(businessObjectClass, attributeName)
 					.getAdditionalDisplayAttributeName();
 		}
 
@@ -1035,8 +1042,8 @@ public class BusinessObjectDictionaryServiceImpl implements
 	public String getLookupFieldAlternateDisplayAttributeName(Class businessObjectClass, String attributeName) {
 		String alternateDisplayAttributeName = null;
 
-		if (getLookupFieldDefinition(businessObjectClass, attributeName) != null) {
-			alternateDisplayAttributeName = getLookupFieldDefinition(businessObjectClass, attributeName)
+		if (getLookupResultFieldDefinition(businessObjectClass, attributeName) != null) {
+			alternateDisplayAttributeName = getLookupResultFieldDefinition(businessObjectClass, attributeName)
 					.getAlternateDisplayAttributeName();
 		}
 
@@ -1095,4 +1102,17 @@ public class BusinessObjectDictionaryServiceImpl implements
 		return disableSearchButtons;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#getGroupByAttributesForEffectiveDating(java.lang.Class)
+	 */
+	public List<String> getGroupByAttributesForEffectiveDating(Class businessObjectClass) {
+		List<String> groupByList = null;
+
+		if (getBusinessObjectEntry(businessObjectClass) != null) {
+			groupByList = getBusinessObjectEntry(businessObjectClass).getGroupByAttributesForEffectiveDating();
+		}
+
+		return groupByList;
+	}
+	
 }

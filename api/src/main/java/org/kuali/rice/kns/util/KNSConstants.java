@@ -146,6 +146,8 @@ public class KNSConstants extends JSTLConstants {
     public static final String BLANK_SPACE = " ";
     public static final String BACK_LOCATION = "backLocation";
     public static final String BACKDOOR_PARAMETER = "backdoorId";
+    public static final String LOGOFF_REDIRECT_URL_PARAMETER = "LOGOFF_REDIRECT_URL";
+    public static final String LOGOFF_REDIRECT_URL_PROPERTY = "rice.portal.logout.redirectUrl";
 //    public static final String BLANKET_APPROVE_METHOD = "blanketApprove";
     public static final String BUSINESS_OBJECT_CLASS_ATTRIBUTE = "businessObjectClassName";
     public static final String CALLING_METHOD = "caller";
@@ -168,6 +170,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String DOCUMENT_CANCEL_QUESTION = "DocCancel";
 //    public static final String DOCUMENT_DELETE_QUESTION = "DocDelete";
     public static final String DOCUMENT_DISAPPROVE_QUESTION = "DocDisapprove";
+    public static final String DOCUMENT_SENSITIVE_DATA_QUESTION = "DocSensitiveDataQuestion";
 //    public static final String DOCUMENT_HEADER_ID = "documentHeaderId";
     public static final String DOCUMENT_HEADER_PROPERTY_NAME = "documentHeader";
     public static final String DOCUMENT_SAVE_BEFORE_CLOSE_QUESTION = "DocSaveBeforeClose";
@@ -477,6 +480,7 @@ public class KNSConstants extends JSTLConstants {
     public static final String OR_LOGICAL_OPERATOR = "|";
     public static final String NOT_LOGICAL_OPERATOR = "!";
     public static final String BETWEEN_OPERATOR = "..";
+    public static final String NULL_OPERATOR = "NULL";
 //    // add AND operator to thest if it is uncommented below
 //    public static final String[] LOGICAL_OPERATORS = {OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR};
     public static final String[] QUERY_CHARACTERS = {"*", "?", "%", ">", "<", BETWEEN_OPERATOR, OR_LOGICAL_OPERATOR, NOT_LOGICAL_OPERATOR, "="};
@@ -534,6 +538,7 @@ public class KNSConstants extends JSTLConstants {
         public static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
         public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME";
         public static final String SENSITIVE_DATA_PATTERNS = "SENSITIVE_DATA_PATTERNS";
+        public static final String SENSITIVE_DATA_PATTERNS_WARNING_IND = "SENSITIVE_DATA_PATTERNS_WARNING_IND";
     }
 
     public static class Maintenance {
@@ -577,5 +582,7 @@ public class KNSConstants extends JSTLConstants {
 	public static final String ENABLE_NONPRODUCTION_UNMASKING = "enable.nonproduction.data.unmasking";
 	
   	public static final String SINGLE_QUOTE = "'";
+  	
+  	public static final String SENSITIVE_DATA_QUESTION_SESSION_TICKET = "SENSITIVE_DATA_QUESTION_SESSION_TICKET";
 
 }

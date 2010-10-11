@@ -630,7 +630,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * So, this method exists to properly handle the proxied attachment BO.  This is a hack
      * and should be removed post JPA migration.
      */
-    private void refreshAttachment() {
+    protected void refreshAttachment() {
     	if (ObjectUtils.isNull(attachment)) {
             this.refreshReferenceObject("attachment");
             final boolean isProxy = attachment != null && ProxyHelper.isProxy(attachment);
@@ -934,7 +934,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 	}
 
 	 //for issue KULRice3070
-	 private boolean checkAllowsRecordDeletion() {
+	 protected boolean checkAllowsRecordDeletion() {
 		 Boolean allowsRecordDeletion = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getAllowsRecordDeletion(this.getNewMaintainableObject().getBoClass());
 		 if ( allowsRecordDeletion != null ) {
 			 return allowsRecordDeletion.booleanValue();
@@ -945,12 +945,12 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 	 }
 
 	 //for KULRice3070
-	 private boolean checkMaintenanceAction(){	 
+	 protected boolean checkMaintenanceAction(){	 
 		 return this.getNewMaintainableObject().getMaintenanceAction().equals(KNSConstants.MAINTENANCE_DELETE_ACTION);
 	 }
 
 	 //for KULRice3070
-	 private boolean checkDeletePermission(BusinessObject businessObject) {
+	 protected boolean checkDeletePermission(BusinessObject businessObject) {
 
 		 boolean allowsMaintain = false;
 

@@ -182,13 +182,14 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
         AttributeDefinition attributeDefinition = getAttributeDefinition(entryName, attributeName);
         if (attributeDefinition != null) {
-            if (!StringUtils.isEmpty(attributeDefinition.getDisplayLabelAttribute())) {
+        	// KULRICE-4445 prevent NullPointerException by ensuring a label is set
+     	 	label = attributeDefinition.getLabel();
+        	if (!StringUtils.isEmpty(attributeDefinition.getDisplayLabelAttribute())) {
                 attributeDefinition = getAttributeDefinition(entryName, attributeDefinition.getDisplayLabelAttribute());
                 if (attributeDefinition != null) {
                     label = attributeDefinition.getLabel();
                 }
             }
-            label = attributeDefinition.getLabel();
         }
 
         return label;

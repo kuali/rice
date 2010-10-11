@@ -31,6 +31,7 @@ import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.dao.impl.DocumentDaoJpa;
 import org.kuali.rice.kns.dao.impl.DocumentDaoOjb;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.service.DocumentAdHocService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
@@ -41,12 +42,13 @@ public class DocumentDaoProxy implements DocumentDao {
 
 	private static Logger LOG = Logger.getLogger(DocumentDaoProxy.class);
 
-    private BusinessObjectDao businessObjectDao;
     private DocumentDao documentDaoJpa;
     private DocumentDao documentDaoOjb;
 
     private static KualiModuleService kualiModuleService;
     private static Map<String, DocumentDao> documentDaoValues = new ConcurrentHashMap<String, DocumentDao>();
+
+    private static final String DOCUMENT_AD_HOC_SERVICE_NAME = "documentAdHocService";
 
     private DocumentDao getDao(Class clazz) {
     	ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
@@ -65,10 +67,12 @@ public class DocumentDaoProxy implements DocumentDao {
                 } else {
                     if (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled("rice.kns"))) {
                         //using JPA
-                    	DocumentDaoJpa documentDaoJpa = new DocumentDaoJpa();
                         if (entityManager != null) {
-                            documentDaoJpa.setEntityManager(entityManager);
-                            documentDaoJpa.setBusinessObjectDao(businessObjectDao);
+                        	// we set the entity manager directly in the constructor
+                        	DocumentDaoJpa documentDaoJpa =
+                        		new DocumentDaoJpa(entityManager, this.documentDaoJpa.getBusinessObjectDao(),
+                        				this.documentDaoJpa.getDocumentAdHocService());
+
                             documentDaoValues.put(dataSourceName, documentDaoJpa);
                             return documentDaoJpa;
                         } else {
@@ -77,9 +81,14 @@ public class DocumentDaoProxy implements DocumentDao {
 
                     } else {
                         //using OJB
-                    	DocumentDaoOjb documentDaoOjb = new DocumentDaoOjb();
+                    	DocumentDaoOjb documentDaoOjb =
+                    		new DocumentDaoOjb(
+                    			this.documentDaoOjb.getBusinessObjectDao(),
+                    			this.documentDaoOjb.getDocumentAdHocService());
+
+                    	// set the data source alias
                         documentDaoOjb.setJcdAlias(dataSourceName);
-                        documentDaoOjb.setBusinessObjectDao(businessObjectDao);
+
                         documentDaoValues.put(dataSourceName, documentDaoOjb);
                         return documentDaoOjb;
                     }
@@ -109,11 +118,22 @@ public class DocumentDaoProxy implements DocumentDao {
 	 * @see org.kuali.rice.kns.dao.DocumentDao#getBusinessObjectDao()
 	 */
 	public BusinessObjectDao getBusinessObjectDao() {
-		return businessObjectDao;
+		if (OrmUtils.isJpaEnabled()) {
+			return documentDaoJpa.getBusinessObjectDao();
+		} else {
+			return documentDaoOjb.getBusinessObjectDao();
+		}
 	}
 
-	public void setBusinessObjectDao(BusinessObjectDao businessObjectDao) {
-        this.businessObjectDao = businessObjectDao;
+	/**
+	 * @see org.kuali.rice.kns.dao.DocumentDao#getDocumentAdHocService()
+	 */
+	public DocumentAdHocService getDocumentAdHocService() {
+		if (OrmUtils.isJpaEnabled()) {
+			return documentDaoJpa.getDocumentAdHocService();
+		} else {
+			return documentDaoOjb.getDocumentAdHocService();
+		}
     }
 
 	/**

@@ -30,6 +30,7 @@ import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
@@ -196,7 +197,16 @@ public class InquiryForm extends KualiForm {
 	                	foundCount++;
 	                	String parameter = request.getParameter(pkParamName);
                         
-                        Boolean forceUppercase = dataDictionaryService.getAttributeForceUppercase(businessObjectClass, boKey);
+                        Boolean forceUppercase = Boolean.FALSE;
+                        try {
+                            forceUppercase = dataDictionaryService.getAttributeForceUppercase(businessObjectClass, boKey);
+                        } catch (UnknownBusinessClassAttributeException ex) {
+                            // swallowing exception because this check for ForceUppercase would
+                            // require a DD entry for the attribute.  it is only checking keys
+                            // so most likely there should be an entry.
+                            LOG.warn("BO class " + businessObjectClassName + " property " + boKey + " should probably have a DD definition.", ex);
+                        }
+                        
                         if (forceUppercase) {
 	                		parameter = parameter.toUpperCase();
 	                	}

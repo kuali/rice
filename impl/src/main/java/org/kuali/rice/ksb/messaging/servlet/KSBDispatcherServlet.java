@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.cxf.Bus;
 import org.apache.cxf.interceptor.Interceptor;
+import org.apache.cxf.message.Message;
 import org.apache.cxf.transport.servlet.ServletController;
 import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.apache.log4j.Logger;
@@ -84,15 +85,15 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 		
         Bus bus = KSBServiceLocator.getCXFBus();
 
-        List<Interceptor> inInterceptors = KSBServiceLocator.getInInterceptors();
+        List<Interceptor<? extends Message>> inInterceptors = KSBServiceLocator.getInInterceptors();
         if(inInterceptors != null) {
-        	List<Interceptor> busInInterceptors = bus.getInInterceptors();
+        	List<Interceptor<? extends Message>> busInInterceptors = bus.getInInterceptors();
         	busInInterceptors.addAll(inInterceptors);
         }
        
-        List<Interceptor> outInterceptors = KSBServiceLocator.getOutInterceptors();
+        List<Interceptor<? extends Message>> outInterceptors = KSBServiceLocator.getOutInterceptors();
         if(outInterceptors != null) {
-        	List<Interceptor> busOutInterceptors = bus.getOutInterceptors();
+        	List<Interceptor<? extends Message>> busOutInterceptors = bus.getOutInterceptors();
         	busOutInterceptors.addAll(outInterceptors);
         }
         

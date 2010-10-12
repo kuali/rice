@@ -24,6 +24,7 @@ import org.apache.cxf.Bus;
 import org.apache.cxf.bus.CXFBusImpl;
 import org.apache.cxf.endpoint.ServerRegistry;
 import org.apache.cxf.interceptor.Interceptor;
+import org.apache.cxf.message.Message;
 import org.apache.cxf.transport.servlet.ServletTransportFactory;
 import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -203,9 +204,9 @@ public class KSBServiceLocator {
     	return (ServerRegistry)getService(KSBConstants.ServiceNames.CXF_SERVER_REGISTRY);
     }
     
-    public static List<Interceptor> getInInterceptors() {
+    public static List<Interceptor<? extends Message>> getInInterceptors() {
     	try {
-    		return (List<Interceptor>) getService(KSBConstants.ServiceNames.BUS_IN_INTERCEPTORS);
+    		return (List<Interceptor<? extends Message>>) getService(KSBConstants.ServiceNames.BUS_IN_INTERCEPTORS);
     	}
     	catch(RiceRemoteServiceConnectionException ex) {
     		// swallow this exception, means no bus wide interceptors defined
@@ -213,9 +214,9 @@ public class KSBServiceLocator {
     	}
     }
     
-    public static List<Interceptor> getOutInterceptors() {
+    public static List<Interceptor<? extends Message>> getOutInterceptors() {
     	try {
-    		return (List<Interceptor>) getService(KSBConstants.ServiceNames.BUS_OUT_INTERCEPTORS);
+    		return (List<Interceptor<? extends Message>>) getService(KSBConstants.ServiceNames.BUS_OUT_INTERCEPTORS);
     	}
     	catch(RiceRemoteServiceConnectionException ex) {
     		// swallow this exception, means no bus wide interceptors defined

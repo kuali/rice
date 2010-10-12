@@ -86,6 +86,7 @@
 		<jotm.version>2.1.9</jotm.version>
 		<jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
 		<jsp-api.version>2.1</jsp-api.version>
+		<jsr311-api.version>1.1.1</jsr311-api.version>
 		<jstl.version>1.2</jstl.version>
 		<jta.version>1.1</jta.version>
 		<!-- 4.8.2 is not in maven central repo -->
@@ -780,6 +781,12 @@
 				<groupId>javax.transaction</groupId>
 				<artifactId>jta</artifactId>
 				<version>${jta.version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>javax.ws.rs</groupId>
+				<artifactId>jsr311-api</artifactId>
+				<version>${jsr311-api.version}</version>
 			</dependency>
 
 			<!-- explicitly including jaxen to change version number from what maven 

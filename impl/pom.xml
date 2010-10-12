@@ -23,6 +23,11 @@
 			<artifactId>rice-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>jsr311-api</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>opensymphony</groupId>

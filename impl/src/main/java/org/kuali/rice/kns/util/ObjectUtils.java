@@ -462,8 +462,9 @@ public class ObjectUtils {
     }
 
 	/**
-	 * Returns a Formatter instance for the given property name in the given given business object. First checks if a formatter is defined
-	 * for the attribute in the data dictionary, is not found then returns the registered formatter for the property type in Formatter
+	 * Returns a Formatter instance for the given property name in the given given business object. First
+	 * checks if a formatter is defined for the attribute in the data dictionary, is not found then returns
+	 * the registered formatter for the property type in Formatter
 	 * 
 	 * @param bo
 	 *            - business object instance with property to get formatter for
@@ -474,11 +475,30 @@ public class ObjectUtils {
 	public static Formatter getFormatterWithDataDictionary(Object bo, String propertyName) {
 		Formatter formatter = null;
 
+		Class boClass = bo.getClass();
+		String boPropertyName = propertyName;
+
+		// for collections, formatter should come from property on the collection type
+		if (StringUtils.contains(propertyName, "[")) {
+			String collectionName = StringUtils.substringBefore(propertyName, "[");
+
+			boClass = getPropertyType(bo, collectionName, KNSServiceLocator.getPersistenceStructureService());
+			boPropertyName = StringUtils.substringAfterLast(propertyName, ".");
+		}
+
 		Class<? extends Formatter> formatterClass = KNSServiceLocator.getDataDictionaryService().getAttributeFormatter(
-				bo.getClass(), propertyName);
+				boClass, boPropertyName);
 		if (formatterClass == null) {
-			formatterClass = Formatter.findFormatter(getPropertyType(bo, propertyName,
-					KNSServiceLocator.getPersistenceStructureService()));
+			try {
+				formatterClass = Formatter.findFormatter(getPropertyType(boClass.newInstance(), propertyName,
+						KNSServiceLocator.getPersistenceStructureService()));
+			} catch (InstantiationException e) {
+				LOG.warn("Unable to find a formater for bo class " + boClass + " and property " + propertyName);
+				// just swallow the exception and let formatter be null
+			} catch (IllegalAccessException e) {
+				LOG.warn("Unable to find a formater for bo class " + boClass + " and property " + propertyName);
+				// just swallow the exception and let formatter be null
+			}
 		}
 
 		if (formatterClass != null) {

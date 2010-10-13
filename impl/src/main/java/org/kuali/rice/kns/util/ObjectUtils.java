@@ -479,24 +479,25 @@ public class ObjectUtils {
 		String boPropertyName = propertyName;
 
 		// for collections, formatter should come from property on the collection type
-		if (StringUtils.contains(propertyName, "[")) {
-			String collectionName = StringUtils.substringBefore(propertyName, "[");
-
-			boClass = getPropertyType(bo, collectionName, KNSServiceLocator.getPersistenceStructureService());
-			boPropertyName = StringUtils.substringAfterLast(propertyName, ".");
+		if (StringUtils.contains(propertyName, "]")) {
+			Object collectionParent = getNestedValue(bo, StringUtils.substringBeforeLast(propertyName, "].") + "]");
+			if (collectionParent != null) {
+				boClass = collectionParent.getClass();
+				boPropertyName = StringUtils.substringAfterLast(propertyName, "].");
+			}
 		}
 
 		Class<? extends Formatter> formatterClass = KNSServiceLocator.getDataDictionaryService().getAttributeFormatter(
 				boClass, boPropertyName);
 		if (formatterClass == null) {
 			try {
-				formatterClass = Formatter.findFormatter(getPropertyType(boClass.newInstance(), propertyName,
+				formatterClass = Formatter.findFormatter(getPropertyType(boClass.newInstance(), boPropertyName,
 						KNSServiceLocator.getPersistenceStructureService()));
 			} catch (InstantiationException e) {
-				LOG.warn("Unable to find a formater for bo class " + boClass + " and property " + propertyName);
+				LOG.warn("Unable to find a formater for bo class " + boClass + " and property " + boPropertyName);
 				// just swallow the exception and let formatter be null
 			} catch (IllegalAccessException e) {
-				LOG.warn("Unable to find a formater for bo class " + boClass + " and property " + propertyName);
+				LOG.warn("Unable to find a formater for bo class " + boClass + " and property " + boPropertyName);
 				// just swallow the exception and let formatter be null
 			}
 		}
@@ -986,7 +987,7 @@ public class ObjectUtils {
      * 
      * @return The field value if it exists. If it doesnt, and the name is invalid, and
      */
-    public static Object getNestedValue(BusinessObject bo, String fieldName) {
+    public static Object getNestedValue(Object bo, String fieldName) {
 
         if (bo == null) {
             throw new IllegalArgumentException("The bo passed in was null.");

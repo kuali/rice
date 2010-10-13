@@ -13,22 +13,22 @@
 -- See the License for the specific language governing permissions and
 -- limitations under the License.
 
-alter table KREW_DOC_HDR_T add (APP_DOC_STAT varchar2(64), APP_DOC_STAT_MDFN_DT date)
+alter table KREW_DOC_HDR_T add (APP_DOC_STAT varchar(64), APP_DOC_STAT_MDFN_DT date)
 /
 create index KREW_DOC_HDR_T10 on KREW_DOC_HDR_T (APP_DOC_STAT)
 /
 create index KREW_DOC_HDR_T12 on KREW_DOC_HDR_T (APP_DOC_STAT_MDFN_DT)
 /
-alter table KREW_DOC_TYP_PLCY_RELN_T add PLCY_VAL varchar2(64)
+alter table KREW_DOC_TYP_PLCY_RELN_T add PLCY_VAL varchar(64)
 /
-alter table KREW_RTE_NODE_T add NEXT_DOC_STAT varchar2(64)
+alter table KREW_RTE_NODE_T add NEXT_DOC_STAT varchar(64)
 /
 CREATE TABLE KREW_DOC_TYP_APP_DOC_STAT_T
 (
-      DOC_TYP_ID NUMBER(19)
-        , DOC_STAT_NM VARCHAR2(64)
-        , VER_NBR NUMBER(8) default 0
-        , OBJ_ID VARCHAR2(36) NOT NULL    
+      DOC_TYP_ID DECIMAL(19,0)
+        , DOC_STAT_NM varchar(64)
+        , VER_NBR DECIMAL(8,0) default 0
+        , OBJ_ID varchar(36) NOT NULL    
     , CONSTRAINT KREW_DOC_TYP_APP_DOC_STAT_TP1 PRIMARY KEY(DOC_TYP_ID,DOC_STAT_NM)
     , CONSTRAINT KREW_DOC_TYP_APP_DOC_STAT_TC0 UNIQUE (OBJ_ID)
 ) 
@@ -38,13 +38,13 @@ create index KREW_DOC_TYP_APP_DOC_STAT_T1 on KREW_DOC_TYP_APP_DOC_STAT_T(DOC_TYP
 
 CREATE TABLE KREW_APP_DOC_STAT_TRAN_T
 (
-      APP_DOC_STAT_TRAN_ID NUMBER(19) PRIMARY KEY,
-      DOC_HDR_ID NUMBER(14),
-      APP_DOC_STAT_FROM VARCHAR2(64),
-      APP_DOC_STAT_TO VARCHAR2(64),
+      APP_DOC_STAT_TRAN_ID DECIMAL(19,0) PRIMARY KEY,
+      DOC_HDR_ID DECIMAL(14,0),
+      APP_DOC_STAT_FROM varchar(64),
+      APP_DOC_STAT_TO varchar(64),
       STAT_TRANS_DATE DATE,
-      VER_NBR NUMBER(8) default 0,
-      OBJ_ID VARCHAR2(36) NOT NULL,
+      VER_NBR DECIMAL(8,0) default 0,
+      OBJ_ID varchar(36) NOT NULL,
       CONSTRAINT KREW_APP_DOC_STAT_TRAN_TC0 UNIQUE (OBJ_ID)
 )
 /
@@ -55,12 +55,18 @@ CREATE INDEX KREW_APP_DOC_STAT_TI2 ON KREW_APP_DOC_STAT_TRAN_T (DOC_HDR_ID, APP_
 CREATE INDEX KREW_APP_DOC_STAT_TI3 ON KREW_APP_DOC_STAT_TRAN_T (DOC_HDR_ID, APP_DOC_STAT_TO)
 / 
 
-create sequence krew_doc_lnk_s increment by 1 start with 2000 cache 20
+CREATE TABLE krew_doc_lnk_s (
+  id bigint(19) NOT NULL auto_increment,
+  PRIMARY KEY  (id)
+)
 /
+insert into krew_doc_lnk_s values (2000)
+/
+
 create table krew_doc_lnk_t(
-           DOC_LNK_ID NUMBER(19),
-           ORGN_DOC_ID NUMBER(14) NOT NULL,
-           DEST_DOC_ID NUMBER(14) NOT NULL,          
+           DOC_LNK_ID DECIMAL(19,0),
+           ORGN_DOC_ID DECIMAL(14,0) NOT NULL,
+           DEST_DOC_ID DECIMAL(14,0) NOT NULL, 
            CONSTRAINT KREW_DOC_LNK_TP1 PRIMARY KEY (DOC_LNK_ID)
 )
 /

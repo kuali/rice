@@ -174,9 +174,13 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 					}
 					field.setFieldType(fieldType);
 
-					//this is set to 30 in the jsp for standard fields, should this be a parameter?!
-					field.setMaxLength(30); // moved this here so the value can be altered below
-
+					//now calling the dd to get size.
+					Integer maxLen = dataDictionaryService.getAttributeMaxLength(DocSearchCriteriaDTO.class, propertyName);
+					if(maxLen != null)
+						field.setMaxLength(maxLen.intValue());
+					else
+						field.setMaxLength(40);
+					
 					//TODO: special processing for some field types
 					if(StringUtils.equals(StandardSearchCriteriaField.DROPDOWN,fieldType)||
 					   StringUtils.equals(StandardSearchCriteriaField.DROPDOWN_HIDE_EMPTY, fieldType)){
@@ -242,7 +246,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 					}
 
 
-					if(StringUtils.isEmpty(field.getFieldLabel())) {
+					if(StringUtils.isEmpty(field.getFieldLabel())) {						 
 						String labelMessageKey = dataDictionaryService.getAttributeLabel(DocSearchCriteriaDTO.class,propertyName);
 						field.setFieldLabel(labelMessageKey);
 					}

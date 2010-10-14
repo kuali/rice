@@ -572,9 +572,16 @@ public class StandardDocumentSearchResultProcessor implements
 				.put(
 						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID,
 						docCriteriaDTO.getRouteHeaderId());
-		alternateSort.put(
-				KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
-				docCriteriaDTO.getInitiatorTransposedName());
+		if (StringUtils.isNotBlank(docCriteriaDTO.getInitiatorTransposedName())) {
+		    alternateSort.put(
+				    KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
+				    docCriteriaDTO.getInitiatorTransposedName());
+		}
+		else {
+			alternateSort.put(
+					KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR,
+					docCriteriaDTO.getInitiatorWorkflowId());		
+		}
 		alternateSort
 				.put(
 						KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_DATE_CREATED,

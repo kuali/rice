@@ -39,14 +39,27 @@ public abstract class KimDefaultableEntityDataBase extends
 	 * @return the dflt
 	 */
 	public boolean isDefault() {
-		return this.dflt;
+		return isDflt();
 	}
 
 	/**
 	 * @param dflt the dflt to set
 	 */
 	public void setDefault(boolean dflt) {
-		this.dflt = dflt;
+		this.setDflt(dflt);
 	}
 
+	/**
+	 * @return the dflt
+	 */
+	public boolean isDflt() {
+		return this.dflt;
+	}
+
+	/**
+	 * @param dflt the dflt to set
+	 */
+	public void setDflt(boolean dflt) {
+		this.dflt = dflt;
+	}
 }

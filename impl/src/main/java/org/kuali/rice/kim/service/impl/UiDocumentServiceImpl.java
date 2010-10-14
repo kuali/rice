@@ -493,6 +493,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 				PersonDocumentGroup docGroup = new PersonDocumentGroup();
 				docGroup.setGroupId(group.getGroupId());
 				docGroup.setGroupName(group.getGroupName());
+				docGroup.setKimTypeId(group.getKimTypeId());
 				docGroup.setNamespaceCode(group.getNamespaceCode());
 				docGroup.setPrincipalId(identityManagementPersonDocument.getPrincipalId());
 				

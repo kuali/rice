@@ -176,10 +176,12 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 
 					//now calling the dd to get size.
 					Integer maxLen = dataDictionaryService.getAttributeMaxLength(DocSearchCriteriaDTO.class, propertyName);
-					if(maxLen != null)
+					if(maxLen != null){
 						field.setMaxLength(maxLen.intValue());
-					else
+					}
+					else{
 						field.setMaxLength(40);
+					}
 					
 					//TODO: special processing for some field types
 					if(StringUtils.equals(StandardSearchCriteriaField.DROPDOWN,fieldType)||

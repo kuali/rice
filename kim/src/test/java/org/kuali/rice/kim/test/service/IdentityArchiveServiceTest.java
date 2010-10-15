@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -36,6 +37,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
+@Ignore
 public class IdentityArchiveServiceTest extends KIMTestCase {
 
 	private IdentityArchiveService identityArchiveService;

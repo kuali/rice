@@ -144,7 +144,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         */
     }
 
-    @SuppressWarnings({ "unchecked", "null" })
+    @SuppressWarnings({ "unchecked" })
 	protected Map<String, String> buildRoleSearchCriteria(Map<String, String> fieldValues){
        	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
     	Map<String, String> searchCriteria;
@@ -158,7 +158,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         	}
         	else {
         		for (KimEntityInfo kimEntityInfo : kimEntityInfoList) {
-        			principals.addAll(kimEntityInfo.getPrincipals());
+        			principals = kimEntityInfo.getPrincipals();
         		}
         	}
         }

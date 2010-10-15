@@ -148,7 +148,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
 	protected Map<String, String> buildRoleSearchCriteria(Map<String, String> fieldValues){
        	String assignedToPrincipalName = fieldValues.get(ASSIGNED_TO_PRINCIPAL_NAME);
     	Map<String, String> searchCriteria;
-    	List<KimPrincipalInfo> principals = null;
+    	List<KimPrincipalInfo> principals = new ArrayList<KimPrincipalInfo>();
         if(StringUtils.isNotEmpty(assignedToPrincipalName)){
         	searchCriteria = new HashMap<String, String>();
         	searchCriteria.put("principalName", WILDCARD+assignedToPrincipalName+WILDCARD);
@@ -158,7 +158,9 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
         	}
         	else {
         		for (KimEntityInfo kimEntityInfo : kimEntityInfoList) {
-        			principals = kimEntityInfo.getPrincipals();
+        			if(kimEntityInfo.getPrincipals() != null){
+        				principals.addAll(kimEntityInfo.getPrincipals());
+        			}
         		}
         	}
         }

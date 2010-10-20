@@ -23,7 +23,7 @@
 	<bean id="riceDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
 		<property name="transactionManager" ref="jotm" />
 		<property name="driverClassName" value="${rice.datasource.driver.name}" />
-		<property name="url" value="$rice.{datasource.url}" />
+		<property name="url" value="${rice.datasource.url}" />
 		<property name="maxSize" value="${rice.datasource.pool.maxSize}" />
 		<property name="minSize" value="${rice.datasource.pool.minSize}" />
 		<property name="maxWait" value="${rice.datasource.pool.maxWait}" />

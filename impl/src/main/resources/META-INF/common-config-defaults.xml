@@ -124,8 +124,8 @@
     <param name="mail.relay.server" override="false">mail.relay.server</param>
     <param name="mailing.list.batch" override="false">mailing.list.batch</param>
 
-    <param name="javascript.files" override="false">kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
-    <param name="css.files" override="false">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css</param>
+    <param name="javascript.files" override="false">kr/scripts/jquery/jquery-1.4.2.js,kr/scripts/jquery/jquery-ui-1.8.5.js,kr/scripts/jquery/jquery.jgrowl.js,kr/scripts/jquery/jquery.watermark.js,kr/scripts/jquery/jquery.validate.js,kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js,kr/scripts/jquery_common.js</param>
+    <param name="css.files" override="false">kr/css/kuali.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css,kr/css/jquery-ui-1.8.5.css,kr/css/jquery.jgrowl.css</param>
 
     <param name="portal.css.files" override="false">rice-portal/css/portal.css</param>
     <param name="portal.javascript.files" override="false">kr/scripts/my_common.js</param>

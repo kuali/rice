@@ -317,9 +317,14 @@
 
                     <kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}"
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
-                        fieldLabel="${field.fieldLabel}" />
+                        fieldLabel="${field.fieldLabel}" fieldHelp="${field.fieldHelpSummary}"/>
 
                     <td class="grid" style="width:${dataCellWidth}%;">
+                    
+                        <c:set var="requiredClass" value=""/>
+                        <c:if test="${field.fieldRequired}">
+                          <c:set var="requiredClass" value="required"/>
+                        </c:if>
 
                         <c:choose>
 
@@ -335,7 +340,7 @@
                                     size='${field.size}'
                                     maxlength='${field.maxLength}'
                                     style="${textStyle}" ${onblurcall} ${onchangecall}
-                                    class="${field.styleClass}" tabIndex="${tabIndex}"/>
+                                    class="${field.styleClass} ${requiredClass}" tabIndex="${tabIndex}"/>
 
                                 <c:if test="${field.datePicker eq true}">
 

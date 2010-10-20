@@ -38,7 +38,7 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.kns.web.ui.HeaderField;
 
 /**
- * This class common properites for all action forms.
+ * This class common properties for all action forms.
  */
 public class KualiForm extends PojoFormBase {
     private static final long serialVersionUID = 1L;
@@ -68,6 +68,9 @@ public class KualiForm extends PojoFormBase {
     private int numColumns = 2;
     
     private String fieldNameToFocusOnAfterSubmit;
+    
+    // flags whether page is being rendered in a dialog
+    private boolean dialogMode = false;
     
     /**
      * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#addRequiredNonEditableProperties()
@@ -482,6 +485,14 @@ public class KualiForm extends PojoFormBase {
 	 */
 	public void setBackLocation(String backLocation) {
 		this.backLocation = backLocation;
+	}
+
+	public boolean isDialogMode() {
+		return this.dialogMode;
+	}
+
+	public void setDialogMode(boolean dialogMode) {
+		this.dialogMode = dialogMode;
 	}
 
 }

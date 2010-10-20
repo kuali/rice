@@ -114,6 +114,8 @@
     </div>
     <br/>
     </c:if>
+    
+   
 
 	<table width="100%">
 	  <c:if test="${KualiForm.lookupCriteriaEnabled}">
@@ -137,10 +139,9 @@
 					<td height="30" colspan="${headerColspan}"  class="infoline">
 					
 					<c:if test="${KualiForm.renderSearchButtons}">
-					  <html:image
+					  <html:submit
 						property="methodToCall.search" value="search"
-						src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_search.gif" styleClass="tinybutton"
-						alt="search" title="search" border="0" /> 
+						alt="search" title="search" /> 
 					  <html:image
 						property="methodToCall.clearValues" value="clearValues"
 						src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_clear.gif" styleClass="tinybutton"
@@ -315,4 +316,5 @@
 				height="20"></td>
 		</tr>
 	</table>
+	
 </kul:page>

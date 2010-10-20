@@ -90,6 +90,7 @@ public class LookupForm extends KualiForm {
     	registerRequiredNonEditableProperty("searchUsingOnlyPrimaryKeyValues");
     	registerRequiredNonEditableProperty(KNSConstants.MULTIPLE_VALUE_LOOKUP_PREVIOUSLY_SELECTED_OBJ_IDS_PARAM);
     	registerRequiredNonEditableProperty(KNSConstants.TableRenderConstants.VIEWED_PAGE_NUMBER);
+    	registerRequiredNonEditableProperty(KNSConstants.TableRenderConstants.DIALOG_MODE);
     }
     
     /**

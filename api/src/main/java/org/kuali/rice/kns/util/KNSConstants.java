@@ -558,6 +558,8 @@ public class KNSConstants extends JSTLConstants {
         // below field used on displayMultipleValueLookupResults.tag
         public static final String PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM = "previouslySortedColumnIndex";
         public static final String VIEWED_PAGE_NUMBER = "viewedPageNumber";
+        
+        public static final String DIALOG_MODE = "dialogMode";
     }
 
     public static final String TAB_STATES = "tabStates";

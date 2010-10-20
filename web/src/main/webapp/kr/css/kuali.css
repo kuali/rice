@@ -1162,4 +1162,8 @@ td.rightTd {
 	border-left:1px solid #000000; 
 	padding:3px; 
 	width:300px;
-}	
+}
+
+.watermark {
+   color: #999 !important;
+}

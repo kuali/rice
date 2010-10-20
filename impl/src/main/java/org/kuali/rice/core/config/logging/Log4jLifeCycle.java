@@ -62,11 +62,6 @@ public class Log4jLifeCycle extends BaseLifecycle {
     private static final int DEFAULT_RELOAD_INTERVAL = 5 * MINUTE; // 5 minutes
 
     /**
-     * Does file at LOG4J_SETTINGS_PATH exist?
-     */
-    private boolean log4jFileExists;
-
-    /**
      * Non-static and non-final so that it can be reset after configuration is read
      */
     private Logger log = Logger.getLogger(getClass());
@@ -75,7 +70,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
         // obtain the root workflow config
 		Config config = ConfigContext.getRootConfig();
 
-		log4jFileExists = checkPropertiesFileExists(config.getProperty(Config.LOG4J_SETTINGS_PATH));
+        boolean log4jFileExists = checkPropertiesFileExists(config.getProperty(Config.LOG4J_SETTINGS_PATH));
 
         // first check for in-line xml configuration
 		String log4jconfig = config.getProperty(Config.LOG4J_SETTINGS_XML);
@@ -109,7 +104,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
             String log4jReloadInterval = config.getProperty(Config.LOG4J_SETTINGS_RELOADINTERVAL_MINS);
 			if (log4jReloadInterval != null) {
 				try {
-                    reloadInterval = new Integer(log4jReloadInterval).intValue() * MINUTE;
+                    reloadInterval = Integer.parseInt(log4jReloadInterval) * MINUTE;
 				} catch (NumberFormatException nfe) {
 					log.warn("Invalid reload interval: " + log4jReloadInterval + ", using default: 5 minutes");
 				}
@@ -117,7 +112,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
 
             // if we are using a specific version of Log4j for which we have written subclasses that allow
             // variable substitution using core config, then use those custom classes to do so
-            // otherwise use the plain Spring Log4jConfigurer
+            // otherwise use the log4j api
             if ("1.2.13".equals(getLog4jVersion())) {
                 log.info("Using custom Log4j 1.2.13 configurer to make workflow config properties accessible");
                 // use custom impl based on 1.2.13 to insert workflow config properties for resolution
@@ -125,8 +120,10 @@ public class Log4jLifeCycle extends BaseLifecycle {
                 WorkflowLog4j_1_2_13_Configurer.initLoggingWithProperties(config.getProperties(), log4jconfig, reloadInterval);
             } else {
                 log.info("Using standard Spring Log4jConfigurer");
-                // just use standard Spring configurer
-                Log4jConfigurer.initLogging(log4jconfig, reloadInterval);
+                // just use standard log4j api
+                Properties p = new Properties();
+                p.load(getClass().getClassLoader().getResourceAsStream(log4jconfig));
+                PropertyConfigurator.configure(p);
             }
 
 			log = Logger.getLogger(getClass());
@@ -146,17 +143,17 @@ public class Log4jLifeCycle extends BaseLifecycle {
 	 */
 	private boolean checkPropertiesFileExists(String log4jSettingsPath) {
 		boolean exists;
-		
+
 		try {
 			exists = ResourceUtils.getFile(log4jSettingsPath).exists();
 		} catch (FileNotFoundException e) {
 			exists = false;
 		}
-		
+
 		if (!exists) {
 			System.out.println(LOG4J_FILE_NOT_FOUND + log4jSettingsPath);
 		}
-		
+
 		return exists;
 	}
 
@@ -197,7 +194,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
      * Subclasses the Log4j 1.2.13 PropertyConfigurator to add a static method which accepts an initial
      * set of properties (to use for variable substitution)
      */
-    protected static final class WorkflowLog4j_1_2_13_PropertyConfigurator extends PropertyConfigurator {
+    static final class WorkflowLog4j_1_2_13_PropertyConfigurator extends PropertyConfigurator {
         static public void configureAndWatch(final Properties initialProperties, String configFilename, long delay) {
             // cannot just use a subclass and pass the initial properties to constructor as the super constructor
             // is invoked before the properties member can be set, and doOnChange will be called from constructor

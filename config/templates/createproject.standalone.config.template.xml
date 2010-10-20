@@ -26,6 +26,10 @@
 	<param name="${PROJECT_NAME}.datasource.pool.size">5</param>
 	<param name="${PROJECT_NAME}.datasource.pool.maxSize">5</param>
 	<param name="${PROJECT_NAME}.datasource.pool.minSize">5</param>
+	<param name="${PROJECT_NAME}.datasource.pool.maxActive">${datasource.pool.maxActive}</param>
+	<param name="${PROJECT_NAME}.datasource.minIdle">${datasource.minIdle}</param>
+	<param name="${PROJECT_NAME}.datasource.initialSize">${datasource.initialSize}</param>
+	<param name="${PROJECT_NAME}.datasource.accessToUnderlyingConnectionAllowed">${datasource.accessToUnderlyingConnectionAllowed}</param>
 	
 	<!-- Rice datasource params -->
 	<param name="rice.datasource.url"></param>
@@ -36,7 +40,8 @@
 	<param name="rice.datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
 	<param name="rice.datasource.pool.validationQuery">select 1 from dual</param>
 	<param name="rice.datasource.pool.maxWait">30000</param>
-	<param name="rice.datasource.pool.size">5</param>
+	<param name="rice.datasource.pool.maxSize">5</param>
+	<param name="rice.datasource.pool.minSize">5</param>
 
 
 	<!--  runmodes -->

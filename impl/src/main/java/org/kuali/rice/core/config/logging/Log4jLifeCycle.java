@@ -119,18 +119,17 @@ public class Log4jLifeCycle extends BaseLifecycle {
 
                 WorkflowLog4j_1_2_13_Configurer.initLoggingWithProperties(config.getProperties(), log4jconfig, reloadInterval);
             } else {
-                log.info("Using standard Spring Log4jConfigurer");
+                log.info("Using standard Log4jConfigurer");
                 // just use standard log4j api
-                Properties p = new Properties();
-                p.load(getClass().getClassLoader().getResourceAsStream(log4jconfig));
-                PropertyConfigurator.configure(p);
+                PropertyConfigurator.configureAndWatch(log4jconfig, reloadInterval);
             }
 
 			log = Logger.getLogger(getClass());
         // finally fall back to a Log4J configuration shipped with workflow
 		} else {
-			Log4jConfigurer.initLogging(AUTOMATIC_LOGGING_CONFIG_URL, DEFAULT_RELOAD_INTERVAL);
-			log = Logger.getLogger(getClass());
+
+            PropertyConfigurator.configureAndWatch(AUTOMATIC_LOGGING_CONFIG_URL, DEFAULT_RELOAD_INTERVAL);
+            log = Logger.getLogger(getClass());
 		}
 		super.start();
 	}

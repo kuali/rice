@@ -27,9 +27,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanDefinitionVisitor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.util.StringValueResolver;
 
 /**
  * This PropertyPlaceholderConfigurer impl will load properties from the current ConfigContext.
@@ -80,12 +80,14 @@ public class RiceConfigPropertyPlaceholderConfigurer extends PropertyPlaceholder
         super.setBeanFactory(beanFactory);
     }
 
-//------------------------------------------------------------------------------------
-// begin spring 2.0 compatible impl
-//------------------------------------------------------------------------------------
+    // this has to be redeclared because private in the base with no getter
+    private String nullValue;
+    
     protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props) throws BeansException {
 
-        BeanDefinitionVisitor visitor = new PlaceholderResolvingBeanDefinitionVisitor(props);
+        StringValueResolver valueResolver = new PlaceholderResolvingStringValueResolver(props);
+        RiceConfigBeanDefinitionVisitor visitor = new RiceConfigBeanDefinitionVisitor(valueResolver);
+
         String[] beanNames = beanFactoryToProcess.getBeanDefinitionNames();
         for (int i = 0; i < beanNames.length; i++) {
             // Check that we're not parsing our own bean definition,
@@ -99,22 +101,26 @@ public class RiceConfigPropertyPlaceholderConfigurer extends PropertyPlaceholder
                 }
             }
         }
+
+        // New in Spring 2.5: resolve placeholders in alias target names and aliases as well.
+        beanFactoryToProcess.resolveAliases(valueResolver);
     }
-    
+
     /**
      * BeanDefinitionVisitor that resolves placeholders in String values, delegating to the <code>parseStringValue</code>
      * method of the containing class.
      */
-    public class PlaceholderResolvingBeanDefinitionVisitor extends RiceConfigBeanDefinitionVisitor {
+    public class PlaceholderResolvingStringValueResolver implements StringValueResolver {
 
         private final Properties props;
 
-        public PlaceholderResolvingBeanDefinitionVisitor(Properties props) {
+        public PlaceholderResolvingStringValueResolver(Properties props) {
             this.props = props;
         }
 
-        protected String resolveStringValue(String strVal) throws BeansException {
-            return parseStringValue(strVal, this.props, new HashSet());
+        public String resolveStringValue(String strVal) throws BeansException {
+            String value = parseStringValue(strVal, this.props, new HashSet<String>());
+            return (value.equals(nullValue) ? null : value);
         }
 
         public Properties resolvePropertiesValue(String strVal) {
@@ -130,82 +136,13 @@ public class RiceConfigPropertyPlaceholderConfigurer extends PropertyPlaceholder
 
             return prefixedProps;
         }
+
     }
-//------------------------------------------------------------------------------------
-// end spring 2.0 compatible impl
-//------------------------------------------------------------------------------------
-
-
-//------------------------------------------------------------------------------------
-// begin spring 2.5 compatible impl
-//------------------------------------------------------------------------------------
-//    
-//    // this has to be redeclared because private in the base with no getter
-//    private String nullValue;
-//    
-//    protected void processProperties(ConfigurableListableBeanFactory beanFactoryToProcess, Properties props) throws BeansException {
-//
-//        StringValueResolver valueResolver = new PlaceholderResolvingStringValueResolver(props);
-//        RiceConfigBeanDefinitionVisitor visitor = new RiceConfigBeanDefinitionVisitor(valueResolver);
-//
-//        String[] beanNames = beanFactoryToProcess.getBeanDefinitionNames();
-//        for (int i = 0; i < beanNames.length; i++) {
-//            // Check that we're not parsing our own bean definition,
-//            // to avoid failing on unresolvable placeholders in properties file locations.
-//            if (!(beanNames[i].equals(this.beanName) && beanFactoryToProcess.equals(this.beanFactory))) {
-//                BeanDefinition bd = beanFactoryToProcess.getBeanDefinition(beanNames[i]);
-//                try {
-//                    visitor.visitBeanDefinition(bd);
-//                } catch (BeanDefinitionStoreException ex) {
-//                    throw new BeanDefinitionStoreException(bd.getResourceDescription(), beanNames[i], ex.getMessage());
-//                }
-//            }
-//        }
-//
-//        // New in Spring 2.5: resolve placeholders in alias target names and aliases as well.
-//        beanFactoryToProcess.resolveAliases(valueResolver);
-//    }
-//
-//    /**
-//     * BeanDefinitionVisitor that resolves placeholders in String values, delegating to the <code>parseStringValue</code>
-//     * method of the containing class.
-//     */
-//    public class PlaceholderResolvingStringValueResolver implements StringValueResolver {
-//
-//        private final Properties props;
-//
-//        public PlaceholderResolvingStringValueResolver(Properties props) {
-//            this.props = props;
-//        }
-//
-//        public String resolveStringValue(String strVal) throws BeansException {
-//            String value = parseStringValue(strVal, this.props, new HashSet<String>());
-//            return (value.equals(nullValue) ? null : value);
-//        }
-//
-//        public Properties resolvePropertiesValue(String strVal) {
-//            Properties prefixedProps = new Properties();
-//
-//            for (Object key : props.keySet()) {
-//                String keyStr = (String) key;
-//                if (keyStr.startsWith(strVal)) {
-//                    String newKeyStr = keyStr.substring(strVal.length());
-//                    prefixedProps.put(newKeyStr, resolveStringValue((String) props.get(key)));
-//                }
-//            }
-//
-//            return prefixedProps;
-//        }
-//
-//    }
-//    
-//    @Override
-//    public void setNullValue(String nullValue) {
-//        this.nullValue = nullValue;
-//        super.setNullValue(nullValue);
-//    }
-//------------------------------------------------------------------------------------
-// end spring 2.5 compatible impl
-//------------------------------------------------------------------------------------
+    
+    @Override
+    public void setNullValue(String nullValue) {
+        this.nullValue = nullValue;
+        super.setNullValue(nullValue);
+    }
 
 }

@@ -59,6 +59,10 @@ public class WorkflowDocumentState implements EDLModelComponent {
 
 	private static final Logger LOG = Logger.getLogger(WorkflowDocumentState.class);
 
+	// The order the enum values are listed determines the order the buttons appear on the screen
+	private enum buttons{ACKNOWLEDGE, BLANKETAPPROVE, ROUTE, SAVE, COMPLETE, APPROVE, DISAPPROVE, 
+	    RETURNTOPREVIOUS, FYI, CANCEL};
+	
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
 
 		try {
@@ -135,62 +139,71 @@ public class WorkflowDocumentState implements EDLModelComponent {
 		}
 	}
 
-	public static List determineValidActions(WorkflowDocument wfdoc) throws WorkflowException {
-		if (wfdoc == null) {
-			List l = new ArrayList();
-			l.add(UserAction.ACTION_CREATE);
-			return l;
-		}
-		List list = new ArrayList();
-		if (wfdoc.isAcknowledgeRequested()) {
-			list.add(UserAction.ACTION_ACKNOWLEDGE);
-		}
-		if (wfdoc.isApprovalRequested()) {
-			list.add(UserAction.ACTION_APPROVE);
-			if (wfdoc.isBlanketApproveCapable()) {
-				list.add(UserAction.ACTION_BLANKETAPPROVE);
-			}
-			if (!wfdoc.stateIsSaved()){
-			list.add(UserAction.ACTION_DISAPPROVE);
-			}
-	 	 	//should invoke WorkflowDocument.saveRoutingData(...).
-			list.add(UserAction.ACTION_SAVE);
-			if (wfdoc.getPreviousNodeNames().length > 0) {
-				list.add(UserAction.ACTION_RETURN_TO_PREVIOUS);
-			}
-		}
-		if (wfdoc.isCompletionRequested()) {
-			list.add(UserAction.ACTION_COMPLETE);
-			if (wfdoc.isBlanketApproveCapable()) {// duplicating this because
-													// it determines display
-													// order. this is a
-													// limitation of the style
-													// sheet but most easily
-													// corrected here for now...
-				list.add(UserAction.ACTION_BLANKETAPPROVE);
-			}
-			list.add(UserAction.ACTION_CANCEL);
-		}
-		if (wfdoc.isFYIRequested()) {
-			list.add(UserAction.ACTION_FYI);
-		}
-		if (wfdoc.isRouteCapable()) {
-			list.add(UserAction.ACTION_ROUTE);
-			if (wfdoc.isBlanketApproveCapable()) {// duplicating this because
-													// it determines display
-													// order. this is a
-													// limitation of the style
-													// sheet but most easily
-													// corrected here for now...
-				list.add(UserAction.ACTION_BLANKETAPPROVE);
-			}
-			list.add(UserAction.ACTION_SAVE);
-			list.add(UserAction.ACTION_CANCEL);
-		}
-		return list;
-	}
+    public static List<String> determineValidActions(WorkflowDocument wfdoc) throws WorkflowException {
+        String[] flags = new String[10];
+        List<String> list = new ArrayList<String>();
+        
+        if (wfdoc == null) {
+            list.add(UserAction.ACTION_CREATE);
+            return list;
+        }
+        
+        if (wfdoc.isAcknowledgeRequested()) {
+            flags[buttons.ACKNOWLEDGE.ordinal()] = UserAction.ACTION_ACKNOWLEDGE;
+        }
+        
+        if (wfdoc.isApprovalRequested()) {
+            if (wfdoc.isBlanketApproveCapable()) {
+                flags[buttons.BLANKETAPPROVE.ordinal()] = UserAction.ACTION_BLANKETAPPROVE;
+            }
+            if (!wfdoc.stateIsSaved()) {
+                flags[buttons.APPROVE.ordinal()] = UserAction.ACTION_APPROVE;
+                flags[buttons.DISAPPROVE.ordinal()] = UserAction.ACTION_DISAPPROVE;
+            }
+            
+            // should invoke WorkflowDocument.saveRoutingData(...).
+            flags[buttons.SAVE.ordinal()] = UserAction.ACTION_SAVE;
+            if (wfdoc.getPreviousNodeNames().length > 0) {
+                flags[buttons.RETURNTOPREVIOUS.ordinal()] = UserAction.ACTION_RETURN_TO_PREVIOUS;
+            }
+        }
+        
+        // this will never happen, but left code in case this gets figured out later
+        // if allowed to execute save/approve and complete will both show
+        else if (wfdoc.isCompletionRequested()) {
+            flags[buttons.COMPLETE.ordinal()] = UserAction.ACTION_COMPLETE;
+            if (wfdoc.isBlanketApproveCapable()) {
+                flags[buttons.BLANKETAPPROVE.ordinal()] = UserAction.ACTION_BLANKETAPPROVE;
+            }
+        }
+        
+        if (wfdoc.isFYIRequested()) {
+            flags[buttons.FYI.ordinal()] = UserAction.ACTION_FYI;
+        }
+        
+        if (wfdoc.isRouteCapable()) {
+            flags[buttons.ROUTE.ordinal()] = UserAction.ACTION_ROUTE;
+            if (wfdoc.isBlanketApproveCapable()) {
+                flags[buttons.BLANKETAPPROVE.ordinal()] = UserAction.ACTION_BLANKETAPPROVE;
+            }
+        }
+        
+        if (wfdoc.isApprovalRequested() || wfdoc.isRouteCapable()) {
+            flags[buttons.SAVE.ordinal()] = UserAction.ACTION_SAVE;
+        }
+        
+        if (wfdoc.isCompletionRequested() || wfdoc.isRouteCapable()) {
+            flags[buttons.CANCEL.ordinal()] = UserAction.ACTION_CANCEL;
+        }
 
+        for (int i = 0; i < flags.length; i++) {
+            if (flags[i] != null) {
+                list.add(flags[i]);
+            }
+        }
 
+        return list;
+    }
 	
 	public static boolean isEditable(EDLContext edlContext, List actions) {
 	    boolean editable = false;

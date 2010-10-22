@@ -90,6 +90,8 @@
                           <c:if test="${primDelegateRequest.groupRequest}">
                               <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.GroupImpl" keyValues="groupId=${primDelegateRequest.groupId}" render="true"><c:out value="${primDelegateRequest.groupName}" /></kul:inquiry>
                           </c:if>
+                          &nbsp;
+                         <bean-el:message key="routeLog.ActionRequests.actionRequest.label.primaryDelegate"/>
                           <c:if test="${!empty primDelegateRequest.qualifiedRoleNameLabel}">
                             &nbsp;(<c:out value="${primDelegateRequest.qualifiedRoleNameLabel}" />)
                           </c:if>
@@ -98,6 +100,15 @@
                        </c:when>
                        <c:when test="${roleRequest.groupRequest}">
                           <kul:inquiry boClassName="org.kuali.rice.kim.bo.impl.GroupImpl" keyValues="groupId=${roleRequest.groupId}" render="true"><c:out value="${roleRequest.groupName}" /></kul:inquiry>
+                          &nbsp;
+                            <c:choose>
+                              <c:when test="${roleRequest.delegationType == KEWConstants.DELEGATION_SECONDARY}">
+                                <bean-el:message key="routeLog.ActionRequests.actionRequest.label.secondaryDelegate"/>
+                              </c:when>
+                              <c:when test="${roleRequest.delegationType == KEWConstants.DELEGATION_PRIMARY}">
+                                <bean-el:message key="routeLog.ActionRequests.actionRequest.label.primaryDelegate"/>
+                              </c:when>
+                            </c:choose>
                            <c:if test="${!empty actionRequest.qualifiedRoleNameLabel}">
                                &nbsp;(<c:out value="${actionRequest.qualifiedRoleNameLabel}" />)
                            </c:if>

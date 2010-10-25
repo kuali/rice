@@ -8,8 +8,11 @@
 
 	<!-- configure the rice standalone server url -->
 	<param name="rice.url">http://localhost:8080/kr-dev</param>
-	<param name="application.url">${application.http.scheme}://${application.host}:${http.port}/${module.name}-${environment}</param>
-
+	<param name="application.url">${application.http.scheme}://${application.host}:${http.port}/${app.context.name}</param>
+	<param name="workflow.url">${rice.url}/kew</param>
+	<param name="kew.url">${rice.url}/kew</param>
+	<param name="kim.url">${rice.url}/kim</param>
+	
 	<!-- Misc parameters -->
 	<param name="institution">iu</param>
 	<param name="version">03/19/2007 01:59 PM</param>

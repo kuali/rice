@@ -136,3 +136,15 @@ ALTER TABLE TRV_ACCT
     FOREIGN KEY (ACCT_FO_ID)
     REFERENCES TRV_ACCT_FO (ACCT_FO_ID)
 /
+# -----------------------------------------------------------------------------
+# -- TRAV_DOC_2_ACCOUNTS
+# -----------------------------------------------------------------------------
+drop table if exists TRAV_DOC_2_ACCOUNTS
+/
+CREATE TABLE TRAV_DOC_2_ACCOUNTS
+(
+      FDOC_NBR VARCHAR(14)
+        , ACCT_NUM VARCHAR(10)
+        , CONSTRAINT TRAV_DOC_2_ACCOUNTSP1 PRIMARY KEY(FDOC_NBR,ACCT_NUM)
+)
+/

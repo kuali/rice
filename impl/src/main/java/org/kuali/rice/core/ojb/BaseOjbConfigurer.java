@@ -129,7 +129,7 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
 
 
 
-    protected String getOjbPropertiesLocation() {
+    public static String getOjbPropertiesLocation() {
         String ojbPropertiesLocation = ConfigContext.getCurrentContextConfig().getProperty(RICE_OJB_PROPERTIES_PARAM);
         if (!StringUtils.isBlank(ojbPropertiesLocation)) {
             LOG.info("Using custom OJB.properites from: " + ojbPropertiesLocation);

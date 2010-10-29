@@ -34,6 +34,7 @@ import org.kuali.rice.core.config.logging.Log4jLifeCycle;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
@@ -91,18 +92,32 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#start()
 	 */
 	public void start() throws Exception {
-	    notify(new BeforeStartEvent());
-		initializeFullConfiguration();
-		initializeResourceLoaders();
-		super.start();
-		addModulesResourceLoaders();
-		if (getRootResourceLoader() != null	) {
-			if (!getRootResourceLoader().isStarted()) {
-				getRootResourceLoader().start();
-			}
-			GlobalResourceLoader.addResourceLoader(getRootResourceLoader());
-		}
-	}
+		  
+		  String currentValue = System.getProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP);
+		        try {
+		            System.setProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP, BaseOjbConfigurer.getOjbPropertiesLocation());
+		  
+		            notify(new BeforeStartEvent());
+		            initializeFullConfiguration();
+		            initializeResourceLoaders();
+		            super.start();
+		            addModulesResourceLoaders();
+		            if (getRootResourceLoader() != null ) {
+		             if (!getRootResourceLoader().isStarted()) {
+		              getRootResourceLoader().start();
+		             }
+		             GlobalResourceLoader.addResourceLoader(getRootResourceLoader());
+		            }
+		  
+		        } finally {
+		            if (currentValue == null) {
+		                System.getProperties().remove(BaseOjbConfigurer.OJB_PROPERTIES_PROP);
+		            } else {
+		                System.setProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP, currentValue);
+		            }
+		        }
+
+		 }
 	
 	/**
 	 * 

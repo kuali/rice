@@ -638,7 +638,11 @@ public class SectionBridge {
                                         if (subCollectionDefinition.hasSummaryField(fieldDefinition.getName())) {
                                             summaryFields.put(fieldDefinition.getName(), subCollField);
                                         }
-
+                                        
+                                        if (fieldDefinition.isReadOnlyAfterAdd()) {
+                                        	subCollField.setReadOnly(true);
+                                        }
+                                        
                                         subCollFields.add(subCollField);
                                     }
 

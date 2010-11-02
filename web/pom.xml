@@ -23,11 +23,6 @@
 	</parent>
 	<artifactId>rice-web</artifactId>
 	<packaging>war</packaging>
-	
-	<properties>
-		<!-- otherwise StandaloneInitializeListenerTest.testConfigInitialization fails -->
-		<surefire.useSystemClassLoader>true</surefire.useSystemClassLoader>
-	</properties>
 
 	<dependencies>
 		<dependency>

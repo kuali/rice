@@ -83,7 +83,6 @@
 
   <bean id="Country-postalCountryName-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="name" value="postalCountryName"/>
-    <property name="forceUppercase" value="true"/>
     <property name="label" value="Country Name"/>
     <property name="shortLabel" value="Country Name"/>
     <property name="maxLength" value="50"/>

@@ -992,7 +992,13 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 	        		docSearchRow.setInitiatorLastName(name.getDefaultEntityName().getLastName());
 	        		docSearchRow.setInitiatorName(name.getDefaultEntityName().getFormattedName());
 	        		docSearchRow.setInitiatorNetworkId(name.getPrincipalName());
-	        		docSearchRow.setInitiatorTransposedName(name.getDefaultEntityName().getFormattedName());
+					if (StringUtils.isNotBlank(name.getDefaultEntityName().getFormattedName())) {
+						docSearchRow.setInitiatorTransposedName(name.getDefaultEntityName().getFormattedName());
+					} else if (StringUtils.isNotBlank(name.getPrincipalName())) {
+						docSearchRow.setInitiatorTransposedName(name.getPrincipalName());
+					} else {
+						docSearchRow.setInitiatorTransposedName(docSearchRow.getInitiatorWorkflowId());
+					}
 	        		// it doesn't look like the doc search code even uses the initiator email address for anything
 	        		docSearchRow.setInitiatorEmailAddress("");
 	        	}

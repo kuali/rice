@@ -176,7 +176,7 @@
 					${docTitle}&nbsp;
 					<c:choose>
 						<c:when test="${!empty alternativeHelp}"> 
-							<kul:help documentTypeName="${KualiForm.docTypeName}" alternativeHelp="${alternativeHelp}" altText="document help"/>
+							<kul:help documentTypeName="${KualiForm.docTypeName}" alternativeHelp="${alternativeHelp}" altText="document help" />
 						</c:when>
 						<c:otherwise>
 							<c:if test="${showDocumentInfo}">
@@ -265,8 +265,8 @@
 			<div class="right">
 				<div class="excol">
 					<div class="lookupcreatenew">
-						<html:image property="methodToCall.showAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif" title="show all panel content" alt="show all panel content" styleClass="tinybutton" onclick="return expandAllTab();" />
-						<html:image property="methodToCall.hideAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif" title="hide all panel content" alt="hide all panel content" styleClass="tinybutton" onclick="return collapseAllTab();" />
+						<html:image property="methodToCall.showAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif" title="show all panel content" alt="show all panel content" styleClass="tinybutton" onclick="return expandAllTab();" tabindex="-1" />
+						<html:image property="methodToCall.hideAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif" title="hide all panel content" alt="hide all panel content" styleClass="tinybutton" onclick="return collapseAllTab();" tabindex="-1" />
 					</div>
 				</div>
 			</div>
@@ -327,8 +327,8 @@
 		         </c:forEach>
 	           </c:if>
 			   <c:if test="${showTabButtons != '' && showTabButtons == true}">
-				  <html:image property="methodToCall.showAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif" title="show all panel content" alt="show all panel content" styleClass="tinybutton" onclick="javascript: return expandAllTab(document, tabStatesSize); " />
-				  <html:image property="methodToCall.hideAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif" title="hide all panel content" alt="hide all panel content" styleClass="tinybutton" onclick="javascript: return collapseAllTab(document, tabStatesSize); " />
+				  <html:image property="methodToCall.showAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif" title="show all panel content" alt="show all panel content" styleClass="tinybutton" onclick="javascript: return expandAllTab(document, tabStatesSize); " tabindex="-1" />
+				  <html:image property="methodToCall.hideAllTabs" src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif" title="hide all panel content" alt="hide all panel content" styleClass="tinybutton" onclick="javascript: return collapseAllTab(document, tabStatesSize); " tabindex="-1" />
 		       </c:if>
 			   <c:if test="${renderRequiredFieldsLabel}" >
 				<br>* required field

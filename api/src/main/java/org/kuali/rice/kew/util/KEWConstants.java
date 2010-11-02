@@ -872,7 +872,6 @@ public class KEWConstants extends JSTLConstants {
 	public static final String KEYSTORE_ALIAS_HEADER = "KEW_KEYSTORE_ALIAS";
 
 	public static final int DEFAULT_TRANSACTION_TIMEOUT_SECONDS = 3600;
-	public static final int MAX_RETURNED_ROWS = 1000;
 
     public static final String HTML_NON_BREAKING_SPACE = "&nbsp;";
 

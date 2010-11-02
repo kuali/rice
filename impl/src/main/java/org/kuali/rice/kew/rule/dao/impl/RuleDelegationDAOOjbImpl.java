@@ -99,7 +99,6 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                                                                principalId, activeInd,
                                                                extensionValues, workflowIdDirective));
 
-        crit.addLessThanField("rownum", ((Integer)KEWConstants.MAX_RETURNED_ROWS).toString());
         return (List<RuleDelegation>) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit, true));
     }
 
@@ -130,8 +129,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                                                                ruleDescription, workgroupIds,
                                                                workflowId, activeInd,
                                                                extensionValues, actionRequestCodes));
-        crit.addLessThanField("rownum", ((Integer)KEWConstants.MAX_RETURNED_ROWS).toString());
-        return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit, true));
+       return (List) this.getPersistenceBrokerTemplate().getCollectionByQuery(new QueryByCriteria(RuleDelegation.class, crit, true));
     }
 
     private ReportQueryByCriteria getResponsibilitySubQuery(String ruleResponsibilityName) {

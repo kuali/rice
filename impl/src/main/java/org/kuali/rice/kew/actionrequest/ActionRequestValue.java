@@ -874,7 +874,7 @@ public class ActionRequestValue implements WorkflowPersistable {
      *
      * @return primary delgate requests
      */
-    public List<? super ActionRequestValue> getPrimaryDelegateRequests() {
+    public List<ActionRequestValue> getPrimaryDelegateRequests() {
         List<ActionRequestValue> primaryDelegateRequests = new ArrayList<ActionRequestValue>();
         for (ActionRequestValue childRequest : childrenRequests)
         {

@@ -1,6 +1,6 @@
 README.txt
 Kuali Rice 1.1.0
-February 5, 2010
+October 29, 2010
 
 
 Contents

@@ -344,6 +344,7 @@
           <bean parent="FieldDefinition" p:attributeName="assignedToPrincipal.principalId"/>
           <bean parent="FieldDefinition" p:attributeName="template.permissionTemplateId"/>
           <bean parent="FieldDefinition" p:attributeName="assignedToGroup.groupId"/>
+          <bean parent="FieldDefinition" p:attributeName="active" p:defaultValue="Y"/>
       </list>
     </property>
     <property name="resultFields">

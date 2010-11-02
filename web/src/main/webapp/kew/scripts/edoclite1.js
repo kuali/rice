@@ -320,6 +320,9 @@ function getFieldValue(fieldInputs) {
 		throw 'Problem determining field value for inputs, type was: ' + type;
 	}
 	else {
+	    if(fieldInputs[0].type == 'checkbox' && !fieldInputs[0].checked){
+			return null;
+		}
 		return fieldInputs[0].value;
 	}
 }

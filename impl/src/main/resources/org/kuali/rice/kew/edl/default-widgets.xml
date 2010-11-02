@@ -1525,7 +1525,7 @@
                   <xsl:param name="readOnly"/>
                   <xsl:if test="$globalReadOnly != 'true' and $readOnly != 'true'">
                     <xsl:if test="//fieldDef[@name=$fieldName]/lookup">
-                      <input name="userAction" value="performLookup.{$fieldName}" type="image" onclick="buttonClick('performLookup');" src="images/searchicon.gif"/>
+                      <input name="userAction.performLookup.{$fieldName}" value="performLookup.{$fieldName}" type="image" onclick="buttonClick('performLookup');" src="images/searchicon.gif"/>
                     </xsl:if>
                   </xsl:if>
                 </xsl:template>

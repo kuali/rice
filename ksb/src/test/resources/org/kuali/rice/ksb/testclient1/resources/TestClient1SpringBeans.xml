@@ -282,7 +282,4 @@
 			</bean>
 		</property>
 	</bean>
-
-    <bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
-
 </beans>

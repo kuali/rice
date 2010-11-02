@@ -24,7 +24,7 @@
     <artifactId>rice-ken</artifactId>
 
     <properties>
-    	<maven.skip.packaging>true</maven.skip.packaging>
+    	<maven.skip.packaging>false</maven.skip.packaging>
     </properties>
 
     <dependencies>

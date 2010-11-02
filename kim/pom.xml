@@ -25,7 +25,7 @@
     <artifactId>rice-kim</artifactId>
 
   <properties>
-  	<maven.skip.packaging>true</maven.skip.packaging>
+  	<maven.skip.packaging>false</maven.skip.packaging>
   	<maven.surefire.forkmode>always</maven.surefire.forkmode>
   	<maven.surefire.forkedProcessTimeoutInSeconds>300</maven.surefire.forkedProcessTimeoutInSeconds>
   </properties>

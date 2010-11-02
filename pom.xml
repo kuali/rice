@@ -140,7 +140,7 @@
 		<surefire.reportFormat>plain</surefire.reportFormat>
 		<!-- using the argLine since the environmentVariables tag is not working 
 		(ver 2.5 of this plugin) -->
-		<surefire.argLine>-Dalt.config.location="${alt.config.location}" -Xmx1536m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</surefire.argLine>
+		<surefire.argLine>-Dalt.config.location="${alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</surefire.argLine>
 		<surefire.report.1>report-only</surefire.report.1>
     	<cobertura.maven.plugin.version>2.4</cobertura.maven.plugin.version>
     	<cobertura.maven.plugin.format.1>html</cobertura.maven.plugin.format.1>

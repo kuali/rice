@@ -69,7 +69,7 @@
 		<commons-pool.version>1.5.5</commons-pool.version>
 		<commons-validator.version>1.3.1</commons-validator.version>
 		<connector-api.version>1.5</connector-api.version>
-		<cxf.version>2.3.0</cxf.version>
+		<cxf.version>2.2.11</cxf.version>
 		<db-ojb.version>1.0.4-patch4</db-ojb.version>
 		<displaytag.version>1.2</displaytag.version>
 		<!-- cannot update without rewriting the KualiDWRServlet -->
@@ -90,7 +90,7 @@
 		<jstl.version>1.2</jstl.version>
 		<jta.version>1.1</jta.version>
 		<!-- 4.8.2 is not in maven central repo -->
-		<junit.version>4.8.1</junit.version>
+		<junit.version>4.8.2</junit.version>
 		<log4j.version>1.2.16</log4j.version>
 		<mysql-connector-java.version>5.1.13</mysql-connector-java.version>
 		<ojdbc14.version>10.2.0.3.0</ojdbc14.version>
@@ -99,6 +99,7 @@
 		<persistence.version>1.0.0.Final</persistence.version>
 		<quartz.version>1.8.3</quartz.version>
 		<reflections.version>0.9.5-RC2</reflections.version>
+		<serializer.version>2.7.1</serializer.version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
@@ -240,9 +241,10 @@
 											<exclude>org.opensymphony.quartz</exclude>
 											<exclude>opensymphony:quartz</exclude>
 
-											<!-- jcl-over-slf4j is an alternate implementation of commons-logging 
-												- excluding commons-logging -->
+											<!-- jcl-over-slf4j is an alternate implementation of commons-logging - excluding commons-logging -->
 											<exclude>commons-logging</exclude>
+											<!-- already including a different jcl-over-slf4j -->
+											<exclude>org.slf4j:jcl104-over-slf4j</exclude>
 											<!-- already including cglib-nodep -->
 											<exclude>cglib:cglib</exclude>
 											<!-- already including the jdk16 version -->
@@ -499,6 +501,7 @@
 		<module>api</module>
 		<module>impl</module>
 		<module>web</module>
+		<module>devtools</module>
 		<module>sampleapp</module>
 		<module>ksb</module>
 		<module>kcb</module>
@@ -694,8 +697,8 @@
 				<version>${displaytag.version}</version>
 				<exclusions>
 					<exclusion>
-						<artifactId>commons-logging</artifactId>
-						<groupId>commons-logging</groupId>
+						<groupId>org.slf4j</groupId>
+						<artifactId>jcl104-over-slf4j</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>javax.servlet</groupId>
@@ -749,8 +752,6 @@
 				<scope>runtime</scope>
 			</dependency>
 
-			<!-- this is already included in the glassfish jsp jar
-			used by jetty but is required for packaging purposes -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>jstl</artifactId>
@@ -766,16 +767,12 @@
 				<scope>provided</scope>
 			</dependency>
 
-<!-- this should be included at provided scope once
-	 the embedded jetty in rice is extracted into a spearate module.
-	 Included in the glassfish jsp impl used by jetty.
 			<dependency>
 				<groupId>javax.servlet.jsp</groupId>
 				<artifactId>jsp-api</artifactId>
 				<version>${jsp-api.version}</version>
 				<scope>provided</scope>
 			</dependency>
--->
 
 			<dependency>
 				<groupId>javax.transaction</groupId>
@@ -801,6 +798,7 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
+				<scope>test</scope>
 			</dependency>
 
 			<dependency>
@@ -820,10 +818,15 @@
 				<groupId>net.sourceforge.htmlunit</groupId>
 				<artifactId>htmlunit</artifactId>
 				<version>${htmlunit.version}</version>
+				<scope>test</scope>
 				<exclusions>
 					<exclusion>
 						<artifactId>commons-logging</artifactId>
 						<groupId>commons-logging</groupId>
+					</exclusion>
+					<exclusion>
+						<groupId>xml-apis</groupId>
+						<artifactId>xml-apis</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -840,6 +843,10 @@
 					<exclusion>
 						<groupId>cglib</groupId>
 						<artifactId>cglib</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>xalan</groupId>
+						<artifactId>xalan</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>xml-apis</groupId>
@@ -1194,30 +1201,42 @@
 				<groupId>org.codehaus.groovy</groupId>
 				<artifactId>groovy</artifactId>
 				<version>${groovy.version}</version>
+				<scope>runtime</scope>
 			</dependency>
 
 			<dependency>
 			    <groupId>org.eclipse.jetty</groupId>
 			    <artifactId>jetty-deploy</artifactId>
 			    <version>${jetty.version}</version>
+			    <scope>test</scope>
 			</dependency>
 
 			<dependency>
 			    <groupId>org.eclipse.jetty</groupId>
 			    <artifactId>jetty-jsp-2.1</artifactId>
 			    <version>${jetty.version}</version>
+			    <scope>test</scope>
 			</dependency>
 			
 			<dependency>
 			    <groupId>org.eclipse.jetty</groupId>
 			    <artifactId>jetty-server</artifactId>
 			    <version>${jetty.version}</version>
+			    <scope>test</scope>
+			</dependency>
+			
+			<dependency>
+		    	<groupId>org.eclipse.jetty</groupId>
+		    	<artifactId>jetty-servlet</artifactId>
+		    	<version>${jetty.version}</version>
+		    	<scope>test</scope>
 			</dependency>
 			
 			<dependency>
 			    <groupId>org.eclipse.jetty</groupId>
 			    <artifactId>jetty-webapp</artifactId>
 			    <version>${jetty.version}</version>
+			    <scope>test</scope>
 			</dependency>
 
 			<dependency>
@@ -1280,6 +1299,7 @@
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jsp-2.1-glassfish</artifactId>
 				<version>${jsp-2.1-glassfish.version}</version>
+				<scope>test</scope>
 				<exclusions>
 					<exclusion>
 						<groupId>org.mortbay.jetty</groupId>
@@ -1426,7 +1446,17 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-
+			<dependency>
+				<groupId>xalan</groupId>
+				<artifactId>serializer</artifactId>
+				<version>${serializer.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>xml-apis</groupId>
+						<artifactId>xml-apis</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
 			<dependency>
 				<!-- groupid was changed to com.experlog in later versions -->
 				<groupId>xapool</groupId>
@@ -1440,6 +1470,7 @@
 				<groupId>xerces</groupId>
 				<artifactId>xercesImpl</artifactId>
 				<version>${xercesImpl.version}</version>
+				<scope>runtime</scope>
 				<exclusions>
 					<exclusion>
 						<groupId>xml-apis</groupId>

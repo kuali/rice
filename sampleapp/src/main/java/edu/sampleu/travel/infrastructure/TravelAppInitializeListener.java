@@ -21,10 +21,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.web.jetty.JettyServer;
 import org.springframework.util.Log4jConfigurer;
-
-import uk.ltd.getahead.dwr.util.LoggingOutput;
 
 /**
  * A ServletContextListener that fires up the Spring context.
@@ -47,7 +44,7 @@ public class TravelAppInitializeListener implements ServletContextListener {
 		    throw new RuntimeException("Failed to start sample application.", e);
 		}
 
-		Object o = sce.getServletContext().getAttribute(JettyServer.JETTYSERVER_TESTMODE_ATTRIB);
+		Object o = sce.getServletContext().getAttribute("JETTYSERVER_TESTMODE");
 		boolean testMode = false;
 		if (o != null) {
 		    testMode = Boolean.valueOf((String) o);

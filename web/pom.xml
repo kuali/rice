@@ -30,11 +30,20 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>rice-impl</artifactId>
 			<version>${project.version}</version>
+			<scope>test</scope>
 		</dependency>
+		<dependency>
+		  <groupId>${project.groupId}</groupId>
+		  <artifactId>rice-devtools</artifactId>
+		  <version>${project.version}</version>
+		  <scope>test</scope>
+		</dependency>
+		
         <dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>rice-sampleapp</artifactId>
 			<version>${project.version}</version>
+			<scope>test</scope>
 		</dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -49,6 +58,46 @@
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc14</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.sourceforge.htmlunit</groupId>
+            <artifactId>htmlunit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <scope>test</scope>
+        </dependency>       
    </dependencies>
 
 	<build>
@@ -72,23 +121,6 @@
                     </execution>
                 </executions>
             </plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-				    <!-- exclude the sample app files and the jars that we don't want to include -->
-				    <!-- this is a terrible way to do this because we will still be including many unnecessary transitive
-				         dependencies from these dependencies that are being excluded.  Proper scoping and modularity can
-				         make this not needed -->
-					<packagingExcludes>**/ojdbc14*.jar, **/mysql*.jar, **/junit*.jar, **/htmlunit*.jar, **/jetty*.jar, **/jsp*.jar, **/servlet*.jar</packagingExcludes>
-                    <webResources>
-                        <resource>
-                            <!-- Including the extracted help files -->
-                            <directory>${basedir}/target/help</directory>
-                        </resource>
-                    </webResources>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 

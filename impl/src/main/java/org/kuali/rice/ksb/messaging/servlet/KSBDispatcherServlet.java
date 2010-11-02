@@ -87,13 +87,13 @@ public class KSBDispatcherServlet extends DispatcherServlet {
 
         List<Interceptor<? extends Message>> inInterceptors = KSBServiceLocator.getInInterceptors();
         if(inInterceptors != null) {
-        	List<Interceptor<? extends Message>> busInInterceptors = bus.getInInterceptors();
+        	List<Interceptor> busInInterceptors = bus.getInInterceptors();
         	busInInterceptors.addAll(inInterceptors);
         }
        
         List<Interceptor<? extends Message>> outInterceptors = KSBServiceLocator.getOutInterceptors();
         if(outInterceptors != null) {
-        	List<Interceptor<? extends Message>> busOutInterceptors = bus.getOutInterceptors();
+        	List<Interceptor> busOutInterceptors = bus.getOutInterceptors();
         	busOutInterceptors.addAll(outInterceptors);
         }
         

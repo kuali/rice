@@ -124,11 +124,15 @@
     	
     	see https://cwiki.apache.org/MAVEN/maven-3x-and-site-plugin.html
     	-->
+    	<cobertura.maven.plugin.version>2.4</cobertura.maven.plugin.version>
+    	<cobertura.maven.plugin.format.1>html</cobertura.maven.plugin.format.1>
+		<cobertura.maven.plugin.format.2>xml</cobertura.maven.plugin.format.2>
     	<javadoc.plugin.version>2.7</javadoc.plugin.version>
     	<javadoc.aggregate>true</javadoc.aggregate>
 		<javadoc.maxmemory>512m</javadoc.maxmemory>
     	<project.info.reports.plugin.version>2.2</project.info.reports.plugin.version>
     	<project.info.reports.plugin.dependencyLocationsEnabled>false</project.info.reports.plugin.dependencyLocationsEnabled>
+    	<site.plugin.version>2.1.1</site.plugin.version>
     	<surefire.plugin.version>2.6</surefire.plugin.version>
 		<surefire.additionalClasspathElement.1>${mysql-connector-java.jar.location}</surefire.additionalClasspathElement.1>
 		<surefire.additionalClasspathElement.2>${ojdbc14.jar.location}</surefire.additionalClasspathElement.2>
@@ -142,9 +146,6 @@
 		(ver 2.5 of this plugin) -->
 		<surefire.argLine>-Dalt.config.location="${alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</surefire.argLine>
 		<surefire.report.1>report-only</surefire.report.1>
-    	<cobertura.maven.plugin.version>2.4</cobertura.maven.plugin.version>
-    	<cobertura.maven.plugin.format.1>html</cobertura.maven.plugin.format.1>
-		<cobertura.maven.plugin.format.2>xml</cobertura.maven.plugin.format.2>
 	</properties>
 
 	<build>
@@ -356,7 +357,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>2.1.1</version>
+					<version>${site.plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -1578,17 +1579,21 @@
 	    <profile>
 	      <id>maven-3</id>
 	      <activation>
-	        <file>
+	        <activeByDefault>false</activeByDefault>
+	        <!-- <file>-->
 	          <!--  This employs that the basedir expression is only recognized by Maven 3.x (see MNG-2363) -->
-	          <exists>${basedir}</exists>
-	        </file>
+	          <!-- <exists>${basedir}</exists>-->
+	        <!-- </file>-->
 	      </activation>
+	      <properties>
+	      	<site.plugin.version>3.0-beta-3</site.plugin.version>
+	      </properties>
 	      <build>
 	        <plugins>
 	          <plugin>
 	              <groupId>org.apache.maven.plugins</groupId>
 	              <artifactId>maven-site-plugin</artifactId>
-	              <version>3.0-beta-2</version>
+	              <version>${site.plugin.version}</version>
 	              <configuration>
 	              	<reportPlugins>
 	              		<!-- can the configuration of these plugins be place in the pluginManagement section for Maven 3? -->

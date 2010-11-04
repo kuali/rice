@@ -920,8 +920,7 @@
 		<site>
 			<id>rice-site</id>
 			<name>Rice Web Site</name>
-			<url>scp://rice.kuali.org:/opt/www/drupal/contents/rice/docs/${project.version}/site
-			</url>
+			<url>scp://www.kuali.org:/home/ubuntu/www/drupal/content/kuali/rice/docs/${project.version}/site</url>
 		</site>
 	</distributionManagement>
 </project>

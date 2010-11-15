@@ -35,9 +35,14 @@ PROJECT_PATH = PROJECT_DIR + '/' + PROJECT_NAME
 //get rice version from rice projects pom file
 def pom=new XmlSlurper().parse(new File("${RICE_DIR}/pom.xml"))
 riceVersion = pom.version.text()
+projectNameUpper = PROJECT_NAME.toUpperCase()
 
+if (SAMPLEAPP) {
+  projectNameUpper = "TRAVEL"
+}  
 TEMPLATE_BINDING = [
 	"\${PROJECT_NAME}":"$PROJECT_NAME",
+	"\${APP_NAMESPACE}":projectNameUpper,
 	"\${RICE_VERSION}":riceVersion,
 	"\${USER_HOME}":System.getProperty('user.home'),
 	"\${bootstrap.spring.file}":"SpringBeans.xml"

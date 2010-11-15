@@ -122,8 +122,6 @@
     <bean id="messageResource" class="org.kuali.rice.ksb.testclient1.MessageResourceImpl">
     	<property name="storage" ref="kmsStorage"/>
     </bean>
-
-	<bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
 	
 	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.security.credentials.CredentialsSourceFactory" />
 
@@ -282,7 +280,6 @@
 			</bean>
 		</property>
 	</bean>
-
-    <bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
-
+	
+	<bean id="cache" class="org.kuali.rice.ksb.messaging.RiceCacheExporterFactoryBean" />
 </beans>

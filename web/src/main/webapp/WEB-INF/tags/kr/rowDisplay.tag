@@ -81,7 +81,7 @@
             <c:set var="headerColspan" value="${numberOfColumns * 2}" />
             <c:set var="dataCellWidth" value="${100 / (numberOfColumns * ((isMaintenance || requestedAction eq 'addLine') ? 4 : 2))}" />
 
-            <c:set var="tabIndex" value="${KualiForm.currentTabIndex}"/>
+            <c:set var="tabIndex" value="0"/>
             <c:set var="dummyIncrementVar" value="${kfunc:incrementTabIndex(KualiForm, tabIndex)}" />
     
             <%--

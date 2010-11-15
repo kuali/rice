@@ -306,6 +306,7 @@
                             src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif"
                             title="show all panel content"
                             alt="show all panel content"
+                            tabindex="-1"
                             styleClass="tinybutton"
                             onclick="return expandAllTab();"
                         />
@@ -314,6 +315,7 @@
                             src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif"
                             title="hide all panel content"
                             alt="hide all panel content"
+                            tabindex="-1"
                             styleClass="tinybutton"
                             onclick="return collapseAllTab();"
                         />
@@ -412,6 +414,7 @@
                       src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif"
                       title="show all panel content"
                       alt="show all panel content"
+                      tabindex="-1"
                       styleClass="tinybutton"
                       onclick="javascript: return expandAllTab(document, tabStatesSize); "
                   />
@@ -420,6 +423,7 @@
                       src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif"
                       title="hide all panel content"
                       alt="hide all panel content"
+                      tabindex="-1"
                       styleClass="tinybutton"
                       onclick="javascript: return collapseAllTab(document, tabStatesSize); "
                   />

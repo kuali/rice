@@ -45,7 +45,6 @@ import javax.xml.transform.stream.StreamSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.xerces.jaxp.JAXPConstants;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.ken.bo.Notification;
@@ -72,6 +71,10 @@ import org.xml.sax.SAXParseException;
  */
 public final class Util {
     private static final Logger LOG = Logger.getLogger(Util.class);
+    
+    public static final java.lang.String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
+    public static final java.lang.String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
+    public static final java.lang.String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
     //public static final EntityResolver ENTITY_RESOLVER = new ClassLoaderEntityResolver("schema", "notification");
     public static final NamespaceContext NOTIFICATION_NAMESPACE_CONTEXT;
@@ -223,7 +226,7 @@ public final class Util {
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setValidating(validate);
         dbf.setNamespaceAware(namespaceAware);
-        dbf.setAttribute(JAXPConstants.JAXP_SCHEMA_LANGUAGE, JAXPConstants.W3C_XML_SCHEMA);
+        dbf.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
         DocumentBuilder db = dbf.newDocumentBuilder();
         if (entityResolver != null) {
             db.setEntityResolver(entityResolver);

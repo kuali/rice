@@ -27,6 +27,4 @@
 	<param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
 	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
 	<param name="config.location">${alt.config.location}</param>
-	<!-- this is used for the testharness test -->
-	<param name="rice.test.case.test">test</param>
 </config>

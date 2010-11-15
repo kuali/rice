@@ -25,20 +25,22 @@
   <artifactId>rice-kew</artifactId>
 
   <properties>
-  	<maven.skip.packaging>true</maven.skip.packaging>
+  	<maven.skip.packaging>false</maven.skip.packaging>
   </properties>
 
   <dependencies>
- 	<dependency>
-		<groupId>xmlunit</groupId>
-		<artifactId>xmlunit</artifactId>
-		<version>1.3</version>
-	</dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>rice-impl</artifactId>
       <version>${project.version}</version>
+      <scope>test</scope>
     </dependency>
+    <dependency>
+	     <groupId>${project.groupId}</groupId>
+	      <artifactId>rice-devtools</artifactId>
+	      <version>${project.version}</version>
+	      <scope>test</scope>
+	</dependency>
     <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
@@ -52,6 +54,126 @@
       <artifactId>spring-test</artifactId>
       <scope>test</scope>
     </dependency>
+  	<dependency>
+		<groupId>org.codehaus.groovy</groupId>
+		<artifactId>groovy</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.hibernate.javax.persistence</groupId>
+		<artifactId>hibernate-jpa-2.0-api</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>commons-beanutils</groupId>
+		<artifactId>commons-beanutils</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-rt-frontend-jaxws</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>log4j</groupId>
+		<artifactId>log4j</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-tx</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.jdom</groupId>
+		<artifactId>jdom</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>bsf</groupId>
+		<artifactId>bsf</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>javax.servlet</groupId>
+		<artifactId>servlet-api</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>commons-collections</groupId>
+		<artifactId>commons-collections</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.struts</groupId>
+		<artifactId>struts-core</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context-support</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.springmodules</groupId>
+		<artifactId>spring-modules-ojb</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-core</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-context</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.apache.cxf</groupId>
+		<artifactId>cxf-rt-frontend-simple</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>commons-lang</groupId>
+		<artifactId>commons-lang</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>junit</groupId>
+		<artifactId>junit</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>commons-io</groupId>
+		<artifactId>commons-io</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-beans</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework</groupId>
+		<artifactId>spring-jdbc</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>org.slf4j</groupId>
+		<artifactId>jcl-over-slf4j</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>javax.mail</groupId>
+		<artifactId>mail</artifactId>
+		<scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>xalan</groupId>
+		<artifactId>serializer</artifactId>
+		<scope>test</scope>
+	</dependency>
   </dependencies>
 
 </project>

@@ -143,7 +143,8 @@
     <property name="name" value="docTypeFullName"/>
     <property name="label" value="Type"/>
     <property name="shortLabel" value="Type"/>
-
+    <property name="maxLength" value="255"/>
+    
     <property name="control">
     	<bean parent="TextControlDefinition" p:size="20"/>
     </property>

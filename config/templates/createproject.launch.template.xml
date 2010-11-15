@@ -16,7 +16,7 @@
 -->
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.kuali.rice.core.web.jetty.JettyServer"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="8080 &quot;/${PROJECT_NAME}-dev&quot; &quot;/src/main/webapp&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="8082 &quot;/${PROJECT_NAME}-dev&quot; &quot;/src/main/webapp&quot;"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
 <listEntry value="4"/>
 </listAttribute>

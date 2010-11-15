@@ -33,7 +33,7 @@
     </property>
 
 
-    <property name="documentTypeName" value="FiscalOfficerMaintenanceDocument"/>
+    <property name="documentTypeName" value="RiceDocument"/>
     <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
 
 

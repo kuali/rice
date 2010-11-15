@@ -64,25 +64,25 @@
 		<commons-dbcp.version>1.4</commons-dbcp.version>
 		<commons-fileupload.version>1.2.2</commons-fileupload.version>
 		<commons-httpclient.version>3.1</commons-httpclient.version>
-		<commons-io.version>1.4</commons-io.version>
+		<commons-io.version>2.0</commons-io.version>
 		<commons-lang.version>2.5</commons-lang.version>
 		<commons-pool.version>1.5.5</commons-pool.version>
 		<commons-validator.version>1.3.1</commons-validator.version>
 		<connector-api.version>1.5</connector-api.version>
-		<cxf.version>2.3.0</cxf.version>
+		<cxf.version>2.2.11</cxf.version>
 		<db-ojb.version>1.0.4-patch4</db-ojb.version>
 		<displaytag.version>1.2</displaytag.version>
 		<!-- cannot update without rewriting the KualiDWRServlet -->
 		<dwr.version>1.1.3</dwr.version>
 		<groovy.version>1.7.5</groovy.version>
-		<hibernate.version>3.5.6-Final</hibernate.version>
+		<hibernate.version>3.6.0.Final</hibernate.version>
 		<htmlunit.version>2.8</htmlunit.version>
 		<!-- 1.4.3 is not in maven central repo -->
 		<mail.version>1.4.1</mail.version>
 		<jaxen.version>1.1.1</jaxen.version>
 		<!-- 1.1.1 is not in maven central repo -->
 		<jdom.version>1.1</jdom.version>
-		<jetty.version>7.1.6.v20100715</jetty.version>
+		<jetty.version>7.2.0.v20101020</jetty.version>
 		<jotm.version>2.1.9</jotm.version>
 		<jsp-2.1-glassfish.version>2.1.v20100127</jsp-2.1-glassfish.version>
 		<jsp-api.version>2.1</jsp-api.version>
@@ -90,7 +90,7 @@
 		<jstl.version>1.2</jstl.version>
 		<jta.version>1.1</jta.version>
 		<!-- 4.8.2 is not in maven central repo -->
-		<junit.version>4.8.1</junit.version>
+		<junit.version>4.8.2</junit.version>
 		<log4j.version>1.2.16</log4j.version>
 		<mysql-connector-java.version>5.1.13</mysql-connector-java.version>
 		<ojdbc14.version>10.2.0.3.0</ojdbc14.version>
@@ -99,10 +99,11 @@
 		<persistence.version>1.0.0.Final</persistence.version>
 		<quartz.version>1.8.3</quartz.version>
 		<reflections.version>0.9.5-RC2</reflections.version>
+		<serializer.version>2.7.1</serializer.version>
 		<servlet-api.version>2.5</servlet-api.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<spring-modules-ojb.version>0.8a</spring-modules-ojb.version>
-		<spring.version>3.0.4.RELEASE</spring.version>
+		<spring.version>3.0.5.RELEASE</spring.version>
 		<standard.version>1.1.2</standard.version>
 		<struts.version>1.3.10</struts.version>
 		<xapool.version>1.5.0-patch3</xapool.version>
@@ -123,11 +124,15 @@
     	
     	see https://cwiki.apache.org/MAVEN/maven-3x-and-site-plugin.html
     	-->
+    	<cobertura.maven.plugin.version>2.4</cobertura.maven.plugin.version>
+    	<cobertura.maven.plugin.format.1>html</cobertura.maven.plugin.format.1>
+		<cobertura.maven.plugin.format.2>xml</cobertura.maven.plugin.format.2>
     	<javadoc.plugin.version>2.7</javadoc.plugin.version>
     	<javadoc.aggregate>true</javadoc.aggregate>
 		<javadoc.maxmemory>512m</javadoc.maxmemory>
     	<project.info.reports.plugin.version>2.2</project.info.reports.plugin.version>
     	<project.info.reports.plugin.dependencyLocationsEnabled>false</project.info.reports.plugin.dependencyLocationsEnabled>
+    	<site.plugin.version>2.1.1</site.plugin.version>
     	<surefire.plugin.version>2.6</surefire.plugin.version>
 		<surefire.additionalClasspathElement.1>${mysql-connector-java.jar.location}</surefire.additionalClasspathElement.1>
 		<surefire.additionalClasspathElement.2>${ojdbc14.jar.location}</surefire.additionalClasspathElement.2>
@@ -139,11 +144,8 @@
 		<surefire.reportFormat>plain</surefire.reportFormat>
 		<!-- using the argLine since the environmentVariables tag is not working 
 		(ver 2.5 of this plugin) -->
-		<surefire.argLine>-Dalt.config.location="${alt.config.location}" -Xmx1536m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</surefire.argLine>
+		<surefire.argLine>-Dalt.config.location="${alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</surefire.argLine>
 		<surefire.report.1>report-only</surefire.report.1>
-    	<cobertura.maven.plugin.version>2.4</cobertura.maven.plugin.version>
-    	<cobertura.maven.plugin.format.1>html</cobertura.maven.plugin.format.1>
-		<cobertura.maven.plugin.format.2>xml</cobertura.maven.plugin.format.2>
 	</properties>
 
 	<build>
@@ -240,9 +242,13 @@
 											<exclude>org.opensymphony.quartz</exclude>
 											<exclude>opensymphony:quartz</exclude>
 
-											<!-- jcl-over-slf4j is an alternate implementation of commons-logging 
-												- excluding commons-logging -->
+											<!-- jcl-over-slf4j is an alternate implementation of commons-logging - excluding commons-logging -->
 											<exclude>commons-logging</exclude>
+											<!-- already including a different jcl-over-slf4j -->
+											<exclude>org.slf4j:jcl104-over-slf4j</exclude>
+											<!-- excluding all slf4j -->
+											<exclude>org.slf4j</exclude>
+											
 											<!-- already including cglib-nodep -->
 											<exclude>cglib:cglib</exclude>
 											<!-- already including the jdk16 version -->
@@ -328,7 +334,8 @@
 
 										<includes>									
 											<!-- only allow in this specific version -->
-											<include>javax.servlet:jstl:1.2</include>
+											<include>javax.servlet:jstl:${jstl.version}</include>
+											<include>org.slf4j:*:${slf4j.version}</include>
 										</includes>
 									</bannedDependencies>
 								</rules>
@@ -350,7 +357,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-site-plugin</artifactId>
-					<version>2.1.1</version>
+					<version>${site.plugin.version}</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -499,6 +506,7 @@
 		<module>api</module>
 		<module>impl</module>
 		<module>web</module>
+		<module>devtools</module>
 		<module>sampleapp</module>
 		<module>ksb</module>
 		<module>kcb</module>
@@ -694,8 +702,12 @@
 				<version>${displaytag.version}</version>
 				<exclusions>
 					<exclusion>
-						<artifactId>commons-logging</artifactId>
-						<groupId>commons-logging</groupId>
+     					<groupId>org.slf4j</groupId>
+      					<artifactId>slf4j-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>jcl104-over-slf4j</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>javax.servlet</groupId>
@@ -749,8 +761,6 @@
 				<scope>runtime</scope>
 			</dependency>
 
-			<!-- this is already included in the glassfish jsp jar
-			used by jetty but is required for packaging purposes -->
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>jstl</artifactId>
@@ -766,16 +776,12 @@
 				<scope>provided</scope>
 			</dependency>
 
-<!-- this should be included at provided scope once
-	 the embedded jetty in rice is extracted into a spearate module.
-	 Included in the glassfish jsp impl used by jetty.
 			<dependency>
 				<groupId>javax.servlet.jsp</groupId>
 				<artifactId>jsp-api</artifactId>
 				<version>${jsp-api.version}</version>
 				<scope>provided</scope>
 			</dependency>
--->
 
 			<dependency>
 				<groupId>javax.transaction</groupId>
@@ -801,6 +807,7 @@
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
 				<version>${junit.version}</version>
+				<scope>test</scope>
 			</dependency>
 
 			<dependency>
@@ -820,10 +827,15 @@
 				<groupId>net.sourceforge.htmlunit</groupId>
 				<artifactId>htmlunit</artifactId>
 				<version>${htmlunit.version}</version>
+				<scope>test</scope>
 				<exclusions>
 					<exclusion>
 						<artifactId>commons-logging</artifactId>
 						<groupId>commons-logging</groupId>
+					</exclusion>
+					<exclusion>
+						<groupId>xml-apis</groupId>
+						<artifactId>xml-apis</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -840,6 +852,10 @@
 					<exclusion>
 						<groupId>cglib</groupId>
 						<artifactId>cglib</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>xalan</groupId>
+						<artifactId>xalan</artifactId>
 					</exclusion>
 					<exclusion>
 						<groupId>xml-apis</groupId>
@@ -1194,36 +1210,42 @@
 				<groupId>org.codehaus.groovy</groupId>
 				<artifactId>groovy</artifactId>
 				<version>${groovy.version}</version>
+				<scope>runtime</scope>
 			</dependency>
 
 			<dependency>
 			    <groupId>org.eclipse.jetty</groupId>
 			    <artifactId>jetty-deploy</artifactId>
 			    <version>${jetty.version}</version>
+			    <scope>test</scope>
 			</dependency>
 
 			<dependency>
 			    <groupId>org.eclipse.jetty</groupId>
 			    <artifactId>jetty-jsp-2.1</artifactId>
 			    <version>${jetty.version}</version>
+			    <scope>test</scope>
 			</dependency>
 			
 			<dependency>
 			    <groupId>org.eclipse.jetty</groupId>
 			    <artifactId>jetty-server</artifactId>
 			    <version>${jetty.version}</version>
+			    <scope>test</scope>
+			</dependency>
+			
+			<dependency>
+		    	<groupId>org.eclipse.jetty</groupId>
+		    	<artifactId>jetty-servlet</artifactId>
+		    	<version>${jetty.version}</version>
+		    	<scope>test</scope>
 			</dependency>
 			
 			<dependency>
 			    <groupId>org.eclipse.jetty</groupId>
 			    <artifactId>jetty-webapp</artifactId>
 			    <version>${jetty.version}</version>
-			</dependency>
-
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-annotations</artifactId>
-				<version>${hibernate.version}</version>
+			    <scope>test</scope>
 			</dependency>
 
 			<dependency>
@@ -1280,6 +1302,7 @@
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jsp-2.1-glassfish</artifactId>
 				<version>${jsp-2.1-glassfish.version}</version>
+				<scope>test</scope>
 				<exclusions>
 					<exclusion>
 						<groupId>org.mortbay.jetty</groupId>
@@ -1292,6 +1315,12 @@
 				<groupId>org.quartz-scheduler</groupId>
 				<artifactId>quartz</artifactId>
 				<version>${quartz.version}</version>
+				<exclusions>
+					<exclusion>
+     					<groupId>org.slf4j</groupId>
+      					<artifactId>slf4j-api</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 
 			<dependency>
@@ -1302,6 +1331,10 @@
 					<exclusion>
 						<groupId>ch.qos.logback</groupId>
 						<artifactId>logback-classic</artifactId>
+					</exclusion>
+					<exclusion>
+     					<groupId>org.slf4j</groupId>
+      					<artifactId>slf4j-api</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -1316,6 +1349,7 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
 				<version>${slf4j.version}</version>
+				<scope>runtime</scope>
 			</dependency>
 
 			<dependency>
@@ -1426,7 +1460,17 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-
+			<dependency>
+				<groupId>xalan</groupId>
+				<artifactId>serializer</artifactId>
+				<version>${serializer.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>xml-apis</groupId>
+						<artifactId>xml-apis</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
 			<dependency>
 				<!-- groupid was changed to com.experlog in later versions -->
 				<groupId>xapool</groupId>
@@ -1440,6 +1484,7 @@
 				<groupId>xerces</groupId>
 				<artifactId>xercesImpl</artifactId>
 				<version>${xercesImpl.version}</version>
+				<scope>runtime</scope>
 				<exclusions>
 					<exclusion>
 						<groupId>xml-apis</groupId>
@@ -1534,17 +1579,21 @@
 	    <profile>
 	      <id>maven-3</id>
 	      <activation>
-	        <file>
+	        <activeByDefault>false</activeByDefault>
+	        <!-- <file>-->
 	          <!--  This employs that the basedir expression is only recognized by Maven 3.x (see MNG-2363) -->
-	          <exists>${basedir}</exists>
-	        </file>
+	          <!-- <exists>${basedir}</exists>-->
+	        <!-- </file>-->
 	      </activation>
+	      <properties>
+	      	<site.plugin.version>3.0-beta-3</site.plugin.version>
+	      </properties>
 	      <build>
 	        <plugins>
 	          <plugin>
 	              <groupId>org.apache.maven.plugins</groupId>
 	              <artifactId>maven-site-plugin</artifactId>
-	              <version>3.0-beta-2</version>
+	              <version>${site.plugin.version}</version>
 	              <configuration>
 	              	<reportPlugins>
 	              		<!-- can the configuration of these plugins be place in the pluginManagement section for Maven 3? -->
@@ -1626,7 +1675,7 @@
 		<site>
 			<id>rice-site</id>
 			<name>Rice Web Site</name>
-			<url>scp://rice.kuali.org:/opt/www/drupal/contents/rice/docs/${project.version}/site</url>
+			<url>scp://www.kuali.org:/home/ubuntu/www/drupal/content/kuali/rice/docs/${project.version}/site</url>
 		</site>
 	</distributionManagement>
 </project>

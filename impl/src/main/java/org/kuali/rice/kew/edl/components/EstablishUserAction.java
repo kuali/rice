@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.edl.components;
 
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLModelComponent;
@@ -43,7 +45,27 @@ public class EstablishUserAction implements EDLModelComponent {
     
     public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
 	RequestParser requestParser = edlContext.getRequestParser();
+
+	List<String> params = requestParser.getParameterNames();
+	
+	/**
+	 * IE does not process image buttons in the same way as other browsers. If you have 
+	 *   <input name="userAction" value="performAction.unit_1" type=image src="images/searchicon.gif"/>
+	 *   The actual request parameters that are sent are: userAction.x=9; userAction.y=22. The numbers
+	 *   correspond to the location of the button on the screen. NO OTHER DATA IS SENT.  So in order 
+	 *   for this to work for IE we need to change the name to include the value of userAction.
+	 *   So we're now sending
+	 *   <input name="userAction.performLookup.unit_1" value="This no longer matters" type=image src="images/searchicon.gif"/>
+	 *   So we now need to parse out the userAction, the action, and the value. Which is what happens below.
+	 *   The end result is a new parameter "userAction=performLookup.unit_1". 
+	 */
+	for(String param: params){
+		if(param.startsWith("userAction.performLookup") && param.endsWith(".y")){			
+			requestParser.setParameterValue(USER_ACTION_PARAM, param.substring("userAction.".length(), param.length()-2));
+		}
+	}
 	String userAction = requestParser.getParameterValue(USER_ACTION_PARAM);
+
 	if (StringUtils.isEmpty(userAction)) {
 	    String command = requestParser.getParameterValue(COMMAND_PARAM);
 	    if (!StringUtils.isEmpty(command)) {

@@ -30,6 +30,7 @@ import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
@@ -195,16 +196,17 @@ public class InquiryForm extends KualiForm {
 	                if (request.getParameter(pkParamName) != null) {
 	                	foundCount++;
 	                	String parameter = request.getParameter(pkParamName);
-
-
+                        
                         Boolean forceUppercase = Boolean.FALSE;
-                        // this throws org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException
-                        try{
-                        forceUppercase = dataDictionaryService.getAttributeForceUppercase(businessObjectClass, pkParamName);
+                        try {
+                            forceUppercase = dataDictionaryService.getAttributeForceUppercase(businessObjectClass, boKey);
+                        } catch (UnknownBusinessClassAttributeException ex) {
+                            // swallowing exception because this check for ForceUppercase would
+                            // require a DD entry for the attribute.  it is only checking keys
+                            // so most likely there should be an entry.
+                            LOG.warn("BO class " + businessObjectClassName + " property " + boKey + " should probably have a DD definition.", ex);
                         }
-                        catch(Exception e){
-                          LOG.error("Can't instantiate class: " + boClassName, e);
-                        }
+                        
                         if (forceUppercase) {
 	                		parameter = parameter.toUpperCase();
 	                	}

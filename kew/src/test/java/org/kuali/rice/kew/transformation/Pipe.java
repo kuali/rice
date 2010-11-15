@@ -29,6 +29,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.apache.xml.serializer.OutputPropertiesFactory;
 import org.apache.xml.serializer.Serializer;
 import org.apache.xml.serializer.SerializerFactory;
+import org.junit.Test;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -42,6 +43,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
    */
 public class Pipe extends KEWTestCase
 {
+	@Test
 	public void testPipe()
 	throws TransformerException, TransformerConfigurationException, 
          SAXException, IOException	   

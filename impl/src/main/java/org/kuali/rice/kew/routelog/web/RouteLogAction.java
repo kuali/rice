@@ -129,7 +129,7 @@ public class RouteLogAction extends KewKualiAction {
 	public void populateRouteLogFormActionRequests(RouteLogForm rlForm, DocumentRouteHeaderValue routeHeader) {
         List<ActionRequestValue> rootRequests = getActionRequestService().getRootRequests(routeHeader.getActionRequests());
         Collections.sort(rootRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
-        
+        rootRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(rootRequests);
         int arCount = 0;
         for ( ActionRequestValue actionRequest : rootRequests ) {
             if (actionRequest.isPending()) {
@@ -145,29 +145,51 @@ public class RouteLogAction extends KewKualiAction {
         rlForm.setRootRequests(rootRequests);
         rlForm.setPendingActionRequestCount(arCount);
     }
-    
-    @SuppressWarnings("unchecked")
-    private void fixActionRequestsPositions(DocumentRouteHeaderValue routeHeader) {
-        for (ActionTakenValue actionTaken : routeHeader.getActionsTaken()) {
-            Collections.sort((List<ActionRequestValue>) actionTaken.getActionRequests(), ROUTE_LOG_ACTION_REQUEST_SORTER);
-            actionTaken.setActionRequests( actionTaken.getActionRequests() );
-        }
-    }
 
     @SuppressWarnings("unchecked")
 	private ActionRequestValue switchActionRequestPositionIfPrimaryDelegatePresent( ActionRequestValue actionRequest ) {
-    	List<? super ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
-    	if ( primaryDelegateRequests.isEmpty() ) {
-    		return actionRequest;
+    	
+    	/**
+    	 * KULRICE-4756 - The main goal here is to fix the regression of what happened in Rice 1.0.2 with the display
+    	 * of primary delegate requests.  The delegate is displayed at the top-most level correctly on action requests
+    	 * that are "rooted" at a "role" request.
+    	 * 
+    	 * If they are rooted at a principal or group request, then the display of the primary delegator at the top-most
+    	 * level does not happen (instead it shows the delegator and you have to expand the request to see the primary
+    	 * delegate).
+    	 * 
+    	 * Ultimately, the KAI group and Rice BA need to come up with a specification for how the Route Log should
+    	 * display delegate information.  For now, will fix this so that in the non "role" case, it will put the
+    	 * primary delegate as the outermost request *except* in the case where there is more than one primary delegate.
+    	 */
+    	
+    	if (!actionRequest.isRoleRequest()) {
+    		List<ActionRequestValue> primaryDelegateRequests = actionRequest.getPrimaryDelegateRequests();
+    		// only display primary delegate request at top if there is only *one* primary delegate request
+    		if ( primaryDelegateRequests.size() != 1) {
+    			return actionRequest;
+    		}
+    		ActionRequestValue primaryDelegateRequest = primaryDelegateRequests.get(0);
+    		actionRequest.getChildrenRequests().remove(primaryDelegateRequest);
+    		primaryDelegateRequest.setChildrenRequests(actionRequest.getChildrenRequests());
+    		primaryDelegateRequest.setParentActionRequest(actionRequest.getParentActionRequest());
+    		primaryDelegateRequest.setParentActionRequestId(actionRequest.getParentActionRequestId());
+    		
+    		actionRequest.setChildrenRequests( new ArrayList<ActionRequestValue>(0) );
+    		actionRequest.setParentActionRequest(primaryDelegateRequest);
+    		actionRequest.setParentActionRequestId(primaryDelegateRequest.getActionRequestId());
+    		
+    		primaryDelegateRequest.getChildrenRequests().add(0, actionRequest);
+    		
+    		for (ActionRequestValue delegateRequest : primaryDelegateRequest.getChildrenRequests()) {
+    			delegateRequest.setParentActionRequest(primaryDelegateRequest);
+    			delegateRequest.setParentActionRequestId(primaryDelegateRequest.getActionRequestId());
+    		}
+    		
+    		return primaryDelegateRequest;
     	}
-    	ActionRequestValue primaryDelegateRequest = (ActionRequestValue) primaryDelegateRequests.get(0);
-		primaryDelegateRequest.setChildrenRequests(actionRequest.getChildrenRequests());
-		primaryDelegateRequest.getChildrenRequests().add(0, actionRequest);
-		primaryDelegateRequest.getChildrenRequests().remove(primaryDelegateRequest);
-		primaryDelegateRequest.setParentActionRequest(actionRequest.getParentActionRequest());
-		actionRequest.setChildrenRequests( new ArrayList<ActionRequestValue>(0) );
-		actionRequest.setParentActionRequest(primaryDelegateRequest);
-		return primaryDelegateRequest;
+    	
+    	return actionRequest;
     }
 
     private List<ActionRequestValue> switchActionRequestPositionsIfPrimaryDelegatesPresent( Collection<ActionRequestValue> actionRequests ) {
@@ -176,6 +198,14 @@ public class RouteLogAction extends KewKualiAction {
 			results.add( switchActionRequestPositionIfPrimaryDelegatePresent(actionRequest) );
     	}
     	return results;
+    }
+    
+    @SuppressWarnings("unchecked")
+    private void fixActionRequestsPositions(DocumentRouteHeaderValue routeHeader) {
+        for (ActionTakenValue actionTaken : routeHeader.getActionsTaken()) {
+            Collections.sort((List<ActionRequestValue>) actionTaken.getActionRequests(), ROUTE_LOG_ACTION_REQUEST_SORTER);
+            actionTaken.setActionRequests( actionTaken.getActionRequests() );
+        }
     }
     
     /**
@@ -205,6 +235,8 @@ public class RouteLogAction extends KewKualiAction {
 
         Collections.sort(futureActionRequests, ROUTE_LOG_ACTION_REQUEST_SORTER);
         
+        futureActionRequests = switchActionRequestPositionsIfPrimaryDelegatesPresent(futureActionRequests);
+        
         int pendingActionRequestCount = 0;
         for (ActionRequestValue actionRequest: futureActionRequests) {
             if (actionRequest.isPending()) {
@@ -221,6 +253,7 @@ public class RouteLogAction extends KewKualiAction {
         rlForm.setFutureRootRequests(futureActionRequests);
         rlForm.setFutureActionRequestCount(pendingActionRequestCount);
     }
+
 
 	/**
 	 * This utility method returns a Set of LongS containing the IDs for the ActionRequestValueS associated with 

@@ -29,19 +29,19 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.Validator;
 import javax.xml.validation.ValidatorHandler;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.core.xml.schema.RiceXmlSchemaFactory;
 import org.kuali.rice.kew.xml.GroupNamespaceURIEliminationFilterPOC;
 import org.kuali.rice.kew.xml.GroupNamespaceURIMemberTransformationFilterPOC;
 import org.kuali.rice.kew.xml.GroupNamespaceURITransformationFilterPOC;
 import org.kuali.rice.kim.xml.GroupXmlDto;
-import org.kuali.rice.test.RiceTestCase;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
 
-public class JaxpSchemaValidationTest extends RiceTestCase {
+public class JaxpSchemaValidationTest extends Assert {
 
 	private static final String SCHEMA_DIR = "classpath:schema/";
 
@@ -245,15 +245,4 @@ public class JaxpSchemaValidationTest extends RiceTestCase {
 	public static void setCompileErrors(int compileErrors) {
 		JaxpSchemaValidationTest.compileErrors = compileErrors;
 	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.test.RiceTestCase#getModuleName()
-	 */
-	@Override
-	protected String getModuleName() {
-		return "impl";
-	}
-
 }

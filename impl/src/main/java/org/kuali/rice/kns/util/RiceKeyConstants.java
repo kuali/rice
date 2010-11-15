@@ -1,12 +1,12 @@
 /*
  * Copyright 2005-2008 The Kuali Foundation
- * 
+ *
  * Licensed under the Educational Community License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.opensource.org/licenses/ecl2.php
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,7 +44,7 @@ public class RiceKeyConstants {
     public static final String ERROR_INVALID_FORMAT = "error.invalidFormat";
     public static final String ERROR_EXCLUSIVE_MIN = "error.exclusiveMin";
     public static final String ERROR_INCLUSIVE_MAX = "error.inclusiveMax";
-    
+
     public static final String ERROR_INACTIVATION_BLOCKED = "error.inactivation.blocked";
 
     public static final String ERROR_INVALID_ADHOC_PERSON_ID = "error.adhoc.invalid.person";
@@ -65,9 +65,9 @@ public class RiceKeyConstants {
     public static final String UNAUTHORIZED_LOOKUP = "unauthorized.lookup";
     public static final String UNAUTHORIZED_DOCUMENT = "unauthorized.document";
     public static final String UNAUTHORIZED_CUSTOM = "unauthorized.custom";
-    
+
     public static final String MULTIPLE_VALUE_LOOKUP_ICON_LABEL = "multiple.value.lookup.icon.label";
-    
+
     public static final String AUTHORIZATION_ERROR_GENERAL = "error.authorization.general";
     public static final String AUTHORIZATION_ERROR_INACTIVE_DOCTYPE = "error.authorization.inactiveDocumentType";
     public static final String AUTHORIZATION_ERROR_DOCTYPE = "error.authorization.documentType";
@@ -100,7 +100,7 @@ public class RiceKeyConstants {
 
     // Person errors
     public static final String ERROR_DOCUMENT_KUALIUSERMAINT_UNIQUE_EMPLID = "error.document.PersonMaintenance.UniqueEmplId";
-    
+
 
     public static final String ERROR_CUSTOM = "error.custom";
     public static final String ERROR_INQUIRY = "error.inquiry";
@@ -112,7 +112,7 @@ public class RiceKeyConstants {
     public static final String ERROR_ZERO_OR_NEGATIVE_AMOUNT = "error.zeroOrNegativeAmount";
     public static final String ERROR_NEGATIVE_AMOUNT = "error.negativeAmount";
     public static final String ERROR_NOT_AMONG = "error.invalidNotAmong";
-    
+
     public static final String WARNING_MAINTENANCE_LOCKED = "warning.maintenance.locked";
     public static final String ERROR_VERSION_MISMATCH = "error.version.mismatch";
 
@@ -131,13 +131,13 @@ public class RiceKeyConstants {
 
     public static final String MESSAGE_DELETE="message.delete";
     public static final String MESSAGE_DELETED="mesage.deleted";
-    
-    
+
+
     public static final String QUESTION_DISAPPROVE_DOCUMENT = "document.question.disapprove.text";
     public static final String QUESTION_SENSITIVE_DATA_DOCUMENT = "document.question.sensitiveData.text";
 
     public static final String ERROR_MISSING = "error.missing";
-    
+
     // Application Parameter Component errors
     public static final String ERROR_APPLICATION_PARAMETERS_ALLOWED_RESTRICTION = "error.applicationParametersAllowedRestriction";
     public static final String ERROR_APPLICATION_PARAMETERS_DENIED_RESTRICTION = "error.applicationParametersDeniedRestriction";
@@ -148,7 +148,10 @@ public class RiceKeyConstants {
 
     public static final Object WARNING_LINE_IMPORT_LENGTH_MISMATCH = "warning.core.bo.AccountImportLengthMismatch";
 
-    // kim person document 
+    // kim role document
+    public static final String QUESTION_ACTIVE_DELEGATES_FOR_INACTIVE_MEMBERS = "question.document.maintenance.role.activeDelegatesForInactiveRoleMembers";
+
+    // kim person document
     public static final String ERROR_MULTIPLE_DEFAULT_SELETION = "error.multiple.default.selection";
     public static final String ERROR_NO_DEFAULT_SELETION = "error.no.default.selection";
     public static final String ERROR_MULTIPLE_PRIMARY_EMPLOYMENT = "error.multiple.primary.employment";
@@ -179,16 +182,16 @@ public class RiceKeyConstants {
     public static final String ERROR_DELEGATION_FROM_AMOUNT_LESSER = "error.delegation.fromamount.lesser";
     public static final String ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR = "error.assign.role.member.circular";
     public static final String ERROR_ASSIGN_GROUP_MEMBER_CIRCULAR = "error.assign.group.member.circular";
-    
-    
+
+
     //parameter document
     public static final String AUTHORIZATION_ERROR_PARAMETER = "error.authorization.parameter";
-    
+
     public static final String ERROR_DOCUMENT_FIELD_CONTAINS_POSSIBLE_SENSITIVE_DATA = "error.document.fieldContainsPossibleSensitiveData";
-    
+
     public static final String ERROR_WILDCARDS_AND_OPERATORS_NOT_ALLOWED_ON_FIELD = "error.wildcards.and.operators.not.allowed.on.field";
     public static final String INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY = "info.wildcards.and.operators.treated.literally";
-    
+
     public static final String ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE = "error.document.identityManagementPerson.qualifier.valueNotUnique";
 }
 

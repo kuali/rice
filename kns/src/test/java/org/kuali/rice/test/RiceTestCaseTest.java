@@ -37,12 +37,12 @@ public class RiceTestCaseTest extends RiceTestCase {
 	
 	@Override
 	protected List<String> getConfigLocations() {
-		return Arrays.asList(new String[]{"classpath:META-INF/impl-test-config.xml"});
+		return Arrays.asList(new String[]{"classpath:META-INF/kns-test-config.xml"});
 	}
 
 	@Override
 	protected String getModuleName() {
-		return "impl";
+		return "kns";
 	}
 
 }

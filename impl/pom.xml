@@ -9,6 +9,17 @@
 	<artifactId>rice-impl</artifactId>
 
 	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-core-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>  
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-core-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>  
+		
 	    <dependency>
         	<groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>

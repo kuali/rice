@@ -514,6 +514,7 @@
 		<module>kim</module>
 		<module>kew</module>
 		<module>ken</module>
+		<module>core</module>
 	</modules>
 
 	<repositories>

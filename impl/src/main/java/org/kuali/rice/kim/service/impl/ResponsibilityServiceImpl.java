@@ -275,28 +275,31 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     	List<ResponsibilityActionInfo> results = new ArrayList<ResponsibilityActionInfo>();
     	Collection<RoleMembershipInfo> roleMembers = getRoleService().getRoleMembers( roleIds, qualification );
     	for ( RoleMembershipInfo rm : roleMembers ) {
-    		ResponsibilityActionInfo rai;
-    		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
-    			rai = new ResponsibilityActionInfo( rm.getMemberId(), null, rm.getEmbeddedRoleId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
-    		} else {
-    			rai = new ResponsibilityActionInfo( null, rm.getMemberId(), rm.getEmbeddedRoleId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
-    		}
-    		// get associated resp resolution objects
-    		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( rm.getRoleId(), responsibility.getResponsibilityId(), rm.getRoleMemberId() );
-    		if ( action == null ) {
-    			LOG.error( "Unable to get responsibility action record for role/responsibility/roleMember: " 
-    					+ rm.getRoleId() + "/" + responsibility.getResponsibilityId() + "/" + rm.getRoleMemberId() );
-    			LOG.error( "Skipping this role member in getActionsForResponsibilityRoles()");
-    			continue;
-    		}
-    		// add the data to the ResponsibilityActionInfo objects
-    		rai.setActionTypeCode( action.getActionTypeCode() );
-    		rai.setActionPolicyCode( action.getActionPolicyCode() );
-    		rai.setPriorityNumber(action.getPriorityNumber() == null ? DEFAULT_PRIORITY_NUMBER : action.getPriorityNumber());
-    		rai.setForceAction( action.isForceAction() );
-    		rai.setParallelRoutingGroupingCode( (rm.getRoleSortingCode()==null)?"":rm.getRoleSortingCode() );
-    		rai.setRoleResponsibilityActionId( action.getRoleResponsibilityActionId() );
-    		results.add( rai );
+    	    // only add them to the list if the member ID has been populated
+    	    if ( StringUtils.isNotBlank( rm.getMemberId() ) ) {
+        		ResponsibilityActionInfo rai;
+        		if ( rm.getMemberTypeCode().equals( Role.PRINCIPAL_MEMBER_TYPE ) ) {
+        			rai = new ResponsibilityActionInfo( rm.getMemberId(), null, rm.getEmbeddedRoleId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
+        		} else {
+        			rai = new ResponsibilityActionInfo( null, rm.getMemberId(), rm.getEmbeddedRoleId(), responsibility, rm.getRoleId(), rm.getQualifier(), rm.getDelegates() );
+        		}
+        		// get associated resp resolution objects
+        		RoleResponsibilityActionImpl action = responsibilityDao.getResponsibilityAction( rm.getRoleId(), responsibility.getResponsibilityId(), rm.getRoleMemberId() );
+        		if ( action == null ) {
+        			LOG.error( "Unable to get responsibility action record for role/responsibility/roleMember: " 
+        					+ rm.getRoleId() + "/" + responsibility.getResponsibilityId() + "/" + rm.getRoleMemberId() );
+        			LOG.error( "Skipping this role member in getActionsForResponsibilityRoles()");
+        			continue;
+        		}
+        		// add the data to the ResponsibilityActionInfo objects
+        		rai.setActionTypeCode( action.getActionTypeCode() );
+        		rai.setActionPolicyCode( action.getActionPolicyCode() );
+        		rai.setPriorityNumber(action.getPriorityNumber() == null ? DEFAULT_PRIORITY_NUMBER : action.getPriorityNumber());
+        		rai.setForceAction( action.isForceAction() );
+        		rai.setParallelRoutingGroupingCode( (rm.getRoleSortingCode()==null)?"":rm.getRoleSortingCode() );
+        		rai.setRoleResponsibilityActionId( action.getRoleResponsibilityActionId() );
+        		results.add( rai );
+    	    }
     	}
     	return results;
     }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.xml;
+package org.kuali.rice.core.xml.dto;
 
 import java.io.Serializable;
 import java.sql.Date;

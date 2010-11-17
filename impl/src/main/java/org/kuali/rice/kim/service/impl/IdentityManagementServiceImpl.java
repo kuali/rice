@@ -29,6 +29,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.core.util.RiceDebugUtils;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -50,7 +51,6 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.AuthenticationService;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.GroupUpdateService;
@@ -553,7 +553,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	}
 
     /**
-     * @see org.kuali.rice.kim.service.IdentityManagementService#getAuthorizedPermissions(java.lang.String, String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.IdentityManagementService#getAuthorizedPermissions(java.lang.String, String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet, org.kuali.rice.core.xml.dto.AttributeSet)
      */
     public List<? extends KimPermissionInfo> getAuthorizedPermissions(String principalId,
     		String namespaceCode, String permissionName, AttributeSet permissionDetails, AttributeSet qualification) {
@@ -1084,7 +1084,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityActionsByTemplateName(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#getResponsibilityActionsByTemplateName(java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet, org.kuali.rice.core.xml.dto.AttributeSet)
 	 */
 	public List<ResponsibilityActionInfo> getResponsibilityActionsByTemplateName(
 			String namespaceCode, String responsibilityTemplateName,
@@ -1095,7 +1095,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasResponsibilityByTemplateName(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.IdentityManagementService#hasResponsibilityByTemplateName(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet, org.kuali.rice.core.xml.dto.AttributeSet)
 	 */
 	public boolean hasResponsibilityByTemplateName(String principalId,
 			String namespaceCode, String responsibilityTemplateName,

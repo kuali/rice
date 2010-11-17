@@ -31,11 +31,11 @@ import javax.xml.validation.ValidatorHandler;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.kuali.rice.core.xml.dto.GroupXmlDto;
 import org.kuali.rice.core.xml.schema.RiceXmlSchemaFactory;
 import org.kuali.rice.kew.xml.GroupNamespaceURIEliminationFilterPOC;
 import org.kuali.rice.kew.xml.GroupNamespaceURIMemberTransformationFilterPOC;
 import org.kuali.rice.kew.xml.GroupNamespaceURITransformationFilterPOC;
-import org.kuali.rice.kim.xml.GroupXmlDto;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLFilter;

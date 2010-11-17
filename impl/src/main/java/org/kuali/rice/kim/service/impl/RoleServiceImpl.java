@@ -32,6 +32,7 @@ import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
@@ -46,7 +47,6 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
@@ -326,7 +326,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     // --------------------
 
     /**
-     * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.core.xml.dto.AttributeSet)
      */
     public List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
     	Set<String> foundRoleTypeMembers = new HashSet<String>();
@@ -374,7 +374,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 	}
 
 	/**
-     * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.core.xml.dto.AttributeSet)
      */
     protected List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification, boolean followDelegations, Set<String> foundRoleTypeMembers ) {
     	List<RoleMembershipInfo> results = new ArrayList<RoleMembershipInfo>();
@@ -754,14 +754,14 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     }
 
     /**
-     * @see org.kuali.rice.kim.service.RoleService#principalHasRole(java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.RoleService#principalHasRole(java.lang.String, java.util.List, org.kuali.rice.core.xml.dto.AttributeSet)
      */
     public boolean principalHasRole(String principalId, List<String> roleIds, AttributeSet qualification) {
     	return principalHasRole( principalId, roleIds, qualification, true );
     }
 
     /**
-     * @see org.kuali.rice.kim.service.RoleService#getPrincipalIdSubListWithRole(java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.RoleService#getPrincipalIdSubListWithRole(java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
      */
     public List<String> getPrincipalIdSubListWithRole( List<String> principalIds, String roleNamespaceCode, String roleName, AttributeSet qualification ) {
     	List<String> subList = new ArrayList<String>();

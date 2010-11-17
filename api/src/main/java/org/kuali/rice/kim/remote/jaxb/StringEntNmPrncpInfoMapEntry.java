@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.core.jaxb;
+package org.kuali.rice.kim.remote.jaxb;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
+import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 
 /**
  * This is a description of what this class does - jim7 don't forget to fill this in. 
@@ -26,7 +26,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class StringEntityNameInfoMapEntry {
+public class StringEntNmPrncpInfoMapEntry {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -34,12 +34,12 @@ public class StringEntityNameInfoMapEntry {
 	String key;
 	
 	@XmlElement(required=true) // maxoccurs == minoccurs == 1
-	KimEntityNameInfo value;
+	KimEntityNamePrincipalNameInfo value;
 	
 	/**
-	 * 
+	 *
 	 */
-	public StringEntityNameInfoMapEntry() {
+	public StringEntNmPrncpInfoMapEntry() {
 	    super();
 	}
 	
@@ -47,7 +47,7 @@ public class StringEntityNameInfoMapEntry {
 	 * @param name
 	 * @param value
 	 */
-	public StringEntityNameInfoMapEntry(String key, KimEntityNameInfo value) {
+	public StringEntNmPrncpInfoMapEntry(String key, KimEntityNamePrincipalNameInfo value) {
 	    super();
 	    
 	    this.key = key;

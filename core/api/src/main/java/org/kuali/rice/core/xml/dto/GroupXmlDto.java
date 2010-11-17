@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kim.xml;
+package org.kuali.rice.core.xml.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,7 +28,6 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.jaxb.AdapterAttributeSetToHashMap;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
 

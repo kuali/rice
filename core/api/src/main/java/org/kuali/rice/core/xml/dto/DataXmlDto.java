@@ -27,8 +27,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.kuali.rice.core.xml.CoreNamespaceConstants;
-import org.kuali.rice.kim.xml.GroupXmlDto;
-import org.kuali.rice.kim.xml.KimNamespaceConstants;
 
 /**
  * This is a description of what this class does - g don't forget to fill this in. 

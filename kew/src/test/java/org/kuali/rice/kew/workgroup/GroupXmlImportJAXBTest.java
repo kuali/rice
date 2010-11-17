@@ -30,11 +30,11 @@ import javax.xml.bind.Marshaller;
 
 import org.apache.log4j.Logger;
 import org.junit.Test;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.core.xml.dto.DataXmlDto;
+import org.kuali.rice.core.xml.dto.GroupMembershipXmlDto;
+import org.kuali.rice.core.xml.dto.GroupXmlDto;
 import org.kuali.rice.kew.xml.GroupXmlJAXBParser;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.xml.GroupMembershipXmlDto;
-import org.kuali.rice.kim.xml.GroupXmlDto;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.

@@ -34,6 +34,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.core.util.RiceDebugUtils;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
@@ -43,7 +44,6 @@ import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KimTypeInfoService;
@@ -198,7 +198,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.service.RoleService#getRoleMemberPrincipalIds(java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleMemberPrincipalIds(java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
 	 */
 	public Collection<String> getRoleMemberPrincipalIds(String namespaceCode, String roleName, AttributeSet qualification) {
 		StringBuffer cacheKey = new StringBuffer();
@@ -279,7 +279,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleMembers(java.util.List, org.kuali.rice.core.xml.dto.AttributeSet)
 	 */
 	public List<RoleMembershipInfo> getRoleMembers(List<String> roleIds, AttributeSet qualification) {
 		List<String>[] filteredRoles = filterRoleIdsByCachingAbility(roleIds);
@@ -317,7 +317,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
     }
 
 	/**
-	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipal(java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipal(java.lang.String, java.util.List, org.kuali.rice.core.xml.dto.AttributeSet)
 	 */
 	public List<AttributeSet> getRoleQualifiersForPrincipal(String principalId, List<String> roleIds, AttributeSet qualification) {		
 		StringBuffer cacheKey = new StringBuffer( principalId );
@@ -336,7 +336,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipal(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipal(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
 	 */
 	public List<AttributeSet> getRoleQualifiersForPrincipal(String principalId, String namespaceCode, String roleName, AttributeSet qualification) {
 		StringBuffer cacheKey = new StringBuffer( principalId );
@@ -498,7 +498,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
 	/**
-	 * @see org.kuali.rice.kim.service.RoleService#getPrincipalIdSubListWithRole(java.util.List, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.RoleService#getPrincipalIdSubListWithRole(java.util.List, java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
 	 */
 	public List<String> getPrincipalIdSubListWithRole(
 			List<String> principalIds, String roleNamespaceCode,
@@ -578,7 +578,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipalIncludingNested(java.lang.String, java.util.List, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipalIncludingNested(java.lang.String, java.util.List, org.kuali.rice.core.xml.dto.AttributeSet)
 	 */
 	public List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested(
 			String principalId, List<String> roleIds, AttributeSet qualification) {
@@ -586,7 +586,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 	
 	/**
-	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipalIncludingNested(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+	 * @see org.kuali.rice.kim.service.RoleService#getRoleQualifiersForPrincipalIncludingNested(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
 	 */
 	public List<AttributeSet> getRoleQualifiersForPrincipalIncludingNested(
 			String principalId, String namespaceCode, String roleName,
@@ -705,7 +705,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	}
 
     /**
-     * @see org.kuali.rice.kim.service.RoleUpdateService#assignRoleAsDelegationMemberToRole(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.RoleUpdateService#assignRoleAsDelegationMemberToRole(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
      */
 	public void saveDelegationMemberForRole(String delegationMemberId, String roleMemberId, String memberId, String memberTypeCode, 
 			String delegationTypeCode, String roleId, AttributeSet qualifications, 

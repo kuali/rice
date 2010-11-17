@@ -18,8 +18,8 @@ package org.kuali.rice.kew.role;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * A test implementatino of a QualifierResolver which returns qualifications for chart

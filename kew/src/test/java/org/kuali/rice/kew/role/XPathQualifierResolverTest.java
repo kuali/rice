@@ -18,11 +18,11 @@ package org.kuali.rice.kew.role;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.test.BaseRiceTestCase;
 
 /**

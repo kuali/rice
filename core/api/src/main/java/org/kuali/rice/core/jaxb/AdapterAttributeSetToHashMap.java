@@ -33,8 +33,8 @@ import java.util.Iterator;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 import org.kuali.rice.core.xml.dto.AttributeEntry;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.core.xml.dto.AttributeSetList;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 
 /*

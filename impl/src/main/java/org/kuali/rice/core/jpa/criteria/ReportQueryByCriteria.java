@@ -18,6 +18,7 @@ package org.kuali.rice.core.jpa.criteria;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 
 

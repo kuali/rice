@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.util;
 
+import org.kuali.rice.core.util.type.KualiDecimal;
+
 /**
  * 
  */

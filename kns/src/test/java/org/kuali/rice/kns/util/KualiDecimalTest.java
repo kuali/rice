@@ -18,8 +18,8 @@ package org.kuali.rice.kns.util;
 import java.math.BigDecimal;
 
 import org.junit.Test;
-import org.kuali.rice.kns.util.AbstractKualiDecimal;
-import org.kuali.rice.kns.util.KualiDecimal;
+import org.kuali.rice.core.util.type.AbstractKualiDecimal;
+import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kns.web.format.CurrencyFormatter;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;

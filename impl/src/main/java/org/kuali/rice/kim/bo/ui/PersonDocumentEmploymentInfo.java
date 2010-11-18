@@ -33,11 +33,11 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
+import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.bo.reference.EmploymentStatus;
 import org.kuali.rice.kim.bo.reference.EmploymentType;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
-import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

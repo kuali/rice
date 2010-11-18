@@ -24,6 +24,7 @@ import java.sql.Types;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
+import org.kuali.rice.core.util.type.KualiDecimal;
 
 /**
  *  map between kualidecimal percentage format and numeric field from db 

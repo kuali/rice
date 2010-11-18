@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
@@ -47,7 +48,6 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.util.KualiDecimal;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
@@ -310,7 +310,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      * @return true if it is like a "float", false otherwise
      */
     protected boolean isDecimaltastic(Class clazz) {
-        return java.lang.Double.class.isAssignableFrom(clazz) || java.lang.Float.class.isAssignableFrom(clazz) || clazz.equals(Double.TYPE) || clazz.equals(Float.TYPE) || java.math.BigDecimal.class.isAssignableFrom(clazz) || org.kuali.rice.kns.util.KualiDecimal.class.isAssignableFrom(clazz);
+        return java.lang.Double.class.isAssignableFrom(clazz) || java.lang.Float.class.isAssignableFrom(clazz) || clazz.equals(Double.TYPE) || clazz.equals(Float.TYPE) || java.math.BigDecimal.class.isAssignableFrom(clazz) || org.kuali.rice.core.util.type.KualiDecimal.class.isAssignableFrom(clazz);
     }
     
     /**

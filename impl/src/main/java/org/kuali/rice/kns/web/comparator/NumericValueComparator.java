@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.util.KualiDecimal;
+import org.kuali.rice.core.util.type.KualiDecimal;
 
 public class NumericValueComparator implements Serializable, Comparator {
 

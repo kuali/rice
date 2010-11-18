@@ -22,6 +22,7 @@ import java.sql.Types;
 
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.kuali.rice.core.util.type.KualiInteger;
 
 /**
  *  KualiInteger Type converter 

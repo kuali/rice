@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.type.KualiDecimal;
 
 /**
  * Miscellaneous Utility Methods.

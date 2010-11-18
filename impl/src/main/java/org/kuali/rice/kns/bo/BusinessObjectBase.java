@@ -20,7 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.util.TypeUtils;
+import org.kuali.rice.core.util.type.TypeUtils;
 
 /**
  * Transient Business Object Base Business Object

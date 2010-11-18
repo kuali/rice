@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.util;
+package org.kuali.rice.core.util.type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
+
 
 public class KualiInteger extends Number implements Comparable {
     public static final int ROUND_BEHAVIOR = KualiDecimal.ROUND_BEHAVIOR;

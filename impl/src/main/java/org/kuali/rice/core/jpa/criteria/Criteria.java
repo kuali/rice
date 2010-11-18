@@ -29,7 +29,7 @@ import javax.persistence.Query;
 
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.kns.util.TypeUtils;
+import org.kuali.rice.core.util.type.TypeUtils;
 
 /**
  * A criteria builder for JPQL Query objects.

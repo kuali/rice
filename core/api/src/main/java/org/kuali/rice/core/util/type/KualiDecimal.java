@@ -13,9 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.util;
+package org.kuali.rice.core.util.type;
 
 import java.math.BigDecimal;
+
 
 /**
  * This class is a wrapper around java.math.BigDecimal. It exposes the only the

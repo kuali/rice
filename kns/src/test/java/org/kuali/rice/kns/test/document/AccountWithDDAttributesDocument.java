@@ -24,9 +24,9 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
+import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kns.document.SessionDocument;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
-import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
  * This is a test transactional document for use with testing data dictionary searchable attributes on the doc search. 

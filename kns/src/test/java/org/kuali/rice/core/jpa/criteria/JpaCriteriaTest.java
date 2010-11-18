@@ -32,6 +32,7 @@ import javax.persistence.EntityManager;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
+import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.DocumentService;
@@ -40,7 +41,6 @@ import org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KualiDecimal;
 import org.kuali.rice.test.TransactionalTest;
 import org.kuali.test.KNSTestCase;
 

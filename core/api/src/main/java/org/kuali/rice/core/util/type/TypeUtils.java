@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kns.util;
+package org.kuali.rice.core.util.type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
+
 
 /**
  * This class provides utilities for checking the types of objects.

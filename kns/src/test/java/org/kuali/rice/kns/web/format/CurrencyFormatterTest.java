@@ -18,7 +18,7 @@ package org.kuali.rice.kns.web.format;
 import java.text.NumberFormat;
 
 import org.junit.Test;
-import org.kuali.rice.kns.util.KualiDecimal;
+import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.test.KNSTestCase;
 

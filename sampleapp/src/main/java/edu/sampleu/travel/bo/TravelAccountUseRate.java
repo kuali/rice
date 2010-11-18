@@ -22,8 +22,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.rice.kns.bo.InactivatableFromToImpl;
-import org.kuali.rice.kns.util.KualiPercent;
 
 @Entity
 @Table(name = "TRV_ACCT_USE_RT")

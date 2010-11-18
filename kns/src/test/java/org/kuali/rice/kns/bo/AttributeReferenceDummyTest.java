@@ -22,8 +22,8 @@ import java.util.LinkedHashMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kuali.rice.kns.util.KualiDecimal;
-import org.kuali.rice.kns.util.KualiPercent;
+import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.test.KNSTestCase;
 
 /**

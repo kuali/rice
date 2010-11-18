@@ -124,10 +124,8 @@
 		<property name="transactionManager" ref="jotm" />
 		<property name="userTransaction" ref="jotm" />
 		<property name="rootConfig" ref="config" />
-		<property name="serviceNamespace" value="TEST" />
 		<property name="ksbConfigurer">
 				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-					<property name="serviceServletUrl" value="${serviceServletUrl}" />
 					<property name="services">
 						<list>
 							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" p:localServiceName="lookupResultsDDBoLookupable" p:serviceInterface="org.kuali.rice.kns.lookup.Lookupable" p:serviceEndPoint-ref="lookupResultsDDBoLookupableHelperUrl" p:messageExceptionHandler="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" p:millisToLive="-1" p:retryAttempts="0" p:priority="5">
@@ -150,7 +148,6 @@
 		</property>
 		<property name="kewConfigurer">
 				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
-					<property name="clientProtocol" value="local" />
 				</bean>
 		</property>
 		<property name="kenConfigurer">

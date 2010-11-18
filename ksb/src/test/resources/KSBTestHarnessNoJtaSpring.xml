@@ -99,9 +99,14 @@
 
 		
 		<property name="rootConfig" ref="config" />
+		<property name="properties">
+			<props>
+				<prop key="service.namespace">KEW</prop>
+				<prop key="serviceServletUrl">http://localhost:${ksb.testharness.port}/en-test/remoting/</prop>
+			</props>
+		</property>
 		<property name="ksbConfigurer">
 			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-				<property name="serviceServletUrl" value="http://localhost:${ksb.testharness.port}/en-test/remoting/" />
 				<property name="overrideServices">
 					<list>
 						<bean class="org.kuali.rice.ksb.messaging.config.ServiceHolder">

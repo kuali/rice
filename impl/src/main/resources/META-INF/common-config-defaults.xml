@@ -108,9 +108,6 @@
     <param name="externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
     <param name="kr.externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
     <param name="travel.externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
-    <param name="kr.url" override="false">${application.url}/kr</param>
-    <param name="kim.url" override="false">${application.url}/kim</param>
-    <param name="kew.url" override="false">${application.url}/kew</param>
 
     <!-- Code Options: (dev|snd|unt|reg|stg|trn|prd) -->
     <param name="production.environment.code" override="false">prd</param>
@@ -175,9 +172,6 @@
     <param name="classpath.resource.prefix" override="false">/WEB-INF/classes/</param>
 
 	<!-- KEW -->
-
-	<param name="kew.mode" override="false">local</param>
-	<param name="rice.kew.struts.config.files" override="false">/kew/WEB-INF/struts-config.xml</param>
 	<param name="rice.kew.enableKENNotification" override="false">true</param>
 
 	<!-- KEW-specific JPA parameters -->
@@ -211,9 +205,6 @@
     <!-- KSB -->
 
     <param name="rice.ksb.config.allowSelfSignedSSL" override="false">false</param>
-	<param name="ksb.mode" override="false">local</param>
-    <param name="ksb.url" override="false">${application.url}/ksb</param>
-    <param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>
 	<param name="rice.ksb.loadKNSModuleConfiguration" override="false">true</param>
 
 	<param name="dev.mode" override="false">false</param>
@@ -258,14 +249,6 @@
 
 	<!-- KIM -->
 
-	<!-- what mode should KIM be run in?
-        local - use the master data source
-        embedded - run locally, but may have separate data source from rest of application
-        remote - do not install services locally, access over KSB
-     -->
-    <param name="kim.mode" override="false">local</param>
-    <param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
-
 	<param name="kim.cache.entity.max.size" override="false">3000</param>
     <param name="kim.cache.entity.max.age.seconds" override="false">3600</param>
     <param name="kim.cache.group.max.size" override="false">3000</param>
@@ -295,8 +278,6 @@
 	<param name="enable.nonproduction.data.unmasking" override="false">false</param>
 
     <!-- KEN -->
-
-	<param name="ken.url" override="false">${application.url}/ken</param>
 	<param name="ken.system.user" override="false">notsys</param>
     <param name="notification.resolveMessageDeliveriesJob.startDelayMS" override="false">5000</param>
     <param name="notification.resolveMessageDeliveriesJob.intervalMS" override="false">10000</param>
@@ -353,5 +334,76 @@
 	<param name="userOptions.default.primaryDelegatorFilterOnActionList" override="false">Primary Delegates on Action List Page</param>
 
 
-
+	<!-- additonal params extracted from Configurers -->
+	
+	<!-- Rice (common) -->
+	<param name="service.namespace" override="false">RICE</param>
+	<param name="datasource.jndi.location" override="false"></param>
+	<param name="nonTransactional.datasource.jndi.location" override="false"></param>
+	<param name="serverDatasource.jndi.location" override="false"></param>
+	<param name="transactionManager.jndi.location" override="false"></param>
+	<param name="userTransaction.jndi.location" override="false"></param>
+	
+	<!-- KNS -->
+	<param name="rice.kr.struts.config.files" override="false">/kr/WEB-INF/struts-config.xml</param>
+	<param name="kr.url" override="false">${application.url}/kr</param>
+	<param name="kr.mode" override="false">local</param>
+	<param name="knsServer.datasource.jndi.location" override="false"></param>
+	<param name="knsApplication.datasource.jndi.location" override="false"></param>
+	<param name="rice.kr.set.soap.services.as.default" override="false">true</param>
+	<param name="rice.kr.expose.services.on.bus" override="false">true</param>
+	<param name="rice.kr.include.user.interface.components" override="false">true</param>
+	<param name="load.data.dictionary" override="false">true</param>=
+	<param name="validate.data.dictionary" override="false">true</param>
+	<param name="validate.data.dictionary.ebo.references" override="false">true</param>
+	
+	<!-- KCB -->
+	<param name="rice.kcb.struts.config.files" override="false">/kcb/WEB-INF/struts-config.xml</param>
+	<param name="kcb.url" override="false">${application.url}/kcb</param>
+	<param name="kcb.mode" override="false">local</param>
+	<param name="rice.kcb.set.soap.services.as.default" override="false">true</param>
+	<param name="rice.kcb.expose.services.on.bus" override="false">true</param>
+	<param name="rice.kcb.include.user.interface.components" override="false">true</param>
+	
+	<!-- KEN -->
+	<param name="rice.ken.struts.config.files" override="false">/ken/WEB-INF/struts-config.xml</param>
+	<param name="ken.url" override="false">${application.url}/ken</param>
+	<param name="ken.mode" override="false">local</param>
+	<param name="rice.ken.set.soap.services.as.default" override="false">true</param>
+	<param name="rice.ken.expose.services.on.bus" override="false">true</param>
+	<param name="rice.ken.include.user.interface.components" override="false">true</param>
+	
+	<!-- KEW -->
+	<param name="rice.kew.struts.config.files" override="false">/kew/WEB-INF/struts-config.xml</param>
+	<param name="kew.url" override="false">${application.url}/kew</param>
+	<param name="kew.mode" override="false">local</param>
+	<param name="client.protocol" override="false">local</param>
+	<param name="org.kuali.workflow.datasource.jndi.location" override="false"></param>
+	<param name="rice.kew.set.soap.services.as.default" override="false">true</param>
+	<param name="rice.kew.expose.services.on.bus" override="false">true</param>
+	<param name="rice.kew.include.user.interface.components" override="false">true</param>
+	
+	<!-- KIM -->
+	<param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
+	<param name="kim.url" override="false">${application.url}/kim</param>
+	<param name="kim.mode" override="false">local</param>
+	<param name="rice.kim.set.soap.services.as.default" override="false">true</param>
+	<param name="rice.kim.expose.services.on.bus" override="false">true</param>
+	<param name="rice.kim.include.user.interface.components" override="false">true</param>
+	
+	<!-- KSB -->
+	<param name="rice.ksb.struts.config.files" override="false">/ksb/WEB-INF/struts-config.xml</param>
+	<param name="ksb.url" override="false">${application.url}/ksb</param>
+	<param name="ksb.mode" override="false">local</param>
+	<param name="keystore.alias" override="false"></param>
+	<param name="keystore.password" override="false"></param>
+	<param name="keystore.file" override="false"></param>
+	<param name="ksbMessage.datasource.jndi.location" override="false"></param>
+	<param name="ksbMessage.nonTransactional.datasource.jndi.location" override="false"></param>
+	<param name="ksbRegistry.datasource.jndi.location" override="false"></param>
+	<param name="http.service.url" override="false">${serviceServletUrl}</param>
+	<param name="rice.ksb.set.soap.services.as.default" override="false">true</param>
+	<param name="rice.ksb.expose.services.on.bus" override="false">true</param>
+	<param name="rice.ksb.include.user.interface.components" override="false">true</param>
+	
 </config>

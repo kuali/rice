@@ -100,12 +100,17 @@
     </bean>
 
 	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
-		<property name="serviceNamespace" value="KEW" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" />
 		<property name="transactionManager" ref="jotm" />
 		<property name="userTransaction" ref="jotm" />
 		<property name="rootConfig" ref="config" />
+		<property name="properties">
+			<props>
+				<prop key="service.namespace">KEW</prop>
+				<prop key="serviceServletUrl">http://localhost:${ksb.testharness.port}/en-test/remoting/</prop>
+			</props>
+		</property>
 		<property name="additionalSpringFiles">
 		  <list>
 		    <value>classpath:KSBTestServiceOverrides.xml</value>
@@ -119,7 +124,6 @@
 		</property> -->
 		<property name="ksbConfigurer">
 			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-				<property name="serviceServletUrl" value="http://localhost:${ksb.testharness.port}/en-test/remoting/" />
 				<property name="nonTransactionalMessageDataSource" ref="nonTransactionalDataSource" />
 				<property name="services">
 					<list>

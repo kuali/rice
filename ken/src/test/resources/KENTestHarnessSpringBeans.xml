@@ -65,7 +65,6 @@
     </bean>
 
     <bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
-        <property name="serviceNamespace" value="KEN" />
         <property name="dataSource" ref="dataSource" />
         <property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" />
         <property name="transactionManager" ref="jotm" />
@@ -73,12 +72,10 @@
         <property name="rootConfig" ref="config" />
 		<property name="ksbConfigurer">
             <bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-                    <property name="serviceServletUrl" value="${serviceServletUrl}" />
             </bean>
         </property>
 		<property name="kcbConfigurer">
             <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
-                <property name="testMode" value="true"/>
             </bean>
         </property>
         <property name="knsConfigurer">
@@ -86,12 +83,10 @@
         </property>
 		<property name="kewConfigurer">
             <bean class="org.kuali.rice.kew.config.KEWConfigurer">
-                <property name="clientProtocol" value="local" />
             </bean>
         </property>
 		<property name="kenConfigurer">
             <bean class="org.kuali.rice.ken.config.KENConfigurer">
-                <property name="testMode" value="true"/>
             </bean>
         </property>
 		<property name="kimConfigurer">

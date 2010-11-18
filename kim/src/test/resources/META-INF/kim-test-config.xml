@@ -15,6 +15,7 @@
 -->
 <config>
 	<param name="module.name">kim</param>
+	<param name="service.namespace">KIM</param>
 
     <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
 

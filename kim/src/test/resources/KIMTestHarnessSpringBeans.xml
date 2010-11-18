@@ -103,7 +103,6 @@
     </bean>
 
 	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
-		<property name="serviceNamespace" value="KIM" />
 		<property name="dataSource" ref="dataSource" />
 		<property name="nonTransactionalDataSource" ref="kimNonTransactionalDataSource" />
 		<property name="transactionManager" ref="jotm" />
@@ -111,7 +110,6 @@
 		<property name="rootConfig" ref="config" />
 		<property name="ksbConfigurer">
 			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-				<property name="serviceServletUrl" value="${serviceServletUrl}" />
 			</bean>
         </property>
 		<property name="knsConfigurer">

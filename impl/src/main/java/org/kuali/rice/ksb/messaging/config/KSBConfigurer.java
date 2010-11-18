@@ -32,6 +32,7 @@ import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.config.event.AfterStartEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
+import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.lifecycle.ServiceDelegatingLifecycle;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
@@ -66,35 +67,15 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 	private List<AlternateEndpoint> alternateEndpoints = new ArrayList<AlternateEndpoint>();
 
-	private String serviceServletUrl;
-
-	private String keystoreAlias;
-
-	private String keystorePassword;
-
-	private String keystoreFile;
-
-	private String webservicesUrl;
-
-	private String webserviceRetry;
-
 	private DataSource registryDataSource;
 
 	private DataSource messageDataSource;
 	
 	private DataSource nonTransactionalMessageDataSource;
 
-	private String registryDataSourceJndiName;
-
-    private String messageDataSourceJndiName;
-
-    private String nonTransactionalMessageDataSourceJndiName;
-
 	private Scheduler exceptionMessagingScheduler;
 
 	private PlatformTransactionManager platformTransactionManager;
-
-	private boolean isStarted = false;
 
 	public KSBConfigurer() {
         super();
@@ -105,16 +86,13 @@ public class KSBConfigurer extends ModuleConfigurer {
         VALID_RUN_MODES.remove( THIN_RUN_MODE );
     }
 	
+	@Override
 	public Config loadConfig(Config parentConfig) throws Exception {
 		Config currentConfig = super.loadConfig(parentConfig);
 		configureDataSource(currentConfig);
 		configureBus(currentConfig);
-		configureKeystore(currentConfig);
 		configureScheduler(currentConfig);
 		configurePlatformTransactionManager(currentConfig);
-		if (getServiceServletUrl() != null) {
-			currentConfig.putProperty("http.service.url", getServiceServletUrl());
-		}
 		configureAlternateEndpoints(currentConfig);
 		return currentConfig;
 	}
@@ -130,7 +108,7 @@ public class KSBConfigurer extends ModuleConfigurer {
             files += "classpath:org/kuali/rice/ksb/config/KSBOJBSpringBeans.xml";
         }
         
-        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.LOAD_KNS_MODULE_CONFIGURATION))) {
+        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.LOAD_KNS_MODULE_CONFIGURATION)).booleanValue()) {
         	files += SpringLoader.SPRING_SEPARATOR_CHARACTER + "classpath:org/kuali/rice/ksb/config/KSBModuleConfigurationSpringBeans.xml";
         }
         
@@ -160,16 +138,12 @@ public class KSBConfigurer extends ModuleConfigurer {
 
 		// this validation of our service list needs to happen after we've
 		// loaded our configs so it's a lifecycle
-		lifecycles.add(new Lifecycle() {
-			boolean started = false;
+		lifecycles.add(new BaseLifecycle() {
 
-			public boolean isStarted() {
-				return this.started;
-			}
-
+			@Override
 			public void start() throws Exception {
 				// first check if we want to allow self-signed certificates for SSL communication
-				if (new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.KSB_ALLOW_SELF_SIGNED_SSL))) {
+				if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.KSB_ALLOW_SELF_SIGNED_SSL)).booleanValue()) {
 				    Protocol.registerProtocol("https", new Protocol("https",
 					    (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
 				}
@@ -177,11 +151,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 				for (final ServiceDefinition serviceDef : KSBConfigurer.this.services) {
 					serviceDef.validate();
 				}
-				this.started = true;
-			}
-
-			public void stop() throws Exception {
-				this.started = false;
+				super.start();
 			}
 		});
 		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.THREAD_POOL_SERVICE));
@@ -200,7 +170,7 @@ public class KSBConfigurer extends ModuleConfigurer {
      * will be available in the service registry once startup is complete.
      */
     @Override
-    public void onEvent(RiceConfigEvent event) throws Exception {
+    public void onEvent(RiceConfigEvent event) {
         if (event instanceof AfterStartEvent) {
             LOG.info("Refreshing Service Registry to export services to the bus.");
             KSBServiceLocator.getServiceDeployer().refresh();
@@ -214,7 +184,6 @@ public class KSBConfigurer extends ModuleConfigurer {
 		return config.getServiceNamespace();
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void configureBus(Config config) throws Exception {
 		LOG.debug("Configuring services for Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
 		configureServiceList(config, Config.BUS_DEPLOYED_SERVICES, getServices());
@@ -230,31 +199,12 @@ public class KSBConfigurer extends ModuleConfigurer {
 			LOG.debug("Services already exist.  Adding additional services");
 			serviceDefinitions.addAll(services);
 		}
-
-		// if it's empty, then we want to be able to inherit it from the parent
-		// configuration
-		if (!StringUtils.isEmpty(this.serviceServletUrl)) {
-			config.putObject(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
-			config.putProperty(Config.SERVICE_SERVLET_URL, this.serviceServletUrl);
-		}
 	}
 
 	protected void configureScheduler(Config config) {
 		if (this.getExceptionMessagingScheduler() != null) {
 			LOG.info("Configuring injected exception messaging Scheduler");
 			config.putObject(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY, this.getExceptionMessagingScheduler());
-		}
-	}
-
-	protected void configureKeystore(Config config) {
-		if (!StringUtils.isEmpty(this.keystoreAlias)) {
-			config.putProperty(Config.KEYSTORE_ALIAS, this.keystoreAlias);
-		}
-		if (!StringUtils.isEmpty(this.keystorePassword)) {
-			config.putProperty(Config.KEYSTORE_PASSWORD, this.keystorePassword);
-		}
-		if (!StringUtils.isEmpty(this.keystoreFile)) {
-			config.putProperty(Config.KEYSTORE_FILE, this.keystoreFile);
 		}
 	}
 
@@ -268,18 +218,12 @@ public class KSBConfigurer extends ModuleConfigurer {
 
         if (getMessageDataSource() != null) {
             config.putObject(KSBConstants.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
-        } else if (!StringUtils.isBlank(getMessageDataSourceJndiName())) {
-            config.putProperty(KSBConstants.KSB_MESSAGE_DATASOURCE_JNDI, getMessageDataSourceJndiName());
         }
         if (getNonTransactionalMessageDataSource() != null) {
             config.putObject(KSBConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE, getNonTransactionalMessageDataSource());
-        } else if (!StringUtils.isBlank(getMessageDataSourceJndiName())) {
-            config.putProperty(KSBConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI, getNonTransactionalMessageDataSourceJndiName());
         }
         if (getRegistryDataSource() != null) {
             config.putObject(KSBConstants.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
-        } else if (!StringUtils.isBlank(getRegistryDataSourceJndiName())) {
-            config.putProperty(KSBConstants.KSB_REGISTRY_DATASOURCE_JNDI, getRegistryDataSourceJndiName());
         }
     }
 
@@ -295,6 +239,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 		config.putObject(KSBConstants.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
 	}
 	
+	@Override
 	public void stop() throws Exception {
 		try {
 			HttpInvokerConnector.shutdownIdleConnectionTimeout();
@@ -317,71 +262,12 @@ public class KSBConfigurer extends ModuleConfigurer {
         ConfigContext.getCurrentContextConfig().removeObject(KSBConstants.KSB_ALTERNATE_ENDPOINTS);
     }
 
-	public boolean isStarted() {
-		return this.isStarted;
-	}
-
-	protected void setStarted(boolean isStarted) {
-		this.isStarted = isStarted;
-	}
-
 	public List<ServiceDefinition> getServices() {
 		return this.services;
 	}
 
 	public void setServices(List<ServiceDefinition> javaServices) {
 		this.services = javaServices;
-	}
-
-	public String getKeystoreAlias() {
-		return this.keystoreAlias;
-	}
-
-	public void setKeystoreAlias(String keystoreAlias) {
-		this.keystoreAlias = keystoreAlias;
-	}
-
-	public String getKeystoreFile() {
-		return this.keystoreFile;
-	}
-
-	public void setKeystoreFile(String keystoreFile) {
-		this.keystoreFile = keystoreFile;
-	}
-
-	public String getKeystorePassword() {
-		return this.keystorePassword;
-	}
-
-	public void setKeystorePassword(String keystorePassword) {
-		this.keystorePassword = keystorePassword;
-	}
-
-	public String getWebserviceRetry() {
-		return this.webserviceRetry;
-	}
-
-	public void setWebserviceRetry(String webserviceRetry) {
-		this.webserviceRetry = webserviceRetry;
-	}
-
-	public String getWebservicesUrl() {
-		return this.webservicesUrl;
-	}
-
-	public void setWebservicesUrl(String webservicesUrl) {
-		this.webservicesUrl = webservicesUrl;
-	}
-
-	public String getServiceServletUrl() {
-		return this.serviceServletUrl;
-	}
-
-	public void setServiceServletUrl(String serviceServletUrl) {
-		if (!StringUtils.isEmpty(serviceServletUrl) && !serviceServletUrl.endsWith("/")) {
-			serviceServletUrl += "/";
-		}
-		this.serviceServletUrl = serviceServletUrl;
 	}
 
 	public DataSource getMessageDataSource() {
@@ -400,36 +286,12 @@ public class KSBConfigurer extends ModuleConfigurer {
         this.nonTransactionalMessageDataSource = nonTransactionalMessageDataSource;
     }
 
-    public String getMessageDataSourceJndiName() {
-		return this.messageDataSourceJndiName;
-	}
-
-	public void setMessageDataSourceJndiName(String messageDataSourceJndiName) {
-		this.messageDataSourceJndiName = messageDataSourceJndiName;
-	}
-
-    public String getNonTransactionalMessageDataSourceJndiName() {
-        return this.nonTransactionalMessageDataSourceJndiName;
-    }
-
-    public void setNonTransactionalMessageDataSourceJndiName(String nonTransactionalMessageDataSourceJndiName) {
-        this.nonTransactionalMessageDataSourceJndiName = nonTransactionalMessageDataSourceJndiName;
-    }
-
     public DataSource getRegistryDataSource() {
 		return this.registryDataSource;
 	}
 
 	public void setRegistryDataSource(DataSource registryDataSource) {
 		this.registryDataSource = registryDataSource;
-	}
-
-	public String getRegistryDataSourceJndiName() {
-		return this.registryDataSourceJndiName;
-	}
-
-	public void setRegistryDataSourceJndiName(String registryDataSourceJndiName) {
-		this.registryDataSourceJndiName = registryDataSourceJndiName;
 	}
 
 	public Scheduler getExceptionMessagingScheduler() {

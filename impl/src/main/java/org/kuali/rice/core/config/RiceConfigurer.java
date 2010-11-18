@@ -16,21 +16,16 @@
  */
 package org.kuali.rice.core.config;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 import javax.transaction.TransactionManager;
 import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
-import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kcb.config.KCBConfigurer;
 import org.kuali.rice.ken.config.KENConfigurer;
@@ -50,19 +45,12 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 public class RiceConfigurer extends RiceConfigurerBase {
 
-	private static final Logger LOG = Logger.getLogger(RiceConfigurer.class);
-
 	private DataSource dataSource;
 	private DataSource nonTransactionalDataSource;
 	private DataSource serverDataSource;
 	private String platform;
 	private UserTransaction userTransaction;
 	private TransactionManager transactionManager;
-    private String dataSourceJndiLocation;
-    private String nonTransactionalDataSourceJndiLocation;
-    private String serverDataSourceJndiLocation;
-	private String userTransactionJndiLocation;
-	private String transactionManagerJndiLocation;
 	private CredentialsSourceFactory credentialsSourceFactory;
 	
 	private KSBConfigurer ksbConfigurer;
@@ -75,6 +63,7 @@ public class RiceConfigurer extends RiceConfigurerBase {
 	/***
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#start()
 	 */
+	@Override
 	public void start() throws Exception {
 		//Add the configurers to modules list in the desired sequence.
 		// and at the beginning if any other modules were specified
@@ -86,6 +75,8 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		if(getKcbConfigurer()!=null) getModules().add(index++,getKcbConfigurer());
 		if(getKewConfigurer()!=null) getModules().add(index++,getKewConfigurer());
 		if(getKenConfigurer()!=null) getModules().add(index++,getKenConfigurer());
+		
+		addConfigToModules();
 		// now execute the super class's start method which will initialize configuration and resource loaders
 		super.start();
 
@@ -94,6 +85,12 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
 		KSBServiceLocator.getThreadPool().execute(messageFetcher);
 
+	}
+	
+	private void addConfigToModules() {
+		for (ModuleConfigurer module : getModules()) {
+			module.setConfig(getRootConfig());
+		}
 	}
 	
 	/**
@@ -125,19 +122,17 @@ public class RiceConfigurer extends RiceConfigurerBase {
 	/***
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
 	 */
+	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		 GlobalResourceDelegatingSpringCreator.APPLICATION_BEAN_FACTORY = getBeanFactory();
 		 return super.loadLifecycles();
 	}
 		    
-
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void initializeBaseConfiguration(Config currentConfig) throws Exception {
 		super.initializeBaseConfiguration(currentConfig);
 		configureJta(currentConfig);
 		configureDataSource(currentConfig);
-		configurePlatform(currentConfig);
 		configureCredentialsSourceFactory(currentConfig);
 	}
 
@@ -145,32 +140,19 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		if (credentialsSourceFactory != null) {
 			rootConfig.putObject(Config.CREDENTIALS_SOURCE_FACTORY, this.credentialsSourceFactory);
 		}
-		
-	}
-
-	protected void configurePlatform(Config config) {
-		if (!StringUtils.isBlank(this.platform)) {
-			String platformClassName = "org.kuali.rice.core.database.platform."+this.platform+"DatabasePlatform";
-			config.putProperty(Config.DATASOURCE_PLATFORM, platformClassName);
-			config.putProperty(Config.OJB_PLATFORM, this.platform);
-		}
 	}
  
 	protected void configureDataSource(Config config) {
 		if (this.dataSource != null) {
 			config.putObject(RiceConstants.DATASOURCE_OBJ, this.dataSource);
-		} else if (!StringUtils.isBlank(this.dataSourceJndiLocation)) {
-			config.putProperty(RiceConstants.DATASOURCE_JNDI, this.dataSourceJndiLocation);
 		}
+		
         if (this.nonTransactionalDataSource != null) {
             config.putObject(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ, this.nonTransactionalDataSource);
-        } else if (!StringUtils.isBlank(this.nonTransactionalDataSourceJndiLocation)) {
-            config.putProperty(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_JNDI, this.nonTransactionalDataSourceJndiLocation);
         }
+        
         if (this.serverDataSource != null) {
         	config.putObject(RiceConstants.SERVER_DATASOURCE_OBJ, this.serverDataSource);
-        }  else if (!StringUtils.isBlank(this.serverDataSourceJndiLocation)) {
-        	config.putProperty(RiceConstants.SERVER_DATASOURCE_JNDI, this.serverDataSourceJndiLocation);
         }
 	}
 
@@ -186,14 +168,8 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		if (this.transactionManager != null) {
 			config.putObject(RiceConstants.TRANSACTION_MANAGER_OBJ, this.transactionManager);
 		}
-		if (!StringUtils.isEmpty(this.userTransactionJndiLocation)) {
-			config.putProperty(RiceConstants.USER_TRANSACTION_JNDI, this.userTransactionJndiLocation);
-		}
-		if (!StringUtils.isEmpty(this.transactionManagerJndiLocation)) {
-			config.putProperty(RiceConstants.TRANSACTION_MANAGER_JNDI, this.transactionManagerJndiLocation);
-		}
-		boolean userTransactionConfigured = this.userTransaction != null || !StringUtils.isEmpty(this.userTransactionJndiLocation);
-		boolean transactionManagerConfigured = this.transactionManager != null || !StringUtils.isEmpty(this.transactionManagerJndiLocation);
+		boolean userTransactionConfigured = this.userTransaction != null || !StringUtils.isEmpty(config.getProperty(RiceConstants.USER_TRANSACTION_JNDI));
+		boolean transactionManagerConfigured = this.transactionManager != null || !StringUtils.isEmpty(config.getProperty(RiceConstants.TRANSACTION_MANAGER_JNDI));
 		if (userTransactionConfigured && !transactionManagerConfigured) {
 			throw new ConfigurationException("When configuring JTA, both a UserTransaction and a TransactionManager are required.  Only the UserTransaction was configured.");
 		}
@@ -248,34 +224,6 @@ public class RiceConfigurer extends RiceConfigurerBase {
 
 	public void setUserTransaction(UserTransaction userTransaction) {
 		this.userTransaction = userTransaction;
-	}
-
-	public void setDataSourceJndiLocation(String dataSourceJndiLocation) {
-		this.dataSourceJndiLocation = dataSourceJndiLocation;
-	}
-
-    public void setNonTransactionalDataSourceJndiLocation(String nonTransactionalDataSourceJndiLocation) {
-        this.nonTransactionalDataSourceJndiLocation = nonTransactionalDataSourceJndiLocation;
-    }
-
-	public void setServerDataSourceJndiLocation(String serverDataSourceJndiLocation) {
-		this.serverDataSourceJndiLocation = serverDataSourceJndiLocation;
-	}
-
-	public String getTransactionManagerJndiLocation() {
-		return this.transactionManagerJndiLocation;
-	}
-
-    public void setTransactionManagerJndiLocation(String transactionManagerJndiLocation) {
-		this.transactionManagerJndiLocation = transactionManagerJndiLocation;
-	}
-
-	public String getUserTransactionJndiLocation() {
-		return this.userTransactionJndiLocation;
-	}
-
-	public void setUserTransactionJndiLocation(String userTransactionJndiLocation) {
-		this.userTransactionJndiLocation = userTransactionJndiLocation;
 	}
 
 	public CredentialsSourceFactory getCredentialsSourceFactory() {

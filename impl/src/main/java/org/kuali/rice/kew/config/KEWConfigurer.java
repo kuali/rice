@@ -55,16 +55,9 @@ import java.util.List;
 public class KEWConfigurer extends ModuleConfigurer {
 
 	public static final String KEW_DATASOURCE_OBJ = "org.kuali.workflow.datasource";
-	public static final String KEW_DATASOURCE_JNDI = "org.kuali.workflow.datasource.jndi.location";
     private static final String ADDITIONAL_SPRING_FILES_PARAM = "kew.additionalSpringFiles";
-    
-	private String clientProtocol;
-
 	private DataSource dataSource;
-	private String dataSourceJndiName;
-	/**
-	 * 
-	 */
+
 	public KEWConfigurer() {
 		super();
 		setModuleName( "KEW" );
@@ -90,8 +83,8 @@ public class KEWConfigurer extends ModuleConfigurer {
     	    springLocation = "classpath:org/kuali/rice/kew/config/KEWSpringBeans.xml";
     	}
 
-        if ( exposeServicesOnBus ) {
-        	if (setSOAPServicesAsDefault) {
+        if ( isExposeServicesOnBus() ) {
+        	if (isSetSOAPServicesAsDefault()) {
         		springLocation += "," + "classpath:org/kuali/rice/kew/config/KEWServiceBusSOAPDefaultSpringBeans.xml";
         	} else {
         		springLocation += "," + "classpath:org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml";
@@ -149,10 +142,9 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	@Override
 	public Config loadConfig(Config parentConfig) throws Exception {
-		parentConfig = super.loadConfig(parentConfig);
-		Config currentConfig = parseConfig(parentConfig);
-		configureClientProtocol(currentConfig);
-		configureDataSource(currentConfig);
+		Config currentConfig = parseConfig(super.loadConfig(parentConfig));
+		validateClientProtocol();
+		configureDataSource();
 		return currentConfig;
 	}
 
@@ -185,44 +177,26 @@ public class KEWConfigurer extends ModuleConfigurer {
 		}
 	}
 
-	protected String getServiceNamespace(Config config) {
+	protected String getServiceNamespace() {
 		if (StringUtils.isBlank(config.getServiceNamespace())) {
 			throw new ConfigurationException("The 'service.namespace' property was not properly configured.");
 		}
 		return config.getServiceNamespace();
 	}
-
-	protected void configureClientProtocol(Config config) {
-		if (StringUtils.isBlank(clientProtocol)) {
-			clientProtocol = config.getClientProtocol();
-			if (StringUtils.isBlank(clientProtocol)) {
-			    // if not explcitly set, set the protocol based on the run mode
-			    if ( getRunMode().equals( REMOTE_RUN_MODE ) || getRunMode().equals( THIN_RUN_MODE ) ) {
-			        clientProtocol = KEWConstants.WEBSERVICE_CLIENT_PROTOCOL;
-			    } else {
-			        clientProtocol = KEWConstants.LOCAL_CLIENT_PROTOCOL;
-			    }
-			}
+	
+	protected void validateClientProtocol() {
+		if (StringUtils.isBlank(getClientProtocol())) {
+			throw new ConfigurationException("Client protocol not specified valid protocols are:" + KEWConstants.CLIENT_PROTOCOLS);
 		}
-		// from a client, LOCAL protocol is equivalent to EMBEDDED
-		// TODO this was messing up the tests were LOCAL was actually being used
-		/*if (KEWConstants.LOCAL_CLIENT_PROTOCOL.equals(clientProtocol)) {
-			clientProtocol = KEWConstants.EMBEDDED_CLIENT_PROTOCOL;
-		}*/
-		if (!KEWConstants.CLIENT_PROTOCOLS.contains(clientProtocol)) {
-			throw new ConfigurationException("Invalid client protocol specified '" + clientProtocol + "'.");
-		}
-		config.putProperty(Config.CLIENT_PROTOCOL, clientProtocol);
 	}
 
-	protected void configureDataSource(Config config) {
+	protected void configureDataSource() {
 		if (getDataSource() != null) {
 			config.putObject(KEW_DATASOURCE_OBJ, getDataSource());
-		} else if (!StringUtils.isBlank(getDataSourceJndiName())) {
-			config.putProperty(KEW_DATASOURCE_JNDI, getDataSourceJndiName());
 		}
 	}
 
+	@Override
 	public ResourceLoader getResourceLoaderToRegister() throws Exception{
 		// create the plugin registry
 		PluginRegistry registry = null;
@@ -251,11 +225,7 @@ public class KEWConfigurer extends ModuleConfigurer {
 	}
 
 	public String getClientProtocol() {
-		return clientProtocol;
-	}
-
-	public void setClientProtocol(String clientProtocol) {
-		this.clientProtocol = clientProtocol;
+		return this.config.getProperty("client.protocol");
 	}
 
 	public DataSource getDataSource() {
@@ -265,13 +235,4 @@ public class KEWConfigurer extends ModuleConfigurer {
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-
-	public String getDataSourceJndiName() {
-		return dataSourceJndiName;
-	}
-
-	public void setDataSourceJndiName(String jndiDatasourceLocation) {
-		this.dataSourceJndiName = jndiDatasourceLocation;
-	}
-
 }

@@ -37,9 +37,6 @@ public class KIMConfigurer extends ModuleConfigurer {
 	
 	private List<RiceConfigEventListener> configEventListeners = new ArrayList<RiceConfigEventListener>();
 
-	/**
-	 * 
-	 */
 	public KIMConfigurer() {
 		super();
 		setModuleName( "KIM" );
@@ -53,14 +50,14 @@ public class KIMConfigurer extends ModuleConfigurer {
 		if ( getRunMode().equals( LOCAL_RUN_MODE ) || getRunMode().equals( EMBEDDED_RUN_MODE ) ) {
 			springFileLocations.append(',').append(KIM_IMPL_SPRING_BEANS_PATH);
 		}
-		if ( exposeServicesOnBus ) {
-			if (setSOAPServicesAsDefault) {
+		if ( isExposeServicesOnBus() ) {
+			if (isSetSOAPServicesAsDefault()) {
 				springFileLocations.append(',').append(KIM_KSB_SOAP_DEFAULT_SPRING_BEANS_PATH);
 			} else {
 				springFileLocations.append(',').append(KIM_KSB_SPRING_BEANS_PATH);
 			}
 		}
-		if ( includeUserInterfaceComponents ) {
+		if ( isIncludeUserInterfaceComponents() ) {
 			springFileLocations.append(',').append(KIM_UI_SPRING_BEANS_PATH);
 		}
 		return springFileLocations.toString();
@@ -70,13 +67,8 @@ public class KIMConfigurer extends ModuleConfigurer {
 		configEventListeners.add(listener);
 	}
 	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.core.config.ModuleConfigurer#onEvent(org.kuali.rice.core.config.event.RiceConfigEvent)
-	 */
 	@Override
-	public void onEvent(RiceConfigEvent event) throws Exception {
+	public void onEvent(RiceConfigEvent event) {
 		super.onEvent(event);
 		for (RiceConfigEventListener listener : configEventListeners) {
 			listener.onEvent(event);

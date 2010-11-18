@@ -61,9 +61,6 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 
 	private static final Logger LOG = Logger.getLogger(RiceConfigurerBase.class);
 
-	private String environment = "dev";
-	private String serviceNamespace;
-
 	private Config rootConfig;
 	private ResourceLoader rootResourceLoader;
 	private Properties properties;
@@ -76,6 +73,7 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	/***
 	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
 	 */
+	@Override
 	public void afterPropertiesSet() throws Exception {
 		start();
 	}
@@ -83,6 +81,7 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	/***
 	 * @see org.springframework.beans.factory.DisposableBean#destroy()
 	 */
+	@Override
 	public void destroy() throws Exception {
 		stop();
 	}
@@ -90,6 +89,7 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	/***
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#start()
 	 */
+	@Override
 	public void start() throws Exception {
 	    notify(new BeforeStartEvent());
 		initializeFullConfiguration();
@@ -157,6 +157,7 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	/***
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#stop()
 	 */
+	@Override
 	public void stop() throws Exception {
 		LOG.info("Stopping Rice...");
 	    notify(new BeforeStopEvent());
@@ -168,6 +169,7 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	/***
 	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
 	 */
+	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		 List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
 		 if (isConfigureLogging()) {
@@ -186,7 +188,8 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	/***
 	 * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
 	 */
-    public void onApplicationEvent(ApplicationEvent event) {
+    @Override
+	public void onApplicationEvent(ApplicationEvent event) {
         try {
         	//Event raised when an ApplicationContext gets initialized or refreshed. 
             if (event instanceof ContextRefreshedEvent) {
@@ -208,11 +211,7 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
         }
     }
 
-	@SuppressWarnings("unchecked")
 	protected void initializeFullConfiguration() throws Exception {
-		if ( LOG.isInfoEnabled() ) {
-			LOG.info("Starting Rice configuration for environment " + this.environment);
-		}
 		Config currentConfig = parseConfig();
 		initializeBaseConfiguration(currentConfig);
 		parseModuleConfigs(currentConfig);
@@ -226,8 +225,6 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	 * be sure to call super.initializeBaseConfiguration.
 	 */
 	protected void initializeBaseConfiguration(Config currentConfig) throws Exception {
-		configureEnvironment(currentConfig);
-		configureServiceNamespace(currentConfig);
 
 	}
 
@@ -267,32 +264,8 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 		}
 	}
 
-	protected void configureEnvironment(Config config) {
-		if (!StringUtils.isBlank(this.environment)) {
-			config.putProperty(Config.ENVIRONMENT, this.environment);		
-		}
-	}
-	
-	protected void configureServiceNamespace(Config config) {
-		if (!StringUtils.isBlank(this.serviceNamespace)) {
-			config.putProperty(Config.SERVICE_NAMESPACE, this.serviceNamespace);
-		}
-	}
-
 	public String getEnvironment() {
-		return this.environment;
-	}
-
-	public void setEnvironment(String environment) {
-		this.environment = environment;
-	}
-	
-	public String getServiceNamespace() {
-		return this.serviceNamespace;
-	}
-
-	public void setServiceNamespace(String ServiceNamespace) {
-		this.serviceNamespace = ServiceNamespace;
+		return this.rootConfig.getProperty("environment");
 	}
 
 	public ResourceLoader getRootResourceLoader() {
@@ -352,7 +325,6 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	 * @param additionalSpringFiles the additionalSpringFiles to set.  list members can be 
 	 * filenames, or comma separated lists of filenames.
 	 */
-	@SuppressWarnings("unchecked")
 	public void setAdditionalSpringFiles(List<String> additionalSpringFiles) {
 		// check to see if we have a single string with comma separated values
 		if (null != additionalSpringFiles && 
@@ -377,6 +349,7 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 		return beanFactory;
 	}
 	
+	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
 		this.beanFactory = beanFactory;
 	}

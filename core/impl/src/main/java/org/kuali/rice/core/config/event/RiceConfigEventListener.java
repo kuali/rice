@@ -23,5 +23,5 @@ package org.kuali.rice.core.config.event;
  *
  */
 public interface RiceConfigEventListener {
-	public void onEvent(RiceConfigEvent event) throws Exception; 
+	public void onEvent(RiceConfigEvent event); 
 }

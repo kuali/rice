@@ -42,22 +42,13 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	public static final String THIN_RUN_MODE = "thin";
 	protected final List<String> VALID_RUN_MODES = new ArrayList<String>();
 	
-	private String runMode = LOCAL_RUN_MODE;	
-    private String moduleName = "!!!UNSET!!!";	
+    private String moduleName = null;	
 	protected String webModuleConfigName = "";
-	protected String webModuleConfigurationFiles = "";
-	protected String webModuleBaseUrl = "";
 	protected boolean webInterface = false;
-    protected boolean testMode;
     protected String springFileLocations = "";
     protected String resourceLoaderName;
-    protected boolean exposeServicesOnBus = true;
-    protected boolean setSOAPServicesAsDefault = false;
-    protected boolean includeUserInterfaceComponents = true;
-	
-	/**
-	 * 
-	 */
+    protected Config config;
+
 	public ModuleConfigurer() {
 		VALID_RUN_MODES.add( LOCAL_RUN_MODE );
 		VALID_RUN_MODES.add( EMBEDDED_RUN_MODE );
@@ -65,98 +56,82 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 		VALID_RUN_MODES.add( THIN_RUN_MODE );
 	}
 	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
-	 */
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		return new ArrayList<Lifecycle>(0);
 	}
-	/**
-	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
-	 */
+
+	@Override
 	public void afterPropertiesSet() throws Exception {
-		if ( getModuleName().equals( "!!!UNSET!!!" ) ) {
+		if ( getModuleName() == null ) {
 			throw new IllegalArgumentException( "Module Name must be given for each ModuleConfigurer instance" );
 		}
-		if ( hasWebInterface() ) {
-			if ( StringUtils.isBlank( webModuleConfigName ) ) {
-				setWebModuleConfigName( "config/" + getModuleName().toLowerCase() );
-			}
-//			if ( StringUtils.isBlank( webModuleConfigurationFiles ) ) {
-//				setWebModuleConfigurationFiles( "/" + getModuleName().toLowerCase() + "/WEB-INF/struts-config.xml" );
-//			}
-		}
 	}
-	
-	
 	
 	public String getRunMode() {
-		return this.runMode;
+		String propertyName = getModuleName().toLowerCase() + ".mode";
+		return this.config.getProperty(propertyName);
+	}
+	
+	public String getWebModuleConfigName() {
+		return "config/" + getModuleName().toLowerCase();
+	}
+	
+	public String getWebModuleConfigurationFiles() {
+		return config.getProperty("rice." + getModuleName().toLowerCase() + ".struts.config.files");
 	}
 
-	public void setRunMode(String runMode) {
+	public void validateRunMode(String runMode) {
 		runMode = runMode.trim();
 		if ( !VALID_RUN_MODES.contains( runMode ) ) {
 			throw new IllegalArgumentException( "Invalid run mode for the " + this.getClass().getSimpleName() + ": " + runMode + " - Valid Values are: " + VALID_RUN_MODES );
 		}
-		this.runMode = runMode;
 	}
-
+	
+	/**
+	 * This base implementation returns true when the module has a web interface and the
+	 * runMode is "local".
+	 * 
+	 * Subclasses can override this method if there are different requirements for inclusion
+	 * of the web UI for the module.
+	 */
+	public boolean shouldRenderWebInterface() {
+		return hasWebInterface() &&	getRunMode().equals( ModuleConfigurer.LOCAL_RUN_MODE );
+	}
+	
+	public boolean isSetSOAPServicesAsDefault() {
+		return Boolean.valueOf(config.getProperty("rice." + getModuleName().toLowerCase() + ".set.soap.services.as.default")).booleanValue();
+	}
+	
+	public boolean isExposeServicesOnBus() {
+		return Boolean.valueOf(config.getProperty("rice." + getModuleName().toLowerCase() + ".expose.services.on.bus")).booleanValue();
+	}
+	
+	public boolean isIncludeUserInterfaceComponents() {
+		return Boolean.valueOf(config.getProperty("rice." + getModuleName().toLowerCase() + ".include.user.interface.components")).booleanValue();
+	}
+	
+	/**
+	 * @return the webModuleBaseUrl
+	 */
+	public String getWebModuleBaseUrl() {
+		return config.getProperty(getModuleName().toLowerCase() + ".url");
+	}
 	
 	public Config loadConfig(Config parentConfig) throws Exception {
     	if ( LOG.isInfoEnabled() ) {
     		LOG.info("Starting configuration of " + getModuleName() + " for service namespace " + parentConfig.getServiceNamespace());
     	}
-		Config config = parentConfig;
-        if (Boolean.valueOf(config.getProperty("rice." + getModuleName().toLowerCase() + ".testMode"))) {
-            testMode = true;
-        }		
-		configureWebConfiguration(config);
-		configureRunMode(config);
+        validateRunMode(getRunMode());
+        configureSpringLocations();
+
 		return config;
 	}
-
-	protected void configureWebConfiguration( Config config ) throws Exception {
-		if ( StringUtils.isBlank( getWebModuleConfigurationFiles() ) ) {
-			if ( StringUtils.isBlank( config.getProperty( "rice." + getModuleName().toLowerCase() + ".struts.config.files" ) ) ) {
-				setWebModuleConfigurationFiles( "/" + getModuleName().toLowerCase() + "/WEB-INF/struts-config.xml" );
-			} else {
-				setWebModuleConfigurationFiles( config.getProperty( "rice." + getModuleName().toLowerCase() + ".struts.config.files" ) );
-			}
-		}
-		config.putProperty( "rice." + getModuleName().toLowerCase() + ".struts.config.files", getWebModuleConfigurationFiles() );
-		if ( StringUtils.isBlank( getWebModuleBaseUrl() ) ) {
-			if ( StringUtils.isBlank( config.getProperty( getModuleName().toLowerCase() + ".url" ) ) ) {
-				setWebModuleBaseUrl( config.getProperty( "application.url" ) + "/" + getModuleName().toLowerCase() );
-			} else {
-				setWebModuleBaseUrl( config.getProperty( getModuleName().toLowerCase() + ".url" ) );
-			}
-		}
-		config.putProperty( getModuleName().toLowerCase() + ".url", getWebModuleBaseUrl() );
+	
+	private void configureSpringLocations() {
 		if ( StringUtils.isEmpty( getSpringFileLocations() ) ) {
 			setSpringFileLocations( getDefaultSpringBeansPath(getDefaultConfigPackagePath() ) );
 		}
-	}
-	
-	/**
-	 * Creates a configuration parameter for the run mode by appending the module name (in lower case) plus ".mode"
-	 */
-	protected void configureRunMode(Config config) {
-		String propertyName = getModuleName().toLowerCase() + ".mode";
-		config.putProperty(propertyName, getRunMode());
-	}
-	
-	/**
-	 * 
-	 * This method returns a comma separated string of spring file locations for this module.
-	 * 
-	 * @throws Exception
-	 */
-	public String getSpringFileLocations() throws Exception {
-		return springFileLocations;
 	}
 	
     /* helper methods for constructors */
@@ -166,6 +141,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
     protected String getDefaultSpringBeansPath(String configPackagePath) {
         return configPackagePath + getModuleName().toUpperCase() + "SpringBeans.xml"; 
     }
+
     public String getDefaultResourceLoaderName() {
         return getModuleName().toUpperCase() + "_SPRING_RESOURCE_LOADER";        
     }
@@ -173,13 +149,21 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
         return new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), getDefaultResourceLoaderName());
     }
 	
+	public Config getConfig() {
+		return this.config;
+	}
+
+	public void setConfig(Config config) {
+		this.config = config;
+	}
+	
 	/**
 	 * 
 	 * This method returns a resource loader that this module might want to register with the global resource loader.
 	 * 
 	 * @throws Exception
 	 */
-	public ResourceLoader getResourceLoaderToRegister() throws Exception{
+	public ResourceLoader getResourceLoaderToRegister() throws Exception {
 		return null;
 	}
 	
@@ -195,14 +179,15 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
      * Constructs a SpringResourceLoader from the appropriate Spring context resource and with the configured
      * resource loader name (and current context config service namespace)
      */
-    protected ResourceLoader createResourceLoader() throws Exception {
+    protected ResourceLoader createResourceLoader() {
         String context = getSpringFileLocations();
         ResourceLoader resourceLoader = new SpringResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), resourceLoaderName), context);
         return resourceLoader;
     }
 
 	
-	public void onEvent(RiceConfigEvent event) throws Exception {
+	@Override
+	public void onEvent(RiceConfigEvent event) {
 		if ( LOG.isInfoEnabled() ) {
 			LOG.info( "ModuleConfigurer.onEvent() called: " + event );
 		}
@@ -216,20 +201,8 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 		this.moduleName = moduleName;
 	}
 
-	public String getWebModuleConfigName() {
-		return this.webModuleConfigName;
-	}
-
 	public void setWebModuleConfigName(String webModuleConfigName) {
 		this.webModuleConfigName = webModuleConfigName;
-	}
-
-	public String getWebModuleConfigurationFiles() {
-		return this.webModuleConfigurationFiles;
-	}
-
-	public void setWebModuleConfigurationFiles(String webModuleConfigurationFiles) {
-		this.webModuleConfigurationFiles = webModuleConfigurationFiles;
 	}
 
 	public boolean hasWebInterface() {
@@ -241,75 +214,19 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	}
 
 	/**
-	 * This base implementation returns true when the module has a web interface and the
-	 * runMode is "local".
 	 * 
-	 * Subclasses can override this method if there are different requirements for inclusion
-	 * of the web UI for the module.
+	 * This method returns a comma separated string of spring file locations for this module.
+	 * 
+	 * @throws Exception
 	 */
-	public boolean shouldRenderWebInterface() {
-		return hasWebInterface() &&	getRunMode().equals( ModuleConfigurer.LOCAL_RUN_MODE );
+	public String getSpringFileLocations() {
+		return springFileLocations;
 	}
 	
-	/**
-	 * @return the testMode
-	 */
-	public boolean isTestMode() {
-		return this.testMode;
-	}
-
-	/**
-	 * @param testMode the testMode to set
-	 */
-	public void setTestMode(boolean testMode) {
-		this.testMode = testMode;
-	}
-
 	/**
 	 * @param springFileLocations the springFileLocations to set
 	 */
 	public void setSpringFileLocations(String springFileLocations) {
 		this.springFileLocations = springFileLocations;
 	}
-
-	/**
-	 * @return the webModuleBaseUrl
-	 */
-	public String getWebModuleBaseUrl() {
-		return this.webModuleBaseUrl;
-	}
-
-	/**
-	 * @param webModuleBaseUrl the webModuleBaseUrl to set
-	 */
-	public void setWebModuleBaseUrl(String webModuleBaseUrl) {
-		this.webModuleBaseUrl = webModuleBaseUrl;
-	}
-
-	public boolean isExposeServicesOnBus() {
-		return this.exposeServicesOnBus;
-	}
-
-	public void setExposeServicesOnBus(boolean exposeServicesOnBus) {
-		this.exposeServicesOnBus = exposeServicesOnBus;
-	}
-
-	public boolean isIncludeUserInterfaceComponents() {
-		return this.includeUserInterfaceComponents;
-	}
-
-	public void setIncludeUserInterfaceComponents(
-			boolean includeUserInterfaceComponents) {
-		this.includeUserInterfaceComponents = includeUserInterfaceComponents;
-	}
-
-	public boolean isSetSOAPServicesAsDefault() {
-		return this.setSOAPServicesAsDefault;
-	}
-
-	public void setSetSOAPServicesAsDefault(boolean setSOAPServicesAsDefault) {
-		this.setSOAPServicesAsDefault = setSOAPServicesAsDefault;
-	}
-
-	
 }

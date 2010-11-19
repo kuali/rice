@@ -35,51 +35,51 @@
 		<c:if test="${not KualiForm.suppressAllButtons}">
 	        <div id="globalbuttons" class="globalbuttons">
 	        	<c:if test="${!empty extraButtonSource}">
-	        		<html:image src="${extraButtonSource}" styleClass="globalbuttons" property="${extraButtonProperty}" alt="${extraButtonAlt}" tabindex="${tabindex}"/>
+	        		<html:submit property="${extraButtonProperty}" value="${extraButtonAlt}" alt="${extraButtonAlt}"/>
 	        	</c:if>
 	        	<c:if test="${!empty extraButtons}">
 		        	<c:forEach items="${extraButtons}" var="extraButton">
-        				<html:image src="${extraButton.extraButtonSource}" styleClass="globalbuttons" property="${extraButton.extraButtonProperty}" title="${extraButton.extraButtonAltText}" alt="${extraButton.extraButtonAltText}"  onclick="${extraButton.extraButtonOnclick}" tabindex="${tabindex}" />
+        				<html:submit property="${extraButton.extraButtonProperty}" value="${extraButton.extraButtonAltText}" title="${extraButton.extraButtonAltText}" alt="${extraButton.extraButtonAltText}"  onclick="${extraButton.extraButtonOnclick}" />
 		        	</c:forEach>
 	        	</c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_PERFORM_ROUTE_REPORT] and not suppressRoutingControls}">
-				    <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_routereport.gif" styleClass="globalbuttons" property="methodToCall.performRouteReport" title="Perform Route Report" alt="Perform Route Report" tabindex="${tabindex}" />
+				    <html:submit property="methodToCall.performRouteReport" value="Perform Route Report" title="Perform Route Report" alt="Perform Route Report" />
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS] and not suppressRoutingControls}">
-	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_sendadhocreq.gif" styleClass="globalbuttons" property="methodToCall.sendAdHocRequests" title="Send AdHoc Requests" alt="Send AdHoc Requests" tabindex="${tabindex}" />
+	                <html:submit property="methodToCall.sendAdHocRequests" value="Send AdHoc Requests" title="Send AdHoc Requests" alt="Send AdHoc Requests"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_ROUTE] and not suppressRoutingControls}">
-	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_submit.gif" styleClass="globalbuttons" property="methodToCall.route" title="submit" alt="submit" tabindex="${tabindex}" />
+	                <html:submit property="methodToCall.route" value="submit" title="submit" alt="submit"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SAVE] and not viewOnly}">
-	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_save.gif" styleClass="globalbuttons" property="methodToCall.${saveButtonValue}" title="save" alt="save" tabindex="${tabindex}" />
+	                <html:submit property="methodToCall.${saveButtonValue}" value="save" title="save" alt="save"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_RELOAD]}">
-	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_reload.gif" styleClass="globalbuttons" property="methodToCall.reload" title="reload" alt="reload" onclick="excludeSubmitRestriction=true" tabindex="${tabindex}" />
+	                <html:submit property="methodToCall.reload" value="reload" title="reload" alt="reload" onclick="excludeSubmitRestriction=true"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_BLANKET_APPROVE] and not suppressRoutingControls}">
-	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_blanketapp.gif" styleClass="globalbuttons" property="methodToCall.blanketApprove" title="blanket approve" alt="blanket approve" tabindex="${tabindex}" />
+	                <html:submit property="methodToCall.blanketApprove" value="blanket approve" title="blanket approve" alt="blanket approve"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_APPROVE] and not suppressRoutingControls}">
-	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_approve.gif" styleClass="globalbuttons" property="methodToCall.approve" title="approve" alt="approve" tabindex="${tabindex}" />
+	                <html:submit property="methodToCall.approve" value="approve" title="approve" alt="approve"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_DISAPPROVE] and not suppressRoutingControls}">
-	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_disapprove.gif" styleClass="globalbuttons" property="methodToCall.disapprove" title="disapprove" alt="disapprove" tabindex="${tabindex}" />
+	                <html:submit property="methodToCall.disapprove" value="disapprove" title="disapprove" alt="disapprove"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_FYI] and not suppressRoutingControls}">
-	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_fyi.gif" styleClass="globalbuttons" property="methodToCall.fyi" title="fyi" alt="fyi" tabindex="${tabindex}" />
+	                <html:submit property="methodToCall.fyi" value="fyi" title="fyi" alt="fyi"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_ACKNOWLEDGE] and not suppressRoutingControls}">
-	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_acknowledge.gif" styleClass="globalbuttons" property="methodToCall.acknowledge" title="acknowledge" alt="acknowledge" tabindex="${tabindex}" />
+	                <html:submit property="methodToCall.acknowledge" value="acknowledge" title="acknowledge" alt="acknowledge"/>
 	            </c:if>
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_CLOSE]}">
-	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" styleClass="globalbuttons" property="methodToCall.close" title="close" alt="close" tabindex="${tabindex}" />
+	                <html:submit property="methodToCall.close" value="close" title="close" alt="close"/>
 	            </c:if>            
 	            <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_CANCEL] and not suppressCancelButton}">
-	                <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_cancel.gif" styleClass="globalbuttons" property="methodToCall.cancel" title="cancel" alt="cancel" tabindex="${tabindex}" />
+	                <html:submit property="methodToCall.cancel" value="cancel" title="cancel" alt="cancel"/>
 	            </c:if>
                 <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_COPY]}">
-                   <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_copy.gif" styleClass="globalbuttons" property="methodToCall.copy" title="Copy current document" alt="Copy current document" tabindex="${tabindex}" />
+                   <html:submit property="methodToCall.copy" value="Copy current document" title="Copy current document" alt="Copy current document"/>
                 </c:if>
 	        </div>
         </c:if>

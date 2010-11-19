@@ -293,7 +293,7 @@
               </div>
             </c:if>
             <!----------------------------------- END DOCUMENT INFO HEADER BOX --------------------------------------->
-            
+
             <c:choose>
               <c:when test="${lookup}" >
                 <%-- Display the expand/collapse buttons for the lookup/inquiry, if specified. --%>
@@ -409,24 +409,10 @@
                   </c:forEach>
                 </c:if>
                 <c:if test="${showTabButtons != '' && showTabButtons == true}">
-                  <html:image 
-                      property="methodToCall.showAllTabs"
-                      src="${ConfigProperties.kr.externalizable.images.url}tinybutton-expandall.gif"
-                      title="show all panel content"
-                      alt="show all panel content"
-                      tabindex="-1"
-                      styleClass="tinybutton"
-                      onclick="javascript: return expandAllTab(document, tabStatesSize); "
-                  />
-                  <html:image 
-                      property="methodToCall.hideAllTabs"
-                      src="${ConfigProperties.kr.externalizable.images.url}tinybutton-collapseall.gif"
-                      title="hide all panel content"
-                      alt="hide all panel content"
-                      tabindex="-1"
-                      styleClass="tinybutton"
-                      onclick="javascript: return collapseAllTab(document, tabStatesSize); "
-                  />
+                  <html:submit property="methodToCall.showAllTabs" value="show all" 
+                              title="show all panel content" alt="show all panel content" />
+                  <html:submit property="methodToCall.hideAllTabs" value="hide all" 
+                              title="hide all panel content" alt="hide all panel content" />                              
                 </c:if>
                 <c:if test="${renderRequiredFieldsLabel}" >
                   <br>
@@ -435,7 +421,10 @@
               </div>
             </div>
           </div>
-          <table class="page-main" width="100%" cellpadding="0" cellspacing="0">
+
+          <div id="workarea">
+          <br/><br/>
+          <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td width="1%">
                 <img 

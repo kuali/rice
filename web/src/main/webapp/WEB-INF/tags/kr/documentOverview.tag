@@ -24,7 +24,7 @@
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
 
 <dd:evalNameToMap mapName="DataDictionary.${KualiForm.docTypeName}.attributes" returnVar="documentAttributes"/>
-<kul:tabTop tabTitle="Document Overview" defaultOpen="true" tabErrorKey="${Constants.DOCUMENT_ERRORS}" >
+<kul:tab tabTitle="Document Overview" defaultOpen="true" tabErrorKey="${Constants.DOCUMENT_ERRORS}" >
 	<div class="tab-container" align=center>
 		  <!-- DOC OVERVIEW TABLE -->
 		  <html:hidden property="document.documentHeader.documentNumber" />
@@ -67,4 +67,4 @@
           </table>
           <jsp:doBody/>            
         </div>
-</kul:tabTop>
+</kul:tab>

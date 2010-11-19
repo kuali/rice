@@ -35,6 +35,9 @@
 				<td width="20"><img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20" height="20"/></td>
 			</tr>
 		</table>
+	  </div>	
 	</c:otherwise>
 </c:choose>
+
+
 

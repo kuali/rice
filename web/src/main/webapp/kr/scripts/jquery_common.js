@@ -20,12 +20,17 @@ var $dialog = null;
 // common event registering done here through JQuery ready event
 $(document).ready(function() {
 
-	 $.jGrowl("Save Successful");
-	 $.jGrowl("Another Message!", {
-	 life : 1000
-	 });
+//	 if (!dialogMode) {
+//	   $.jGrowl("Save Successful", {
+//	   sticky : true
+//	   });
+//	 }
 
-	$(":input").watermark("Fill Me ...");
+	//$.loading(true, { img:'images/jquery/loading.gif', align:'center', text: 'Loading...'});
+  $("#red").loading();
+
+
+	//$(":input").watermark("Fill Me ...");
 
 	initializeInquiryHandlers();
 

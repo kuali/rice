@@ -26,9 +26,9 @@
 
 <c:if test="${isLookup || (!(empty fieldType) && not isLookup)}">
                             
-	<th class="grid" style="width:${cellWidth};" align="right">
+	<th style="width:${cellWidth};" align="right">
 	<c:if test="${!isReadOnly}">
-<label id="${fieldName}.label" for="${fieldName}" onmouseover="$.jGrowl.defaults.closer=false; $.jGrowl('close'); $.jGrowl('${fieldHelp}',{header: 'Field Help', sticky:true, closer:false, theme: 'manilla'});" onmouseout="$.jGrowl('close');">
+<label id="${fieldName}.label" for="${fieldName}">
 </c:if>
     	
 		<%--<c:out value="fieldType is ${fieldType}, isReadOnly is ${isReadOnly}, cellWidth is ${cellWidth}<br/>" escapeXml="false" />--%>

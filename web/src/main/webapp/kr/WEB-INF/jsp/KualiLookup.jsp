@@ -37,7 +37,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/dwr/interface/DocumentTypeService.js"></script>
 	
 	<c:if test="${KualiForm.headerBarEnabled}">
-	<div class="headerarea-small" id="headerarea-small">
+	<div class="headerarea" id="headerarea">
 		<h1><c:out value="${KualiForm.lookupable.title}" /> <c:choose>
 			<c:when test="${KualiForm.fields.docTypeFullName != null}">
 				<%-- this is a custom doc search --%>
@@ -187,6 +187,11 @@
 
 			<br>
 			<br>
+            
+            
+            <c:set var="field" value="${KualiForm.field}" scope="request"/>
+              <jsp:include page="${KualiForm.fieldHandler}"/>
+              
 
 			<c:if test="${reqSearchResultsActualSize>0}">
 				<c:out value="${reqSearchResultsActualSize}" /> items found.  Please refine your search criteria to narrow down your search.

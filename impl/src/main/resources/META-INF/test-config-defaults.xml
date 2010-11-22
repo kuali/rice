@@ -38,4 +38,11 @@
     <param name="unittest.jetty.server10.port" override="false" random="true">19000-19999</param>
     
     <param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources,KR-Test-ApplicationResources</param>
+    
+    <param name="rice.kns.set.soap.services.as.default">false</param>
+    <param name="rice.kcb.set.soap.services.as.default">false</param>
+    <param name="rice.ken.set.soap.services.as.default">false</param>
+    <param name="rice.kew.set.soap.services.as.default">false</param>
+    <param name="rice.kim.set.soap.services.as.default">false</param>
+    <param name="rice.ksb.set.soap.services.as.default">false</param>
 </config>

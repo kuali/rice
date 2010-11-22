@@ -59,7 +59,7 @@ public class RiceCacheExporterFactoryBean implements FactoryBean, InitializingBe
 		if (cache == null) {
 			cache = new RiceCacheAdministratorImpl();
 			cache.setServiceName(this.getServiceName());
-			cache.setForceRegistryRefresh(true);
+			cache.setForceRegistryRefresh(false);
 			if (remotedServiceRegistry == null) {
 				remotedServiceRegistry = KSBServiceLocator.getServiceDeployer();
 			}

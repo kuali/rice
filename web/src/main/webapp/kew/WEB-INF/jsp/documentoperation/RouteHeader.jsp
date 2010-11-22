@@ -24,7 +24,7 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="0" class="bord-r-t" align="center">
 	  <tr>
 		<td class="thnormal" colspan="2" align="center" height="30"><strong>Document</strong></td>
-	  </tr>
+	  </tr>	  
 	 	  <tr>
 		    <td width="33%" class="headercell3-b-l" align="right"><b> Document ID: </b><c:out value="${DocumentOperationForm.routeHeader.routeHeaderId}" /> </td>
 		    <td width="66%" class="headercell3-b-l"><html-el:radio property="routeHeaderOp" value="update"/>Update &nbsp;&nbsp;<html-el:radio property="routeHeaderOp" value="noop"/>No Operation&nbsp;&nbsp;</td>
@@ -61,27 +61,119 @@
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">* Create Date:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="createDate" />&nbsp;<a href="javascript:showCal('createDate');"><img src="images/cal.gif" width="16" height="16" align="absmiddle" alt="Click Here to select a date"></a></td>
+	  	    <td width="66%" class="datacell">
+	  	        <html-el:text property="createDate"  styleId="createDate"/>&nbsp;
+	  	        <img src="images/cal.gif" id="createDate_trigger" width="16" height="16" align="absmiddle" alt="Click Here to select a date">
+	  	        <script type="text/javascript">
+                      Calendar.setup({
+                      inputField     :    "createDate",     // id of the input field
+                      ifFormat       :    "%I:%M %p %m/%d/%Y",     // format of the input field (even if hidden, this format will be honored)
+                      button         :    "createDate_trigger", // the button or image that triggers this
+                      showsTime      :    true,            // will display a time selector
+                      daFormat       :    "%A, %B %d, %Y",// format of the displayed date
+                      singleClick    :    true,
+                      timeFormat     :    "12",
+                      step           :    1
+                    });
+            	</script> &nbsp;
+	  	    	  	    
+	  	    </td>
 	  	  </tr>	 
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">* Doc Status Modification Date:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="statusModDate" />&nbsp;<a href="javascript:showCal('statusModDate');"><img src="images/cal.gif" width="16" height="16" align="absmiddle" alt="Click Here to select a date"></a></td>
+	  	    <td width="66%" class="datacell">
+	  	    	<html-el:text property="statusModDate" styleId="statusModDate"/>&nbsp;
+	  	    	<img src="images/cal.gif" id="statusModDate_trigger" width="16" height="16" align="absmiddle" alt="Click Here to select a date">
+	  	    	<script type="text/javascript">
+                      Calendar.setup({
+                      inputField     :    "statusModDate",     // id of the input field
+                      ifFormat       :    "%I:%M %p %m/%d/%Y ",     // format of the input field (even if hidden, this format will be honored)
+                      button         :    "statusModDate_trigger", // the button or image that triggers this
+                      showsTime      :    true,            // will display a time selector
+                      daFormat       :    "%A, %B %d, %Y",// format of the displayed date
+                      singleClick    :    true,
+                      timeFormat     :    "12",
+                      step           :    1
+                    });
+            	</script> &nbsp;
+	  	    
+	  	    </td>
 	  	  </tr>	 		 
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Approved Date:</td>
-	  	    <td width="66%" class="datacell"><html-el:text  property="approvedDate" />&nbsp;<a href="javascript:showCal('approvedDate');"><img src="images/cal.gif" width="16" height="16" align="absmiddle" alt="Click Here to select a date"></a></td>
+	  	 	<td width="66%" class="datacell">
+	  	    	<html-el:text property="approvedDate" styleId="approvedDate"/>&nbsp;
+	  	    	<img src="images/cal.gif" id="approvedDate_trigger" width="16" height="16" align="absmiddle" alt="Click Here to select a date">
+	  	    	<script type="text/javascript">
+                      Calendar.setup({
+                      inputField     :    "approvedDate",     // id of the input field
+                      ifFormat       :    "%I:%M %p %m/%d/%Y ",     // format of the input field (even if hidden, this format will be honored)
+                      button         :    "approvedDate_trigger", // the button or image that triggers this
+                      showsTime      :    true,            // will display a time selector
+                      daFormat       :    "%A, %B %d, %Y",// format of the displayed date
+                      singleClick    :    true,
+                      timeFormat     :    "12",
+                      step           :    1
+                    });
+            	</script> &nbsp;
+	  	    </td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Finalized Date:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="finalizedDate" />&nbsp;<a href="javascript:showCal('finalizedDate');"><img src="images/cal.gif" width="16" height="16" align="absmiddle" alt="Click Here to select a date"></a></td>
+	  	    <td width="66%" class="datacell">
+	  	    	<html-el:text property="finalizedDate" styleId="finalizedDate"/>&nbsp;
+	  	    	<img src="images/cal.gif" id="finalizedDate_trigger" width="16" height="16" align="absmiddle" alt="Click Here to select a date">
+	  	    	<script type="text/javascript">
+                      Calendar.setup({
+                      inputField     :    "finalizedDate",     // id of the input field
+                      ifFormat       :    "%I:%M %p %m/%d/%Y ",     // format of the input field (even if hidden, this format will be honored)
+                      button         :    "finalizedDate_trigger", // the button or image that triggers this
+                      showsTime      :    true,            // will display a time selector
+                      daFormat       :    "%A, %B %d, %Y",// format of the displayed date
+                      singleClick    :    true,
+                      timeFormat     :    "12",
+                      step           :    1
+                    });
+            	</script> &nbsp;
+	  	    </td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Route Status Modification Date:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeStatusDate" />&nbsp;<a href="javascript:showCal('routeStatusDate');"><img src="images/cal.gif" width="16" height="16" align="absmiddle" alt="Click Here to select a date"></a></td>
+	  	    <td width="66%" class="datacell">
+	  	    	<html-el:text property="routeStatusDate" styleId="routeStatusDate"/>&nbsp;
+	  	    	<img src="images/cal.gif" id="routeStatusDate_trigger" width="16" height="16" align="absmiddle" alt="Click Here to select a date">
+	  	    	<script type="text/javascript">
+                      Calendar.setup({
+                      inputField     :    "routeStatusDate",     // id of the input field
+                      ifFormat       :    "%I:%M %p %m/%d/%Y ",     // format of the input field (even if hidden, this format will be honored)
+                      button         :    "routeStatusDate_trigger", // the button or image that triggers this
+                      showsTime      :    true,            // will display a time selector
+                      daFormat       :    "%A, %B %d, %Y",// format of the displayed date
+                      singleClick    :    true,
+                      timeFormat     :    "12",
+                      step           :    1
+                    });
+            	</script> &nbsp;  
+	  	    </td>
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Route Level Modification Date:</td>
-	  	    <td width="66%" class="datacell"><html-el:text property="routeLevelDate" />&nbsp;<a href="javascript:showCal('routeLevelDate');"><img src="images/cal.gif" width="16" height="16" align="absmiddle" alt="Click Here to select a date"></a></td>
+	  	   	<td width="66%" class="datacell">
+	  	    	<html-el:text property="routeLevelDate" styleId="routeLevelDate"/>&nbsp;
+	  	    	<img src="images/cal.gif" id="statusModDate_trigger" width="16" height="16" align="absmiddle" alt="Click Here to select a date">
+	  	    	<script type="text/javascript">
+                      Calendar.setup({
+                      inputField     :    "routeLevelDate",     // id of the input field
+                      ifFormat       :    "%I:%M %p %m/%d/%Y ",     // format of the input field (even if hidden, this format will be honored)
+                      button         :    "routeLevelDate_trigger", // the button or image that triggers this
+                      showsTime      :    true,            // will display a time selector
+                      daFormat       :    "%A, %B %d, %Y",// format of the displayed date
+                      singleClick    :    true,
+                      timeFormat     :    "12",
+                      step           :    1
+                    });
+            	</script> &nbsp;
+	  	     </td> 	    	  
 	  	  </tr>
 	  	  <tr>
 	  	    <td width="33%" align="right" class="thnormal">Doc Type ID:</td>

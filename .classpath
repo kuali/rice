@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" output="api/target/classes" path="api/src/main/java"/>
+	<classpathentry kind="src" output="devtools/target/classes" path="devtools/src/main/resources"/>
 	<classpathentry kind="src" path="core/impl/src/main/java"/>
 	<classpathentry kind="src" path="core/api/src/main/java"/>
-	<classpathentry kind="src" path="api/target/schema"/>
 	<classpathentry kind="src" output="devtools/target/classes" path="devtools/src/main/java"/>
 	<classpathentry kind="src" output="impl/target/classes" path="impl/src/main/java"/>
 	<classpathentry kind="src" output="impl/target/classes" path="impl/src/main/resources"/>
@@ -114,7 +114,6 @@
 	<classpathentry kind="var" path="M2_REPO/javassist/javassist/3.12.0.GA/javassist-3.12.0.GA.jar" sourcepath="M2_REPO/javassist/javassist/3.12.0.GA/javassist-3.12.0.GA-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/mail/mail/1.4.1/mail-1.4.1.jar" sourcepath="M2_REPO/javax/mail/mail/1.4.1/mail-1.4.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/resource/connector-api/1.5/connector-api-1.5.jar"/>
-	<classpathentry kind="var" path="M2_REPO/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1.jar" sourcepath="M2_REPO/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/jstl/1.2/jstl-1.2.jar" sourcepath="M2_REPO/javax/servlet/jstl/1.2/jstl-1.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5.jar" sourcepath="M2_REPO/javax/servlet/servlet-api/2.5/servlet-api-2.5-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/javax/transaction/jta/1.1/jta-1.1.jar" sourcepath="M2_REPO/javax/transaction/jta/1.1/jta-1.1-sources.jar"/>
@@ -316,5 +315,6 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/m2repo/xpp3/xpp3_min/1.1.4c/xpp3_min-1.1.4c-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1.jar" sourcepath="M2_REPO/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1-sources.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

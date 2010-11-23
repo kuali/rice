@@ -16,26 +16,13 @@
  */
 package org.kuali.rice.core.config;
 
-import java.util.List;
-
-import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kcb.config.KCBConfigurer;
 import org.kuali.rice.ken.config.KENConfigurer;
 import org.kuali.rice.kew.config.KEWConfigurer;
 import org.kuali.rice.kim.config.KIMConfigurer;
 import org.kuali.rice.kns.config.KNSConfigurer;
-import org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator;
-import org.kuali.rice.ksb.messaging.MessageFetcher;
 import org.kuali.rice.ksb.messaging.config.KSBConfigurer;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**
  * Used to configure common Rice configuration properties.
@@ -44,14 +31,6 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  *
  */
 public class RiceConfigurer extends RiceConfigurerBase {
-
-	private DataSource dataSource;
-	private DataSource nonTransactionalDataSource;
-	private DataSource serverDataSource;
-	private String platform;
-	private UserTransaction userTransaction;
-	private TransactionManager transactionManager;
-	private CredentialsSourceFactory credentialsSourceFactory;
 	
 	private KSBConfigurer ksbConfigurer;
 	private KNSConfigurer knsConfigurer;
@@ -79,12 +58,6 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		addConfigToModules();
 		// now execute the super class's start method which will initialize configuration and resource loaders
 		super.start();
-
-		
-		//automatically requeue documents sitting with status of 'R'
-		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
-		KSBServiceLocator.getThreadPool().execute(messageFetcher);
-
 	}
 	
 	private void addConfigToModules() {
@@ -116,123 +89,6 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		if(getKsbConfigurer()!=null){
 			GlobalResourceLoader.addResourceLoader(getKsbConfigurer().getResourceLoaderToRegister());
 		}
-	}
-
-
-	/***
-	 * @see org.kuali.rice.core.lifecycle.BaseCompositeLifecycle#loadLifecycles()
-	 */
-	@Override
-	protected List<Lifecycle> loadLifecycles() throws Exception {
-		 GlobalResourceDelegatingSpringCreator.APPLICATION_BEAN_FACTORY = getBeanFactory();
-		 return super.loadLifecycles();
-	}
-		    
-	@Override
-	protected void initializeBaseConfiguration(Config currentConfig) throws Exception {
-		super.initializeBaseConfiguration(currentConfig);
-		configureJta(currentConfig);
-		configureDataSource(currentConfig);
-		configureCredentialsSourceFactory(currentConfig);
-	}
-
-	protected void configureCredentialsSourceFactory(final Config rootConfig) {
-		if (credentialsSourceFactory != null) {
-			rootConfig.putObject(Config.CREDENTIALS_SOURCE_FACTORY, this.credentialsSourceFactory);
-		}
-	}
- 
-	protected void configureDataSource(Config config) {
-		if (this.dataSource != null) {
-			config.putObject(RiceConstants.DATASOURCE_OBJ, this.dataSource);
-		}
-		
-        if (this.nonTransactionalDataSource != null) {
-            config.putObject(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ, this.nonTransactionalDataSource);
-        }
-        
-        if (this.serverDataSource != null) {
-        	config.putObject(RiceConstants.SERVER_DATASOURCE_OBJ, this.serverDataSource);
-        }
-	}
-
-	/**
-	 * If the user injected JTA classes into this configurer, verify that both the
-	 * UserTransaction and TransactionManager are set and then attach them to
-	 * the configuration.
-	 */
-	protected void configureJta(Config config) {
-		if (this.userTransaction != null) {
-			config.putObject(RiceConstants.USER_TRANSACTION_OBJ, this.userTransaction);
-		}
-		if (this.transactionManager != null) {
-			config.putObject(RiceConstants.TRANSACTION_MANAGER_OBJ, this.transactionManager);
-		}
-		boolean userTransactionConfigured = this.userTransaction != null || !StringUtils.isEmpty(config.getProperty(RiceConstants.USER_TRANSACTION_JNDI));
-		boolean transactionManagerConfigured = this.transactionManager != null || !StringUtils.isEmpty(config.getProperty(RiceConstants.TRANSACTION_MANAGER_JNDI));
-		if (userTransactionConfigured && !transactionManagerConfigured) {
-			throw new ConfigurationException("When configuring JTA, both a UserTransaction and a TransactionManager are required.  Only the UserTransaction was configured.");
-		}
-		if (transactionManagerConfigured && !userTransactionConfigured) {
-			throw new ConfigurationException("When configuring JTA, both a UserTransaction and a TransactionManager are required.  Only the TransactionManager was configured.");
-		}
-	}
-
-	public DataSource getDataSource() {
-		return this.dataSource;
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
-
-    public DataSource getNonTransactionalDataSource() {
-        return this.nonTransactionalDataSource;
-    }
-
-    public void setNonTransactionalDataSource(DataSource nonTransactionalDataSource) {
-        this.nonTransactionalDataSource = nonTransactionalDataSource;
-    }
-
-    public DataSource getServerDataSource() {
-		return this.serverDataSource;
-	}
-
-	public void setServerDataSource(DataSource serverDataSource) {
-		this.serverDataSource = serverDataSource;
-	}
-
-	public String getPlatform() {
-		return this.platform;
-	}
-
-	public void setPlatform(String platform) {
-		this.platform = platform;
-	}
-
-	public TransactionManager getTransactionManager() {
-		return this.transactionManager;
-	}
-
-	public void setTransactionManager(TransactionManager transactionManager) {
-		this.transactionManager = transactionManager;
-	}
-
-	public UserTransaction getUserTransaction() {
-		return this.userTransaction;
-	}
-
-	public void setUserTransaction(UserTransaction userTransaction) {
-		this.userTransaction = userTransaction;
-	}
-
-	public CredentialsSourceFactory getCredentialsSourceFactory() {
-		return credentialsSourceFactory;
-	}
-
-	public void setCredentialsSourceFactory(
-			final CredentialsSourceFactory credentialsSourceFactory) {
-		this.credentialsSourceFactory = credentialsSourceFactory;
 	}
 
 	/**

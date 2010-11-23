@@ -54,11 +54,15 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd"> 
 
-	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
+	<bean id="coreConfigurer" class="org.kuali.rice.core.config.CoreConfigurer">
 		<property name="dataSource" ref="riceDataSource" />
 		<property name="nonTransactionalDataSource" ref="riceNonTransactionalDataSource" />
 		<property name="transactionManager" ref="jtaTransactionManager" />
 		<property name="userTransaction" ref="jtaUserTransaction" />
+		<property name="config" ref="config" />
+	</bean>
+
+	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
 		<property name="rootConfig" ref="config" />
 		<property name="ksbConfigurer">
 			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer" />

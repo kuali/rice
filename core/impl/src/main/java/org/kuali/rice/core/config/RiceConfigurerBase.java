@@ -30,8 +30,6 @@ import org.kuali.rice.core.config.event.AfterStopEvent;
 import org.kuali.rice.core.config.event.BeforeStartEvent;
 import org.kuali.rice.core.config.event.BeforeStopEvent;
 import org.kuali.rice.core.config.event.RiceConfigEvent;
-import org.kuali.rice.core.config.logging.Log4jLifeCycle;
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -40,9 +38,6 @@ import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.resourceloader.RootResourceLoaderLifecycle;
 import org.kuali.rice.core.resourceloader.SpringLoader;
 import org.kuali.rice.core.util.RiceConstants;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationEvent;
@@ -57,7 +52,7 @@ import org.springframework.context.event.ContextRefreshedEvent;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener, BeanFactoryAware {
+public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener<ApplicationEvent> {
 
 	private static final Logger LOG = Logger.getLogger(RiceConfigurerBase.class);
 
@@ -66,7 +61,6 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	private Properties properties;
 	private List<String> configLocations = new ArrayList<String>();
 	private List<String> additionalSpringFiles = new ArrayList<String>();
-	private BeanFactory beanFactory;
 	
 	private List<ModuleConfigurer> modules = new LinkedList<ModuleConfigurer>();
 
@@ -172,17 +166,10 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	@Override
 	protected List<Lifecycle> loadLifecycles() throws Exception {
 		 List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		 if (isConfigureLogging()) {
-			 lifecycles.add(new Log4jLifeCycle());
-		 }
 		 for (ModuleConfigurer module : this.modules) {
 			 lifecycles.add(module);
 		 }
 		 return lifecycles;
-	}
-	
-	protected boolean isConfigureLogging() {
-		return ConfigContext.getCurrentContextConfig().getBooleanProperty(RiceConstants.RICE_LOGGING_CONFIGURE, false);
 	}
 	
 	/***
@@ -190,22 +177,18 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	 */
     @Override
 	public void onApplicationEvent(ApplicationEvent event) {
-        try {
-        	//Event raised when an ApplicationContext gets initialized or refreshed. 
-            if (event instanceof ContextRefreshedEvent) {
-                notify(new AfterStartEvent());
-            }
-            //Event raised when an ApplicationContext gets closed. 
-            else if (event instanceof ContextClosedEvent && !super.isStarted()) 
-            {
-            	notify(new AfterStopEvent());
-            }
-        } catch (Exception e) {
-            throw new RiceRuntimeException(e);
+    	//Event raised when an ApplicationContext gets initialized or refreshed. 
+        if (event instanceof ContextRefreshedEvent) {
+            notify(new AfterStartEvent());
+        }
+        //Event raised when an ApplicationContext gets closed. 
+        else if (event instanceof ContextClosedEvent && !super.isStarted()) 
+        {
+        	notify(new AfterStopEvent());
         }
     }
     
-    protected void notify(RiceConfigEvent event) throws Exception {
+    protected void notify(RiceConfigEvent event) {
         for (ModuleConfigurer module : modules) {
             module.onEvent(event);
         }
@@ -343,15 +326,5 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 		} else {
 			this.additionalSpringFiles = Collections.emptyList();
 		}
-	}	
-
-	public BeanFactory getBeanFactory() {
-		return beanFactory;
 	}
-	
-	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		this.beanFactory = beanFactory;
-	}
-	
 }

@@ -99,11 +99,15 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
+	<bean id="coreConfigurer" class="org.kuali.rice.core.config.CoreConfigurer">
 		<property name="dataSource" ref="dataSource" />
 		<property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" />
 		<property name="transactionManager" ref="jotm" />
 		<property name="userTransaction" ref="jotm" />
+		<property name="config" ref="config" />
+	</bean>
+
+	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer" depends-on="coreConfigurer">
 		<property name="rootConfig" ref="config" />
 		<property name="properties">
 			<props>

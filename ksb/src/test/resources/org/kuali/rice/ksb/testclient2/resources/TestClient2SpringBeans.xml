@@ -107,12 +107,16 @@
 
 	<bean id="credentialsSourceFactory" class="org.kuali.rice.core.security.credentials.CredentialsSourceFactory" />
 
-	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer">
+	<bean id="coreConfigurer" class="org.kuali.rice.core.config.CoreConfigurer">
 		<property name="dataSource" ref="dataSource" />
 		<property name="nonTransactionalDataSource" ref="client2NonTransactionalDataSource" />
 		<property name="transactionManager" ref="jotm" />
 		<property name="userTransaction" ref="jotm" />
 		<property name="credentialsSourceFactory" ref="credentialsSourceFactory" />
+		<property name="config" ref="config" />
+	</bean>
+
+	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer" depends-on="coreConfigurer">
 		<property name="rootConfig" ref="config" />
 		<property name="properties">
 			<props>

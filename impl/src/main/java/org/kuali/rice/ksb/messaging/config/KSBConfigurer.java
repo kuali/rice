@@ -42,6 +42,7 @@ import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.messaging.AlternateEndpoint;
 import org.kuali.rice.ksb.messaging.AlternateEndpointLocation;
+import org.kuali.rice.ksb.messaging.MessageFetcher;
 import org.kuali.rice.ksb.messaging.ServiceDefinition;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;
@@ -174,6 +175,10 @@ public class KSBConfigurer extends ModuleConfigurer {
         if (event instanceof AfterStartEvent) {
             LOG.info("Refreshing Service Registry to export services to the bus.");
             KSBServiceLocator.getServiceDeployer().refresh();
+            
+    		//automatically requeue documents sitting with status of 'R'
+    		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
+    		KSBServiceLocator.getThreadPool().execute(messageFetcher);
         }
     }
 

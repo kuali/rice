@@ -110,10 +110,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	public boolean isIncludeUserInterfaceComponents() {
 		return Boolean.valueOf(config.getProperty("rice." + getModuleName().toLowerCase() + ".include.user.interface.components")).booleanValue();
 	}
-	
-	/**
-	 * @return the webModuleBaseUrl
-	 */
+
 	public String getWebModuleBaseUrl() {
 		return config.getProperty(getModuleName().toLowerCase() + ".url");
 	}

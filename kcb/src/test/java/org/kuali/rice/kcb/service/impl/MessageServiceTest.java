@@ -22,7 +22,7 @@ import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.kcb.test.BusinessObjectTestCase;
-import org.kuali.rice.kcb.test.TestData;
+import org.kuali.rice.kcb.test.KCBTestData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
@@ -43,7 +43,7 @@ public class MessageServiceTest extends BusinessObjectTestCase {
         super.setUp();
     
         messageService = GlobalKCBServiceLocator.getInstance().getMessageService();
-        MESSAGE = TestData.getMessage1();
+        MESSAGE = KCBTestData.getMessage1();
         messageService.saveMessage(MESSAGE);
     }
 

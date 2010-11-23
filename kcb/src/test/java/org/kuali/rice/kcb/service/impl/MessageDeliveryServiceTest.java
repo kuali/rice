@@ -25,7 +25,7 @@ import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageDeliveryService;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.kcb.test.BusinessObjectTestCase;
-import org.kuali.rice.kcb.test.TestData;
+import org.kuali.rice.kcb.test.KCBTestData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
@@ -50,10 +50,10 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         messageService = GlobalKCBServiceLocator.getInstance().getMessageService();
         messageDeliveryService = GlobalKCBServiceLocator.getInstance().getMessageDeliveryService();
 
-        MESSAGE = TestData.getMessage1();
+        MESSAGE = KCBTestData.getMessage1();
         messageService.saveMessage(MESSAGE);
         
-        MESSAGE_DELIV = TestData.getMessageDelivery1();
+        MESSAGE_DELIV = KCBTestData.getMessageDelivery1();
         MESSAGE_DELIV.setMessage(MESSAGE);
         
         messageDeliveryService.saveMessageDelivery(MESSAGE_DELIV);
@@ -96,7 +96,7 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
     public void testDuplicateCreate() {
         // violates messageid-deliverer constraint
         final MessageDelivery md = new MessageDelivery();
-        md.setId(TestData.FAKE_ID);
+        md.setId(KCBTestData.FAKE_ID);
         md.setDelivererSystemId(MESSAGE_DELIV.getDelivererSystemId());
         md.setDelivererTypeName(MESSAGE_DELIV.getDelivererTypeName());
         md.setDeliveryStatus(MESSAGE_DELIV.getDeliveryStatus());

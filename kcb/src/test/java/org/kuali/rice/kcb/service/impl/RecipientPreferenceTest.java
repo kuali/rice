@@ -22,7 +22,7 @@ import org.kuali.rice.kcb.bo.RecipientPreference;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.RecipientPreferenceService;
 import org.kuali.rice.kcb.test.BusinessObjectTestCase;
-import org.kuali.rice.kcb.test.TestData;
+import org.kuali.rice.kcb.test.KCBTestData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
@@ -83,7 +83,7 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
     @Override
     public void testDuplicateCreate() {
         final RecipientPreference p = new RecipientPreference();
-        p.setId(TestData.FAKE_ID);
+        p.setId(KCBTestData.FAKE_ID);
         p.setRecipientId(PREF.getRecipientId());
         p.setProperty(PREF.getProperty());
         p.setValue(PREF.getValue());
@@ -110,7 +110,7 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
     @Override
     public void testInvalidDelete() {
         final RecipientPreference p = new RecipientPreference();
-        p.setId(TestData.INVALID_ID);
+        p.setId(KCBTestData.INVALID_ID);
         // OJB yields an org.springmodules.orm.ojb.OjbOperationException/OptimisticLockException and claims the object
         // may have been deleted by somebody else
         new AssertThrows(DataAccessException.class) {

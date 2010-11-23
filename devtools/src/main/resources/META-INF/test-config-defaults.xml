@@ -39,7 +39,7 @@
     
     <param name="rice.struts.message.resources">KR-ApplicationResources,org.kuali.rice.kew.ApplicationResources,org.kuali.rice.ksb.messaging.ApplicationResources,KIM-ApplicationResources,KR-Test-ApplicationResources</param>
     
-    <param name="rice.kns.set.soap.services.as.default">false</param>
+    <param name="rice.kr.set.soap.services.as.default">false</param>
     <param name="rice.kcb.set.soap.services.as.default">false</param>
     <param name="rice.ken.set.soap.services.as.default">false</param>
     <param name="rice.kew.set.soap.services.as.default">false</param>

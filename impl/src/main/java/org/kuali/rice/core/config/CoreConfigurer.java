@@ -104,7 +104,7 @@ public class CoreConfigurer extends BaseCompositeLifecycle implements Configurer
 	}
 	
 	protected boolean isConfigureLogging() {
-		return ConfigContext.getCurrentContextConfig().getBooleanProperty(RiceConstants.RICE_LOGGING_CONFIGURE, false);
+		return config.getBooleanProperty(RiceConstants.RICE_LOGGING_CONFIGURE, false);
 	}
 	
 	protected void configureCredentialsSourceFactory(final Config rootConfig) {

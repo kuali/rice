@@ -51,13 +51,13 @@
 					<html:hidden property="newRole.kimRoleType.kimTypeServiceName" />
 	            </div>
 				</td>
-				<td>${KualiForm.newRole.namespaceCode}&nbsp;</td>
+				<td align="center">${KualiForm.newRole.namespaceCode}&nbsp;</td>
                 <td align="left" valign="middle" class="infoline">
                 <div align="center">
                 	<kul:htmlControlAttribute property="newRole.roleName" attributeEntry="${docRoleAttributes.roleName}" disabled="true"/>
 	            </div>
 				</td>
-				<td>${KualiForm.newRole.kimRoleType.kimTypeServiceName}</td>
+				<td align="center">${KualiForm.newRole.kimRoleType.name}</td>
                 <td align="left" valign="middle">
                 	<div align="center"> <kul:htmlControlAttribute property="newRole.newRolePrncpl.activeFromDate"  attributeEntry="${docRolePrncplAttributes.activeFromDate}"  datePicker="true" readOnly="${readOnly}" />
 				</div>

@@ -335,18 +335,6 @@
                                                 <artifactId>maven-svn-revision-number-plugin</artifactId>
                                         </plugin>
 				</plugins>
-                                <extensions>
-                                        <extension>
-                                                <groupId>org.kuali.maven</groupId>
-                                                <artifactId>kuali-wagon-s3</artifactId>
-                                                <version>1.0.8</version>
-                                        </extension>
-                                        <extension>
-                                                <groupId>org.apache.maven.wagon</groupId>
-                                                <artifactId>wagon-webdav</artifactId>
-                                                <version>1.0-beta-2</version>
-                                        </extension>
-                                </extensions>
 			</build>
 		</profile>
 	</profiles>

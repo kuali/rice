@@ -18,4 +18,11 @@
 	<param name="service.namespace">KEW</param>
 
     <param name="config.location">${alt.config.location}</param>
+    
+    <param name="rice.kns.set.soap.services.as.default">false</param>
+    <param name="rice.kcb.set.soap.services.as.default">false</param>
+    <param name="rice.ken.set.soap.services.as.default">false</param>
+    <param name="rice.kew.set.soap.services.as.default">false</param>
+    <param name="rice.kim.set.soap.services.as.default">false</param>
+    <param name="rice.ksb.set.soap.services.as.default">false</param>
 </config>

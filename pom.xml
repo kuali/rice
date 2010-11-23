@@ -152,6 +152,47 @@
 						</excludes>
 					</testResource>
 				</testResources>
+                                <pluginManagement>
+                                        <plugins>
+                                                <plugin>
+                                                        <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+                                                        <artifactId>maven-svn-revision-number-plugin</artifactId>
+                                                        <version>1.5</version>
+                                                        <executions>
+                                                                <execution>
+                                                                        <goals>
+                                                                                <goal>revision</goal>
+                                                                        </goals>
+                                                                        <phase>initialize</phase>
+                                                                </execution>
+                                                        </executions>
+                                                        <configuration>
+                                                                <entries>
+                                                                        <entry>
+                                                                                <prefix>prefix</prefix>
+                                                                        </entry>
+                                                                </entries>
+                                                        </configuration>
+                                                </plugin>
+                                                <plugin>
+                                                        <groupId>org.apache.maven.plugins</groupId>
+                                                        <artifactId>maven-war-plugin</artifactId>
+                                                        <version>2.1</version>
+                                                        <configuration>
+                                                                <archive>
+                                                                        <manifest>
+                                                                                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                                                                        </manifest>
+                                                                        <manifestEntries>
+                                                                                <SVN-Repository>${prefix.repository}</SVN-Repository>
+                                                                                <SVN-Path>${prefix.path}</SVN-Path>
+                                                                                <SVN-Revision>${prefix.revision}</SVN-Revision>
+                                                                        </manifestEntries>
+                                                                </archive>
+                                                        </configuration>
+                                                </plugin>
+                                        </plugins>
+                                </pluginManagement>
 				<plugins>
 					<plugin>
 						<artifactId>maven-compiler-plugin</artifactId>
@@ -212,6 +253,9 @@
 									<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
 								</manifest>
 								<manifestEntries>
+                                                                        <SVN-Repository>${prefix.repository}</SVN-Repository>
+                                                                        <SVN-Path>${prefix.path}</SVN-Path>
+                                                                        <SVN-Revision>${prefix.revision}</SVN-Revision>
 									<Build-Time>${current.timestamp}</Build-Time>
 								</manifestEntries>
 							</archive>
@@ -281,6 +325,15 @@
 						     -->
 						<version>2.6</version>
 					</plugin>
+                                        <plugin>
+                                                <groupId>org.apache.maven.plugins</groupId>
+                                                <artifactId>maven-war-plugin</artifactId>
+                                        </plugin>
+
+                                        <plugin>
+                                                <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
+                                                <artifactId>maven-svn-revision-number-plugin</artifactId>
+                                        </plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -288,6 +341,11 @@
 
 	<build>
 		<extensions>
+                        <extension>
+                                <groupId>org.kuali.maven</groupId>
+                                <artifactId>kuali-wagon-s3</artifactId>
+                                <version>1.0.8</version>
+                        </extension>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
 				<artifactId>wagon-webdav</artifactId>
@@ -311,6 +369,17 @@
 
 	<repositories>
 		<repository>
+                        <id>kuali.nexus</id>
+                        <name>Nexus Repository Manager</name>
+                        <url>http://nexus.kuali.org/content/groups/public</url>
+                        <releases>
+                                <enabled>true</enabled>
+                        </releases>
+                        <snapshots>
+                                <enabled>true</enabled>
+                        </snapshots>
+                </repository>
+		<repository>
 			<id>kuali</id>
 			<name>Kuali Repository</name>
 			<url>https://test.kuali.org/maven</url>
@@ -318,6 +387,17 @@
 	</repositories>
 
 	<pluginRepositories>
+                <pluginRepository>
+                        <id>kuali.nexus</id>
+                        <name>Nexus Repository Manager</name>
+                        <url>http://nexus.kuali.org/content/groups/public</url>
+                        <releases>
+                                <enabled>true</enabled>
+                        </releases>
+                        <snapshots>
+                                <enabled>true</enabled>
+                        </snapshots>
+                </pluginRepository>
 		<pluginRepository>
 			<id>kuali</id>
 			<url>https://test.kuali.org/maven</url>
@@ -917,6 +997,11 @@
 			<id>ssh-repository</id>
 			<url>scp://test.kuali.org:/opt/m2/repository</url>
 		</repository>
+                <snapshotRepository>
+                        <id>kuali.snapshot</id>
+                        <name>Kuali Snapshot Repository</name>
+                        <url>s3://maven.kuali.org/snapshot</url>
+                </snapshotRepository>
 		<site>
 			<id>rice-site</id>
 			<name>Rice Web Site</name>

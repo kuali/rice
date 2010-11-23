@@ -59,7 +59,6 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	private Config rootConfig;
 	private ResourceLoader rootResourceLoader;
 	private Properties properties;
-	private List<String> configLocations = new ArrayList<String>();
 	private List<String> additionalSpringFiles = new ArrayList<String>();
 	
 	private List<ModuleConfigurer> modules = new LinkedList<ModuleConfigurer>();
@@ -224,11 +223,7 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 			ConfigContext.init(this.rootConfig);
 		}
 		
-		if (this.configLocations != null && !this.configLocations.isEmpty()) {			
-			 Config tmpConfig = new JAXBConfigImpl(this.configLocations, this.properties);
-			tmpConfig.parseConfig();			
-			this.rootConfig.putConfig(tmpConfig);			
-		} else if (this.properties != null) {
+		if (this.properties != null) {
 		    this.rootConfig.putProperties(this.properties);
 		}
 		// add the RiceConfigurer into the root ConfigContext for access later by the application
@@ -265,14 +260,6 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 
 	public void setProperties(Properties properties) {
 		this.properties = properties;
-	}
-
-	public List<String> getConfigLocations() {
-		return this.configLocations;
-	}
-
-	public void setConfigLocations(List<String> configLocations) {
-		this.configLocations = configLocations;
 	}
 
 	public Config getRootConfig() {

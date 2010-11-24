@@ -404,8 +404,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 			for(RoleDocumentDelegation delegation: identityManagementPersonDocument.getDelegations()){
 				if(CollectionUtils.isNotEmpty(delegation.getMembers())){
 					for(RoleDocumentDelegationMember member: delegation.getMembers()){
-						member.setDelegationTypeCode(delegation.getDelegationTypeCode());
-						identityManagementPersonDocument.getDelegationMembers().add(member);
+						if (StringUtils.equals(member.getMemberId(), identityManagementPersonDocument.getPrincipalId()))
+						{
+							member.setDelegationTypeCode(delegation.getDelegationTypeCode());
+							identityManagementPersonDocument.getDelegationMembers().add(member);
+						}
 					}
 				}
 			}

@@ -16,9 +16,10 @@
 package org.kuali.rice.test;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.InputStreamReader;
 
 import org.apache.commons.lang.StringUtils;
+import org.springframework.core.io.DefaultResourceLoader;
 
 /**
  * A TestCase superclass to be used internally by Rice for tests that need to
@@ -34,7 +35,12 @@ public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
 	@Override
 	protected void loadSuiteTestData() throws Exception {
 		new SQLDataLoader(getKNSDefaultSuiteTestData(), "/").runSql();
-		BufferedReader reader = new BufferedReader(new FileReader(getKIMDataLoadOrderFile()));
+		
+		//ClassPathResource cpr = new ClassPathResource(getKIMDataLoadOrderFile());
+		DefaultResourceLoader resourceLoader = new DefaultResourceLoader();
+		//BufferedReader reader = new BufferedReader(new FileReader(cpr.getFile()));
+		//BufferedReader reader = new BufferedReader(new FileReader(cpr.getFile()));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(resourceLoader.getResource(getKIMDataLoadOrderFile()).getInputStream()));
 		String line = null;
 		while ((line = reader.readLine()) != null) {
 			if (!StringUtils.isBlank(line)) {
@@ -44,14 +50,15 @@ public abstract class RiceInternalSuiteDataTestCase extends RiceTestCase {
 	}
 	
 	protected String getKNSDefaultSuiteTestData() {
-	    return "file:" + getBaseDir() + "/../impl/src/test/config/data/DefaultSuiteTestDataKNS.sql";
+	    //return "file:" + getBaseDir() + "/../src/test/config/data/DefaultSuiteTestDataKNS.sql";
+		return "classpath:/config/data/DefaultSuiteTestDataKNS.sql";
 	}
 
 	protected String getKIMDataLoadOrderFile() {
-	    return getBaseDir() + "/../impl/src/test/config/data/KIMDataLoadOrder.txt";
+	    return "classpath:/config/data/KIMDataLoadOrder.txt";
 	}
 
 	protected String getKIMSqlFileBaseLocation() {
-	    return "file:" + getBaseDir() + "/../impl/src/test/config/data";
+	    return "classpath:/config/data";
 	}
 }

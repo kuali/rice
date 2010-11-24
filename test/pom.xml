@@ -22,5 +22,6 @@
 		<module>kcb</module>
 		<module>kim</module>
 		<module>impl</module>
+		<module>ksb</module>
 	</modules>
 </project>

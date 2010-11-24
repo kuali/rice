@@ -52,7 +52,6 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
     private static final Logger LOG = Logger.getLogger(JAXBConfigImpl.class);
 
-    private static final String CONFIG_CODED_DEFAULTS = "classpath:org/kuali/rice/core/config-coded-defaults.xml";
     private static final String IMPORT_NAME = "config.location";
     private static final String INDENT = "  ";
     private static final String PLACEHOLDER_REGEX = "\\$\\{([^{}]+)\\}";
@@ -117,37 +116,39 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * this config object. 
      */
     private void copyConfig(Config config){
-    	if(config == null) return;
-    	
-    	if(config instanceof JAXBConfigImpl) {
-    		this.rawProperties.putAll(((JAXBConfigImpl) config).rawProperties);
-    		this.resolvedProperties.putAll(((JAXBConfigImpl) config).resolvedProperties);
-    	}else{    		
+    	if(config == null) {
+			return;
+		}
+    	 		
+    	this.putProperties(config.getProperties());
     		
-    		this.putProperties(config.getProperties());
-    		
-    	}
-    	if(config.getObjects() != null)
-    		this.objects.putAll(config.getObjects());
+    	if(config.getObjects() != null) {
+			this.objects.putAll(config.getObjects());
+		}
     }
     
-    public Object getObject(String key) {
+    @Override
+	public Object getObject(String key) {
         return objects.get(key);
     }
 
-    public Map<String, Object> getObjects() {
+    @Override
+	public Map<String, Object> getObjects() {
     	return Collections.unmodifiableMap(objects);
     }
 
-    public Properties getProperties() {
+    @Override
+	public Properties getProperties() {
     	return new ImmutableProperties(resolvedProperties);
     }
 
-    public String getProperty(String key) {
+    @Override
+	public String getProperty(String key) {
         return resolvedProperties.getProperty(key);
     }
 
-    public void overrideProperty(String name, String value) {
+    @Override
+	public void overrideProperty(String name, String value) {
     	this.putProperty(name, value);
     }
    
@@ -157,11 +158,13 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
      * 
      * @see org.kuali.rice.core.config.Config#putProperty(java.lang.String, java.lang.Object)
      */
+	@Override
 	public void putProperty(String key, String value) {
         this.setProperty(key, replaceVariable(key, value));
         resolveRawToCache();
 	}
 
+	@Override
 	public void putProperties(Properties properties) {
         if (properties != null) {
             for(Object o : properties.keySet()) {
@@ -172,7 +175,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
         }
     }
 
-    public void parseConfig() throws IOException {
+    @Override
+	public void parseConfig() throws IOException {
 
         if (fileLocs.size() > 0) {
 
@@ -575,7 +579,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 
         public static final String CONFIG_URI="http://rice.kuali.org/xsd/core/config";
         
-        public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
+        @Override
+		public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
             if(StringUtils.isBlank(uri)) {
                 uri = CONFIG_URI;
             }
@@ -583,7 +588,8 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
             super.startElement(uri, localName, qName, atts);
         }
 
-        public void endElement(String uri, String localName, String qName) throws SAXException {
+        @Override
+		public void endElement(String uri, String localName, String qName) throws SAXException {
             if(StringUtils.isBlank(uri)) {
                 uri = CONFIG_URI;
             }
@@ -593,24 +599,29 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
     }
 
 	
+	@Override
 	public void putObject(String key, Object value) {
 		this.objects.put(key, value);		
 	}
 	
+	@Override
 	public void putObjects(Map<String, Object> objects) {
 		this.objects.putAll(objects);	
 	}
 	
+	@Override
 	public void removeObject(String key){
 		this.objects.remove(key);
 	}
 	
+	@Override
 	public void removeProperty(String key){
 		this.rawProperties.remove(key);
     	    	
     	resolveRawToCache();
 	}
 
+	@Override
 	public void putConfig(Config config) {
 		this.copyConfig(config);
 	}

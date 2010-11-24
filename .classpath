@@ -10,8 +10,6 @@
 	<classpathentry kind="src" output="devtools/target/classes" path="devtools/src/main/java"/>
 	<classpathentry kind="src" output="impl/target/classes" path="impl/src/main/java"/>
 	<classpathentry kind="src" output="impl/target/classes" path="impl/src/main/resources"/>
-	<classpathentry kind="src" output="kcb/target/test-classes" path="kcb/src/test/java"/>
-	<classpathentry kind="src" output="kcb/target/test-classes" path="kcb/src/test/resources"/>
 	<classpathentry kind="src" output="ken/target/test-classes" path="ken/src/test/java"/>
 	<classpathentry kind="src" output="ken/target/test-classes" path="ken/src/test/resources"/>
 	<classpathentry kind="src" output="kew/target/test-classes" path="kew/src/test/java"/>

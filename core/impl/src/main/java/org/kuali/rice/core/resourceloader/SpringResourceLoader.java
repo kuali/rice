@@ -19,7 +19,6 @@ package org.kuali.rice.core.resourceloader;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -33,8 +32,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class SpringResourceLoader extends BaseResourceLoader {
-
-	private static final Logger LOG = Logger.getLogger(SpringResourceLoader.class);
 
 	private SpringResourceLoader parentSpringResourceLoader;
 	
@@ -52,6 +49,7 @@ public class SpringResourceLoader extends BaseResourceLoader {
 		this.fileLocs = fileLocs;
 	}
 
+	@Override
 	public Object getService(QName serviceName) {
 	    	if (!isStarted()) {
 	    	    return null;
@@ -97,7 +95,4 @@ public class SpringResourceLoader extends BaseResourceLoader {
 			SpringResourceLoader parentSpringResourceLoader) {
 		this.parentSpringResourceLoader = parentSpringResourceLoader;
 	}
-	
-	
-
 }

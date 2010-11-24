@@ -82,10 +82,5 @@
 		<property name="kenConfigurer">
         	<bean class="org.kuali.rice.ken.config.KENConfigurer" />
 		</property>
-        <property name="additionalSpringFiles">
-            <list>
-                <value>${rice.additionalSpringFiles}</value>
-            </list>
-        </property>
 	</bean>
 </beans>

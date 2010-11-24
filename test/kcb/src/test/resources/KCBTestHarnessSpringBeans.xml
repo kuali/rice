@@ -61,10 +61,10 @@
     
     <bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer" depends-on="coreConfigurer">
         <property name="rootConfig" ref="config" />
-        <property name="additionalSpringFiles">
-			<list>
-				<value>classpath:org/kuali/rice/kcb/config/KCBSpringBeans-test.xml</value>
-			</list>
+        <property name="properties">
+			<props>
+				<prop key="rice.additionalSpringFiles">classpath:org/kuali/rice/kcb/config/KCBSpringBeans-test.xml</prop>
+			</props>
 		</property>
         <property name="ksbConfigurer" >
 	        <bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">

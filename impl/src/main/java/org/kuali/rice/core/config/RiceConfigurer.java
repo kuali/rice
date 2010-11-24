@@ -54,16 +54,9 @@ public class RiceConfigurer extends RiceConfigurerBase {
 		if(getKcbConfigurer()!=null) getModules().add(index++,getKcbConfigurer());
 		if(getKewConfigurer()!=null) getModules().add(index++,getKewConfigurer());
 		if(getKenConfigurer()!=null) getModules().add(index++,getKenConfigurer());
-		
-		addConfigToModules();
+
 		// now execute the super class's start method which will initialize configuration and resource loaders
 		super.start();
-	}
-	
-	private void addConfigToModules() {
-		for (ModuleConfigurer module : getModules()) {
-			module.setConfig(getRootConfig());
-		}
 	}
 	
 	/**

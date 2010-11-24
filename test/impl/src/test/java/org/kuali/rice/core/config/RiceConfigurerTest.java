@@ -37,28 +37,24 @@ public class RiceConfigurerTest {
 	@Test 
 	public void testSetAdditionalSpringFiles() {
 		RiceConfigurer rc = new RiceConfigurer();
-		
-		List<String> commaSeparated = Arrays.asList("one,two,three,four,five,six"); 
-		List<String> multipleCommaSeparated = Arrays.asList("one,two,three","four,five,six"); 
-		List<String> commaSeparatedAndNot = Arrays.asList("one,two,three","four","five","six");
-		
-		// all the above should expand to contain the following:
-		List<String> notCommaSeparated = Arrays.asList("one","two","three","four","five","six");
-		
-		rc.setAdditionalSpringFiles(null); // shouldn't throw an exception
+		Config c = new JAXBConfigImpl();
+		rc.setRootConfig(c);
 		assertTrue(rc.getAdditionalSpringFiles() == null || rc.getAdditionalSpringFiles().size() == 0);
 		
-		rc.setAdditionalSpringFiles(commaSeparated);
-		assertEquals(rc.getAdditionalSpringFiles(), notCommaSeparated);
+		// all the above should expand to contain the following:
+		List<String> expectedResult = Arrays.asList("one","two","three","four","five","six");
 		
-		rc.setAdditionalSpringFiles(multipleCommaSeparated);
-		assertEquals(rc.getAdditionalSpringFiles(), notCommaSeparated);
+		c.putProperty("rice.additionalSpringFiles", "one,two,three,four,five,six");
+		assertEquals(expectedResult, rc.getAdditionalSpringFiles());
 		
-		rc.setAdditionalSpringFiles(commaSeparatedAndNot);
-		assertEquals(rc.getAdditionalSpringFiles(), notCommaSeparated);
+		c.putProperty("rice.additionalSpringFiles", "one, two,three,four,five,six ");
+		assertEquals(expectedResult, rc.getAdditionalSpringFiles());
 		
-		rc.setAdditionalSpringFiles(notCommaSeparated);
-		assertEquals(rc.getAdditionalSpringFiles(), notCommaSeparated);
+		c.putProperty("rice.additionalSpringFiles", "one,two,three,,four,five,six");
+		assertEquals(expectedResult, rc.getAdditionalSpringFiles());
+		
+		c.putProperty("rice.additionalSpringFiles", "one");
+		assertEquals(Arrays.asList("one"), rc.getAdditionalSpringFiles());
 	}
 
 }

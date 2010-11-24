@@ -59,7 +59,6 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	private Config rootConfig;
 	private ResourceLoader rootResourceLoader;
 	private Properties properties;
-	private List<String> additionalSpringFiles = new ArrayList<String>();
 	
 	private List<ModuleConfigurer> modules = new LinkedList<ModuleConfigurer>();
 
@@ -138,7 +137,7 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 			if(StringUtils.isNotBlank(module.getSpringFileLocations())) 
 				springFileLocations += module.getSpringFileLocations()+SpringLoader.SPRING_SEPARATOR_CHARACTER;
 		}
-		for (String springFile : additionalSpringFiles) {
+		for (String springFile : getAdditionalSpringFiles()) {
 			springFileLocations += springFile + SpringLoader.SPRING_SEPARATOR_CHARACTER;	
 		}
 		ResourceLoader resourceLoader = RiceResourceLoaderFactory.createRootRiceResourceLoader(springFileLocations);
@@ -196,7 +195,14 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 	protected void initializeFullConfiguration() throws Exception {
 		Config currentConfig = parseConfig();
 		initializeBaseConfiguration(currentConfig);
+		addConfigToModules();
 		parseModuleConfigs(currentConfig);
+	}
+	
+	private void addConfigToModules() {
+		for (ModuleConfigurer module : getModules()) {
+			module.setConfig(getRootConfig());
+		}
 	}
 	
 	/**
@@ -284,34 +290,20 @@ public abstract class RiceConfigurerBase extends BaseCompositeLifecycle implemen
 		this.modules = modules;
 	}
 
-	/**
-	 * @return the additionalSpringFiles
-	 */
 	public List<String> getAdditionalSpringFiles() {
-		return this.additionalSpringFiles;
+		final String files = this.rootConfig.getProperty("rice.additionalSpringFiles");
+		return files == null ? Collections.<String>emptyList() : parseFileList(files);
 	}
-
-	/**
-	 * @param additionalSpringFiles the additionalSpringFiles to set.  list members can be 
-	 * filenames, or comma separated lists of filenames.
-	 */
-	public void setAdditionalSpringFiles(List<String> additionalSpringFiles) {
-		// check to see if we have a single string with comma separated values
-		if (null != additionalSpringFiles && 
-				additionalSpringFiles.size() >= 1) {
-			
-			// we'll shove these into a new list, so we can expand comma separated entries
-			this.additionalSpringFiles = new ArrayList<String>();
-			
-			for (String fileName : additionalSpringFiles) {
-				if (fileName.contains(",")) { // if it's comma separated
-					this.additionalSpringFiles.addAll(new ArrayList<String>(Arrays.asList(fileName.split(","))));
-				} else { // plain old filename
-					this.additionalSpringFiles.add(fileName);
-				}
+	
+	private List<String> parseFileList(String files) {
+		final List<String> parsedFiles = new ArrayList<String>();
+		for (String file : Arrays.asList(files.split(","))) {
+			final String trimmedFile = file.trim();
+			if (!trimmedFile.isEmpty()) {
+				parsedFiles.add(trimmedFile);	
 			}
-		} else {
-			this.additionalSpringFiles = Collections.emptyList();
 		}
+		
+		return parsedFiles;
 	}
 }

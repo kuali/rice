@@ -38,7 +38,7 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 	private static final String XML_FILE = "classpath:org/kuali/rice/kns/test/DefaultSuiteTestData.xml";
 	
 	private String contextName = "/knstest";
-	private String relativeWebappRoot = "/../../kns/src/test/webapp";
+	private String relativeWebappRoot = "/../kns/src/test/webapp";
     
 	
 	private TransactionalLifecycle transactionalLifecycle;

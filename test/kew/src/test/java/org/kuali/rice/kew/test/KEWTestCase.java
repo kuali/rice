@@ -198,7 +198,7 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 	}
 
 	protected String getJettyServerRelativeWebappRoot() {
-		return "/../web/src/main/webapp/kew";
+		return "/../../web/src/main/webapp/kew";
 	}
 
 	/**

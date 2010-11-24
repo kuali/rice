@@ -20,6 +20,7 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>kcb</module>
+		<module>kim</module>
 		<module>impl</module>
 	</modules>
 </project>

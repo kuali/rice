@@ -556,7 +556,7 @@ see https://cwiki.apache.org/MAVEN/maven-3x-and-site-plugin.html
 		<module>ksb</module>
 		<!-- <module>kcb</module> -->
 		<module>kns</module>
-		<module>kim</module>
+		<!-- <module>kim</module> -->
 		<module>kew</module>
 		<module>ken</module>
 		<module>core</module>

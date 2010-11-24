@@ -23,5 +23,6 @@
 		<module>kim</module>
 		<module>impl</module>
 		<module>ksb</module>
+		<module>kew</module>
 	</modules>
 </project>

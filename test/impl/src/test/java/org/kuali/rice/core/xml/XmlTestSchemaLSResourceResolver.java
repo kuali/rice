@@ -33,7 +33,7 @@ import org.w3c.dom.ls.LSResourceResolver;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class TestSchemaLSResourceResolver implements LSResourceResolver {
+public class XmlTestSchemaLSResourceResolver implements LSResourceResolver {
 
 	private static final String SCHEMA_DIR = "classpath:schema/";
 	/**

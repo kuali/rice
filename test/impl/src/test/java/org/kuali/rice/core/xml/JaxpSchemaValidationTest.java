@@ -60,7 +60,7 @@ public class JaxpSchemaValidationTest extends Assert {
 	@Test
 	public void testCompileGroup103Schema() throws Exception {
 		setCompileErrors(0);
-		groupSchema = RiceXmlSchemaFactory.addSchema(GROUP_SCHEMA, null, new TestSchemaValidationErrorHandler());
+		groupSchema = RiceXmlSchemaFactory.addSchema(GROUP_SCHEMA, null, new XmlTestSchemaValidationErrorHandler());
 
 		assertNotNull(groupSchema);
 		assertTrue(getCompileErrors()==0);
@@ -73,7 +73,7 @@ public class JaxpSchemaValidationTest extends Assert {
 		assertNotNull(xmlFile);
 
 		setCompileErrors(0);
-		schema = RiceXmlSchemaFactory.addSchema(BAD_GROUP_SCHEMA1, xmlFile, new TestSchemaValidationErrorHandler());
+		schema = RiceXmlSchemaFactory.addSchema(BAD_GROUP_SCHEMA1, xmlFile, new XmlTestSchemaValidationErrorHandler());
 
 		//with Java 1.5, schema will be null, so skipping this check until we require 1.6
 		//assertNotNull(schema);
@@ -98,7 +98,7 @@ public class JaxpSchemaValidationTest extends Assert {
 		GroupXmlDto groupXmlDto = new GroupXmlDto();
 		JAXBContext jaxbContext = JAXBContext.newInstance(GroupXmlDto.class);
         ValidatorHandler vh = groupSchema.newValidatorHandler(); 
-        vh.setErrorHandler(new TestSchemaValidationErrorHandler());
+        vh.setErrorHandler(new XmlTestSchemaValidationErrorHandler());
 
 		SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -130,7 +130,7 @@ public class JaxpSchemaValidationTest extends Assert {
 		GroupXmlDto groupXmlDto = new GroupXmlDto();
 		JAXBContext jaxbContext = JAXBContext.newInstance(GroupXmlDto.class);
         ValidatorHandler vh = groupSchema.newValidatorHandler(); 
-        vh.setErrorHandler(new TestSchemaValidationErrorHandler());
+        vh.setErrorHandler(new XmlTestSchemaValidationErrorHandler());
         
 		SAXParserFactory spf = SAXParserFactory.newInstance();
         spf.setNamespaceAware(true);
@@ -165,7 +165,7 @@ public class JaxpSchemaValidationTest extends Assert {
 		assertNotNull(xmlFile);
 
 		Validator validator = RiceXmlSchemaFactory.getSchema(GROUP_SCHEMA).newValidator();
-		validator.setErrorHandler(new TestSchemaValidationErrorHandler());
+		validator.setErrorHandler(new XmlTestSchemaValidationErrorHandler());
 		validator.validate(new StreamSource(xmlFile));
 		
 		assertTrue(getCompileErrors()==0);
@@ -217,7 +217,7 @@ public class JaxpSchemaValidationTest extends Assert {
 		assertTrue(getCompileErrors()==0);
 
 		Validator validator = RiceXmlSchemaFactory.getSchema(GROUP_SCHEMA).newValidator();
-		validator.setErrorHandler(new TestSchemaValidationErrorHandler());
+		validator.setErrorHandler(new XmlTestSchemaValidationErrorHandler());
 		validator.validate(saxSource3);
 		
 //		assertTrue(getCompileErrors()==0);

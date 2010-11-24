@@ -25,9 +25,9 @@ import org.xml.sax.SAXParseException;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class TestSchemaValidationErrorHandler implements ErrorHandler {
+public class XmlTestSchemaValidationErrorHandler implements ErrorHandler {
 
-	public TestSchemaValidationErrorHandler(){
+	public XmlTestSchemaValidationErrorHandler(){
 	}
 	
 

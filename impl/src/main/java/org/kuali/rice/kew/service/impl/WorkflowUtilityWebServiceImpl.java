@@ -1119,7 +1119,16 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             throw new RuntimeException("docType null for the documentTypeName passed in "+documentTypeName);
         }
     	RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocTypeId(), routeNodeName);
-    	return routeNode!=null;
+    	
+    	if(routeNode==null){
+    		if(docType.getDocTypeParentId() == null)
+    			return false;
+    		else
+    			return hasRouteNode(KEWServiceLocator.getDocumentTypeService().findByDocumentId(docType.getDocTypeParentId()).getName(), routeNodeName);
+    	}
+    	else
+    		return true;
+    	
     }
 
     public boolean isCurrentActiveDocumentType(String documentTypeName) throws WorkflowException {

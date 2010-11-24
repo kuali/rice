@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" output="api/target/classes" path="api/src/main/java"/>
+	<classpathentry kind="src" path="test/kns/src/test/java"/>
+	<classpathentry kind="src" path="test/kns/src/test/config"/>
+	<classpathentry kind="src" path="test/kns/src/test/webapp"/>
+	<classpathentry kind="src" path="test/kns/src/test/resources"/>
 	<classpathentry kind="src" path="test/ken/src/test/resources"/>
 	<classpathentry kind="src" path="test/ken/src/test/java"/>
 	<classpathentry kind="src" path="test/kew/src/test/resources"/>

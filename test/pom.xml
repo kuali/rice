@@ -25,5 +25,6 @@
 		<module>ksb</module>
 		<module>kew</module>
 		<module>ken</module>
+		<module>kns</module>
 	</modules>
 </project>

@@ -554,7 +554,7 @@ see https://cwiki.apache.org/MAVEN/maven-3x-and-site-plugin.html
 		<module>devtools</module>
 		<module>sampleapp</module>
 		<module>ksb</module>
-		<module>kcb</module>
+		<!-- <module>kcb</module> -->
 		<module>kns</module>
 		<module>kim</module>
 		<module>kew</module>

@@ -19,7 +19,7 @@
 	<artifactId>rice-test</artifactId>
 	<packaging>pom</packaging>
 	<modules>
-		<!-- <module>kcb</module>-->
+		<module>kcb</module>
 		<module>impl</module>
 	</modules>
 </project>

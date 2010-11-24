@@ -30,6 +30,7 @@
 	<param name="keystore.password">r1c3pw</param>
 	
 	<param name="kim.test.port">9912</param>
+	<param name="kim.test.remote.port">9914</param>
 	<param name="kim.test.host">localhost</param>
 
 </config>

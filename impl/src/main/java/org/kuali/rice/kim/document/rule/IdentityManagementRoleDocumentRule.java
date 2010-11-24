@@ -126,15 +126,16 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
         validateRoleAssigneesAndDelegations &= validAssignRole(roleDoc);
         if(validateRoleAssigneesAndDelegations){
 	        //valid &= validAssignRole(roleDoc);
-        	// KULRICE-4153
-			// Use the Active Role Member Helper to retrieve only those Role Members that are active
-        	// If a member is active on a Role, and they have an inactive Role Qualifier, Role Qualifier validation will fail
-        	// If a member is inactive on a Role, and they have an inactive Role Qualifier, Role Qualifier validation will pass
+        	// KULRICE-4153 & KULRICE-4818
+        	// Use the Active Role Member Helper to retrieve only those Role Members & Delegation member that are active
+        	// If a member or delegation is active on a Role, and they have an inactive Role Qualifier, Role Qualifier validation will fail
+        	// If a member or delegation is inactive on a Role, and they have an inactive Role Qualifier, Role Qualifier validation will pass
         	List<KimDocumentRoleMember> activeRoleMembers = activeRoleMemberHelper.getActiveRoleMembers(roleDoc.getMembers());
-			
+        	List<RoleDocumentDelegationMember> activeRoleDelegationMembers = activeRoleMemberHelper.getActiveDelegationRoleMembers(roleDoc.getDelegationMembers());
+        	
 	        valid &= validateRoleQualifier(activeRoleMembers, roleDoc.getKimType());
 	        valid &= validRoleMemberActiveDates(roleDoc.getMembers());
-	        valid &= validateDelegationMemberRoleQualifier(roleDoc.getMembers(), roleDoc.getDelegationMembers(), roleDoc.getKimType());
+	        valid &= validateDelegationMemberRoleQualifier(activeRoleMembers, activeRoleDelegationMembers, roleDoc.getKimType());
 	        valid &= validDelegationMemberActiveDates(roleDoc.getDelegationMembers());
 	        valid &= validRoleMembersResponsibilityActions(roleDoc.getMembers());
         }

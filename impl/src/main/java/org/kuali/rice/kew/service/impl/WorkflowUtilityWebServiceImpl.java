@@ -1121,10 +1121,10 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
     	RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeByName(docType.getDocTypeId(), routeNodeName);
     	
     	if(routeNode==null){
-    		if(docType.getDocTypeParentId() == null)
+    		if(docType.getDocTypeParentName() == null)
     			return false;
     		else
-    			return hasRouteNode(KEWServiceLocator.getDocumentTypeService().findByDocumentId(docType.getDocTypeParentId()).getName(), routeNodeName);
+    			return hasRouteNode(docType.getDocTypeParentName(), routeNodeName);	
     	}
     	else
     		return true;

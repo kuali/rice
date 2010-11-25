@@ -1686,6 +1686,20 @@ public class WorkflowUtilityTest extends KEWTestCase {
         verifyTimestampToSecond(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS, timestamps[0].getTime());
     }
     
+    @Test public void testhasRouteNode() throws Exception {
+         
+        Boolean hasNode0 = getWorkflowUtility().hasRouteNode(SeqSetup.DOCUMENT_TYPE_NAME , SeqSetup.ADHOC_NODE);
+        Boolean hasNode1 = getWorkflowUtility().hasRouteNode(SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME , SeqSetup.ADHOC_NODE);
+        Boolean hasNode2 = getWorkflowUtility().hasRouteNode(SeqSetup.CHILD_DOCUMENT_TYPE_NAME , SeqSetup.ADHOC_NODE);
+        Boolean hasNode3 = getWorkflowUtility().hasRouteNode(SeqSetup.LAST_APPROVER_DOCUMENT_TYPE_NAME , SeqSetup.NO_THIS_NODE);
+          
+        assertTrue("it is in parent doc", hasNode0);
+        assertTrue("find it in current doc", hasNode1);
+        assertTrue("find it back in parent doc", hasNode2);
+        assertFalse("find it no where", hasNode3);
+       
+  }
+    
     protected void verifyTimestampToSecond(Long originalTimeInMillis, Long testTimeInMillis) throws Exception {
         Calendar testDate = Calendar.getInstance();
         testDate.setTimeInMillis(originalTimeInMillis);
@@ -1736,6 +1750,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         public static final String WORKFLOW_DOCUMENT_2_NODE = "WorkflowDocument2";
         public static final String ACKNOWLEDGE_1_NODE = "Acknowledge1";
         public static final String ACKNOWLEDGE_2_NODE = "Acknowledge2";
+        public static final String NO_THIS_NODE = "xxxx";
     }
     
     private class RouteLogTestSetup {

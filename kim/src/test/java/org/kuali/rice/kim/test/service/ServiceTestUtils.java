@@ -31,7 +31,7 @@ import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
  */
 public class ServiceTestUtils {
 	static	String serverHostStr = getConfigProp("kim.test.host");
-	static	String serverPortStr = getConfigProp("kim.test.remote.port");
+	static	String serverPortStr = getConfigProp("kim.test.port");
 	static	String appContext = getConfigProp("app.context.name");
 	
 	public static int getConfigIntProp(String intPropKey) {

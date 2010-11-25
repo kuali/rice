@@ -45,7 +45,7 @@ public class PermissionServiceRemoteTest extends PermissionServiceTest {
 	protected Lifecycle getLoadApplicationLifecycle() {
 		return new BaseLifecycle() {
 			public void start() throws Exception {
-				new JettyServerLifecycle(getConfigIntProp("kim.test.remote.port"), "/" + getConfigProp("app.context.name"), "/../kim/src/test/webapp").start();
+				new JettyServerLifecycle(getConfigIntProp("kim.test.port"), "/" + getConfigProp("app.context.name"), "/../kim/src/test/webapp").start();
 				super.start();
 			}
 		};	

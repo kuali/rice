@@ -190,7 +190,6 @@
             
             
             <c:set var="field" value="${KualiForm.field}" scope="request"/>
-              <jsp:include page="${KualiForm.fieldHandler}"/>
               
 
 			<c:if test="${reqSearchResultsActualSize>0}">

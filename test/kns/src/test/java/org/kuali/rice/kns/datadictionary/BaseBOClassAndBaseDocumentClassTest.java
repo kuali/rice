@@ -54,8 +54,8 @@ public class BaseBOClassAndBaseDocumentClassTest extends KNSTestCase {
 		super.setUp();
 
 		dd = new DataDictionary();
-		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/bo/datadictionary");
-		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/document/datadictionary");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml");

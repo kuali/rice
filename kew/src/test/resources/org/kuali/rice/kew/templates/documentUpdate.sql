@@ -1,0 +1,1 @@
+insert into TRV_ACCT_TYPE (acct_type, acct_type_name) values('BEA', 'Bogus Expense Account');

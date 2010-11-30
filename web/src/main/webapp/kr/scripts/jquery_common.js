@@ -27,19 +27,19 @@ $(document).ready(function() {
 //	 }
 
 	//$.loading(true, { img:'images/jquery/loading.gif', align:'center', text: 'Loading...'});
-  $("#red").loading();
+ //$("#red").loading();
 
 
 	//$(":input").watermark("Fill Me ...");
 
-	initializeInquiryHandlers();
+	//initializeInquiryHandlers();
 
-	initializeLookupHandlers();
+	//initializeLookupHandlers();
 
-	if (dialogMode) {
-		initializeReturnHandlers();
-		resizeDialog();
-	}
+//	if (dialogMode) {
+//		initializeReturnHandlers();
+//		resizeDialog();
+//	}
 
 	// this is for nested inquiries to keep opening in the same dialog
 	// if (dialogMode) {
@@ -50,7 +50,7 @@ $(document).ready(function() {
 	$( "input:submit" ).button();
 	
 	// validate form
-	$("form").validate();
+	//$("form").validate();
 
 })
 

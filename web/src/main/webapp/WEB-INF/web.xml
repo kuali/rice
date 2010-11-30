@@ -14,7 +14,44 @@
       <param-name>kew.bootstrap.spring.file</param-name>
       <param-value>${bootstrap.spring.file}</param-value>
     </context-param>
-
+    
+    <!-- Use Documents Saved as *.xhtml -->   
+    <context-param>
+      <param-name>javax.faces.DEFAULT_SUFFIX</param-name>
+      <param-value>.xhtml</param-value>
+    </context-param>
+  
+    <!-- Special Debug Output for Development -->
+    <context-param>
+      <param-name>facelets.DEVELOPMENT</param-name>
+      <param-value>true</param-value>
+    </context-param>
+      
+    <!-- Optional JSF-RI Parameters to Help Debug -->
+    <context-param>
+      <param-name>com.sun.faces.validateXml</param-name>
+      <param-value>true</param-value>
+    </context-param>
+    <context-param>
+      <param-name>com.sun.faces.verifyObjects</param-name>
+      <param-value>true</param-value>
+    </context-param>
+  
+    <context-param>
+      <param-name>facelets.LIBRARIES</param-name>
+      <param-value>/kr/jsf/tags/kul.taglib.xml</param-value>
+    </context-param>
+    
+    <context-param>
+      <param-name>facelets.REFRESH_PERIOD</param-name>
+      <param-value>1</param-value>
+    </context-param>    
+    
+    <context-param>
+       <param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+      <param-value>server</param-value>
+    </context-param>
+    
 	<filter>
         <filter-name>HideWebInfFilter</filter-name>
         <filter-class>org.kuali.rice.kns.web.filter.HideWebInfFilter</filter-class>
@@ -34,6 +71,21 @@
 		<filter-name>UserLoginFilter</filter-name>
 		<filter-class>org.kuali.rice.kew.web.UserLoginFilter</filter-class>
 	</filter>
+    
+    <filter>
+        <filter-name>ExtensionsFilter</filter-name>
+        <filter-class>
+            org.apache.myfaces.component.html.util.ExtensionsFilter
+        </filter-class>
+        <init-param>
+            <param-name>uploadMaxFileSize</param-name>
+            <param-value>10m</param-value>
+        </init-param>
+        <init-param>
+            <param-name>uploadThresholdSize</param-name>
+            <param-value>100k</param-value>
+        </init-param>
+    </filter>    
 
 	<filter-mapping>
         <filter-name>HideWebInfFilter</filter-name>
@@ -84,6 +136,11 @@
         <filter-name>UserLoginFilter</filter-name>
         <servlet-name>edoclite</servlet-name>
     </filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>ExtensionsFilter</filter-name>
+        <servlet-name>faces</servlet-name>
+    </filter-mapping>    
 
     <listener>
       <listener-class>org.kuali.rice.core.web.listener.StandaloneInitializeListener</listener-class>
@@ -96,8 +153,12 @@
 	<listener>
 		<listener-class>org.kuali.rice.kns.web.listener.KualiHttpSessionListener</listener-class>
 	</listener>
+    
+    <listener>
+      <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
+    </listener>
 
-  <servlet>
+	<servlet>
     <servlet-name>krad</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <load-on-startup>3</load-on-startup>
@@ -212,6 +273,12 @@
 		<servlet-name>edoclite</servlet-name>
 		<servlet-class>org.kuali.rice.kew.edl.EDLServlet</servlet-class>
 	</servlet>
+    
+    <servlet>
+        <servlet-name>faces</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 	
 	<!--  
 	
@@ -279,6 +346,11 @@
 		<servlet-name>edoclite</servlet-name>
 		<url-pattern>/kew/EDocLite</url-pattern>
 	</servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>faces</servlet-name>
+        <url-pattern>*.faces</url-pattern>
+    </servlet-mapping>    
 
 	<session-config>
 		<session-timeout>60</session-timeout>

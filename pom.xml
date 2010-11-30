@@ -92,6 +92,8 @@
 		<!-- 4.8.2 is not in maven central repo -->
 		<junit.version>4.8.2</junit.version>
 		<log4j.version>1.2.16</log4j.version>
+        <myfaces-core.version>2.0.2</myfaces-core.version>
+        <myfaces-tomahawk.version>1.1.10</myfaces-tomahawk.version>
 		<mysql-connector-java.version>5.1.13</mysql-connector-java.version>
 		<ojdbc14.version>10.2.0.3.0</ojdbc14.version>
 		<!-- cannot update to 2.4 because of oscache bug CACHE-296 and 2.4.1 is not in maven central repo -->
@@ -1493,6 +1495,30 @@
 				</exclusions>
 			</dependency>
 
+	  	    <dependency>
+			   <groupId>org.apache.myfaces.core</groupId>
+			   <artifactId>myfaces-api</artifactId>
+			   <version>${myface-core.version}</version>
+		    </dependency>
+        
+		    <dependency>
+			   <groupId>org.apache.myfaces.core</groupId>
+			   <artifactId>myfaces-impl</artifactId>
+			   <version>${myface-core.version}</version>
+		    </dependency>
+        
+            <dependency>
+               <groupId>org.apache.myfaces.tomahawk</groupId>
+               <artifactId>tomahawk20</artifactId>
+               <version>${myface-tomahawk.version}</version>
+           </dependency>            
+            <dependency>
+            	<groupId>commons-discovery</groupId>
+            	<artifactId>commons-discovery</artifactId>
+            	<version>0.4</version>
+            	<type>jar</type>
+            	<scope>compile</scope>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 

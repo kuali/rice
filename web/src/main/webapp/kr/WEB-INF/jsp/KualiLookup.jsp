@@ -185,13 +185,6 @@
 			</table>
 			</div>
 
-			<br>
-			<br>
-            
-            
-            <c:set var="field" value="${KualiForm.field}" scope="request"/>
-              
-
 			<c:if test="${reqSearchResultsActualSize>0}">
 				<c:out value="${reqSearchResultsActualSize}" /> items found.  Please refine your search criteria to narrow down your search.
             </c:if>

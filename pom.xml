@@ -561,6 +561,7 @@ see https://cwiki.apache.org/MAVEN/maven-3x-and-site-plugin.html
 		<!-- <module>ken</module> -->
 		<module>core</module>
 		<module>test</module>
+		<module>rice-edl</module>
 	</modules>
 
 	<repositories>

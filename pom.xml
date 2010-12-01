@@ -1498,26 +1498,40 @@
 	  	    <dependency>
 			   <groupId>org.apache.myfaces.core</groupId>
 			   <artifactId>myfaces-api</artifactId>
-			   <version>${myface-core.version}</version>
+			   <version>${myfaces-core.version}</version>
 		    </dependency>
         
 		    <dependency>
 			   <groupId>org.apache.myfaces.core</groupId>
 			   <artifactId>myfaces-impl</artifactId>
-			   <version>${myface-core.version}</version>
+			   <version>${myfaces-core.version}</version>
 		    </dependency>
         
             <dependency>
-               <groupId>org.apache.myfaces.tomahawk</groupId>
-               <artifactId>tomahawk20</artifactId>
-               <version>${myface-tomahawk.version}</version>
-           </dependency>            
+              <groupId>org.apache.myfaces.tomahawk</groupId>
+              <artifactId>tomahawk20</artifactId>
+              <version>${myfaces-tomahawk.version}</version>
+              <exclusions>
+                <exclusion>
+                  <artifactId>commons-logging</artifactId>
+                  <groupId>commons-logging</groupId>
+                </exclusion>
+                <exclusion>
+                  <artifactId>xmlParserAPIs</artifactId>
+                  <groupId>xml-apis</groupId>
+                </exclusion>
+              </exclusions>
+            </dependency>
             <dependency>
-            	<groupId>commons-discovery</groupId>
-            	<artifactId>commons-discovery</artifactId>
-            	<version>0.4</version>
-            	<type>jar</type>
-            	<scope>compile</scope>
+              <groupId>commons-discovery</groupId>
+              <artifactId>commons-discovery</artifactId>
+              <version>0.4</version>
+              <exclusions>
+                <exclusion>
+                  <artifactId>commons-logging</artifactId>
+                  <groupId>commons-logging</groupId>
+                </exclusion>
+              </exclusions>
             </dependency>
 		</dependencies>
 	</dependencyManagement>

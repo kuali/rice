@@ -40,7 +40,7 @@ import org.kuali.rice.kim.document.KimTypeAttributesHelper;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -101,7 +101,7 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 		@JoinColumn(name="dlgn_id",insertable=false,updatable=false),
 		@JoinColumn(name="fdoc_nbr", insertable=false, updatable=false)
 	})
-	protected List <RoleDocumentDelegationMemberQualifier> qualifiers = new TypedArrayList(RoleDocumentDelegationMemberQualifier.class);
+	protected List <RoleDocumentDelegationMemberQualifier> qualifiers = new AutoPopulatingList(RoleDocumentDelegationMemberQualifier.class);
 	
 	@Transient
 	protected String delegationTypeCode;

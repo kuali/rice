@@ -30,7 +30,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ActionFormUtilMap;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
@@ -60,7 +60,7 @@ public class KualiForm extends PojoFormBase {
 
     private String navigationCss;
     private HeaderNavigation[] headerNavigationTabs;
-    protected List<ExtraButton> extraButtons = new TypedArrayList( ExtraButton.class ) ;
+    protected List<ExtraButton> extraButtons = new AutoPopulatingList( ExtraButton.class ) ;
 
     private boolean fieldLevelHelpEnabled;
     
@@ -318,7 +318,7 @@ public class KualiForm extends PojoFormBase {
     }
 
     public void setExtraButtons(List<ExtraButton> extraButtons) {
-        if ( extraButtons instanceof TypedArrayList ) {
+        if ( extraButtons instanceof AutoPopulatingList ) {
             this.extraButtons = extraButtons;
         } else {
             this.extraButtons.clear();

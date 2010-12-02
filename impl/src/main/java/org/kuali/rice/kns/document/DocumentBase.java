@@ -63,7 +63,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 import org.kuali.rice.kns.util.documentserializer.AlwaysFalsePropertySerializabilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.BusinessObjectPropertySerializibilityEvaluator;
@@ -606,7 +606,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 	                logMessage.append("[" + e.getKey() + "] ");
 	                boolean first = true;
 	
-	                TypedArrayList errorList = (TypedArrayList) e.getValue();
+	                AutoPopulatingList errorList = (AutoPopulatingList) e.getValue();
 	                for (Iterator j = errorList.iterator(); j.hasNext();) {
 	                    ErrorMessage em = (ErrorMessage) j.next();
 	

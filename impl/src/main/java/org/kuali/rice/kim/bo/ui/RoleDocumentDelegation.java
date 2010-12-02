@@ -36,7 +36,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -75,13 +75,13 @@ public class RoleDocumentDelegation extends KimDocumentBoActivatableBase {
 		@JoinColumn(name="dlgn_id",insertable=false,updatable=false),
 		@JoinColumn(name="fdoc_nbr", insertable=false, updatable=false)
 	})
-	private List<RoleDocumentDelegationMember> members = new TypedArrayList(RoleDocumentDelegationMember.class);
+	private List<RoleDocumentDelegationMember> members = new AutoPopulatingList(RoleDocumentDelegationMember.class);
 
 	@Transient
 	private RoleDocumentDelegationMember member = new RoleDocumentDelegationMember();
 
 	@Transient
-	protected List<KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
+	protected List<KimDocumentRoleQualifier> qualifiers = new AutoPopulatingList(KimDocumentRoleQualifier.class);
 
 	/**
 	 * This overridden method ...

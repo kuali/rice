@@ -39,7 +39,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -82,7 +82,7 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 	    @JoinColumn(name="ROLE_MBR_ID", insertable = false, updatable = false), 
 	    @JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
 	})
-	protected List <KimDocumentRoleQualifier> qualifiers = new TypedArrayList(KimDocumentRoleQualifier.class);
+	protected List <KimDocumentRoleQualifier> qualifiers = new AutoPopulatingList(KimDocumentRoleQualifier.class);
 	@Transient
 	protected String qualifiersToDisplay;
 	

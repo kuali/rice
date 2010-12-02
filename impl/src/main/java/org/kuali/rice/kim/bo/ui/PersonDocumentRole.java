@@ -47,7 +47,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -100,7 +100,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 	//	@JoinColumn(name="ROLE_ID",insertable=false,updatable=false),
 	//	@JoinColumn(name="FDOC_NBR", insertable=false, updatable=false, table="KRIM_PERSON_DOCUMENT_T")
 	//})
-	protected List<RoleResponsibilityImpl> assignedResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
+	protected List<RoleResponsibilityImpl> assignedResponsibilities = new AutoPopulatingList(RoleResponsibilityImpl.class);
 
 	@Transient
     protected boolean isEditable = true;

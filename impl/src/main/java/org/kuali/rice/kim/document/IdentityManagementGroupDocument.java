@@ -43,7 +43,7 @@ import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 
 /**
@@ -85,11 +85,11 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	@OneToMany(targetEntity = GroupDocumentMember.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
-	private List<GroupDocumentMember> members = new TypedArrayList(GroupDocumentMember.class);
+	private List<GroupDocumentMember> members = new AutoPopulatingList(GroupDocumentMember.class);
 	@OneToMany(targetEntity = GroupDocumentQualifier.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
-	private List<GroupDocumentQualifier> qualifiers = new TypedArrayList(GroupDocumentQualifier.class);
+	private List<GroupDocumentQualifier> qualifiers = new AutoPopulatingList(GroupDocumentQualifier.class);
 
 	public IdentityManagementGroupDocument() {
 	}

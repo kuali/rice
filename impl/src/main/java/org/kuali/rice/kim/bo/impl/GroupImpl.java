@@ -47,7 +47,7 @@ import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This class is the implementation of a Kim Group 
@@ -91,7 +91,7 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	@OneToMany(targetEntity=GroupAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="groupId")
 	@Fetch(value = FetchMode.SELECT)
 	//@JoinColumn(name="GRP_ID", insertable=false, updatable=false)
-	protected List<GroupAttributeDataImpl> groupAttributes = new TypedArrayList(GroupAttributeDataImpl.class);
+	protected List<GroupAttributeDataImpl> groupAttributes = new AutoPopulatingList(GroupAttributeDataImpl.class);
 
 	@Transient
 	private List<Person> memberPersons;

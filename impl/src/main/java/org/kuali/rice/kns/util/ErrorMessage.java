@@ -33,7 +33,7 @@ public class ErrorMessage implements Serializable {
     private String[] messageParameters;
 
     /**
-     * Default constructor, required by TypedArrayList
+     * Default constructor, required by AutoPopulatingList
      */
     public ErrorMessage() {
     }

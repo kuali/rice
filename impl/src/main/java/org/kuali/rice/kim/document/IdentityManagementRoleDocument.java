@@ -37,7 +37,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 
 /**
@@ -61,11 +61,11 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 
 	protected boolean editing;
 	
-	protected List<KimDocumentRolePermission> permissions = new TypedArrayList(KimDocumentRolePermission.class);
-	protected List<KimDocumentRoleResponsibility> responsibilities = new TypedArrayList(KimDocumentRoleResponsibility.class);
-	protected List<KimDocumentRoleMember> members = new TypedArrayList(KimDocumentRoleMember.class);
-	private List<RoleDocumentDelegationMember> delegationMembers = new TypedArrayList(RoleDocumentDelegationMember.class);
-	private List<RoleDocumentDelegation> delegations = new TypedArrayList(RoleDocumentDelegation.class);
+	protected List<KimDocumentRolePermission> permissions = new AutoPopulatingList(KimDocumentRolePermission.class);
+	protected List<KimDocumentRoleResponsibility> responsibilities = new AutoPopulatingList(KimDocumentRoleResponsibility.class);
+	protected List<KimDocumentRoleMember> members = new AutoPopulatingList(KimDocumentRoleMember.class);
+	private List<RoleDocumentDelegationMember> delegationMembers = new AutoPopulatingList(RoleDocumentDelegationMember.class);
+	private List<RoleDocumentDelegation> delegations = new AutoPopulatingList(RoleDocumentDelegation.class);
 	
 	transient private ResponsibilityService responsibilityService;
 	

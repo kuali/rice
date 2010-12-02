@@ -24,6 +24,7 @@ import java.util.Set;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.springframework.util.AutoPopulatingList;
 
 
 /**
@@ -81,7 +82,7 @@ public class ErrorContainer implements Serializable {
     private boolean hasFormatterError() {
     	if (errorMap.getErrorCount()>0) {
             for (String errorKey : (Set<String>)errorMap.keySet()) {
-            	TypedArrayList errorValues = errorMap.getMessages(errorKey);
+            	AutoPopulatingList errorValues = errorMap.getMessages(errorKey);
             	for (ErrorMessage errorMessage : (List<ErrorMessage>)errorValues) {
                     if (errorMessage.getErrorKey().equals(RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR)) {
                         return true;

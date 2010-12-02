@@ -60,7 +60,7 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -1097,7 +1097,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         for (Iterator i = GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext();) {
             Map.Entry e = (Map.Entry) i.next();
 
-            TypedArrayList errorList = (TypedArrayList) e.getValue();
+            AutoPopulatingList errorList = (AutoPopulatingList) e.getValue();
             for (Iterator j = errorList.iterator(); j.hasNext();) {
                 ErrorMessage em = (ErrorMessage) j.next();
 

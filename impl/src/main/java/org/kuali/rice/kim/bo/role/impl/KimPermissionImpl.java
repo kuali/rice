@@ -44,7 +44,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -73,7 +73,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	@OneToMany(targetEntity=PermissionAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
-	protected List<PermissionAttributeDataImpl> detailObjects = new TypedArrayList(PermissionAttributeDataImpl.class);
+	protected List<PermissionAttributeDataImpl> detailObjects = new AutoPopulatingList(PermissionAttributeDataImpl.class);
 
 	@Column(name="PERM_TMPL_ID")
 	protected String templateId;
@@ -85,7 +85,7 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 	@OneToMany(targetEntity=RolePermissionImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     @Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="PERM_ID", insertable=false, updatable=false)
-	protected List<RolePermissionImpl> rolePermissions = new TypedArrayList(RolePermissionImpl.class);
+	protected List<RolePermissionImpl> rolePermissions = new AutoPopulatingList(RolePermissionImpl.class);
 
 	/**
 	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()

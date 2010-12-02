@@ -41,7 +41,7 @@ import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 import org.springframework.core.io.DefaultResourceLoader;
 
 /**
@@ -277,7 +277,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		private String anotherAttribute;
 		private String personPrincipalId;
 		private Person personAttribute;
-		private List<SampleChildBOWithPerson> childBos = new TypedArrayList(SampleChildBOWithPerson.class);
+		private List<SampleChildBOWithPerson> childBos = new AutoPopulatingList(SampleChildBOWithPerson.class);
 		public String getAnAttribute() {
 			return this.anAttribute;
 		}

@@ -46,7 +46,7 @@ import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -74,7 +74,7 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	
 	@OneToMany(targetEntity=RoleMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     @JoinColumn(name="ROLE_MBR_ID", insertable=false, updatable=false)
-    protected List<RoleMemberAttributeDataImpl> attributes; // = new TypedArrayList(RoleMemberAttributeDataImpl.class);
+    protected List<RoleMemberAttributeDataImpl> attributes; // = new AutoPopulatingList(RoleMemberAttributeDataImpl.class);
 	
 	@Transient
 	protected List <RoleResponsibilityActionImpl> roleRspActions;
@@ -108,7 +108,7 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 
 	public List<RoleMemberAttributeDataImpl> getAttributes() {
 		if (this.attributes == null) {
-			return new TypedArrayList(RoleMemberAttributeDataImpl.class);
+			return new AutoPopulatingList(RoleMemberAttributeDataImpl.class);
 		}
 		return this.attributes;
 	}

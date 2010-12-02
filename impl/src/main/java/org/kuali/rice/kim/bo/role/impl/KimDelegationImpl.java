@@ -38,7 +38,7 @@ import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -72,7 +72,7 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	@OneToMany(targetEntity=KimDelegationMemberImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="DLGN_ID", insertable=false, updatable=false)
-	protected List<KimDelegationMemberImpl> members = new TypedArrayList(KimDelegationMemberImpl.class);
+	protected List<KimDelegationMemberImpl> members = new AutoPopulatingList(KimDelegationMemberImpl.class);
 
 	@Transient
 	protected KimTypeInfo kimType; 

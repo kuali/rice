@@ -34,7 +34,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.role.KimDelegationMember;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -58,7 +58,7 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 
 	@OneToMany(targetEntity=KimDelegationMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
 	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="DLGN_MBR_ID", insertable=false, updatable=false )
-	protected List<KimDelegationMemberAttributeDataImpl> attributes = new TypedArrayList(KimDelegationMemberAttributeDataImpl.class);
+	protected List<KimDelegationMemberAttributeDataImpl> attributes = new AutoPopulatingList(KimDelegationMemberAttributeDataImpl.class);
 
 
 

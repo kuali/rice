@@ -24,6 +24,7 @@ import java.util.Set;
 import org.junit.Test;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.test.KNSTestCase;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This class tests the ErrorMap methods.
@@ -155,7 +156,7 @@ public class MessageMapTest extends KNSTestCase {
 
         assertEquals(3, testMap.getErrorCount());
 
-        TypedArrayList errorMessages = testMap.getMessages("accountNbr");
+        AutoPopulatingList errorMessages = testMap.getMessages("accountNbr");
         assertEquals(2, errorMessages.size());
         checkMessageParemeters(errorMessages, 0, RiceKeyConstants.ERROR_INACTIVE, new String[] { "Account Number" });
         checkMessageParemeters(errorMessages, 1, RiceKeyConstants.ERROR_REQUIRED, new String[] { "Account Number" });
@@ -165,7 +166,7 @@ public class MessageMapTest extends KNSTestCase {
         checkMessageParemeters(errorMessages, 0, RiceKeyConstants.ERROR_REQUIRED, new String[] { "Chart Code" });
     }
 
-    private void checkMessageParemeters(TypedArrayList errorMessages, int messageIndex, String expectedKeyConstant, String[] expectedParameters) {
+    private void checkMessageParemeters(AutoPopulatingList errorMessages, int messageIndex, String expectedKeyConstant, String[] expectedParameters) {
         ErrorMessage message1 = (ErrorMessage) errorMessages.get(messageIndex);
         assertEquals(expectedKeyConstant, message1.getErrorKey());
         assertTrue(Arrays.equals(message1.getMessageParameters(), expectedParameters));
@@ -195,7 +196,7 @@ public class MessageMapTest extends KNSTestCase {
             Map.Entry entry = (Map.Entry) i.next();
 
             String propertyKey = (String) entry.getKey();
-            TypedArrayList messageList = (TypedArrayList) entry.getValue();
+            AutoPopulatingList messageList = (AutoPopulatingList) entry.getValue();
             for (Iterator j = messageList.iterator(); j.hasNext();) {
                 ErrorMessage message = (ErrorMessage) j.next();
 
@@ -289,7 +290,7 @@ public class MessageMapTest extends KNSTestCase {
         assertTrue(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_INACTIVE));
         assertFalse(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_NOT_AMONG));
 
-        TypedArrayList preMessages = replaceMap.getMessages("accountNbr");
+        AutoPopulatingList preMessages = replaceMap.getMessages("accountNbr");
         assertEquals(2, preMessages.size());
 
         boolean replaced = replaceMap.replaceError("accountNbr", RiceKeyConstants.ERROR_INACTIVE, RiceKeyConstants.ERROR_NOT_AMONG);
@@ -299,7 +300,7 @@ public class MessageMapTest extends KNSTestCase {
         assertFalse(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_INACTIVE));
         assertTrue(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_NOT_AMONG));
 
-        TypedArrayList postMessages = replaceMap.getMessages("accountNbr");
+        AutoPopulatingList postMessages = replaceMap.getMessages("accountNbr");
         assertEquals(2, postMessages.size());
 
         int replacedCount = 0;
@@ -323,7 +324,7 @@ public class MessageMapTest extends KNSTestCase {
         assertTrue(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_INACTIVE));
         assertFalse(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_NOT_AMONG));
 
-        TypedArrayList preMessages = replaceMap.getMessages("accountNbr");
+        AutoPopulatingList preMessages = replaceMap.getMessages("accountNbr");
         assertEquals(2, preMessages.size());
 
         boolean replaced = replaceMap.replaceError("accountNbr", RiceKeyConstants.ERROR_INACTIVE, RiceKeyConstants.ERROR_NOT_AMONG, "zero", "one");
@@ -333,7 +334,7 @@ public class MessageMapTest extends KNSTestCase {
         assertFalse(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_INACTIVE));
         assertTrue(replaceMap.containsMessageKey(RiceKeyConstants.ERROR_NOT_AMONG));
 
-        TypedArrayList postMessages = replaceMap.getMessages("accountNbr");
+        AutoPopulatingList postMessages = replaceMap.getMessages("accountNbr");
         assertEquals(2, postMessages.size());
 
         int replacedCount = 0;

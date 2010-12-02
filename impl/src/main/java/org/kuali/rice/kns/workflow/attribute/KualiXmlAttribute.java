@@ -15,16 +15,11 @@
  */
 package org.kuali.rice.kns.workflow.attribute;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.w3c.dom.Element;
 
 
 public interface KualiXmlAttribute {
-
-    List<Class> temp = Arrays.asList(new Class[] {});
 
     public Element getConfigXML();
 

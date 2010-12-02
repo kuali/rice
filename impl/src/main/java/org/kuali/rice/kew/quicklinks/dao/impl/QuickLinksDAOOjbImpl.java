@@ -38,7 +38,7 @@ import org.kuali.rice.kew.quicklinks.dao.QuickLinksDAO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;

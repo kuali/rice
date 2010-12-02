@@ -32,7 +32,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.web.session.Authentication;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
@@ -131,8 +131,8 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
     if (searchableAttributes != null) {
       for (Iterator iterator = searchableAttributes.iterator(); iterator.hasNext();) {
         KeyValue searchableAttr = (KeyValue) iterator.next();
-        String attrName = searchableAttr.getkey();
-        String idType = searchableAttr.getvalue();
+        String attrName = searchableAttr.getKey();
+        String idType = searchableAttr.getValue();
         String idValue = UserUtils.getIdValue(idType, user);
         if (!StringUtils.isEmpty(idValue)) {
           if (KEWServiceLocator.getRouteHeaderService().hasSearchableAttributeValue(documentId, attrName, idValue)) {

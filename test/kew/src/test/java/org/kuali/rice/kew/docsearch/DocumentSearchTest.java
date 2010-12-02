@@ -16,6 +16,11 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -31,11 +36,6 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
-
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
 
 
 public class DocumentSearchTest extends KEWTestCase {

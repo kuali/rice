@@ -29,7 +29,7 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.quicklinks.service.QuickLinksService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 

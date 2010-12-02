@@ -21,7 +21,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.util.GlobalVariables;
 

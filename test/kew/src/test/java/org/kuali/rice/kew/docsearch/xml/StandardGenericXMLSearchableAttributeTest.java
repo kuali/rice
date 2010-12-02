@@ -1207,7 +1207,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
          List searchResults = results.getSearchResults();
          assertEquals("Search results should have one document.", 1, searchResults.size());
          DocumentSearchResult result = (DocumentSearchResult)searchResults.get(0);
-         KeyValueSort kvs = result.getResultContainer(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
+         org.kuali.rice.kew.web.KeyValueSort kvs = result.getResultContainer(DocumentSearchResult.PROPERTY_NAME_ROUTE_HEADER_ID);
          assertEquals("Wrong document in search results.", document.getRouteHeaderId(), kvs.getSortValue());
 
          // search with no searchable attribute criteria, should return our document as well

@@ -16,13 +16,13 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import org.kuali.rice.kew.util.KEWPropertyConstants;
-import org.kuali.rice.kew.web.KeyValueSort;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import org.kuali.rice.kew.util.KEWPropertyConstants;
+import org.kuali.rice.kew.web.KeyValueSort;
 
 
 /**

@@ -1065,7 +1065,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                         } else {
                             valueToSet = existingRowValue + "<br>" + newRowValue;
                         }
-                        existingData.setvalue(valueToSet);
+                        existingData.setValue(valueToSet);
                         if ( (existingData.getSortValue() == null) && (newData.getSortValue() != null) ) {
                             existingData.setSortValue(newData.getSortValue());
                         }

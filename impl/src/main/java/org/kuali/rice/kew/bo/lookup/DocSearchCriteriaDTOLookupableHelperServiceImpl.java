@@ -15,13 +15,37 @@
  */
 package org.kuali.rice.kew.bo.lookup;
 
+import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.KeyLabelPair;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.util.type.KualiPercent;
-import org.kuali.rice.kew.docsearch.*;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaBuilder;
+import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
+import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter;
+import org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO;
+import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
+import org.kuali.rice.kew.docsearch.DocumentSearchResult;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.SavedSearchResult;
+import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
+import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
@@ -42,23 +66,24 @@ import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.*;
+import org.kuali.rice.kns.util.FieldUtils;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.MessageMap;
+import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
-import org.kuali.rice.kns.web.format.*;
+import org.kuali.rice.kns.web.format.BooleanFormatter;
+import org.kuali.rice.kns.web.format.CollectionFormatter;
+import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.kns.web.format.TimestampAMPMFormatter;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
-
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Lookupable helper class for new doc search
@@ -223,7 +248,7 @@ KualiLookupableHelperServiceImpl {
             	  Column col = (Column) origColumns.get(i);
             	  KeyValueSort keyValue = null;
             	  for (KeyValueSort keyValueFromList : keyValues) {
-            		  if(StringUtils.equals(col.getPropertyName(), keyValueFromList.getkey())) {
+            		  if(StringUtils.equals(col.getPropertyName(), keyValueFromList.getKey())) {
             			  keyValue = keyValueFromList;
             			  break;
             		  }
@@ -334,7 +359,7 @@ KualiLookupableHelperServiceImpl {
 //ADDED (3 lines)
                 	AnchorHtmlData anchor = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
                 	//TODO: change to grab URL from config variable
-                	if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getkey())) {
+                	if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getKey())) {
                 	    String target = StringUtils.substringBetween(keyValue.getValue(), "target=\"", "\"");
                 	    if (target == null) {
                 	        target = "_self";
@@ -357,7 +382,7 @@ KualiLookupableHelperServiceImpl {
                 			anchor.setHref(".."+KEWConstants.WEBAPP_DIRECTORY+"/"+StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "routeHeaderId=")+"routeHeaderId="+keyValue.getUserDisplayValue() + returnLoc);
                 		}
                         col.setMaxLength(100); //for now force this
-                	} else if(StringUtils.isNotEmpty(keyValue.getvalue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG, keyValue.getkey())) {
+                	} else if(StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_LOG, keyValue.getKey())) {
                 		Matcher hrefMatcher = HREF_PATTERN.matcher(keyValue.getValue());
                 		String matchedURL = "";
                 		if (hrefMatcher.find()) {
@@ -370,9 +395,9 @@ KualiLookupableHelperServiceImpl {
                         }
                         anchor.setTarget(target.trim());
                 		col.setMaxLength(100); //for now force this
-                        keyValue.setvalue(keyValue.getUserDisplayValue());
+                        keyValue.setValue(keyValue.getUserDisplayValue());
                         col.setEscapeXMLValue(false);
-                	} else if (StringUtils.isNotEmpty(keyValue.getvalue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR, keyValue.getkey())) {
+                	} else if (StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals(KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_INITIATOR, keyValue.getKey())) {
                 		anchor.setHref(StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "\" target=\"_blank\""));
                 		col.setMaxLength(100); //for now force this
                 	}

@@ -35,7 +35,7 @@ import org.kuali.rice.kew.quicklinks.dao.QuickLinksDAO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.util.KNSConstants;
 
 public class QuickLinksDAOJpaImpl implements QuickLinksDAO {

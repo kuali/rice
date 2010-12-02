@@ -23,7 +23,7 @@ import org.kuali.rice.kew.quicklinks.InitiatedDocumentType;
 import org.kuali.rice.kew.quicklinks.WatchedDocument;
 import org.kuali.rice.kew.quicklinks.dao.QuickLinksDAO;
 import org.kuali.rice.kew.quicklinks.service.QuickLinksService;
-import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.core.util.KeyValue;
 
 
 public class QuickLinksServiceImpl implements QuickLinksService {

@@ -34,7 +34,7 @@ import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 

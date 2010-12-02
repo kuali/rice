@@ -57,6 +57,7 @@ import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
+import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.KeyValuePair;
 import org.kuali.rice.kew.engine.node.Process;
@@ -105,8 +106,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import org.kuali.rice.kew.engine.node.Branch;
 
 
 /**

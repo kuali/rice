@@ -830,7 +830,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	protected boolean areAttributesEqual(List<String> uniqueAttributeNames, AttributeSet aSet1, AttributeSet aSet2){
 		String attrVal1;
 		String attrVal2;
-		StringValueComparator comparator = new StringValueComparator();
+		StringValueComparator comparator = StringValueComparator.getInstance();
 		for(String uniqueAttributeName: uniqueAttributeNames){
 			attrVal1 = getAttributeValue(aSet1, uniqueAttributeName);
 			attrVal2 = getAttributeValue(aSet2, uniqueAttributeName);

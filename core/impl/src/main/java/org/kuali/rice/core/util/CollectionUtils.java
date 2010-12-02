@@ -50,7 +50,7 @@ public class CollectionUtils {
 	 * @return the iterable
 	 */
 	public static <T> Iterable<T> toIterable(Iterator<T> i) {
-		return new IterableIterator(i);
+		return new IterableIterator<T>(i);
 	}
 	
 	/**
@@ -71,7 +71,7 @@ public class CollectionUtils {
 	 * @return the iterable
 	 */
 	public static <T> Iterable<T> toIterable(Enumeration<T> e) {
-		return new IterableEnumeration(e);
+		return new IterableEnumeration<T>(e);
 	}
 	
 	/**
@@ -91,14 +91,18 @@ public class CollectionUtils {
 			this.e = e;
 		}
 		  
+		@Override
 		public Iterator<T> iterator() {
 			return new Iterator<T>() {
+				@Override
 				public boolean hasNext() {
 					return e.hasMoreElements();
 				}
+				@Override
 				public T next() {
 					return e.nextElement();
 				}
+				@Override
 				public void remove() {
 					throw new UnsupportedOperationException("this iterator does not support remove");
 				}
@@ -123,6 +127,7 @@ public class CollectionUtils {
 			this.i = i;
 		}
 
+		@Override
 		public Iterator<T> iterator() {
 			return i;
 		}

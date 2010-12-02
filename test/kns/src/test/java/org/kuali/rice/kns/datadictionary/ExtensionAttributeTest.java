@@ -49,15 +49,15 @@ public class ExtensionAttributeTest extends KNSTestCase {
 		super.setUp();
 
 		dd = new DataDictionary();
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml");
-		dd.addConfigFileLocation("file:" + getBaseDir() + "/../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/bo/datadictionary");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kns/document/datadictionary");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentStatus.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/EmploymentType.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/PersonImpl.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimBaseBeans.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/GroupImpl.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/RoleImpl.xml");
+		dd.addConfigFileLocation("file:" + getBaseDir() + "/../../impl/src/main/resources/org/kuali/rice/kim/bo/datadictionary/KimTypeImpl.xml");
 		dd.addConfigFileLocation("classpath:org/kuali/rice/kns/test/document");
         dd.parseDataDictionaryConfigurationFiles( false );
 	}

@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.xml.namespace.QName;
 import org.apache.commons.beanutils.PropertyUtils;
@@ -85,7 +86,6 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -1688,7 +1688,7 @@ public class RuleServiceImpl implements RuleService {
 
     private void generateRuleNameIfNeeded(RuleBaseValues rule) {
         if (StringUtils.isBlank(rule.getName())) {
-        	rule.setName(new Guid().toString());
+        	rule.setName(UUID.randomUUID().toString());
         }
     }
 

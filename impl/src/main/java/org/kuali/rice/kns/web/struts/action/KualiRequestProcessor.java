@@ -13,10 +13,8 @@
 package org.kuali.rice.kns.web.struts.action;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.UUID;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +53,6 @@ import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.ErrorContainer;
 import org.kuali.rice.kns.util.ExceptionUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.kns.util.InfoContainer;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
@@ -66,7 +63,6 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoForm;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -311,7 +307,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 						
 						String kualiSessionId = this.getKualiSessionId(request, response);
 						if (kualiSessionId == null) {
-							kualiSessionId = new Guid().toString();
+							kualiSessionId = UUID.randomUUID().toString();
 							response.addCookie(new Cookie(KNSConstants.KUALI_SESSION_ID, kualiSessionId));
 						}
 						userSession.setKualiSessionId(kualiSessionId);

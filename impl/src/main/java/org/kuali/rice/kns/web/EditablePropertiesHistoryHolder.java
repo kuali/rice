@@ -21,10 +21,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.UUID;
 
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.util.Guid;
 
 /**
  * A class which will hold a Map of editable properties, dropping editable properties when too many
@@ -92,7 +92,7 @@ public class EditablePropertiesHistoryHolder implements java.io.Serializable {
 	 * @return a newly generated Guid to act as a key to an editable properties Set
 	 */
 	public String generateNewGuid() {
-		final String guid = new Guid().toString();
+		final String guid = UUID.randomUUID().toString();
 		return guid;
 	}
 	

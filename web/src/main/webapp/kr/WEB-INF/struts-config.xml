@@ -84,7 +84,7 @@
             <forward name="basic" path="/WEB-INF/jsp/KualiMultipleValueLookup.jsp" />
         </action>
 	    <action path="/inquiry" name="InquiryForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.kns.web.struts.action.KualiInquiryAction">
-	        <forward name="basic" path="/WEB-INF/jsf/pages/Inquiry.xhtml" />
+	        <forward name="basic" path="/jsf/pages/Inquiry.xhtml" />
 	    </action>
         <action path="/inquirySubmit" name="InquirySubmitForm" scope="session" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.krad.web.struts.action.InquirySubmitAction">
             <forward name="basic" path="/jsf/pages/InquirySubmit.xhtml" />

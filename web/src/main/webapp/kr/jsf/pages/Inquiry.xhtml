@@ -16,18 +16,13 @@
   
   <ui:define name="body">
     <c:forEach items="${KualiForm.sections}" var="section">
+
        <kul:tab tabTitle="${section.sectionTitle}" defaultOpen="${section.defaultOpen}">
-         <table class="datatable">
-           <c:forEach items="${section.rows}" var="row">
-             <tr>
-               <c:forEach items="${row.fields}" var="field">
-                  <th align="right">${field.fieldLabel}</th>
-                  <td>${field.propertyValue}</td>
-               </c:forEach>
-             </tr>
-           </c:forEach>
-         </table>
+          <ui:include src="${KualiForm.tabTag}">
+            <ui:param name="section" value="${section}"/>
+          </ui:include>
        </kul:tab>
+       
     </c:forEach>
   </ui:define>
   

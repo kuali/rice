@@ -38,6 +38,8 @@ public class Section implements java.io.Serializable {
     Class sectionClass;
     List<Row> rows;
     List<String> containedCollectionNames = new ArrayList();
+    
+    String fieldTag = "/kr/jsf/tags/field.xhtml";
 
     /**
      * Default constructor, initializes
@@ -268,5 +270,11 @@ public class Section implements java.io.Serializable {
 	public void setHelpUrl(String helpUrl) {
 		this.helpUrl = helpUrl;
 	}
+
+	public String getFieldTag() {
+		return this.fieldTag;
+	}
+	
+	
 	
 }

@@ -26,5 +26,6 @@
 		<module>kew</module>
 		<module>ken</module>
 		<module>kns</module>
+		<module>test-clients</module>
 	</modules>
 </project>

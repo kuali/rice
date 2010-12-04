@@ -503,6 +503,11 @@ see https://cwiki.apache.org/MAVEN/maven-3x-and-site-plugin.html
                                                 </entries>
                                         </configuration>
                                 </plugin>
+                <plugin>
+                  <groupId>org.mortbay.jetty</groupId>
+                  <artifactId>jetty-maven-plugin</artifactId>
+                  <version>${jetty.version}</version>
+                </plugin>
 			</plugins>
 		</pluginManagement>
 

@@ -254,7 +254,7 @@
   <bean parent="kimLocalServiceExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker"/>
     <property name="serviceDefinition">
-      <bean parent="kimSoapService"
+      <bean parent="kimJaxWsSoapService"
         p:service-ref="kimIdentityManagementService"
         p:localServiceName="kimIdentityManagementServiceSOAP"
         p:serviceInterface="org.kuali.rice.kim.service.IdentityManagementService" />

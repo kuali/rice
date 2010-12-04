@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
@@ -27,7 +28,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import org.kuali.rice.core.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.jaxb.MapStringStringAdapter;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -129,15 +129,19 @@ public interface IdentityManagementService {
     List<String> getParentGroupIds( @WebParam(name="groupId") String groupId);
     List<String> getDirectParentGroupIds( @WebParam(name="groupId") String groupId);
 
+    @WebMethod(operationName="getGroupIdsForPrincipal")
     List<String> getGroupIdsForPrincipal( @WebParam(name="principalId") String principalId);
 
+    @WebMethod(operationName="getGroupIdsForPrincipalByNamespace")
     List<String> getGroupIdsForPrincipal(
     		@WebParam(name="principalId") String principalId,
     		@WebParam(name="namespaceCode") String namespaceCode
     );
 
+    @WebMethod(operationName="getGroupsForPrincipal")
     List<? extends GroupInfo> getGroupsForPrincipal( @WebParam(name="principalId") String principalId);
 
+    @WebMethod(operationName="getGroupsForPrincipalByNamespace")
     List<? extends GroupInfo> getGroupsForPrincipal(
     		@WebParam(name="principalId") String principalId,
     		@WebParam(name="namespaceCode") String namespaceCode
@@ -146,11 +150,13 @@ public interface IdentityManagementService {
     List<String> getMemberGroupIds( @WebParam(name="groupId") String groupId);
     List<String> getDirectMemberGroupIds( @WebParam(name="groupId") String groupId);
 
+    @WebMethod(operationName="isMemberOfGroup")
 	boolean isMemberOfGroup(
 			@WebParam(name="principalId") String principalId,
 			@WebParam(name="groupId") String groupId
 	);
 
+    @WebMethod(operationName="isMemberOfGroupByNamespace")
 	boolean isMemberOfGroup(
 			@WebParam(name="principalId") String principalId,
 			@WebParam(name="namespaceCode") String namespaceCode,
@@ -196,7 +202,7 @@ public interface IdentityManagementService {
 	// *******************************
 	// AuthenticationService
 	// *******************************
-
+    @WebMethod(exclude=true)
 	String getAuthenticatedPrincipalName( @WebParam(name="request") HttpServletRequest request);
 
 	// *******************************

@@ -229,6 +229,17 @@
     <param name="kim.mode" override="false">local</param>
     <param name="rice.kim.struts.config.files" override="false">/kim/WEB-INF/struts-config.xml</param>
 
+    <!-- The Kim peron inquiry screens can (since 1.0.3.1) hide fields based on two different type of config parameters
+    	If the kim document showing the data has a type (i.e. Address, Phone, etc have AddressType/PhoneType), you can hide all
+    	data with this type by using the following format: "kim.hide.document.type" and the value of of the code (HM, WRK, OTH)
+    	
+    	Individual fields (all instances of them on the page) can also be hidden by following this format:
+    	"[documentClass].hidden".  The value of this should be a comma delimited list of the DD names of the fields.
+     -->
+    <param name="org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo.hidden">baseSalaryAmount</param>
+	<param name="kim.hide.PersonDocumentAddress.type">HM</param>
+	<param name="kim.hide.PersonDocumentPhone.type">HM</param>
+	
 	<param name="kim.cache.entity.max.size" override="false">3000</param>
     <param name="kim.cache.entity.max.age.seconds" override="false">3600</param>
     <param name="kim.cache.group.max.size" override="false">3000</param>

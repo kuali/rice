@@ -28,17 +28,17 @@
 <kul:subtab lookedUpCollectionName="address" width="${tableWidth}" subTabTitle="Addresses" noShowHideButton="true">      
     <table cellpadding="0" cellspacing="0" summary="">
         <tr>
-            <th><div align="left">&nbsp;</div></th> 
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.addressTypeCode}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.line1}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.line2}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.line3}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.cityName}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.stateCode}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.postalCode}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.countryCode}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.dflt}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAddressAttributes.active}" noColon="true" /></div></th>
+            <th><div align="left">&nbsp;</div></th>
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.addressTypeCode}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.line1}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.line2}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.line3}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.cityName}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.stateCode}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.postalCode}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.countryCode}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.dflt}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAddressAttributes.active}" noColon="true" /> 
             <c:if test="${not inquiry and canModify}">  
                 <kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
             </c:if>
@@ -100,51 +100,22 @@
             </tr>         
         </c:if>         
         <c:forEach var="address" items="${KualiForm.document.addrs}" varStatus="status">
-            <tr>
+            <c:if test="${!(inquiry and readOnlyEntity and kfunc:isHiddenKimObjectType(address.addressTypeCode, 'kim.hide.PersonDocumentAddress.type'))}"> 
+              <tr>
                 <th class="infoline">
                     <c:out value="${status.index+1}" />
                 </th>
-                <td align="left" valign="middle">
-                    <div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(address.addressType.addressTypeName)}" readOnly="${readOnlyEntity or !canModify}" />
-                    </div>
-                </td>
-                <td>
-                    <div align="center"> <kul:htmlControlAttribute property="document.addrs[${status.index}].line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
-                    </div>
-                </td>
-                <td>     
-                    <div align="center">            
-                      <kul:htmlControlAttribute property="document.addrs[${status.index}].line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx"/>
-                    </div>
-                </td>
-                <td>
-                    <div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx"/>
-                </div>
-                </td>
-                <td>
-                    <div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx"/>
-                    </div>
-                </td>
-                <td>
-                    <div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="XX"/>
-                </div>
-                </td>
-                <td>
-                    <div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].postalCode" attributeEntry="${docAddressAttributes.postalCode}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="XXXXX"/>
-                    </div>
-                </td>
-                <td>
-                    <div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="XX" />
-                    </div>
-                </td>
-                <td>
-                    <div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].dflt" attributeEntry="${docAddressAttributes.dflt}" readOnly="${readOnlyEntity or !canModify}" />
-                    </div>
-                </td>
-                <td>
-                    <div align="center"><kul:htmlControlAttribute property="document.addrs[${status.index}].active" attributeEntry="${docAddressAttributes.active}" readOnly="${readOnlyEntity or !canModify}" />
-                    </div>
-                </td>
+                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].addressTypeCode" attributeEntry="${docAddressAttributes.addressTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(address.addressType.addressTypeName)}" readOnly="${readOnlyEntity or !canModify}" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].line1" attributeEntry="${docAddressAttributes.line1}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].line2" attributeEntry="${docAddressAttributes.line2}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].line3" attributeEntry="${docAddressAttributes.line3}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].cityName" attributeEntry="${docAddressAttributes.cityName}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].stateCode" attributeEntry="${docAddressAttributes.stateCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="XX" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].postalCode" attributeEntry="${docAddressAttributes.postalCode}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="XXXXX" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].countryCode" attributeEntry="${docAddressAttributes.countryCode}" styleClass="fixed-size-200-select" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="XX" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].dflt" attributeEntry="${docAddressAttributes.dflt}" readOnly="${readOnlyEntity or !canModify}" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.addrs[${status.index}].active" attributeEntry="${docAddressAttributes.active}" readOnly="${readOnlyEntity or !canModify}" />
+
                 <c:if test="${not inquiry and canModify}">                      
                     <td>
                         <div align="center">&nbsp;
@@ -160,7 +131,8 @@
                         </div>
                     </td>
                 </c:if>      
-            </tr>
+              </tr>
+            </c:if>
         </c:forEach>                    
     </table>
 </kul:subtab>

@@ -24,13 +24,14 @@
     <table cellpadding="0" cellspacing="0" summary="">
         <tr>
             <th>&nbsp;</th> 
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docNameAttributes.nameTypeCode}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docNameAttributes.title}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docNameAttributes.firstName}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docNameAttributes.lastName}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docNameAttributes.suffix}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docNameAttributes.dflt}" noColon="true" /></div></th>
-            <th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docNameAttributes.active}" noColon="true" /></div></th>
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.nameTypeCode}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.title}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.firstName}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.lastName}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.suffix}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.dflt}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docNameAttributes.active}" noColon="true" /> 
+          
             <c:if test="${not inquiry and canModify}">    
                 <kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
             </c:if>
@@ -79,40 +80,19 @@
                 </td>
             </tr>         
         </c:if>      
-        <c:forEach var="name" items="${KualiForm.document.names}" varStatus="status">
-            <tr>
+        <c:forEach var="name" items="${KualiForm.document.names}" varStatus="status"> 
+            <c:if test="${!(inquiry and readOnlyEntity and kfunc:isHiddenKimObjectType(name.nameTypeCode, 'kim.hide.PersonDocumentName.type'))}"> 
+              <tr>
                 <th class="infoline">
                     <c:out value="${status.index+1}" />
                 </th>
-                <td align="left" valign="middle">
-                    <div align="center"> <kul:htmlControlAttribute property="document.names[${status.index}].nameTypeCode"  attributeEntry="${docNameAttributes.nameTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(name.entityNameType.entityNameTypeName)}" readOnly="${readOnlyEntity or !canModify}" />
-                    </div>
-                </td>
-                <td>
-                    <div align="center"> <kul:htmlControlAttribute property="document.names[${status.index}].title" attributeEntry="${docNameAttributes.title}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
-                    </div>
-                </td>
-                <td>     
-                    <div align="center">            
-                      <kul:htmlControlAttribute property="document.names[${status.index}].firstName" attributeEntry="${docNameAttributes.firstName}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
-                    </div>
-                </td>
-                <td align="left" valign="middle" class="infoline">
-                    <div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].lastName" attributeEntry="${docNameAttributes.lastName}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
-                </div>
-                </td>
-                <td align="left" valign="middle" class="infoline">
-                    <div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].suffix" attributeEntry="${docNameAttributes.suffix}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
-                </div>
-                </td>
-                <td align="left" valign="middle" class="infoline">
-                    <div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].dflt" attributeEntry="${docNameAttributes.dflt}" readOnly="${readOnlyEntity or !canModify}" />
-                </div>
-                </td>
-                <td align="left" valign="middle" class="infoline">
-                    <div align="center"><kul:htmlControlAttribute property="document.names[${status.index}].active" attributeEntry="${docNameAttributes.active}" readOnly="${readOnlyEntity or !canModify}" />
-                </div>
-                </td>
+                <kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].nameTypeCode"  attributeEntry="${docNameAttributes.nameTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(name.entityNameType.entityNameTypeName)}" readOnly="${readOnlyEntity or !canModify}" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].title" attributeEntry="${docNameAttributes.title}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].firstName" attributeEntry="${docNameAttributes.firstName}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].lastName" attributeEntry="${docNameAttributes.lastName}" readOnly="${readOnlyEntity or !canModify}" displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].suffix" attributeEntry="${docNameAttributes.suffix}" readOnly="${readOnlyEntity or !canModify}"  displayMask="${maskData}" displayMaskValue="Xxxxxxx" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].dflt" attributeEntry="${docNameAttributes.dflt}" readOnly="${readOnlyEntity or !canModify}" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.names[${status.index}].active" attributeEntry="${docNameAttributes.active}" readOnly="${readOnlyEntity or !canModify}" />
                 <c:if test="${not inquiry and canModify}">                        
                     <td>
                         <div align="center">&nbsp;
@@ -128,7 +108,8 @@
                         </div>
                     </td>
                 </c:if>    
-            </tr>
+              </tr>
+            </c:if>  
         </c:forEach> 
     </table>
 </kul:subtab>

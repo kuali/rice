@@ -21,30 +21,18 @@
         <table cellpadding="0" cellspacing="0" summary="">
           	<tr>
           		<th><div align="left">&nbsp;</div></th> 
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docCitizenshipAttributes.countryCode}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docCitizenshipAttributes.startDate}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docCitizenshipAttributes.endDate}" noColon="true" /></div></th>
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docCitizenshipAttributes.countryCode}" noColon="true" />
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docCitizenshipAttributes.startDate}" noColon="true" />
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docCitizenshipAttributes.endDate}" noColon="true" />
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	
           	</tr>     
           	
              <tr>
 				<th class="infoline">Add:</th>
-
-                <td class="infoline">   
-                <div align="center">             	
-                  <kul:htmlControlAttribute property="newCitizenship.countryCode" attributeEntry="${docCitizenshipAttributes.countryCode}" readOnly="${readOnly}" />
-				</div>
-				</td>
-                <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="newCitizenship.startDate" attributeEntry="${docCitizenshipAttributes.startDate}" datePicker="true" readOnly="${readOnly}" />
-                </div>
-                </td>
-                <td align="left" valign="middle" class="infoline">
-                <div align="center">
-                	<kul:htmlControlAttribute property="newCitizenship.endDate" attributeEntry="${docCitizenshipAttributes.endDate}" datePicker="true" readOnly="${readOnly}" />
-	            </div>
-				</td>
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="newCitizenship.countryCode" attributeEntry="${docCitizenshipAttributes.countryCode}" readOnly="${readOnly}" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="newCitizenship.startDate" attributeEntry="${docCitizenshipAttributes.startDate}" datePicker="true" readOnly="${readOnly}" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="newCitizenship.endDate" attributeEntry="${docCitizenshipAttributes.endDate}" datePicker="true" readOnly="${readOnly}" />
                 <td class="infoline">
 					<div align=center>
 						<html:image property="methodToCall.addCitizenship.anchor${tabKey}"
@@ -58,18 +46,9 @@
 					<th class="infoline">
 						<c:out value="${status.index+1}" />
 					</th>
-	                <td>     
-	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.citizenships[${status.index}].countryCode" attributeEntry="${docCitizenshipAttributes.countryCode}" readOnly="${readOnly}" />
-					</div>
-					</td>
-	                <td align="left" valign="middle">
-	                <div align="center"><kul:htmlControlAttribute property="document.citizenships[${status.index}].startDate" attributeEntry="${docCitizenshipAttributes.startDate}" datePicker="true" readOnly="${readOnly}" /></div>
-	                </td>
-	                <td align="left" valign="middle">
-	                	<div align="center"> <kul:htmlControlAttribute property="document.citizenships[${status.index}].endDate"  attributeEntry="${docCitizenshipAttributes.endDate}" datePicker="true" readOnly="${readOnly}" />
-					</div>
-					</td>
+					<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.citizenships[${status.index}].countryCode" attributeEntry="${docCitizenshipAttributes.countryCode}" readOnly="${readOnly}" />
+					<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.citizenships[${status.index}].startDate" attributeEntry="${docCitizenshipAttributes.startDate}" datePicker="true" readOnly="${readOnly}" />
+					<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.citizenships[${status.index}].endDate"  attributeEntry="${docCitizenshipAttributes.endDate}" datePicker="true" readOnly="${readOnly}" />
 
 					<td>
 					<div align=center>&nbsp;

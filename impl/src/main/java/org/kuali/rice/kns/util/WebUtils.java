@@ -522,6 +522,33 @@ public class WebUtils {
 		return indexOfCoordinateExtension;
     }
     
+    public static boolean isInquiryHiddenField(String className, String fieldName, Object formObject, String propertyName) {
+    	boolean isHidden = false;
+    	String hiddenInquiryFields = getKualiConfigurationService().getPropertyString(className+".hidden");
+    	if (StringUtils.isEmpty(hiddenInquiryFields)) {
+    		return isHidden;
+    	}
+    	List hiddenFields = Arrays.asList(hiddenInquiryFields.replaceAll(" ", "").split(","));
+    	if (hiddenFields.contains(fieldName.trim())) {
+    		isHidden = true;
+    	}
+    	return isHidden;
+    }
+    
+    public static boolean isHiddenKimObjectType(String type, String configParameter) {
+    	boolean hideType = false;
+    	String hiddenTypes = getKualiConfigurationService().getPropertyString(configParameter);
+    	if (StringUtils.isEmpty(hiddenTypes)) {
+    		return hideType;
+    	}
+    	List hiddenTypeValues = Arrays.asList(hiddenTypes.replaceAll(" ", "").split(","));
+    	if (hiddenTypeValues.contains(type.trim())) {
+    		hideType = true;
+    	}
+    	return hideType;
+    }
+    
+    
     public static String getFullyMaskedValue(String className, String fieldName, Object formObject, String propertyName){
     	String displayMaskValue = null;
     	Object propertyValue = ObjectUtils.getPropertyValue(formObject, propertyName);

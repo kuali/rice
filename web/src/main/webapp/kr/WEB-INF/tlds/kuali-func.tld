@@ -78,7 +78,7 @@
     	<description>Get Fully Masked Value</description>
     	<name>getFullyMaskedValue</name>
 	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
-	    <function-signature>java.lang.String getFullyMaskedValue(java.lang.String, java.lang.String,, java.lang.Object, java.lang.String)</function-signature>
+	    <function-signature>java.lang.String getFullyMaskedValue(java.lang.String, java.lang.String, java.lang.Object, java.lang.String)</function-signature>
 	    <example>${kfunc:getFullyMaskedValue(className, fieldName, kualiForm, propertyName)}</example>
 	</function>
 	<function>
@@ -87,6 +87,20 @@
 	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
 	    <function-signature>java.lang.String getPartiallyMaskedValue(java.lang.String, java.lang.String,, java.lang.Object, java.lang.String)</function-signature>
 	    <example>${kfunc:getPartiallyMaskedValue(className, fieldName, kualiForm, propertyName)}</example>
+	</function>
+	<function>
+    	<description>Check to see if field is configured to be hidden on inquiry screens.</description>
+    	<name>isInquiryHiddenField</name>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>boolean isInquiryHiddenField(java.lang.String, java.lang.String, java.lang.Object, java.lang.String)</function-signature>
+	    <example>${kfunc:isInquiryHiddenField(className, businessObjectClassName, fieldName, kualiForm)}</example>
+	</function>
+	<function>
+    	<description>Check to see if kim object type should be hidden on inquiry screens.</description>
+    	<name>isHiddenKimObjectType</name>
+	    <function-class>org.kuali.rice.kns.util.WebUtils</function-class>
+	    <function-signature>boolean isHiddenKimObjectType(java.lang.String, java.lang.String)</function-signature>
+	    <example>${kfunc:isHiddenKimObjectType(typeCode, configParameter)}</example>
 	</function>
 	<function>
     	<description>Check Add Note Permission</description>

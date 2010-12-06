@@ -21,12 +21,12 @@
    <table cellpadding="0" cellspacing="0" summary="">
      	<tr>
     		<th><div align="left">&nbsp;</div></th> 
-    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.groupId}" noColon="true" /></div></th>
-    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.namespaceCode}" noColon="true" /></div></th>
-    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.groupName}" noColon="true" /></div></th>
-    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.kimTypeId}" noColon="true" /></div></th>
-    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.activeFromDate}" noColon="true" /></div></th>
-    		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docGroupAttributes.activeToDate}" noColon="true" /></div></th>
+    		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.groupId}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.namespaceCode}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.groupName}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.kimTypeId}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.activeFromDate}" noColon="true" /> 
+            <kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docGroupAttributes.activeToDate}" noColon="true" /> 
            	<c:if test="${not inquiry}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	</c:if>
@@ -92,29 +92,13 @@
 				<th class="infoline">
 					<c:out value="${status.index+1}" />
 				</th>
-                <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].groupId"  attributeEntry="${docGroupAttributes.groupId}"  readOnly="true" />
-					</div>
-				</td>
-                <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].namespaceCode"  attributeEntry="${docGroupAttributes.namespaceCode}" readOnly="true"  />
-					</div>
-				</td>
-                <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].groupName"  attributeEntry="${docGroupAttributes.groupName}" readOnly="true"  />
-					</div>
-				</td>
-                <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].kimGroupType.name"  attributeEntry="${docGroupAttributes.kimGroupType.name}" readOnly="true"  />
-					</div>
-				</td>
-                <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].activeFromDate"  attributeEntry="${docGroupAttributes.activeFromDate}" datePicker="true" readOnly="${readOnly}"/>
-					</div>
-                <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.groups[${status.index}].activeToDate"  attributeEntry="${docGroupAttributes.activeToDate}" datePicker="true" readOnly="${readOnly}"/>
-					</div>
-				</td>
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.groups[${status.index}].groupId"  attributeEntry="${docGroupAttributes.groupId}"  readOnly="true" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.groups[${status.index}].namespaceCode"  attributeEntry="${docGroupAttributes.namespaceCode}" readOnly="true" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.groups[${status.index}].groupName"  attributeEntry="${docGroupAttributes.groupName}" readOnly="true" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.groups[${status.index}].kimGroupType.name"  attributeEntry="${docGroupAttributes.kimGroupType.name}" readOnly="true" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.groups[${status.index}].activeFromDate"  attributeEntry="${docGroupAttributes.activeFromDate}" datePicker="true" readOnly="${readOnly}" />
+				<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.groups[${status.index}].activeToDate"  attributeEntry="${docGroupAttributes.activeToDate}" datePicker="true" readOnly="${readOnly}" />
+
            		<c:if test="${not inquiry}">						
 					<td>
 						<div align=center>&nbsp;			

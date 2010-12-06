@@ -23,12 +23,12 @@
         <c:if test="${!readOnly}">	          	
           	<tr>
           		<th>&nbsp;</th> 
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleId}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.namespaceCode}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleName}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" /></div></th>
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRoleAttributes.roleId}" noColon="true" />
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRoleAttributes.namespaceCode}" noColon="true" /> 
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRoleAttributes.roleName}" noColon="true" /> 
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /> 
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /> 
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" />  
            	<c:if test="${!readOnly}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           	</c:if>	
@@ -80,12 +80,12 @@
         	<%-- add header label for each 'role' to see if it is less confusion for user --%>
           	<tr>
           		<th>&nbsp;</th> 
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleId}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.namespaceCode}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.roleName}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" /></div></th>
+	           	<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRoleAttributes.roleId}" noColon="true" />
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRoleAttributes.namespaceCode}" noColon="true" /> 
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRoleAttributes.roleName}" noColon="true" /> 
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRoleAttributes.kimTypeId}" noColon="true" /> 
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRolePrncplAttributes.activeFromDate}" noColon="true" /> 
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docRolePrncplAttributes.activeToDate}" noColon="true" />
 	           	<c:if test="${!readOnly}">	
 	              	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
 	          	</c:if>	
@@ -100,22 +100,11 @@
 					<c:out value="${status.index+1}" />
 				</th>
 				</td>
-                <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].roleId"  attributeEntry="${docRoleAttributes.roleId}" readOnly="true"  />
-				</div>
-				</td>
-                <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].namespaceCode"  attributeEntry="${docRoleAttributes.namespaceCode}" readOnly="true" />
-				</div>
-				</td>
-                <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].roleName"  attributeEntry="${docRoleAttributes.roleName}" readOnly="true"  />
-				</div>
-				</td>
-                <td align="left" valign="middle">
-                	<div align="center"> <kul:htmlControlAttribute property="document.roles[${status.index}].kimRoleType.name"  attributeEntry="${docRoleAttributes.kimGroupType.name}" readOnly="true"  />
-				</div>
-				</td>
+				<kim:cell inquiry="${inquiry}" valign="middle" textAlign="center" property="document.roles[${status.index}].roleId"  attributeEntry="${docRoleAttributes.roleId}" readOnly="true" />
+                <kim:cell inquiry="${inquiry}" valign="middle" textAlign="center" property="document.roles[${status.index}].namespaceCode"  attributeEntry="${docRoleAttributes.namespaceCode}" readOnly="true" />
+                <kim:cell inquiry="${inquiry}" valign="middle" textAlign="center" property="document.roles[${status.index}].roleName"  attributeEntry="${docRoleAttributes.roleName}" readOnly="true" />
+                <kim:cell inquiry="${inquiry}" valign="middle" textAlign="center" property="document.roles[${status.index}].kimRoleType.name"  attributeEntry="${docRoleAttributes.kimGroupType.name}" readOnly="true" />
+
 				<c:set var="roleMemberActiveDatesReadOnly" value="${(!empty role.definitions and fn:length(role.definitions) > 0) || readOnlyRole}" />
                 <td align="left" valign="middle">
                 	<c:if test="${fn:length(role.rolePrncpls) > 0}">

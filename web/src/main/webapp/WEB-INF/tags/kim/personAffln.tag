@@ -21,9 +21,9 @@
         <table cellpadding="0" cellspacing="0" summary="">
           	<tr>
           		<th><div align="left">&nbsp;</div></th> 
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.affiliationTypeCode}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.campusCode}" noColon="true" /></div></th>
-          		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docAffiliationAttributes.dflt}" noColon="true" /></div></th>
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}" noColon="true" />
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAffiliationAttributes.campusCode}" noColon="true" />
+          		<kim:cell inquiry="${inquiry}" isLabel="true" textAlign="center" attributeEntry="${docAffiliationAttributes.dflt}" noColon="true" />
            <c:if test="${not inquiry}">	
               	<kul:htmlAttributeHeaderCell literalLabel="Actions" scope="col"/>
           </c:if>	
@@ -66,19 +66,10 @@
 					<th rowspan="${rowSpan}" class="infoline">
 						<c:out value="${status.index+1}" />
 					</th>
-	                <td align="left" valign="middle">
-	                <div align="center"><kul:htmlControlAttribute property="document.affiliations[${status.index}].affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(affln.affiliationType.affiliationTypeName)}" disabled="true" readOnly="false" /></div>
-	                </td>
-	                <td>     
-	                <div align="center">           	
-	                  <kul:htmlControlAttribute property="document.affiliations[${status.index}].campusCode" attributeEntry="${docAffiliationAttributes.campusCode}" readOnly="${readOnlyEntity}" />
-					</div>
-					</td>
-	                <td align="left" valign="middle">
-		                <div align="center">
-		                	<kul:htmlControlAttribute property="document.affiliations[${status.index}].dflt" attributeEntry="${docAffiliationAttributes.dflt}" readOnly="${readOnlyEntity}" /> 
-						</div>
-                    </td>
+					<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${status.index}].affiliationTypeCode" attributeEntry="${docAffiliationAttributes.affiliationTypeCode}"  readOnlyAlternateDisplay="${fn:escapeXml(affln.affiliationType.affiliationTypeName)}" disabled="true" readOnly="false" />
+					<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${status.index}].campusCode" attributeEntry="${docAffiliationAttributes.campusCode}" readOnly="${readOnlyEntity}" />
+					<kim:cell inquiry="${inquiry}" valign="middle" cellClass="infoline" textAlign="center" property="document.affiliations[${status.index}].dflt" attributeEntry="${docAffiliationAttributes.dflt}" readOnly="${readOnlyEntity}" />
+
            <c:if test="${not inquiry}">	
 
 					<td>

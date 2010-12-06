@@ -450,4 +450,12 @@ public class KualiHelpAction extends KualiAction {
     private String getHelpUrl(String parameterNamespace, String parameterDetailTypeCode, String parameterName) {
         return getConfigurationService().getPropertyString(KNSConstants.EXTERNALIZABLE_HELP_URL_KEY) + getParameterService().getParameterValue(parameterNamespace, parameterDetailTypeCode, parameterName);
     }    
+    
+    /**
+     * Retrieves help content to link to based on parameterNamespace and parameterName
+     */
+    public ActionForward getHelpUrlByNamespace(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        KualiHelpForm helpForm = (KualiHelpForm) form;
+       return getStoredHelpUrl(mapping, form, request, response); 
+    }
 }

@@ -20,8 +20,8 @@
 <%@ attribute name="documentTypeName" required="false" description="The name of the document type to show help text for." %>
 <%@ attribute name="pageName" required="false" description="The page of a specific document to show a help icon for." %>
 <%@ attribute name="altText" required="false" description="The alternate text for the help icon." %>
-<%@ attribute name="securityGroupName" required="false" description="The name of the security group to be used with the parameter name attribute; together, the found parameter has the URL for the help text." %>
-<%@ attribute name="parameterName" required="false" description="The name of the parameter which will be used with the securityGroup name attribute; together, the found parameter has the URL for the help text." %>
+<%@ attribute name="parameterNamespace" required="false" description="The namespace of the parameter to be used with the parameter name attribute; together, the found parameter has the URL for the help text." %>
+<%@ attribute name="parameterName" required="false" description="The name of the parameter which will be used with the parameterNamespace attribute; together, the found parameter has the URL for the help text." %>
 <%@ attribute name="searchDocumentTypeName" required="false" description="The document type name of a document being looked up to display help for." %>
 <%@ attribute name="lookupBusinessObjectClassName" required="false" description="The business object looked up on the lookup page, which needs to have specific help displayed for it." %>
 <%@ attribute name="alternativeHelp" required="false"%>
@@ -50,8 +50,8 @@
   c:when test="${! empty documentTypeName }"
     ><a href="${ConfigProperties.application.url}/kr/help.do?methodToCall=getDocumentHelpText&amp;documentTypeName=${documentTypeName}" tabindex="-1" target="helpWindow"  title="[Help]${altText}"></c:when
   ><
-  c:when test="${(! empty securityGroupName) && (! empty parameterName)}"
-    ><a href="${ConfigProperties.application.url}/kr/help.do?methodToCall=getStoredHelpUrl&amp;helpSecurityGroupName=${securityGroupName}&amp;helpParameterName=${parameterName}" tabindex="-1" target="helpWindow"></c:when
+  c:when test="${(! empty parameterNamespace) && (! empty parameterName)}"
+    ><a href="${ConfigProperties.application.url}/kr/help.do?methodToCall=getHelpUrlByNamespace&amp;helpParameterNamespace=${parameterNamespace}&amp;helpParameterName=${parameterName}" tabindex="-1" target="helpWindow"></c:when
 ><
   c:when test="${(!empty searchDocumentTypeName)}"
     ><a href="${ConfigProperties.application.url}/kr/help.do?methodToCall=getLookupHelpText&amp;searchDocumentTypeName=${searchDocumentTypeName}" tabindex="-1" target="helpWindow" title="[Help]${altText}"></c:when

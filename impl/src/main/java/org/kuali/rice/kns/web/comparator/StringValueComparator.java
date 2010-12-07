@@ -19,14 +19,14 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 public final class StringValueComparator implements Serializable, Comparator<String> {
-    private static final StringValueComparator theInstance = new StringValueComparator();
+    private static final StringValueComparator INSTANCE = new StringValueComparator();
     
     private StringValueComparator() {
-    	throw new UnsupportedOperationException("do not call");
+    	//private
     }
 
     public static StringValueComparator getInstance() {
-        return theInstance;
+        return INSTANCE;
     }
     
     @Override

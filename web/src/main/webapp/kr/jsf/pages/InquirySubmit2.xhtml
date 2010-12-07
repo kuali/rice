@@ -9,7 +9,7 @@
       xmlns:kul="http://rice.kuali.org/jsf"
       xmlns:fn="http://java.sun.com/jsp/jstl/functions">
       
-<ui:composition template="/kr/jsf/templates/page.xhtml">
+<ui:composition template="/kr/jsf/templates/page2.xhtml">
   <ui:define name="title">Inquiry Submit</ui:define>
 
   <ui:define name="header">Travel Account Inquiry</ui:define>
@@ -19,7 +19,7 @@
     
     <h:panelGrid columns="2" styleClass="datatable" columnClasses="right">
         <h:outputLabel for="${KualiForm.account.number}" value="${accountAttributes.number.label}"/>
-        <h:inputText value="${KualiForm.account.number}">
+        <h:inputText id="KualiForm.account.number" value="${KualiForm.account.number}">
           <f:converter  converterId="kuali.JSFTypeConverter" />
         </h:inputText>
     </h:panelGrid>

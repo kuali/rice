@@ -8,8 +8,11 @@
 
   <application>
     <view-handler>
-      org.kuali.rice.krad.web.jsf.struts.ViewHandlerImpl
+       org.kuali.rice.krad.web.jsf.struts.ViewHandlerImpl
     </view-handler>
+    <el-resolver>
+      org.kuali.rice.krad.web.jsf.NullELResolver
+    </el-resolver>    
   </application>
 
   <managed-bean>
@@ -19,5 +22,11 @@
     </managed-bean-class>
     <managed-bean-scope>request</managed-bean-scope>
   </managed-bean>
+  
+  <converter>
+    <converter-id>kuali.JSFTypeConverter</converter-id>
+    <converter-class>org.kuali.rice.krad.web.jsf.JSFTypeConverter</converter-class>
+  </converter>
+  
   
 </faces-config>

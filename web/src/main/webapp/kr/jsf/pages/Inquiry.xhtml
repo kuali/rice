@@ -7,7 +7,9 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:kul="http://rice.kuali.org/jsf"
-      xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:t="http://myfaces.apache.org/tomahawk"
+      xmlns:tr="http://myfaces.apache.org/trinidad">
       
 <ui:composition template="/kr/jsf/templates/page.xhtml">
   <ui:define name="title">Inquiry</ui:define>
@@ -15,14 +17,16 @@
   <ui:define name="header">${kualiInquirable.title}</ui:define>
   
   <ui:define name="body">
+    <tr:separator/>
+
     <c:forEach items="${KualiForm.sections}" var="section">
 
-       <kul:tab tabTitle="${section.sectionTitle}" defaultOpen="${section.defaultOpen}">
+       <t:collapsiblePanel title="${section.sectionTitle}"> 
           <ui:include src="${KualiForm.tabTag}">
             <ui:param name="section" value="${section}"/>
           </ui:include>
-       </kul:tab>
-       
+        </t:collapsiblePanel>
+     
     </c:forEach>
   </ui:define>
   

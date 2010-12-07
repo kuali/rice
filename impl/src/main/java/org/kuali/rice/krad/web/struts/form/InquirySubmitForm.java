@@ -29,7 +29,6 @@ public class InquirySubmitForm extends KualiForm {
 	protected TravelAccount account;
 
 	public InquirySubmitForm() {
-		account = new TravelAccount();
 	}
 
 	public TravelAccount getAccount() {

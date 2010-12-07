@@ -25,6 +25,7 @@ import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
@@ -141,6 +142,10 @@ public class Log4jLifeCycle extends BaseLifecycle {
 	 * @return true if exists
 	 */
 	private boolean checkPropertiesFileExists(String log4jSettingsPath) {
+		if (StringUtils.isBlank(log4jSettingsPath)) {
+			return false;
+		}
+		
 		boolean exists;
 
 		try {

@@ -116,7 +116,7 @@ public final class KIMServiceLocator {
     	if ( LOG.isDebugEnabled() ) {
 			LOG.debug("Fetching service " + KIM_IDENTITY_MANAGEMENT_SERVICE);
 		}
-    	return (IdentityManagementService) GlobalResourceLoader.getResourceLoader().getService(new QName(KIM_IDENTITY_MANAGEMENT_SERVICE));
+    	return (IdentityManagementService) GlobalResourceLoader.getService(new QName(KIM_IDENTITY_MANAGEMENT_SERVICE));
     }
 
     public static IdentityService getIdentityService() {

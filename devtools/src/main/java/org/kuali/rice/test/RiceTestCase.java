@@ -69,6 +69,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     private List<String> reports = new ArrayList<String>();
 
     private SpringResourceLoader testHarnessSpringResourceLoader;
+    private boolean clearTables = true;
 
     @Before
     public void setUp() throws Exception {
@@ -282,7 +283,9 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         /**
          * Clears the tables in the database.
          */
-        lifecycles.add(new ClearDatabaseLifecycle());
+        if (clearTables) {
+        	lifecycles.add(new ClearDatabaseLifecycle());
+        }
         
         /**
          * Loads Suite Test Data
@@ -406,4 +409,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      */
     protected abstract String getModuleName();
 
+    protected void setClearTables(boolean clearTables) {
+    	this.clearTables = clearTables;
+    }
+    
 }

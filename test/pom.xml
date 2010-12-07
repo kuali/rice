@@ -27,5 +27,6 @@
 		<module>ken</module>
 		<module>kns</module>
 		<module>test-clients</module>
+		<module>ksb2</module>
 	</modules>
 </project>

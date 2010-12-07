@@ -10,9 +10,7 @@
 	
 	<param name="client1.location">${basedir}/src/test/clients/TestClient1/</param>	
 	<param name="client2.location">${basedir}/src/test/clients/TestClient2/</param>
-	<param name="ksb.client1.port" override="false">9913</param>
-	<param name="ksb.client2.port" override="false">9914</param>
-	<param name="ksb.testharness.port" override="false">9915</param>
+	<param name="ksb.client2.port" override="false">${cargo.servlet.port}</param>
 	
 	<param name="threadPool.size">1</param>
 	<param name="threadPool.fetchFrequency">3000</param>
@@ -23,8 +21,7 @@
 	
 	<param name="keystore.alias">rice</param>
 	<param name="keystore.password">r1c3pw</param>
-	<param name="keystore.file">${basedir}/src/test/resources/keystore/ricekeystore</param>
-	<param name="keystore.location">${basedir}/src/test/resources/keystore/ricekeystore</param>
+	<param name="keystore.file">classpath:org/kuali/rice/test/ksb/testclient2/config/ricekeystore</param>
 	
 	<param name="use.clearDatabaseLifecycle">true</param>
 	<param name="use.sqlDataLoaderLifecycle">true</param>

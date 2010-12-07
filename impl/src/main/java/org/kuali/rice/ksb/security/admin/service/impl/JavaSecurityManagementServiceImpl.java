@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.ksb.security.admin.service.impl;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
@@ -39,9 +37,11 @@ import org.bouncycastle.jce.X509Principal;
 import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.security.admin.KeyStoreEntryDataContainer;
 import org.kuali.rice.ksb.security.admin.service.JavaSecurityManagementService;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.core.io.Resource;
 
 /**
  * This is an implementation of the {@link JavaSecurityManagementService} interface used by the KSB module 
@@ -97,18 +97,18 @@ public class JavaSecurityManagementServiceImpl implements JavaSecurityManagement
         if (StringUtils.isEmpty(getModuleKeyStorePassword())) {
             throw new RuntimeException("Value for configuration parameter '" + Config.KEYSTORE_PASSWORD + "' could not be found.  Please ensure that the keystore is configured properly.");
         }
-        File keystoreFile = new File(getModuleKeyStoreLocation());
-        if (!keystoreFile.exists()) {
-            throw new RuntimeException("Value for configuration parameter '" + Config.KEYSTORE_FILE + "' is invalid.  The file does not exist on the filesystem, location was: '" + getModuleKeyStoreLocation() + "'");
+        Resource keystore = RiceUtilities.getResource(getModuleKeyStoreLocation());
+        if (!keystore.exists()) {
+            throw new RuntimeException("Value for configuration parameter '" + Config.KEYSTORE_FILE + "' is invalid.  The file does not exist at the specified location, location was: '" + getModuleKeyStoreLocation() + "'");
         }
-        if (!keystoreFile.canRead()) {
+        if (!keystore.isReadable()) {
             throw new RuntimeException("Value for configuration parameter '" + Config.KEYSTORE_FILE + "' is invalid.  The file exists but is not readable (please check permissions), location was: '" + getModuleKeyStoreLocation() + "'");
         }
     }
 
     protected KeyStore loadKeyStore() throws GeneralSecurityException, IOException {
         KeyStore keyStore = KeyStore.getInstance(getModuleKeyStoreType());
-        keyStore.load(new FileInputStream(getModuleKeyStoreLocation()), getModuleKeyStorePassword().toCharArray());
+        keyStore.load(RiceUtilities.getResourceAsStream(getModuleKeyStoreLocation()), getModuleKeyStorePassword().toCharArray());
         return keyStore;
     }
 

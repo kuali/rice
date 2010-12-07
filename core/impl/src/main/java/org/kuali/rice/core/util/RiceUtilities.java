@@ -28,9 +28,8 @@ import java.net.UnknownHostException;
 import java.util.Enumeration;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.FileSystemResourceLoader;
 import org.springframework.core.io.Resource;
@@ -177,34 +176,35 @@ public class RiceUtilities {
 	 * @see DefaultResourceLoader
 	 */
 	public static InputStream getResourceAsStream(String resourceLoc) throws MalformedURLException, IOException {
-	    AbsoluteFileSystemResourceLoader rl = new AbsoluteFileSystemResourceLoader();
-	    rl.setClassLoader(Thread.currentThread().getContextClassLoader());
-	    Resource r = rl.getResource(resourceLoc);
-	    if (r.exists()) {
-	        return r.getInputStream();
-	    } else {
-	        return null;
+	    Resource resource = getResource(resourceLoc);
+	    if (resource.exists()) {
+	        return resource.getInputStream();
 	    }
-//	    
-//        if (resourceLoc.lastIndexOf("classpath:") > -1) {
-//            String configName = resourceLoc.split("classpath:")[1];
-//            /*ClassPathResource cpr = new  ClassPathResource(configName, Thread.currentThread().getContextClassLoader());
-//            if (cpr.exists()) {
-//                return cpr.getInputStream();
-//            } else {
-//                return null;
-//            }*/
-//            return Thread.currentThread().getContextClassLoader().getResourceAsStream(configName);
-//        } else if (resourceLoc.lastIndexOf("http://") > -1 || resourceLoc.lastIndexOf("file:/") > -1) {
-//            return new URL(resourceLoc).openStream();
-//        } else {
-//            try {
-//                return new FileInputStream(resourceLoc);
-//            } catch (FileNotFoundException e) {
-//                return null; // logged by caller
-//            }
-//        }
+	    return null;
     }
+	
+	/**
+	 * Determines if the given resource location exists.
+	 * 
+	 * @param resourceLoc resource location; syntax supported by {@link DefaultResourceLoader} 
+	 * @return true if the resource exists, false otherwise
+	 */
+	public static boolean doesResourceExist(String resourceLoc) {
+		Resource resource = getResource(resourceLoc);
+	    return resource != null && resource.exists();
+	}
+	
+	/**
+	 * Returns a handle to the requested Resource.
+	 * 
+	 * @param resourceLoc resource location; syntax supported by {@link DefaultResourceLoader}
+	 * @return a handle to the Resource
+	 */
+	public static Resource getResource(String resourceLoc) {
+		AbsoluteFileSystemResourceLoader resourceLoader = new AbsoluteFileSystemResourceLoader();
+		resourceLoader.setClassLoader(ClassLoaderUtils.getDefaultClassLoader());
+	    return resourceLoader.getResource(resourceLoc);
+	}
 
 	/**
      * This method searches for an exception of the specified type in the stack trace of the given

@@ -2661,21 +2661,33 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
     	RoleMemberImpl roleMemberImpl = matchingRoleMembers.get(0);
     	documentRoleMember.setRoleMemberId(roleMemberImpl.getRoleMemberId());
-    	BusinessObject member = getMember(memberTypeCode, memberId);
     	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
-    		documentRoleMember.setMemberId(((KimPrincipalImpl)member).getPrincipalId());
-    		documentRoleMember.setMemberName(((KimPrincipalImpl)member).getPrincipalName());
-    		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
+    		KimPrincipalInfo principal = null;
+    		principal = getIdentityService().getPrincipal(memberId);
+    		if (principal != null) {
+    			documentRoleMember.setMemberId(principal.getPrincipalId());
+        		documentRoleMember.setMemberName(principal.getPrincipalName());
+        		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE);
+    		}    		
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
-        	documentRoleMember.setMemberNamespaceCode(((GroupImpl)member).getNamespaceCode());
-    		documentRoleMember.setMemberId(((GroupImpl)member).getGroupId());
-    		documentRoleMember.setMemberName(((GroupImpl)member).getGroupName());
-    		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);
+        	GroupInfo group = null;
+        	group = getGroupService().getGroupInfo(memberId);
+        	if (group != null) {
+        		documentRoleMember.setMemberNamespaceCode(group.getNamespaceCode());
+        		documentRoleMember.setMemberId(group.getGroupId());
+        		documentRoleMember.setMemberName(group.getGroupName());
+        		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE);	
+        	}
+        	
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
-        	documentRoleMember.setMemberNamespaceCode(((RoleImpl)member).getNamespaceCode());
-    		documentRoleMember.setMemberId(((RoleImpl)member).getRoleId());
-    		documentRoleMember.setMemberName(((RoleImpl)member).getRoleName());
-    		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+        	KimRoleInfo role = null;
+        	role = getRoleService().getRole(memberId);
+        	if (role != null) {
+        		documentRoleMember.setMemberNamespaceCode(role.getNamespaceCode());
+        		documentRoleMember.setMemberId(role.getRoleId());
+        		documentRoleMember.setMemberName(role.getRoleName());
+        		documentRoleMember.setMemberTypeCode(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE);
+        	}        	
         }
     	return documentRoleMember;
     }

@@ -313,10 +313,10 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
         }
         if (getKualiRuleService().applyRules(new AddGroupEvent("",personDocumentForm.getPersonDocument(), newGroup))) {
-	        GroupImpl groupImpl = (GroupImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, newGroup.getGroupId());
-	        newGroup.setGroupName(groupImpl.getGroupName());
-	        newGroup.setNamespaceCode(groupImpl.getNamespaceCode());
-	        newGroup.setKimTypeId(groupImpl.getKimTypeId());
+	        GroupInfo group = getIdentityManagementService().getGroup(newGroup.getGroupId());
+	        newGroup.setGroupName(group.getGroupName());
+	        newGroup.setNamespaceCode(group.getNamespaceCode());
+	        newGroup.setKimTypeId(group.getKimTypeId());
         	personDocumentForm.getPersonDocument().getGroups().add(newGroup);
 	        personDocumentForm.setNewGroup(new PersonDocumentGroup());
         }

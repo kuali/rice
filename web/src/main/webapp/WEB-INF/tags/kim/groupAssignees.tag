@@ -33,7 +33,7 @@
 	    <c:if test="${canAssignGroup}">
 	      <table cellpadding="0" cellspacing="0" summary="">
 	    	  <tr>
-                <td colspan=8 class="tab-subhead">Add Member:</td>
+                <td colspan=8 class="tab-subhead">Add Member: Select a Group Namespace to determine if you have the appropriate permission to add members to this group</td>
               </tr>
 	          <tr>
 	        		<th>&nbsp;</th> 

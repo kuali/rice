@@ -36,6 +36,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
@@ -336,13 +337,13 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
         PersonDocumentRole newRole = personDocumentForm.getNewRole();
         if (getKualiRuleService().applyRules(new AddRoleEvent("",personDocumentForm.getPersonDocument(), newRole))) {
-	        RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newRole.getRoleId());
-	        if(!validateRole(newRole.getRoleId(), roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
+	        KimRoleInfo role = KIMServiceLocator.getRoleService().getRole(newRole.getRoleId());
+	        if(!validateRole(newRole.getRoleId(), role, PersonDocumentRoleRule.ERROR_PATH, "Person")){
 	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	        }
-	        newRole.setRoleName(roleImpl.getRoleName());
-	        newRole.setNamespaceCode(roleImpl.getNamespaceCode());
-	        newRole.setKimTypeId(roleImpl.getKimTypeId());
+	        newRole.setRoleName(role.getRoleName());
+	        newRole.setNamespaceCode(role.getNamespaceCode());
+	        newRole.setKimTypeId(role.getKimTypeId());
 	        if(!validateRoleAssignment(personDocumentForm.getPersonDocument(), newRole)){
 	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
 	        }

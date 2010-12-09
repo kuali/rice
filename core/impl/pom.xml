@@ -329,7 +329,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>dwr</groupId>
+			<groupId>org.directwebremoting</groupId>
 			<artifactId>dwr</artifactId>
 		</dependency>
 

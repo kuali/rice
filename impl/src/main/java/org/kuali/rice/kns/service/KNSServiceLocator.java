@@ -12,16 +12,10 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.EntityManagerFactory;
 
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
-import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
@@ -31,7 +25,6 @@ import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.question.Question;
 import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
-import org.kuali.rice.kns.util.spring.NamedOrderedListBean;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
@@ -46,24 +39,6 @@ public class KNSServiceLocator {
 
     public static <T extends Object> T getService(String serviceName) {
     	return GlobalResourceLoader.<T>getService(serviceName);
-    }
-            
-    public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
-    	final Collection<SpringResourceLoader> springResourceLoaders = RiceResourceLoaderFactory.getSpringResourceLoaders();
-    	final List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
-    
-		if ( springResourceLoaders != null ) {
-			for (SpringResourceLoader springResourceLoader : springResourceLoaders) {
-				for (NamedOrderedListBean namedOrderedListBean : springResourceLoader.getContext().
-						getBeansOfType(NamedOrderedListBean.class).values()) {
-				    if (namedOrderedListBean.getName().equals(listName)) {
-						namedOrderedListBeans.add(namedOrderedListBean);
-					}
-				}
-			}
-		}
-	
-		return namedOrderedListBeans;
     }
 
     public static final String ENCRYPTION_SERVICE = "encryptionService";

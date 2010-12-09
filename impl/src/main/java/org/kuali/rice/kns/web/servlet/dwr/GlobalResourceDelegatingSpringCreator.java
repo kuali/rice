@@ -15,10 +15,10 @@
  * limitations under the License.
  */package org.kuali.rice.kns.web.servlet.dwr;
 
+import org.directwebremoting.spring.SpringCreator;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.springframework.beans.factory.BeanFactory;
 
-import uk.ltd.getahead.dwr.create.SpringCreator;
 
 /**
  * A {@link SpringCreator} that checks the {@link GlobalResourceLoader} for the

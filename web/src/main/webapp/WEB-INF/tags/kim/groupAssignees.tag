@@ -19,7 +19,7 @@
 <c:set var="groupQualifierAttributes" value="${DataDictionary.GroupDocumentQualifier.attributes}" />
 
 <kul:tab tabTitle="Assignees" defaultOpen="true" tabErrorKey="document.member*">
-    <c:if test="${toCreateGroup}">
+    <c:if test="${empty KualiForm.document.groupNamespace}">
     <div class="tab-container">Select a Group Namespace to determine if you have the appropriate permission to add members to this group</div>
     </c:if>
 	<div class="tab-container" align="center">

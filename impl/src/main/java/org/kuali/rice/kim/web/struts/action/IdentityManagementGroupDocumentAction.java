@@ -130,11 +130,8 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     protected void createDocument(KualiDocumentFormBase form)
     		throws WorkflowException {
     	super.createDocument(form);
-    	
     	IdentityManagementGroupDocumentForm groupDocumentForm = (IdentityManagementGroupDocumentForm) form;
-    	
     	if ( groupDocumentForm.getGroupId() == null ) {
-    		groupDocumentForm.setToCreateGroup(true);
     		groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
     		groupDocumentForm.getGroupDocument().initializeDocumentForNewGroup();
     		groupDocumentForm.setGroupId( groupDocumentForm.getGroupDocument().getGroupId() );

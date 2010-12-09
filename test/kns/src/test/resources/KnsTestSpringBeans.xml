@@ -58,7 +58,7 @@
 		<property name="properties" ref="configProperties" />
 	</bean>
 
-	<bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+	<bean id="bootstrapConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
 				<value>classpath:META-INF/kns-test-config.xml</value>
@@ -74,7 +74,7 @@
 	</bean>
 
 	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="config" />
+		<property name="targetObject" ref="bootstrapConfig" />
 		<property name="targetMethod" value="getProperties" />
 	</bean>
 
@@ -85,7 +85,7 @@
     <alias alias="jtaUserTransaction" name="jtaTransactionManager"/>
 
 	<bean id="riceDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
-		<property name="transactionManager" ref="jotm" />
+		<property name="transactionManager" ref="jtaTransactionManager" />
 		<property name="driverClassName" value="${datasource.driver.name}" />
 		<property name="url" value="${datasource.url}" />
 		<property name="maxSize" value="${datasource.pool.maxSize}" />
@@ -108,24 +108,7 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-	<bean id="testModule" class="org.kuali.rice.kns.service.impl.ModuleServiceBase" depends-on="rice">
-  		<property name="moduleConfiguration">
-  			<bean id="testModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
-				<property name="namespaceCode" value="TEST" />
-				<property name="initializeDataDictionary" value="true"/>
-				<property name="dataDictionaryPackages">
-					<list>
-						<value>org/kuali/rice/kns/test/document</value>
-					</list>
-				</property>
-				<property name="databaseRepositoryFilePaths">
-					<list>
-						<value>OJB-repository-kns-test.xml</value>
-					</list>
-				</property>
-			</bean>
-    	</property>
-	</bean>
+
 	
 	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
 	
@@ -187,4 +170,23 @@
 				p:localServiceName="lookupResultsDDBoLookupable" p:serviceInterface="org.kuali.rice.kns.lookup.Lookupable" />
 		</property>
 	</bean-->
+	
+	<bean id="testModule" class="org.kuali.rice.kns.service.impl.ModuleServiceBase">
+  		<property name="moduleConfiguration">
+  			<bean id="testModuleConfiguration" class="org.kuali.rice.kns.bo.ModuleConfiguration">
+				<property name="namespaceCode" value="TEST" />
+				<property name="initializeDataDictionary" value="true"/>
+				<property name="dataDictionaryPackages">
+					<list>
+						<value>org/kuali/rice/kns/test/document</value>
+					</list>
+				</property>
+				<property name="databaseRepositoryFilePaths">
+					<list>
+						<value>OJB-repository-kns-test.xml</value>
+					</list>
+				</property>
+			</bean>
+    	</property>
+	</bean>
 </beans>

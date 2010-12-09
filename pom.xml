@@ -56,7 +56,7 @@ limitations under the License.
 		<!-- the 3.x codebase is completely different - switching will require rewriting much code -->
 		<bsf.version>2.4.0</bsf.version>
 		<casclient.version>2.1.1</casclient.version>
-		<cas-client-core.version>3.1.11</cas-client-core.version>
+		<cas-client-core.version>3.2.0</cas-client-core.version>
 		<cglib.version>2.2</cglib.version>
 		<commons-beanutils.version>1.8.3</commons-beanutils.version>
 		<commons-codec.version>1.4</commons-codec.version>
@@ -91,12 +91,12 @@ limitations under the License.
 		<!-- 4.8.2 is not in maven central repo -->
 		<junit.version>4.8.2</junit.version>
 		<log4j.version>1.2.16</log4j.version>
-		<mysql-connector-java.version>5.1.13</mysql-connector-java.version>
+		<mysql-connector-java.version>5.1.14</mysql-connector-java.version>
 		<ojdbc14.version>10.2.0.3.0</ojdbc14.version>
 		<!-- cannot update to 2.4 because of oscache bug CACHE-296 and 2.4.1 is not in maven central repo -->
 		<oscache.version>2.3.2</oscache.version>
 		<persistence.version>1.0.0.Final</persistence.version>
-		<quartz.version>1.8.3</quartz.version>
+		<quartz.version>1.8.4</quartz.version>
 		<reflections.version>0.9.5-RC2</reflections.version>
 		<serializer.version>2.7.1</serializer.version>
 		<servlet-api.version>2.5</servlet-api.version>
@@ -109,7 +109,7 @@ limitations under the License.
 		<!-- 2.11.0 is not in maven central repo -->
 		<xercesImpl.version>2.9.1</xercesImpl.version>
 		<xstream.version>1.3.1</xstream.version>
-		<wss4j.version>1.5.9</wss4j.version>
+		<wss4j.version>1.5.10</wss4j.version>
 
 		<!-- database drivers location -->
 		<jdbc.drivers.location>/opt/java/drivers</jdbc.drivers.location>
@@ -127,7 +127,7 @@ limitations under the License.
 		<javadoc.maxmemory>512m</javadoc.maxmemory>
 		<project.info.reports.plugin.version>2.2</project.info.reports.plugin.version>
 		<project.info.reports.plugin.dependencyLocationsEnabled>false</project.info.reports.plugin.dependencyLocationsEnabled>
-		<site.plugin.version>2.1.1</site.plugin.version>
+		<site.plugin.version>2.2</site.plugin.version>
 		<surefire.plugin.version>2.6</surefire.plugin.version>
 		<surefire.additionalClasspathElement.1>${mysql-connector-java.jar.location}</surefire.additionalClasspathElement.1>
 		<surefire.additionalClasspathElement.2>${ojdbc14.jar.location}</surefire.additionalClasspathElement.2>
@@ -137,11 +137,8 @@ limitations under the License.
 		<surefire.include.1>${test.includes}</surefire.include.1>
 		<surefire.forkMode>${maven.surefire.forkmode}</surefire.forkMode>
 		<surefire.reportFormat>plain</surefire.reportFormat>
-		<!-- using the argLine since the environmentVariables tag is not working 
-			(ver 2.5 of this plugin) -->
-		<surefire.argLine>-Dalt.config.location="${alt.config.location}"
-			-Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC
-			-XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</surefire.argLine>
+		<!-- using the argLine since the environmentVariables tag is not working (ver 2.5 of this plugin) -->
+		<surefire.argLine>-Dalt.config.location="${alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</surefire.argLine>
 		<surefire.report.1>report-only</surefire.report.1>
 	</properties>
 
@@ -196,7 +193,7 @@ limitations under the License.
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
-					<version>1.0-beta-1</version>
+					<version>1.0</version>
 					<executions>
 						<execution>
 							<id>enforce-banned-dependencies</id>
@@ -460,7 +457,7 @@ limitations under the License.
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-war-plugin</artifactId>
-					<version>2.1</version>
+					<version>2.1.1</version>
 					<configuration>
 						<archive>
 							<manifest>

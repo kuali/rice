@@ -94,7 +94,7 @@
 	</target>
 
 	<target name="update-eclipse-classpath" depends="init" description="Updates Eclipse classpath">
-		<maven goals="install eclipse:eclipse" options="-DdownloadSources=true -DskipTests=true"/>
+		<maven goals="install eclipse:eclipse" options="-DdownloadSources=true -DdownloadJavadocs=true -DskipITs=true -DskipTests=true"/>
 		<antcall target="merge-module-classpaths"/>
 	</target>
 

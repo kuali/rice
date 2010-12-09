@@ -43,6 +43,7 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	}
 	
 	protected boolean canAssignGroup = true;
+	protected boolean toCreateGroup = false;
 	
 	protected KimTypeInfo kimType;
 	protected GroupDocumentMember member = new GroupDocumentMember();
@@ -167,6 +168,20 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	 */
 	public void setKimType(KimTypeInfo kimType) {
 		this.kimType = kimType;
+	}
+	
+	/**
+	 * @return the toCreateGroup
+	 */
+	public boolean isToCreateGroup() {
+		return this.toCreateGroup;
+	}
+
+	/**
+	 * @param toCreateGroup the toCreateGroup to set
+	 */
+	public void setToCreateGroup(boolean toCreateGroup) {
+		this.toCreateGroup = toCreateGroup;
 	}
 
 }

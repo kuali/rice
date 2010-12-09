@@ -19,6 +19,9 @@
 <c:set var="groupQualifierAttributes" value="${DataDictionary.GroupDocumentQualifier.attributes}" />
 
 <kul:tab tabTitle="Assignees" defaultOpen="true" tabErrorKey="document.member*">
+    <c:if test="${toCreateGroup}">
+    <div class="tab-container">Select a Group Namespace to determine if you have the appropriate permission to add members to this group</div>
+    </c:if>
 	<div class="tab-container" align="center">
 	    <kul:tableRenderPagingBanner pageNumber="${KualiForm.memberTableMetadata.viewedPageNumber}"
 	                                totalPages="${KualiForm.memberTableMetadata.totalNumberOfPages}"
@@ -33,7 +36,8 @@
 	    <c:if test="${canAssignGroup}">
 	      <table cellpadding="0" cellspacing="0" summary="">
 	    	  <tr>
-                <td colspan=8 class="tab-subhead">Add Member: Select a Group Namespace to determine if you have the appropriate permission to add members to this group</td>
+                <td colspan=8 class="tab-subhead">Add Member: 
+             </td> 
               </tr>
 	          <tr>
 	        		<th>&nbsp;</th> 

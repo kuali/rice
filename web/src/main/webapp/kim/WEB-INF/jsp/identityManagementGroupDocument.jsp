@@ -19,6 +19,7 @@
 <c:set var="readOnly" scope="request" value="${inquiry}" />
 <c:set var="readOnly" scope="request" value="${!KualiForm.documentActions[Constants.KUALI_ACTION_CAN_EDIT] || inquiry}" />
 <c:set var="canAssignGroup" scope="request" value="${KualiForm.canAssignGroup && !readOnly}" />
+<c:set var="toCreateGroup" scope="request" value="${KualiForm.toCreateGroup && !readOnly}" />
 <c:set var="editingDocument" scope="request" value="${KualiForm.document.editing}" />
 
 <c:set var="formAction" value="identityManagementGroupDocument" />

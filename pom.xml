@@ -50,6 +50,7 @@ limitations under the License.
 		<abdera.version>1.1</abdera.version>
 		<!-- no longer maintained - should use spring security instead -->
 		<acegi.version>1.0.7</acegi.version>
+		<antlr.version>2.7.7</antlr.version>
 		<aopalliance.version>1.0</aopalliance.version>
 		<asm.version>3.2</asm.version>
 		<bcprov.version>1.45</bcprov.version>
@@ -72,12 +73,14 @@ limitations under the License.
 		<cxf.version>2.3.1</cxf.version>
 		<db-ojb.version>1.0.4-patch4</db-ojb.version>
 		<displaytag.version>1.2</displaytag.version>
+		<dom4j.version>1.6.1</dom4j.version>
 		<dwr.version>3.0.M1</dwr.version>
 		<groovy.version>1.7.5</groovy.version>
 		<hibernate.version>3.6.0.Final</hibernate.version>
 		<htmlunit.version>2.8</htmlunit.version>
 		<!-- 1.4.3 is not in maven central repo -->
 		<mail.version>1.4.1</mail.version>
+		<javassist.version>3.14.0-GA</javassist.version>
 		<jaxen.version>1.1.1</jaxen.version>
 		<!-- 1.1.1 is not in maven central repo -->
 		<jdom.version>1.1</jdom.version>
@@ -189,6 +192,9 @@ limitations under the License.
 					
 					This plugin also enforces that plugins specify a version number.  Using meta version tags or not specifing a version
 					on a plugin is a decrecated feature as it leads to build instability.
+					
+					Finally, the DependencyConvergence rule helps ensure that all of our submodules are resolving the same versions of
+					artifacts by making sure that all deps converge.  This managed at the dep management section which is critical.
 			    -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -208,6 +214,7 @@ limitations under the License.
 									<requireMavenVersion>
 										<version>[2.2,4.0)</version>
 									</requireMavenVersion>
+									<DependencyConvergence/>
 
 									<!-- Maven 3 Migration: This rule is not supported by Maven 3. See: 
 										http://jira.codehaus.org/browse/MENFORCER-98 -->
@@ -234,6 +241,7 @@ limitations under the License.
 											<exclude>bouncycastle</exclude>
 											<exclude>org.opensymphony.quartz</exclude>
 											<exclude>opensymphony:quartz</exclude>
+											<exclude>javassist</exclude>
 
 											<!-- jcl-over-slf4j is an alternate implementation of commons-logging - excluding commons-logging -->
 											<exclude>commons-logging</exclude>
@@ -620,6 +628,12 @@ limitations under the License.
 		<dependencies>
 
 			<dependency>
+				<groupId>antlr</groupId>
+				<artifactId>antlr</artifactId>
+				<version>${antlr.version}</version>
+			</dependency>
+
+			<dependency>
 				<groupId>aopalliance</groupId>
 				<artifactId>aopalliance</artifactId>
 				<version>${aopalliance.version}</version>
@@ -783,27 +797,9 @@ limitations under the License.
 			</dependency>
 
 			<dependency>
-				<groupId>org.directwebremoting</groupId>
-				<artifactId>dwr</artifactId>
-				<version>${dwr.version}</version>
-				<exclusions>
-					<exclusion>
-						<artifactId>commons-logging</artifactId>
-						<groupId>commons-logging</groupId>
-					</exclusion>
-					<exclusion>
-						<groupId>xerces</groupId>
-						<artifactId>xmlParserAPIs</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>jdom</groupId>
-						<artifactId>jdom</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>xml-apis</groupId>
-						<artifactId>xml-apis</artifactId>
-					</exclusion>
-				</exclusions>
+				<groupId>dom4j</groupId>
+				<artifactId>dom4j</artifactId>
+				<version>${dom4j.version}</version>
 			</dependency>
 
 			<dependency>
@@ -1216,6 +1212,10 @@ limitations under the License.
 						<artifactId>commons-logging</artifactId>
 						<groupId>commons-logging</groupId>
 					</exclusion>
+					<exclusion>
+						<artifactId>antlr</artifactId>
+						<groupId>antlr</groupId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 
@@ -1275,6 +1275,30 @@ limitations under the License.
 				<version>${groovy.version}</version>
 				<scope>runtime</scope>
 			</dependency>
+			
+			<dependency>
+				<groupId>org.directwebremoting</groupId>
+				<artifactId>dwr</artifactId>
+				<version>${dwr.version}</version>
+				<exclusions>
+					<exclusion>
+						<artifactId>commons-logging</artifactId>
+						<groupId>commons-logging</groupId>
+					</exclusion>
+					<exclusion>
+						<groupId>xerces</groupId>
+						<artifactId>xmlParserAPIs</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>jdom</groupId>
+						<artifactId>jdom</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>xml-apis</groupId>
+						<artifactId>xml-apis</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
 
 			<dependency>
 				<groupId>org.eclipse.jetty</groupId>
@@ -1320,6 +1344,14 @@ limitations under the License.
 						<groupId>xml-apis</groupId>
 						<artifactId>xml-apis</artifactId>
 					</exclusion>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>antlr</groupId>
+						<artifactId>antlr</artifactId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 
@@ -1331,6 +1363,10 @@ limitations under the License.
 					<exclusion>
 						<groupId>cglib</groupId>
 						<artifactId>cglib</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javassist</groupId>
+						<artifactId>javassist</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -1352,6 +1388,12 @@ limitations under the License.
 					</exclusion>
 				</exclusions>
 				<scope>runtime</scope>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.javassist</groupId>
+				<artifactId>javassist</artifactId>
+				<version>${javassist.version}</version>
 			</dependency>
 
 			<dependency>
@@ -1398,6 +1440,14 @@ limitations under the License.
 					<exclusion>
 						<groupId>org.slf4j</groupId>
 						<artifactId>slf4j-api</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>javassist</groupId>
+						<artifactId>javassist</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>dom4j</groupId>
+						<artifactId>dom4j</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>

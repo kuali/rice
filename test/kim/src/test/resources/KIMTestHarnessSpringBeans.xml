@@ -64,6 +64,13 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="arguments">
+			<list><ref bean="config"/></list>
+		</property>
+	</bean>
 
 	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="config" />
@@ -81,7 +88,7 @@
     <alias alias="jtaUserTransaction"  name="jtaTransactionManager"/>
 
 	<bean id="riceDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
-		<property name="transactionManager" ref="jotm" />
+		<property name="transactionManager" ref="jtaTransactionManager" />
 		<property name="driverClassName" value="${datasource.driver.name}" />
 		<property name="url" value="${datasource.url}" />
 		<property name="maxSize" value="${datasource.pool.maxSize}" />

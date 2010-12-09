@@ -43,12 +43,7 @@ public class GroupServiceRemoteTest extends GroupServiceTest {
 
 	@Override
 	protected Lifecycle getLoadApplicationLifecycle() {
-		return new BaseLifecycle() {
-			public void start() throws Exception {
-				new JettyServerLifecycle(getConfigIntProp("kim.test.port"), "/" + getConfigProp("app.context.name"), "/../kim/src/test/webapp").start();
-				super.start();
-			}
-		};	
+		return getJettyServerLifecycle();
 	}
 	
 	private int getConfigIntProp(String intPropKey) {

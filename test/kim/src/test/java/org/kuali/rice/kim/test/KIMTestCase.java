@@ -150,7 +150,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 			JettyServerLifecycle lifecycle = null;
 			@Override
 			public void start() throws Exception { 
-				lifecycle = new JettyServerLifecycle(ServiceTestUtils.getConfigIntProp("kim.test.port"), "/" + ServiceTestUtils.getConfigProp("app.context.name"), "/../kim/src/test/webapp");
+				lifecycle = new JettyServerLifecycle(ServiceTestUtils.getConfigIntProp("kim.test.port"), "/" + ServiceTestUtils.getConfigProp("app.context.name"), "/../test/kim/src/test/webapp");
 				lifecycle.start();
 				super.start();
 			}

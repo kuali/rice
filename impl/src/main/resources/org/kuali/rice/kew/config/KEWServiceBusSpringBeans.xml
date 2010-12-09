@@ -54,6 +54,11 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="enServiceInvoker"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="enServiceInvoker" />
+	</bean>
+
 	<bean id="kewLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
 		<property name="runModePropertyName" value="kew.mode" />
 		<property name="validRunMode" value="local" />

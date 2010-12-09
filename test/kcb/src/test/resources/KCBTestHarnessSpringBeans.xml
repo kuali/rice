@@ -43,7 +43,7 @@
 
 	<bean class="org.kuali.rice.core.config.spring.ConfigPropertyPlaceholderConfigurer" />
 
-    <bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+    <bean id="bootstrapConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
         <property name="configLocations">
             <list>
                 <value>classpath:META-INF/kcb-test-config.xml</value>
@@ -58,6 +58,8 @@
 		</property>
 	</bean>
 	
+	<import resource="classpath:org/kuali/rice/core/RiceJTASpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/core/RiceDataSourceSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/kcb/config/KCBConfigSpringBeans.xml"/>

@@ -259,7 +259,12 @@
 	<bean id="kenSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">
        <property name="serviceNameSpaceURI" value="http://rice.kuali.org/wsdl/ken"/>
     </bean>
-
+    
+	<bean id="enServiceInvoker"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="enServiceInvoker" />
+	</bean>
+	
     <!-- export our sendNotificationKewXmlService -->
     <bean parent="kenLocalServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker"/>

@@ -302,7 +302,6 @@
 	<param name="rice.ken.jpa.GenerateDdl" override="false">true</param>
 	<!-- End KEN-specific JPA parameters -->
 
-	<param name="secure.workflowutility.soapservice.endpoint" override="false">true</param>
 	<param name="title.inquiry.url.value.prependtext" override="false"></param>
 	<param name="portal.show.sample.app" override="false">false</param>
 	<param name="bus.refresh.rate" override="false">30</param>
@@ -405,5 +404,82 @@
 	<param name="rice.ksb.set.soap.services.as.default" override="false">true</param>
 	<param name="rice.ksb.expose.services.on.bus" override="false">true</param>
 	<param name="rice.ksb.include.user.interface.components" override="false">true</param>
+	
+	<!-- CORE -->
+	<param name="core.mode" override="false">local</param>
+	
+	<!-- from kew-config-defaults -->
+	
+	 <!-- Daily emails every day at 1 AM -->
+  <!--  By disabling the cronExpression below, that disables the related scheduled email -->
+  <!--<param name="dailyEmail.cronExpression">0 0 1 * * ?</param>-->
+  <param name="dailyEmail.active">true</param>
+
+  <!-- Weekly emails every Monday at 2 AM -->
+  <!--  By disabling the cronExpression below, that disables the related scheduled email -->
+  <!--<param name="weeklyEmail.cronExpression">0 0 2 ? * 2</param>-->
+  <param name="weeklyEmail.active">true</param>
+
+  <param name="simpleDocumentActionsService.security">true</param>
+  <param name="secure.workflowdocument.javaservice.endpoint">true</param>
+  <param name="secure.workflowutility.javaservice.endpoint">true</param>
+  <param name="secure.workflowutility.soapservice.endpoint">true</param>
+  <param name="secure.identity.javaservice.endpoint">true</param>
+  <param name="secure.group.javaservice.endpoint">true</param>
+
+  <param name="rice.resourceloader.servicesToCache">
+      userTransaction,
+      jtaTransactionManager,
+      transactionManager,
+      enWorkflowDataSource,
+      enRuleAttributeService,
+      enRuleTemplateService,
+      enRuleService,
+      enDocumentRouteHeaderService,
+      enActionListService,
+      enDocumentSearchService,
+      enDocumentTypeService,
+      enPreferencesService,
+      enActionTakenService,
+      enApplicationConstantsService,
+      enActionRequestService,
+      enResponsibilityIdService,
+      enRuleDelegationService,
+      enEmailService,
+      enNotificationService,
+      enRouteModuleService,
+      enWorkflowDocumentService,
+      enRoleService,
+      enRoutingReportService,
+      enExtractService,
+      workflowEngine,
+      enRouteNodeService,
+      enBranchService,
+      enExceptionRoutingService,
+      enHelpService,
+      enEDocLiteService,
+      enStyleService,
+      enXmlDigesterService,
+      enStatsService,
+      enNoteService,
+      enDocumentRoutingService,
+      enBlanketApproveProcessor,
+      enSearchableAttributeProcessor,
+      enMoveDocumentService,
+      enActionInvocationService,
+      enImmediateEmailReminderService,
+      enActionListEmailService,
+      enWorkflowUtilityService,
+      enWorkflowDocumentActionsService,
+      enRemoveReplaceDocumentService,
+      enUserOptionsService,
+      enDocumentSecurityService,
+      enEmailContentService,
+      enActionRegistry,
+      enCacheAdministrator,
+      enEncryptionService,
+      enQuickLinksService
+      enDocumentLinkService
+  </param>
 	
 </config>

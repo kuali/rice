@@ -80,7 +80,10 @@
   </bean>
   <bean id="PessimisticLock-ownedByPrincipalIdentifier" parent="PessimisticLock-ownedByPrincipalIdentifier-parentBean"/>
 
-  <bean id="PessimisticLock-ownedByPrincipalIdentifier-parentBean" abstract="true" parent="PersonImpl-principalId">
+  <bean id="PessimisticLock-ownedByPrincipalIdentifier-parentBean" abstract="true" parent="AttributeDefinition">
+	<property name="required" value="true"/>
+	<property name="maxLength" value="40"/>
+	<property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Owner Prncpl ID"/>
     <property name="control">
       <bean parent="HiddenControlDefinition"/>
@@ -88,6 +91,9 @@
     <property name="displayLabelAttribute" value="ownedByUser.principalName"/>
     <property name="name" value="ownedByPrincipalIdentifier"/>
     <property name="label" value="Lock Owner Principal ID"/>
+    <property name="validationPattern" >
+      <bean parent="AlphaNumericValidationPattern" p:lowerCase="true" />
+    </property>
   </bean>
   <bean id="PessimisticLock-ownedByUser.principalName" parent="PessimisticLock-ownedByUser.principalName-parentBean"/>
 
@@ -105,17 +111,7 @@
       <!-- <bean parent="KualiUserControlDefinition" p:personNameAttributeName="ownedByUser.name" p:universalIdAttributeName="ownedByPrincipalIdentifier" p:userIdAttributeName="ownedByUser.principalName"/>-->
     </property>
   </bean>
-  
-  <!--  
-  <bean id="PessimisticLock-ownedByUser.principalName" parent="PessimisticLock-ownedByUser.principalName-parentBean" />
 
-  <bean id="PessimisticLock-ownedByUser.principalName-parentBean" abstract="true" parent="PersonImpl-principalName">
-    <property name="shortLabel" value="Owner" />
-    <property name="required" value="false" />
-    <property name="name" value="ownedByUser.principalName" />
-    <property name="label" value="Lock Owner" />
-  </bean>
-  -->
   <bean id="PessimisticLock-lockDescriptor" parent="PessimisticLock-lockDescriptor-parentBean"/>
 
   <bean id="PessimisticLock-lockDescriptor-parentBean" abstract="true" parent="AttributeDefinition">

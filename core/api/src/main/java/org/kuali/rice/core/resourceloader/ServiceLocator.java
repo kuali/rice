@@ -30,7 +30,7 @@ public interface ServiceLocator extends Lifecycle {
 	/**
 	 * Fetches the service with the given name.
 	 */
-	public Object getService(QName qname);
+	public <T extends Object> T getService(QName qname);
 
 	public String getContents(String indent, boolean servicePerLine);
 

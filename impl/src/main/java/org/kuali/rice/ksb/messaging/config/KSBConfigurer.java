@@ -17,6 +17,8 @@
 package org.kuali.rice.ksb.messaging.config;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,18 +27,14 @@ import javax.sql.DataSource;
 import org.apache.commons.httpclient.contrib.ssl.EasySSLProtocolSocketFactory;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.httpclient.protocol.ProtocolSocketFactory;
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.ModuleConfigurer;
-import org.kuali.rice.core.config.event.AfterStartEvent;
-import org.kuali.rice.core.config.event.RiceConfigEvent;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.lifecycle.ServiceDelegatingLifecycle;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.kuali.rice.core.resourceloader.SpringLoader;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
@@ -77,49 +75,43 @@ public class KSBConfigurer extends ModuleConfigurer {
 	private Scheduler exceptionMessagingScheduler;
 
 	private PlatformTransactionManager platformTransactionManager;
-
-	public KSBConfigurer() {
-        super();
-        setModuleName( "KSB" );
-        setHasWebInterface(true);
-        VALID_RUN_MODES.remove(EMBEDDED_RUN_MODE);
-        VALID_RUN_MODES.remove( REMOTE_RUN_MODE );
-        VALID_RUN_MODES.remove( THIN_RUN_MODE );
-    }
 	
 	@Override
-	public Config loadConfig(Config parentConfig) throws Exception {
-		Config currentConfig = super.loadConfig(parentConfig);
-		configureDataSource(currentConfig);
-		configureBus(currentConfig);
-		configureScheduler(currentConfig);
-		configurePlatformTransactionManager(currentConfig);
-		configureAlternateEndpoints(currentConfig);
-		return currentConfig;
+	public void addAdditonalToConfig() {
+		configureDataSource();
+		configureBus();
+		configureScheduler();
+		configurePlatformTransactionManager();
+		configureAlternateEndpoints();
 	}
 
 	@Override
-	public String getSpringFileLocations(){
-	    String files = "classpath:org/kuali/rice/ksb/config/KSBSpringBeans.xml" + SpringLoader.SPRING_SEPARATOR_CHARACTER;
+	public List<String> getPrimarySpringFiles(){
+		final List<String> springFileLocations = new ArrayList<String>();
+		
+		//hack 'cause KSB used KNS
+		springFileLocations.add("classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml");
+		
+		springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBSpringBeans.xml");
         
         if (OrmUtils.isJpaEnabled("rice.ksb")) {
-            files += "classpath:org/kuali/rice/ksb/config/KSBJPASpringBeans.xml";
+        	springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBJPASpringBeans.xml");
         }
         else {
-            files += "classpath:org/kuali/rice/ksb/config/KSBOJBSpringBeans.xml";
+        	springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBOJBSpringBeans.xml");
         }
         
-        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.LOAD_KNS_MODULE_CONFIGURATION)).booleanValue()) {
-        	files += SpringLoader.SPRING_SEPARATOR_CHARACTER + "classpath:org/kuali/rice/ksb/config/KSBModuleConfigurationSpringBeans.xml";
+        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.LOAD_KNS_MODULE_CONFIGURATION)).booleanValue()) {
+        	springFileLocations.add("classpath:org/kuali/rice/ksb/config/KSBModuleConfigurationSpringBeans.xml");
         }
         
-        return files;
+        return springFileLocations;
 	}
 	
 	/**
 	 * Returns true - KSB UI should always be included.
 	 * 
-	 * @see org.kuali.rice.core.config.ModuleConfigurer#shouldRenderWebInterface()
+	 * @see org.kuali.rice.core.ConfigContext.getCurrentContextConfig().ModuleConfigurer#shouldRenderWebInterface()
 	 */
 	@Override
 	public boolean shouldRenderWebInterface() {
@@ -127,14 +119,14 @@ public class KSBConfigurer extends ModuleConfigurer {
 	}
 	
 	@Override
-	public ResourceLoader getResourceLoaderToRegister() throws Exception{
+	public Collection<ResourceLoader> getResourceLoadersToRegister() throws Exception{
 		ResourceLoader ksbRemoteResourceLoader = KSBResourceLoaderFactory.createRootKSBRemoteResourceLoader();
 		ksbRemoteResourceLoader.start();
-		return ksbRemoteResourceLoader;
+		return Collections.singletonList(ksbRemoteResourceLoader);
 	}
 	
 	@Override
-	protected List<Lifecycle> loadLifecycles() throws Exception {
+	public List<Lifecycle> loadLifecycles() throws Exception {
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
 
 		// this validation of our service list needs to happen after we've
@@ -144,7 +136,7 @@ public class KSBConfigurer extends ModuleConfigurer {
 			@Override
 			public void start() throws Exception {
 				// first check if we want to allow self-signed certificates for SSL communication
-				if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.KSB_ALLOW_SELF_SIGNED_SSL)).booleanValue()) {
+				if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.KSB_ALLOW_SELF_SIGNED_SSL)).booleanValue()) {
 				    Protocol.registerProtocol("https", new Protocol("https",
 					    (ProtocolSocketFactory) new EasySSLProtocolSocketFactory(), 443));
 				}
@@ -155,65 +147,58 @@ public class KSBConfigurer extends ModuleConfigurer {
 				super.start();
 			}
 		});
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.THREAD_POOL_SERVICE));
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.SCHEDULED_THREAD_POOL_SERVICE));
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.REPEAT_TOPIC_INVOKING_QUEUE));
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.OBJECT_REMOTER));
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.BUS_ADMIN_SERVICE));
-		lifecycles.add(new ServiceDelegatingLifecycle(KSBServiceLocator.REMOTED_SERVICE_REGISTRY));
+		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.THREAD_POOL_SERVICE));
+		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.SCHEDULED_THREAD_POOL_SERVICE));
+		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.REPEAT_TOPIC_INVOKING_QUEUE));
+		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.OBJECT_REMOTER));
+		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.BUS_ADMIN_SERVICE));
+		lifecycles.add(new ServiceDelegatingLifecycle(KSBConstants.ServiceNames.REMOTED_SERVICE_REGISTRY));
 		return lifecycles;
 	}
-	
-	
+
+	@Override
+	public void doAdditionalContextStartedLogic() {
+		requeueMessages();
+	}
 
 	/**
      * Used to refresh the service registry after the Application Context is initialized.  This way any services that were exported on startup
      * will be available in the service registry once startup is complete.
      */
-    @Override
-    public void onEvent(RiceConfigEvent event) {
-        if (event instanceof AfterStartEvent) {
-            LOG.info("Refreshing Service Registry to export services to the bus.");
-            KSBServiceLocator.getServiceDeployer().refresh();
-            
-    		//automatically requeue documents sitting with status of 'R'
-    		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
-    		KSBServiceLocator.getThreadPool().execute(messageFetcher);
-        }
+    private void requeueMessages() {
+        LOG.info("Refreshing Service Registry to export services to the bus.");
+        KSBServiceLocator.getServiceDeployer().refresh();
+        
+		//automatically requeue documents sitting with status of 'R'
+		MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
+		KSBServiceLocator.getThreadPool().execute(messageFetcher);
     }
 
-    protected String getServiceNamespace(Config config) {
-		if (StringUtils.isBlank(config.getServiceNamespace())) {
-			throw new ConfigurationException("The 'service.namespace' property was not properly configured.");
-		}
-		return config.getServiceNamespace();
+	protected void configureBus() {
+		LOG.debug("Configuring services for Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
+		configureServiceList(Config.BUS_DEPLOYED_SERVICES, getServices());
 	}
 
-	protected void configureBus(Config config) throws Exception {
+	protected void configureServiceList(String key, List<ServiceDefinition> theServices) {
 		LOG.debug("Configuring services for Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
-		configureServiceList(config, Config.BUS_DEPLOYED_SERVICES, getServices());
-	}
-
-	@SuppressWarnings("unchecked")
-	protected void configureServiceList(Config config, String key, List services) throws Exception {
-		LOG.debug("Configuring services for Service Namespace " + ConfigContext.getCurrentContextConfig().getServiceNamespace() + " using config for classloader " + ClassLoaderUtils.getDefaultClassLoader());
-		List<ServiceDefinition> serviceDefinitions = (List<ServiceDefinition>) config.getObject(key);
+		@SuppressWarnings("unchecked")
+		List<ServiceDefinition> serviceDefinitions = (List<ServiceDefinition>) ConfigContext.getCurrentContextConfig().getObject(key);
 		if (serviceDefinitions == null) {
-			config.putObject(key, services);
-		} else if (services != null) {
+			ConfigContext.getCurrentContextConfig().putObject(key, theServices);
+		} else if (theServices != null) {
 			LOG.debug("Services already exist.  Adding additional services");
-			serviceDefinitions.addAll(services);
+			serviceDefinitions.addAll(theServices);
 		}
 	}
 
-	protected void configureScheduler(Config config) {
+	protected void configureScheduler() {
 		if (this.getExceptionMessagingScheduler() != null) {
 			LOG.info("Configuring injected exception messaging Scheduler");
-			config.putObject(KSBConstants.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY, this.getExceptionMessagingScheduler());
+			ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY, this.getExceptionMessagingScheduler());
 		}
 	}
 
-	protected void configureDataSource(Config config) {
+	protected void configureDataSource() {
         if (getMessageDataSource() != null && getRegistryDataSource() == null) {
             throw new ConfigurationException("A message data source was defined but a registry data source was not defined.  Both must be specified.");
         }
@@ -222,36 +207,35 @@ public class KSBConfigurer extends ModuleConfigurer {
         }
 
         if (getMessageDataSource() != null) {
-            config.putObject(KSBConstants.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
+            ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_MESSAGE_DATASOURCE, getMessageDataSource());
         }
         if (getNonTransactionalMessageDataSource() != null) {
-            config.putObject(KSBConstants.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE, getNonTransactionalMessageDataSource());
+            ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE, getNonTransactionalMessageDataSource());
         }
         if (getRegistryDataSource() != null) {
-            config.putObject(KSBConstants.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
+            ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_REGISTRY_DATASOURCE, getRegistryDataSource());
         }
     }
 
-	protected void configurePlatformTransactionManager(Config config) {
+	protected void configurePlatformTransactionManager() {
 		if (getPlatformTransactionManager() == null) {
 			return;
 		}
-		config.putObject(RiceConstants.SPRING_TRANSACTION_MANAGER, getPlatformTransactionManager());
+		ConfigContext.getCurrentContextConfig().putObject(RiceConstants.SPRING_TRANSACTION_MANAGER, getPlatformTransactionManager());
 	}
 	
-	protected void configureAlternateEndpoints(Config config) {
-		config.putObject(KSBConstants.KSB_ALTERNATE_ENDPOINT_LOCATIONS, getAlternateEndpointLocations());
-		config.putObject(KSBConstants.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
+	protected void configureAlternateEndpoints() {
+		ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_ALTERNATE_ENDPOINT_LOCATIONS, getAlternateEndpointLocations());
+		ConfigContext.getCurrentContextConfig().putObject(KSBConstants.Config.KSB_ALTERNATE_ENDPOINTS, getAlternateEndpoints());
 	}
 	
 	@Override
-	public void stop() throws Exception {
+	public void doAdditionalContextStoppedLogic() {
 		try {
 			HttpInvokerConnector.shutdownIdleConnectionTimeout();
 		} catch (Exception e) {
 			LOG.error("Failed to shutdown idle connection timeout evictor thread.", e);
 		}
-	    super.stop();
 	    cleanUpConfiguration();
 	}
 	
@@ -264,7 +248,7 @@ public class KSBConfigurer extends ModuleConfigurer {
      */
     protected void cleanUpConfiguration() {
         ConfigContext.getCurrentContextConfig().removeObject(Config.BUS_DEPLOYED_SERVICES);
-        ConfigContext.getCurrentContextConfig().removeObject(KSBConstants.KSB_ALTERNATE_ENDPOINTS);
+        ConfigContext.getCurrentContextConfig().removeObject(KSBConstants.Config.KSB_ALTERNATE_ENDPOINTS);
     }
 
 	public List<ServiceDefinition> getServices() {

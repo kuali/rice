@@ -16,61 +16,77 @@
 package org.kuali.rice.core.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 
 import javax.xml.namespace.QName;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.event.RiceConfigEvent;
-import org.kuali.rice.core.config.event.RiceConfigEventListener;
 import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
+import org.kuali.rice.core.resourceloader.BaseResourceLoader;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.kuali.rice.core.resourceloader.SpringResourceLoader;
+import org.kuali.rice.core.resourceloader.ResourceLoaderContainer;
+import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
+import org.kuali.rice.core.util.RiceConstants;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.event.ContextClosedEvent;
+import org.springframework.context.event.ContextRefreshedEvent;
 
-public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, RiceConfigEventListener {
-    /**
-     * Protected logger for use by subclasses
-     */
+public class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener<ApplicationEvent> {
     protected final Logger LOG = Logger.getLogger(getClass());
 
 	public static final String LOCAL_RUN_MODE = "local";
 	public static final String EMBEDDED_RUN_MODE = "embedded";
 	public static final String REMOTE_RUN_MODE = "remote";
 	public static final String THIN_RUN_MODE = "thin";
-	protected final List<String> VALID_RUN_MODES = new ArrayList<String>();
+	private List<String> validRunModes = new ArrayList<String>();
+	private boolean hasWebInterface;
 	
-    private String moduleName = null;	
-	protected String webModuleConfigName = "";
-	protected boolean webInterface = false;
-    protected String springFileLocations = "";
-    protected String resourceLoaderName;
-    protected Config config;
-
-	public ModuleConfigurer() {
-		VALID_RUN_MODES.add( LOCAL_RUN_MODE );
-		VALID_RUN_MODES.add( EMBEDDED_RUN_MODE );
-		VALID_RUN_MODES.add( REMOTE_RUN_MODE );
-		VALID_RUN_MODES.add( THIN_RUN_MODE );
+	private Properties properties = new Properties();
+	private String moduleName;
+	
+	@Override
+	public final void start() throws Exception {
+		super.start();
 	}
 	
 	@Override
-	protected List<Lifecycle> loadLifecycles() throws Exception {
-		return new ArrayList<Lifecycle>(0);
+	public final void afterPropertiesSet() throws Exception {
+		validateConfigurerState();
+		addToConfig();
+		initializeResourceLoaders();
+		start();
 	}
-
+	
 	@Override
-	public void afterPropertiesSet() throws Exception {
-		if ( getModuleName() == null ) {
-			throw new IllegalArgumentException( "Module Name must be given for each ModuleConfigurer instance" );
-		}
+	public final void stop() throws Exception {
+		super.stop();
+	}
+	
+	@Override
+	public final void destroy() throws Exception {
+		stop();
+	}
+	
+	@Override
+	public List<Lifecycle> loadLifecycles() throws Exception {
+		return Collections.emptyList();
+		//override in subclasses
 	}
 	
 	public String getRunMode() {
 		String propertyName = getModuleName().toLowerCase() + ".mode";
-		return this.config.getProperty(propertyName);
+		return ConfigContext.getCurrentContextConfig().getProperty(propertyName);
 	}
 	
 	public String getWebModuleConfigName() {
@@ -78,14 +94,7 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	}
 	
 	public String getWebModuleConfigurationFiles() {
-		return config.getProperty("rice." + getModuleName().toLowerCase() + ".struts.config.files");
-	}
-
-	public void validateRunMode(String runMode) {
-		runMode = runMode.trim();
-		if ( !VALID_RUN_MODES.contains( runMode ) ) {
-			throw new IllegalArgumentException( "Invalid run mode for the " + this.getClass().getSimpleName() + ": " + runMode + " - Valid Values are: " + VALID_RUN_MODES );
-		}
+		return ConfigContext.getCurrentContextConfig().getProperty("rice." + getModuleName().toLowerCase() + ".struts.config.files");
 	}
 	
 	/**
@@ -100,96 +109,59 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	}
 	
 	public boolean isSetSOAPServicesAsDefault() {
-		return Boolean.valueOf(config.getProperty("rice." + getModuleName().toLowerCase() + ".set.soap.services.as.default")).booleanValue();
+		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("rice." + getModuleName().toLowerCase() + ".set.soap.services.as.default")).booleanValue();
 	}
 	
 	public boolean isExposeServicesOnBus() {
-		return Boolean.valueOf(config.getProperty("rice." + getModuleName().toLowerCase() + ".expose.services.on.bus")).booleanValue();
+		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("rice." + getModuleName().toLowerCase() + ".expose.services.on.bus")).booleanValue();
 	}
 	
 	public boolean isIncludeUserInterfaceComponents() {
-		return Boolean.valueOf(config.getProperty("rice." + getModuleName().toLowerCase() + ".include.user.interface.components")).booleanValue();
+		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("rice." + getModuleName().toLowerCase() + ".include.user.interface.components")).booleanValue();
 	}
 
 	public String getWebModuleBaseUrl() {
-		return config.getProperty(getModuleName().toLowerCase() + ".url");
+		return ConfigContext.getCurrentContextConfig().getProperty(getModuleName().toLowerCase() + ".url");
 	}
-	
-	public Config loadConfig(Config parentConfig) throws Exception {
-    	if ( LOG.isInfoEnabled() ) {
-    		LOG.info("Starting configuration of " + getModuleName() + " for service namespace " + parentConfig.getServiceNamespace());
-    	}
-        validateRunMode(getRunMode());
-        configureSpringLocations();
-
-		return config;
-	}
-	
-	private void configureSpringLocations() {
-		if ( StringUtils.isEmpty( getSpringFileLocations() ) ) {
-			setSpringFileLocations( getDefaultSpringBeansPath(getDefaultConfigPackagePath() ) );
-		}
-	}
-	
-    /* helper methods for constructors */
-    protected String getDefaultConfigPackagePath() {
-    	return "org/kuali/rice/" + getModuleName().toLowerCase() + "/config/";
-    }
-    protected String getDefaultSpringBeansPath(String configPackagePath) {
-        return configPackagePath + getModuleName().toUpperCase() + "SpringBeans.xml"; 
-    }
-
-    public String getDefaultResourceLoaderName() {
-        return getModuleName().toUpperCase() + "_SPRING_RESOURCE_LOADER";        
-    }
-    public QName getDefaultResourceLoaderQName() {
-        return new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), getDefaultResourceLoaderName());
-    }
-	
-	public Config getConfig() {
-		return this.config;
-	}
-
-	public void setConfig(Config config) {
-		this.config = config;
-	}
-	
-	/**
-	 * 
-	 * This method returns a resource loader that this module might want to register with the global resource loader.
-	 * 
-	 * @throws Exception
-	 */
-	public ResourceLoader getResourceLoaderToRegister() throws Exception {
-		return null;
-	}
-	
-    /**
-     * Template method for creation of the module resource loader.  Subclasses should override
-     * and return an appropriate resource loader for the module.  If 'null' is returned, no
-     * resource loader is added to the lifecycles by default.  The caller {@link #loadLifecycles()}
-     * implementation will add the ResourceLoader to the GlobalResourceLoader, so that it is not
-     * necessary to do so in the subclass.
-     * @return a resource loader for the module, or null
-     */
-    /**
-     * Constructs a SpringResourceLoader from the appropriate Spring context resource and with the configured
-     * resource loader name (and current context config service namespace)
-     */
-    protected ResourceLoader createResourceLoader() {
-        String context = getSpringFileLocations();
-        ResourceLoader resourceLoader = new SpringResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), resourceLoaderName), context);
-        return resourceLoader;
-    }
-
 	
 	@Override
-	public void onEvent(RiceConfigEvent event) {
-		if ( LOG.isInfoEnabled() ) {
-			LOG.info( "ModuleConfigurer.onEvent() called: " + event );
-		}
+	public List<String> getPrimarySpringFiles() {
+		return Collections.singletonList(getDefaultSpringBeansPath(getDefaultConfigPackagePath()));
 	}
 
+	public boolean hasWebInterface() {
+		return this.hasWebInterface;
+	}
+
+	public void setHasWebInterface(boolean hasWebInterface) {
+		this.hasWebInterface = hasWebInterface;
+	}
+	
+	public Properties getProperties() {
+		return this.properties;
+	}
+
+	public void setProperties(Properties properties) {
+		this.properties = properties;
+	}
+
+	public List<String> getAdditionalSpringFiles() {
+		final String files = ConfigContext.getCurrentContextConfig().getProperty("rice." + getModuleName() + ".additionalSpringFiles");
+		return files == null ? Collections.<String>emptyList() : parseFileList(files);
+	}
+	
+	private List<String> parseFileList(String files) {
+		final List<String> parsedFiles = new ArrayList<String>();
+		for (String file : Arrays.asList(files.split(","))) {
+			final String trimmedFile = file.trim();
+			if (!trimmedFile.isEmpty()) {
+				parsedFiles.add(trimmedFile);	
+			}
+		}
+		
+		return parsedFiles;
+	}
+	
 	public String getModuleName() {
 		return this.moduleName;
 	}
@@ -197,33 +169,152 @@ public abstract class ModuleConfigurer extends BaseCompositeLifecycle implements
 	public void setModuleName(String moduleName) {
 		this.moduleName = moduleName;
 	}
-
-	public void setWebModuleConfigName(String webModuleConfigName) {
-		this.webModuleConfigName = webModuleConfigName;
+    
+    /* helper methods for constructors */
+    protected String getDefaultConfigPackagePath() {
+    	return "org/kuali/rice/" + getModuleName().toLowerCase() + "/config/";
+    }
+    protected String getDefaultSpringBeansPath(String configPackagePath) {
+        return configPackagePath + getModuleName().toUpperCase() + "SpringBeans.xml"; 
+    }
+    
+	public List<String> getValidRunModes() {
+		return this.validRunModes;
 	}
 
-	public boolean hasWebInterface() {
-		return this.webInterface;
+	public void setValidRunModes(List<String> validRunModes) {
+		this.validRunModes = validRunModes;
 	}
-
-	protected void setHasWebInterface(boolean webInterface) {
-		this.webInterface = webInterface;
+	
+	@Override
+	public final void validateConfigurerState() {
+		if (StringUtils.isBlank(this.moduleName)) {
+			throw new IllegalStateException("the module name for this module has not been set");
+		}
+		
+		if (CollectionUtils.isEmpty(this.validRunModes)) {
+			throw new IllegalStateException("the valid run modes for this module has not been set");
+		}
+		
+		validateRunMode();
+		
+		doAdditonalConfigurerValidations();
 	}
-
+	
+	private void validateRunMode() {
+		final String trimmedRunMode = getRunMode();
+		if ( !validRunModes.contains( trimmedRunMode ) ) {
+			throw new IllegalArgumentException( "Invalid run mode for the " + this.getClass().getSimpleName() + ": " + trimmedRunMode + " - Valid Values are: " + validRunModes );
+		}
+	}
+	
+	protected void doAdditonalConfigurerValidations() {
+		//override in subclasses
+	}
+	
+	
 	/**
-	 * 
-	 * This method returns a comma separated string of spring file locations for this module.
-	 * 
-	 * @throws Exception
+	 * This method does the following: 
+	 * <ol>
+	 *  <li>Places all module specific configurations into the root config</li>
+	 *  <li>Adds any additional properties passed into the config into the root config</li>
+	 *  <li>Adds any items a subclass wants to put into the config</li>
+	 * </ol>
 	 */
-	public String getSpringFileLocations() {
-		return springFileLocations;
+	@Override
+	public final void addToConfig() {
+		
+		if (this.properties != null) {
+			ConfigContext.getCurrentContextConfig().putProperties(this.properties);
+		}
+		
+		registerConfigurerWithConfig();
+		addAdditonalToConfig();
+	}
+	
+	protected void addAdditonalToConfig() {
+		//override in subclasses
 	}
 	
 	/**
-	 * @param springFileLocations the springFileLocations to set
+	 * This is a bit of a hack.... fix me
+	 *
 	 */
-	public void setSpringFileLocations(String springFileLocations) {
-		this.springFileLocations = springFileLocations;
+	private void registerConfigurerWithConfig() {
+		@SuppressWarnings("unchecked")
+		Collection<ModuleConfigurer> configurers = (Collection<ModuleConfigurer>) ConfigContext.getCurrentContextConfig().getObject("ModuleConfigurers");
+		if (configurers == null) {
+			configurers = new ArrayList<ModuleConfigurer>();
+		}
+		configurers.add(this);
+		
+		ConfigContext.getCurrentContextConfig().putObject("ModuleConfigurers", configurers);
+	}
+	
+	@Override
+	public final void initializeResourceLoaders() throws Exception {
+		List<String> files = new ArrayList<String>();
+		files.addAll(getPrimarySpringFiles());
+		files.addAll(getAdditionalSpringFiles());
+		
+		ResourceLoader rootResourceLoader = GlobalResourceLoader.getResourceLoader();
+		if (rootResourceLoader == null) {
+			rootResourceLoader = createRootResourceLoader();
+		}
+		
+		if (!files.isEmpty()) {
+			ResourceLoader rl = RiceResourceLoaderFactory.createRootRiceResourceLoader(files, getModuleName());
+			rl.start();
+			GlobalResourceLoader.addResourceLoader(rl);
+		}
+		
+		final Collection<ResourceLoader> rls = getResourceLoadersToRegister();
+		
+		for (ResourceLoader rl : rls) {
+			GlobalResourceLoader.addResourceLoader(rl);
+		}
+	}
+	
+	protected Collection<ResourceLoader> getResourceLoadersToRegister() throws Exception {
+		return Collections.emptyList();
+		//override in subclasses
+	}
+	
+	private ResourceLoader createRootResourceLoader() throws Exception {
+		final ResourceLoaderContainer container = new ResourceLoaderContainer(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), RiceConstants.ROOT_RESOURCE_LOADER_CONTAINER_NAME));
+		ResourceLoader rootResourceLoader = new BaseResourceLoader(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), RiceConstants.DEFAULT_ROOT_RESOURCE_LOADER_NAME));
+		
+		container.addResourceLoader(rootResourceLoader);
+		GlobalResourceLoader.addResourceLoader(container);
+		GlobalResourceLoader.start();
+		
+		return container;
+	}
+
+	@Override
+	public final void onApplicationEvent(ApplicationEvent event) {
+		if (event instanceof ContextRefreshedEvent) {
+			doContextStartedLogic();
+		} else if (event instanceof ContextClosedEvent) {
+			doContextStoppedLogic();
+		}
+	}
+
+	@Override
+	public final void doContextStartedLogic() {
+		doAdditionalContextStartedLogic();
+	}
+
+	@Override
+	public final void doContextStoppedLogic() {
+		doAdditionalContextStoppedLogic();
+	}
+	
+	protected void doAdditionalContextStartedLogic() {
+		//override in subclasses
+	}
+
+	protected void doAdditionalContextStoppedLogic() {
+		//override in subclasses
 	}
 }

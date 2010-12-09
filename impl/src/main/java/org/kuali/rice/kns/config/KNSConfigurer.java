@@ -15,14 +15,15 @@
  */
 package org.kuali.rice.kns.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.sql.DataSource;
 
-import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.ModuleConfigurer;
-import org.kuali.rice.core.config.event.AfterStartEvent;
-import org.kuali.rice.core.config.event.RiceConfigEvent;
-import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -35,28 +36,50 @@ public class KNSConfigurer extends ModuleConfigurer {
 	private static final String KNS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml";
 	private static final String KNS_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSServiceBusSpringBeans.xml";
 
-	public KNSConfigurer() {
-	    super();
-	    setModuleName( "KR" );
-	    setHasWebInterface(true);
-	    // KNS never runs in a remote or thin mode
-	    VALID_RUN_MODES.remove( REMOTE_RUN_MODE );
-	    VALID_RUN_MODES.remove( THIN_RUN_MODE );
-    }
-
-    @Override
-	public Config loadConfig(Config parentConfig) throws Exception {
-        Config currentConfig = super.loadConfig(parentConfig);
-        configureDataSource(currentConfig);
-        return currentConfig;
-    }
+	@Override
+	public void addAdditonalToConfig() {
+		configureDataSource();
+	}
 
 	@Override
-	public String getSpringFileLocations(){
+	public List<String> getPrimarySpringFiles() {
+		final List<String> springFileLocations = new ArrayList<String>();
+		//springFileLocations.add(KNS_SPRING_BEANS_PATH);
+
 		if ( isExposeServicesOnBus() ) {
-			return KNS_SPRING_BEANS_PATH + "," + KNS_KSB_SPRING_BEANS_PATH;
+			springFileLocations.add(KNS_KSB_SPRING_BEANS_PATH);
 		}
-		return KNS_SPRING_BEANS_PATH;
+		return springFileLocations;
+	}
+	
+	@Override
+	public void doAdditionalContextStartedLogic() {
+		loadDataDictionary();
+	}
+	
+	/**
+     * Used to "poke" the Data Dictionary again after the Spring Context is initialized.  This is to
+     * allow for modules loaded with KualiModule after the KNS has already been initialized to work.
+     * 
+     * Also initializes the DateTimeService
+     */
+    private void loadDataDictionary() {
+		if (isLoadDataDictionary()) {
+            LOG.info("KNS Configurer - Loading DD");
+			DataDictionaryService dds = KNSServiceLocator.getDataDictionaryService();
+			if ( dds == null ) {
+				dds = (DataDictionaryService) GlobalResourceLoader.getService( KNSServiceLocator.DATA_DICTIONARY_SERVICE );
+			}
+			dds.getDataDictionary().parseDataDictionaryConfigurationFiles(false);
+
+			if ( isValidateDataDictionary() ) {
+                LOG.info("KNS Configurer - Validating DD");
+				dds.getDataDictionary().validateDD( isValidateDataDictionaryEboReferences() );
+			}
+			// KULRICE-4513 After the Data Dictionary is loaded and validated, perform Data Dictionary bean overrides.
+			dds.getDataDictionary().performBeanOverrides();
+		}
+		KNSServiceLocator.getDateTimeService().initializeDateTimeService();
 	}
 
    /**
@@ -68,27 +91,17 @@ public class KNSConfigurer extends ModuleConfigurer {
     public boolean shouldRenderWebInterface() {
         return true;
     }
-
-    /**
-     * Returns true - KNS UI should always be included.
-     *
-     * @see org.kuali.rice.core.config.ModuleConfigurer#hasWebInterface()
-     */
-    @Override
-    public boolean hasWebInterface() {
-        return true;
-    }
     
 	public boolean isLoadDataDictionary() {
-		return Boolean.valueOf(this.config.getProperty("load.data.dictionary")).booleanValue();
+		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("load.data.dictionary")).booleanValue();
 	}
 
 	public boolean isValidateDataDictionary() {
-		return Boolean.valueOf(this.config.getProperty("validate.data.dictionary")).booleanValue();
+		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("validate.data.dictionary")).booleanValue();
 	}
 
 	public boolean isValidateDataDictionaryEboReferences() {
-		return Boolean.valueOf(this.config.getProperty("validate.data.dictionary.ebo.references")).booleanValue();
+		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("validate.data.dictionary.ebo.references")).booleanValue();
 	}
 
 	/**
@@ -97,30 +110,7 @@ public class KNSConfigurer extends ModuleConfigurer {
      * 
      * Also initializes the DateTimeService
      */
-    @Override
-    public void onEvent(RiceConfigEvent event) {
-        if (event instanceof AfterStartEvent) {
-    		if (isLoadDataDictionary()) {
-                LOG.info("KNS Configurer - Loading DD");
-    			DataDictionaryService dds = KNSServiceLocator.getDataDictionaryService();
-    			if ( dds == null ) {
-    				dds = (DataDictionaryService)RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean( KNSServiceLocator.DATA_DICTIONARY_SERVICE );
-    			}
-    			dds.getDataDictionary().parseDataDictionaryConfigurationFiles(false);
-
-    			if ( isValidateDataDictionary() ) {
-                    LOG.info("KNS Configurer - Validating DD");
-    				dds.getDataDictionary().validateDD( isValidateDataDictionaryEboReferences() );
-    			}
-    			// KULRICE-4513 After the Data Dictionary is loaded and validated, perform Data Dictionary bean overrides.
-    			dds.getDataDictionary().performBeanOverrides();
-    		}
-    		KNSServiceLocator.getDateTimeService().initializeDateTimeService();
-    	}
-    }
-
-
-    protected void configureDataSource(Config config) {
+    protected void configureDataSource() {
         if (getApplicationDataSource() != null && getServerDataSource() == null) {
             throw new ConfigurationException("An application data source was defined but a server data source was not defined.  Both must be specified.");
         }
@@ -129,10 +119,10 @@ public class KNSConfigurer extends ModuleConfigurer {
         }
 
         if (getApplicationDataSource() != null) {
-            config.putObject(KNSConstants.KNS_APPLICATION_DATASOURCE, getApplicationDataSource());
+        	ConfigContext.getCurrentContextConfig().putObject(KNSConstants.KNS_APPLICATION_DATASOURCE, getApplicationDataSource());
         }
         if (getServerDataSource() != null) {
-            config.putObject(KNSConstants.KNS_SERVER_DATASOURCE, getServerDataSource());
+        	ConfigContext.getCurrentContextConfig().putObject(KNSConstants.KNS_SERVER_DATASOURCE, getServerDataSource());
         }
     }
 	

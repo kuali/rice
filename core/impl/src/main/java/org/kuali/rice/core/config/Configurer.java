@@ -15,8 +15,16 @@
  */
 package org.kuali.rice.core.config;
 
+import java.util.List;
+
 import org.kuali.rice.core.lifecycle.Lifecycle;
 
 public interface Configurer extends Lifecycle {
-    // marker interface
+	List<String> getPrimarySpringFiles();
+	List<Lifecycle> loadLifecycles() throws Exception;
+	void addToConfig();
+	void validateConfigurerState();
+	void initializeResourceLoaders() throws Exception;
+	void doContextStartedLogic();
+	void doContextStoppedLogic();
 }

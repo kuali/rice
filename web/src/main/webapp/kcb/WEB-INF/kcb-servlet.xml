@@ -17,10 +17,18 @@
         </property>
     </bean>
 
-    <!-- import beans from GlobalResourceLoader -->
-    <bean id="recipientPreferenceService" class="org.kuali.rice.core.resourceloader.ResourceLoaderServiceFactoryBean" />
-    <bean id="messageDelivererRegistryService" class="org.kuali.rice.core.resourceloader.ResourceLoaderServiceFactoryBean" />
-    <bean id="kenIntegrationService" class="org.kuali.rice.core.resourceloader.ResourceLoaderServiceFactoryBean" />
+	<!-- import beans from GlobalResourceLoader -->
+	<bean id="recipientPreferenceService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="recipientPreferenceService" />
+	</bean>
+	
+	<bean id="messageDelivererRegistryService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="messageDelivererRegistryService" />
+	</bean>
+	
+	<bean id="kenIntegrationService" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="kenIntegrationService" />
+	</bean>
 
     <!-- Implement better strategy later -->
     <!-- 

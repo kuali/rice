@@ -74,9 +74,11 @@
 		<property name="properties" ref="configProperties" />
 	</bean>
 
-	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+	<bean id="jtaTransactionManager" class="org.springframework.transaction.jta.JotmFactoryBean">
       <property name="defaultTimeout" value="${transaction.timeout}"/>
     </bean>
+    
+    <alias alias="jtaUserTransaction"  name="jtaTransactionManager"/>
 
 	<bean id="dataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
 		<property name="transactionManager" ref="jotm" />
@@ -90,7 +92,7 @@
 		<property name="password" value="${datasource.password}" />
 	</bean>
 
-    <bean id="kimNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${datasource.driver.name}"/>
         <property name="url" value="${datasource.url}"/>
         <property name="maxActive" value="${datasource.pool.maxActive}"/>
@@ -102,42 +104,9 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
-	<bean id="coreConfigurer" class="org.kuali.rice.core.config.CoreConfigurer">
-		<property name="dataSource" ref="dataSource" />
-		<property name="nonTransactionalDataSource" ref="kimNonTransactionalDataSource" />
-		<property name="transactionManager" ref="jotm" />
-		<property name="userTransaction" ref="jotm" />
-		<property name="config" ref="config" />
-	</bean>
-
-	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer" depends-on="coreConfigurer">
-		<property name="rootConfig" ref="config" />
-		<property name="ksbConfigurer">
-			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-			</bean>
-        </property>
-		<property name="knsConfigurer">
-			<bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
-        </property>
-		<property name="kimConfigurer">
-			<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
-		</property>
-		<property name="kewConfigurer">
-            <bean class="org.kuali.rice.kew.config.KEWConfigurer"/>
-        </property>
-	</bean>
-	
-	<bean id="transactionManager" class="org.springframework.transaction.jta.JtaTransactionManager" lazy-init="true">
-		<property name="userTransaction">
-			<ref local="jotm" />
-		</property>
-		<property name="transactionManager">
-			<ref local="jotm" />
-		</property>
-	</bean>	
-	<bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate" lazy-init="true">
-		<property name="transactionManager">
-			<ref bean="transactionManager" />
-		</property>
-	</bean>
+	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kns/config/KNSConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kim/config/KIMConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
 </beans>

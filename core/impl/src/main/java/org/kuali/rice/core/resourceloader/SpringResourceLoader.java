@@ -16,6 +16,9 @@
  */
 package org.kuali.rice.core.resourceloader;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
@@ -38,13 +41,13 @@ public class SpringResourceLoader extends BaseResourceLoader {
 	private ApplicationContext parentContext;
 	private ConfigurableApplicationContext context;
 
-	private final String[] fileLocs;
+	private final List<String> fileLocs;
 
 	public SpringResourceLoader(QName name, String fileLoc) {
-	    this(name, new String[] { fileLoc });
+	    this(name, Collections.singletonList(fileLoc));
 	}
 
-	public SpringResourceLoader(QName name, String[] fileLocs) {
+	public SpringResourceLoader(QName name, List<String> fileLocs) {
 		super(name);
 		this.fileLocs = fileLocs;
 	}
@@ -71,7 +74,7 @@ public class SpringResourceLoader extends BaseResourceLoader {
 			if (parentSpringResourceLoader != null) {
 				parentContext = parentSpringResourceLoader.getContext();
 			}
-			this.context = new ClassPathXmlApplicationContext(this.fileLocs, parentContext);
+			this.context = new ClassPathXmlApplicationContext(this.fileLocs.toArray(new String[] {}), parentContext);
 			super.start();
 		}
 	}

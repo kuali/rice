@@ -51,33 +51,15 @@
         </property>
     </bean>
     
-    <bean id="coreConfigurer" class="org.kuali.rice.core.config.CoreConfigurer">
-        <property name="dataSource" ref="dataSource" />
-        <property name="nonTransactionalDataSource" ref="nonTransactionalDataSource" />
-        <property name="transactionManager" ref="jotm" />
-        <property name="userTransaction" ref="jotm" />
-        <property name="config" ref="config" />
-	</bean>
-    
-    <bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer" depends-on="coreConfigurer">
-        <property name="rootConfig" ref="config" />
-        <property name="properties">
-			<props>
-				<prop key="rice.additionalSpringFiles">classpath:org/kuali/rice/kcb/config/KCBSpringBeans-test.xml</prop>
-			</props>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="arguments">
+			<list><ref bean="bootstrapConfig"/></list>
 		</property>
-        <property name="ksbConfigurer" >
-	        <bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-	        </bean>
-	    </property>
-        <property name="kcbConfigurer" >
-	        <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
-	        </bean>
-	    </property>
-        <!--
-        <bean class="org.kuali.rice.ken.config.KENConfigurer">
-            <property name="testMode" value="true"/>
-        </bean>
-        -->
-    </bean>
+	</bean>
+	
+	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kcb/config/KCBConfigSpringBeans.xml"/>
+    
 </beans>

@@ -16,7 +16,6 @@
 package org.kuali.rice.core.config.spring;
 
 import java.util.List;
-import java.util.Properties;
 
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -24,20 +23,21 @@ import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.springframework.beans.factory.FactoryBean;
 
-public class ConfigFactoryBean implements FactoryBean {
+public class ConfigFactoryBean implements FactoryBean<Config> {
 
 	private List<String> configLocations;
 
 	public static String CONFIG_OVERRIDE_LOCATION;
 
-	public Object getObject() throws Exception {
+	@Override
+	public Config getObject() throws Exception {
 		
 		Config oldConfig = null;
 		
 		if (getConfigLocations() == null) {
 			throw new ConfigurationException("No config locations declared, at least one is required");
 		}
-		Properties baseProperties = new Properties();
+
 		if (ConfigContext.getCurrentContextConfig() != null) {
 			oldConfig = ConfigContext.getCurrentContextConfig();
 		}
@@ -53,10 +53,12 @@ public class ConfigFactoryBean implements FactoryBean {
 		return config;
 	}
 
-	public Class getObjectType() {
+	@Override
+	public Class<Config> getObjectType() {
 		return Config.class;
 	}
 
+	@Override
 	public boolean isSingleton() {
 		return true;
 	}

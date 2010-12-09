@@ -36,24 +36,28 @@ public class RiceConfigurerTest {
 	 */
 	@Test 
 	public void testSetAdditionalSpringFiles() {
-		RiceConfigurer rc = new RiceConfigurer();
+		ModuleConfigurer rc = new ModuleConfigurer() {{
+			setModuleName("foo"); 
+		}};
+		
 		Config c = new JAXBConfigImpl();
-		rc.setRootConfig(c);
+		ConfigContext.init(c);
+		
 		assertTrue(rc.getAdditionalSpringFiles() == null || rc.getAdditionalSpringFiles().size() == 0);
 		
 		// all the above should expand to contain the following:
 		List<String> expectedResult = Arrays.asList("one","two","three","four","five","six");
 		
-		c.putProperty("rice.additionalSpringFiles", "one,two,three,four,five,six");
+		c.putProperty("rice.foo.additionalSpringFiles", "one,two,three,four,five,six");
 		assertEquals(expectedResult, rc.getAdditionalSpringFiles());
 		
-		c.putProperty("rice.additionalSpringFiles", "one, two,three,four,five,six ");
+		c.putProperty("rice.foo.additionalSpringFiles", "one, two,three,four,five,six ");
 		assertEquals(expectedResult, rc.getAdditionalSpringFiles());
 		
-		c.putProperty("rice.additionalSpringFiles", "one,two,three,,four,five,six");
+		c.putProperty("rice.foo.additionalSpringFiles", "one,two,three,,four,five,six");
 		assertEquals(expectedResult, rc.getAdditionalSpringFiles());
 		
-		c.putProperty("rice.additionalSpringFiles", "one");
+		c.putProperty("rice.foo.additionalSpringFiles", "one");
 		assertEquals(Arrays.asList("one"), rc.getAdditionalSpringFiles());
 	}
 

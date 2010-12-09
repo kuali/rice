@@ -463,10 +463,10 @@ public final class KEWServiceLocator {
      */
 
     public static DataSource getDataSource() {
-	return (DataSource) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(DATASOURCE);
+	return (DataSource) getBean(DATASOURCE);
     }
 
     public static PlatformTransactionManager getPlatformTransactionManager() {
-	return (PlatformTransactionManager) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(TRANSACTION_MANAGER);
+	return (PlatformTransactionManager) getBean(TRANSACTION_MANAGER);
     }
 }

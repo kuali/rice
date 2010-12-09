@@ -222,7 +222,7 @@
 	</target>
 
 	<target name="retrieve-maven-dependencies" depends="install-oracle-jar">
-		<maven goals="install" options="-DskipTests=true"/>
+		<maven goals="install" options="-DskipTests=true -DdownloadSources=true"/>
 	</target>
 
 	<target name="install-rice-jars" depends="init">

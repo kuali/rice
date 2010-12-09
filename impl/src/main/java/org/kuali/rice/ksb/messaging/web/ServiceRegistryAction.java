@@ -65,7 +65,9 @@ public class ServiceRegistryAction extends KSBAction {
 	/**
      * Enable deletion of localhost service registry entries
      */
-    public ActionForward deleteLocalhostEntries(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+//FIXME: RICE MODULARITY
+//this method references KEWServiceLocator.getDataSource() which no longer exists.    
+/*    public ActionForward deleteLocalhostEntries(ActionMapping mapping, ActionForm form, HttpServletRequest request,
         	HttpServletResponse response) throws IOException, ServletException {
     	String sqlString = "delete from KRSB_SVC_DEF_T where SVC_URL like '%localhost%'";
     	DataSource ds = (DataSource) KEWServiceLocator.getDataSource();
@@ -73,7 +75,7 @@ public class ServiceRegistryAction extends KSBAction {
 		final String sqlToExec = sqlString;
 		t.execute(sqlToExec);
 		return mapping.findForward("basic");
-    }
+    }*/
 
 
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm actionForm) throws Exception {

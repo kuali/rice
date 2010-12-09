@@ -30,6 +30,6 @@ public interface ObjectLoader {
 	/**
 	 * Constructs an instance of the Object using the given ObjectDefinition classname.
 	 */
-	public Object getObject(ObjectDefinition definition);
+	public <T extends Object> T getObject(ObjectDefinition definition);
 
 }

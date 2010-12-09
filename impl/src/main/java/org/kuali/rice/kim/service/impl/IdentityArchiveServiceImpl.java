@@ -34,13 +34,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.RiceConfigurer;
-import org.kuali.rice.core.config.event.AfterStartEvent;
-import org.kuali.rice.core.config.event.BeforeStopEvent;
-import org.kuali.rice.core.config.event.RiceConfigEvent;
-import org.kuali.rice.core.config.event.RiceConfigEventListener;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
@@ -48,7 +41,10 @@ import org.kuali.rice.kim.service.IdentityArchiveService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
@@ -60,16 +56,17 @@ import org.springframework.transaction.support.TransactionTemplate;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceConfigEventListener {
+public class IdentityArchiveServiceImpl implements IdentityArchiveService, InitializingBean, DisposableBean {
 	private static final Logger LOG = Logger.getLogger( IdentityArchiveServiceImpl.class );
 
 	private BusinessObjectService businessObjectService;
+	private KualiConfigurationService kualiConfigurationService;
 
 	private static final String EXEC_INTERVAL_SECS = "kim.identityArchiveServiceImpl.executionIntervalSeconds";
 	private static final String MAX_WRITE_QUEUE_SIZE = "kim.identityArchiveServiceImpl.maxWriteQueueSize";
+	private static final int EXECUTION_INTERVAL_SECONDS_DEFAULT = 600; // by default, flush the write queue this often
+	private static final int MAX_WRITE_QUEUE_SIZE_DEFAULT = 300; // cache this many KEDI's before forcing write
 
-	private int executionIntervalSeconds = 600; // by default, flush the write queue this often
-	private int maxWriteQueueSize = 300; // cache this many KEDI's before forcing write
 	private final WriteQueue writeQueue = new WriteQueue();
 	private final EntityArchiveWriter writer = new EntityArchiveWriter();
 
@@ -84,45 +81,42 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 	// ditto
 	private final Runnable shutdownWriter =
 		new CallableAdapter(new PreLogCallableWrapper<Boolean>(writer, Level.DEBUG, "rice is shutting down, flushing write queue"));
-
-	public IdentityArchiveServiceImpl(Integer executionIntervalSeconds, Integer maxWriteQueueSize) {
-		// register for RiceConfigEventS
-		RiceConfigurer rice =
-			(RiceConfigurer)ConfigContext.getCurrentContextConfig().getObject( RiceConstants.RICE_CONFIGURER_CONFIG_NAME );
-		LOG.debug("registering for events...");
-		rice.getKimConfigurer().registerConfigEventListener(this);
-
-		if (executionIntervalSeconds != null) {
-			this.executionIntervalSeconds = executionIntervalSeconds;
+	
+	private int getExecutionIntervalSeconds() {
+		final String prop = kualiConfigurationService.getPropertyString(EXEC_INTERVAL_SECS);
+		try {
+			return Integer.valueOf(prop).intValue();
+		} catch (NumberFormatException e) {
+			return EXECUTION_INTERVAL_SECONDS_DEFAULT;
 		}
-
-		if (maxWriteQueueSize != null) {
-			this.maxWriteQueueSize = maxWriteQueueSize;
+	}
+	
+	private int getMaxWriteQueueSize() {
+		final String prop = kualiConfigurationService.getPropertyString(MAX_WRITE_QUEUE_SIZE);
+		try {
+			return Integer.valueOf(prop).intValue();
+		} catch (NumberFormatException e) {
+			return MAX_WRITE_QUEUE_SIZE_DEFAULT;
 		}
 	}
 
-	protected BusinessObjectService getBusinessObjectService() {
-		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
-		}
-		return businessObjectService;
-	}
-
+	@Override
 	public KimEntityDefaultInfo getEntityDefaultInfoFromArchive( String entityId ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put(KimConstants.PrimaryKeyConstants.ENTITY_ID, entityId);
-    	KimEntityDefaultInfoCacheImpl cachedValue = (KimEntityDefaultInfoCacheImpl)getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
+    	KimEntityDefaultInfoCacheImpl cachedValue = getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
     	return (cachedValue == null) ? null : cachedValue.convertCacheToEntityDefaultInfo();
     }
 
-    public KimEntityDefaultInfo getEntityDefaultInfoFromArchiveByPrincipalId( String principalId ) {
+    @Override
+	public KimEntityDefaultInfo getEntityDefaultInfoFromArchiveByPrincipalId( String principalId ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principalId", principalId);
-    	KimEntityDefaultInfoCacheImpl cachedValue = (KimEntityDefaultInfoCacheImpl)getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
+    	KimEntityDefaultInfoCacheImpl cachedValue = getBusinessObjectService().findByPrimaryKey(KimEntityDefaultInfoCacheImpl.class, criteria);
     	return (cachedValue == null) ? null : cachedValue.convertCacheToEntityDefaultInfo();
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
 	public KimEntityDefaultInfo getEntityDefaultInfoFromArchiveByPrincipalName( String principalName ) {
     	Map<String,String> criteria = new HashMap<String, String>(1);
     	criteria.put("principalName", principalName);
@@ -130,31 +124,45 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
     	return (entities == null || entities.size() == 0) ? null : entities.iterator().next().convertCacheToEntityDefaultInfo();
     }
 
-    public void saveDefaultInfoToArchive( KimEntityDefaultInfo entity ) {
+    @Override
+	public void saveDefaultInfoToArchive( KimEntityDefaultInfo entity ) {
     	// if the max size has been reached, schedule now
-    	if (maxWriteQueueSize <= writeQueue.offerAndGetSize(entity) /* <- this enqueues the KEDI */ &&
+    	if (getMaxWriteQueueSize() <= writeQueue.offerAndGetSize(entity) /* <- this enqueues the KEDI */ &&
     			writer.requestSubmit()) {
     		KSBServiceLocator.getThreadPool().execute(maxQueueSizeExceededWriter);
     	}
     }
+    
+	public BusinessObjectService getBusinessObjectService() {
+		return this.businessObjectService;
+	}
 
-    /**
-     * <h4>On events:</h4>
-     * <p>{@link AfterStartEvent}: schedule the writer on the KSB scheduled pool
-     * <p>{@link BeforeStopEvent}: flush the write queue immediately
-     *
-     * @see org.springframework.context.ApplicationListener#onApplicationEvent(org.springframework.context.ApplicationEvent)
-     */
-    public void onEvent(final RiceConfigEvent event) {
-    	if (event instanceof AfterStartEvent) {
-    		// on startup, schedule this to run
-    		LOG.info("scheduling writer...");
-    		KSBServiceLocator.getScheduledPool().scheduleAtFixedRate(scheduledWriter,
-    				executionIntervalSeconds, executionIntervalSeconds, TimeUnit.SECONDS);
-    	} else if (event instanceof BeforeStopEvent) {
-    		KSBServiceLocator.getThreadPool().execute(shutdownWriter);
-    	}
-    }
+	public void setBusinessObjectService(BusinessObjectService businessObjectService) {
+		this.businessObjectService = businessObjectService;
+	}
+
+	public KualiConfigurationService getKualiConfigurationService() {
+		return this.kualiConfigurationService;
+	}
+
+	public void setKualiConfigurationService(
+			KualiConfigurationService kualiConfigurationService) {
+		this.kualiConfigurationService = kualiConfigurationService;
+	}
+    
+    /** schedule the writer on the KSB scheduled pool. */
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		LOG.info("scheduling writer...");
+		KSBServiceLocator.getScheduledPool().scheduleAtFixedRate(scheduledWriter,
+				getExecutionIntervalSeconds(), getExecutionIntervalSeconds(), TimeUnit.SECONDS);
+	}
+
+	/** flush the write queue immediately. */
+	@Override
+	public void destroy() throws Exception {
+		KSBServiceLocator.getThreadPool().execute(shutdownWriter);
+	}
 
 	/**
 	 * store the person to the database, but do this an alternate thread to
@@ -169,6 +177,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 		AtomicBoolean currentlySubmitted = new AtomicBoolean(false);
 
 		private final Comparator<Comparable> nullSafeComparator = new Comparator<Comparable>() {
+			@Override
 			public int compare(Comparable i1, Comparable i2) {
 				if (i1 != null && i2 != null) {
 					return i1.compareTo(i2);
@@ -192,6 +201,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 			 * compares by entityId value
 			 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
 			 */
+			@Override
 			public int compare(KimEntityDefaultInfo o1, KimEntityDefaultInfo o2) {
 				String entityId1 = (o1 == null) ? null : o1.getEntityId();
 				String entityId2 = (o2 == null) ? null : o2.getEntityId();
@@ -241,6 +251,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 		 * Call that tries to flush the write queue.
 		 * @see Callable#call()
 		 */
+		@Override
 		public Object call() {
 			try {
 				// the strategy is to grab chunks of entities, dedupe & sort them, and insert them in a big
@@ -249,14 +260,17 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 				PlatformTransactionManager transactionManager = KNSServiceLocator.getTransactionManager();
 				TransactionTemplate template = new TransactionTemplate(transactionManager);
 				template.execute(new TransactionCallback() {
+					@Override
 					public Object doInTransaction(TransactionStatus status) {
 						KimEntityDefaultInfo entity = null;
-						ArrayList<KimEntityDefaultInfo> entitiesToInsert = new ArrayList<KimEntityDefaultInfo>(maxWriteQueueSize);
-						Set<String> deduper = new HashSet<String>(maxWriteQueueSize);
+						ArrayList<KimEntityDefaultInfo> entitiesToInsert = new ArrayList<KimEntityDefaultInfo>(getMaxWriteQueueSize());
+						Set<String> deduper = new HashSet<String>(getMaxWriteQueueSize());
 
 						// order is important in this conditional so that elements aren't dequeued and then ignored
-						while (entitiesToInsert.size() < maxWriteQueueSize && null != (entity = writeQueue.poll())) {
-							if (deduper.add(entity.getEntityId())) entitiesToInsert.add(entity);
+						while (entitiesToInsert.size() < getMaxWriteQueueSize() && null != (entity = writeQueue.poll())) {
+							if (deduper.add(entity.getEntityId())) {
+								entitiesToInsert.add(entity);
+							}
 						}
 
 						Collections.sort(entitiesToInsert, kediComparator);
@@ -297,10 +311,6 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 			if (result != null) { writeQueueSize.decrementAndGet(); }
 			return result;
 		}
-
-		private int getSize() {
-			return writeQueueSize.get();
-		}
 	}
 
 	/**
@@ -326,6 +336,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 		 * 
 		 * @see java.util.concurrent.Callable#call()
 		 */
+		@Override
 		@SuppressWarnings("unchecked")
 		public A call() throws Exception {
 			LOG.log(level, message);
@@ -347,6 +358,7 @@ public class IdentityArchiveServiceImpl implements IdentityArchiveService, RiceC
 			this.callable = callable;
 		}
 
+		@Override
 		public void run() {
 			try {
 				callable.call();

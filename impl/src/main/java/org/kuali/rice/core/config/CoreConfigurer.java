@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.config;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,24 +25,14 @@ import javax.transaction.UserTransaction;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.logging.Log4jLifeCycle;
-import org.kuali.rice.core.lifecycle.BaseCompositeLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.security.credentials.CredentialsSourceFactory;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kns.web.servlet.dwr.GlobalResourceDelegatingSpringCreator;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.InitializingBean;
 
 /**
  * This is a place to put some of the common configuration logic that used to be done by the RiceConfigurer.
  */
-public class CoreConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, BeanFactoryAware {
-
-	private BeanFactory beanFactory;
-	private Config config;
+public class CoreConfigurer extends ModuleConfigurer {
 
 	private DataSource dataSource;
 	private DataSource nonTransactionalDataSource;
@@ -50,97 +41,67 @@ public class CoreConfigurer extends BaseCompositeLifecycle implements Configurer
 	private UserTransaction userTransaction;
 	private TransactionManager transactionManager;
 	private CredentialsSourceFactory credentialsSourceFactory;
-	
-	
-	public BeanFactory getBeanFactory() {
-		return this.beanFactory;
-	}
-	
-	@Override
-	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		this.beanFactory = beanFactory;
-	}
-	
-	public Config getConfig() {
-		return this.config;
-	}
-
-	public void setConfig(Config config) {
-		this.config = config;
-	}
 
 	@Override
-	public void destroy() throws Exception {
-		stop();
-	}
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		start();
-	}
-	
-	@Override
-	public void start() throws Exception {
-		initializeFullConfiguration();
-		super.start();
-	}
-
-	@Override
-	protected List<Lifecycle> loadLifecycles() throws Exception {
-		GlobalResourceDelegatingSpringCreator.APPLICATION_BEAN_FACTORY = getBeanFactory(); 
-		
-		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		 if (isConfigureLogging()) {
-			 lifecycles.add(new Log4jLifeCycle());
-		 }
+	public List<Lifecycle> loadLifecycles() throws Exception {
+		final List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
+		if (isConfigureLogging()) {
+			lifecycles.add(new Log4jLifeCycle());
+		}
 		 
-		 return lifecycles;
+		return lifecycles;
 	}
 	
-	protected void initializeFullConfiguration() throws Exception {
-		configureJta(config);
-		configureDataSource(config);
-		configureCredentialsSourceFactory(config);
+	@Override
+	public void addAdditonalToConfig() {
+		configureJta();
+		configureDataSource();
+		configureCredentialsSourceFactory();
 	}
 	
 	protected boolean isConfigureLogging() {
-		return config.getBooleanProperty(RiceConstants.RICE_LOGGING_CONFIGURE, false);
+		return ConfigContext.getCurrentContextConfig().getBooleanProperty(RiceConstants.RICE_LOGGING_CONFIGURE, false);
 	}
 	
-	protected void configureCredentialsSourceFactory(final Config rootConfig) {
+	protected void configureCredentialsSourceFactory() {
 		if (credentialsSourceFactory != null) {
-			rootConfig.putObject(Config.CREDENTIALS_SOURCE_FACTORY, this.credentialsSourceFactory);
+			ConfigContext.getCurrentContextConfig().putObject(Config.CREDENTIALS_SOURCE_FACTORY, this.credentialsSourceFactory);
 		}
 	}
  
-	protected void configureDataSource(Config config) {
+	protected void configureDataSource() {
 		if (this.dataSource != null) {
-			config.putObject(RiceConstants.DATASOURCE_OBJ, this.dataSource);
+			ConfigContext.getCurrentContextConfig().putObject(RiceConstants.DATASOURCE_OBJ, this.dataSource);
 		}
 		
         if (this.nonTransactionalDataSource != null) {
-            config.putObject(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ, this.nonTransactionalDataSource);
+        	ConfigContext.getCurrentContextConfig().putObject(RiceConstants.NON_TRANSACTIONAL_DATASOURCE_OBJ, this.nonTransactionalDataSource);
         }
         
         if (this.serverDataSource != null) {
-        	config.putObject(RiceConstants.SERVER_DATASOURCE_OBJ, this.serverDataSource);
+        	ConfigContext.getCurrentContextConfig().putObject(RiceConstants.SERVER_DATASOURCE_OBJ, this.serverDataSource);
         }
 	}
 
+	@Override
+	public List<String> getPrimarySpringFiles() {
+		return Collections.emptyList();
+	}
+	
 	/**
 	 * If the user injected JTA classes into this configurer, verify that both the
 	 * UserTransaction and TransactionManager are set and then attach them to
 	 * the configuration.
 	 */
-	protected void configureJta(Config config) {
+	protected void configureJta() {
 		if (this.userTransaction != null) {
-			config.putObject(RiceConstants.USER_TRANSACTION_OBJ, this.userTransaction);
+			ConfigContext.getCurrentContextConfig().putObject(RiceConstants.USER_TRANSACTION_OBJ, this.userTransaction);
 		}
 		if (this.transactionManager != null) {
-			config.putObject(RiceConstants.TRANSACTION_MANAGER_OBJ, this.transactionManager);
+			ConfigContext.getCurrentContextConfig().putObject(RiceConstants.TRANSACTION_MANAGER_OBJ, this.transactionManager);
 		}
-		boolean userTransactionConfigured = this.userTransaction != null || !StringUtils.isEmpty(config.getProperty(RiceConstants.USER_TRANSACTION_JNDI));
-		boolean transactionManagerConfigured = this.transactionManager != null || !StringUtils.isEmpty(config.getProperty(RiceConstants.TRANSACTION_MANAGER_JNDI));
+		boolean userTransactionConfigured = this.userTransaction != null || !StringUtils.isEmpty(ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.USER_TRANSACTION_JNDI));
+		boolean transactionManagerConfigured = this.transactionManager != null || !StringUtils.isEmpty(ConfigContext.getCurrentContextConfig().getProperty(RiceConstants.TRANSACTION_MANAGER_JNDI));
 		if (userTransactionConfigured && !transactionManagerConfigured) {
 			throw new ConfigurationException("When configuring JTA, both a UserTransaction and a TransactionManager are required.  Only the UserTransaction was configured.");
 		}
@@ -205,6 +166,4 @@ public class CoreConfigurer extends BaseCompositeLifecycle implements Configurer
 			final CredentialsSourceFactory credentialsSourceFactory) {
 		this.credentialsSourceFactory = credentialsSourceFactory;
 	}
-
-
 }

@@ -123,28 +123,28 @@ public class GlobalResourceLoader {
 		LOG.info("...GlobalResourceLoader successfully stopped.");
 	}
 
-	public static Object getService(QName serviceName) {
+	public static <T extends Object> T getService(QName serviceName) {
 		if (serviceName == null) {
 			throw new IllegalArgumentException("The service name must be non-null.");
 		}
 		LOG.debug("GlobalResourceLoader fetching service " + serviceName);
 		try {
-			return getResourceLoader().getService(serviceName);
+			return getResourceLoader().<T>getService(serviceName);
 		} catch (RiceRemoteServiceConnectionException ex) {
 			LOG.warn(ex.getMessage());
 			return null;
 		}
 	}
 
-	public static Object getService(String localServiceName) {
+	public static <T extends Object> T getService(String localServiceName) {
 		if (StringUtils.isEmpty(localServiceName)) {
 			throw new IllegalArgumentException("The service name must be non-null.");
 		}
-		return getService(new QName(localServiceName));
+		return GlobalResourceLoader.<T>getService(new QName(localServiceName));
 	}
 
-	public static Object getObject(ObjectDefinition objectDefinition) {
-		return getResourceLoader().getObject(objectDefinition);
+	public static <T extends Object> T getObject(ObjectDefinition objectDefinition) {
+		return getResourceLoader().<T>getObject(objectDefinition);
 	}
 
 	public static boolean isInitialized() {

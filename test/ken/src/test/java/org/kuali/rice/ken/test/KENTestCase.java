@@ -31,10 +31,11 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+import org.kuali.rice.test.CompositeBeanFactory;
 import org.kuali.rice.test.lifecycles.SQLDataLoaderLifecycle;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.transaction.PlatformTransactionManager;
 
 
@@ -84,7 +85,7 @@ public abstract class KENTestCase extends BaselineTestCase {
             @Override
             public void start() throws Exception {
                 // get the composite Rice Spring context
-                ConfigurableApplicationContext moduleContext = RiceResourceLoaderFactory.getSpringResourceLoader().getContext();
+                BeanFactory moduleContext = CompositeBeanFactory.createBeanFactory(RiceResourceLoaderFactory.getSpringResourceLoaders());
                 // This method sets up the Spring services so that they can be accessed by the tests.
                 services = new SpringNotificationServiceLocator(moduleContext);
                 // grab the module's transaction manager

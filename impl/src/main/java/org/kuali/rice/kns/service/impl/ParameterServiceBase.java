@@ -20,9 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
@@ -32,10 +30,10 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.ParameterConstants;
-import org.kuali.rice.kns.service.ParameterEvaluator;
-import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.service.ParameterConstants.COMPONENT;
 import org.kuali.rice.kns.service.ParameterConstants.NAMESPACE;
+import org.kuali.rice.kns.service.ParameterEvaluator;
+import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
 
@@ -45,6 +43,8 @@ import org.kuali.rice.kns.util.KNSUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
+//FIXME: RICE MODULARITY
+//caching is disabled in here until the caching services are moved
 public abstract class ParameterServiceBase implements ParameterService {
 	protected DataDictionaryService dataDictionaryService;
 	protected KualiModuleService kualiModuleService;
@@ -62,7 +62,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	/**
 	 * @see org.kuali.kfs.sys.service.ParameterService#parameterExists(java.lang.Class componentClass, java.lang.String parameterName)
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public boolean parameterExists(Class componentClass, String parameterName) {
 	    return retrieveParameter(getNamespace(componentClass), getDetailType(componentClass), parameterName) != null;
 	}
@@ -75,7 +75,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 * @param parameterName
 	 * @return boolean value of Yes/No indicator parameter
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public boolean getIndicatorParameter(Class componentClass, String parameterName) {
 	    return "Y".equals(getParameter(componentClass, parameterName).getParameterValue());
 	}
@@ -89,15 +89,15 @@ public abstract class ParameterServiceBase implements ParameterService {
      * @param parameterName
      * @return boolean value of Yes/No indicator parameter
      */
-    @SuppressWarnings("unchecked")
-    public boolean getIndicatorParameter(String namespaceCode, String detailTypeCode, String parameterName) {
+    @Override
+	public boolean getIndicatorParameter(String namespaceCode, String detailTypeCode, String parameterName) {
         return "Y".equals(getParameter(namespaceCode, detailTypeCode, parameterName).getParameterValue());
     }
 
 	/**
 	 * @see org.kuali.kfs.sys.service.ParameterService#getParameterValue(java.lang.Class componentClass, java.lang.String parameterName)
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public String getParameterValue(Class componentClass, String parameterName) {
 	    return getParameter(componentClass, parameterName).getParameterValue();
 	}
@@ -105,8 +105,8 @@ public abstract class ParameterServiceBase implements ParameterService {
 	/**
      * @see org.kuali.kfs.sys.service.ParameterService#getParameterValue(java.lang.Class componentClass, java.lang.String parameterName)
      */
-    @SuppressWarnings("unchecked")
-    public String getParameterValue(String namespaceCode, String detailTypeCode, String parameterName) {
+    @Override
+	public String getParameterValue(String namespaceCode, String detailTypeCode, String parameterName) {
         return getParameter(namespaceCode, detailTypeCode, parameterName).getParameterValue();
     }
 
@@ -121,7 +121,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 * @param constrainingValue
 	 * @return derived value String or null
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public String getParameterValue(Class componentClass, String parameterName, String constrainingValue) {
 	    List<String> parameterValues = getParameterValues(componentClass, parameterName, constrainingValue);
 	    if (parameterValues.size() == 1) {
@@ -137,7 +137,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 * @param parameterName
 	 * @return parsed List of String parameter values
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public List<String> getParameterValues(Class componentClass, String parameterName) {
 	    return Collections.unmodifiableList( getParameterValues(getParameter(componentClass, parameterName)) );
 	}
@@ -150,8 +150,8 @@ public abstract class ParameterServiceBase implements ParameterService {
      * @param parameterName
      * @return parsed List of String parameter values
      */
-    @SuppressWarnings("unchecked")
-    public List<String> getParameterValues(String namespaceCode, String detailTypeCode, String parameterName) {
+    @Override
+	public List<String> getParameterValues(String namespaceCode, String detailTypeCode, String parameterName) {
         return Collections.unmodifiableList( getParameterValues(getParameter(namespaceCode, detailTypeCode, parameterName)) );
     }
 
@@ -164,7 +164,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 * @param constrainingValue
 	 * @return derived values List<String> or an empty list if no values are found
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public List<String> getParameterValues(Class componentClass, String parameterName, String constrainingValue) {
 	    return Collections.unmodifiableList( getParameterValues(getParameter(componentClass, parameterName), constrainingValue) );
 	}
@@ -178,7 +178,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 * @return ParameterEvaluator instance initialized with the Parameter corresponding to the specified componentClass and
 	 *         parameterName and the values of the Parameter
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public ParameterEvaluator getParameterEvaluator(Class componentClass, String parameterName) {
 	    return getParameterEvaluator(getParameter(componentClass, parameterName));
 	}
@@ -193,8 +193,8 @@ public abstract class ParameterServiceBase implements ParameterService {
      * @return ParameterEvaluator instance initialized with the Parameter corresponding to the specified componentClass and
      *         parameterName and the values of the Parameter
      */
-    @SuppressWarnings("unchecked")
-    public ParameterEvaluator getParameterEvaluator(String namespaceCode, String detailTypeCode, String parameterName) {
+    @Override
+	public ParameterEvaluator getParameterEvaluator(String namespaceCode, String detailTypeCode, String parameterName) {
         return getParameterEvaluator(getParameter(namespaceCode, detailTypeCode, parameterName));
     }
 
@@ -209,7 +209,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 *         parameterName, the values of the Parameter, the knowledge of whether the values are allowed or denied, and the
 	 *         constrainedValue
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public ParameterEvaluator getParameterEvaluator(Class componentClass, String parameterName, String constrainedValue) {
 	    return getParameterEvaluator(getParameter(componentClass, parameterName), constrainedValue);
 	}
@@ -224,7 +224,7 @@ public abstract class ParameterServiceBase implements ParameterService {
      * @return ParameterEvaluator instance initialized with the Parameter corresponding to the specified componentClass and
      *         parameterName and the values of the Parameter
      */
-    @SuppressWarnings("unchecked")
+	@Override
     public ParameterEvaluator getParameterEvaluator(String namespaceCode, String detailTypeCode, String parameterName, String constrainedValue) {
         return getParameterEvaluator(getParameter(namespaceCode, detailTypeCode, parameterName), constrainedValue);
     }
@@ -240,7 +240,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 *         parameterName, the values of the Parameter that correspond to the specified constrainingValue, the knowledge of
 	 *         whether the values are allowed or denied, and the constrainedValue
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public ParameterEvaluator getParameterEvaluator(Class componentClass, String parameterName, String constrainingValue,
 			String constrainedValue) {
 			    return getParameterEvaluator(getParameter(componentClass, parameterName), constrainingValue, constrainedValue);
@@ -262,7 +262,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	 *         the constrainingValue restriction, the values of the Parameter that correspond to the specified constrainingValue,
 	 *         the knowledge of whether the values are allowed or denied, and the constrainedValue
 	 */
-	@SuppressWarnings("unchecked")
+	@Override
 	public ParameterEvaluator getParameterEvaluator(Class componentClass, String allowParameterName, String denyParameterName,
 			String constrainingValue, String constrainedValue) {
 			    Parameter allowParameter = getParameter(componentClass, allowParameterName);
@@ -277,7 +277,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 			}
 
 
-	@SuppressWarnings("unchecked")
+	@Override
 	public String getNamespace(Class documentOrStepClass) {
 	    if (documentOrStepClass == null) {
 	        throw new IllegalArgumentException("The getNamespace method of ParameterServiceImpl requires non-null documentOrStepClass");
@@ -301,7 +301,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	    throw new IllegalArgumentException("Unable to determine the namespace for documentOrStepClass " + documentOrStepClass.getName() );
 	}
 
-	@SuppressWarnings("unchecked")
+	@Override
 	public String getDetailType(Class documentOrStepClass) {
 	    if (documentOrStepClass == null) {
 	        throw new IllegalArgumentException("The getDetailType method of ParameterServiceImpl requires non-null documentOrStepClass");
@@ -325,7 +325,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 	    throw new IllegalArgumentException("The getDetailType method of ParameterServiceImpl requires a TransactionalDocument or BusinessObject class.  Was:" + documentOrStepClass.getName());
 	}
 
-	@SuppressWarnings("unchecked")
+
 	private Class getStepClass() {
 		try {
 			ClassLoader cl = ClassLoaderUtils.getDefaultClassLoader();
@@ -337,7 +337,7 @@ public abstract class ParameterServiceBase implements ParameterService {
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
+
 	protected String getDetailTypeName(Class documentOrStepClass) {
 	    if (documentOrStepClass == null) {
 	        throw new IllegalArgumentException("The getDetailTypeName method of ParameterServiceImpl requires non-null documentOrStepClass");
@@ -387,7 +387,6 @@ public abstract class ParameterServiceBase implements ParameterService {
 	    return parameterEvaluator;
 	}
 
-	@SuppressWarnings("unchecked")
 	protected ParameterDetailType getParameterDetailType(Class documentOrStepClass) {
 	    String detailTypeString = getDetailType(documentOrStepClass);
 	    String detailTypeName = getDetailTypeName(documentOrStepClass);
@@ -418,12 +417,11 @@ public abstract class ParameterServiceBase implements ParameterService {
      */
     public void clearCache() {
         //parameterCache = new ThreadLocal<Map<String,Parameter>>();
-        KEWServiceLocator.getCacheAdministrator().flushGroup(PARAMETER_CACHE_GROUP_NAME);
+        //KEWServiceLocator.getCacheAdministrator().flushGroup(PARAMETER_CACHE_GROUP_NAME);
     }
  
-    @SuppressWarnings("unchecked")
 	protected Parameter getParameter(Class componentClass, String parameterName) {
-        String key = componentClass.toString() + ":" + parameterName;
+        //String key = componentClass.toString() + ":" + parameterName;
         Parameter parameter = null;
         //String namespaceCode = getNamespace(componentClass);
         //String detailTypeCode = getDetailType(componentClass);
@@ -455,7 +453,8 @@ public abstract class ParameterServiceBase implements ParameterService {
      * namespace and name, null is returned.
      */
     protected Parameter fetchFromCache(String namespaceCode, String detailTypeCode, String name) {
-        return (Parameter)KEWServiceLocator.getCacheAdministrator().getFromCache(getParameterCacheKey(namespaceCode, detailTypeCode, name));
+        //return (Parameter)KEWServiceLocator.getCacheAdministrator().getFromCache(getParameterCacheKey(namespaceCode, detailTypeCode, name));
+    	return null;
     }
     
     /**
@@ -466,7 +465,7 @@ public abstract class ParameterServiceBase implements ParameterService {
         if (parameter == null) {
             return;
         }
-        KEWServiceLocator.getCacheAdministrator().putInCache(getParameterCacheKey(parameter.getParameterNamespaceCode(), parameter.getParameterDetailTypeCode(), parameter.getParameterName()), parameter, PARAMETER_CACHE_GROUP_NAME);
+        //KEWServiceLocator.getCacheAdministrator().putInCache(getParameterCacheKey(parameter.getParameterNamespaceCode(), parameter.getParameterDetailTypeCode(), parameter.getParameterName()), parameter, PARAMETER_CACHE_GROUP_NAME);
     }
     
     /**
@@ -481,7 +480,7 @@ public abstract class ParameterServiceBase implements ParameterService {
     //}
     
     protected void flushParameterFromCache(String namespaceCode, String detailTypeCode, String name) {
-        KEWServiceLocator.getCacheAdministrator().flushEntry(getParameterCacheKey(namespaceCode, detailTypeCode, name));
+        //KEWServiceLocator.getCacheAdministrator().flushEntry(getParameterCacheKey(namespaceCode, detailTypeCode, name));
     }
     /**
      * Returns the cache key for the given parameter.

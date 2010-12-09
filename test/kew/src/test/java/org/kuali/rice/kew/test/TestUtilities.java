@@ -40,10 +40,9 @@ import junit.framework.AssertionFailedError;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
-import org.apache.ojb.broker.PBKey;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -61,7 +60,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
 
 
 /**
@@ -130,7 +128,7 @@ public class TestUtilities {
 
     public static TransactionTemplate getTransactionTemplate() {
 		return (TransactionTemplate)
-					RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(KEWServiceLocator.TRANSACTION_TEMPLATE);
+					GlobalResourceLoader.getService(KEWServiceLocator.TRANSACTION_TEMPLATE);
 	}
 
     public static void verifyTestEnvironment(DataSource dataSource) {

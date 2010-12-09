@@ -16,8 +16,6 @@
 package org.kuali.rice.kns.web.servlet;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -34,14 +32,10 @@ import uk.ltd.getahead.dwr.Configuration;
 import uk.ltd.getahead.dwr.DWRServlet;
 
 public class KualiDWRServlet extends DWRServlet {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -3903455224197903186L;
 
 	private static final String CLASSPATH_RESOURCE_PREFIX = "classpath.resource.prefix";
-	
-	public static List<String> HACK_ADDITIONAL_FILES = new ArrayList<String>();
 
 	private Boolean springBasedConfigPath;
 
@@ -63,7 +57,7 @@ public class KualiDWRServlet extends DWRServlet {
 		String classpathResourcePrefix = KNSServiceLocator.getKualiConfigurationService().getPropertyString(CLASSPATH_RESOURCE_PREFIX);
 		for (NamedOrderedListBean namedOrderedListBean : KNSServiceLocator.getNamedOrderedListBeans(KNSConstants.SCRIPT_CONFIGURATION_FILES_LIST_NAME)) {
 			for (String scriptConfigurationFilePath : namedOrderedListBean.getList()) {
-				if (getSpringBasedConfigPath()) {
+				if (getSpringBasedConfigPath().booleanValue()) {
 					DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
 					try {
 						InputStream is = resourceLoader.getResource(scriptConfigurationFilePath).getInputStream();
@@ -82,10 +76,6 @@ public class KualiDWRServlet extends DWRServlet {
 				if (!StringUtils.isBlank(scriptConfigurationFilePath))
 					super.readFile(classpathResourcePrefix + scriptConfigurationFilePath, configuration);
 			}	
-		}
-		
-		for (String configFile : HACK_ADDITIONAL_FILES) {
-			super.readFile(classpathResourcePrefix + configFile, configuration);
 		}
 	}
 

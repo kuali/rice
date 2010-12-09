@@ -65,17 +65,26 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="arguments">
+			<list><ref bean="bootstrapConfig"/></list>
+		</property>
+	</bean>
 
 	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="config" />
 		<property name="targetMethod" value="getProperties" />
 	</bean>
 
-	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+	<bean id="jtaTransactionManager" class="org.springframework.transaction.jta.JotmFactoryBean">
       <property name="defaultTimeout" value="${transaction.timeout}"/>
     </bean>
+    
+    <alias alias="jtaUserTransaction" name="jtaTransactionManager"/>
 
-	<bean id="knsDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
+	<bean id="riceDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
 		<property name="transactionManager" ref="jotm" />
 		<property name="driverClassName" value="${datasource.driver.name}" />
 		<property name="url" value="${datasource.url}" />
@@ -87,7 +96,7 @@
 		<property name="password" value="${datasource.password}" />
 	</bean>
 
-    <bean id="knsNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${datasource.driver.name}"/>
         <property name="url" value="${datasource.url}"/>
         <property name="maxActive" value="${datasource.pool.maxActive}"/>
@@ -117,47 +126,48 @@
 			</bean>
     	</property>
 	</bean>
-
-	<bean id="coreConfigurer" class="org.kuali.rice.core.config.CoreConfigurer">
-		<property name="dataSource" ref="knsDataSource" />
-		<property name="nonTransactionalDataSource" ref="knsNonTransactionalDataSource" />
-		<property name="transactionManager" ref="jotm" />
-		<property name="userTransaction" ref="jotm" />
-		<property name="config" ref="config" />
+	
+	<import resource="classpath:org/kuali/rice/core/config/COREConfigSpringBeans.xml"/>
+	
+		<bean id="ksbConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:org/kuali/rice/ksb/config/ksb-config-defaults.xml</value>
+			</list>
+		</property>
 	</bean>
 	
-	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer" depends-on="coreConfigurer">
-		<property name="rootConfig" ref="config" />
-		<property name="ksbConfigurer">
-				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-					<property name="services">
-						<list>
-							<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" p:localServiceName="lookupResultsDDBoLookupable" p:serviceInterface="org.kuali.rice.kns.lookup.Lookupable" p:serviceEndPoint-ref="lookupResultsDDBoLookupableHelperUrl" p:messageExceptionHandler="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" p:millisToLive="-1" p:retryAttempts="0" p:priority="5">
-								<property name="service">
-									<ref bean="lookupResultsDDBoLookupable" />
-								</property>
-							</bean>
-						</list>
-					</property>
-				</bean>
-        </property>
-        <property name="kimConfigurer">
-	        <bean class="org.kuali.rice.kim.config.KIMConfigurer" />
-		</property>
-		<property name="kcbConfigurer">
-                <bean class="org.kuali.rice.kcb.config.KCBConfigurer"/>
-        </property>
-		<property name="knsConfigurer">
-				<bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
-		</property>
-		<property name="kewConfigurer">
-				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
-				</bean>
-		</property>
-		<property name="kenConfigurer">
-        	<bean class="org.kuali.rice.ken.config.KENConfigurer" />
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="arguments">
+			<list><ref bean="ksbConfig"/></list>
 		</property>
 	</bean>
+
+	<bean id="ksbConfigurer" class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
+		<property name="moduleName" value="KSB" />
+		<property name="hasWebInterface" value="true" />
+		<property name="validRunModes">
+			<list>
+				<value>local</value>
+			</list>
+		</property>
+		<property name="services">
+			<list>
+				<bean class="org.kuali.rice.ksb.messaging.JavaServiceDefinition" p:localServiceName="lookupResultsDDBoLookupable" p:serviceInterface="org.kuali.rice.kns.lookup.Lookupable" p:serviceEndPoint-ref="lookupResultsDDBoLookupableHelperUrl" p:messageExceptionHandler="org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler" p:millisToLive="-1" p:retryAttempts="0" p:priority="5">
+					<property name="service">
+						<ref bean="lookupResultsDDBoLookupable" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>	
+	
+	<import resource="classpath:org/kuali/rice/kns/config/KNSConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kim/config/KIMConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kcb/config/KCBConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/ken/config/KENConfigSpringBeans.xml"/>
 		
 	<bean id="lookupResultsDDBoLookupableHelperService" class="org.kuali.rice.kns.lookup.LookupResultsDDBoLookupableHelperServiceImpl" />
 

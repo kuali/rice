@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.core.resourceloader;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.config.Config;
@@ -33,54 +37,84 @@ public class RiceResourceLoaderFactory {
 
 	private static final String RICE_ROOT_RESOURCE_LOADER_NAME = "RICE_ROOT_RESOURCE_LOADER";
 	private static final String RICE_SPRING_RESOURCE_LOADER_NAME = "RICE_SPRING_RESOURCE_LOADER_NAME";
-
-	private static void initialize() {
-		Config config = ConfigContext.getCurrentContextConfig();
+	
+	public static ResourceLoader createRootRiceResourceLoader(List<String> springFileLocations, String prefix) {
+		//FIXME: RICE MODULARITY
+		//hack to not break the hack in ResourceLoaderContainer.moveKSBLoadersDownHack();
+		if ("KSB".equals(prefix.toUpperCase())) {
+			prefix = "K~S~B";
+		}
+		
+		final Config config = ConfigContext.getCurrentContextConfig();
 		if (config.getServiceNamespace() == null) {
 			throw new ConfigurationException("No service namespace available at this time");
 		}
-		if (getRootResourceLoaderName() == null) {
-			setRootResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), RICE_ROOT_RESOURCE_LOADER_NAME));
+		final QName root = new QName(config.getServiceNamespace(), prefix.toUpperCase() + "_" + RICE_ROOT_RESOURCE_LOADER_NAME);
+		
+		if (getRootResourceLoaderNames() == null || !getRootResourceLoaderNames().contains(root)) {
+			addRootResourceLoaderName(root);
 		}
-		if (getSpringResourceLoaderName() == null) {
-			setSpringResourceLoaderName(new QName(ConfigContext.getCurrentContextConfig().getServiceNamespace(), RICE_SPRING_RESOURCE_LOADER_NAME));
+		
+		final QName spring = new QName(config.getServiceNamespace(), prefix.toUpperCase() + "_" + RICE_SPRING_RESOURCE_LOADER_NAME);
+		if (getSpringResourceLoaderNames() == null || !getSpringResourceLoaderNames().contains(root)) {
+			addSpringResourceLoaderName(spring);
 		}
-	}
-
-	public static ResourceLoader createRootRiceResourceLoader(String springFileLocations) {
-		initialize();
-		ResourceLoader rootResourceLoader = 
-			new BaseResourceLoader((QName)ConfigContext.getCurrentContextConfig().getObject(RICE_ROOT_RESOURCE_LOADER_NAME),
-			new SimpleServiceLocator());
-		ResourceLoader springResourceLoader = 
-			new SpringResourceLoader((QName)ConfigContext.getCurrentContextConfig().getObject(RICE_SPRING_RESOURCE_LOADER_NAME),
-			springFileLocations.split(SpringLoader.SPRING_SEPARATOR_CHARACTER));
+		
+		final ResourceLoader rootResourceLoader = new BaseResourceLoader(root, new SimpleServiceLocator());
+		final ResourceLoader springResourceLoader = new SpringResourceLoader(spring, springFileLocations);
 		rootResourceLoader.addResourceLoaderFirst(springResourceLoader);
+		
 		return rootResourceLoader;
 	}
 
-	public static BaseResourceLoader getRootResourceLoader() {
-		return (BaseResourceLoader)GlobalResourceLoader.getResourceLoader(getRootResourceLoaderName());
+	public static Collection<BaseResourceLoader> getRootResourceLoaders() {
+		final Collection<QName> names = getRootResourceLoaderNames();
+		final Collection<BaseResourceLoader> loaders = new ArrayList<BaseResourceLoader>();
+		for (QName name : names) {
+			loaders.add((BaseResourceLoader) GlobalResourceLoader.getResourceLoader(name));
+		}
+		return loaders;
 	}
 
-	public static SpringResourceLoader getSpringResourceLoader() {
-		return (SpringResourceLoader)GlobalResourceLoader.getResourceLoader(getSpringResourceLoaderName());
+	public static Collection<SpringResourceLoader> getSpringResourceLoaders() {
+		final Collection<QName> names = getSpringResourceLoaderNames();
+		final Collection<SpringResourceLoader> loaders = new ArrayList<SpringResourceLoader>();
+		for (QName name : names) {
+			loaders.add((SpringResourceLoader) GlobalResourceLoader.getResourceLoader(name));
+		}
+		return loaders;
 	}
 
-	public static QName getRootResourceLoaderName() {
-		return (QName)ConfigContext.getCurrentContextConfig().getObject(RICE_ROOT_RESOURCE_LOADER_NAME);
+	@SuppressWarnings("unchecked")
+	private static Collection<QName> getRootResourceLoaderNames() {
+		return (Collection<QName>) ConfigContext.getCurrentContextConfig().getObject(RICE_ROOT_RESOURCE_LOADER_NAME);
 	}
 
-	public static void setRootResourceLoaderName(QName name) {
-		ConfigContext.getCurrentContextConfig().putObject(RICE_ROOT_RESOURCE_LOADER_NAME, name);
+	private static void addRootResourceLoaderName(QName name) {
+		@SuppressWarnings("unchecked")
+		Collection<QName> names = (Collection<QName>) ConfigContext.getCurrentContextConfig().getObject(RICE_ROOT_RESOURCE_LOADER_NAME);
+		if (names == null) {
+			names = new ArrayList<QName>();
+		}
+		names.add(name);
+		
+		ConfigContext.getCurrentContextConfig().putObject(RICE_ROOT_RESOURCE_LOADER_NAME, names);
 	}
 
-	public static QName getSpringResourceLoaderName() {
-		return (QName)ConfigContext.getCurrentContextConfig().getObject(RICE_SPRING_RESOURCE_LOADER_NAME);
+	@SuppressWarnings("unchecked")
+	private static Collection<QName> getSpringResourceLoaderNames() {
+		return (Collection<QName>) ConfigContext.getCurrentContextConfig().getObject(RICE_SPRING_RESOURCE_LOADER_NAME);
 	}
 
-	public static void setSpringResourceLoaderName(QName ksbRsourceLoaderName) {
-		ConfigContext.getCurrentContextConfig().putObject(RICE_SPRING_RESOURCE_LOADER_NAME, ksbRsourceLoaderName);
+	private static void addSpringResourceLoaderName(QName name) {
+		@SuppressWarnings("unchecked")
+		Collection<QName> names = (Collection<QName>) ConfigContext.getCurrentContextConfig().getObject(RICE_SPRING_RESOURCE_LOADER_NAME);
+		if (names == null) {
+			names = new ArrayList<QName>();
+		}
+		names.add(name);
+		
+		ConfigContext.getCurrentContextConfig().putObject(RICE_SPRING_RESOURCE_LOADER_NAME, names);
 	}
 
 }

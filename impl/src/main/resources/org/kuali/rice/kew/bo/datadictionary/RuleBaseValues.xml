@@ -103,7 +103,9 @@
           <property name="objectAttributeName" value="documentType"/>
           <property name="primitiveAttributes">
             <list>
-              <bean parent="PrimitiveAttributeDefinition" p:sourceName="documentType.documentTypeId" p:targetName="documentTypeId"/>
+    		  <!-- FIXME: RICE MODULARITY -->
+    		  <!-- after configurer work app fails to start up with this relationship across modules -->              
+              <!-- <bean parent="PrimitiveAttributeDefinition" p:sourceName="documentType.documentTypeId" p:targetName="documentTypeId"/>-->
             </list>
           </property>
           <property name="supportAttributes">

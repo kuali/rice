@@ -58,16 +58,23 @@
 		<property name="properties" ref="configProperties" />
 	</bean>
 
-	<bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+	<bean id="bootstrapConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
 		<property name="configLocations">
 			<list>
 				<value>classpath:META-INF/server-workflow.xml</value>
 			</list>
 		</property>
 	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="arguments">
+			<list><ref bean="bootstrapConfig"/></list>
+		</property>
+	</bean>
 
 	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-		<property name="targetObject" ref="config" />
+		<property name="targetObject" ref="bootstrapConfig" />
 		<property name="targetMethod" value="getProperties" />
 	</bean>
 
@@ -99,32 +106,42 @@
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
 
+	<bean id="coreConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:org/kuali/rice/core/config/core-config-defaults.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="arguments">
+			<list><ref bean="coreConfig"/></list>
+		</property>
+	</bean>
+
 	<bean id="coreConfigurer" class="org.kuali.rice.core.config.CoreConfigurer">
+		<property name="moduleName" value="CORE" />
+		<property name="hasWebInterface" value="false" />
+		<property name="validRunModes">
+			<list>
+				<value>local</value>
+			</list>
+		</property>
 		<property name="dataSource" ref="workflowDataSource" />
 		<property name="nonTransactionalDataSource" ref="kewNonTransactionalDataSource" />
 		<property name="transactionManager" ref="jotm" />
 		<property name="userTransaction" ref="jotm" />
-		<property name="config" ref="config" />
-	</bean>
-
-	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer" depends-on="coreConfigurer">
-		<property name="rootConfig" ref="config" />
 		<property name="properties">
 			<props>
 				<prop key="plugin.registry.enabled">true</prop>
 			</props>
 		</property>
-		<property name="ksbConfigurer">
-			<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-			</bean>
-		</property>
-		<property name="kcbConfigurer">
-                <bean class="edu.kuali.rice.kcb.config.KCBConfigurer"/>
-        </property>
-		<property name="kewConfigurer">
-			<bean class="org.kuali.rice.kew.config.KEWConfigurer">
-			</bean>
-		</property>
 	</bean>
+
+	<import resource="classpath:org/kuali/rice/ksb/config/KSBConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kcb/config/KCBConfigSpringBeans.xml"/>
+	<import resource="classpath:org/kuali/rice/kew/config/KEWConfigSpringBeans.xml"/>
 
 </beans>

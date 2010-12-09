@@ -16,24 +16,28 @@
  */
 package org.kuali.rice.kew.config;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.config.*;
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
-import org.kuali.rice.core.resourceloader.SpringLoader;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.lifecycle.EmbeddedLifeCycle;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginRegistryFactory;
 import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
 import org.kuali.rice.kew.util.KEWConstants;
-
-import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 
 
 /**
@@ -55,21 +59,15 @@ import java.util.List;
 public class KEWConfigurer extends ModuleConfigurer {
 
 	public static final String KEW_DATASOURCE_OBJ = "org.kuali.workflow.datasource";
-    private static final String ADDITIONAL_SPRING_FILES_PARAM = "kew.additionalSpringFiles";
-	private DataSource dataSource;
 
-	public KEWConfigurer() {
-		super();
-		setModuleName( "KEW" );
-		setHasWebInterface( true );
-	}
+	private DataSource dataSource;
 	
 	@Override
-	public String getSpringFileLocations(){
-		String springFileLocations;
-		if (KEWConfigurer.REMOTE_RUN_MODE.equals(getRunMode()) || KEWConfigurer.THIN_RUN_MODE.equals(getRunMode()) ||
+	public List<String> getPrimarySpringFiles() {
+		final List<String> springFileLocations;
+		if (ModuleConfigurer.REMOTE_RUN_MODE.equals(getRunMode()) || ModuleConfigurer.THIN_RUN_MODE.equals(getRunMode()) ||
 				KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(ConfigContext.getCurrentContextConfig().getClientProtocol())) {
-			springFileLocations = "";
+			springFileLocations = Collections.emptyList();
 		} else {
 			springFileLocations = getEmbeddedSpringFileLocation();
 		}
@@ -77,42 +75,31 @@ public class KEWConfigurer extends ModuleConfigurer {
 		return springFileLocations;
 	}
 	
-    public String getEmbeddedSpringFileLocation(){
-    	String springLocation = ConfigContext.getCurrentContextConfig().getAlternateSpringFile();
-    	if (springLocation == null) {
-    	    springLocation = "classpath:org/kuali/rice/kew/config/KEWSpringBeans.xml";
-    	}
+    private List<String> getEmbeddedSpringFileLocation(){
+    	final List<String> springFileLocations = new ArrayList<String>();
+    	springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWSpringBeans.xml");
 
         if ( isExposeServicesOnBus() ) {
         	if (isSetSOAPServicesAsDefault()) {
-        		springLocation += "," + "classpath:org/kuali/rice/kew/config/KEWServiceBusSOAPDefaultSpringBeans.xml";
+        		springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWServiceBusSOAPDefaultSpringBeans.xml");
         	} else {
-        		springLocation += "," + "classpath:org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml";
+        		springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWServiceBusSpringBeans.xml");
         	}
         }
-
-    	springLocation += SpringLoader.SPRING_SEPARATOR_CHARACTER;
         
         if (OrmUtils.isJpaEnabled("rice.kew")) {
-            springLocation += "classpath:org/kuali/rice/kew/config/KEWJPASpringBeans.xml";
+        	springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWJPASpringBeans.xml");
         }
         else {
-            springLocation += "classpath:org/kuali/rice/kew/config/KEWOJBSpringBeans.xml";
+        	springFileLocations.add("classpath:org/kuali/rice/kew/config/KEWOJBSpringBeans.xml");
         }
-    	
-    	String additionalSpringFiles = ConfigContext.getCurrentContextConfig().getProperty(ADDITIONAL_SPRING_FILES_PARAM);
-    	if(StringUtils.isNotEmpty(additionalSpringFiles) && 	additionalSpringFiles.contains(","))
-    		StringUtils.split(additionalSpringFiles, ",");
-    	String[] springLocations;
-    	if (!StringUtils.isEmpty(additionalSpringFiles)) {
-    		springLocations = new String[2];
-    		springLocations[0] = "," + additionalSpringFiles;
-    	}
-    	return springLocation;
+
+    	return springFileLocations;
     }
 
 	@Override
-	protected List<Lifecycle> loadLifecycles() throws Exception {
+	public List<Lifecycle> loadLifecycles() throws Exception {
+		
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
 		if ( getRunMode().equals( THIN_RUN_MODE ) ) {
 			lifecycles.add(createThinClientLifecycle());
@@ -122,110 +109,66 @@ public class KEWConfigurer extends ModuleConfigurer {
 		return lifecycles;
 	}
 
-	protected boolean isStandaloneServer() {
-	    return getRunMode().equals( LOCAL_RUN_MODE );
-	}
-
 	/**
 	 * TODO Because a lot of our lifecycles live behind the embedded plugin and the KEWConfigurer does not, this is a simple
 	 * measure to load these without having to deal with the removal of the embedded plugin right away.
      * @return Life Cycle
      * @throws Exception if life cycle not created
      */
-	protected Lifecycle createEmbeddedLifeCycle() throws Exception {
+	private Lifecycle createEmbeddedLifeCycle() throws Exception {
 		return new EmbeddedLifeCycle();
 	}
 
-	protected Lifecycle createThinClientLifecycle() throws Exception {
+	private Lifecycle createThinClientLifecycle() throws Exception {
 		return new ThinClientLifecycle();
 	}
 
 	@Override
-	public Config loadConfig(Config parentConfig) throws Exception {
-		Config currentConfig = parseConfig(super.loadConfig(parentConfig));
-		validateClientProtocol();
+	public void addAdditonalToConfig() {
 		configureDataSource();
-		return currentConfig;
 	}
 
-	protected Config parseConfig(Config parentConfig) throws Exception {
-		List<String> defaultConfigLocations = new ArrayList<String>();
-		defaultConfigLocations.add(KEWConstants.DEFAULT_GLOBAL_CONFIG_LOCATION);
-		defaultConfigLocations.add(KEWConstants.DEFAULT_APPLICATION_CONFIG_LOCATION);
-		
-		Config kewConfig = new JAXBConfigImpl(defaultConfigLocations, parentConfig.getProperties());
-		
-		kewConfig.parseConfig();
-		mergeDefaultsIntoParentConfig(parentConfig, kewConfig);
-		return parentConfig;
-	}
-
-	/**
-	 * Merges any default configuration into the parent config.  If a property appears in both
-	 * places, precedence is given to the parentConfig.  This allows for our defaults to not
-	 * override any property which has already been defined.
-     * @param parentConfig parent configuration
-     * @param defaultConfig original configuration
-     *
-     */
-	protected void mergeDefaultsIntoParentConfig(Config parentConfig, Config defaultConfig) {
-		for (Object keyObj : defaultConfig.getProperties().keySet()) {
-			String key = (String)keyObj;
-			if (!parentConfig.getProperties().containsKey(key)) {
-				parentConfig.putProperty(key, defaultConfig.getProperty(key));
-			}
-		}
-	}
-
-	protected String getServiceNamespace() {
-		if (StringUtils.isBlank(config.getServiceNamespace())) {
-			throw new ConfigurationException("The 'service.namespace' property was not properly configured.");
-		}
-		return config.getServiceNamespace();
-	}
-	
-	protected void validateClientProtocol() {
-		if (StringUtils.isBlank(getClientProtocol())) {
-			throw new ConfigurationException("Client protocol not specified valid protocols are:" + KEWConstants.CLIENT_PROTOCOLS);
-		}
-	}
-
-	protected void configureDataSource() {
+	private void configureDataSource() {
 		if (getDataSource() != null) {
-			config.putObject(KEW_DATASOURCE_OBJ, getDataSource());
+			ConfigContext.getCurrentContextConfig().putObject(KEW_DATASOURCE_OBJ, getDataSource());
 		}
 	}
 
 	@Override
-	public ResourceLoader getResourceLoaderToRegister() throws Exception{
+	public Collection<ResourceLoader> getResourceLoadersToRegister() throws Exception {
 		// create the plugin registry
 		PluginRegistry registry = null;
 		String pluginRegistryEnabled = ConfigContext.getCurrentContextConfig().getProperty("plugin.registry.enabled");
-		if (!StringUtils.isBlank(pluginRegistryEnabled) && Boolean.valueOf(pluginRegistryEnabled)) {
+		if (!StringUtils.isBlank(pluginRegistryEnabled) && Boolean.valueOf(pluginRegistryEnabled).booleanValue()) {
 			registry = new PluginRegistryFactory().createPluginRegistry();
 		}
 
-		CoreResourceLoader coreResourceLoader = 
-			new CoreResourceLoader(RiceResourceLoaderFactory.getSpringResourceLoader(), registry);
-		coreResourceLoader.start();
+		final Collection<ResourceLoader> rls = new ArrayList<ResourceLoader>();
+		for (ResourceLoader rl : RiceResourceLoaderFactory.getSpringResourceLoaders()) {
+			CoreResourceLoader coreResourceLoader = 
+				new CoreResourceLoader(rl, registry);
+			coreResourceLoader.start();
 
-		//wait until core resource loader is started to attach to GRL;  this is so startup
-		//code can depend on other things hooked into GRL without incomplete KEW resources
-		//messing things up.
+			//wait until core resource loader is started to attach to GRL;  this is so startup
+			//code can depend on other things hooked into GRL without incomplete KEW resources
+			//messing things up.
 
-		GlobalResourceLoader.addResourceLoader(coreResourceLoader);
+			GlobalResourceLoader.addResourceLoader(coreResourceLoader);
 
-		// now start the plugin registry if there is one
-		if (registry != null) {
-			registry.start();
-			// the registry resourceloader is now being handled by the CoreResourceLoader
-			//GlobalResourceLoader.addResourceLoader(registry);
+			// now start the plugin registry if there is one
+			if (registry != null) {
+				registry.start();
+				// the registry resourceloader is now being handled by the CoreResourceLoader
+				//GlobalResourceLoader.addResourceLoader(registry);
+			}
+			rls.add(coreResourceLoader);
 		}
-		return coreResourceLoader;
+
+		return rls;
 	}
 
-	public String getClientProtocol() {
-		return this.config.getProperty("client.protocol");
+	private String getClientProtocol() {
+		return ConfigContext.getCurrentContextConfig().getProperty("client.protocol");
 	}
 
 	public DataSource getDataSource() {
@@ -234,5 +177,16 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
+	}
+	
+	@Override
+	protected void doAdditonalConfigurerValidations() {
+		validateClientProtocol();
+	}
+	
+	private void validateClientProtocol() {
+		if (StringUtils.isBlank(getClientProtocol())) {
+			throw new ConfigurationException("Client protocol not specified valid protocols are:" + KEWConstants.CLIENT_PROTOCOLS);
+		}
 	}
 }

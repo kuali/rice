@@ -17,4 +17,6 @@
 	
     <param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
     <param name="config.location">${alt.config.location}</param>
+    
+    <param name="rice.kcb.additionalSpringFiles">classpath:org/kuali/rice/kcb/config/KCBSpringBeans-test.xml</param>
 </config>

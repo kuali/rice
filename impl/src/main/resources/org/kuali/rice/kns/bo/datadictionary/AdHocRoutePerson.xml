@@ -34,7 +34,9 @@
   </bean>
   <bean id="AdHocRoutePerson-id" parent="AdHocRoutePerson-id-parentBean"/>
 
-  <bean id="AdHocRoutePerson-id-parentBean" abstract="true" parent="PersonImpl-principalName">
+  <bean id="AdHocRoutePerson-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="required" value="true"/>
+    <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Person"/>
     <property name="maxLength" value="30"/>
     <property name="control">
@@ -44,6 +46,9 @@
     <property name="name" value="id"/>
     <property name="label" value="Person Identifier"/>
     <property name="description" value="The username of an individual user who receives the document ad hoc for the Action Requested"/>
+    <property name="validationPattern" >
+      <bean parent="AlphaNumericValidationPattern" p:lowerCase="true" />
+    </property>
   </bean>
   <bean id="AdHocRoutePerson-versionNumber" parent="AdHocRoutePerson-versionNumber-parentBean"/>
 

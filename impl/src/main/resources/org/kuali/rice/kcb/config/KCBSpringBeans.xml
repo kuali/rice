@@ -82,6 +82,15 @@
         <property name="serverDataSource" value="true"/>
     </bean>
 
+	<bean id="ksbScheduler"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="ksbScheduler" />
+	</bean>
+	
+	<bean id="enServiceInvoker"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="enServiceInvoker" />
+	</bean>
 
     <!-- Eagerly-init KCB initializer; sets OJB platform dynamically for now -->
     <bean id="initializer" class="org.kuali.rice.kcb.config.KCBInitializer" lazy-init="false" depends-on="ojbConfigurer">

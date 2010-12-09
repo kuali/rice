@@ -54,28 +54,38 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-  <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="properties" ref="configProperties"/>
-  </bean>
 
-  <bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
-    <property name="configLocations">
-      <list>
-        <value>classpath:META-INF/server-test-config.xml</value>
-      </list>
-    </property>
-  </bean>
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
 
-  <bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-    <property name="targetObject" ref="config"/>
-    <property name="targetMethod" value="getProperties"/>
-  </bean>
+	<bean id="bootstrapConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:META-INF/server-test-config.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="arguments">
+			<list><ref bean="bootstrapConfig"/></list>
+		</property>
+	</bean>
 
-	<bean id="jotm" class="org.springframework.transaction.jta.JotmFactoryBean">
+	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="bootstrapConfig" />
+		<property name="targetMethod" value="getProperties" />
+	</bean>
+
+	<bean id="jtaTransactionManager" class="org.springframework.transaction.jta.JotmFactoryBean">
       <property name="defaultTimeout" value="${transaction.timeout}"/>
     </bean>
+    
+    <alias name="jtaTransactionManager" alias="jtaUserTransaction"/>
 
-  <bean id="workflowDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
+  <bean id="riceDataSource" class="org.kuali.rice.core.database.XAPoolDataSource">
     <property name="transactionManager" ref="jotm"/>
     <property name="driverClassName" value="${datasource.driver.name}"/>
     <property name="url" value="${datasource.url}"/>
@@ -87,7 +97,7 @@
     <property name="password" value="${datasource.password}"/>
   </bean>
   
-    <bean id="kewNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <bean id="riceNonTransactionalDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="${datasource.driver.name}"/>
         <property name="url" value="${datasource.url}"/>
         <property name="maxActive" value="${datasource.pool.maxActive}"/>
@@ -103,45 +113,7 @@
 -->
 	<bean id="rootResourceLoader" class="org.kuali.rice.core.resourceloader.SpringBeanFactoryResourceLoader"/>
 
-	<bean id="coreConfigurer" class="org.kuali.rice.core.config.CoreConfigurer">
-		<property name="dataSource" ref="workflowDataSource" />
-		<property name="nonTransactionalDataSource" ref="kewNonTransactionalDataSource" />
-		<property name="transactionManager" ref="jotm" />
-		<property name="userTransaction" ref="jotm" />
-		<property name="config" ref="config" />
-	</bean>
-
-	<bean id="rice" class="org.kuali.rice.core.config.RiceConfigurer" depends-on="coreConfigurer">
-		<property name="rootConfig" ref="config" />
-		<property name="rootResourceLoader" ref="rootResourceLoader"/>
-		<property name="properties">
-			<props>
-				<prop key="plugin.registry.enabled">true</prop>
-				<prop key="rice.additionalSpringFiles">classpath:org/kuali/rice/kcb/config/KCBSpringBeans-test.xml</prop>
-			</props>
-		</property>
-		<property name="ksbConfigurer">
-				<bean class="org.kuali.rice.ksb.messaging.config.KSBConfigurer">
-				</bean>
-        </property>
-		<property name="kcbConfigurer">
-                <bean class="org.kuali.rice.kcb.config.KCBConfigurer">
-                </bean>
-        </property>
-        <property name="knsConfigurer">
-                <bean class="org.kuali.rice.kns.config.KNSConfigurer"/>
-        </property>
-		<property name="kewConfigurer">
-				<bean class="org.kuali.rice.kew.config.KEWConfigurer">
-				</bean>
-		</property>
-		<property name="kenConfigurer">
-        	<bean class="org.kuali.rice.ken.config.KENConfigurer" />
-		</property>
-		<property name="kimConfigurer">
-        	<bean class="org.kuali.rice.kim.config.KIMConfigurer" />
-		</property>
-	</bean>
+	<import resource="classpath:org/kuali/rice/config/RiceSpringBeans.xml"/>
 	
 	<!-- Test services for KIM -->
 	<bean id="testBaseResponsibilityTypeService" class="org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase"/>

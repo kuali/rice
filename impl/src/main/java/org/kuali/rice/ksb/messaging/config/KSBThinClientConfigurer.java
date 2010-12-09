@@ -16,6 +16,9 @@
  */
 package org.kuali.rice.ksb.messaging.config;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.kuali.rice.core.config.ModuleConfigurer;
 
 
@@ -41,8 +44,8 @@ public class KSBThinClientConfigurer extends ModuleConfigurer {
     }
 	
 	@Override
-	public String getSpringFileLocations(){
-		return "classpath:org/kuali/rice/ksb/config/KSBThinClientSpringBeans.xml";
+	public List<String> getPrimarySpringFiles(){
+		return Collections.singletonList("classpath:org/kuali/rice/ksb/config/KSBThinClientSpringBeans.xml");
 	}
 
 }

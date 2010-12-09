@@ -69,10 +69,28 @@ public class ResourceLoaderContainer extends BaseLifecycle implements ResourceLo
 
 	public void addResourceLoader(ResourceLoader resourceLoader) {
 		this.resourceLoaders.add(resourceLoader);
+		
+		//FIXME: RICE MODULARITY
+		moveKSBLoadersDownHack();		
+	}
+	
+	/** hack to move the ksb Resource loaders down in the RL stack. */
+	private void moveKSBLoadersDownHack() {
+		//FIXME: RICE MODULARITY 
+		for (int i = 0; i < resourceLoaders.size(); i++) {
+			final boolean remote = resourceLoaders.get(i).getName().toString().toUpperCase().contains("KSB");
+			if (remote) {
+				final ResourceLoader removed = this.resourceLoaders.remove(i);
+				this.resourceLoaders.add(this.resourceLoaders.size(), removed);
+			}
+		}
 	}
 
 	public void addResourceLoaderFirst(ResourceLoader resourceLoader) {
 		this.resourceLoaders.add(0, resourceLoader);
+
+		//FIXME: RICE MODULARITY
+		moveKSBLoadersDownHack();
 	}
 
 	public boolean containsResourceLoader(ResourceLoader resourceLoader) {

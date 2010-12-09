@@ -763,6 +763,7 @@ public class FieldUtils {
                     try {
                     	Object fieldValue = fieldValues.get(propertyName);
                         ObjectUtils.setObjectProperty(bo, propertyName, type, fieldValue);
+                        cachedValues.put(propertyNamePrefix + propertyName, fieldValues.get(propertyName)); 
                     }
                     catch (FormatException e) {
                         cachedValues.put(propertyNamePrefix + propertyName, fieldValues.get(propertyName));

@@ -53,8 +53,7 @@ limitations under the License.
 		<aopalliance.version>1.0</aopalliance.version>
 		<asm.version>3.2</asm.version>
 		<bcprov.version>1.45</bcprov.version>
-		<!-- the 3.x codebase is completely different - switching will require 
-			rewriting much code -->
+		<!-- the 3.x codebase is completely different - switching will require rewriting much code -->
 		<bsf.version>2.4.0</bsf.version>
 		<casclient.version>2.1.1</casclient.version>
 		<cas-client-core.version>3.1.11</cas-client-core.version>
@@ -173,21 +172,27 @@ limitations under the License.
 		</testResources>
 		<pluginManagement>
 			<plugins>
-				<!-- This plugin helps enforce that excluded dependencies stay excluded 
+				<!--
+				    This plugin helps enforce that excluded dependencies stay excluded 
 					and don't sneak back in through another dependency (a global ban). Here are 
-					a few common situations this plugin helps with: 1) multiple implementations 
-					of a dependency - you only want to use one implementation (ex: commons-logging 
-					vs jcl-over-slf4j, javax.mail vs geronimo-javamail_1.4_spec) 2) similar maven 
-					artifacts are produced for the same project - you only need to include one 
-					(ex: cglib vs cglib-nodep) 3) an artifact's group id or artifact id has been 
-					renamed - maven considers these different artifacts and you only want to 
-					include one (ex: opensymphony:quartz vs org.opensymphony.quartz:quartz vs 
-					org.quartz-scheduler:quartz) 4) an artifact was added to the container and 
-					no longer is needed (ex: jaxb in java 6) This plugin also helps enforce consistent 
-					a consistent Java & Maven version are used. This helps the stability of builds 
-					across systems. This plugin also enforces that plugins specify a version 
-					number. Using meta version tags or not specifing a version on a plugin is 
-					a decrecated feature as it leads to build instability. -->
+					a few common situations this plugin helps with:
+					
+					1) multiple implementations of a dependency - you only want to use one implementation
+					   (ex: commons-logging vs jcl-over-slf4j, javax.mail vs geronimo-javamail_1.4_spec)
+					2) similar maven artifacts are produced for the same project - you only need to include one 
+					   (ex: cglib vs cglib-nodep)
+					3) an artifact's group id or artifact id has been renamed - maven considers these different
+					   artifacts and you only want to include one
+					   (ex: opensymphony:quartz vs org.opensymphony.quartz:quartz vs org.quartz-scheduler:quartz)
+					4) an artifact was added to the container and no longer is needed
+					   (ex: jaxb in java 6)
+					   
+					This plugin also helps enforce consistent a consistent Java & Maven version are used.  This helps the
+					stability of builds across systems.
+					
+					This plugin also enforces that plugins specify a version number.  Using meta version tags or not specifing a version
+					on a plugin is a decrecated feature as it leads to build instability.
+			    -->
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-enforcer-plugin</artifactId>
@@ -233,8 +238,7 @@ limitations under the License.
 											<exclude>org.opensymphony.quartz</exclude>
 											<exclude>opensymphony:quartz</exclude>
 
-											<!-- jcl-over-slf4j is an alternate implementation of commons-logging 
-												- excluding commons-logging -->
+											<!-- jcl-over-slf4j is an alternate implementation of commons-logging - excluding commons-logging -->
 											<exclude>commons-logging</exclude>
 											<!-- already including a different jcl-over-slf4j -->
 											<exclude>org.slf4j:jcl104-over-slf4j</exclude>
@@ -248,8 +252,7 @@ limitations under the License.
 											<!-- already including the jdk16 version -->
 											<exclude>org.bouncycastle:bcprov-jdk15</exclude>
 
-											<!-- excluding old jstl implementations which can cause hard-to-detect 
-												errors -->
+											<!-- excluding old jstl implementations which can cause hard-to-detect errors -->
 											<exclude>taglibs:standard</exclude>
 											<exclude>javax.servlet:jstl</exclude> <!-- allowing (including) a specific version below -->
 
@@ -625,8 +628,7 @@ limitations under the License.
 				<version>${aopalliance.version}</version>
 			</dependency>
 
-			<!-- explicitly including asm to change version number from what maven 
-				would have resolved it to -->
+			<!-- explicitly including asm to change version number from what maven would have resolved it to -->
 			<dependency>
 				<groupId>asm</groupId>
 				<artifactId>asm</artifactId>
@@ -742,8 +744,7 @@ limitations under the License.
 						<artifactId>commons-logging</artifactId>
 						<groupId>commons-logging</groupId>
 					</exclusion>
-					<!-- excluding because struts requires a newer version than is brought 
-						in from 1.3.1 of commons-validator -->
+					<!-- excluding because struts requires a newer version than is brought in from 1.3.1 of commons-validator -->
 					<exclusion>
 						<groupId>commons-digester</groupId>
 						<artifactId>commons-digester</artifactId>
@@ -785,7 +786,6 @@ limitations under the License.
 			</dependency>
 
 			<dependency>
-				<!-- groupid was changed to org.directwebremoting in later versions -->
 				<groupId>org.directwebremoting</groupId>
 				<artifactId>dwr</artifactId>
 				<version>${dwr.version}</version>
@@ -863,8 +863,7 @@ limitations under the License.
 				<version>${jsr311-api.version}</version>
 			</dependency>
 
-			<!-- explicitly including jaxen to change version number from what maven 
-				would have resolved it to -->
+			<!-- explicitly including jaxen to change version number from what maven would have resolved it to -->
 			<dependency>
 				<groupId>jaxen</groupId>
 				<artifactId>jaxen</artifactId>
@@ -933,8 +932,7 @@ limitations under the License.
 			</dependency>
 
 			<dependency>
-				<!-- groupid will change to org.opensymphony.oscache if they ever release 
-					another version -->
+				<!-- groupid will change to org.opensymphony.oscache if they ever release another version -->
 				<groupId>opensymphony</groupId>
 				<artifactId>oscache</artifactId>
 				<version>${oscache.version}</version>
@@ -1365,8 +1363,7 @@ limitations under the License.
 				<version>${jdom.version}</version>
 			</dependency>
 
-			<!-- the jsp libraries have not been moved over to eclipse as of jetty 
-				7 - this is required for jetty 7 -->
+			<!-- the jsp libraries have not been moved over to eclipse as of jetty 7 - this is required for jetty 7 -->
 			<dependency>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jsp-2.1-glassfish</artifactId>
@@ -1547,8 +1544,7 @@ limitations under the License.
 				<version>${xapool.version}</version>
 			</dependency>
 
-			<!-- explicitly including xercesImpl to change version number from what 
-				maven would have resolved it to -->
+			<!-- explicitly including xercesImpl to change version number from what maven would have resolved it to -->
 			<dependency>
 				<groupId>xerces</groupId>
 				<artifactId>xercesImpl</artifactId>

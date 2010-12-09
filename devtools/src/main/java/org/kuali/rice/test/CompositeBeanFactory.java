@@ -65,7 +65,7 @@ public final class CompositeBeanFactory implements BeanFactory {
 					return o;
 				}	
 			} catch (BeansException e) {
-				LOG.info("bean exception", e);
+				LOG.debug("bean exception", e);
 			}
 		}
 		return null;

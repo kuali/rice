@@ -62,7 +62,16 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
     }
 
     public void setDefaultName(KimEntityName defaultName) {
-        this.defaultName = new KimEntityNameInfo(defaultName);
+        if (defaultName instanceof KimEntityNameInfo) {
+            this.defaultName = (KimEntityNameInfo) defaultName;
+        }
+        else {
+            this.defaultName = new KimEntityNameInfo(defaultName);
+        }
+    }
+
+    public void setDefaultName(KimEntityNameInfo defaultName) {
+        this.defaultName = defaultName;
     }
 
     /**
@@ -103,8 +112,17 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 
     public void setDefaultAffiliation(KimEntityAffiliation defaultAffiliation) {
         if (defaultAffiliation != null) {
-            this.defaultAffiliation = new KimEntityAffiliationInfo(defaultAffiliation);
+            if (defaultAffiliation instanceof KimEntityAffiliationInfo) {
+                this.defaultAffiliation = (KimEntityAffiliationInfo) defaultAffiliation;
+            }
+            else {
+                this.defaultAffiliation = new KimEntityAffiliationInfo(defaultAffiliation);
+            }
         }
+    }
+
+    public void setDefaultAffiliation(KimEntityAffiliationInfo defaultAffiliation) {
+        this.defaultAffiliation = defaultAffiliation;
     }
 
     /**
@@ -117,8 +135,17 @@ public class KimEntityDefaultInfo extends KimInactivatableInfo {
 
     public void setPrimaryEmployment(KimEntityEmploymentInformation primaryEmployment) {
         if (primaryEmployment != null) {
-            this.primaryEmployment = new KimEntityEmploymentInformationInfo(primaryEmployment);
+            if (primaryEmployment instanceof KimEntityEmploymentInformationInfo) {
+                this.primaryEmployment = (KimEntityEmploymentInformationInfo) primaryEmployment;
+            }
+            else {
+                this.primaryEmployment = new KimEntityEmploymentInformationInfo(primaryEmployment);
+            }
         }
+    }
+
+    public void setPrimaryEmployment(KimEntityEmploymentInformationInfo primaryEmployment) {
+        this.primaryEmployment = primaryEmployment;
     }
 
     /**

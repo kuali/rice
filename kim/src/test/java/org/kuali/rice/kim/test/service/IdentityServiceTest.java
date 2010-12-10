@@ -94,12 +94,16 @@ public class IdentityServiceTest extends KIMTestCase {
 		String principalId = "KULUSER";
 		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalId(principalId);
 		assertNotNull("entity must not be null", info);
+        assertTrue("entity must be active", info.isActive());
 		assertNotNull("entity principals must not be null", info.getPrincipals());
 		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
 		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
 			assertEquals("Wrong principal id", principalId, principalInfo.getPrincipalId());
 		}
 		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
+        assertNotNull("entity should have default name", info.getDefaultName());
+        assertEquals("first name is incorrect", "KULUSER",info.getDefaultName().getFirstName());
+        assertEquals("last name is incorrect", "KULUSER",info.getDefaultName().getLastName());
 	}
 
 	@Test
@@ -107,12 +111,16 @@ public class IdentityServiceTest extends KIMTestCase {
 		String principalName = "kuluser";
 		KimEntityDefaultInfo info = identityService.getEntityDefaultInfoByPrincipalName(principalName);
 		assertNotNull("entity must not be null", info);
+        assertTrue("entity must be active", info.isActive());
 		assertNotNull("entity principals must not be null", info.getPrincipals());
 		assertEquals("entity must have exactly 1 principal", 1, info.getPrincipals().size());
 		for (KimPrincipalInfo principalInfo : info.getPrincipals()) {
 			assertEquals("Wrong principal name", principalName, principalInfo.getPrincipalName());
 		}
 		assertTrue("entity external identifiers must not be null", (info.getExternalIdentifiers() == null) || info.getExternalIdentifiers().isEmpty());
+        assertNotNull("entity should have default name", info.getDefaultName());
+        assertEquals("first name is incorrect", "KULUSER",info.getDefaultName().getFirstName());
+        assertEquals("last name is incorrect", "KULUSER",info.getDefaultName().getLastName());
 	}
 
 	@Test
@@ -171,6 +179,9 @@ public class IdentityServiceTest extends KIMTestCase {
 		for (KimEntityDefaultInfo kimEntityDefaultInfo : results) {
 			assertEquals("Entity should have only one principal for this test", 1, kimEntityDefaultInfo.getPrincipals().size());
 			assertEquals("Principal Ids should match", principalIdToTest, kimEntityDefaultInfo.getPrincipals().get(0).getPrincipalId());
+            assertNotNull("entity should have default name", kimEntityDefaultInfo.getDefaultName());
+            assertEquals("first name is incorrect", "Principal",kimEntityDefaultInfo.getDefaultName().getFirstName());
+            assertEquals("last name is incorrect", "One",kimEntityDefaultInfo.getDefaultName().getLastName());
 		}
 	}
 

@@ -968,30 +968,4 @@
     <field-descriptor column="DEST_DOC_ID" name="destDocId" jdbc-type="BIGINT"/>
   </class-descriptor>
 
-  	<class-descriptor class="org.kuali.rice.kew.ria.bo.RIADocTypeMap" table="KREW_RIA_DOCTYPE_MAP_T">
-		<field-descriptor name="ID" column="ID" jdbc-type="BIGINT" primarykey="true" index="true" />
-		<field-descriptor name="riaDocTypeName" column="RIA_DOC_TYPE_NAME" jdbc-type="VARCHAR" />
-		<field-descriptor name="riaUrl" column="RIA_URL" jdbc-type="VARCHAR" />
-		<field-descriptor name="helpUrl" column="HELP_URL" jdbc-type="VARCHAR" />
-		<field-descriptor name="initGroups" column="INIT_GROUPS" jdbc-type="VARCHAR" />
-		<field-descriptor name="editable" column="EDITABLE" jdbc-type="CHAR" conversion="org.kuali.rice.kns.util.OjbCharBooleanConversion" />
-		<field-descriptor name="updatedAt" column="UPDATED_AT" jdbc-type="DATE" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-	</class-descriptor>
-
-	<class-descriptor class="org.kuali.rice.kew.ria.document.RIADocument" table="KREW_RIA_DOC_T">
-		<field-descriptor name="versionNumber" column="VER_NBR" jdbc-type="BIGINT" locking="true" />
-		<field-descriptor name="objectId" column="OBJ_ID" jdbc-type="VARCHAR" index="true" />
-		<field-descriptor name="documentNumber" column="RIA_ID" jdbc-type="VARCHAR" primarykey="true" />
-		<field-descriptor name="xmlContent" column="XML_CONTENT" jdbc-type="VARCHAR" />
-		<field-descriptor name="riaDocTypeName" column="RIA_DOC_TYPE_NAME" jdbc-type="VARCHAR" />
-		<!--  object references -->
-		<reference-descriptor name="documentHeader" class-ref="org.kuali.rice.kns.bo.DocumentHeader" auto-retrieve="true" auto-update="object" auto-delete="object">
-			<foreignkey field-ref="documentNumber" />
-		</reference-descriptor>
-	</class-descriptor>
-
-
-
 </descriptor-repository>

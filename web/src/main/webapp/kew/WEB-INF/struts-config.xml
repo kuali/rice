@@ -29,9 +29,6 @@
         <form-bean name="IngesterForm" type="org.kuali.rice.kew.batch.web.IngesterForm" />
         <form-bean name="FeedbackForm" type="org.kuali.rice.kew.feedback.web.FeedbackForm"/>
         <form-bean name="NoteForm" type="org.kuali.rice.kew.notes.web.NoteForm" />
-        
-        <!-- RIA form -->
-        <form-bean name="RIADocumentForm" type="org.kuali.rice.kew.ria.web.RIADocumentForm" />
     </form-beans>
 
 	<global-exceptions>
@@ -216,13 +213,6 @@
           <forward name="basic" path="/WEB-INF/jsp/notes/AllNotesReport.jsp" />
           <forward name="requiredStateError" path="/WEB-INF/jsp/notes/AllNotesReport.jsp"/>
           <forward name="finalStateError" path="/WEB-INF/jsp/notes/AllNotesReport.jsp"/>
-      </action>
-
-      <!-- End convert from EN module -->
-
-      <action path="/riaDocument" name="RIADocumentForm" input="/WEB-INF/jsp/ria/riaDocument.jsp" type="org.kuali.rice.kew.ria.web.RIADocumentAction"
-              scope="request" parameter="methodToCall" validate="true" attribute="KualiForm">
-              <forward name="basic" path="/WEB-INF/jsp/ria/riaDocument.jsp" />
       </action>
 
     </action-mappings>

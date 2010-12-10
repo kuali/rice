@@ -52,7 +52,7 @@ public class CurrencyFormatter extends Formatter {
     private static Logger LOG = Logger.getLogger(CurrencyFormatter.class);
     public static final String SHOW_SYMBOL = "showCurrencySymbol";
     private static final Pattern CURRENCY_PATTERN = Pattern.compile("[-\\(\\)\\$\\.,0-9]*");
-    private static final Pattern TRAILING_DECIMAL_PATTERN = Pattern.compile(".*\\.[0-9]{0,2}\\)?$");
+    private static final Pattern TRAILING_DECIMAL_PATTERN = Pattern.compile("^(\\.[0-9]{0,2}){0,1}$");
     // end Kuali Foundation modification
 
     /**
@@ -93,7 +93,7 @@ public class CurrencyFormatter extends Formatter {
             }
 
             // preemptively detect String with excessive digits after the decimal, to prevent them from being silently rounded
-            if (rawString.contains(".") && !TRAILING_DECIMAL_PATTERN.matcher(rawString).matches()) {
+            if (rawString.contains(".") && !TRAILING_DECIMAL_PATTERN.matcher(target.substring(target.indexOf("."), target.length())).matches()) {
                 throw new FormatException("parsing", RiceKeyConstants.ERROR_CURRENCY_DECIMAL, rawString);
             }
 

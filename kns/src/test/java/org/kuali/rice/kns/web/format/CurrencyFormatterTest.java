@@ -172,4 +172,59 @@ public class CurrencyFormatterTest extends KNSTestCase {
 
         assertEquals(expected, parsedNumber);
     }
+    
+    
+    /**
+     * Test-case using a number with multiple decimal parts
+     * @throws Exception
+     */    @Test 
+    public void testNumberWithMultipleDecimalParts() throws Exception {
+        String stringValue = "12345.12.23.34";
+        boolean failedAsExpected = false;
+        try {
+            f.convertToObject(stringValue);
+        }
+        catch (FormatException e) {
+            failedAsExpected = true;
+            assertEquals(RiceKeyConstants.ERROR_CURRENCY_DECIMAL, e.getErrorKey());
+        }
+        assertTrue(failedAsExpected);
+    }
+    
+    @Test
+    public void testNumberWithMultipleDecimalParts_validate() throws Exception {
+        String target = "$222222.43.56";
+        CurrencyFormatter cf = new CurrencyFormatter();
+        assertFalse(cf.validate(target));
+    }
+    
+    @Test
+    public void testNumberWithDecimalPart_validate1() throws Exception {
+        String target = ".56";
+        assertTrue(f.validate(target));
+    }
+    
+    @Test
+    public void testNumberWithDecimalPart_validate2() throws Exception {
+        String target = "43.567";
+        assertFalse(f.validate(target));
+    }
+    
+    @Test
+    public void testNumberWithDecimalPart_validate3() throws Exception {
+        String target = "222222.";
+        assertTrue(f.validate(target));
+    }
+    
+    @Test
+    public void testNumberWithDecimalPart_validate4() throws Exception {
+        String target = "222222.2";
+        assertTrue(f.validate(target));
+    }
+    
+    @Test
+    public void testNumberWithDecimalPart_validate5() throws Exception {
+        String target = "222222";
+        assertTrue(f.validate(target));
+    }
 }

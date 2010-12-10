@@ -29,7 +29,7 @@ public class UTF8AnyCharacterValidationPatternTest extends BaseRiceTestCase {
         pattern = new UTF8AnyCharacterValidationPattern();
     }
 
-    @Test public final void testMatch_allACSII() {
+    @Test public final void testMatch_allUTF8ExceptWhiteSpace() {
         boolean[] expected = { true, // ""
                 true, // "!!!"
                 true, // "[a-9]"
@@ -57,7 +57,7 @@ public class UTF8AnyCharacterValidationPatternTest extends BaseRiceTestCase {
         UTF8ValidationTestUtils.assertPatternMatches(pattern, expected);
     }
     
-    @Test public final void testMatch_allowUTF8() {
+    @Test public final void testMatch_allowALLUTF8() {
         boolean[] expected = { true, // ""
                 true, // "!!!"
                 true, // "[a-9]"

@@ -170,15 +170,8 @@
 	</bean>
 
 	<bean id="dataDictionaryService" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl">
-		<constructor-arg>
-			<bean class="org.kuali.rice.kns.datadictionary.DataDictionary">
-				<property name="dataDictionaryMapper">
-					<bean class="org.kuali.rice.kns.datadictionary.RIADataDictionaryMapper"/>
-				</property>
-			</bean>
-		</constructor-arg>
 		<property name="kualiConfigurationService" ref="kualiConfigurationService" />
-  		<property name="kualiModuleService" ref="kualiModuleService" />
+		<property name="kualiModuleService" ref="kualiModuleService" />
 		<property name="baselinePackages">
 			<list>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/DataDictionaryBaseTypes.xml</value>

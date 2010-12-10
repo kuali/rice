@@ -151,7 +151,7 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupa
     	List<KimPrincipalInfo> principals = new ArrayList<KimPrincipalInfo>();
         if(StringUtils.isNotEmpty(assignedToPrincipalName)){
         	searchCriteria = new HashMap<String, String>();
-        	searchCriteria.put("principalName", WILDCARD+assignedToPrincipalName+WILDCARD);
+        	searchCriteria.put("principals.principalName", WILDCARD+assignedToPrincipalName+WILDCARD);
         	List<KimEntityInfo> kimEntityInfoList = KIMServiceLocator.getIdentityManagementService().lookupEntityInfo(searchCriteria, true);
         	if(kimEntityInfoList == null || kimEntityInfoList.isEmpty()) {
         		return null;

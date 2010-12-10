@@ -37,6 +37,7 @@ public abstract class BaseInvocationHandler implements InvocationHandler {
 	    hashCodeMethod = Object.class.getMethod("hashCode", (Class[])null);
 	    equalsMethod = Object.class.getMethod("equals", new Class[] { Object.class });
 	    } catch (NoSuchMethodException e) {
+	    	// this should never happen
 	    	throw new NoSuchMethodError(e.getMessage());
 	    }
     }

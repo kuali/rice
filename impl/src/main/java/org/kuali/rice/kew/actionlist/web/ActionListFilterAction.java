@@ -81,15 +81,16 @@ public class ActionListFilterAction extends KualiAction {
 
 	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
-        if (getUserSession(request).getActionListFilter() != null) {
-            ActionListFilter actionListFilter = getUserSession(request).getActionListFilter();
+        final org.kuali.rice.kns.UserSession commonUserSession = getCommonUserSession();
+        final ActionListFilter filter = (ActionListFilter) commonUserSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
+        if (filter != null) {
             if (filterForm.getDocTypeFullName() != null && ! "".equals(filterForm.getDocTypeFullName())) {
-                actionListFilter.setDocumentType(filterForm.getDocTypeFullName());
-                getUserSession(request).setActionListFilter(actionListFilter);
-                filterForm.setFilter(actionListFilter);
+            	filter.setDocumentType(filterForm.getDocTypeFullName());
+            	commonUserSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
+                filterForm.setFilter(filter);
             } else {
-                filterForm.setFilter(actionListFilter);
-                filterForm.setDocTypeFullName(actionListFilter.getDocumentType());
+                filterForm.setFilter(filter);
+                filterForm.setDocTypeFullName(filter.getDocumentType());
             }
         }
         return mapping.findForward("viewFilter");
@@ -98,7 +99,7 @@ public class ActionListFilterAction extends KualiAction {
     public ActionForward filter(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         //validate the filter through the actionitem/actionlist service (I'm thinking actionlistservice)
-        UserSession session = getUserSession(request);
+        final org.kuali.rice.kns.UserSession commonUserSession = getCommonUserSession();
         ActionListFilter alFilter = filterForm.getLoadedFilter();
         if (StringUtils.isNotBlank(alFilter.getDelegatorId()) && !KEWConstants.DELEGATION_DEFAULT.equals(alFilter.getDelegatorId()) &&
         		StringUtils.isNotBlank(alFilter.getPrimaryDelegateId()) && !KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(alFilter.getPrimaryDelegateId())){
@@ -106,7 +107,7 @@ public class ActionListFilterAction extends KualiAction {
         	// then reset the secondary delegation drop-down to its default value.
         	alFilter.setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
         }
-        session.setActionListFilter(alFilter);
+        commonUserSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, alFilter);
         KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPrincipal().getPrincipalId());
         if (GlobalVariables.getMessageMap().isEmpty()) {
             return mapping.findForward("viewActionList");
@@ -124,7 +125,8 @@ public class ActionListFilterAction extends KualiAction {
         filterForm.setLastAssignedDateTo("");
         filterForm.setDocTypeFullName("");
         UserSession session = getUserSession(request);
-        session.setActionListFilter(null);
+        final org.kuali.rice.kns.UserSession commonUserSession = getCommonUserSession();
+        commonUserSession.removeObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
         KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPrincipal().getPrincipalId());
         return mapping.findForward("viewFilter");
     }
@@ -184,5 +186,9 @@ public class ActionListFilterAction extends KualiAction {
 		return UserSession.getAuthenticatedUser();
 	}
 
+	private org.kuali.rice.kns.UserSession getCommonUserSession() {
+		return GlobalVariables.getUserSession();
+	}
+	
 }
 

@@ -189,14 +189,16 @@ public class ActionListAction extends KualiAction {
         plog.log("Time to initialize");
         try {
             UserSession uSession = getUserSession(request);
+            final org.kuali.rice.kns.UserSession commonUserSession = getCommonUserSession();
             String principalId = null;
-            if (uSession.getActionListFilter() == null) {
+            if (commonUserSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME) == null) {
                 ActionListFilter filter = new ActionListFilter();
                 filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
                 filter.setExcludeDelegationType(true);
-                uSession.setActionListFilter(filter);
+                commonUserSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
             }
 
+            final ActionListFilter filter = (ActionListFilter) commonUserSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
             /* 'forceListRefresh' variable used to signify that the action list filter has changed
              * any time the filter changes the action list must be refreshed or filter may not take effect on existing
              * list items... only exception is if action list has not loaded previous and fetching of the list has not
@@ -207,8 +209,8 @@ public class ActionListAction extends KualiAction {
             	principalId = uSession.getHelpDeskActionListPrincipal().getPrincipalId();
             } else {
                 if (!StringUtils.isEmpty(form.getDocType())) {
-                    uSession.getActionListFilter().setDocumentType(form.getDocType());
-                    uSession.getActionListFilter().setExcludeDocumentType(false);
+                	filter.setDocumentType(form.getDocType());
+                	filter.setExcludeDocumentType(false);
                     forceListRefresh = true;
                 }
                 principalId = uSession.getPerson().getPrincipalId();
@@ -229,16 +231,16 @@ public class ActionListAction extends KualiAction {
             			} else {
             				form.setDelegationId(KEWConstants.DELEGATION_DEFAULT);
             			}
-            		} else if (StringUtils.isNotBlank(uSession.getActionListFilter().getPrimaryDelegateId()) &&
-            				!KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(uSession.getActionListFilter().getPrimaryDelegateId())) {
+            		} else if (StringUtils.isNotBlank(filter.getPrimaryDelegateId()) &&
+            				!KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(filter.getPrimaryDelegateId())) {
             			// If the primary delegation drop-down is invisible but a primary delegation filter is in place, and if the secondary delegation
             			// drop-down has a non-default value selected, then reset the primary delegation filtering.
-            			uSession.getActionListFilter().setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
+            			filter.setPrimaryDelegateId(KEWConstants.PRIMARY_DELEGATION_DEFAULT);
             		}
             	}
             	// Enable the secondary delegation filtering.
-           		uSession.getActionListFilter().setDelegatorId(form.getDelegationId());
-           		uSession.getActionListFilter().setExcludeDelegatorId(false);
+           		filter.setDelegatorId(form.getDelegationId());
+           		filter.setExcludeDelegatorId(false);
            		actionList = null;
             }
 
@@ -246,13 +248,13 @@ public class ActionListAction extends KualiAction {
             	// If the secondary delegation drop-down is invisible but a secondary delegation filter is in place, and if the primary delegation
             	// drop-down has a non-default value selected, then reset the secondary delegation filtering.
             	if (StringUtils.isBlank(form.getDelegationId()) && !KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(form.getPrimaryDelegateId()) && 
-            			StringUtils.isNotBlank(uSession.getActionListFilter().getDelegatorId()) &&
-            					!KEWConstants.DELEGATION_DEFAULT.equals(uSession.getActionListFilter().getDelegatorId())) {
-            		uSession.getActionListFilter().setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
+            			StringUtils.isNotBlank(filter.getDelegatorId()) &&
+            					!KEWConstants.DELEGATION_DEFAULT.equals(filter.getDelegatorId())) {
+            		filter.setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
             	}
             	// Enable the primary delegation filtering.
-            	uSession.getActionListFilter().setPrimaryDelegateId(form.getPrimaryDelegateId());
-            	uSession.getActionListFilter().setExcludeDelegatorId(false);
+            	filter.setPrimaryDelegateId(form.getPrimaryDelegateId());
+            	filter.setExcludeDelegatorId(false);
             	actionList = null;
             }
             
@@ -262,21 +264,21 @@ public class ActionListAction extends KualiAction {
             }
 
             if (isOutboxMode(form, request, preferences)) {
-        	    actionList = new ArrayList(actionListSrv.getOutbox(principalId, uSession.getActionListFilter()));
+        	    actionList = new ArrayList(actionListSrv.getOutbox(principalId, filter));
         	    form.setOutBoxEmpty(actionList.isEmpty());
             } else {
                 if (actionList == null) {
                 	//clear out old User Option records if they exist
                 	actionListSrv.refreshActionList(getUserSession(request).getPerson().getPrincipalId());
                 	// fetch the action list
-                    actionList = new ArrayList(actionListSrv.getActionList(principalId, uSession.getActionListFilter()));
+                    actionList = new ArrayList(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                 } else if (forceListRefresh) {
                 	// force a refresh... usually based on filter change or parameter specifying refresh needed
-                    actionList = new ArrayList(actionListSrv.getActionList(principalId, uSession.getActionListFilter()));
+                    actionList = new ArrayList(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                 } else if (actionListSrv.refreshActionList(getUserSession(request).getPerson().getPrincipalId())) {
-                    actionList = new ArrayList(actionListSrv.getActionList(principalId, uSession.getActionListFilter()));
+                    actionList = new ArrayList(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                 } else {
                 	if (!uSession.isUpdateActionList()) {
@@ -292,17 +294,17 @@ public class ActionListAction extends KualiAction {
             if (KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
                 Collection delegators = actionListSrv.findUserSecondaryDelegators(principalId);
                 form.setDelegators(getWebFriendlyRecipients(delegators));
-                form.setDelegationId(uSession.getActionListFilter().getDelegatorId());
+                form.setDelegationId(filter.getDelegatorId());
             }
 
             // Build the drop-down of primary delegates.
             if (KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getPrimaryDelegateFilter())) {
             	Collection<Recipient> pDelegates = actionListSrv.findUserPrimaryDelegations(principalId);
             	form.setPrimaryDelegates(getWebFriendlyRecipients(pDelegates));
-            	form.setPrimaryDelegateId(uSession.getActionListFilter().getPrimaryDelegateId());
+            	form.setPrimaryDelegateId(filter.getPrimaryDelegateId());
             }
             
-            form.setFilterLegend(uSession.getActionListFilter().getFilterLegend());
+            form.setFilterLegend(filter.getFilterLegend());
             plog.log("Setting attributes");
 
             int pageSize = getPageSize(preferences);
@@ -712,10 +714,10 @@ public class ActionListAction extends KualiAction {
 
     public ActionForward clearFilter(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("clearFilter ActionListAction");
-        UserSession session = getUserSession(request);
-        session.setActionListFilter(null);
+        final org.kuali.rice.kns.UserSession commonUserSession = getCommonUserSession();
+        commonUserSession.removeObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
-        KEWServiceLocator.getActionListService().saveRefreshUserOption(session.getPrincipalId());
+        KEWServiceLocator.getActionListService().saveRefreshUserOption(commonUserSession.getPrincipalId());
         LOG.debug("end clearFilter ActionListAction");
         return start(mapping, form, request, response);
     }
@@ -809,6 +811,10 @@ public class ActionListAction extends KualiAction {
 
 	private UserSession getUserSession(HttpServletRequest request){
 		return UserSession.getAuthenticatedUser();
+	}
+	
+	private org.kuali.rice.kns.UserSession getCommonUserSession() {
+		return GlobalVariables.getUserSession();
 	}
 
     private static class ActionItemComparator implements Comparator {

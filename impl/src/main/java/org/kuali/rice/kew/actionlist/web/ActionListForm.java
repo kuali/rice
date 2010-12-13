@@ -325,7 +325,7 @@ public class ActionListForm extends KualiForm {
         setHeaderButtons(getHeaderButtons());
 
         // take the UserSession from the HttpSession and add it to the request
-        request.setAttribute("UserSession", userSession);
+        request.setAttribute(KNSConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
 
         //refactor actionlist.jsp not to be dependent on this
         request.setAttribute("preferences", userSession);

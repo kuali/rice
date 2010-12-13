@@ -17,6 +17,7 @@ package org.kuali.rice.kns;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -358,5 +359,10 @@ public class UserSession implements Serializable {
 		}
 
 		return hasTicket;
+	}
+	
+	/** retrieves an unmodifiable view of the objectMap. */
+	public Map<String, Object> getObjectMap() {
+		return Collections.unmodifiableMap(this.objectMap);
 	}
 }

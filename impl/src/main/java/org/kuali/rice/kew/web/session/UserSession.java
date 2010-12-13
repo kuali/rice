@@ -57,7 +57,7 @@ public class UserSession implements Serializable {
 
     private int nextObjectKey;
     private transient Map objectMap = new HashMap();
-    private ActionListFilter actionListFilter;
+//    private ActionListFilter actionListFilter;
     private Preferences preferences;
     private List authentications = new ArrayList();
 
@@ -163,14 +163,14 @@ public class UserSession implements Serializable {
         return preferences;
     }
 
-    public ActionListFilter getActionListFilter() {
+/*    public ActionListFilter getActionListFilter() {
         return actionListFilter;
     }
 
     public void setActionListFilter(ActionListFilter actionListFilter) {
         this.actionListFilter = actionListFilter;
     }
-
+*/
     public KimPrincipal getActualPrincipal() {
     	return actualPrincipal;
     }

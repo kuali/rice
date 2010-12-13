@@ -1024,4 +1024,6 @@ public class KEWConstants extends JSTLConstants {
 	public static final String ROLEROUTE_QUALIFIER_RESOLVER_CLASS_ELEMENT = "qualifierResolverClass";
 	public static final String ROLEROUTE_RESPONSIBILITY_TEMPLATE_NAME_ELEMENT = "responsibilityTemplateName";
 	public static final String ROLEROUTE_NAMESPACE_ELEMENT = "namespace";
+	
+	public static final String ACTION_LIST_FILTER_ATTR_NAME = "ActionListFilter";
 }

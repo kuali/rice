@@ -47,7 +47,6 @@ limitations under the License.
 		<test.includes>**/*Test.java</test.includes>
 
 		<!-- project dependencies -->
-		<abdera.version>1.1</abdera.version>
 		<!-- no longer maintained - should use spring security instead -->
 		<acegi.version>1.0.7</acegi.version>
 		<antlr.version>2.7.7</antlr.version>
@@ -218,14 +217,14 @@ limitations under the License.
 
 									<!-- Maven 3 Migration: This rule is not supported by Maven 3. See: 
 										http://jira.codehaus.org/browse/MENFORCER-98 -->
-									<requirePluginVersions>
+									<!-- <requirePluginVersions>
 										<message>Specifying a plugin w/o a version is a deprecated
 											feature b/c it can cause non-reproducible builds</message>
 										<banLatest>true</banLatest>
 										<banRelease>true</banRelease>
 										<banSnapshots>true</banSnapshots>
 										<phases>clean,deploy,site</phases>
-									</requirePluginVersions>
+									</requirePluginVersions>-->
 
 									<bannedDependencies>
 										<excludes>
@@ -1171,34 +1170,6 @@ limitations under the License.
 					<exclusion>
 						<groupId>org.bouncycastle</groupId>
 						<artifactId>bcprov-jdk15</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.abdera</groupId>
-				<artifactId>abdera-core</artifactId>
-				<version>${abdera.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
-					</exclusion>
-					<exclusion>
-						<groupId>org.apache.geronimo.specs</groupId>
-						<artifactId>geronimo-activation_1.0.2_spec</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-
-			<dependency>
-				<groupId>org.apache.abdera</groupId>
-				<artifactId>abdera-parser</artifactId>
-				<version>${abdera.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>commons-logging</groupId>
-						<artifactId>commons-logging</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>

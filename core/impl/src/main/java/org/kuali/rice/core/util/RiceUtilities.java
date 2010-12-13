@@ -184,17 +184,6 @@ public class RiceUtilities {
     }
 	
 	/**
-	 * Determines if the given resource location exists.
-	 * 
-	 * @param resourceLoc resource location; syntax supported by {@link DefaultResourceLoader} 
-	 * @return true if the resource exists, false otherwise
-	 */
-	public static boolean doesResourceExist(String resourceLoc) {
-		Resource resource = getResource(resourceLoc);
-	    return resource != null && resource.exists();
-	}
-	
-	/**
 	 * Returns a handle to the requested Resource.
 	 * 
 	 * @param resourceLoc resource location; syntax supported by {@link DefaultResourceLoader}

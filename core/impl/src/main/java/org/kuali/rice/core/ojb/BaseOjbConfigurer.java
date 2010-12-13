@@ -62,7 +62,6 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
 
     public static final String RICE_OJB_PROPERTIES_PARAM = "rice.custom.ojb.properties";
     public static final String OJB_PROPERTIES_PROP = "OJB.properties";
-    public static final String DEFAULT_OJB_PROPERTIES = "org/kuali/rice/core/ojb/RiceOJB.properties";
 
     /**
      * The OJB JCD aliases 
@@ -131,13 +130,6 @@ public class BaseOjbConfigurer extends BaseLifecycle implements InitializingBean
 
     protected String getOjbPropertiesLocation() {
         String ojbPropertiesLocation = ConfigContext.getCurrentContextConfig().getProperty(RICE_OJB_PROPERTIES_PARAM);
-        if (!StringUtils.isBlank(ojbPropertiesLocation)) {
-            LOG.info("Using custom OJB.properites from: " + ojbPropertiesLocation);
-        } else {        	
-            ojbPropertiesLocation = DEFAULT_OJB_PROPERTIES;
-            ConfigContext.getCurrentContextConfig().putProperty(RICE_OJB_PROPERTIES_PARAM, ojbPropertiesLocation);
-            LOG.info("Using default OJB.properties from: " + ojbPropertiesLocation);
-        }
         return ojbPropertiesLocation;
     }
 

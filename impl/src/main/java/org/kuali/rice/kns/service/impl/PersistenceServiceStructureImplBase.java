@@ -44,10 +44,6 @@ public class PersistenceServiceStructureImplBase {
 	 */
 	public PersistenceServiceStructureImplBase() {
 		String ojbPropertyFileLocation = ConfigContext.getCurrentContextConfig().getProperty(BaseOjbConfigurer.RICE_OJB_PROPERTIES_PARAM);
-		if ( StringUtils.isBlank(ojbPropertyFileLocation) ) {
-			ojbPropertyFileLocation = BaseOjbConfigurer.DEFAULT_OJB_PROPERTIES;
-			ConfigContext.getCurrentContextConfig().putProperty(BaseOjbConfigurer.RICE_OJB_PROPERTIES_PARAM, ojbPropertyFileLocation);
-		}
         String currentValue = System.getProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP);
 		try {
 			System.setProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP, ojbPropertyFileLocation);

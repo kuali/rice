@@ -19,11 +19,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -140,6 +140,10 @@ public class UserSession implements Serializable {
        // only allow backdoor in non-production environments
        if ( !KNSServiceLocator.getKualiConfigurationService().isProductionEnvironment() ) {
         this.backdoorUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        if (backdoorUser == null) {
+        	throw new RiceRuntimeException(principalName + " is not a valid principalName");
+        }
+        
         this.workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
        }
     }
@@ -220,15 +224,13 @@ public class UserSession implements Serializable {
      */
     public void removeObjectsByPrefix(String objectKeyPrefix) {
         List<String> removeKeys = new ArrayList<String>();
-        for (Iterator<String> iter = objectMap.keySet().iterator(); iter.hasNext();) {
-            String key = iter.next();
+        for (String key : objectMap.keySet()) {
             if (key.startsWith(objectKeyPrefix)) {
                 removeKeys.add(key);
             }
         }
 
-        for (Iterator<String> iter = removeKeys.iterator(); iter.hasNext();) {
-            String key = iter.next();
+        for (String key : removeKeys) {
             this.objectMap.remove(key);
         }
     }

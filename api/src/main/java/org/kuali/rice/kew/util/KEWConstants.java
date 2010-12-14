@@ -135,8 +135,6 @@ public class KEWConstants extends JSTLConstants {
     public static final String WEEKLY_UNIT = "Weekly";
     public static final String MONTHLY_UNIT = "Monthly";
     public static final String YEARLY_UNIT = "Yearly";
-
-    public static final String USER_SESSION_KEY = "kewUserSession";
     public static final String SUDS_DATASOURCE = "SUDS";
     public static final String APP_CODE = "en";
     public static final String PROD_DEPLOYMENT_CODE = "production.environment.code";
@@ -1033,4 +1031,6 @@ public class KEWConstants extends JSTLConstants {
 	
 	public static final String HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME = "helpDeskActionListPrincipal";
 	public static final String HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME = "helpDeskActionListPerson";
+	public static final String PREFERENCES = "Preferences";
+	public static final String AUTHENTICATIONS = "Authentications";
 }

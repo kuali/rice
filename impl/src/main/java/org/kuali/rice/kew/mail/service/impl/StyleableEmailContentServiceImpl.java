@@ -51,10 +51,10 @@ import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -152,7 +152,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
             	LOG.error("Cannot find user for id " + delegatorId);
             	delegatorDisplayValue = "USER NOT FOUND";
             } else {
-            	delegatorDisplayValue = UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), delegator);
+            	delegatorDisplayValue = UserUtils.getTransposedName(GlobalVariables.getUserSession(), delegator);
             }
         } else if (actionItem.getDelegatorWorkflowId() != null) {
             delegatorType = "workgroup";
@@ -341,7 +341,8 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
      * @param node - the node object to add the actionItem XML to (defaults to the doc variable if null is passed in)
      * @throws Exception
      */
-    public EmailContent generateImmediateReminder(Person user, ActionItem actionItem, DocumentType documentType) {
+    @Override
+	public EmailContent generateImmediateReminder(Person user, ActionItem actionItem, DocumentType documentType) {
     	
     	LOG.info("Starting generation of immediate email reminder...");
     	LOG.info("Action Id: " + actionItem.getActionItemId() + 
@@ -366,7 +367,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         try {
             addObjectXML(doc, user, element, "user");
 //            addActionItem(doc, actionItem, user, node);
-            Node node = (Node) element;
+            Node node = element;
             if (node == null) {
                 node = doc;
             }
@@ -456,15 +457,18 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         node.appendChild(element);
     }
 
-    public EmailContent generateWeeklyReminder(Person user, Collection<ActionItem> actionItems) {
+    @Override
+	public EmailContent generateWeeklyReminder(Person user, Collection<ActionItem> actionItems) {
         return generateReminderForActionItems(user, actionItems, "weeklyReminder", globalEmailStyleSheet);
     }
 
-    public EmailContent generateDailyReminder(Person user, Collection<ActionItem> actionItems) {
+    @Override
+	public EmailContent generateDailyReminder(Person user, Collection<ActionItem> actionItems) {
         return generateReminderForActionItems(user, actionItems, "dailyReminder", globalEmailStyleSheet);
     }
 
-    public EmailContent generateFeedback(FeedbackForm form) {
+    @Override
+	public EmailContent generateFeedback(FeedbackForm form) {
         DocumentBuilder db = getDocumentBuilder(true);
         Document doc = db.newDocument();
         String styleSheet = globalEmailStyleSheet;

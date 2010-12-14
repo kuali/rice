@@ -25,14 +25,19 @@
 		<filter-class>org.displaytag.filter.ResponseOverrideFilter</filter-class>
 	</filter>
 
-  <filter>
-    <filter-name>BootstrapFilter</filter-name>
-    <filter-class>org.kuali.rice.kew.web.BootstrapFilter</filter-class>
-  </filter>
-
 	<filter>
+	  <filter-name>BootstrapFilter</filter-name>
+	  <filter-class>org.kuali.rice.kew.web.BootstrapFilter</filter-class>
+	</filter>
+  
+  	<filter>
 		<filter-name>UserLoginFilter</filter-name>
 		<filter-class>org.kuali.rice.kew.web.UserLoginFilter</filter-class>
+	</filter>
+  
+  	<filter>
+		<filter-name>UserPreferencesFilter</filter-name>
+		<filter-class>org.kuali.rice.kew.web.UserPreferencesFilter</filter-class>
 	</filter>
 
 	<filter-mapping>
@@ -49,40 +54,61 @@
       <filter-name>BootstrapFilter</filter-name>
       <servlet-name>action</servlet-name>
     </filter-mapping>
+    
+    <filter-mapping>
+		<filter-name>UserLoginFilter</filter-name>
+		<servlet-name>action</servlet-name>
+	</filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>UserPreferencesFilter</filter-name>
+       <servlet-name>action</servlet-name>
+    </filter-mapping>
 
     <filter-mapping>
       <filter-name>BootstrapFilter</filter-name>
       <servlet-name>notification</servlet-name>
     </filter-mapping>
-
-	<filter-mapping>
+    
+   	<filter-mapping>
 		<filter-name>UserLoginFilter</filter-name>
-		<servlet-name>action</servlet-name>
+		<servlet-name>notification</servlet-name>
 	</filter-mapping>
-
+    
     <filter-mapping>
-        <filter-name>UserLoginFilter</filter-name>
-        <servlet-name>notification</servlet-name>
+        <filter-name>UserPreferencesFilter</filter-name>
+       <servlet-name>notification</servlet-name>
     </filter-mapping>
-
+    
     <!-- for KCB Spring Web MVC pages -->
     <filter-mapping>
         <filter-name>BootstrapFilter</filter-name>
         <servlet-name>kcb</servlet-name>
     </filter-mapping>
+    
+   	<filter-mapping>
+		<filter-name>UserLoginFilter</filter-name>
+		<servlet-name>kcb</servlet-name>
+	</filter-mapping>
+    
     <filter-mapping>
-        <filter-name>UserLoginFilter</filter-name>
-        <servlet-name>kcb</servlet-name>
+        <filter-name>UserPreferencesFilter</filter-name>
+       <servlet-name>kcb</servlet-name>
     </filter-mapping>
-
+    
     <filter-mapping>
         <filter-name>BootstrapFilter</filter-name>
         <servlet-name>edoclite</servlet-name>
     </filter-mapping>
     
     <filter-mapping>
-        <filter-name>UserLoginFilter</filter-name>
-        <servlet-name>edoclite</servlet-name>
+		<filter-name>UserLoginFilter</filter-name>
+		<servlet-name>edoclite</servlet-name>
+	</filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>UserPreferencesFilter</filter-name>
+       <servlet-name>edoclite</servlet-name>
     </filter-mapping>
 
     <listener>

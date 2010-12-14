@@ -27,7 +27,6 @@ import org.kuali.rice.kew.actionlist.ActionToTake;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -324,14 +323,13 @@ public class ActionListForm extends KualiForm {
 
 	@Override
 	public void populate(HttpServletRequest request) {
-		UserSession userSession = UserSession.getAuthenticatedUser();
         setHeaderButtons(getHeaderButtons());
 
         // take the UserSession from the HttpSession and add it to the request
         request.setAttribute(KNSConstants.USER_SESSION_KEY, GlobalVariables.getUserSession());
 
         //refactor actionlist.jsp not to be dependent on this
-        request.setAttribute("preferences", userSession);
+        request.setAttribute("preferences", GlobalVariables.getUserSession().retrieveObject(KEWConstants.PREFERENCES));
 
         String principalId = GlobalVariables.getUserSession().getPrincipalId();
         final KimPrincipal hdalPrinc = (KimPrincipal) GlobalVariables.getUserSession().retrieveObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);

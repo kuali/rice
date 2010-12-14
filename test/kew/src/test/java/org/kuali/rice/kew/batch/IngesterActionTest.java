@@ -39,9 +39,10 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtils;
 import org.kuali.rice.kew.test.web.MockFormFile;
 import org.kuali.rice.kew.test.web.WorkflowServletRequest;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.UserLoginFilter;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 
@@ -136,12 +137,12 @@ public class IngesterActionTest extends KEWTestCase {
         });
         request.setMethod("post");
         try {
-        	UserSession userSession = (UserSession)request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
+        	UserSession userSession = (UserSession)request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
         	assertNotNull("UserSession should have been established.", userSession);
-        	UserSession.setAuthenticatedUser(userSession);
+        	GlobalVariables.setUserSession(userSession);
         	action.execute(mapping, form, request, response);
         } finally {
-        	UserSession.setAuthenticatedUser(null);
+        	GlobalVariables.setUserSession(null);
         }
 
         // test result

@@ -34,7 +34,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
@@ -42,11 +41,11 @@ import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.dto.StateDTO;
-import org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -60,11 +59,8 @@ import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**
@@ -77,7 +73,8 @@ public class RouteLogAction extends KewKualiAction {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RouteLogAction.class);
     private static Comparator<ActionRequestValue> ROUTE_LOG_ACTION_REQUEST_SORTER = new Utilities.RouteLogActionRequestSorter();
     
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         RouteLogForm rlForm = (RouteLogForm) form;
         Long routeHeaderId = null;
@@ -92,7 +89,7 @@ public class RouteLogAction extends KewKualiAction {
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
 
         DocumentSecurityService security = KEWServiceLocator.getDocumentSecurityService();
-        if (!security.routeLogAuthorized(getUserSession(request), routeHeader, new SecuritySession(UserSession.getAuthenticatedUser()))) {
+        if (!security.routeLogAuthorized(getUserSession(), routeHeader, new SecuritySession(GlobalVariables.getUserSession()))) {
           return mapping.findForward("NotAuthorized");
         }
         
@@ -115,7 +112,7 @@ public class RouteLogAction extends KewKualiAction {
 		// check whether action message logging should be enabled, user must
 		// have KIM permission for doc type 
         boolean isAuthorizedToAddRouteLogMessage = KEWServiceLocator.getDocumentTypePermissionService()
-				.canAddRouteLogMessage(UserSession.getAuthenticatedUser().getPrincipalId(), routeHeader);
+				.canAddRouteLogMessage(GlobalVariables.getUserSession().getPrincipalId(), routeHeader);
 		if (isAuthorizedToAddRouteLogMessage) {
 			rlForm.setEnableLogAction(true);
 		} else {
@@ -266,9 +263,11 @@ public class RouteLogAction extends KewKualiAction {
 		List<ActionRequestValue> actionRequests = 
 			KEWServiceLocator.getActionRequestService().findAllActionRequestsByRouteHeaderId(document.getRouteHeaderId());
 		
-		if (actionRequests != null) for (ActionRequestValue actionRequest : actionRequests) {
-			if (actionRequest.getActionRequestId() != null) {
-				actionRequestIds.add(actionRequest.getActionRequestId());
+		if (actionRequests != null) {
+			for (ActionRequestValue actionRequest : actionRequests) {
+				if (actionRequest.getActionRequestId() != null) {
+					actionRequestIds.add(actionRequest.getActionRequestId());
+				}
 			}
 		}
 		return actionRequestIds;
@@ -296,12 +295,16 @@ public class RouteLogAction extends KewKualiAction {
         
         ActionRequestDTO[] actionRequestVOs = documentDetail.getActionRequests();
         List<ActionRequestValue> futureActionRequests = new ArrayList<ActionRequestValue>();
-        if (actionRequestVOs != null) for (ActionRequestDTO actionRequestVO : actionRequestVOs) if (actionRequestVO != null) {
-        	if (!preexistingActionRequestIds.contains(actionRequestVO.getActionRequestId())) {
-        		ActionRequestValue converted = DTOConverter.convertActionRequestDTO(actionRequestVO, routeNodeInstanceFabricator);
-        		futureActionRequests.add(converted);
-        	}
-        }
+        if (actionRequestVOs != null) {
+			for (ActionRequestDTO actionRequestVO : actionRequestVOs) {
+				if (actionRequestVO != null) {
+					if (!preexistingActionRequestIds.contains(actionRequestVO.getActionRequestId())) {
+						ActionRequestValue converted = DTOConverter.convertActionRequestDTO(actionRequestVO, routeNodeInstanceFabricator);
+						futureActionRequests.add(converted);
+					}
+				}
+			}
+		}
 		return futureActionRequests;
 	}
     
@@ -309,8 +312,8 @@ public class RouteLogAction extends KewKualiAction {
         return (ActionRequestService) KEWServiceLocator.getService(KEWServiceLocator.ACTION_REQUEST_SRV);
     }
     
-    private UserSession getUserSession(HttpServletRequest request) {
-        return UserSession.getAuthenticatedUser();
+    private UserSession getUserSession() {
+        return GlobalVariables.getUserSession();
     }
     
     /**
@@ -394,16 +397,18 @@ public class RouteLogAction extends KewKualiAction {
     		DTOConverter.convertState(null);
 
     		List<NodeState> nodeState = new ArrayList<NodeState>();
-    		if (nodeInstanceDTO.getState() != null) for (StateDTO stateDTO : nodeInstanceDTO.getState()) {
-    			NodeState state = getNodeState(stateDTO.getStateId());
-    			if (state != null) {
-    				state.setKey(stateDTO.getKey());
-    				state.setValue(stateDTO.getValue());
-    				state.setStateId(stateDTO.getStateId());
-    				state.setNodeInstance(nodeInstance);
-    				nodeState.add(state);
-    			}
-    		}
+    		if (nodeInstanceDTO.getState() != null) {
+				for (StateDTO stateDTO : nodeInstanceDTO.getState()) {
+					NodeState state = getNodeState(stateDTO.getStateId());
+					if (state != null) {
+						state.setKey(stateDTO.getKey());
+						state.setValue(stateDTO.getValue());
+						state.setStateId(stateDTO.getStateId());
+						state.setNodeInstance(nodeInstance);
+						nodeState.add(state);
+					}
+				}
+			}
     		nodeInstance.setState(nodeState);
 
     		List<RouteNodeInstance> nextNodeInstances = new ArrayList<RouteNodeInstance>();
@@ -424,6 +429,7 @@ public class RouteLogAction extends KewKualiAction {
 		 * 
 		 * @see org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader#load(java.lang.Long)
 		 */
+		@Override
 		public RouteNodeInstance load(Long routeNodeInstanceID) {
 			return routeNodeInstances.get(routeNodeInstanceID);
 		}
@@ -541,19 +547,19 @@ public class RouteLogAction extends KewKualiAction {
 		
 		// check user has permission to add a route log message
 		boolean isAuthorizedToAddRouteLogMessage = KEWServiceLocator.getDocumentTypePermissionService()
-				.canAddRouteLogMessage(UserSession.getAuthenticatedUser().getPrincipalId(), routeHeader);
+				.canAddRouteLogMessage(GlobalVariables.getUserSession().getPrincipalId(), routeHeader);
 
 		if (!isAuthorizedToAddRouteLogMessage) {
 			throw new InvalidActionTakenException("Principal with name '"
-					+ UserSession.getAuthenticatedUser().getPrincipalName()
+					+ GlobalVariables.getUserSession().getPrincipalName()
 					+ "' is not authorized to add route log messages for documents of type '"
 					+ routeHeader.getDocumentType().getName());
 		}
 
-		LOG.info("Logging new action message for user " + UserSession.getAuthenticatedUser().getPrincipalName()
+		LOG.info("Logging new action message for user " + GlobalVariables.getUserSession().getPrincipalName()
 				+ ", route header id " + routeHeader);
 		KEWServiceLocator.getWorkflowDocumentService().logDocumentAction(
-				UserSession.getAuthenticatedUser().getPrincipalId(), routeHeader,
+				GlobalVariables.getUserSession().getPrincipalId(), routeHeader,
 				routeLogForm.getNewRouteLogActionMessage());
 
 		routeLogForm.setNewRouteLogActionMessage("");

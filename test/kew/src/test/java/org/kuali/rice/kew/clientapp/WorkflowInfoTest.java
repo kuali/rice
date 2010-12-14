@@ -24,9 +24,10 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**
@@ -51,9 +52,9 @@ public class WorkflowInfoTest extends KEWTestCase {
     @Test
     public void testGetRouteHeader() throws Exception {
      // ensure the UserSession is cleared out (could have been set up by other tests)
-    UserSession.setAuthenticatedUser(null);
+    GlobalVariables.setUserSession(null);
     String ewestfalPrincipalId = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal").getPrincipalId();
-    UserSession.setAuthenticatedUser(new UserSession(ewestfalPrincipalId));
+    GlobalVariables.setUserSession(new UserSession(ewestfalPrincipalId));
     WorkflowDocument document = new WorkflowDocument(ewestfalPrincipalId, "TestDocumentType");
 	Long documentId = document.getRouteHeaderId();
 	assertNotNull(documentId);

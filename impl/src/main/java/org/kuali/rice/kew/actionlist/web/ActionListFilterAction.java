@@ -17,33 +17,27 @@
 package org.kuali.rice.kew.actionlist.web;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.JSTLConstants;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
-import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 
@@ -60,7 +54,7 @@ public class ActionListFilterAction extends KualiAction {
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
     	request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
-    	request.setAttribute("preferences", this.getUserSession(request).getPreferences());
+    	request.setAttribute("preferences", this.getUserSession().retrieveObject(KEWConstants.PREFERENCES));
 		initForm(request, form);
 		return super.execute(mapping, form, request, response);
 	}
@@ -81,12 +75,12 @@ public class ActionListFilterAction extends KualiAction {
 
 	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
-        final org.kuali.rice.kns.UserSession commonUserSession = getCommonUserSession();
-        final ActionListFilter filter = (ActionListFilter) commonUserSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
+        final UserSession uSession = getUserSession();
+        final ActionListFilter filter = (ActionListFilter) uSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
         if (filter != null) {
             if (filterForm.getDocTypeFullName() != null && ! "".equals(filterForm.getDocTypeFullName())) {
             	filter.setDocumentType(filterForm.getDocTypeFullName());
-            	commonUserSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
+            	uSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
                 filterForm.setFilter(filter);
             } else {
                 filterForm.setFilter(filter);
@@ -99,7 +93,7 @@ public class ActionListFilterAction extends KualiAction {
     public ActionForward filter(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
         //validate the filter through the actionitem/actionlist service (I'm thinking actionlistservice)
-        final org.kuali.rice.kns.UserSession commonUserSession = getCommonUserSession();
+        final UserSession uSession = getUserSession();
         ActionListFilter alFilter = filterForm.getLoadedFilter();
         if (StringUtils.isNotBlank(alFilter.getDelegatorId()) && !KEWConstants.DELEGATION_DEFAULT.equals(alFilter.getDelegatorId()) &&
         		StringUtils.isNotBlank(alFilter.getPrimaryDelegateId()) && !KEWConstants.PRIMARY_DELEGATION_DEFAULT.equals(alFilter.getPrimaryDelegateId())){
@@ -107,8 +101,8 @@ public class ActionListFilterAction extends KualiAction {
         	// then reset the secondary delegation drop-down to its default value.
         	alFilter.setDelegatorId(KEWConstants.DELEGATION_DEFAULT);
         }
-        commonUserSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, alFilter);
-        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPrincipal().getPrincipalId());
+        uSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, alFilter);
+        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession().getPrincipalId());
         if (GlobalVariables.getMessageMap().isEmpty()) {
             return mapping.findForward("viewActionList");
         } else {
@@ -124,22 +118,21 @@ public class ActionListFilterAction extends KualiAction {
         filterForm.setLastAssignedDateFrom("");
         filterForm.setLastAssignedDateTo("");
         filterForm.setDocTypeFullName("");
-        UserSession session = getUserSession(request);
-        final org.kuali.rice.kns.UserSession commonUserSession = getCommonUserSession();
-        commonUserSession.removeObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
-        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession(request).getPrincipal().getPrincipalId());
+        UserSession session = getUserSession();
+        session.removeObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
+        KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession().getPrincipalId());
         return mapping.findForward("viewFilter");
     }
 
     public void initForm(HttpServletRequest request, ActionForm form) throws Exception {
         ActionListFilterForm filterForm = (ActionListFilterForm) form;
-        filterForm.setUserWorkgroups(getUserWorkgroupsDropDownList(getUserSession(request).getPerson().getPrincipalId()));
-        PreferencesService prefSrv = (PreferencesService) KEWServiceLocator.getPreferencesService();
-        Preferences preferences = prefSrv.getPreferences(getUserSession(request).getPerson().getPrincipalId());
+        filterForm.setUserWorkgroups(getUserWorkgroupsDropDownList(getUserSession().getPrincipalId()));
+        PreferencesService prefSrv = KEWServiceLocator.getPreferencesService();
+        Preferences preferences = prefSrv.getPreferences(getUserSession().getPrincipalId());
         request.setAttribute("preferences", preferences);
-        ActionListService actionListSrv = (ActionListService) KEWServiceLocator.getActionListService();
-        request.setAttribute("delegators", getWebFriendlyRecipients(actionListSrv.findUserSecondaryDelegators(getUserSession(request).getPrincipal().getPrincipalId())));
-        request.setAttribute("primaryDelegates", getWebFriendlyRecipients(actionListSrv.findUserPrimaryDelegations(getUserSession(request).getPrincipal().getPrincipalId())));
+        ActionListService actionListSrv = KEWServiceLocator.getActionListService();
+        request.setAttribute("delegators", ActionListUtil.getWebFriendlyRecipients(actionListSrv.findUserSecondaryDelegators(getUserSession().getPrincipalId())));
+        request.setAttribute("primaryDelegates", ActionListUtil.getWebFriendlyRecipients(actionListSrv.findUserPrimaryDelegations(getUserSession().getPrincipalId())));
         if (! filterForm.getMethodToCall().equalsIgnoreCase("clear")) {
             filterForm.validateDates();
         }
@@ -166,27 +159,7 @@ public class ActionListFilterAction extends KualiAction {
     	return sortedUserWorkgroups;
     }
 
-    private List getWebFriendlyRecipients(Collection<Recipient> recipients) {
-        Collection<Recipient> newRecipients = new ArrayList<Recipient>(recipients.size());
-        for (Recipient recipient : recipients)
-        {
-            newRecipients.add(new WebFriendlyRecipient(recipient));
-        }
-        List recipientList = new ArrayList(newRecipients);
-        Collections.sort(recipientList, new Comparator() {
-            Comparator comp = new ComparableComparator();
-            public int compare(Object o1, Object o2) {
-                return comp.compare(((WebFriendlyRecipient)o1).getDisplayName().trim().toLowerCase(), ((WebFriendlyRecipient)o2).getDisplayName().trim().toLowerCase());
-            }
-        });
-        return recipientList;
-    }
-
-	private UserSession getUserSession(HttpServletRequest request){
-		return UserSession.getAuthenticatedUser();
-	}
-
-	private org.kuali.rice.kns.UserSession getCommonUserSession() {
+	private UserSession getUserSession(){
 		return GlobalVariables.getUserSession();
 	}
 	

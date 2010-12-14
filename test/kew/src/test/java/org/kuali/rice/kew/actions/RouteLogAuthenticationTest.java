@@ -20,7 +20,8 @@ import org.junit.Test;
 import org.kuali.rice.kew.edl.WorkflowFunctions;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 public class RouteLogAuthenticationTest extends KEWTestCase {
@@ -41,19 +42,19 @@ public class RouteLogAuthenticationTest extends KEWTestCase {
     	document.routeDocument("");
 
     	// ensure the UserSession is cleared out (could have been set up by other tests)
-    	UserSession.setAuthenticatedUser(null);
+    	GlobalVariables.setUserSession(null);
 
         // false because we didn't set up the user session properly
         assertFalse(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
 
         // these two should be in the route log
-        UserSession.setAuthenticatedUser(new UserSession(user1PrincipalId));
+        GlobalVariables.setUserSession(new UserSession(user1PrincipalId));
         assertTrue(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
-        UserSession.setAuthenticatedUser(new UserSession(getPrincipalIdForName("bmcgough")));
+        GlobalVariables.setUserSession(new UserSession(getPrincipalIdForName("bmcgough")));
         assertTrue(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
 
         // user2 should NOT be in the route log
-        UserSession.setAuthenticatedUser(new UserSession(getPrincipalIdForName("user2")));
+        GlobalVariables.setUserSession(new UserSession(getPrincipalIdForName("user2")));
         assertFalse(WorkflowFunctions.isUserRouteLogAuthenticated(document.getRouteHeaderId() + ""));
     }
 

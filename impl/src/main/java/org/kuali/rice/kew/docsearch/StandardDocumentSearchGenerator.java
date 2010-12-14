@@ -56,11 +56,11 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValueSort;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -80,12 +80,6 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     private static final String ROUTE_NODE_INST_TABLE = "KREW_RTE_NODE_INSTN_T";
     private static final String DATABASE_WILDCARD_CHARACTER_STRING = "%";
     private static final char DATABASE_WILDCARD_CHARACTER = DATABASE_WILDCARD_CHARACTER_STRING.toCharArray()[0];
-
-    private static final String CREATE_DATE_FIELD_STRING = " DOC_HDR.CRTE_DT ";
-    private static final String APPROVE_DATE_FIELD_STRING = " DOC_HDR.APRV_DT ";
-    private static final String FINALIZATION_DATE_FIELD_STRING = " DOC_HDR.FNL_DT ";
-    private static final String LAST_STATUS_UPDATE_DATE = " DOC_HDR.STAT_MDFN_DT ";
-    private static final String STATUS_TRANSITION_DATE_FIELD_STRING = " STAT_TRAN.STAT_TRANS_DATE ";
 
     private static List<SearchableAttribute> searchableAttributes;
     private static DocSearchCriteriaDTO criteria;
@@ -1011,7 +1005,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         // if we have threshold+1 results, then we have more results than we are going to display
         criteria.setOverThreshold(resultSetHasNext);
 
-        UserSession userSession = UserSession.getAuthenticatedUser();
+        UserSession userSession = GlobalVariables.getUserSession();
         if ( (userSession == null) && (principalId != null && !"".equals(principalId)) ) {
             LOG.info("Authenticated User Session is null... using parameter user: " + principalId);
             userSession = new UserSession(principalId);
@@ -1128,7 +1122,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             docCriteriaDTO.setInitiatorName(user.getName());
             docCriteriaDTO.setInitiatorFirstName(user.getFirstName());
             docCriteriaDTO.setInitiatorLastName(user.getLastName());
-            docCriteriaDTO.setInitiatorTransposedName(UserUtils.getTransposedName(UserSession.getAuthenticatedUser(), principal));
+            docCriteriaDTO.setInitiatorTransposedName(UserUtils.getTransposedName(GlobalVariables.getUserSession(), principal));
             docCriteriaDTO.setInitiatorEmailAddress(user.getEmailAddress());
         }
 
@@ -1337,8 +1331,8 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         StringBuffer fromSql = new StringBuffer();
         String currentAttributeTableAlias = "SA_" + attributeValue.getAttributeDataType().toUpperCase();
         fromSql.append(" LEFT OUTER JOIN " + attributeValue.getAttributeTableName() + " " + currentAttributeTableAlias + " ON (" + docHeaderTableAlias + ".DOC_HDR_ID = " + currentAttributeTableAlias + ".DOC_HDR_ID)");
-        for (Iterator<String> iter = tableAliasComponentNames.iterator(); iter.hasNext();) {
-            String aliasComponentName = (String) iter.next();
+        for (String string : tableAliasComponentNames) {
+            String aliasComponentName = (String) string;
             if (aliasComponentName.equalsIgnoreCase(attributeValue.getAttributeDataType())) {
                 selectSql.append(", " + currentAttributeTableAlias + ".KEY_CD as " + aliasComponentName + "_KEY, " + currentAttributeTableAlias + ".VAL as " + aliasComponentName + "_VALUE");
             } else {
@@ -1779,11 +1773,14 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 searchVal = ">= " + fromDate;
             }else if(toDate != null && !"".equals(toDate)){
                 searchVal = "<= " + toDate;
-            }else searchVal =  "";
+            } else {
+				searchVal =  "";
+			}
         }
 
-        if(searchVal == null || "".equals(searchVal))
-            return "";
+        if(searchVal == null || "".equals(searchVal)) {
+			return "";
+		}
 
         Criteria crit = getSqlBuilder().createCriteria(colName, searchVal, tableName, tableAlias, java.sql.Date.class, true, true);
         return new StringBuffer(whereStatementClause + crit.buildWhere()).toString();

@@ -20,6 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.docsearch.DocSearchDTO;
 import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
@@ -31,23 +32,23 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.web.session.Authentication;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.UserSession;
 
 
 public class DocumentSecurityServiceImpl implements DocumentSecurityService {
   public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentSecurityServiceImpl.class);
 
-  public boolean docSearchAuthorized(UserSession userSession, DocSearchDTO docCriteriaDTO, SecuritySession session) {
+  @Override
+public boolean docSearchAuthorized(UserSession userSession, DocSearchDTO docCriteriaDTO, SecuritySession session) {
       return checkAuthorization(userSession, session, docCriteriaDTO.getDocTypeName(), docCriteriaDTO.getRouteHeaderId(), docCriteriaDTO.getInitiatorWorkflowId());
   }
 
-  public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderValue routeHeader, SecuritySession session) {
+  @Override
+public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderValue routeHeader, SecuritySession session) {
       return checkAuthorization(userSession, session, routeHeader.getDocumentType().getName(), routeHeader.getRouteHeaderId(), routeHeader.getInitiatorWorkflowId());
   }
 
@@ -181,24 +182,37 @@ public class DocumentSecurityServiceImpl implements DocumentSecurityService {
 	  if (existingAuth != null) {
 		  return existingAuth;
 	  }
-	  boolean memberOfGroup = session.getUserSession().isMemberOfGroupWithName(namespace, workgroupName);
+	  boolean memberOfGroup = isMemberOfGroupWithName(namespace, workgroupName, session.getUserSession().getPrincipalId());
 	  session.getAuthenticatedWorkgroups().put(key, memberOfGroup);
 	  return memberOfGroup;
   }
 
+	private boolean isMemberOfGroupWithName(String namespace, String groupName, String principalId) {
+		for (Group group : KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principalId)) {
+			if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName, group.getGroupName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+  
+
   protected boolean isRoleAuthenticated(List<String> allowedRoles, List<String> disallowedRoles, UserSession userSession, SecuritySession session) {
 	  boolean disallowed = false;
 	  boolean allowed = false;
-	  for (Iterator iterator = userSession.getAuthentications().iterator(); iterator.hasNext();) {
-		  Authentication auth = (Authentication) iterator.next();
-		  String role = auth.getAuthority();
-		  if (disallowedRoles.contains(role)) {
-			  disallowed = true;
-		  }
-		  if (allowedRoles.contains(role)) {
-			  allowed = true;
-		  }
+	  final Collection<Authentication> auths = (Collection<Authentication>) userSession.retrieveObject(KEWConstants.AUTHENTICATIONS);
+	  if (auths != null) {
+		  for (Authentication auth : auths) {
+			  String role = auth.getAuthority();
+			  if (disallowedRoles.contains(role)) {
+				  disallowed = true;
+			  }
+			  if (allowedRoles.contains(role)) {
+				  allowed = true;
+			  }
+		  }		  
 	  }
+
 	  if (allowed) {
 		  // allowed takes precedence over disallowed
 		  return true;

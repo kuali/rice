@@ -16,6 +16,9 @@
  */
 package org.kuali.rice.kew.routing.web;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -29,10 +32,8 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kew.web.session.UserSession;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**
@@ -43,7 +44,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
 
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         DocHandlerForm docHandlerForm = (DocHandlerForm) form;
 
         String docHandler = null;
@@ -52,7 +54,7 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
             RouteHeaderService rhSrv = (RouteHeaderService) KEWServiceLocator.getService(KEWServiceLocator.DOC_ROUTE_HEADER_SRV);
             DocumentRouteHeaderValue routeHeader = rhSrv.getRouteHeader(docHandlerForm.getDocId());
 
-            if (!KEWServiceLocator.getDocumentSecurityService().routeLogAuthorized(UserSession.getAuthenticatedUser(), routeHeader, new SecuritySession(UserSession.getAuthenticatedUser()))) {
+            if (!KEWServiceLocator.getDocumentSecurityService().routeLogAuthorized(GlobalVariables.getUserSession(), routeHeader, new SecuritySession(GlobalVariables.getUserSession()))) {
             	return mapping.findForward("NotAuthorized");
             }
             docHandler = routeHeader.getDocumentType().getDocHandlerUrl();
@@ -91,6 +93,6 @@ public class ClientAppDocHandlerRedirectAction extends KewKualiAction {
     }
 
     public static UserSession getUserSession(HttpServletRequest request) {
-        return UserSession.getAuthenticatedUser();
+        return GlobalVariables.getUserSession();
     }
 }

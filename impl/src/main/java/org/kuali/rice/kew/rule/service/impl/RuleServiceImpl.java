@@ -32,6 +32,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import javax.xml.namespace.QName;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.ComparatorUtils;
 import org.apache.commons.lang.ObjectUtils;
@@ -77,7 +78,6 @@ import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.validation.RuleValidationContext;
 import org.kuali.rice.kew.validation.ValidationResults;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.XmlConstants;
@@ -86,6 +86,8 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -135,14 +137,14 @@ public class RuleServiceImpl implements RuleService {
         }
         // iterate through all associated responsibilities, and if they are unsaved (responsibilityId is null)
         // set a new id on them, and recursively save any associated delegation rules
-        for (Iterator iterator = ruleBaseValues.getResponsibilities().iterator(); iterator.hasNext();) {
-            RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
+        for (Object element : ruleBaseValues.getResponsibilities()) {
+            RuleResponsibility responsibility = (RuleResponsibility) element;
             if (responsibility.getResponsibilityId() == null) {
                 responsibility.setResponsibilityId(getResponsibilityIdService().getNewResponsibilityId());
             }
             if (saveDelegations) {
-                for (Iterator iter = responsibility.getDelegationRules().iterator(); iter.hasNext();) {
-                    RuleDelegation localRuleDelegation = (RuleDelegation) iter.next();
+                for (Object element2 : responsibility.getDelegationRules()) {
+                    RuleDelegation localRuleDelegation = (RuleDelegation) element2;
                     save2(localRuleDelegation.getDelegationRuleBaseValues(), localRuleDelegation, true);
                 }
             }
@@ -208,10 +210,10 @@ public class RuleServiceImpl implements RuleService {
                     responsibilityIds.addAll(getResponsibilityIdsFromGraph(delegationRule, isGenerateRuleArs));
                 }
             }
-            for (Iterator iterator = rule.getResponsibilities().iterator(); iterator.hasNext();) {
-                RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
-                for (Iterator delIterator = responsibility.getDelegationRules().iterator(); delIterator.hasNext();) {
-                    RuleDelegation delegation = (RuleDelegation) delIterator.next();
+            for (Object element : rule.getResponsibilities()) {
+                RuleResponsibility responsibility = (RuleResponsibility) element;
+                for (Object element2 : responsibility.getDelegationRules()) {
+                    RuleDelegation delegation = (RuleDelegation) element2;
 
                     delegation.getDelegationRuleBaseValues().setCurrentInd(Boolean.TRUE);
                     RuleBaseValues delegatorRule = delegation.getDelegationRuleBaseValues();
@@ -237,8 +239,8 @@ public class RuleServiceImpl implements RuleService {
             installNotification(rule, notifyMap);
         }
         LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
-        for (Iterator iterator = notifyMap.values().iterator(); iterator.hasNext();) {
-            queueRuleCache((Long)iterator.next());
+        for (Object element : notifyMap.values()) {
+            queueRuleCache((Long)element);
         }
 
         getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
@@ -289,10 +291,10 @@ public class RuleServiceImpl implements RuleService {
                 rulesToSave.put(oldRule.getRuleBaseValuesId(), oldRule);
                 responsibilityIds.addAll(getModifiedResponsibilityIds(oldRule, rule));
             }
-            for (Iterator iterator = rule.getResponsibilities().iterator(); iterator.hasNext();) {
-                RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
-                for (Iterator delIterator = responsibility.getDelegationRules().iterator(); delIterator.hasNext();) {
-                    RuleDelegation delegation = (RuleDelegation) delIterator.next();
+            for (Object element : rule.getResponsibilities()) {
+                RuleResponsibility responsibility = (RuleResponsibility) element;
+                for (Object element2 : responsibility.getDelegationRules()) {
+                    RuleDelegation delegation = (RuleDelegation) element2;
                     RuleBaseValues delegateRule = delegation.getDelegationRuleBaseValues();
                     delegateRule.setCurrentInd(Boolean.TRUE);
                     performanceLogger.log("Setting delegate rule: " + delegateRule.getDescription() + " to current.");
@@ -315,8 +317,8 @@ public class RuleServiceImpl implements RuleService {
             installNotification(rule, notifyMap);
         }
         LOG.info("Notifying rule cache of "+notifyMap.size()+" cache changes.");
-        for (Iterator iterator = notifyMap.values().iterator(); iterator.hasNext();) {
-            queueRuleCache((Long)iterator.next());
+        for (Object element : notifyMap.values()) {
+            queueRuleCache((Long)element);
         }
         if (isGenerateRuleArs) {
             getActionRequestService().updateActionRequestsForResponsibilityChange(responsibilityIds);
@@ -612,8 +614,8 @@ public class RuleServiceImpl implements RuleService {
 
     private Set getResponsibilityIdsFromGraph(RuleBaseValues rule, boolean isRuleCollecting) {
         Set responsibilityIds = new HashSet();
-        for (Iterator iterator = rule.getResponsibilities().iterator(); iterator.hasNext();) {
-            RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
+        for (Object element : rule.getResponsibilities()) {
+            RuleResponsibility responsibility = (RuleResponsibility) element;
             if (isRuleCollecting) {
                 responsibilityIds.add(responsibility.getResponsibilityId());
             }
@@ -627,12 +629,12 @@ public class RuleServiceImpl implements RuleService {
      */
     private Set<Long> getModifiedResponsibilityIds(RuleBaseValues oldRule, RuleBaseValues newRule) {
         Map<Long, RuleResponsibility> modifiedResponsibilityMap = new HashMap<Long, RuleResponsibility>();
-        for (Iterator iterator = oldRule.getResponsibilities().iterator(); iterator.hasNext();) {
-            RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
+        for (Object element : oldRule.getResponsibilities()) {
+            RuleResponsibility responsibility = (RuleResponsibility) element;
             modifiedResponsibilityMap.put(responsibility.getResponsibilityId(), responsibility);
         }
-        for (Iterator iterator = newRule.getResponsibilities().iterator(); iterator.hasNext();) {
-            RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
+        for (Object element : newRule.getResponsibilities()) {
+            RuleResponsibility responsibility = (RuleResponsibility) element;
             RuleResponsibility oldResponsibility = modifiedResponsibilityMap.get(responsibility.getResponsibilityId());
             if (oldResponsibility == null) {
                 // if there's no old responsibility then it's a new responsibility, add it
@@ -794,10 +796,10 @@ public class RuleServiceImpl implements RuleService {
      * Gets the RuleDelegation object from the parentRule that points to the delegateRule.
      */
     private RuleDelegation getRuleDelegation(RuleBaseValues parentRule, RuleBaseValues delegateRule) throws Exception {
-        for (Iterator iterator = parentRule.getResponsibilities().iterator(); iterator.hasNext(); ) {
-            RuleResponsibility responsibility = (RuleResponsibility) iterator.next();
-            for (Iterator respIt = responsibility.getDelegationRules().iterator(); respIt.hasNext(); ) {
-                RuleDelegation ruleDelegation = (RuleDelegation) respIt.next();
+        for (Object element : parentRule.getResponsibilities()) {
+            RuleResponsibility responsibility = (RuleResponsibility) element;
+            for (Object element2 : responsibility.getDelegationRules()) {
+                RuleDelegation ruleDelegation = (RuleDelegation) element2;
                 // they should be the same object in memory
                 if (ruleDelegation.getDelegationRuleBaseValues().equals(delegateRule)) {
                     return ruleDelegation;
@@ -854,8 +856,8 @@ public class RuleServiceImpl implements RuleService {
         if (ruleBaseValues.getResponsibilities().isEmpty()) {
             errors.add(new WorkflowServiceErrorImpl("A responsibility is required", "routetemplate.ruleservice.responsibility.required"));
         } else {
-            for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
-                RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+            for (Object element : ruleBaseValues.getResponsibilities()) {
+                RuleResponsibility responsibility = (RuleResponsibility) element;
                 if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
                     if (getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                         errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
@@ -906,8 +908,8 @@ public class RuleServiceImpl implements RuleService {
             LOG.error("Force Action is missing");
         }
 
-        for (Iterator iter = ruleBaseValues.getResponsibilities().iterator(); iter.hasNext();) {
-            RuleResponsibility responsibility = (RuleResponsibility) iter.next();
+        for (Object element : ruleBaseValues.getResponsibilities()) {
+            RuleResponsibility responsibility = (RuleResponsibility) element;
             if (responsibility.getRuleResponsibilityName() != null && KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(responsibility.getRuleResponsibilityType())) {
                 if (getIdentityManagementService().getGroup(responsibility.getRuleResponsibilityName()) == null) {
                     errors.add(new WorkflowServiceErrorImpl("Workgroup is invalid", "routetemplate.ruleservice.workgroup.invalid"));
@@ -925,13 +927,13 @@ public class RuleServiceImpl implements RuleService {
         }
 
         if (ruleBaseValues.getRuleTemplate() != null) {
-            for (Iterator iter = ruleBaseValues.getRuleTemplate().getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
-                RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) iter.next();
+            for (Object element : ruleBaseValues.getRuleTemplate().getActiveRuleTemplateAttributes()) {
+                RuleTemplateAttribute templateAttribute = (RuleTemplateAttribute) element;
                 if (!templateAttribute.isRuleValidationAttribute()) {
                     continue;
                 }
                 RuleValidationAttribute attribute = templateAttribute.getRuleValidationAttribute();
-                UserSession userSession = UserSession.getAuthenticatedUser();
+                UserSession userSession = GlobalVariables.getUserSession();
                 try {
                     RuleValidationContext validationContext = new RuleValidationContext(ruleBaseValues, ruleDelegation, userSession);
                     ValidationResults results = attribute.validate(validationContext);
@@ -1119,10 +1121,10 @@ public class RuleServiceImpl implements RuleService {
                     return pendingRule.getRouteHeaderId();
                 }
             }
-            for (Iterator iter = pendingRule.getResponsibilities().iterator(); iter.hasNext();) {
-                RuleResponsibility responsibility = (RuleResponsibility) iter.next();
-                for (Iterator iterator2 = responsibility.getDelegationRules().iterator(); iterator2.hasNext();) {
-                    RuleDelegation delegation = (RuleDelegation) iterator2.next();
+            for (Object element : pendingRule.getResponsibilities()) {
+                RuleResponsibility responsibility = (RuleResponsibility) element;
+                for (Object element2 : responsibility.getDelegationRules()) {
+                    RuleDelegation delegation = (RuleDelegation) element2;
                     List pendingDelegateRules = ruleDAO.findByPreviousVersionId(delegation.getDelegationRuleBaseValues().getRuleBaseValuesId());
                     for (Iterator iterator3 = pendingDelegateRules.iterator(); iterator3.hasNext();) {
                         RuleBaseValues pendingDelegateRule = (RuleBaseValues) iterator3.next();
@@ -1626,10 +1628,10 @@ public class RuleServiceImpl implements RuleService {
             String constant = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CUSTOM_DOC_TYPES);
             if (!StringUtils.isEmpty(constant)) {
                 String[] ruleConfigs = constant.split(",");
-                for (int index = 0; index < ruleConfigs.length; index++) {
-                    String[] configElements = ruleConfigs[index].split(":");
+                for (String ruleConfig : ruleConfigs) {
+                    String[] configElements = ruleConfig.split(":");
                     if (configElements.length != 4) {
-                        throw new RuntimeException("Found incorrect number of config elements within a section of the custom rule document types config.  There should have been four ':' delimited sections!  " + ruleConfigs[index]);
+                        throw new RuntimeException("Found incorrect number of config elements within a section of the custom rule document types config.  There should have been four ':' delimited sections!  " + ruleConfig);
                     }
                     config.configs.add(configElements);
                 }

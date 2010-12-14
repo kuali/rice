@@ -31,9 +31,10 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Row;
 
 /**
@@ -102,9 +103,9 @@ public class DeprecatedDocumentTagsTest extends KEWTestCase{
         for (int i = 0; i < testPrincipalNames.length; i++) {
         	LOG.info("Testing visibility of the rule attribute for user '" + testPrincipalNames[i] + "'");
         	// Set up a new KEW UserSession in a manner similar to that of WorkflowInfoTest.
-            UserSession.setAuthenticatedUser(null);
+            GlobalVariables.setUserSession(null);
             String testPrincipalId = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(testPrincipalNames[i]).getPrincipalId();
-            UserSession.setAuthenticatedUser(new UserSession(testPrincipalId));
+            GlobalVariables.setUserSession(new UserSession(testPrincipalId));
             // Get the visibility of the rule attribute, which should be dependent on how the UserSession compares with the "isMemberOfWorkgroup" element.
             StandardGenericXMLSearchableAttribute searchableAttribute = new StandardGenericXMLSearchableAttribute();
             searchableAttribute.setRuleAttribute(ruleAttribute);

@@ -36,8 +36,9 @@ import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.mail.service.EmailService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**
@@ -49,7 +50,8 @@ public class FeedbackAction extends KewKualiAction {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FeedbackAction.class);
 
-    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         // load fixed properties in Form elements
         FeedbackForm feedbackForm = (FeedbackForm) form;
@@ -86,7 +88,7 @@ public class FeedbackAction extends KewKualiAction {
             feedbackForm.setException(exception);
         }
 
-        UserSession uSession = getUserSession(request);
+        UserSession uSession = getUserSession();
 
         Person	workflowUser = uSession.getPerson();
         if (workflowUser != null) {
@@ -132,36 +134,8 @@ public class FeedbackAction extends KewKualiAction {
     	return emailContentService.getDocumentTypeEmailAddress(docType);
     }
 
-    private String constructSubject(FeedbackForm form) {
-    	String subject = "Feedback from " + form.getNetworkId();
-    	if (form.getRouteHeaderId() != null) {
-    		subject += (" for document " + form.getRouteHeaderId());
-    	}
-    	return subject;
-    }
-
-    private String constructEmailBody(FeedbackForm form) {
-    	StringBuffer buffer = new StringBuffer();
-    	buffer.append("\n");
-    	buffer.append("Network ID: " + form.getNetworkId()).append("\n");
-    	buffer.append("Name: " + form.getUserName()).append("\n");
-    	buffer.append("Email: " + form.getUserEmail()).append("\n");
-    	buffer.append("Phone: " + form.getPhone()).append("\n");
-    	buffer.append("Time: " + form.getTimeDate()).append("\n");
-    	buffer.append("Environment: " + ConfigContext.getCurrentContextConfig().getEnvironment()).append("\n\n");
-
-    	buffer.append("Document type: " + form.getDocumentType()).append("\n");
-    	buffer.append("Document id: " + form.getRouteHeaderId()).append("\n\n");
-
-    	buffer.append("Category: " + form.getCategory()).append("\n");
-    	buffer.append("Comments: \n" + form.getComments()).append("\n\n");
-
-    	buffer.append("Exception: \n" + form.getException());
-    	return buffer.toString();
-    }
-
-    private static UserSession getUserSession(HttpServletRequest request) {
-        return UserSession.getAuthenticatedUser();
+    private static UserSession getUserSession() {
+        return GlobalVariables.getUserSession();
     }
 }
 

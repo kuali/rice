@@ -49,6 +49,7 @@ import org.apache.struts.upload.CommonsMultipartRequestHandler;
 import org.apache.struts.upload.FormFile;
 import org.apache.struts.upload.MultipartRequestHandler;
 import org.apache.struts.upload.MultipartRequestWrapper;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
@@ -138,6 +139,18 @@ public class WebUtils {
         }
         
         return methodToCall;
+    }
+    
+    /** 
+     * gets the UserSession object from the HttpServletRequest object's associated session.
+     * 
+     * <p>
+     * In some cases (different threads) the UserSession cannot be retrieved from
+     * GlobalVariables but can still be accessed via the session object
+     * </p> 
+     */
+    public static final UserSession getUserSessionFromRequest(HttpServletRequest request) {
+    	return (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
     }
     
     /** 
@@ -403,17 +416,6 @@ public class WebUtils {
              LOG.debug( "Max File Upload Size: " + max );
          }
          return  max;
-    }
-    
-    private static KualiMultipartRequestHandler getMultipartHandler(HttpServletRequest request, ActionForm form) throws ServletException {
-        KualiMultipartRequestHandler multipartHandler = new KualiMultipartRequestHandler();
-        if (form instanceof PojoFormBase) {
-           // multipartHandler.setMaxUploadSizeToMaxOfList( ((PojoFormBase) form).getMaxUploadSizes() );
-        }
-        if ( LOG.isDebugEnabled() ) {
-            LOG.debug( "Max File Upload Size: " + multipartHandler.getSizeMaxString() );
-        }
-        return multipartHandler;
     }
 
     private static Map getFileParametersForMultipartRequest(HttpServletRequest request, MultipartRequestHandler multipartHandler) {

@@ -15,6 +15,15 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Test;
@@ -27,15 +36,15 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.user.AuthenticationUserId;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.web.session.Authentication;
 import org.kuali.rice.kew.web.session.BasicAuthentication;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-
-import java.util.*;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
  * This is a test class to test the document search security and row filtering
@@ -70,7 +79,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
         LOG.debug("performing user login: " + networkId);
 
         Person	user = null;
-        UserSession.setAuthenticatedUser(null);
+        GlobalVariables.setUserSession(null);
         try {
             if (id != null && (!StringUtils.isBlank(id.getId()))) {
                 LOG.debug("Looking up user: " + id);
@@ -80,9 +89,15 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
                 UserSession userSession = new UserSession(user.getPrincipalId());
                 // set up the thread local reference to the current authenticated user
                 for (String dummyRoleName : dummyRoleNames) {
-                    userSession.addAuthentication(new BasicAuthentication(dummyRoleName));
+                	Collection<Authentication> auths = (Collection<Authentication>) userSession.retrieveObject(KEWConstants.AUTHENTICATIONS);
+                	if (auths == null) {
+                		auths = new ArrayList<Authentication>();
+                	}
+                	auths.add(new BasicAuthentication(dummyRoleName));
+                	
+                	userSession.addObject(KEWConstants.AUTHENTICATIONS, auths);
                 }
-                UserSession.setAuthenticatedUser(userSession);
+                GlobalVariables.setUserSession(userSession);
             } else {
                 LOG.error("UserId passed in was invalid");
             }

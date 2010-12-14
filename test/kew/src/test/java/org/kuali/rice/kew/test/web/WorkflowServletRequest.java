@@ -19,10 +19,10 @@ package org.kuali.rice.kew.test.web;
 
 import javax.servlet.ServletContext;
 
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 
@@ -69,34 +69,34 @@ public class WorkflowServletRequest extends MockHttpServletRequest {
         if (session == null) {
             throw new IllegalStateException("Session must be set before backdoor id is set");
         }
-        session.establishBackdoorWithPrincipalName(backdoorId);
+        session.setBackdoorUser(backdoorId);
     }
 
     public void setWorkflowUser(KimPrincipal user) {
         if (user == null) {
             setUserSession(null);
         } else {
-            setUserSession(new UserSession(user));
+            setUserSession(new UserSession(user.getPrincipalName()));
         }
     }
 
     public KimPrincipal getWorkflowUser() {
         UserSession session = getUserSession();
         if (session == null) return null;
-        return session.getPrincipal();
+        return KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(session.getLoggedInUserPrincipalName());
     }
 
     public String getBackdoorPrincipalId() {
         UserSession session = getUserSession();
         if (session == null) return null;
-        return session.getBackdoorPrincipal().getPrincipalId();
+        return session.getPrincipalId();
     }
 
     public void setUserSession(UserSession userSession) {
-        getSession().setAttribute(KEWConstants.USER_SESSION_KEY, userSession);
+        getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
     }
 
     public UserSession getUserSession() {
-        return (UserSession) getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
+        return (UserSession) getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
     }
 }

@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.web;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -24,19 +25,25 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
-import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.exception.AuthenticationException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.WebUtils;
 
 
 /**
@@ -46,106 +53,162 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UserLoginFilter implements Filter {
-    private static final Logger LOG = Logger.getLogger(UserLoginFilter.class);
 
-    public void init(FilterConfig config) throws ServletException {}
+	private static final String MDC_USER = "user";
+	
+	private IdentityManagementService identityManagementService;
+	private KualiConfigurationService kualiConfigurationService;
+	private ParameterService parameterService;
+	
+	private FilterConfig filterConfig;
+	
+	@Override
+	public void init(FilterConfig config) throws ServletException {
+		this.filterConfig = config;
+	}
 
-    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-        if (!(req instanceof HttpServletRequest && res instanceof HttpServletResponse)) {
-            chain.doFilter(req, res);
-            return;
-        }
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+		this.doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
+	}
+	
+	private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+		
+		try {
+			establishUserSession(request);
+			establishSessionCookie(request, response);
+			establishBackdoorUser(request);
+			
+			addToMDC(request);
+			
+			chain.doFilter(request, response);
+		} finally {
+			removeFromMDC();
+		}
+		
+	}
 
-        LOG.debug("Begin UserLoginFilter...");
+	@Override
+	public void destroy() {
+		filterConfig = null;
+	}
+	
+	/**
+	 * Checks if a user can be authenticated and if so establishes a UserSession for that user.
+	 */
+	private void establishUserSession(HttpServletRequest request) {
+		if (!isUserSessionEstablished(request)) {
+			String principalName = getIdentityManagementService().getAuthenticatedPrincipalName(request);
+			if (StringUtils.isBlank(principalName)) {
+				throw new AuthenticationException( "Blank User from AuthenticationService - This should never happen." );
+			}
+			
+			KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
+			if (principal == null) {
+				throw new AuthenticationException("Unknown User: " + principalName);
+			}
+			
+			if (!isAuthorizedToLogin(principal.getPrincipalId())) {
+				throw new AuthenticationException("You cannot log in, because you are not an active Kuali user.\nPlease ask someone to activate your account, if you need to use Kuali Systems.\nThe user id provided was: " + principalName + ".\n");
+			}
 
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) res;
-
-        final UserSession userSession;
-        if (!isUserSessionEstablished(request)) {
-            userSession = login(request);
-            if (userSession != null) {
-                request.getSession().setAttribute(KEWConstants.USER_SESSION_KEY, userSession);
-            }
-        } else {
-            userSession = (UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
-        }
-
-        if (userSession != null) {
-            // Override the HttpServletRequest with one that provides
-            // our logged-in user. This allows any engine-agnostic webapp code
-            // that may be living in the context to obtain remote user traditionally
-            LOG.debug("Wrapping servlet request: " + userSession.getPrincipalName());
-            request = new HttpServletRequestWrapper(request) {
-                public String getRemoteUser() {
-                    return userSession.getPrincipalName();
-                }
-            };
-        }
-
-        // set up the thread local reference to the current authenticated user
-        // and then forward to next filter in the chain
-        MDC.put("user", userSession.getPrincipalName());
-        try {
-            UserSession.setAuthenticatedUser(userSession);
-            LOG.debug("...end UserLoginFilter.");
-            chain.doFilter(request, response);
-        } finally {
-        	MDC.remove("user");
-            UserSession.setAuthenticatedUser(null);
-        }
-
+			final UserSession userSession = new UserSession(principalName);
+			if ( userSession.getPerson() == null ) {
+				throw new AuthenticationException("Invalid User: " + principalName);
+			}
+			
+			request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
+		}
+	}
+	
+	/** checks if the passed in principalId is authorized to log in. */
+	private boolean isAuthorizedToLogin(String principalId) {
+		return getIdentityManagementService().isAuthorized( 
+				principalId, 
+				KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, 
+				KimConstants.PermissionNames.LOG_IN, 
+				null, 
+				new AttributeSet("principalId", principalId));
+	}
+	
+	
+	/**
+	 * Creates a session id cookie if one does not exists.  Write the cookie out to the response with that session id.
+	 * Also, sets the cookie on the established user session.
+	 */
+	private void establishSessionCookie(HttpServletRequest request, HttpServletResponse response) {
+		String kualiSessionId = this.getKualiSessionId(request.getCookies());
+		if (kualiSessionId == null) {
+			kualiSessionId = UUID.randomUUID().toString();
+			response.addCookie(new Cookie(KNSConstants.KUALI_SESSION_ID, kualiSessionId));
+		}
+		WebUtils.getUserSessionFromRequest(request).setKualiSessionId(kualiSessionId);
+	}
+	
+	/** gets the kuali session id from an array of cookies.  If a session id does not exist returns null. */
+	private String getKualiSessionId(final Cookie[] cookies) {
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (KNSConstants.KUALI_SESSION_ID.equals(cookie.getName())) {
+					return cookie.getValue();
+				}
+			}
+		}
+		return null;
+	}
+	
+	/** establishes the backdoor user on the established user id if backdoor capabilities are valid. */
+	private void establishBackdoorUser(HttpServletRequest request) {
+		final String backdoor = request.getParameter(KNSConstants.BACKDOOR_PARAMETER);
+		
+		if ( StringUtils.isNotBlank(backdoor) ) {
+			if ( !getKualiConfigurationService().isProductionEnvironment() ) {
+				if ( getParameterService().getIndicatorParameter(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND) ) {
+					WebUtils.getUserSessionFromRequest(request).setBackdoorUser(backdoor);
+				}
+			}
+		}
+	}
+	
+	private void addToMDC(HttpServletRequest request) {
+		MDC.put(MDC_USER, WebUtils.getUserSessionFromRequest(request).getPrincipalId());
+	}
+	
+	private void removeFromMDC() {
+		MDC.remove(MDC_USER);
+	}
+	
+	/**
+	 * Checks if the user who made the request has a UserSession established
+	 * 
+	 * @param request the HTTPServletRequest object passed in
+	 * @return true if the user session has been established, false otherwise
+	 */
+	private boolean isUserSessionEstablished(HttpServletRequest request) {
+		return (request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY) != null);
+	}
+	
+    private IdentityManagementService getIdentityManagementService() {
+    	if (this.identityManagementService == null) {
+    		this.identityManagementService = KIMServiceLocator.getIdentityManagementService();
+    	}
+    	
+    	return this.identityManagementService;
     }
-
-    /**
-     * Checks if the user who made the request has a UserSession established
-     *
-     * @param request
-     *            the HTTPServletRequest object passed in
-     * @return true if the user session has been established, false otherwise
-     */
-    public static boolean isUserSessionEstablished(HttpServletRequest request) {
-        return (request.getSession(false) != null && request.getSession(false).getAttribute(KEWConstants.USER_SESSION_KEY) != null);
+    
+    private KualiConfigurationService getKualiConfigurationService() {
+    	if (this.kualiConfigurationService == null) {
+    		this.kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+    	}
+    	
+    	return this.kualiConfigurationService;
     }
-
-    /**
-     * create a UserSession object for the workflow user
-     *
-     * @param request
-     *            the servlet request
-     * @return UserSession object if authentication was successful, null otherwise
-     */
-    protected UserSession login(HttpServletRequest request) {
-        LOG.info("performing user login: ");
-
-        String principalName = null;
-        KimPrincipal principal = null;
-
-        IdentityManagementService idmService = KIMServiceLocator.getIdentityManagementService();
-        principalName = idmService.getAuthenticatedPrincipalName(request);
-        	
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("Looking up principal by name: " + principalName);
-        }
-        
-        principal = idmService.getPrincipalByPrincipalName(principalName);
-
-        if (StringUtils.isBlank(principalName) || principal == null) {
-        	throw new RiceRuntimeException("KIM could not identify an authenticated principal from incoming request.  The principal name was " + principalName);
-        }
-        
-        if ( LOG.isDebugEnabled() ) {
-        	LOG.debug("ending user lookup: " + principal);
-        }
-
-        UserSession userSession = new UserSession(principal);
-        LOG.info("...finished performing user login.");
-        return userSession;
+    
+    private ParameterService getParameterService() {
+    	if (this.parameterService == null) {
+    		this.parameterService = KNSServiceLocator.getParameterService();
+    	}
+    	
+    	return this.parameterService;
     }
-
-    public static UserSession getUserSession(HttpServletRequest request) {
-        return (UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
-    }
-
-    public void destroy() {}
 }

@@ -46,7 +46,7 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.AppSpecificRouteRecipient;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -426,7 +426,7 @@ public class SuperUserAction extends KewKualiAction {
         return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
     public static UserSession getUserSession(HttpServletRequest request) {
-        return UserSession.getAuthenticatedUser();
+        return GlobalVariables.getUserSession();
     }
     
 }

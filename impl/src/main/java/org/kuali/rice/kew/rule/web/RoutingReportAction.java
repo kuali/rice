@@ -60,7 +60,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -176,11 +176,11 @@ public class RoutingReportAction extends KewKualiAction {
         String xmlDocumentContent = routingForm.getDocumentContent();
         if (routingForm.getReportType().equals(TEMPLATE_REPORTING)) {
             List attributes = new ArrayList();
-            for (Iterator iterator = ruleTemplateContainers.iterator(); iterator.hasNext();) {
-                RouteReportRuleTemplateContainer ruleTemplateContainer = (RouteReportRuleTemplateContainer) iterator.next();
+            for (Object element : ruleTemplateContainers) {
+                RouteReportRuleTemplateContainer ruleTemplateContainer = (RouteReportRuleTemplateContainer) element;
                 RuleTemplate ruleTemplate = ruleTemplateContainer.ruleTemplate;
-                for (Iterator iter = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
-                    RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
+                for (Object element2 : ruleTemplate.getActiveRuleTemplateAttributes()) {
+                    RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) element2;
                     if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                         continue;
                     }
@@ -218,12 +218,12 @@ public class RoutingReportAction extends KewKualiAction {
 		int numberOfRules = 0;
 		int numberOfActionRequests = 0;
 		Set<String> alreadyProcessedRuleTemplateNames = new HashSet<String>();
-		for (Iterator iterator = ruleTemplateContainers.iterator(); iterator.hasNext();) {
+		for (Object element : ruleTemplateContainers) {
 			// initialize the RouteContext
 		    RouteContext context = RouteContext.createNewRouteContext();
 		context.setActivationContext(new ActivationContext(ActivationContext.CONTEXT_IS_SIMULATION));
 			try {
-			    RouteReportRuleTemplateContainer ruleTemplateContainer = (RouteReportRuleTemplateContainer) iterator.next();
+			    RouteReportRuleTemplateContainer ruleTemplateContainer = (RouteReportRuleTemplateContainer) element;
 				RuleTemplate ruleTemplate = ruleTemplateContainer.ruleTemplate;
 				RouteNode routeLevel = ruleTemplateContainer.routeNode;
 
@@ -299,6 +299,7 @@ public class RoutingReportAction extends KewKualiAction {
 		return magicCounter;
 	}
 
+	@Override
 	public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 	    return mapping.findForward("basic");
 	}
@@ -330,7 +331,7 @@ public class RoutingReportAction extends KewKualiAction {
             if (Utilities.isEmpty(routingReportForm.getInitiatorPrincipalId())) {
                 throw new RuntimeException("Initiator Principal ID was not given");
             } else {
-                KimPrincipal initiatorPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipal(routingReportForm.getInitiatorPrincipalId());
+                KEWServiceLocator.getIdentityHelperService().getPrincipal(routingReportForm.getInitiatorPrincipalId());
             }
             if (Utilities.isEmpty(routingReportForm.getDocumentContent())) {
                 throw new RuntimeException("Document Content was not given");
@@ -390,12 +391,12 @@ public class RoutingReportAction extends KewKualiAction {
 			if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 				((GenericXMLRuleAttribute) workflowAttribute).setRuleAttribute(ruleAttribute);
 			}
-			for (Iterator iterator = workflowAttribute.getRoutingDataRows().iterator(); iterator.hasNext();) {
-				Row row = (Row) iterator.next();
+			for (Object element : workflowAttribute.getRoutingDataRows()) {
+				Row row = (Row) element;
 
 				List fields = new ArrayList();
-				for (Iterator iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
-					Field field = (Field) iterator2.next();
+				for (Object element2 : row.getFields()) {
+					Field field = (Field) element2;
 					if (request.getParameter(field.getPropertyName()) != null) {
 						field.setPropertyValue(request.getParameter(field.getPropertyName()));
 					} else if (routingReportForm.getFields() != null && !routingReportForm.getFields().isEmpty()) {
@@ -446,11 +447,6 @@ public class RoutingReportAction extends KewKualiAction {
 		return mapping.findForward("basic");
 	}
 
-	private void makeLookupPathParam(ActionMapping mapping, HttpServletRequest request) {
-        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
-        request.setAttribute("basePath", basePath);
-    }
-
 	private RuleTemplateService getRuleTemplateService() {
 		return (RuleTemplateService) KEWServiceLocator.getService(KEWServiceLocator.RULE_TEMPLATE_SERVICE);
 	}
@@ -460,7 +456,7 @@ public class RoutingReportAction extends KewKualiAction {
 	}
 
 	private UserSession getUserSession(HttpServletRequest request) {
-	    return UserSession.getAuthenticatedUser();
+	    return GlobalVariables.getUserSession();
 	}
 
 

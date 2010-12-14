@@ -25,12 +25,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.kew.quicklinks.service.QuickLinksService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 
@@ -53,7 +51,7 @@ public class QuickLinksAction extends KewKualiAction {
 
     public void initForm(HttpServletRequest request, ActionForm form) throws Exception {
         QuickLinksForm quickLinksForm = (QuickLinksForm)form;
-        String principalId = getUserSession(request).getPrincipalId();
+        String principalId = getUserSession().getPrincipalId();
         LOG.debug("getting Action List Stats");
         quickLinksForm.setActionListStats(getQuickLinksService().getActionListStats(principalId));
         LOG.debug("finished getting Action List Stats");
@@ -83,8 +81,8 @@ public class QuickLinksAction extends KewKualiAction {
     private QuickLinksService getQuickLinksService() {
         return ((QuickLinksService)KEWServiceLocator.getService(KEWServiceLocator.QUICK_LINKS_SERVICE));
     }
-    private static UserSession getUserSession(HttpServletRequest request) {
-        return UserSession.getAuthenticatedUser();
+    private static UserSession getUserSession() {
+        return GlobalVariables.getUserSession();
     }
 
 }

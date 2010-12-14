@@ -27,18 +27,13 @@ import org.kuali.rice.kew.actions.ActionSet;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NotificationCustomActionListAttribute implements CustomActionListAttribute {
-    /**
-     * @see org.kuali.rice.kew.actionlist.CustomActionListAttribute#getDocHandlerDisplayParameters(org.kuali.rice.kew.web.session.UserSession, org.kuali.rice.kew.actionitem.ActionItem)
-     */
+
     @Override
 	public DisplayParameters getDocHandlerDisplayParameters(String principalId, ActionItem actionItem) throws Exception {
 	DisplayParameters dp = new DisplayParameters(new Integer(400));
 	return dp;
     }
 
-    /**
-     * @see org.kuali.rice.kew.actionlist.CustomActionListAttribute#getLegalActions(org.kuali.rice.kew.web.session.UserSession, org.kuali.rice.kew.actionitem.ActionItem)
-     */
     @Override
 	public ActionSet getLegalActions(String principalId,ActionItem actionItem) throws Exception {
 	ActionSet as = new ActionSet();

@@ -43,7 +43,6 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -131,7 +130,7 @@ public class RemoveReplaceAction extends KewKualiAction {
     }
 
     private WorkflowDocument createDocument() throws WorkflowException {
-	return new WorkflowDocument(new WorkflowIdDTO(UserSession.getAuthenticatedUser().getPrincipalId()), KEWConstants.REMOVE_REPLACE_DOCUMENT_TYPE);
+	return new WorkflowDocument(new WorkflowIdDTO(GlobalVariables.getUserSession().getPrincipalId()), KEWConstants.REMOVE_REPLACE_DOCUMENT_TYPE);
     }
 
     public ActionForward selectOperation(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -393,7 +392,7 @@ public class RemoveReplaceAction extends KewKualiAction {
 	RemoveReplaceForm form = (RemoveReplaceForm)actionForm;
 	validateSubmission(form);
 	RemoveReplaceDocument document = createRemoveReplaceDocument(form);
-	KEWServiceLocator.getRemoveReplaceDocumentService().blanketApprove(document, UserSession.getAuthenticatedUser(), form.getAnnotation());
+	KEWServiceLocator.getRemoveReplaceDocumentService().blanketApprove(document, GlobalVariables.getUserSession(), form.getAnnotation());
 	loadFormForReport(form, document);
 	ActionMessages messages = new ActionMessages();
         messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.routing.blanketApproved", "Remove/Replace User Document"));
@@ -406,7 +405,7 @@ public class RemoveReplaceAction extends KewKualiAction {
 	RemoveReplaceForm form = (RemoveReplaceForm)actionForm;
 	validateSubmission(form);
 	RemoveReplaceDocument document = createRemoveReplaceDocument(form);
-	KEWServiceLocator.getRemoveReplaceDocumentService().route(document, UserSession.getAuthenticatedUser(), form.getAnnotation());
+	KEWServiceLocator.getRemoveReplaceDocumentService().route(document, GlobalVariables.getUserSession(), form.getAnnotation());
 	loadFormForReport(form, document);
 	ActionMessages messages = new ActionMessages();
         messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.routing.routed", "Remove/Replace User Document"));

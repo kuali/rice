@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.ComparatorUtils;
-import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -60,7 +59,6 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtensio
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.UserSession;
@@ -101,7 +99,7 @@ public class ActionListAction extends KualiAction {
 	public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionListForm frm = (ActionListForm)actionForm;
     	request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
-    	request.setAttribute("preferences", this.getKewUserSession().getPreferences());
+    	request.setAttribute("preferences", getUserSession().retrieveObject(KEWConstants.PREFERENCES));
     	frm.setHeaderButtons(getHeaderButtons());
     	return super.execute(mapping, actionForm, request, response);
     }
@@ -211,7 +209,7 @@ public class ActionListAction extends KualiAction {
                 principalId = uSession.getPerson().getPrincipalId();
             }
 
-            Preferences preferences = getKewUserSession().getPreferences();
+            final Preferences preferences = (Preferences) getUserSession().retrieveObject(KEWConstants.PREFERENCES);
 
             if (!StringUtils.isEmpty(form.getDelegationId())) {
             	if (!KEWConstants.DELEGATION_DEFAULT.equals(form.getDelegationId())) {
@@ -289,14 +287,14 @@ public class ActionListAction extends KualiAction {
             // build the drop-down of delegators
             if (KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getDelegatorFilter())) {
                 Collection delegators = actionListSrv.findUserSecondaryDelegators(principalId);
-                form.setDelegators(getWebFriendlyRecipients(delegators));
+                form.setDelegators(ActionListUtil.getWebFriendlyRecipients(delegators));
                 form.setDelegationId(filter.getDelegatorId());
             }
 
             // Build the drop-down of primary delegates.
             if (KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE.equalsIgnoreCase(preferences.getPrimaryDelegateFilter())) {
             	Collection<Recipient> pDelegates = actionListSrv.findUserPrimaryDelegations(principalId);
-            	form.setPrimaryDelegates(getWebFriendlyRecipients(pDelegates));
+            	form.setPrimaryDelegates(ActionListUtil.getWebFriendlyRecipients(pDelegates));
             	form.setPrimaryDelegateId(filter.getPrimaryDelegateId());
             }
             
@@ -794,32 +792,11 @@ public class ActionListAction extends KualiAction {
         return actionCompatible;
     }
 
-    private List getWebFriendlyRecipients(Collection recipients) {
-        Collection newRecipients = new ArrayList(recipients.size());
-        for (Iterator iterator = recipients.iterator(); iterator.hasNext();) {
-            newRecipients.add(new WebFriendlyRecipient(iterator.next()));
-        }
-        List recipientList = new ArrayList(newRecipients);
-        Collections.sort(recipientList, new Comparator() {
-            Comparator comp = new ComparableComparator();
-
-            @Override
-			public int compare(Object o1, Object o2) {
-                return comp.compare(((WebFriendlyRecipient) o1).getDisplayName().trim().toLowerCase(), ((WebFriendlyRecipient) o2).getDisplayName().trim().toLowerCase());
-            }
-        });
-        return recipientList;
-    }
-
 	private UserSession getUserSession(){
 		return GlobalVariables.getUserSession();
 	}
-	
-	private org.kuali.rice.kew.web.session.UserSession getKewUserSession() {
-		return org.kuali.rice.kew.web.session.UserSession.getAuthenticatedUser();
-	}
 
-    private static class ActionItemComparator implements Comparator {
+    private static class ActionItemComparator implements Comparator<ActionItem> {
 
     	private static final String DOCUMENT_ID = "routeHeaderId";
 
@@ -833,10 +810,10 @@ public class ActionListAction extends KualiAction {
     	}
 
 		@Override
-		public int compare(Object object1, Object object2) {
+		public int compare(ActionItem object1, ActionItem object2) {
 			try {
-				ActionItem actionItem1 = (ActionItem)object1;
-				ActionItem actionItem2 = (ActionItem)object2;
+				ActionItem actionItem1 = object1;
+				ActionItem actionItem2 = object2;
 				// invoke the power of the lookup functionality provided by the display tag library, this LookupUtil method allows for us
 				// to evaulate nested bean properties (like workgroup.groupNameId.nameId) in a null-safe manner.  For example, in the
 				// example if workgroup evaluated to NULL then LookupUtil.getProperty would return null rather than blowing an exception

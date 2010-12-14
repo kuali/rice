@@ -29,7 +29,8 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -171,7 +172,7 @@ public class DocSearchUtils {
             }
             return null;
         }
-        String regexSplitExpression = (String) REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION.get(matchingRegexExpression);
+        String regexSplitExpression = REGEX_EXPRESSION_MAP_TO_REGEX_SPLIT_EXPRESSION.get(matchingRegexExpression);
 
         // Check date formats and reformat to yyyy/MM/dd
         // well formed MM/dd/yyyy
@@ -375,13 +376,13 @@ public class DocSearchUtils {
                     String value = searchableAttribute.substring(index + 1);
                     if (value.startsWith(CURRENT_USER_PREFIX)) {
                         String idType = value.substring(CURRENT_USER_PREFIX.length());
-                        UserSession session = UserSession.getAuthenticatedUser();
+                        UserSession session = GlobalVariables.getUserSession();
                         String idValue = UserUtils.getIdValue(idType, session.getPerson());
                         if (!StringUtils.isBlank(idValue)) {
                             value = idValue;
                         }
                     }
-                    SearchAttributeCriteriaComponent critComponent = (SearchAttributeCriteriaComponent) criteriaComponentsByKey.get(key);
+                    SearchAttributeCriteriaComponent critComponent = criteriaComponentsByKey.get(key);
                     if (critComponent == null) {
                         // here we potentially have a change to the searchable attributes dealing with naming or ranges... so
                         // we just ignore the values
@@ -424,7 +425,7 @@ public class DocSearchUtils {
             {
                 if (criteriaComponent.isCanHoldMultipleValues())
                 {
-                    List<String> values = (List<String>) checkForMultiValueSearchableAttributes.get(criteriaComponent.getFormKey());
+                    List<String> values = checkForMultiValueSearchableAttributes.get(criteriaComponent.getFormKey());
                     criteriaComponent.setValue(null);
                     criteriaComponent.setValues(values);
                 }
@@ -523,7 +524,7 @@ public class DocSearchUtils {
                                 sacc.setSearchInclusive(field.isInclusive());
                                 sacc.setLookupableFieldType(field.getFieldType());
                                 sacc.setSearchable(field.isIndexedForSearch());
-                                sacc.setCanHoldMultipleValues(field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
+                                sacc.setCanHoldMultipleValues(Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType()));
                                 criteriaComponentsByFormKey.put(field.getPropertyName(), sacc);
                             } else {
                                 throw new RiceRuntimeException("Fields must be of type org.kuali.rice.kew.docsearch.Field");
@@ -533,7 +534,7 @@ public class DocSearchUtils {
                 }
                 for (Iterator iterator = propertyFields.iterator(); iterator.hasNext();) {
                     SearchAttributeFormContainer propertyField = (SearchAttributeFormContainer) iterator.next();
-                    SearchAttributeCriteriaComponent sacc = (SearchAttributeCriteriaComponent) criteriaComponentsByFormKey.get(propertyField.getKey());
+                    SearchAttributeCriteriaComponent sacc = criteriaComponentsByFormKey.get(propertyField.getKey());
                     if (sacc != null) {
                         if (sacc.getSearchableAttributeValue() == null) {
                             String errorMsg = "Searchable attribute with form field key " + sacc.getFormKey() + " does not have a valid SearchableAttributeValue";

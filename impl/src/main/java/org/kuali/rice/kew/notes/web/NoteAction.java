@@ -36,6 +36,7 @@ import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 
 import javax.servlet.http.HttpServletRequest;
@@ -92,7 +93,7 @@ public class NoteAction extends KewKualiAction {
     	NoteForm noteForm = (NoteForm) form;
     	NoteService noteService = KEWServiceLocator.getNoteService();
     	Note note = noteService.getNoteByNoteId(noteForm.getNote().getNoteId());
-    	noteService.deleteAttachment((Attachment)note.getAttachments().remove(0));
+    	noteService.deleteAttachment(note.getAttachments().remove(0));
     	noteForm.setDocId(note.getRouteHeaderId());
     	noteForm.setNoteIdNumber(note.getNoteId());
     	edit(mapping, form, request, response);
@@ -141,7 +142,7 @@ public class NoteAction extends KewKualiAction {
         if (routeHeader != null) {
             customNoteAttribute = routeHeader.getCustomNoteAttribute();
             if (customNoteAttribute != null) {
-                customNoteAttribute.setUserSession(getUserSession(request));
+                customNoteAttribute.setUserSession(GlobalVariables.getUserSession());
                 canAddNotes = customNoteAttribute.isAuthorizedToAddNotes();
                 canEditNote = customNoteAttribute.isAuthorizedToEditNote(noteToSave);
             }
@@ -215,18 +216,18 @@ public class NoteAction extends KewKualiAction {
             CustomNoteAttribute customNoteAttribute = null;
             DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(noteForm.getDocId());
 
-            List allNotes = routeHeader.getNotes();
+            List<Note> allNotes = routeHeader.getNotes();
             boolean canAddNotes = false;
             if (routeHeader != null) {
                 customNoteAttribute = routeHeader.getCustomNoteAttribute();
                 if (customNoteAttribute != null) {
-                    customNoteAttribute.setUserSession(getUserSession(request));
+                    customNoteAttribute.setUserSession(GlobalVariables.getUserSession());
                     canAddNotes = customNoteAttribute.isAuthorizedToAddNotes();
                 }
             }
-            Iterator notesIter = allNotes.iterator();
+            Iterator<Note> notesIter = allNotes.iterator();
             while (notesIter.hasNext()) {
-                Note singleNote = (Note) notesIter.next();
+                Note singleNote = notesIter.next();
                 singleNote.setNoteCreateLongDate(new Long(singleNote.getNoteCreateDate().getTime()));
                 getAuthorData(singleNote);
                 boolean canEditNote = false;
@@ -291,7 +292,8 @@ public class NoteAction extends KewKualiAction {
         try {
           Collections.sort(allNotes,
           new Comparator() {
-            public int compare(Object o1, Object o2) {
+            @Override
+			public int compare(Object o1, Object o2) {
   			Timestamp date1 = ((Note) o1).getNoteCreateDate();
   			Timestamp date2 = ((Note) o2).getNoteCreateDate();
 

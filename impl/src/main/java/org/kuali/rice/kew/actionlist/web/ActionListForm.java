@@ -28,6 +28,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -92,11 +93,13 @@ public class ActionListForm extends KualiForm {
 	this.helpDeskActionListUserName = helpDeskActionListUserName;
     }
 
-    public String getMethodToCall() {
+    @Override
+	public String getMethodToCall() {
 	return methodToCall;
     }
 
-    public void setMethodToCall(String methodToCall) {
+    @Override
+	public void setMethodToCall(String methodToCall) {
 	this.methodToCall = methodToCall;
     }
 
@@ -331,8 +334,9 @@ public class ActionListForm extends KualiForm {
         request.setAttribute("preferences", userSession);
 
         String principalId = GlobalVariables.getUserSession().getPrincipalId();
-        if (userSession.getHelpDeskActionListPrincipal() != null) {
-        	setHelpDeskActionListUserName(userSession.getHelpDeskActionListPrincipal().getPrincipalName());
+        final KimPrincipal hdalPrinc = (KimPrincipal) GlobalVariables.getUserSession().retrieveObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);
+        if (hdalPrinc != null) {
+        	setHelpDeskActionListUserName(hdalPrinc.getPrincipalName());
         }
         boolean isHelpDeskAuthorized = KIMServiceLocator.getIdentityManagementService().isAuthorized(principalId, KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.VIEW_OTHER_ACTION_LIST, new AttributeSet(), new AttributeSet());
         if (isHelpDeskAuthorized) {

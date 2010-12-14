@@ -27,8 +27,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.w3c.dom.Document;
 
 
@@ -44,10 +44,10 @@ public class EDLControllerChain {
 
 	private static final Logger LOG = Logger.getLogger(EDLControllerChain.class);
 
-	private Stack edlControllers = new Stack();
+	private Stack<EDLController> edlControllers = new Stack<EDLController>();
 
 	public void renderEDL(RequestParser requestParser, HttpServletResponse response) throws Exception {
-		EDLController edlController = (EDLController) edlControllers.pop();
+		EDLController edlController = edlControllers.pop();
 		edlController.setEdlContext(getInitialEDLContext(edlController, requestParser, edlController.getStyle().newTransformer()));
 
 		Document dom = edlController.notifyComponents();
@@ -77,7 +77,7 @@ public class EDLControllerChain {
         if (edlContext.getUserSession() != null) {
             Person wu = edlContext.getUserSession().getPerson();
             if (wu != null) user = wu.getPrincipalId();
-            wu = edlContext.getUserSession().getActualPerson();
+            wu = edlContext.getUserSession().getPerson();
             if (wu != null) loggedInUser = wu.getPrincipalId();
         }
         transformer.setParameter("user", user);
@@ -92,7 +92,7 @@ public class EDLControllerChain {
 		EDLContext edlContext = new EDLContext();
 		edlContext.setEdlControllerChain(this);
 		edlContext.setEdocLiteAssociation(edlController.getEdocLiteAssociation());
-		edlContext.setUserSession(UserSession.getAuthenticatedUser());
+		edlContext.setUserSession(GlobalVariables.getUserSession());
 		edlContext.setTransformer(transformer);
 		edlContext.setRequestParser(requestParser);
 		return edlContext;

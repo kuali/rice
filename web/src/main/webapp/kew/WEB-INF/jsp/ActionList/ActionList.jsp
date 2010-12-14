@@ -113,8 +113,7 @@
 				</html-el:select>
 			</div>
 		</c:if>
-
-		<c:if test="${kewUserSession.actionListFilter != null && kewUserSession.actionListFilter.filterOn}">
+		<c:if test="${UserSession.objectMap[KEWConstants.ACTION_LIST_FILTER_ATTR_NAME] != null && UserSession.objectMap[KEWConstants.ACTION_LIST_FILTER_ATTR_NAME].filterOn}">
 		<div style="float:left; width:70px">
 	   <a
          href='<c:out value="ActionList.do?methodToCall=clearFilter" />'  title="clearFilter"><img
@@ -131,11 +130,11 @@
             <div style="float:left">
             <html-el:image src="${ConfigProperties.kr.url}/images/tinybutton-hlpdesk.gif" property="methodToCall.helpDeskActionListLogin" styleClass="tinybutton" />
             </div>
-			<c:if test="${kewUserSession.helpDeskActionListPerson != null}">
+			<c:if test="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] != null}">
 				<a href="
 					<c:url value="ActionList.do">
 						<c:param name="methodToCall" value="clearHelpDeskActionListUser" />
-					</c:url>">Clear <c:out value="${kewUserSession.helpDeskActionListPerson.name}"/>'s List</a>
+					</c:url>">Clear <c:out value="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME].name}"/>'s List</a>
 			</c:if>&nbsp;&nbsp;
 		</c:if>
 
@@ -146,7 +145,7 @@
 	<div align="right">
 	<br/>
          <c:if
-            test="${kewUserSession.helpDeskActionListPerson == null && ! empty actionList && ! empty ActionListForm.defaultActions}">
+            test="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ! empty actionList && ! empty ActionListForm.defaultActions}">
               <c:set var="defaultActions" value="${ActionListForm.defaultActions}" scope="request" />
               <html-el:select styleId='defaultAction' property="defaultActionToTake">
                     <html-el:options collection="defaultActions" labelProperty="value" property="key" filter="false" />
@@ -216,11 +215,11 @@
 					<td></td>
 					</tr>
 			<c:if
-				test="${kewUserSession.actionListFilter.filterLegend != null && kewUserSession.actionListFilter.filterLegend != ''}">
+				test="${UserSession.objectMap[KEWConstants.ACTION_LIST_FILTER_ATTR_NAME].filterLegend != null && UserSession.objectMap[KEWConstants.ACTION_LIST_FILTER_ATTR_NAME].filterLegend != ''}">
 					<tr>
 				 	<td></td>
 					<td><strong><c:out
-					value="${kewUserSession.actionListFilter.filterLegend}" /></strong></td>
+					value="${UserSession.objectMap[KEWConstants.ACTION_LIST_FILTER_ATTR_NAME].filterLegend}" /></strong></td>
 					<td></td>
 					</tr>
 			 </c:if>
@@ -242,7 +241,7 @@
 					<display-el:setProperty name="export.banner" value="" />
 					<display-el:setProperty name="css.tr.even" value="actionlist_anyRow" />
 					<display-el:setProperty name="css.tr.odd" value="actionlist_anyRow" />
-                    <c:if test="${kewUserSession.helpDeskActionListPerson == null && ActionListForm.hasDisplayParameters}">
+                    <c:if test="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null} && ActionListForm.hasDisplayParameters}">
   					  <display-el:column title="&nbsp;">
 						<c:choose>
 						   <c:when test="${result.displayParameters != null}">
@@ -265,7 +264,7 @@
 					<display-el:column sortable="true" title="${documentIdLabel}"
 						sortProperty="routeHeaderId">
 						<c:choose>
-							<c:when test="${kewUserSession.helpDeskActionListPerson == null}">
+							<c:when test="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null}">
                                 <a
 									href="<c:url value="${Constants.DOC_HANDLER_REDIRECT_PAGE}" >
                                      <c:param name="${Constants.ROUTEHEADER_ID_PARAMETER}" value="${result.routeHeaderId}"/>
@@ -381,7 +380,7 @@
 					</c:if>
 
 					<c:if
-						test="${! ActionListForm.viewOutbox && kewUserSession.helpDeskActionListPerson == null && ActionListForm.hasCustomActions && (ActionListForm.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
+						test="${! ActionListForm.viewOutbox && UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null && ActionListForm.hasCustomActions && (ActionListForm.customActionList || (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL))}">
 						<display-el:column title="${actionsLabel}" class="infocell">
 							<c:if test="${! empty result.customActions}">
 								<c:set var="customActions" value="${result.customActions}"
@@ -430,7 +429,7 @@
 				</td>
 			</tr>
 			<c:if
-				test="${kewUserSession.helpDeskActionListPerson == null && (! empty customActionsPresent) && (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL || ActionListForm.customActionList)}">
+				test="${UserSession.objectMap[KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME] == null} && (! empty customActionsPresent) && (preferences.showClearFyi == Constants.PREFERENCES_YES_VAL || ActionListForm.customActionList)}">
 				<tr>
 					<td></td>
 					<td height="0" class="tinybutton">

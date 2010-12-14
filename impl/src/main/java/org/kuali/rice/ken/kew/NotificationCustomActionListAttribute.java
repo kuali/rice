@@ -19,7 +19,6 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.DisplayParameters;
 import org.kuali.rice.kew.actions.ActionSet;
-import org.kuali.rice.kew.web.session.UserSession;
 
 
 /**
@@ -31,7 +30,8 @@ public class NotificationCustomActionListAttribute implements CustomActionListAt
     /**
      * @see org.kuali.rice.kew.actionlist.CustomActionListAttribute#getDocHandlerDisplayParameters(org.kuali.rice.kew.web.session.UserSession, org.kuali.rice.kew.actionitem.ActionItem)
      */
-    public DisplayParameters getDocHandlerDisplayParameters(UserSession userSession, ActionItem actionItem) throws Exception {
+    @Override
+	public DisplayParameters getDocHandlerDisplayParameters(String principalId, ActionItem actionItem) throws Exception {
 	DisplayParameters dp = new DisplayParameters(new Integer(400));
 	return dp;
     }
@@ -39,7 +39,8 @@ public class NotificationCustomActionListAttribute implements CustomActionListAt
     /**
      * @see org.kuali.rice.kew.actionlist.CustomActionListAttribute#getLegalActions(org.kuali.rice.kew.web.session.UserSession, org.kuali.rice.kew.actionitem.ActionItem)
      */
-    public ActionSet getLegalActions(UserSession userSession,ActionItem actionItem) throws Exception {
+    @Override
+	public ActionSet getLegalActions(String principalId,ActionItem actionItem) throws Exception {
 	ActionSet as = new ActionSet();
 	as.addFyi();
 	return as;

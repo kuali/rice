@@ -18,7 +18,6 @@ package org.kuali.rice.kew.actionlist;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actions.ActionSet;
-import org.kuali.rice.kew.web.session.UserSession;
 
 
 
@@ -38,14 +37,14 @@ public class DefaultCustomActionListAttribute implements CustomActionListAttribu
 	static {
 		DEFAULT_LEGAL_ACTIONS.addFyi();
 	}
-	
-	public DefaultCustomActionListAttribute() {}
     
-    public ActionSet getLegalActions(UserSession userSession, ActionItem actionItem) throws Exception {
+    @Override
+	public ActionSet getLegalActions(String principalId, ActionItem actionItem) throws Exception {
     	return DEFAULT_LEGAL_ACTIONS;
 	}
     
-    public DisplayParameters getDocHandlerDisplayParameters(UserSession userSession, ActionItem actionItem) throws Exception {
+    @Override
+	public DisplayParameters getDocHandlerDisplayParameters(String principalId, ActionItem actionItem) throws Exception {
 		return null;
 	}
     

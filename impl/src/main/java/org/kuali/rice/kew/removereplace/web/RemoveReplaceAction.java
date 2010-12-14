@@ -47,6 +47,7 @@ import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**
@@ -61,7 +62,6 @@ public class RemoveReplaceAction extends KewKualiAction {
 
     private static final String INVALID_USER_ID_MSG = "removereplace.invalidUserId";
     private static final String USER_ID_NOT_FOUND_MSG = "removereplace.userIdNotFound";
-    private static final String INVALID_REPLACEMENT_USER_ID_MSG = "removereplace.invalidReplacementUserId";
     private static final String REPLACEMENT_USER_ID_NOT_FOUND_MSG = "removereplace.replacementUserIdNotFound";
     private static final String REPLACEMENT_USER_ID_REQUIRED_MSG = "removereplace.replacementUserIdRequired";
     private static final String INVALID_OPERATION_MSG = "removereplace.invalidOperation";
@@ -91,7 +91,7 @@ public class RemoveReplaceAction extends KewKualiAction {
 	form.setActionRequestCodes(CodeTranslator.arLabels);
 	boolean isCreating = false;
 	if (form.getDocId() != null) {
-            form.setWorkflowDocument(new WorkflowDocument(getUserSession(request).getPrincipalId(), form.getDocId()));
+            form.setWorkflowDocument(new WorkflowDocument(GlobalVariables.getUserSession().getPrincipalId(), form.getDocId()));
         } else {
             // we're creating a new one if this action is being invoked without a method to call or with "start"
             isCreating = StringUtils.isEmpty(form.getMethodToCall()) || form.getMethodToCall().equals("start");
@@ -452,12 +452,13 @@ public class RemoveReplaceAction extends KewKualiAction {
 	return document;
     }
 
-    public ActionForward performLookup(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+	public ActionForward performLookup(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
         String lookupService = request.getParameter("lookupableImplServiceName");
         String conversionFields = request.getParameter("conversionFields");
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
         StringBuffer lookupUrl = new StringBuffer(basePath);
-        lookupUrl.append("/Lookup.do?methodToCall=start&docFormKey=").append(getUserSession(request).addObject(actionForm)).append("&lookupableImplServiceName=");
+        lookupUrl.append("/Lookup.do?methodToCall=start&docFormKey=").append(GlobalVariables.getUserSession().addObject(actionForm)).append("&lookupableImplServiceName=");
         lookupUrl.append(lookupService);
         lookupUrl.append("&conversionFields=").append(conversionFields);
         lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");
@@ -485,10 +486,6 @@ public class RemoveReplaceAction extends KewKualiAction {
             messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage(messageKey, "document", secondMessageParameter));
         }
         saveMessages(request, messages);
-    }
-
-    private static UserSession getUserSession(HttpServletRequest request) {
-        return UserSession.getAuthenticatedUser();
     }
 
 

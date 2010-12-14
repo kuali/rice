@@ -19,14 +19,13 @@ package org.kuali.rice.kew.actionlist;
 import java.io.Serializable;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionlist.DisplayParameters;
 import org.kuali.rice.kew.actions.ActionSet;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.mail.CustomEmailAttribute;
 import org.kuali.rice.kew.notes.CustomNoteAttribute;
 import org.kuali.rice.kew.notes.Note;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
 
 
 public class TestCustomActionList implements CustomActionListAttribute, Serializable, CustomEmailAttribute, CustomNoteAttribute {
@@ -57,7 +56,7 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
         return "Customized Email Subject";
     }
 
-	public ActionSet getLegalActions(UserSession userSession, ActionItem actionItem) throws Exception {
+	public ActionSet getLegalActions(String principalId, ActionItem actionItem) throws Exception {
 		ActionSet actionSet = new ActionSet();
 		actionSet.addAcknowledge();
 		actionSet.addApprove();
@@ -66,7 +65,7 @@ public class TestCustomActionList implements CustomActionListAttribute, Serializ
 		return actionSet;
 	}
     
-    public DisplayParameters getDocHandlerDisplayParameters(UserSession userSession, ActionItem actionItem) throws Exception {
+    public DisplayParameters getDocHandlerDisplayParameters(String principalId, ActionItem actionItem) throws Exception {
 		return new DisplayParameters(new Integer(300));
 	}
     

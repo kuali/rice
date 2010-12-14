@@ -25,10 +25,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -36,6 +34,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**
@@ -53,18 +52,10 @@ public class UserSession implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private static ThreadLocal currentUserSession = new ThreadLocal();
+    private static ThreadLocal<UserSession> currentUserSession = new ThreadLocal<UserSession>();
 
-    private int nextObjectKey;
-    private transient Map objectMap = new HashMap();
-//    private ActionListFilter actionListFilter;
     private Preferences preferences;
-    private List authentications = new ArrayList();
-
-    private String sortOrder;
-    private String sortCriteria;
-    private int currentPage;
-    private boolean updateActionList;
+    private List<Authentication> authentications = new ArrayList<Authentication>();
 
     private KimPrincipal actualPrincipal;
     private Person actualPerson;
@@ -73,10 +64,7 @@ public class UserSession implements Serializable {
     private KimPrincipal backdoorPrincipal;
     private Person backdoorPerson;
     private Map<String, Group> backdoorPrincipalGroups = new HashMap<String, Group>();
-
-    private KimPrincipal helpDeskActionListPrincipal;
-    private Person helpDeskActionListPerson;
-
+    
     private static IdentityManagementService identityService = null;
     private static PersonService<Person> personService = null;
 
@@ -102,75 +90,20 @@ public class UserSession implements Serializable {
 		for (Group group : groups) {
 			actualPrincipalGroups.put(group.getGroupId(), group);
 		}
-        this.nextObjectKey = 0;
-	}
-
-	/**
-	 * @return the sortOrder
-	 */
-	public String getSortOrder() {
-		return this.sortOrder;
-	}
-
-	/**
-	 * @param sortOrder the sortOrder to set
-	 */
-	public void setSortOrder(String sortOrder) {
-		this.sortOrder = sortOrder;
-	}
-
-	/**
-	 * @return the sortCriteria
-	 */
-	public String getSortCriteria() {
-		return this.sortCriteria;
-	}
-
-	/**
-	 * @param sortCriteria the sortCriteria to set
-	 */
-	public void setSortCriteria(String sortCriteria) {
-		this.sortCriteria = sortCriteria;
-	}
-
-	/**
-	 * @return the currentPage
-	 */
-	public int getCurrentPage() {
-		return this.currentPage;
-	}
-
-	/**
-	 * @param currentPage the currentPage to set
-	 */
-	public void setCurrentPage(int currentPage) {
-		this.currentPage = currentPage;
 	}
 
     public static UserSession getAuthenticatedUser() {
-    	return (UserSession)currentUserSession.get();
+    	return currentUserSession.get();
     }
 
     public static void setAuthenticatedUser(UserSession currentUserSession) {
     	UserSession.currentUserSession.set(currentUserSession);
     }
 
-    public String getValue(String value) {
-    	return value;
-    }
-
     public Preferences getPreferences() {
         return preferences;
     }
 
-/*    public ActionListFilter getActionListFilter() {
-        return actionListFilter;
-    }
-
-    public void setActionListFilter(ActionListFilter actionListFilter) {
-        this.actionListFilter = actionListFilter;
-    }
-*/
     public KimPrincipal getActualPrincipal() {
     	return actualPrincipal;
     }
@@ -185,14 +118,6 @@ public class UserSession implements Serializable {
 
 	public Person getBackdoorPerson() {
 		return this.backdoorPerson;
-	}
-
-	public KimPrincipal getHelpDeskActionListPrincipal() {
-		return this.helpDeskActionListPrincipal;
-	}
-
-	public Person getHelpDeskActionListPerson() {
-		return this.helpDeskActionListPerson;
 	}
 
 	public String getPrincipalId() {
@@ -244,20 +169,9 @@ public class UserSession implements Serializable {
         establishPreferencesForPrincipal(actualPrincipal);
     }
 
-    public void establishHelpDeskWithPrincipalName(String principalName) {
-    	this.helpDeskActionListPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(principalName);
-    	this.helpDeskActionListPerson = KEWServiceLocator.getIdentityHelperService().getPersonByPrincipalName(principalName);
-    }
-
-    public void clearHelpDesk() {
-    	this.helpDeskActionListPrincipal = null;
-    	this.helpDeskActionListPerson = null;
-    }
-
     public void refreshPreferences() {
     	establishPreferencesForPrincipal(getPrincipal());
-    	this.updateActionList = true;
-    	//this.preferences.setPreferencesUpdated(true);
+    	GlobalVariables.getUserSession().addObject(KEWConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.TRUE);
     }
 
     protected void establishPreferencesForPrincipal(KimPrincipal principal) {
@@ -273,57 +187,20 @@ public class UserSession implements Serializable {
         }
     }
 
-    protected boolean isProductionEnvironment() {
+    private boolean isProductionEnvironment() {
     	return ConfigContext.getCurrentContextConfig().getProperty(KEWConstants.PROD_DEPLOYMENT_CODE).equalsIgnoreCase(
     			ConfigContext.getCurrentContextConfig().getEnvironment());
-    }
-
-    public String addObject(Object object) {
-        String objectKey = nextObjectKey++ + "";
-        getObjectMap().put(objectKey, object);
-        return objectKey;
-    }
-
-    public Object retrieveObject(String objectKey) {
-        return getObjectMap().get(objectKey);
-    }
-
-    public void removeObject(String objectKey) {
-        getObjectMap().remove(objectKey);
     }
 
     public boolean isBackdoorInUse() {
         return backdoorPrincipal != null;
     }
 
-    public String getEmailAddress() {
-    	return getPerson().getEmailAddressUnmasked();
-    }
-
-    public int getNextObjectKey() {
-        return nextObjectKey;
-    }
-    public void setNextObjectKey(int nextObjectKey) {
-        this.nextObjectKey = nextObjectKey;
-    }
-    public Map getObjectMap() {
-    	if (objectMap == null) {
-    		objectMap = new HashMap();
-    	}
-        return objectMap;
-    }
-    public void setObjectMap(Map objectMap) {
-        this.objectMap = objectMap;
-    }
-    public String getDisplayName() {
-        return getPersonService().getPerson(getPrincipalId()).getNameUnmasked();
-    }
-
     /**
      * Returns a List of Authentications on the UserSession.  This List identifies the various types of
      * authentications that the user has performed (i.e. Kerberos, Safeword, etc.)
      */
-    public List getAuthentications() {
+    public List<Authentication> getAuthentications() {
     	return authentications;
     }
 
@@ -336,8 +213,8 @@ public class UserSession implements Serializable {
     } 
 
     public boolean hasRole(String role) {
-    	for (Iterator iterator = getAuthentications().iterator(); iterator.hasNext();) {
-    		Authentication auth = (Authentication) iterator.next();
+    	for (Iterator<Authentication> iterator = getAuthentications().iterator(); iterator.hasNext();) {
+    		Authentication auth = iterator.next();
     		if (auth.getAuthority().equalsIgnoreCase(role)) {
     			return true;
     		}
@@ -379,13 +256,4 @@ public class UserSession implements Serializable {
 		}
 		return personService;
 	}
-
-    public boolean isUpdateActionList() {
-        return this.updateActionList;
-    }
-
-    public void actionListUpdated() {
-        this.updateActionList = false;
-    }
-
 }

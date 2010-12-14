@@ -61,8 +61,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
@@ -84,17 +85,11 @@ public class ActionListAction extends KualiAction {
     private static final String ACTION_LIST_USER_KEY = "actionList.user";
     private static final String REQUERY_ACTION_LIST_KEY = "requeryActionList";
 
-    // property names used for errors -- some of these are bogus, as there isn't
-    // really a form whose fields can be highlighted.
-    private static final String ROUTEHEADERID_PROP = "routeHeaderId";
     private static final String ACTIONREQUESTCD_PROP = "actionRequestCd";
     private static final String CUSTOMACTIONLIST_PROP = "customActionList";
-    private static final String DOCTITLE_PROP = "docTitle";
     private static final String ACTIONITEM_PROP = "actionitem";
     private static final String HELPDESK_ACTIONLIST_USERNAME = "helpDeskActionListUserName";
 
-    // error keys
-    private static final String ACTIONITEM_ROUTEHEADERID_INVALID_ERRKEY = "actionitem.routeheaderid.invalid";
     private static final String ACTIONITEM_ACTIONREQUESTCD_INVALID_ERRKEY = "actionitem.actionrequestcd.invalid";
     private static final String ACTIONLIST_BAD_CUSTOM_ACTION_LIST_ITEMS_ERRKEY = "actionlist.badCustomActionListItems";
 	private static final String ACTIONLIST_BAD_ACTION_ITEMS_ERRKEY = "actionlist.badActionItems";
@@ -102,10 +97,11 @@ public class ActionListAction extends KualiAction {
 	private static final String HELPDESK_LOGIN_INVALID_ERRKEY = "helpdesk.login.invalid";
 
 
+	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionListForm frm = (ActionListForm)actionForm;
     	request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
-    	request.setAttribute("preferences", this.getUserSession(request).getPreferences());
+    	request.setAttribute("preferences", this.getKewUserSession().getPreferences());
     	frm.setHeaderButtons(getHeaderButtons());
     	return super.execute(mapping, actionForm, request, response);
     }
@@ -152,21 +148,21 @@ public class ActionListAction extends KualiAction {
         Integer page = form.getPage();
         String sortCriterion = form.getSort();
         SortOrderEnum sortOrder = SortOrderEnum.ASCENDING;
+        final UserSession uSession = getUserSession();
+        
         if (form.getDir() != null) {
         	sortOrder = parseSortOrder(form.getDir());
         }
-        else if ( !StringUtils.isEmpty(getUserSession(request).getSortOrder()))     {
-        	sortOrder = parseSortOrder(getUserSession(request).getSortOrder());
-     //   	System.out.println("Session value for SortOrder "+sortOrder);
+        else if ( !StringUtils.isEmpty((String) uSession.retrieveObject(KEWConstants.SORT_ORDER_ATTR_NAME)))     {
+        	sortOrder = parseSortOrder((String) uSession.retrieveObject(KEWConstants.SORT_ORDER_ATTR_NAME));
         }
         // if both the page and the sort criteria are null, that means its the first entry into the page, use defaults
         if (page == null && sortCriterion == null) {
         	page = Integer.valueOf(1);
         	sortCriterion = ActionItemComparator.DOCUMENT_ID;
         }
-        else if ( !StringUtils.isEmpty(getUserSession(request).getSortCriteria()))     {
-        	sortCriterion = getUserSession(request).getSortCriteria();
-     //       System.out.println("Session sortCriterion variables used..."+getUserSession(request).getSortCriteria());
+        else if ( !StringUtils.isEmpty((String) uSession.retrieveObject(KEWConstants.SORT_CRITERIA_ATTR_NAME)))     {
+        	sortCriterion = (String) uSession.retrieveObject(KEWConstants.SORT_CRITERIA_ATTR_NAME);
         }
         // if the page is still null, that means the user just performed a sort action, pull the currentPage off of the form
         if (page == null) {
@@ -188,25 +184,24 @@ public class ActionListAction extends KualiAction {
         List actionList = (List)request.getSession().getAttribute(ACTION_LIST_KEY);
         plog.log("Time to initialize");
         try {
-            UserSession uSession = getUserSession(request);
-            final org.kuali.rice.kns.UserSession commonUserSession = getCommonUserSession();
+            //UserSession uSession = getUserSession(request);
             String principalId = null;
-            if (commonUserSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME) == null) {
+            if (uSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME) == null) {
                 ActionListFilter filter = new ActionListFilter();
                 filter.setDelegationType(KEWConstants.DELEGATION_SECONDARY);
                 filter.setExcludeDelegationType(true);
-                commonUserSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
+                uSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, filter);
             }
 
-            final ActionListFilter filter = (ActionListFilter) commonUserSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
+            final ActionListFilter filter = (ActionListFilter) uSession.retrieveObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
             /* 'forceListRefresh' variable used to signify that the action list filter has changed
              * any time the filter changes the action list must be refreshed or filter may not take effect on existing
              * list items... only exception is if action list has not loaded previous and fetching of the list has not
              * occurred yet
              */
             boolean forceListRefresh = request.getSession().getAttribute(REQUERY_ACTION_LIST_KEY) != null;
-            if (uSession.getHelpDeskActionListPrincipal() != null) {
-            	principalId = uSession.getHelpDeskActionListPrincipal().getPrincipalId();
+            if (uSession.retrieveObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME) != null) {
+            	principalId = ((KimPrincipal) uSession.retrieveObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME)).getPrincipalId();
             } else {
                 if (!StringUtils.isEmpty(form.getDocType())) {
                 	filter.setDocumentType(form.getDocType());
@@ -216,7 +211,7 @@ public class ActionListAction extends KualiAction {
                 principalId = uSession.getPerson().getPrincipalId();
             }
 
-            Preferences preferences = getUserSession(request).getPreferences();
+            Preferences preferences = getKewUserSession().getPreferences();
 
             if (!StringUtils.isEmpty(form.getDelegationId())) {
             	if (!KEWConstants.DELEGATION_DEFAULT.equals(form.getDelegationId())) {
@@ -259,7 +254,7 @@ public class ActionListAction extends KualiAction {
             }
             
             // if the user has changed, we need to refresh the action list
-            if (!principalId.equals((String) request.getSession().getAttribute(ACTION_LIST_USER_KEY))) {
+            if (!principalId.equals(request.getSession().getAttribute(ACTION_LIST_USER_KEY))) {
                 actionList = null;
             }
 
@@ -269,7 +264,7 @@ public class ActionListAction extends KualiAction {
             } else {
                 if (actionList == null) {
                 	//clear out old User Option records if they exist
-                	actionListSrv.refreshActionList(getUserSession(request).getPerson().getPrincipalId());
+                	actionListSrv.refreshActionList(getUserSession().getPerson().getPrincipalId());
                 	// fetch the action list
                     actionList = new ArrayList(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
@@ -277,11 +272,12 @@ public class ActionListAction extends KualiAction {
                 	// force a refresh... usually based on filter change or parameter specifying refresh needed
                     actionList = new ArrayList(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
-                } else if (actionListSrv.refreshActionList(getUserSession(request).getPerson().getPrincipalId())) {
+                } else if (actionListSrv.refreshActionList(getUserSession().getPerson().getPrincipalId())) {
                     actionList = new ArrayList(actionListSrv.getActionList(principalId, filter));
                     request.getSession().setAttribute(ACTION_LIST_USER_KEY, principalId);
                 } else {
-                	if (!uSession.isUpdateActionList()) {
+                	Boolean update = (Boolean) uSession.retrieveObject(KEWConstants.UPDATE_ACTION_LIST_ATTR_NAME);
+                	if (update == null || !update) {
                 		freshActionList = false;
                 	}
                 }
@@ -330,10 +326,10 @@ public class ActionListAction extends KualiAction {
             			form.getCurrentDir(), pageSize, preferences, form);
             plog.log("done w/ buildCurrentPage");
             request.setAttribute(ACTION_LIST_PAGE_KEY, currentPage);
-            uSession.actionListUpdated();
-            uSession.setCurrentPage(form.getCurrentPage());
-            uSession.setSortCriteria(form.getSort());
-            uSession.setSortOrder(form.getCurrentDir());
+            uSession.addObject(KEWConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.FALSE);
+            uSession.addObject(KEWConstants.CURRENT_PAGE_ATTR_NAME, form.getCurrentPage());
+            uSession.addObject(KEWConstants.SORT_CRITERIA_ATTR_NAME, (Object) form.getSort());
+            uSession.addObject(KEWConstants.SORT_ORDER_ATTR_NAME, (Object) form.getCurrentDir());
             plog.log("finished setting attributes, finishing action list fetch");
         } catch (Exception e) {
             LOG.error("Error loading action list.", e);
@@ -427,7 +423,7 @@ public class ActionListAction extends KualiAction {
 
     private void initializeActionList(List actionList, Preferences preferences) throws WorkflowException {
     	List actionItemProblemIds = new ArrayList();
-    	Map<Long,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems((List<ActionItem>)actionList);
+    	Map<Long,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(actionList);
 
     	int index = 0;
     	generateActionItemErrors(actionList);
@@ -449,23 +445,23 @@ public class ActionListAction extends KualiAction {
     			actionItem.setRouteHeader(routeHeaderExtension);
     			//set background colors for document statuses
     			if (KEWConstants.ROUTE_HEADER_APPROVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorApproved()));
+    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorApproved()));
     			} else if (KEWConstants.ROUTE_HEADER_CANCEL_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorCanceled()));
+    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorCanceled()));
     			} else if (KEWConstants.ROUTE_HEADER_DISAPPROVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorDissaproved()));
+    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorDissaproved()));
     			} else if (KEWConstants.ROUTE_HEADER_ENROUTE_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorEnroute()));
+    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorEnroute()));
     			} else if (KEWConstants.ROUTE_HEADER_EXCEPTION_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorException()));
+    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorException()));
     			} else if (KEWConstants.ROUTE_HEADER_FINAL_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorFinal()));
+    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorFinal()));
     			} else if (KEWConstants.ROUTE_HEADER_INITIATED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorInitiated()));
+    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorInitiated()));
     			} else if (KEWConstants.ROUTE_HEADER_PROCESSED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorProccessed()));
+    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorProccessed()));
     			} else if (KEWConstants.ROUTE_HEADER_SAVED_CD.equalsIgnoreCase(routeHeader.getDocRouteStatus())) {
-    				actionItem.setRowStyleClass((String)KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorSaved()));
+    				actionItem.setRowStyleClass(KEWConstants.ACTION_LIST_COLOR_PALETTE.get(preferences.getColorSaved()));
     			}
     			index++;
     		} catch (Exception e) {
@@ -532,7 +528,7 @@ public class ActionListAction extends KualiAction {
     	int startIndex = (page.intValue() - 1) * pageSize;
     	int endIndex = startIndex + pageSize;
     	generateActionItemErrors(actionList);
-    	Map<Long,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems((List<ActionItem>)actionList);
+    	Map<Long,DocumentRouteHeaderValue> routeHeaders = KEWServiceLocator.getRouteHeaderService().getRouteHeadersForActionItems(actionList);
     	for (int index = startIndex; index < endIndex && index < actionList.size(); index++) {
     		ActionItemActionListExtension actionItem = (ActionItemActionListExtension)actionList.get(index);
     		// evaluate custom action list component for mass actions
@@ -547,7 +543,7 @@ public class ActionListAction extends KualiAction {
     			if (customActionListAttribute != null) {
     				Map customActions = new LinkedHashMap();
     				customActions.put("NONE", "NONE");
-    				ActionSet legalActions = customActionListAttribute.getLegalActions(UserSession.getAuthenticatedUser(), actionItem);
+    				ActionSet legalActions = customActionListAttribute.getLegalActions(getUserSession().getPrincipalId(), actionItem);
     				if (legalActions != null && legalActions.hasApprove() && isActionCompatibleRequest(actionItem, KEWConstants.ACTION_TAKEN_APPROVED_CD)) {
     					customActions.put(KEWConstants.ACTION_TAKEN_APPROVED_CD, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
     					itemHasApproves = true;
@@ -572,7 +568,7 @@ public class ActionListAction extends KualiAction {
     					actionItem.setCustomActions(customActions);
     					itemHasCustomActions = true;
     				}
-    				actionItem.setDisplayParameters(customActionListAttribute.getDocHandlerDisplayParameters(UserSession.getAuthenticatedUser(), actionItem));
+    				actionItem.setDisplayParameters(customActionListAttribute.getDocHandlerDisplayParameters(getUserSession().getPrincipalId(), actionItem));
     				haveApproves = haveApproves || itemHasApproves;
     				haveAcknowledges = haveAcknowledges || itemHasAcknowledges;
     				haveFyis = haveFyis || itemHasFyis;
@@ -655,8 +651,8 @@ public class ActionListAction extends KualiAction {
         ActionMessages messages = new ActionMessages();
         List invocations = new ArrayList();
         int index = 0;
-        for (Iterator iterator = actionListForm.getActionsToTake().iterator(); iterator.hasNext();) {
-        	ActionToTake actionToTake = (ActionToTake) iterator.next();
+        for (Object element : actionListForm.getActionsToTake()) {
+        	ActionToTake actionToTake = (ActionToTake) element;
         	if (actionToTake != null && actionToTake.getActionTakenCd() != null &&
         			!"".equals(actionToTake.getActionTakenCd()) &&
         			!"NONE".equalsIgnoreCase(actionToTake.getActionTakenCd()) &&
@@ -670,7 +666,7 @@ public class ActionListAction extends KualiAction {
             }
         	index++;
 		}
-        KEWServiceLocator.getWorkflowDocumentService().takeMassActions(getUserSession(request).getPrincipalId(), invocations);
+        KEWServiceLocator.getWorkflowDocumentService().takeMassActions(getUserSession().getPrincipalId(), invocations);
         messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("general.routing.processed"));
         saveMessages(request, messages);
         ActionListForm cleanForm = new ActionListForm();
@@ -693,11 +689,15 @@ public class ActionListAction extends KualiAction {
         ActionListForm actionListForm = (ActionListForm) form;
         String name = actionListForm.getHelpDeskActionListUserName();
         if (!"true".equals(request.getAttribute("helpDeskActionList"))) {
-        	throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalId(), "helpDeskActionListLogin", getClass().getSimpleName());
+        	throw new AuthorizationException(getUserSession().getPrincipalId(), "helpDeskActionListLogin", getClass().getSimpleName());
         }
         try
         {
-	        getUserSession(request).establishHelpDeskWithPrincipalName(name);
+        	final KimPrincipal helpDeskActionListPrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipalByPrincipalName(name);
+        	final Person helpDeskActionListPerson = KEWServiceLocator.getIdentityHelperService().getPersonByPrincipalName(name);
+        	
+        	GlobalVariables.getUserSession().addObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME, helpDeskActionListPrincipal);
+        	GlobalVariables.getUserSession().addObject(KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME, helpDeskActionListPerson);
         }
         catch (RiceRuntimeException rre)
         {
@@ -714,7 +714,7 @@ public class ActionListAction extends KualiAction {
 
     public ActionForward clearFilter(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("clearFilter ActionListAction");
-        final org.kuali.rice.kns.UserSession commonUserSession = getCommonUserSession();
+        final org.kuali.rice.kns.UserSession commonUserSession = getUserSession();
         commonUserSession.removeObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME);
         request.getSession().setAttribute(REQUERY_ACTION_LIST_KEY, "true");
         KEWServiceLocator.getActionListService().saveRefreshUserOption(commonUserSession.getPrincipalId());
@@ -724,7 +724,8 @@ public class ActionListAction extends KualiAction {
 
     public ActionForward clearHelpDeskActionListUser(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LOG.debug("clearHelpDeskActionListUser ActionListAction");
-        getUserSession(request).clearHelpDesk();
+    	GlobalVariables.getUserSession().removeObject(KEWConstants.HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME);
+    	GlobalVariables.getUserSession().removeObject(KEWConstants.HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME);
         LOG.debug("end clearHelpDeskActionListUser ActionListAction");
         return start(mapping, form, request, response);
     }
@@ -734,7 +735,7 @@ public class ActionListAction extends KualiAction {
      */
     public ActionForward count(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionListForm alForm = (ActionListForm)form;
-    	Person user = getUserSession(request).getPerson();
+    	Person user = getUserSession().getPerson();
     	alForm.setCount(KEWServiceLocator.getActionListService().getCount(user.getPrincipalId()));
     	LOG.info("Fetched Action List count of " + alForm.getCount() + " for user " + user.getPrincipalName());
     	return mapping.findForward("count");
@@ -743,7 +744,7 @@ public class ActionListAction extends KualiAction {
     public ActionForward removeOutboxItems(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 	ActionListForm alForm = (ActionListForm)form;
 	if (alForm.getOutboxItems() != null) {
-	    KEWServiceLocator.getActionListService().removeOutboxItems(getUserSession(request).getPrincipal().getPrincipalId(), Arrays.asList(alForm.getOutboxItems()));
+	    KEWServiceLocator.getActionListService().removeOutboxItems(getUserSession().getPrincipalId(), Arrays.asList(alForm.getOutboxItems()));
 	}
 
 	alForm.setViewOutbox("true");
@@ -802,19 +803,20 @@ public class ActionListAction extends KualiAction {
         Collections.sort(recipientList, new Comparator() {
             Comparator comp = new ComparableComparator();
 
-            public int compare(Object o1, Object o2) {
+            @Override
+			public int compare(Object o1, Object o2) {
                 return comp.compare(((WebFriendlyRecipient) o1).getDisplayName().trim().toLowerCase(), ((WebFriendlyRecipient) o2).getDisplayName().trim().toLowerCase());
             }
         });
         return recipientList;
     }
 
-	private UserSession getUserSession(HttpServletRequest request){
-		return UserSession.getAuthenticatedUser();
+	private UserSession getUserSession(){
+		return GlobalVariables.getUserSession();
 	}
 	
-	private org.kuali.rice.kns.UserSession getCommonUserSession() {
-		return GlobalVariables.getUserSession();
+	private org.kuali.rice.kew.web.session.UserSession getKewUserSession() {
+		return org.kuali.rice.kew.web.session.UserSession.getAuthenticatedUser();
 	}
 
     private static class ActionItemComparator implements Comparator {
@@ -830,6 +832,7 @@ public class ActionListAction extends KualiAction {
     		this.sortName = sortName;
     	}
 
+		@Override
 		public int compare(Object object1, Object object2) {
 			try {
 				ActionItem actionItem1 = (ActionItem)object1;

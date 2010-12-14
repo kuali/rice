@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.notes;
 
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
 
 
 /**
@@ -30,29 +30,35 @@ public class WorkflowNoteAttributeImpl implements CustomNoteAttribute {
 
     private UserSession userSession;
 
-    public boolean isAuthorizedToAddNotes() throws Exception {
+    @Override
+	public boolean isAuthorizedToAddNotes() throws Exception {
         return true;
     }
 
     /**
      * By default the individual who authored the note is the only one allowed to edit it.
      */
-    public boolean isAuthorizedToEditNote(Note note) throws Exception {
+    @Override
+	public boolean isAuthorizedToEditNote(Note note) throws Exception {
     	return note.getNoteAuthorWorkflowId().equalsIgnoreCase(userSession.getPrincipalId());
     }
 
-    public RouteHeaderDTO getRouteHeaderVO() {
+    @Override
+	public RouteHeaderDTO getRouteHeaderVO() {
         return routeHeaderVO;
     }
 
-    public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO) {
+    @Override
+	public void setRouteHeaderVO(RouteHeaderDTO routeHeaderVO) {
         this.routeHeaderVO = routeHeaderVO;
     }
 
+	@Override
 	public UserSession getUserSession() {
 		return userSession;
 	}
 
+	@Override
 	public void setUserSession(UserSession userSession) {
 		this.userSession = userSession;
 	}

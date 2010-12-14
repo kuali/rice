@@ -1026,4 +1026,11 @@ public class KEWConstants extends JSTLConstants {
 	public static final String ROLEROUTE_NAMESPACE_ELEMENT = "namespace";
 	
 	public static final String ACTION_LIST_FILTER_ATTR_NAME = "ActionListFilter";
+	public static final String UPDATE_ACTION_LIST_ATTR_NAME = "updateActionList";
+	public static final String SORT_ORDER_ATTR_NAME = "sortOrder";
+	public static final String SORT_CRITERIA_ATTR_NAME = "sortCriteria";
+	public static final String CURRENT_PAGE_ATTR_NAME = "currentPage";
+	
+	public static final String HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME = "helpDeskActionListPrincipal";
+	public static final String HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME = "helpDeskActionListPerson";
 }

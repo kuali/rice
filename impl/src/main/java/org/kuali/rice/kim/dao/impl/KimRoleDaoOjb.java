@@ -492,7 +492,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
 			ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, memberSubCrit);
 			for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
-				if (!roleIds.contains(roleMbr.getRoleId())) {
+				if (!roleIds.contains(roleMbr.getRoleId()) && roleMbr.isActive()) {
 					roleIds.add(roleMbr.getRoleId());
 				}
 			}
@@ -516,7 +516,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         	ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, grpRoleCrit);
 
 			for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
-				if (!roleIds.contains(roleMbr.getRoleId())) {
+				if (!roleIds.contains(roleMbr.getRoleId()) && roleMbr.isActive()) {
 					roleIds.add(roleMbr.getRoleId());
 				}
 			}

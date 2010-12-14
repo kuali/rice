@@ -469,7 +469,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     }
 
     private List<String> getRoleIdsForPrincipalName(String value) {
-		String principalName = value.replace('*', '%');
+    	String principalName = value.replace('*', '%');
 		List<String> roleIds = new ArrayList<String>();
 		Criteria memberSubCrit = new Criteria();
         Map<String, String> criteria = new HashMap<String, String>();
@@ -492,7 +492,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
 			ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, memberSubCrit);
 			for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
-				if (!roleIds.contains(roleMbr.getRoleId()) && roleMbr.isActive()) {
+				if (roleMbr.isActive() && !roleIds.contains(roleMbr.getRoleId())) {
 					roleIds.add(roleMbr.getRoleId());
 				}
 			}
@@ -516,7 +516,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         	ReportQueryByCriteria memberSubQuery = QueryFactory.newReportQuery(RoleMemberImpl.class, grpRoleCrit);
 
 			for (RoleMemberImpl roleMbr : (List<RoleMemberImpl>)getPersistenceBrokerTemplate().getCollectionByQuery(memberSubQuery)) {
-				if (!roleIds.contains(roleMbr.getRoleId()) && roleMbr.isActive()) {
+				if (roleMbr.isActive() && !roleIds.contains(roleMbr.getRoleId()) ) {
 					roleIds.add(roleMbr.getRoleId());
 				}
 			}

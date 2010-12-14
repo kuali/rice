@@ -16,13 +16,13 @@
 package org.kuali.rice.core.jdbc;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jdbc.criteria.Criteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.*;
 import org.kuali.rice.kns.web.format.BooleanFormatter;

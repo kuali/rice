@@ -23,6 +23,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.database.TransactionalNoValidationExceptionRollback;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -53,7 +54,6 @@ import org.kuali.rice.kns.rule.event.SaveDocumentEvent;
 import org.kuali.rice.kns.rule.event.SaveEvent;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentHeaderService;
 import org.kuali.rice.kns.service.DocumentHelperService;

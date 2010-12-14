@@ -13,23 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.service.impl;
+package org.kuali.rice.core.impl;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
-import org.kuali.rice.kns.service.DateTimeService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.ParameterService;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.config.ConfigContext;
 
 /**
  * This class is the service implementation for a DateTime structure. This is
@@ -44,18 +45,18 @@ public class DateTimeServiceImpl implements DateTimeService {
 	protected String dateToStringFormatForFileName;
 	protected String timestampToStringFormatForFileName;
 
-	public synchronized void initializeDateTimeService() {
-		ParameterService parameterService = KNSServiceLocator.getParameterService();
+	
+	
+	public synchronized void initializeDateTimeService() {		
 		if (stringToDateFormats == null) {
-			List<String> dateFormatParams = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE,
-					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.STRING_TO_DATE_FORMATS);
+			List<String> dateFormatParams = parseConfigValues(ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.STRING_TO_DATE_FORMATS));			
 
 			stringToDateFormats = new String[dateFormatParams.size()];
 
 			for (int i = 0; i < dateFormatParams.size(); i++) {
 				String dateFormatParam = dateFormatParams.get(i);
 				if (StringUtils.isBlank(dateFormatParam)) {
-					throw new IllegalArgumentException("KR-NS/All/STRING_TO_DATE_FORMATS parameter contains a blank semi-colon delimited substring");
+					throw new IllegalArgumentException("Core/All/STRING_TO_DATE_FORMATS parameter contains a blank semi-colon delimited substring");
 				}
 				else {
 					// try to create a new SimpleDateFormat to try to detect illegal patterns
@@ -66,15 +67,14 @@ public class DateTimeServiceImpl implements DateTimeService {
 		}
 
 		if (stringToTimestampFormats == null) {
-			List<String> dateFormatParams = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE,
-					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.STRING_TO_TIMESTAMP_FORMATS);
+			List<String> dateFormatParams = parseConfigValues(ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.STRING_TO_TIMESTAMP_FORMATS));			
 
 			stringToTimestampFormats = new String[dateFormatParams.size()];
 
 			for (int i = 0; i < dateFormatParams.size(); i++) {
 				String dateFormatParam = dateFormatParams.get(i);
 				if (StringUtils.isBlank(dateFormatParam)) {
-					throw new IllegalArgumentException("KR-NS/All/STRING_TO_TIMESTAMP_FORMATS parameter contains a blank semi-colon delimited substring");
+					throw new IllegalArgumentException("Core/All/STRING_TO_TIMESTAMP_FORMATS parameter contains a blank semi-colon delimited substring");
 				}
 				else {
 					// try to create a new SimpleDateFormat to try to detect illegal patterns
@@ -85,49 +85,47 @@ public class DateTimeServiceImpl implements DateTimeService {
 		}
 
 		if (dateToStringFormatForUserInterface == null) {
-			dateToStringFormatForUserInterface = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
-					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE);
+			dateToStringFormatForUserInterface = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE);			
 			// construct new SDF to make sure it's properly formatted
 			new SimpleDateFormat(dateToStringFormatForUserInterface);
 		}
 
 		if (timestampToStringFormatForUserInterface == null) {
-			timestampToStringFormatForUserInterface = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
-					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE);
+			timestampToStringFormatForUserInterface = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE);			
 			// construct new SDF to make sure it's properly formatted
 			new SimpleDateFormat(timestampToStringFormatForUserInterface);
 		}
 
 		if (dateToStringFormatForFileName == null) {
-			dateToStringFormatForFileName = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
-					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DATE_TO_STRING_FORMAT_FOR_FILE_NAME);
+			dateToStringFormatForFileName = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.DATE_TO_STRING_FORMAT_FOR_FILE_NAME);
+			
 			// construct new SDF to make sure it's properly formatted
 			new SimpleDateFormat(dateToStringFormatForFileName);
 		}
 
 		if (timestampToStringFormatForFileName == null) {
-			timestampToStringFormatForFileName = parameterService.getParameterValue(KNSConstants.KNS_NAMESPACE,
-					KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME);
+			timestampToStringFormatForFileName = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME);
+			
 			// construct new SDF to make sure it's properly formatted
 			new SimpleDateFormat(timestampToStringFormatForFileName);
 		}
 	}
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#toDateString(java.util.Date)
+	 * @see org.kuali.rice.core.api.DateTimeService#toDateString(java.util.Date)
 	 */
 	public String toDateString(Date date) {
 		return toString(date, dateToStringFormatForUserInterface);
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#toDateTimeString(java.util.Date)
+	 * @see org.kuali.rice.core.api.DateTimeService#toDateTimeString(java.util.Date)
 	 */
 	public String toDateTimeString(Date date) {
 		return toString(date, timestampToStringFormatForUserInterface);
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#toString(java.util.Date,
+	 * @see org.kuali.rice.core.api.DateTimeService#toString(java.util.Date,
 	 *      java.lang.String)
 	 */
 	public String toString(Date date, String pattern) {
@@ -137,7 +135,7 @@ public class DateTimeServiceImpl implements DateTimeService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#getCurrentDate()
+	 * @see org.kuali.rice.core.api.DateTimeService#getCurrentDate()
 	 */
 	public Date getCurrentDate() {
 		Calendar c = Calendar.getInstance();
@@ -146,21 +144,21 @@ public class DateTimeServiceImpl implements DateTimeService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#getCurrentTimestamp()
+	 * @see org.kuali.rice.core.api.DateTimeService#getCurrentTimestamp()
 	 */
 	public Timestamp getCurrentTimestamp() {
 		return new java.sql.Timestamp(getCurrentDate().getTime());
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#getCurrentSqlDate()
+	 * @see org.kuali.rice.core.api.DateTimeService#getCurrentSqlDate()
 	 */
 	public java.sql.Date getCurrentSqlDate() {
 		return new java.sql.Date(getCurrentDate().getTime());
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#getCurrentSqlDateMidnight()
+	 * @see org.kuali.rice.core.api.DateTimeService#getCurrentSqlDateMidnight()
 	 */
 	public java.sql.Date getCurrentSqlDateMidnight() {
 		// simple and not unduely inefficient way to truncate the time component
@@ -168,14 +166,14 @@ public class DateTimeServiceImpl implements DateTimeService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#getCurrentCalendar()
+	 * @see org.kuali.rice.core.api.DateTimeService#getCurrentCalendar()
 	 */
 	public Calendar getCurrentCalendar() {
 		return getCalendar(getCurrentDate());
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#getCalendar
+	 * @see org.kuali.rice.core.api.DateTimeService#getCalendar
 	 */
 	public Calendar getCalendar(Date date) {
 		if (date == null) {
@@ -191,14 +189,14 @@ public class DateTimeServiceImpl implements DateTimeService {
 	/**
 	 * Formats strings into dates using the format string in the KR-NS/All/STRING_TO_DATE_FORMATS parameter
 	 *
-	 * @see org.kuali.rice.kns.service.DateTimeService#convertToDate(java.lang.String)
+	 * @see org.kuali.rice.core.api.DateTimeService#convertToDate(java.lang.String)
 	 */
 	public Date convertToDate(String dateString) throws ParseException {
 		return parseAgainstFormatArray(dateString, stringToDateFormats);
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#convertToDateTime(java.lang.String)
+	 * @see org.kuali.rice.core.api.DateTimeService#convertToDateTime(java.lang.String)
 	 */
 	public Date convertToDateTime(String dateTimeString) throws ParseException {
 		if (StringUtils.isBlank(dateTimeString)) {
@@ -208,7 +206,7 @@ public class DateTimeServiceImpl implements DateTimeService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#convertToSqlTimestamp(java.lang.String)
+	 * @see org.kuali.rice.core.api.DateTimeService#convertToSqlTimestamp(java.lang.String)
 	 */
 	public java.sql.Timestamp convertToSqlTimestamp(String timeString)
 			throws ParseException {
@@ -219,7 +217,7 @@ public class DateTimeServiceImpl implements DateTimeService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#convertToSqlDate(java.lang.String)
+	 * @see org.kuali.rice.core.api.DateTimeService#convertToSqlDate(java.lang.String)
 	 */
 	public java.sql.Date convertToSqlDate(String dateString)
 			throws ParseException {
@@ -250,7 +248,7 @@ public class DateTimeServiceImpl implements DateTimeService {
 
 	/**
 	 * @throws ParseException
-	 * @see org.kuali.rice.kns.service.DateTimeService#convertToSqlDate(java.sql.Timestamp)
+	 * @see org.kuali.rice.core.api.DateTimeService#convertToSqlDate(java.sql.Timestamp)
 	 */
 	public java.sql.Date convertToSqlDate(Timestamp timestamp)
 			throws ParseException {
@@ -323,7 +321,7 @@ public class DateTimeServiceImpl implements DateTimeService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#toDateStringForFilename(java.util.Date)
+	 * @see org.kuali.rice.core.api.DateTimeService#toDateStringForFilename(java.util.Date)
 	 */
 	public String toDateStringForFilename(Date date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(dateToStringFormatForFileName);
@@ -331,10 +329,25 @@ public class DateTimeServiceImpl implements DateTimeService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.service.DateTimeService#toDateTimeStringForFilename(java.util.Date)
+	 * @see org.kuali.rice.core.api.DateTimeService#toDateTimeStringForFilename(java.util.Date)
 	 */
 	public String toDateTimeStringForFilename(Date date) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(timestampToStringFormatForFileName);
 		return dateFormat.format(date);
+	}
+	
+	/**
+	 * 
+	 * The dateTime config vars are ';' seperated. This method should probably 
+	 * be on the config interface.
+	 * 
+	 * @param configValue
+	 * @return
+	 */
+	private List<String> parseConfigValues(String configValue) {
+	    if (configValue == null || "".equals(configValue)) {
+	        return Collections.emptyList();
+	    }
+	    return Arrays.asList(configValue.split(";"));
 	}
 }

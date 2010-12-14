@@ -168,5 +168,5 @@ public interface DateTimeService {
      */
     public String toDateTimeStringForFilename(Date date);
     
-    public void initializeDateTimeService();
+
 }

@@ -78,8 +78,7 @@ public class KNSConfigurer extends ModuleConfigurer {
 			}
 			// KULRICE-4513 After the Data Dictionary is loaded and validated, perform Data Dictionary bean overrides.
 			dds.getDataDictionary().performBeanOverrides();
-		}
-		KNSServiceLocator.getDateTimeService().initializeDateTimeService();
+		}		
 	}
 
    /**

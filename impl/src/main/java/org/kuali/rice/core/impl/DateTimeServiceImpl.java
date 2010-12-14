@@ -31,13 +31,14 @@ import org.apache.commons.lang.time.DurationFormatUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.config.ConfigContext;
+import org.springframework.beans.factory.InitializingBean;
 
 /**
  * This class is the service implementation for a DateTime structure. This is
  * the default, Kuali delivered implementation.
  */
 //@Transactional
-public class DateTimeServiceImpl implements DateTimeService {
+public class DateTimeServiceImpl implements DateTimeService, InitializingBean {
 	protected String[] stringToDateFormats;
 	protected String[] stringToTimestampFormats;
 	protected String dateToStringFormatForUserInterface;
@@ -45,71 +46,7 @@ public class DateTimeServiceImpl implements DateTimeService {
 	protected String dateToStringFormatForFileName;
 	protected String timestampToStringFormatForFileName;
 
-	
-	
-	public synchronized void initializeDateTimeService() {		
-		if (stringToDateFormats == null) {
-			List<String> dateFormatParams = parseConfigValues(ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.STRING_TO_DATE_FORMATS));			
-
-			stringToDateFormats = new String[dateFormatParams.size()];
-
-			for (int i = 0; i < dateFormatParams.size(); i++) {
-				String dateFormatParam = dateFormatParams.get(i);
-				if (StringUtils.isBlank(dateFormatParam)) {
-					throw new IllegalArgumentException("Core/All/STRING_TO_DATE_FORMATS parameter contains a blank semi-colon delimited substring");
-				}
-				else {
-					// try to create a new SimpleDateFormat to try to detect illegal patterns
-					new SimpleDateFormat(dateFormatParam);
-					stringToDateFormats[i] = dateFormatParam;
-				}
-			}
-		}
-
-		if (stringToTimestampFormats == null) {
-			List<String> dateFormatParams = parseConfigValues(ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.STRING_TO_TIMESTAMP_FORMATS));			
-
-			stringToTimestampFormats = new String[dateFormatParams.size()];
-
-			for (int i = 0; i < dateFormatParams.size(); i++) {
-				String dateFormatParam = dateFormatParams.get(i);
-				if (StringUtils.isBlank(dateFormatParam)) {
-					throw new IllegalArgumentException("Core/All/STRING_TO_TIMESTAMP_FORMATS parameter contains a blank semi-colon delimited substring");
-				}
-				else {
-					// try to create a new SimpleDateFormat to try to detect illegal patterns
-					new SimpleDateFormat(dateFormatParam);
-					stringToTimestampFormats[i] = dateFormatParam;
-				}
-			}
-		}
-
-		if (dateToStringFormatForUserInterface == null) {
-			dateToStringFormatForUserInterface = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE);			
-			// construct new SDF to make sure it's properly formatted
-			new SimpleDateFormat(dateToStringFormatForUserInterface);
-		}
-
-		if (timestampToStringFormatForUserInterface == null) {
-			timestampToStringFormatForUserInterface = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE);			
-			// construct new SDF to make sure it's properly formatted
-			new SimpleDateFormat(timestampToStringFormatForUserInterface);
-		}
-
-		if (dateToStringFormatForFileName == null) {
-			dateToStringFormatForFileName = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.DATE_TO_STRING_FORMAT_FOR_FILE_NAME);
-			
-			// construct new SDF to make sure it's properly formatted
-			new SimpleDateFormat(dateToStringFormatForFileName);
-		}
-
-		if (timestampToStringFormatForFileName == null) {
-			timestampToStringFormatForFileName = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME);
-			
-			// construct new SDF to make sure it's properly formatted
-			new SimpleDateFormat(timestampToStringFormatForFileName);
-		}
-	}
+		
 	/**
 	 * @see org.kuali.rice.core.api.DateTimeService#toDateString(java.util.Date)
 	 */
@@ -349,5 +286,74 @@ public class DateTimeServiceImpl implements DateTimeService {
 	        return Collections.emptyList();
 	    }
 	    return Arrays.asList(configValue.split(";"));
+	}
+	/**
+	 * This overridden method ...
+	 * 
+	 * @see org.springframework.beans.factory.InitializingBean#afterPropertiesSet()
+	 */
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		if (stringToDateFormats == null) {
+			List<String> dateFormatParams = parseConfigValues(ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.STRING_TO_DATE_FORMATS));			
+
+			stringToDateFormats = new String[dateFormatParams.size()];
+
+			for (int i = 0; i < dateFormatParams.size(); i++) {
+				String dateFormatParam = dateFormatParams.get(i);
+				if (StringUtils.isBlank(dateFormatParam)) {
+					throw new IllegalArgumentException("Core/All/STRING_TO_DATE_FORMATS parameter contains a blank semi-colon delimited substring");
+				}
+				else {
+					// try to create a new SimpleDateFormat to try to detect illegal patterns
+					new SimpleDateFormat(dateFormatParam);
+					stringToDateFormats[i] = dateFormatParam;
+				}
+			}
+		}
+
+		if (stringToTimestampFormats == null) {
+			List<String> dateFormatParams = parseConfigValues(ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.STRING_TO_TIMESTAMP_FORMATS));			
+
+			stringToTimestampFormats = new String[dateFormatParams.size()];
+
+			for (int i = 0; i < dateFormatParams.size(); i++) {
+				String dateFormatParam = dateFormatParams.get(i);
+				if (StringUtils.isBlank(dateFormatParam)) {
+					throw new IllegalArgumentException("Core/All/STRING_TO_TIMESTAMP_FORMATS parameter contains a blank semi-colon delimited substring");
+				}
+				else {
+					// try to create a new SimpleDateFormat to try to detect illegal patterns
+					new SimpleDateFormat(dateFormatParam);
+					stringToTimestampFormats[i] = dateFormatParam;
+				}
+			}
+		}
+
+		if (dateToStringFormatForUserInterface == null) {
+			dateToStringFormatForUserInterface = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE);			
+			// construct new SDF to make sure it's properly formatted
+			new SimpleDateFormat(dateToStringFormatForUserInterface);
+		}
+
+		if (timestampToStringFormatForUserInterface == null) {
+			timestampToStringFormatForUserInterface = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE);			
+			// construct new SDF to make sure it's properly formatted
+			new SimpleDateFormat(timestampToStringFormatForUserInterface);
+		}
+
+		if (dateToStringFormatForFileName == null) {
+			dateToStringFormatForFileName = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.DATE_TO_STRING_FORMAT_FOR_FILE_NAME);
+			
+			// construct new SDF to make sure it's properly formatted
+			new SimpleDateFormat(dateToStringFormatForFileName);
+		}
+
+		if (timestampToStringFormatForFileName == null) {
+			timestampToStringFormatForFileName = ConfigContext.getCurrentContextConfig().getProperty(CoreConstants.TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME);
+			
+			// construct new SDF to make sure it's properly formatted
+			new SimpleDateFormat(timestampToStringFormatForFileName);
+		}		
 	}
 }

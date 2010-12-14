@@ -1670,12 +1670,27 @@ public class UiDocumentServiceImpl implements UiDocumentService {
     	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
         	roleMemberTypeClass = KimPrincipalImpl.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.PRINCIPAL_ID;
+        	KimPrincipalInfo  principalInfo = null;
+	 	 	principalInfo = getIdentityManagementService().getPrincipal(memberId);
+	 	 	if (principalInfo != null) {
+	 	 		
+	 	 	}
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
         	roleMemberTypeClass = GroupImpl.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.GROUP_ID;
+        	GroupInfo groupInfo = null;
+	 	 	groupInfo = getGroupService().getGroupInfo(memberId);
+	 	 	if (groupInfo != null) {
+	 	 		
+	 	 	}
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
         	roleMemberTypeClass = RoleImpl.class;
         	roleMemberIdName = KimConstants.PrimaryKeyConstants.ROLE_ID;
+        	KimRoleInfo roleInfo = null;
+	 	 	roleInfo = getRoleService().getRole(memberId);
+	 	 	if (roleInfo != null) {
+	 	 		
+	 	 	}
         }
         Map<String, String> criteria = new HashMap<String, String>();
         criteria.put(roleMemberIdName, memberId);
@@ -1699,16 +1714,28 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	public String getMemberFullName(String memberTypeCode, String memberId){
 		if(StringUtils.isEmpty(memberTypeCode) || StringUtils.isEmpty(memberId)) return "";
-		BusinessObject member = getMember(memberTypeCode, memberId);
-		if (member == null) { //not a REAL principal, try to fake the name
-			String fakeName = "";
-			KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
-			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
-				fakeName = kp.getPrincipalName();
-			}			
-			return fakeName;
-		}
-		return getFullMemberName(memberTypeCode, member);
+	   	String memberFullName = "";
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	KimPrincipalInfo principalInfo = null;
+        	principalInfo = getIdentityManagementService().getPrincipal(memberId);
+        	if (principalInfo != null) {
+        		String principalName = principalInfo.getPrincipalName();
+        		Person psn = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+        		memberFullName = psn.getFirstName() + " " + psn.getLastName();
+        	}        	        	
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	GroupInfo groupInfo = null;
+        	groupInfo = getIdentityManagementService().getGroup(memberId);
+        	if (groupInfo != null) {
+        		memberFullName = groupInfo.getGroupName();
+        	}
+        	
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	KimRoleInfo roleInfo = null;
+        	roleInfo = getRoleService().getRole(memberId);        	
+        	memberFullName = roleInfo.getRoleName();
+        }
+        return memberFullName;
 	}
 
 	public String getMemberNamespaceCode(String memberTypeCode, String memberId){
@@ -1758,6 +1785,10 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         return roleMemberName;
     }
 
+    /**
+     * @deprecated
+     * This method was called previously only by getMemberFullName(). The logic in this method has been moved there.
+     */
     public String getFullMemberName(String memberTypeCode, BusinessObject member){
     	String roleMemberName = "";
         if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){

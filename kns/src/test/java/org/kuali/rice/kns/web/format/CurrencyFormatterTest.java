@@ -223,8 +223,22 @@ public class CurrencyFormatterTest extends KNSTestCase {
     }
     
     @Test
-    public void testNumberWithDecimalPart_validate5() throws Exception {
+    public void testNumberWithNoDecimalPart_validate() throws Exception {
         String target = "222222";
-        assertTrue(f.validate(target));
+        assertTrue(f.validate(target)); 
     }
+    
+    @Test
+    public void testNumberWithParantheses_validate() throws Exception {
+        String target = "(501)";
+        assertTrue(f.validate(target)); 
+    }
+    
+    @Test
+    public void testNumberWithDecimalPartAndParantheses_validate() throws Exception {
+        String target = "($2.22)";
+        assertTrue(f.validate(target)); 
+    }
+    
+  
 }

@@ -52,7 +52,7 @@ public class CurrencyFormatter extends Formatter {
     private static Logger LOG = Logger.getLogger(CurrencyFormatter.class);
     public static final String SHOW_SYMBOL = "showCurrencySymbol";
     private static final Pattern CURRENCY_PATTERN = Pattern.compile("[-\\(\\)\\$\\.,0-9]*");
-    private static final Pattern TRAILING_DECIMAL_PATTERN = Pattern.compile("^(\\.[0-9]{0,2}){0,1}$");
+    private static final Pattern TRAILING_DECIMAL_PATTERN = Pattern.compile("^(\\.[0-9]{0,2}){0,1}\\)?$");
     // end Kuali Foundation modification
 
     /**

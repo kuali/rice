@@ -19,7 +19,6 @@ package org.kuali.rice.kew.web.session;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -174,7 +173,7 @@ public class UserSession implements Serializable {
     	GlobalVariables.getUserSession().addObject(KEWConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.TRUE);
     }
 
-    protected void establishPreferencesForPrincipal(KimPrincipal principal) {
+    private void establishPreferencesForPrincipal(KimPrincipal principal) {
         this.preferences = KEWServiceLocator.getPreferencesService().getPreferences(principal.getPrincipalId());
         if (this.preferences.isRequiresSave()) {
             LOG.info("Detected that user preferences require saving.");
@@ -208,21 +207,7 @@ public class UserSession implements Serializable {
     	getAuthentications().add(authentication);
     }
 
-    public void removeAuthentication(Authentication authentication) {
-    	getAuthentications().remove(authentication);
-    } 
-
-    public boolean hasRole(String role) {
-    	for (Iterator<Authentication> iterator = getAuthentications().iterator(); iterator.hasNext();) {
-    		Authentication auth = iterator.next();
-    		if (auth.getAuthority().equalsIgnoreCase(role)) {
-    			return true;
-    		}
-    	}
-    	return false;
-    }
-
-    public Map<String, Group> getGroups() {
+    private Map<String, Group> getGroups() {
     	if (getBackdoorPrincipal() != null) {
     		return backdoorPrincipalGroups;
     	}
@@ -236,10 +221,6 @@ public class UserSession implements Serializable {
 			}
 		}
 		return false;
-	}
-
-	public boolean isMemberOfGroupWithId(String groupId) {
-		return getGroups().containsKey(groupId);
 	}
 
 	protected IdentityManagementService getIdentityService(){

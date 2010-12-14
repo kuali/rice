@@ -16,7 +16,8 @@
 package org.kuali.rice.core.api;
 
 /**
- * This is a description of what this class does - g don't forget to fill this in. 
+ * This class contains constants used by the core module. They are public to all and both clients 
+ * and other rice modules are allowed to use them. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *

@@ -18,6 +18,7 @@ package org.kuali.rice.kns.datadictionary.impl;
 import java.lang.reflect.InvocationTargetException;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.kuali.rice.kns.datadictionary.FieldOverride;
 
 /**
  * A Field Override used to replace value elements from a Data Dictionary bean. 
@@ -25,7 +26,7 @@ import org.apache.commons.beanutils.BeanUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class FieldOverrideForValueReplaceImpl {
+public class FieldOverrideForValueReplaceImpl extends FieldOverrideForListElementBase implements FieldOverride{
 	
 	private String propertyName;
 	private Object value;

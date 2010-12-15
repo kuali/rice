@@ -57,6 +57,8 @@
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 	<import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
 
+	<bean id="dateTimeService" class="org.kuali.rice.core.impl.DateTimeServiceImpl"/>
+	
 	<bean id="knsOjbConfigurer" class="org.kuali.rice.core.ojb.BaseOjbConfigurer">
 		<property name="jcdAliases">
 			<list>
@@ -432,7 +434,7 @@
 	</bean>
 
 
-	<bean id="dateTimeService" class="org.kuali.rice.core.impl.DateTimeServiceImpl"/>
+	
 
 	<bean id="businessObjectDictionaryService" class="org.kuali.rice.kns.service.impl.BusinessObjectDictionaryServiceImpl">
 		<property name="dataDictionaryService">

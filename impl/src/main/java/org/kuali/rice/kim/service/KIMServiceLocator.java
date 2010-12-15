@@ -20,6 +20,7 @@ import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ModuleConfigurer;
+import org.kuali.rice.core.config.ModuleConfigurer.RunMode;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -73,7 +74,7 @@ public final class KIMServiceLocator {
 			LOG.debug("Fetching service " + serviceName);
 		}
 		return GlobalResourceLoader.getResourceLoader().getService(
-				(ModuleConfigurer.REMOTE_RUN_MODE.equals(ConfigContext.getCurrentContextConfig().getProperty(KIM_RUN_MODE_PROPERTY))) ?
+				(RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KIM_RUN_MODE_PROPERTY)))) ?
 						new QName(KimConstants.KIM_MODULE_NAMESPACE, serviceName) : new QName(serviceName) );
 	}
 	

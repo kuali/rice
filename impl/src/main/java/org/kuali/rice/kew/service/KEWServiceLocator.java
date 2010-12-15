@@ -23,10 +23,9 @@ import javax.xml.namespace.QName;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.ModuleConfigurer;
+import org.kuali.rice.core.config.ModuleConfigurer.RunMode;
 import org.kuali.rice.core.config.NodeSettings;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
@@ -258,7 +257,7 @@ public final class KEWServiceLocator {
 			LOG.debug("Fetching service " + serviceName);
 		}
 		return GlobalResourceLoader.getResourceLoader().getService(
-				(ModuleConfigurer.REMOTE_RUN_MODE.equals(ConfigContext.getCurrentContextConfig().getProperty(KEW_RUN_MODE_PROPERTY))) ?
+				(RunMode.REMOTE.equals(RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KEW_RUN_MODE_PROPERTY)))) ?
 						new QName(KEWConstants.KEW_MODULE_NAMESPACE, serviceName) : new QName(serviceName));
 	}
 

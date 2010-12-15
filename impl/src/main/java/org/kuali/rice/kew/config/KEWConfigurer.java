@@ -26,7 +26,6 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -37,7 +36,7 @@ import org.kuali.rice.kew.lifecycle.EmbeddedLifeCycle;
 import org.kuali.rice.kew.plugin.PluginRegistry;
 import org.kuali.rice.kew.plugin.PluginRegistryFactory;
 import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
-import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.KEWConstants.ClientProtocol;
 
 
 /**
@@ -65,8 +64,8 @@ public class KEWConfigurer extends ModuleConfigurer {
 	@Override
 	public List<String> getPrimarySpringFiles() {
 		final List<String> springFileLocations;
-		if (ModuleConfigurer.REMOTE_RUN_MODE.equals(getRunMode()) || ModuleConfigurer.THIN_RUN_MODE.equals(getRunMode()) ||
-				KEWConstants.WEBSERVICE_CLIENT_PROTOCOL.equals(ConfigContext.getCurrentContextConfig().getClientProtocol())) {
+		if (RunMode.REMOTE.equals(getRunMode()) || RunMode.THIN.equals(getRunMode()) ||
+				ClientProtocol.WEBSERVICE.equals(getClientProtocol())) {
 			springFileLocations = Collections.emptyList();
 		} else {
 			springFileLocations = getEmbeddedSpringFileLocation();
@@ -101,9 +100,9 @@ public class KEWConfigurer extends ModuleConfigurer {
 	public List<Lifecycle> loadLifecycles() throws Exception {
 		
 		List<Lifecycle> lifecycles = new LinkedList<Lifecycle>();
-		if ( getRunMode().equals( THIN_RUN_MODE ) ) {
+		if ( getRunMode().equals( RunMode.THIN ) ) {
 			lifecycles.add(createThinClientLifecycle());
-		} else if ( !getRunMode().equals( REMOTE_RUN_MODE ) ) { // local or embedded
+		} else if ( !getRunMode().equals( RunMode.REMOTE ) ) { // local or embedded
 			lifecycles.add(createEmbeddedLifeCycle());
 		}
 		return lifecycles;
@@ -167,8 +166,8 @@ public class KEWConfigurer extends ModuleConfigurer {
 		return rls;
 	}
 
-	private String getClientProtocol() {
-		return ConfigContext.getCurrentContextConfig().getProperty("client.protocol");
+	private ClientProtocol getClientProtocol() {
+		return ClientProtocol.valueOf(ConfigContext.getCurrentContextConfig().getProperty("client.protocol"));
 	}
 
 	public DataSource getDataSource() {
@@ -177,16 +176,5 @@ public class KEWConfigurer extends ModuleConfigurer {
 
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
-	}
-	
-	@Override
-	protected void doAdditonalConfigurerValidations() {
-		validateClientProtocol();
-	}
-	
-	private void validateClientProtocol() {
-		if (StringUtils.isBlank(getClientProtocol())) {
-			throw new ConfigurationException("Client protocol not specified valid protocols are:" + KEWConstants.CLIENT_PROTOCOLS);
-		}
 	}
 }

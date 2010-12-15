@@ -58,8 +58,8 @@
 		<property name="hasWebInterface" value="true" />
 		<property name="validRunModes">
 			<list>
-				<value>local</value>
-				<value>embedded</value>
+				<value>LOCAL</value>
+				<value>EMBEDDED</value>
 			</list>
 		</property>
 	</bean>		

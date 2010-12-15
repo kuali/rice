@@ -28,8 +28,6 @@ import java.util.Properties;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Config {
- 
-	public static final String CLIENT_PROTOCOL = "client.protocol";
 
 	public static final String KEYSTORE_ALIAS = "keystore.alias";
 	public static final String KEYSTORE_PASSWORD = "keystore.password";
@@ -193,8 +191,6 @@ public interface Config {
 	public Map<String, Object> getObjects();
 
 	public Object getObject(String key);
-
-	public String getClientProtocol();
 
 	public String getBaseWebServiceURL();
 

@@ -204,10 +204,6 @@ public abstract class BaseConfig implements Config {
         return getObjects().get(key);
     }
 
-    public String getClientProtocol() {
-        return getProperty(CLIENT_PROTOCOL);
-    }
-
     public String getBaseWebServiceURL() {
         return getProperty(BASE_WEB_SERVICE_URL_WORKFLOW_CLIENT_FILE);
     }

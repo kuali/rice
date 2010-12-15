@@ -37,7 +37,7 @@ public class KIMConfigurer extends ModuleConfigurer {
 	public List<String> getPrimarySpringFiles() {
 		final List<String> springFileLocations = new ArrayList<String>();
 		springFileLocations.add( KIM_INTERFACE_SPRING_BEANS_PATH );
-		if ( getRunMode().equals( LOCAL_RUN_MODE ) || getRunMode().equals( EMBEDDED_RUN_MODE ) ) {
+		if ( getRunMode().equals( RunMode.LOCAL ) || getRunMode().equals( RunMode.EMBEDDED ) ) {
 			springFileLocations.add(KIM_IMPL_SPRING_BEANS_PATH);
 		}
 		if ( isExposeServicesOnBus() ) {

@@ -82,10 +82,6 @@ public abstract class AbstractBaseConfig implements Config {
         return RiceUtilities.getBooleanValueForString(getProperty(key), defaultValue);
     }
 
-    public String getClientProtocol() {
-        return getProperty(Config.CLIENT_PROTOCOL);
-    }
-
     public String getClientWSDLFullPathAndFileName() {
         return getProperty(Config.WSDL_LOCATION_WORKFLOW_CLIENT_FILE);
     }

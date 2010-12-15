@@ -58,7 +58,7 @@
 		<property name="hasWebInterface" value="true" />
 		<property name="validRunModes">
 			<list>
-				<value>local</value>
+				<value>LOCAL</value>
 			</list>
 		</property>
 	</bean>		

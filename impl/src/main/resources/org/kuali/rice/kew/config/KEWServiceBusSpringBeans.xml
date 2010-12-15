@@ -61,12 +61,12 @@
 
 	<bean id="kewLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
 		<property name="runModePropertyName" value="kew.mode" />
-		<property name="validRunMode" value="local" />
+		<property name="validRunMode" value="LOCAL" />
 	</bean>
 
 	<bean id="kewEmbeddedServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
 		<property name="runModePropertyName" value="kew.mode" />
-		<property name="validRunMode" value="embedded" />
+		<property name="validRunMode" value="EMBEDDED" />
 	</bean>
 	
 	<bean id="kewSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">

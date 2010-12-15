@@ -253,7 +253,7 @@
 
    	<bean id="kenLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
 		<property name="runModePropertyName" value="ken.mode" />
-		<property name="validRunMode" value="local" />
+		<property name="validRunMode" value="LOCAL" />
 	</bean>
 	
 	<bean id="kenSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition" abstract="true">

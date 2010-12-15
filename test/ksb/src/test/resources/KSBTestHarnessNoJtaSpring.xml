@@ -97,7 +97,7 @@
 		<property name="hasWebInterface" value="false" />
 		<property name="validRunModes">
 			<list>
-				<value>local</value>
+				<value>LOCAL</value>
 			</list>
 		</property>
 		<property name="dataSource" ref="dataSource" />
@@ -115,7 +115,7 @@
 		<property name="hasWebInterface" value="true" />
 		<property name="validRunModes">
 			<list>
-				<value>local</value>
+				<value>LOCAL</value>
 			</list>
 		</property>
 		<property name="overrideServices">

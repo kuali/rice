@@ -846,18 +846,8 @@ public class KEWConstants extends JSTLConstants {
     public static final String ADDITIONAL_CONFIG_LOCATIONS_PARAM = "additional.config.locations";
 
     // client protocols
-    public static final String WEBSERVICE_CLIENT_PROTOCOL = "webservice";
-    public static final String LOCAL_CLIENT_PROTOCOL = "local";
-    public static final String EMBEDDED_CLIENT_PROTOCOL = "embedded";
-    public static final String RMI_CLIENT_PROTOCOL = "rmi";
-    public static final String SPRING_INVOKER_CLIENT_PROTOCOL = "springInvoker";
-
-    public static final Set<String> CLIENT_PROTOCOLS = new HashSet<String>();
-    static {
-    	CLIENT_PROTOCOLS.add(LOCAL_CLIENT_PROTOCOL);
-    	CLIENT_PROTOCOLS.add(EMBEDDED_CLIENT_PROTOCOL);
-    	CLIENT_PROTOCOLS.add(WEBSERVICE_CLIENT_PROTOCOL);
-    	CLIENT_PROTOCOLS.add(RMI_CLIENT_PROTOCOL);
+    public static enum ClientProtocol {
+    	WEBSERVICE, LOCAL, EMBEDDED, RMI, SPRING_INVOKER
     }
 
     // system branch state keys

@@ -45,11 +45,11 @@ import org.springframework.context.event.ContextRefreshedEvent;
 public class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener<ApplicationEvent> {
     protected final Logger LOG = Logger.getLogger(getClass());
 
-	public static final String LOCAL_RUN_MODE = "local";
-	public static final String EMBEDDED_RUN_MODE = "embedded";
-	public static final String REMOTE_RUN_MODE = "remote";
-	public static final String THIN_RUN_MODE = "thin";
-	private List<String> validRunModes = new ArrayList<String>();
+    public enum RunMode {
+    	LOCAL, EMBEDDED, REMOTE, THIN
+    }
+    
+	private List<RunMode> validRunModes = new ArrayList<RunMode>();
 	private boolean hasWebInterface;
 	
 	private Properties properties = new Properties();
@@ -84,9 +84,9 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 		//override in subclasses
 	}
 	
-	public String getRunMode() {
+	public RunMode getRunMode() {
 		String propertyName = getModuleName().toLowerCase() + ".mode";
-		return ConfigContext.getCurrentContextConfig().getProperty(propertyName);
+		return RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(propertyName));
 	}
 	
 	public String getWebModuleConfigName() {
@@ -105,7 +105,7 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	 * of the web UI for the module.
 	 */
 	public boolean shouldRenderWebInterface() {
-		return hasWebInterface() &&	getRunMode().equals( ModuleConfigurer.LOCAL_RUN_MODE );
+		return hasWebInterface() &&	getRunMode().equals( ModuleConfigurer.RunMode.LOCAL );
 	}
 	
 	public boolean isSetSOAPServicesAsDefault() {
@@ -178,11 +178,11 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
         return configPackagePath + getModuleName().toUpperCase() + "SpringBeans.xml"; 
     }
     
-	public List<String> getValidRunModes() {
+	public List<RunMode> getValidRunModes() {
 		return this.validRunModes;
 	}
 
-	public void setValidRunModes(List<String> validRunModes) {
+	public void setValidRunModes(List<RunMode> validRunModes) {
 		this.validRunModes = validRunModes;
 	}
 	
@@ -202,9 +202,8 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	}
 	
 	private void validateRunMode() {
-		final String trimmedRunMode = getRunMode();
-		if ( !validRunModes.contains( trimmedRunMode ) ) {
-			throw new IllegalArgumentException( "Invalid run mode for the " + this.getClass().getSimpleName() + ": " + trimmedRunMode + " - Valid Values are: " + validRunModes );
+		if ( !validRunModes.contains( getRunMode() ) ) {
+			throw new IllegalArgumentException( "Invalid run mode for the " + this.getClass().getSimpleName() + ": " + getRunMode() + " - Valid Values are: " + validRunModes );
 		}
 	}
 	

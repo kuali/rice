@@ -58,7 +58,7 @@
 		<property name="hasWebInterface" value="false" />
 		<property name="validRunModes">
 			<list>
-				<value>local</value>
+				<value>LOCAL</value>
 			</list>
 		</property>
 		<property name="dataSource" ref="riceDataSource" />

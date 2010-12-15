@@ -26,7 +26,7 @@ import org.kuali.rice.kns.datadictionary.FieldOverride;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class FieldOverrideForValueReplaceImpl extends FieldOverrideForListElementBase implements FieldOverride{
+public class FieldOverrideForValueReplaceImpl implements FieldOverride{
 	
 	private String propertyName;
 	private Object value;

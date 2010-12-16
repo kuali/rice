@@ -15,18 +15,6 @@
  */
 package org.kuali.rice.core.jdbc;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.DateTimeService;
-import org.kuali.rice.core.database.platform.DatabasePlatform;
-import org.kuali.rice.core.jdbc.criteria.Criteria;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.core.util.type.TypeUtils;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.*;
-import org.kuali.rice.kns.web.format.BooleanFormatter;
-
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -35,6 +23,21 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.database.platform.DatabasePlatform;
+import org.kuali.rice.core.jdbc.criteria.Criteria;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.util.type.TypeUtils;
+import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.web.format.BooleanFormatter;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.
@@ -402,7 +405,7 @@ public class SqlBuilder {
 
 	protected DateTimeService getDateTimeService(){
 		if (dateTimeService == null) {
-			dateTimeService = KNSServiceLocator.getDateTimeService();
+			dateTimeService = GlobalResourceLoader.getService(CoreConstants.Services.DATETIME_SERVICE);
     	}
     	return dateTimeService;
 	}
@@ -431,9 +434,9 @@ public class SqlBuilder {
      * stated append 23:59:59 to the end of the date.  This ensures that you are searching for the entire
      * day.
      */
-    private static String cleanUpperBound(String stringDate){
+    private String cleanUpperBound(String stringDate){
     	try{
-    		java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(stringDate);
+    		java.sql.Timestamp dt = getDateTimeService().convertToSqlTimestamp(stringDate);
     		SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
 			if("00:00:00".equals(sdfTime.format(dt)) && !StringUtils.contains(stringDate, "00:00:00") && !StringUtils.contains(stringDate, "12:00 AM")){
@@ -455,9 +458,9 @@ public class SqlBuilder {
     * @param stringDate
     * @return
     */
-   private static String convertSimpleDateToDateRange(String stringDate){
+   private String convertSimpleDateToDateRange(String stringDate){
    	try{
-   		java.sql.Timestamp dt = KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(stringDate);
+   		java.sql.Timestamp dt = getDateTimeService().convertToSqlTimestamp(stringDate);
    		SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm:ss");
 
 			if("00:00:00".equals(sdfTime.format(dt)) && !StringUtils.contains(stringDate, "00:00:00") && !StringUtils.contains(stringDate, "12:00 AM")){

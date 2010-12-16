@@ -107,15 +107,6 @@ public class EDocLiteAssociation  extends KewPersistableBusinessObjectBase imple
         this.activeInd = activeInd;
     }
 
-    public String toString() {
-        return "[EDocLiteAssociation: edocLiteAssocId=" + edocLiteAssocId
-                                 + ", edlName=" + edlName
-                                 + ", definition=" + definition
-                                 + ", style=" + style
-                                 + ", activeInd=" + activeInd
-                                 + ", versionNumber=" + versionNumber
-                                 + "]";
-    }
 	public String getActionsUrl() {
 		return actionsUrl;
 	}

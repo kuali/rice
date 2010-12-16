@@ -440,19 +440,6 @@ public class RuleTemplate  extends KewPersistableBusinessObjectBase implements W
         }
 		return roles;
     }
-    
-    public String toString() {
-        return new ToStringBuilder(this).append("ruleTemplateId", ruleTemplateId)
-                                        .append("name", name)
-                                        .append("description", description)
-                                        .append("delegationTemplateId", delegationTemplateId)
-                                        .append("totalRuleTemplateAttributes", getRuleTemplateAttributes() == null ? "null" : "size: " + getRuleTemplateAttributes().size())
-                                        .append("activeRuleTemplateAttributes", getActiveRuleTemplateAttributes() == null ? "null" : "size: " + getActiveRuleTemplateAttributes().size())
-                                        .append("returnUrl", returnUrl)
-                                        .append("versionNumber", versionNumber)
-                                        .append("ruleTemplateOptions", ruleTemplateOptions).toString();
-                                 
-    }
 
 	/**
 	 * This overridden method ...

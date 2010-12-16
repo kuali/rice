@@ -47,6 +47,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.actionlist.DefaultCustomActionListAttribute;
@@ -59,7 +60,6 @@ import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.dto.KeyValueDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.Branch;
@@ -814,8 +814,8 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
         updateAppDocStatus(routeHeaderVO.getAppDocStatus());
 
         /* set the variables from the routeHeaderVO */
-        List<KeyValueDTO> variables = routeHeaderVO.getVariables();
-        for (KeyValueDTO kvp : variables) {
+        List<KeyValue<String, String>> variables = routeHeaderVO.getVariables();
+        for (KeyValue<String, String> kvp : variables) {
             setVariable(kvp.getKey(), kvp.getValue());
         }
     }
@@ -1054,36 +1054,26 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
 		this.appDocStatusHistory = appDocStatusHistory;
 	}
 
-
-	public String toString() {
-	    return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-	        .append("routeHeaderId", routeHeaderId)
-            .append("documentTypeId", documentTypeId)
-            .append("docVersion", docVersion)
-            .append("docTitle", docTitle)
-            .append("createDate", createDate)
-            .append("initiatorWorkflowId", initiatorWorkflowId)
-            .append("routedByUserWorkflowId", routedByUserWorkflowId)
-            .append("docRouteStatus", docRouteStatus)
-            .append("routeStatusDate", routeStatusDate)
-            .append("statusModDate", statusModDate)
-            .append("docRouteLevel", docRouteLevel)
-            .append("routeLevelDate", routeLevelDate)
-            .append("approvedDate", approvedDate)
-            .append("finalizedDate", finalizedDate)
-            .append("appDocId", appDocId)
-            .toString();
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
 	@Override
-	protected LinkedHashMap toStringMapper() {
-		// TODO chris - THIS METHOD NEEDS JAVADOCS
-		return null;
+	protected LinkedHashMap<String, Object> toStringMapper() {
+        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+        
+        map.put("routeHeaderId", routeHeaderId);
+        map.put("documentTypeId", documentTypeId);
+        map.put("docVersion", docVersion);
+        map.put("docTitle", docTitle);
+        map.put("createDate", createDate);
+        map.put("initiatorWorkflowId", initiatorWorkflowId);
+        map.put("routedByUserWorkflowId", routedByUserWorkflowId);
+        map.put("docRouteStatus", docRouteStatus);
+        map.put("routeStatusDate", routeStatusDate);
+        map.put("statusModDate", statusModDate);
+        map.put("docRouteLevel", docRouteLevel);
+        map.put("routeLevelDate", routeLevelDate);
+        map.put("approvedDate", approvedDate);
+        map.put("finalizedDate", finalizedDate);
+        map.put("appDocId", appDocId);
+		return map;
 	}
 
 }

@@ -94,16 +94,6 @@ public class KimTypeInfo extends TransientBusinessObjectBase implements KimType,
 		this.name = name;
 	}
 
-	@Override
-	public String toString() {
-		LinkedHashMap<String,Object> m = new LinkedHashMap<String,Object>();
-		m.put( "kimTypeId", kimTypeId );
-		m.put( "name", name );
-		m.put( "kimTypeServiceName", kimTypeServiceName );
-		m.put( "attributeDefinitions",  attributeDefinitions );
-		return m.toString();
-	}
-
 	public String getNamespaceCode() {
 		return this.namespaceCode;
 	}
@@ -116,15 +106,14 @@ public class KimTypeInfo extends TransientBusinessObjectBase implements KimType,
 		this.kimTypeId = kimTypeId;
 	}
 
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	protected LinkedHashMap toStringMapper() {
-		return null;
+		LinkedHashMap<String,Object> m = new LinkedHashMap<String,Object>();
+		m.put( "kimTypeId", kimTypeId );
+		m.put( "name", name );
+		m.put( "kimTypeServiceName", kimTypeServiceName );
+		m.put( "attributeDefinitions",  attributeDefinitions );
+		return m;
 	}
 
 }

@@ -15,23 +15,22 @@
  */
 package org.kuali.rice.ken.bo;
 
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-import javax.persistence.OrderBy;
-
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -152,14 +151,6 @@ public class NotificationProducer extends PersistableBusinessObjectBase{
     public void setChannels(List<NotificationChannel> channels) {
         this.channels = channels;
     }
-    
-    public String toString() {
-        return new ToStringBuilder(this).append("id", id)
-                                        .append("name", name)
-                                        .append("description", description)
-                                        .append("contactInfo", contactInfo)
-                                        .toString();
-    }
 
 	/**
 	 * This overridden method ...
@@ -170,6 +161,9 @@ public class NotificationProducer extends PersistableBusinessObjectBase{
 	protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
         m.put("id", getId());
+        m.put("name", name);
+        m.put("description", description);
+        m.put("contactInfo", contactInfo);
 
         return m;
 	}

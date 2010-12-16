@@ -105,12 +105,6 @@ public class FiscalOfficer extends PersistableBusinessObjectBase {
     public void setAccounts(List<TravelAccount> accounts) {
         this.accounts = accounts;
     }
-
-    public String toString() {
-        return "[FiscalOfficer: id=" + id +
-                             ", userName=" + userName +
-                             "]";
-    }
     
     @Override
     protected LinkedHashMap toStringMapper() {

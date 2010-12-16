@@ -38,7 +38,7 @@ public abstract class KewKualiAction extends KualiAction {
 	protected String getReturnLocation(HttpServletRequest request, ActionMapping mapping) 
     {
     	String mappingPath = mapping.getPath();
-    	String basePath = getBasePath(request);
+    	String basePath = getApplicationBaseUrl();
         return basePath + KEWConstants.WEBAPP_DIRECTORY + mappingPath + ".do";
     }
 

@@ -1463,36 +1463,6 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     	return ! this.documentTypeId.equals(this.previousVersionId);
     }
 
-    public String toString() {
-        return "[DocumentType: documentTypeId=" + documentTypeId
-                          + ", docTypeParentId=" + docTypeParentId
-                          + ", name=" + name
-                          + ", version=" + version
-                          + ", activeInd=" + active
-                          + ", currentInd=" + currentInd
-                          + ", description=" + description
-                          + ", routeHeaderId=" + routeHeaderId
-                          + ", unresolvedDocHandlerUrl=" + unresolvedDocHandlerUrl
-                          + ", unresolvedHelpDefinitionUrl=" + unresolvedHelpDefinitionUrl
-                          + ", unresolvedDocSearchHelpUrl=" + unresolvedDocSearchHelpUrl
-                          + ", postProcessorName=" + postProcessorName
-                          + ", workgroupId=" + workgroupId
-                          + ", blanketApproveWorkgroupId=" + blanketApproveWorkgroupId
-                          + ", blanketApprovePolicy=" + blanketApprovePolicy
-                          + ", versionNumber=" + versionNumber
-                          + ", defaultExceptionWorkgroup=" + defaultExceptionWorkgroup
-                          + ", policies=" + policies
-                          + ", security=" + documentTypeSecurityXml
-                          + ", routeLevels=" + routeLevels
-                          + ", childrenDocTypes=" + childrenDocTypes
-                          + ", documentTypeAttributes=" + documentTypeAttributes
-                          + ", processes=" + processes
-                          + ", routingVersion=" + routingVersion
-                          + ", actualNotificationFromAddress=" + actualNotificationFromAddress
-                          + ", actualServiceNamespace=" + actualServiceNamespace
-                          + "]";
-    }
-
     /**
      * @return the actualServiceNamespace
      */
@@ -1630,7 +1600,31 @@ public class DocumentType extends KewPersistableBusinessObjectBase implements In
     protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
         m.put("documentTypeId", this.documentTypeId);
-        m.put("name", this.name);
+        m.put("docTypeParentId=", docTypeParentId);
+		m.put("name", name);
+		m.put("version", version);
+		m.put("activeInd", active);
+		m.put("currentInd", currentInd);
+		m.put("description", description);
+		m.put("routeHeaderId", routeHeaderId);
+		m.put("unresolvedDocHandlerUrl", unresolvedDocHandlerUrl);
+		m.put("unresolvedHelpDefinitionUrl", unresolvedHelpDefinitionUrl);
+		m.put("unresolvedDocSearchHelpUrl", unresolvedDocSearchHelpUrl);
+		m.put("postProcessorName", postProcessorName);
+		m.put("workgroupId", workgroupId);
+		m.put("blanketApproveWorkgroupId", blanketApproveWorkgroupId);
+		m.put("blanketApprovePolicy", blanketApprovePolicy);
+		m.put("versionNumber", versionNumber);
+		m.put("defaultExceptionWorkgroup", defaultExceptionWorkgroup);
+		m.put("policies", policies);
+		m.put("security", documentTypeSecurityXml);
+		m.put("routeLevels", routeLevels);
+		m.put("childrenDocTypes", childrenDocTypes);
+		m.put("documentTypeAttributes", documentTypeAttributes);
+		m.put("processes", processes);
+		m.put("routingVersion", routingVersion);
+		m.put("actualNotificationFromAddress", actualNotificationFromAddress);
+		m.put("actualServiceNamespace", actualServiceNamespace);
         return m;
     }
 

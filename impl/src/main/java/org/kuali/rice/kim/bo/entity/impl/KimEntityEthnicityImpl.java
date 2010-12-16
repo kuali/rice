@@ -64,6 +64,7 @@ public class KimEntityEthnicityImpl extends KimEntityDataBase implements KimEnti
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getEthnicityCode()
 	 */
+	@Override
 	public String getEthnicityCode() {
 	    if (isSuppressPersonal()) {
             return KimConstants.RESTRICTED_DATA_MASK;
@@ -74,13 +75,15 @@ public class KimEntityEthnicityImpl extends KimEntityDataBase implements KimEnti
     /**
      * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getEthnicityCodeUnmasked()
      */
-    public String getEthnicityCodeUnmasked() {
+    @Override
+	public String getEthnicityCodeUnmasked() {
         return this.ethnicityCode;
     }
 
     /**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getSubEthnicityCode()
 	 */
+	@Override
 	public String getSubEthnicityCode() {
 	    if (isSuppressPersonal()) {
             return KimConstants.RESTRICTED_DATA_MASK;
@@ -91,6 +94,7 @@ public class KimEntityEthnicityImpl extends KimEntityDataBase implements KimEnti
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getSubEthnicityCodeUnmasked()
 	 */
+	@Override
 	public String getSubEthnicityCodeUnmasked() {
 		return this.subEthnicityCode;
 	}
@@ -98,6 +102,7 @@ public class KimEntityEthnicityImpl extends KimEntityDataBase implements KimEnti
 	/**
 	 * @see org.kuali.rice.kim.bo.entity.KimEntityEthnicity#getId()
 	 */
+	@Override
 	public String getId() {
 		return entityId;
 	}
@@ -106,14 +111,15 @@ public class KimEntityEthnicityImpl extends KimEntityDataBase implements KimEnti
 	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
 	 */
 	@Override
-	protected LinkedHashMap<String, String> toStringMapper() {
-		LinkedHashMap<String, String> m = new LinkedHashMap<String, String>();
+	protected LinkedHashMap<String, Object> toStringMapper() {
+		LinkedHashMap<String, Object> m = new LinkedHashMap<String, Object>();
 		m.put("entityId", entityId);
 		m.put("ethnicityCode", ethnicityCode);
 		m.put("subEthnicityCode", subEthnicityCode);
 		return m;
 	}
 
+	@Override
 	public String getEntityId() {
 		return this.entityId;
 	}
@@ -130,7 +136,8 @@ public class KimEntityEthnicityImpl extends KimEntityDataBase implements KimEnti
 		this.subEthnicityCode = subEthnicityCode;
 	}
 
-    public boolean isSuppressPersonal() {
+    @Override
+	public boolean isSuppressPersonal() {
         if (suppressPersonal != null) {
             return suppressPersonal.booleanValue();
         }

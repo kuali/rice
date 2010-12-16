@@ -95,14 +95,6 @@ public class EDocLiteStyle  extends KewPersistableBusinessObjectBase{
         this.activeInd = activeInd;
     }
 
-    public String toString() {
-        return "[EDocLiteStyle: edocLiteStyleId=" + edocLiteStyleId
-                           + ", name=" + name
-                           + ", xml=" + (xmlContent == null ? xmlContent : xmlContent.length() + "chars")
-                           + ", activeInd=" + activeInd
-                           + ", versionNumber=" + versionNumber
-                           + "]";
-    }
 	/**
 	 * This overridden method ...
 	 *

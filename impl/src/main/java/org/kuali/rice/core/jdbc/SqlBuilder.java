@@ -27,6 +27,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.api.LogicalOperators;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jdbc.criteria.Criteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -34,6 +35,7 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.util.GlobalVariables;
+
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -50,6 +52,8 @@ public class SqlBuilder {
 
 	private DateTimeService dateTimeService;
 	private DatabasePlatform dbPlatform;
+	
+	public static final  String EMPTY_STRING = "";
 
 	public Criteria createCriteria(String columnName, String searchValue, String tableName, String tableAlias, Class propertyType) {
 		return createCriteria(columnName, searchValue, tableName, tableAlias, propertyType, false, true);
@@ -137,23 +141,23 @@ public class SqlBuilder {
 			return;
 		}
 
-		if (StringUtils.contains(propertyValue, KNSConstants.OR_LOGICAL_OPERATOR)) {
+		if (StringUtils.contains(propertyValue, LogicalOperators.OR_LOGICAL_OPERATOR)) {
 			addOrCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, allowWildcards);
 			return;
 		}
 
-		if ( StringUtils.contains(propertyValue, KNSConstants.AND_LOGICAL_OPERATOR)) {
+		if ( StringUtils.contains(propertyValue, LogicalOperators.AND_LOGICAL_OPERATOR)) {
 			addAndCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, allowWildcards);
 			return;
 		}
 
 		if (TypeUtils.isStringClass(propertyType)) {
 			if (StringUtils.contains(propertyValue,
-					KNSConstants.NOT_LOGICAL_OPERATOR)) {
+					LogicalOperators.NOT_LOGICAL_OPERATOR)) {
 				addNotCriteria(propertyName, propertyValue, propertyType,
 						caseInsensitive, criteria, allowWildcards);
             } else if (propertyValue != null && (
-            				StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)
+            				StringUtils.contains(propertyValue, LogicalOperators.BETWEEN_OPERATOR)
             				|| propertyValue.startsWith(">")
             				|| propertyValue.startsWith("<") ) ) {
 				addStringRangeCriteria(propertyName, propertyValue, criteria, propertyType, caseInsensitive, allowWildcards);
@@ -184,20 +188,20 @@ public class SqlBuilder {
 	}
 
 	private void addOrCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria, boolean allowWildcards) {
-		addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, KNSConstants.OR_LOGICAL_OPERATOR, allowWildcards);
+		addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, LogicalOperators.OR_LOGICAL_OPERATOR, allowWildcards);
 	}
 
 	private void addAndCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria, boolean allowWildcards) {
-		addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, KNSConstants.AND_LOGICAL_OPERATOR, allowWildcards);
+		addLogicalOperatorCriteria(propertyName, propertyValue, propertyType, caseInsensitive, criteria, LogicalOperators.AND_LOGICAL_OPERATOR, allowWildcards);
 	}
 
 	private void addNotCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, Criteria criteria, boolean allowWildcards) {
-		String[] splitPropVal = StringUtils.split(propertyValue, KNSConstants.NOT_LOGICAL_OPERATOR);
+		String[] splitPropVal = StringUtils.split(propertyValue, LogicalOperators.NOT_LOGICAL_OPERATOR);
 
 		int strLength = splitPropVal.length;
 		// if more than one NOT operator assume an implicit and (i.e. !a!b = !a&!b)
 		if (strLength > 1) {
-			String expandedNot = "!" + StringUtils.join(splitPropVal, KNSConstants.AND_LOGICAL_OPERATOR + KNSConstants.NOT_LOGICAL_OPERATOR);
+			String expandedNot = "!" + StringUtils.join(splitPropVal, LogicalOperators.AND_LOGICAL_OPERATOR + LogicalOperators.NOT_LOGICAL_OPERATOR);
 			// we know that since this method is called, treatWildcardsAndOperatorsAsLiteral is false
 			addCriteria(propertyName, expandedNot, propertyType, caseInsensitive, allowWildcards, criteria);
 		} else {
@@ -214,10 +218,10 @@ public class SqlBuilder {
 			Criteria predicate = new Criteria("N/A", criteria.getAlias());
 			// we know that since this method is called, treatWildcardsAndOperatorsAsLiteral is false
 			addCriteria(propertyName, splitPropVal[i], propertyType, caseInsensitive, allowWildcards, predicate);
-			if (splitValue == KNSConstants.OR_LOGICAL_OPERATOR) {
+			if (splitValue == LogicalOperators.OR_LOGICAL_OPERATOR) {
 				subCriteria.or(predicate);
 			}
-			if (splitValue == KNSConstants.AND_LOGICAL_OPERATOR) {
+			if (splitValue == LogicalOperators.AND_LOGICAL_OPERATOR) {
 				subCriteria.and(predicate);
 			}
 		}
@@ -246,17 +250,17 @@ public class SqlBuilder {
 		}
 	}
 
-	public static String cleanDate(String string) {
-        for (int i = 0; i < KNSConstants.RANGE_CHARACTERS.length; i++) {
-            string = StringUtils.replace(string, KNSConstants.RANGE_CHARACTERS[i], KNSConstants.EMPTY_STRING);
+	public static String cleanDate(String string) {		
+        for (int i = 0; i < LogicalOperators.RANGE_CHARACTERS.length; i++) {
+            string = StringUtils.replace(string, LogicalOperators.RANGE_CHARACTERS[i], EMPTY_STRING);
         }
         return string;
     }
 
 	public static boolean containsRangeCharacters(String string){
 		boolean bRet = false;
-		for (int i = 0; i < KNSConstants.RANGE_CHARACTERS.length; i++) {
-            if(StringUtils.contains(string, KNSConstants.RANGE_CHARACTERS[i])){
+		for (int i = 0; i < LogicalOperators.RANGE_CHARACTERS.length; i++) {
+            if(StringUtils.contains(string, LogicalOperators.RANGE_CHARACTERS[i])){
             	bRet = true;
             }
         }
@@ -265,7 +269,7 @@ public class SqlBuilder {
 
 	private void addDateRangeCriteria(String propertyName, String propertyValue, Criteria criteria, Class propertyType) {
 
-		if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
+		if (StringUtils.contains(propertyValue, LogicalOperators.BETWEEN_OPERATOR)) {
 			String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
 			criteria.between(propertyName, parseDate(cleanDate(rangeValues[0])), parseDate(cleanUpperBound(cleanDate(rangeValues[1]))), propertyType);
 		} else if (propertyValue.startsWith(">=")) {
@@ -280,7 +284,7 @@ public class SqlBuilder {
 			criteria.lt(propertyName, parseDate(cleanDate(propertyValue)), propertyType);
 		} else {
 			String sDate = convertSimpleDateToDateRange(cleanDate(propertyValue));
-			if(sDate.contains(KNSConstants.BETWEEN_OPERATOR)){
+			if(sDate.contains(LogicalOperators.BETWEEN_OPERATOR)){
 				addDateRangeCriteria(propertyName, sDate, criteria, propertyType);
 			}else{
 				criteria.eq(propertyName, parseDate(sDate), propertyType);
@@ -298,12 +302,12 @@ public class SqlBuilder {
 	}
 
 	public static String cleanNumericOfValidOperators(String string){
-		for (int i = 0; i < KNSConstants.RANGE_CHARACTERS.length; i++) {
-            string = StringUtils.replace(string, KNSConstants.RANGE_CHARACTERS[i], KNSConstants.EMPTY_STRING);
+		for (int i = 0; i < LogicalOperators.RANGE_CHARACTERS.length; i++) {
+            string = StringUtils.replace(string, LogicalOperators.RANGE_CHARACTERS[i], EMPTY_STRING);
         }
-		string = StringUtils.replace(string, KNSConstants.OR_LOGICAL_OPERATOR, KNSConstants.EMPTY_STRING);
-		string = StringUtils.replace(string, KNSConstants.AND_LOGICAL_OPERATOR, KNSConstants.EMPTY_STRING);
-		string = StringUtils.replace(string, KNSConstants.NOT_LOGICAL_OPERATOR, KNSConstants.EMPTY_STRING);
+		string = StringUtils.replace(string, LogicalOperators.OR_LOGICAL_OPERATOR, EMPTY_STRING);
+		string = StringUtils.replace(string, LogicalOperators.AND_LOGICAL_OPERATOR, EMPTY_STRING);
+		string = StringUtils.replace(string, LogicalOperators.NOT_LOGICAL_OPERATOR, EMPTY_STRING);
 
 		return string;
 	}
@@ -339,7 +343,7 @@ public class SqlBuilder {
 
 	private void addNumericRangeCriteria(String propertyName, String propertyValue, Criteria criteria, Class propertyType) {
 
-		if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
+		if (StringUtils.contains(propertyValue, LogicalOperators.BETWEEN_OPERATOR)) {
 			String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
 			criteria.between(propertyName, stringToBigDecimal(rangeValues[0]), stringToBigDecimal(rangeValues[1]), propertyType);
 		} else if (propertyValue.startsWith(">=")) {
@@ -357,7 +361,7 @@ public class SqlBuilder {
 
 	private void addStringRangeCriteria(String propertyName, String propertyValue, Criteria criteria, Class propertyType, boolean caseInsensitive, boolean allowWildcards) {
 
-		if (StringUtils.contains(propertyValue, KNSConstants.BETWEEN_OPERATOR)) {
+		if (StringUtils.contains(propertyValue, LogicalOperators.BETWEEN_OPERATOR)) {
 			String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
 			propertyName = this.getCaseAndLiteralPropertyName(propertyName, caseInsensitive);
 			String val1 = this.getCaseAndLiteralPropertyValue(rangeValues[0], caseInsensitive, allowWildcards);
@@ -525,23 +529,23 @@ public class SqlBuilder {
 			throw new NullPointerException("The list passed in is by reference and should never be null.");
 		}
 
-		if (StringUtils.contains(valueEntered, KNSConstants.BETWEEN_OPERATOR)) {
+		if (StringUtils.contains(valueEntered, LogicalOperators.BETWEEN_OPERATOR)) {
 			List<String> l = Arrays.asList(valueEntered.split("\\.\\."));
 			for(String value : l){
 				getSearchableValueRecursive(value,lRet);
 			}
 			return;
 		}
-		if (StringUtils.contains(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR)) {
-			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KNSConstants.OR_LOGICAL_OPERATOR));
+		if (StringUtils.contains(valueEntered, LogicalOperators.OR_LOGICAL_OPERATOR)) {
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, LogicalOperators.OR_LOGICAL_OPERATOR));
 			for(String value : l){
 				getSearchableValueRecursive(value,lRet);
 			}
 			return;
 		}
-		if (StringUtils.contains(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR)) {
+		if (StringUtils.contains(valueEntered, LogicalOperators.AND_LOGICAL_OPERATOR)) {
 			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR)));
-			List<String> l = Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND_LOGICAL_OPERATOR));
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, LogicalOperators.AND_LOGICAL_OPERATOR));
 			for(String value : l){
 				getSearchableValueRecursive(value,lRet);
 			}

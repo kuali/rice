@@ -17,17 +17,16 @@ package org.kuali.rice.ken.bo;
 
 import java.util.LinkedHashMap;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Column;
-import javax.persistence.Id;
 import javax.persistence.CascadeType;
-import javax.persistence.Table;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -120,15 +119,6 @@ public class NotificationChannelReviewer extends PersistableBusinessObjectBase{
         this.reviewerType = reviewerType;
     }
 
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return new ToStringBuilder(this).append("id", id)
-                                        .append("channel", channel != null ? channel.getId() : null)
-                                        .append("reviewerId", reviewerId).toString();
-    }
-
 	/**
 	 * This overridden method ...
 	 * 
@@ -138,6 +128,8 @@ public class NotificationChannelReviewer extends PersistableBusinessObjectBase{
 	protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
         m.put("id", getId());
+        m.put("channel", channel != null ? channel.getId() : null);
+        m.put("reviewerId", reviewerId);
 
         return m;
 	}

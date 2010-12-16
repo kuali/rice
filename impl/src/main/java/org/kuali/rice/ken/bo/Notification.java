@@ -416,28 +416,6 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
     public String getContentMessage() {
 	return StringUtils.substringBetween(content, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_OPEN, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_CLOSE);	
     }
-    
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return new ToStringBuilder(this)
-                       .append("id", id)
-                       .append("deliveryType", deliveryType)
-                       .append("sendDateTime", sendDateTime)
-                       .append("autoRemoveDateTime", autoRemoveDateTime)
-                       .append("content", StringUtils.abbreviate(content, 100))
-                       .append("processingFlag", processingFlag)
-                       .append("lockedDate", lockedDate)
-                       .append("lockVerNbr", super.getVersionNumber())
-                       //.append("obj_id", super.getObjectId())
-                       .append("priority", priority)
-                       .append("contentType", contentType)
-                       .append("channel", channel)
-                       .append("producer", producer)
-                       .append("recipients", recipients == null ? null : "" + recipients.size())
-                       .append("senders", senders == null ? null : "" + senders.size()).toString();
-    }
 
 	/**
 	 * This overridden method ...
@@ -448,6 +426,21 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
 	protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
         m.put("id", getId());
+        m.put("id", id);
+        m.put("deliveryType", deliveryType);
+        m.put("sendDateTime", sendDateTime);
+        m.put("autoRemoveDateTime", autoRemoveDateTime);
+        m.put("content", StringUtils.abbreviate(content, 100));
+        m.put("processingFlag", processingFlag);
+        m.put("lockedDate", lockedDate);
+        m.put("lockVerNbr", super.getVersionNumber());
+        //.append("obj_id", super.getObjectId())
+        m.put("priority", priority);
+        m.put("contentType", contentType);
+        m.put("channel", channel);
+        m.put("producer", producer);
+        m.put("recipients", recipients == null ? null : "" + recipients.size());
+        m.put("senders", senders == null ? null : "" + senders.size());
 
         return m;
 	}

@@ -256,13 +256,6 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * @see java.lang.Object#toString()
-     */
-    final public String toString() {
-        return toStringBuilder(toStringMapper());
-    }
-
-    /**
      * @see org.kuali.rice.kns.document.Document#prepareForSave()
      */
     public void prepareForSave() {

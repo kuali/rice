@@ -24,6 +24,10 @@ package org.kuali.rice.core.api;
  */
 public class CoreConstants {
 	
+	public static class Services {
+        public static final String DATETIME_SERVICE = "dateTimeService";
+	}
+	
 	public static final String STRING_TO_DATE_FORMATS = "STRING_TO_DATE_FORMATS";
     public static final String STRING_TO_TIMESTAMP_FORMATS = "STRING_TO_TIMESTAMP_FORMATS";
     public static final String DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE = "DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE";

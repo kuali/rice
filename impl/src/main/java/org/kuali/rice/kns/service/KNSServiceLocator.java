@@ -14,6 +14,7 @@ package org.kuali.rice.kns.service;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -102,10 +103,10 @@ public class KNSServiceLocator {
 	return (PostProcessorService) getService(POST_PROCESSOR_SERVICE);
     }
 
-    public static final String DATETIME_SERVICE = "dateTimeService";
+    //public static final String DATETIME_SERVICE = "dateTimeService";
 
     public static DateTimeService getDateTimeService() {
-	return (DateTimeService) getService(DATETIME_SERVICE);
+	return (DateTimeService) getService(CoreConstants.Services.DATETIME_SERVICE);
     }
 
     public static final String LOOKUP_SERVICE = "lookupService";

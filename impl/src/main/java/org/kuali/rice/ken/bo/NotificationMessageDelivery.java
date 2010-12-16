@@ -27,9 +27,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Version;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
@@ -177,21 +175,6 @@ public class NotificationMessageDelivery extends PersistableBusinessObjectBase i
     }
 
     /**
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                       .append("id", id)
-                       .append("messageDeliveryStatus", messageDeliveryStatus)
-                       .append("userRecipientId", userRecipientId)
-                       .append("deliverySystemId", deliverySystemId)
-                       .append("lockedDate", lockedDate)
-                       .append("notification", notification)
-                       .toString();
-    }
-
-    /**
      * Gets the deliverySystemId attribute. 
      * @return Returns the deliverySystemId.
      */
@@ -216,6 +199,11 @@ public class NotificationMessageDelivery extends PersistableBusinessObjectBase i
 	protected LinkedHashMap toStringMapper() {
         LinkedHashMap m = new LinkedHashMap();
         m.put("id", getId());
+        m.put("messageDeliveryStatus", messageDeliveryStatus);
+        m.put("userRecipientId", userRecipientId);
+        m.put("deliverySystemId", deliverySystemId);
+        m.put("lockedDate", lockedDate);
+        m.put("notification", notification);
 
         return m;
 	}

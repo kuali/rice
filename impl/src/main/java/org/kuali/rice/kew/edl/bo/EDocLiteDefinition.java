@@ -95,14 +95,6 @@ public class EDocLiteDefinition  extends KewPersistableBusinessObjectBase {
         this.activeInd = activeInd;
     }
 
-    public String toString() {
-        return "[EDocLiteDefinition: eDocLiteDefId=" + eDocLiteDefId
-                                + ", name=" + name
-                                + ", xml=" + (xmlContent == null ? xmlContent : xmlContent.length() + "chars")
-                                + ", activeInd=" + activeInd
-                                + ", versionNumber=" + versionNumber
-                                + "]";
-    }
     /**
 	 * This overridden method ...
 	 *

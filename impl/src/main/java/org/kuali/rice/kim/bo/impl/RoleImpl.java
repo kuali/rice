@@ -42,7 +42,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -74,7 +74,7 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	@OneToMany(targetEntity=RoleMemberImpl.class,cascade={CascadeType.MERGE, CascadeType.REFRESH},fetch=FetchType.EAGER)
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ROLE_ID", insertable=false, updatable=false)
-	protected List<RoleMemberImpl> members = new TypedArrayList(RoleMemberImpl.class);
+	protected List<RoleMemberImpl> members = new AutoPopulatingList(RoleMemberImpl.class);
 
 	@Transient
 	protected String principalName;

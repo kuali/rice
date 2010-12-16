@@ -20,6 +20,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +30,8 @@ import java.util.regex.Pattern;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.util.IdentitySet;
 import org.kuali.rice.core.jdbc.SqlBuilder;
+import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
@@ -59,7 +60,6 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 
@@ -91,12 +91,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * creates a new IdentitySet.
      * @return a new Set
      */
-    @SuppressWarnings("unchecked")
     private static Set<BusinessObject> newIdentitySet() {
-        //using Hibernate's IdentitySet because Java 5 doesn't have a good way to create one
-        return new IdentitySet();
-        //in Java 6
-        //return java.util.Collections.newSetFromMap(new java.util.IdentityHashMap<BusinessObject, Boolean>());
+    	return java.util.Collections.newSetFromMap(new IdentityHashMap<BusinessObject, Boolean>());
     }
     
     /**

@@ -27,12 +27,12 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

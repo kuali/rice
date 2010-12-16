@@ -16,11 +16,10 @@
  */
 package org.kuali.rice.kim.config;
 
-import java.util.LinkedList;
+import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.core.config.ModuleConfigurer;
-import org.kuali.rice.core.lifecycle.Lifecycle;
 
 
 /**
@@ -44,8 +43,8 @@ public class KIMThinClientConfigurer extends ModuleConfigurer {
     }
 	
 	@Override
-	public String getSpringFileLocations(){
-		return "classpath:org/kuali/rice/kim/config/KIMThinClientSpringBeans.xml";
+	public List<String> getPrimarySpringFiles(){
+		return Collections.singletonList("classpath:org/kuali/rice/kim/config/KIMThinClientSpringBeans.xml");
 	}
 	
 }

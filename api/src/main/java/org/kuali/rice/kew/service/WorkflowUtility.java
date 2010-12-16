@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.jaxb.AttributeSetAdapter;
 import org.kuali.rice.core.jaxb.SqlTimestampAdapter;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
@@ -46,7 +47,6 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWWebServiceConstants;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * A remotable service which provides an API for performing various queries and

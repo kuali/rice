@@ -15,7 +15,7 @@
  */
 
 @javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters({
-	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.jaxb.AttributeSetAdapter.class,type=org.kuali.rice.kim.bo.types.dto.AttributeSet.class),
+	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.jaxb.AttributeSetAdapter.class,type=org.kuali.rice.core.xml.dto.AttributeSet.class),
 	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.jaxb.SqlDateAdapter.class,type=java.sql.Date.class),
 	@javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter(value=org.kuali.rice.core.jaxb.SqlTimestampAdapter.class,type=java.sql.Timestamp.class)
 })

@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.docsearch.service;
 
 import org.kuali.rice.kew.docsearch.*;
-import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.core.util.KeyValue;
 
 import java.util.List;
 

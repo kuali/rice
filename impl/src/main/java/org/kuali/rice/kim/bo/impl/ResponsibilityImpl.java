@@ -23,7 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -32,7 +32,7 @@ public class ResponsibilityImpl extends KimResponsibilityImpl {
 
 	private static final long serialVersionUID = 1L;
 	@Transient
-	List<RoleImpl> assignedToRoles = new TypedArrayList(RoleImpl.class);
+	List<RoleImpl> assignedToRoles = new AutoPopulatingList(RoleImpl.class);
 	@Transient
 	protected String assignedToRoleNamespaceForLookup;
 	@Transient

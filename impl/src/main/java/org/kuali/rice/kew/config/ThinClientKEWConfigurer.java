@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.config;
 
-import org.kuali.rice.core.config.RiceConfigurerBase;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.config.KIMThinClientConfigurer;
 import org.kuali.rice.ksb.messaging.config.KSBThinClientConfigurer;
 
@@ -25,33 +23,29 @@ import org.kuali.rice.ksb.messaging.config.KSBThinClientConfigurer;
  *      
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ThinClientKEWConfigurer extends RiceConfigurerBase {
-	
-	private KEWConfigurer kewConfigurer;
-	
-	public ThinClientKEWConfigurer() {
-		setServiceNamespace(KEWConstants.KEW_MESSAGING_ENTITY);
-		// thin client allows us to still have access to the DigitalSignatureService but not use the full capabilities of the bus
-		getModules().add(new KSBThinClientConfigurer());		
-		
-		this.kewConfigurer = new KEWConfigurer();
-		
-		// If this flag is not set, KEWConfigurer will need a database connection and other
-		// things we haven't configured.
-		kewConfigurer.setRunMode(KEWConfigurer.THIN_RUN_MODE);
-		kewConfigurer.setClientProtocol(KEWConstants.WEBSERVICE_CLIENT_PROTOCOL);
-		
-		getModules().add(kewConfigurer);
-		
-		getModules().add(new KIMThinClientConfigurer());
-	}
-
-	@Override
-	protected void addModulesResourceLoaders() throws Exception {
-		// TODO: this seems like a total hack the way this is happening, see the addModulesResourceLoaders
-		// method RiceConfigurer as well
-		kewConfigurer.getResourceLoaderToRegister();
-	}
+//FIXME: RICE MODULARITY
+// need to fix this class at some point
+public abstract class ThinClientKEWConfigurer /*extends RiceConfigurerBase*/ {
+//	
+//	private KEWConfigurer kewConfigurer;
+//	
+//	public ThinClientKEWConfigurer() {
+//		// thin client allows us to still have access to the DigitalSignatureService but not use the full capabilities of the bus
+//		getModules().add(new KSBThinClientConfigurer());		
+//		
+//		this.kewConfigurer = new KEWConfigurer();
+//		
+//		getModules().add(kewConfigurer);
+//		
+//	}
+//
+//		getModules().add(new KIMThinClientConfigurer());
+//	@Override
+//	protected void addModulesResourceLoaders() throws Exception {
+//		// TODO: this seems like a total hack the way this is happening, see the addModulesResourceLoaders
+//		// method RiceConfigurer as well
+//		kewConfigurer.getResourceLoadersToRegister();
+//	}
 	
 	
 }

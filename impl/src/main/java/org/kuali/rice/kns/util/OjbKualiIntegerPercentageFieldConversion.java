@@ -18,6 +18,8 @@ package org.kuali.rice.kns.util;
 import java.math.BigDecimal;
 
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
+import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.util.type.KualiInteger;
 
 
 public class OjbKualiIntegerPercentageFieldConversion extends OjbDecimalPercentageFieldConversion {

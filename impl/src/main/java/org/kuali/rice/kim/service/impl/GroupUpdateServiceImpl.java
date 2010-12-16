@@ -81,9 +81,6 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
      * @see org.kuali.rice.kim.service.GroupService#addPrincipalToGroup(java.lang.String, java.lang.String)
      */
     public boolean addPrincipalToGroup(String principalId, String groupId) {
-    	if (isMemberOfGroup(principalId, groupId)) {
-    		return true;
-    	}
         GroupMemberImpl groupMember = new GroupMemberImpl();
         groupMember.setGroupId(groupId);
         groupMember.setMemberTypeCode( KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE );

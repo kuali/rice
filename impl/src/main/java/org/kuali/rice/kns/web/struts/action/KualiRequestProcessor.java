@@ -13,12 +13,8 @@
 package org.kuali.rice.kns.web.struts.action;
 
 import java.io.IOException;
-import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -38,24 +34,15 @@ import org.apache.struts.config.FormBeanConfig;
 import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.util.RequestUtils;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.ErrorContainer;
 import org.kuali.rice.kns.util.ExceptionUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.kns.util.InfoContainer;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
@@ -66,7 +53,6 @@ import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoForm;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -78,22 +64,14 @@ import org.springmodules.orm.ojb.OjbOperationException;
  * 
  */
 public class KualiRequestProcessor extends RequestProcessor {
-
-	private static final String MDC_USER_ALREADY_SET = "userAlreadySet";
-
-	private static final String MDC_USER = "user";
-
-	private static final String MDC_DOC_ID = "docId";
 	
+	private static final String MDC_DOC_ID = "docId";
 	private static final String PREVIOUS_REQUEST_EDITABLE_PROPERTIES_GUID_PARAMETER_NAME = "actionEditablePropertiesGuid";
 
 	private static Logger LOG = Logger.getLogger(KualiRequestProcessor.class);
 
-	protected SessionDocumentService sessionDocumentService;
-	protected DataDictionaryService dataDictionaryService;
-	protected BusinessObjectService businessObjectService;
-	protected PlatformTransactionManager transactionManager;
-	protected IdentityManagementService identityManagementService;
+	private SessionDocumentService sessionDocumentService;
+	private PlatformTransactionManager transactionManager;
 	
 	@Override
 	public void process(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -147,14 +125,20 @@ public class KualiRequestProcessor extends RequestProcessor {
 		} finally {
 			// MDC docId key is set above, and also during super.process() in the call to processActionForm
 			MDC.remove(MDC_DOC_ID);
-			// MDC user key is set above, although it may have already been set.
-			if (MDC.get(MDC_USER_ALREADY_SET) == null) {
-				MDC.remove(MDC_USER);
-			} else {
-				MDC.remove(MDC_USER_ALREADY_SET);
-			}
 		}
 
+	}
+	
+	@Override
+	protected boolean processPreprocess(HttpServletRequest request, HttpServletResponse response) {
+        final UserSession session = WebUtils.getUserSessionFromRequest(request);
+        
+        if (session == null) {
+        	throw new IllegalStateException("the user session has not been established");
+        }
+    	GlobalVariables.setUserSession(session);
+    	GlobalVariables.clear();
+		return true;
 	}
 	
 	/**
@@ -217,6 +201,7 @@ public class KualiRequestProcessor extends RequestProcessor {
     	TransactionTemplate template = new TransactionTemplate(getTransactionManager());
     	try {
 			template.execute(new TransactionCallback() {
+				@Override
 				public Object doInTransaction(TransactionStatus status) {
 					try {
 						// Process any ActionForm bean related to this request
@@ -277,81 +262,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 		}
     }
 
-	/**
-	 * override of the pre process for all struts requests which will ensure
-	 * that we have the appropriate state for user sessions for all of our
-	 * requests, also populating the GlobalVariables class with our UserSession
-	 * for convenience to the non web layer based classes and implementations
-	 */
-	@Override
-	protected boolean processPreprocess(HttpServletRequest request, HttpServletResponse response) {
-		UserSession userSession = null;
-		if (!isUserSessionEstablished(request)) {
-			String principalName = getIdentityManagementService().getAuthenticatedPrincipalName(request);
-			if ( StringUtils.isNotBlank(principalName) ) {
-				KimPrincipal principal = getIdentityManagementService().getPrincipalByPrincipalName( principalName );
-				if ( principal != null ) {
-					AttributeSet qualification = new AttributeSet();
-					qualification.put( "principalId", principal.getPrincipalId() );
-					// check to see if the given principal is an active principal/entity
-					if ( getIdentityManagementService().isAuthorized( 
-							principal.getPrincipalId(), 
-							KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, 
-							KimConstants.PermissionNames.LOG_IN, 
-							null, 
-							qualification ) ) {
-					
-						// This is a temp solution to show KIM AuthN checking existence of Principals.
-						// We may want to move this code to the IdentityService once it is finished.
-						userSession = new UserSession(principalName);
-						if ( userSession.getPerson() == null ) {
-							LOG.warn("Unknown User: " + principalName);
-							throw new RuntimeException("Invalid User: " + principalName);
-						}
-						
-						String kualiSessionId = this.getKualiSessionId(request, response);
-						if (kualiSessionId == null) {
-							kualiSessionId = new Guid().toString();
-							response.addCookie(new Cookie(KNSConstants.KUALI_SESSION_ID, kualiSessionId));
-						}
-						userSession.setKualiSessionId(kualiSessionId);
-					} /* if: principal is active */ else {
-						LOG.warn("Principal is Inactive: " + principalName);
-						throw new RuntimeException("You cannot log in, because you are not an active Kuali user.\nPlease ask someone to activate your account, if you need to use Kuali Systems.\nThe user id provided was: " + principalName + ".\n");
-					}
-				} /* if: principal is null */ else {
-					LOG.warn("Principal Name not found in IdentityManagementService: " + principalName);
-					throw new RuntimeException("Unknown User: " + principalName);
-				}
-			} /* if: principalName blank */ else {
-				LOG.error( "Principal Name from the authentication service was blank!" );
-				throw new RuntimeException( "Blank User from AuthenticationService - This should never happen." );
-			}
-		} else {
-			userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
-		}
-		
-		request.getSession().setAttribute(KNSConstants.USER_SESSION_KEY, userSession);
-		GlobalVariables.setUserSession(userSession);
-		GlobalVariables.clear();
-		if ( StringUtils.isNotBlank( request.getParameter(KNSConstants.BACKDOOR_PARAMETER) ) ) {
-			if ( !KNSServiceLocator.getKualiConfigurationService().isProductionEnvironment() ) {
-				if ( KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KUALI_RICE_WORKFLOW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND) ) {
-	    			userSession.setBackdoorUser(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
-	    			org.kuali.rice.kew.web.session.UserSession.getAuthenticatedUser().establishBackdoorWithPrincipalName(request.getParameter(KNSConstants.BACKDOOR_PARAMETER));
-				}
-			}
-		}
-		
-		if (MDC.get(MDC_USER) != null) {
-			// abuse the MDC to prevent removing user prematurely if it was set elsewhere (e.g. UserLoginFilter)
-			MDC.put(MDC_USER_ALREADY_SET, Boolean.TRUE); 
-		} else {
-			MDC.put(MDC_USER, userSession.getPrincipalId());
-		}
-		
-		return true;
-	}
 
 	/**
 	 * This method gets the document number from the request.  The request should have been processed already 
@@ -373,18 +283,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 		}
 		
 		return documentNumber;
-	}
-
-	/**
-	 * Checks if the user who made the request has a UserSession established
-	 * 
-	 * @param request
-	 *            the HTTPServletRequest object passed in
-	 * @return true if the user session has been established, false otherwise
-	 */
-	private boolean isUserSessionEstablished(HttpServletRequest request) {
-		boolean result = (request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY) != null);
-		return result;
 	}
 
 	/**
@@ -468,8 +366,9 @@ public class KualiRequestProcessor extends RequestProcessor {
 			}
 
 			// Fix state that could be incorrect because of validation failure
-			if (form instanceof PojoForm)
+			if (form instanceof PojoForm) {
 				((PojoForm) form).processValidationFail();
+			}
 
 			// Was an input path (or forward) specified for this mapping?
 			String input = mapping.getInput();
@@ -526,7 +425,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 				LOG.debug("getDecomentForm KualiDocumentFormBase from session");
 				form = (ActionForm) userSession.retrieveObject(docFormKey);
 			} else {
-				form = (ActionForm) getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request.getRemoteAddr());
+				form = getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request.getRemoteAddr());
 			}
 			request.setAttribute(mapping.getAttribute(), form);
 			if (!KNSConstants.SESSION_SCOPE.equalsIgnoreCase(documentWebScope)) {
@@ -589,7 +488,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 					LOG.debug("getDocumentForm KualiDocumentFormBase from session");
 					form = (ActionForm) userSessionObject;
 				} else {
-					ActionForm tempForm = (ActionForm)getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request.getRemoteAddr());
+					ActionForm tempForm = getSessionDocumentService().getDocumentForm(documentNumber, docFormKey, userSession, request.getRemoteAddr());
 					if ( tempForm != null ) {
 						form = tempForm;
 					}
@@ -772,32 +671,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 		}
 	}
 
-	@SuppressWarnings("serial")
-	private static class WrappedActionForwardRuntimeException extends RuntimeException {
-		private ActionForward actionForward;
-
-		public WrappedActionForwardRuntimeException(ActionForward actionForward) {
-			this.actionForward = actionForward;
-		}
-
-		public ActionForward getActionForward() {
-			return actionForward;
-		}
-	}
-
-	private String getKualiSessionId(HttpServletRequest request, HttpServletResponse response) {
-		String kualiSessionId = null;
-		Cookie[] cookies = (Cookie[]) request.getCookies();
-		if (cookies != null) {
-			for (int i = 0; i < cookies.length; i++) {
-				Cookie cookie = cookies[i];
-				if (KNSConstants.KUALI_SESSION_ID.equals(cookie.getName()))
-					kualiSessionId = cookie.getValue();
-			}
-		}
-		return kualiSessionId;
-	}
-
 	/**
 	 * @return the sessionDocumentService
 	 */
@@ -809,26 +682,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 	}
 
 	/**
-	 * @return the dataDictionaryService
-	 */
-	public DataDictionaryService getDataDictionaryService() {
-		if ( dataDictionaryService == null ) {
-			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
-		}
-		return this.dataDictionaryService;
-	}
-
-	/**
-	 * @return the businessObjectService
-	 */
-	public BusinessObjectService getBusinessObjectService() {
-		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
-		}
-		return this.businessObjectService;
-	}
-
-	/**
 	 * @return the transactionManager
 	 */
 	public PlatformTransactionManager getTransactionManager() {
@@ -836,14 +689,6 @@ public class KualiRequestProcessor extends RequestProcessor {
 			transactionManager = KNSServiceLocator.getTransactionManager();
 		}
 		return this.transactionManager;
-	}
-
-	
-	public IdentityManagementService getIdentityManagementService() {
-		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
-		}
-		return this.identityManagementService;
 	}
 	
 	private ActionForm createNewActionForm(ActionMapping mapping, HttpServletRequest request) {

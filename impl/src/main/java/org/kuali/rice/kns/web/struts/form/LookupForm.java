@@ -31,7 +31,6 @@ import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.kns.web.view.field.ErrorsField;
 
 /**
  * This class is the action form for all lookups.
@@ -68,17 +67,6 @@ public class LookupForm extends KualiForm {
     private boolean ddExtraButton = false;
 	private boolean headerBarEnabled = true;
 	private boolean disableSearchButtons = false;
-	
-	private String fieldHandler = "/kr/WEB-INF/jsp/Test.jsp";
-	private ErrorsField field;
-	private String fragContents = "Error title is: <br/> ${field.errorTitle}";
-	
-	public LookupForm() {
-		field = new ErrorsField();
-		field.setErrorTitle("Errors found here!");
-		field.setDisplayErrorCount(true);
-	}
-	
     
     /**
      * @see org.kuali.rice.kns.web.struts.form.KualiForm#addRequiredNonEditableProperties()
@@ -102,7 +90,6 @@ public class LookupForm extends KualiForm {
     	registerRequiredNonEditableProperty("searchUsingOnlyPrimaryKeyValues");
     	registerRequiredNonEditableProperty(KNSConstants.MULTIPLE_VALUE_LOOKUP_PREVIOUSLY_SELECTED_OBJ_IDS_PARAM);
     	registerRequiredNonEditableProperty(KNSConstants.TableRenderConstants.VIEWED_PAGE_NUMBER);
-    	registerRequiredNonEditableProperty(KNSConstants.TableRenderConstants.DIALOG_MODE);
     }
     
     /**
@@ -729,36 +716,4 @@ public class LookupForm extends KualiForm {
 
 		return renderSearchButtons;
 	}
-
-
-	public String getFieldHandler() {
-		return this.fieldHandler;
-	}
-
-
-	public void setFieldHandler(String fieldHandler) {
-		this.fieldHandler = fieldHandler;
-	}
-
-
-	public ErrorsField getField() {
-		return this.field;
-	}
-
-
-	public void setField(ErrorsField field) {
-		this.field = field;
-	}
-
-
-	public String getFragContents() {
-		return this.fragContents;
-	}
-
-
-	public void setFragContents(String fragContents) {
-		this.fragContents = fragContents;
-	}
-	
-	
 }

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.xml;
 
-import org.kuali.rice.kim.xml.KimNamespaceConstants;
+import org.kuali.rice.core.xml.dto.KimNamespaceConstants;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;

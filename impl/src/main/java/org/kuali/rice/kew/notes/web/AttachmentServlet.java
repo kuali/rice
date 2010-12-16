@@ -36,8 +36,9 @@ import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 
 
@@ -56,6 +57,7 @@ public class AttachmentServlet extends HttpServlet {
 	// to Rice 1.0.3
 	private static final Logger LOG = Logger.getLogger(AttachmentServlet.class);
 			
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		Long attachmentId = new Long(request.getParameter(ATTACHMENT_ID_KEY));
 		if (attachmentId == null) {
@@ -73,7 +75,7 @@ public class AttachmentServlet extends HttpServlet {
 			secureChecks = false;
 		}
 		try {
-			UserSession userSession = (UserSession) request.getSession().getAttribute(KEWConstants.USER_SESSION_KEY);
+			UserSession userSession = (UserSession) request.getSession().getAttribute(KNSConstants.USER_SESSION_KEY);
 			if (userSession != null) {// If we can get a valid userSession object off the Http request...
 				
 				NoteService noteService = KEWServiceLocator.getNoteService(); 
@@ -124,6 +126,7 @@ public class AttachmentServlet extends HttpServlet {
 			throw new WorkflowRuntimeException(e);
 		}
 	}
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doPost(request, response);
 	}	

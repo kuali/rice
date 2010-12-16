@@ -24,6 +24,8 @@ import java.sql.Types;
 
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.util.type.KualiInteger;
 
 /**
  * Kuali integer percentage type converteger

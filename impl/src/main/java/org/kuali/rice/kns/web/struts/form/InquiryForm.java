@@ -53,8 +53,6 @@ public class InquiryForm extends KualiForm {
     private Map editingMode;
     private String formKey;
     private boolean canExport;
-    
-    private String tabTag = "/kr/jsf/tags/section.xhtml";
 
     @Override
     public void addRequiredNonEditableProperties(){
@@ -392,12 +390,6 @@ public class InquiryForm extends KualiForm {
 	public void setCanExport(boolean canExport) {
 		this.canExport = canExport;
 	}
-
-	public String getTabTag() {
-		return this.tabTag;
-	}
-	
-	
 
 
 }

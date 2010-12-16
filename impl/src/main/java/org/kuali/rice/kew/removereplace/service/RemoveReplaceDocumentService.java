@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.removereplace.service;
 
 import org.kuali.rice.kew.removereplace.RemoveReplaceDocument;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.

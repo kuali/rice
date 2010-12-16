@@ -40,7 +40,7 @@ import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - bhargavp don't forget to fill this in. 
@@ -61,9 +61,9 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	
 	@OneToMany(targetEntity=RoleDocumentDelegation.class, fetch=FetchType.EAGER, cascade={CascadeType.ALL})
     @JoinColumn(name="FDOC_NBR",insertable=false,updatable=false)
-	protected List<RoleDocumentDelegation> delegations = new TypedArrayList(RoleDocumentDelegation.class);
+	protected List<RoleDocumentDelegation> delegations = new AutoPopulatingList(RoleDocumentDelegation.class);
 	@Transient
-	protected List<RoleDocumentDelegationMember> delegationMembers = new TypedArrayList(RoleDocumentDelegationMember.class);
+	protected List<RoleDocumentDelegationMember> delegationMembers = new AutoPopulatingList(RoleDocumentDelegationMember.class);
 	@Transient
 	protected transient SequenceAccessorService sequenceAccessorService;
 	

@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.RoutingTypeDefinition;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;

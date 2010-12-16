@@ -57,11 +57,16 @@
     </bean>
   <bean id="kimLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter" abstract="true">
 	<property name="runModePropertyName" value="kim.mode" />
-	<property name="validRunMode" value="local" />
+	<property name="validRunMode" value="LOCAL" />
   </bean>
   <!--
         Identity Service
   -->
+
+	<bean id="enServiceInvoker"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="enServiceInvoker" />
+	</bean>
 
   <bean parent="kimLocalServiceExporter">
     <property name="remotedServiceRegistry" ref="enServiceInvoker" />

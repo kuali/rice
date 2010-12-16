@@ -57,7 +57,7 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -162,9 +162,9 @@ public class RuleBaseValues extends KewPersistableBusinessObjectBase {
     public RuleBaseValues() {
         responsibilities = new ArrayList<RuleResponsibility>();
         ruleExtensions = new ArrayList<RuleExtension>();
-        personResponsibilities = new TypedArrayList(PersonRuleResponsibility.class);
-        groupResponsibilities = new TypedArrayList(GroupRuleResponsibility.class);
-        roleResponsibilities = new TypedArrayList(RoleRuleResponsibility.class);
+        personResponsibilities = new AutoPopulatingList(PersonRuleResponsibility.class);
+        groupResponsibilities = new AutoPopulatingList(GroupRuleResponsibility.class);
+        roleResponsibilities = new AutoPopulatingList(RoleRuleResponsibility.class);
         fieldValues = new HashMap<String, String>();
     }
 

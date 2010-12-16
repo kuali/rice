@@ -18,25 +18,24 @@ package org.kuali.rice.kns.web.comparator;
 import java.io.Serializable;
 import java.util.Comparator;
 
-public class StringValueComparator implements Serializable, Comparator {
-    private static final StringValueComparator theInstance = new StringValueComparator();
+public final class StringValueComparator implements Serializable, Comparator<String> {
+    private static final StringValueComparator INSTANCE = new StringValueComparator();
     
-    public StringValueComparator() {
+    private StringValueComparator() {
+    	//private
     }
 
     public static StringValueComparator getInstance() {
-        return theInstance;
+        return INSTANCE;
     }
     
-    public int compare(Object o1, Object o2) {
+    @Override
+	public int compare(String o1, String o2) {
         // null guard. non-null value is greater. equal if both are null
         if (null == o1 || null == o2) {
             return (null == o1 && null == o2) ? 0 : ((null == o1) ? -1 : 1);
         }
-        
-        String s1 = (String) o1;
-        String s2 = (String) o2;
 
-        return String.CASE_INSENSITIVE_ORDER.compare(s1, s2);
+        return String.CASE_INSENSITIVE_ORDER.compare(o1, o2);
     }
 }

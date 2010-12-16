@@ -25,12 +25,12 @@ import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;

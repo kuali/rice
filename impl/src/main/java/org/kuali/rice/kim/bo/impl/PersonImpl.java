@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
@@ -42,7 +43,6 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
-import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 

@@ -72,7 +72,7 @@
 		<kul:panelFooter />
 		</kul:tableWrapper>
 		
-        
+
 		
 		<kul:inquiryControls />
 

@@ -26,11 +26,13 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletResponse;
 
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.WebUtils;
 
 /**
  * A login filter which forwards to a login page that allows for the desired
@@ -41,46 +43,49 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 public class DummyLoginFilter implements Filter {
     private String loginPath;
     private boolean showPassword = false;
-    public void init(FilterConfig config) throws ServletException {
+    @Override
+	public void init(FilterConfig config) throws ServletException {
         loginPath = config.getInitParameter("loginPath");
-        showPassword = new Boolean(config.getInitParameter("showPassword"));
+        showPassword = Boolean.valueOf(config.getInitParameter("showPassword")).booleanValue();
         if (loginPath == null) {
             loginPath = "/WEB-INF/jsp/dummy_login.jsp";
         }
     }
 
+	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        if (request instanceof HttpServletRequest) {
-            HttpServletRequest hsreq = (HttpServletRequest) request;
-            UserSession session = null;
-            if (UserLoginFilter.isUserSessionEstablished(hsreq)) {
-            	session = UserLoginFilter.getUserSession(hsreq);	
-            }
-            if (session == null) {
-            	IdentityManagementService auth = KIMServiceLocator.getIdentityManagementService();
-           		request.setAttribute("showPasswordField", showPassword);
-                final String user = request.getParameter("__login_user");
-                final String password = request.getParameter("__login_pw");
-                if (user != null) {
-                	// Very simple password checking. Nothing hashed or encrypted. This is strictly for demonstration purposes only.
-                	final KimPrincipal principal = showPassword ? auth.getPrincipalByPrincipalNameAndPassword(user, password) : auth.getPrincipalByPrincipalName(user);
-                	if (principal == null) {
-                		handleInvalidLogin(request, response);	
-                		return;
-                	} else {
-                        // wrap the request with the remote user
-                        // UserLoginFilter and WebAuthenticationService will create the session
-                        request = new HttpServletRequestWrapper(hsreq) {
-                            public String getRemoteUser() {
-                                return user;
-                            }
-                        };	
-                	}
-                } else {
-                    // no session has been established and this is not a login form submission, so forward to login page
-                    request.getRequestDispatcher(loginPath).forward(request, response);
-                    return;
-                }
+		this.doFilter((HttpServletRequest) request, (HttpServletResponse) response, chain);
+	}
+    
+	private void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
+        final UserSession session = WebUtils.getUserSessionFromRequest(request);
+        
+        if (session == null) {
+        	IdentityManagementService auth = KIMServiceLocator.getIdentityManagementService();
+       		request.setAttribute("showPasswordField", Boolean.valueOf(showPassword));
+            final String user = request.getParameter("__login_user");
+            final String password = request.getParameter("__login_pw");
+            if (user != null) {
+            	// Very simple password checking. Nothing hashed or encrypted. This is strictly for demonstration purposes only.
+            	final KimPrincipal principal = showPassword ? auth.getPrincipalByPrincipalNameAndPassword(user, password) : auth.getPrincipalByPrincipalName(user);
+            	if (principal == null) {
+            		handleInvalidLogin(request, response);	
+            		return;
+            	}
+            	
+                // wrap the request with the remote user
+                // UserLoginFilter and WebAuthenticationService will create the session
+                request = new HttpServletRequestWrapper(request) {
+                    @Override
+					public String getRemoteUser() {
+                        return user;
+                    }
+                };	
+            	
+            } else {
+                // no session has been established and this is not a login form submission, so forward to login page
+                request.getRequestDispatcher(loginPath).forward(request, response);
+                return;
             }
         }
         chain.doFilter(request, response);
@@ -99,6 +104,8 @@ public class DummyLoginFilter implements Filter {
 		request.getRequestDispatcher(loginPath).forward(request, response);
 	}
 
-    public void destroy() {
+    @Override
+	public void destroy() {
+    	loginPath = null;
     }
 }

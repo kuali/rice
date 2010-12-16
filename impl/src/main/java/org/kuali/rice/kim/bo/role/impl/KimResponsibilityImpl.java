@@ -33,9 +33,9 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -44,7 +44,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -71,7 +71,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	@OneToMany(targetEntity=ResponsibilityAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="responsibilityId")
 	@Fetch(value = FetchMode.SELECT)
 	//@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
-	protected List<ResponsibilityAttributeDataImpl> detailObjects = new TypedArrayList(ResponsibilityAttributeDataImpl.class);
+	protected List<ResponsibilityAttributeDataImpl> detailObjects = new AutoPopulatingList(ResponsibilityAttributeDataImpl.class);
 	
 	@Column(name="RSP_TMPL_ID")
 	protected String templateId;
@@ -82,7 +82,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	@OneToMany(targetEntity=RoleResponsibilityImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="responsibilityId")
 	@Fetch(value = FetchMode.SELECT)
 	//@JoinColumn(name="RSP_ID", insertable = false, updatable = false)
-	protected List<RoleResponsibilityImpl> roleResponsibilities = new TypedArrayList(RoleResponsibilityImpl.class);
+	protected List<RoleResponsibilityImpl> roleResponsibilities = new AutoPopulatingList(RoleResponsibilityImpl.class);
 	
 	/**
 	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()

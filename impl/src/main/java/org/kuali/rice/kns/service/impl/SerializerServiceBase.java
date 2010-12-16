@@ -66,7 +66,7 @@ public abstract class SerializerServiceBase implements SerializerService  {
         xstream = new XStream(new ProxyAndStateAwareJavaReflectionProvider());
         xstream.registerConverter(new ProxyConverter(xstream.getMapper(), xstream.getReflectionProvider() ));
         xstream.addDefaultImplementation(ArrayList.class, ListProxyDefaultImpl.class);
-        //xstream.registerConverter(new TypedArrayListConverter(xstream.getMapper()));
+        //xstream.registerConverter(new AutoPopulatingListConverter(xstream.getMapper()));
     }
         
     public class ProxyConverter extends ReflectionConverter {
@@ -166,14 +166,14 @@ public abstract class SerializerServiceBase implements SerializerService  {
         return new SerializationState();
     }
     
-//    public class TypedArrayListConverter extends CollectionConverter {
+//    public class AutoPopulatingListConverter extends CollectionConverter {
 //
-//    	public TypedArrayListConverter(Mapper mapper){
+//    	public AutoPopulatingListConverter(Mapper mapper){
 //    		super(mapper);
 //    	}
 //
 //    	public boolean canConvert(Class clazz) {
-//    		return clazz.equals(TypedArrayList.class);
+//    		return clazz.equals(AutoPopulatingList.class);
 //        }
 //
 //    }

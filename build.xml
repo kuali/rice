@@ -94,7 +94,7 @@
 	</target>
 
 	<target name="update-eclipse-classpath" depends="init" description="Updates Eclipse classpath">
-		<maven goals="install eclipse:eclipse" options="-DdownloadSources=true -DskipTests=true"/>
+		<maven goals="install eclipse:eclipse" options="-DdownloadSources=true -DdownloadJavadocs=true -DskipITs=true -DskipTests=true"/>
 		<antcall target="merge-module-classpaths"/>
 	</target>
 
@@ -222,7 +222,7 @@
 	</target>
 
 	<target name="retrieve-maven-dependencies" depends="install-oracle-jar">
-		<maven goals="install" options="-DskipTests=true"/>
+		<maven goals="install" options="-DskipTests=true -DdownloadSources=true"/>
 	</target>
 
 	<target name="install-rice-jars" depends="init">

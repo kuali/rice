@@ -15,54 +15,70 @@
  */
 package org.kuali.rice.kns.config;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.sql.DataSource;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.ModuleConfigurer;
-import org.kuali.rice.core.config.event.AfterStartEvent;
-import org.kuali.rice.core.config.event.RiceConfigEvent;
-import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 public class KNSConfigurer extends ModuleConfigurer {
 
-	private boolean loadDataDictionary = true;
-	private boolean validateDataDictionary = false;
-	private boolean validateDataDictionaryEboReferences = true;
-
 	private DataSource applicationDataSource;
 	private DataSource serverDataSource;
-	private String applicationDataSourceJndiName;
-    private String serverDataSourceJndiName;
 
 	private static final String KNS_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSSpringBeans.xml";
 	private static final String KNS_KSB_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kns/config/KNSServiceBusSpringBeans.xml";
 
-	public KNSConfigurer() {
-	    super();
-	    setModuleName( "KR" );
-	    setHasWebInterface(true);
-	    // KNS never runs in a remote or thin mode
-	    VALID_RUN_MODES.remove( REMOTE_RUN_MODE );
-	    VALID_RUN_MODES.remove( THIN_RUN_MODE );
-    }
-
-    public Config loadConfig(Config parentConfig) throws Exception {
-        Config currentConfig = super.loadConfig(parentConfig);
-        configureDataSource(currentConfig);
-        return currentConfig;
-    }
+	@Override
+	public void addAdditonalToConfig() {
+		configureDataSource();
+	}
 
 	@Override
-	public String getSpringFileLocations(){
-		if ( exposeServicesOnBus ) {
-			return KNS_SPRING_BEANS_PATH + "," + KNS_KSB_SPRING_BEANS_PATH;
+	public List<String> getPrimarySpringFiles() {
+		final List<String> springFileLocations = new ArrayList<String>();
+		//springFileLocations.add(KNS_SPRING_BEANS_PATH);
+
+		if ( isExposeServicesOnBus() ) {
+			springFileLocations.add(KNS_KSB_SPRING_BEANS_PATH);
 		}
-		return KNS_SPRING_BEANS_PATH;
+		return springFileLocations;
+	}
+	
+	@Override
+	public void doAdditionalContextStartedLogic() {
+		loadDataDictionary();
+	}
+	
+	/**
+     * Used to "poke" the Data Dictionary again after the Spring Context is initialized.  This is to
+     * allow for modules loaded with KualiModule after the KNS has already been initialized to work.
+     * 
+     * Also initializes the DateTimeService
+     */
+    private void loadDataDictionary() {
+		if (isLoadDataDictionary()) {
+            LOG.info("KNS Configurer - Loading DD");
+			DataDictionaryService dds = KNSServiceLocator.getDataDictionaryService();
+			if ( dds == null ) {
+				dds = (DataDictionaryService) GlobalResourceLoader.getService( KNSServiceLocator.DATA_DICTIONARY_SERVICE );
+			}
+			dds.getDataDictionary().parseDataDictionaryConfigurationFiles(false);
+
+			if ( isValidateDataDictionary() ) {
+                LOG.info("KNS Configurer - Validating DD");
+				dds.getDataDictionary().validateDD( isValidateDataDictionaryEboReferences() );
+			}
+			// KULRICE-4513 After the Data Dictionary is loaded and validated, perform Data Dictionary bean overrides.
+			dds.getDataDictionary().performBeanOverrides();
+		}		
 	}
 
    /**
@@ -74,16 +90,18 @@ public class KNSConfigurer extends ModuleConfigurer {
     public boolean shouldRenderWebInterface() {
         return true;
     }
+    
+	public boolean isLoadDataDictionary() {
+		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("load.data.dictionary")).booleanValue();
+	}
 
-    /**
-     * Returns true - KNS UI should always be included.
-     *
-     * @see org.kuali.rice.core.config.ModuleConfigurer#hasWebInterface()
-     */
-    @Override
-    public boolean hasWebInterface() {
-        return true;
-    }
+	public boolean isValidateDataDictionary() {
+		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("validate.data.dictionary")).booleanValue();
+	}
+
+	public boolean isValidateDataDictionaryEboReferences() {
+		return Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty("validate.data.dictionary.ebo.references")).booleanValue();
+	}
 
 	/**
      * Used to "poke" the Data Dictionary again after the Spring Context is initialized.  This is to
@@ -91,30 +109,7 @@ public class KNSConfigurer extends ModuleConfigurer {
      * 
      * Also initializes the DateTimeService
      */
-    @Override
-    public void onEvent(RiceConfigEvent event) throws Exception {
-        if (event instanceof AfterStartEvent) {
-    		if (isLoadDataDictionary()) {
-                LOG.info("KNS Configurer - Loading DD");
-    			DataDictionaryService dds = KNSServiceLocator.getDataDictionaryService();
-    			if ( dds == null ) {
-    				dds = (DataDictionaryService)RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean( KNSServiceLocator.DATA_DICTIONARY_SERVICE );
-    			}
-    			dds.getDataDictionary().parseDataDictionaryConfigurationFiles(false);
-
-    			if ( isValidateDataDictionary() ) {
-                    LOG.info("KNS Configurer - Validating DD");
-    				dds.getDataDictionary().validateDD( validateDataDictionaryEboReferences );
-    			}
-    			// KULRICE-4513 After the Data Dictionary is loaded and validated, perform Data Dictionary bean overrides.
-    			dds.getDataDictionary().performBeanOverrides();
-    		}
-    		KNSServiceLocator.getDateTimeService().initializeDateTimeService();
-    	}
-    }
-
-
-    protected void configureDataSource(Config config) {
+    protected void configureDataSource() {
         if (getApplicationDataSource() != null && getServerDataSource() == null) {
             throw new ConfigurationException("An application data source was defined but a server data source was not defined.  Both must be specified.");
         }
@@ -123,45 +118,13 @@ public class KNSConfigurer extends ModuleConfigurer {
         }
 
         if (getApplicationDataSource() != null) {
-            config.putObject(KNSConstants.KNS_APPLICATION_DATASOURCE, getApplicationDataSource());
-        } else if (!StringUtils.isBlank(getApplicationDataSourceJndiName())) {
-            config.putProperty(KNSConstants.KNS_APPLICATION_DATASOURCE_JNDI, getApplicationDataSourceJndiName());
+        	ConfigContext.getCurrentContextConfig().putObject(KNSConstants.KNS_APPLICATION_DATASOURCE, getApplicationDataSource());
         }
         if (getServerDataSource() != null) {
-            config.putObject(KNSConstants.KNS_SERVER_DATASOURCE, getServerDataSource());
-        } else if (!StringUtils.isBlank(getServerDataSourceJndiName())) {
-            config.putProperty(KNSConstants.KNS_SERVER_DATASOURCE_JNDI, getServerDataSourceJndiName());
+        	ConfigContext.getCurrentContextConfig().putObject(KNSConstants.KNS_SERVER_DATASOURCE, getServerDataSource());
         }
     }
-
-	/**
-	 * @return the loadDataDictionary
-	 */
-	public boolean isLoadDataDictionary() {
-		return this.loadDataDictionary;
-	}
-
-	/**
-	 * @param loadDataDictionary the loadDataDictionary to set
-	 */
-	public void setLoadDataDictionary(boolean loadDataDictionary) {
-		this.loadDataDictionary = loadDataDictionary;
-	}
-
-	/**
-	 * @return the validateDataDictionary
-	 */
-	public boolean isValidateDataDictionary() {
-		return this.validateDataDictionary;
-	}
-
-	/**
-	 * @param validateDataDictionary the validateDataDictionary to set
-	 */
-	public void setValidateDataDictionary(boolean validateDataDictionary) {
-		this.validateDataDictionary = validateDataDictionary;
-	}
-
+	
     public DataSource getApplicationDataSource() {
         return this.applicationDataSource;
     }
@@ -177,30 +140,4 @@ public class KNSConfigurer extends ModuleConfigurer {
     public void setServerDataSource(DataSource serverDataSource) {
         this.serverDataSource = serverDataSource;
     }
-
-    public String getApplicationDataSourceJndiName() {
-        return this.applicationDataSourceJndiName;
-    }
-
-    public String getServerDataSourceJndiName() {
-        return this.serverDataSourceJndiName;
-    }
-
-    public void setApplicationDataSourceJndiName(
-            String applicationDataSourceJndiName) {
-        this.applicationDataSourceJndiName = applicationDataSourceJndiName;
-    }
-
-    public void setServerDataSourceJndiName(String serverDataSourceJndiName) {
-        this.serverDataSourceJndiName = serverDataSourceJndiName;
-    }
-
-	public void setValidateDataDictionaryEboReferences(
-			boolean validateDataDictionaryEboReferences) {
-		this.validateDataDictionaryEboReferences = validateDataDictionaryEboReferences;
-	}
-
-	public boolean isValidateDataDictionaryEboReferences() {
-		return validateDataDictionaryEboReferences;
-	}
 }

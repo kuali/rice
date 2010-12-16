@@ -37,7 +37,7 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/dwr/interface/DocumentTypeService.js"></script>
 	
 	<c:if test="${KualiForm.headerBarEnabled}">
-	<div class="headerarea" id="headerarea">
+	<div class="headerarea-small" id="headerarea-small">
 		<h1><c:out value="${KualiForm.lookupable.title}" /> <c:choose>
 			<c:when test="${KualiForm.fields.docTypeFullName != null}">
 				<%-- this is a custom doc search --%>
@@ -114,8 +114,6 @@
     </div>
     <br/>
     </c:if>
-    
-   
 
 	<table width="100%">
 	  <c:if test="${KualiForm.lookupCriteriaEnabled}">
@@ -139,9 +137,10 @@
 					<td height="30" colspan="${headerColspan}"  class="infoline">
 					
 					<c:if test="${KualiForm.renderSearchButtons}">
-					  <html:submit
+					  <html:image
 						property="methodToCall.search" value="search"
-						alt="search" title="search" /> 
+						src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_search.gif" styleClass="tinybutton"
+						alt="search" title="search" border="0" /> 
 					  <html:image
 						property="methodToCall.clearValues" value="clearValues"
 						src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_clear.gif" styleClass="tinybutton"
@@ -184,6 +183,9 @@
 			  </c:if>
 			</table>
 			</div>
+
+			<br>
+			<br>
 
 			<c:if test="${reqSearchResultsActualSize>0}">
 				<c:out value="${reqSearchResultsActualSize}" /> items found.  Please refine your search criteria to narrow down your search.
@@ -313,5 +315,4 @@
 				height="20"></td>
 		</tr>
 	</table>
-	
 </kul:page>

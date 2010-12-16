@@ -19,9 +19,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;

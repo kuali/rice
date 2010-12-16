@@ -530,13 +530,7 @@ public class KNSConstants extends JSTLConstants {
 
         public static final String ENABLE_DIRECT_INQUIRIES_IND = "ENABLE_DIRECT_INQUIRIES_IND";
         public static final String DEFAULT_COUNTRY = "DEFAULT_COUNTRY";
-        
-        public static final String STRING_TO_DATE_FORMATS = "STRING_TO_DATE_FORMATS";
-        public static final String STRING_TO_TIMESTAMP_FORMATS = "STRING_TO_TIMESTAMP_FORMATS";
-        public static final String DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE = "DATE_TO_STRING_FORMAT_FOR_USER_INTERFACE";
-        public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE = "TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE";
-        public static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
-        public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME";
+                
         public static final String SENSITIVE_DATA_PATTERNS = "SENSITIVE_DATA_PATTERNS";
         public static final String SENSITIVE_DATA_PATTERNS_WARNING_IND = "SENSITIVE_DATA_PATTERNS_WARNING_IND";
     }
@@ -558,8 +552,6 @@ public class KNSConstants extends JSTLConstants {
         // below field used on displayMultipleValueLookupResults.tag
         public static final String PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM = "previouslySortedColumnIndex";
         public static final String VIEWED_PAGE_NUMBER = "viewedPageNumber";
-        
-        public static final String DIALOG_MODE = "dialogMode";
     }
 
     public static final String TAB_STATES = "tabStates";

@@ -28,6 +28,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
@@ -42,7 +43,6 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;

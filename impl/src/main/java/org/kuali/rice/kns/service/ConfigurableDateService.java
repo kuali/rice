@@ -17,6 +17,8 @@ package org.kuali.rice.kns.service;
 
 import java.util.Date;
 
+import org.kuali.rice.core.api.DateTimeService;
+
 /**
  * This is a timeDateService that allows tests to specify the date/time they need to run. Set the currentDate property in this class
  * before running your code under test and dateTimeService.getCurrentDate() will return the one you specify instead of the current

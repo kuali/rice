@@ -9,6 +9,17 @@
 	<artifactId>rice-impl</artifactId>
 
 	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-core-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>  
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rice-core-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>  
+		
 	    <dependency>
         	<groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
@@ -312,7 +323,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>dwr</groupId>
+			<groupId>org.directwebremoting</groupId>
 			<artifactId>dwr</artifactId>
 		</dependency>
 
@@ -365,26 +376,5 @@
 		    <groupId>org.apache.ws.security</groupId>
 		    <artifactId>wss4j</artifactId>
 		</dependency>
-    
-        <!-- these are for jsf/facelets -->
-        <dependency>
-          <groupId>org.apache.myfaces.core</groupId>
-          <artifactId>myfaces-api</artifactId>
-        </dependency>
-      
-        <dependency>
-          <groupId>org.apache.myfaces.core</groupId>
-          <artifactId>myfaces-impl</artifactId>
-        </dependency>
-      
-        <dependency>
-          <groupId>org.apache.myfaces.tomahawk</groupId>
-          <artifactId>tomahawk20</artifactId>
-        </dependency>
-        
-        <dependency>
-          <groupId>commons-discovery</groupId>
-          <artifactId>commons-discovery</artifactId>
-        </dependency>
 	</dependencies>
 </project>

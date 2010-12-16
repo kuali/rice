@@ -30,8 +30,8 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
@@ -50,12 +50,12 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.WebUtils;
-import org.kuali.rice.kns.util.spring.AutoPopulatingList;
 import org.kuali.rice.kns.web.derviedvaluesetter.DerivedValuesSetter;
 import org.kuali.rice.kns.web.format.NoOpStringFormatter;
 import org.kuali.rice.kns.web.format.TimestampAMPMFormatter;
 import org.kuali.rice.kns.web.ui.HeaderField;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * TODO we should not be referencing kew constants from this class and wedding ourselves to that workflow application This class is
@@ -140,7 +140,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         newNote = new Note();
         this.editingMode = new HashMap();
         //this.additionalScriptFiles = new AutoPopulatingList(String.class);
-        this.additionalScriptFiles = new AutoPopulatingList(String.class);
+        this.additionalScriptFiles = new AutoPopulatingList<String>(String.class);
 
         // set the initial record for persons up
         newAdHocRoutePerson = new AdHocRoutePerson();

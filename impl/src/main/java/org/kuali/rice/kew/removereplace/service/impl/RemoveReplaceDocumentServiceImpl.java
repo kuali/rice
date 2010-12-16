@@ -33,10 +33,10 @@ import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.user.WorkflowUserId;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.UserSession;
 
 
 public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentService {
@@ -50,11 +50,13 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 	dao.save(document);
     }
 
-    public RemoveReplaceDocument findById(Long documentId) {
+    @Override
+	public RemoveReplaceDocument findById(Long documentId) {
 	return dao.findById(documentId);
     }
 
-    public void blanketApprove(RemoveReplaceDocument document, UserSession user, String annotation) {
+    @Override
+	public void blanketApprove(RemoveReplaceDocument document, UserSession user, String annotation) {
 	save(document);
 	try {
 	    WorkflowDocument workflowDoc = new WorkflowDocument(user.getPrincipalId(), document.getDocumentId());
@@ -66,7 +68,8 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
 	}
     }
 
-    public void route(RemoveReplaceDocument document, UserSession user, String annotation) {
+    @Override
+	public void route(RemoveReplaceDocument document, UserSession user, String annotation) {
 	save(document);
 	try {
 	    WorkflowDocument workflowDoc = new WorkflowDocument(user.getPrincipalId(), document.getDocumentId());
@@ -170,7 +173,8 @@ public class RemoveReplaceDocumentServiceImpl implements RemoveReplaceDocumentSe
     }
 
 
-    public void finalize(Long documentId) {
+    @Override
+	public void finalize(Long documentId) {
 	RemoveReplaceDocument document = findById(documentId);
 
 	if (document == null) {

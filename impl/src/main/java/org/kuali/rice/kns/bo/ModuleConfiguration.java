@@ -196,6 +196,7 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		this.scriptConfigurationFilePaths = scriptConfigurationFilePaths;
 	}
 
+	@Override
 	public void afterPropertiesSet() throws Exception {
 		if (isInitializeDataDictionary() && getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty() ) {
 			if ( getDataDictionaryService() == null ) {
@@ -236,6 +237,7 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		this.namespaceCode = namespaceCode;
 	}
 
+	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}

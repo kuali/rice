@@ -18,8 +18,8 @@ package org.kuali.rice.kew.role;
 import java.util.Collections;
 import java.util.List;
 
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * Implementation of the Null Object Pattern for QualiferResolvers.  Returns an List with a single empty

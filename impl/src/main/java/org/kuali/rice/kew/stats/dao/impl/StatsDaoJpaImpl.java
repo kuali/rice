@@ -27,10 +27,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 import org.apache.ojb.broker.accesslayer.LookupException;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.dao.StatsDAO;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.KeyValue;
 
 /**
  * This is a description of what this class does - ddean don't forget to fill this in. 
@@ -107,7 +107,7 @@ public class StatsDaoJpaImpl implements StatsDAO {
         
         List<KeyValue> numDocs = new ArrayList<KeyValue>(resultList.size());
         for (Object[] result : resultList) {
-            numDocs.add(new KeyValue(result[1].toString(),result[0].toString()));
+            numDocs.add(new org.kuali.rice.core.util.KeyValue(result[1].toString(),result[0].toString()));
         }
         
         stats.setNumInitiatedDocsByDocType(numDocs);

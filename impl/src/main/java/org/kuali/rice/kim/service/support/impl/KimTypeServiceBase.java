@@ -30,8 +30,9 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.type.TypeUtils;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -60,7 +61,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.web.comparator.StringValueComparator;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
@@ -830,7 +830,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	protected boolean areAttributesEqual(List<String> uniqueAttributeNames, AttributeSet aSet1, AttributeSet aSet2){
 		String attrVal1;
 		String attrVal2;
-		StringValueComparator comparator = new StringValueComparator();
+		StringValueComparator comparator = StringValueComparator.getInstance();
 		for(String uniqueAttributeName: uniqueAttributeNames){
 			attrVal1 = getAttributeValue(aSet1, uniqueAttributeName);
 			attrVal2 = getAttributeValue(aSet2, uniqueAttributeName);

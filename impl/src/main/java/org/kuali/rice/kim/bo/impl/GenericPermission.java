@@ -30,8 +30,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.hibernate.annotations.Type;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.role.KimPermission;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**

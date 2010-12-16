@@ -16,13 +16,13 @@
  */
 package org.kuali.rice.kew.actionrequest.service;
 
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 import java.util.Collection;
 import java.util.List;

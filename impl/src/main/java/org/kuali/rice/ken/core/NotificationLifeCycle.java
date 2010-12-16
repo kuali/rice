@@ -18,6 +18,7 @@ package org.kuali.rice.ken.core;
 import javax.sql.DataSource;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.lifecycle.LifecycleBean;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;

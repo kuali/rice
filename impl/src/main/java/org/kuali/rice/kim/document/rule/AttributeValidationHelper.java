@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;

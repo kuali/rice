@@ -34,16 +34,16 @@ import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 
 /**
@@ -85,11 +85,11 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	@OneToMany(targetEntity = GroupDocumentMember.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
-	private List<GroupDocumentMember> members = new TypedArrayList(GroupDocumentMember.class);
+	private List<GroupDocumentMember> members = new AutoPopulatingList(GroupDocumentMember.class);
 	@OneToMany(targetEntity = GroupDocumentQualifier.class, fetch = FetchType.EAGER, cascade=CascadeType.ALL)
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="FDOC_NBR", insertable = false, updatable = false)
-	private List<GroupDocumentQualifier> qualifiers = new TypedArrayList(GroupDocumentQualifier.class);
+	private List<GroupDocumentQualifier> qualifiers = new AutoPopulatingList(GroupDocumentQualifier.class);
 
 	public IdentityManagementGroupDocument() {
 	}

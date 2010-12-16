@@ -31,7 +31,7 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -57,7 +57,7 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 	@Transient
 	protected KimResponsibilityImpl kimResponsibility;
 	@Transient
-	protected List<KimDocumentRoleResponsibilityAction> roleRspActions = new TypedArrayList(KimDocumentRoleResponsibilityAction.class);
+	protected List<KimDocumentRoleResponsibilityAction> roleRspActions = new AutoPopulatingList(KimDocumentRoleResponsibilityAction.class);
 	
 	public String getRoleId() {
 		return roleId;

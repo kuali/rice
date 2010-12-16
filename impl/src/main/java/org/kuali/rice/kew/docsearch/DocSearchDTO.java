@@ -16,14 +16,14 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kew.web.RowStyleable;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**

@@ -34,6 +34,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
@@ -279,7 +280,7 @@ public class RemotedServiceRegistryImpl implements RemotedServiceRegistry, Runna
 		LOG.debug("Checking for newly published services on service namespace " + serviceNamespace + " ...");
 		this.serverIp = RiceUtilities.getIpNumber();
 
-		String serviceServletUrl = (String) ConfigContext.getObjectFromConfigHierarchy(Config.SERVICE_SERVLET_URL);
+		String serviceServletUrl = (String) ConfigContext.getConfig(ClassLoaderUtils.getDefaultClassLoader()).getProperty(Config.SERVICE_SERVLET_URL);
 		if (serviceServletUrl == null) {
 			throw new RuntimeException("No service url provided to locate services.  This is configured in the KSBConfigurer.");
 		}

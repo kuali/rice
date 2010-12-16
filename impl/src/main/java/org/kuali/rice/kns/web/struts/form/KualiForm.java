@@ -30,7 +30,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ActionFormUtilMap;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
@@ -38,7 +38,7 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
 import org.kuali.rice.kns.web.ui.HeaderField;
 
 /**
- * This class common properties for all action forms.
+ * This class common properites for all action forms.
  */
 public class KualiForm extends PojoFormBase {
     private static final long serialVersionUID = 1L;
@@ -60,7 +60,7 @@ public class KualiForm extends PojoFormBase {
 
     private String navigationCss;
     private HeaderNavigation[] headerNavigationTabs;
-    protected List<ExtraButton> extraButtons = new TypedArrayList( ExtraButton.class ) ;
+    protected List<ExtraButton> extraButtons = new AutoPopulatingList( ExtraButton.class ) ;
 
     private boolean fieldLevelHelpEnabled;
     
@@ -68,9 +68,6 @@ public class KualiForm extends PojoFormBase {
     private int numColumns = 2;
     
     private String fieldNameToFocusOnAfterSubmit;
-    
-    // flags whether page is being rendered in a dialog
-    private boolean dialogMode = false;
     
     /**
      * @see org.kuali.rice.kns.web.struts.pojo.PojoFormBase#addRequiredNonEditableProperties()
@@ -321,7 +318,7 @@ public class KualiForm extends PojoFormBase {
     }
 
     public void setExtraButtons(List<ExtraButton> extraButtons) {
-        if ( extraButtons instanceof TypedArrayList ) {
+        if ( extraButtons instanceof AutoPopulatingList ) {
             this.extraButtons = extraButtons;
         } else {
             this.extraButtons.clear();
@@ -485,14 +482,6 @@ public class KualiForm extends PojoFormBase {
 	 */
 	public void setBackLocation(String backLocation) {
 		this.backLocation = backLocation;
-	}
-
-	public boolean isDialogMode() {
-		return this.dialogMode;
-	}
-
-	public void setDialogMode(boolean dialogMode) {
-		this.dialogMode = dialogMode;
 	}
 
 }

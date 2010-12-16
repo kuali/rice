@@ -33,7 +33,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill
@@ -56,32 +56,32 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityNameImpl> names = new TypedArrayList(KimEntityNameImpl.class);
+	protected List<KimEntityNameImpl> names = new AutoPopulatingList(KimEntityNameImpl.class);
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimPrincipalImpl> principals = new TypedArrayList(KimPrincipalImpl.class);
+	protected List<KimPrincipalImpl> principals = new AutoPopulatingList(KimPrincipalImpl.class);
 
 	@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityExternalIdentifierImpl> externalIdentifiers = new TypedArrayList(KimEntityExternalIdentifierImpl.class);
+	protected List<KimEntityExternalIdentifierImpl> externalIdentifiers = new AutoPopulatingList(KimEntityExternalIdentifierImpl.class);
 
 	@Fetch(value = FetchMode.SELECT)
 	@OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.ALL})
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityAffiliationImpl> affiliations; // = new TypedArrayList(KimEntityAffiliationImpl.class);
+	protected List<KimEntityAffiliationImpl> affiliations; // = new AutoPopulatingList(KimEntityAffiliationImpl.class);
 
 	@OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.ALL})
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name="ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityEmploymentInformationImpl> employmentInformation = new TypedArrayList(KimEntityEmploymentInformationImpl.class);
+	protected List<KimEntityEmploymentInformationImpl> employmentInformation = new AutoPopulatingList(KimEntityEmploymentInformationImpl.class);
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityEntityTypeImpl> entityTypes = new TypedArrayList(KimEntityEntityTypeImpl.class);
+	protected List<KimEntityEntityTypeImpl> entityTypes = new AutoPopulatingList(KimEntityEntityTypeImpl.class);
 	
 	@OneToOne(targetEntity=KimEntityPrivacyPreferencesImpl.class, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
@@ -94,22 +94,22 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	@OneToMany(targetEntity = KimEntityCitizenshipImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityCitizenshipImpl> citizenships = new TypedArrayList(KimEntityCitizenshipImpl.class);
+	protected List<KimEntityCitizenshipImpl> citizenships = new AutoPopulatingList(KimEntityCitizenshipImpl.class);
 
 	@OneToMany(targetEntity = KimEntityEthnicityImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityEthnicityImpl> ethnicities = new TypedArrayList(KimEntityEthnicityImpl.class);
+	protected List<KimEntityEthnicityImpl> ethnicities = new AutoPopulatingList(KimEntityEthnicityImpl.class);
 
 	@OneToMany(targetEntity = KimEntityResidencyImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityResidencyImpl> residencies = new TypedArrayList(KimEntityResidencyImpl.class);
+	protected List<KimEntityResidencyImpl> residencies = new AutoPopulatingList(KimEntityResidencyImpl.class);
 
 	@OneToMany(targetEntity = KimEntityVisaImpl.class, fetch = FetchType.EAGER, cascade = { CascadeType.ALL })
 	@Fetch(value = FetchMode.SELECT)
 	@JoinColumn(name = "ENTITY_ID", insertable = false, updatable = false)
-	protected List<KimEntityVisaImpl> visas = new TypedArrayList(KimEntityVisaImpl.class);
+	protected List<KimEntityVisaImpl> visas = new AutoPopulatingList(KimEntityVisaImpl.class);
 
 	/**
 	 * @return the entityId

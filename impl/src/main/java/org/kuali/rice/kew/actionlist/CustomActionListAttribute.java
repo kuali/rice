@@ -19,8 +19,8 @@ package org.kuali.rice.kew.actionlist;
 import java.io.Serializable;
 
 import org.kuali.rice.kew.actionitem.ActionItem;
+import org.kuali.rice.kew.actionlist.web.ActionListAction;
 import org.kuali.rice.kew.actions.ActionSet;
-import org.kuali.rice.kew.web.session.UserSession;
 
 
 /**
@@ -40,12 +40,12 @@ public interface CustomActionListAttribute extends Serializable {
 	 * which actions can be taken on the document from the ActionList.  If this method returns null then
 	 * action invocation will not be available from the action list.
 	 */
-	public ActionSet getLegalActions(UserSession userSession, ActionItem actionItem) throws Exception;
+	public ActionSet getLegalActions(String principalId, ActionItem actionItem) throws Exception;
 
 	/**
 	 * Returns the display parameters for the inline framed doc handler on the Action List.
 	 * If this method returns null, then a default value will be used.
 	 */
-	public DisplayParameters getDocHandlerDisplayParameters(UserSession userSession, ActionItem actionItem) throws Exception;
+	public DisplayParameters getDocHandlerDisplayParameters(String principalId, ActionItem actionItem) throws Exception;
 
 }

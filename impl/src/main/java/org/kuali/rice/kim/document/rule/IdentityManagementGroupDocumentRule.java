@@ -20,9 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;

@@ -22,7 +22,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.ExceptionIncident;
 import org.kuali.rice.kns.exception.KualiException;
@@ -31,6 +30,7 @@ import org.kuali.rice.kns.mail.MailMessage;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiExceptionIncidentService;
 import org.kuali.rice.kns.service.MailService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -66,7 +66,8 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
      * 
      * @see org.kuali.rice.kns.service.KualiExceptionIncidentService#emailReport(java.lang.String, java.lang.String)
      */
-    public void emailReport(String subject, String message) throws Exception {
+    @Override
+	public void emailReport(String subject, String message) throws Exception {
         if (LOG.isTraceEnabled()) {
             String lm=String.format("ENTRY %s;%s",
                     (subject==null)?"null":subject.toString(),
@@ -117,7 +118,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         // Copy input message reference for creating an instance of mail message
         MailMessage msg=new MailMessage();
         
-        Person actualUser = UserSession.getAuthenticatedUser().getActualPerson();
+        Person actualUser = GlobalVariables.getUserSession().getPerson();
         String fromEmail = actualUser.getEmailAddress();
         if ((fromEmail != null) && (fromEmail != "")) {
         	msg.setFromAddress(fromEmail);
@@ -163,7 +164,8 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
      * 
      * @see org.kuali.rice.kns.service.KualiExceptionIncidentService#report(org.kuali.rice.kns.exception.KualiExceptionIncident)
      */
-    public void report(KualiExceptionIncident exceptionIncident) throws Exception {
+    @Override
+	public void report(KualiExceptionIncident exceptionIncident) throws Exception {
         if (LOG.isTraceEnabled()) {
             String lm=String.format("ENTRY %s",
                     (exceptionIncident==null)?"null":exceptionIncident.toString());
@@ -246,7 +248,8 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
      * @see org.kuali.rice.kns.service.KualiExceptionIncidentService#getExceptionIncident(
      * java.lang.Exception,java.util.Map)
      */
-    public KualiExceptionIncident getExceptionIncident(Exception exception,
+    @Override
+	public KualiExceptionIncident getExceptionIncident(Exception exception,
             Map<String, String> properties) {
     	if ( exception == null ) {
     		return getExceptionIncident(properties);
@@ -273,7 +276,8 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
      * 
      * @see org.kuali.rice.kns.service.KualiExceptionIncidentService#getExceptionIncident(java.util.Map)
      */
-    public KualiExceptionIncident getExceptionIncident(Map<String, String> properties) {
+    @Override
+	public KualiExceptionIncident getExceptionIncident(Map<String, String> properties) {
         if (LOG.isTraceEnabled()) {
             String lm=String.format("ENTRY %s", properties.toString());
             LOG.trace(lm);

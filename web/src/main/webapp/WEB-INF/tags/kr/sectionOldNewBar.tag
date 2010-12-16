@@ -35,23 +35,21 @@
 
     <c:when test="${Constants.MAINTENANCE_COPY_ACTION eq action || Constants.MAINTENANCE_EDIT_ACTION eq action}">
         <c:set var="isCopyActionNotEditAction" value="${Constants.MAINTENANCE_COPY_ACTION eq action}"/>
-		<td colspan="${colspan}" width="50%">
-			<h3>
+		<td colspan="${colspan}" class="tab-subhead" width="50%">
+			<div class="tab-subhead-r">
                 ${isCopyActionNotEditAction ? 'Original' : 'Old'}
-			</h3>
+			</div>
 		</td>
-		<td colspan="${colspan}" width="50%">
-		   <h3>
-               ${isCopyActionNotEditAction ? 'New Copy' : 'New'}
-           </h3>
+		<td colspan="${colspan}" class="tab-subhead" width="50%">
+            ${isCopyActionNotEditAction ? 'New Copy' : 'New'}
 		</td>
         </tr><tr>
 	</c:when>
 	
 	<c:when test="${depth eq 0}">
 		<%-- Show just one section header that goes all the way across. --%>
-		<td colspan="${colspan}">
-			<h3>New</h3>
+		<td colspan="${colspan}" class="tab-subhead">
+			New
 		</td>
         </tr><tr>
     </c:when>

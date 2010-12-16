@@ -17,6 +17,7 @@ package org.kuali.rice.kns.web.struts.action;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,8 +42,6 @@ import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionServlet;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ModuleConfigurer;
-import org.kuali.rice.core.config.RiceConfigurer;
-import org.kuali.rice.core.util.RiceConstants;
 
 public class KualiActionServlet extends ActionServlet {
     private static final Logger LOG = Logger.getLogger(KualiActionServlet.class);
@@ -54,7 +53,8 @@ public class KualiActionServlet extends ActionServlet {
      *
      * @exception ServletException if we cannot initialize these resources
      */
-    protected void initOther() throws ServletException {
+    @Override
+	protected void initOther() throws ServletException {
 
         String value = null;
         value = getServletConfig().getInitParameter("config");
@@ -94,13 +94,12 @@ public class KualiActionServlet extends ActionServlet {
     @Override
     public ServletConfig getServletConfig() {
         if ( serverConfigOverride == null ) {
-            ServletConfig config = super.getServletConfig();
+            ServletConfig sConfig = super.getServletConfig();
 
-            if ( config == null ) {
+            if ( sConfig == null ) {
                 return null;
-            } else {
-                serverConfigOverride = new KualiActionServletConfig(config);
             }
+            serverConfigOverride = new KualiActionServletConfig(sConfig);
         }
         return serverConfigOverride;
     }
@@ -115,22 +114,24 @@ public class KualiActionServlet extends ActionServlet {
         private ServletConfig wrapped;
         private Map<String,String> initParameters = new HashMap<String, String>();
 
-        @SuppressWarnings("deprecation")
         public KualiActionServletConfig(ServletConfig wrapped) {
             this.wrapped = wrapped;
             // copy out all the init parameters so they can be augmented
-            Enumeration<String> initParameterNames = wrapped.getInitParameterNames();
+            @SuppressWarnings("unchecked")
+			final Enumeration<String> initParameterNames = wrapped.getInitParameterNames();
             while ( initParameterNames.hasMoreElements() ) {
                 String paramName = initParameterNames.nextElement();
                 initParameters.put( paramName, wrapped.getInitParameter(paramName) );
             }
             // loop over the installed modules, adding their struts configuration to the servlet
             // if they have a web interface
-            RiceConfigurer rice = (RiceConfigurer)ConfigContext.getCurrentContextConfig().getObject( RiceConstants.RICE_CONFIGURER_CONFIG_NAME );
+            @SuppressWarnings("unchecked")
+			final Collection<ModuleConfigurer> riceModules = (Collection<ModuleConfigurer>) ConfigContext.getCurrentContextConfig().getObject("ModuleConfigurers");
+            
             if ( LOG.isInfoEnabled() ) {
-            	LOG.info( "Configuring init parameters of the KualiActionServlet from RiceConfigurer: " + rice );
+            	LOG.info( "Configuring init parameters of the KualiActionServlet from riceModules: " + riceModules );
             }
-            for ( ModuleConfigurer module : rice.getModules() ) {
+            for ( ModuleConfigurer module : riceModules ) {
                 // only install the web configuration if the module has web content
                 // and it is running in a "local" mode
                 // in "embedded" or "remote" modes, the UIs are hosted on a central server
@@ -148,19 +149,23 @@ public class KualiActionServlet extends ActionServlet {
             }
         }
 
-        public String getInitParameter(String name) {
+        @Override
+		public String getInitParameter(String name) {
             return initParameters.get(name);
         }
 
-        @SuppressWarnings("unchecked")
+        @Override
+		@SuppressWarnings("unchecked")
 		public Enumeration<String> getInitParameterNames() {
             return new IteratorEnumeration( initParameters.keySet().iterator() );
         }
 
-        public ServletContext getServletContext() {
+        @Override
+		public ServletContext getServletContext() {
             return wrapped.getServletContext();
         }
-        public String getServletName() {
+        @Override
+		public String getServletName() {
             return wrapped.getServletName();
         }
     }

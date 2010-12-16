@@ -35,10 +35,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.util.AbstractKualiDecimal;
-import org.kuali.rice.kns.util.KualiDecimal;
-import org.kuali.rice.kns.util.KualiInteger;
-import org.kuali.rice.kns.util.KualiPercent;
+import org.kuali.rice.core.util.type.AbstractKualiDecimal;
+import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.util.type.KualiInteger;
+import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.rice.kns.web.struts.pojo.ArrayUtils;
 
 

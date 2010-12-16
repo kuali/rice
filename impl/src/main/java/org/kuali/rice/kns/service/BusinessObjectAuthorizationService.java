@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kns.service;
 
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;

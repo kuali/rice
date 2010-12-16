@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.config.ModuleConfigurer;
-import org.kuali.rice.core.config.event.RiceConfigEvent;
-import org.kuali.rice.core.config.event.RiceConfigEventListener;
 
 /**
  * This class handles the Spring based KIM configuration that is part of the Rice Configurer that must 
@@ -35,52 +33,23 @@ public class KIMConfigurer extends ModuleConfigurer {
 	private static final String KIM_KSB_SOAP_DEFAULT_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMServiceBusSOAPDefaultSpringBeans.xml";
 	private static final String KIM_UI_SPRING_BEANS_PATH = "classpath:org/kuali/rice/kim/config/KIMUserInterfaceSpringBeans.xml";
 	
-	private List<RiceConfigEventListener> configEventListeners = new ArrayList<RiceConfigEventListener>();
-
-	/**
-	 * 
-	 */
-	public KIMConfigurer() {
-		super();
-		setModuleName( "KIM" );
-		setHasWebInterface( true );
-		VALID_RUN_MODES.remove( THIN_RUN_MODE );
-	}
-
 	@Override
-	public String getSpringFileLocations() {
-		StringBuffer springFileLocations = new StringBuffer( KIM_INTERFACE_SPRING_BEANS_PATH );
-		if ( getRunMode().equals( LOCAL_RUN_MODE ) || getRunMode().equals( EMBEDDED_RUN_MODE ) ) {
-			springFileLocations.append(',').append(KIM_IMPL_SPRING_BEANS_PATH);
+	public List<String> getPrimarySpringFiles() {
+		final List<String> springFileLocations = new ArrayList<String>();
+		springFileLocations.add( KIM_INTERFACE_SPRING_BEANS_PATH );
+		if ( getRunMode().equals( RunMode.LOCAL ) || getRunMode().equals( RunMode.EMBEDDED ) ) {
+			springFileLocations.add(KIM_IMPL_SPRING_BEANS_PATH);
 		}
-		if ( exposeServicesOnBus ) {
-			if (setSOAPServicesAsDefault) {
-				springFileLocations.append(',').append(KIM_KSB_SOAP_DEFAULT_SPRING_BEANS_PATH);
+		if ( isExposeServicesOnBus() ) {
+			if (isSetSOAPServicesAsDefault()) {
+				springFileLocations.add(KIM_KSB_SOAP_DEFAULT_SPRING_BEANS_PATH);
 			} else {
-				springFileLocations.append(',').append(KIM_KSB_SPRING_BEANS_PATH);
+				springFileLocations.add(KIM_KSB_SPRING_BEANS_PATH);
 			}
 		}
-		if ( includeUserInterfaceComponents ) {
-			springFileLocations.append(',').append(KIM_UI_SPRING_BEANS_PATH);
+		if ( isIncludeUserInterfaceComponents() ) {
+			springFileLocations.add(KIM_UI_SPRING_BEANS_PATH);
 		}
-		return springFileLocations.toString();
+		return springFileLocations;
 	}
-	
-	public void registerConfigEventListener(RiceConfigEventListener listener) {
-		configEventListeners.add(listener);
-	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.core.config.ModuleConfigurer#onEvent(org.kuali.rice.core.config.event.RiceConfigEvent)
-	 */
-	@Override
-	public void onEvent(RiceConfigEvent event) throws Exception {
-		super.onEvent(event);
-		for (RiceConfigEventListener listener : configEventListeners) {
-			listener.onEvent(event);
-		}
-	}
-
 }

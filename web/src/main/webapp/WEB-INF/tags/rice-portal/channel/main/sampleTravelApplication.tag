@@ -24,9 +24,8 @@
   	 <li><portal:portalLink displayTitle="true" title="Travel Fiscal Officer" url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=edu.sampleu.travel.bo.FiscalOfficer&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" /></li>
   	 <li><portal:portalLink displayTitle="true" title="Travel Account Type" url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=edu.sampleu.travel.bo.TravelAccountType&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" /></li>
   	 <li><portal:portalLink displayTitle="true" title="Travel Account Use Rate" url="${ConfigProperties.kr.url}/lookup.do?methodToCall=start&businessObjectClassName=edu.sampleu.travel.bo.TravelAccountUseRate&returnLocation=${ConfigProperties.application.url}/portal.do&hideReturnLink=true&docFormKey=88888888" /></li>
-     <li><portal:portalLink displayTitle="true" title="JSF/Struts Test Form" url="${ConfigProperties.kr.url}/inquirySubmit.do" /></li>
-     <li><portal:portalLink displayTitle="true" title="JSF/Spring Test Form" url="${ConfigProperties.kr.url}/submitInquiry?methodToCall=start" /></li>
   </ul>
 
+  
 </div>
 <channel:portalChannelBottom />

@@ -36,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
+import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
@@ -62,8 +63,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.TypeUtils;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 import org.kuali.rice.kns.util.documentserializer.AlwaysFalsePropertySerializabilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.BusinessObjectPropertySerializibilityEvaluator;
@@ -606,7 +606,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 	                logMessage.append("[" + e.getKey() + "] ");
 	                boolean first = true;
 	
-	                TypedArrayList errorList = (TypedArrayList) e.getValue();
+	                AutoPopulatingList errorList = (AutoPopulatingList) e.getValue();
 	                for (Iterator j = errorList.iterator(); j.hasNext();) {
 	                    ErrorMessage em = (ErrorMessage) j.next();
 	

@@ -18,7 +18,7 @@ package org.kuali.rice.kew.web;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-
+import org.kuali.rice.core.util.KeyValue;
 
 
 /**
@@ -57,7 +57,7 @@ public class KeyValueSort extends KeyValue {
     }
 
     public KeyValueSort(KeyValueSort kvs) {
-        this(kvs.getkey(),kvs.getValue(),kvs.getUserDisplayValue(),kvs.getSortValue(),kvs.getSearchableAttributeValue());
+        this(kvs.getKey(),kvs.getValue(),kvs.getUserDisplayValue(),kvs.getSortValue(),kvs.getSearchableAttributeValue());
     }
 
 	public Object getSortValue() {

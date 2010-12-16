@@ -29,13 +29,13 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.JSTLConstants;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kew.web.KeyValue;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 
@@ -49,16 +49,18 @@ import org.kuali.rice.kns.util.GlobalVariables;
  */
 public class PreferencesAction extends KewKualiAction {
 
-    public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         initForm(request, form);
         request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
         return super.execute(mapping, form, request, response);
     }
 
-    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         PreferencesService preferencesService = (PreferencesService) KEWServiceLocator.getService(KEWServiceLocator.PREFERENCES_SERVICE);
         PreferencesForm preferencesForm = (PreferencesForm) form;
-        preferencesForm.setPreferences(preferencesService.getPreferences(getUserSession(request).getPrincipalId()));
+        preferencesForm.setPreferences(preferencesService.getPreferences(getUserSession().getPrincipalId()));
         return mapping.findForward("basic");
     }
 
@@ -68,9 +70,12 @@ public class PreferencesAction extends KewKualiAction {
 
         prefForm.validatePreferences();
         if (GlobalVariables.getMessageMap().hasNoErrors()) {
-            prefSrv.savePreferences(getUserSession(request).getPrincipalId(), prefForm.getPreferences());
+            prefSrv.savePreferences(getUserSession().getPrincipalId(), prefForm.getPreferences());
         }
-        getUserSession(request).refreshPreferences();
+        
+        GlobalVariables.getUserSession().addObject(KEWConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.TRUE);
+        GlobalVariables.getUserSession().removeObject(KEWConstants.PREFERENCES);
+        
         if (! StringUtils.isEmpty(prefForm.getReturnMapping())) {
             return mapping.findForward(prefForm.getReturnMapping());
         }
@@ -100,7 +105,7 @@ public class PreferencesAction extends KewKualiAction {
         request.setAttribute("primaryDelegateFilter", primaryDelegateFilterChoices);
     }
 
-    private static UserSession getUserSession(HttpServletRequest request) {
-        return UserSession.getAuthenticatedUser();
+    private static UserSession getUserSession() {
+        return GlobalVariables.getUserSession();
     }
 }

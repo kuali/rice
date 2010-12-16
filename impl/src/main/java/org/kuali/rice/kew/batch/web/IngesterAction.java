@@ -21,15 +21,15 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.batch.*;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
 
@@ -52,7 +52,8 @@ import java.util.List;
 public class IngesterAction extends KualiAction {
     private static final Logger LOG = Logger.getLogger(IngesterAction.class);
 
-    public ActionForward execute(
+    @Override
+	public ActionForward execute(
             ActionMapping mapping,
             ActionForm form,
             HttpServletRequest request,
@@ -79,7 +80,9 @@ public class IngesterAction extends KualiAction {
 
             for (FormFile file1 : files)
             {
-                if (file1.getFileName() == null || file1.getFileName().length() == 0) continue;
+                if (file1.getFileName() == null || file1.getFileName().length() == 0) {
+					continue;
+				}
                 if (file1.getFileData() == null)
                 {
                     messages.add("File '" + file1.getFileName() + "' contained no data");
@@ -103,13 +106,15 @@ public class IngesterAction extends KualiAction {
                     continue;
                 } finally
                 {
-                    if (fos != null) try
-                    {
-                        fos.close();
-                    } catch (IOException ioe)
-                    {
-                        LOG.error("Error closing temp file output stream: " + temp, ioe);
-                    }
+                    if (fos != null) {
+						try
+						{
+						    fos.close();
+						} catch (IOException ioe)
+						{
+						    LOG.error("Error closing temp file output stream: " + temp, ioe);
+						}
+					}
                 }
                 if (file1.getFileName().toLowerCase().endsWith(".zip"))
                 {
@@ -142,7 +147,7 @@ public class IngesterAction extends KualiAction {
                 List<XmlDocCollection> c = new ArrayList<XmlDocCollection>(1);
                 c.add(compositeCollection);
                 try {
-                    Collection<XmlDocCollection> failed = KEWServiceLocator.getXmlIngesterService().ingest(c, UserSession.getAuthenticatedUser().getPrincipal().getPrincipalId());
+                    Collection<XmlDocCollection> failed = KEWServiceLocator.getXmlIngesterService().ingest(c, GlobalVariables.getUserSession().getPrincipalId());
                     boolean txFailed = failed.size() > 0;
                     if (txFailed) {
                         messages.add("Ingestion failed");
@@ -195,16 +200,17 @@ public class IngesterAction extends KualiAction {
         return mapping.findForward("view");
     }
 
-    protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException
+    @Override
+	protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException
     {
-    	String principalId = UserSession.getAuthenticatedUser().getPrincipalId();
+    	String principalId = GlobalVariables.getUserSession().getPrincipalId();
     	AttributeSet roleQualifier = new AttributeSet();
     	AttributeSet permissionDetails = KimCommonUtils.getNamespaceAndActionClass(this.getClass());
 
         if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))
         {
-            throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalName(),
+            throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(),
             		methodToCall,
             		this.getClass().getSimpleName());
         }

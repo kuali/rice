@@ -27,7 +27,7 @@
 	<dependencies>
 	    <dependency>
 	      <groupId>${project.groupId}</groupId>
-	      <artifactId>rice-impl</artifactId>
+	      <artifactId>rice-core-impl</artifactId>
 	      <version>${project.version}</version>
 	      <exclusions>
 	      	<!-- the versions from the jetty server -->

@@ -180,7 +180,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	
 	public List<QName> getServiceNamesForUnqualifiedName(String unqualifiedServiceName) {
 		List<QName> names = new ArrayList<QName>();
-		for (QName serviceName : clients.keySet()) {
+		for (QName serviceName : getClients().keySet()) {
 			if (serviceName.getLocalPart().equals(unqualifiedServiceName)) {
 				names.add(serviceName);
 			}

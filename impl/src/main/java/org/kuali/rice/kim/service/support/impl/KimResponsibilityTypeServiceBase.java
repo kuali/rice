@@ -18,8 +18,8 @@ package org.kuali.rice.kim.service.support.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 
 /**

@@ -22,7 +22,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.config.ModuleConfigurer;
+import org.kuali.rice.core.config.ModuleConfigurer.RunMode;
 
 /**
  * A KSBExporter which will exports the service in the case where the specified
@@ -39,31 +39,29 @@ import org.kuali.rice.core.config.ModuleConfigurer;
 public class RunModeServiceExporter extends PropertyConditionalKSBExporter {
 	
     private String runModePropertyName;
-    private String validRunMode;
-    private static final List<String> runModeHierarchy = new ArrayList<String>();
+    private RunMode validRunMode;
+    private static final List<RunMode> runModeHierarchy = new ArrayList<RunMode>();
     static {
-    	runModeHierarchy.add(ModuleConfigurer.THIN_RUN_MODE);
-    	runModeHierarchy.add(ModuleConfigurer.REMOTE_RUN_MODE);
-    	runModeHierarchy.add(ModuleConfigurer.EMBEDDED_RUN_MODE);
-    	runModeHierarchy.add(ModuleConfigurer.LOCAL_RUN_MODE);
+    	runModeHierarchy.add(RunMode.THIN);
+    	runModeHierarchy.add(RunMode.REMOTE);
+    	runModeHierarchy.add(RunMode.EMBEDDED);
+    	runModeHierarchy.add(RunMode.LOCAL);
     }
 
     @Override
 	protected boolean shouldRemoteThisService() throws Exception {
-    	if (StringUtils.isBlank(validRunMode)) {
+    	if (validRunMode == null) {
     		throw new ConfigurationException("The validRunMode property was not set.");
     	}
     	if (!runModeHierarchy.contains(getValidRunMode())) {
     		throw new ConfigurationException("Given validRunMode is not a valid run mode.  Value was: " + getValidRunMode());
     	}
-		String runModePropertyValue = ConfigContext.getCurrentContextConfig().getProperty(getRunModePropertyName());
-    	if (StringUtils.isBlank(runModePropertyValue)) {
-    		throw new ConfigurationException("Given runModePropertyName does not have a value.  The runModePropertyName was " + getRunModePropertyName());
-    	}
+		RunMode runModePropertyValue = RunMode.valueOf(ConfigContext.getCurrentContextConfig().getProperty(getRunModePropertyName()));
+
     	if (!runModeHierarchy.contains(runModePropertyValue)) {
     		throw new ConfigurationException("Run mode value set on runModePropertyName of '" + getRunModePropertyName() + "' is not a valid run mode.  Value was: " + runModePropertyValue);
     	}
-    	List<String> validRunModeSubList = runModeHierarchy.subList(runModeHierarchy.indexOf(getValidRunMode()), runModeHierarchy.size());
+    	List<RunMode> validRunModeSubList = runModeHierarchy.subList(runModeHierarchy.indexOf(getValidRunMode()), runModeHierarchy.size());
     	return validRunModeSubList.contains(runModePropertyValue) && super.shouldRemoteThisService();
 	}
 
@@ -75,11 +73,11 @@ public class RunModeServiceExporter extends PropertyConditionalKSBExporter {
         this.runModePropertyName = runModePropertyName;
     }
 
-    public String getValidRunMode() {
+    public RunMode getValidRunMode() {
         return this.validRunMode;
     }
 
-    public void setValidRunMode(String validRunMode) {
+    public void setValidRunMode(RunMode validRunMode) {
         this.validRunMode = validRunMode;
     }
     

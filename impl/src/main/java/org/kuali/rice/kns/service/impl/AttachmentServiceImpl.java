@@ -23,6 +23,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
@@ -33,7 +34,6 @@ import org.kuali.rice.kns.dao.AttachmentDao;
 import org.kuali.rice.kns.dao.NoteDao;
 import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.util.Guid;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,7 +80,7 @@ public class AttachmentServiceImpl implements AttachmentService {
             throw new IllegalArgumentException("invalid (null) inputStream");
         }
 
-        String uniqueFileNameGuid = new Guid().toString();
+        String uniqueFileNameGuid = UUID.randomUUID().toString();
         String fullPathUniqueFileName = getDocumentDirectory(parent.getObjectId()) + File.separator + uniqueFileNameGuid;
 
         writeInputStreamToFileStorage(fileContents, fullPathUniqueFileName);

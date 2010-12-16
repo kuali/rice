@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.KimType;
@@ -36,7 +37,6 @@ import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;

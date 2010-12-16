@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.InactivateableFromTo;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.InactivateableFromToService;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.util.BeanPropertyComparator;

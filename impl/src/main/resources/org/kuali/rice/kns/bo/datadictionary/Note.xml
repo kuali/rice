@@ -40,7 +40,9 @@
     			<property name="objectAttributeName" value="authorUniversal" />
     			<property name="primitiveAttributes">
     				<list>
-    					<bean parent="PrimitiveAttributeDefinition" p:sourceName="authorUniversal.principalName" p:targetName="principalName" />
+    					<!-- FIXME: RICE MODULARITY -->
+    					<!-- after configurer work app fails to start up with this relationship across modules -->
+    					<!-- <bean parent="PrimitiveAttributeDefinition" p:sourceName="authorUniversal.principalName" p:targetName="principalName" />-->
     				</list>
     			</property>
     		</bean>
@@ -203,8 +205,18 @@
   
   <bean id="Note-authorUniversal.principalName" parent="Note-authorUniversal.principalName-parentBean"/>
 
-  <bean id="Note-authorUniversal.principalName-parentBean" abstract="true" parent="KimBaseBeans-principalName">
-    <property name="name" value="authorUniversal.principalName"/>
-    <property name="required" value="false"/>
+  <bean id="Note-authorUniversal.principalName-parentBean"  parent="AttributeDefinition" abstract="true"
+        p:name="authorUniversal.principalName"
+        p:forceUppercase="false"
+        p:label="Principal Name"
+        p:shortLabel="Principal Name"
+        p:maxLength="40"
+        p:required="false" >
+    <property name="validationPattern" >
+      <bean parent="AlphaNumericValidationPattern" p:lowerCase="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition" p:size="10" />
+    </property> 
   </bean>
 </beans>

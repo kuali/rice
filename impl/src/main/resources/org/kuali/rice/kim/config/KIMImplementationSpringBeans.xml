@@ -54,6 +54,23 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<bean id="jtaTransactionManager"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="jtaTransactionManager" />
+	</bean>
+	
+	<bean id="businessObjectService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="businessObjectService" />
+	</bean>
+	
+	<bean id="kualiConfigurationService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="kualiConfigurationService" />
+	</bean>
+
+  	<import resource="classpath:org/kuali/rice/core/CommonOJBSpringBeans.xml"/>
+
     <bean id="kimDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean" lazy-init="true">
         <property name="preferredDataSourceParams">
             <list>
@@ -77,6 +94,10 @@
 		<property name="metadataLocation" value="classpath:org/kuali/rice/kim/config/OJB-repository-kim.xml" />
 	</bean>
 
+	<bean id="dbPlatform"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="dbPlatform" />
+	</bean>
 
     <bean id="kimPlatformAwareDao" abstract="true" class="org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb">
         <property name="jcdAlias" value="kimDataSource" />
@@ -122,12 +143,10 @@
 
   <bean id="kimIdentityDelegateService" class="org.kuali.rice.kim.service.impl.IdentityServiceImpl" />
 
-  <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl">
-    <!-- executionIntervalSeconds -->
-    <constructor-arg index="0" value="${kim.identityArchiveServiceImpl.executionIntervalSeconds}"/>
-    <!-- maxWriteQueueSize -->
-    <constructor-arg index="1" value="${kim.identityArchiveServiceImpl.maxWriteQueueSize}"/>
-  </bean>
+  <bean id="kimIdentityArchiveService" class="org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl"
+  	p:businessObjectService-ref="businessObjectService"
+  	p:kualiConfigurationService-ref="kualiConfigurationService"
+  />
 
   <bean id="kimIdentityService" class="org.kuali.rice.kim.service.impl.IdentityCurrentAndArchivedServiceImpl">
     <constructor-arg ref="kimIdentityArchiveService" />

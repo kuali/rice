@@ -23,10 +23,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -85,7 +86,7 @@ public class BackdoorAction extends KualiAction {
         UserSession uSession = getUserSession(request);
         
         if (uSession.isBackdoorInUse()) {
-            uSession.clearBackdoor();
+            uSession.clearBackdoorUser();
             setFormGroupPermission((BackdoorForm)form, request);
             //request.setAttribute("reloadPage","true");
             
@@ -108,16 +109,20 @@ public class BackdoorAction extends KualiAction {
         //if backdoor Id is empty or equal to currently logged in user, clear backdoor id
         if (uSession.isBackdoorInUse() &&
                 (StringUtils.isEmpty(backdoorForm.getBackdoorId())
-                || uSession.getActualPrincipal().getPrincipalName().equals(backdoorForm.getBackdoorId()))) {
+                || uSession.getLoggedInUserPrincipalName().equals(backdoorForm.getBackdoorId()))) {
             return logout(mapping, form, request, response);
         }
         
-        if (!uSession.establishBackdoorWithPrincipalName(backdoorForm.getBackdoorId())) {
+        try {
+        	uSession.setBackdoorUser(backdoorForm.getBackdoorId());
+        } catch (RiceRuntimeException e) {
+        	LOG.warn("invalid backdoor id " + backdoorForm.getBackdoorId(), e);
             request.setAttribute("badbackdoor", "Invalid backdoor Id given '" + backdoorForm.getBackdoorId() + "'");
             return mapping.findForward("portal");
         }
-        
-        uSession.getAuthentications().clear();
+
+        uSession.removeObject(KEWConstants.AUTHENTICATIONS);
+
         setFormGroupPermission(backdoorForm, request);
         
         return mapping.findForward("portal");
@@ -145,6 +150,6 @@ public class BackdoorAction extends KualiAction {
     }
 
     public static UserSession getUserSession(HttpServletRequest request) {
-        return UserSession.getAuthenticatedUser();
+        return GlobalVariables.getUserSession();
     }
 }

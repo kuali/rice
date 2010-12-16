@@ -29,16 +29,14 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.actions.DispatchAction;
-import org.kuali.rice.kew.web.session.UserSession;
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -51,6 +49,7 @@ public abstract class KSBAction extends DispatchAction {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KSBAction.class);
 
+	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
 		checkAuthorization(form, "");
@@ -69,7 +68,7 @@ public abstract class KSBAction extends DispatchAction {
 				// boolean return, so that control flow can be more explicitly
 				// specified by the subclass
 				if (messages instanceof ActionErrors) {
-					saveErrors(request, (ActionErrors) messages);
+					saveErrors(request, messages);
 				} else {
 					saveMessages(request, messages);
 				}
@@ -115,14 +114,14 @@ public abstract class KSBAction extends DispatchAction {
 	
 	protected void checkAuthorization( ActionForm form, String methodToCall) throws AuthorizationException 
     {
-    	String principalId = UserSession.getAuthenticatedUser().getPrincipalId();
+    	String principalId = GlobalVariables.getUserSession().getPrincipalId();
     	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
     	AttributeSet permissionDetails = KimCommonUtils.getNamespaceAndActionClass(this.getClass());
     	
         if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE, 
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
         {
-        	throw new AuthorizationException(UserSession.getAuthenticatedUser().getPrincipalName(), 
+        	throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(), 
             		methodToCall,
             		this.getClass().getSimpleName());
         }

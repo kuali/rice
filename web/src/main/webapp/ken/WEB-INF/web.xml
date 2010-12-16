@@ -119,9 +119,15 @@
     <!-- KEW filter mappings -->
     <!-- Map UserLoginFilter to Struts MVC servlet -->
     <filter-mapping>
-        <filter-name>UserLoginFilter</filter-name>
-        <servlet-name>action</servlet-name>
+		<filter-name>UserLoginFilter</filter-name>
+		<servlet-name>action</servlet-name>
+	</filter-mapping>
+    
+    <filter-mapping>
+        <filter-name>UserPreferencesFilter</filter-name>
+       <servlet-name>action</servlet-name>
     </filter-mapping>
+
 
 
     <!-- Notification System Spring listener that loads the root application context of this web app at startup. -->

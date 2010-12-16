@@ -29,6 +29,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.authorization.FieldRestriction;
@@ -57,7 +58,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.TypeUtils;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.util.cache.CopiedObject;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;

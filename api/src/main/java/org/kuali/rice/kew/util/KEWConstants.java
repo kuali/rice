@@ -135,8 +135,6 @@ public class KEWConstants extends JSTLConstants {
     public static final String WEEKLY_UNIT = "Weekly";
     public static final String MONTHLY_UNIT = "Monthly";
     public static final String YEARLY_UNIT = "Yearly";
-
-    public static final String USER_SESSION_KEY = "kewUserSession";
     public static final String SUDS_DATASOURCE = "SUDS";
     public static final String APP_CODE = "en";
     public static final String PROD_DEPLOYMENT_CODE = "production.environment.code";
@@ -848,18 +846,8 @@ public class KEWConstants extends JSTLConstants {
     public static final String ADDITIONAL_CONFIG_LOCATIONS_PARAM = "additional.config.locations";
 
     // client protocols
-    public static final String WEBSERVICE_CLIENT_PROTOCOL = "webservice";
-    public static final String LOCAL_CLIENT_PROTOCOL = "local";
-    public static final String EMBEDDED_CLIENT_PROTOCOL = "embedded";
-    public static final String RMI_CLIENT_PROTOCOL = "rmi";
-    public static final String SPRING_INVOKER_CLIENT_PROTOCOL = "springInvoker";
-
-    public static final Set<String> CLIENT_PROTOCOLS = new HashSet<String>();
-    static {
-    	CLIENT_PROTOCOLS.add(LOCAL_CLIENT_PROTOCOL);
-    	CLIENT_PROTOCOLS.add(EMBEDDED_CLIENT_PROTOCOL);
-    	CLIENT_PROTOCOLS.add(WEBSERVICE_CLIENT_PROTOCOL);
-    	CLIENT_PROTOCOLS.add(RMI_CLIENT_PROTOCOL);
+    public static enum ClientProtocol {
+    	WEBSERVICE, LOCAL, EMBEDDED, RMI, SPRING_INVOKER
     }
 
     // system branch state keys
@@ -1024,4 +1012,15 @@ public class KEWConstants extends JSTLConstants {
 	public static final String ROLEROUTE_QUALIFIER_RESOLVER_CLASS_ELEMENT = "qualifierResolverClass";
 	public static final String ROLEROUTE_RESPONSIBILITY_TEMPLATE_NAME_ELEMENT = "responsibilityTemplateName";
 	public static final String ROLEROUTE_NAMESPACE_ELEMENT = "namespace";
+	
+	public static final String ACTION_LIST_FILTER_ATTR_NAME = "ActionListFilter";
+	public static final String UPDATE_ACTION_LIST_ATTR_NAME = "updateActionList";
+	public static final String SORT_ORDER_ATTR_NAME = "sortOrder";
+	public static final String SORT_CRITERIA_ATTR_NAME = "sortCriteria";
+	public static final String CURRENT_PAGE_ATTR_NAME = "currentPage";
+	
+	public static final String HELP_DESK_ACTION_LIST_PRINCIPAL_ATTR_NAME = "helpDeskActionListPrincipal";
+	public static final String HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME = "helpDeskActionListPerson";
+	public static final String PREFERENCES = "Preferences";
+	public static final String AUTHENTICATIONS = "Authentications";
 }

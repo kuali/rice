@@ -25,6 +25,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
@@ -43,7 +44,6 @@ import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.InactivationBlockingDetectionService;
@@ -60,7 +60,7 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.TypedArrayList;
+import org.springframework.util.AutoPopulatingList;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -1097,7 +1097,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         for (Iterator i = GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext();) {
             Map.Entry e = (Map.Entry) i.next();
 
-            TypedArrayList errorList = (TypedArrayList) e.getValue();
+            AutoPopulatingList errorList = (AutoPopulatingList) e.getValue();
             for (Iterator j = errorList.iterator(); j.hasNext();) {
                 ErrorMessage em = (ErrorMessage) j.next();
 

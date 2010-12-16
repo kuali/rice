@@ -28,7 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.web.session.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.IncidentReportUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.w3c.dom.Document;
@@ -47,6 +47,7 @@ public class EDLServlet extends HttpServlet {
 
 	private static final Logger LOG = Logger.getLogger(EDLServlet.class);
 
+	@Override
 	public void init() throws ServletException {
 		try {
 			KEWServiceLocator.getEDocLiteService().initEDLGlobalConfig();
@@ -56,6 +57,7 @@ public class EDLServlet extends HttpServlet {
 
 	}
 
+	@Override
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String documentId = null;
 		try {
@@ -75,7 +77,7 @@ public class EDLServlet extends HttpServlet {
 		        if (documentId == null) {
 		        	String docFormKey = requestParser.getParameterValue(KNSConstants.DOC_FORM_KEY);
 		        	if (docFormKey != null) {
-		        		Document document = (Document) UserSession.getAuthenticatedUser().retrieveObject(docFormKey);
+		        		Document document = (Document) GlobalVariables.getUserSession().retrieveObject(docFormKey);
 		        		Element documentState = EDLXmlUtils.getDocumentStateElement(document);
 		        		documentId = EDLXmlUtils.getChildElementTextValue(documentState, "docId");
 		        		requestParser.setAttribute(KNSConstants.DOC_FORM_KEY, docFormKey);

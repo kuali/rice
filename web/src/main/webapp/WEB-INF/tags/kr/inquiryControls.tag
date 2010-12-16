@@ -19,13 +19,10 @@
         <c:if test="${KualiForm.canExport}">
 		  <html:image src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_export.gif" styleClass="globalbuttons" property="methodToCall.export" title="Perform Export" alt="Perform Export" />
 	    </c:if>
-        
-        <c:if test="${!KualiForm.dialogMode}">
-		  <SCRIPT>
-	          document.write('<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" class="globalbuttons" onclick=\"window.close()\" title="close this window" alt="close this window">');
-          </SCRIPT>
-          <NOSCRIPT>
-              &nbsp;
-          </NOSCRIPT>
-        </c:if>
+		<SCRIPT>
+	        document.write('<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_close.gif" class="globalbuttons" onclick=\"window.close()\" title="close this window" alt="close this window">');
+        </SCRIPT>
+        <NOSCRIPT>
+            &nbsp;
+        </NOSCRIPT>
 </div>

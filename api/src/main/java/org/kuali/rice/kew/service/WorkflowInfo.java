@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.apache.commons.lang.ObjectUtils;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.dto.ActionItemDTO;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
@@ -39,7 +40,6 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 
 /**
  * Convenience class for client applications to query workflow.  This class is one of two

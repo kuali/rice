@@ -17,8 +17,8 @@ package org.kuali.rice.kns.web.format;
 
 import java.text.NumberFormat;
 
-import org.kuali.rice.kns.util.KualiDecimal;
-import org.kuali.rice.kns.util.KualiInteger;
+import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.util.type.KualiInteger;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 public class KualiIntegerCurrencyFormatter extends CurrencyFormatter {

@@ -214,7 +214,7 @@
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                         fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
                          <c:out value="${field.displayMaskValue}"/>
                         <kul:fieldShowIcons isReadOnly="${isFieldReadOnly && !isLookup}" field="${field}" addHighlighting="${addHighlighting}" />
 
@@ -269,8 +269,8 @@
 
                     <c:if test="${(isInquiry or isLookup)}">
 
-                        <th style="width:${dataCellWidth}%;">&nbsp;</th>
-                        <td style="width:${dataCellWidth}%;">
+                        <th class="grid" style="width:${dataCellWidth}%;">&nbsp;</th>
+                        <td class="grid" style="width:${dataCellWidth}%;">
 
                             <c:out value="${field.fieldLabel}" />&nbsp;
 
@@ -286,7 +286,7 @@
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                         fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
 
                         <c:choose>
 
@@ -317,14 +317,9 @@
 
                     <kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}"
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
-                        fieldLabel="${field.fieldLabel}" fieldHelp="${field.fieldHelpSummary}"/>
+                        fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
-                    
-                        <c:set var="requiredClass" value=""/>
-                        <c:if test="${field.fieldRequired}">
-                          <c:set var="requiredClass" value="required"/>
-                        </c:if>
+                    <td class="grid" style="width:${dataCellWidth}%;">
 
                         <c:choose>
 
@@ -340,34 +335,19 @@
                                     size='${field.size}'
                                     maxlength='${field.maxLength}'
                                     style="${textStyle}" ${onblurcall} ${onchangecall}
-                                    class="${field.styleClass} ${requiredClass}" tabIndex="${tabIndex}"/>
+                                    class="${field.styleClass}" tabindex="${tabIndex}"/>
 
                                 <c:if test="${field.datePicker eq true}">
 
-                              <!--       <img src="${ConfigProperties.kr.externalizable.images.url}cal.gif"
+                                    <img src="${ConfigProperties.kr.externalizable.images.url}cal.gif"
                                         id="${field.propertyName}_datepicker"
                                         style="cursor: pointer;"
                                         title="Date selector"
                                         alt="Date selector"
                                         onmouseover="this.style.backgroundColor='red';"
-                                        onmouseout="this.style.backgroundColor='transparent';" />  -->
-                                        
- 
-                                    <script>
-	                                    $(function() {
-	                                       	$( "#${field.propertyName}" ).datepicker({
-		                                	showOn: "button",
-		                                    buttonImage: "images/cal.gif",
-	                                 		buttonImageOnly: true,
-	                                 		showAnim: 'slide',
-	                                 		showButtonPanel: true,
-	                                 		changeMonth: true,
-		                                	changeYear: true
-                                	      	});
-                                      	});
-                                	</script>                                
+                                        onmouseout="this.style.backgroundColor='transparent';" />
 
-                                 <!--    <script type="text/javascript">
+                                    <script type="text/javascript">
 
                                         Calendar.setup(
                                             {
@@ -377,7 +357,7 @@
                                             }
                                         );
 
-                                    </script>-->
+                                    </script>
 
                                 </c:if>
 
@@ -405,7 +385,7 @@
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                         fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
 
                         <c:choose>
 
@@ -438,7 +418,7 @@
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%"
                         fieldName="${field.propertyName}" fieldType="${field.fieldType}" fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
 
                         <c:choose>
 
@@ -473,7 +453,7 @@
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%"
                         fieldName="${field.propertyName}" fieldType="${field.fieldType}" fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
 
                         <c:choose>
 
@@ -505,7 +485,7 @@
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                         fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
                                             <c:choose>
 
                             <c:when test="${isFieldReadOnly}">
@@ -538,7 +518,7 @@
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                         fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
                         <c:choose>
                             <c:when test="${isFieldReadOnly}">
                                 <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" isLookup="${isLookup}" />
@@ -569,7 +549,7 @@
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%"
                         fieldName="${field.propertyName}" fieldType="${field.fieldType}" fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
 
                         <c:choose>
 
@@ -600,7 +580,7 @@
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                         fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
 
                         <c:choose>
                             <c:when test="${isFieldReadOnly}">
@@ -621,7 +601,7 @@
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                         fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
                         <c:if test="${!hasErrors}">
                             <kul:checkErrors keyMatch="${field.universalIdAttributeName}" />
                         </c:if>
@@ -662,7 +642,7 @@
                         fieldLabel="${field.fieldLabel}" />
 
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
                         <c:choose>
                             <c:when test="${isFieldReadOnly}">
                                 <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" isLookup="${isLookup}" />
@@ -692,7 +672,7 @@
                     <kul:fieldDefaultLabel isLookup="${isLookup}" isRequired="${field.fieldRequired}" isReadOnly="${isFieldReadOnly}"
                         cellWidth="${dataCellWidth}%" fieldType="${field.fieldType}" fieldLabel="${field.fieldLabel}" fieldName="${field.propertyName}"/>
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
                         <c:choose>
                             <c:when test="${isFieldReadOnly}">
                                 <c:if test="${empty fieldValue}" >
@@ -757,7 +737,7 @@
                         isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                         fieldLabel="${field.fieldLabel}" />
 
-                    <td style="width:${dataCellWidth}%;">
+                    <td class="grid" style="width:${dataCellWidth}%;">
                         <kul:fieldShowReadOnly field="${field}" addHighlighting="${addHighlighting}" isLookup="${isLookup}" />
 
                         <kul:fieldShowIcons isReadOnly="${isFieldReadOnly}" field="${field}" addHighlighting="${addHighlighting}" />
@@ -771,7 +751,7 @@
                     isReadOnly="${isFieldReadOnly}" cellWidth="${dataCellWidth}%" fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                     fieldLabel="${field.fieldLabel}" />
 
-                  <td style="width:${dataCellWidth}%;">
+                  <td class="grid" style="width:${dataCellWidth}%;">
 
                     <input type="hidden" name='${field.propertyName}' value='<c:out value="${fieldValue}"/>' />
                     &nbsp;
@@ -796,7 +776,7 @@
                         <%-- when deleting, we have to anchor back to the top level tab, rather than the sub tab that we were viewing --%>
                         <c:set var="anchorTabIndex" value="${topLevelTabIndex}"/>
                     </c:if>
-                    <th colspan="4" align="${cellAlign}" >
+                    <th class="grid" colspan="4" align="${cellAlign}" >
                         <c:set var="imageButtonName" value="${field.propertyName}.${Constants.METHOD_TO_CALL_PARM13_LEFT_DEL}${currentTabIndex}${Constants.METHOD_TO_CALL_PARM13_RIGHT_DEL}.anchor${anchorTabIndex}" />
                         ${kfunc:registerEditableProperty(KualiForm, imageButtonName)}
                         <input type="image"
@@ -815,7 +795,7 @@
                             isReadOnly="true" cellWidth="${dataCellWidth}%"
                             fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                             fieldLabel="${field.fieldLabel}" />
-                        <td style="width:${dataCellWidth}%;">
+                        <td class="grid" style="width:${dataCellWidth}%;">
                         <html:image
                             src="${ConfigProperties.externalizable.images.url}${field.imageSrc}"
                             styleClass="${field.styleClass}"
@@ -829,7 +809,7 @@
                             isReadOnly="true" cellWidth="${dataCellWidth}%"
                             fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                             fieldLabel="" />
-                        <td style="width:${dataCellWidth}%;">&nbsp;</td>
+                        <td class="grid" style="width:${dataCellWidth}%;">&nbsp;</td>
                     </c:otherwise>
                 </c:choose>
             </c:when>
@@ -844,7 +824,7 @@
                             isReadOnly="true" cellWidth="${dataCellWidth}%"
                             fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                             fieldLabel="${field.fieldLabel}" />
-                        <td style="width:${dataCellWidth}%;">
+                        <td class="grid" style="width:${dataCellWidth}%;">
                         <c:if test="${not empty field.propertyValue }" >
                                 <html:link href="${field.propertyValue}" target="${field.target}" styleClass="${field.styleClass}">${field.hrefText}
                                 </html:link>
@@ -857,7 +837,7 @@
                             isReadOnly="true" cellWidth="${dataCellWidth}%"
                             fieldName="${field.propertyName}" fieldType="${field.fieldType}"
                             fieldLabel="" />
-                        <td style="width:${dataCellWidth}%;">&nbsp;</td>
+                        <td class="grid" style="width:${dataCellWidth}%;">&nbsp;</td>
                     </c:otherwise>
                 </c:choose>
             </c:when>

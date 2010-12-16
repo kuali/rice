@@ -15,10 +15,24 @@
  */
 package org.kuali.rice.kew.bo.lookup;
 
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.docsearch.*;
+import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
+import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessor;
+import org.kuali.rice.kew.docsearch.DocumentLookupCriteriaProcessorKEWAdapter;
+import org.kuali.rice.kew.docsearch.DocumentSearchResult;
+import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
+import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -30,7 +44,6 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
-import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.comparator.CellComparatorHelper;
@@ -43,10 +56,6 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
-
-import java.lang.reflect.InvocationTargetException;
-import java.sql.Date;
-import java.util.*;
 
 /**
  * This is a description of what this class does - chris don't forget to fill this in.
@@ -65,7 +74,7 @@ KualiLookupableHelperServiceImpl {
 	/**
 	 * This overridden method ...
 	 *
-	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.kns.service.DateTimeService)
+	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.core.api.DateTimeService)
 	 */
 	public void setDateTimeService(DateTimeService dateTimeService) {
 		this.dateTimeService = dateTimeService;
@@ -238,7 +247,7 @@ KualiLookupableHelperServiceImpl {
 //ADDED (3 lines)
                     AnchorHtmlData anchor = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);
                     //TODO: change to grab URL from config variable
-                    if (StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getkey()))
+                    if (StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getKey()))
                     {
                         anchor.setHref(StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "docId=") + "docId=" + keyValue.getUserDisplayValue());
                         col.setMaxLength(100); //for now force this

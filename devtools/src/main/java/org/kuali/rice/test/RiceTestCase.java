@@ -14,6 +14,7 @@ package org.kuali.rice.test;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -69,8 +70,10 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
     private List<String> reports = new ArrayList<String>();
 
     private SpringResourceLoader testHarnessSpringResourceLoader;
+    private boolean clearTables = true;
 
-    @Before
+    @Override
+	@Before
     public void setUp() throws Exception {
         try {
             configureLogging();
@@ -164,7 +167,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         }
     }
 
-    @After
+    @Override
+	@After
     public void tearDown() throws Exception {
     	// wait for outstanding threads to complete for 1 minute
     	ThreadMonitor.tearDown(60000);
@@ -256,7 +260,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
          * Initializes Rice configuration from the test harness configuration file.
          */
         lifecycles.add(new BaseLifecycle() {
-            public void start() throws Exception {
+            @Override
+			public void start() throws Exception {
                 Config config = getTestHarnessConfig();
                 ConfigContext.init(config);
                 super.start();
@@ -273,7 +278,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
          * created from TestHarnessSpringBeans.xml
          */
         lifecycles.add(new BaseLifecycle() {
-            public void start() throws Exception {
+            @Override
+			public void start() throws Exception {
                 TestHarnessServiceLocator.setContext(getTestHarnessSpringResourceLoader().getContext());
                 super.start();
             }
@@ -282,13 +288,16 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
         /**
          * Clears the tables in the database.
          */
-        lifecycles.add(new ClearDatabaseLifecycle());
+        if (clearTables) {
+        	lifecycles.add(new ClearDatabaseLifecycle());
+        }
         
         /**
          * Loads Suite Test Data
          */
         lifecycles.add(new BaseLifecycle() {
-        	public void start() throws Exception {
+        	@Override
+			public void start() throws Exception {
         		loadSuiteTestData();
         		super.start();
         	}
@@ -324,7 +333,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
 		}
         lifecycles.add(getPerTestDataLoaderLifecycle());
         lifecycles.add(new BaseLifecycle() {
-            public void start() throws Exception {
+            @Override
+			public void start() throws Exception {
                 loadPerTestData();
                 super.start();
             }
@@ -369,8 +379,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      * Subclasses may override to specify a different location.
      * @return the location of the test harness spring beans context file.
      */
-    protected String[] getTestHarnessSpringBeansLocation() {
-        return new String[] { DEFAULT_TEST_HARNESS_SPRING_BEANS };
+    protected List<String> getTestHarnessSpringBeansLocation() {
+        return Collections.singletonList( DEFAULT_TEST_HARNESS_SPRING_BEANS );
     }
 
     protected Config getTestHarnessConfig() throws Exception {
@@ -406,4 +416,8 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      */
     protected abstract String getModuleName();
 
+    protected void setClearTables(boolean clearTables) {
+    	this.clearTables = clearTables;
+    }
+    
 }

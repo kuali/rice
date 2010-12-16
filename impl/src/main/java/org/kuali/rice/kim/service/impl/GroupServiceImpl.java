@@ -27,13 +27,13 @@ import java.util.Set;
 import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;

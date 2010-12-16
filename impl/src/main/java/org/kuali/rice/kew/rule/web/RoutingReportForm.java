@@ -20,24 +20,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
-import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.KeyValue;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.ui.Row;
 

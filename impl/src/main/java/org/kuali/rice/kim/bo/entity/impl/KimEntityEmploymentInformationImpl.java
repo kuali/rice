@@ -27,10 +27,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
+import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
-import org.kuali.rice.kns.util.KualiDecimal;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)

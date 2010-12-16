@@ -22,11 +22,10 @@
 <%@ attribute name="fieldName" required="true" description="What the Field Name is?" %>
 <%@ attribute name="fieldType" required="true" description="What type of field is being displayed?" %>
 <%@ attribute name="fieldLabel" required="true" description="What's the label to show for the field?" %>
-<%@ attribute name="fieldHelp" required="false" description="Help information to display for the field." %>
 
 <c:if test="${isLookup || (!(empty fieldType) && not isLookup)}">
                             
-	<th style="width:${cellWidth};" align="right">
+	<th class="grid" style="width:${cellWidth};" align="right">
 	<c:if test="${!isReadOnly}">
 <label id="${fieldName}.label" for="${fieldName}">
 </c:if>

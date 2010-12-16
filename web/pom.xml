@@ -36,7 +36,6 @@
 		  <version>${project.version}</version>
 		  <scope>test</scope>
 		</dependency>
-		
         <dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>rice-sampleapp</artifactId>
@@ -48,7 +47,7 @@
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
-         <dependency>
+        <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
@@ -59,27 +58,7 @@
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <scope>test</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.htmlunit</groupId>
@@ -91,11 +70,6 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <scope>test</scope>
-        </dependency>       
    </dependencies>
 
 	<build>

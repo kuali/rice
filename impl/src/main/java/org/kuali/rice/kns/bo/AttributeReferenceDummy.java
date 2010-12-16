@@ -20,8 +20,8 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
-import org.kuali.rice.kns.util.KualiDecimal;
-import org.kuali.rice.kns.util.KualiPercent;
+import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.util.type.KualiPercent;
 
 
 /**

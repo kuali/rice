@@ -35,13 +35,13 @@
 	<bean id="kewLocalServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter"
 		abstract="true">
 		<property name="runModePropertyName" value="kew.mode" />
-		<property name="validRunMode" value="local" />
+		<property name="validRunMode" value="LOCAL" />
 	</bean>
 
 	<bean id="kewEmbeddedServiceExporter" class="org.kuali.rice.ksb.messaging.RunModeServiceExporter"
 		abstract="true">
 		<property name="runModePropertyName" value="kew.mode" />
-		<property name="validRunMode" value="embedded" />
+		<property name="validRunMode" value="EMBEDDED" />
 	</bean>
 
 	<bean id="kewJaxWsSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition"
@@ -180,6 +180,11 @@
 				<property name="priority" value="10" />
 			</bean>
 		</property>
+	</bean>
+
+	<bean id="enServiceInvoker"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="enServiceInvoker" />
 	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">

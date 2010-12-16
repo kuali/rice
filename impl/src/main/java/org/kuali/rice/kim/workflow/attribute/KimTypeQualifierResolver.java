@@ -23,11 +23,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;

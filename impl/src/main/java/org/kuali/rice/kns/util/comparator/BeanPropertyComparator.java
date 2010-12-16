@@ -25,8 +25,8 @@ import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.comparators.ComparableComparator;
+import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kns.exception.BeanComparisonException;
-import org.kuali.rice.kns.util.TypeUtils;
 
 /**
  * This class compares the two beans using multiple property names.

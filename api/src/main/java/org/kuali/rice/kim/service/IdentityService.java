@@ -24,8 +24,6 @@ import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.kuali.rice.core.jaxb.MapStringStringAdapter;
-import org.kuali.rice.core.jaxb.StringToKimEntityNameInfoMapAdapter;
-import org.kuali.rice.core.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
@@ -42,6 +40,8 @@ import org.kuali.rice.kim.bo.reference.dto.EntityNameTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.EntityTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
 import org.kuali.rice.kim.bo.reference.dto.PhoneTypeInfo;
+import org.kuali.rice.kim.remote.jaxb.StringToKimEntityNameInfoMapAdapter;
+import org.kuali.rice.kim.remote.jaxb.StringToKimEntityNamePrincipalInfoMapAdapter;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 
 /**

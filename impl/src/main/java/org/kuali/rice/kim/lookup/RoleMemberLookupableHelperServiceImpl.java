@@ -22,10 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;

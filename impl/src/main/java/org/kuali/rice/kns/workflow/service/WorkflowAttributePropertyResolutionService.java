@@ -17,8 +17,8 @@ package org.kuali.rice.kns.workflow.service;
 
 import java.util.List;
 
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.RoutingTypeDefinition;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;

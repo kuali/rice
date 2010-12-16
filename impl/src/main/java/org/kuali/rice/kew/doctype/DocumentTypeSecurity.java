@@ -36,7 +36,7 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;

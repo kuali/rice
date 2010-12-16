@@ -21,7 +21,7 @@ import java.util.List;
 import org.kuali.rice.kew.quicklinks.ActionListStats;
 import org.kuali.rice.kew.quicklinks.InitiatedDocumentType;
 import org.kuali.rice.kew.quicklinks.WatchedDocument;
-import org.kuali.rice.kew.web.KeyValue;
+import org.kuali.rice.core.util.KeyValue;
 
 
 /**

@@ -21,9 +21,9 @@ import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowInfo;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 
 
 /**
@@ -39,7 +39,7 @@ public class WorkflowFunctions {
 
     public static boolean isUserInitiator(String id) throws WorkflowException {
     	boolean initiator = false;
-    	UserSession userSession = UserSession.getAuthenticatedUser();
+    	UserSession userSession = GlobalVariables.getUserSession();
     	if (userSession != null) {
     		try {
     			long documentId = Long.parseLong(id.trim());
@@ -57,7 +57,7 @@ public class WorkflowFunctions {
 	public static boolean isUserRouteLogAuthenticated(String id) {
 		boolean authenticated=false;
 		WorkflowInfo workflowInfo = new WorkflowInfo();
-		UserSession userSession=UserSession.getAuthenticatedUser();
+		UserSession userSession=GlobalVariables.getUserSession();
 		if(userSession!=null){
 			String principalId = userSession.getPrincipalId();
 			try {
@@ -78,38 +78,19 @@ public class WorkflowFunctions {
 	}
 
 	public static boolean isPrincipalIdAuthenticated(String principalId) {
-		return UserSession.getAuthenticatedUser().getPrincipalId().equals(principalId);
+		return GlobalVariables.getUserSession().getPrincipalId().equals(principalId);
 	}
 	
 	public static boolean isPrincipalNameAuthenticated(String principalName) {
-		return UserSession.getAuthenticatedUser().getPrincipalName().equals(principalName);
+		return GlobalVariables.getUserSession().getPrincipalName().equals(principalName);
 	}
 	
 	public static boolean isEmployeeIdAuthenticated(String employeeId) {
-		return UserSession.getAuthenticatedUser().getPerson().getEmployeeId().equals(employeeId);
+		return GlobalVariables.getUserSession().getPerson().getEmployeeId().equals(employeeId);
 	}
-
-	public static boolean isUserInGroup(String namespace, String groupName){
-		boolean isUserInGroup=false;
-		UserSession userSession=UserSession.getAuthenticatedUser();
-		if(userSession!=null){
-			if(!Utilities.isEmpty(groupName)){
-
-				try{
-					isUserInGroup = userSession.isMemberOfGroupWithName(namespace, groupName);
-				}catch(Exception e){
-	    			LOG.error("Exception encountered trying to determine if user is member of a group: userId: " + userSession.getPrincipalId() + ";groupNamespace/Name: " 
-	    					+ namespace + "/" + groupName + " resulted in error:" + e);
-				}
-
-			}
-		}
-		return isUserInGroup;
-	}
-
 
 	public static Person getAuthenticatedPerson(){
-		UserSession userSession=UserSession.getAuthenticatedUser();
+		UserSession userSession=GlobalVariables.getUserSession();
 		Person user = userSession.getPerson();
 		return user;
 	}
@@ -142,8 +123,8 @@ public class WorkflowFunctions {
 			throw new WorkflowRuntimeException("Problem generating list of previous node names for documentID = " + id, e);
 		}
 		//see if node name is in the list of previous node names
-		for (int i = 0; i < previousNodeNames.length; i++) {
-			if (previousNodeNames[i].equals(nodeName)) {
+		for (String previousNodeName : previousNodeNames) {
+			if (previousNodeName.equals(nodeName)) {
 				return true;
 			}
 		}
@@ -187,7 +168,7 @@ public class WorkflowFunctions {
 	}
 
 	public static String getAuthenticationId() {
-	    UserSession userSession=UserSession.getAuthenticatedUser();
+	    UserSession userSession=GlobalVariables.getUserSession();
 	    return userSession.getPrincipalName();
 	
 	}

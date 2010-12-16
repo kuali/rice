@@ -34,7 +34,9 @@
   </bean>
   <bean id="AdHocRouteWorkgroup-id" parent="AdHocRouteWorkgroup-id-parentBean"/>
 
-  <bean id="AdHocRouteWorkgroup-id-parentBean" abstract="true" parent="PersonImpl-principalName">
+  <bean id="AdHocRouteWorkgroup-id-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="required" value="true"/>
+    <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Workgroup"/>
     <property name="maxLength" value="70"/>
     <property name="control">
@@ -44,6 +46,9 @@
     <property name="name" value="id"/>
     <property name="label" value="Workgroup Identifier"/>
     <property name="description" value="The name of the registered workgroup that receives the document ad hoc for the Action Requested."/>
+    <property name="validationPattern" >
+      <bean parent="AlphaNumericValidationPattern" p:lowerCase="true" />
+    </property>
   </bean>
   <bean id="AdHocRouteWorkgroup-versionNumber" parent="AdHocRouteWorkgroup-versionNumber-parentBean"/>
 

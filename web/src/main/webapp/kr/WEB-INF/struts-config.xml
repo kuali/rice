@@ -23,7 +23,6 @@
 	    <form-bean name="LookupForm" type="org.kuali.rice.kns.web.struts.form.LookupForm" />
 		<form-bean name="MultipleValueLookupForm" type="org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm" />
 	    <form-bean name="InquiryForm" type="org.kuali.rice.kns.web.struts.form.InquiryForm" />
-        <form-bean name="InquirySubmitForm" type="org.kuali.rice.krad.web.struts.form.InquirySubmitForm" />
 	    <form-bean name="KualiMaintenanceForm" type="org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm" />
 	    <form-bean name="KualiHelpForm" type="org.kuali.rice.kns.web.struts.form.KualiHelpForm" />
         <form-bean name="MultipleValueLookupForm" type="org.kuali.rice.kns.web.struts.form.MultipleValueLookupForm" />
@@ -84,11 +83,8 @@
             <forward name="basic" path="/WEB-INF/jsp/KualiMultipleValueLookup.jsp" />
         </action>
 	    <action path="/inquiry" name="InquiryForm" scope="request" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.kns.web.struts.action.KualiInquiryAction">
-	        <forward name="basic" path="/jsf/pages/Inquiry.xhtml" />
+	        <forward name="basic" path="/WEB-INF/jsp/KualiInquiry.jsp" />
 	    </action>
-        <action path="/inquirySubmit" name="InquirySubmitForm" scope="session" attribute="KualiForm" parameter="methodToCall" type="org.kuali.rice.krad.web.struts.action.InquirySubmitAction">
-            <forward name="basic" path="/jsf/pages/InquirySubmit.xhtml" />
-        </action>        
 	    <action path="/maintenance" name="KualiMaintenanceForm" attribute="KualiForm" scope="request" parameter="methodToCall" validate="false" input="/WEB-INF/jsp/KualiMaintenanceDocument.jsp" type="org.kuali.rice.kns.web.struts.action.KualiMaintenanceDocumentAction">
 	        <forward name="basic" path="/WEB-INF/jsp/KualiMaintenanceDocument.jsp" />
 	    </action>    
@@ -109,7 +105,7 @@
         </action>
     </action-mappings>
 
-    <controller processorClass="org.kuali.rice.krad.web.jsf.struts.FacesRequestProcessor" />
+    <controller processorClass="org.kuali.rice.kns.web.struts.action.KualiRequestProcessor" />
     <message-resources factory="org.kuali.rice.kns.web.struts.action.KualiPropertyMessageResourcesFactory" parameter="" />
     <plug-in className="org.kuali.rice.kns.web.struts.pojo.PojoPlugin" /> 
 </struts-config>

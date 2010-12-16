@@ -12,21 +12,12 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.persistence.EntityManagerFactory;
 
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
-import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
@@ -36,95 +27,26 @@ import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.question.Question;
 import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
-import org.kuali.rice.kns.util.spring.NamedOrderedListBean;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 
-public class KNSServiceLocator<T extends Object> {
+public class KNSServiceLocator {
 
     public static final String VALIDATION_COMPLETION_UTILS = "validationCompletionUtils";
 
-    public static Object getService(String serviceName) {
-	return GlobalResourceLoader.getService(serviceName);
-    }
-
-    public static <T> T getNervousSystemContextBean(Class<T> type) {
-	Collection<T> beansOfType = getBeansOfType(type).values();
-	if (beansOfType.isEmpty()) {
-	    throw new NoSuchBeanDefinitionException("No beans of this type in the KNS application context: "
-		    + type.getName());
-	}
-	if (beansOfType.size() > 1) {
-	    return getNervousSystemContextBean(type, type.getSimpleName().substring(0, 1).toLowerCase() + type.getSimpleName().substring(1));
-	}
-	return beansOfType.iterator().next();
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> T getNervousSystemContextBean(Class<T> type, String name) {
-	return (T) RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBean(name);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> Map<String, T> getBeansOfType(Class<T> type) {
-    	SpringResourceLoader springResourceLoader = RiceResourceLoaderFactory.getSpringResourceLoader();
-    	if ( springResourceLoader != null ) {
-    		return new HashMap((Map) springResourceLoader.getContext().getBeansOfType(type));
-    	} else {
-    		return new HashMap(0);
-    	}
-    }
-
-    public static String[] getBeanNames() {
-	return RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanDefinitionNames();
-    }
-
-    public static Set<String> getSingletonNames() {
-	Set<String> singletonNames = new HashSet<String>();
-	Collections.addAll(singletonNames, RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory()
-		.getSingletonNames());
-	return singletonNames;
-    }
-
-    public static Set<Class> getSingletonTypes() {
-	Set<Class> singletonTypes = new HashSet<Class>();
-	for (String singletonName : getSingletonNames()) {
-	    singletonTypes.add(RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().getType(
-		    singletonName));
-	}
-	return singletonTypes;
-    }
-
-    public static boolean isSingleton( String beanName ) {
-    	try {
-    	    return RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeanFactory().isSingleton(beanName);
-    	} catch ( NoSuchBeanDefinitionException ex ) {
-    	    // service is not in Spring so we can't assume
-    	    return false;
-    	}
-    }
-            
-    public static List<NamedOrderedListBean> getNamedOrderedListBeans(String listName) {
-	List<NamedOrderedListBean> namedOrderedListBeans = new ArrayList<NamedOrderedListBean>();
-	for (Object namedOrderedListBean : RiceResourceLoaderFactory.getSpringResourceLoader().getContext().getBeansOfType(
-		NamedOrderedListBean.class).values()) {
-	    if (((NamedOrderedListBean) namedOrderedListBean).getName().equals(listName)) {
-		namedOrderedListBeans.add((NamedOrderedListBean) namedOrderedListBean);
-	    }
-	}
-	return namedOrderedListBeans;
+    public static <T extends Object> T getService(String serviceName) {
+    	return GlobalResourceLoader.<T>getService(serviceName);
     }
 
     public static final String ENCRYPTION_SERVICE = "encryptionService";
 
     public static final EncryptionService getEncryptionService() {
-	return (EncryptionService) getService(ENCRYPTION_SERVICE);
+    	return (EncryptionService) getService(ENCRYPTION_SERVICE);
     }
     
     public static final String POST_DATA_LOAD_ENCRYPTION_SERVICE = "postDataLoadEncryptionService";
@@ -181,10 +103,10 @@ public class KNSServiceLocator<T extends Object> {
 	return (PostProcessorService) getService(POST_PROCESSOR_SERVICE);
     }
 
-    public static final String DATETIME_SERVICE = "dateTimeService";
+    //public static final String DATETIME_SERVICE = "dateTimeService";
 
     public static DateTimeService getDateTimeService() {
-	return (DateTimeService) getService(DATETIME_SERVICE);
+	return (DateTimeService) getService(CoreConstants.Services.DATETIME_SERVICE);
     }
 
     public static final String LOOKUP_SERVICE = "lookupService";

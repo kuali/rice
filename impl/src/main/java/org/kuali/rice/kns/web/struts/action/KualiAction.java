@@ -36,7 +36,7 @@ import org.apache.struts.actions.DispatchAction;
 import org.kuali.rice.core.service.Demonstration;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;

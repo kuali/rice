@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -38,7 +39,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.util.Guid;
 
 /**
  * Business Object Base Business Object
@@ -198,7 +198,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     }
 
     public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        setObjectId(new Guid().toString());
+        setObjectId(UUID.randomUUID().toString());
     }
 
     public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
@@ -207,13 +207,13 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     
     @PrePersist
     public void beforeInsert() {
-    	setObjectId(new Guid().toString());
+    	setObjectId(UUID.randomUUID().toString());
     }
 
     @PreUpdate
     public void beforeUpdate() {
         if (StringUtils.isEmpty(getObjectId())) {
-            setObjectId(new Guid().toString());
+            setObjectId(UUID.randomUUID().toString());
         }
     }
     

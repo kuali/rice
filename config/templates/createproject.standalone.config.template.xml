@@ -49,8 +49,8 @@
 
 
 	<!--  runmodes -->
-	<param name="kim.mode">embedded</param>
-	<param name="kew.mode">embedded</param>
+	<param name="kim.mode">EMBEDDED</param>
+	<param name="kew.mode">EMBEDDED</param>
 	
 	<param name="keystore.alias">rice</param>
 	<param name="keystore.file">${USER_HOME}/kuali/main/dev/rice.keystore</param>

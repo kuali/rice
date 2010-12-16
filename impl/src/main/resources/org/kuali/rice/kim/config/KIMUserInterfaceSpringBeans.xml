@@ -54,6 +54,91 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
+	<!-- hack start cannot use GRL to import b/c of Spring Inheritance -->
+
+	<bean id="persistenceStructureService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="persistenceStructureService" />
+	</bean>
+	
+	<bean id="businessObjectDictionaryService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="businessObjectDictionaryService" />
+	</bean>
+	
+	<bean id="dataDictionaryService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="dataDictionaryService" />
+	</bean>
+	
+	<bean id="encryptionService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="encryptionService" />
+	</bean>
+	
+	<bean id="lookupService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="lookupService" />
+	</bean>
+	
+	<bean id="businessObjectMetaDataService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="businessObjectMetaDataService" />
+	</bean>
+	
+	<bean id="sequenceAccessorService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="sequenceAccessorService" />
+	</bean>
+	
+	<bean id="lookupResultsService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="lookupResultsService" />
+	</bean>
+	
+	<bean id="businessObjectService"
+		class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="businessObjectService" />
+	</bean>
+
+	<bean id="lookupableHelperService" class="org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl">
+		<property name="persistenceStructureService">
+			<ref bean="persistenceStructureService" />
+		</property>
+		<property name="businessObjectDictionaryService">
+			<ref bean="businessObjectDictionaryService" />
+		</property>
+		<property name="dataDictionaryService">
+			<ref bean="dataDictionaryService" />
+		</property>
+		<property name="encryptionService">
+			<ref bean="encryptionService" />
+		</property>
+		<property name="lookupService">
+			<ref bean="lookupService" />
+		</property>
+		<property name="businessObjectMetaDataService">
+			<ref bean="businessObjectMetaDataService" />
+		</property>
+		<property name="sequenceAccessorService">
+			<ref bean="sequenceAccessorService" />
+		</property>
+		<property name="businessObjectService">
+			<ref bean="businessObjectService" />
+		</property>
+		<property name="lookupResultsService">
+			<ref bean="lookupResultsService" />
+		</property>
+	</bean>
+	
+	<bean id="kualiLookupable" class="org.kuali.rice.kns.lookup.KualiLookupableImpl" scope="prototype">
+		<property name="lookupableHelperService">
+			<ref bean="lookupableHelperService" />
+		</property>
+	</bean>
+  
+  <!-- hack end -->
+  
   <bean id="kimUiDocumentService" class="org.kuali.rice.kim.service.impl.UiDocumentServiceImpl" />
 
     <bean id="groupLookupable" class="org.kuali.rice.kim.lookup.GroupLookupableImpl" parent="kualiLookupable" scope="prototype">

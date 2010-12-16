@@ -15,11 +15,12 @@
  */
 package org.kuali.rice.kew.bo;
 
+import java.util.UUID;
+
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
 
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.util.Guid;
 
 /**
  * Overrides JPA persistence methods to use KEWServicelocator.
@@ -38,7 +39,12 @@ public abstract class KewPersistableBusinessObjectBase extends PersistableBusine
         //    setAutoIncrementSet(true);
         //}
         
-        this.setObjectId(new Guid().toString());
+        this.setObjectId(UUID.randomUUID().toString());
+    }
+    
+    public static void main(String...strings ) {
+    	System.out.println(UUID.randomUUID().toString());
+    	System.out.println(UUID.randomUUID().toString());
     }
 
 }

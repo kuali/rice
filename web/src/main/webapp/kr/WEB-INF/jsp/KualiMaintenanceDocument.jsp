@@ -41,7 +41,7 @@
 	lookup="${lookup}" headerMenuBar="${headerMenuBar}" headerTitle="${headerTitle}" auditCount="0" renderRequiredFieldsLabel="${renderRequiredFieldsLabel}">
 
 <%-- Put the header on the page. --%>
-			<table width="100%" cellpadding="0" cellspacing="0" class="tab">
+			<table width="100%" cellpadding="0" cellspacing="0" class="tab" id="ryansHeader">
 			    <tr>
 			        <td>
 			        
@@ -97,6 +97,7 @@
 
 	<kul:adHocRecipients />
 	<kul:routeLog />
+	<kul:panelFooter />
 	<kul:documentControls transactionalDocument="false" />
 	</td>
 	</tr>

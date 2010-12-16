@@ -18,9 +18,9 @@ package org.kuali.rice.kns.authorization;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;

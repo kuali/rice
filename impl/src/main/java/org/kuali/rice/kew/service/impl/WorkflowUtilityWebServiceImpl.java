@@ -36,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
@@ -89,10 +90,10 @@ import org.kuali.rice.kew.service.WorkflowUtility;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.web.session.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -154,7 +155,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         DocumentRouteHeaderValue document = loadDocument(documentId);
         
-        UserSession userSession = UserSession.getAuthenticatedUser();
+        UserSession userSession = GlobalVariables.getUserSession();
         String principalId = null;
         if (userSession != null) { // get the principalId if we can
         	principalId = userSession.getPrincipalId();
@@ -276,8 +277,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         List<String> actionRequestedCds = Arrays.asList(actionRequestedCodes);
         ActionItemDTO[] actionItems = getAllActionItems(routeHeaderId);
         List<ActionItemDTO> matchingActionitems = new ArrayList<ActionItemDTO>();
-        for (int i = 0; i < actionItems.length; i++) {
-            ActionItemDTO actionItemVO = actionItems[i];
+        for (ActionItemDTO actionItemVO : actionItems) {
             if (actionRequestedCds.contains(actionItemVO.getActionRequestCd())) {
                 matchingActionitems.add(actionItemVO);
             }
@@ -617,8 +617,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 		    		return true;
 		    	}
 		    	// check the action requested codes passed in
-		    	for (int i = 0; i < actionRequestedCodes.length; i++) {
-					String requestedActionRequestCode = actionRequestedCodes[i];
+		    	for (String requestedActionRequestCode : actionRequestedCodes) {
 					if (requestedActionRequestCode.equals(actionRequest.getActionRequested())) {
 					    boolean satisfiesDestinationUserCriteria = (criteria.getDestinationRecipients().isEmpty()) || (isRecipientRoutedRequest(actionRequest,criteria.getDestinationRecipients()));
 					    if (satisfiesDestinationUserCriteria) {
@@ -1177,7 +1176,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         }
         DocumentRouteHeaderValue document = loadDocument(documentId);
         
-        UserSession userSession = UserSession.getAuthenticatedUser();
+        UserSession userSession = GlobalVariables.getUserSession();
         String principalId = null;
         if (userSession != null) { // get the principalId if we can
         	principalId = userSession.getPrincipalId();
@@ -1186,8 +1185,8 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 
         DocumentStatusTransitionDTO[] transitionHistory = new DocumentStatusTransitionDTO[list.size()];        
         int i = 0;
-        for (Iterator iter = list.iterator(); iter.hasNext();) {
-        	DocumentStatusTransition transition = (DocumentStatusTransition) iter.next();
+        for (Object element : list) {
+        	DocumentStatusTransition transition = (DocumentStatusTransition) element;
             transitionHistory[i] = DTOConverter.convertDocumentStatusTransition(transition);
             i++;
         }

@@ -26,6 +26,7 @@ import javax.jws.WebService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
@@ -36,7 +37,6 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
-import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.RoleUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
@@ -189,7 +189,7 @@ public class RoleUpdateServiceImpl extends RoleServiceBase implements RoleUpdate
      * 
      * This overridden method ...
      * 
-     * @see org.kuali.rice.kim.service.RoleUpdateService#assignRoleAsDelegationMemberToRole(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.kim.bo.types.dto.AttributeSet)
+     * @see org.kuali.rice.kim.service.RoleUpdateService#assignRoleAsDelegationMemberToRole(java.lang.String, java.lang.String, java.lang.String, org.kuali.rice.core.xml.dto.AttributeSet)
      */
     public void saveDelegationMemberForRole(String delegationMemberId,
     			String roleMemberId, String memberId, String memberTypeCode, String delegationTypeCode, 

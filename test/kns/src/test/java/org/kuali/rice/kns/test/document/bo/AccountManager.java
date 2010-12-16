@@ -108,16 +108,6 @@ public class AccountManager extends PersistableBusinessObjectBase {
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
-
-    /*
-    public String toString() {
-        return "(" + userName + "," + accountNum + ")";
-    }*/
-    public String toString() {
-        return "[FiscalOfficer: id=" + amId +
-                             ", userName=" + userName +
-                             "]";
-    }
     
     @Override
     protected LinkedHashMap toStringMapper() {

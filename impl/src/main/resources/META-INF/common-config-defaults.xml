@@ -236,9 +236,9 @@
     	Individual fields (all instances of them on the page) can also be hidden by following this format:
     	"[documentClass].hidden".  The value of this should be a comma delimited list of the DD names of the fields.
      -->
-    <param name="org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo.hidden">baseSalaryAmount</param>
-	<param name="kim.hide.PersonDocumentAddress.type">HM</param>
-	<param name="kim.hide.PersonDocumentPhone.type">HM</param>
+    <param name="org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo.hidden" override="false">baseSalaryAmount</param>
+	<param name="kim.hide.PersonDocumentAddress.type" override="false">HM</param>
+	<param name="kim.hide.PersonDocumentPhone.type" override="false">HM</param>
 	
 	<param name="kim.cache.entity.max.size" override="false">3000</param>
     <param name="kim.cache.entity.max.age.seconds" override="false">3600</param>
@@ -258,6 +258,7 @@
 
     <param name="kim.soapExposedService.jaxws.security" override="false">true</param>
 
+	<param name="kim.show.blank.qualifiers" override="false">true</param>
 	<param name="enable.nonproduction.data.unmasking" override="false">false</param>
     <!-- KEN -->
 

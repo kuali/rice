@@ -23,7 +23,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.document.KimTypeAttributesHelper;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -207,10 +210,17 @@ public class RoleDocumentDelegationMember extends KimDocumentBoBase {
 	}
 
 	protected void populateDerivedValues() {
-    	BusinessObject member = KIMServiceLocator.getUiDocumentService().getMember(getMemberTypeCode(), getMemberId());
-    	if ( member != null ) {
-	        setMemberNamespaceCode(KIMServiceLocator.getUiDocumentService().getMemberNamespaceCode(getMemberTypeCode(), member));
-    	}
+		if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())){
+        	GroupInfo groupInfo = null;
+        	groupInfo = KIMServiceLocator.getIdentityManagementService().getGroup(getMemberId());
+        	if (groupInfo != null) {
+        		setMemberNamespaceCode(groupInfo.getNamespaceCode());
+        	}        	
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())){
+        	KimRoleInfo roleInfo = null;
+        	roleInfo = KIMServiceLocator.getRoleService().getRole(getMemberId());
+        	setMemberNamespaceCode(roleInfo.getNamespaceCode());
+        }
 	}
 	
 	/**

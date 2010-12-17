@@ -40,8 +40,6 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -60,6 +58,7 @@ import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.dto.KeyValueDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.Branch;
@@ -814,8 +813,8 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
         updateAppDocStatus(routeHeaderVO.getAppDocStatus());
 
         /* set the variables from the routeHeaderVO */
-        List<KeyValue<String, String>> variables = routeHeaderVO.getVariables();
-        for (KeyValue<String, String> kvp : variables) {
+        List<KeyValueDTO> variables = routeHeaderVO.getVariables();
+        for (KeyValueDTO kvp : variables) {
             setVariable(kvp.getKey(), kvp.getValue());
         }
     }

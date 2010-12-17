@@ -1,5 +1,5 @@
 <%--
- Copyright 2007-2009 The Kuali Foundation
+ Copyright 2005-2008 The Kuali Foundation
  
  Licensed under the Educational Community License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -13,17 +13,4 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/rice-portal/jsp/sys/riceTldHeader.jsp"%>
-
-<c:if test="${ConfigProperties.portal.show.sample.app eq 'true'}">
-	<td class="content" valign="top">
-	    <mainChannel:sampleTravelApplication />
-        <mainChannel:kradTestLinks />
-	</td>
-</c:if>
-<td class="content" valign="top">
-<mainChannel:workflow />
-</td>
-<td class="content" valign="top">
-<mainChannel:notification />
-</td>
+<% response.sendRedirect("../portal.jsp"); %>

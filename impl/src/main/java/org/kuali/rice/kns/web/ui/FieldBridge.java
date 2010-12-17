@@ -17,13 +17,12 @@ package org.kuali.rice.kns.web.ui;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.CollectionDefinitionI;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
@@ -219,26 +218,27 @@ public class FieldBridge {
             }
             ((PersistableBusinessObjectValuesFinder) finder).setIncludeKeyInDescription(fieldControl.getIncludeKeyInLabel());
         }
-        List keyValues = finder.getKeyValues();
+        List<KeyValue> keyValues = finder.getKeyValues();
         propValue = getPropertyValueFromList(prop, keyValues);
-        if(propValue==null)
-        	propValue = lookupInactiveFinderValue(prop, finder);
+        if(propValue==null) {
+			propValue = lookupInactiveFinderValue(prop, finder);
+		}
         return propValue;
     }
     
     private static String lookupInactiveFinderValue(Object property, KeyValuesFinder finder){
-    	List keyValues = finder.getKeyValues(false);
+    	List<KeyValue> keyValues = finder.getKeyValues(false);
     	return getPropertyValueFromList(property, keyValues);
     	
     }
     
-    private static String getPropertyValueFromList(Object property, List keyValues){
+    private static String getPropertyValueFromList(Object property, List<KeyValue> keyValues){
     	String propertyValue = null;
         if (property != null) {
-            for (Iterator iter = keyValues.iterator(); iter.hasNext();) {
-                KeyLabelPair element = (KeyLabelPair) iter.next();
+            for (Object element2 : keyValues) {
+                KeyValue element = (KeyValue) element2;
                 if (element.getKey().toString().equals(property.toString())) {
-                    propertyValue = element.getLabel();
+                    propertyValue = element.getValue();
                     break;
                 }
             }
@@ -403,7 +403,7 @@ public class FieldBridge {
                 Field collField = FieldUtils.getPropertyField(collectionDefinition.getBusinessObjectClass(), fieldDefinition.getName(), false);
 
                 if (fieldDefinition instanceof MaintainableFieldDefinition) {
-                    setupField(collField, (MaintainableFieldDefinition)fieldDefinition, conditionallyRequiredMaintenanceFields);
+                    setupField(collField, fieldDefinition, conditionallyRequiredMaintenanceFields);
                 }
                 //generate the error key for the add row
                 String[] nameParts = StringUtils.split(collField.getPropertyName(), ".");
@@ -419,7 +419,7 @@ public class FieldBridge {
                 }
 
                 //  set the QuickFinderClass
-                BusinessObject collectionBoInstance = (BusinessObject) collectionDefinition.getBusinessObjectClass().newInstance();
+                BusinessObject collectionBoInstance = collectionDefinition.getBusinessObjectClass().newInstance();
                 FieldUtils.setInquiryURL(collField, collectionBoInstance, fieldDefinition.getName());
                 if (collectionDefinition instanceof MaintainableCollectionDefinition) {
                     MaintenanceUtils.setFieldQuickfinder(collectionBoInstance, parents+collectionDefinition.getName(), true, 0, fieldDefinition.getName(), collField, displayedFieldNames, m, (MaintainableFieldDefinition) fieldDefinition);

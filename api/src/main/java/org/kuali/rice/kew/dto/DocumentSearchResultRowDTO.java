@@ -19,6 +19,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.util.ContreteKeyValue;
+
 /**
  * This is a virtual object used for the DocumentSearchResult class.
  * 
@@ -28,13 +30,13 @@ public class DocumentSearchResultRowDTO implements Serializable {
 
     private static final long serialVersionUID = -4512313267985796233L;
 
-    private List<KeyValueDTO> fieldValues = new ArrayList<KeyValueDTO>();
+    private List<ContreteKeyValue> fieldValues = new ArrayList<ContreteKeyValue>();
 
-    public List<KeyValueDTO> getFieldValues() {
+    public List<ContreteKeyValue> getFieldValues() {
         return this.fieldValues;
     }
 
-    public void setFieldValues(List<KeyValueDTO> fieldValues) {
+    public void setFieldValues(List<ContreteKeyValue> fieldValues) {
         this.fieldValues = fieldValues;
     }
 

@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -133,7 +133,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     private String additionalDisplayPropertyName;
     private String additionalDisplayPropertyValue;  
 
-    private List<KeyLabelPair> fieldValidValues;
+    private List<KeyValue> fieldValidValues;
     private String quickFinderClassNameImpl;
     private String baseLookupUrl;
 
@@ -241,7 +241,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
      * @param fieldValidValues used for drop down list
      * @param quickFinderClassNameImpl class name to transfer control to quick finder
      */
-    public Field(String fieldLabel, String fieldHelpUrl, String fieldType, boolean clear, String propertyName, String propertyValue, boolean fieldRequired, boolean dateField, List<KeyLabelPair> fieldValidValues, String quickFinderClassNameImpl) {
+    public Field(String fieldLabel, String fieldHelpUrl, String fieldType, boolean clear, String propertyName, String propertyValue, boolean fieldRequired, boolean dateField, List<KeyValue> fieldValidValues, String quickFinderClassNameImpl) {
         this.dateField = dateField;
         this.fieldLabel = fieldLabel;
         this.fieldHelpUrl = fieldHelpUrl;
@@ -277,7 +277,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
      * @param size size of the input field
      * @param maxLength maxLength of the input field
      */
-    public Field(String fieldLabel, String fieldHelpUrl, String fieldType, boolean clear, String propertyName, String propertyValue, boolean fieldRequired, boolean dateField, List<KeyLabelPair> fieldValidValues, String quickFinderClassNameImpl, int size, int maxLength) {
+    public Field(String fieldLabel, String fieldHelpUrl, String fieldType, boolean clear, String propertyName, String propertyValue, boolean fieldRequired, boolean dateField, List<KeyValue> fieldValidValues, String quickFinderClassNameImpl, int size, int maxLength) {
         this.dateField = dateField;
         this.fieldLabel = fieldLabel;
         this.fieldHelpUrl = fieldHelpUrl;
@@ -600,7 +600,7 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     /**
      * @return Returns the fieldValidValues.
      */
-    public List<KeyLabelPair> getFieldValidValues() {
+    public List<KeyValue> getFieldValidValues() {
         return fieldValidValues;
     }
 
@@ -608,7 +608,8 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     /**
      * @return Returns the formatter.
      */
-    public Formatter getFormatter() {
+    @Override
+	public Formatter getFormatter() {
         return formatter;
     }
 
@@ -637,14 +638,16 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     /**
      * @return Returns the propertyName.
      */
-    public String getPropertyName() {
+    @Override
+	public String getPropertyName() {
         return propertyName;
     }
 
     /**
      * @return Returns the propertyValue.
      */
-    public String getPropertyValue() {
+    @Override
+	public String getPropertyValue() {
         if (propertyValue == null) {
             propertyValue = KNSConstants.EMPTY_STRING;
         }
@@ -858,12 +861,12 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     /**
      * @param fieldValidValues The fieldValidValues to set.
      */
-    public void setFieldValidValues(List<KeyLabelPair> fieldValidValues) {
+    public void setFieldValidValues(List<KeyValue> fieldValidValues) {
     	this.fieldValidValues = fieldValidValues;
     }
 
     public boolean getHasBlankValidValue() {
-    	for ( KeyLabelPair keyLabel : (List<KeyLabelPair>)fieldValidValues ) {
+    	for ( KeyValue keyLabel : fieldValidValues ) {
             if ( keyLabel.getKey().equals( "" ) ) {
             	return true;
             }
@@ -874,7 +877,8 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     /**
      * @param formatter The formatter to set.
      */
-    public void setFormatter(Formatter formatter) {
+    @Override
+	public void setFormatter(Formatter formatter) {
         this.formatter = formatter;
     }
 
@@ -937,7 +941,8 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     /**
      * @param propertyName The propertyName to set.
      */
-    public void setPropertyName(String propertyName) {
+    @Override
+	public void setPropertyName(String propertyName) {
         String newPropertyName = KNSConstants.EMPTY_STRING;
         if (propertyName != null) {
             newPropertyName = propertyName;
@@ -1296,11 +1301,13 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
      *
      * @param propertyValue The propertyValue to set.
      */
-    public void setPropertyValue(String propertyValue) {
+    @Override
+	public void setPropertyValue(String propertyValue) {
         this.propertyValue = propertyValue;
     }
 
-    public String toString() {
+    @Override
+	public String toString() {
         return "[" + getFieldType() + "] " + getPropertyName() + " = '" + getPropertyValue() + "'";
     }
 
@@ -1512,10 +1519,12 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
 	    }
 	}
 	
+	@Override
 	public String getAlternateDisplayPropertyName() {
 		return this.alternateDisplayPropertyName;
 	}
 
+	@Override
 	public void setAlternateDisplayPropertyName(String alternateDisplayPropertyName) {
 		this.alternateDisplayPropertyName = alternateDisplayPropertyName;
 	}
@@ -1530,10 +1539,12 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
 		this.alternateDisplayPropertyValue = formattedValue;
 	}
 
+	@Override
 	public String getAdditionalDisplayPropertyName() {
 		return this.additionalDisplayPropertyName;
 	}
 
+	@Override
 	public void setAdditionalDisplayPropertyName(String additionalDisplayPropertyName) {
 		this.additionalDisplayPropertyName = additionalDisplayPropertyName;
 	}
@@ -1599,7 +1610,8 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
      * @deprecated
      * @return
      */
-    public boolean isHidden() {
+    @Deprecated
+	public boolean isHidden() {
         return this.hidden;
     }
 
@@ -1613,7 +1625,8 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
      * @deprecated
      * @param hidden
      */
-    public void setHidden(boolean hidden) {
+    @Deprecated
+	public void setHidden(boolean hidden) {
         this.hidden = hidden;
     }
 

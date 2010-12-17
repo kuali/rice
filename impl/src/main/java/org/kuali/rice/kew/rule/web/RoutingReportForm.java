@@ -28,6 +28,7 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -85,7 +86,8 @@ public class RoutingReportForm extends KualiForm {
         ruleTemplateAttributes = new ArrayList();
     }
 
-    public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
+    @Override
+	public ActionErrors validate(ActionMapping mapping, HttpServletRequest request) {
 
         ActionErrors errors = new ActionErrors();
         if (getReportType() != null && getReportType().equals(RoutingReportAction.DOC_TYPE_REPORTING)) {
@@ -133,18 +135,18 @@ public class RoutingReportForm extends KualiForm {
         this.ruleTemplates = ruleTemplates;
     }
 
-    public List getHours() {
-        List hours = new ArrayList();
-        hours.add(new KeyValue("0", "12"));
+    public List<KeyValue> getHours() {
+    	List<KeyValue> hours = new ArrayList<KeyValue>();
+        hours.add(new ContreteKeyValue("0", "12"));
         for (int i = 1; i < 12; i++) {
-            hours.add(new KeyValue(i + "", i + ""));
+            hours.add(new ContreteKeyValue(i + "", i + ""));
         }
         return hours;
     }
-    public List getMinutes() {
-        List mins = new ArrayList();
+    public List<KeyValue> getMinutes() {
+    	List<KeyValue> mins = new ArrayList<KeyValue>();
         for (int i = 0; i < 60; i++) {
-            mins.add(new KeyValue(i + "", ":" + (i < 10 ? "0" : "") + i + ""));
+            mins.add(new ContreteKeyValue(i + "", ":" + (i < 10 ? "0" : "") + i + ""));
         }
         return mins;
     }

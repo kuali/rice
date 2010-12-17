@@ -109,7 +109,7 @@ public interface WorkflowAttribute extends Serializable {
      * valid values will be changed as well)). The lookupable indicator determines whether this field will have a lookupable (valid value search) associated with it. The property
      * name is the name of the field when rendered on the jsp. This needs to be unique when compared to other field names on the jsp. The property value is the value entered into
      * the text box or other field type on the jsp. This value will be empty when creating the field and populated during form submission. A List of valid values is optional and
-     * needed to populate drop down boxes or radio buttons. This list consists of KeyLabelPair objects which the key will be the value passed in on submission and the label will
+     * needed to populate drop down boxes or radio buttons. This list consists of KeyValue objects which the key will be the value passed in on submission and the label will
      * be what is display on the jsp. The lookupable is the name of the lookable service to be called for this field. The default lookupable name is the name of the field on the
      * lookupable itself. This may be the same of the property name of the field. This is needed when field conversions are needed. If the lookupable returns a key that doesn't
      * match a property name on the jsp it needs to be converted to one that does. So if the property name is different than the default lookupable name, the lookupable will
@@ -182,7 +182,7 @@ public interface WorkflowAttribute extends Serializable {
      * 
      * @param parmaMap Map containing the names and values of the routing data for this Attribute
      */
-    public List validateRoutingData(Map paramMap); 
+    public List validateRoutingData(Map<String, String> paramMap); 
     
     /**
      * Validates ruleExtension values in the incoming map.  Called by the UI during rule creation.
@@ -193,7 +193,7 @@ public interface WorkflowAttribute extends Serializable {
      * 
      * @param paramMap Map containing the names and values of the rule extensions for this Attribute
      */
-    public List validateRuleData(Map paramMap);
+    public List validateRuleData(Map<String, String> paramMap);
     
     /**
      * Sets the required flag for this Attribute to true.  If required is true, the extensionValues for

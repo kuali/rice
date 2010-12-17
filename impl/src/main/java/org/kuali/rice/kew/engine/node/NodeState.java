@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import java.util.LinkedHashMap;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,8 +55,9 @@ public class NodeState extends State {
     public NodeState() {}
     
     public NodeState(String key, String value) {
-        super(key, value);
+    	super(key, value);
     }
+    
     
     public RouteNodeInstance getNodeInstance() {
         return nodeInstance;
@@ -78,4 +81,10 @@ public class NodeState extends State {
     public void setLockVerNbr(Integer lockVerNbr) {
         this.lockVerNbr = lockVerNbr;
     }
+
+	@Override
+	protected LinkedHashMap<String, Object> toStringMapper() {
+        final LinkedHashMap<String, Object> propMap = toStringMapperFields();
+        return propMap;
+	}
 }

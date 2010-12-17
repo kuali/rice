@@ -15,10 +15,13 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
+import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
@@ -40,44 +43,51 @@ public class KeyValuesServiceImpl implements KeyValuesService {
     /**
      * @see org.kuali.rice.kns.service.KeyValuesService#findAll(java.lang.Class)
      */
-    public Collection findAll(Class clazz) {
-        ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(clazz);
+    @Override
+	public <T extends BusinessObject> Collection<T> findAll(Class<T> clazz) {
+    	ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(clazz);
 		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(clazz)){
-			return responsibleModuleService.getExternalizableBusinessObjectsList(clazz, new HashMap<String, Object>());
+			return (Collection<T>) responsibleModuleService.getExternalizableBusinessObjectsList((Class<ExternalizableBusinessObject>) clazz, Collections.<String, Object>emptyMap());
 		}
         if (containsActiveIndicator(clazz)) {
             return businessObjectDao.findAllActive(clazz);
         }
-        else {
-            if (LOG.isDebugEnabled()) LOG.debug("Active indicator not found for class " + clazz.getName());
-            return businessObjectDao.findAll(clazz);
-        }
+        if (LOG.isDebugEnabled()) {
+			LOG.debug("Active indicator not found for class " + clazz.getName());
+		}
+        return businessObjectDao.findAll(clazz);
     }
+    
+	public static <E> Collection<E> createUnmodifiableUpcastList(Collection<? extends E> list, Class<E> type) {
+		return new ArrayList<E>(list);
+	}
 
     /**
      * @see org.kuali.rice.kns.service.KeyValuesService#findAllOrderBy(java.lang.Class, java.lang.String, boolean)
      */
-    public Collection findAllOrderBy(Class clazz, String sortField, boolean sortAscending) {
+    @Override
+	public <T extends BusinessObject> Collection<T> findAllOrderBy(Class<T> clazz, String sortField, boolean sortAscending) {
         if (containsActiveIndicator(clazz)) {
             return businessObjectDao.findAllActiveOrderBy(clazz, sortField, sortAscending);
         }
-        else {
-            if (LOG.isDebugEnabled()) LOG.debug("Active indicator not found for class " + clazz.getName());
-            return businessObjectDao.findAllOrderBy(clazz, sortField, sortAscending);
-        }
+        if (LOG.isDebugEnabled()) {
+			LOG.debug("Active indicator not found for class " + clazz.getName());
+		}
+        return businessObjectDao.findAllOrderBy(clazz, sortField, sortAscending);
     }
 
     /**
      * @see org.kuali.rice.kns.service.BusinessObjectService#findMatching(java.lang.Class, java.util.Map)
      */
-    public Collection findMatching(Class clazz, Map fieldValues) {
+    @Override
+	public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, Object> fieldValues) {
         if (containsActiveIndicator(clazz)) {
             return businessObjectDao.findMatchingActive(clazz, fieldValues);
         }
-        else {
-            if (LOG.isDebugEnabled()) LOG.debug("Active indicator not found for class " + clazz.getName());
-            return businessObjectDao.findMatching(clazz, fieldValues);
-        }
+        if (LOG.isDebugEnabled()) {
+			LOG.debug("Active indicator not found for class " + clazz.getName());
+		}
+        return businessObjectDao.findMatching(clazz, fieldValues);
     }
 
 
@@ -120,7 +130,7 @@ public class KeyValuesServiceImpl implements KeyValuesService {
      * @param clazz
      * @return boolean if active column is mapped for Class
      */
-    private boolean containsActiveIndicator(Class clazz) {
+    private <T extends BusinessObject> boolean containsActiveIndicator(Class<T> clazz) {
         boolean containsActive = false;
 
         if (persistenceStructureService.listFieldNames(clazz).contains(KNSPropertyConstants.ACTIVE)) {
@@ -133,8 +143,11 @@ public class KeyValuesServiceImpl implements KeyValuesService {
     /**
      * @see org.kuali.rice.kns.service.KeyValuesService#findAll(java.lang.Class)
      */
-    public Collection findAllInactive(Class clazz) {
-    	if (LOG.isDebugEnabled()) LOG.debug("Active indicator not found for class " + clazz.getName());
+    @Override
+	public <T extends BusinessObject> Collection<T> findAllInactive(Class<T> clazz) {
+    	if (LOG.isDebugEnabled()) {
+			LOG.debug("Active indicator not found for class " + clazz.getName());
+		}
         return businessObjectDao.findAllInactive(clazz);
     }
 

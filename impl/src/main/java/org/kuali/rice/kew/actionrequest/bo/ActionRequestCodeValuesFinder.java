@@ -16,9 +16,11 @@
 package org.kuali.rice.kew.actionrequest.bo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
@@ -29,18 +31,19 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
  */
 public class ActionRequestCodeValuesFinder extends KeyValuesBase {
 
-	private static final List<KeyLabelPair> actionRequestCodes = new ArrayList<KeyLabelPair>();
+	private static final List<KeyValue> ACTION_REQUEST_CODES;
 	static {
+		final List<KeyValue> temp = new ArrayList<KeyValue>();
 		for (String actionRequestCode : KEWConstants.ACTION_REQUEST_CODES.keySet()) {
-			actionRequestCodes.add(new KeyLabelPair(actionRequestCode, KEWConstants.ACTION_REQUEST_CODES.get(actionRequestCode)));
+			temp.add(new ContreteKeyValue(actionRequestCode, KEWConstants.ACTION_REQUEST_CODES.get(actionRequestCode)));
 		}
+		
+		ACTION_REQUEST_CODES = Collections.unmodifiableList(temp);
 	}
-	
-	/**
-	 * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyValues()
-	 */
-	public List<KeyLabelPair> getKeyValues() {
-		return actionRequestCodes;
+
+	@Override
+	public List<KeyValue> getKeyValues() {
+		return ACTION_REQUEST_CODES;
 	}
 
 }

@@ -39,21 +39,21 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.util.KNSConstants;
 
 public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(QuickLinksDAOJpaImpl.class);
 
     @PersistenceContext(unitName = "kew-unit")
     private EntityManager entityManager;
 
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
     public List<ActionListStats> getActionListStats(final String principalId) {
         try {
-            final List<Object[]> stats = (List<Object[]>) entityManager.createNamedQuery("ActionItem.QuickLinks.FindActionListStatsByPrincipalId").setParameter("principalId", principalId).getResultList();
+            final List<Object[]> stats = entityManager.createNamedQuery("ActionItem.QuickLinks.FindActionListStatsByPrincipalId").setParameter("principalId", principalId).getResultList();
             final List<ActionListStats> docTypes = new ArrayList<ActionListStats>(stats.size());
             for (Object[] res : stats) {
                 final String docTypeName = (String) res[0];
                 final Long count = (Long) res[1];
 
-                final List<String> docTypeLabel = (List<String>) entityManager.createNamedQuery("DocumentType.QuickLinks.FindLabelByTypeName").setParameter("docTypeName", docTypeName).getResultList();
+                final List<String> docTypeLabel = entityManager.createNamedQuery("DocumentType.QuickLinks.FindLabelByTypeName").setParameter("docTypeName", docTypeName).getResultList();
                 if (docTypeLabel.size() > 0) {
                     docTypes.add(new ActionListStats(docTypeName, docTypeLabel.get(0), count.intValue()));
                 }
@@ -65,7 +65,8 @@ public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
     public List<InitiatedDocumentType> getInitiatedDocumentTypesList(final String principalId) {
         String documentNames = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.QUICK_LINK_DETAIL_TYPE, KEWConstants.QUICK_LINKS_RESTRICT_DOCUMENT_TYPES);
         if (documentNames != null) {
@@ -82,7 +83,7 @@ public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
         }
 
         try {
-            final List<Object[]> list = (List<Object[]>) entityManager.createNamedQuery("DocumentType.QuickLinks.FindInitiatedDocumentTypesListByInitiatorWorkflowId").setParameter("initiatorWorkflowId", principalId).getResultList();
+            final List<Object[]> list = entityManager.createNamedQuery("DocumentType.QuickLinks.FindInitiatedDocumentTypesListByInitiatorWorkflowId").setParameter("initiatorWorkflowId", principalId).getResultList();
             final List<InitiatedDocumentType> documentTypesByName = new ArrayList<InitiatedDocumentType>(list.size());
             for (Object[] doc : list) {
                 final String docTypeName = (String) doc[0];
@@ -110,18 +111,21 @@ public class QuickLinksDAOJpaImpl implements QuickLinksDAO {
         }
     }
 
-    public List<KeyValue> getNamedSearches(String principalId) {
+    @Override
+	public List<KeyValue> getNamedSearches(String principalId) {
         return getDocumentSearchService().getNamedSearches(principalId);
     }
 
-    public List<KeyValue> getRecentSearches(String principalId) {
+    @Override
+	public List<KeyValue> getRecentSearches(String principalId) {
         return getDocumentSearchService().getMostRecentSearches(principalId);
     }
 
-    @SuppressWarnings("unchecked")
+    @Override
+	@SuppressWarnings("unchecked")
     public List<WatchedDocument> getWatchedDocuments(final String principalId) {
         try {
-            return (List<WatchedDocument>) entityManager.createNamedQuery("DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId").setParameter("initiatorWorkflowId", principalId).getResultList();
+            return entityManager.createNamedQuery("DocumentRouteHeaderValue.QuickLinks.FindWatchedDocumentsByInitiatorWorkflowId").setParameter("initiatorWorkflowId", principalId).getResultList();
         } catch (Exception e) {
             throw new WorkflowRuntimeException("Error getting watched documents for user: " + principalId, e);
         }

@@ -20,7 +20,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kns.bo.State;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -30,25 +31,27 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  */
 public class StateValuesFinder extends KeyValuesBase {
 
-	private static List<KeyLabelPair> labels;
+	private static List<KeyValue> labels;
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List<KeyLabelPair> getKeyValues() {
+    @Override
+	public List<KeyValue> getKeyValues() {
     	if ( labels == null ) {
     		List<State> baseCodes = KNSServiceLocator.getStateService().findAllStates();
     		List<State> codes = new ArrayList<State>( baseCodes );
     		Collections.sort(codes, new Comparator<State> () {
+				@Override
 				public int compare(State o1, State o2) {
 					return o1.getPostalStateName().compareTo(o2.getPostalStateName());
 				}
     		});
     		
-    		List<KeyLabelPair> newLabels = new ArrayList<KeyLabelPair>();
-	        newLabels.add(new KeyLabelPair("", ""));
+    		List<KeyValue> newLabels = new ArrayList<KeyValue>();
+	        newLabels.add(new ContreteKeyValue("", ""));
 	        for (State state : codes) {
 	            if(state.isActive()) {
-	                newLabels.add(new KeyLabelPair(state.getPostalStateCode(), state.getPostalStateName()));
+	                newLabels.add(new ContreteKeyValue(state.getPostalStateCode(), state.getPostalStateName()));
 	            }
 	        }
 	        labels = newLabels;

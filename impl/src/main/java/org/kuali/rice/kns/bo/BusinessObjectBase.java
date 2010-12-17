@@ -39,7 +39,7 @@ public abstract class BusinessObjectBase implements BusinessObject {
      * @param fieldValues
      * @return consistently-formatted String containing the given fieldnames and their values
      */
-    protected String toStringBuilder(LinkedHashMap fieldValues) {
+    protected String toStringBuilder(LinkedHashMap<String, Object> fieldValues) {
         String built = null;
         String className = StringUtils.uncapitalize(StringUtils.substringAfterLast(this.getClass().getName(), "."));
 
@@ -93,13 +93,14 @@ public abstract class BusinessObjectBase implements BusinessObject {
     /**
      * @return Map containing the fieldValues of the key fields for this class, indexed by fieldName
      */
-    abstract protected LinkedHashMap toStringMapper();
+    abstract protected LinkedHashMap<String, Object> toStringMapper();
 
 
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString() {
+    @Override
+	public final String toString() {
         if (!StringUtils.contains(this.getClass().getName(), "$$")) {
             return toStringBuilder(toStringMapper());
         }
@@ -108,7 +109,8 @@ public abstract class BusinessObjectBase implements BusinessObject {
         }
     }
     
-    public void prepareForWorkflow() {
+    @Override
+	public void prepareForWorkflow() {
 	// do nothing
     }
 }

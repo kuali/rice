@@ -18,7 +18,8 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -30,11 +31,12 @@ public class IndicatorPersonSearchTypeValuesFinder extends KeyValuesBase {
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-        List<KeyLabelPair> activeLabels = new ArrayList<KeyLabelPair>();
-        activeLabels.add(new KeyLabelPair("user", "User"));
-        activeLabels.add(new KeyLabelPair("group", "Group Member"));
-        activeLabels.add(new KeyLabelPair("", "Both"));
+    @Override
+	public List<KeyValue> getKeyValues() {
+        List<KeyValue> activeLabels = new ArrayList<KeyValue>();
+        activeLabels.add(new ContreteKeyValue("user", "User"));
+        activeLabels.add(new ContreteKeyValue("group", "Group Member"));
+        activeLabels.add(new ContreteKeyValue("", "Both"));
         return activeLabels;
     }
 }

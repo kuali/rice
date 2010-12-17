@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
+
 /**
  * Transport object for the DocumentRouteHeaderValue.  Represents a document to the
  * client programmer
@@ -64,7 +67,7 @@ public class RouteHeaderDTO implements Serializable {
     /**
      * Probably needs to be an array for web services
      */
-    private List<KeyValueDTO> variables = new ArrayList<KeyValueDTO>();
+    private List<KeyValue> variables = new ArrayList<KeyValue>();
 
     public RouteHeaderDTO() { }
 
@@ -276,8 +279,8 @@ public class RouteHeaderDTO implements Serializable {
 	}
 	// ** Modify Ends
 
-    private KeyValueDTO findVariable(String name) {
-    	for (KeyValueDTO kvp : variables) {
+    private KeyValue findVariable(String name) {
+    	for (KeyValue kvp : variables) {
             if (isEqual(kvp.getKey(), name)) {
                 return kvp;
             }
@@ -285,23 +288,21 @@ public class RouteHeaderDTO implements Serializable {
         return null;
     }
     public String getVariable(String name) {
-        KeyValueDTO kvp = findVariable(name);
+        KeyValue kvp = findVariable(name);
         if (kvp == null) return null;
         return kvp.getValue();
     }
 
     public void setVariable(String name, String value) {
-        KeyValueDTO kvp = findVariable(name);
+        final KeyValue kvp = findVariable(name);
         if (kvp == null) {
             if (value == null) {
                 return;
             }
-            kvp = new KeyValueDTO();
-            kvp.setKey(name);
-            kvp.setValue(value);
-            variables.add(kvp);
+            variables.add(new ContreteKeyValue(name, value));
         } else {
-            // values do not need to be removed from the VO
+            
+        	// values do not need to be removed from the VO
             // in fact they CAN'T be, as the DocumentRouteHeaderValue
             // must observe the null value so the removal actually
             // propagates (otherwise DocumentRouteHeaderValue can't
@@ -314,12 +315,13 @@ public class RouteHeaderDTO implements Serializable {
             //    LOG.error("Removing value: " + kvp.getKey() + "=" + kvp.getValue());
             //    variables.remove(kvp);
             //} else {
-                kvp.setValue(value);
+        		variables.remove(kvp);
+        		variables.add(new ContreteKeyValue(kvp.getKey(), value));
             //}
         }
     }
 
-    public List<KeyValueDTO> getVariables() {
+    public List<KeyValue> getVariables() {
         return variables;
     }
 

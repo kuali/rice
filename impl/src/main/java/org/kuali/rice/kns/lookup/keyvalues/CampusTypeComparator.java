@@ -19,15 +19,18 @@ import java.util.Comparator;
 
 import org.kuali.rice.kns.bo.CampusType;
 
-public class CampusTypeComparator implements Comparator {
+public class CampusTypeComparator implements Comparator<CampusType> {
 
-    public CampusTypeComparator() {
-    }
+	private CampusTypeComparator() {
+	}
+	
+	public static final Comparator<CampusType> INSTANCE = new CampusTypeComparator();
+	
+    @Override
+	public int compare(CampusType o1, CampusType o2) {
 
-    public int compare(Object o1, Object o2) {
-
-        CampusType obj1 = (CampusType) o1;
-        CampusType obj2 = (CampusType) o2;
+        CampusType obj1 = o1;
+        CampusType obj2 = o2;
 
         return obj1.getCampusTypeCode().compareTo(obj2.getCampusTypeCode());
     }

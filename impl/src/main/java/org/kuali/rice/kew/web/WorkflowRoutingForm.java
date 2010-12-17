@@ -153,18 +153,7 @@ public class WorkflowRoutingForm extends ActionForm {
     public void setWorkflowDocument(WorkflowDocument workflowDocument) {
         this.workflowDocument = workflowDocument;
     }
-    /**
-     * @return Returns the previousRouteLevels.
-     */
-    /*public List getPreviousRouteLevels() {
-        List previousRouteLevels = new ArrayList();
-        if (flexDoc != null && flexDoc.getDocRouteLevel() != null) {
-            for (int i = flexDoc.getDocRouteLevel().intValue(); i > 0; --i) {
-                previousRouteLevels.add(new KeyValue(Integer.toString(i - 1), Integer.toString(i - 1)));
-            }
-        }
-        return previousRouteLevels;
-    }*/
+
     /**
      * @return Returns the superUserSearch.
      */

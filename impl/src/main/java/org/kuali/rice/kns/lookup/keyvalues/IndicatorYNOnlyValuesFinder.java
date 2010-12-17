@@ -18,7 +18,8 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 
 /**
  * This class returns list of boolean key value pairs.
@@ -30,10 +31,11 @@ public class IndicatorYNOnlyValuesFinder extends KeyValuesBase {
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List<KeyLabelPair> getKeyValues() {
-        List<KeyLabelPair> activeLabels = new ArrayList<KeyLabelPair>();
-        activeLabels.add(new KeyLabelPair("Yes", "Yes"));
-        activeLabels.add(new KeyLabelPair("No", "No"));
+    @Override
+	public List<KeyValue> getKeyValues() {
+        List<KeyValue> activeLabels = new ArrayList<KeyValue>();
+        activeLabels.add(new ContreteKeyValue("Yes", "Yes"));
+        activeLabels.add(new ContreteKeyValue("No", "No"));
         return activeLabels;
     }
 

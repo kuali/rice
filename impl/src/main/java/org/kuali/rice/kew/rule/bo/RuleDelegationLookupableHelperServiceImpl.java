@@ -15,10 +15,19 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.rule.OddSearchAttribute;
@@ -57,9 +66,6 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
 
-import java.sql.Date;
-import java.util.*;
-
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
  *
@@ -74,7 +80,6 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
     private static final String PARENT_RULE_ID_PROPERTY_NAME = "ruleResponsibility.ruleBaseValues.ruleBaseValuesId";
     private static final String RULE_TEMPLATE_PROPERTY_NAME = "delegationRuleBaseValues.ruleTemplate.name";
     private static final String RULE_ID_PROPERTY_NAME = "delegationRuleBaseValues.ruleBaseValuesId";
-    private static final String RULE_TEMPLATE_ID_PROPERTY_NAME = "delegationRuleBaseValues.ruleBaseValuesId";
     private static final String ACTIVE_IND_PROPERTY_NAME = "delegationRuleBaseValues.activeInd";
     private static final String DELEGATION_PROPERTY_NAME = "delegationType";
     private static final String GROUP_REVIEWER_PROPERTY_NAME = "delegationRuleBaseValues.groupReviewer";
@@ -85,17 +90,13 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
     private static final String DOC_TYP_NAME_PROPERTY_NAME = "delegationRuleBaseValues.documentType.name";
     private static final String RULE_DESC_PROPERTY_NAME = "delegationRuleBaseValues.description";
 
-    private static final String DOC_TYP_LOOKUPABLE = "DocumentTypeLookupableImplService";
-    private static final String RULE_TEMPLATE_LOOKUPABLE = "RuleTemplateLookupableImplService";
-    private static final String WORKGROUP_LOOKUPABLE = "WorkGroupLookupableImplService";
-    private static final String PERSON_LOOKUPABLE = "UserLookupableImplService";
-
     private static final String BACK_LOCATION = "backLocation";
     private static final String DOC_FORM_KEY = "docFormKey";
     private static final String INVALID_WORKGROUP_ERROR = "The Group Reviewer Namespace and Name combination is not valid";
     private static final String INVALID_PERSON_ERROR = "The Person Reviewer is not valid";
 
-    public List<Row> getRows() {
+    @Override
+	public List<Row> getRows() {
         List<Row> superRows = super.getRows();
         List<Row> returnRows = new ArrayList<Row>();
         returnRows.addAll(superRows);
@@ -113,9 +114,8 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
             ruleTemplate = getRuleTemplateService().findByRuleTemplateName(ruleTemplateNameParam);
 
-            int i = 0;
-            for (Iterator iter = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
-                RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
+            for (Object element : ruleTemplate.getActiveRuleTemplateAttributes()) {
+                RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) element;
                 if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                     continue;
                 }
@@ -132,11 +132,10 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 } else {
                     searchRows = attribute.getRuleRows();
                 }
-                for (Iterator<Row> iterator = searchRows.iterator(); iterator.hasNext();) {
-                    Row row = iterator.next();
+                for (Row row : searchRows) {
                     List<Field> fields = new ArrayList<Field>();
-                    for (Iterator<Field> iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
-                        Field field = (Field) iterator2.next();
+                    for (Field field2 : row.getFields()) {
+                        Field field = field2;
                         if (fieldValues.get(field.getPropertyName()) != null) {
                             field.setPropertyValue(fieldValues.get(field.getPropertyName()));
                         }
@@ -156,11 +155,10 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 } else {
                     searchRows = attribute.getRuleRows();
                 }
-                for (Iterator iterator = searchRows.iterator(); iterator.hasNext();) {
-                    Row row = (Row) iterator.next();
+                for (Object element2 : searchRows) {
+                    Row row = (Row) element2;
                     List<Field> fields = new ArrayList<Field>();
-                    for (Iterator<Field> iterator2 = row.getFields().iterator(); iterator2.hasNext();) {
-                        Field field = iterator2.next();
+                    for (Field field : row.getFields()) {
                         if (fieldValues.get(field.getPropertyName()) != null) {
                             field.setPropertyValue(fieldValues.get(field.getPropertyName()));
                         }
@@ -184,27 +182,26 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
     public List<? extends BusinessObject> getSearchResults(Map<String, String> fieldValues) {
         List errors = new ArrayList();
 
-        String parentRuleBaseValueId = (String) fieldValues.get(PARENT_RULE_ID_PROPERTY_NAME);
-        String parentResponsibilityId = (String) fieldValues.get(PARENT_RESPONSIBILITY_ID_PROPERTY_NAME);
-        String docTypeNameParam = (String) fieldValues.get(DOC_TYP_NAME_PROPERTY_NAME);
+        String parentRuleBaseValueId = fieldValues.get(PARENT_RULE_ID_PROPERTY_NAME);
+        String parentResponsibilityId = fieldValues.get(PARENT_RESPONSIBILITY_ID_PROPERTY_NAME);
+        String docTypeNameParam = fieldValues.get(DOC_TYP_NAME_PROPERTY_NAME);
         String ruleTemplateIdParam = null;//(String) fieldValues.get(RULE_TEMPLATE_ID_PROPERTY_NAME);
-        String ruleTemplateNameParam = (String) fieldValues.get(RULE_TEMPLATE_PROPERTY_NAME);
-        String groupIdParam = (String) fieldValues.get(GROUP_REVIEWER_PROPERTY_NAME);
-        String groupNameParam = (String) fieldValues.get(GROUP_REVIEWER_NAME_PROPERTY_NAME);
-        String groupNamespaceParam = (String) fieldValues.get(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
-        String networkIdParam = (String) fieldValues.get(PERSON_REVIEWER_PROPERTY_NAME);
-        String userDirectiveParam = (String) fieldValues.get(PERSON_REVIEWER_TYPE_PROPERTY_NAME);
-        String activeParam = (String) fieldValues.get(ACTIVE_IND_PROPERTY_NAME);
-        String delegationParam = (String) fieldValues.get(DELEGATION_PROPERTY_NAME);
-        String ruleIdParam = (String) fieldValues.get(RULE_ID_PROPERTY_NAME);
-        String delegationWizard = (String) fieldValues.get(KEWConstants.DELEGATION_WIZARD);
-        String ruleDescription = (String) fieldValues.get(RULE_DESC_PROPERTY_NAME);
+        String ruleTemplateNameParam = fieldValues.get(RULE_TEMPLATE_PROPERTY_NAME);
+        String groupIdParam = fieldValues.get(GROUP_REVIEWER_PROPERTY_NAME);
+        String groupNameParam = fieldValues.get(GROUP_REVIEWER_NAME_PROPERTY_NAME);
+        String groupNamespaceParam = fieldValues.get(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
+        String networkIdParam = fieldValues.get(PERSON_REVIEWER_PROPERTY_NAME);
+        String userDirectiveParam = fieldValues.get(PERSON_REVIEWER_TYPE_PROPERTY_NAME);
+        String activeParam = fieldValues.get(ACTIVE_IND_PROPERTY_NAME);
+        String delegationParam = fieldValues.get(DELEGATION_PROPERTY_NAME);
+        String ruleIdParam = fieldValues.get(RULE_ID_PROPERTY_NAME);
+        fieldValues.get(KEWConstants.DELEGATION_WIZARD);
+        String ruleDescription = fieldValues.get(RULE_DESC_PROPERTY_NAME);
 
         String docTypeSearchName = null;
         String workflowId = null;
         String workgroupId = null;
         Long ruleTemplateId = null;
-        Boolean isDelegateRule = null;
         Boolean isActive = null;
         Long ruleId = null;
 
@@ -239,7 +236,6 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 }
                 group = getIdentityManagementService().getGroupByName(groupNamespaceParam, groupNameParam.trim());
                 if (group == null) {
-                    String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
                     GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
                 } else {
                     workgroupId = group.getGroupId();
@@ -266,8 +262,8 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             }
 
             attributes = new HashMap();
-            for (Iterator iter = ruleTemplate.getActiveRuleTemplateAttributes().iterator(); iter.hasNext();) {
-                RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) iter.next();
+            for (Object element : ruleTemplate.getActiveRuleTemplateAttributes()) {
+                RuleTemplateAttribute ruleTemplateAttribute = (RuleTemplateAttribute) element;
                 if (!ruleTemplateAttribute.isWorkflowAttribute()) {
                     continue;
                 }
@@ -292,7 +288,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 for (Row row : searchRows) {
                     for (Field field : row.getFields()) {
                         if (fieldValues.get(field.getPropertyName()) != null) {
-                            String attributeParam = (String) fieldValues.get(field.getPropertyName());
+                            String attributeParam = fieldValues.get(field.getPropertyName());
                             if (!attributeParam.equals("")) {
                                 if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                                     attributes.put(field.getPropertyName(), attributeParam.trim());
@@ -303,9 +299,9 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                         }
                         if (field.getFieldType().equals(Field.TEXT) || field.getFieldType().equals(Field.DROPDOWN) || field.getFieldType().equals(Field.DROPDOWN_REFRESH) || field.getFieldType().equals(Field.RADIO)) {
                             if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-                                myColumns.getColumns().add(new KeyLabelPair(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
+                                myColumns.getColumns().add(new ContreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
                             } else {
-                                myColumns.getColumns().add(new KeyLabelPair(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
+                                myColumns.getColumns().add(new ContreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
                             }
                         }
                     }
@@ -331,7 +327,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         List<RuleDelegation> displayList = new ArrayList<RuleDelegation>();
 
         while (rules.hasNext()) {
-            RuleDelegation ruleDelegation = (RuleDelegation) rules.next();
+            RuleDelegation ruleDelegation = rules.next();
             RuleBaseValues record = ruleDelegation.getDelegationRuleBaseValues();
 
             if (Utilities.isEmpty(record.getDescription())) {
@@ -340,17 +336,16 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
             if (ruleTemplateNameParam != null && !ruleTemplateNameParam.trim().equals("") || ruleTemplateIdParam != null && !"".equals(ruleTemplateIdParam) && !"null".equals(ruleTemplateIdParam)) {
                 MyColumns myNewColumns = new MyColumns();
-                for (Iterator iter = myColumns.getColumns().iterator(); iter.hasNext();) {
-                    KeyLabelPair pair = (KeyLabelPair) iter.next();
-                    KeyLabelPair newPair = new KeyLabelPair();
-                    newPair.setKey(pair.getKey());
-                    if (record.getRuleExtensionValue(new Long(pair.getLabel()), pair.getKey().toString()) != null) {
-                        newPair.setLabel(record.getRuleExtensionValue(new Long(pair.getLabel()), pair.getKey().toString()).getValue());
+                for (Object element : myColumns.getColumns()) {
+                    KeyValue pair = (KeyValue) element;
+                    final KeyValue newPair;
+                    if (record.getRuleExtensionValue(new Long(pair.getKey()), pair.getKey().toString()) != null) {
+                    	newPair = new ContreteKeyValue(pair.getKey(), record.getRuleExtensionValue(new Long(pair.getValue()), pair.getKey().toString()).getValue());
                     } else {
-                        newPair.setLabel(KEWConstants.HTML_NON_BREAKING_SPACE);
+                    	newPair = new ContreteKeyValue(pair.getKey(), KEWConstants.HTML_NON_BREAKING_SPACE);
                     }
                     myNewColumns.getColumns().add(newPair);
-                    record.getFieldValues().put((String)newPair.key, newPair.label);
+                    record.getFieldValues().put(newPair.getKey(), newPair.getValue());
                 }
                 record.setMyColumns(myNewColumns);
             }
@@ -407,7 +402,6 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         if  (!Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
             Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
-                String attributeLabel =  getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
                 GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
             }
         }
@@ -416,7 +410,6 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             //Person person = KIMServiceLocator.getPersonService().getPerson(personId);
             Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(personId);/** IU fix EN-1552 */
             if (person == null) {
-                String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME) + ":" + getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), PERSON_REVIEWER_PROPERTY_NAME);
                 GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
             }
         }
@@ -468,9 +461,9 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
             }
 
             List<Column> columns = getColumns();
-            for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+            for (Object element2 : columns) {
 
-                Column col = (Column) iterator.next();
+                Column col = (Column) element2;
                 String curPropName = col.getPropertyName();
                 Formatter formatter = col.getFormatter();
 

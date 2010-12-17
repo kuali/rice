@@ -17,80 +17,62 @@ package org.kuali.rice.kns.lookup.keyvalues;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
 
-/**
- * This class returns list of chart key value pairs.
- *
- *
- */
 public abstract class KeyValuesBase implements KeyValuesFinder {
-    public Collection getOptionLabels() {
-        List optionLabels = new ArrayList();
+    public Collection<String> getOptionLabels() {
+    	Collection<String> optionLabels = new ArrayList<String>();
 
-        List keyLabels = getKeyValues();
-        for (Iterator iter = keyLabels.iterator(); iter.hasNext();) {
-            KeyLabelPair keyLabel = (KeyLabelPair) iter.next();
-            optionLabels.add(keyLabel.getLabel());
+    	Collection<KeyValue> keyLabels = getKeyValues();
+        for (KeyValue keyLabel : keyLabels) {
+        	optionLabels.add(keyLabel.getValue());
         }
         return optionLabels;
     }
 
-    public Collection getOptionValues() {
-        List optionValues = new ArrayList();
+    public Collection<String> getOptionValues() {
+    	Collection<String> optionValues = new ArrayList<String>();
 
-        List keyLabels = getKeyValues();
-        for (Iterator iter = keyLabels.iterator(); iter.hasNext();) {
-            KeyLabelPair keyLabel = (KeyLabelPair) iter.next();
-            optionValues.add(keyLabel.getKey());
+    	Collection<KeyValue> keyLabels = getKeyValues();
+        for (KeyValue keyLabel : keyLabels) {
+        	optionValues.add(keyLabel.getKey());
         }
         return optionValues;
     }
 
-    /**
-     * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyLabelMap()
-     */
-    public Map getKeyLabelMap() {
-        Map keyLabelMap = new HashMap();
+    @Override
+	public Map<String, String> getKeyLabelMap() {
+        Map<String, String> keyLabelMap = new HashMap<String, String>();
 
-        List keyLabels = getKeyValues();
-        for (Iterator iter = keyLabels.iterator(); iter.hasNext();) {
-            KeyLabelPair keyLabel = (KeyLabelPair) iter.next();
-            keyLabelMap.put(keyLabel.getKey(), keyLabel.getLabel());
+        List<KeyValue> keyLabels = getKeyValues();
+        for (KeyValue keyLabel : keyLabels) {
+        	keyLabelMap.put(keyLabel.getKey(), keyLabel.getValue());
         }
 
         return keyLabelMap;
     }
 
-    /**
-     * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyLabel(java.lang.Object)
-     */
-    public String getKeyLabel(Object key) {
-        Map keyLabelMap = getKeyLabelMap();
+    @Override
+	public String getKeyLabel(String key) {
+        Map<String, String> keyLabelMap = getKeyLabelMap();
 
         if (keyLabelMap.containsKey(key)) {
-            return (String) keyLabelMap.get(key);
+            return keyLabelMap.get(key);
         }
-        else {
-            return "";
-        }
+        return null;
     }
     
-    /***
-     * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getInactiveKeyValues()
-     */
-    public List getKeyValues(boolean includeActiveOnly){
-    	return new ArrayList();
+    @Override
+	public List<KeyValue> getKeyValues(boolean includeActiveOnly){
+    	return Collections.emptyList();
     }
     
-    /**
-     * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#clearInternalCache()
-     */
+	@Override
 	public void clearInternalCache() {
 		// do nothing
 	}

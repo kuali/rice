@@ -20,11 +20,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableImpl;
 
 /**
- * A bean which wraps a List of {@link <KeyLabelPair>} objects.
+ * A bean which wraps a List of {@link <KeyValue>} objects.
  * 
  * @see RuleBaseValuesLookupableImpl
  *
@@ -33,16 +33,16 @@ import org.kuali.rice.kew.rule.bo.RuleBaseValuesLookupableImpl;
 public class MyColumns implements Serializable {
 
 	private static final long serialVersionUID = -4669528607040709102L;
-	private List<KeyLabelPair> columns;
+	private List<KeyValue> columns;
 
     public MyColumns() {
-        columns = new ArrayList<KeyLabelPair>();
+        columns = new ArrayList<KeyValue>();
     }
 
-    public List<KeyLabelPair> getColumns() {
+    public List<KeyValue> getColumns() {
         return columns;
     }
-    public void setColumns(List<KeyLabelPair> columns) {
+    public void setColumns(List<KeyValue> columns) {
         this.columns = columns;
     }
 }

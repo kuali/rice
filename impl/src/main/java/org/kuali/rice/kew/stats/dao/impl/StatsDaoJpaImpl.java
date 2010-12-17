@@ -28,6 +28,7 @@ import javax.persistence.Query;
 
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.dao.StatsDAO;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -52,7 +53,8 @@ public class StatsDaoJpaImpl implements StatsDAO {
     @PersistenceContext
     private EntityManager entityManager;
     
-    public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException {
+    @Override
+	public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException {
         Query query = entityManager.createQuery("select count(*) as count, drhv.docRouteStatus from DocumentRouteHeaderValue drhv where drhv.createDate between :beginDate and :endDate group by docRouteStatus");
 //        Query query = entityManager.createNamedQuery("Stats.DocumentsRoutedReport");
         query.setParameter("beginDate", new Timestamp(begDate.getTime()));
@@ -86,12 +88,14 @@ public class StatsDaoJpaImpl implements StatsDAO {
         }
     }
 
-    public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
+    @Override
+	public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
         stats.setNumActionItems(entityManager.createQuery("select count(*) from ActionItem ai").getSingleResult().toString());
 //        stats.setNumActionItems(entityManager.createNamedQuery("Stats.NumActiveItemsReport").getSingleResult().toString());
     }
 
-    public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException, LookupException {
+    @Override
+	public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException, LookupException {
         Query query = entityManager.createQuery("select count(*), dt.name from DocumentRouteHeaderValue drhv, DocumentType dt where drhv.createDate > :createDate and drhv.documentTypeId = dt.documentTypeId group by dt.name");
 //        Query query = entityManager.createNamedQuery("Stats.NumInitiatedDocsByDocTypeReport");
         Calendar calendar = Calendar.getInstance();
@@ -107,18 +111,20 @@ public class StatsDaoJpaImpl implements StatsDAO {
         
         List<KeyValue> numDocs = new ArrayList<KeyValue>(resultList.size());
         for (Object[] result : resultList) {
-            numDocs.add(new org.kuali.rice.core.util.KeyValue(result[1].toString(),result[0].toString()));
+            numDocs.add(new ContreteKeyValue(result[1].toString(),result[0].toString()));
         }
         
         stats.setNumInitiatedDocsByDocType(numDocs);
     }
 
-    public void NumUsersReport(Stats stats) throws SQLException, LookupException {
+    @Override
+	public void NumUsersReport(Stats stats) throws SQLException, LookupException {
         stats.setNumUsers(entityManager.createQuery("select count(distinct uo.workflowId) from UserOptions uo").getSingleResult().toString());
 //        stats.setNumUsers(entityManager.createNamedQuery("Stats.NumUsersReport").getSingleResult().toString());
     }
 
-    public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException {
+    @Override
+	public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException {
         stats.setNumDocTypes(entityManager.createQuery("select count(*) from DocumentType dt where dt.currentInd = true").getSingleResult().toString());
 //        stats.setNumDocTypes(entityManager.createNamedQuery("Stats.NumberOfDocTypesReport").getSingleResult().toString());
     }

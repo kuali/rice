@@ -16,9 +16,11 @@
 package org.kuali.rice.kew.rule.bo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
@@ -30,12 +32,19 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
  */
 public class RuleAttributeTypeValuesFinder extends KeyValuesBase {
 
-	public List<KeyLabelPair> getKeyValues() {
-		List<KeyLabelPair> ruleAttributeTypes = new ArrayList<KeyLabelPair>();
+	private static final List<KeyValue> RULE_ATTRIBUTE_TYPES;
+	
+	static {
+		final List<KeyValue> ruleAttributeTypes = new ArrayList<KeyValue>();
 		for (String ruleAttributeType : KEWConstants.RULE_ATTRIBUTE_TYPES) {
-			ruleAttributeTypes.add(new KeyLabelPair(ruleAttributeType, KEWConstants.RULE_ATTRIBUTE_TYPE_MAP.get(ruleAttributeType)));
+			ruleAttributeTypes.add(new ContreteKeyValue(ruleAttributeType, KEWConstants.RULE_ATTRIBUTE_TYPE_MAP.get(ruleAttributeType)));
 		}
-		return ruleAttributeTypes;
+		RULE_ATTRIBUTE_TYPES = Collections.unmodifiableList(ruleAttributeTypes);
+	}
+	
+	@Override
+	public List<KeyValue> getKeyValues() {
+		return RULE_ATTRIBUTE_TYPES;
 	}
 
 }

@@ -106,8 +106,9 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         
         personDocumentForm.setCanModifyEntity(getUiDocumentService().canModifyEntity(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
         KimEntityDefaultInfo origEntity = null;
-        if(personDocumentForm.getPersonDocument()!=null)
-        	origEntity = getIdentityManagementService().getEntityDefaultInfo(personDocumentForm.getPersonDocument().getEntityId());
+        if(personDocumentForm.getPersonDocument()!=null) {
+			origEntity = getIdentityManagementService().getEntityDefaultInfo(personDocumentForm.getPersonDocument().getEntityId());
+		}
         boolean isCreatingNew = (personDocumentForm.getPersonDocument()==null || origEntity==null)?true:false;
         personDocumentForm.setCanOverrideEntityPrivacyPreferences(isCreatingNew || getUiDocumentService().canOverrideEntityPrivacyPreferences(GlobalVariables.getUserSession().getPrincipalId(), personDocumentForm.getPrincipalId()));
 		return forward;
@@ -162,14 +163,16 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         } else {
         	getUiDocumentService().loadEntityToPersonDoc(personDocumentForm.getPersonDocument(), personDocumentForm.getPrincipalId() );
         	populateRoleInformation( personDocumentForm.getPersonDocument() );
-        	if(personDocumentForm.getPersonDocument()!=null) 
-        		personDocumentForm.getPersonDocument().setIfRolesEditable();
+        	if(personDocumentForm.getPersonDocument()!=null) {
+				personDocumentForm.getPersonDocument().setIfRolesEditable();
+			}
         }
 	}
 	
 	/***
 	 * @see org.kuali.rice.kim.web.struts.action.IdentityManagementDocumentActionBase#getActionName()
 	 */
+	@Override
 	public String getActionName(){
 		return KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION;
 	}
@@ -394,8 +397,9 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         		roleRspAction.setRoleResponsibilityId("*");        		
         		roleRspAction.refreshReferenceObject("roleResponsibility");
         		if(rolePrncpl.getRoleRspActions()==null || rolePrncpl.getRoleRspActions().size()<1){
-        			if(rolePrncpl.getRoleRspActions()==null)
-        				rolePrncpl.setRoleRspActions(new ArrayList<KimDocumentRoleResponsibilityAction>());
+        			if(rolePrncpl.getRoleRspActions()==null) {
+						rolePrncpl.setRoleRspActions(new ArrayList<KimDocumentRoleResponsibilityAction>());
+					}
         			 rolePrncpl.getRoleRspActions().add(roleRspAction);
         		}
         	}        	
@@ -466,7 +470,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
     
     public ActionForward addDelegationMember(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementPersonDocumentForm personDocumentForm = (IdentityManagementPersonDocumentForm) form;
-        IdentityManagementPersonDocument personDocument = (IdentityManagementPersonDocument)personDocumentForm.getPersonDocument();
+        IdentityManagementPersonDocument personDocument = personDocumentForm.getPersonDocument();
         RoleDocumentDelegationMember newDelegationMember = personDocumentForm.getNewDelegationMember();
         KimTypeAttributesHelper attrHelper = newDelegationMember.getAttributesHelper();
         if (getKualiRuleService().applyRules(new AddPersonDelegationMemberEvent("", personDocumentForm.getPersonDocument(), newDelegationMember))) {
@@ -520,7 +524,8 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         return super.refresh(mapping, form, request, response);
 	}
 
-    public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+	public ActionForward performLookup(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	return super.performLookup(mapping, form, request, response);
     }
     
@@ -590,7 +595,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         props.put(KNSConstants.DOC_NUM, impdForm.getDocument().getDocumentNumber());
 
         // TODO: how should this forward be handled
-        String url = UrlFactory.parameterizeUrl(getBasePath(request) + "/kr/" + KNSConstants.LOOKUP_ACTION, props);
+        String url = UrlFactory.parameterizeUrl(getApplicationBaseUrl() + "/kr/" + KNSConstants.LOOKUP_ACTION, props);
 
         impdForm.registerEditableProperty("methodToCall");
 

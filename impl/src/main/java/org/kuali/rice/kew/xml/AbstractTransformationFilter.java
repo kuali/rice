@@ -17,10 +17,10 @@ package org.kuali.rice.kew.xml;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.XMLFilterImpl;
@@ -83,6 +83,7 @@ public abstract class AbstractTransformationFilter extends XMLFilterImpl {
 	 */
 	public abstract String getStartingElementPath();
 	
+	@Override
 	public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
 		// Push the element onto the stack
 		if (groupXmlStack.isEmpty()){			
@@ -98,7 +99,7 @@ public abstract class AbstractTransformationFilter extends XMLFilterImpl {
 		CurrentElement currentElement = new CurrentElement(currentElementKey,uri, localName, qName, atts);
 				
 		// Transform elements of concern:
-		if (getElementTransformationList().contains(new KeyValue(getTrimmedCurrentElementKey(currentElementKey), uri))){
+		if (getElementTransformationList().contains(new ContreteKeyValue(getTrimmedCurrentElementKey(currentElementKey), uri))){
 			CurrentElement transformedElement = this.transformStartElement(currentElement);			
 			super.startElement(transformedElement.getUri(), transformedElement.getLocalName(), transformedElement.getqName(), transformedElement.getAttributes());
 		}
@@ -111,12 +112,13 @@ public abstract class AbstractTransformationFilter extends XMLFilterImpl {
 	protected String getTrimmedCurrentElementKey(String currentElementKey){
 		return currentElementKey.replaceFirst(StringEscapeUtils.escapeJava(this.getStartingElementPath()+"."), "");
 	}
-    public void endElement(String uri, String localName, String qName) throws SAXException {
+    @Override
+	public void endElement(String uri, String localName, String qName) throws SAXException {
 		// Fetch the current element from the top of the stack
 		String currentElementKey = groupXmlStack.get(groupXmlStack.size()-1);
 		CurrentElement currentElement = new CurrentElement(currentElementKey,uri, localName, qName);
 		
-		if (getElementTransformationList().contains(new KeyValue(getTrimmedCurrentElementKey(currentElementKey), uri))){
+		if (getElementTransformationList().contains(new ContreteKeyValue(getTrimmedCurrentElementKey(currentElementKey), uri))){
 			CurrentElement transformedElement = this.transformEndElement(currentElement);			
 			super.endElement(transformedElement.getUri(), transformedElement.getLocalName(), transformedElement.getqName());
 		}		

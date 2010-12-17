@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.kew.dto;
 
-import java.io.Serializable;
+import org.kuali.rice.core.util.AbstractKeyValue;
 
 /**
  * Transport object for State.  Essentially an empty "marker" subclass of state to use as a VO
@@ -24,7 +24,7 @@ import java.io.Serializable;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class StateDTO extends KeyValueDTO implements Serializable {
+public class StateDTO extends AbstractKeyValue {
     
 	private static final long serialVersionUID = 4787443469039295347L;
 	
@@ -38,4 +38,11 @@ public class StateDTO extends KeyValueDTO implements Serializable {
 		this.stateId = stateId;
 	}
     
+    public void setKey(String key) {
+		this.key = key;
+	}
+    
+    public void setValue(String value) {
+		this.value = value;
+	}
 }

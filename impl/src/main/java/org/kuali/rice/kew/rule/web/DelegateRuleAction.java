@@ -69,7 +69,7 @@ public class DelegateRuleAction extends KewKualiAction {
 	}
 	
 	protected String generateMaintenanceUrl(HttpServletRequest request, DelegateRuleForm form) {
-		return getBasePath(request) + "/kr/" + KNSConstants.MAINTENANCE_ACTION + "?" + 
+		return getApplicationBaseUrl() + "/kr/" + KNSConstants.MAINTENANCE_ACTION + "?" + 
 			KNSConstants.DISPATCH_REQUEST_PARAMETER + "=" + KNSConstants.START_METHOD + "&" +
 			KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE + "=" + RuleDelegation.class.getName() +  "&" +
 			WebRuleUtils.RESPONSIBILITY_ID_PARAM + "=" + form.getParentResponsibilityId() + "&" +

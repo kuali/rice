@@ -17,10 +17,10 @@ package org.kuali.rice.kns.lookup.keyvalues;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.bo.CampusType;
 import org.kuali.rice.kns.bo.CampusTypeImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -33,29 +33,28 @@ import org.kuali.rice.kns.service.KeyValuesService;
  */
 public class CampusTypeValuesFinder extends KeyValuesBase {
 
-    public List getKeyValues() {
+    @Override
+	public List<KeyValue> getKeyValues() {
 
         // get a list of all CampusTypes
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-        List campusTypes = (List) boService.findAll(CampusTypeImpl.class);
+        List<CampusType> campusTypes = (List) boService.findAll(CampusTypeImpl.class);
         // copy the list of codes before sorting, since we can't modify the results from this method
         if ( campusTypes == null ) {
-        	campusTypes = new ArrayList<CampusTypeImpl>(0);
+        	campusTypes = new ArrayList<CampusType>(0);
         } else {
-        	campusTypes = new ArrayList<CampusTypeImpl>( campusTypes );
+        	campusTypes = new ArrayList<CampusType>( campusTypes );
         }
-        // calling comparator.
-        CampusTypeComparator campusTypeComparator = new CampusTypeComparator();
+       
 
         // sort using comparator.
-        Collections.sort(campusTypes, campusTypeComparator);
+        Collections.sort(campusTypes, CampusTypeComparator.INSTANCE);
 
         // create a new list (code, descriptive-name)
-        List labels = new ArrayList();
+        List<KeyValue> labels = new ArrayList<KeyValue>();
 
-        for (Iterator iter = campusTypes.iterator(); iter.hasNext();) {
-            CampusType campusType = (CampusType) iter.next();
-            labels.add(new KeyLabelPair(campusType.getCampusTypeCode(), campusType.getCampusTypeCode() + " - " + campusType.getCampusTypeName()));
+        for (CampusType campusType : campusTypes) {
+            labels.add(new ContreteKeyValue(campusType.getCampusTypeCode(), campusType.getCampusTypeCode() + " - " + campusType.getCampusTypeName()));
         }
 
         return labels;

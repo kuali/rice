@@ -22,6 +22,7 @@ import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
@@ -82,9 +83,8 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         for (String clearListName : clearListNames)
         {
             List<UserOptions> records = userOptionsService.findByUserQualified(principalId, clearListName);
-            for (Iterator<UserOptions> iter = records.iterator(); iter.hasNext();)
-            {
-                userOptionsService.deleteUserOptions((UserOptions) iter.next());
+            for (UserOptions userOptions : records) {
+                userOptionsService.deleteUserOptions((UserOptions) userOptions);
             }
         }
 	}
@@ -429,7 +429,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		if (namedSearches != null && namedSearches.size() > 0) {
 			Collections.sort(namedSearches);
 			for (UserOptions namedSearch : namedSearches) {
-				KeyValue keyValue = new KeyValue(namedSearch.getOptionId(), namedSearch.getOptionId().substring(NAMED_SEARCH_ORDER_BASE.length(), namedSearch.getOptionId().length()));
+				KeyValue keyValue = new ContreteKeyValue(namedSearch.getOptionId(), namedSearch.getOptionId().substring(NAMED_SEARCH_ORDER_BASE.length(), namedSearch.getOptionId().length()));
 				sortedNamedSearches.add(keyValue);
 			}
 		}
@@ -455,15 +455,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
                 }
                 if (matchingOption != null)
                 {
-                    try
-                    {
-                        sortedMostRecentSearches.add(new KeyValue(anOrdered, getCriteriaFromSavedSearch(matchingOption).getDocumentSearchAbbreviatedString()));
-                    }
-                    catch (Exception e)
-                    {
-                        String errorMessage = "Error found atttempting to get 'recent search' using user (principal id " + principalId + ") with option having id " + matchingOption.getOptionId() + " and value '" + matchingOption.getOptionVal() + "'";
-                        LOG.error("getMostRecentSearches() " + errorMessage, e);
-                    }
+                	sortedMostRecentSearches.add(new ContreteKeyValue(anOrdered, getCriteriaFromSavedSearch(matchingOption).getDocumentSearchAbbreviatedString()));
                 }
             }
 		}

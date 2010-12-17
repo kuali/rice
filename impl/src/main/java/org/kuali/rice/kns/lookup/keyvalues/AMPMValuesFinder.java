@@ -18,7 +18,8 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 
 /**
  * This class returns list of am/pm value pairs.
@@ -30,10 +31,11 @@ public class AMPMValuesFinder extends KeyValuesBase {
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-        List keyValues = new ArrayList();
-        keyValues.add(new KeyLabelPair("No", "AM"));
-        keyValues.add(new KeyLabelPair("Yes", "PM"));
+    @Override
+	public List<KeyValue> getKeyValues() {
+    	List<KeyValue> keyValues = new ArrayList<KeyValue>();
+        keyValues.add(new ContreteKeyValue("No", "AM"));
+        keyValues.add(new ContreteKeyValue("Yes", "PM"));
 
         return keyValues;
     }

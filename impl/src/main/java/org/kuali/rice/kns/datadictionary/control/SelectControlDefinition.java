@@ -20,7 +20,7 @@ package org.kuali.rice.kns.datadictionary.control;
 /**
     The select element will render an HTML select control.
     The valuesFinderClass will have a getKeyValues() method
-    that returns a list of KeyLabelPair objects.
+    that returns a list of KeyValue objects.
 
     An optional script attribute allows java script code to be
     entered.  This code will be run when the user selects a new
@@ -35,14 +35,16 @@ public class SelectControlDefinition extends MultivalueControlDefinitionBase {
     /**
      * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isSelect()
      */
-    public boolean isSelect() {
+    @Override
+	public boolean isSelect() {
         return true;
     }
 
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return "SelectControlDefinition";
     }
 

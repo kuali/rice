@@ -16,14 +16,14 @@
 package org.kuali.rice.kns.lookup.keyvalues;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -38,19 +38,19 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
 	/**
 	 * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
-	public List<KeyLabelPair> getKeyValues() {
+	@Override
+	public List<KeyValue> getKeyValues() {
         KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
         if ( kimType != null ) {
-	        KimTypeService service = KimCommonUtils.getKimTypeService(kimType);
+	        KimTypeService service = KIMServiceLocator.getKimTypeService(kimType);
 	        if ( service != null ) {
-				return service.getAttributeValidValues(kimTypeId,kimAttributeName);
-	        } else {
-	        	LOG.error( "Unable to get type service " + kimType.getKimTypeServiceName() );
-	        }
+				return new ArrayList<KeyValue>(service.getAttributeValidValues(kimTypeId,kimAttributeName));
+	        } 
+	        LOG.error( "Unable to get type service " + kimType.getKimTypeServiceName() );
         } else {
         	LOG.error( "Unable to obtain KIM type for kimTypeId=" + kimTypeId );
         }
-        return new ArrayList<KeyLabelPair>(0);
+        return Collections.emptyList();
 	}
 
 	/**

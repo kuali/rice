@@ -18,10 +18,10 @@ package org.kuali.rice.kew.quicklinks.dao;
 
 import java.util.List;
 
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.quicklinks.ActionListStats;
 import org.kuali.rice.kew.quicklinks.InitiatedDocumentType;
 import org.kuali.rice.kew.quicklinks.WatchedDocument;
-import org.kuali.rice.core.util.KeyValue;
 
 
 public interface QuickLinksDAO {

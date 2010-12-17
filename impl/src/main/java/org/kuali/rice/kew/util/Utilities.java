@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.util;
 
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -33,9 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.collections.KeyValue;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -174,8 +175,7 @@ public class Utilities {
     public static Set asSet(Object[] objects) {
         Set set = new HashSet();
         if (objects != null) {
-            for (int index = 0; index < objects.length; index++) {
-                Object object = objects[index];
+            for (Object object : objects) {
                 set.add(object);
             }
         }
@@ -203,7 +203,8 @@ public class Utilities {
      *	Consider moving out of this class if this bugs
      */
     public static class PrioritySorter implements Comparator<ActionRequestValue> {
-        public int compare(ActionRequestValue ar1, ActionRequestValue ar2) {
+        @Override
+		public int compare(ActionRequestValue ar1, ActionRequestValue ar2) {
             int value = ar1.getPriority().compareTo(ar2.getPriority());
             if (value == 0) {
                 value = ActionRequestValue.compareActionCode(ar1.getActionRequested(), ar2.getActionRequested(), true);
@@ -225,7 +226,8 @@ public class Utilities {
      *	Consider moving out of this class if this bugs
      */
     public static class RouteLogActionRequestSorter extends PrioritySorter implements Comparator<ActionRequestValue> {
-        public int compare(ActionRequestValue ar1, ActionRequestValue ar2) {
+        @Override
+		public int compare(ActionRequestValue ar1, ActionRequestValue ar2) {
             if (! ar1.getChildrenRequests().isEmpty()) {
                 Collections.sort(ar1.getChildrenRequests(), this);
             }
@@ -259,7 +261,9 @@ public class Utilities {
 
         try {
             Date parsedDate = RiceConstants.getDefaultDateFormat().parse(date.trim());
-            if (! RiceConstants.getDefaultDateFormat().format(parsedDate).equals(date)) return false;
+            if (! RiceConstants.getDefaultDateFormat().format(parsedDate).equals(date)) {
+				return false;
+			}
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(parsedDate);
             int yearInt = calendar.get(Calendar.YEAR);
@@ -306,8 +310,12 @@ public class Utilities {
      * for comparison purposes because it enforces element uniqueness)
      */
     public static boolean collectionsEquivalent(Collection a, Collection b) {
-        if (a == null && b == null) return true;
-        if (a == null ^ b == null) return false;
+        if (a == null && b == null) {
+			return true;
+		}
+        if (a == null ^ b == null) {
+			return false;
+		}
         return a.containsAll(b) && b.containsAll(a);
     }
 
@@ -329,15 +337,13 @@ public class Utilities {
 
     /**
      * Helper method that takes a List of {@link KeyValue} and presents it as a Map
-     * @param <T> the key type
-     * @param <Z> the value type
      * @param collection collection of {@link KeyValue}
-     * @return a Map<T,Z> representing the keys and values in the KeyValue collection
+     * @return a Map<String, String> representing the keys and values in the KeyValue collection
      */
-    public static <T,Z> Map<T, Z> getKeyValueCollectionAsMap(List<? extends KeyValue> collection) {
-        Map<T, Z> map = new HashMap<T, Z>(collection.size());
+    public static <T  extends KeyValue> Map<String, String> getKeyValueCollectionAsMap(List<T> collection) {
+        Map<String, String> map = new HashMap<String, String>(collection.size());
         for (KeyValue kv: collection) {
-            map.put((T) kv.getKey(), (Z) kv.getValue());
+            map.put(kv.getKey(), kv.getValue());
         }
         return map;
     }
@@ -346,14 +352,15 @@ public class Utilities {
      * Helper method that takes a List of {@link KeyValue} and presents it as a Map containing
      * KeyValue values
      * @param <T> the key type
-     * @param <Z> the collection/map value type, which must be a KeyValue
+     * @param <U> the value type
+     * @param <Z> the collection/map value type, which must be a KeyValue<T,U>
      * @param collection collection of {@link KeyValue}
      * @return a Map<T,Z> where keys of the KeyValues in the collection are mapped to their respective KeyValue object
      */
-    public static <T,Z  extends KeyValue> Map<T, Z> getKeyValueCollectionAsLookupTable(List<Z> collection) {
-        Map<T, Z> map = new HashMap<T, Z>(collection.size());
-        for (Z kv: collection) {
-            map.put((T) kv.getKey(), kv);
+    public static <T  extends KeyValue> Map<String, T> getKeyValueCollectionAsLookupTable(List<T> collection) {
+        Map<String, T> map = new HashMap<String, T>(collection.size());
+        for (T kv: collection) {
+            map.put(kv.getKey(), kv);
         }
         return map;
     }

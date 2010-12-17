@@ -22,7 +22,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -31,9 +30,8 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
@@ -65,6 +63,7 @@ import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
+import org.kuali.rice.kns.service.DateTimeService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -100,7 +99,7 @@ KualiLookupableHelperServiceImpl {
 	private static final Pattern HREF_PATTERN = Pattern.compile("<a href=\"([^\"]+)\"");
 
 	/**
-	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.core.api.DateTimeService)
+	 * @see org.kuali.rice.kew.bo.lookup.DocumentRouteHeaderValueLookupableHelperService#setDateTimeService(org.kuali.rice.kns.service.DateTimeService)
 	 */
 	public void setDateTimeService(DateTimeService dateTimeService) {
 		this.dateTimeService = dateTimeService;
@@ -224,13 +223,13 @@ KualiLookupableHelperServiceImpl {
 
 //          String actionUrls = getActionUrls(element, pkNames, businessObjectRestrictions);
 //ADDED (4 lines)
-        for (Iterator<DocumentSearchResult> iter = result.iterator(); iter.hasNext();) {
+        for (DocumentSearchResult documentSearchResult : result) {
 
 
 
 
 
-        	DocumentSearchResult docSearchResult = (DocumentSearchResult)iter.next();
+        	DocumentSearchResult docSearchResult = (DocumentSearchResult)documentSearchResult;
 //TODO: where to get these from?
 //        	HtmlData returnUrl = new AnchorHtmlData();
         	String actionUrls = "";
@@ -544,7 +543,9 @@ KualiLookupableHelperServiceImpl {
 
 		BusinessObjectEntry boe = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(this.getBusinessObjectClass().getName());
         int numCols = boe.getLookupDefinition().getNumOfColumns();
-        if(numCols == 0) numCols = KNSConstants.DEFAULT_NUM_OF_COLUMNS;
+        if(numCols == 0) {
+			numCols = KNSConstants.DEFAULT_NUM_OF_COLUMNS;
+		}
 
 		super.getRows().addAll(FieldUtils.wrapFields(this.getFields(rows),numCols ));
 
@@ -989,12 +990,8 @@ KualiLookupableHelperServiceImpl {
 						values.put(tempField.getPropertyName(), tempField.getPropertyValue());
 					}
 
-			        for (Iterator<Row> iter = this.getRows().iterator(); iter.hasNext();) {
-			        	Row row = iter.next();
-
-			        	for (Iterator<Field> iterator = row.getFields().iterator(); iterator.hasNext();) {
-			        		Field field = iterator.next();
-
+			        for (Row row : this.getRows()) {
+			        	for (Field field : row.getFields()) {
 			        		if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
 			        			if (this.getParameters().get(field.getPropertyName()) != null) {
 			        				if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
@@ -1016,10 +1013,8 @@ KualiLookupableHelperServiceImpl {
 			        }
 
 			        if (checkForAdditionalFields(fieldValues)) {
-			            for (Iterator<Row> iter = this.getRows().iterator(); iter.hasNext();) {
-			                Row row = iter.next();
-			                for (Iterator<Field> iterator = row.getFields().iterator(); iterator.hasNext();) {
-			                    Field field = iterator.next();
+			            for (Row row : this.getRows()) {
+			                for (Field field : row.getFields()) {
 			                    if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
 			                        if (this.getParameters().get(field.getPropertyName()) != null) {
 			                        	if(!Field.MULTI_VALUE_FIELD_TYPES.contains(field.getFieldType())) {
@@ -1109,10 +1104,10 @@ KualiLookupableHelperServiceImpl {
 
 		}
 		Object fieldValue = null;
-        for (Iterator<Row> iter = getRows().iterator(); iter.hasNext();) {
-            Row row = (Row) iter.next();
-            for (Iterator<Field> iterator = row.getFields().iterator(); iterator.hasNext();) {
-                Field field = (Field) iterator.next();
+        for (Row row2 : getRows()) {
+            Row row = (Row) row2;
+            for (Field field2 : row.getFields()) {
+                Field field = (Field) field2;
                 if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
                 	if (fieldValues.get(field.getPropertyName()) != null) {
         				field.setPropertyValue(fieldValues.get(field.getPropertyName()));
@@ -1150,7 +1145,7 @@ KualiLookupableHelperServiceImpl {
 	@Override
 	public Field getExtraField() {
 		SavedSearchValuesFinder savedSearchValuesFinder = new SavedSearchValuesFinder();
-		List<KeyLabelPair> savedSearchValues = savedSearchValuesFinder.getKeyValues();
+		List<KeyValue> savedSearchValues = savedSearchValuesFinder.getKeyValues();
 
 		Field savedSearch = new Field();
 		savedSearch.setPropertyName("savedSearchName");

@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.bo.RuleMaintenanceActionRequestCodeValuesFinder;
 import org.kuali.rice.kew.document.RoutingRuleMaintainable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -71,11 +71,11 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 	/**
 	 * A convenience method for creating a set of expected key label pairs.
 	 * 
-	 * @param hasAcknowledge Indicates that a KeyLabelPair for "acknowledge" options should exist.
-	 * @param hasComplete Indicates that a KeyLabelPair for "complete" options should exist.
-	 * @param hasApprove Indicates that a KeyLabelPair for "approve" options should exist.
-	 * @param hasFyi Indicates that a KeyLabelPair for "fyi" options should exist.
-	 * @return A Set containing the desired expected KeyLabelPair keys.
+	 * @param hasAcknowledge Indicates that a KeyValue for "acknowledge" options should exist.
+	 * @param hasComplete Indicates that a KeyValue for "complete" options should exist.
+	 * @param hasApprove Indicates that a KeyValue for "approve" options should exist.
+	 * @param hasFyi Indicates that a KeyValue for "fyi" options should exist.
+	 * @return A Set containing the desired expected KeyValue keys.
 	 */
 	private Set<String> createExpectedKeysSet(boolean hasAcknowledge, boolean hasComplete, boolean hasApprove, boolean hasFyi) {
 		final Set<String> expectedKeys = new HashSet<String>();
@@ -88,15 +88,15 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 	}
 	
 	/**
-	 * A convenience method for placing the keys from a KeyLabelPair list into a set.
+	 * A convenience method for placing the keys from a KeyValue list into a set.
 	 * 
-	 * @param kValues The KeyLabelPairs to process.
-	 * @return A Set containing the keys of each KeyLabelPair.
+	 * @param kValues The KeyValues to process.
+	 * @return A Set containing the keys of each KeyValue.
 	 */
-	private Set<String> createSetOfKeyLabelPairKeys(List<KeyLabelPair> klpList) {
+	private Set<String> createSetOfKeyValueKeys(List<KeyValue> klpList) {
 		final Set<String> actualKeys = new HashSet<String>();
-		for (Iterator<KeyLabelPair> iterator = klpList.iterator(); iterator.hasNext();) {
-			actualKeys.add((String) iterator.next().key);
+		for (Iterator<KeyValue> iterator = klpList.iterator(); iterator.hasNext();) {
+			actualKeys.add((String) iterator.next().getKey());
 		}
 		return actualKeys;
 	}
@@ -107,9 +107,9 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 	 */
 	@Test public void testAllTrueOptionsInTestRuleTemplate() throws Exception {
 		createNewKualiMaintenanceForm("TestRuleTemplate");
-		assertRuleTemplateHasExpectedKeyLabelPairs(
+		assertRuleTemplateHasExpectedKeyValues(
 				createExpectedKeysSet(true, true, true, true),
-				createSetOfKeyLabelPairKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
+				createSetOfKeyValueKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
 	}
 
 	/**
@@ -120,15 +120,15 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 	@Test public void testCorrectKeyValuesReturnedBasedOnKualiFormInstance() throws Exception {
 		// First, check that the proper values are returned when the Kuali form is *not* a KualiMaintenanceForm.
 		GlobalVariables.setKualiForm(new KualiForm());
-		assertRuleTemplateHasExpectedKeyLabelPairs(
+		assertRuleTemplateHasExpectedKeyValues(
 				createExpectedKeysSet(true, true, true, true),
-				createSetOfKeyLabelPairKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
+				createSetOfKeyValueKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
 		// Next, check that the proper values are returned when the Kuali form is a KualiMaintenanceForm containing a given rule template.
 		loadXmlFile("RT_ValidRuleTemplatesWithVaryingDefaults.xml");
 		createNewKualiMaintenanceForm("Test_Rule_Template2");
-		assertRuleTemplateHasExpectedKeyLabelPairs(
+		assertRuleTemplateHasExpectedKeyValues(
 				createExpectedKeysSet(false, false, false, true),
-				createSetOfKeyLabelPairKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
+				createSetOfKeyValueKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
 	}
 	
 	/**
@@ -146,21 +146,21 @@ public class RuleTemplateDefaultsTest extends KEWTestCase {
 		// Test each rule template from the given file.
 		for (int i = 0; i < ruleTemplates.length; i++) {
 			createNewKualiMaintenanceForm(ruleTemplates[i]);
-			assertRuleTemplateHasExpectedKeyLabelPairs(
+			assertRuleTemplateHasExpectedKeyValues(
 					createExpectedKeysSet(kSetBools[i][0], kSetBools[i][1], kSetBools[i][2], kSetBools[i][3]),
-					createSetOfKeyLabelPairKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
+					createSetOfKeyValueKeys((new RuleMaintenanceActionRequestCodeValuesFinder()).getKeyValues()));
 			assertRuleTemplateHasExpectedDefaultActions(defaultActions[i]);
 		}
 	}
 	
 	/**
-	 * A convenience method for performing KeyLabelPair existence/nonexistence tests.
+	 * A convenience method for performing KeyValue existence/nonexistence tests.
 	 * 
-	 * @param expectedKeys The expected KeyLabelPair keys.
-	 * @param actualKeys The actual KeyLabelPair keys.
+	 * @param expectedKeys The expected KeyValue keys.
+	 * @param actualKeys The actual KeyValue keys.
 	 * @throws Exception
 	 */
-	private void assertRuleTemplateHasExpectedKeyLabelPairs(Set<String> expectedKeys, Set<String> actualKeys) throws Exception {
+	private void assertRuleTemplateHasExpectedKeyValues(Set<String> expectedKeys, Set<String> actualKeys) throws Exception {
 		// Check to see if all required keys are in the set.
 		for (Iterator<String> iterator = expectedKeys.iterator(); iterator.hasNext();) {
 			final String expKey = iterator.next();

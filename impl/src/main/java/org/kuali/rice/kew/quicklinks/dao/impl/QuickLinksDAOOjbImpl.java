@@ -46,9 +46,11 @@ import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements QuickLinksDAO {
 
-    public List<ActionListStats> getActionListStats(final String principalId) {
+    @Override
+	public List<ActionListStats> getActionListStats(final String principalId) {
         return (List<ActionListStats>) this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
-            public Object doInPersistenceBroker(PersistenceBroker broker) {
+            @Override
+			public Object doInPersistenceBroker(PersistenceBroker broker) {
                 PreparedStatement selectActionItems = null;
                 PreparedStatement selectDocTypeLabel = null;
                 ResultSet selectedActionItems = null;
@@ -108,10 +110,12 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         });
     }
 
-    public List<InitiatedDocumentType> getInitiatedDocumentTypesList(final String principalId) {
+    @Override
+	public List<InitiatedDocumentType> getInitiatedDocumentTypesList(final String principalId) {
         return (List<InitiatedDocumentType>)  this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
 
-            public Object doInPersistenceBroker(PersistenceBroker broker) {
+            @Override
+			public Object doInPersistenceBroker(PersistenceBroker broker) {
                 PreparedStatement selectDistinctDocumentTypes = null;
                 ResultSet selectedDistinctDocumentTypes = null;
                 List<InitiatedDocumentType> documentTypesByName = new ArrayList<InitiatedDocumentType>();
@@ -182,17 +186,21 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
         });
     }
 
-    public List<KeyValue> getNamedSearches(String principalId) {
+    @Override
+	public List<KeyValue> getNamedSearches(String principalId) {
         return getDocumentSearchService().getNamedSearches(principalId);
     }
 
-    public List<KeyValue> getRecentSearches(String principalId) {
+    @Override
+	public List<KeyValue> getRecentSearches(String principalId) {
         return getDocumentSearchService().getMostRecentSearches(principalId);
     }
 
-    public List<WatchedDocument> getWatchedDocuments(final String principalId) {
+    @Override
+	public List<WatchedDocument> getWatchedDocuments(final String principalId) {
         return (List<WatchedDocument>) this.getPersistenceBrokerTemplate().execute(new PersistenceBrokerCallback() {
-            public Object doInPersistenceBroker(PersistenceBroker broker) {
+            @Override
+			public Object doInPersistenceBroker(PersistenceBroker broker) {
                 List<WatchedDocument> watchedDocuments = new ArrayList<WatchedDocument>();
                 PreparedStatement selectWatchedDocuments = null;
                 ResultSet selectedWatchedDocuments = null;
@@ -202,7 +210,7 @@ public class QuickLinksDAOOjbImpl extends PersistenceBrokerDaoSupport implements
                     selectWatchedDocuments.setString(1, principalId);
                     selectedWatchedDocuments = selectWatchedDocuments.executeQuery();
                     while (selectedWatchedDocuments.next()) {
-                        watchedDocuments.add(new WatchedDocument(selectedWatchedDocuments.getString(1), (String)KEWConstants.DOCUMENT_STATUSES.get(selectedWatchedDocuments.getString(2)), selectedWatchedDocuments.getString(3)));
+                        watchedDocuments.add(new WatchedDocument(selectedWatchedDocuments.getString(1), KEWConstants.DOCUMENT_STATUSES.get(selectedWatchedDocuments.getString(2)), selectedWatchedDocuments.getString(3)));
                     }
                     return watchedDocuments;
                 } catch (Exception e) {

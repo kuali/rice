@@ -59,7 +59,7 @@ public class RuleAction extends KewKualiAction {
     }
 
     protected String generateMaintenanceUrl(HttpServletRequest request, RuleForm form) {
-        return getBasePath(request) + "/kr/" + KNSConstants.MAINTENANCE_ACTION + "?" +
+        return getApplicationBaseUrl() + "/kr/" + KNSConstants.MAINTENANCE_ACTION + "?" +
             KNSConstants.DISPATCH_REQUEST_PARAMETER + "=" + KNSConstants.START_METHOD + "&" +
             KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE + "=" + RuleBaseValues.class.getName() +  "&" +
             WebRuleUtils.DOCUMENT_TYPE_NAME_PARAM + "=" + form.getDocumentTypeName() + "&" +

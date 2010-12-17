@@ -16,9 +16,11 @@
 package org.kuali.rice.kew.rule.bo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
@@ -29,15 +31,18 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
  */
 public class ApprovePolicyValuesFinder extends KeyValuesBase {
 
-	private static final List<KeyLabelPair> approvePolicies = new ArrayList<KeyLabelPair>();
+	private static final List<KeyValue> APPROVED_PROLICIES;
 	static {
+		final List<KeyValue> temp = new ArrayList<KeyValue>();
 		for (String delegationType : KEWConstants.APPROVE_POLICIES.keySet()) {
-			approvePolicies.add(new KeyLabelPair(delegationType, KEWConstants.APPROVE_POLICIES.get(delegationType)));
+			temp.add(new ContreteKeyValue(delegationType, KEWConstants.APPROVE_POLICIES.get(delegationType)));
 		}
+		APPROVED_PROLICIES = Collections.unmodifiableList(temp);
 	}
 	
-	public List<KeyLabelPair> getKeyValues() {
-		return approvePolicies;
+	@Override
+	public List<KeyValue> getKeyValues() {
+		return APPROVED_PROLICIES;
 	}
 
 }

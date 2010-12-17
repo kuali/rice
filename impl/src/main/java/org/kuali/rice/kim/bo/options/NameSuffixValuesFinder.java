@@ -18,7 +18,8 @@ package org.kuali.rice.kim.bo.options;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
@@ -37,15 +38,16 @@ public class NameSuffixValuesFinder extends KeyValuesBase {
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
+    @Override
+	public List<KeyValue> getKeyValues() {
 
     	List<String> values = KNSServiceLocator.getParameterService().getParameterValues(
     			KimConstants.NAMESPACE_CODE, PARAM_BO_CLASSNAME, "SUFFIXES"
     			);
-        List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
-        labels.add(new KeyLabelPair("", ""));
+        List<KeyValue> labels = new ArrayList<KeyValue>();
+        labels.add(new ContreteKeyValue("", ""));
         for (String suffix : values) {
-            labels.add(new KeyLabelPair(suffix, suffix));            
+            labels.add(new ContreteKeyValue(suffix, suffix));            
         }
 
         return labels;

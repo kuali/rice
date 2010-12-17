@@ -16,9 +16,11 @@
 package org.kuali.rice.kim.bo.options;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
@@ -29,18 +31,21 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
  */
 public class MemberTypeValuesFinder extends KeyValuesBase {
 
-	static final List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>( 3 );
+	private static final List<KeyValue> LABELS;
 	static {
-        labels.add(new KeyLabelPair(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL));
-        labels.add(new KeyLabelPair(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_GROUP));
-        labels.add(new KeyLabelPair(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE));
+		final List<KeyValue> labels = new ArrayList<KeyValue>( 3 );
+        labels.add(new ContreteKeyValue(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL));
+        labels.add(new ContreteKeyValue(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_GROUP));
+        labels.add(new ContreteKeyValue(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_ROLE));
+        LABELS = Collections.unmodifiableList(labels);
 	}
 	
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List<KeyLabelPair> getKeyValues() {
-        return labels;
+    @Override
+	public List<KeyValue> getKeyValues() {
+        return LABELS;
     }    
 
 }

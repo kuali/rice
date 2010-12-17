@@ -16,9 +16,11 @@
 package org.kuali.rice.kns.lookup.keyvalues;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -30,14 +32,18 @@ public class IndicatorValuesFinder extends KeyValuesBase {
 
 	public static final IndicatorValuesFinder INSTANCE = new IndicatorValuesFinder();
 	
-	protected static final List<KeyLabelPair> activeLabels = new ArrayList<KeyLabelPair>(3);
+	protected static final List<KeyValue> ACTIVE_LABELS;
 	static {
-        activeLabels.add(new KeyLabelPair(KNSConstants.YES_INDICATOR_VALUE, "Yes"));
-        activeLabels.add(new KeyLabelPair(KNSConstants.NO_INDICATOR_VALUE, "No"));
-        activeLabels.add(new KeyLabelPair("", "Both"));
+		final List<KeyValue> activeLabels = new ArrayList<KeyValue>(3);
+        activeLabels.add(new ContreteKeyValue(KNSConstants.YES_INDICATOR_VALUE, "Yes"));
+        activeLabels.add(new ContreteKeyValue(KNSConstants.NO_INDICATOR_VALUE, "No"));
+        activeLabels.add(new ContreteKeyValue("", "Both"));
+        
+        ACTIVE_LABELS = Collections.unmodifiableList(activeLabels);
 	}
 	
-    public List<KeyLabelPair> getKeyValues() {
-        return activeLabels;
+    @Override
+	public List<KeyValue> getKeyValues() {
+        return ACTIVE_LABELS;
     }
 }

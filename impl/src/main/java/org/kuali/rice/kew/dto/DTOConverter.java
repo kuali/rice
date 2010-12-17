@@ -36,6 +36,8 @@ import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.reflect.PropertyDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
@@ -59,7 +61,6 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.engine.node.KeyValuePair;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -159,8 +160,7 @@ public class DTOConverter {
 
     public static ValidActionsDTO convertValidActions(ValidActions validActions) {
         ValidActionsDTO validActionsVO = new ValidActionsDTO();
-        for (Iterator<String> iter = validActions.getActionTakenCodes().iterator(); iter.hasNext();) {
-            String actionTakenCode = iter.next();
+        for (String actionTakenCode : validActions.getActionTakenCodes()) {
             validActionsVO.addValidActionsAllowed(actionTakenCode);
         }
         return validActionsVO;
@@ -257,9 +257,9 @@ public class DTOConverter {
 
         
         // Convert the variables
-        List<KeyValueDTO> variables = routeHeaderVO.getVariables();
+        List<KeyValue> variables = routeHeaderVO.getVariables();
         if( variables != null && !variables.isEmpty()){
-        	for(KeyValueDTO kvp : variables){
+        	for(KeyValue kvp : variables){
         		routeHeader.setVariable(kvp.getKey(), kvp.getValue());
         	}
         }
@@ -365,8 +365,7 @@ public class DTOConverter {
             if (contentSectionElement == null) {
                 contentSectionElement = document.createElement(elementName);
             }
-            for (int index = 0; index < definitions.length; index++) {
-                WorkflowAttributeDefinitionDTO definitionVO = definitions[index];
+            for (WorkflowAttributeDefinitionDTO definitionVO : definitions) {
                 AttributeDefinition definition = convertWorkflowAttributeDefinitionVO(definitionVO, documentType);
                 RuleAttribute ruleAttribute = definition.getRuleAttribute();
                 Object attribute = GlobalResourceLoader.getResourceLoader().getObject(definition.getObjectDefinition());
@@ -393,7 +392,7 @@ public class DTOConverter {
                     List<WorkflowAttributeValidationError> errors = ((WorkflowAttributeXmlValidator) attribute).validateClientRoutingData();
                     if (!errors.isEmpty()) {
                         inError = true;
-                        errorMessage += "Error validating attribute " + definitions[index].getAttributeName() + " ";
+                        errorMessage += "Error validating attribute " + definitionVO.getAttributeName() + " ";
                         for (WorkflowAttributeValidationError error : errors) {
                             errorMessage += error.getMessage() + " ";
                         }
@@ -582,8 +581,8 @@ public class DTOConverter {
         if (fetchActionRequests) {
 	        ActionRequestDTO[] actionRequests = new ActionRequestDTO[actionTaken.getActionRequests().size()];
 	        int index = 0;
-	        for (Iterator iterator = actionTaken.getActionRequests().iterator(); iterator.hasNext();) {
-	            ActionRequestValue actionRequest = (ActionRequestValue) iterator.next();
+	        for (Object element : actionTaken.getActionRequests()) {
+	            ActionRequestValue actionRequest = (ActionRequestValue) element;
 	            actionRequests[index++] = convertActionRequest(actionRequest, false);
 	        }
 	        actionTakenVO.setActionRequests(actionRequests);
@@ -758,7 +757,7 @@ public class DTOConverter {
         actionTaken.setDelegatorPrincipalId(actionTakenVO.getDelegatorPrincpalId());
         actionTaken.setDelegatorGroupId(actionTakenVO.getDelegatorGroupId());
         actionTaken.setDocVersion(actionTakenVO.getDocVersion());
-        DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionTakenVO.getRouteHeaderId());
+        KEWServiceLocator.getRouteHeaderService().getRouteHeader(actionTakenVO.getRouteHeaderId());
         //actionTaken.setRouteHeader(routeHeader);
         actionTaken.setRouteHeaderId(actionTaken.getRouteHeaderId());
         return actionTaken;
@@ -915,8 +914,8 @@ public class DTOConverter {
         }
         detail.setNodeInstances((RouteNodeInstanceDTO[]) nodeInstanceVOs.toArray(new RouteNodeInstanceDTO[0]));
         List actionTakenVOs = new ArrayList();
-        for (Iterator iterator = routeHeader.getActionsTaken().iterator(); iterator.hasNext();) {
-            ActionTakenValue actionTaken = (ActionTakenValue) iterator.next();
+        for (Object element : routeHeader.getActionsTaken()) {
+            ActionTakenValue actionTaken = (ActionTakenValue) element;
             actionTakenVOs.add(convertActionTaken(actionTaken));
         }
         detail.setActionsTaken((ActionTakenDTO[]) actionTakenVOs.toArray(new ActionTakenDTO[0]));
@@ -991,15 +990,15 @@ public class DTOConverter {
         nodeVO.setRouteNodeName(node.getRouteNodeName());
         int index = 0;
         Long[] previousNodeIds = new Long[node.getPreviousNodes().size()];
-        for (Iterator iterator = node.getPreviousNodes().iterator(); iterator.hasNext();) {
-            RouteNode prevNode = (RouteNode) iterator.next();
+        for (Object element : node.getPreviousNodes()) {
+            RouteNode prevNode = (RouteNode) element;
             previousNodeIds[index++] = prevNode.getRouteNodeId();
         }
         nodeVO.setPreviousNodeIds(previousNodeIds);
         index = 0;
         Long[] nextNodeIds = new Long[node.getNextNodes().size()];
-        for (Iterator iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
-            RouteNode nextNode = (RouteNode) iterator.next();
+        for (Object element : node.getNextNodes()) {
+            RouteNode nextNode = (RouteNode) element;
             nextNodeIds[index++] = nextNode.getRouteNodeId();
         }
         nodeVO.setNextNodeIds(nextNodeIds);
@@ -1044,15 +1043,15 @@ public class DTOConverter {
 
         // Add or update notes to note table based on notes array in RouteHeaderVO
         if (notes != null) {
-            for (int i = 0; i < notes.length; i++) {
-                if (notes[i] != null) {
+            for (NoteDTO note : notes) {
+                if (note != null) {
                     noteToSave = new Note();
-                    noteToSave.setNoteId(notes[i].getNoteId());
+                    noteToSave.setNoteId(note.getNoteId());
                     noteToSave.setRouteHeaderId(routeHeaderId);
-                    noteToSave.setNoteAuthorWorkflowId(notes[i].getNoteAuthorWorkflowId());
-                    noteToSave.setNoteCreateDate(Utilities.convertCalendar(notes[i].getNoteCreateDate()));
-                    noteToSave.setNoteText(notes[i].getNoteText());
-                    noteToSave.setLockVerNbr(notes[i].getLockVerNbr());
+                    noteToSave.setNoteAuthorWorkflowId(note.getNoteAuthorWorkflowId());
+                    noteToSave.setNoteCreateDate(Utilities.convertCalendar(note.getNoteCreateDate()));
+                    noteToSave.setNoteText(note.getNoteText());
+                    noteToSave.setLockVerNbr(note.getLockVerNbr());
                     // if notes[i].getNoteId() == null, add note to note table, otherwise update note to note table
                     getNoteService().saveNote(noteToSave);
                 }
@@ -1062,8 +1061,8 @@ public class DTOConverter {
 
         // Delete notes from note table based on notesToDelete array in RouteHeaderVO
         if (notesToDelete != null) {
-            for (int i = 0; i < notesToDelete.length; i++) {
-                noteToDelete = getNoteService().getNoteByNoteId(notesToDelete[i].getNoteId());
+            for (NoteDTO element : notesToDelete) {
+                noteToDelete = getNoteService().getNoteByNoteId(element.getNoteId());
                 if (noteToDelete != null) {
                     getNoteService().deleteNote(noteToDelete);
                 }
@@ -1185,18 +1184,18 @@ public class DTOConverter {
             return null;
         }
         List<RuleExtensionDTO> extensionVOs = new ArrayList<RuleExtensionDTO>();
-        for (Iterator iter = ruleExtension.getExtensionValues().iterator(); iter.hasNext();) {
-            RuleExtensionValue extensionValue = (RuleExtensionValue) iter.next();
+        for (Object element : ruleExtension.getExtensionValues()) {
+            RuleExtensionValue extensionValue = (RuleExtensionValue) element;
             extensionVOs.add(new RuleExtensionDTO(extensionValue.getKey(), extensionValue.getValue()));
         }
         return extensionVOs;
     }
 
-    public static KeyValuePair convertRuleExtensionVO(RuleExtensionDTO ruleExtensionVO) throws WorkflowException {
+    public static KeyValue convertRuleExtensionVO(RuleExtensionDTO ruleExtensionVO) throws WorkflowException {
         if (ruleExtensionVO == null) {
             return null;
         }
-        return new KeyValuePair(ruleExtensionVO.getKey(), ruleExtensionVO.getValue());
+        return new ContreteKeyValue(ruleExtensionVO.getKey(), ruleExtensionVO.getValue());
     }
 
     public static RuleResponsibilityDTO convertRuleResponsibility(RuleResponsibility ruleResponsibility) throws WorkflowException {
@@ -1216,8 +1215,8 @@ public class DTOConverter {
         } else if (ruleResponsibility.getRole() != null) {
         	ruleResponsibilityVO.setRoleName(ruleResponsibility.getRole());
         }
-        for (Iterator iter = ruleResponsibility.getDelegationRules().iterator(); iter.hasNext();) {
-            RuleDelegation ruleDelegation = (RuleDelegation) iter.next();
+        for (Object element : ruleResponsibility.getDelegationRules()) {
+            RuleDelegation ruleDelegation = (RuleDelegation) element;
             ruleResponsibilityVO.addDelegationRule(convertRuleDelegation(ruleDelegation));
         }
         return ruleResponsibilityVO;
@@ -1241,13 +1240,13 @@ public class DTOConverter {
         rule.setRuleTemplateName(ruleValues.getRuleTemplateName());
 
         // get keyPair values to setup RuleExtensionVOs
-        for (Iterator iter = ruleValues.getRuleExtensions().iterator(); iter.hasNext();) {
-            RuleExtension ruleExtension = (RuleExtension) iter.next();
+        for (Object element : ruleValues.getRuleExtensions()) {
+            RuleExtension ruleExtension = (RuleExtension) element;
             rule.addRuleExtensions(convertRuleExtension(ruleExtension));
         }
         // get keyPair values to setup RuleExtensionVOs
-        for (Iterator iter = ruleValues.getResponsibilities().iterator(); iter.hasNext();) {
-            RuleResponsibility ruleResponsibility = (RuleResponsibility) iter.next();
+        for (Object element : ruleValues.getResponsibilities()) {
+            RuleResponsibility ruleResponsibility = (RuleResponsibility) element;
             rule.addRuleResponsibility(convertRuleResponsibility(ruleResponsibility));
         }
         return rule;
@@ -1300,7 +1299,7 @@ public class DTOConverter {
 
         // build a map of the search attributes passed in from the client creating lists where keys are duplicated
         HashMap<String, List<String>> searchAttributeValues = new HashMap<String,List<String>>();
-        for (KeyValueDTO keyValueVO : criteriaVO.getSearchAttributeValues()) {
+        for (KeyValue keyValueVO : criteriaVO.getSearchAttributeValues()) {
             if (searchAttributeValues.containsKey(keyValueVO.getKey())) {
                 searchAttributeValues.get(keyValueVO.getKey()).add(keyValueVO.getValue());
             } else {
@@ -1345,9 +1344,9 @@ public class DTOConverter {
 
     public static DocumentSearchResultRowDTO convertDocumentSearchResult(DocumentSearchResult resultRow) throws WorkflowException {
         DocumentSearchResultRowDTO rowVO = new DocumentSearchResultRowDTO();
-        List<KeyValueDTO> fieldValues = new ArrayList<KeyValueDTO>();
+        List<ContreteKeyValue> fieldValues = new ArrayList<ContreteKeyValue>();
         for (KeyValueSort keyValueSort : resultRow.getResultContainers()) {
-            fieldValues.add(new KeyValueDTO(keyValueSort.getKey(),keyValueSort.getValue(),keyValueSort.getUserDisplayValue()));
+            fieldValues.add(new ContreteKeyValue(keyValueSort.getKey(),keyValueSort.getUserDisplayValue()));
         }
         rowVO.setFieldValues(fieldValues);
         return rowVO;

@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
@@ -31,22 +32,22 @@ import org.kuali.rice.kns.service.KeyValuesService;
  */
 public class CampusValuesFinder extends KeyValuesBase {
 
-	protected static List<KeyLabelPair> campusCache = null;
+	protected static List<KeyValue> campusCache = null;
 	
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    @SuppressWarnings("unchecked")
-	public List<KeyLabelPair> getKeyValues() {
+	@Override
+	public List<KeyValue> getKeyValues() {
     	if ( campusCache == null ) {
     		synchronized ( this.getClass() ) {
 				
 		        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-		        Collection<Campus> codes = (Collection<Campus>)boService.findAll(Campus.class);
-		        List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
-		        labels.add(new KeyLabelPair("", ""));
+		        Collection<Campus> codes = boService.findAll(Campus.class);
+		        List<KeyValue> labels = new ArrayList<KeyValue>();
+		        labels.add(new ContreteKeyValue("", ""));
 		        for ( Campus campus : codes ) {
-		            labels.add(new KeyLabelPair(campus.getCampusCode(), campus.getCampusCode() + " - " + campus.getCampusName()));
+		            labels.add(new ContreteKeyValue(campus.getCampusCode(), campus.getCampusCode() + " - " + campus.getCampusName()));
 		        }
 		
 		        campusCache = labels;

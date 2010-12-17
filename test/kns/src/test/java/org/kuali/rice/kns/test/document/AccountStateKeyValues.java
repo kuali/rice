@@ -18,7 +18,8 @@ package org.kuali.rice.kns.test.document;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
 /**
@@ -33,12 +34,12 @@ public class AccountStateKeyValues extends KeyValuesBase {
 	 * 
 	 * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
-	public List<?> getKeyValues() {
-		List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
-		keyValues.add(new KeyLabelPair("FirstState","First Account DD Attribute State"));
-		keyValues.add(new KeyLabelPair("SecondState","Second Account DD Attribute State"));
-		keyValues.add(new KeyLabelPair("ThirdState","Third Account DD Attribute State"));
-		keyValues.add(new KeyLabelPair("FourthState","Fourth Account DD Attribute State"));
+	public List getKeyValues() {
+		List<KeyValue> keyValues = new ArrayList<KeyValue>();
+		keyValues.add(new ContreteKeyValue("FirstState","First Account DD Attribute State"));
+		keyValues.add(new ContreteKeyValue("SecondState","Second Account DD Attribute State"));
+		keyValues.add(new ContreteKeyValue("ThirdState","Third Account DD Attribute State"));
+		keyValues.add(new ContreteKeyValue("FourthState","Fourth Account DD Attribute State"));
 		return keyValues;
 	}
 }

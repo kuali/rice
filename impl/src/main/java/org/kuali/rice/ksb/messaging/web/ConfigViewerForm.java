@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging.web;
 import java.util.List;
 
 import org.apache.struts.action.ActionForm;
-import org.kuali.rice.kew.engine.node.KeyValuePair;
+import org.kuali.rice.core.util.KeyValue;
 
 /**
  * This is a description of what this class does - g don't forget to fill this in. 
@@ -28,13 +28,13 @@ import org.kuali.rice.kew.engine.node.KeyValuePair;
  */
 public class ConfigViewerForm extends ActionForm{
 
-	List<KeyValuePair> properties = null;
+	List<KeyValue> properties = null;
 
-	public List<KeyValuePair> getProperties() {
+	public List<KeyValue> getProperties() {
 		return this.properties;
 	}
 
-	public void setProperties(List<KeyValuePair> properties) {
+	public void setProperties(List<KeyValue> properties) {
 		this.properties = properties;
 	}
 	

@@ -18,7 +18,8 @@ package org.kuali.rice.kim.bo.options;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
@@ -29,12 +30,13 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
  *
  */
 public class ActionTypeValuesFinder extends KeyValuesBase {
-    public List getKeyValues() {
-        List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
-        labels.add(new KeyLabelPair("", ""));
-        labels.add(new KeyLabelPair(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL));
-        labels.add(new KeyLabelPair(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL));
-        labels.add(new KeyLabelPair(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL));
+    @Override
+	public List<KeyValue> getKeyValues() {
+        List<KeyValue> labels = new ArrayList<KeyValue>();
+        labels.add(new ContreteKeyValue("", ""));
+        labels.add(new ContreteKeyValue(KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL));
+        labels.add(new ContreteKeyValue(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL));
+        labels.add(new ContreteKeyValue(KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL));
         return labels;
     }    
 

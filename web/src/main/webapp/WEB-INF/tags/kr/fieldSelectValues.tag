@@ -19,5 +19,5 @@
 
 <c:forEach items="${field.fieldValidValues}" var="select">
     <option ${field.propertyValue eq select.key ? 'selected="selected"' : ''}
-            value='<c:out value="${select.key}"/>'>${select.htmlSpacePadding}<c:out value="${select.label}" /></option>
+            value='<c:out value="${select.key}"/>'><%--${select.htmlSpacePadding}--%><c:out value="${select.value}" /></option>
 </c:forEach>

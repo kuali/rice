@@ -37,7 +37,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -65,14 +66,12 @@ import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.DocumentAuthorizationException;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
-import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.rule.event.AddAdHocRoutePersonEvent;
 import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.kns.rule.event.AddNoteEvent;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
-import org.kuali.rice.kns.rule.event.SaveDocumentEvent;
 import org.kuali.rice.kns.rule.event.SendAdHocRequestsEvent;
 import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
@@ -133,6 +132,7 @@ public class KualiDocumentActionBase extends KualiAction {
     private BusinessObjectMetaDataService businessObjectMetaDataService;
     private EntityManagerFactory entityManagerFactory;
 
+	@Override
 	protected void checkAuthorization( ActionForm form, String methodToCall ) throws AuthorizationException {
         if ( !(form instanceof KualiDocumentFormBase) ) {
             super.checkAuthorization(form, methodToCall);
@@ -159,7 +159,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
         catch (OjbOperationException e) {
             // special handling for OptimisticLockExceptions
-            OjbOperationException ooe = (OjbOperationException) e;
+            OjbOperationException ooe = e;
 
             Throwable cause = ooe.getCause();
             if (cause instanceof OptimisticLockException) {
@@ -420,7 +420,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         // check business rules
-        boolean rulePassed = getKualiRuleService().applyRules(new AddAdHocRoutePersonEvent(document, (AdHocRoutePerson) kualiDocumentFormBase.getNewAdHocRoutePerson()));
+        boolean rulePassed = getKualiRuleService().applyRules(new AddAdHocRoutePersonEvent(document, kualiDocumentFormBase.getNewAdHocRoutePerson()));
 
         // if the rule evaluation passed, let's add the ad hoc route person
         if (rulePassed) {
@@ -476,7 +476,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         // check business rules
-        boolean rulePassed = getKualiRuleService().applyRules(new AddAdHocRouteWorkgroupEvent(document, (AdHocRouteWorkgroup) kualiDocumentFormBase.getNewAdHocRouteWorkgroup()));
+        boolean rulePassed = getKualiRuleService().applyRules(new AddAdHocRouteWorkgroupEvent(document, kualiDocumentFormBase.getNewAdHocRouteWorkgroup()));
 
         // if the rule evaluation passed, let's add the ad hoc route workgroup
         if (rulePassed) {
@@ -718,37 +718,37 @@ public class KualiDocumentActionBase extends KualiAction {
         String globalVariableFormKey = GlobalVariables.getUserSession().addObject(form);
         // setup back form variables
         request.setAttribute("backUrlBase", backUrlBase);
-        List<KeyLabelPair> backFormParameters = new ArrayList<KeyLabelPair>();
-        backFormParameters.add(new KeyLabelPair(KNSConstants.DISPATCH_REQUEST_PARAMETER,KNSConstants.RETURN_METHOD_TO_CALL));
-        backFormParameters.add(new KeyLabelPair(KNSConstants.DOC_FORM_KEY,globalVariableFormKey));
+        List<KeyValue> backFormParameters = new ArrayList<KeyValue>();
+        backFormParameters.add(new ContreteKeyValue(KNSConstants.DISPATCH_REQUEST_PARAMETER,KNSConstants.RETURN_METHOD_TO_CALL));
+        backFormParameters.add(new ContreteKeyValue(KNSConstants.DOC_FORM_KEY,globalVariableFormKey));
         request.setAttribute("backFormHiddenVariables", backFormParameters);
 
         // setup route report form variables
         request.setAttribute("workflowRouteReportUrl", getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KEWConstants.DOCUMENT_ROUTING_REPORT_PAGE);
-        List<KeyLabelPair> generalRouteReportFormParameters = new ArrayList<KeyLabelPair>();
-        generalRouteReportFormParameters.add(new KeyLabelPair(KEWConstants.INITIATOR_ID_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId()));
-        generalRouteReportFormParameters.add(new KeyLabelPair(KEWConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
+        List<KeyValue> generalRouteReportFormParameters = new ArrayList<KeyValue>();
+        generalRouteReportFormParameters.add(new ContreteKeyValue(KEWConstants.INITIATOR_ID_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId()));
+        generalRouteReportFormParameters.add(new ContreteKeyValue(KEWConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
         // prepareForRouteReport() method should populate document header workflow document application content xml
         String xml = document.getXmlForRouteReport();
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("XML being used for Routing Report is: " + xml);
         }
-        generalRouteReportFormParameters.add(new KeyLabelPair(KEWConstants.DOCUMENT_CONTENT_ATTRIBUTE_NAME,xml));
+        generalRouteReportFormParameters.add(new ContreteKeyValue(KEWConstants.DOCUMENT_CONTENT_ATTRIBUTE_NAME,xml));
 
         // set up the variables for the form if java script is working (includes a close button variable and no back url)
-        List<KeyLabelPair> javaScriptFormParameters = new ArrayList<KeyLabelPair>();
+        List<KeyValue> javaScriptFormParameters = new ArrayList<KeyValue>();
         javaScriptFormParameters.addAll(generalRouteReportFormParameters);
-        javaScriptFormParameters.add(new KeyLabelPair(KEWConstants.DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME, KEWConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE));
+        javaScriptFormParameters.add(new ContreteKeyValue(KEWConstants.DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME, KEWConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE));
         request.setAttribute("javaScriptFormVariables", javaScriptFormParameters);
 
         // set up the variables for the form if java script is NOT working (includes a back url but no close button)
-        List<KeyLabelPair> noJavaScriptFormParameters = new ArrayList<KeyLabelPair>();
+        List<KeyValue> noJavaScriptFormParameters = new ArrayList<KeyValue>();
         noJavaScriptFormParameters.addAll(generalRouteReportFormParameters);
         Properties parameters = new Properties();
-        for (KeyLabelPair pair : backFormParameters) {
-            parameters.put(pair.getKey(), pair.getLabel());
+        for (KeyValue pair : backFormParameters) {
+            parameters.put(pair.getKey(), pair.getValue());
         }
-        noJavaScriptFormParameters.add(new KeyLabelPair(KEWConstants.RETURN_URL_ATTRIBUTE_NAME,UrlFactory.parameterizeUrl(backUrlBase, parameters)));
+        noJavaScriptFormParameters.add(new ContreteKeyValue(KEWConstants.RETURN_URL_ATTRIBUTE_NAME,UrlFactory.parameterizeUrl(backUrlBase, parameters)));
         request.setAttribute("noJavaScriptFormVariables", noJavaScriptFormParameters);
 
         return mapping.findForward(KNSConstants.MAPPING_ROUTE_REPORT);
@@ -1833,7 +1833,8 @@ public class KualiDocumentActionBase extends KualiAction {
 		return this.businessObjectService;
 	}
 
-    protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
+    @Override
+	protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
     	if ( businessObjectAuthorizationService == null ) {
     		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
     	}
@@ -1893,6 +1894,7 @@ public class KualiDocumentActionBase extends KualiAction {
 		return super.toggleTab(mapping, form, request, response);
 	}
 
+	@Override
 	protected void doProcessingAfterPost( KualiForm form, HttpServletRequest request ) {
 		super.doProcessingAfterPost(form, request);
 		if ( form instanceof KualiDocumentFormBase ) {

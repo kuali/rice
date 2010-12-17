@@ -23,7 +23,9 @@ import java.util.List;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,39 +36,40 @@ import org.springframework.transaction.annotation.Transactional;
  * that are specified.
  */
 @Transactional
-public class PersistableBusinessObjectValuesFinder extends KeyValuesBase {
+public class PersistableBusinessObjectValuesFinder <T extends PersistableBusinessObject> extends KeyValuesBase {
 
     private static final Log LOG = LogFactory.getLog(PersistableBusinessObjectValuesFinder.class);
 
-    private Class businessObjectClass;
+    private Class<T> businessObjectClass;
     private String keyAttributeName;
     private String labelAttributeName;
     private boolean includeKeyInDescription = false;
     private boolean includeBlankRow = false;
 
     /**
-     * Build the list of KeyLabelPairs using the key (keyAttributeName) and
+     * Build the list of KeyValues using the key (keyAttributeName) and
      * label (labelAttributeName) of the list of all business objects found
      * for the BO class specified.
      *
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List<KeyLabelPair> getKeyValues() {
-    	List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>();
+    @Override
+	public List<KeyValue> getKeyValues() {
+    	List<KeyValue> labels = new ArrayList<KeyValue>();
 
     	try {
     	    KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
-            Collection objects = boService.findAll(businessObjectClass);
+            Collection<T> objects = boService.findAll(businessObjectClass);
             if(includeBlankRow) {
-            	labels.add(new KeyLabelPair("", ""));
+            	labels.add(new ContreteKeyValue("", ""));
             }
-            for (Object object : objects) {
+            for (T object : objects) {
             	Object key = PropertyUtils.getProperty(object, keyAttributeName);
             	String label = (String)PropertyUtils.getProperty(object, labelAttributeName);
             	if (includeKeyInDescription) {
             	    label = key + " - " + label;
             	}
-            	labels.add(new KeyLabelPair(key, label));
+            	labels.add(new ContreteKeyValue(key.toString(), label));
     	    }
     	} catch (IllegalAccessException e) {
             LOG.debug(e.getMessage(), e);
@@ -88,14 +91,14 @@ public class PersistableBusinessObjectValuesFinder extends KeyValuesBase {
     /**
      * @return the businessObjectClass
      */
-    public Class getBusinessObjectClass() {
+    public Class<T> getBusinessObjectClass() {
         return this.businessObjectClass;
     }
 
     /**
      * @param businessObjectClass the businessObjectClass to set
      */
-    public void setBusinessObjectClass(Class businessObjectClass) {
+    public void setBusinessObjectClass(Class<T> businessObjectClass) {
         this.businessObjectClass = businessObjectClass;
     }
 

@@ -19,6 +19,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 
 /**
@@ -54,7 +55,7 @@ public class DocumentSearchCriteriaDTO implements Serializable {
     private String toDateFinalized; // the end range for finalized
 
     // searchable attribute properties
-    private List<KeyValueDTO> searchAttributeValues = new ArrayList<KeyValueDTO>();
+    private List<ContreteKeyValue> searchAttributeValues = new ArrayList<ContreteKeyValue>();
 
     // below used only in specialized cases
     private boolean advancedSearch = false;
@@ -235,11 +236,11 @@ public class DocumentSearchCriteriaDTO implements Serializable {
         this.toDateFinalized = toDateFinalized;
     }
 
-    public List<KeyValueDTO> getSearchAttributeValues() {
+    public List<ContreteKeyValue> getSearchAttributeValues() {
         return this.searchAttributeValues;
     }
 
-    public void setSearchAttributeValues(List<KeyValueDTO> searchAttributeValues) {
+    public void setSearchAttributeValues(List<ContreteKeyValue> searchAttributeValues) {
         this.searchAttributeValues = searchAttributeValues;
     }
 

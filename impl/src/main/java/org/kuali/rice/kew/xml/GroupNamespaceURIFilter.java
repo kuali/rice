@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.core.xml.CoreNamespaceConstants;
 
 
@@ -39,25 +40,26 @@ public class GroupNamespaceURIFilter extends AbstractTransformationFilter {
 	 * 
 	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#getElementTransformationList()
 	 */
+	@Override
 	public List<KeyValue> getElementTransformationList() {
 		List<KeyValue> rList = new ArrayList<KeyValue>();
 
-		rList.add(new KeyValue("groups", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.groupName", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.namespaceCode", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.groupDescription", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.active", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.type", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.type.namespace", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.type.name", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.attributes", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.members", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.members.principalName",GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.members.principalId", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.members.groupName", GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.members.groupName.name",GROUP_URI_OLD));
-		rList.add(new KeyValue("groups.group.members.groupName.namespace", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.groupName", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.namespaceCode", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.groupDescription", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.active", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.type", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.type.namespace", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.type.name", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.attributes", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.members", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.members.principalName",GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.members.principalId", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.members.groupName", GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.members.groupName.name",GROUP_URI_OLD));
+		rList.add(new ContreteKeyValue("groups.group.members.groupName.namespace", GROUP_URI_OLD));
 
 		return rList;
 	}
@@ -67,6 +69,7 @@ public class GroupNamespaceURIFilter extends AbstractTransformationFilter {
 	 * 
 	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#getStartingElement()
 	 */
+	@Override
 	public String getStartingElementPath() {
 		return "data";
 	}
@@ -76,6 +79,7 @@ public class GroupNamespaceURIFilter extends AbstractTransformationFilter {
 	 * 
 	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#transformEndElement(org.kuali.rice.kew.xml.AbstractTransformationFilter.CurrentElement)
 	 */
+	@Override
 	public CurrentElement transformEndElement(CurrentElement currentElement) {
 		if("groups.group.attributes".equals(this.getTrimmedCurrentElementKey(currentElement.getNameKey()))){
 			currentElement.setUri(CoreNamespaceConstants.CORE);
@@ -90,6 +94,7 @@ public class GroupNamespaceURIFilter extends AbstractTransformationFilter {
 	 * 
 	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#transformStartElement(org.kuali.rice.kew.xml.AbstractTransformationFilter.CurrentElement)
 	 */
+	@Override
 	public CurrentElement transformStartElement(CurrentElement currentElement) {
 		currentElement.setUri(GROUP_URI_NEW);
 		return currentElement;

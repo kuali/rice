@@ -81,7 +81,9 @@ public class BranchServiceImpl implements BranchService {
         if (bs == null) {
             LOG.debug("Defining new variable named '" + name + "' at scope '" + branch + "'");
             // create new variable at initial search scope
-            bs = new BranchState(name, value);
+            bs = new BranchState();
+            bs.setKey(name);
+            bs.setValue(value);
             bs.setBranch(branch);
             branch.addBranchState(bs);
         } else {

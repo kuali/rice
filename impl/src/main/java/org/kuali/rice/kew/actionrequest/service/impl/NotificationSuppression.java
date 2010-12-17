@@ -65,7 +65,10 @@ public class NotificationSuppression {
     			List<String> requestKeys = getSuppressNotifyNodeStateKeys(childActionRequest);
     			if (requestKeys != null) for (String requestKey : requestKeys) { 
     				if (nodeInstance.getNodeState(requestKey) == null) { // only add once
-    					nodeInstance.addNodeState(new NodeState(requestKey, "notification suppression"));
+    					NodeState ns = new NodeState();
+    					ns.setKey(requestKey);
+    					ns.setValue("notification suppression");
+    					nodeInstance.addNodeState(ns);
     				}
     			}
     		}

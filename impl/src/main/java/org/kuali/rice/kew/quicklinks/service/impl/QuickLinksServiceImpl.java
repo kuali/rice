@@ -30,23 +30,28 @@ public class QuickLinksServiceImpl implements QuickLinksService {
 
     private QuickLinksDAO quickLinksDAO;
 
-    public List<ActionListStats> getActionListStats(String principalId) {
+    @Override
+	public List<ActionListStats> getActionListStats(String principalId) {
         return getQuickLinksDAO().getActionListStats(principalId);
     }
 
-    public List<InitiatedDocumentType> getInitiatedDocumentTypesList(String principalId) {
+    @Override
+	public List<InitiatedDocumentType> getInitiatedDocumentTypesList(String principalId) {
         return getQuickLinksDAO().getInitiatedDocumentTypesList(principalId);
     }
 
-    public List<KeyValue> getNamedSearches(String principalId) {
+    @Override
+	public List<KeyValue> getNamedSearches(String principalId) {
         return getQuickLinksDAO().getNamedSearches(principalId);
     }
 
-    public List<KeyValue> getRecentSearches(String principalId) {
+    @Override
+	public List<KeyValue> getRecentSearches(String principalId) {
         return getQuickLinksDAO().getRecentSearches(principalId);
     }
 
-    public List<WatchedDocument> getWatchedDocuments(String principalId) {
+    @Override
+	public List<WatchedDocument> getWatchedDocuments(String principalId) {
         return getQuickLinksDAO().getWatchedDocuments(principalId);
     }
 

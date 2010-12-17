@@ -458,7 +458,9 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     	    state = rootBranch.getBranchState(REVOKED_NODE_INSTANCES_STATE_KEY);
     	}
     	if (state == null) {
-    		state = new BranchState(REVOKED_NODE_INSTANCES_STATE_KEY, "");
+    		state = new BranchState();
+    		state.setKey(REVOKED_NODE_INSTANCES_STATE_KEY);
+    		state.setValue("");
     		rootBranch.addBranchState(state);
     	}
     	if (state.getValue() == null) {

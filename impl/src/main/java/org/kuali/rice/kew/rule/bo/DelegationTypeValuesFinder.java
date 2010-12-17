@@ -16,9 +16,11 @@
 package org.kuali.rice.kew.rule.bo;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -31,21 +33,29 @@ import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
  */
 public class DelegationTypeValuesFinder extends KeyValuesBase {
 
-	private static final List<KeyLabelPair> delegationTypes = new ArrayList<KeyLabelPair>();
-	private static final List<KeyLabelPair> delegationTypesForMaintDocs = new ArrayList<KeyLabelPair>();
+	private static final List<KeyValue> C_DELEGATION_TYPES;
+	private static final List<KeyValue> C_DELEGATION_TYPES_FOR_MAIN_DOCS;
 	static {
+		
+		final List<KeyValue> delegationTypes = new ArrayList<KeyValue>();
+		final List<KeyValue> delegationTypesForMaintDocs = new ArrayList<KeyValue>();
+		
 		for (String delegationType : KEWConstants.DELEGATION_TYPES.keySet()) {
-			delegationTypes.add(new KeyLabelPair(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
+			delegationTypes.add(new ContreteKeyValue(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
 			// Use a separate delegation types list for the related maintenance docs, since they should disallow the "Both" option.
 			if (!KEWConstants.DELEGATION_BOTH.equals(delegationType)) {
-				delegationTypesForMaintDocs.add(new KeyLabelPair(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
+				delegationTypesForMaintDocs.add(new ContreteKeyValue(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
 			}
 		}
+		
+		C_DELEGATION_TYPES = Collections.unmodifiableList(delegationTypes);
+		C_DELEGATION_TYPES_FOR_MAIN_DOCS = Collections.unmodifiableList(delegationTypesForMaintDocs);
 	}
 	
-	public List<KeyLabelPair> getKeyValues() {
+	@Override
+	public List<KeyValue> getKeyValues() {
 		// Return the appropriate delegation types list, depending on whether or not it is needed for a maintenance doc.
-		return (GlobalVariables.getKualiForm() instanceof KualiMaintenanceForm) ? delegationTypesForMaintDocs : delegationTypes;
+		return (GlobalVariables.getKualiForm() instanceof KualiMaintenanceForm) ? C_DELEGATION_TYPES_FOR_MAIN_DOCS : C_DELEGATION_TYPES;
 	}
 
 }

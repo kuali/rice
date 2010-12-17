@@ -21,6 +21,7 @@ import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -28,6 +29,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
@@ -41,7 +44,6 @@ import org.kuali.rice.kew.dto.DocumentDetailDTO;
 import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
 import org.kuali.rice.kew.dto.DocumentSearchResultRowDTO;
-import org.kuali.rice.kew.dto.KeyValueDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
@@ -1475,9 +1477,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         // now verify that the search returned the proper document id
         boolean foundValidDocId = false;
         for (DocumentSearchResultRowDTO documentSearchResultRowVO : searchResults) {
-			for (KeyValueDTO keyValueVO : documentSearchResultRowVO.getFieldValues()) {
+			for (KeyValue keyValueVO : documentSearchResultRowVO.getFieldValues()) {
 				if ( (KEWPropertyConstants.DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID.equals(keyValueVO.getKey())) &&
-					 (StringUtils.equals(workflowDocument.getRouteHeaderId().toString(), keyValueVO.getUserDisplayValue())) ) {
+					 (StringUtils.equals(workflowDocument.getRouteHeaderId().toString(), keyValueVO.getValue())) ) {
 					foundValidDocId = true;
 					break;
 				}
@@ -1577,21 +1579,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         DocumentSearchCriteriaDTO criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE)}));
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,TestXMLSearchableAttributeString.SEARCH_STORAGE_VALUE)));
         DocumentSearchResultDTO result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         List<DocumentSearchResultRowDTO> searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
-        criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,"fred")}));
+        criteria.setDocTypeFullName(documentTypeName); 
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue(TestXMLSearchableAttributeString.SEARCH_STORAGE_KEY,"fred")));
         result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("fakeproperty", "doesntexist")}));
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue("fakeproperty", "doesntexist")));
         try {
             result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
@@ -1599,21 +1601,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString())}));
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeLong.SEARCH_STORAGE_VALUE.toString())));
         result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "1111111")}));
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue(TestXMLSearchableAttributeLong.SEARCH_STORAGE_KEY, "1111111")));
         result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("fakeymcfakefake", "99999999")}));
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue("fakeymcfakefake", "99999999")));
         try {
             result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
@@ -1621,21 +1623,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString())}));
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, TestXMLSearchableAttributeFloat.SEARCH_STORAGE_VALUE.toString())));
         result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "215.3548")}));
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue(TestXMLSearchableAttributeFloat.SEARCH_STORAGE_KEY, "215.3548")));
         result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("fakeylostington", "9999.9999")}));
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue("fakeylostington", "9999.9999")));
         try {
             result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");
@@ -1643,21 +1645,21 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)))}));
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, DocSearchUtils.getDisplayValueWithDateOnly(new Timestamp(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_VALUE_IN_MILLS)))));
         result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should have two documents.", 2, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "07/06/1979")}));
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue(TestXMLSearchableAttributeDateTime.SEARCH_STORAGE_KEY, "07/06/1979")));
         result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
         searchResults = result.getSearchResults();
         assertEquals("Search results should be empty.", 0, searchResults.size());
 
         criteria = new DocumentSearchCriteriaDTO();
         criteria.setDocTypeFullName(documentTypeName);
-        criteria.setSearchAttributeValues(Arrays.asList(new KeyValueDTO[]{new KeyValueDTO("lastingsfakerson","07/06/2007")}));
+        criteria.setSearchAttributeValues(Collections.singletonList(new ContreteKeyValue("lastingsfakerson","07/06/2007")));
         try {
             result = getWorkflowUtility().performDocumentSearchWithPrincipal(principalId, criteria);
             fail("Search results should be throwing a validation exception for use of non-existant searchable attribute");

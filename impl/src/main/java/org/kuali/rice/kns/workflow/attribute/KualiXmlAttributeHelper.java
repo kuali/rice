@@ -34,7 +34,7 @@ import javax.xml.xpath.XPathExpressionException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
@@ -170,11 +170,11 @@ public class KualiXmlAttributeHelper {
                                     NamedNodeMap valuesNodeAttributes = displayTagChildNode.getAttributes();
                                     Node potentialSelectedAttribute = (valuesNodeAttributes != null) ? valuesNodeAttributes.getNamedItem("selected") : null;
                                     for (Iterator iter = finder.getKeyValues().iterator(); iter.hasNext();) {
-                                        KeyLabelPair keyLabelPair = (KeyLabelPair) iter.next();
+                                        KeyValue keyValue = (KeyValue) iter.next();
                                         Element newValuesElement = root.getOwnerDocument().createElement("values");
-                                        newValuesElement.appendChild(root.getOwnerDocument().createTextNode(keyLabelPair.getKey().toString()));
-                                        // newValuesElement.setNodeValue(keyLabelPair.getKey().toString());
-                                        newValuesElement.setAttribute("title", keyLabelPair.getLabel());
+                                        newValuesElement.appendChild(root.getOwnerDocument().createTextNode(keyValue.getKey()));
+                                        // newValuesElement.setNodeValue(KeyValue.getKey().toString());
+                                        newValuesElement.setAttribute("title", keyValue.getValue());
                                         if (potentialSelectedAttribute != null) {
                                             newValuesElement.setAttribute("selected", potentialSelectedAttribute.getNodeValue());
                                         }

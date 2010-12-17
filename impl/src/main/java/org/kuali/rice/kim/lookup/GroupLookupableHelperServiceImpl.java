@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.lookup;
 
-import static java.util.Collections.sort;
-
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,14 +23,14 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -40,7 +38,6 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.bo.ui.KimAttributeDataComparator;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -233,14 +230,15 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                 newColumn.setColumnTitle(field.getFieldLabel());
                 newColumn.setMaxLength(getColumnMaxLength(field.getPropertyName()));
                 newColumn.setPropertyName(field.getPropertyName());
-                newColumn.setFormatter((Formatter) field.getFormatter());
+                newColumn.setFormatter(field.getFormatter());
                 columns.add(newColumn);
             }
         }
         return columns;
 	}
 
-    public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
+    @Override
+	public Collection performLookup(LookupForm lookupForm, Collection resultTable, boolean bounded) {
         setBackLocation((String) lookupForm.getFieldsForLookup().get(KNSConstants.BACK_LOCATION));
         setDocFormKey((String) lookupForm.getFieldsForLookup().get(KNSConstants.DOC_FORM_KEY));
         Collection displayList;
@@ -279,15 +277,14 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
             }
 
             List<Column> columns = getColumns();
-            for (Iterator iterator = columns.iterator(); iterator.hasNext();) {
+            for (Object element2 : columns) {
 
-                Column col = (Column) iterator.next();
+                Column col = (Column) element2;
                 Formatter formatter = col.getFormatter();
 
                 // pick off result column from result list, do formatting
                 String propValue = KNSConstants.EMPTY_STRING;
                 Object prop = null;
-                boolean skipPropTypeCheck = false;
                 if (col.getPropertyName().matches("\\w+\\.\\d+$")) {
                     String id = col.getPropertyName().substring(col.getPropertyName().lastIndexOf('.') + 1); //.split("\\d+$"))[1];
                     prop = ((GroupImpl)element).getGroupAttributeValueById(id);
@@ -295,7 +292,6 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                 if (prop == null) {
                     prop = ObjectUtils.getPropertyValue(element, col.getPropertyName());
                 } else {
-                    skipPropTypeCheck = true;
                 }
 
                 // set comparator and formatter based on property type
@@ -377,21 +373,22 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
         return displayList;
     }
 
-	private List<KeyLabelPair> getGroupTypeOptions() {
-		List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
-		options.add(new KeyLabelPair("", ""));
+	private List<KeyValue> getGroupTypeOptions() {
+		List<KeyValue> options = new ArrayList<KeyValue>();
+		options.add(new ContreteKeyValue("", ""));
 
 		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocator.getTypeInfoService().getAllTypes();
 		// get the distinct list of type IDs from all groups in the system
         for (KimTypeInfo kimType : kimGroupTypes) {
             if (KimTypeLookupableHelperServiceImpl.hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
                 String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
-                options.add(new KeyLabelPair(kimType.getKimTypeId(), value));
+                options.add(new ContreteKeyValue(kimType.getKimTypeId(), value));
             }
         }
-        Collections.sort(options, new Comparator<KeyLabelPair>() {
-           public int compare(KeyLabelPair k1, KeyLabelPair k2) {
-               return k1.getLabel().compareTo(k2.getLabel());
+        Collections.sort(options, new Comparator<KeyValue>() {
+           @Override
+           public int compare(KeyValue k1, KeyValue k2) {
+               return k1.getValue().compareTo(k2.getValue());
            }
         });
 		return options;
@@ -400,7 +397,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 	private List<Row> setupAttributeRows(Map fieldValues) {
 		List<Row> returnRows = new ArrayList<Row>();
 		for (Row row : getGrpRows()) {
-			Field field = (Field) row.getFields().get(0);
+			Field field = row.getFields().get(0);
 			if (field.getPropertyName().equals(KIM_TYPE_ID_PROPERTY_NAME) && StringUtils.isNotBlank(field.getPropertyValue())) {
 				if (!StringUtils.isBlank(getTypeId()) || !getTypeId().equals(field.getPropertyValue())) {
 					setTypeId(field.getPropertyValue());
@@ -448,7 +445,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
                                 throw new RuntimeException(e.getMessage());
                             }
 						} else if (definition.getControl().isCheckbox()) {
-						    KeyValuesFinder finder = (KeyValuesFinder)new IndicatorValuesFinder();
+						    KeyValuesFinder finder = new IndicatorValuesFinder();
                             typeField.setFieldValidValues(finder.getKeyValues());
                             typeField.setFieldType(Field.RADIO);
 						    //typeField.setFieldType(Field.CHECKBOX);

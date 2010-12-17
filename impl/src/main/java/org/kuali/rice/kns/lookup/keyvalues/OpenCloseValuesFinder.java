@@ -16,9 +16,11 @@
 package org.kuali.rice.kns.lookup.keyvalues;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 
 /**
  * This class returns list containg O = Open or C = Closed
@@ -27,14 +29,21 @@ import org.kuali.rice.core.util.KeyLabelPair;
  */
 public class OpenCloseValuesFinder extends KeyValuesBase {
 
+	private static final List<KeyValue> KEY_VALUES;
+	
+	static {
+		final List<KeyValue> keyValues = new ArrayList<KeyValue>();
+		keyValues.add(new ContreteKeyValue("O", "Open"));
+		keyValues.add(new ContreteKeyValue("C", "Closed"));
+		KEY_VALUES = Collections.unmodifiableList(keyValues);
+	}
+	
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-        List keyValues = new ArrayList();
-        keyValues.add(new KeyLabelPair("O", "Open"));
-        keyValues.add(new KeyLabelPair("C", "Closed"));
-        return keyValues;
+    @Override
+	public List<KeyValue> getKeyValues() {
+        return KEY_VALUES;
     }
 
 }

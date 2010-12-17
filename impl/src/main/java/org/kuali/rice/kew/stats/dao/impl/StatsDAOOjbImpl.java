@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.dao.StatsDAO;
@@ -45,7 +46,8 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
     public static final String SQL_NUM_USERS = "select count(distinct prncpl_id) as prsn_count from KREW_USR_OPTN_T";
     public static final String SQL_NUM_DOCS_INITIATED = "select count(*), krew_doc_typ_t.doc_typ_nm from krew_doc_hdr_t, krew_doc_typ_t where krew_doc_hdr_t.crte_dt > ? and krew_doc_hdr_t.doc_typ_id = krew_doc_typ_t.doc_typ_id group by krew_doc_typ_t.doc_typ_nm";
 
-    public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
+    @Override
+	public void NumActiveItemsReport(Stats stats) throws SQLException, LookupException {
 
         LOG.debug("NumActiveItemsReport()");
         PersistenceBroker broker = this.getPersistenceBroker(false);
@@ -60,7 +62,8 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
         closeDatabaseObjects(rs, ps, conn/*, broker*/);
     }
 
-    public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException {
+    @Override
+	public void NumberOfDocTypesReport(Stats stats) throws SQLException, LookupException {
 
         LOG.debug("NumberOfDocTypesReport()");
         PersistenceBroker broker = this.getPersistenceBroker(false);
@@ -75,7 +78,8 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
         closeDatabaseObjects(rs, ps, conn/*, broker*/);
     }
 
-    public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException {
+    @Override
+	public void DocumentsRoutedReport(Stats stats, Date begDate, Date endDate) throws SQLException, LookupException {
 
         LOG.debug("DocumentsRoutedReport()");
         PersistenceBroker broker = this.getPersistenceBroker(false);
@@ -113,7 +117,8 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
         closeDatabaseObjects(rs, ps, conn/*, broker*/);
     }
 
-    public void NumUsersReport(Stats stats) throws SQLException, LookupException {
+    @Override
+	public void NumUsersReport(Stats stats) throws SQLException, LookupException {
 
         LOG.debug("NumUsersReport()");
         PersistenceBroker broker = this.getPersistenceBroker(false);
@@ -128,7 +133,8 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
         closeDatabaseObjects(rs, ps, conn/*, broker*/);
     }
 
-    public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException, LookupException {
+    @Override
+	public void NumInitiatedDocsByDocTypeReport(Stats stats) throws SQLException, LookupException {
 
         LOG.debug("NumInitiatedDocsByDocType()");
         PersistenceBroker broker = this.getPersistenceBroker(false);
@@ -143,10 +149,10 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
         ps.setTimestamp(1, new Timestamp(calendar.getTime().getTime()));
         ResultSet rs = ps.executeQuery();
 
-        List numDocs = new ArrayList();
+        List<KeyValue> numDocs = new ArrayList<KeyValue>();
 
         while (rs.next()) {
-            numDocs.add(new KeyValue(rs.getString(2), new Integer(rs.getInt(1)).toString()));
+            numDocs.add(new ContreteKeyValue(rs.getString(2), new Integer(rs.getInt(1)).toString()));
         }
         stats.setNumInitiatedDocsByDocType(numDocs);
 

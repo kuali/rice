@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
@@ -39,8 +40,9 @@ import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
  */
 public class RoleNameValuesFinder extends KeyValuesBase {
 	
-	public List<KeyLabelPair> getKeyValues() {
-		List<KeyLabelPair> roleNames = new ArrayList<KeyLabelPair>();
+	@Override
+	public List<KeyValue> getKeyValues() {
+		List<KeyValue> roleNames = new ArrayList<KeyValue>();
 		if (GlobalVariables.getKualiForm() != null && GlobalVariables.getKualiForm() instanceof KualiMaintenanceForm) {
 			KualiMaintenanceForm form = (KualiMaintenanceForm)GlobalVariables.getKualiForm();
 			MaintenanceDocument document = (MaintenanceDocument)form.getDocument();
@@ -56,7 +58,7 @@ public class RoleNameValuesFinder extends KeyValuesBase {
 			RuleTemplate ruleTemplate = rule.getRuleTemplate();
 			List<Role> roles = ruleTemplate.getRoles();
 			for (Role role : roles) {
-				roleNames.add(new KeyLabelPair(role.getName(), role.getLabel()));
+				roleNames.add(new ContreteKeyValue(role.getName(), role.getLabel()));
 			}
 		}
 		return roleNames;

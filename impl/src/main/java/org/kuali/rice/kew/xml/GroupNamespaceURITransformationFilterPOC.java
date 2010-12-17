@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.xml.sax.SAXException;
 
 /**
@@ -86,14 +87,15 @@ public class GroupNamespaceURITransformationFilterPOC extends AbstractTransforma
 	 * 
 	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#getElementTransformationList()
 	 */	
+	@Override
 	public List<KeyValue> getElementTransformationList() {
 		List<KeyValue> rList = new ArrayList<KeyValue>();
 
-		rList.add(new KeyValue("group.name", GROUP_URI));
-		rList.add(new KeyValue("group.namespace", GROUP_URI));
-		rList.add(new KeyValue("group.description", GROUP_URI));
-		rList.add(new KeyValue("group.members.principalName", GROUP_URI));
-		rList.add(new KeyValue("group.members.principalId", GROUP_URI));		
+		rList.add(new ContreteKeyValue("group.name", GROUP_URI));
+		rList.add(new ContreteKeyValue("group.namespace", GROUP_URI));
+		rList.add(new ContreteKeyValue("group.description", GROUP_URI));
+		rList.add(new ContreteKeyValue("group.members.principalName", GROUP_URI));
+		rList.add(new ContreteKeyValue("group.members.principalId", GROUP_URI));		
 
 		return rList;
 	}
@@ -104,6 +106,7 @@ public class GroupNamespaceURITransformationFilterPOC extends AbstractTransforma
 	 * 
 	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#getStartingElementPath()
 	 */	
+	@Override
 	public String getStartingElementPath() {
 		
 		return "data.groups";
@@ -115,6 +118,7 @@ public class GroupNamespaceURITransformationFilterPOC extends AbstractTransforma
 	 * 
 	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#transformStartElement(org.kuali.rice.kew.xml.AbstractTransformationFilter.CurrentElement)
 	 */
+	@Override
 	public CurrentElement transformStartElement(CurrentElement currentElement) throws SAXException{
 		String transformedLocalName = elementTransformationMap.get(this.getTrimmedCurrentElementKey(currentElement.getNameKey()));
 		String transformedQualifiedName = transformedLocalName;
@@ -128,6 +132,7 @@ public class GroupNamespaceURITransformationFilterPOC extends AbstractTransforma
 	 * 
 	 * @see org.kuali.rice.kew.xml.AbstractTransformationFilter#transformEndElement(org.kuali.rice.kew.xml.AbstractTransformationFilter.CurrentElement)
 	 */
+	@Override
 	public CurrentElement transformEndElement(CurrentElement currentElement) throws SAXException {
 		String transformedLocalName = elementTransformationMap.get(this.getTrimmedCurrentElementKey(currentElement.getNameKey()));
 		String transformedQualifiedName = transformedLocalName;

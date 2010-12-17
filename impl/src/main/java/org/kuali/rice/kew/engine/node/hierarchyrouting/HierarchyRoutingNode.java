@@ -87,7 +87,7 @@ public class HierarchyRoutingNode implements DynamicNode {
      */
     protected HierarchyProvider getHierarchyProvider(RouteNodeInstance nodeInstance, RouteContext context) {
         Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(nodeInstance.getRouteNode().getConfigParams());
-        String hierarchyProviderClass = cfgMap.get(HIERARCHY_PROVIDER);
+        String hierarchyProviderClass = cfgMap.get(HIERARCHY_PROVIDER); 
         if (StringUtils.isEmpty(hierarchyProviderClass)) {
             throw new WorkflowRuntimeException("hierarchyProvider configuration parameter not set for HierarchyRoutingNode: " + nodeInstance.getName());
         }
@@ -212,7 +212,10 @@ public class HierarchyRoutingNode implements DynamicNode {
         RouteNode requestsPrototype = getStopRequestNode(futureStop, context.getDocument().getDocumentType());
         RouteNodeInstance requestNode = helper.getNodeFactory().createRouteNodeInstance(context.getDocument().getRouteHeaderId(), requestsPrototype);
         requestNode.setBranch(processInstance.getBranch());
-        requestNode.addNodeState(new NodeState(STOP_ID, provider.getStopIdentifier(futureStop)));
+        NodeState ns = new NodeState();
+        ns.setKey(STOP_ID);
+        ns.setValue(provider.getStopIdentifier(futureStop));
+        requestNode.addNodeState(ns);
         provider.setStop(requestNode, futureStop);
         LOG.debug("Stop set on request node: " + provider.getStop(requestNode));
         addStopToProcessState(provider, processInstance, futureStop);
@@ -303,7 +306,11 @@ public class HierarchyRoutingNode implements DynamicNode {
     }
 
     private static void markAsInitialSplitNode(RouteNodeInstance splitNode) {
-        splitNode.addNodeState(new NodeState(INITIAL_SPLIT_NODE_MARKER, INITIAL_SPLIT_NODE_MARKER));
+        NodeState ns = new NodeState();
+        ns.setKey(INITIAL_SPLIT_NODE_MARKER);
+        ns.setValue(INITIAL_SPLIT_NODE_MARKER);
+    	
+    	splitNode.addNodeState(ns);
     }
 
     /**
@@ -323,7 +330,11 @@ public class HierarchyRoutingNode implements DynamicNode {
         String stopStateName = provider.getStopIdentifier(stop);
         NodeState visitedStopsState = processInstance.getNodeState(VISITED_STOPS);
         if (visitedStopsState == null) {
-            processInstance.addNodeState(new NodeState(VISITED_STOPS, stopStateName + V_STOPS_DEL));
+            NodeState ns = new NodeState();
+            ns.setKey(VISITED_STOPS);
+            ns.setValue(stopStateName + V_STOPS_DEL);
+        	
+        	processInstance.addNodeState(ns);
         } else if (! getVisitedStopsList(processInstance).contains(stopStateName)) {
             visitedStopsState.setValue(visitedStopsState.getValue() + stopStateName + V_STOPS_DEL);
         }
@@ -374,7 +385,11 @@ public class HierarchyRoutingNode implements DynamicNode {
         String branchName = "Branch " + provider.getStopIdentifier(stop);
         RouteNodeInstance orgRequestInstance = SplitTransitionEngine.createSplitChild(branchName, requestsNode, splitNodeInstance);
         splitNodeInstance.addNextNodeInstance(orgRequestInstance);
-        orgRequestInstance.addNodeState(new NodeState(STOP_ID, provider.getStopIdentifier(stop)));
+        NodeState ns = new NodeState();
+        ns.setKey(STOP_ID);
+        ns.setValue(provider.getStopIdentifier(stop));
+        
+        orgRequestInstance.addNodeState(ns);
         provider.setStop(orgRequestInstance, stop);
         addStopToProcessState(provider, processInstance, stop);
         return orgRequestInstance;

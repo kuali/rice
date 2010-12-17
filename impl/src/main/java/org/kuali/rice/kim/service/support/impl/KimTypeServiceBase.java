@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
@@ -117,6 +117,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	 *
 	 * @see org.kuali.rice.kim.service.support.KimTypeService#getWorkflowDocumentTypeName()
 	 */
+	@Override
 	public String getWorkflowDocumentTypeName() {
 		return null;
 	}
@@ -163,6 +164,7 @@ public class KimTypeServiceBase implements KimTypeService {
 	 *
 	 * @see org.kuali.rice.kim.service.support.KimTypeService#validateAttributes(AttributeSet)
 	 */
+	@Override
 	public AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes) {
 		AttributeSet validationErrors = new AttributeSet();
 		if ( attributes == null ) {
@@ -222,8 +224,9 @@ public class KimTypeServiceBase implements KimTypeService {
 			Class<?> propertyType = propertyDescriptor.getPropertyType();
 			if(propertyType!=String.class){
 				attributeValueObject = KNSUtils.createObject(propertyType, new Class[]{String.class}, new Object[] {attributeValue});
-			} else
+			} else {
 				attributeValueObject = attributeValue;
+			}
 		}
 		return attributeValueObject;
 	}
@@ -527,9 +530,8 @@ public class KimTypeServiceBase implements KimTypeService {
 		return new ArrayList<String>();
 	}
 
-	@SuppressWarnings("unchecked")
-	protected List<KeyLabelPair> getLocalDataDictionaryAttributeValues(KimTypeAttributeInfo attr) throws ClassNotFoundException {
-		List<KeyLabelPair> pairs = new ArrayList<KeyLabelPair>();
+	protected List<KeyValue> getLocalDataDictionaryAttributeValues(KimTypeAttributeInfo attr) throws ClassNotFoundException {
+		List<KeyValue> pairs = new ArrayList<KeyValue>();
 		BusinessObjectEntry entry = getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(attr.getComponentName());
 		if ( entry == null ) {
 			LOG.warn( "Unable to obtain BusinessObjectEntry for component name: " + attr.getComponentName() );
@@ -566,11 +568,12 @@ public class KimTypeServiceBase implements KimTypeService {
 		return pairs;
 	}
 
-	protected List<KeyLabelPair> getCustomValueFinderValues(KimTypeAttributeInfo attrib) {
-		return new ArrayList<KeyLabelPair>(0);
+	protected List<KeyValue> getCustomValueFinderValues(KimTypeAttributeInfo attrib) {
+		return new ArrayList<KeyValue>(0);
 	}
 
-	public List<KeyLabelPair> getAttributeValidValues(String kimTypeId, String attributeName) {
+	@Override
+	public List<KeyValue> getAttributeValidValues(String kimTypeId, String attributeName) {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "getAttributeValidValues(" + kimTypeId + "," + attributeName + ")");			
 		}
@@ -578,7 +581,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "Found Attribute definition: " + attrib );
 		}
-		List<KeyLabelPair> pairs = null;
+		List<KeyValue> pairs = null;
 		if ( StringUtils.isNotBlank(attrib.getComponentName()) ) {
 			try {
 				Class.forName(attrib.getComponentName());
@@ -586,7 +589,7 @@ public class KimTypeServiceBase implements KimTypeService {
 					pairs = getLocalDataDictionaryAttributeValues(attrib);
 				} catch ( ClassNotFoundException ex ) {
 					LOG.error( "Got a ClassNotFoundException resolving a values finder - since this should have been executing in the context of the host system - this should not happen.");
-					pairs = new ArrayList<KeyLabelPair>(0);
+					pairs = new ArrayList<KeyValue>(0);
 				}
 			} catch ( ClassNotFoundException ex ) {
 				LOG.error( "Got a ClassNotFoundException resolving a component name (" + attrib.getComponentName() + ") - since this should have been executing in the context of the host system - this should not happen.");
@@ -729,6 +732,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
 //	private Map<String,AttributeDefinitionMap> attributeDefinitionCache = new HashMap<String,AttributeDefinitionMap>();
 
+	@Override
 	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
 //		AttributeDefinitionMap definitions = attributeDefinitionCache.get( kimTypeId );
 //		if ( definitions == null ) {
@@ -810,10 +814,12 @@ public class KimTypeServiceBase implements KimTypeService {
 	 * 
 	 * @see org.kuali.rice.kim.service.support.KimTypeService#getWorkflowRoutingAttributes(java.lang.String)
 	 */
+	@Override
 	public List<String> getWorkflowRoutingAttributes(String routeLevel) {
 		return workflowRoutingAttributes;
 	}
 	
+	@Override
 	public boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
 		boolean areAttributesUnique = true;
 		List<String> uniqueAttributes = getUniqueAttributes(kimTypeId);
@@ -857,25 +863,30 @@ public class KimTypeServiceBase implements KimTypeService {
 	
     protected boolean areAllAttributeValuesEmpty(AttributeSet attributes){
     	boolean areAllAttributesEmpty = true;
-    	if(attributes!=null)
-	    	for(String attributeNameKey: attributes.keySet()){
+    	if(attributes!=null) {
+			for(String attributeNameKey: attributes.keySet()){
 				if(StringUtils.isNotEmpty(attributes.get(attributeNameKey))){
 					areAllAttributesEmpty = false;
 					break;
 				}
 			}
+		}
     	return areAllAttributesEmpty;
     }
 
 	protected String getAttributeValue(AttributeSet aSet, String attributeName){
-		if(StringUtils.isEmpty(attributeName)) return null;
+		if(StringUtils.isEmpty(attributeName)) {
+			return null;
+		}
 		for(String attributeNameKey: aSet.keySet()){
-			if(attributeName.equals(attributeNameKey))
+			if(attributeName.equals(attributeNameKey)) {
 				return aSet.get(attributeNameKey);
+			}
 		}
 		return null;
 	}
 	
+	@Override
 	public List<String> getUniqueAttributes(String kimTypeId){
 		KimTypeInfo kimType = getTypeInfoService().getKimType(kimTypeId);
         List<String> uniqueAttributes = new ArrayList<String>();
@@ -889,6 +900,7 @@ public class KimTypeServiceBase implements KimTypeService {
         return uniqueAttributes;
 	}
 
+	@Override
 	public AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet originalAttributeSet, AttributeSet newAttributeSet){
 		AttributeSet validationErrors = new AttributeSet();
 		List<String> attributeErrors = null;
@@ -922,6 +934,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		this.checkRequiredAttributes = checkRequiredAttributes;
 	}
 
+	@Override
 	public AttributeSet validateAttributesAgainstExisting(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
 		return new AttributeSet();
 	}

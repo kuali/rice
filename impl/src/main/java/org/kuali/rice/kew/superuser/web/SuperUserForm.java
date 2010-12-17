@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -67,10 +68,12 @@ public class SuperUserForm extends KewRoutingKualiForm {
     // KULRICE-3035: Added the ability to store the doc search's "returnLocation" property so that the superuser form can create a proper "cancel" button.
     private String returnLocation;
     
-    public String getMethodToCall() {
+    @Override
+	public String getMethodToCall() {
         return methodToCall;
     }
-    public void setMethodToCall(String methodToCall) {
+    @Override
+	public void setMethodToCall(String methodToCall) {
         this.methodToCall = methodToCall;
     }
 
@@ -174,7 +177,8 @@ public class SuperUserForm extends KewRoutingKualiForm {
         this.authorized = authorized;
     }
 
-    public void reset(ActionMapping mapping, HttpServletRequest request){
+    @Override
+	public void reset(ActionMapping mapping, HttpServletRequest request){
         this.futureNodeNames = new ArrayList<String>();
     }
 
@@ -204,12 +208,11 @@ public class SuperUserForm extends KewRoutingKualiForm {
         return getRouteHeader().getDocumentType();
     }
 
-    public Set getPreviousNodes() throws Exception {
+    public Set<KeyValue> getPreviousNodes() throws Exception {
     	String[] nodeNames = new WorkflowInfo().getPreviousRouteNodeNames(routeHeader.getRouteHeaderId());
-        Set previousNodes = new HashSet();
-        for (int i = 0; i < nodeNames.length; i++) {
-			String nodeName = nodeNames[i];
-			previousNodes.add(new KeyValue(nodeName, nodeName));
+        Set<KeyValue> previousNodes = new HashSet<KeyValue>();
+        for (String nodeName : nodeNames) {
+			previousNodes.add(new ContreteKeyValue(nodeName, nodeName));
 		}
         return previousNodes;
     }

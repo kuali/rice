@@ -18,7 +18,8 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
 
@@ -27,18 +28,19 @@ public class ModuleValuesFinder extends KeyValuesBase {
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-        List keyValues = new ArrayList();
-        keyValues.add(new KeyLabelPair("", ""));
-        //keyValues.add(getKeyLabelPair(RiceConstants.CROSS_MODULE_CODE, RiceConstants.CROSS_MODULE_NAME));
+    @Override
+	public List<KeyValue> getKeyValues() {
+    	List<KeyValue> keyValues = new ArrayList<KeyValue>();
+        keyValues.add(new ContreteKeyValue("", ""));
+        //keyValues.add(getKeyValue(RiceConstants.CROSS_MODULE_CODE, RiceConstants.CROSS_MODULE_NAME));
         for (ModuleService moduleService : KNSServiceLocator.getKualiModuleService().getInstalledModuleServices()) {
-            keyValues.add(getKeyLabelPair(moduleService.getModuleConfiguration().getNamespaceCode(), 
+            keyValues.add(getKeyValue(moduleService.getModuleConfiguration().getNamespaceCode(), 
             		KNSServiceLocator.getKualiModuleService().getNamespaceName(moduleService.getModuleConfiguration().getNamespaceCode())));
         }
         return keyValues;
     }
     
-    private KeyLabelPair getKeyLabelPair(String moduleCode, String moduleName) {
-        return new KeyLabelPair(moduleCode, moduleCode + " - " + moduleName);
+    private KeyValue getKeyValue(String moduleCode, String moduleName) {
+        return new ContreteKeyValue(moduleCode, moduleCode + " - " + moduleName);
     }
 }

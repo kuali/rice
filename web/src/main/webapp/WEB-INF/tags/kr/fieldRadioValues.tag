@@ -22,15 +22,15 @@
 
 ${kfunc:registerEditableProperty(KualiForm, field.propertyName)}
 <c:forEach items="${field.fieldValidValues}" var="radio">
-  <c:if test="${!empty radio.label}">
+  <c:if test="${!empty radio.value}">
     <input type="radio"
         ${field.propertyValue eq radio.key ? 'checked="checked"' : ''}
         name='${field.propertyName}'
-        id='${field.propertyName}${radio.label}'
+        id='${field.propertyName}${radio.value}'
         value='<c:out value="${radio.key}" />'
-		title='${field.fieldLabel} - ${radio.label}'
+		title='${field.fieldLabel} - ${radio.value}'
         onblur="${onblur}" onchange="${onchange}" tabIndex="${tabIndex}"/>
-    <label for='${field.propertyName}${radio.label}'><c:out value="${radio.label}"/></label>
+    <label for='${field.propertyName}${radio.value}'><c:out value="${radio.value}"/></label>
   </c:if>
   
   <c:set var="tabIndex" value="${KualiForm.currentTabIndex}"/>

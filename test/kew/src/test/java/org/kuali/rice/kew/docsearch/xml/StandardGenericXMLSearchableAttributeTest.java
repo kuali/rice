@@ -19,7 +19,6 @@ package org.kuali.rice.kew.docsearch.xml;
 import java.io.BufferedReader;
 import java.io.StringReader;
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +29,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
@@ -38,10 +36,7 @@ import org.kuali.rice.kew.docsearch.DocumentSearchContext;
 import org.kuali.rice.kew.docsearch.DocumentSearchResult;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
-import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
 import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
@@ -55,7 +50,6 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -1318,12 +1312,12 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
     }
 
     /**
-     * Tests that Field objects use correct KeyLabelPair instances when checks for blank valid values are performed
+     * Tests that Field objects use correct KeyValue instances when checks for blank valid values are performed
      * (such as when JSP renders drop-downs), to verify that KULRICE-3587 has been fixed.
      * 
      * @throws Exception
      */
-    @Test public void testBlankValidValuesOnKeyLabelPairs() throws Exception {
+    @Test public void testBlankValidValuesOnKeyValues() throws Exception {
     	boolean[] shouldHaveBlank = {true, false};
     	String[] attributesToTest = {"XMLSearchableAttributeWithBlank", "XMLSearchableAttributeWithoutBlank"};
         DocumentSearchContext docSearchContext = DocSearchUtils.getDocumentSearchContext("", "BlankValidValuesDocType", "");

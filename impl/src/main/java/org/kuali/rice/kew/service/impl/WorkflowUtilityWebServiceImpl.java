@@ -36,6 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -70,7 +71,6 @@ import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.engine.node.KeyValuePair;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
@@ -973,7 +973,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
         if (ruleReportCriteria.getRuleExtensionVOs() != null) {
             for (int i = 0; i < ruleReportCriteria.getRuleExtensionVOs().length; i++) {
                 RuleExtensionDTO ruleExtensionVO = ruleReportCriteria.getRuleExtensionVOs()[i];
-                KeyValuePair ruleExtension = DTOConverter.convertRuleExtensionVO(ruleExtensionVO);
+                KeyValue ruleExtension = DTOConverter.convertRuleExtensionVO(ruleExtensionVO);
                 extensionValues.put(ruleExtension.getKey(), ruleExtension.getValue());
             }
         }

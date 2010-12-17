@@ -814,8 +814,8 @@ public class DocumentRouteHeaderValue extends KewPersistableBusinessObjectBase {
         updateAppDocStatus(routeHeaderVO.getAppDocStatus());
 
         /* set the variables from the routeHeaderVO */
-        List<KeyValue<String, String>> variables = routeHeaderVO.getVariables();
-        for (KeyValue<String, String> kvp : variables) {
+        List<KeyValue> variables = routeHeaderVO.getVariables();
+        for (KeyValue kvp : variables) {
             setVariable(kvp.getKey(), kvp.getValue());
         }
     }

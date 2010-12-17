@@ -20,7 +20,7 @@ package org.kuali.rice.kns.datadictionary.control;
 /**
                         The radio element will render an HTML radio control.
                         The valuesFinderClass will have a getKeyValues() method
-                        that returns a list of KeyLabelPair objects.
+                        that returns a list of KeyValue objects.
  */
 public class RadioControlDefinition extends MultivalueControlDefinitionBase {
     private static final long serialVersionUID = -7578183583825935850L;
@@ -31,14 +31,16 @@ public class RadioControlDefinition extends MultivalueControlDefinitionBase {
     /**
      * @see org.kuali.rice.kns.datadictionary.control.ControlDefinition#isRadio()
      */
-    public boolean isRadio() {
+    @Override
+	public boolean isRadio() {
         return true;
     }
 
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString() {
+    @Override
+	public String toString() {
         return "RadioControlDefinition";
     }
 }

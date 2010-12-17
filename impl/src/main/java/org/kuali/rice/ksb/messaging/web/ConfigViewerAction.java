@@ -28,8 +28,8 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigLogger;
-import org.kuali.rice.kew.engine.node.KeyValuePair;
-
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 /**
  * This is a description of what this class does - g don't forget to fill this in. 
  * 
@@ -43,6 +43,7 @@ public class ConfigViewerAction extends KSBAction{
 	 * 
 	 * @see org.kuali.rice.ksb.messaging.web.KSBAction#establishRequiredState(javax.servlet.http.HttpServletRequest, org.apache.struts.action.ActionForm)
 	 */
+	@Override
 	public ActionMessages establishRequiredState(HttpServletRequest request,
 			ActionForm actionForm) throws Exception {
 		ConfigViewerForm  form = (ConfigViewerForm)actionForm;
@@ -51,13 +52,13 @@ public class ConfigViewerAction extends KSBAction{
 		return null;
 	}
 	
-	protected List<KeyValuePair> getFilteredConfigList(){
-		List<KeyValuePair> lRet = new ArrayList<KeyValuePair>();
+	protected List<KeyValue> getFilteredConfigList(){
+		List<KeyValue> lRet = new ArrayList<KeyValue>();
 		Properties p = ConfigContext.getCurrentContextConfig().getProperties();
 		for(Object o: p.keySet()){
 			String key = (String)o;			
 			
-			lRet.add(new KeyValuePair(key,ConfigLogger.getDisplaySafeValue(key, p.getProperty(key))));			
+			lRet.add(new ContreteKeyValue(key,ConfigLogger.getDisplaySafeValue(key, p.getProperty(key))));			
 		}
 		return lRet;
 	}
@@ -67,6 +68,7 @@ public class ConfigViewerAction extends KSBAction{
 	 * 
 	 * @see org.kuali.rice.ksb.messaging.web.KSBAction#start(org.apache.struts.action.ActionMapping, org.apache.struts.action.ActionForm, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
 	 */
+	@Override
 	public ActionForward start(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {

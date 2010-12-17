@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.KeyLabelPair;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.util.GlobalVariables;
 
@@ -36,23 +36,24 @@ public class SavedSearchValuesFinder extends KeyValuesBase {
 	/**
 	 * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyValues()
 	 */
-	public List getKeyValues() {
-		List<KeyLabelPair> savedSearchValues = new ArrayList<KeyLabelPair>();
-		savedSearchValues.add(new KeyLabelPair("", "Searches"));
-		savedSearchValues.add(new KeyLabelPair("*ignore*", "-----"));
-		savedSearchValues.add(new KeyLabelPair("*ignore*", "-Named Searches"));
+	@Override
+	public List<KeyValue> getKeyValues() {
+		List<KeyValue> savedSearchValues = new ArrayList<KeyValue>();
+		savedSearchValues.add(new ContreteKeyValue("", "Searches"));
+		savedSearchValues.add(new ContreteKeyValue("*ignore*", "-----"));
+		savedSearchValues.add(new ContreteKeyValue("*ignore*", "-Named Searches"));
 		List<KeyValue> namedSearches = KEWServiceLocator.getDocumentSearchService().getNamedSearches(GlobalVariables.getUserSession().getPrincipalId());
 		for (KeyValue keyValue : namedSearches) {
 			String label = StringUtils.abbreviate(keyValue.getValue(), 75);
-			KeyLabelPair keyLabel = new KeyLabelPair(keyValue.getKey(),label);
+			KeyValue keyLabel = new ContreteKeyValue(keyValue.getKey(),label);
 			savedSearchValues.add(keyLabel);
 		}
-		savedSearchValues.add(new KeyLabelPair("*ignore*", "-----"));
-		savedSearchValues.add(new KeyLabelPair("*ignore*", "-Recent Searches"));
+		savedSearchValues.add(new ContreteKeyValue("*ignore*", "-----"));
+		savedSearchValues.add(new ContreteKeyValue("*ignore*", "-Recent Searches"));
 		List<KeyValue> mostRecentSearches = KEWServiceLocator.getDocumentSearchService().getMostRecentSearches(GlobalVariables.getUserSession().getPrincipalId());
 		for (KeyValue keyValue : mostRecentSearches) {
 			String label = StringUtils.abbreviate(keyValue.getValue(), 75);
-			KeyLabelPair keyLabel = new KeyLabelPair(keyValue.getKey(),label);
+			KeyValue keyLabel = new ContreteKeyValue(keyValue.getKey(),label);
 			savedSearchValues.add(keyLabel);
 		}
 		return savedSearchValues;

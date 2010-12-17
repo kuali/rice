@@ -29,6 +29,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.preferences.Preferences;
@@ -69,7 +70,7 @@ public class ActionListFilterAction extends KualiAction {
 			ActionMapping mapping)
 	{
     	String mappingPath = mapping.getPath();
-    	String basePath = getBasePath(request);
+    	String basePath = getApplicationBaseUrl();
         return basePath + KEWConstants.WEBAPP_DIRECTORY + mappingPath + ".do";
 	}
 
@@ -103,11 +104,10 @@ public class ActionListFilterAction extends KualiAction {
         }
         uSession.addObject(KEWConstants.ACTION_LIST_FILTER_ATTR_NAME, alFilter);
         KEWServiceLocator.getActionListService().saveRefreshUserOption(getUserSession().getPrincipalId());
-        if (GlobalVariables.getMessageMap().isEmpty()) {
+        if (GlobalVariables.getMessageMap().hasNoErrors()) {
             return mapping.findForward("viewActionList");
-        } else {
-            return mapping.findForward("viewFilter");
-        }
+        } 
+        return mapping.findForward("viewFilter");    
     }
 
     public ActionForward clear(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -143,7 +143,7 @@ public class ActionListFilterAction extends KualiAction {
             KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         List<KeyValue> sortedUserWorkgroups = new ArrayList<KeyValue>();
     	KeyValue keyValue = null;
-    	keyValue = new KeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
+    	keyValue = new ContreteKeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
     	sortedUserWorkgroups.add(keyValue);
     	if (userWorkgroups != null && userWorkgroups.size() > 0) {
     		Collections.sort(userWorkgroups);
@@ -152,7 +152,7 @@ public class ActionListFilterAction extends KualiAction {
             for (String groupId : userWorkgroups)
             {
                 group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
-                keyValue = new KeyValue(groupId, group.getGroupName());
+                keyValue = new ContreteKeyValue(groupId, group.getGroupName());
                 sortedUserWorkgroups.add(keyValue);
             }
     	}

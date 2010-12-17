@@ -539,7 +539,9 @@ public class StandardWorkflowEngine implements WorkflowEngine {
 		    return false;
 		}
 		if (branchState == null) {
-			branchState = new BranchState(key, "true");
+			branchState = new BranchState();
+			branchState.setKey(key);
+			branchState.setValue("true");
 			rootBranch.addBranchState(branchState);
 			saveBranch(context, rootBranch);
 			return false;

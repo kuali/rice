@@ -18,17 +18,18 @@ package org.kuali.rice.kns.test.document;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
 public class AccountRequestType extends KeyValuesBase {
 
     public List getKeyValues() {
-        List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
-        keyValues.add(new KeyLabelPair("", ""));
-        keyValues.add(new KeyLabelPair("A", "Account Request Type A"));
-        keyValues.add(new KeyLabelPair("B", "Account Request Type B"));
-        keyValues.add(new KeyLabelPair("C", "Account Request Type C"));
+        List<KeyValue> keyValues = new ArrayList<KeyValue>();
+        keyValues.add(new ContreteKeyValue("", ""));
+        keyValues.add(new ContreteKeyValue("A", "Account Request Type A"));
+        keyValues.add(new ContreteKeyValue("B", "Account Request Type B"));
+        keyValues.add(new ContreteKeyValue("C", "Account Request Type C"));
         return keyValues;
     }
 

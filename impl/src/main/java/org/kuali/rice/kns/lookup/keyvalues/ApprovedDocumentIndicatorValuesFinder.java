@@ -18,7 +18,8 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 
 /**
  * This class returns list of approved document indicator value pairs.
@@ -28,10 +29,11 @@ public class ApprovedDocumentIndicatorValuesFinder extends KeyValuesBase {
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-        List keyValues = new ArrayList();
-        keyValues.add(new KeyLabelPair("A", "Approved"));
-        keyValues.add(new KeyLabelPair("", "All"));
+    @Override
+	public List<KeyValue> getKeyValues() {
+    	List<KeyValue> keyValues = new ArrayList<KeyValue>();
+        keyValues.add(new ContreteKeyValue("A", "Approved"));
+        keyValues.add(new ContreteKeyValue("", "All"));
 
         return keyValues;
     }

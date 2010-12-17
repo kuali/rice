@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.test.document.bo.AccountType;
@@ -31,9 +31,9 @@ public class AccountTypeKeyValues extends KeyValuesBase {
 
         Collection<AccountType> bos = KNSServiceLocator.getBusinessObjectService().findAll( AccountType.class );
         
-        keyValues.add(new KeyLabelPair("", ""));
+        keyValues.add(new ContreteKeyValue("", ""));
         for ( AccountType typ : bos ) {
-        	keyValues.add(new KeyLabelPair(typ.getAccountTypeCode(), typ.getName()));
+        	keyValues.add(new ContreteKeyValue(typ.getAccountTypeCode(), typ.getName()));
         }
 
         return keyValues;

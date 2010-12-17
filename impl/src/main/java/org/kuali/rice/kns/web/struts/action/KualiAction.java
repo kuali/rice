@@ -472,8 +472,8 @@ public abstract class KualiAction extends DispatchAction {
             
             // register each of the destination parameters of the field conversion string as editable
             String[] fieldConversions = conversionFields.split(KNSConstants.FIELD_CONVERSIONS_SEPARATOR);
-            for (int i = 0; i < fieldConversions.length; i++) {
-            	String destination = fieldConversions[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR)[1];
+            for (String fieldConversion : fieldConversions) {
+            	String destination = fieldConversion.split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR)[1];
             	kualiForm.registerEditableProperty(destination);
             }
         }
@@ -489,9 +489,11 @@ public abstract class KualiAction extends DispatchAction {
             if ( LOG.isDebugEnabled() ) {
             	 LOG.debug( "lookupParams: " + Arrays.toString(lookupParams) ); 
             }
-            for (int i = 0; i < lookupParams.length; i++) {
-            	String[] keyValue = lookupParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR); 
-                if (keyValue.length != 2) throw new RuntimeException("malformed field conversion pair: " + Arrays.toString(keyValue)); 
+            for (String lookupParam : lookupParams) {
+            	String[] keyValue = lookupParam.split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR); 
+                if (keyValue.length != 2) {
+					throw new RuntimeException("malformed field conversion pair: " + Arrays.toString(keyValue));
+				} 
 
                 String lookupParameterValue = retrieveLookupParameterValue(boClass, keyValue[1], keyValue[0], form, request);
                 if (StringUtils.isNotBlank(lookupParameterValue)) {
@@ -665,8 +667,8 @@ public abstract class KualiAction extends DispatchAction {
                 LOG.debug( "inquiryParams: " + inquiryParams );
             }
             Class<? extends BusinessObject> boClass = (Class<? extends BusinessObject>) Class.forName(boClassName);
-            for (int i = 0; i < inquiryParams.length; i++) {
-                String[] keyValue = inquiryParams[i].split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
+            for (String inquiryParam : inquiryParams) {
+                String[] keyValue = inquiryParam.split(KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR);
 
                 String inquiryParameterValue = retrieveLookupParameterValue(boClass, keyValue[1], keyValue[0], form, request);
                 if (inquiryParameterValue == null) {
@@ -1140,15 +1142,5 @@ public abstract class KualiAction extends DispatchAction {
 			applicationBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
 		}
 		return applicationBaseUrl;
-	}
-	
-	/**
-	 * Returns the Base URL for the application server.
-	 * 
-	 * @deprecated Use getApplicationBaseUrl() instead.
-	 */
-	@Deprecated
-	protected String getBasePath( HttpServletRequest request ) {
-		return getApplicationBaseUrl();
 	}
 }

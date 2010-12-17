@@ -25,5 +25,5 @@
 		</c:if>
     </c:forEach>
     <option ${propertySelected ? 'selected="selected"' : ''}
-            value='<c:out value="${select.key}"/>'>${select.htmlSpacePadding}<c:out value="${select.label}" /></option>
+            value='<c:out value="${select.key}"/>'><%--${select.htmlSpacePadding}--%><c:out value="${select.value}" /></option>
 </c:forEach>

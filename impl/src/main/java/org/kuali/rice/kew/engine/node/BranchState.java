@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import java.util.LinkedHashMap;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,7 +54,7 @@ public class BranchState extends State {
     public BranchState() {}
     
     public BranchState(String key, String value) {
-        super(key, value);
+    	super(key, value);
     }
     
     public Branch getBranch() {
@@ -79,10 +81,16 @@ public class BranchState extends State {
         this.lockVerNbr = lockVerNbr;
     }
 
-    public String toString() {
-        return "[BranchState: stateId=" + getStateId() + ", branch=" + branch + ", key=" + key + ", value=" + value + "]"; 
+    /**
+     * This overridden method ...
+     * 
+     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
+     */
+    @Override
+    protected LinkedHashMap<String, Object> toStringMapper() {
+    	LinkedHashMap<String, Object> map = toStringMapperFields();
+    	map.put("branch", getBranch());
+    	return map;
     }
-    
-    
 }
 

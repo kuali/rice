@@ -31,7 +31,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -99,10 +100,10 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         StringBuffer findField = new StringBuffer("//routingConfig/" + FIELD_DEF_E);
         if (types != null && types.length > 0) {
             findField.append("[");
-            for (int i = 0; i < types.length; i++) {
-                findField.append("@workflowType='" + types[i] + "'" + OR);
+            for (String type : types) {
+                findField.append("@workflowType='" + type + "'" + OR);
                 // missing workflowType is equivalent ("defaults") to ALL
-                if ("ALL".equals(types[i])) {
+                if ("ALL".equals(type)) {
                     findField.append("not(@workflowType)" + OR);
                 }
             }
@@ -144,7 +145,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                     if ("value".equals(childNode.getNodeName())) {
                         myField.setPropertyValue(childNode.getFirstChild().getNodeValue());
                     } else if ("display".equals(childNode.getNodeName())) {
-                        List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
+                        List<KeyValue> options = new ArrayList<KeyValue>();
                         List<String> selectedOptions = new ArrayList<String>();
                         for (int k = 0; k < childNode.getChildNodes().getLength(); k++) {
                             Node displayChildNode = childNode.getChildNodes().item(k);
@@ -169,7 +170,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                                 if (titleAttribute != null) {
                                 	title = titleAttribute.getNodeValue();
                             	}
-                            	options.add(new KeyLabelPair(optionValue, title));
+                            	options.add(new ContreteKeyValue(optionValue, title));
                             }
                         }
                         if (!options.isEmpty()) {

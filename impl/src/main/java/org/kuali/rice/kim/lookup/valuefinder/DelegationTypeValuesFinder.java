@@ -16,9 +16,11 @@
 package org.kuali.rice.kim.lookup.valuefinder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
@@ -29,16 +31,19 @@ import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
  */
 public class DelegationTypeValuesFinder extends KeyValuesBase {
 
-	private static final List<KeyLabelPair> delegationTypes = new ArrayList<KeyLabelPair>();
+	private static final List<KeyValue> C_DELEGATION_TYPES;
 	static {
-		delegationTypes.add(new KeyLabelPair("", ""));
+		final List<KeyValue> delegationTypes = new ArrayList<KeyValue>();
+		delegationTypes.add(new ContreteKeyValue("", ""));
 		for (String delegationType : KimConstants.KimUIConstants.DELEGATION_TYPES.keySet()) {
-			delegationTypes.add(new KeyLabelPair(delegationType, KimConstants.KimUIConstants.DELEGATION_TYPES.get(delegationType)));
+			delegationTypes.add(new ContreteKeyValue(delegationType, KimConstants.KimUIConstants.DELEGATION_TYPES.get(delegationType)));
 		}
+		C_DELEGATION_TYPES = Collections.unmodifiableList(delegationTypes);
 	}
 	
-	public List<KeyLabelPair> getKeyValues() {
-		return delegationTypes;
+	@Override
+	public List<KeyValue> getKeyValues() {
+		return C_DELEGATION_TYPES;
 	}
 
 }

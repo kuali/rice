@@ -18,7 +18,8 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 
 /**
  * This class returns list containg A = Active, I = Inactive and B = Show All
@@ -31,11 +32,12 @@ public class ActiveInactiveValuesFinder extends KeyValuesBase {
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List<KeyLabelPair> getKeyValues() {
-        List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
-        keyValues.add(new KeyLabelPair("A", "Active"));
-        keyValues.add(new KeyLabelPair("I", "Inactive"));
-        keyValues.add(new KeyLabelPair("B", "Show All"));
+    @Override
+	public List<KeyValue> getKeyValues() {
+        List<KeyValue> keyValues = new ArrayList<KeyValue>();
+        keyValues.add(new ContreteKeyValue("A", "Active"));
+        keyValues.add(new ContreteKeyValue("I", "Inactive"));
+        keyValues.add(new ContreteKeyValue("B", "Show All"));
         return keyValues;
     }
 

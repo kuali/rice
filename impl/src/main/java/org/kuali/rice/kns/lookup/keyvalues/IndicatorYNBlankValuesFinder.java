@@ -17,7 +17,8 @@ package org.kuali.rice.kns.lookup.keyvalues;
 
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 
 /**
  * This class returns list of payment method key value pairs.
@@ -29,9 +30,10 @@ public class IndicatorYNBlankValuesFinder extends IndicatorYNOnlyValuesFinder {
     /*
      * @see org.kuali.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-        List activeLabels = super.getKeyValues();
-        activeLabels.add(0,new KeyLabelPair("", ""));
+    @Override
+	public List<KeyValue> getKeyValues() {
+    	List<KeyValue> activeLabels = super.getKeyValues();
+        activeLabels.add(0,new ContreteKeyValue("", ""));
         return activeLabels;
     }
 

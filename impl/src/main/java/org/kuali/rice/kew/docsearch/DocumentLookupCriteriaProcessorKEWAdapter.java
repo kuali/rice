@@ -15,8 +15,13 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -27,10 +32,6 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * This is a description of what this class does - chris don't forget to fill this in.
@@ -202,10 +203,10 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 						} else if("routeNodes".equalsIgnoreCase(standardSearchCriteriaField.getOptionsCollectionProperty())){
 							if(documentType!=null) {
 								//TODO: can these be used directly in values finder also there is an option key and value property that could probably be used by all of these
-								List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
+								List<KeyValue> keyValues = new ArrayList<KeyValue>();
 								List<RouteNode> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
 								for (RouteNode routeNode : routeNodes) {
-									keyValues.add(new KeyLabelPair(routeNode.getRouteNodeId()+"",routeNode.getRouteNodeName()));
+									keyValues.add(new ContreteKeyValue(routeNode.getRouteNodeId()+"",routeNode.getRouteNodeName()));
 								}
 								field.setFieldValidValues(keyValues);
 								//TODO: fix this in criteria this field shouldn't be blank values otherwise have to reset this for some reason
@@ -219,20 +220,20 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 								skipadd=true;
 							}
 							//TODO: move to values finder class
-							List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
+							List<KeyValue> keyValues = new ArrayList<KeyValue>();
 							Set<String> docStatusKeys = KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.keySet();
 							for (String string : docStatusKeys) {
-								KeyLabelPair keyLabel = new KeyLabelPair(string,KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.get(string));
+								KeyValue keyLabel = new ContreteKeyValue(string,KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.get(string));
 								keyValues.add(keyLabel);
 							}
 							field.setFieldValidValues(keyValues);
 						} else if("validApplicationStatuses".equalsIgnoreCase(standardSearchCriteriaField.getOptionsCollectionProperty())){
 							if(documentType!=null) {
 								//TODO: can these be used directly in values finder also there is an option key and value property that could probably be used by all of these
-								List<KeyLabelPair> keyValues = new ArrayList<KeyLabelPair>();
+								List<KeyValue> keyValues = new ArrayList<KeyValue>();
 								List<ApplicationDocumentStatus> validStatuses = documentType.getValidApplicationStatuses();
 								for (ApplicationDocumentStatus appStatus : (List<ApplicationDocumentStatus>) validStatuses) {
-									keyValues.add(new KeyLabelPair(appStatus.getStatusName(),appStatus.getStatusName()));
+									keyValues.add(new ContreteKeyValue(appStatus.getStatusName(),appStatus.getStatusName()));
 								}
 								field.setFieldValidValues(keyValues);
 								//TODO: fix this in criteria this field shouldn't be blank values otherwise have to reset this for some reason
@@ -243,7 +244,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 							}
 							
 						} else {
-							field.setFieldValidValues(new ArrayList<KeyLabelPair>());
+							field.setFieldValidValues(new ArrayList<KeyValue>());
 						}
 					}
 

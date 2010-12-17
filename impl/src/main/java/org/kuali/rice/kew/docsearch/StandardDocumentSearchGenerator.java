@@ -1717,7 +1717,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     // ---- utility methods
 
     /**
-     * TODO we should probably clean this up some, but we are going to exclude those KeyLabelPairs
+     * TODO we should probably clean this up some, but we are going to exclude those KeyValues
      * that have a null label.  This will happen in the case of Quickfinders which don't really
      * represent criteria anyway.  Note however, that it is legal for the label to be the empty string.
      * At some point we will probably need to do some more work to untangle this mess

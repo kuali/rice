@@ -18,6 +18,8 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.util.KeyValue;
+
 /**
  * This interface defines basic methods value finders.
  *
@@ -30,7 +32,7 @@ public interface KeyValuesFinder {
      *
      * @return List of KeyValue objects.
      */
-    public List getKeyValues();
+    public List<KeyValue> getKeyValues();
 
     /**
      * Builds a list of key values representations for valid value selections.
@@ -39,7 +41,7 @@ public interface KeyValuesFinder {
      *  
      * @return List of KeyValue objects.
      */
-    public List getKeyValues(boolean includeActiveOnly);
+    public List<KeyValue> getKeyValues(boolean includeActiveOnly);
 
     /**
      * Returns a map with the key as the key of the map and the label as the value. Used to render the label instead of the code in
@@ -47,7 +49,7 @@ public interface KeyValuesFinder {
      *
      * @return
      */
-    public Map getKeyLabelMap();
+    public Map<String, String> getKeyLabelMap();
 
     /**
      * Returns the label for the associated key.
@@ -55,7 +57,7 @@ public interface KeyValuesFinder {
      * @param key
      * @return
      */
-    public String getKeyLabel(Object key);
+    public String getKeyLabel(String key);
     
    
     /**

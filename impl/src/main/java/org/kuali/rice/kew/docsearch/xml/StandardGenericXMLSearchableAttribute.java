@@ -16,8 +16,25 @@
  */
 package org.kuali.rice.kew.docsearch.xml;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
@@ -35,18 +52,12 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import java.io.BufferedReader;
-import java.io.StringReader;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -267,7 +278,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 					if ("value".equals(childNode.getNodeName())) {
 						myField.setPropertyValue(childNode.getFirstChild().getNodeValue());
 					} else if ("display".equals(childNode.getNodeName())) {
-						List<KeyLabelPair> options = new ArrayList<KeyLabelPair>();
+						List<KeyValue> options = new ArrayList<KeyValue>();
                         List<String> selectedOptions = new ArrayList<String>();
 						for (int k = 0; k < childNode.getChildNodes().getLength(); k++) {
 							Node displayChildNode = childNode.getChildNodes().item(k);
@@ -284,12 +295,12 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 								NamedNodeMap valuesAttributes = displayChildNode.getAttributes();
 //                              this is to allow an empty drop down choice and can probably implemented in a better way
                                 if (displayChildNode.getFirstChild() != null) {
-                                    options.add(new KeyLabelPair(displayChildNode.getFirstChild().getNodeValue(), valuesAttributes.getNamedItem("title").getNodeValue()));
+                                    options.add(new ContreteKeyValue(displayChildNode.getFirstChild().getNodeValue(), valuesAttributes.getNamedItem("title").getNodeValue()));
                                     if (valuesAttributes.getNamedItem("selected") != null) {
                                         selectedOptions.add(displayChildNode.getFirstChild().getNodeValue());
                                     }
                                 } else {
-                                    options.add(new KeyLabelPair("", valuesAttributes.getNamedItem("title").getNodeValue()));
+                                    options.add(new ContreteKeyValue("", valuesAttributes.getNamedItem("title").getNodeValue()));
                                 }
 							}
 						}

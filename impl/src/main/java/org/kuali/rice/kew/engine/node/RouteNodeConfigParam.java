@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.io.Serializable;
+import java.util.LinkedHashMap;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -28,9 +28,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * A route node definition configuration parameter.  RouteNodeConfigParameters are
@@ -43,12 +44,12 @@ import org.hibernate.annotations.Parameter;
 @Entity
 @Table(name="KREW_RTE_NODE_CFG_PARM_T")
 @AttributeOverrides({@AttributeOverride(name="key", column=@Column(name="KEY_CD")), @AttributeOverride(name="value", column=@Column(name="VAL"))})
-public class RouteNodeConfigParam extends KeyValuePair implements Serializable {
+public class RouteNodeConfigParam extends PersistableBusinessObjectBase implements KeyValue {
     private static final long serialVersionUID = 5592421070149273014L;
 
     /**
      * Primary key
-     */
+     */ 
     @Id
 	@Column(name="RTE_NODE_CFG_PARM_ID")
 	@GeneratedValue(generator="KREW_RTE_NODE_CFG_PARM_S")
@@ -58,6 +59,8 @@ public class RouteNodeConfigParam extends KeyValuePair implements Serializable {
 	})
     //@SequenceGenerator(name="KREW_RTE_NODE_CFG_PARM_SEQ_GEN", sequenceName="KREW_RTE_NODE_CFG_PARM_S")	
 	private Long id;
+	private String key;
+    private String value;
     /**
      * Foreign key to routenode table
      */
@@ -68,7 +71,8 @@ public class RouteNodeConfigParam extends KeyValuePair implements Serializable {
     public RouteNodeConfigParam() {}
 
     public RouteNodeConfigParam(RouteNode routeNode, String key, String value) {
-        super(key, value);
+    	this.key = key;
+    	this.value = value;
         this.routeNode = routeNode;
     }
 
@@ -96,13 +100,32 @@ public class RouteNodeConfigParam extends KeyValuePair implements Serializable {
     public void setRouteNode(RouteNode routeNode) {
         this.routeNode = routeNode;
     }
-
-    public String toString() {
-        return new ToStringBuilder(this).append("id", id)
-                                        .append("routeNode", routeNode == null ? null : routeNode.getRouteNodeId())
-                                        .append("key", key)
-                                        .append("value", value)
-                                        .toString();
+    
+    @Override
+    public String getKey() {
+    	return key;
     }
     
+    @Override
+    public String getValue() {
+    	return value;
+    }
+    
+    public void setKey(String key) {
+		this.key = key;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+    @Override
+    protected LinkedHashMap<String, Object> toStringMapper() {
+    	final LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+    	map.put("id", id);
+    	map.put("key", key);
+    	map.put("value", value);
+    	map.put("routeNode", routeNode == null ? null : routeNode.getRouteNodeId());
+    	return map;
+    }
 }

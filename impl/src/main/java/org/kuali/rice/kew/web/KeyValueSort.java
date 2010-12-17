@@ -19,6 +19,7 @@ package org.kuali.rice.kew.web;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 
 
 /**
@@ -28,7 +29,7 @@ import org.kuali.rice.core.util.KeyValue;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KeyValueSort extends KeyValue {
+public class KeyValueSort implements KeyValue {
 
 	private static final long serialVersionUID = 3575440091286391804L;
 
@@ -36,17 +37,19 @@ public class KeyValueSort extends KeyValue {
 	private Object sortValue;
     private Class sortClass;
     private SearchableAttributeValue searchableAttributeValue;
-
+    private final ContreteKeyValue keyValue;
+    
+    
 	public KeyValueSort() {
-		super();
+		keyValue = new ContreteKeyValue();
 	}
 
 	public KeyValueSort(String key, String value) {
-		super(key,value);
+		keyValue = new ContreteKeyValue(key, value);
 	}
 
     public KeyValueSort(String key, String value, Object sortValue, SearchableAttributeValue searchableAttributeValue) {
-        super(key,value);
+        this(key,value);
         this.sortValue = sortValue;
         this.searchableAttributeValue = searchableAttributeValue;
     }
@@ -83,5 +86,23 @@ public class KeyValueSort extends KeyValue {
     	}
     	return getValue();
     }
+
+	@Override
+	public String getKey() {
+		return keyValue.getKey();
+	}
+
+	@Override
+	public String getValue() {
+		return keyValue.getValue();
+	}
+
+	public void setKey(String k) {
+		keyValue.setKey(k);
+	}
+
+	public void setValue(String v) {
+		keyValue.setValue(v);
+	}
 
 }

@@ -17,7 +17,8 @@ package org.kuali.rice.kim.service.support;
 
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 
@@ -55,7 +56,7 @@ public interface KimTypeService {
 	
 	boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes);
 	
-    List<KeyLabelPair> getAttributeValidValues(String kimTypeId, String attributeName);
+    List<KeyValue> getAttributeValidValues(String kimTypeId, String attributeName);
     
     AttributeDefinitionMap getAttributeDefinitions(String kimTypeId);
     

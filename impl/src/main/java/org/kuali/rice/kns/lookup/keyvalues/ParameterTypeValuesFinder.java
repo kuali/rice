@@ -19,7 +19,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.ContreteKeyValue;
 import org.kuali.rice.kns.bo.ParameterType;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
@@ -33,7 +34,8 @@ public class ParameterTypeValuesFinder extends KeyValuesBase {
 
     private static ParameterTypeComparator comparator = new ParameterTypeComparator();
     
-    public List<KeyLabelPair> getKeyValues() {
+    @Override
+	public List<KeyValue> getKeyValues() {
 
         // get a list of all CampusTypes
         KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
@@ -49,10 +51,10 @@ public class ParameterTypeValuesFinder extends KeyValuesBase {
         Collections.sort(bos, comparator);
 
         // create a new list (code, descriptive-name)
-        List<KeyLabelPair> labels = new ArrayList<KeyLabelPair>( bos.size() );
+        List<KeyValue> labels = new ArrayList<KeyValue>( bos.size() );
 
         for ( ParameterType bo : bos ) {
-            labels.add( new KeyLabelPair(bo.getParameterTypeCode(), bo.getParameterTypeName() ) );
+            labels.add( new ContreteKeyValue(bo.getParameterTypeCode(), bo.getParameterTypeName() ) );
         }
 
         return labels;

@@ -110,9 +110,9 @@ public class ValuesFinderTest extends WebTestBase {
      */
 //    @Test public void testTravelRequestTypeNonWeb() {
 //	TravelRequestType travelRequestType = new TravelRequestType();
-//	List<KeyLabelPair> keyValues = travelRequestType.getKeyValues();
+//	List<KeyValue> keyValues = travelRequestType.getKeyValues();
 //        assertEquals(requestTypes.size() - 1, keyValues.size());
-//        for (KeyLabelPair keyValue: keyValues) {
+//        for (KeyValue keyValue: keyValues) {
 //            assertEquals(requestTypes.get(keyValue.getKey()), keyValue.getLabel());
 //        }
 //    }

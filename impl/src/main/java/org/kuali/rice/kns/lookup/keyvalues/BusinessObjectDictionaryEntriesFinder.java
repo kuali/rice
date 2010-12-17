@@ -16,10 +16,10 @@
 package org.kuali.rice.kns.lookup.keyvalues;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.kuali.rice.core.util.KeyLabelPair;
+import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
@@ -30,13 +30,14 @@ public class BusinessObjectDictionaryEntriesFinder extends KeyValuesBase {
     /**
      * @see org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder#getKeyValues()
      */
-    public List getKeyValues() {
-        List businessObjects = KNSServiceLocator.getBusinessObjectDictionaryService().getBusinessObjectClassnames();
-        List boKeyLabels = new ArrayList();
+    @Override
+	public List<KeyValue> getKeyValues() {
+        List<String> businessObjects = KNSServiceLocator.getBusinessObjectDictionaryService().getBusinessObjectClassnames();
+        List<KeyValue> boKeyLabels = new ArrayList<KeyValue>();
 
-        for (Iterator iter = businessObjects.iterator(); iter.hasNext();) {
-            String className = (String) iter.next();
-            boKeyLabels.add(new KeyLabelPair(className, className));
+        for (String string : businessObjects) {
+            String className = string;
+            boKeyLabels.add(new ContreteKeyValue(className, className));
         }
 
         return boKeyLabels;

@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
-import org.kuali.rice.kew.dto.KeyValueDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
 import org.kuali.rice.kew.dto.ReportCriteriaDTO;
@@ -273,7 +273,7 @@ public class FutureRequestsTest extends KEWTestCase {
         document.approve("route node 1");
 
         document = new WorkflowDocument(user1PrincipalId, document.getRouteHeaderId());
-        List<KeyValueDTO> l =document.getRouteHeader().getVariables();
+        List<KeyValue> l =document.getRouteHeader().getVariables();
         assertFalse("should not have approval status 1", document.isApprovalRequested());
 
         document = new WorkflowDocument(user2PrincipalId, document.getRouteHeaderId());

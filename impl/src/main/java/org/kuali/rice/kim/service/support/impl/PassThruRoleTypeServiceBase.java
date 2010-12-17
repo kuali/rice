@@ -29,25 +29,31 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 	
 	public static final String UNMATCHABLE_QUALIFICATION = "!~!~!~!~!~";
 
-    public abstract AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, AttributeSet qualification);
+    @Override
+	public abstract AttributeSet convertQualificationForMemberRoles(String namespaceCode, String roleName, String memberRoleNamespaceCode, String memberRoleName, AttributeSet qualification);
     
-    public List<RoleMembershipInfo> doRoleQualifiersMatchQualification(AttributeSet qualification, List<RoleMembershipInfo> roleMemberList) {
+    @Override
+	public List<RoleMembershipInfo> doRoleQualifiersMatchQualification(AttributeSet qualification, List<RoleMembershipInfo> roleMemberList) {
         return roleMemberList;
     }
 
-    public boolean doesRoleQualifierMatchQualification(AttributeSet qualification, AttributeSet roleQualifier) {
+    @Override
+	public boolean doesRoleQualifierMatchQualification(AttributeSet qualification, AttributeSet roleQualifier) {
         return true;
     }
 
-    public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
+    @Override
+	public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
         return new ArrayList<RoleMembershipInfo>(0);
     }
     
-    public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification) {
+    @Override
+	public boolean hasApplicationRole(String principalId, List<String> groupIds, String namespaceCode, String roleName, AttributeSet qualification) {
         return false;
     }
 
-    public boolean isApplicationRoleType() {
+    @Override
+	public boolean isApplicationRoleType() {
         return false;
     }
 
@@ -55,22 +61,21 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return new ArrayList<String>(0);
     }
 
-    public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
+    @Override
+	public AttributeDefinitionMap getAttributeDefinitions(String kimTypeId) {
         return null;
     }
 
-//    public List<KeyLabelPair> getAttributeValidValues(String attributeName) {
-//        return new ArrayList<KeyLabelPair>(0);
-//    }
-
-    public String getWorkflowDocumentTypeName() {
+    @Override
+	public String getWorkflowDocumentTypeName() {
         return null;
     }
     
     /**
      * @see org.kuali.rice.kim.service.support.KimTypeService#getWorkflowRoutingAttributes(java.lang.String)
      */
-    public List<String> getWorkflowRoutingAttributes(String routeLevel) {
+    @Override
+	public List<String> getWorkflowRoutingAttributes(String routeLevel) {
     	return new ArrayList<String>(0);
     }
 
@@ -82,11 +87,13 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
         return inputAttributeSet;
     }
 
-    public AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes) {
+    @Override
+	public AttributeSet validateAttributes(String kimTypeId, AttributeSet attributes) {
         return null;
     }
     
-    public List<RoleMembershipInfo> sortRoleMembers(List<RoleMembershipInfo> roleMembers) {
+    @Override
+	public List<RoleMembershipInfo> sortRoleMembers(List<RoleMembershipInfo> roleMembers) {
         return roleMembers;
     }
     
@@ -97,6 +104,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 	 * 
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#principalInactivated(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public void principalInactivated(String principalId, String namespaceCode,
 			String roleName) {
 		if ( LOG.isDebugEnabled() ) {
@@ -105,18 +113,22 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 		// base implementation - do nothing
 	}
 
-    public boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
+    @Override
+	public boolean validateUniqueAttributes(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
         return true;
     }
 
-    public AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet mainAttributes, AttributeSet delegationAttributes){
+    @Override
+	public AttributeSet validateUnmodifiableAttributes(String kimTypeId, AttributeSet mainAttributes, AttributeSet delegationAttributes){
         return new AttributeSet();
     }
     
-    public List<String> getUniqueAttributes(String kimTypeId){
+    @Override
+	public List<String> getUniqueAttributes(String kimTypeId){
         return new ArrayList<String>();
     }
     
+	@Override
 	public AttributeSet validateAttributesAgainstExisting(String kimTypeId, AttributeSet newAttributes, AttributeSet oldAttributes){
 		return new AttributeSet();
 	}
@@ -126,6 +138,7 @@ public abstract class PassThruRoleTypeServiceBase implements KimRoleTypeService 
 	 * 
 	 * @see org.kuali.rice.kim.service.support.KimRoleTypeService#shouldCacheRoleMembershipResults(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public boolean shouldCacheRoleMembershipResults(String namespaceCode,
 			String roleName) {
 		return false;

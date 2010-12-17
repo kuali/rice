@@ -1,0 +1,29 @@
+<config>
+	<param name="module.name">sample-app</param>
+	<param name="service.namespace">RICE</param>
+
+	<param name="filter.login.class">org.kuali.rice.kew.web.DummyLoginFilter</param>
+	<param name="filtermapping.login.1">/*</param>
+	
+    <!--
+      Because this file is loaded during unit tests but outside of the test harness
+      context (in its own webapp), we need to be sure to include the defaults directly.
+     -->
+    <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
+
+	<param name="kns.test.port" random="true">30000-34999</param>
+
+	<param name="serviceServletUrl">http://localhost:${kns.test.port}/${app.context.name}/remoting/</param>
+	<param name="transaction.timeout">3600</param>
+	
+	<param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
+	<param name="config.location">${alt.config.location}</param>
+	
+	
+	
+	<param name="rice.kns.application.jpa.PersistenceUnitName">kns-application-unit</param>
+	<param name="rice.kns.application.jpa.GenerateDdl">false</param>
+	<param name="rice.kns.application.jpa.PersistenceXmlLocation">classpath:META-INF/kns-test-persistence.xml</param>
+	<!-- this is used for the testharness test -->
+	<param name="rice.test.case.test">test</param>
+</config>

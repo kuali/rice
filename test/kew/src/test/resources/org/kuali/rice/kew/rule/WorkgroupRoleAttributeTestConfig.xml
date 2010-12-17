@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+  Defines a Document Type definition for the Travel Reimbursement which contains routing to the Department Manager.
+
+-->
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+  <documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+    <documentType>
+      <name>WorkgroupRoleAttributeDocument</name>
+      <label>Workgroup Role Attribute Document</label>
+      <description>Workgroup Role Attribute Document</description>
+      <postProcessorName>org.kuali.rice.kew.postprocessor.DefaultPostProcessor</postProcessorName>
+      <superUserGroupName namespace="KR-WKFLW">TestWorkgroup</superUserGroupName>
+      <blanketApproveGroupName namespace="KR-WKFLW">TestWorkgroup</blanketApproveGroupName>
+      <defaultExceptionGroupName namespace="KR-WKFLW">TestWorkgroup</defaultExceptionGroupName>
+      <docHandler>none</docHandler>
+      <routePaths>
+        <routePath>
+          <start name="Initiated" nextNode="Workgroup Role"/>
+          <requests name="Workgroup Role"/>
+        </routePath>
+      </routePaths>
+      <routeNodes>
+        <start name="Initiated">
+          <activationType>P</activationType>
+        </start>
+        <requests name="Workgroup Role">
+          <activationType>P</activationType>
+          <ruleTemplate>WorkgroupRoleTemplate</ruleTemplate>
+          <mandatoryRoute>true</mandatoryRoute>
+        </requests>
+      </routeNodes>
+    </documentType>
+  </documentTypes>
+  <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
+    <ruleAttribute>
+      <name>WorkgroupRoleAttribute</name>
+      <className>org.kuali.rice.kew.rule.TestWorkgroupRoleAttribute</className>
+      <label>Workgroup Role Attribute</label>
+      <type>RuleAttribute</type>
+    </ruleAttribute>
+  </ruleAttributes>
+  <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
+    <ruleTemplate allowOverwrite="true">
+    <name>WorkgroupRoleTemplate</name>
+    <description>WorkgroupRoleTemplate</description>
+      <attributes>
+        <attribute>
+          <name>WorkgroupRoleAttribute</name>
+        </attribute>
+      </attributes>
+    </ruleTemplate>
+  </ruleTemplates>
+  <rules xmlns="ns:workflow/Rule" xsi:schemaLocation="ns:workflow/Rule resource:Rule">
+    <rule>
+      <documentType>WorkgroupRoleAttributeDocument</documentType>
+            <ruleTemplate>WorkgroupRoleTemplate</ruleTemplate>
+      <description>WorkgroupRoleAttribute Rule</description>
+      <forceAction>true</forceAction>
+      <responsibilities>
+        <responsibility>
+        <role>org.kuali.rice.kew.rule.TestWorkgroupRoleAttribute!workgroup</role>
+      <actionRequested>A</actionRequested>
+    </responsibility>
+      </responsibilities>
+    </rule>
+  </rules>
+</data>

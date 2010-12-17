@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+	This is a sample "stub" workflow document type that can be mapped to the RIADocument KNS DD.
+	This document type will never itself be used since the RIA workflow document type is specified
+	at runtime, on a per-kns-doc basis.
+-->
+<data xmlns="ns:workflow" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="ns:workflow resource:WorkflowData">
+	<documentTypes xmlns="ns:workflow/DocumentType" xsi:schemaLocation="ns:workflow/DocumentType resource:DocumentType">
+		<documentType>
+			<name>RIADocument</name>
+			<description>Create or Update RIA Document</description>
+			<label>RIA Document</label>
+			<postProcessorName>org.kuali.workflow.postprocessor.KualiPostProcessor</postProcessorName>
+			<superUserWorkgroupName>WorkflowAdmin</superUserWorkgroupName>
+			<blanketApproveWorkgroupName>WorkflowAdmin</blanketApproveWorkgroupName>
+			<defaultExceptionWorkgroupName>WorkflowAdmin</defaultExceptionWorkgroupName>
+    		<docHandler>http://localhost:8080/kr-dev/kr/maintenance.do?methodToCall=docHandler</docHandler>
+    		<active>true</active>
+			<routingVersion>1</routingVersion>
+			<routePaths>
+		    <routePath>
+		      <start name="Adhoc Routing" /> 
+		    </routePath>
+	    </routePaths>
+	    <routeNodes>
+	      <start name="Adhoc Routing">
+	        <activationType>S</activationType>
+	        <mandatoryRoute>false</mandatoryRoute>
+	        <finalApproval>false</finalApproval>
+	      </start>
+	    </routeNodes>
+		</documentType>
+	</documentTypes>
+</data>

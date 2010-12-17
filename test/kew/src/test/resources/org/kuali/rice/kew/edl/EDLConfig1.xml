@@ -1,0 +1,24 @@
+<edlConfig>
+	<preProcessors>
+		<preProcessor>org.kuali.rice.kew.edl.components.WorkflowDocumentActions</preProcessor>
+	</preProcessors>
+	<postProcessors>
+		<postProcessor>org.kuali.rice.kew.edl.components.WorkflowDocumentActions</postProcessor>
+		<postProcessor>org.kuali.rice.kew.edl.components.WorkflowDocumentState</postProcessor>
+	</postProcessors>
+	<configProcessors>
+		<configProcessor>
+			<xpathExp>display/type = 'select' or display/type = 'text' or display/type = 'password' or display/type = 'radio' or display/type = 'checkbox' or display/type = 'textarea'</xpathExp>
+			<className>org.kuali.rice.kew.edl.components.SimpleWorkflowEDLConfigComponent</className>
+		</configProcessor>
+		<configProcessor>
+			<xpathExp>name() = 'instructions'</xpathExp>
+			<className>org.kuali.rice.kew.edl.components.SimpleWorkflowEDLConfigComponent</className>
+		</configProcessor>
+	</configProcessors>
+	<!-- 
+	<stateComponents>
+		<stateComponent>org.kuali.rice.kew.edl.TestStateComponent</stateComponent>
+	</stateComponents>
+	 -->
+</edlConfig>

@@ -1,0 +1,22 @@
+<!-- loaded by the KCB base unit test...just delegates to the "common-config-test-locations" xml (and alt.build location for CI) -->
+<config>
+    <param name="environment" override="false">${environment}</param>
+    <param name="module.name">kcb</param>
+    <param name="service.namespace">KCB</param>
+
+    <param name="config.location">classpath:META-INF/test-config-defaults.xml</param>
+
+    <param name="serviceServletUrl">http://kcbUnitTestFake-fakeServiceServletUrl</param>
+    <param name="kcb.messaging.synchronous">false</param>
+	<param name="transaction.timeout">3600</param>
+	
+	<param name="message.delivery">synchronous</param>
+	<param name="message.persistence">true</param>	
+	<param name="useQuartzDatabase">false</param>
+	<param name="rice.ksb.loadKNSModuleConfiguration">false</param>
+	
+    <param name="config.location">classpath:META-INF/common-config-test-locations.xml</param>
+    <param name="config.location">${alt.config.location}</param>
+    
+    <param name="rice.kcb.additionalSpringFiles">classpath:org/kuali/rice/kcb/config/KCBSpringBeans-test.xml</param>
+</config>

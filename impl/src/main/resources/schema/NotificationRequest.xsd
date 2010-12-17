@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+This schema defines the format that a notification request must be in,
+in order to be accepted by the system for processing.
+-->
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:xsd="http://www.w3.org/2001/xml.xsd"
+        xmlns:c="ns:notification/common"
+        xmlns:nreq="ns:notification/NotificationRequest"
+        targetNamespace="ns:notification/NotificationRequest"
+        attributeFormDefault="unqualified"
+        elementFormDefault="qualified">
+
+  <annotation>
+    <documentation xml:lang="en">Notification Request Message schema</documentation>
+  </annotation>
+
+  <import namespace="ns:notification/common" schemaLocation="resource:notification/notification-common" />
+
+  <!--  complex elements -->
+
+  <element name="senders">
+    <complexType>
+      <sequence>
+        <element name="sender" type="c:NonEmptyShortStringType" minOccurs="0" maxOccurs="unbounded" />
+      </sequence>
+    </complexType>
+  </element>
+
+  <!--  recipients consist one or more group or user elements; at least
+    one is required of either type -->
+  <element name="recipients">
+    <complexType>
+      <sequence>
+        <choice minOccurs="1" maxOccurs="unbounded">
+          <element name="group" type="c:NonEmptyShortStringType" />
+          <element name="user" type="c:NonEmptyShortStringType" />
+        </choice>
+      </sequence>
+    </complexType>
+  </element>
+
+  <element name="notification">
+    <complexType>
+      <sequence>
+        <element name="channel" type="c:NonEmptyShortStringType" minOccurs="1" maxOccurs="1" />
+        <element name="producer" type="c:NonEmptyShortStringType" minOccurs="1" maxOccurs="1" />
+        <element ref="nreq:senders" minOccurs="1" maxOccurs="1" />
+        <element ref="nreq:recipients" minOccurs="1" maxOccurs="1" />
+        <element name="deliveryType" type="c:NonEmptyShortStringType" minOccurs="1" maxOccurs="1" />
+        <element name="sendDateTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+        <element name="autoRemoveDateTime" type="dateTime" minOccurs="0" maxOccurs="1" />
+        <element name="priority" type="c:NonEmptyShortStringType" minOccurs="1" maxOccurs="1" />
+        <element name="title" type="c:NonEmptyShortStringType" minOccurs="1" maxOccurs="1"/>
+        <element name="contentType" type="c:NonEmptyShortStringType" minOccurs="1" maxOccurs="1" />
+        <any processContents="strict" minOccurs="1" maxOccurs="1"/>
+        <!-- <element name="content" type="anyType" /> -->
+      </sequence>
+    </complexType>
+  </element>
+
+</schema>

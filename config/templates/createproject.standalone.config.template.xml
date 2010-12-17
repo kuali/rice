@@ -1,0 +1,66 @@
+<config>
+	<!-- App specific parameters -->
+	<param name="app.namespace">${APP_NAMESPACE}</param>
+	<param name="app.code">${PROJECT_NAME}</param>
+	<param name="app.context.name">${app.code}-${environment}</param>
+	<param name="production.environment.code">PRD</param>
+	<param name="http.port">8082</param>
+
+	<!-- configure the rice standalone server url -->
+	<param name="rice.url">http://localhost:8080/kr-dev</param>
+	<param name="application.url">${application.http.scheme}://${application.host}:${http.port}/${app.context.name}</param>
+	<param name="workflow.url">${rice.url}/kew</param>
+	<param name="kew.url">${rice.url}/kew</param>
+	<param name="kim.url">${rice.url}/kim</param>
+	
+	<!-- Misc parameters -->
+	<param name="institution">iu</param>
+	<param name="version">03/19/2007 01:59 PM</param>
+
+	<!--  Application Datasource params -->
+	<param name="datasource.ojb.platform">Oracle9i</param>
+	<param name="${PROJECT_NAME}.datasource.url"></param>
+	<param name="${PROJECT_NAME}.datasource.username"></param>
+	<param name="${PROJECT_NAME}.datasource.password"></param>
+	<param name="${PROJECT_NAME}.datasource.ojb.platform">Oracle9i</param>
+	<param name="${PROJECT_NAME}.datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+	<param name="${PROJECT_NAME}.datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
+	<param name="${PROJECT_NAME}.datasource.pool.validationQuery">select 1 from dual</param>
+	<param name="${PROJECT_NAME}.datasource.pool.maxWait">30000</param>
+	<param name="${PROJECT_NAME}.datasource.pool.size">5</param>
+	<param name="${PROJECT_NAME}.datasource.pool.maxSize">5</param>
+	<param name="${PROJECT_NAME}.datasource.pool.minSize">5</param>
+	<param name="${PROJECT_NAME}.datasource.pool.maxActive">${datasource.pool.maxActive}</param>
+	<param name="${PROJECT_NAME}.datasource.minIdle">${datasource.minIdle}</param>
+	<param name="${PROJECT_NAME}.datasource.initialSize">${datasource.initialSize}</param>
+	<param name="${PROJECT_NAME}.datasource.accessToUnderlyingConnectionAllowed">${datasource.accessToUnderlyingConnectionAllowed}</param>
+	
+	<!-- Rice datasource params -->
+	<param name="rice.datasource.url"></param>
+	<param name="rice.datasource.username"></param>
+	<param name="rice.datasource.password"></param>
+	<param name="rice.datasource.ojb.platform">Oracle9i</param>
+	<param name="rice.datasource.platform">org.kuali.rice.core.database.platform.OracleDatabasePlatform</param>
+	<param name="rice.datasource.driver.name">oracle.jdbc.driver.OracleDriver</param>
+	<param name="rice.datasource.pool.validationQuery">select 1 from dual</param>
+	<param name="rice.datasource.pool.maxWait">30000</param>
+	<param name="rice.datasource.pool.maxSize">5</param>
+	<param name="rice.datasource.pool.minSize">5</param>
+
+
+	<!--  runmodes -->
+	<param name="kim.mode">EMBEDDED</param>
+	<param name="kew.mode">EMBEDDED</param>
+	
+	<param name="keystore.alias">rice</param>
+	<param name="keystore.file">${USER_HOME}/kuali/main/dev/rice.keystore</param>
+	<param name="keystore.password">r1c3pw</param>
+
+	<param name="dev.mode">false</param>
+	<param name="useQuartzDatabase">false</param>
+	<param name="Routing.ImmediateExceptionRouting">true</param>
+
+
+	<!-- Kuali parameters -->
+	<param name="encryption.key">7IC64w6ksLU</param>
+</config>

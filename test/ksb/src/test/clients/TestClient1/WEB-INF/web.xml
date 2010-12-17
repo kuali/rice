@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright 2008-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee   http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+    <context-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:org/kuali/rice/ksb/testclient1/resources/TestClient1SpringBeans.xml</param-value>
+    </context-param>
+    
+    <context-param>
+      <param-name>test.client.spring.context.name</param-name>
+      <param-value>TestClient1SpringContext</param-value>
+    </context-param>
+
+    <listener>
+      <listener-class>org.kuali.rice.ksb.server.KSBTestContextLoaderListener</listener-class>
+    </listener>
+
+    <servlet>
+		<servlet-name>remoting</servlet-name>
+		<servlet-class>org.kuali.rice.ksb.messaging.servlet.KSBDispatcherServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>remoting</servlet-name>
+		<url-pattern>/remoting/*</url-pattern>
+	</servlet-mapping>
+	
+		<!-- only need to include this for the kuali tlds
+	     since tld file will only be searched from within other jars -->
+	<jsp-config>
+		<taglib>
+			<taglib-uri>http://www.kuali.org/jsp/jstl/functions</taglib-uri>
+			<taglib-location>/WEB-INF/tld/kuali-func.tld</taglib-location>
+		</taglib>
+		
+		<!-- customized struts tags -->
+		<taglib>
+			<taglib-uri>http://www.kuali.org/struts.apache.org/tags-html</taglib-uri>
+			<taglib-location>/WEB-INF/tld/kuali-struts-html.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>http://www.kuali.org/struts.apache.org/tags-html-el</taglib-uri>
+			<taglib-location>/WEB-INF/tld/kuali-struts-html-el.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+	
+</web-app>

@@ -1,0 +1,11 @@
+<config>
+  <!-- redefine foo, reference ancestor ${boo} -->
+  <param name="foo">config-1:foo ${boo}</param>
+  <!-- define bar -->
+  <param name="bar">config-1:bar</param>
+  <!-- define baz -->
+  <param name="baz">config-1:baz</param>
+  <!-- include another config file -->
+  <param name="random1" random="true">100-199</param>
+  <param name="config.location">classpath:org/kuali/rice/core/config/config-2.xml</param>
+</config>

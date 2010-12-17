@@ -1,0 +1,5 @@
+<config>
+  <!-- define quux -->
+  <param name="quux">config-3:quux</param>
+  <param name="random3" random="true"> 300- 399</param>
+</config>

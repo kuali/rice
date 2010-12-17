@@ -1,0 +1,273 @@
+<!--
+ Copyright 2010 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <bean id="RIADocTypeMap" parent="RIADocTypeMap-parentBean" />
+
+  <bean id="RIADocTypeMap-parentBean" abstract="true" parent="BusinessObjectEntry">
+    <property name="businessObjectClass" value="org.kuali.rice.kew.ria.bo.RIADocTypeMap" />
+    <property name="objectLabel" value="RIADocTypeMap"/>
+    <property name="inquiryDefinition" >
+      <ref bean="RIADocTypeMap-inquiryDefinition" />
+    </property>
+    <property name="lookupDefinition" >
+      <ref bean="RIADocTypeMap-lookupDefinition" />
+    </property>
+    <property name="titleAttribute" value="ID" />
+    <property name="attributes" >
+      <list>
+        <ref bean="RIADocTypeMap-ID" />
+        <ref bean="RIADocTypeMap-riaDocTypeName" />
+        <ref bean="RIADocTypeMap-riaUrl" />
+        <ref bean="RIADocTypeMap-helpUrl" />
+        <ref bean="RIADocTypeMap-initGroups" />
+        <ref bean="RIADocTypeMap-editable" />
+        <ref bean="RIADocTypeMap-updatedAt" />
+        <ref bean="RIADocTypeMap-newCollectionRecord" />
+        <ref bean="RIADocTypeMap-versionNumber" />
+      </list>
+    </property>
+    
+    
+  </bean>
+
+<!-- Attribute Definitions -->
+
+
+  <bean id="RIADocTypeMap-ID" parent="RIADocTypeMap-ID-parentBean" />
+
+  <bean id="RIADocTypeMap-ID-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="ID" />
+    <property name="maxLength" value="30" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="HiddenControlDefinition" />
+    </property>
+    <property name="summary" value="RIA DocType Mapping ID" />
+    <property name="name" value="ID" />
+    <property name="label" value="ID" />
+    <property name="description" value="The identifier for the RIA DocType Mapping record." />
+  </bean>
+  <bean id="RIADocTypeMap-riaDocTypeName" parent="RIADocTypeMap-riaDocTypeName-parentBean" />
+
+  <bean id="RIADocTypeMap-riaDocTypeName-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="riaDocTypeName" />
+    <property name="maxLength" value="100" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="summary" value="riaDocTypeName" />
+    <property name="name" value="riaDocTypeName" />
+    <property name="label" value="riaDocTypeName" />
+    <property name="description" value="The name for RIA DocType Mapping record." />
+  </bean>
+  <bean id="RIADocTypeMap-riaUrl" parent="RIADocTypeMap-riaUrl-parentBean" />
+
+  <bean id="RIADocTypeMap-riaUrl-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="RIA url" />
+    <property name="maxLength" value="250" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="summary" value="RIA Url" />
+    <property name="name" value="riaUrl" />
+    <property name="label" value="RIA url" />
+    <property name="description" value="RIA Url for the RIA DocType Mapping record." />
+  </bean>
+  <bean id="RIADocTypeMap-helpUrl" parent="RIADocTypeMap-helpUrl-parentBean" />
+
+  <bean id="RIADocTypeMap-helpUrl-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Help Url" />
+    <property name="maxLength" value="250" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern"
+            p:allowWhitespace="true" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="summary" value="Help Url" />
+    <property name="name" value="helpUrl" />
+    <property name="label" value="Help Url" />
+    <property name="description" value="RIA Url for the RIA DocType Mapping record." />
+  </bean>
+  <bean id="RIADocTypeMap-initGroups" parent="RIADocTypeMap-initGroups-parentBean" />
+
+  <bean id="RIADocTypeMap-initGroups-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Initiate Groups" />
+    <property name="maxLength" value="255" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="100" />
+    </property>
+    <property name="summary" value="Initiate Groups" />
+    <property name="name" value="initGroups" />
+    <property name="label" value="Initiate Groups" />
+    <property name="description" value="Group names separated by comma which are used for document authorization. Leaving it blank opens the document to everybody." />
+  </bean>
+  <bean id="RIADocTypeMap-editable" parent="RIADocTypeMap-editable-parentBean" />
+
+  <bean id="RIADocTypeMap-editable-parentBean" abstract="true" parent="AttributeDefinition">
+    <property name="forceUppercase" value="false" />
+    <property name="shortLabel" value="Document Editable?" />
+    <property name="maxLength" value="6" />
+    <property name="validationPattern" >
+      <bean parent="AnyCharacterValidationPattern" />
+    </property>
+    <property name="control" >
+      <bean parent="RadioControlDefinition"
+            p:valuesFinderClass="org.kuali.rice.kew.ria.valuefinder.YesNoValueFinder"
+            p:includeKeyInLabel="false" />
+    </property>
+    <property name="summary" value="&amp;nbsp;" />
+    <property name="name" value="editable" />
+    <property name="label" value="Document Editable?" />
+    <property name="description" value="Please indicate here whether document should be editable after submission" />
+  </bean>
+  <bean id="RIADocTypeMap-updatedAt" parent="RIADocTypeMap-updatedAt-parentBean" />
+
+  <bean id="RIADocTypeMap-updatedAt-parentBean" abstract="true" parent="AttributeReferenceDummy-genericTimestamp">
+    <property name="shortLabel" value="updatedAt" />
+    <property name="control" >
+      <bean parent="TextControlDefinition"
+            p:size="9" />
+    </property>
+    <property name="name" value="updatedAt" />
+    <property name="label" value="updatedAt" />
+  </bean>
+  <bean id="RIADocTypeMap-newCollectionRecord" parent="RIADocTypeMap-newCollectionRecord-parentBean" />
+
+  <bean id="RIADocTypeMap-newCollectionRecord-parentBean" abstract="true" parent="AttributeReferenceDummy-newCollectionRecord">
+  </bean>
+  <bean id="RIADocTypeMap-versionNumber" parent="RIADocTypeMap-versionNumber-parentBean" />
+
+  <bean id="RIADocTypeMap-versionNumber-parentBean" abstract="true" parent="AttributeReferenceDummy-versionNumber">
+  </bean>
+
+<!-- Business Object Inquiry Definition -->
+
+
+  <bean id="RIADocTypeMap-inquiryDefinition" parent="RIADocTypeMap-inquiryDefinition-parentBean" />
+
+  <bean id="RIADocTypeMap-inquiryDefinition-parentBean" abstract="true" parent="InquiryDefinition">
+    <property name="inquirySections" >
+      <list>
+        <bean parent="InquirySectionDefinition">
+          <property name="numberOfColumns" value="1" />
+          <property name="inquiryFields" >
+            <list>
+              <bean parent="FieldDefinition"
+                    p:attributeName="ID" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="riaDocTypeName" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="editable" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="initGroups" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="riaUrl" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="helpUrl" />
+              <bean parent="FieldDefinition"
+                    p:attributeName="updatedAt" />
+            </list>
+          </property>
+          <property name="title" value="RIA DocType Mapping" />
+        </bean>
+      </list>
+    </property>
+    <property name="title" value="RIA DocType Mapping" />
+  </bean>
+
+<!-- Business Object Lookup Definition -->
+
+
+  <bean id="RIADocTypeMap-lookupDefinition" parent="RIADocTypeMap-lookupDefinition-parentBean" />
+
+  <bean id="RIADocTypeMap-lookupDefinition-parentBean" abstract="true" parent="LookupDefinition">
+    <!-- 
+    <property name="instructions" value="Look up RIA DocType Mapping within the system that can be used for requesting access." />
+     -->
+    <property name="defaultSort" >
+      <bean parent="SortDefinition">
+      </bean>
+    </property>
+    <property name="lookupFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="ID" />
+        <bean parent="FieldDefinition"
+              p:attributeName="riaDocTypeName" />
+        <bean parent="FieldDefinition"
+              p:attributeName="editable" />
+        <bean parent="FieldDefinition"
+              p:attributeName="initGroups" />
+        <bean parent="FieldDefinition"
+              p:attributeName="riaUrl" />
+        <bean parent="FieldDefinition"
+              p:attributeName="helpUrl" />
+        <bean parent="FieldDefinition"
+              p:attributeName="updatedAt" />
+      </list>
+    </property>
+    <property name="resultFields" >
+      <list>
+        <bean parent="FieldDefinition"
+              p:attributeName="ID" />
+        <bean parent="FieldDefinition"
+              p:attributeName="riaDocTypeName" />
+        <bean parent="FieldDefinition"
+              p:attributeName="editable" />
+        <bean parent="FieldDefinition"
+              p:attributeName="initGroups" />
+        <bean parent="FieldDefinition"
+              p:attributeName="riaUrl" />
+        <bean parent="FieldDefinition"
+              p:attributeName="helpUrl" />
+        <bean parent="FieldDefinition"
+              p:attributeName="updatedAt" />
+      </list>
+    </property>
+    <property name="resultSetLimit" value="100" />
+    <property name="title" value="RIA DocType Mapping Lookup" />
+  </bean>
+</beans>

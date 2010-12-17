@@ -23,6 +23,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
+import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -177,11 +181,26 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	}
 
 	protected void populateDerivedValues() {
-    	BusinessObject member = KIMServiceLocator.getUiDocumentService().getMember(getMemberTypeCode(), getMemberId());
-    	if ( member != null ) {
-	        setMemberName(KIMServiceLocator.getUiDocumentService().getMemberName(getMemberTypeCode(), member));
-	        setMemberNamespaceCode(KIMServiceLocator.getUiDocumentService().getMemberNamespaceCode(getMemberTypeCode(), member));
-    	}
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        	KimPrincipalInfo principalInfo = null;
+        	principalInfo = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
+        	if (principalInfo != null) {
+        		setMemberName(principalInfo.getPrincipalName());
+        	}        	        	
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        	GroupInfo groupInfo = null;
+        	groupInfo = KIMServiceLocator.getIdentityManagementService().getGroup(memberId);
+        	if (groupInfo != null) {
+        		setMemberName(groupInfo.getGroupName());
+        		setMemberNamespaceCode(groupInfo.getNamespaceCode());
+        	}
+        	
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        	KimRoleInfo roleInfo = null;
+        	roleInfo = KIMServiceLocator.getRoleService().getRole(memberId);        	
+        	setMemberName(roleInfo.getRoleName());
+        	setMemberNamespaceCode(roleInfo.getNamespaceCode());
+        }
 	}
 	
 	public boolean isRole(){

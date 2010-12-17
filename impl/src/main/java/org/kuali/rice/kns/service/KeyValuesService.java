@@ -18,6 +18,8 @@ package org.kuali.rice.kns.service;
 import java.util.Collection;
 import java.util.Map;
 
+import org.kuali.rice.kns.bo.BusinessObject;
+
 /**
  * This class provides collection retrievals to populate key value pairs of business objects.
  * 
@@ -32,7 +34,7 @@ public interface KeyValuesService {
      * @param clazz
      * @return
      */
-    public Collection findAll(Class clazz);
+    public <T extends BusinessObject> Collection<T> findAll(Class<T> clazz);
 
     /**
      * Retrieves a collection of business objects populated with data, such that each record in the database populates a new object
@@ -44,7 +46,7 @@ public interface KeyValuesService {
      * @param sortAscending - boolean indicating whether to sort ascending or descending
      * @return
      */
-    public Collection findAllOrderBy(Class clazz, String sortField, boolean sortAscending);
+    public <T extends BusinessObject> Collection<T> findAllOrderBy(Class<T> clazz, String sortField, boolean sortAscending);
 
     /**
      * This method retrieves a collection of business objects populated with data, such that each record in the database populates a
@@ -55,7 +57,7 @@ public interface KeyValuesService {
      * @param fieldValues
      * @return
      */
-    public Collection findMatching(Class clazz, Map fieldValues);
+    public <T extends BusinessObject> Collection<T> findMatching(Class<T> clazz, Map<String, Object> fieldValues);
     
     /**
      * Retrieves a collection of business objects populated with data, such that each record in the database populates a new object
@@ -64,6 +66,6 @@ public interface KeyValuesService {
      * @param clazz
      * @return
      */
-    public Collection findAllInactive(Class clazz);
+    public <T extends BusinessObject> Collection<T> findAllInactive(Class<T> clazz);
 
 }

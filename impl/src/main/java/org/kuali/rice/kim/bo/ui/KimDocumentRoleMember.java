@@ -181,23 +181,23 @@ public class KimDocumentRoleMember  extends KimDocumentBoBase {
 	}
 
 	protected void populateDerivedValues() {
-        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(memberTypeCode)){
+        if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(getMemberTypeCode())){
         	KimPrincipalInfo principalInfo = null;
-        	principalInfo = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
+        	principalInfo = KIMServiceLocator.getIdentityManagementService().getPrincipal(getMemberId());
         	if (principalInfo != null) {
         		setMemberName(principalInfo.getPrincipalName());
         	}        	        	
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(getMemberTypeCode())){
         	GroupInfo groupInfo = null;
-        	groupInfo = KIMServiceLocator.getIdentityManagementService().getGroup(memberId);
+        	groupInfo = KIMServiceLocator.getIdentityManagementService().getGroup(getMemberId());
         	if (groupInfo != null) {
         		setMemberName(groupInfo.getGroupName());
         		setMemberNamespaceCode(groupInfo.getNamespaceCode());
         	}
         	
-        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(memberTypeCode)){
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(getMemberTypeCode())){
         	KimRoleInfo roleInfo = null;
-        	roleInfo = KIMServiceLocator.getRoleService().getRole(memberId);        	
+        	roleInfo = KIMServiceLocator.getRoleService().getRole(getMemberId());        	
         	setMemberName(roleInfo.getRoleName());
         	setMemberNamespaceCode(roleInfo.getNamespaceCode());
         }

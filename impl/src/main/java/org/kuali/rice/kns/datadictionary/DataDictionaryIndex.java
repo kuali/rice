@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.kns.ui.container.View;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 /**
@@ -44,6 +45,9 @@ public class DataDictionaryIndex implements Runnable {
 	private Map<Class, DocumentEntry> documentEntriesByBusinessObjectClass;
 	private Map<Class, DocumentEntry> documentEntriesByMaintainableClass;
 	private Map<String, DataDictionaryEntry> entriesByJstlKey;
+	
+	// view entries keyed by view id
+	private Map<String, View> viewEntries;
 
 	// keyed by a class object, and the value is a set of classes that may block the class represented by the key from inactivation 
 	private Map<Class, Set<InactivationBlockingMetadata>> inactivationBlockersForClass;
@@ -75,11 +79,16 @@ public class DataDictionaryIndex implements Runnable {
 	public Map<Class, Set<InactivationBlockingMetadata>> getInactivationBlockersForClass() {
 		return this.inactivationBlockersForClass;
 	}
+	
+	public Map<String, View> getViewEntries() {
+		return this.viewEntries;
+	}
 
 	private void buildDDIndicies() {
         // primary indices
         businessObjectEntries = new HashMap<String, BusinessObjectEntry>();
         documentEntries = new HashMap<String, DocumentEntry>();
+        viewEntries = new HashMap<String, View>();
 
         // alternate indices
         documentEntriesByBusinessObjectClass = new HashMap<Class, DocumentEntry>();
@@ -145,6 +154,16 @@ public class DataDictionaryIndex implements Runnable {
                 documentEntries.put(mde.getBusinessObjectClass().getSimpleName() + "MaintenanceDocument", entry);
             }
         }
+        
+		Map<String, View> viewBeans = ddBeans.getBeansOfType(View.class);
+		for (View view : viewBeans.values()) {
+			if (viewEntries.containsKey(view.getId())) {
+				throw new DataDictionaryException("Two views must not share the same id. Found duplicate id: "
+						+ view.getId());
+			}
+
+			viewEntries.put(view.getId(), view);
+		}
     }
 
     private void buildDDInactivationBlockingIndices() {

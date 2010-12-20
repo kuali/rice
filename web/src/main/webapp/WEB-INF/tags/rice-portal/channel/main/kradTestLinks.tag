@@ -18,9 +18,8 @@
 <channel:portalChannelTop channelTitle="KRAD Testing" />
 <div class="body">
   
-  <ul class="chan"><!-- 
-	 <li><portal:portalLink displayTitle="true" title="Create New Sample Application Travel Request (KualiDocumentActionBase)" url="${ConfigProperties.application.url}/travelDocument2.do?methodToCall=docHandler&command=initiate&docTypeName=TravelRequest" /></li>
-   -->
+  <ul class="chan">
+	 <li><portal:portalLink displayTitle="true" title="Test View 1" url="${ConfigProperties.application.url}/spring/uitest?methodToCall=start" /></li>
   </ul>
 
   

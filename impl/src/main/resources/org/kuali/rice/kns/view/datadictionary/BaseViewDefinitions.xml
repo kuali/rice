@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:p="http://www.springframework.org/schema/p" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+<!--
+ Copyright 2007-2009 The Kuali Foundation
+ 
+ Licensed under the Educational Community License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+ http://www.opensource.org/licenses/ecl2.php
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+  <!-- Views -->
+
+  <bean id="View" abstract="true" class="org.kuali.rice.kns.ui.container.View">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/view/defaultView.jsp"/>
+  </bean>
+  
+  <!-- Pages -->
+   
+   <bean id="Page" abstract="true" class="org.kuali.rice.kns.ui.container.Page">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/page/defaultPage.jsp"/>
+  </bean> 
+  
+  <!-- Sections -->
+  
+  <!-- Groups -->
+  
+  <!-- Headers -->
+  
+  <bean id="Header" abstract="true" class="org.kuali.rice.kns.ui.container.Header">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/header.jsp"/>
+  </bean>
+  
+  <bean id="ViewHeader" abstract="true" parent="Header">
+      <property name="styleClass" value="viewHeader"/>
+  </bean>
+  
+  <bean id="PageHeader" abstract="true" parent="Header">
+      <property name="styleClass" value="pageHeader"/>
+  </bean>
+
+  <bean id="HeaderLevelOne" abstract="true" parent="Header">
+      <property name="styleClass" value="headerLevelOne"/>
+  </bean>
+  
+  <bean id="HeaderLevelTwo" abstract="true" parent="Header">
+      <property name="styleClass" value="headerLevelTwo"/>
+  </bean>
+  
+  <bean id="HeaderLevelThree" abstract="true" parent="Header">
+      <property name="styleClass" value="headerLevelThree"/>
+  </bean>
+  
+  <!-- Footers -->
+  <bean id="Footer" abstract="true" class="org.kuali.rice.kns.ui.container.Footer">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/footer.jsp"/>
+  </bean>  
+  
+  <!--  Navigation -->
+  
+  <bean id="LeftMenu" abstract="true" class="org.kuali.rice.kns.ui.navigation.Navigation">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/navigation/leftMenu.jsp"/>
+      <property name="styleClass" value="leftMenu"/>
+  </bean>  
+  
+  <bean id="PageTabs" abstract="true" class="org.kuali.rice.kns.ui.navigation.Navigation">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/navigation/horizontalTabs.jsp"/>
+      <property name="styleClass" value="horizontalTabs"/>
+  </bean>  
+  
+  <!-- Layout Managers -->
+
+  <bean id="BoxLayoutManager" abstract="true" class="org.kuali.rice.kns.ui.layout.BoxLayoutManager">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/box.jsp"/>
+  </bean>  
+  
+  <bean id="GridLayoutManager" abstract="true" class="org.kuali.rice.kns.ui.layout.GridLayoutManager">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/grid.jsp"/>
+  </bean>  
+  
+  <bean id="TableLayoutManager" abstract="true" class="org.kuali.rice.kns.ui.layout.TableLayoutManager">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/table.jsp"/>
+  </bean>  
+        
+  <!-- Controls -->
+  
+   <bean id="TextControl" abstract="true" class="org.kuali.rice.kns.ui.control.TextControl">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/control/text.jsp"/>
+  </bean>  
+  
+  <!-- Elements -->
+  
+  <bean id="Action" abstract="true" class="org.kuali.rice.kns.ui.element.Action">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/action.jsp"/>
+      <property name="styleClass" value="primaryAction"/>
+  </bean>   
+
+  <bean id="SecondaryAction" abstract="true" parent="Action">
+      <property name="styleClass" value="secondaryAction"/>
+  </bean>      
+  
+  <bean id="LinkAction" abstract="true" parent="Action">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/linkAction.jsp"/>
+  </bean>    
+  
+  <bean id="Label" abstract="true" class="org.kuali.rice.kns.ui.element.Label">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/label.jsp"/>
+  </bean>  
+ 
+  <bean id="Image" abstract="true" class="org.kuali.rice.kns.ui.element.Image">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/image.jsp"/>
+  </bean>   
+  
+  <bean id="Message" abstract="true" class="org.kuali.rice.kns.ui.element.Message">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/message.jsp"/>
+  </bean>   
+  
+  <bean id="ResourceMessage" abstract="true" class="org.kuali.rice.kns.ui.element.ResourceMessage" parent="Message"/>
+   
+  <bean id="TableMessage" abstract="true" class="org.kuali.rice.kns.ui.element.TableMessage" parent="Message"/>
+ 
+  <bean id="ParameterMessage" abstract="true" class="org.kuali.rice.kns.ui.element.ParameterMessage" parent="Message"/>
+ 
+  <bean id="Spacer" abstract="true" class="org.kuali.rice.kns.ui.element.Spacer">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/spacer.jsp"/>
+  </bean>   
+  
+  <!-- Widgets -->
+   
+</beans>

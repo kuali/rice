@@ -41,6 +41,7 @@ import org.kuali.rice.kns.datadictionary.exception.CompletionException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.ui.container.View;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
@@ -267,6 +268,16 @@ public class DataDictionary {
 
 	public Map<String, DocumentEntry> getDocumentEntries() {
 		return ddMapper.getDocumentEntries(ddIndex);
+	}
+	
+	/**
+	 * Returns the View entry identified by the given id
+	 * 
+	 * @param viewId - unique id for view
+	 * @return View instance associated with the id
+	 */
+	public View getViewById(String viewId) {
+		return ddMapper.getViewById(ddIndex, viewId);
 	}
 
     /**

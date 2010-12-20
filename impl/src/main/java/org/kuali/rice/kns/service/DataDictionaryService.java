@@ -32,6 +32,7 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
+import org.kuali.rice.kns.ui.container.View;
 import org.kuali.rice.kns.web.format.Formatter;
 
 
@@ -438,4 +439,12 @@ public interface DataDictionaryService {
      * @return a set of all registered inactivation blocks for a particular business object
      */
     public Set<InactivationBlockingMetadata> getAllInactivationBlockingDefinitions(Class inactivationBlockedBusinessObjectClass);
+    
+	/**
+	 * Returns the View entry identified by the given id
+	 * 
+	 * @param viewId - unique id for view
+	 * @return View instance associated with the id
+	 */
+	public View getViewById(String viewId);
 }

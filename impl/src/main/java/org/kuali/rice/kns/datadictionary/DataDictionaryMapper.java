@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.kns.ui.container.View;
+
 /**
  * Maps one Document type to other document Type.
  * 
@@ -108,4 +110,13 @@ public interface DataDictionaryMapper {
 	 * @return the class of the mapped document type or null if given documentType was not found.
 	 */
 	//public Class getDocumentTypeClass(String documentTypeName);
+	
+	/**
+	 * Returns the View entry identified by the given id
+	 * 
+	 * @param index - the data dictionary index
+	 * @param viewId - unique id for view
+	 * @return View instance associated with the id
+	 */
+	public View getViewById(DataDictionaryIndex index, String viewId);
 }

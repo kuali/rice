@@ -16,34 +16,34 @@
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <!-- begin of view render -->
-<krad:html htmlFormAction="${KualiForm.formAction}"
-                  headerTitle="${view.title}" additionalScriptFiles="${view.additionalScriptFiles}"
+<krad:html htmlFormAction="${View.formAction}"
+                  headerTitle="${View.title}" additionalScriptFiles="${View.additionalScriptFiles}"
                   renderMultipart="true">
 
     <!----------------------------------- #VIEW HEADER --------------------------------------->
-    <tiles:insertTemplate template="${view.header.template}">
-          <tiles:putAttribute name="header" value="${view.header}" />
+    <tiles:insertTemplate template="${View.header.template}">
+          <tiles:putAttribute name="header" value="${View.header}" />
     </tiles:insertTemplate>
-
+    
     <!----------------------------------- #VIEW NAVIGATION --------------------------------------->
-    <tiles:insertTemplate template="${view.navigation.template}">
-          <tiles:putAttribute name="navigation" value="${view.navigation}" />
-          <tiles:putAttribute name="currentPageId" value="${view.currentPageId}" />
+    <tiles:insertTemplate template="${View.navigation.template}">
+          <tiles:putAttribute name="navigation" value="${View.navigation}" />
+          <tiles:putAttribute name="currentPageId" value="${View.currentPageId}" />
     </tiles:insertTemplate>    
 
     <%-- begin of page render --%>
-    <tiles:insertTemplate template="${view.currentPage.template}">
-          <tiles:putAttribute name="page" value="${view.currentPage}" />
+    <tiles:insertTemplate template="${View.currentPage.template}">
+          <tiles:putAttribute name="page" value="${View.currentPage}" />
     </tiles:insertTemplate>    
     <%-- end of page render --%>
     
-    <%-- write out hiddens needed to maintain state --%>
-    <tiles:insertTemplate template="${view.state.template}">
+    <%-- write out hiddens needed to maintain state 
+    <tiles:insertTemplate template="${view.state.template}"--%>
     
     <!----------------------------------- #VIEW FOOTER --------------------------------------->
-    <tiles:insertTemplate template="${view.footer.template}">
-          <tiles:putAttribute name="footer" value="${view.footer}" />
-    </tiles:insertTemplate>
+    <tiles:insertTemplate template="${View.footer.template}">
+          <tiles:putAttribute name="footer" value="${View.footer}" />
+    </tiles:insertTemplate>    
 
 </krad:html>
 <!-- end of view render -->

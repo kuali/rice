@@ -29,7 +29,7 @@ import org.kuali.rice.kns.ui.widget.Help;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public abstract class ContainerBase extends ComponentBase {
+public abstract class ContainerBase extends ComponentBase implements Container {
 	private String title;
 	private String additionalErrorKeys;
 
@@ -37,11 +37,60 @@ public abstract class ContainerBase extends ComponentBase {
 	private ErrorsField errors;
 	private Help help;
 
-	private List<? extends Component> items;
+	private List<Component> items;
 
 	public ContainerBase() {
 
 	}
-	
+
 	public abstract List<Class> getSupportedComponents();
+
+	public String getTitle() {
+		return this.title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getAdditionalErrorKeys() {
+		return this.additionalErrorKeys;
+	}
+
+	public void setAdditionalErrorKeys(String additionalErrorKeys) {
+		this.additionalErrorKeys = additionalErrorKeys;
+	}
+
+	public Message getTitleMessage() {
+		return this.titleMessage;
+	}
+
+	public void setTitleMessage(Message titleMessage) {
+		this.titleMessage = titleMessage;
+	}
+
+	public ErrorsField getErrors() {
+		return this.errors;
+	}
+
+	public void setErrors(ErrorsField errors) {
+		this.errors = errors;
+	}
+
+	public Help getHelp() {
+		return this.help;
+	}
+
+	public void setHelp(Help help) {
+		this.help = help;
+	}
+
+	public List<Component> getItems() {
+		return this.items;
+	}
+
+	public void setItems(List<Component> items) {
+		this.items = items;
+	}
+
 }

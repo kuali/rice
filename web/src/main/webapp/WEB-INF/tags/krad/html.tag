@@ -83,15 +83,17 @@
        onsubmit="return hasFormAlreadyBeenSubmitted();">
 
        <a name="topOfForm"></a>
-   </c:if>    
       
        <jsp:doBody/>
 
-    <c:if test="${renderForm}">
       </form:form>
       <div id="formComplete"></div>
       <!----------------------------------- End Form --------------------------------------->
-    </c:if>  
+   </c:if>  
+   
+   <c:if test="${!renderForm}"> 
+     <jsp:doBody/>
+   </c:if>  
     
    </body>
 </html>

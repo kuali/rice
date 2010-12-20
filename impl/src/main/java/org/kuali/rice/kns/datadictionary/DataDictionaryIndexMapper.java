@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.ui.container.View;
 
 /**
  * A DataDictionaryMapper that simply consults the statically initialized
@@ -180,5 +181,22 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 		}
 
 		return (MaintenanceDocumentEntry) index.getDocumentEntriesByBusinessObjectClass().get(businessObjectClass);
+	}
+	
+	/**
+	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewById(org.kuali.rice.krad.datadictionary.DataDictionaryIndex,
+	 *      java.lang.String)
+	 */
+	public View getViewById(DataDictionaryIndex index, String viewId) {
+		if (StringUtils.isBlank(viewId)) {
+			throw new IllegalArgumentException("invalid (blank) view id");
+		}
+		if (LOG.isDebugEnabled()) {
+			LOG.debug("calling getViewById by id '" + viewId + "'");
+		}
+
+		View view = index.getViewEntries().get(viewId);
+
+		return view;
 	}
 }

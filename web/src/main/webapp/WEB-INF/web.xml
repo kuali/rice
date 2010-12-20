@@ -127,6 +127,10 @@
 	<listener>
 		<listener-class>org.kuali.rice.kns.web.listener.KualiHttpSessionListener</listener-class>
 	</listener>
+    
+    <listener>
+       <listener-class>org.apache.tiles.web.startup.simple.SimpleTilesListener</listener-class>
+    </listener>    
 
 	<servlet>
 		<servlet-name>action</servlet-name>
@@ -302,7 +306,7 @@
     
      <servlet-mapping>
       <servlet-name>krad</servlet-name>
-      <url-pattern>/krad/*</url-pattern>
+      <url-pattern>/spring/*</url-pattern>
     </servlet-mapping>    
 
 	<session-config>

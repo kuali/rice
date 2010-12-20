@@ -13,37 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.ui.container;
+package org.kuali.rice.kns.ui.service.impl;
+
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.ui.container.View;
+import org.kuali.rice.kns.ui.service.ViewService;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * @see org.kuali.rice.kns.ui.service.ViewService
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
-public abstract class HeaderFooterContainerBase extends ContainerBase {
-	private Header header;
-	private Footer footer;
+public class ViewServiceImpl implements ViewService {
+	protected DataDictionaryService dataDictionaryService;
 
-	public HeaderFooterContainerBase() {
-
+	/**
+	 * @see org.kuali.rice.kns.ui.service.ViewService#getViewById(java.lang.String)
+	 */
+	public View getViewById(String viewId) {
+		return dataDictionaryService.getViewById(viewId);
 	}
 
-	public Header getHeader() {
-		return this.header;
-	}
-
-	public void setHeader(Header header) {
-		this.header = header;
-	}
-
-	public Footer getFooter() {
-		return this.footer;
-	}
-
-	public void setFooter(Footer footer) {
-		this.footer = footer;
+	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
+		this.dataDictionaryService = dataDictionaryService;
 	}
 
 }

@@ -21,7 +21,7 @@ package org.kuali.rice.kns.ui;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public abstract class ComponentBase {
+public abstract class ComponentBase implements Component {
 	private String id;
 	private String name;
 	private String template;

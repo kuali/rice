@@ -15,12 +15,22 @@
  */
 package org.kuali.rice.kns.ui.service;
 
+import org.kuali.rice.kns.ui.container.View;
+
 /**
  * This is a description of what this class does - jkneal don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class ViewService {
+public interface ViewService {
 
+	/**
+	 * Returns the View entry identified by the given id
+	 * 
+	 * @param viewId - unique id for view
+	 * @return View instance associated with the id
+	 */
+	public View getViewById(String viewId);
+	
 }

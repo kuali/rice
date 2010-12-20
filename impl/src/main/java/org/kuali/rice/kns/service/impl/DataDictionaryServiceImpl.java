@@ -54,6 +54,7 @@ import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.ui.container.View;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
@@ -846,7 +847,12 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return preRulesCheckClass;
     }
 
-    public void addDataDictionaryLocation(String location) throws IOException {
+    @Override
+	public View getViewById(String viewId) {
+		return dataDictionary.getViewById(viewId);
+	}
+
+	public void addDataDictionaryLocation(String location) throws IOException {
         dataDictionary.addConfigFileLocation(location);
     }
 

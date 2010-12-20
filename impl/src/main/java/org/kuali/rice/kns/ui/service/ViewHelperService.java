@@ -21,6 +21,6 @@ package org.kuali.rice.kns.ui.service;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class ViewHelperService {
+public interface ViewHelperService {
 
 }

@@ -60,8 +60,8 @@ public class AccountWithDDAttributesDocument extends TransactionalDocumentBase i
 	private boolean accountAwake;
 
     @Override
-    protected LinkedHashMap<?,?> toStringMapper() {
-        LinkedHashMap<String, String> meMap = new LinkedHashMap<String, String>();
+    protected LinkedHashMap<String,Object> toStringMapper() {
+        LinkedHashMap<String, Object> meMap = new LinkedHashMap<String, Object>();
         meMap.put("accountOwner", getAccountOwner());
         meMap.put("accountOpenDate", getAccountOpenDate().toString());
         meMap.put("accountState", getAccountState());

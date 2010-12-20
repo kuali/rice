@@ -64,8 +64,8 @@ public class AccountRequestDocument2 extends TransactionalDocumentBase implement
     }
 
     @Override
-    protected LinkedHashMap<?,?> toStringMapper() {
-        LinkedHashMap<String, String> meMap = new LinkedHashMap<String, String>();
+    protected LinkedHashMap<String,Object> toStringMapper() {
+        LinkedHashMap<String, Object> meMap = new LinkedHashMap<String, Object>();
         meMap.put("requester", getRequester());
         meMap.put("reason1", getReason1());
         meMap.put("reason2", getReason2());

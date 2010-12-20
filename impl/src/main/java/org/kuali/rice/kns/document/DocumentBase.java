@@ -245,7 +245,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @return Map containing the fieldValues of the key fields for this class, indexed by fieldName
      */
-    protected LinkedHashMap toStringMapper(){
+    protected LinkedHashMap<String,Object> toStringMapper(){
         LinkedHashMap m = new LinkedHashMap();
 
         m.put("documentNumber", getDocumentNumber());

@@ -38,7 +38,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -719,26 +719,26 @@ public class KualiDocumentActionBase extends KualiAction {
         // setup back form variables
         request.setAttribute("backUrlBase", backUrlBase);
         List<KeyValue> backFormParameters = new ArrayList<KeyValue>();
-        backFormParameters.add(new ContreteKeyValue(KNSConstants.DISPATCH_REQUEST_PARAMETER,KNSConstants.RETURN_METHOD_TO_CALL));
-        backFormParameters.add(new ContreteKeyValue(KNSConstants.DOC_FORM_KEY,globalVariableFormKey));
+        backFormParameters.add(new ConcreteKeyValue(KNSConstants.DISPATCH_REQUEST_PARAMETER,KNSConstants.RETURN_METHOD_TO_CALL));
+        backFormParameters.add(new ConcreteKeyValue(KNSConstants.DOC_FORM_KEY,globalVariableFormKey));
         request.setAttribute("backFormHiddenVariables", backFormParameters);
 
         // setup route report form variables
         request.setAttribute("workflowRouteReportUrl", getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KEWConstants.DOCUMENT_ROUTING_REPORT_PAGE);
         List<KeyValue> generalRouteReportFormParameters = new ArrayList<KeyValue>();
-        generalRouteReportFormParameters.add(new ContreteKeyValue(KEWConstants.INITIATOR_ID_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId()));
-        generalRouteReportFormParameters.add(new ContreteKeyValue(KEWConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
+        generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.INITIATOR_ID_ATTRIBUTE_NAME, document.getDocumentHeader().getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId()));
+        generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.DOCUMENT_TYPE_NAME_ATTRIBUTE_NAME,document.getDocumentHeader().getWorkflowDocument().getDocumentType()));
         // prepareForRouteReport() method should populate document header workflow document application content xml
         String xml = document.getXmlForRouteReport();
         if ( LOG.isDebugEnabled() ) {
         	LOG.debug("XML being used for Routing Report is: " + xml);
         }
-        generalRouteReportFormParameters.add(new ContreteKeyValue(KEWConstants.DOCUMENT_CONTENT_ATTRIBUTE_NAME,xml));
+        generalRouteReportFormParameters.add(new ConcreteKeyValue(KEWConstants.DOCUMENT_CONTENT_ATTRIBUTE_NAME,xml));
 
         // set up the variables for the form if java script is working (includes a close button variable and no back url)
         List<KeyValue> javaScriptFormParameters = new ArrayList<KeyValue>();
         javaScriptFormParameters.addAll(generalRouteReportFormParameters);
-        javaScriptFormParameters.add(new ContreteKeyValue(KEWConstants.DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME, KEWConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE));
+        javaScriptFormParameters.add(new ConcreteKeyValue(KEWConstants.DISPLAY_CLOSE_BUTTON_ATTRIBUTE_NAME, KEWConstants.DISPLAY_CLOSE_BUTTON_TRUE_VALUE));
         request.setAttribute("javaScriptFormVariables", javaScriptFormParameters);
 
         // set up the variables for the form if java script is NOT working (includes a back url but no close button)
@@ -748,7 +748,7 @@ public class KualiDocumentActionBase extends KualiAction {
         for (KeyValue pair : backFormParameters) {
             parameters.put(pair.getKey(), pair.getValue());
         }
-        noJavaScriptFormParameters.add(new ContreteKeyValue(KEWConstants.RETURN_URL_ATTRIBUTE_NAME,UrlFactory.parameterizeUrl(backUrlBase, parameters)));
+        noJavaScriptFormParameters.add(new ConcreteKeyValue(KEWConstants.RETURN_URL_ATTRIBUTE_NAME,UrlFactory.parameterizeUrl(backUrlBase, parameters)));
         request.setAttribute("noJavaScriptFormVariables", noJavaScriptFormParameters);
 
         return mapping.findForward(KNSConstants.MAPPING_ROUTE_REPORT);

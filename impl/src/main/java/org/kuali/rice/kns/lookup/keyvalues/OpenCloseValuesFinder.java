@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 
 /**
@@ -33,8 +33,8 @@ public class OpenCloseValuesFinder extends KeyValuesBase {
 	
 	static {
 		final List<KeyValue> keyValues = new ArrayList<KeyValue>();
-		keyValues.add(new ContreteKeyValue("O", "Open"));
-		keyValues.add(new ContreteKeyValue("C", "Closed"));
+		keyValues.add(new ConcreteKeyValue("O", "Open"));
+		keyValues.add(new ConcreteKeyValue("C", "Closed"));
 		KEY_VALUES = Collections.unmodifiableList(keyValues);
 	}
 	

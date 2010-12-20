@@ -34,7 +34,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
@@ -295,12 +295,12 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 								NamedNodeMap valuesAttributes = displayChildNode.getAttributes();
 //                              this is to allow an empty drop down choice and can probably implemented in a better way
                                 if (displayChildNode.getFirstChild() != null) {
-                                    options.add(new ContreteKeyValue(displayChildNode.getFirstChild().getNodeValue(), valuesAttributes.getNamedItem("title").getNodeValue()));
+                                    options.add(new ConcreteKeyValue(displayChildNode.getFirstChild().getNodeValue(), valuesAttributes.getNamedItem("title").getNodeValue()));
                                     if (valuesAttributes.getNamedItem("selected") != null) {
                                         selectedOptions.add(displayChildNode.getFirstChild().getNodeValue());
                                     }
                                 } else {
-                                    options.add(new ContreteKeyValue("", valuesAttributes.getNamedItem("title").getNodeValue()));
+                                    options.add(new ConcreteKeyValue("", valuesAttributes.getNamedItem("title").getNodeValue()));
                                 }
 							}
 						}

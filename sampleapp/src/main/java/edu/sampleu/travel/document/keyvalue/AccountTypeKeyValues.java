@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -32,9 +32,9 @@ public class AccountTypeKeyValues extends KeyValuesBase {
 
         Collection<TravelAccountType> bos = KNSServiceLocator.getBusinessObjectService().findAll( TravelAccountType.class );
         
-        keyValues.add(new ContreteKeyValue("", ""));
+        keyValues.add(new ConcreteKeyValue("", ""));
         for ( TravelAccountType typ : bos ) {
-        	keyValues.add(new ContreteKeyValue(typ.getAccountTypeCode(), typ.getName()));
+        	keyValues.add(new ConcreteKeyValue(typ.getAccountTypeCode(), typ.getName()));
         }
 
         return keyValues;

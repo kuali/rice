@@ -32,7 +32,7 @@ import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -170,7 +170,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                                 if (titleAttribute != null) {
                                 	title = titleAttribute.getNodeValue();
                             	}
-                            	options.add(new ContreteKeyValue(optionValue, title));
+                            	options.add(new ConcreteKeyValue(optionValue, title));
                             }
                         }
                         if (!options.isEmpty()) {

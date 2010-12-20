@@ -35,7 +35,7 @@ import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -123,7 +123,7 @@ public class DocumentTypeSecurity implements Serializable {
           String name = (String) xpath.evaluate("./@name", searchableAttributeNode, XPathConstants.STRING);
           String idType = (String) xpath.evaluate("./@idType", searchableAttributeNode, XPathConstants.STRING);
           if (!Utilities.isEmpty(name) && !Utilities.isEmpty(idType)) {
-            KeyValue searchableAttribute = new ContreteKeyValue(name, idType);
+            KeyValue searchableAttribute = new ConcreteKeyValue(name, idType);
             searchableAttributes.add(searchableAttribute);
           }
         }

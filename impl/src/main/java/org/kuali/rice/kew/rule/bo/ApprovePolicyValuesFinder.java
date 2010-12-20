@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
@@ -35,7 +35,7 @@ public class ApprovePolicyValuesFinder extends KeyValuesBase {
 	static {
 		final List<KeyValue> temp = new ArrayList<KeyValue>();
 		for (String delegationType : KEWConstants.APPROVE_POLICIES.keySet()) {
-			temp.add(new ContreteKeyValue(delegationType, KEWConstants.APPROVE_POLICIES.get(delegationType)));
+			temp.add(new ConcreteKeyValue(delegationType, KEWConstants.APPROVE_POLICIES.get(delegationType)));
 		}
 		APPROVED_PROLICIES = Collections.unmodifiableList(temp);
 	}

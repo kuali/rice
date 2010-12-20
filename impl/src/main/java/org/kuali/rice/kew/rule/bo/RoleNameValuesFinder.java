@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
@@ -58,7 +58,7 @@ public class RoleNameValuesFinder extends KeyValuesBase {
 			RuleTemplate ruleTemplate = rule.getRuleTemplate();
 			List<Role> roles = ruleTemplate.getRoles();
 			for (Role role : roles) {
-				roleNames.add(new ContreteKeyValue(role.getName(), role.getLabel()));
+				roleNames.add(new ConcreteKeyValue(role.getName(), role.getLabel()));
 			}
 		}
 		return roleNames;

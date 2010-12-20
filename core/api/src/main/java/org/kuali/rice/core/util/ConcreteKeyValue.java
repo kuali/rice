@@ -28,21 +28,21 @@ import org.apache.commons.lang.builder.CompareToBuilder;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public final class ContreteKeyValue extends AbstractKeyValue implements Comparable<KeyValue> {
+public final class ConcreteKeyValue extends AbstractKeyValue implements Comparable<KeyValue> {
 	
-	public ContreteKeyValue() {
+	public ConcreteKeyValue() {
 		super();
 	}
 
-	public ContreteKeyValue(String key, String value) {
+	public ConcreteKeyValue(String key, String value) {
 		super(key, value);
 	}
 
-	public ContreteKeyValue(KeyValue keyValue) {
+	public ConcreteKeyValue(KeyValue keyValue) {
 		super(keyValue);
 	}
 	
-	public ContreteKeyValue(Map.Entry<String, String> entry) {
+	public ConcreteKeyValue(Map.Entry<String, String> entry) {
 		super(entry);
 	}
 	
@@ -101,7 +101,7 @@ public final class ContreteKeyValue extends AbstractKeyValue implements Comparab
 	
 	@Override
 	public String toString() {
-		return "ContreteKeyValue [getKey()=" + this.getKey() + ", getValue()="
+		return "ConcreteKeyValue [getKey()=" + this.getKey() + ", getValue()="
 				+ this.getValue() + "]";
 	}
 }

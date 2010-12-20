@@ -29,7 +29,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.preferences.Preferences;
@@ -143,7 +143,7 @@ public class ActionListFilterAction extends KualiAction {
             KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         List<KeyValue> sortedUserWorkgroups = new ArrayList<KeyValue>();
     	KeyValue keyValue = null;
-    	keyValue = new ContreteKeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
+    	keyValue = new ConcreteKeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
     	sortedUserWorkgroups.add(keyValue);
     	if (userWorkgroups != null && userWorkgroups.size() > 0) {
     		Collections.sort(userWorkgroups);
@@ -152,7 +152,7 @@ public class ActionListFilterAction extends KualiAction {
             for (String groupId : userWorkgroups)
             {
                 group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
-                keyValue = new ContreteKeyValue(groupId, group.getGroupName());
+                keyValue = new ConcreteKeyValue(groupId, group.getGroupName());
                 sortedUserWorkgroups.add(keyValue);
             }
     	}

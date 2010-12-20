@@ -17,7 +17,7 @@ package org.kuali.rice.kns.lookup.keyvalues;
 
 import java.util.List;
 
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 
 /**
@@ -33,7 +33,7 @@ public class IndicatorYNBlankValuesFinder extends IndicatorYNOnlyValuesFinder {
     @Override
 	public List<KeyValue> getKeyValues() {
     	List<KeyValue> activeLabels = super.getKeyValues();
-        activeLabels.add(0,new ContreteKeyValue("", ""));
+        activeLabels.add(0,new ConcreteKeyValue("", ""));
         return activeLabels;
     }
 

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.xml.CoreNamespaceConstants;
 
 
@@ -44,22 +44,22 @@ public class GroupNamespaceURIFilter extends AbstractTransformationFilter {
 	public List<KeyValue> getElementTransformationList() {
 		List<KeyValue> rList = new ArrayList<KeyValue>();
 
-		rList.add(new ContreteKeyValue("groups", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.groupName", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.namespaceCode", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.groupDescription", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.active", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.type", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.type.namespace", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.type.name", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.attributes", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.members", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.members.principalName",GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.members.principalId", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.members.groupName", GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.members.groupName.name",GROUP_URI_OLD));
-		rList.add(new ContreteKeyValue("groups.group.members.groupName.namespace", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.groupName", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.namespaceCode", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.groupDescription", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.active", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.type", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.type.namespace", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.type.name", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.attributes", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.members", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.members.principalName",GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.members.principalId", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.members.groupName", GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.members.groupName.name",GROUP_URI_OLD));
+		rList.add(new ConcreteKeyValue("groups.group.members.groupName.namespace", GROUP_URI_OLD));
 
 		return rList;
 	}

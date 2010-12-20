@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ParameterService;
 
@@ -57,9 +57,9 @@ public class ApcValuesFinder extends KeyValuesBase {
 	public List<KeyValue> getKeyValues() {
     	ParameterService parameterService = KNSServiceLocator.getParameterService();
     	List<KeyValue> activeLabels = new ArrayList<KeyValue>();
-    	activeLabels.add(new ContreteKeyValue("", ""));
+    	activeLabels.add(new ConcreteKeyValue("", ""));
     	for (String parm : parameterService.getParameterValues(parameterNamespace, parameterDetailType, parameterName)) {
-    	    activeLabels.add(new ContreteKeyValue(parm, parm));
+    	    activeLabels.add(new ConcreteKeyValue(parm, parm));
     	}
     	return activeLabels;
     }

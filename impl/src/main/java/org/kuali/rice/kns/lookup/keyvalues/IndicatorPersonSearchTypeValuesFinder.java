@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -34,9 +34,9 @@ public class IndicatorPersonSearchTypeValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
         List<KeyValue> activeLabels = new ArrayList<KeyValue>();
-        activeLabels.add(new ContreteKeyValue("user", "User"));
-        activeLabels.add(new ContreteKeyValue("group", "Group Member"));
-        activeLabels.add(new ContreteKeyValue("", "Both"));
+        activeLabels.add(new ConcreteKeyValue("user", "User"));
+        activeLabels.add(new ConcreteKeyValue("group", "Group Member"));
+        activeLabels.add(new ConcreteKeyValue("", "Both"));
         return activeLabels;
     }
 }

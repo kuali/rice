@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.xml.sax.SAXException;
 
 /**
@@ -91,11 +91,11 @@ public class GroupNamespaceURITransformationFilterPOC extends AbstractTransforma
 	public List<KeyValue> getElementTransformationList() {
 		List<KeyValue> rList = new ArrayList<KeyValue>();
 
-		rList.add(new ContreteKeyValue("group.name", GROUP_URI));
-		rList.add(new ContreteKeyValue("group.namespace", GROUP_URI));
-		rList.add(new ContreteKeyValue("group.description", GROUP_URI));
-		rList.add(new ContreteKeyValue("group.members.principalName", GROUP_URI));
-		rList.add(new ContreteKeyValue("group.members.principalId", GROUP_URI));		
+		rList.add(new ConcreteKeyValue("group.name", GROUP_URI));
+		rList.add(new ConcreteKeyValue("group.namespace", GROUP_URI));
+		rList.add(new ConcreteKeyValue("group.description", GROUP_URI));
+		rList.add(new ConcreteKeyValue("group.members.principalName", GROUP_URI));
+		rList.add(new ConcreteKeyValue("group.members.principalId", GROUP_URI));		
 
 		return rList;
 	}

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
@@ -45,9 +45,9 @@ public class NameTitleValuesFinder extends KeyValuesBase {
     			KimConstants.NAMESPACE_CODE, PARAM_BO_CLASSNAME, "PREFIXES"
     			);
         List<KeyValue> labels = new ArrayList<KeyValue>();
-        labels.add(new ContreteKeyValue("", ""));
+        labels.add(new ConcreteKeyValue("", ""));
         for (String title : values) {
-            labels.add(new ContreteKeyValue(title, title));
+            labels.add(new ConcreteKeyValue(title, title));
             
         }
 

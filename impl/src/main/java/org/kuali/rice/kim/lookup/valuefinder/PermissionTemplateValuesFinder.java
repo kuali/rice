@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
@@ -42,7 +42,7 @@ public class PermissionTemplateValuesFinder extends KeyValuesBase {
 		List<KimPermissionTemplateInfo> templates = KIMServiceLocator.getPermissionService().getAllTemplates();
 		List<KeyValue> result = new ArrayList<KeyValue>( templates.size() ); 
 		for ( KimPermissionTemplateInfo template : templates ) {
-			result.add( new ContreteKeyValue( template.getPermissionTemplateId(), template.getNamespaceCode() + " : " + template.getName() ) );
+			result.add( new ConcreteKeyValue( template.getPermissionTemplateId(), template.getNamespaceCode() + " : " + template.getName() ) );
 		}
 		return result;
 	}

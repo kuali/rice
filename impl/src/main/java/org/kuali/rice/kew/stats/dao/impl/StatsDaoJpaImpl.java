@@ -28,7 +28,7 @@ import javax.persistence.Query;
 
 import org.apache.ojb.broker.accesslayer.LookupException;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.dao.StatsDAO;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -111,7 +111,7 @@ public class StatsDaoJpaImpl implements StatsDAO {
         
         List<KeyValue> numDocs = new ArrayList<KeyValue>(resultList.size());
         for (Object[] result : resultList) {
-            numDocs.add(new ContreteKeyValue(result[1].toString(),result[0].toString()));
+            numDocs.add(new ConcreteKeyValue(result[1].toString(),result[0].toString()));
         }
         
         stats.setNumInitiatedDocsByDocType(numDocs);

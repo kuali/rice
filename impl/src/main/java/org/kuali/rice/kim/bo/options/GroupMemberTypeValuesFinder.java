@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
@@ -34,8 +34,8 @@ public class GroupMemberTypeValuesFinder extends KeyValuesBase {
 	private static final List<KeyValue> LABELS;
 	static {
 		final List<KeyValue> labels = new ArrayList<KeyValue>( 3 );
-	    labels.add(new ContreteKeyValue(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL));
-	    labels.add(new ContreteKeyValue(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_GROUP));
+	    labels.add(new ConcreteKeyValue(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL));
+	    labels.add(new ConcreteKeyValue(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE, KimConstants.KimUIConstants.MEMBER_TYPE_GROUP));
 	    LABELS = Collections.unmodifiableList(labels);
 	}
 	

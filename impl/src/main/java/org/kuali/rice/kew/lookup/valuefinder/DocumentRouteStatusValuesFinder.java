@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
@@ -48,13 +48,13 @@ public class DocumentRouteStatusValuesFinder extends KeyValuesBase {
 		List<String> docStatusParentKeys = asSortedList(KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.keySet());
 
 		for (String parentKey : docStatusParentKeys) {
-			KeyValue keyLabel = new ContreteKeyValue(parentKey,parentKey + " Statuses");
+			KeyValue keyLabel = new ConcreteKeyValue(parentKey,parentKey + " Statuses");
 			keyValues.add(keyLabel);
 
 			// each parent key, pending, successful, unsuccessful each has a sub list of real document statuses
 			List<String> docStatusCodes = KEWConstants.DOCUMENT_STATUS_PARENT_TYPES.get(parentKey);
 			for(String docStatusCode : docStatusCodes){
-				KeyValue docStat = new ContreteKeyValue(docStatusCode, "- "+ KEWConstants.DOCUMENT_STATUSES.get(docStatusCode));
+				KeyValue docStat = new ConcreteKeyValue(docStatusCode, "- "+ KEWConstants.DOCUMENT_STATUSES.get(docStatusCode));
 				keyValues.add(docStat);
 			}
 		}

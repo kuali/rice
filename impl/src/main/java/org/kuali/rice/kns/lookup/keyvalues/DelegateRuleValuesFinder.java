@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 
 /**
  * This class returns list containg A = Active, I = Inactive and B = Show All
@@ -35,9 +35,9 @@ public class DelegateRuleValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
-        keyValues.add(new ContreteKeyValue("N", "Non-Delegates"));
-        keyValues.add(new ContreteKeyValue("Y", "Delegates"));
-        keyValues.add(new ContreteKeyValue("", "Show All"));
+        keyValues.add(new ConcreteKeyValue("N", "Non-Delegates"));
+        keyValues.add(new ConcreteKeyValue("Y", "Delegates"));
+        keyValues.add(new ConcreteKeyValue("", "Show All"));
         return keyValues;
     }
 

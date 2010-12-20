@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
@@ -52,9 +52,9 @@ public class NamespaceValuesFinder extends KeyValuesBase {
 
         // create a new list (code, descriptive-name)
         List<KeyValue> labels = new ArrayList<KeyValue>( bos.size() );
-        labels.add(new ContreteKeyValue("", ""));
+        labels.add(new ConcreteKeyValue("", ""));
         for ( Namespace bo : bos ) {
-            labels.add( new ContreteKeyValue(bo.getNamespaceCode(), bo.getCodeAndDescription() ) );
+            labels.add( new ConcreteKeyValue(bo.getNamespaceCode(), bo.getCodeAndDescription() ) );
         }
         return labels;
     }

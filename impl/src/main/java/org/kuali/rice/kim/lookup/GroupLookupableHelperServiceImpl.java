@@ -30,7 +30,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -375,14 +375,14 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 
 	private List<KeyValue> getGroupTypeOptions() {
 		List<KeyValue> options = new ArrayList<KeyValue>();
-		options.add(new ContreteKeyValue("", ""));
+		options.add(new ConcreteKeyValue("", ""));
 
 		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocator.getTypeInfoService().getAllTypes();
 		// get the distinct list of type IDs from all groups in the system
         for (KimTypeInfo kimType : kimGroupTypes) {
             if (KimTypeLookupableHelperServiceImpl.hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
                 String value = kimType.getNamespaceCode().trim() + KNSConstants.FIELD_CONVERSION_PAIR_SEPARATOR + kimType.getName().trim();
-                options.add(new ContreteKeyValue(kimType.getKimTypeId(), value));
+                options.add(new ConcreteKeyValue(kimType.getKimTypeId(), value));
             }
         }
         Collections.sort(options, new Comparator<KeyValue>() {

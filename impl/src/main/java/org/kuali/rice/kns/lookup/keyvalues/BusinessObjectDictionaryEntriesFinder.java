@@ -18,7 +18,7 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -37,7 +37,7 @@ public class BusinessObjectDictionaryEntriesFinder extends KeyValuesBase {
 
         for (String string : businessObjects) {
             String className = string;
-            boKeyLabels.add(new ContreteKeyValue(className, className));
+            boKeyLabels.add(new ConcreteKeyValue(className, className));
         }
 
         return boKeyLabels;

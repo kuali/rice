@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
 /**
@@ -36,10 +36,10 @@ public class AccountStateKeyValues extends KeyValuesBase {
 	 */
 	public List getKeyValues() {
 		List<KeyValue> keyValues = new ArrayList<KeyValue>();
-		keyValues.add(new ContreteKeyValue("FirstState","First Account DD Attribute State"));
-		keyValues.add(new ContreteKeyValue("SecondState","Second Account DD Attribute State"));
-		keyValues.add(new ContreteKeyValue("ThirdState","Third Account DD Attribute State"));
-		keyValues.add(new ContreteKeyValue("FourthState","Fourth Account DD Attribute State"));
+		keyValues.add(new ConcreteKeyValue("FirstState","First Account DD Attribute State"));
+		keyValues.add(new ConcreteKeyValue("SecondState","Second Account DD Attribute State"));
+		keyValues.add(new ConcreteKeyValue("ThirdState","Third Account DD Attribute State"));
+		keyValues.add(new ConcreteKeyValue("FourthState","Fourth Account DD Attribute State"));
 		return keyValues;
 	}
 }

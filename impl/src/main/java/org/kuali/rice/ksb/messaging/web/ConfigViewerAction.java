@@ -29,7 +29,7 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigLogger;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 /**
  * This is a description of what this class does - g don't forget to fill this in. 
  * 
@@ -58,7 +58,7 @@ public class ConfigViewerAction extends KSBAction{
 		for(Object o: p.keySet()){
 			String key = (String)o;			
 			
-			lRet.add(new ContreteKeyValue(key,ConfigLogger.getDisplaySafeValue(key, p.getProperty(key))));			
+			lRet.add(new ConcreteKeyValue(key,ConfigLogger.getDisplaySafeValue(key, p.getProperty(key))));			
 		}
 		return lRet;
 	}

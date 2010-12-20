@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
@@ -37,7 +37,7 @@ public class RuleAttributeTypeValuesFinder extends KeyValuesBase {
 	static {
 		final List<KeyValue> ruleAttributeTypes = new ArrayList<KeyValue>();
 		for (String ruleAttributeType : KEWConstants.RULE_ATTRIBUTE_TYPES) {
-			ruleAttributeTypes.add(new ContreteKeyValue(ruleAttributeType, KEWConstants.RULE_ATTRIBUTE_TYPE_MAP.get(ruleAttributeType)));
+			ruleAttributeTypes.add(new ConcreteKeyValue(ruleAttributeType, KEWConstants.RULE_ATTRIBUTE_TYPE_MAP.get(ruleAttributeType)));
 		}
 		RULE_ATTRIBUTE_TYPES = Collections.unmodifiableList(ruleAttributeTypes);
 	}

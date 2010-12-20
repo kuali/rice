@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
@@ -35,7 +35,7 @@ public class ActionRequestCodeValuesFinder extends KeyValuesBase {
 	static {
 		final List<KeyValue> temp = new ArrayList<KeyValue>();
 		for (String actionRequestCode : KEWConstants.ACTION_REQUEST_CODES.keySet()) {
-			temp.add(new ContreteKeyValue(actionRequestCode, KEWConstants.ACTION_REQUEST_CODES.get(actionRequestCode)));
+			temp.add(new ConcreteKeyValue(actionRequestCode, KEWConstants.ACTION_REQUEST_CODES.get(actionRequestCode)));
 		}
 		
 		ACTION_REQUEST_CODES = Collections.unmodifiableList(temp);

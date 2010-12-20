@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
@@ -33,9 +33,9 @@ public class ActionPolicyValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
         List<KeyValue> labels = new ArrayList<KeyValue>();
-        labels.add(new ContreteKeyValue("", ""));
+        labels.add(new ConcreteKeyValue("", ""));
         for (Object key : CodeTranslator.approvePolicyLabels.keySet()) {
-        	labels.add(new ContreteKeyValue((String)key,(String)CodeTranslator.approvePolicyLabels.get(key)));
+        	labels.add(new ConcreteKeyValue((String)key,(String)CodeTranslator.approvePolicyLabels.get(key)));
         }
         return labels;
     }    

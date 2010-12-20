@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
@@ -63,7 +63,7 @@ public class RuleMaintenanceActionRequestCodeValuesFinder extends ActionRequestC
 		// Add the rule options to the list if they are not defined (true by default) or if they are explicitly set to true.
 		for (int i = 0; i < ruleOpts.length; i++) {
 			if (ruleOpts[i] == null || ruleOpts[i].getValue() == null || "true".equals(ruleOpts[i].getValue())) {
-				actionRequestCodes.add(new ContreteKeyValue(ruleConsts[i], KEWConstants.ACTION_REQUEST_CODES.get(ruleConsts[i])));
+				actionRequestCodes.add(new ConcreteKeyValue(ruleConsts[i], KEWConstants.ACTION_REQUEST_CODES.get(ruleConsts[i])));
 			}
 		}
 		return actionRequestCodes;

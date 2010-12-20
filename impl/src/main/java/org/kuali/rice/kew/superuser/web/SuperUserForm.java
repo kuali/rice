@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -212,7 +212,7 @@ public class SuperUserForm extends KewRoutingKualiForm {
     	String[] nodeNames = new WorkflowInfo().getPreviousRouteNodeNames(routeHeader.getRouteHeaderId());
         Set<KeyValue> previousNodes = new HashSet<KeyValue>();
         for (String nodeName : nodeNames) {
-			previousNodes.add(new ContreteKeyValue(nodeName, nodeName));
+			previousNodes.add(new ConcreteKeyValue(nodeName, nodeName));
 		}
         return previousNodes;
     }

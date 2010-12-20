@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 
 /**
  * This class returns list containg A = Active, I = Inactive and B = Show All
@@ -35,9 +35,9 @@ public class ActiveInactiveValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
         List<KeyValue> keyValues = new ArrayList<KeyValue>();
-        keyValues.add(new ContreteKeyValue("A", "Active"));
-        keyValues.add(new ContreteKeyValue("I", "Inactive"));
-        keyValues.add(new ContreteKeyValue("B", "Show All"));
+        keyValues.add(new ConcreteKeyValue("A", "Active"));
+        keyValues.add(new ConcreteKeyValue("I", "Inactive"));
+        keyValues.add(new ConcreteKeyValue("B", "Show All"));
         return keyValues;
     }
 

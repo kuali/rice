@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 
 /**
  * This class returns list of boolean key value pairs.
@@ -34,8 +34,8 @@ public class IndicatorYNOnlyValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
         List<KeyValue> activeLabels = new ArrayList<KeyValue>();
-        activeLabels.add(new ContreteKeyValue("Yes", "Yes"));
-        activeLabels.add(new ContreteKeyValue("No", "No"));
+        activeLabels.add(new ConcreteKeyValue("Yes", "Yes"));
+        activeLabels.add(new ConcreteKeyValue("No", "No"));
         return activeLabels;
     }
 

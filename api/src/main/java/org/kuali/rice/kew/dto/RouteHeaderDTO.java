@@ -22,7 +22,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 
 /**
  * Transport object for the DocumentRouteHeaderValue.  Represents a document to the
@@ -299,7 +299,7 @@ public class RouteHeaderDTO implements Serializable {
             if (value == null) {
                 return;
             }
-            variables.add(new ContreteKeyValue(name, value));
+            variables.add(new ConcreteKeyValue(name, value));
         } else {
             
         	// values do not need to be removed from the VO
@@ -316,7 +316,7 @@ public class RouteHeaderDTO implements Serializable {
             //    variables.remove(kvp);
             //} else {
         		variables.remove(kvp);
-        		variables.add(new ContreteKeyValue(kvp.getKey(), value));
+        		variables.add(new ConcreteKeyValue(kvp.getKey(), value));
             //}
         }
     }

@@ -24,7 +24,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
@@ -61,7 +61,7 @@ public class PersistableBusinessObjectValuesFinder <T extends PersistableBusines
     	    KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
             Collection<T> objects = boService.findAll(businessObjectClass);
             if(includeBlankRow) {
-            	labels.add(new ContreteKeyValue("", ""));
+            	labels.add(new ConcreteKeyValue("", ""));
             }
             for (T object : objects) {
             	Object key = PropertyUtils.getProperty(object, keyAttributeName);
@@ -69,7 +69,7 @@ public class PersistableBusinessObjectValuesFinder <T extends PersistableBusines
             	if (includeKeyInDescription) {
             	    label = key + " - " + label;
             	}
-            	labels.add(new ContreteKeyValue(key.toString(), label));
+            	labels.add(new ConcreteKeyValue(key.toString(), label));
     	    }
     	} catch (IllegalAccessException e) {
             LOG.debug(e.getMessage(), e);

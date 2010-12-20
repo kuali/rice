@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.kns.test.document.bo.AccountType;
@@ -44,21 +44,21 @@ public class PersistableBusinessObjectValuesFinderTest extends KNSTestCase {
      *
      */
     public PersistableBusinessObjectValuesFinderTest() {
-	testKeyValues.add(new ContreteKeyValue("CAT", "Clearing Account Type"));
-	testKeyValues.add(new ContreteKeyValue("EAT", "Expense Account Type"));
-	testKeyValues.add(new ContreteKeyValue("IAT", "Income Account Type"));
+	testKeyValues.add(new ConcreteKeyValue("CAT", "Clearing Account Type"));
+	testKeyValues.add(new ConcreteKeyValue("EAT", "Expense Account Type"));
+	testKeyValues.add(new ConcreteKeyValue("IAT", "Income Account Type"));
 
-	testKeyValuesKeyInLabel.add(new ContreteKeyValue("CAT", "CAT - Clearing Account Type"));
-	testKeyValuesKeyInLabel.add(new ContreteKeyValue("EAT", "EAT - Expense Account Type"));
-	testKeyValuesKeyInLabel.add(new ContreteKeyValue("IAT", "IAT - Income Account Type"));
+	testKeyValuesKeyInLabel.add(new ConcreteKeyValue("CAT", "CAT - Clearing Account Type"));
+	testKeyValuesKeyInLabel.add(new ConcreteKeyValue("EAT", "EAT - Expense Account Type"));
+	testKeyValuesKeyInLabel.add(new ConcreteKeyValue("IAT", "IAT - Income Account Type"));
  
-	testKeyValuesLongKey.add(new ContreteKeyValue(new Long(1).toString(), "fred"));
-	testKeyValuesLongKey.add(new ContreteKeyValue(new Long(2).toString(), "fran"));
-	testKeyValuesLongKey.add(new ContreteKeyValue(new Long(3).toString(), "frank"));
+	testKeyValuesLongKey.add(new ConcreteKeyValue(new Long(1).toString(), "fred"));
+	testKeyValuesLongKey.add(new ConcreteKeyValue(new Long(2).toString(), "fran"));
+	testKeyValuesLongKey.add(new ConcreteKeyValue(new Long(3).toString(), "frank"));
 
-	testKeyValuesKeyInLabelLongKey.add(new ContreteKeyValue(new Long(1).toString(), "1 - fred"));
-	testKeyValuesKeyInLabelLongKey.add(new ContreteKeyValue(new Long(2).toString(), "2 - fran"));
-	testKeyValuesKeyInLabelLongKey.add(new ContreteKeyValue(new Long(3).toString(), "3 - frank"));
+	testKeyValuesKeyInLabelLongKey.add(new ConcreteKeyValue(new Long(1).toString(), "1 - fred"));
+	testKeyValuesKeyInLabelLongKey.add(new ConcreteKeyValue(new Long(2).toString(), "2 - fran"));
+	testKeyValuesKeyInLabelLongKey.add(new ConcreteKeyValue(new Long(3).toString(), "3 - frank"));
     }
 
     /**

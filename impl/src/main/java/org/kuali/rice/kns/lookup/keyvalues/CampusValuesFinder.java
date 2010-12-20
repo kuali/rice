@@ -20,7 +20,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
@@ -45,9 +45,9 @@ public class CampusValuesFinder extends KeyValuesBase {
 		        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
 		        Collection<Campus> codes = boService.findAll(Campus.class);
 		        List<KeyValue> labels = new ArrayList<KeyValue>();
-		        labels.add(new ContreteKeyValue("", ""));
+		        labels.add(new ConcreteKeyValue("", ""));
 		        for ( Campus campus : codes ) {
-		            labels.add(new ContreteKeyValue(campus.getCampusCode(), campus.getCampusCode() + " - " + campus.getCampusName()));
+		            labels.add(new ConcreteKeyValue(campus.getCampusCode(), campus.getCampusCode() + " - " + campus.getCampusName()));
 		        }
 		
 		        campusCache = labels;

@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.ParameterType;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
@@ -54,7 +54,7 @@ public class ParameterTypeValuesFinder extends KeyValuesBase {
         List<KeyValue> labels = new ArrayList<KeyValue>( bos.size() );
 
         for ( ParameterType bo : bos ) {
-            labels.add( new ContreteKeyValue(bo.getParameterTypeCode(), bo.getParameterTypeName() ) );
+            labels.add( new ConcreteKeyValue(bo.getParameterTypeCode(), bo.getParameterTypeName() ) );
         }
 
         return labels;

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 
 /**
@@ -33,8 +33,8 @@ public class ParameterOperatorValuesFinder extends KeyValuesBase {
 	
 	static {
 		final List<KeyValue> keyValues = new ArrayList<KeyValue>();
-        keyValues.add(new ContreteKeyValue("A", "Allowed"));
-        keyValues.add(new ContreteKeyValue("D", "Denied"));
+        keyValues.add(new ConcreteKeyValue("A", "Allowed"));
+        keyValues.add(new ConcreteKeyValue("D", "Denied"));
 		KEY_VALUES = Collections.unmodifiableList(keyValues);
 	}
 	

@@ -37,7 +37,7 @@ import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.reflect.PropertyDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
@@ -1195,7 +1195,7 @@ public class DTOConverter {
         if (ruleExtensionVO == null) {
             return null;
         }
-        return new ContreteKeyValue(ruleExtensionVO.getKey(), ruleExtensionVO.getValue());
+        return new ConcreteKeyValue(ruleExtensionVO.getKey(), ruleExtensionVO.getValue());
     }
 
     public static RuleResponsibilityDTO convertRuleResponsibility(RuleResponsibility ruleResponsibility) throws WorkflowException {
@@ -1344,9 +1344,9 @@ public class DTOConverter {
 
     public static DocumentSearchResultRowDTO convertDocumentSearchResult(DocumentSearchResult resultRow) throws WorkflowException {
         DocumentSearchResultRowDTO rowVO = new DocumentSearchResultRowDTO();
-        List<ContreteKeyValue> fieldValues = new ArrayList<ContreteKeyValue>();
+        List<ConcreteKeyValue> fieldValues = new ArrayList<ConcreteKeyValue>();
         for (KeyValueSort keyValueSort : resultRow.getResultContainers()) {
-            fieldValues.add(new ContreteKeyValue(keyValueSort.getKey(),keyValueSort.getUserDisplayValue()));
+            fieldValues.add(new ConcreteKeyValue(keyValueSort.getKey(),keyValueSort.getUserDisplayValue()));
         }
         rowVO.setFieldValues(fieldValues);
         return rowVO;

@@ -30,7 +30,7 @@ import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -94,15 +94,15 @@ public class PreferencesAction extends KewKualiAction {
 
     public void getDelegatorFilterChoices(HttpServletRequest request) {
         List<KeyValue> delegatorFilterChoices = new ArrayList<KeyValue>();
-        delegatorFilterChoices.add(new ContreteKeyValue(KEWConstants.DELEGATORS_ON_FILTER_PAGE, KEWConstants.DELEGATORS_ON_FILTER_PAGE));
-        delegatorFilterChoices.add(new ContreteKeyValue(KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE, KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE));
+        delegatorFilterChoices.add(new ConcreteKeyValue(KEWConstants.DELEGATORS_ON_FILTER_PAGE, KEWConstants.DELEGATORS_ON_FILTER_PAGE));
+        delegatorFilterChoices.add(new ConcreteKeyValue(KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE, KEWConstants.DELEGATORS_ON_ACTION_LIST_PAGE));
         request.setAttribute("delegatorFilter", delegatorFilterChoices);
     }
     
     public void getPrimaryDelegateFilterChoices(HttpServletRequest request) {
     	List<KeyValue> primaryDelegateFilterChoices = new ArrayList<KeyValue>();
-    	primaryDelegateFilterChoices.add(new ContreteKeyValue(KEWConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE, KEWConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE));
-        primaryDelegateFilterChoices.add(new ContreteKeyValue(KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE, KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE));
+    	primaryDelegateFilterChoices.add(new ConcreteKeyValue(KEWConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE, KEWConstants.PRIMARY_DELEGATES_ON_FILTER_PAGE));
+        primaryDelegateFilterChoices.add(new ConcreteKeyValue(KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE, KEWConstants.PRIMARY_DELEGATES_ON_ACTION_LIST_PAGE));
         request.setAttribute("primaryDelegateFilter", primaryDelegateFilterChoices);
     }
 

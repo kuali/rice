@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -178,7 +178,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 	 */
 	public List getFieldConversions() {
 		List conversionFields = new ArrayList();
-		conversionFields.add(new ContreteKeyValue("userid", USERID_FORM_FIELDNAME));
+		conversionFields.add(new ConcreteKeyValue("userid", USERID_FORM_FIELDNAME));
 		return conversionFields;
 	}
 

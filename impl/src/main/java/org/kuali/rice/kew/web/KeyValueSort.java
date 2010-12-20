@@ -19,7 +19,7 @@ package org.kuali.rice.kew.web;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 
 
 /**
@@ -37,15 +37,15 @@ public class KeyValueSort implements KeyValue {
 	private Object sortValue;
     private Class sortClass;
     private SearchableAttributeValue searchableAttributeValue;
-    private final ContreteKeyValue keyValue;
+    private final ConcreteKeyValue keyValue;
     
     
 	public KeyValueSort() {
-		keyValue = new ContreteKeyValue();
+		keyValue = new ConcreteKeyValue();
 	}
 
 	public KeyValueSort(String key, String value) {
-		keyValue = new ContreteKeyValue(key, value);
+		keyValue = new ConcreteKeyValue(key, value);
 	}
 
     public KeyValueSort(String key, String value, Object sortValue, SearchableAttributeValue searchableAttributeValue) {

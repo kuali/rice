@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.Country;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -48,8 +48,8 @@ public abstract class AbstractCountryValuesFinderBase extends KeyValuesBase {
 		final Country defaultCountry = KNSServiceLocator.getCountryService().getDefaultCountry();
 		List<KeyValue> labels = new ArrayList<KeyValue>( boList.size() + 1 );
 		
-        labels.add(new ContreteKeyValue("", ""));
-       	labels.add(new ContreteKeyValue(defaultCountry.getPostalCountryCode(), defaultCountry.getPostalCountryName()));
+        labels.add(new ConcreteKeyValue("", ""));
+       	labels.add(new ConcreteKeyValue(defaultCountry.getPostalCountryCode(), defaultCountry.getPostalCountryName()));
         	
         Collections.sort(boList, new Comparator<Country>() {
 			@Override
@@ -66,7 +66,7 @@ public abstract class AbstractCountryValuesFinderBase extends KeyValuesBase {
         // the default country may show up twice, but that's fine
         for (Country country : boList) {
         	if (country.isActive()) {
-        		labels.add(new ContreteKeyValue(country.getPostalCountryCode(), country.getPostalCountryName()));
+        		labels.add(new ConcreteKeyValue(country.getPostalCountryCode(), country.getPostalCountryName()));
         	}
         }
         return labels;

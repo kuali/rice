@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 
 /**
@@ -31,8 +31,8 @@ public class YesNoValueFinder extends KeyValuesBase {
 	private static final List<KeyValue> ACTIVE_LABELS;
 	static {
 		final List<KeyValue> activeLabels = new ArrayList<KeyValue>();
-		activeLabels.add(new ContreteKeyValue("Y", "Yes"));
-		activeLabels.add(new ContreteKeyValue("N", "No"));
+		activeLabels.add(new ConcreteKeyValue("Y", "Yes"));
+		activeLabels.add(new ConcreteKeyValue("N", "No"));
 		ACTIVE_LABELS = Collections.unmodifiableList(activeLabels);
 	}
 	

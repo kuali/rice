@@ -21,7 +21,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -206,7 +206,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 								List<KeyValue> keyValues = new ArrayList<KeyValue>();
 								List<RouteNode> routeNodes = KEWServiceLocator.getRouteNodeService().getFlattenedNodes(documentType, true);
 								for (RouteNode routeNode : routeNodes) {
-									keyValues.add(new ContreteKeyValue(routeNode.getRouteNodeId()+"",routeNode.getRouteNodeName()));
+									keyValues.add(new ConcreteKeyValue(routeNode.getRouteNodeId()+"",routeNode.getRouteNodeName()));
 								}
 								field.setFieldValidValues(keyValues);
 								//TODO: fix this in criteria this field shouldn't be blank values otherwise have to reset this for some reason
@@ -223,7 +223,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 							List<KeyValue> keyValues = new ArrayList<KeyValue>();
 							Set<String> docStatusKeys = KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.keySet();
 							for (String string : docStatusKeys) {
-								KeyValue keyLabel = new ContreteKeyValue(string,KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.get(string));
+								KeyValue keyLabel = new ConcreteKeyValue(string,KEWConstants.DOC_SEARCH_ROUTE_STATUS_QUALIFIERS.get(string));
 								keyValues.add(keyLabel);
 							}
 							field.setFieldValidValues(keyValues);
@@ -233,7 +233,7 @@ public class DocumentLookupCriteriaProcessorKEWAdapter implements
 								List<KeyValue> keyValues = new ArrayList<KeyValue>();
 								List<ApplicationDocumentStatus> validStatuses = documentType.getValidApplicationStatuses();
 								for (ApplicationDocumentStatus appStatus : (List<ApplicationDocumentStatus>) validStatuses) {
-									keyValues.add(new ContreteKeyValue(appStatus.getStatusName(),appStatus.getStatusName()));
+									keyValues.add(new ConcreteKeyValue(appStatus.getStatusName(),appStatus.getStatusName()));
 								}
 								field.setFieldValidValues(keyValues);
 								//TODO: fix this in criteria this field shouldn't be blank values otherwise have to reset this for some reason

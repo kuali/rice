@@ -18,7 +18,7 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 
 /**
@@ -34,8 +34,8 @@ public class AMPMValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
     	List<KeyValue> keyValues = new ArrayList<KeyValue>();
-        keyValues.add(new ContreteKeyValue("No", "AM"));
-        keyValues.add(new ContreteKeyValue("Yes", "PM"));
+        keyValues.add(new ConcreteKeyValue("No", "AM"));
+        keyValues.add(new ConcreteKeyValue("Yes", "PM"));
 
         return keyValues;
     }

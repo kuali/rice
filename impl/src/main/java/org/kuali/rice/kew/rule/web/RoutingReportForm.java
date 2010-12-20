@@ -28,7 +28,7 @@ import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -137,16 +137,16 @@ public class RoutingReportForm extends KualiForm {
 
     public List<KeyValue> getHours() {
     	List<KeyValue> hours = new ArrayList<KeyValue>();
-        hours.add(new ContreteKeyValue("0", "12"));
+        hours.add(new ConcreteKeyValue("0", "12"));
         for (int i = 1; i < 12; i++) {
-            hours.add(new ContreteKeyValue(i + "", i + ""));
+            hours.add(new ConcreteKeyValue(i + "", i + ""));
         }
         return hours;
     }
     public List<KeyValue> getMinutes() {
     	List<KeyValue> mins = new ArrayList<KeyValue>();
         for (int i = 0; i < 60; i++) {
-            mins.add(new ContreteKeyValue(i + "", ":" + (i < 10 ? "0" : "") + i + ""));
+            mins.add(new ConcreteKeyValue(i + "", ":" + (i < 10 ? "0" : "") + i + ""));
         }
         return mins;
     }

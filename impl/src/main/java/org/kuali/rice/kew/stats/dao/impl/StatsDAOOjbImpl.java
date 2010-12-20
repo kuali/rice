@@ -28,7 +28,7 @@ import java.util.List;
 
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.accesslayer.LookupException;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.stats.Stats;
 import org.kuali.rice.kew.stats.dao.StatsDAO;
@@ -152,7 +152,7 @@ public class StatsDAOOjbImpl extends PersistenceBrokerDaoSupport implements Stat
         List<KeyValue> numDocs = new ArrayList<KeyValue>();
 
         while (rs.next()) {
-            numDocs.add(new ContreteKeyValue(rs.getString(2), new Integer(rs.getInt(1)).toString()));
+            numDocs.add(new ConcreteKeyValue(rs.getString(2), new Integer(rs.getInt(1)).toString()));
         }
         stats.setNumInitiatedDocsByDocType(numDocs);
 

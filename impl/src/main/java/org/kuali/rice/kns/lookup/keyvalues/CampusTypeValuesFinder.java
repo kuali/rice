@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.bo.CampusType;
 import org.kuali.rice.kns.bo.CampusTypeImpl;
@@ -54,7 +54,7 @@ public class CampusTypeValuesFinder extends KeyValuesBase {
         List<KeyValue> labels = new ArrayList<KeyValue>();
 
         for (CampusType campusType : campusTypes) {
-            labels.add(new ContreteKeyValue(campusType.getCampusTypeCode(), campusType.getCampusTypeCode() + " - " + campusType.getCampusTypeName()));
+            labels.add(new ConcreteKeyValue(campusType.getCampusTypeCode(), campusType.getCampusTypeCode() + " - " + campusType.getCampusTypeName()));
         }
 
         return labels;

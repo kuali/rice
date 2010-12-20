@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
@@ -41,10 +41,10 @@ public class DelegationTypeValuesFinder extends KeyValuesBase {
 		final List<KeyValue> delegationTypesForMaintDocs = new ArrayList<KeyValue>();
 		
 		for (String delegationType : KEWConstants.DELEGATION_TYPES.keySet()) {
-			delegationTypes.add(new ContreteKeyValue(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
+			delegationTypes.add(new ConcreteKeyValue(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
 			// Use a separate delegation types list for the related maintenance docs, since they should disallow the "Both" option.
 			if (!KEWConstants.DELEGATION_BOTH.equals(delegationType)) {
-				delegationTypesForMaintDocs.add(new ContreteKeyValue(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
+				delegationTypesForMaintDocs.add(new ConcreteKeyValue(delegationType, KEWConstants.DELEGATION_TYPES.get(delegationType)));
 			}
 		}
 		

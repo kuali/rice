@@ -20,7 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -35,9 +35,9 @@ public class IndicatorValuesFinder extends KeyValuesBase {
 	protected static final List<KeyValue> ACTIVE_LABELS;
 	static {
 		final List<KeyValue> activeLabels = new ArrayList<KeyValue>(3);
-        activeLabels.add(new ContreteKeyValue(KNSConstants.YES_INDICATOR_VALUE, "Yes"));
-        activeLabels.add(new ContreteKeyValue(KNSConstants.NO_INDICATOR_VALUE, "No"));
-        activeLabels.add(new ContreteKeyValue("", "Both"));
+        activeLabels.add(new ConcreteKeyValue(KNSConstants.YES_INDICATOR_VALUE, "Yes"));
+        activeLabels.add(new ConcreteKeyValue(KNSConstants.NO_INDICATOR_VALUE, "No"));
+        activeLabels.add(new ConcreteKeyValue("", "Both"));
         
         ACTIVE_LABELS = Collections.unmodifiableList(activeLabels);
 	}

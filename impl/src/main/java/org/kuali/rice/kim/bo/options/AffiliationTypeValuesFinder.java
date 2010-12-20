@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.Country;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -51,14 +51,14 @@ public class AffiliationTypeValuesFinder extends KeyValuesBase {
             }
             else {
                 if(element.isActive()) {
-                    keyValues.add(new ContreteKeyValue(element.getPostalCountryCode(), element.getPostalCountryName()));
+                    keyValues.add(new ConcreteKeyValue(element.getPostalCountryCode(), element.getPostalCountryName()));
                 }
             }
         }
 
         List<KeyValue> keyValueUSFirst = new ArrayList<KeyValue>();
-        keyValueUSFirst.add(new ContreteKeyValue("", ""));
-        keyValueUSFirst.add(new ContreteKeyValue(defaultCountry.getPostalCountryCode(), defaultCountry.getPostalCountryName()));
+        keyValueUSFirst.add(new ConcreteKeyValue("", ""));
+        keyValueUSFirst.add(new ConcreteKeyValue(defaultCountry.getPostalCountryCode(), defaultCountry.getPostalCountryName()));
         keyValueUSFirst.addAll(keyValues);
 
         return keyValueUSFirst;

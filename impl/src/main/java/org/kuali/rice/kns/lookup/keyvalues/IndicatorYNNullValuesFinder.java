@@ -18,7 +18,7 @@ package org.kuali.rice.kns.lookup.keyvalues;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 
 public class IndicatorYNNullValuesFinder extends KeyValuesBase {
@@ -26,9 +26,9 @@ public class IndicatorYNNullValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
     	List<KeyValue> activeLabels = new ArrayList<KeyValue>();
-        activeLabels.add(new ContreteKeyValue("", ""));
-        activeLabels.add(new ContreteKeyValue("Yes", "Yes"));
-        activeLabels.add(new ContreteKeyValue("No", "No"));
+        activeLabels.add(new ConcreteKeyValue("", ""));
+        activeLabels.add(new ConcreteKeyValue("Yes", "Yes"));
+        activeLabels.add(new ConcreteKeyValue("No", "No"));
         return activeLabels;
     }
 

@@ -27,7 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.rule.OddSearchAttribute;
@@ -299,9 +299,9 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                         }
                         if (field.getFieldType().equals(Field.TEXT) || field.getFieldType().equals(Field.DROPDOWN) || field.getFieldType().equals(Field.DROPDOWN_REFRESH) || field.getFieldType().equals(Field.RADIO)) {
                             if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
-                                myColumns.getColumns().add(new ContreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
+                                myColumns.getColumns().add(new ConcreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
                             } else {
-                                myColumns.getColumns().add(new ContreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
+                                myColumns.getColumns().add(new ConcreteKeyValue(field.getPropertyName(), ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
                             }
                         }
                     }
@@ -340,9 +340,9 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                     KeyValue pair = (KeyValue) element;
                     final KeyValue newPair;
                     if (record.getRuleExtensionValue(new Long(pair.getKey()), pair.getKey().toString()) != null) {
-                    	newPair = new ContreteKeyValue(pair.getKey(), record.getRuleExtensionValue(new Long(pair.getValue()), pair.getKey().toString()).getValue());
+                    	newPair = new ConcreteKeyValue(pair.getKey(), record.getRuleExtensionValue(new Long(pair.getValue()), pair.getKey().toString()).getValue());
                     } else {
-                    	newPair = new ContreteKeyValue(pair.getKey(), KEWConstants.HTML_NON_BREAKING_SPACE);
+                    	newPair = new ConcreteKeyValue(pair.getKey(), KEWConstants.HTML_NON_BREAKING_SPACE);
                     }
                     myNewColumns.getColumns().add(newPair);
                     record.getFieldValues().put(newPair.getKey(), newPair.getValue());

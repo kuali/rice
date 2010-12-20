@@ -21,7 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ContreteKeyValue;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.State;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
@@ -48,10 +48,10 @@ public class StateValuesFinder extends KeyValuesBase {
     		});
     		
     		List<KeyValue> newLabels = new ArrayList<KeyValue>();
-	        newLabels.add(new ContreteKeyValue("", ""));
+	        newLabels.add(new ConcreteKeyValue("", ""));
 	        for (State state : codes) {
 	            if(state.isActive()) {
-	                newLabels.add(new ContreteKeyValue(state.getPostalStateCode(), state.getPostalStateName()));
+	                newLabels.add(new ConcreteKeyValue(state.getPostalStateCode(), state.getPostalStateName()));
 	            }
 	        }
 	        labels = newLabels;

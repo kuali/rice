@@ -29,10 +29,12 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
@@ -222,19 +224,46 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         			new String[] {"Member Type Code and Member ID"});
         	return false;
 		}
-    	BusinessObject member = getUiDocumentService().getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
-        if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE) 
-        		&& !validateRole(newMember.getMemberId(), (RoleImpl)member, "document.member.memberId", "Role")){
-        	return false;
-        }
-
-        if(member==null){
-        	GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
-        			new String[] {newMember.getMemberId()});
-        	return false;
+    	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(newMember.getMemberTypeCode())){
+        	KimPrincipalInfo principalInfo = null;
+        	principalInfo = getIdentityManagementService().getPrincipal(newMember.getMemberId());
+        	if (principalInfo == null) {
+        		GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+            			new String[] {newMember.getMemberId()});
+            	return false;
+        	}
+        	else {
+        		newMember.setMemberName(principalInfo.getPrincipalName());
+        	}
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(newMember.getMemberTypeCode())){
+        	GroupInfo groupInfo = null;
+        	groupInfo = getIdentityManagementService().getGroup(newMember.getMemberId());
+        	if (groupInfo == null) {
+        		GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+            			new String[] {newMember.getMemberId()});
+            	return false;
+        	}
+        	else {
+        		newMember.setMemberName(groupInfo.getGroupName());
+                newMember.setMemberNamespaceCode(groupInfo.getNamespaceCode());
+        	}
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
+        	KimRoleInfo roleInfo = null;
+        	roleInfo = KIMServiceLocator.getRoleService().getRole(newMember.getMemberId());   
+        	if (roleInfo == null) {
+        		GlobalVariables.getMessageMap().putError("document.member.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+            			new String[] {newMember.getMemberId()});
+            	return false;
+        	}
+        	else if(StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE) 
+            		&& !validateRole(newMember.getMemberId(), (Role)roleInfo, "document.member.memberId", "Role")){
+            	return false;
+            }
+        	else {
+        		newMember.setMemberName(roleInfo.getRoleName());
+                newMember.setMemberNamespaceCode(roleInfo.getNamespaceCode());
+        	}
 		}
-        newMember.setMemberName(getUiDocumentService().getMemberName(newMember.getMemberTypeCode(), member));
-        newMember.setMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(newMember.getMemberTypeCode(), member));
         return true;
     }
     

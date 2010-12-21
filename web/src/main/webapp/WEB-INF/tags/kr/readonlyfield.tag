@@ -31,7 +31,7 @@
         <c:forEach items="${field.fieldValidValues}" var="select">
           <c:if test="${field.propertyValue==select.key}">
             <c:if test="${!value_found}">
-              <c:out value="${select.label}" />
+              <c:out value="${select.value}" />
               <c:if test="${isLookup}">
       		    <input type="hidden" name="${field.propertyName}" value="<c:out value="${field.propertyValue}"/>" />
 		      </c:if>
@@ -43,7 +43,7 @@
 			<c:forEach items="${field.fieldInactiveValidValues}" var="select">
 	          <c:if test="${field.propertyValue==select.key}">
 	            <c:if test="${!value_found}">
-	              <c:out value="${select.label}" />
+	              <c:out value="${select.value}" />
                   <c:if test="${isLookup}">
       		        <input type="hidden" name="${field.propertyName}" value="<c:out value="${field.propertyValue}"/>" />
 		          </c:if>

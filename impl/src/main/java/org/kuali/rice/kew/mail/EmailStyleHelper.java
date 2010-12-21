@@ -42,7 +42,10 @@ public class EmailStyleHelper {
     
     public EmailContent generateEmailContent(Templates style, Document document) {
 	DOMResult result = new DOMResult();
-        LOG.debug("Input document: " + XmlHelper.jotNode(document.getDocumentElement(), true));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Input document: " + XmlHelper.jotNode(document.getDocumentElement(), true));
+        }
+
         try {
             style.newTransformer().transform(new DOMSource(document), result);
         } catch (TransformerException te) {
@@ -67,5 +70,5 @@ public class EmailStyleHelper {
             throw new WorkflowRuntimeException("Error evaluating generated email content", xpee);
         }
     }
-    
+
 }

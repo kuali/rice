@@ -62,7 +62,7 @@ public class ThinClientTest extends KEWTestCase {
 	private static final String KIM_PRINCIPAL_NAME = "testuser1";
 
 	private static SpringResourceLoader thinClientResourceLoader = new SpringResourceLoader(new QName("ThinClientTest"), 
-			SPRING_BEANS_FILE);
+			SPRING_BEANS_FILE, null);
 	
 	private ClassLoader ourClassLoader = null;
 	private ClassLoader parentClassLoader = null;

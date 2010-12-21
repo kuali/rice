@@ -71,9 +71,9 @@ public abstract class KSBTestCase extends RiceTestCase {
         List<Lifecycle> lifecycles = super.getSuiteLifecycles();
         if (this.disableJta()) {
             System.setProperty(BaseOjbConfigurer.OJB_PROPERTIES_PROP, "RiceNoJtaOJB.properties");
-            this.springContextResourceLoader = new SpringResourceLoader(new QName("ksbtestharness"), "KSBTestHarnessNoJtaSpring.xml");
+            this.springContextResourceLoader = new SpringResourceLoader(new QName("ksbtestharness"), "KSBTestHarnessNoJtaSpring.xml", null);
         } else {
-            this.springContextResourceLoader = new SpringResourceLoader(new QName("ksbtestharness"), "KSBTestHarnessSpring.xml");
+            this.springContextResourceLoader = new SpringResourceLoader(new QName("ksbtestharness"), "KSBTestHarnessSpring.xml", null);
         }
 
         lifecycles.add(this.springContextResourceLoader);

@@ -43,7 +43,7 @@ public abstract class KCBTestCase extends BaselineTestCase {
     
     @Override
 	protected Lifecycle getLoadApplicationLifecycle() {
-    	SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KCBTestHarnessApplicationResourceLoader"), "classpath:KCBTestHarnessSpringBeans.xml");
+    	SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KCBTestHarnessApplicationResourceLoader"), "classpath:KCBTestHarnessSpringBeans.xml", null);
     	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
     	return springResourceLoader;
 	}

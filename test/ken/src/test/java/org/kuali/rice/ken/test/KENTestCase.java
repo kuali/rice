@@ -66,7 +66,7 @@ public abstract class KENTestCase extends BaselineTestCase {
     
     @Override
 	protected Lifecycle getLoadApplicationLifecycle() {
-    	SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KENTestHarnessApplicationResourceLoader"), "classpath:KENTestHarnessSpringBeans.xml");
+    	SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KENTestHarnessApplicationResourceLoader"), "classpath:KENTestHarnessSpringBeans.xml", null);
     	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
     	return springResourceLoader;
 	}

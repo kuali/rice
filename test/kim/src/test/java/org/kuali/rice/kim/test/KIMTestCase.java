@@ -66,7 +66,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 	
 	@Override
 	protected Lifecycle getLoadApplicationLifecycle() {
-    	SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KIMTestHarnessApplicationResourceLoader"), "classpath:KIMTestHarnessSpringBeans.xml");
+    	SpringResourceLoader springResourceLoader = new SpringResourceLoader(new QName("KIMTestHarnessApplicationResourceLoader"), "classpath:KIMTestHarnessSpringBeans.xml", null);
     	springResourceLoader.setParentSpringResourceLoader(getTestHarnessSpringResourceLoader());
     	return springResourceLoader;
 	}

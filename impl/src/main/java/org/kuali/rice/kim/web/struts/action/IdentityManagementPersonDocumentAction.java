@@ -471,11 +471,15 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         RoleDocumentDelegationMember newDelegationMember = personDocumentForm.getNewDelegationMember();
         KimTypeAttributesHelper attrHelper = newDelegationMember.getAttributesHelper();
         if (getKualiRuleService().applyRules(new AddPersonDelegationMemberEvent("", personDocumentForm.getPersonDocument(), newDelegationMember))) {
-	        RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newDelegationMember.getRoleImpl().getRoleId());
-	        if(!validateRole(newDelegationMember.getRoleImpl().getRoleId(),roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
-	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+	        //RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, newDelegationMember.getRoleImpl().getRoleId());
+	        KimRoleInfo roleInfo = null;
+        	roleInfo = KIMServiceLocator.getRoleService().getRole(newDelegationMember.getRoleImpl().getRoleId());
+	        if (roleInfo != null) {
+		        if(!validateRole(newDelegationMember.getRoleImpl().getRoleId(),roleInfo, PersonDocumentRoleRule.ERROR_PATH, "Person")){
+		        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+		        }
+		        newDelegationMember.setRoleImpl(convertRoleInfoToRoleImpl(roleInfo));
 	        }
-	        newDelegationMember.setRoleImpl(roleImpl);
 	        AttributeDefinition attrDefinition;
 	        RoleMemberImpl roleMember = KIMServiceLocator.getUiDocumentService().getRoleMember(newDelegationMember.getRoleMemberId());
 	        AttributeSet roleMemberAttributes = (new AttributeValidationHelper()).convertAttributesToMap(roleMember.getAttributes());
@@ -552,11 +556,15 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
             impdForm.getNewDelegationMember().setRoleMemberMemberTypeCode(roleMember.getMemberTypeCode());
             impdForm.getNewDelegationMember().setRoleMemberName(getUiDocumentService().getMemberName(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
             impdForm.getNewDelegationMember().setRoleMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(impdForm.getNewDelegationMember().getRoleMemberMemberTypeCode(), impdForm.getNewDelegationMember().getRoleMemberMemberId()));
-	        RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
-	        if(!validateRole(impdForm.getNewDelegationMember().getRoleImpl().getRoleId(), roleImpl, PersonDocumentRoleRule.ERROR_PATH, "Person")){
-	        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+	        //RoleImpl roleImpl = (RoleImpl)getUiDocumentService().getMember(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
+            KimRoleInfo roleInfo = null;
+        	roleInfo = KIMServiceLocator.getRoleService().getRole(impdForm.getNewDelegationMember().getRoleImpl().getRoleId());
+	        if (roleInfo != null) {
+		        if(!validateRole(impdForm.getNewDelegationMember().getRoleImpl().getRoleId(), roleInfo, PersonDocumentRoleRule.ERROR_PATH, "Person")){
+		        	return mapping.findForward(RiceConstants.MAPPING_BASIC);
+		        }
+		        impdForm.getNewDelegationMember().setRoleImpl(convertRoleInfoToRoleImpl(roleInfo));
 	        }
-	        impdForm.getNewDelegationMember().setRoleImpl(roleImpl);
         }
         impdForm.setNewDelegationMemberRoleId(null);
         return null;
@@ -597,5 +605,15 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
 
         return new ActionForward(url, true);
     }
-
+    
+    private RoleImpl convertRoleInfoToRoleImpl(KimRoleInfo roleInfo) {
+	    RoleImpl roleImpl = new RoleImpl();
+	    roleImpl.setKimTypeId(roleInfo.getKimTypeId());
+	    roleImpl.setNamespaceCode(roleInfo.getNamespaceCode());
+	    roleImpl.setRoleDescription(roleInfo.getRoleDescription());
+	    roleImpl.setRoleId(roleInfo.getRoleId());
+	    roleImpl.setRoleName(roleInfo.getRoleName());
+	    roleImpl.setActive(roleInfo.isActive());
+	    return roleImpl;
+    }
 }

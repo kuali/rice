@@ -385,14 +385,42 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         			new String[] {"Member Type Code and Member ID"});
         	return false;
 		}
-    	BusinessObject member = getUiDocumentService().getMember(newMember.getMemberTypeCode(), newMember.getMemberId());
-        if(member==null){
-        	GlobalVariables.getMessageMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
-        			new String[] {newMember.getMemberId()});
-        	return false;
+    	if(KimConstants.KimUIConstants.MEMBER_TYPE_PRINCIPAL_CODE.equals(newMember.getMemberTypeCode())){
+        	KimPrincipalInfo principalInfo = null;
+        	principalInfo = getIdentityManagementService().getPrincipal(newMember.getMemberId());
+        	if (principalInfo == null) {
+        		GlobalVariables.getMessageMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+            			new String[] {newMember.getMemberId()});
+            	return false;
+        	}
+        	else {
+        		newMember.setMemberName(principalInfo.getPrincipalName());
+        	}
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_GROUP_CODE.equals(newMember.getMemberTypeCode())){
+        	GroupInfo groupInfo = null;
+        	groupInfo = getIdentityManagementService().getGroup(newMember.getMemberId());
+        	if (groupInfo == null) {
+        		GlobalVariables.getMessageMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+            			new String[] {newMember.getMemberId()});
+            	return false;
+        	}
+        	else {
+        		newMember.setMemberName(groupInfo.getGroupName());
+                newMember.setMemberNamespaceCode(groupInfo.getNamespaceCode());
+        	}
+        } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
+        	KimRoleInfo roleInfo = null;
+        	roleInfo = KIMServiceLocator.getRoleService().getRole(newMember.getMemberId());   
+        	if (roleInfo == null) {
+        		GlobalVariables.getMessageMap().putError("document.delegationMember.memberId", RiceKeyConstants.ERROR_MEMBERID_MEMBERTYPE_MISMATCH,
+            			new String[] {newMember.getMemberId()});
+            	return false;
+        	}
+        	else {
+        		newMember.setMemberName(roleInfo.getRoleName());
+                newMember.setMemberNamespaceCode(roleInfo.getNamespaceCode());
+        	}
 		}
-        newMember.setMemberName(getUiDocumentService().getMemberName(newMember.getMemberTypeCode(), member));
-        newMember.setMemberNamespaceCode(getUiDocumentService().getMemberNamespaceCode(newMember.getMemberTypeCode(), member));
         return true;
     }
 

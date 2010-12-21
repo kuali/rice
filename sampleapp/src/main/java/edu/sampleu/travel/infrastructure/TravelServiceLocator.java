@@ -17,8 +17,8 @@ package edu.sampleu.travel.infrastructure;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.util.spring.ClassPathXmlApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Initializes the Travel App Spring context.

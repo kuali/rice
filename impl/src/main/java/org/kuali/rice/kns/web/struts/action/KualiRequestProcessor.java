@@ -49,6 +49,7 @@ import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.WarningContainer;
 import org.kuali.rice.kns.util.WebUtils;
+import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.pojo.PojoForm;
@@ -388,10 +389,8 @@ public class KualiRequestProcessor extends RequestProcessor {
 			}
 
 			return (false);
-		} else {
-			return true;
 		}
-
+		return true;
 	}
 
 	/**
@@ -526,8 +525,14 @@ public class KualiRequestProcessor extends RequestProcessor {
 			if (form instanceof PojoForm) {
 				if (((PojoForm)form).getEditableProperties() == null 
 						|| ((PojoForm)form).getEditableProperties().isEmpty()) {
-				    final String guid = GlobalVariables.getUserSession().getEditablePropertiesHistoryHolder().addEditablePropertiesToHistory(((PojoForm)form).getEditableProperties());
+					EditablePropertiesHistoryHolder holder = (EditablePropertiesHistoryHolder) GlobalVariables.getUserSession().getObjectMap().get(KNSConstants.EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME);
+				    if (holder == null) {
+				    	holder = new EditablePropertiesHistoryHolder();
+				    }
+					
+					final String guid = holder.addEditablePropertiesToHistory(((PojoForm)form).getEditableProperties());
 				    ((PojoForm)form).setActionEditablePropertiesGuid(guid);
+				    GlobalVariables.getUserSession().addObject(KNSConstants.EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME, holder);
 				}
 			}
 			

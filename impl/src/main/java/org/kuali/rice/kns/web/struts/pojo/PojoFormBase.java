@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +33,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
-import org.apache.struts.upload.MultipartRequestHandler;
-import org.apache.struts.upload.MultipartRequestWrapper;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -43,7 +40,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.util.WebUtils;
-import org.kuali.rice.kns.web.format.EncryptionFormatter;
+import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 
@@ -107,7 +104,8 @@ public class PojoFormBase extends ActionForm implements PojoForm {
      * @param requestParameters
      */
 
-    public void postprocessRequestParameters(Map requestParameters) {
+    @Override
+	public void postprocessRequestParameters(Map requestParameters) {
         // do nothing
     }
     // end Kuali Foundation modification
@@ -119,7 +117,8 @@ public class PojoFormBase extends ActionForm implements PojoForm {
      * the properties to which they are bound. Values that can't be converted are cached in a map of unconverted values. Returns an
      * ActionErrors containing ActionMessage instances for each conversion error that occured, if any.
      */
-    public void populate(HttpServletRequest request) {
+    @Override
+	public void populate(HttpServletRequest request) {
         Timer t0 = new Timer("PojoFormBase.populate");
         unconvertedValues.clear();
         unknownKeys = new ArrayList();
@@ -263,47 +262,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
     // end Kuali Foundation modification
 
-	// begin Kuali Foundation modification
-    /**
-     * <p>
-     * Create a <code>Map</code> containing all of the parameters supplied for a multipart request, keyed by parameter name. In
-     * addition to text and file elements from the multipart body, query string parameters are included as well.
-     * </p>
-     *
-     * @param request The (wrapped) HTTP request whose parameters are to be added to the map.
-     * @param multipartHandler The multipart handler used to parse the request.
-     *
-     * @return the map containing all parameters for this multipart request.
-     */
-    private static Map getAllParametersForMultipartRequest(HttpServletRequest request, MultipartRequestHandler multipartHandler) {
-        Timer t0 = new Timer("PojoFormBase.getAllParametersForMultipartRequest");
-
-        Map parameters = new HashMap();
-        Hashtable elements = multipartHandler.getAllElements();
-        Enumeration e = elements.keys();
-        while (e.hasMoreElements()) {
-            String key = (String) e.nextElement();
-            parameters.put(key, elements.get(key));
-        }
-
-        if (request instanceof MultipartRequestWrapper) {
-            request = (HttpServletRequest) ((MultipartRequestWrapper) request).getRequest();
-            e = request.getParameterNames();
-            while (e.hasMoreElements()) {
-                String key = (String) e.nextElement();
-                parameters.put(key, request.getParameterValues(key));
-            }
-        }
-        else {
-            LOG.debug("Gathering multipart parameters for unwrapped request");
-        }
-
-        t0.log();
-        return parameters;
-    }
-    // end Kuali Foundation modification
-
-    /**
+	/**
      * Delegates to {@link PropertyUtils#getPropertyType(Object, String)}to look up the property type for the provided keypath.
      * Caches the resulting class so that subsequent lookups for the same keypath can be satisfied by looking in the cache.
      *
@@ -380,7 +339,8 @@ public class PojoFormBase extends ActionForm implements PojoForm {
      * Caution should be used when invoking this method. It should never be called prior to {@link #populate(HttpServletRequest)}
      * because the cached request reference could be stale.
      */
-    public Object formatValue(Object value, String keypath, Class type) {
+    @Override
+	public Object formatValue(Object value, String keypath, Class type) {
 
         Formatter formatter = getFormatter(keypath, type);
         if ( LOG.isDebugEnabled() ) {
@@ -404,7 +364,8 @@ public class PojoFormBase extends ActionForm implements PojoForm {
         formatterTypes.put(keypath, type);
     }
 
-    public Map getUnconvertedValues() {
+    @Override
+	public Map getUnconvertedValues() {
         return unconvertedValues;
     }
 
@@ -426,7 +387,8 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     }
 
 	// begin Kuali Foundation modification
-    public void processValidationFail() {
+    @Override
+	public void processValidationFail() {
         // do nothing - subclasses can implement this if they want to.
     }
     // end Kuali Foundation modification
@@ -493,7 +455,8 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	return maxUploadFileSizes;
     }
     
-    public void registerEditableProperty(String editablePropertyName){
+    @Override
+	public void registerEditableProperty(String editablePropertyName){
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug( "KualiSessionId: " + GlobalVariables.getUserSession().getKualiSessionId() + " -- Registering Property: " + editablePropertyName );
     	}
@@ -504,14 +467,16 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     	requiredNonEditableProperties.add(requiredNonEditableProperty);
     }
     
-    public void clearEditablePropertyInformation(){
+    @Override
+	public void clearEditablePropertyInformation(){
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug( "KualiSessionId: " + GlobalVariables.getUserSession().getKualiSessionId() + " -- Clearing Editable Properties" );
     	}
     	editableProperties = new HashSet<String>();
     }
     
-    public Set<String> getEditableProperties(){
+    @Override
+	public Set<String> getEditableProperties(){
     	return editableProperties;
     }
  
@@ -523,7 +488,8 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     /***
      * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#addRequiredNonEditableProperties()
      */
-    public void addRequiredNonEditableProperties(){
+    @Override
+	public void addRequiredNonEditableProperties(){
     }
     
     public boolean isPropertyNonEditableButRequired(String propertyName) {
@@ -538,13 +504,15 @@ public class PojoFormBase extends ActionForm implements PojoForm {
     	return request.getParameterValues(parameterName);
     }
     
-    public Set<String> getRequiredNonEditableProperties(){
+    @Override
+	public Set<String> getRequiredNonEditableProperties(){
     	return requiredNonEditableProperties;
     }
     
 	/**
 	 * @see PojoForm#registerStrutsActionMappingScope(String)
 	 */
+	@Override
 	public void registerStrutsActionMappingScope(String strutsActionMappingScope) {
 		this.strutsActionMappingScope = strutsActionMappingScope;
 	}
@@ -556,10 +524,12 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	/**
 	 * @see PojoForm#registerStrutsActionMappingScope(String)
 	 */
+	@Override
 	public void registerIsNewForm(boolean isNewForm) {
 		this.isNewForm = isNewForm;
 	}
 	
+	@Override
 	public boolean getIsNewForm() {
 		return this.isNewForm;
 	}
@@ -568,6 +538,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	/**
 	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#shouldPropertyBePopulatedInForm(java.lang.String, javax.servlet.http.HttpServletRequest)
 	 */
+	@Override
 	public boolean shouldPropertyBePopulatedInForm(String requestParameterName, HttpServletRequest request) {
 		
 		if (requestParameterName.equals(PojoFormBase.PREVIOUS_REQUEST_EDITABLE_PROPERTIES_GUID)) {
@@ -586,6 +557,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	 * 
 	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#getMethodToCallsToBypassSessionRetrievalForGETRequests()
 	 */
+	@Override
 	public Set<String> getMethodToCallsToBypassSessionRetrievalForGETRequests() {
 		Set<String> defaultMethodToCalls = new HashSet<String>();
 		defaultMethodToCalls.add(KNSConstants.START_METHOD);
@@ -599,6 +571,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	 * 
 	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#setEditablePropertiesGuid(java.lang.String)
 	 */
+	@Override
 	public void setPopulateEditablePropertiesGuid(String guid) {
 		this.populateEditablePropertiesGuid = guid;
 	}
@@ -614,6 +587,7 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	 * Sets the guid of the editable properties which were registered by the action
 	 * @see org.kuali.rice.kns.web.struts.pojo.PojoForm#setActionEditablePropertiesGuid(java.lang.String)
 	 */
+	@Override
 	public void setActionEditablePropertiesGuid(String guid) {
 		this.actionEditablePropertiesGuid = guid;
 	}
@@ -629,7 +603,13 @@ public class PojoFormBase extends ActionForm implements PojoForm {
 	 * @return the editable properties to be consulted during population
 	 */
 	public Set<String> getPopulateEditableProperties() {
-		return GlobalVariables.getUserSession().getEditablePropertiesHistoryHolder().getEditableProperties(getPopulateEditablePropertiesGuid());
+		EditablePropertiesHistoryHolder holder = (EditablePropertiesHistoryHolder) GlobalVariables.getUserSession().getObjectMap().get(KNSConstants.EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME);
+	    if (holder == null) {
+	    	holder = new EditablePropertiesHistoryHolder();
+	    }
+	    GlobalVariables.getUserSession().addObject(KNSConstants.EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME, holder);
+		
+		return holder.getEditableProperties(getPopulateEditablePropertiesGuid());
 	}
 	
 	/**

@@ -581,5 +581,6 @@ public final class KNSConstants {
   	public static final String SINGLE_QUOTE = "'";
   	
   	public static final String SENSITIVE_DATA_QUESTION_SESSION_TICKET = "SENSITIVE_DATA_QUESTION_SESSION_TICKET";
+  	public static final String EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME = "EditablePropertiesHistoryHolder";
 
 }

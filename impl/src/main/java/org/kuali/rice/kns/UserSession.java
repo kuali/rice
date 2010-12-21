@@ -23,12 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.SessionTicket;
-import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
@@ -44,7 +44,6 @@ public class UserSession implements Serializable {
     private int nextObjectKey;
     private Map<String,Object> objectMap;
     private String kualiSessionId;
-    private EditablePropertiesHistoryHolder editablePropertiesHistoryHolder;
 
     /**
 	 * @return the kualiSessionId
@@ -75,7 +74,6 @@ public class UserSession implements Serializable {
         }
         this.nextObjectKey = 0;
         this.objectMap = new HashMap<String,Object>();
-        this.editablePropertiesHistoryHolder = new EditablePropertiesHistoryHolder();
     }
 
     
@@ -86,9 +84,7 @@ public class UserSession implements Serializable {
         if (backdoorUser != null) {
             return backdoorUser.getPrincipalId();
         }
-        else {
-            return person.getPrincipalId();
-        }
+        return person.getPrincipalId();
     }
 
     /**
@@ -98,9 +94,7 @@ public class UserSession implements Serializable {
         if (backdoorUser != null) {
             return backdoorUser.getPrincipalName();
         }
-        else {
-            return person.getPrincipalName();
-        }
+        return person.getPrincipalName();
     }
 
     
@@ -113,9 +107,8 @@ public class UserSession implements Serializable {
     public String getLoggedInUserPrincipalName() {
     	if ( person != null ) {
     		return person.getPrincipalName();
-    	} else {
-    		return "";
     	}
+    	return "";
     }
 
     /**
@@ -125,9 +118,7 @@ public class UserSession implements Serializable {
         if (backdoorUser != null) {
             return backdoorUser;
         }
-        else {
-            return person;
-        }
+        return person;
     }
 
     /**
@@ -138,7 +129,7 @@ public class UserSession implements Serializable {
      */
     public void setBackdoorUser(String principalName) {
        // only allow backdoor in non-production environments
-       if ( !KNSServiceLocator.getKualiConfigurationService().isProductionEnvironment() ) {
+       if ( !isProductionEnvironment()) {
         this.backdoorUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
         if (backdoorUser == null) {
         	throw new RiceRuntimeException(principalName + " is not a valid principalName");
@@ -147,6 +138,11 @@ public class UserSession implements Serializable {
         this.workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
        }
     }
+    
+    private boolean isProductionEnvironment() {
+    	return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.PROD_ENVIRONMENT_CODE_KEY).equalsIgnoreCase(
+    			ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.ENVIRONMENT_KEY));
+        }
 
     /**
      * clear the backdoor user
@@ -254,9 +250,7 @@ public class UserSession implements Serializable {
         if (workflowDocMap.containsKey(docId)) {
             return workflowDocMap.get(docId);
         }
-        else {
-            return null;
-        }
+        return null;
     }
 
     /**
@@ -272,13 +266,6 @@ public class UserSession implements Serializable {
         catch (WorkflowException e) {
             throw new IllegalStateException("could not save the document in the session msg: " + e.getMessage());
         }
-    }
-    
-    /**
-     * @return this session's editable properties history holder
-     */
-    public EditablePropertiesHistoryHolder getEditablePropertiesHistoryHolder() {
-    	return editablePropertiesHistoryHolder;
     }
     
 	/**

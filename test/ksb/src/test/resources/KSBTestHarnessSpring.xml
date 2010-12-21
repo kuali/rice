@@ -61,6 +61,13 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="arguments">
+			<list><ref bean="config"/></list>
+		</property>
+	</bean>
 
 	<bean id="configProperties" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
 		<property name="targetObject" ref="config" />
@@ -98,6 +105,21 @@
         <property name="password" value="${datasource.password}" />
         <property name="accessToUnderlyingConnectionAllowed" value="${datasource.accessToUnderlyingConnectionAllowed}"/>
     </bean>
+    
+    <bean id="coreConfig" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:org/kuali/rice/core/config/core-config-defaults.xml</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.kuali.rice.core.config.spring.ConfigInitializer.initialize" />
+		<property name="arguments">
+			<list><ref bean="coreConfig"/></list>
+		</property>
+	</bean>
 
 	<bean id="coreConfigurer" class="org.kuali.rice.core.config.CoreConfigurer">
 		<property name="moduleName" value="CORE" />

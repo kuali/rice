@@ -591,7 +591,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         props.put(KNSConstants.LOOKUP_AUTO_SEARCH, "Yes");
         props.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.SEARCH_METHOD);
 
-        props.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(impdForm));
+        props.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(impdForm));
         props.put(KNSConstants.DOC_NUM, impdForm.getDocument().getDocumentNumber());
 
         // TODO: how should this forward be handled

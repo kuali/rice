@@ -132,7 +132,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         if (request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY) != null) {
             GlobalVariables.getUserSession().removeObject(request.getParameter(KNSConstants.SEARCH_LIST_REQUEST_KEY));
         }
-        request.setAttribute(KNSConstants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObject(resultTable, KNSConstants.SEARCH_LIST_KEY_PREFIX));
+        request.setAttribute(KNSConstants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(resultTable, KNSConstants.SEARCH_LIST_KEY_PREFIX));
 
         String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
 

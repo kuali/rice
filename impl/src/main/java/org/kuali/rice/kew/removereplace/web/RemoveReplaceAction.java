@@ -457,7 +457,7 @@ public class RemoveReplaceAction extends KewKualiAction {
         String conversionFields = request.getParameter("conversionFields");
         String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + mapping.getModuleConfig().getPrefix();
         StringBuffer lookupUrl = new StringBuffer(basePath);
-        lookupUrl.append("/Lookup.do?methodToCall=start&docFormKey=").append(GlobalVariables.getUserSession().addObject(actionForm)).append("&lookupableImplServiceName=");
+        lookupUrl.append("/Lookup.do?methodToCall=start&docFormKey=").append(GlobalVariables.getUserSession().addObjectWithGeneratedKey(actionForm)).append("&lookupableImplServiceName=");
         lookupUrl.append(lookupService);
         lookupUrl.append("&conversionFields=").append(conversionFields);
         lookupUrl.append("&returnLocation=").append(basePath).append(mapping.getPath()).append(".do");

@@ -210,7 +210,7 @@ public class KualiDocumentActionBase extends KualiAction {
             	String formKey = formBase.getFormKey(); 
             	if (StringUtils.isBlank(formBase.getFormKey()) || userSession.retrieveObject(formBase.getFormKey()) == null) { 
             		// generate doc form key here if it does not exist 
-            		formKey = GlobalVariables.getUserSession().addObject(form); 
+            		formKey = GlobalVariables.getUserSession().addObjectWithGeneratedKey(form); 
             		formBase.setFormKey(formKey); 
                 }
             }
@@ -715,7 +715,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         String backUrlBase = getReturnLocation(request, mapping);
-        String globalVariableFormKey = GlobalVariables.getUserSession().addObject(form);
+        String globalVariableFormKey = GlobalVariables.getUserSession().addObjectWithGeneratedKey(form);
         // setup back form variables
         request.setAttribute("backUrlBase", backUrlBase);
         List<KeyValue> backFormParameters = new ArrayList<KeyValue>();

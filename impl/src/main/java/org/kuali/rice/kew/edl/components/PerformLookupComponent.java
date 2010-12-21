@@ -56,7 +56,7 @@ public class PerformLookupComponent implements EDLModelComponent {
 		
 		Properties parameters = new Properties();
 		parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, getBusinessObjectClassName(dom, configElement, edlContext));
-		parameters.put(KEWPropertyConstants.DOC_FORM_KEY, edlContext.getUserSession().addObject(dom));
+		parameters.put(KEWPropertyConstants.DOC_FORM_KEY, edlContext.getUserSession().addObjectWithGeneratedKey(dom));
 		parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, constructReturnUrl(dom, configElement, edlContext));
 		parameters.putAll(getLookupParameters(dom, configElement, edlContext));
 		parameters.put(KNSConstants.CONVERSION_FIELDS_PARAMETER, getFieldConversions(dom, configElement, edlContext));

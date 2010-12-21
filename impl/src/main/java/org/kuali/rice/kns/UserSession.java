@@ -142,7 +142,7 @@ public class UserSession implements Serializable {
     private boolean isProductionEnvironment() {
     	return ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.PROD_ENVIRONMENT_CODE_KEY).equalsIgnoreCase(
     			ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.ENVIRONMENT_KEY));
-        }
+    }
 
     /**
      * clear the backdoor user
@@ -161,8 +161,21 @@ public class UserSession implements Serializable {
      * 
      * @param object
      */
-    public String addObject(Object object, String keyPrefix) {
+    public String addObjectWithGeneratedKey(Object object, String keyPrefix) {
         String objectKey = keyPrefix + nextObjectKey++;
+        objectMap.put(objectKey, object);
+        return objectKey;
+    }
+    
+    /**
+     * allows adding an arbitrary object to the session and returns a string key that can be used to later access this object from
+     * the session using the retrieveObject method in this class. The key is generated from an integer and incremented for every 
+     * object added.  So the first object added with have a key of "1".  This key will be returned from the method.
+     * 
+     * @param object
+     */
+    public String addObjectWithGeneratedKey(Object object) {
+        String objectKey = nextObjectKey++ + "";
         objectMap.put(objectKey, object);
         return objectKey;
     }
@@ -178,20 +191,6 @@ public class UserSession implements Serializable {
 
         objectMap.put(key, object);
 
-    }
-
-
-    /**
-     * allows adding an arbitrary object to the session and returns a string key that can be used to later access this object from
-     * the session using the retrieveObject method in this class. The key is generated from an integer and incremented for every 
-     * object added.  So the first object added with have a key of "1".  This key will be returned from the method.
-     * 
-     * @param object
-     */
-    public String addObject(Object object) {
-        String objectKey = nextObjectKey++ + "";
-        objectMap.put(objectKey, object);
-        return objectKey;
     }
 
     /**
@@ -276,7 +275,7 @@ public class UserSession implements Serializable {
 	 * @return the objectMap key for the ticket as a String
 	 */
 	public String putSessionTicket(SessionTicket ticket) {
-		return addObject(ticket);
+		return addObjectWithGeneratedKey(ticket);
 	}
 
 	/**

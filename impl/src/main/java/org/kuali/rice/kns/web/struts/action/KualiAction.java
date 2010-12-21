@@ -581,7 +581,7 @@ public abstract class KualiAction extends DispatchAction {
             }
         }
 
-        parameters.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
+        parameters.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(form));
         parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, boClassName);
 
         parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation(request, mapping));
@@ -685,7 +685,7 @@ public abstract class KualiAction extends DispatchAction {
             }
         }
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "start");
-        parameters.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
+        parameters.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(form));
         String inquiryUrl = null;
         try {
         	Class.forName(boClassName);
@@ -783,7 +783,7 @@ public abstract class KualiAction extends DispatchAction {
         Properties parameters = new Properties();
 
         parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "start");
-        parameters.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
+        parameters.put(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(form));
         parameters.put(KNSConstants.CALLING_METHOD, caller);
         parameters.put(KNSConstants.QUESTION_INST_ATTRIBUTE_NAME, questionId);
         parameters.put(KNSConstants.QUESTION_IMPL_ATTRIBUTE_NAME, questionType);
@@ -838,7 +838,7 @@ public abstract class KualiAction extends DispatchAction {
         String conversionFields = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
 
         String deploymentBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY);
-        String workgroupLookupUrl = deploymentBaseUrl + "/Lookup.do?lookupableImplServiceName=WorkGroupLookupableImplService&methodToCall=start&docFormKey=" + GlobalVariables.getUserSession().addObject(form);
+        String workgroupLookupUrl = deploymentBaseUrl + "/Lookup.do?lookupableImplServiceName=WorkGroupLookupableImplService&methodToCall=start&docFormKey=" + GlobalVariables.getUserSession().addObjectWithGeneratedKey(form);
 
         if (conversionFields != null) {
             workgroupLookupUrl += "&conversionFields=" + conversionFields;
@@ -1007,7 +1007,7 @@ public abstract class KualiAction extends DispatchAction {
             request.setAttribute(KNSConstants.DOCUMENT_WEB_SCOPE, docWebScope);
         }
 
-        request.setAttribute(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObject(form));
+        request.setAttribute(KNSConstants.DOC_FORM_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(form));
         
         ActionForward forward=mapping.findForward(FORWARD_TEXT_AREA_UPDATE);
 

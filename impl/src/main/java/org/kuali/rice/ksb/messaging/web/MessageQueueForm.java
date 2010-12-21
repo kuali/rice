@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.SqlTimestampConverter;
 import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.util.CodeTranslator;
@@ -62,14 +63,14 @@ public class MessageQueueForm extends ActionForm {
     private String value2Filter;
     private String filterApplied;
 
-    private Integer maxMessageFetcherMessages = 50;
+    private Integer maxMessageFetcherMessages = Integer.valueOf(50);
 
     private String myIpAddress;
     private String myServiceNamespace;
     private String messagePersistence;
     private String messageDelivery;
     private String messageOff;
-    private List<ValueLabelPair> ipAddresses = new ArrayList<ValueLabelPair>();
+    private List<KeyValue> ipAddresses = new ArrayList<KeyValue>();
 
     static {
         ConvertUtils.register(new SqlTimestampConverter(), Timestamp.class);
@@ -274,11 +275,11 @@ public class MessageQueueForm extends ActionForm {
         this.value2Filter = value2Filter;
     }
 
-    public List<ValueLabelPair> getIpAddresses() {
+    public List<KeyValue> getIpAddresses() {
         return this.ipAddresses;
     }
 
-    public void setIpAddresses(List<ValueLabelPair> ipAddresses) {
+    public void setIpAddresses(List<KeyValue> ipAddresses) {
         this.ipAddresses = ipAddresses;
     }
 

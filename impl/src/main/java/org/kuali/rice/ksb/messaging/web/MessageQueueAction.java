@@ -39,6 +39,7 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
@@ -337,7 +338,7 @@ public class MessageQueueAction extends KSBAction {
 		for (ServiceInfo serviceInfo : services) {
 		    if (serviceInfo.getServiceName().equals(serviceName)) {
 			routeQueueForm.getIpAddresses().add(
-				new ValueLabelPair(serviceInfo.getServerIp(), serviceInfo.getServerIp()));
+				new ConcreteKeyValue(serviceInfo.getServerIp(), serviceInfo.getServerIp()));
 		    }
 		}
 	    } else {

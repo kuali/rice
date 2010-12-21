@@ -337,7 +337,7 @@
 		                      <a href="javascript: submitQueueId('saveAndForward', '<c:out value="${MessageQueueForm.messageQueueFromForm.routeQueueId}" />')">Save and Forward</a>&nbsp;&nbsp;
 		                        <c:set var="ipAddresses" value="${MessageQueueForm.ipAddresses}" scope="request" />
 		                        <html-el:select property="ipAddress">
-								  <html-el:options collection="ipAddresses" property="value" labelProperty="label"/>
+								  <html-el:options collection="ipAddresses" property="value" labelProperty="value"/>
 								</html-el:select>
 								<br>
 		                      <a href="javascript: submitQueueId('delete', '<c:out value="${MessageQueueForm.messageQueueFromForm.routeQueueId}" />')">Delete</a><br>

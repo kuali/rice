@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="src" output="api/target/classes" path="api/src/main/java"/>
+	<classpathentry kind="src" output="krad/krad-app-framework/target/classes" path="krad/krad-app-framework/src/main/java"/>
+	<classpathentry kind="src" output="krad/krad-web-framework/target/classes" path="krad/krad-web-framework/src/main/java"/>
 	<classpathentry kind="src" output="edl/impl/target/test-classes" path="edl/impl/src/test/resources"/>
 	<classpathentry kind="src" output="edl/impl/target/classes" path="edl/impl/src/main/resources"/>
 	<classpathentry kind="src" output="edl/remote/target/test-classes" path="edl/remote/src/test/resources"/>

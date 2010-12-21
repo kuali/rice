@@ -28,6 +28,7 @@ import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.reflect.PropertyDefinition;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ContextClassLoaderBinder;
 
 /**
  * Resolves object definitions into java Objects that are wrapped in a proxy whose classloader is the current

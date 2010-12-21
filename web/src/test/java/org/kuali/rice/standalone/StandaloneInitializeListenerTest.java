@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
+import org.kuali.rice.core.util.ContextClassLoaderBinder;
 import org.kuali.rice.core.web.listener.StandaloneInitializeListener;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.BaseRiceTestCase;

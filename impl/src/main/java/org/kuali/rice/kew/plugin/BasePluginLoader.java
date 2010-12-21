@@ -27,8 +27,8 @@ import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.util.ContextClassLoaderBinder;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.Utilities;
 

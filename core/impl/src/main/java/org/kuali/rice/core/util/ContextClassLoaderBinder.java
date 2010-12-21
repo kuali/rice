@@ -29,9 +29,6 @@ import java.util.List;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class ContextClassLoaderBinder {
-    
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-			.getLogger(ContextClassLoaderBinder.class);
 	
 	/**
      * Stack of previous context classloaders that should be

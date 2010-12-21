@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.resourceloader.BaseWrappingResourceLoader;
-import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
+import org.kuali.rice.core.util.ContextClassLoaderBinder;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 
 

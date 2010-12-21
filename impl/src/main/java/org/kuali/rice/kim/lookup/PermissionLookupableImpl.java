@@ -18,6 +18,7 @@ package org.kuali.rice.kim.lookup;
 import java.util.Properties;
 
 import org.kuali.rice.kim.bo.impl.GenericPermission;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -40,7 +41,7 @@ public class PermissionLookupableImpl extends KualiLookupableImpl {
 	public String getCreateNewUrl() {
         String url = "";
 
-        if (getLookupableHelperService().allowsMaintenanceNewOrCopyAction()) {
+        if (getLookupableHelperService().allowsNewOrCopyAction(KimConstants.KimUIConstants.KIM_PERMISSION_DOCUMENT_TYPE_NAME)) {
             Properties parameters = new Properties();
             parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.MAINTENANCE_NEW_METHOD_TO_CALL);
             parameters.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, GenericPermission.class.getName());

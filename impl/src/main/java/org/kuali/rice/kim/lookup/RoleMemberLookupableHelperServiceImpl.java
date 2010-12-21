@@ -30,7 +30,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
-import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -41,7 +40,7 @@ import org.kuali.rice.kns.web.ui.Row;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public abstract class RoleMemberLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
+public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupableHelperServiceImpl {
 
 	protected static final String DETAIL_CRITERIA = "detailCriteria";
 	protected static final String WILDCARD = "*";

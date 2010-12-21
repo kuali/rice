@@ -59,6 +59,18 @@
 	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
+	
+	<bean id="KSBConstants" class="org.kuali.rice.core.util.ConstantsMap">
+		<property name="constantClass" value="org.kuali.rice.ksb.util.KSBConstants"/>
+	</bean>
+	
+	<bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
+		<property name="attributes">
+			<map>
+				<entry key="KSBConstants" value-ref="KSBConstants"/>
+			</map>
+		</property>
+	</bean>
 
 	<bean id="ksbRegistryDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
 		<property name="preferredDataSourceParams">

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.xml.namespace.QName;
 
 import org.kuali.rice.core.config.Config;
@@ -38,7 +39,7 @@ public class RiceResourceLoaderFactory {
 	private static final String RICE_ROOT_RESOURCE_LOADER_NAME = "RICE_ROOT_RESOURCE_LOADER";
 	private static final String RICE_SPRING_RESOURCE_LOADER_NAME = "RICE_SPRING_RESOURCE_LOADER_NAME";
 	
-	public static ResourceLoader createRootRiceResourceLoader(List<String> springFileLocations, String prefix) {
+	public static ResourceLoader createRootRiceResourceLoader(ServletContext context, List<String> springFileLocations, String prefix) {
 		//FIXME: RICE MODULARITY
 		//hack to not break the hack in ResourceLoaderContainer.moveKSBLoadersDownHack();
 		if ("KSB".equals(prefix.toUpperCase())) {
@@ -61,7 +62,8 @@ public class RiceResourceLoaderFactory {
 		}
 		
 		final ResourceLoader rootResourceLoader = new BaseResourceLoader(root, new SimpleServiceLocator());
-		final ResourceLoader springResourceLoader = new SpringResourceLoader(spring, springFileLocations);
+		
+		final ResourceLoader springResourceLoader = new SpringResourceLoader(spring, springFileLocations, context);
 		rootResourceLoader.addResourceLoaderFirst(springResourceLoader);
 		
 		return rootResourceLoader;

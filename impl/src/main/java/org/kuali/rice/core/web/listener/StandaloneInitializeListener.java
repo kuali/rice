@@ -33,12 +33,10 @@ import org.apache.log4j.PropertyConfigurator;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.MessageFetcher;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.support.XmlWebApplicationContext;
 
 
 /**
@@ -51,19 +49,20 @@ public class StandaloneInitializeListener implements ServletContextListener {
 
     private static final Logger LOG = Logger.getLogger(StandaloneInitializeListener.class);
 
-    private static final String DEFAULT_SPRING_BEANS = "org/kuali/rice/standalone/config/StandaloneSpringBeans.xml";
+    private static final String DEFAULT_SPRING_BEANS = "classpath:org/kuali/rice/standalone/config/StandaloneSpringBeans.xml";
     private static final String DEFAULT_SPRING_BEANS_REPLACEMENT_VALUE = "${bootstrap.spring.file}";
     public static final String RICE_BASE = "rice.base";
     public static final String CATALINA_BASE = "catalina.base";
     public static final String RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER = "rice.standalone.execute.messageFetcher";
     private static final String DEFAULT_LOG4J_CONFIG = "org/kuali/rice/core/logging/default-log4j.properties";
 
-    private ConfigurableApplicationContext context = null;
+    private XmlWebApplicationContext context = null;
 
     /**
      * ServletContextListener interface implementation that schedules the start of the lifecycle
      */
-    public void contextInitialized(ServletContextEvent sce) {
+    @Override
+	public void contextInitialized(ServletContextEvent sce) {
         long startInit = System.currentTimeMillis();
         try {
             Properties p = new Properties();
@@ -76,8 +75,6 @@ public class StandaloneInitializeListener implements ServletContextListener {
         }
 
         LOG.info("Initializing Kuali Rice Standalone...");
-
-        sce.getServletContext().setAttribute("Constants", new JSTLConstants(KEWConstants.class));
 
         List<String> configLocations = new ArrayList<String>();
         String additionalConfigLocations = System.getProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM);
@@ -125,7 +122,10 @@ public class StandaloneInitializeListener implements ServletContextListener {
             //config.parseConfig();
             ConfigContext.init(config);
             
-            context = new ClassPathXmlApplicationContext(bootstrapSpringBeans);
+            context = new XmlWebApplicationContext();
+            context.setConfigLocation(bootstrapSpringBeans);
+            context.setServletContext(sce.getServletContext());
+            context.refresh();
             context.start();
 
             if (shouldExecuteMessageFetcher()) {
@@ -147,9 +147,9 @@ public class StandaloneInitializeListener implements ServletContextListener {
      */
     protected Properties getContextParameters(ServletContext context) {
         Properties properties = new Properties();
-        Enumeration paramNames = context.getInitParameterNames();
+        Enumeration<String> paramNames = context.getInitParameterNames();
         while (paramNames.hasMoreElements()) {
-            String paramName = (String) paramNames.nextElement();
+            String paramName = paramNames.nextElement();
             properties.put(paramName, context.getInitParameter(paramName));
         }
         return properties;
@@ -191,7 +191,8 @@ public class StandaloneInitializeListener implements ServletContextListener {
         }
     }
 
-    public void contextDestroyed(ServletContextEvent sce) {
+    @Override
+	public void contextDestroyed(ServletContextEvent sce) {
         LOG.info("Shutting down Kuali Rice Standalone.");
         try {
             if (context != null) {
@@ -211,7 +212,7 @@ public class StandaloneInitializeListener implements ServletContextListener {
         return StringUtils.isBlank(executeMessageFetcher) ? true : new Boolean(executeMessageFetcher);
     }
 
-    public ConfigurableApplicationContext getContext() {
+    public XmlWebApplicationContext getContext() {
         return context;
     }
 

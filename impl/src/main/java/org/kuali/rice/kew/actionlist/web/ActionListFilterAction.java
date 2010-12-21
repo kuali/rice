@@ -27,9 +27,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.util.JSTLConstants;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.preferences.Preferences;
@@ -54,7 +53,7 @@ public class ActionListFilterAction extends KualiAction {
 	public ActionForward execute(ActionMapping mapping, ActionForm form,
 			HttpServletRequest request, HttpServletResponse response)
 			throws Exception {
-    	request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
+    	request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KEWConstants"));
     	request.setAttribute("preferences", this.getUserSession().retrieveObject(KEWConstants.PREFERENCES));
 		initForm(request, form);
 		return super.execute(mapping, form, request, response);

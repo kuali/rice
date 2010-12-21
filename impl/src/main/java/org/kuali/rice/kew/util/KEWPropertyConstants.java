@@ -18,15 +18,17 @@ package org.kuali.rice.kew.util;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.kuali.rice.core.util.JSTLConstants;
-
 /**
  * This is a constants file used to describe KEW properties
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KEWPropertyConstants extends JSTLConstants {
+public final class KEWPropertyConstants {
+	
+	private KEWPropertyConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     private static final long serialVersionUID = 3866677900853284209L;
 

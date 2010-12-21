@@ -29,7 +29,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
@@ -46,10 +45,10 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.AppSpecificRouteRecipient;
 import org.kuali.rice.kew.web.KewKualiAction;
-import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -217,7 +216,7 @@ public class SuperUserAction extends KewKualiAction {
     }
     
     public ActionForward initForm(HttpServletRequest request, ActionForm form) throws Exception {
-        request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
+        request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KEWConstants"));
         SuperUserForm superUserForm = (SuperUserForm) form;
         DocumentRouteHeaderValue routeHeader = KEWServiceLocator.getRouteHeaderService().getRouteHeader(superUserForm.getRouteHeaderId());
         superUserForm.setRouteHeader(routeHeader);

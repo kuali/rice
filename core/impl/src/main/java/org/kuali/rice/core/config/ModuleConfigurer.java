@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
+import javax.servlet.ServletContext;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -41,8 +42,9 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.web.context.ServletContextAware;
 
-public class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener<ApplicationEvent> {
+public class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener<ApplicationEvent>, ServletContextAware {
     protected final Logger LOG = Logger.getLogger(getClass());
 
     public enum RunMode {
@@ -54,6 +56,7 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	
 	private Properties properties = new Properties();
 	private String moduleName;
+	private ServletContext servletContext;
 	
 	@Override
 	public final void start() throws Exception {
@@ -172,7 +175,7 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
     
     /* helper methods for constructors */
     protected String getDefaultConfigPackagePath() {
-    	return "org/kuali/rice/" + getModuleName().toLowerCase() + "/config/";
+    	return "classpath:org/kuali/rice/" + getModuleName().toLowerCase() + "/config/";
     }
     protected String getDefaultSpringBeansPath(String configPackagePath) {
         return configPackagePath + getModuleName().toUpperCase() + "SpringBeans.xml"; 
@@ -262,7 +265,7 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 		}
 		
 		if (!files.isEmpty()) {
-			ResourceLoader rl = RiceResourceLoaderFactory.createRootRiceResourceLoader(files, getModuleName());
+			ResourceLoader rl = RiceResourceLoaderFactory.createRootRiceResourceLoader(servletContext, files, getModuleName());
 			rl.start();
 			GlobalResourceLoader.addResourceLoader(rl);
 		}
@@ -315,5 +318,10 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 
 	protected void doAdditionalContextStoppedLogic() {
 		//override in subclasses
+	}
+	
+	@Override
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
 	}
 }

@@ -68,7 +68,7 @@ public class KSBResourceLoaderFactory {
 	}
 
 	public static ResourceLoader createThinClientKSBResourceLoader() {
-		ResourceLoader resourceLoader = new SpringResourceLoader(new QName("", "KSB_THIN_CLIENT_RESOURCE_LOADER"), "classpath:org/kuali/rice/ksb/config/KSBThinClientSpringBeans.xml");
+		ResourceLoader resourceLoader = new SpringResourceLoader(new QName("", "KSB_THIN_CLIENT_RESOURCE_LOADER"), "classpath:org/kuali/rice/ksb/config/KSBThinClientSpringBeans.xml", null);
 		GlobalResourceLoader.addResourceLoader(resourceLoader);
 		return resourceLoader;
 	}

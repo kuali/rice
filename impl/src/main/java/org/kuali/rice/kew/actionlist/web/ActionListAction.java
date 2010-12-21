@@ -41,7 +41,6 @@ import org.displaytag.properties.SortOrderEnum;
 import org.displaytag.util.LookupUtil;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionitem.ActionItemActionListExtension;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
@@ -71,7 +70,7 @@ import org.kuali.rice.kns.web.ui.ExtraButton;
 /**
  * Action doing Action list stuff
  *
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @author Kuali Rice Team (rice.collab@kuali.org)a
  *
  */
 public class ActionListAction extends KualiAction {
@@ -98,7 +97,7 @@ public class ActionListAction extends KualiAction {
 	@Override
 	public ActionForward execute(ActionMapping mapping, ActionForm actionForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
     	ActionListForm frm = (ActionListForm)actionForm;
-    	request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
+    	request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KEWConstants"));
     	request.setAttribute("preferences", getUserSession().retrieveObject(KEWConstants.PREFERENCES));
     	frm.setHeaderButtons(getHeaderButtons());
     	return super.execute(mapping, actionForm, request, response);

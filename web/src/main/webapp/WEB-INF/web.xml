@@ -114,9 +114,9 @@
     <listener>
       <listener-class>org.kuali.rice.core.web.listener.StandaloneInitializeListener</listener-class>
     </listener>
-
-	<listener>
-		<listener-class>org.kuali.rice.kns.web.listener.JstlConstantsInitListener</listener-class>
+    
+    <listener>
+	  <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
 	</listener>
 
 	<listener>

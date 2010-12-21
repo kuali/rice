@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.kim.util;
 
-import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
@@ -24,7 +23,11 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KIMPropertyConstants extends JSTLConstants {
+public final class KIMPropertyConstants {
+	
+	private KIMPropertyConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 	
 	private static final long serialVersionUID = -879796178745937778L;
 

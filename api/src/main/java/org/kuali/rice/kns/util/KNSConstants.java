@@ -18,12 +18,15 @@ package org.kuali.rice.kns.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.core.util.JSTLConstants;
-
 /**
  * This class is used to define global constants.
  */
-public class KNSConstants extends JSTLConstants {
+public final class KNSConstants {
+	
+	private KNSConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
     private static final long serialVersionUID = 2882277719647128949L;
 
 //    public static final String AD_HOC_ROUTE_ERRORS = null;

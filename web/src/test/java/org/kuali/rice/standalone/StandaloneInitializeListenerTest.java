@@ -17,6 +17,7 @@ package org.kuali.rice.standalone;
 
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Map;
 
 import javax.servlet.ServletContextEvent;
 
@@ -25,7 +26,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderBinder;
-import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.core.web.listener.StandaloneInitializeListener;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.BaseRiceTestCase;
@@ -72,7 +72,7 @@ public class StandaloneInitializeListenerTest extends BaseRiceTestCase {
             String testInitParam = ConfigContext.getCurrentContextConfig().getProperty(TEST_INIT_PARAM);
             assertEquals(TEST_INIT_PARAM_VAL, testInitParam);
         
-            assertTrue(mockServletContext.getAttribute("Constants") instanceof JSTLConstants);
+            assertTrue(mockServletContext.getAttribute("Constants") instanceof Map);
         
             // now destroy the context
             listener.contextDestroyed(sce);

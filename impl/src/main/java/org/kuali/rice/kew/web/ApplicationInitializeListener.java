@@ -30,8 +30,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.JAXBConfigImpl;
-import org.kuali.rice.core.config.SimpleConfig;
-import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.ksb.messaging.MessageFetcher;
@@ -59,6 +57,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
 	 * ServletContextListener interface implementation that schedules the start
 	 * of the lifecycle
      */
+	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 //	    try {
 //	    Properties p = new Properties();
@@ -69,8 +68,6 @@ public class ApplicationInitializeListener implements ServletContextListener {
 //	    }
 
 		LOG.info("Initializing Workflow...");
-
-        sce.getServletContext().setAttribute("Constants", new JSTLConstants(KEWConstants.class));
 
         List<String> configLocations = new ArrayList<String>();
 		// use the system prop as an override of the default packaged
@@ -186,6 +183,7 @@ public class ApplicationInitializeListener implements ServletContextListener {
 //    	lifeCycles.add(new EmailReminderLifecycle());
 //	}
 
+	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		LOG.info("Shutting down workflow.");
 

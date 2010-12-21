@@ -15,12 +15,16 @@
  */
 package org.kuali.rice.kns.authorization;
 
-import org.kuali.rice.core.util.JSTLConstants;
 
 /**
  * Defines constants used in authorization-related code.
  */
-public class AuthorizationConstants extends JSTLConstants {
+public final class AuthorizationConstants {
+	
+	private AuthorizationConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
     private static final long serialVersionUID = 3415761227639600675L;
 
     public static class EditMode {

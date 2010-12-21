@@ -58,6 +58,18 @@
 
 	<import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
 
+	<bean id="KEWConstants" class="org.kuali.rice.core.util.ConstantsMap">
+		<property name="constantClass" value="org.kuali.rice.kew.util.KEWConstants"/>
+	</bean>
+	
+	<bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
+		<property name="attributes">
+			<map>
+				<entry key="KEWConstants" value-ref="KEWConstants"/>
+			</map>
+		</property>
+	</bean>
+
 	<bean id="enWorkflowDataSource" class="org.kuali.rice.core.database.PrimaryDataSourceFactoryBean">
         <property name="preferredDataSourceParams">
 			<list>

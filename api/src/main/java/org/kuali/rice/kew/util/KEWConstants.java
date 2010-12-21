@@ -18,18 +18,19 @@ package org.kuali.rice.kew.util;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.core.util.RiceConstants;
 
-public class KEWConstants extends JSTLConstants {
+public final class KEWConstants {
 
+	private KEWConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
     private static final long serialVersionUID = -3897059085433394648L;
 
     public static final String KEW_MODULE_NAMESPACE = "KEW";

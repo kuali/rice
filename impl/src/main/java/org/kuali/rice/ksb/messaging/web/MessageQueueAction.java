@@ -39,7 +39,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.util.JSTLConstants;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
@@ -64,7 +63,8 @@ public class MessageQueueAction extends KSBAction {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MessageQueueAction.class);
 
-    public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request,
+    @Override
+	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 	    HttpServletResponse response) throws IOException, ServletException {
 	return mapping.findForward("report");
     }
@@ -74,7 +74,7 @@ public class MessageQueueAction extends KSBAction {
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
 	save(routeQueueForm);
 
-	Long routeQueueId = routeQueueForm.getMessageQueueFromForm().getRouteQueueId();
+	routeQueueForm.getMessageQueueFromForm().getRouteQueueId();
 	ActionMessages messages = new ActionMessages();
 	messages.add(ActionMessages.GLOBAL_MESSAGE, new ActionMessage("routequeue.RouteQueueService.saved"));
 	saveMessages(request, messages);
@@ -316,9 +316,10 @@ public class MessageQueueAction extends KSBAction {
          *
          * Called by the super's Execute method on every request.
          */
-    public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-	request.setAttribute("rice_constant", new JSTLConstants(RiceConstants.class));
-	request.setAttribute("ksb_constant", new KSBConstants());
+    @Override
+	public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
+	request.setAttribute("rice_constant", getServlet().getServletContext().getAttribute("RiceConstants"));
+	request.setAttribute("ksb_constant", getServlet().getServletContext().getAttribute("KSBConstants"));
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
 	routeQueueForm.setMyIpAddress(RiceUtilities.getIpNumber());
 	routeQueueForm.setMyServiceNamespace(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.SERVICE_NAMESPACE));
@@ -352,7 +353,8 @@ public class MessageQueueAction extends KSBAction {
 		Collections.sort(queueEntries, new Comparator() {
 		    private Comparator comp = new ComparableComparator();
 
-		    public int compare(Object object1, Object object2) {
+		    @Override
+			public int compare(Object object1, Object object2) {
 			if (object1 == null && object2 == null) {
 			    return 0;
 			} else if (object1 == null) {

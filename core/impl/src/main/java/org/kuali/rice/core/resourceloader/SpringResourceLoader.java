@@ -19,6 +19,7 @@ package org.kuali.rice.core.resourceloader;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +27,7 @@ import org.kuali.rice.core.config.ConfigurationException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.context.support.XmlWebApplicationContext;
 
 /**
  * A simple {@link ResourceLoader} which wraps a Spring {@link ConfigurableApplicationContext}.
@@ -40,16 +42,18 @@ public class SpringResourceLoader extends BaseResourceLoader {
 	
 	private ApplicationContext parentContext;
 	private ConfigurableApplicationContext context;
+	private ServletContext servletContextcontext;
 
 	private final List<String> fileLocs;
 
-	public SpringResourceLoader(QName name, String fileLoc) {
-	    this(name, Collections.singletonList(fileLoc));
+	public SpringResourceLoader(QName name, String fileLoc, ServletContext context) {
+	    this(name, Collections.singletonList(fileLoc), context);
 	}
 
-	public SpringResourceLoader(QName name, List<String> fileLocs) {
+	public SpringResourceLoader(QName name, List<String> fileLocs, ServletContext servletContextcontext) {
 		super(name);
 		this.fileLocs = fileLocs;
+		this.servletContextcontext = servletContextcontext;
 	}
 
 	@Override
@@ -74,7 +78,18 @@ public class SpringResourceLoader extends BaseResourceLoader {
 			if (parentSpringResourceLoader != null) {
 				parentContext = parentSpringResourceLoader.getContext();
 			}
-			this.context = new ClassPathXmlApplicationContext(this.fileLocs.toArray(new String[] {}), parentContext);
+			
+			if (servletContextcontext != null) {
+				XmlWebApplicationContext lContext = new XmlWebApplicationContext();
+				lContext.setServletContext(servletContextcontext);
+				lContext.setParent(parentContext);
+				lContext.setConfigLocations(this.fileLocs.toArray(new String[] {}));
+				lContext.refresh();
+				context = lContext;
+			} else {
+				this.context = new ClassPathXmlApplicationContext(this.fileLocs.toArray(new String[] {}), parentContext);
+			}
+           
 			super.start();
 		}
 	}

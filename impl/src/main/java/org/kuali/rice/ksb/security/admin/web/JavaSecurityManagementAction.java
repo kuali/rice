@@ -30,8 +30,6 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.core.util.JSTLConstants;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.messaging.web.KSBAction;
 import org.kuali.rice.ksb.security.admin.ExportServlet;
 import org.kuali.rice.ksb.security.admin.KeyStoreEntryDataContainer;
@@ -53,7 +51,7 @@ public class JavaSecurityManagementAction extends KSBAction {
      */
     @Override
     public ActionMessages establishRequiredState(HttpServletRequest request, ActionForm form) throws Exception {
-        request.setAttribute("rice_constant", new JSTLConstants(RiceConstants.class));
+        request.setAttribute("rice_constant", getServlet().getServletContext().getAttribute("RiceConstants"));
         request.setAttribute("entryListPageSize", 30);
         Collection<KeyStoreEntryDataContainer> keyStoreEntryList = KSBServiceLocator.getJavaSecurityManagementService().getListOfModuleKeyStoreEntries();
         LOG.info("Found " + keyStoreEntryList.size() + " entries in module keystore");

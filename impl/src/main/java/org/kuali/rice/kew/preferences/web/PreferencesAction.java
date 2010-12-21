@@ -28,9 +28,8 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.util.JSTLConstants;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.preferences.Preferences;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -53,7 +52,7 @@ public class PreferencesAction extends KewKualiAction {
     @Override
 	public ActionForward execute(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         initForm(request, form);
-        request.setAttribute("Constants", new JSTLConstants(KEWConstants.class));
+        request.setAttribute("Constants", getServlet().getServletContext().getAttribute("KEWConstants"));
         return super.execute(mapping, form, request, response);
     }
 

@@ -1196,4 +1196,38 @@
       </list>
     </property>
   </bean>
+  
+  	<bean id="KNSConstants" class="org.kuali.rice.core.util.ConstantsMap">
+		<property name="constantClass" value="org.kuali.rice.kns.util.KNSConstants"/>
+	</bean>
+	
+	<bean id="RiceConstants" class="org.kuali.rice.core.util.ConstantsMap">
+		<property name="constantClass" value="org.kuali.rice.core.util.RiceConstants"/>
+	</bean>
+	
+	<bean id="KNSPropertyConstants" class="org.kuali.rice.core.util.ConstantsMap">
+		<property name="constantClass" value="org.kuali.rice.kns.util.KNSPropertyConstants"/>
+	</bean>
+	
+	<bean id="AuthorizationConstants" class="org.kuali.rice.core.util.ConstantsMap">
+		<property name="constantClass" value="org.kuali.rice.kns.authorization.AuthorizationConstants"/>
+	</bean>
+	
+	<bean id="ConfigProperties" class="org.kuali.rice.kns.util.JstlPropertyHolder">
+		<property name="properties" value="#{kualiConfigurationService.allProperties}"/>
+	</bean>
+	
+	<bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
+		<property name="attributes">
+			<map>
+				<entry key="KNSConstants" value-ref="KNSConstants"/>
+				<entry key="Constants" value-ref="KNSConstants"/>
+				<entry key="RiceConstants" value-ref="RiceConstants"/>
+				<entry key="PropertyConstants" value-ref="KNSPropertyConstants"/>
+				<entry key="AuthorizationConstants" value-ref="AuthorizationConstants"/>
+				<entry key="DataDictionary" value="#{dataDictionaryService.dataDictionaryMap}" />
+				<entry key="ConfigProperties" value-ref="ConfigProperties"/>
+			</map>
+		</property>
+	</bean>
 </beans>

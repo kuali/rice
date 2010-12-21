@@ -23,7 +23,11 @@ import java.text.SimpleDateFormat;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RiceConstants extends JSTLConstants {
+public final class RiceConstants {
+	
+	private RiceConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     private static final long serialVersionUID = 3625085403351858951L;
 

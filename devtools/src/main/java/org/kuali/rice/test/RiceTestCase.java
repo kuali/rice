@@ -369,7 +369,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
 
     public SpringResourceLoader getTestHarnessSpringResourceLoader() {
         if (testHarnessSpringResourceLoader == null) {
-            testHarnessSpringResourceLoader = new SpringResourceLoader(new QName("TestHarnessSpringContext"), getTestHarnessSpringBeansLocation());
+            testHarnessSpringResourceLoader = new SpringResourceLoader(new QName("TestHarnessSpringContext"), getTestHarnessSpringBeansLocation(), null);
         }
         return testHarnessSpringResourceLoader;
     }

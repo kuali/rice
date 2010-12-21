@@ -40,7 +40,7 @@ import org.kuali.rice.kns.util.properties.PropertyTree;
  * 
  */
 
-public abstract class JstlPropertyHolder implements Map {
+public class JstlPropertyHolder implements Map {
     private PropertyTree propertyTree;
 
     /**
@@ -55,7 +55,7 @@ public abstract class JstlPropertyHolder implements Map {
      * 
      * @param properties
      */
-    protected void setProperties(Properties properties) {
+    public void setProperties(Properties properties) {
         propertyTree = new PropertyTree(properties);
     }
 
@@ -72,120 +72,96 @@ public abstract class JstlPropertyHolder implements Map {
 
 
     // delegated methods
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#get(java.lang.Object)
-     */
-    public Object get(Object key) {
+    @Override
+	public Object get(Object key) {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }
         return this.propertyTree.get(key);
     }
 
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#size()
-     */
-    public int size() {
+    @Override
+	public int size() {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }
         return this.propertyTree.size();
     }
 
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#clear()
-     */
-    public void clear() {
+    @Override
+	public void clear() {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }
         this.propertyTree.clear();
     }
 
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#isEmpty()
-     */
-    public boolean isEmpty() {
+    @Override
+	public boolean isEmpty() {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }
         return this.propertyTree.isEmpty();
     }
 
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#containsKey(java.lang.Object)
-     */
-    public boolean containsKey(Object key) {
+    @Override
+	public boolean containsKey(Object key) {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }
         return this.propertyTree.containsKey(key);
     }
 
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#containsValue(java.lang.Object)
-     */
-    public boolean containsValue(Object value) {
+    @Override
+	public boolean containsValue(Object value) {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }
         return this.propertyTree.containsValue(value);
     }
 
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#values()
-     */
-    public Collection values() {
+    @Override
+	public Collection values() {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }
         return this.propertyTree.values();
     }
 
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#putAll(java.util.Map)
-     */
-    public void putAll(Map m) {
+    @Override
+	public void putAll(Map m) {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }
         this.propertyTree.putAll(m);
     }
 
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#entrySet()
-     */
-    public Set entrySet() {
+    @Override
+	public Set entrySet() {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }
         return this.propertyTree.entrySet();
     }
 
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#keySet()
-     */
-    public Set keySet() {
+    @Override
+	public Set keySet() {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }
         return this.propertyTree.keySet();
     }
 
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#remove(java.lang.Object)
-     */
-    public Object remove(Object key) {
+    @Override
+	public Object remove(Object key) {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }
         return this.propertyTree.remove(key);
     }
 
-    /**
-     * @see org.kuali.rice.kns.util.properties.PropertyTree#put(java.lang.Object, java.lang.Object)
-     */
-    public Object put(Object key, Object value) {
+    @Override
+	public Object put(Object key, Object value) {
         if (propertyTree == null) {
             throw new IllegalStateException("propertyTree has not been initialized");
         }

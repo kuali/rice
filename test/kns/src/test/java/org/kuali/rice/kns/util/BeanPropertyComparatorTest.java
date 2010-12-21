@@ -20,8 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.kuali.rice.kns.exception.BeanComparisonException;
-import org.kuali.rice.kns.util.BeanPropertyComparator;
+import org.kuali.rice.kns.util.BeanPropertyComparator.BeanComparisonException;
 import org.kuali.test.KNSTestCase;
 
 /**

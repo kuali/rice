@@ -22,7 +22,11 @@ package org.kuali.rice.core.api;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class CoreConstants {
+public final class CoreConstants {
+	
+	private CoreConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 	
 	public static class Services {
         public static final String DATETIME_SERVICE = "dateTimeService";

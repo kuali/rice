@@ -105,11 +105,13 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * @see org.kuali.rice.kns.service.DocumentService#saveDocument(org.kuali.rice.kns.document.Document)
      */
-    public Document saveDocument(Document document) throws WorkflowException, ValidationException {
+    @Override
+	public Document saveDocument(Document document) throws WorkflowException, ValidationException {
 	return saveDocument(document, SaveDocumentEvent.class);
     }
 
-    public Document saveDocument(Document document, Class kualiDocumentEventClass) throws WorkflowException, ValidationException {
+    @Override
+	public Document saveDocument(Document document, Class kualiDocumentEventClass) throws WorkflowException, ValidationException {
         checkForNulls(document);
         if (kualiDocumentEventClass == null) {
             throw new IllegalArgumentException("invalid (null) kualiDocumentEventClass");
@@ -125,7 +127,8 @@ public class DocumentServiceImpl implements DocumentService {
         Document savedDocument = validateAndPersistDocumentAndSaveAdHocRoutingRecipients(document, generateKualiDocumentEvent(document, kualiDocumentEventClass));
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService().save(savedDocument.getDocumentHeader().getWorkflowDocument(), null);
-        GlobalVariables.getUserSession().setWorkflowDocument(savedDocument.getDocumentHeader().getWorkflowDocument());
+        
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
 
         return savedDocument;
     }
@@ -174,7 +177,8 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * @see org.kuali.rice.kns.service.DocumentService#routeDocument(org.kuali.rice.kns.document.Document, java.lang.String, java.util.List)
      */
-    public Document routeDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
+    @Override
+	public Document routeDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
         checkForNulls(document);
         //if (!getDocumentActionFlags(document).getCanRoute()) {
         //    throw buildAuthorizationException("route", document);
@@ -183,7 +187,7 @@ public class DocumentServiceImpl implements DocumentService {
         Document savedDocument = validateAndPersistDocument(document, new RouteDocumentEvent(document));
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService().route(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        GlobalVariables.getUserSession().setWorkflowDocument(savedDocument.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -192,7 +196,8 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#approveDocument(org.kuali.rice.kns.document.Document, java.lang.String,
      *      java.util.List)
      */
-    public Document approveDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
+    @Override
+	public Document approveDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
         checkForNulls(document);
         //if (!getDocumentActionFlags(document).getCanApprove()) {
         //    throw buildAuthorizationException("approve", document);
@@ -201,7 +206,7 @@ public class DocumentServiceImpl implements DocumentService {
         Document savedDocument = validateAndPersistDocument(document, new ApproveDocumentEvent(document));
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService().approve(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        GlobalVariables.getUserSession().setWorkflowDocument(savedDocument.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -210,11 +215,12 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * @see org.kuali.rice.kns.service.DocumentService#superUserApproveDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
-    public Document superUserApproveDocument(Document document, String annotation) throws WorkflowException {
+    @Override
+	public Document superUserApproveDocument(Document document, String annotation) throws WorkflowException {
         getDocumentDao().save(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserApprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -222,11 +228,12 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * @see org.kuali.rice.kns.service.DocumentService#superUserCancelDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
-    public Document superUserCancelDocument(Document document, String annotation) throws WorkflowException {
+    @Override
+	public Document superUserCancelDocument(Document document, String annotation) throws WorkflowException {
         getDocumentDao().save(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserCancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -234,11 +241,12 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * @see org.kuali.rice.kns.service.DocumentService#superUserCancelDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
-    public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException {
+    @Override
+	public Document superUserDisapproveDocument(Document document, String annotation) throws WorkflowException {
         getDocumentDao().save(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserDisapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -246,7 +254,8 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * @see org.kuali.rice.kns.service.DocumentService#disapproveDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
-    public Document disapproveDocument(Document document, String annotation) throws Exception {
+    @Override
+	public Document disapproveDocument(Document document, String annotation) throws Exception {
         checkForNulls(document);
         //if (!getDocumentActionFlags(document).getCanDisapprove()) {
         //    throw buildAuthorizationException("disapprove", document);
@@ -262,7 +271,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().disapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -270,7 +279,8 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * @see org.kuali.rice.kns.service.DocumentService#cancelDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
-    public Document cancelDocument(Document document, String annotation) throws WorkflowException {
+    @Override
+	public Document cancelDocument(Document document, String annotation) throws WorkflowException {
         checkForNulls(document);
         //if (!getDocumentActionFlags(document).getCanCancel()) {
         //    throw buildAuthorizationException("cancel", document);
@@ -284,7 +294,7 @@ public class DocumentServiceImpl implements DocumentService {
         }
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().cancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         //getBusinessObjectService().delete(document.getAdHocRoutePersons());
         //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
         removeAdHocPersonsAndWorkgroups(document);
@@ -295,14 +305,15 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#acknowledgeDocument(org.kuali.rice.kns.document.Document, java.lang.String,
      *      java.util.List)
      */
-    public Document acknowledgeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException {
+    @Override
+	public Document acknowledgeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException {
         checkForNulls(document);
         //if (!getDocumentActionFlags(document).getCanAcknowledge()) {
         //    throw buildAuthorizationException("acknowledge", document);
         //}
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().acknowledge(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -311,7 +322,8 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#blanketApproveDocument(org.kuali.rice.kns.document.Document, java.lang.String,
      *      java.util.List)
      */
-    public Document blanketApproveDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
+    @Override
+	public Document blanketApproveDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
         checkForNulls(document);
         //if (!getDocumentActionFlags(document).getCanBlanketApprove()) {
         //    throw buildAuthorizationException("blanket approve", document);
@@ -320,7 +332,7 @@ public class DocumentServiceImpl implements DocumentService {
         Document savedDocument = validateAndPersistDocument(document, new BlanketApproveDocumentEvent(document));
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService().blanketApprove(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        GlobalVariables.getUserSession().setWorkflowDocument(savedDocument.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -328,7 +340,8 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * @see org.kuali.rice.kns.service.DocumentService#clearDocumentFyi(org.kuali.rice.kns.document.Document, java.util.List)
      */
-    public Document clearDocumentFyi(Document document, List adHocRecipients) throws WorkflowException {
+    @Override
+	public Document clearDocumentFyi(Document document, List adHocRecipients) throws WorkflowException {
         checkForNulls(document);
         //if (!getDocumentActionFlags(document).getCanFYI()) {
          //   throw buildAuthorizationException("clear FYI", document);
@@ -336,7 +349,7 @@ public class DocumentServiceImpl implements DocumentService {
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
         getWorkflowDocumentService().clearFyi(document.getDocumentHeader().getWorkflowDocument(), adHocRecipients);
-        GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -359,8 +372,9 @@ public class DocumentServiceImpl implements DocumentService {
         adHocRoutingRecipients.addAll(document.getAdHocRoutePersons());
         adHocRoutingRecipients.addAll(document.getAdHocRouteWorkgroups());
 
-        for (AdHocRouteRecipient recipient : adHocRoutingRecipients)
-            recipient.setdocumentNumber(document.getDocumentNumber());
+        for (AdHocRouteRecipient recipient : adHocRoutingRecipients) {
+			recipient.setdocumentNumber(document.getDocumentNumber());
+		}
         HashMap criteria = new HashMap();
         criteria.put("documentNumber", document.getDocumentNumber());
         getBusinessObjectService().deleteMatching(AdHocRouteRecipient.class, criteria);
@@ -372,7 +386,8 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * @see org.kuali.rice.kns.service.DocumentService#documentExists(java.lang.String)
      */
-    public boolean documentExists(String documentHeaderId) {
+    @Override
+	public boolean documentExists(String documentHeaderId) {
         // validate parameters
         if (StringUtils.isBlank(documentHeaderId)) {
             throw new IllegalArgumentException("invalid (blank) documentHeaderId");
@@ -409,7 +424,8 @@ public class DocumentServiceImpl implements DocumentService {
      *
      * @see org.kuali.rice.kns.service.DocumentService#getNewDocument(java.lang.Class)
      */
-    public Document getNewDocument(Class documentClass) throws WorkflowException {
+    @Override
+	public Document getNewDocument(Class documentClass) throws WorkflowException {
         if (documentClass == null) {
             throw new IllegalArgumentException("invalid (null) documentClass");
         }
@@ -430,7 +446,8 @@ public class DocumentServiceImpl implements DocumentService {
      *
      * @see org.kuali.rice.kns.service.DocumentService#getNewDocument(java.lang.String)
      */
-    public Document getNewDocument(String documentTypeName) throws WorkflowException {
+    @Override
+	public Document getNewDocument(String documentTypeName) throws WorkflowException {
 
         // argument validation
         Timer t0 = new Timer("DocumentServiceImpl.getNewDocument");
@@ -458,7 +475,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         // initiate new workflow entry, get the workflow doc
         KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, GlobalVariables.getUserSession().getPerson());
-        GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
 
         // create a new document header object
         DocumentHeader documentHeader = null;
@@ -521,7 +538,8 @@ public class DocumentServiceImpl implements DocumentService {
      * @throws WorkflowException
      * @return Document
      */
-    public Document getByDocumentHeaderId(String documentHeaderId) throws WorkflowException {
+    @Override
+	public Document getByDocumentHeaderId(String documentHeaderId) throws WorkflowException {
         if (documentHeaderId == null) {
             throw new IllegalArgumentException("invalid (null) documentHeaderId");
         }
@@ -541,7 +559,7 @@ public class DocumentServiceImpl implements DocumentService {
 	        	LOG.debug("Retrieving doc id: " + documentHeaderId + " from workflow service.");
 	        }
 	        workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
-	        GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
+	        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
 
 	        Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
 
@@ -560,6 +578,7 @@ public class DocumentServiceImpl implements DocumentService {
 	/**
 	 * @see org.kuali.rice.kns.service.DocumentService#getByDocumentHeaderIdSessionless(java.lang.String)
 	 */
+	@Override
 	public Document getByDocumentHeaderIdSessionless(String documentHeaderId)
 			throws WorkflowException {
         if (documentHeaderId == null) {
@@ -615,7 +634,8 @@ public class DocumentServiceImpl implements DocumentService {
      *
      * @see org.kuali.rice.kns.service.DocumentService#getDocumentsByListOfDocumentHeaderIds(java.lang.Class, java.util.List)
      */
-    public List getDocumentsByListOfDocumentHeaderIds(Class clazz, List documentHeaderIds) throws WorkflowException {
+    @Override
+	public List getDocumentsByListOfDocumentHeaderIds(Class clazz, List documentHeaderIds) throws WorkflowException {
         // make sure that the supplied class is of the document type
         if (!Document.class.isAssignableFrom(clazz)) {
             throw new IllegalArgumentException("invalid (non-document) class of " + clazz.getName());
@@ -710,7 +730,8 @@ public class DocumentServiceImpl implements DocumentService {
      * @param document
      * @throws WorkflowException
      */
-    public void prepareWorkflowDocument(Document document) throws WorkflowException {
+    @Override
+	public void prepareWorkflowDocument(Document document) throws WorkflowException {
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
 
@@ -752,7 +773,8 @@ public class DocumentServiceImpl implements DocumentService {
      * This is to allow for updates of document statuses and other related requirements for updates outside of the initial save and
      * route
      */
-    public Document updateDocument(Document document) {
+    @Override
+	public Document updateDocument(Document document) {
         checkForNulls(document);
         return getDocumentDao().save(document);
     }
@@ -761,7 +783,8 @@ public class DocumentServiceImpl implements DocumentService {
      *
      * @see org.kuali.rice.kns.service.DocumentService#createNoteFromDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
-    public Note createNoteFromDocument(Document document, String text) throws Exception {
+    @Override
+	public Note createNoteFromDocument(Document document, String text) throws Exception {
         Note note = new Note();
 
         note.setNotePostedTimestamp(getDateTimeService().getCurrentTimestamp());
@@ -783,12 +806,14 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * @see org.kuali.rice.kns.service.DocumentService#addNoteToDocument(org.kuali.rice.kns.document.Document, org.kuali.rice.kns.bo.Note)
      */
-    public boolean addNoteToDocument(Document document, Note note) {
+    @Override
+	public boolean addNoteToDocument(Document document, Note note) {
         PersistableBusinessObject parent = getNoteParent(document,note);
         return parent.addNote(note);
     }
 
-    public PersistableBusinessObject getNoteParent(Document document, Note newNote) {
+    @Override
+	public PersistableBusinessObject getNoteParent(Document document, Note newNote) {
         //get the property name to set (this assumes this is a document type note)
         String propertyName = getNoteService().extractNoteProperty(newNote);
         //get BO to set
@@ -801,25 +826,18 @@ public class DocumentServiceImpl implements DocumentService {
 	 *
 	 * @see org.kuali.rice.kns.service.DocumentService#sendAdHocRequests(org.kuali.rice.kns.document.Document, java.util.List)
 	 */
+	@Override
 	public void sendAdHocRequests(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException{
 		prepareWorkflowDocument(document);
 		getWorkflowDocumentService().sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(),
         		annotation, adHocRecipients);
-		GlobalVariables.getUserSession().setWorkflowDocument(document.getDocumentHeader().getWorkflowDocument());
+		KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
 		//getBusinessObjectService().delete(document.getAdHocRoutePersons());
 		//getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
 		removeAdHocPersonsAndWorkgroups(document);
 	}
 
 	/**
-     * @param documentTypeName
-     * @return DocumentAuthorizer instance for the given documentType name
-     */
-    private DocumentAuthorizer getDocumentAuthorizer(String documentTypeName) {
-        return getDocumentHelperService().getDocumentAuthorizer(documentTypeName);
-    }
-
-    /**
      * spring injected date time service
      *
      * @param dateTimeService
@@ -843,7 +861,8 @@ public class DocumentServiceImpl implements DocumentService {
      * @param kualiRuleService The kualiRuleService to set.
      * @deprecated nothing uses this field
      */
-    public void setKualiRuleService(KualiRuleService kualiRuleService) {
+    @Deprecated
+	public void setKualiRuleService(KualiRuleService kualiRuleService) {
         // nothing uses this field...
     }
 
@@ -851,7 +870,8 @@ public class DocumentServiceImpl implements DocumentService {
      * @param dictionaryValidationService The dictionaryValidationService to set.
      * @deprecated nothing uses this field
      */
-    public void setDictionaryValidationService(DictionaryValidationService dictionaryValidationService) {
+    @Deprecated
+	public void setDictionaryValidationService(DictionaryValidationService dictionaryValidationService) {
         // nothing uses this field...
     }
 
@@ -861,7 +881,8 @@ public class DocumentServiceImpl implements DocumentService {
      * @param maintenanceDocumentService The maintenanceDocumentService to set.
      * @deprecated nothing uses this field
      */
-    public final void setMaintenanceDocumentService(MaintenanceDocumentService maintenanceDocumentService) {
+    @Deprecated
+	public final void setMaintenanceDocumentService(MaintenanceDocumentService maintenanceDocumentService) {
         // nothing uses this field...
     }
 

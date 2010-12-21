@@ -178,14 +178,14 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             // populate workflowDocument in documentHeader, if needed
         	// KULRICE-4444 Obtain Document Header using the Workflow Service to minimize overhead
             try {
-            	workflowDocument = GlobalVariables.getUserSession().getWorkflowDocument(getDocument().getDocumentNumber());
+            	workflowDocument = KNSServiceLocator.getSessionDocumentService().getDocumentFromSession( GlobalVariables.getUserSession(), getDocument().getDocumentNumber());
          	 	if ( workflowDocument == null)
          	 	{
                     // gets the workflow document from doc service, doc service will also set the workflow document in the
                     // user's session
          	 		Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
          	 	 	workflowDocument = KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(getDocument().getDocumentNumber()), person);
-         	 	 	GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
+         	 	 	KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
          	 	 	if (workflowDocument == null)
          	 	 	{
          	 	 		throw new WorkflowException("Unable to retrieve workflow document # " + getDocument().getDocumentNumber() + " from workflow document service createWorkflowDocument");

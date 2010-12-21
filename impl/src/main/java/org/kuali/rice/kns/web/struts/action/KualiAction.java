@@ -166,7 +166,7 @@ public abstract class KualiAction extends DispatchAction {
 
     @Override
     protected ActionForward dispatchMethod(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response, String methodToCall) throws Exception {
-        GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY, (Object)methodToCall);
+        GlobalVariables.getUserSession().addObject(DocumentAuthorizerBase.USER_SESSION_METHOD_TO_CALL_OBJECT_KEY, methodToCall);
         return super.dispatchMethod(mapping, form, request, response, methodToCall);
     }
     

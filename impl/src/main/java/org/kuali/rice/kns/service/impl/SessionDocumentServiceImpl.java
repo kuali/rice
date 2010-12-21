@@ -26,6 +26,8 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.SessionDocument;
 import org.kuali.rice.kns.dao.SessionDocumentDao;
@@ -85,6 +87,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 		}
     }
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public void afterPropertiesSet() throws Exception {
 		cachedObjects = Collections.synchronizedMap( new KualiLRUMap(maxCacheSize) );		
@@ -93,7 +96,8 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 	/**
      * @see org.kuali.rice.kns.service.SessionDocumentService#getDocumentForm(String documentNumber, String docFormKey, UserSession userSession)
      */
-    public KualiDocumentFormBase getDocumentForm( String documentNumber, String docFormKey, UserSession userSession, String ipAddress){
+    @Override
+	public KualiDocumentFormBase getDocumentForm( String documentNumber, String docFormKey, UserSession userSession, String ipAddress){
     	KualiDocumentFormBase documentForm = null;
     	
 		LOG.debug("getDocumentForm KualiDocumentFormBase from db");
@@ -104,7 +108,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 			primaryKeys.put(PRINCIPAL_ID, userSession.getPrincipalId());
 			primaryKeys.put(IP_ADDRESS, ipAddress);
    
-			SessionDocument sessionDoc = (SessionDocument)getBusinessObjectService().findByPrimaryKey(SessionDocument.class, primaryKeys);
+			SessionDocument sessionDoc = getBusinessObjectService().findByPrimaryKey(SessionDocument.class, primaryKeys);
 			if(sessionDoc != null){
 				byte[] formAsBytes = sessionDoc.getSerializedDocumentForm();
 				if ( sessionDoc.isEncrypted() ) {
@@ -118,7 +122,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 	         
 				//re-store workFlowDocument into session
 				KualiWorkflowDocument workflowDocument = documentForm.getDocument().getDocumentHeader().getWorkflowDocument();
-				userSession.setWorkflowDocument(workflowDocument);				
+				addDocumentToUserSession(userSession, workflowDocument);				
 			}
 		} catch(Exception e) {
 		    LOG.error("getDocumentForm failed for SessId/DocNum/PrinId/IP:"
@@ -127,11 +131,40 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 
         return documentForm;
     }
+    
+	@Override
+	public KualiWorkflowDocument getDocumentFromSession(UserSession userSession, String docId) {
+		@SuppressWarnings("unchecked")
+		Map<String, KualiWorkflowDocument> workflowDocMap = (Map<String, KualiWorkflowDocument>) userSession.retrieveObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
+		
+		if (workflowDocMap == null) {
+			workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
+			userSession.addObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
+			return null;
+		}
+		return workflowDocMap.get(docId);
+	}
+	
+	@Override
+	public void addDocumentToUserSession(UserSession userSession, KualiWorkflowDocument document) {
+		try {
+			@SuppressWarnings("unchecked")
+			Map<String, KualiWorkflowDocument> workflowDocMap = (Map<String, KualiWorkflowDocument>) userSession.retrieveObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME);
+			if (workflowDocMap == null) {
+				workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
+			}
+			workflowDocMap.put(document.getRouteHeaderId().toString(), document);
+			userSession.addObject(KEWConstants.WORKFLOW_DOCUMENT_MAP_ATTR_NAME, workflowDocMap);
+		} catch (WorkflowException e) {
+			throw new IllegalStateException("could not save the document in the session", e);
+		}
+	}
 
     /**
 	 * @see org.kuali.rice.kns.service.SessionDocumentService#purgeDocumentForm(String
 	 *      documentNumber, String docFormKey, UserSession userSession )
 	 */
+	@Override
 	public void purgeDocumentForm(String documentNumber, String docFormKey,
 			UserSession userSession, String ipAddress) {
 		synchronized (userSession) {
@@ -157,7 +190,8 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
      * @see org.kuali.rice.kns.service.SessinoDocumentService#setDocumentForm()
      */
     
-    public void setDocumentForm(KualiDocumentFormBase form, UserSession userSession, String ipAddress){
+    @Override
+	public void setDocumentForm(KualiDocumentFormBase form, UserSession userSession, String ipAddress){
     	synchronized ( userSession ) { 
 	    	//formKey was set in KualiDocumentActionBase execute method
 			String formKey = form.getFormKey();
@@ -194,7 +228,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 					primaryKeys.put(PRINCIPAL_ID, userSession.getPrincipalId());
 					primaryKeys.put(IP_ADDRESS, ipAddress);
 		
-					SessionDocument sessionDocument = (SessionDocument)getBusinessObjectService().findByPrimaryKey(SessionDocument.class, primaryKeys);
+					SessionDocument sessionDocument = getBusinessObjectService().findByPrimaryKey(SessionDocument.class, primaryKeys);
 					if ( sessionDocument == null ) {
 						sessionDocument = new SessionDocument();
 			            sessionDocument.setSessionId(userSession.getKualiSessionId());
@@ -219,7 +253,8 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
     	}    	
     }
     
-    public void purgeAllSessionDocuments(Timestamp expirationDate){
+    @Override
+	public void purgeAllSessionDocuments(Timestamp expirationDate){
     	sessionDocumentDao.purgeAllSessionDocuments(expirationDate);
     }
     

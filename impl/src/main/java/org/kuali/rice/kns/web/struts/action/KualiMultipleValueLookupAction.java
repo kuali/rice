@@ -91,7 +91,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         }
         
         Collection displayList = new ArrayList();
-        List<ResultRow> resultTable = new ArrayList<ResultRow>();
+        ArrayList<ResultRow> resultTable = new ArrayList<ResultRow>();
 
         // validate search parameters
         kualiLookupable.validateSearchParameters(multipleValueLookupForm.getFields());
@@ -134,7 +134,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         }
         request.setAttribute(KNSConstants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(resultTable, KNSConstants.SEARCH_LIST_KEY_PREFIX));
 
-        String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
+        request.getParameter(KNSConstants.REFRESH_CALLER);
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
@@ -149,7 +149,8 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
      * @return
      * @throws Exception
      */
-    public ActionForward switchToPage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+	public ActionForward switchToPage(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         MultipleValueLookupForm multipleValueLookupForm = (MultipleValueLookupForm) form;
         List<ResultRow> resultTable = switchToPage(multipleValueLookupForm, getMaxRowsPerPage(multipleValueLookupForm));
         request.setAttribute("reqSearchResults", resultTable);
@@ -171,7 +172,8 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
      * @return
      * @throws Exception
      */
-    public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+	public ActionForward sort(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         MultipleValueLookupForm multipleValueLookupForm = (MultipleValueLookupForm) form;
         List<ResultRow> resultTable = sort(multipleValueLookupForm, getMaxRowsPerPage(multipleValueLookupForm));
         request.setAttribute("reqSearchResults", resultTable);

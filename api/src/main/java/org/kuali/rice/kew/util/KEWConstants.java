@@ -807,7 +807,7 @@ public final class KEWConstants {
         RULE_ATTRIBUTE_TYPE_MAP.put(SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE, SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE, DOCUMENT_SEARCH_SECURITY_FILTER_ATTRIBUTE_TYPE_LABEL);
         RULE_ATTRIBUTE_TYPE_MAP.put(QUALIFIER_RESOLVER_ATTRIBUTE_TYPE, QUALIFIER_RESOLVER_ATTRIBUTE_TYPE_LABEL);
-    };
+    }
 
     public static final String DAILY = "daily";
     public static final String WEEKLY = "weekly";
@@ -1024,4 +1024,5 @@ public final class KEWConstants {
 	public static final String HELP_DESK_ACTION_LIST_PERSON_ATTR_NAME = "helpDeskActionListPerson";
 	public static final String PREFERENCES = "Preferences";
 	public static final String AUTHENTICATIONS = "Authentications";
+	public static final String WORKFLOW_DOCUMENT_MAP_ATTR_NAME = "workflowDocumentMap";
 }

@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.kim.bo.entity;
 
+import java.io.Serializable;
+
 /**
  * principal for a KIM entity
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface KimPrincipal {
+public interface KimPrincipal extends Serializable {
     
     /**
      * Gets this {@link KimPrincipal}'s id.

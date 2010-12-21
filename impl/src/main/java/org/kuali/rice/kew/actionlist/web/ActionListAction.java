@@ -325,8 +325,8 @@ public class ActionListAction extends KualiAction {
             request.setAttribute(ACTION_LIST_PAGE_KEY, currentPage);
             uSession.addObject(KEWConstants.UPDATE_ACTION_LIST_ATTR_NAME, Boolean.FALSE);
             uSession.addObject(KEWConstants.CURRENT_PAGE_ATTR_NAME, form.getCurrentPage());
-            uSession.addObject(KEWConstants.SORT_CRITERIA_ATTR_NAME, (Object) form.getSort());
-            uSession.addObject(KEWConstants.SORT_ORDER_ATTR_NAME, (Object) form.getCurrentDir());
+            uSession.addObject(KEWConstants.SORT_CRITERIA_ATTR_NAME, form.getSort());
+            uSession.addObject(KEWConstants.SORT_ORDER_ATTR_NAME, form.getCurrentDir());
             plog.log("finished setting attributes, finishing action list fetch");
         } catch (Exception e) {
             LOG.error("Error loading action list.", e);

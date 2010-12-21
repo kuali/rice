@@ -19,6 +19,7 @@ import java.sql.Timestamp;
 
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
+import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
 
@@ -39,8 +40,17 @@ public interface SessionDocumentService {
      * @return KualiDocumentFormBase
      * @throws
      */
-	
 	public KualiDocumentFormBase getDocumentForm( String documentNumber, String docFormKey, UserSession userSession, String ipAddress);
+	
+	/**
+	 * This method retrieve's a document from the user session from the given docId. 
+	 */
+	public KualiWorkflowDocument getDocumentFromSession(UserSession userSession, String docId);
+	
+	/**
+	 * This method places a document into the user session. 
+	 */
+	public void addDocumentToUserSession(UserSession userSession, KualiWorkflowDocument document);
 	
 	/**
      * Delete KualiDocumentFormBase from session and database.

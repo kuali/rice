@@ -107,8 +107,8 @@ public class RIADocument extends TransactionalDocumentBase implements SessionDoc
         // create workflow document for riaDocumentTypeName
         KualiWorkflowDocument workflowDocument = 
         	KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument(riaDocumentTypeName, GlobalVariables.getUserSession().getPerson());
-        //workflowDocument.getRouteHeader().setDocTypeName(documentTypeName);
-        GlobalVariables.getUserSession().setWorkflowDocument(workflowDocument);
+        
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
         
         // create a new document header object
         DocumentHeader documentHeader = new DocumentHeader();

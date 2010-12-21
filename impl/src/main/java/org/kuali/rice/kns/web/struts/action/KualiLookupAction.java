@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -35,7 +34,6 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
@@ -196,7 +194,7 @@ public class KualiLookupAction extends KualiAction {
         }
 
         Collection displayList = new ArrayList();
-        List<ResultRow> resultTable = new ArrayList<ResultRow>();
+        ArrayList<ResultRow> resultTable = new ArrayList<ResultRow>();
 
         // validate search parameters
         kualiLookupable.validateSearchParameters(lookupForm.getFields());
@@ -238,7 +236,7 @@ public class KualiLookupAction extends KualiAction {
         
      	request.setAttribute(KNSConstants.SEARCH_LIST_REQUEST_KEY, GlobalVariables.getUserSession().addObjectWithGeneratedKey(resultTable, KNSConstants.SEARCH_LIST_KEY_PREFIX));
       	        
-        String refreshCaller = request.getParameter(KNSConstants.REFRESH_CALLER);
+        request.getParameter(KNSConstants.REFRESH_CALLER);
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
@@ -247,7 +245,8 @@ public class KualiLookupAction extends KualiAction {
     /**
      * refresh - is called when one quickFinder returns to the previous one. Sets all the values and performs the new search.
      */
-    public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override
+	public ActionForward refresh(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         LookupForm lookupForm = (LookupForm) form;
         Lookupable kualiLookupable = lookupForm.getLookupable();
         if (kualiLookupable == null) {
@@ -265,8 +264,8 @@ public class KualiLookupAction extends KualiAction {
         for (Iterator iter = kualiLookupable.getRows().iterator(); iter.hasNext();) {
         	Row row = (Row) iter.next();
 
-        	for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
-        		Field field = (Field) iterator.next();
+        	for (Object element : row.getFields()) {
+        		Field field = (Field) element;
 
         		if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
         			if (request.getParameter(field.getPropertyName()) != null) {
@@ -294,8 +293,8 @@ public class KualiLookupAction extends KualiAction {
         if (kualiLookupable.checkForAdditionalFields(fieldValues)) {
             for (Iterator iter = kualiLookupable.getRows().iterator(); iter.hasNext();) {
                 Row row = (Row) iter.next();
-                for (Iterator iterator = row.getFields().iterator(); iterator.hasNext();) {
-                    Field field = (Field) iterator.next();
+                for (Object element : row.getFields()) {
+                    Field field = (Field) element;
                     if (field.getPropertyName() != null && !field.getPropertyName().equals("")) {
                         if (request.getParameter(field.getPropertyName()) != null) {
 //                            field.setPropertyValue(request.getParameter(field.getPropertyName()));

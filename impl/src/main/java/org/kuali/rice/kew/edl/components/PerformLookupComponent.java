@@ -42,6 +42,7 @@ public class PerformLookupComponent implements EDLModelComponent {
 
 	private static final Logger LOG = Logger.getLogger(PerformLookupComponent.class);
 	
+	@Override
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
 		String userAction = edlContext.getUserAction().getAction();
 		if (userAction != null && userAction.startsWith("performLookup")) {

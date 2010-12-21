@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.service;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -416,8 +417,8 @@ public class PessimisticLockServiceTest extends KNSTestCase {
      * 
      * @throws Exception
      */
-    private void assertCustomLockDescriptorsAreWorking(Document testDoc, final String LOCK_KEY, final Object LOCK_VALUE1,
-    		final Object LOCK_VALUE2) throws Exception {
+    private void assertCustomLockDescriptorsAreWorking(Document testDoc, final String LOCK_KEY, final Serializable LOCK_VALUE1,
+    		final Serializable LOCK_VALUE2) throws Exception {
     	PessimisticLockService lockService = KNSServiceLocator.getPessimisticLockService();
     	
     	// Have "quickstart" establish a pessimistic lock on the document by using a custom lock descriptor that only locks part of the document.

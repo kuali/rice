@@ -379,7 +379,7 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiWorkflowDocument workflowDoc = doc.getDocumentHeader().getWorkflowDocument();
         kualiDocumentFormBase.setDocTypeName(workflowDoc.getDocumentType());
         // KualiDocumentFormBase.populate() needs this updated in the session
-        GlobalVariables.getUserSession().setWorkflowDocument(workflowDoc);
+        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDoc);
     }
 
 

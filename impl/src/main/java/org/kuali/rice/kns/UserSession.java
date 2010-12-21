@@ -25,11 +25,9 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.SessionTicket;
-import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
 
 /**
@@ -58,9 +56,6 @@ public class UserSession implements Serializable {
 	public void setKualiSessionId(String kualiSessionId) {
 		this.kualiSessionId = kualiSessionId;
 	}
-
-	// KULRICE-4443 Allow workflow sessions to fail over between nodes to prevent document loss by removing transient modifier
-	private Map<String,KualiWorkflowDocument> workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
 
     /**
      * Take in a netid, and construct the user from that.
@@ -134,8 +129,6 @@ public class UserSession implements Serializable {
         if (backdoorUser == null) {
         	throw new RiceRuntimeException(principalName + " is not a valid principalName");
         }
-        
-        this.workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
        }
     }
     
@@ -150,7 +143,6 @@ public class UserSession implements Serializable {
      */
     public void clearBackdoorUser() {
         this.backdoorUser = null;
-        this.workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
     }
 
     /**
@@ -161,7 +153,7 @@ public class UserSession implements Serializable {
      * 
      * @param object
      */
-    public String addObjectWithGeneratedKey(Object object, String keyPrefix) {
+    public String addObjectWithGeneratedKey(Serializable object, String keyPrefix) {
         String objectKey = keyPrefix + nextObjectKey++;
         objectMap.put(objectKey, object);
         return objectKey;
@@ -235,36 +227,6 @@ public class UserSession implements Serializable {
      */
     public boolean isBackdoorInUse() {
         return backdoorUser != null;
-    }
-
-    /**
-     * retrieve a flexdoc from the userSession based on the document id
-     * 
-     * @param docId
-     */
-    public KualiWorkflowDocument getWorkflowDocument(String docId) {
-        if (workflowDocMap == null) {
-            workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
-        }
-        if (workflowDocMap.containsKey(docId)) {
-            return workflowDocMap.get(docId);
-        }
-        return null;
-    }
-
-    /**
-     * set a flexDoc into the userSession which will be stored under the document id
-     */
-    public void setWorkflowDocument(KualiWorkflowDocument workflowDocument) {
-        try {
-            if (workflowDocMap == null) {
-                workflowDocMap = new HashMap<String,KualiWorkflowDocument>();
-            }
-            workflowDocMap.put(workflowDocument.getRouteHeaderId().toString(), workflowDocument);
-        }
-        catch (WorkflowException e) {
-            throw new IllegalStateException("could not save the document in the session msg: " + e.getMessage());
-        }
     }
     
 	/**

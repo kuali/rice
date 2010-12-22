@@ -25,7 +25,7 @@ import java.util.Iterator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class CollectionUtils {
+public final class CollectionUtils {
 
 	/** do not call. */
 	private CollectionUtils() {

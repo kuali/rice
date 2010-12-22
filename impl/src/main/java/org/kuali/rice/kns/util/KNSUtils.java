@@ -26,7 +26,11 @@ import org.kuali.rice.core.util.type.KualiDecimal;
 /**
  * Miscellaneous Utility Methods.
  */
-public class KNSUtils {
+public final class KNSUtils {
+	
+	private KNSUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
     
     public final static String getBusinessTitleForClass(Class<? extends Object> clazz) {
         if (clazz == null) {

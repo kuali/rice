@@ -52,7 +52,7 @@ import org.kuali.rice.kns.web.ui.Section;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 
-public class MaintenanceUtils {
+public final class MaintenanceUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceUtils.class);
 
     private static MaintenanceDocumentService maintenanceDocumentService;
@@ -61,6 +61,10 @@ public class MaintenanceUtils {
     private static KualiExceptionIncidentService kualiExceptionIncidentService; 
     private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
     private static DataDictionaryService dataDictionaryService;
+    
+	private MaintenanceUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
     
     /**
      * Returns the field templates defined in the maint dictionary xml files. Field templates are used in multiple value lookups.

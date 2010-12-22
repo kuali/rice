@@ -58,7 +58,7 @@ import org.kuali.rice.kns.web.ui.Section;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class WebRuleUtils {
+public final class WebRuleUtils {
 
 	public static final String RULE_TEMPLATE_ID_PARAM = "ruleCreationValues.ruleTemplateId";
 	public static final String RULE_TEMPLATE_NAME_PARAM = "ruleCreationValues.ruleTemplateName";
@@ -69,6 +69,10 @@ public class WebRuleUtils {
 	private static final String RULE_ATTRIBUTES_SECTION_ID = "RuleAttributes";
 	private static final String RULE_ATTRIBUTES_SECTION_TITLE = "Rule Attributes";
 	private static final String ROLES_MAINTENANCE_SECTION_ID = "RolesMaintenance";
+	
+	private WebRuleUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 	
 	/**
 	 * Copies the existing rule onto the current document.  This is used within the web-based rule GUI to make a

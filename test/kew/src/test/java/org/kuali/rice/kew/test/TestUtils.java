@@ -21,11 +21,15 @@ package org.kuali.rice.kew.test;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class TestUtils {
+public final class TestUtils {
 
     public static final String KEW_MODULE_NAME = "kew";
     public static final String BASEDIR_PROP = "basedir";
 
+	private TestUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+    
     public static String getModuleName() {
 	return KEW_MODULE_NAME;
     }

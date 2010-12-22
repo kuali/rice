@@ -26,7 +26,7 @@ import org.kuali.rice.core.util.CollectionUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PagingBannerUtils {
+public final class PagingBannerUtils {
 
 	/** do not call. */
 	private PagingBannerUtils() {

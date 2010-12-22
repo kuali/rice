@@ -25,7 +25,13 @@ import java.util.GregorianCalendar;
  * 
  * 
  */
-public class DateUtils extends org.apache.commons.lang.time.DateUtils {
+public final class DateUtils extends org.apache.commons.lang.time.DateUtils {
+	
+	private DateUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+
+	
     /**
      * Adds null-safety to commons.DateUtils isSameDay method.
      * 

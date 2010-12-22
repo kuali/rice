@@ -20,7 +20,12 @@ import org.kuali.rice.core.util.type.KualiDecimal;
 /**
  * 
  */
-public class NumberUtils extends org.apache.commons.lang.math.NumberUtils {
+public final class NumberUtils extends org.apache.commons.lang.math.NumberUtils {
+	
+	private NumberUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
     /**
      * @param i
      * @param defaultValue

@@ -40,9 +40,12 @@ import org.kuali.rice.kns.util.ObjectUtils;
  * 
  * @see org.kuali.rice.kns.util.AssertionUtils
  */
-public class KualiTestAssertionUtils {
+public final class KualiTestAssertionUtils {
 
-
+	private KualiTestAssertionUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
     public static void assertEquality(Object a, Object b) {
         assertNotNull(a);
         assertNotNull(b);

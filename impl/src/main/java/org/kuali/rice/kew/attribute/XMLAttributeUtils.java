@@ -29,8 +29,12 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class XMLAttributeUtils {
+public final class XMLAttributeUtils {
 
+	private XMLAttributeUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
 	public static void establishFieldLookup(Field field, Node lookupNode) {
 		NamedNodeMap quickfinderAttributes = lookupNode.getAttributes();
 		String businessObjectClass = quickfinderAttributes.getNamedItem("businessObjectClass").getNodeValue();

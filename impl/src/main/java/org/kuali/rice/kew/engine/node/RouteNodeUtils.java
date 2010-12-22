@@ -35,7 +35,11 @@ import java.util.*;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RouteNodeUtils {
+public final class RouteNodeUtils {
+	
+	private RouteNodeUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
 	/**
 	 * Searches a RouteNode's "contentFragment" (it's XML definition) for an XML element with

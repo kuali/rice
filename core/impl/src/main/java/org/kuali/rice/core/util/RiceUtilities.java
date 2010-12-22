@@ -38,12 +38,16 @@ import org.springframework.core.io.Resource;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RiceUtilities {
+public final class RiceUtilities {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RiceUtilities.class);
 	private static final String[] TRUE_VALUES = new String[] { "true", "yes", "t", "y" };
 	
 	private static String instanceIpAddress = null;
 	private static String instanceHostName = null;
+	
+	private RiceUtilities() {
+		throw new UnsupportedOperationException("do not call");
+	}
 	
 	public static boolean getBooleanValueForString(String value, boolean defaultValue) {
 		if (!StringUtils.isBlank(value)) {

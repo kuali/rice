@@ -26,10 +26,10 @@ import org.kuali.rice.core.security.credentials.Credentials;
  * @since 0.9
  *
  */
-public class SecurityUtils {
+public final class SecurityUtils {
 
 	private SecurityUtils() {
-		// nothing to do
+		throw new UnsupportedOperationException("do not call");
 	}
 	
 	public static Authentication convertCredentialsToSecurityContext(final Credentials credentials) {

@@ -32,10 +32,12 @@ import org.kuali.rice.kew.engine.node.var.PropertyScheme;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PropertiesUtil {
+public final class PropertiesUtil {
     private static final Logger LOG = Logger.getLogger(PropertiesUtil.class);
 
-    private PropertiesUtil() {}
+	private PropertiesUtil() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     public static String readResource(InputStream stream) throws IOException {
         StringBuffer sb = new StringBuffer(2048);

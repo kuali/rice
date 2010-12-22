@@ -39,8 +39,12 @@ import org.apache.commons.beanutils.converters.ShortConverter;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ConverterUtils {
+public final class ConverterUtils {
 
+	private ConverterUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
 	public static synchronized void registerContextSensitiveConverters() {
     	registerBigDecimalConverter();
     	registerBigIntegerConverter();

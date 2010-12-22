@@ -55,9 +55,7 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 
 /**
- * This is a static utility class for Lookup related utilities and helper methods.
- *
- *
+ * Not a static utility class for Lookup related utilities and helper methods.
  */
 public class LookupUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(LookupUtils.class);

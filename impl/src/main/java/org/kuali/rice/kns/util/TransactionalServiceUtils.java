@@ -22,7 +22,11 @@ import org.apache.commons.collections.IteratorUtils;
 /**
  * This class provides utility methods to support the operation of transactional services
  */
-public class TransactionalServiceUtils {
+public final class TransactionalServiceUtils {
+	
+	private TransactionalServiceUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
     /**
      * Copys iterators so that they may be used outside of this class.  Often, the DAO may
      * return iterators that may not be used outside of this class because the transaction/

@@ -32,7 +32,7 @@ import org.kuali.rice.kns.exception.KualiExceptionIncident;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class IncidentReportUtils {
+public final class IncidentReportUtils {
 
 	/**
      * Key to define the attribute stores exception properties such as
@@ -40,6 +40,10 @@ public class IncidentReportUtils {
      * <p>Value is exceptionProperties
      */
     public static final String EXCEPTION_PROPERTIES="exceptionProperties";
+    
+	private IncidentReportUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
 	public static Map<String, String> populateRequestForIncidentReport(Exception exception,
 			String documentId, String componentName, HttpServletRequest request) {

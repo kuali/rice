@@ -73,7 +73,7 @@ import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
 /**
  * General helper methods for handling requests.
  */
-public class WebUtils {
+public final class WebUtils {
     private static final Logger LOG = Logger.getLogger(WebUtils.class);
 
     private static final String IMAGE_COORDINATE_CLICKED_X_EXTENSION = ".x";
@@ -86,6 +86,10 @@ public class WebUtils {
      * A request attribute name that indicates that a {@link FileUploadLimitExceededException} has already been thrown for the request.
      */
     public static final String FILE_UPLOAD_LIMIT_EXCEEDED_EXCEPTION_ALREADY_THROWN = "fileUploadLimitExceededExceptionAlreadyThrown";
+    
+	private WebUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
     
     private static KualiConfigurationService configurationService;
     

@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -64,7 +63,6 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.web.format.FormatException;
-import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.PropertyRenderingConfigElement;
 import org.kuali.rice.kns.web.ui.Row;
@@ -74,12 +72,16 @@ import org.kuali.rice.kns.web.ui.Section;
 /**
  * This class is used to build Field objects from underlying data dictionary and general utility methods for handling fields.
  */
-public class FieldUtils {
+public final class FieldUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FieldUtils.class);
     private static DataDictionaryService dataDictionaryService = null;
     private static BusinessObjectMetaDataService businessObjectMetaDataService = null;
     private static BusinessObjectDictionaryService businessObjectDictionaryService = null;
     private static KualiModuleService kualiModuleService = null;
+    
+	private FieldUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     public static void setInquiryURL(Field field, BusinessObject bo, String propertyName) {
         HtmlData inquiryHref = new AnchorHtmlData(KNSConstants.EMPTY_STRING, KNSConstants.EMPTY_STRING);

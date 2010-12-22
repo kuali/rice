@@ -53,11 +53,12 @@ import org.kuali.rice.kns.web.format.Formatter;
 /**
  * This class contains various Object, Proxy, and serialization utilities.
  */
-public class ObjectUtils {
+public final class ObjectUtils {
     private static final Logger LOG = Logger.getLogger(ObjectUtils.class);
 
-    private ObjectUtils() {
-    }
+	private ObjectUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     /**
      * Uses Serialization mechanism to create a deep copy of the given Object. As a special case, deepCopy of null returns null,

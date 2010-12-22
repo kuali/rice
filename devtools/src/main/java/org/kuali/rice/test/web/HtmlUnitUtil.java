@@ -23,9 +23,13 @@ import org.kuali.rice.core.config.ConfigContext;
 
 import java.net.URL;
 
-public class HtmlUnitUtil {
+public final class HtmlUnitUtil {
 
     public static final String BASE_URL = "http://localhost:" + getPort() + "/knstest";
+    
+	private HtmlUnitUtil() {
+		throw new UnsupportedOperationException("do not call");
+	}
     
     public static HtmlPage gotoPageAndLogin(WebClient webClient, String url) throws Exception {
         HtmlPage loginPage = (HtmlPage)webClient.getPage(new URL(url));

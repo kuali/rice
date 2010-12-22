@@ -27,9 +27,13 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DataAccessUtils {
+public final class DataAccessUtils {
 
     private static final Set<Class<?>> OPTIMISTIC_LOCK_EXCEPTION_CLASSES = new HashSet<Class<?>>();
+    
+	private DataAccessUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     // add some standard optimistic lock exception classes
     static {

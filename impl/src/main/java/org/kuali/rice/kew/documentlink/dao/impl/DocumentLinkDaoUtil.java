@@ -23,7 +23,11 @@ import org.kuali.rice.kew.documentlink.DocumentLink;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DocumentLinkDaoUtil {
+public final class DocumentLinkDaoUtil {
+	
+	private DocumentLinkDaoUtil() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
 	public static DocumentLink reverseLink(DocumentLink link){
 		

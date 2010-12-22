@@ -24,7 +24,11 @@ import java.lang.reflect.Array;
  * end Kuali Foundation modification
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ArrayUtils {
+public final class ArrayUtils {
+	
+	private ArrayUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     /**
      * Sets the value of an element of an array of primitives at the supplied index.

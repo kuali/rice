@@ -26,8 +26,6 @@ import javax.xml.namespace.QName;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
@@ -69,6 +67,10 @@ public final class PluginUtils {
             return file.isDirectory() && file.getName().equals(SHARED_DIR);
         }
     };
+    
+	private PluginUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     public static class PluginDirectoryFilter implements FileFilter {
         private final File sharedPluginDirectory;
@@ -191,6 +193,4 @@ public final class PluginUtils {
 	        }
 		}
     }
-
-    private PluginUtils() { /* prevent construction */}
 }

@@ -31,9 +31,13 @@ import org.kuali.rice.core.proxy.TargetedInvocationHandler;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ClassLoaderUtils {
+public final class ClassLoaderUtils {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ClassLoaderUtils.class);
+    
+	private ClassLoaderUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
 	/**
 	 * Returns the default class loader within the current context.  If there is a context classloader

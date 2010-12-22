@@ -65,16 +65,16 @@ import org.springframework.transaction.support.TransactionTemplate;
 /**
  * Defines utilities for unit testing
  */
-public class TestUtilities {
+public final class TestUtilities {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TestUtilities.class);
 
     private static final String TEST_TABLE_NAME = "EN_UNITTEST_T";
     private static Thread exceptionThreader;
 
-    private TestUtilities() {
-        // prevent construction
-    }
+	private TestUtilities() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     public static InputStream loadResource(Class packageClass, String resourceName) {
     	return packageClass.getResourceAsStream(resourceName);

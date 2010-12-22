@@ -96,6 +96,10 @@ public final class Util {
         // set the timezone for current time
          
     }
+    
+	private Util() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     /**
      * @return the name of the user configured to be the Notification system user

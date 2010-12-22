@@ -54,7 +54,7 @@ import org.kuali.rice.kns.util.GlobalVariables;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KimCommonUtils {
+public final class KimCommonUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimCommonUtils.class);
 
     private static KualiModuleService kualiModuleService;
@@ -62,7 +62,8 @@ public class KimCommonUtils {
     private static IdentityManagementService identityManagementService;
 
 	private KimCommonUtils() {
-    }
+		throw new UnsupportedOperationException("do not call");
+	}
 
 	private static KualiModuleService getKualiModuleService() {
 		if (kualiModuleService == null) {

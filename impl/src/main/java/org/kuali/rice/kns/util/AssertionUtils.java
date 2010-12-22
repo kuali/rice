@@ -38,7 +38,11 @@ package org.kuali.rice.kns.util;
  * 
  * @see org.kuali.test.util.KualiTestAssertionUtils
  */
-public class AssertionUtils {
+public final class AssertionUtils {
+	
+	private AssertionUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     /**
      * Asserts that the {@code isTrue} parameter is true. If this assertion fails, the {@code AssertionError} it throws will have no

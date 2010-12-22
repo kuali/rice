@@ -23,7 +23,12 @@ package org.kuali.rice.kns.util;
  * In particular, display tag does not handle POSTing of forms when switching between pages and sorting.
  * 
  */
-public class TableRenderUtil {
+public final class TableRenderUtil {
+	
+	private TableRenderUtil() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
     /**
      * Returns the minimum number of pages needed to display a result set of the given page
      * 

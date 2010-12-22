@@ -24,8 +24,12 @@ import org.kuali.rice.core.resourceloader.ResourceLoader;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ResourceLoaderUtil {
+public final class ResourceLoaderUtil {
     private static final Logger LOG = Logger.getLogger(ResourceLoaderUtil.class);
+    
+	private ResourceLoaderUtil() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     /**
      * Instantiates className class via no-arg constructor, and returns a proxy

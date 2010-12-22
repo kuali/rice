@@ -26,7 +26,11 @@ import org.apache.log4j.Logger;
  *
  *
  */
-public class ExceptionUtils {
+public final class ExceptionUtils {
+	
+	private ExceptionUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     /**
      * Logs the stack trace of the given throwable to the given logger.

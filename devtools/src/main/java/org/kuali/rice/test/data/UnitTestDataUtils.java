@@ -24,8 +24,12 @@ import org.kuali.rice.test.SQLDataLoader;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class UnitTestDataUtils {
+public final class UnitTestDataUtils {
 
+	private UnitTestDataUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
     public static void executeDataLoader(UnitTestData[] data) throws Exception {
         for (UnitTestData d: data) {
             executeDataLoader(d);

@@ -29,10 +29,14 @@ import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class ServiceTestUtils {
+public final class ServiceTestUtils {
 	static	String serverHostStr = getConfigProp("kim.test.host");
 	static	String serverPortStr = getConfigProp("kim.test.port");
 	static	String appContext = getConfigProp("app.context.name");
+	
+	private ServiceTestUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 	
 	public static int getConfigIntProp(String intPropKey) {
 		return Integer.parseInt(getConfigProp(intPropKey));

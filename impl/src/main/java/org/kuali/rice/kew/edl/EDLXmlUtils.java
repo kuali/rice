@@ -40,7 +40,7 @@ import org.w3c.dom.NodeList;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class EDLXmlUtils {
+public final class EDLXmlUtils {
 
 	private static final Logger LOG = Logger.getLogger(EDLXmlUtils.class);
 
@@ -65,6 +65,10 @@ public class EDLXmlUtils {
             }
         }
     };
+    
+	private EDLXmlUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     /**
      * Returns a valid DocumentBuilder

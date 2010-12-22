@@ -44,8 +44,12 @@ public class TypeUtils {
     private static final HashMap<Class,Boolean> isSimpleCache = new HashMap<Class, Boolean>();
 
 
+	private TypeUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+    
     public static class JoinType{
-
+    	//FIXME: wtf is this?
 	}
 
     /**

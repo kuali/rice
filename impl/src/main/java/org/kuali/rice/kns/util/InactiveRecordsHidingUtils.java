@@ -25,7 +25,12 @@ import java.util.Map;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class InactiveRecordsHidingUtils {
+public final class InactiveRecordsHidingUtils {
+	
+	private InactiveRecordsHidingUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
     /**
      * Returns whether a collection has been set to show inactive records.  Note that if a collection has not been set to show inactive inactive records, then
      * this method will return false.

@@ -21,7 +21,11 @@ package org.kuali.rice.core.util;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RiceDebugUtils {
+public final class RiceDebugUtils {
+	
+	private RiceDebugUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
 	public static StringBuffer getTruncatedStackTrace( boolean excludeCaller ) {
     	// temporary throwable to be able to obtain a stack trace

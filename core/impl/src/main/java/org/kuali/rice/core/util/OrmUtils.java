@@ -36,12 +36,15 @@ import java.util.Set;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class OrmUtils {
+public final class OrmUtils {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(OrmUtils.class);
 	
 	private static Map<String, Boolean> cache = new HashMap<String, Boolean>();
 
+	private OrmUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 	
 	public static void populateAutoIncValue(Object entity, Long value) {
     	try {	    		

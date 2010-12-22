@@ -24,9 +24,13 @@ import org.kuali.rice.kns.service.ModuleService;
 /**
  * A class with utilities related to externalizable business objects
  */
-public class ExternalizableBusinessObjectUtils {
+public final class ExternalizableBusinessObjectUtils {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ExternalizableBusinessObjectUtils.class);
 
+	private ExternalizableBusinessObjectUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+    
 	/**
 	 * Given a class, this method determines which of the interfaces that the class implements extends {@link ExternalizableBusinessObject}
 	 * 

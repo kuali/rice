@@ -33,7 +33,12 @@ import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
  * This class helps to provide common mock objects for testing and also helper methods to build instances of objects.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class MockObjectsUtil {
+public final class MockObjectsUtil {
+	
+	private MockObjectsUtil() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
     /**
      * This method is a helper to build a NotificationChannel instance.
      * @param name

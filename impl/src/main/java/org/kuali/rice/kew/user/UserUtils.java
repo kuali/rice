@@ -26,11 +26,15 @@ import org.kuali.rice.kns.UserSession;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UserUtils {
+public final class UserUtils {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UserUtils.class);
 
 	private static PersonService<Person> personService;
+	
+	private UserUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 	
 	public static String getIdValue(String idType, Person user) {
 	    if ("workflowId".equalsIgnoreCase(idType) || "w".equalsIgnoreCase(idType) || "principalId".equalsIgnoreCase(idType)) {

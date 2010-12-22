@@ -30,9 +30,13 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 
-public class TestUtilities {
+public final class TestUtilities {
 	
 	private static Thread exceptionThreader;
+	
+	private TestUtilities() {
+		throw new UnsupportedOperationException("do not call");
+	}
 	
 	/**
      * Waits "indefinately" for the exception routing thread to terminate.

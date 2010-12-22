@@ -26,7 +26,11 @@ import org.kuali.rice.ksb.util.KSBConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KSBTestUtils {
+public final class KSBTestUtils {
+	
+	private KSBTestUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
     public static void setMessagingToAsync() {
         setupMessaging("async");

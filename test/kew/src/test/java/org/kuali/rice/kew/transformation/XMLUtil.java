@@ -34,8 +34,12 @@ import javax.xml.xpath.XPathFactory;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-public class XMLUtil {
+public final class XMLUtil {
 
+	private XMLUtil() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
 	// an XPath constructor
 	
 	static XPath makeXPath() {

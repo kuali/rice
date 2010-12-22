@@ -22,7 +22,12 @@ import org.kuali.rice.kns.datadictionary.FieldDefinition;
  * 
  * 
  */
-public class MapperUtils {
+public final class MapperUtils {
+	
+	private MapperUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+	
     /**
      * @param attributeName
      * @return ExportMap containing the standard entries associated with an attribute name

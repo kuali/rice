@@ -38,13 +38,17 @@ import org.kuali.rice.kns.web.ui.Row;
 import org.w3c.dom.Document;
 
 
-public class WorkflowUtils {
+public final class WorkflowUtils {
     private static final String XPATH_ROUTE_CONTEXT_KEY = "_xpathKey";
     public static final String XSTREAM_SAFE_PREFIX = "wf:xstreamsafe('";
     public static final String XSTREAM_SAFE_SUFFIX = "')";
     public static final String XSTREAM_MATCH_ANYWHERE_PREFIX = "//";
     public static final String XSTREAM_MATCH_RELATIVE_PREFIX = "./";
 
+	private WorkflowUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+    
     /**
      *
      * This method sets up the XPath with the correct workflow namespace and resolver initialized. This ensures that the XPath

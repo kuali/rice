@@ -19,9 +19,13 @@ import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 
 import junit.framework.AssertionFailedError;
 
-public class ValidationTestUtils {
+public final class ValidationTestUtils {
     private static final String[] TEST_INPUTS = { "", "!!!", "[a-9]", "^A-Z", "abc", "a bc", "a_bc", "123", "12 3", "12_3", "a1b2c3", "a1b2_c3", "a 1b2c3", "a 1b2_c3", "foo.bar", "foo.bar_baz", ".bar_foo baz" };
 
+	private ValidationTestUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
+    
     public static final void assertPatternMatches(ValidationPattern pattern, boolean[] expectedValues) {
         if (expectedValues.length != TEST_INPUTS.length) {
             throw new AssertionFailedError("expectedValues length was " + expectedValues.length + ", expected TEST_INPUTS.length of " + TEST_INPUTS.length);

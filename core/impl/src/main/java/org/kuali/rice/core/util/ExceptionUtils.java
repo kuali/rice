@@ -23,7 +23,11 @@ import java.lang.reflect.InvocationTargetException;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ExceptionUtils {
+public final class ExceptionUtils {
+	
+	private ExceptionUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
 	/**
 	 * Unwraps the appropriate Throwable from the given Throwable.  More specifically, this handles

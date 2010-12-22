@@ -34,7 +34,11 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RuleTestUtils {
+public final class RuleTestUtils {
+	
+	private RuleTestUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
 	
 	/**
 	 * <p>This method will create a delegate rule for the rule (assumed to be cardinality of 1) specified by the given

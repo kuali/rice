@@ -36,9 +36,13 @@ import org.kuali.rice.kew.util.KEWConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class CompatUtils {
+public final class CompatUtils {
 	
     private static RouteHelper helper = new RouteHelper();
+    
+	private CompatUtils() {
+		throw new UnsupportedOperationException("do not call");
+	}
     
     public static Integer getLevelForNode(DocumentType documentType, String nodeName) {
         if (isRouteLevelCompatible(documentType)) {

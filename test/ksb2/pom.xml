@@ -52,7 +52,6 @@
 	
 	    <!-- TODO - yuck, ended up having to create two profiles here to get the desired effect with mostly duplicated configuration
 	                of the cargo plugin.  I'm sure there's a better way to do this, don't have time right now to figure it out though -->
-	
 		<profile>
 			<id>eclipse</id>
 			<!-- This profile is meant to be used when wanting to run the integration tests inside of eclipse -->
@@ -61,7 +60,6 @@
 			</activation>
 			<properties>
 				<cargo.wait>true</cargo.wait>
-				<skipITs>true</skipITs>
 				<cargo.servlet.port>10200</cargo.servlet.port>
 			</properties>
 			<build>
@@ -125,11 +123,9 @@
 			</build>
 		</profile>
 		<profile>
-			<id>it</id>
+			<id>itests</id>
 			<activation>
-				<property>
-					<name>!skipITs</name>
-				</property>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
 				<cargo.servlet.port>10200</cargo.servlet.port>

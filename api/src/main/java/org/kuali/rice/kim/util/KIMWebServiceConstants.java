@@ -28,69 +28,115 @@ public class KIMWebServiceConstants {
 
 	public static final String MODULE_TARGET_NAMESPACE = RiceConstants.RICE_JAXWS_TARGET_NAMESPACE_BASE + "/kim";
 
-	public static class PermissionService {
+	public static final class PermissionService {
 		public static final String WEB_SERVICE_NAME = "kimPermissionServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.PermissionService";
 		public static final String WEB_SERVICE_PORT = "KimPermissionServicePort";
+		
+		private PermissionService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class PermissionUpdateService {
+	public static final class PermissionUpdateService {
 		public static final String WEB_SERVICE_NAME = "kimPermissionUpdateServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.PermissionUpdateService";
 		public static final String WEB_SERVICE_PORT = "KimPermissionUpdateServicePort";
+		
+		private PermissionUpdateService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class RoleService {
+	public static final class RoleService {
 		public static final String WEB_SERVICE_NAME = "kimRoleServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.RoleService";
 		public static final String WEB_SERVICE_PORT = "RoleServicePort";
+		
+		private RoleService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class RoleUpdateService {
+	public static final class RoleUpdateService {
 		public static final String WEB_SERVICE_NAME = "kimRoleUpdateServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.RoleUpdateService";
 		public static final String WEB_SERVICE_PORT = "RoleUpdateServicePort";
+		
+		private RoleUpdateService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class GroupService {
+	public static final class GroupService {
 		public static final String WEB_SERVICE_NAME = "kimGroupServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.GroupService";
 		public static final String WEB_SERVICE_PORT = "GroupServicePort";
+		
+		private GroupService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class GroupUpdateService {
+	public static final class GroupUpdateService {
 		public static final String WEB_SERVICE_NAME = "kimGroupUpdateServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.GroupUpdateService";
 		public static final String WEB_SERVICE_PORT = "GroupUpdateServicePort";
+		
+		private GroupUpdateService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class ResponsibilityService {
+	public static final class ResponsibilityService {
 		public static final String WEB_SERVICE_NAME = "kimResponsibilityServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.ResponsibilityService";
 		public static final String WEB_SERVICE_PORT = "ResponsibilityServicePort";
+		
+		private ResponsibilityService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class ResponsibilityUpdateService {
+	public static final class ResponsibilityUpdateService {
 		public static final String WEB_SERVICE_NAME = "kimResponsibilityUpdateServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.ResponsibilityUpdateService";
 		public static final String WEB_SERVICE_PORT = "ResponsibilityUpdateServicePort";
+		
+		private ResponsibilityUpdateService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class IdentityService {
+	public static final class IdentityService {
 		public static final String WEB_SERVICE_NAME = "kimIdentityServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.IdentityService";
 		public static final String WEB_SERVICE_PORT = "IdentityServicePort";
+		
+		private IdentityService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class IdentityManagementService {
+	public static final class IdentityManagementService {
 		public static final String WEB_SERVICE_NAME = "kimIdentityManagementServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kim.service.IdentityManagementService";
 		public static final String WEB_SERVICE_PORT = "IdentityManagementServicePort";
+		
+		private IdentityManagementService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class IdentityManagementNotificationService {
+	public final static class IdentityManagementNotificationService {
 		public static final String WEB_SERVICE_NAME = "kimIdentityManagementNotificationServiceSOAP";
+		
+		private IdentityManagementNotificationService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-
+	private KIMWebServiceConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

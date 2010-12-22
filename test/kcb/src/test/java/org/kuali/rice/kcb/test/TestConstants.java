@@ -24,7 +24,7 @@ import org.kuali.rice.kcb.util.KCBConstants;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface TestConstants {
+public final class TestConstants {
     /**
      * Email deliverer property
      */
@@ -39,5 +39,7 @@ public interface TestConstants {
     public static final String NON_EXISTENT_DELIVERER_NAME = "BOGUS_DELIVERER";
     
 
-
+	private TestConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

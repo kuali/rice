@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
-public class ParameterConstants {
+public final class ParameterConstants {
     public static final String NERVOUS_SYSTEM_NAMESPACE = KNSConstants.KNS_NAMESPACE;
     public static final String ALL_COMPONENT = "All";
     public static final String DOCUMENT_COMPONENT = "Document";
@@ -32,34 +32,37 @@ public class ParameterConstants {
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target( { ElementType.TYPE })
-    public @interface NAMESPACE {
+    public static @interface NAMESPACE {
         String namespace();
     }
 
     @Retention(RetentionPolicy.RUNTIME)
     @Target( { ElementType.TYPE })
-    public @interface COMPONENT {
+    public static @interface COMPONENT {
         String component();
     }
 
     @NAMESPACE(namespace = NERVOUS_SYSTEM_NAMESPACE)
     @COMPONENT(component = ALL_COMPONENT)
-    public final class NERVOUS_SYSTEM_ALL {
+    public static final class NERVOUS_SYSTEM_ALL {
     }
 
     @NAMESPACE(namespace = NERVOUS_SYSTEM_NAMESPACE)
     @COMPONENT(component = DOCUMENT_COMPONENT)
-    public final class NERVOUS_SYSTEM_DOCUMENT {
+    public static final class NERVOUS_SYSTEM_DOCUMENT {
     }
 
     @NAMESPACE(namespace = NERVOUS_SYSTEM_NAMESPACE)
     @COMPONENT(component = LOOKUP_COMPONENT)
-    public final class NERVOUS_SYSTEM_LOOKUP {
+    public static final class NERVOUS_SYSTEM_LOOKUP {
     }
 
     @NAMESPACE(namespace = NERVOUS_SYSTEM_NAMESPACE)
     @COMPONENT(component = BATCH_COMPONENT)
-    public final class NERVOUS_SYSTEM_BATCH {
+    public static final class NERVOUS_SYSTEM_BATCH {
     }
 
+	private ParameterConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

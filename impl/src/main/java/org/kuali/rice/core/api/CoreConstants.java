@@ -24,12 +24,12 @@ package org.kuali.rice.core.api;
  */
 public final class CoreConstants {
 	
-	private CoreConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
-	
-	public static class Services {
+	public final static class Services {
         public static final String DATETIME_SERVICE = "dateTimeService";
+        
+    	private Services() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
 	}
 	
 	public static final String STRING_TO_DATE_FORMATS = "STRING_TO_DATE_FORMATS";
@@ -38,5 +38,8 @@ public final class CoreConstants {
     public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE = "TIMESTAMP_TO_STRING_FORMAT_FOR_USER_INTERFACE";
     public static final String DATE_TO_STRING_FORMAT_FOR_FILE_NAME = "DATE_TO_STRING_FORMAT_FOR_FILE_NAME";
     public static final String TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME = "TIMESTAMP_TO_STRING_FORMAT_FOR_FILE_NAME";
-
+    
+	private CoreConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

@@ -24,20 +24,31 @@ import org.kuali.rice.core.util.RiceConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KEWWebServiceConstants {
+public final class KEWWebServiceConstants {
 
 	public static final String MODULE_TARGET_NAMESPACE = RiceConstants.RICE_JAXWS_TARGET_NAMESPACE_BASE + "/kew";
 
-	public static class SimpleDocumentActionsWebService {
+	public static final class SimpleDocumentActionsWebService {
 		public static final String WEB_SERVICE_NAME = "simpleDocumentActionsService";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService";
 		public static final String WEB_SERVICE_PORT = "SimpleDocumentActionsWebServicePort";
+		
+		private SimpleDocumentActionsWebService() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class WorkflowUtility {
+	public static final class WorkflowUtility {
 		public static final String WEB_SERVICE_NAME = "WorkflowUtilityServiceSOAP";
 		public static final String INTERFACE_CLASS = "org.kuali.rice.kew.service.WorkflowUtility";
 		public static final String WEB_SERVICE_PORT = "WorkflowUtilityPort";
+		
+		private WorkflowUtility() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
+	private KEWWebServiceConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

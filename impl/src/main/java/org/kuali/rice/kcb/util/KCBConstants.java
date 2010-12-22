@@ -19,7 +19,7 @@ package org.kuali.rice.kcb.util;
  * This class houses various constants for KCB
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class KCBConstants {
+public final class KCBConstants {
 	
 	public static final String SERVICE_NAMESPACE = "KCB";
 	
@@ -30,5 +30,13 @@ public class KCBConstants {
      */
     public static final class MESSAGE_DELIVERY_TYPES {
         public static final String EMAIL_MESSAGE_DELIVERY_TYPE = "Email"; 
+        
+    	private MESSAGE_DELIVERY_TYPES() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
+    
+	private KCBConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

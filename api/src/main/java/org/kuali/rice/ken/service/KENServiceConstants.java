@@ -23,5 +23,7 @@ package org.kuali.rice.ken.service;
 public final class KENServiceConstants {
     public static final String KENAPI_SERVICE = "KEN-KENAPIService";
 
-    private KENServiceConstants() {}
+	private KENServiceConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

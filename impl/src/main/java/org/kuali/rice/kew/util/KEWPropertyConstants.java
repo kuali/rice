@@ -25,12 +25,6 @@ import java.util.Set;
  *
  */
 public final class KEWPropertyConstants {
-	
-	private KEWPropertyConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
-
-    private static final long serialVersionUID = 3866677900853284209L;
 
     // Constants used by Document Search and the document search results
     public static final String DOC_SEARCH_RESULT_PROPERTY_NAME_ROUTE_HEADER_ID = "routeHeaderId";
@@ -91,5 +85,9 @@ public final class KEWPropertyConstants {
 		RESP_SECTION_NAME_SET.add(PERSON_RESP_SECTION);
 		RESP_SECTION_NAME_SET.add(GROUP_RESP_SECTION);
 		RESP_SECTION_NAME_SET.add(ROLE_RESP_SECTION);
+	}
+	
+	private KEWPropertyConstants() {
+		throw new UnsupportedOperationException("do not call");
 	}
 }

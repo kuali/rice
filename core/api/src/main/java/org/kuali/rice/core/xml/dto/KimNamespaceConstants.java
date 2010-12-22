@@ -24,8 +24,12 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  */
 @XmlTransient
-public class KimNamespaceConstants {
+public final class KimNamespaceConstants {
 
 	public static final String GROUP = "http://rice.kuali.org/xsd/kim/group";
+	
+	private KimNamespaceConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 	
 }

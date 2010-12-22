@@ -27,18 +27,11 @@ import org.kuali.rice.core.util.RiceConstants;
 
 public final class KEWConstants {
 
-	private KEWConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
-	
-    private static final long serialVersionUID = -3897059085433394648L;
-
     public static final String KEW_MODULE_NAMESPACE = "KEW";
     
     public static final String WEBAPP_DIRECTORY = "/kew";
 
     public static final String USE_OUT_BOX = "USE_OUT_BOX%";
-
 
     /**
      * Node state key under which rule selector can be specified on a per-nodeinstance basis
@@ -1000,9 +993,13 @@ public final class KEWConstants {
     public static final String DOCUMENT_SEARCH_ROUTE_LOG_POPUP_VALUE = "Y";
     public static final String DOCUMENT_SEARCH_DOCUMENT_POPUP_VALUE = "Y";
 
-    public class PermissionNames {
+    public static final class PermissionNames {
         public static final String VIEW_OTHER_ACTION_LIST = "View Other Action List";
         public static final String UNRESTRICTED_DOCUMENT_SEARCH = "Unrestricted Document Search";
+        
+    	private PermissionNames() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 
     // special user used when no other user is available
@@ -1025,4 +1022,8 @@ public final class KEWConstants {
 	public static final String PREFERENCES = "Preferences";
 	public static final String AUTHENTICATIONS = "Authentications";
 	public static final String WORKFLOW_DOCUMENT_MAP_ATTR_NAME = "workflowDocumentMap";
+	
+	private KEWConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

@@ -24,25 +24,27 @@ import org.kuali.rice.kns.util.KNSPropertyConstants;
  *
  */
 public final class KIMPropertyConstants {
-	
-	private KIMPropertyConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
-	
-	private static final long serialVersionUID = -879796178745937778L;
 
-	public static class Entity {
+	public static final class Entity {
 		public static final String ENTITY_ID = "entityId";
+		
+		private Entity() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 	
-	public static class Principal {
+	public static final class Principal {
 		public static final String PRINCIPAL_ID = "principalId";
 		public static final String PRINCIPAL_NAME = "principalName";
 		public static final String PASSWORD = "password";
 		public static final String ACTIVE = KNSPropertyConstants.ACTIVE;
+		
+		private Principal() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class Person {
+	public static final class Person {
 		public static final String ENTITY_ID = Entity.ENTITY_ID;
 		public static final String PRINCIPAL_ID = Principal.PRINCIPAL_ID;
 		public static final String PRINCIPAL_NAME = Principal.PRINCIPAL_NAME;
@@ -69,49 +71,101 @@ public final class KIMPropertyConstants {
 		public static final String AFFILIATION_TYPE_CODE = "affiliationTypeCode";
 		public static final String PRIMARY_DEPARTMENT_CODE = "primaryDepartmentCode";
 		public static final String BASE_SALARY_AMOUNT = "baseSalaryAmount";
+		
+		private Person() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 	
-	public static class Group {
+	public static final class Group {
 	    public static final String GROUP_ID = "groupId";
         public static final String GROUP_NAME = "groupName";
+        
+		private Group() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 	
-	public static class KimType {
+	public static final class KimType {
 	    public static final String KIM_TYPE_ID = "kimTypeId";
+	    
+		private KimType() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 	
-	public static class Role {
+	public static final class Role {
 		public static final String ROLE_ID = "roleId";
 		public static final String ROLE_NAME = "roleName";
 	    public static final String KIM_TYPE_ID = KimType.KIM_TYPE_ID;
 		public static final String ACTIVE = KNSPropertyConstants.ACTIVE;
+		
+		private Role() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class KimMember {
+	public static final class KimMember {
 		public static final String MEMBER_ID = "memberId";
 		public static final String MEMBER_TYPE_CODE = "memberTypeCode";
 		public static final String ACTIVE_FROM_DATE = "activeFromDate";
 		public static final String ACTIVE_TO_DATE = "activeToDate";
+		
+		private KimMember() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 	
-	public static class RoleMember extends KimMember {
+	public static final class RoleMember {
 		public static final String ROLE_MEMBER_ID = "roleMemberId";
 		public static final String ROLE_ID = Role.ROLE_ID;
+		public static final String MEMBER_ID = KimMember.MEMBER_ID;
+		public static final String MEMBER_TYPE_CODE = KimMember.MEMBER_TYPE_CODE;
+		public static final String ACTIVE_FROM_DATE = KimMember.ACTIVE_FROM_DATE;
+		public static final String ACTIVE_TO_DATE = KimMember.ACTIVE_TO_DATE;
+		
+		private RoleMember() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class GroupMember extends KimMember {
+	public static final class GroupMember {
 		public static final String GROUP_MEMBER_ID = "groupMemberId";
 		public static final String GROUP_ID = Group.GROUP_ID;
+		public static final String MEMBER_ID = KimMember.MEMBER_ID;
+		public static final String MEMBER_TYPE_CODE = KimMember.MEMBER_TYPE_CODE;
+		public static final String ACTIVE_FROM_DATE = KimMember.ACTIVE_FROM_DATE;
+		public static final String ACTIVE_TO_DATE = KimMember.ACTIVE_TO_DATE;
+		
+		private GroupMember() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 	
-	public static class DelegationMember extends KimMember {
+	public static final class DelegationMember {
 		public static final String DELEGATION_MEMBER_ID = "delegationMemberId";
 		public static final String DELEGATION_ID = Delegation.DELEGATION_ID;
+		public static final String MEMBER_ID = KimMember.MEMBER_ID;
+		public static final String MEMBER_TYPE_CODE = KimMember.MEMBER_TYPE_CODE;
+		public static final String ACTIVE_FROM_DATE = KimMember.ACTIVE_FROM_DATE;
+		public static final String ACTIVE_TO_DATE = KimMember.ACTIVE_TO_DATE;
+		
+		private DelegationMember() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 	
-	public static class Delegation {
+	public static final class Delegation {
 		public static final String ROLE_ID = "roleId";
 		public static final String DELEGATION_ID = "delegationId";
 		public static final String ACTIVE = KNSPropertyConstants.ACTIVE;
+		
+		private Delegation() {
+			throw new UnsupportedOperationException("do not call");
+		}
+	}
+	
+	private KIMPropertyConstants() {
+		throw new UnsupportedOperationException("do not call");
 	}
 }

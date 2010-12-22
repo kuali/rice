@@ -24,13 +24,6 @@ import java.text.SimpleDateFormat;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class RiceConstants {
-	
-	private RiceConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
-
-    private static final long serialVersionUID = 3625085403351858951L;
-
 	public static final String DB_PLATFORM = "dbPlatform";
 
     public static final String RICE_JPA_ENABLED = "rice.jpa.enabled";
@@ -90,4 +83,8 @@ public final class RiceConstants {
 	public static final long NO_WAIT = 0;
 
 	public static final String RICE_JAXWS_TARGET_NAMESPACE_BASE = "http://rice.kuali.org/wsdl";
+	
+	private RiceConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

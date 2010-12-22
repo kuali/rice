@@ -23,7 +23,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  * This class houses all constants for the NotificationSystem.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class NotificationConstants {
+public final class NotificationConstants {
     /**
      * This inner class holds contants that are used for parsing and resolving of content 
      * inside of the XML message format that represents a notification request.
@@ -35,6 +35,10 @@ public class NotificationConstants {
         public static final String CONTENT_SIMPLE_OPEN = "<content xmlns=\"ns:notification/ContentTypeSimple\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"ns:notification/ContentTypeSimple resource:notification/ContentTypeSimple\">";
         public static final String CONTENT_EVENT_OPEN = "<content xmlns=\"ns:notification/ContentTypeEvent\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"ns:notification/ContentTypeEvent resource:notification/ContentTypeEvent\">";
         public static final String CONTENT_CLOSE = "</content>";
+        
+    	private XML_MESSAGE_CONSTANTS() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     /**
@@ -42,8 +46,12 @@ public class NotificationConstants {
  * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class CONTENT_TYPES {
-	public static final String EVENT_CONTENT_TYPE = "Event";
-	public static final String SIMPLE_CONTENT_TYPE = "Simple";
+    	public static final String EVENT_CONTENT_TYPE = "Event";
+    	public static final String SIMPLE_CONTENT_TYPE = "Simple";
+    	
+    	private CONTENT_TYPES() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     /**
@@ -55,6 +63,10 @@ public class NotificationConstants {
     public static final class DELIVERY_TYPES {
         public static final String FYI = "FYI";
         public static final String ACK = "ACK";
+        
+    	private DELIVERY_TYPES() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 
     /**
@@ -72,9 +84,13 @@ public class NotificationConstants {
  * @author Kuali Rice Team (rice.collab@kuali.org)
      */
     public static final class NOTIFICATION_DETAIL_VIEWS {
-	public static final String NORMAL_VIEW = "displayActionListView";
-	public static final String INLINE = "displayActionListInlineView";
-	public static final String DOC_SEARCH_VIEW = "displayDocSearchView";
+    	public static final String NORMAL_VIEW = "displayActionListView";
+    	public static final String INLINE = "displayActionListInlineView";
+    	public static final String DOC_SEARCH_VIEW = "displayDocSearchView";
+    	
+    	private NOTIFICATION_DETAIL_VIEWS() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     /**
@@ -85,8 +101,12 @@ public class NotificationConstants {
         public static final String MSG_DELIVERY_ID = "messageDeliveryId";
         public static final String DELIVERER_ID = "delivererId";
         public static final String DOC_ID = "docId";
-	public static final String COMMAND = "command";
-	public static final String STANDALONE_WINDOW = "standaloneWindow";
+        public static final String COMMAND = "command";
+        public static final String STANDALONE_WINDOW = "standaloneWindow";
+        
+    	private NOTIFICATION_CONTROLLER_CONSTANTS() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     /**
@@ -102,6 +122,10 @@ public class NotificationConstants {
         public static final String DELIVERED = "DELIVERED";
         public static final String REMOVED = "REMOVED";
         public static final String AUTO_REMOVED = "AUTO_REMOVED";
+        
+    	private MESSAGE_DELIVERY_STATUS() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     /**
@@ -113,6 +137,10 @@ public class NotificationConstants {
     public static final class MESSAGE_DELIVERY_TYPES {
         public static final String KEW_ACTION_LIST_MESSAGE_DELIVERY_TYPE = "KEWActionList"; 
         public static final String DEFAULT_MESSAGE_DELIVERY_TYPE = KEW_ACTION_LIST_MESSAGE_DELIVERY_TYPE;
+        
+    	private MESSAGE_DELIVERY_TYPES() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     /**
@@ -124,6 +152,10 @@ public class NotificationConstants {
     public static final class RECIPIENT_TYPES {
         public static final String USER = "USER";
         public static final String GROUP = "GROUP";
+        
+    	private RECIPIENT_TYPES() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     /**
@@ -135,6 +167,10 @@ public class NotificationConstants {
     public static final class PROCESSING_FLAGS {
         public static final String RESOLVED = "RESOLVED";
         public static final String UNRESOLVED = "UNRESOLVED";
+        
+    	private PROCESSING_FLAGS() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 
     /**
@@ -144,6 +180,10 @@ public class NotificationConstants {
     public static final class LOCKED_FLAG {
         public static final String UNLOCKED = "U";
         public static final String LOCKED = "L";
+        
+    	private LOCKED_FLAG() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 
     /**
@@ -155,6 +195,10 @@ public class NotificationConstants {
     public static final class RESPONSE_STATUSES {
         public static final String SUCCESS = "Success";
         public static final String FAILURE = "Failure";
+        
+    	private RESPONSE_STATUSES() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     /**
@@ -173,6 +217,10 @@ public class NotificationConstants {
 			"the specified delivery type was invalid.";
         public static final String INVALID_REMOVE_DATE = "The notification message was received by the system; however, we cannot process it because " +
 	"the specified auto-remove date is before the send date.";
+        
+    	private RESPONSE_MESSAGES() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     /**
@@ -206,6 +254,10 @@ public class NotificationConstants {
         public static final String NOTIFICATION = "notification";
         public static final String USER_RECIPIENT_ID = "userRecipientId";
         public static final String DELIVERY_SYSTEM_ID = "deliverySystemId";
+        
+    	private BO_PROPERTY_NAMES() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     /**
@@ -223,6 +275,10 @@ public class NotificationConstants {
         public static final String GENERIC_AUTO_REMOVE_ANNOTATION = "The notification message has been auto-removed by the Notification System.";
         public static final String NOTIFICATION_ADMIN_GROUP_NAME = "NotificationAdmin";
         public static final String SEND_NOTIFICATION_REQ_DOC_TYPE = "SendNotificationRequest";
+        
+    	private KEW_CONSTANTS() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     /**
@@ -248,6 +304,10 @@ public class NotificationConstants {
             producer.setDescription(NOTIFICATION_SYSTEM_PRODUCER_DESCRIPTION);
             producer.setContactInfo(NOTIFICATION_SYSTEM_PRODUCER_CONTACT_INFO);
             return producer;
-        }	
+        }
+        
+    	private NOTIFICATION_PRODUCERS() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 }

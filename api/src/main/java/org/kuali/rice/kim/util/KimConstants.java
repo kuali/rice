@@ -24,7 +24,7 @@ import java.util.Map;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KimConstants {
+public final class KimConstants {
 
 	public static final String KIM_MODULE_NAMESPACE = "KIM";
 	
@@ -46,22 +46,34 @@ public class KimConstants {
 	public static final String KIM_ATTRIBUTE_BOOLEAN_TRUE_STR_VALUE = "Y";
 	public static final String KIM_ATTRIBUTE_BOOLEAN_FALSE_STR_VALUE = "N";
 	
-	public class EntityTypes {
+	public static final class EntityTypes {
 		public static final String PERSON = "PERSON";
 		public static final String SYSTEM = "SYSTEM";
+		
+		private EntityTypes() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public class PersonExternalIdentifierTypes {
+	public static final class PersonExternalIdentifierTypes {
 		public static final String TAX = "TAX";
+		
+		private PersonExternalIdentifierTypes() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
-	public class PersonAffiliationTypes {
+	public static final class PersonAffiliationTypes {
 		public static final String STAFF_AFFILIATION_TYPE = "STAFF";
 		public static final String STUDENT_AFFILIATION_TYPE = "STUDENT";
 		public static final String AFFILIATE_AFFILIATION_TYPE = "AFFILIATE";
 		public static final String FACULTY_AFFILIATION_TYPE = "FACULTY";
+		
+		private PersonAffiliationTypes() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public class PermissionTemplateNames {
+	public static final class PermissionTemplateNames {
         public static final String FULL_UNMASK_FIELD = "Full Unmask Field";
     	public static final String PARTIAL_UNMASK_FIELD = "Partial Unmask Field";
     	public static final String VIEW_FIELD = "View Inquiry or Maintenance Document Field";
@@ -101,16 +113,24 @@ public class KimConstants {
     	public static final String PERFORM_CUSTOM_MAINTENANCE_DOCUMENT_FUNCTION ="Perform Custom Maintenance Document Function";
     	public static final String MAINTAIN_SYSTEM_PARAMETER = "Maintain System Parameter";
     	public static final String SEND_AD_HOC_REQUEST ="Send Ad Hoc Request";
+    	
+		private PermissionTemplateNames() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class PermissionNames {
+	public final static class PermissionNames {
 		public static final String LOG_IN = "Log In";
 		public static final String ADMIN_PESSIMISTIC_LOCKING = "Administer Pessimistic Locking";
 		public static final String OVERRIDE_ENTITY_PRIVACY_PREFERENCES = "Override Entity Privacy Preferences";
     	public static final String MODIFY_ENTITY = "Modify Entity";
+    	
+		private PermissionNames() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class KimUIConstants {
+	public final static class KimUIConstants {
 		public static final String NAME_VALUE_SEPARATOR = " : ";
 		public static final String COMMA_SEPARATOR = ", ";
 		public static final String OR_OPERATOR = "|";
@@ -184,9 +204,13 @@ public class KimConstants {
 	    public static final String KIM_DOCUMENT_ROLE_MEMBER_LOOKUPABLE_IMPL = "kimDocumentRoleMemberLookupable";
 	    public static final String ROLE_MEMBER_LOOKUPABLE_IMPL = "roleMemberImplLookupable";
 	    public static final String ROLE_MEMBERS_COLLECTION_NAME = "roleMembers";
+	    
+		private KimUIConstants() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class PrimaryKeyConstants {
+	public final static class PrimaryKeyConstants {
 		public static final String ENTITY_ID = "entityId";
 		public static final String PRINCIPAL_ID = "principalId";
 		public static final String ROLE_ID = "roleId";
@@ -205,9 +229,13 @@ public class KimConstants {
 		public static final String KIM_PERMISSION_REQUIRED_ATTR_ID = "kimPermissionRequiredAttributeId";
 		public static final String KIM_ATTRIBUTE_ID = "kimAttributeId";
 		public static final String KIM_TYPE_CODE ="code";
+		
+		private PrimaryKeyConstants() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class UniqueKeyConstants {
+	public final static class UniqueKeyConstants {
 		public static final String NAMESPACE_CODE = "namespaceCode";
 		public static final String PRINCIPAL_NAME = "principalName";
 		public static final String GROUP_NAME = "groupName";
@@ -216,9 +244,13 @@ public class KimConstants {
 		public static final String RESPONSIBILITY_NAME = "name";
 		public static final String PERMISSION_TEMPLATE_NAME = "name";
 		public static final String RESPONSIBILITY_TEMPLATE_NAME = "name";
+		
+		private UniqueKeyConstants() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
-	public static class SequenceNames {
+	public final static class SequenceNames {
 		public static final String KRIM_PRNCPL_ID_S = "KRIM_PRNCPL_ID_S";
 		public static final String KRIM_ENTITY_ID_S = "KRIM_ENTITY_ID_S";
 		public static final String KRIM_ROLE_ID_S = "KRIM_ROLE_ID_S";
@@ -232,6 +264,10 @@ public class KimConstants {
 		public static final String KRIM_PERM_ID_S = "KRIM_PERM_ID_S";
 		public static final String KRIM_RSP_ID_S = "KRIM_RSP_ID_S";
 		public static final String KRIM_ATTR_DATA_ID_S = "KRIM_ATTR_DATA_ID_S";
+		
+		private SequenceNames() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
 	/**
@@ -242,7 +278,7 @@ public class KimConstants {
 	 *
 	 * @author Kuali Rice Team (rice.collab@kuali.org)
 	 */
-	public static class KimGroupMemberTypes {
+	public final static class KimGroupMemberTypes {
 
 		/**
 		 * For group members that are themselves groups
@@ -253,6 +289,13 @@ public class KimConstants {
 		 * For group members that are principals
 		 */
 		public static final String PRINCIPAL_MEMBER_TYPE = "P";
+		
+		private KimGroupMemberTypes() {
+			throw new UnsupportedOperationException("do not call");
+		}
 	}
 
+	private KimConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

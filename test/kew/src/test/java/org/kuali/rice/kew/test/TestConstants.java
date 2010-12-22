@@ -19,9 +19,12 @@ package org.kuali.rice.kew.test;
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface TestConstants {
+public final class TestConstants {
 
     public static final String TEST_SPRING_DATA_SOURCE_FILE = "TestSpringDataSource.xml";
     public static final String STANDARD_BEANS_FILE = "SpringBeans.xml";
     
+	private TestConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

@@ -23,16 +23,24 @@ package org.kuali.test;
  * 
  * 
  */
-public interface KNSTestConstants {
+public final class KNSTestConstants {
     /**
      * contains Test related constants
      * 
      * 
      */
-    public final class TestConstants {
+    public static final class TestConstants {
         private static final String HOST = "localhost";
         private static final String PORT = "8080";
         public static final String BASE_PATH = "http://" + HOST + ":" + PORT + "/";
         public static final String MESSAGE = "JUNIT test entry. If this exist after the tests are not cleaning up correctly. Created by class";
+        
+    	private TestConstants() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
+    
+	private KNSTestConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

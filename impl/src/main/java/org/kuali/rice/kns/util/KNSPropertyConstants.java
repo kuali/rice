@@ -22,12 +22,6 @@ package org.kuali.rice.kns.util;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class KNSPropertyConstants {
-	
-	private KNSPropertyConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
-
-	private static final long serialVersionUID = 8521031610189566393L;
 
 	public static final String ACTIVE = "active";
 	public static final String ACTIVE_FROM_DATE = "activeFromDate";
@@ -107,4 +101,8 @@ public final class KNSPropertyConstants {
     public static final String POSTAL_ZIP_CODE = "postalZipCode";
     public static final String POSTAL_STATE_CODE = "postalStateCode";
     public static final String POSTAL_CODE = "postalCode";
+    
+	private KNSPropertyConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

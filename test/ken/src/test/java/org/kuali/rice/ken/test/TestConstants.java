@@ -24,7 +24,7 @@ import org.kuali.rice.ken.util.NotificationConstants;
  * to be kept in sync.
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TestConstants {
+public final class TestConstants {
     /**
      * A primary key that won't exist in the database
      */
@@ -209,5 +209,9 @@ public class TestConstants {
      * Email deliverer property
      */
     public static final String EMAIL_DELIVERER_PROPERTY_VALUE = "kuali-ken-testing@cornell.edu";
+    
+	private TestConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
 }

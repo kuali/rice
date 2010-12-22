@@ -24,8 +24,12 @@ import javax.xml.bind.annotation.XmlTransient;
  *
  */
 @XmlTransient
-public class CoreNamespaceConstants {
+public final class CoreNamespaceConstants {
 	
 	public static final String DATA = "http://rice.kuali.org/xsd/core/data";
 	public static final String CORE = "http://rice.kuali.org/xsd/core/xml/dto";
+	
+	private CoreNamespaceConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

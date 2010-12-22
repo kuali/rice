@@ -18,7 +18,7 @@ package org.kuali.rice.kns.util;
 /**
  * Holds error key constants.
  */
-public class RiceKeyConstants {
+public final class RiceKeyConstants {
     public static final String ERROR_EXISTENCE = "error.existence";
     public static final String ERROR_EXPIRED = "error.expired";
     public static final String ERROR_INACTIVE = "error.inactive";
@@ -193,5 +193,9 @@ public class RiceKeyConstants {
     public static final String INFO_WILDCARDS_AND_OPERATORS_TREATED_LITERALLY = "info.wildcards.and.operators.treated.literally";
 
     public static final String ERROR_DOCUMENT_IDENTITY_MANAGEMENT_PERSON_QUALIFIER_VALUE_NOT_UNIQUE = "error.document.identityManagementPerson.qualifier.valueNotUnique";
+    
+	private RiceKeyConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }
 

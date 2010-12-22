@@ -21,9 +21,13 @@ package org.kuali.rice.kew.ria;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class RIAConstants {
+public final class RIAConstants {
 	public static final String GENERIC_RIA_DOCUMENT = "RIADocument";
 	public static final String RIA_DOC_TYPE_NAME = "riaDocTypeName";
 	public static final String RIA_UPDATED_AT = "updatedAt";
 	public static final String DEFAULT_GROUP_NAMESPACE = "KUALI";
+	
+	private RIAConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

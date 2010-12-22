@@ -22,17 +22,11 @@ package org.kuali.rice.ksb.util;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class KSBConstants {
-	
-	private KSBConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
-
-    private static final long serialVersionUID = -958108423493026266L;
 
     /**
      * Configuration Parameters
      */
-    public class Config {
+    public static final class Config {
     	public static final String SERVICE_NAMESPACE = "service.namespace";
         public static final String MESSAGE_PERSISTENCE = "message.persistence";
         public static final String MESSAGING_OFF = "message.off";
@@ -56,6 +50,10 @@ public final class KSBConstants {
         public static final String KSB_ALTERNATE_ENDPOINT_LOCATIONS = "ksb.alternateEndpointLocations";
         public static final String LOAD_KNS_MODULE_CONFIGURATION = "rice.ksb.loadKNSModuleConfiguration";
         public static final String RESTFUL_SERVICE_PATH = "rice.ksb.restfulServicePath";
+        
+    	private Config() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     // messaging constants
@@ -77,7 +75,7 @@ public final class KSBConstants {
     public static final String KEYSTORE_ALIAS_HEADER = "KEW_KEYSTORE_ALIAS";
     public static final String KEYSTORE_CERTIFICATE_HEADER = "KEW_CERTIFICATE_ALIAS";
     
-    public class ServiceNames {
+    public static final class ServiceNames {
     	public static final String BAM_SERVICE = "bamService";
     	public static final String BUS_ADMIN_SERVICE = "busAdminService";
     	public static final String BUS_IN_INTERCEPTORS = "ksbInInterceptors";
@@ -108,6 +106,10 @@ public final class KSBConstants {
         public static final String THREAD_POOL_SERVICE = "enThreadPool";
         public static final String TRANSACTION_MANAGER = "transactionManager";
         public static final String TRANSACTION_TEMPLATE = "transactionTemplate";
+        
+    	private ServiceNames() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
     
     // Deprecated configuration Parameters, please use the Config inner class when referencing these.
@@ -157,5 +159,9 @@ public final class KSBConstants {
     public static final String KSB_ALTERNATE_ENDPOINT_LOCATIONS = KSBConstants.Config.KSB_ALTERNATE_ENDPOINT_LOCATIONS;
     @Deprecated
     public static final String LOAD_KNS_MODULE_CONFIGURATION = KSBConstants.Config.LOAD_KNS_MODULE_CONFIGURATION;
+    
+	private KSBConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 
 }

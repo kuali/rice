@@ -22,12 +22,6 @@ import java.util.List;
  * This class is used to define global constants.
  */
 public final class KNSConstants {
-	
-	private KNSConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
-	
-    private static final long serialVersionUID = 2882277719647128949L;
 
 //    public static final String AD_HOC_ROUTE_ERRORS = null;
 
@@ -66,7 +60,7 @@ public final class KNSConstants {
     public static final String KUALI_ACTION_CAN_EDIT__DOCUMENT_OVERVIEW = "canEditDocumentOverview"; 
     public static final String KUALI_DEFAULT_TRUE_VALUE = "true";
     
-    public static class DetailTypes {
+    public static final class DetailTypes {
         public static final String NA_PARM_DETAIL_TYPE = "N/A";
         public static final String ALL_DETAIL_TYPE = "All";
         public static final String LOOKUP_PARM_DETAIL_TYPE = "Lookup";
@@ -89,14 +83,22 @@ public final class KNSConstants {
         public static final String RULE_SERVICE_DETAIL_TYPE = "RuleBaseValues";
         public static final String RULE_TEMPLATE_DETAIL_TYPE = "RuleTemplate";
         public static final String WORKGROUP_DETAIL_TYPE = "Notification";
+        
+    	private DetailTypes() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 
-    public static class DocumentFormHeaderFieldIds {
+    public static final class DocumentFormHeaderFieldIds {
     	public static final String DOCUMENT_NUMBER = "documentNumber";
     	public static final String DOCUMENT_WORKFLOW_STATUS = "documentStatus";
     	public static final String DOCUMENT_INITIATOR = "documentInitiator";
     	public static final String DOCUMENT_CREATE_DATE = "documentCreateDate";
     	public static final String DOCUMENT_TEMPLATE_NUMBER = "documentTemplateNumber";
+    	
+    	private DocumentFormHeaderFieldIds() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 
     public static final String MAX_UPLOAD_SIZE_PARM_NM = "MAX_FILE_SIZE_DEFAULT_UPLOAD";
@@ -456,7 +458,7 @@ public final class KNSConstants {
 
     public static final String XML_MIME_TYPE = "application/xml";
 
-    public enum NoteTypeEnum {
+    public static enum NoteTypeEnum {
         BUSINESS_OBJECT_NOTE_TYPE("BO", "documentBusinessObject"), DOCUMENT_HEADER_NOTE_TYPE("DH", "documentHeader");
         private String noteTypeCode;
         private String noteTypePath;
@@ -510,7 +512,7 @@ public final class KNSConstants {
     public static final String DOCUMENT_WEB_SCOPE = "documentWebScope";
     public static final String SESSION_SCOPE = "session";
 
-    public static class SystemGroupParameterNames {
+    public static final class SystemGroupParameterNames {
         public static final String CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND = "CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND";
 
         public static final String LOOKUP_RESULTS_LIMIT = "RESULTS_LIMIT";
@@ -536,17 +538,25 @@ public final class KNSConstants {
                 
         public static final String SENSITIVE_DATA_PATTERNS = "SENSITIVE_DATA_PATTERNS";
         public static final String SENSITIVE_DATA_PATTERNS_WARNING_IND = "SENSITIVE_DATA_PATTERNS_WARNING_IND";
+        
+    	private SystemGroupParameterNames() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 
-    public static class Maintenance {
+    public static final class Maintenance {
         public static final String AFTER_CLASS_DELIM = "!!";
         public static final String AFTER_FIELDNAME_DELIM = "^^";
         public static final String AFTER_VALUE_DELIM = "::";
+        
+    	private Maintenance() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 
     public static final int DEFAULT_NUM_OF_COLUMNS = 1;
 
-    public static class TableRenderConstants {
+    public static final class TableRenderConstants {
         public static final String SWITCH_TO_PAGE_METHOD = "switchToPage";
         public static final String SORT_METHOD = "sort";
         public static final String SELECT_ALL_METHOD = "selectAll";
@@ -555,6 +565,10 @@ public final class KNSConstants {
         // below field used on displayMultipleValueLookupResults.tag
         public static final String PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM = "previouslySortedColumnIndex";
         public static final String VIEWED_PAGE_NUMBER = "viewedPageNumber";
+        
+    	private TableRenderConstants() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 
     public static final String TAB_STATES = "tabStates";
@@ -571,9 +585,13 @@ public final class KNSConstants {
 
     public static final String GLOBAL_VARIABLES_MESSAGES_LIST_ACTION_MESSAGES = "GlobalVariablesMessagesList";
 
-    public class Config {
+    public static final class Config {
     	public static final String APPLY_ILLEGAL_BUSINESS_OBJECT_FOR_SAVE_CHECK = "rice.kns.illegalBusinessObjectsForSave.applyCheck";
     	public static final String ILLEGAL_BUSINESS_OBJECTS_FOR_SAVE = "rice.kns.illegalBusinessObjectsForSave";
+    	
+    	private Config() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 
 	public static final String ENABLE_NONPRODUCTION_UNMASKING = "enable.nonproduction.data.unmasking";
@@ -583,4 +601,8 @@ public final class KNSConstants {
   	public static final String SENSITIVE_DATA_QUESTION_SESSION_TICKET = "SENSITIVE_DATA_QUESTION_SESSION_TICKET";
   	public static final String EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME = "EditablePropertiesHistoryHolder";
 
+  	
+	private KNSConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

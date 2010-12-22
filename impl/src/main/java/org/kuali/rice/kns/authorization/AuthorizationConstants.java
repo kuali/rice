@@ -20,21 +20,29 @@ package org.kuali.rice.kns.authorization;
  * Defines constants used in authorization-related code.
  */
 public final class AuthorizationConstants {
-	
-	private AuthorizationConstants() {
-		throw new UnsupportedOperationException("do not call");
-	}
-	
-    private static final long serialVersionUID = 3415761227639600675L;
 
-    public static class EditMode {
+    public static final class EditMode {
         public static final String UNVIEWABLE = "unviewable";
         public static final String VIEW_ONLY = "viewOnly";
         public static final String FULL_ENTRY = "fullEntry";
+        
+    	private EditMode() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
 
-    public static class MaintenanceEditMode extends EditMode {
+    public static final class MaintenanceEditMode {
         public static final String APPROVER_EDIT_ENTRY = "approverEditEntry";
+        public static final String UNVIEWABLE = EditMode.UNVIEWABLE;
+        public static final String VIEW_ONLY = EditMode.VIEW_ONLY;
+        public static final String FULL_ENTRY = EditMode.FULL_ENTRY;
+        
+    	private MaintenanceEditMode() {
+    		throw new UnsupportedOperationException("do not call");
+    	}
     }
-
+    
+	private AuthorizationConstants() {
+		throw new UnsupportedOperationException("do not call");
+	}
 }

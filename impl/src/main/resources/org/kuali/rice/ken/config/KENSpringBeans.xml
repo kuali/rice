@@ -219,12 +219,6 @@
             <value>kenDataSource</value>
         </property>
     </bean>
-    
-    <!-- JPA
-    <bean id="kenGenericDao" class="org.kuali.rice.core.dao.impl.GenericDaoJpa">
-		<property name="entityManager" ref="kenEntityManager"/>
-	</bean>
-	 -->
     <!-- END DAOS -->
 
     <bean id="resolverExecutor" class="java.util.concurrent.ThreadPoolExecutor">

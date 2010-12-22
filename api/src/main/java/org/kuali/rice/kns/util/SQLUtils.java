@@ -26,6 +26,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.LogicalOperator;
+
 
 /**
  * Utility class for working with SQL.
@@ -285,5 +287,22 @@ public final class SQLUtils {
         }
         return new Timestamp(calendar.getTimeInMillis());
     }
-	
+   
+	public static String cleanDate(String string) {		
+        for (LogicalOperator op : LogicalOperator.RANGE_CHARACTERS) {
+            string = StringUtils.replace(string, op.op(), "");
+        }
+        return string;
+    }
+   
+	public static String cleanNumericOfValidOperators(String string){
+		for (LogicalOperator op : LogicalOperator.RANGE_CHARACTERS) {
+            string = StringUtils.replace(string, op.op(), "");
+        }
+		string = StringUtils.replace(string, LogicalOperator.OR.op(), "");
+		string = StringUtils.replace(string, LogicalOperator.AND.op(), "");
+		string = StringUtils.replace(string, LogicalOperator.NOT.op(), "");
+
+		return string;
+	}
 }

@@ -19,6 +19,8 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
@@ -30,7 +32,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.jdbc.SqlBuilder;
+import org.kuali.rice.core.api.LogicalOperator;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -60,6 +62,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 
@@ -98,7 +101,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDocument(org.kuali.rice.kns.document.Document)
      */
-    public void validateDocument(Document document) {
+    @Override
+	public void validateDocument(Document document) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
 
         // validate primitive values
@@ -110,7 +114,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDocumentAttribute(org.kuali.rice.kns.document.Document,
      *      java.lang.String,java.lang.String)
      */
-    public void validateDocumentAttribute(Document document, String attributeName, String errorPrefix) {
+    @Override
+	public void validateDocumentAttribute(Document document, String attributeName, String errorPrefix) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
 
         try {
@@ -131,7 +136,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDocumentRecursively
      */
-    public void validateDocumentRecursively(Document document, int depth) {
+    @Override
+	public void validateDocumentRecursively(Document document, int depth) {
         // validate primitives of document
         validateDocument(document);
 
@@ -139,11 +145,13 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         validateBusinessObjectsFromDescriptors(document, PropertyUtils.getPropertyDescriptors(document.getClass()), depth);
     }
 
-    public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired) {
+    @Override
+	public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired) {
     	validateDocumentAndUpdatableReferencesRecursively(document, maxDepth, validateRequired, false);
     }
     
-    public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
+    @Override
+	public void validateDocumentAndUpdatableReferencesRecursively(Document document, int maxDepth, boolean validateRequired, boolean chompLastLetterSFromCollectionName) {
         String documentEntryName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();
         // validate primitive values of the document
         validatePrimitivesFromDescriptors(documentEntryName, document, PropertyUtils.getPropertyDescriptors(document.getClass()), "", validateRequired);
@@ -226,14 +234,16 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateBusinessObject(org.kuali.rice.kns.bo.BusinessObject)
      */
-    public void validateBusinessObject(BusinessObject businessObject) {
+    @Override
+	public void validateBusinessObject(BusinessObject businessObject) {
         validateBusinessObject(businessObject, true);
     }
 
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateBusinessObject(org.kuali.rice.kns.bo.BusinessObject,boolean)
      */
-    public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired) {
+    @Override
+	public void validateBusinessObject(BusinessObject businessObject, boolean validateRequired) {
         if (ObjectUtils.isNull(businessObject)) {
             return;
         }
@@ -249,6 +259,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
 	 * @see org.kuali.rice.kns.service.DictionaryValidationService#validateBusinessObjectOnMaintenanceDocument(org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
 	 */
+	@Override
 	public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
 		MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
 		for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
@@ -294,14 +305,16 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	/**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#isBusinessObjectValid(org.kuali.rice.kns.bo.BusinessObject)
      */
-    public boolean isBusinessObjectValid(BusinessObject businessObject) {
+    @Override
+	public boolean isBusinessObjectValid(BusinessObject businessObject) {
         return isBusinessObjectValid(businessObject, null);
     }
 
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#isBusinessObjectValid(org.kuali.rice.kns.bo.BusinessObject, String)
      */
-    public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix) {
+    @Override
+	public boolean isBusinessObjectValid(BusinessObject businessObject, String prefix) {
         final MessageMap errorMap = GlobalVariables.getMessageMap();
         int originalErrorCount = errorMap.getErrorCount();
 
@@ -316,7 +329,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @param businessObject - business object to validate
      */
-    public void validateBusinessObjectsRecursively(BusinessObject businessObject, int depth) {
+    @Override
+	public void validateBusinessObjectsRecursively(BusinessObject businessObject, int depth) {
         if (ObjectUtils.isNull(businessObject)) {
             return;
         }
@@ -333,7 +347,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeFormat
      * objectClassName is the docTypeName
      */
-    public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String errorKey) {
+    @Override
+	public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String errorKey) {
         // Retrieve the field's data type, or set to the string data type if an exception occurs when retrieving the class or the DD entry.
         String attributeDataType = null;
         try {
@@ -347,7 +362,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         
         validateAttributeFormat(objectClassName, attributeName, attributeInValue, attributeDataType, errorKey);
     }
-
+    
     /**
      * The attributeDataType parameter should be one of the data types specified by the SearchableAttribute interface; will
      * default to DATA_TYPE_STRING if a data type other than the ones from SearchableAttribute is specified.
@@ -355,6 +370,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeFormat(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      * objectClassName is the docTypeName
      */
+	@Override
 	public void validateAttributeFormat(String objectClassName, String attributeName, String attributeInValue, String attributeDataType, String errorKey) {
         boolean checkDateBounds = false; // this is used so we can check date bounds
         Class<?> formatterClass = null;
@@ -368,7 +384,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
          *  12/07/09 .. 12/08/09 it will return [12/07/09,12/08/09]
          */
 
-        List<String> attributeValues = SqlBuilder.getCleanedSearchableValues(attributeInValue, attributeDataType);
+        List<String> attributeValues = getCleanedSearchableValues(attributeInValue, attributeDataType);
 
         if(attributeValues == null || attributeValues.isEmpty()) {
 			return;
@@ -497,11 +513,92 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     		}
         }
     }
+	
+    /**
+    *
+    * This method splits the values then cleans them of any other query characters like *?!><...
+    *
+    * @param valueEntered
+    * @param propertyDataType
+    * @return
+    */
+   private static List<String> getCleanedSearchableValues(String valueEntered, String propertyDataType) {
+ 	   List<String> lRet = null;
+ 	   List<String> lTemp = getSearchableValues(valueEntered);
+ 	   if(lTemp != null && !lTemp.isEmpty()){
+ 		   lRet = new ArrayList<String>();
+ 		   for(String val: lTemp){
+ 			   // Clean the wildcards appropriately, depending on the field's data type.
+ 			   if (KNSConstants.DATA_TYPE_STRING.equals(propertyDataType)) {
+ 				   lRet.add(ObjectUtils.clean(val));
+ 			   } else if (KNSConstants.DATA_TYPE_FLOAT.equals(propertyDataType) || KNSConstants.DATA_TYPE_LONG.equals(propertyDataType)) {
+ 				   lRet.add(SQLUtils.cleanNumericOfValidOperators(val));
+ 			   } else if (KNSConstants.DATA_TYPE_DATE.equals(propertyDataType)) {
+ 				   lRet.add(SQLUtils.cleanDate(val));
+ 			   } else {
+ 				   lRet.add(ObjectUtils.clean(val));
+ 			   }
+ 		   }
+ 	   }
+ 	   return lRet;
+   }
+   
+   /**
+   *
+   * This method splits the valueEntered on locical operators and, or, and between
+   *
+   * @param valueEntered
+   * @return
+   */
+	private static List<String> getSearchableValues(String valueEntered) {
+		List<String> lRet = new ArrayList<String>();
+		getSearchableValueRecursive(valueEntered, lRet);
+		return lRet;
+	}
+
+	private static void getSearchableValueRecursive(String valueEntered, List lRet) {
+		if(valueEntered == null) {
+			return;
+		}
+
+		valueEntered = valueEntered.trim();
+
+		if(lRet == null){
+			throw new NullPointerException("The list passed in is by reference and should never be null.");
+		}
+
+		if (StringUtils.contains(valueEntered, LogicalOperator.BETWEEN.op())) {
+			List<String> l = Arrays.asList(valueEntered.split("\\.\\."));
+			for(String value : l){
+				getSearchableValueRecursive(value,lRet);
+			}
+			return;
+		}
+		if (StringUtils.contains(valueEntered, LogicalOperator.OR.op())) {
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, LogicalOperator.OR.op()));
+			for(String value : l){
+				getSearchableValueRecursive(value,lRet);
+			}
+			return;
+		}
+		if (StringUtils.contains(valueEntered, LogicalOperator.AND.op())) {
+			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND.op())));
+			List<String> l = Arrays.asList(StringUtils.split(valueEntered, LogicalOperator.AND.op()));
+			for(String value : l){
+				getSearchableValueRecursive(value,lRet);
+			}
+			return;
+		}
+
+		// lRet is pass by ref and should NEVER be null
+		lRet.add(valueEntered);
+  }
 
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateAttributeRequired
      */
-    public void validateAttributeRequired(String objectClassName, String attributeName, Object attributeValue, Boolean forMaintenance, String errorKey) {
+    @Override
+	public void validateAttributeRequired(String objectClassName, String attributeName, Object attributeValue, Boolean forMaintenance, String errorKey) {
         // check if field is a required field for the business object
         if (attributeValue == null || (attributeValue instanceof String && StringUtils.isBlank((String) attributeValue))) {
             Boolean required = getDataDictionaryService().isAttributeRequired(objectClassName, attributeName);
@@ -583,7 +680,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @param propertyDescriptor
      * @param errorPrefix
      */
-    public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired) {
+    @Override
+	public void validatePrimitiveFromDescriptor(String entryName, Object object, PropertyDescriptor propertyDescriptor, String errorPrefix, boolean validateRequired) {
         // validate the primitive attributes if defined in the dictionary
         if (null != propertyDescriptor && getDataDictionaryService().isAttributeDefined(entryName, propertyDescriptor.getName())) {
             Object value = ObjectUtils.getPropertyValue(object, propertyDescriptor.getName());
@@ -608,7 +706,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceExists(org.kuali.rice.kns.bo.BusinessObject,
      *      org.kuali.rice.kns.datadictionary.ReferenceDefinition)
      */
-    public boolean validateReferenceExists(BusinessObject bo, ReferenceDefinition reference) {
+    @Override
+	public boolean validateReferenceExists(BusinessObject bo, ReferenceDefinition reference) {
         return validateReferenceExists(bo, reference.getAttributeName());
     }
 
@@ -616,7 +715,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceExists(org.kuali.rice.kns.bo.BusinessObject,
      *      java.lang.String)
      */
-    public boolean validateReferenceExists(BusinessObject bo, String referenceName) {
+    @Override
+	public boolean validateReferenceExists(BusinessObject bo, String referenceName) {
 
         // attempt to retrieve the specified object from the db
         BusinessObject referenceBo = businessObjectService.getReferenceIfExists(bo, referenceName);
@@ -637,7 +737,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.kns.bo.BusinessObject,
      *      org.kuali.rice.kns.datadictionary.ReferenceDefinition)
      */
-    public boolean validateReferenceIsActive(BusinessObject bo, ReferenceDefinition reference) {
+    @Override
+	public boolean validateReferenceIsActive(BusinessObject bo, ReferenceDefinition reference) {
         return validateReferenceIsActive(bo, reference.getAttributeName());
     }
 
@@ -645,7 +746,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceIsActive(org.kuali.rice.kns.bo.BusinessObject,
      *      java.lang.String, java.lang.String, boolean)
      */
-    public boolean validateReferenceIsActive(BusinessObject bo, String referenceName) {
+    @Override
+	public boolean validateReferenceIsActive(BusinessObject bo, String referenceName) {
 
         // attempt to retrieve the specified object from the db
         BusinessObject referenceBo = businessObjectService.getReferenceIfExists(bo, referenceName);
@@ -663,7 +765,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateReferenceExistsAndIsActive(org.kuali.rice.kns.bo.BusinessObject,
      *      org.kuali.rice.kns.datadictionary.ReferenceDefinition)
      */
-    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, ReferenceDefinition reference) {
+    @Override
+	public boolean validateReferenceExistsAndIsActive(BusinessObject bo, ReferenceDefinition reference) {
         boolean success = true;
         // intelligently use the fieldname from the reference, or get it out
         // of the dataDictionaryService
@@ -729,7 +832,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      *      java.lang.String, java.lang.String, boolean, boolean, java.lang.String, java.lang.String)
      */
 
-    public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName, String attributeToHighlightOnFail, String displayFieldName) {
+    @Override
+	public boolean validateReferenceExistsAndIsActive(BusinessObject bo, String referenceName, String attributeToHighlightOnFail, String displayFieldName) {
     	
     	// if we're dealing with a nested attribute, we need to resolve down to the BO where the primitive attribute is located
     	// this is primarily to deal with the case of a defaultExistenceCheck that uses an "extension", i.e referenceName
@@ -811,7 +915,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDefaultExistenceChecks(org.kuali.rice.kns.bo.BusinessObject)
      */
-    public boolean validateDefaultExistenceChecks(BusinessObject bo) {
+    @Override
+	public boolean validateDefaultExistenceChecks(BusinessObject bo) {
 
         boolean success = true;
 
@@ -831,6 +936,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.kns.bo.BusinessObject, org.kuali.rice.kns.bo.BusinessObject, java.lang.String)
      */
+	@Override
 	public boolean validateDefaultExistenceChecksForNewCollectionItem(BusinessObject bo, BusinessObject newCollectionItem,
 			String collectionName) {
         boolean success = true;
@@ -865,6 +971,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	 * 
 	 * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDefaultExistenceChecksForTransDoc(org.kuali.rice.kns.document.TransactionalDocument)
 	 */
+	@Override
 	public boolean validateDefaultExistenceChecksForTransDoc(TransactionalDocument document) {
         boolean success = true;
 
@@ -887,6 +994,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	 * 
 	 * @see org.kuali.rice.kns.service.DictionaryValidationService#validateDefaultExistenceChecksForNewCollectionItem(org.kuali.rice.kns.document.TransactionalDocument, org.kuali.rice.kns.bo.PersistableBusinessObject)
 	 */
+	@Override
 	public boolean validateDefaultExistenceChecksForNewCollectionItem(
 			TransactionalDocument document,
 			BusinessObject newCollectionItem, String collectionName) {
@@ -919,7 +1027,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateApcRule(org.kuali.rice.kns.bo.BusinessObject,
      *      org.kuali.rice.kns.datadictionary.ApcRuleDefinition)
      */
-    public boolean validateApcRule(BusinessObject bo, ApcRuleDefinition apcRule) {
+    @Override
+	public boolean validateApcRule(BusinessObject bo, ApcRuleDefinition apcRule) {
         boolean success = true;
         Object attrValue;
         try {
@@ -947,7 +1056,8 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
     /**
      * @see org.kuali.rice.kns.service.DictionaryValidationService#validateApcRules(org.kuali.rice.kns.bo.BusinessObject)
      */
-    public boolean validateApcRules(BusinessObject bo) {
+    @Override
+	public boolean validateApcRules(BusinessObject bo) {
         boolean success = true;
 
         // get a collection of all the apcRuleDefinitions setup for this object

@@ -20,9 +20,6 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.CoreConstants;
@@ -34,8 +31,8 @@ import org.kuali.rice.core.jdbc.criteria.Criteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
 
 /**
@@ -211,10 +208,10 @@ public class SqlBuilder {
 		String[] splitPropVal = StringUtils.split(propertyValue, splitValue);
 
 		Criteria subCriteria = new Criteria("N/A");
-		for (int i = 0; i < splitPropVal.length; i++) {
+		for (String element : splitPropVal) {
 			Criteria predicate = new Criteria("N/A", criteria.getAlias());
 			// we know that since this method is called, treatWildcardsAndOperatorsAsLiteral is false
-			addCriteria(propertyName, splitPropVal[i], propertyType, caseInsensitive, allowWildcards, predicate);
+			addCriteria(propertyName, element, propertyType, caseInsensitive, allowWildcards, predicate);
 			if (splitValue == LogicalOperator.OR.op()) {
 				subCriteria.or(predicate);
 			}
@@ -245,13 +242,6 @@ public class SqlBuilder {
 		}
 	}
 
-	public static String cleanDate(String string) {		
-        for (LogicalOperator op : LogicalOperator.RANGE_CHARACTERS) {
-            string = StringUtils.replace(string, op.op(), EMPTY_STRING);
-        }
-        return string;
-    }
-
 	public static boolean containsRangeCharacters(String string){
 		boolean bRet = false;
 		for (LogicalOperator op : LogicalOperator.RANGE_CHARACTERS) {
@@ -266,19 +256,19 @@ public class SqlBuilder {
 
 		if (StringUtils.contains(propertyValue, LogicalOperator.BETWEEN.op())) {
 			String[] rangeValues = propertyValue.split("\\.\\."); // this translate to the .. operator
-			criteria.between(propertyName, parseDate(cleanDate(rangeValues[0])), parseDate(cleanUpperBound(cleanDate(rangeValues[1]))), propertyType);
+			criteria.between(propertyName, parseDate(SQLUtils.cleanDate(rangeValues[0])), parseDate(cleanUpperBound(SQLUtils.cleanDate(rangeValues[1]))), propertyType);
 		} else if (propertyValue.startsWith(">=")) {
-			criteria.gte(propertyName, parseDate(cleanDate(propertyValue)), propertyType);
+			criteria.gte(propertyName, parseDate(SQLUtils.cleanDate(propertyValue)), propertyType);
 		} else if (propertyValue.startsWith("<=")) {
-			criteria.lte(propertyName, parseDate(cleanUpperBound(cleanDate(propertyValue))),propertyType);
+			criteria.lte(propertyName, parseDate(cleanUpperBound(SQLUtils.cleanDate(propertyValue))),propertyType);
 		} else if (propertyValue.startsWith(">")) {
 			// we clean the upper bound here because if you say >12/22/09, it translates greater than
 			// the date... as in whole date. ie. the next day on.
-			criteria.gt(propertyName, parseDate(cleanUpperBound(cleanDate(propertyValue))), propertyType);
+			criteria.gt(propertyName, parseDate(cleanUpperBound(SQLUtils.cleanDate(propertyValue))), propertyType);
 		} else if (propertyValue.startsWith("<")) {
-			criteria.lt(propertyName, parseDate(cleanDate(propertyValue)), propertyType);
+			criteria.lt(propertyName, parseDate(SQLUtils.cleanDate(propertyValue)), propertyType);
 		} else {
-			String sDate = convertSimpleDateToDateRange(cleanDate(propertyValue));
+			String sDate = convertSimpleDateToDateRange(SQLUtils.cleanDate(propertyValue));
 			if(sDate.contains(LogicalOperator.BETWEEN.op())){
 				addDateRangeCriteria(propertyName, sDate, criteria, propertyType);
 			}else{
@@ -289,22 +279,11 @@ public class SqlBuilder {
 
 	public static boolean isValidNumber(String value){
 		try{
-		BigDecimal bd = stringToBigDecimal(value);
+		stringToBigDecimal(value);
 			return true;
 		}catch(Exception ex){
 			return false;
 		}
-	}
-
-	public static String cleanNumericOfValidOperators(String string){
-		for (LogicalOperator op : LogicalOperator.RANGE_CHARACTERS) {
-            string = StringUtils.replace(string, op.op(), EMPTY_STRING);
-        }
-		string = StringUtils.replace(string, LogicalOperator.OR.op(), EMPTY_STRING);
-		string = StringUtils.replace(string, LogicalOperator.AND.op(), EMPTY_STRING);
-		string = StringUtils.replace(string, LogicalOperator.NOT.op(), EMPTY_STRING);
-
-		return string;
 	}
 
 	public static String cleanNumeric(String value){
@@ -472,86 +451,6 @@ public class SqlBuilder {
 	   }
 
 		return stringDate;
-   }
-
-   /**
-   *
-   * This method splits the values then cleans them of any other query characters like *?!><...
-   *
-   * @param valueEntered
-   * @param propertyDataType
-   * @return
-   */
-  public static List<String> getCleanedSearchableValues(String valueEntered, String propertyDataType) {
-	   List<String> lRet = null;
-	   List<String> lTemp = getSearchableValues(valueEntered);
-	   if(lTemp != null && !lTemp.isEmpty()){
-		   lRet = new ArrayList<String>();
-		   for(String val: lTemp){
-			   // Clean the wildcards appropriately, depending on the field's data type.
-			   if (SearchableAttribute.DATA_TYPE_STRING.equals(propertyDataType)) {
-				   lRet.add(ObjectUtils.clean(val));
-			   } else if (SearchableAttribute.DATA_TYPE_FLOAT.equals(propertyDataType) || SearchableAttribute.DATA_TYPE_LONG.equals(propertyDataType)) {
-				   lRet.add(SqlBuilder.cleanNumericOfValidOperators(val));
-			   } else if (SearchableAttribute.DATA_TYPE_DATE.equals(propertyDataType)) {
-				   lRet.add(SqlBuilder.cleanDate(val));
-			   } else {
-				   lRet.add(ObjectUtils.clean(val));
-			   }
-		   }
-	   }
-	   return lRet;
-  }
-
-   /**
-    *
-    * This method splits the valueEntered on locical operators and, or, and between
-    *
-    * @param valueEntered
-    * @return
-    */
-   public static List<String> getSearchableValues(String valueEntered) {
-		List<String> lRet = new ArrayList<String>();
-
-		getSearchableValueRecursive(valueEntered, lRet);
-
-		return lRet;
-	}
-
-	protected static void getSearchableValueRecursive(String valueEntered, List lRet) {
-		if(valueEntered == null)return;
-
-		valueEntered = valueEntered.trim();
-
-		if(lRet == null){
-			throw new NullPointerException("The list passed in is by reference and should never be null.");
-		}
-
-		if (StringUtils.contains(valueEntered, LogicalOperator.BETWEEN.op())) {
-			List<String> l = Arrays.asList(valueEntered.split("\\.\\."));
-			for(String value : l){
-				getSearchableValueRecursive(value,lRet);
-			}
-			return;
-		}
-		if (StringUtils.contains(valueEntered, LogicalOperator.OR.op())) {
-			List<String> l = Arrays.asList(StringUtils.split(valueEntered, LogicalOperator.OR.op()));
-			for(String value : l){
-				getSearchableValueRecursive(value,lRet);
-			}
-			return;
-		}
-		if (StringUtils.contains(valueEntered, LogicalOperator.AND.op())) {
-			//splitValueList.addAll(Arrays.asList(StringUtils.split(valueEntered, KNSConstants.AND.op())));
-			List<String> l = Arrays.asList(StringUtils.split(valueEntered, LogicalOperator.AND.op()));
-			for(String value : l){
-				getSearchableValueRecursive(value,lRet);
-			}
-			return;
-		}
-
-		// lRet is pass by ref and should NEVER be null
-		lRet.add(valueEntered);
    }
 
 	public static final class SQLBuilderException extends RiceRuntimeException {

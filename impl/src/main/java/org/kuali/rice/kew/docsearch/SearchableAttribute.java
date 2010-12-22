@@ -14,6 +14,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.ui.Row;
 
 import java.io.Serializable;
@@ -32,10 +33,10 @@ public interface SearchableAttribute extends Serializable {
     public static final String SEARCH_WILDCARD_CHARACTER = "*";
     public static final String SEARCH_WILDCARD_CHARACTER_REGEX_ESCAPED = "\\" + SEARCH_WILDCARD_CHARACTER;
 
-    public static final String DATA_TYPE_STRING = "string";
-    public static final String DATA_TYPE_DATE = "datetime";
-    public static final String DATA_TYPE_LONG = "long";
-    public static final String DATA_TYPE_FLOAT = "float";
+    public static final String DATA_TYPE_STRING = KNSConstants.DATA_TYPE_STRING;
+    public static final String DATA_TYPE_DATE = KNSConstants.DATA_TYPE_DATE;
+    public static final String DATA_TYPE_LONG = KNSConstants.DATA_TYPE_LONG;
+    public static final String DATA_TYPE_FLOAT = KNSConstants.DATA_TYPE_FLOAT;
 
     public static final String DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME = DATA_TYPE_STRING;
 

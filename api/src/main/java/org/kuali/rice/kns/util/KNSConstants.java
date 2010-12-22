@@ -602,6 +602,11 @@ public final class KNSConstants {
   	public static final String EDITABLE_PROPERTIES_HISTORY_HOLDER_ATTR_NAME = "EditablePropertiesHistoryHolder";
 
   	
+    public static final String DATA_TYPE_STRING = "string";
+    public static final String DATA_TYPE_DATE = "datetime";
+    public static final String DATA_TYPE_LONG = "long";
+    public static final String DATA_TYPE_FLOAT = "float";
+  	
 	private KNSConstants() {
 		throw new UnsupportedOperationException("do not call");
 	}

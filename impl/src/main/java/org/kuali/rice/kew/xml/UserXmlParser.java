@@ -52,7 +52,7 @@ import org.xml.sax.SAXException;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class UserXmlParser implements XmlConstants {
+public class UserXmlParser {
     
     private static final Namespace NAMESPACE = Namespace.getNamespace("", "ns:workflow/User");
 

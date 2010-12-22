@@ -34,8 +34,8 @@ import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
 
 
@@ -56,8 +56,6 @@ public class Criteria {
 	private String entityName;
 
 	private String alias;
-
-	private int bindParamCount;
 
 	private boolean distinct = false;
 
@@ -523,13 +521,13 @@ public class Criteria {
 	public String establishDateString(String fromDate, String toDate, String columnDbName, String whereStatementClause) {
     	DatabasePlatform platform = getDbPlatform();
     	StringBuffer dateSqlString = new StringBuffer(whereStatementClause).append(" " + platform.escapeString(columnDbName) + " ");
-        if (fromDate != null && DocSearchUtils.getSqlFormattedDate(fromDate) != null && toDate != null && DocSearchUtils.getSqlFormattedDate(toDate) != null) {
-            return dateSqlString.append(" >= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null) + " and " + platform.escapeString(columnDbName) + " <= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
+        if (fromDate != null && SQLUtils.getSqlFormattedDate(fromDate) != null && toDate != null && SQLUtils.getSqlFormattedDate(toDate) != null) {
+            return dateSqlString.append(" >= " + platform.getDateSQL(platform.escapeString(SQLUtils.getSqlFormattedDate(fromDate.trim())), null) + " and " + platform.escapeString(columnDbName) + " <= " + platform.getDateSQL(platform.escapeString(SQLUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
         } else {
-            if (fromDate != null && DocSearchUtils.getSqlFormattedDate(fromDate) != null) {
-                return dateSqlString.append(" >= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(fromDate.trim())), null)).toString();
-            } else if (toDate != null && DocSearchUtils.getSqlFormattedDate(toDate) != null) {
-                return dateSqlString.append(" <= " + platform.getDateSQL(platform.escapeString(DocSearchUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
+            if (fromDate != null && SQLUtils.getSqlFormattedDate(fromDate) != null) {
+                return dateSqlString.append(" >= " + platform.getDateSQL(platform.escapeString(SQLUtils.getSqlFormattedDate(fromDate.trim())), null)).toString();
+            } else if (toDate != null && SQLUtils.getSqlFormattedDate(toDate) != null) {
+                return dateSqlString.append(" <= " + platform.getDateSQL(platform.escapeString(SQLUtils.getSqlFormattedDate(toDate.trim())), "23:59:59")).toString();
             } else {
                 return "";
             }

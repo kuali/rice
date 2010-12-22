@@ -19,11 +19,12 @@ import java.util.Iterator;
 
 import org.jdom.Element;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+
+import static org.kuali.rice.kew.xml.XmlConstants.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -31,7 +32,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class GroupXmlExporter implements XmlExporter, XmlConstants {
+public class GroupXmlExporter implements XmlExporter {
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 
     private XmlRenderer renderer = new XmlRenderer(GROUP_NAMESPACE);

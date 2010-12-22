@@ -76,6 +76,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import static org.kuali.rice.kew.xml.XmlConstants.*;
 
 
 /**
@@ -83,7 +84,7 @@ import org.xml.sax.SAXException;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentTypeXmlParser implements XmlConstants {
+public class DocumentTypeXmlParser {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentTypeXmlParser.class);
 

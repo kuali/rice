@@ -33,7 +33,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.rule.KeyValueId;
 import org.kuali.rice.kew.rule.RoleAttribute;
@@ -53,6 +52,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -557,7 +557,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 		/*  Not the best solution below but does allow our forcing of the 4 digit year
 		 *  until KEW and use the KNS for it's date entry/validation
 		 */
-		String convertedDate = DocSearchUtils.getEntryFormattedDate(dateValue);
+		String convertedDate = SQLUtils.getEntryFormattedDate(dateValue);
 		if (convertedDate == null) {
 		    throw new ParseException("Date entered as '" + dateValue + "' is in invalid format", 0);
 		}

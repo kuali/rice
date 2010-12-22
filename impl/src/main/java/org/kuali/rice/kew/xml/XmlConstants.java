@@ -23,7 +23,7 @@ import org.jdom.Namespace;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface XmlConstants {
+public final class XmlConstants {
 
     // namespaces
     public static final Namespace WORKFLOW_NAMESPACE = Namespace.getNamespace("", "ns:workflow");
@@ -192,4 +192,8 @@ public interface XmlConstants {
     //style
     public static final String STYLE_STYLES = "styles";
     public static final String STYLE_STYLE = "style";
+    
+    private XmlConstants() {
+    	throw new UnsupportedOperationException("do not call");
+    }
 }

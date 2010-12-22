@@ -25,12 +25,11 @@ import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
-
+import static org.kuali.rice.kew.xml.XmlConstants.*;
 /**
  * Exports rules to XML.
  *
@@ -38,7 +37,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RuleDelegationXmlExporter implements XmlExporter, XmlConstants {
+public class RuleDelegationXmlExporter implements XmlExporter {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 

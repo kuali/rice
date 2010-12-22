@@ -41,6 +41,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.xml.sax.SAXException;
 
+import static org.kuali.rice.kew.xml.XmlConstants.*;
 
 
 /**
@@ -48,11 +49,10 @@ import org.xml.sax.SAXException;
  *
  * @see KimGroups
  *
- * @author Kuali Rice Team (rice.collab@kuali.org) *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class GroupXmlParser implements XmlConstants {
+public class GroupXmlParser {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(GroupXmlParser.class);
     private static final boolean DEFAULT_ACTIVE_VALUE = true;
     private static final String DEFAULT_GROUP_DESCRIPTION = "";

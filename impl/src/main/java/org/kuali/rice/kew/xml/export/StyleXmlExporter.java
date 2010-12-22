@@ -25,9 +25,9 @@ import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
 
+import static org.kuali.rice.kew.xml.XmlConstants.*;
 
 /**
  * Exports Style definitions to XML.
@@ -38,7 +38,7 @@ import org.kuali.rice.kew.xml.XmlRenderer;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class StyleXmlExporter implements XmlExporter, XmlConstants {
+public class StyleXmlExporter implements XmlExporter {
 	private static final Logger LOG = Logger.getLogger(StyleXmlExporter.class);
 
 	private XmlRenderer renderer = new XmlRenderer(STYLE_NAMESPACE);

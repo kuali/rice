@@ -48,6 +48,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.xml.sax.SAXException;
 
+import static org.kuali.rice.kew.xml.XmlConstants.*;
 
 /**
  * Parses rules from XML.
@@ -56,7 +57,7 @@ import org.xml.sax.SAXException;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RuleXmlParser implements XmlConstants {
+public class RuleXmlParser {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleXmlParser.class);
 

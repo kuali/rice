@@ -17,11 +17,9 @@
 package org.kuali.rice.kew.util;
 
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -50,12 +48,16 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class Utilities {
+public final class Utilities {
     /**
      * Commons-Lang StrSubstitor which substitutes variables specified like ${name} in strings,
      * using a lookup implementation that pulls variables from the core config
      */
     private static StrSubstitutor substitutor = new StrSubstitutor(new ConfigStringLookup());
+    
+    private Utilities() {
+    	throw new UnsupportedOperationException("do not call");
+    }
 
     /**
      * Performs variable substitution on the specified string, replacing variables specified like ${name}
@@ -154,22 +156,6 @@ public class Utilities {
         t.printStackTrace(pw);
         pw.close();
         return sw.toString();
-    }
-
-    public static Calendar convertTimestamp(Timestamp timestamp) {
-        if (timestamp == null) {
-            return null;
-        }
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(timestamp);
-        return calendar;
-    }
-
-    public static Timestamp convertCalendar(Calendar calendar) {
-        if (calendar == null) {
-            return null;
-        }
-        return new Timestamp(calendar.getTime().getTime());
     }
 
     public static Set asSet(Object[] objects) {

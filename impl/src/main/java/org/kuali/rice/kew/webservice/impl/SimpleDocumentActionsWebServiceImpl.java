@@ -37,7 +37,6 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWWebServiceConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.webservice.DocumentResponse;
 import org.kuali.rice.kew.webservice.ErrorResponse;
 import org.kuali.rice.kew.webservice.NoteDetail;
@@ -47,6 +46,7 @@ import org.kuali.rice.kew.webservice.StandardResponse;
 import org.kuali.rice.kew.webservice.UserInRouteLogResponse;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.SQLUtils;
 
 
 /**
@@ -74,6 +74,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#acknowledge(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse acknowledge(String docId, String principalId, String annotation) {
         StandardResponse results;
 
@@ -106,6 +107,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#approve(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse approve(String docId, String principalId, String docTitle,
 			String docContent, String annotation) {
 	  //Map<String, Object> results;
@@ -143,6 +145,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#blanketApprove(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse blanketApprove(String docId, String principalId, String docTitle,
 			String docContent, String annotation) {
 	  //Map<String, Object> results;
@@ -174,6 +177,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * 
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#cancel(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse cancel(String docId, String principalId, String annotation) {
 		//Map<String, Object> results;
 	    StandardResponse results;
@@ -205,6 +209,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#create(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public DocumentResponse create(String initiatorPrincipalId, String appDocId, String docType,
 			String docTitle) {
 
@@ -261,6 +266,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#disapprove(java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse disapprove(String docId, String principalId, String annotation) {
 //      Map<String, Object> results;
         StandardResponse results;
@@ -290,6 +296,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#fyi(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse fyi(String docId, String principalId) {
 //		Map<String, Object> results;
 	    StandardResponse results;
@@ -322,6 +329,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#getDocument(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public DocumentResponse getDocument(String docId, String principalId) {
 //		Map<String, Object> results;
 		StandardResponse results;
@@ -393,6 +401,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#isUserInRouteLog(java.lang.String, java.lang.String)
 	 */
+	@Override
 	public UserInRouteLogResponse isUserInRouteLog(String docId, String principalId) {
 		//Map<String, Object> results = new HashMap<String, Object>(6);
 		
@@ -429,6 +438,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#requestAdHocAckToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse requestAdHocAckToGroup(String docId, String principalId,
 			String recipientGroupId, String annotation) {
 		return requestAdHocToGroup(docId, principalId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
@@ -447,6 +457,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 */
+	@Override
 	public StandardResponse requestAdHocAckToPrincipal(String docId, String principalId,
 			String recipientPrincipalId, String annotation) {
 		return requestAdHocToPrincipal(docId, principalId, recipientPrincipalId, annotation, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ, KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ_LABEL);
@@ -467,6 +478,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#requestAdHocApproveToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse requestAdHocApproveToGroup(String docId, String principalId,
 			String recipientGroupId, String annotation) {
 		return requestAdHocToGroup(docId, principalId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_APPROVE_REQ, KEWConstants.ACTION_REQUEST_APPROVE_REQ_LABEL);
@@ -485,6 +497,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 */
+	@Override
 	public StandardResponse requestAdHocApproveToPrincipal(String docId, String principalId,
 			String recipientPrincipalId, String annotation) {
 
@@ -506,6 +519,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#requestAdHocFyiToGroup(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse requestAdHocFyiToGroup(String docId, String principalId, String recipientGroupId, String annotation) {
 		return requestAdHocToGroup(docId, principalId, recipientGroupId, annotation, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
 	}
@@ -523,6 +537,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 * @param annotation a comment associated with this request
 	 * @return Map including the standard set of return values
 	 */
+	@Override
 	public StandardResponse requestAdHocFyiToPrincipal(String docId, String principalId,
 			String recipientPrincipalId, String annotation) {
 		return requestAdHocToPrincipal(docId, principalId, recipientPrincipalId, annotation, KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
@@ -596,6 +611,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#route(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse route(String docId, String principalId, String docTitle,
 			String docContent, String annotation) {
 
@@ -631,6 +647,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#save(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse save(String docId, String principalId, String docTitle, String docContent, String annotation) {
 	    StandardResponse results;
 	    
@@ -648,6 +665,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	/**
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#saveDocumentContent(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
 	 */
+	@Override
 	public StandardResponse saveDocumentContent(String docId, String principalId, String docTitle, String docContent) {
 	    StandardResponse results;
 	    
@@ -673,7 +691,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#addNote(java.lang.String, java.lang.String, java.lang.String)
      */
-    public NoteResponse addNote(String docId, String principalId, String noteText) {
+    @Override
+	public NoteResponse addNote(String docId, String principalId, String noteText) {
 //		Map<String, Object> results = new HashMap<String, Object>(5);
 		NoteResponse results = new NoteResponse();
 		
@@ -737,7 +756,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#updateNote(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    public NoteResponse updateNote(String docId, String noteId, String principalId, String noteText) {
+    @Override
+	public NoteResponse updateNote(String docId, String noteId, String principalId, String noteText) {
 //		Map<String, Object> results = new HashMap<String, Object>(5);
 		String author = "";
 		String resultsNoteId = "";
@@ -798,7 +818,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#deleteNote(java.lang.String, java.lang.String, java.lang.String)
      */
-    public ErrorResponse deleteNote(String docId, String noteId, String principalId) {
+    @Override
+	public ErrorResponse deleteNote(String docId, String noteId, String principalId) {
 		//Map<String, Object> results = new HashMap<String, Object>(1);
 		
         ErrorResponse results = new ErrorResponse();
@@ -840,7 +861,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#returnToPreviousNode(java.lang.String, java.lang.String)
 	 */
-    public StandardResponse returnToPreviousNode(String docId, String principalId, String annotation, String nodeName) {
+    @Override
+	public StandardResponse returnToPreviousNode(String docId, String principalId, String annotation, String nodeName) {
     	return returnToPreviousNodeWithUpdates(docId, principalId, annotation, nodeName, null, null);
     }
 
@@ -858,7 +880,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 	 *
 	 * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#returnToPreviousNode(java.lang.String, java.lang.String)
 	 */
-    public StandardResponse returnToPreviousNodeWithUpdates(String docId, String principalId, String annotation, String nodeName, String docTitle, String docContent) {
+    @Override
+	public StandardResponse returnToPreviousNodeWithUpdates(String docId, String principalId, String annotation, String nodeName, String docTitle, String docContent) {
         StandardResponse results;
         
        	try {
@@ -877,7 +900,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
      * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#revokeAdHocRequestsByNodeName(java.lang.String,
      *      java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    public StandardResponse revokeAdHocRequestsByNodeName(String docId, String principalId, String docTitle, String docContent, String nodeName, String annotation) {
+    @Override
+	public StandardResponse revokeAdHocRequestsByNodeName(String docId, String principalId, String docTitle, String docContent, String nodeName, String annotation) {
         StandardResponse results;
 
         try {
@@ -897,7 +921,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
      * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#revokeAdHocRequestsByPrincipalId(java.lang.String,
      *      java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    public StandardResponse revokeAdHocRequestsByPrincipalId(String docId, String principalId, String docTitle, String docContent, String adhocPrincipalId, String annotation) {
+    @Override
+	public StandardResponse revokeAdHocRequestsByPrincipalId(String docId, String principalId, String docTitle, String docContent, String adhocPrincipalId, String annotation) {
         StandardResponse results;
 
         try {
@@ -917,7 +942,8 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
      * @see org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService#revokeAdHocRequestsByGroupId(java.lang.String,
      *      java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    public StandardResponse revokeAdHocRequestsByGroupId(String docId, String principalId, String docTitle, String docContent, String groupId, String annotation) {
+    @Override
+	public StandardResponse revokeAdHocRequestsByGroupId(String docId, String principalId, String docTitle, String docContent, String groupId, String annotation) {
         StandardResponse results;
 
         try {
@@ -1046,9 +1072,9 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
     	NoteDTO note = null;
 
     	if (notes != null){
-	    	for (int i=0; i<notes.length; i++){
-	    		if (notes[i].getNoteId().toString().equals(noteId)) {
-	    			note = notes[i];
+	    	for (NoteDTO note2 : notes) {
+	    		if (note2.getNoteId().toString().equals(noteId)) {
+	    			note = note2;
 	    			break;
 	    		}
 	    	}
@@ -1263,7 +1289,7 @@ public class SimpleDocumentActionsWebServiceImpl implements SimpleDocumentAction
 		String formattedDate = "";
 
 		DateFormat dateFormat = new SimpleDateFormat();
-		Timestamp dateCreated = Utilities.convertCalendar(calendar);
+		Timestamp dateCreated = SQLUtils.convertCalendar(calendar);
 		formattedDate = dateFormat.format(dateCreated);
 
 		return formattedDate;

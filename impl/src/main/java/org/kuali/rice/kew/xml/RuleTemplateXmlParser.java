@@ -47,7 +47,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.xml.sax.SAXException;
 
-
+import static org.kuali.rice.kew.xml.XmlConstants.*;
 /**
  * Parses {@link RuleTemplate}s from XML.
  *
@@ -55,7 +55,7 @@ import org.xml.sax.SAXException;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RuleTemplateXmlParser implements XmlConstants {
+public class RuleTemplateXmlParser {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleTemplateXmlParser.class);
 

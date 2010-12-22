@@ -16,15 +16,22 @@
  */
 package org.kuali.rice.kew.xml.export;
 
+import static org.kuali.rice.kew.xml.XmlConstants.HELP_ENTRIES;
+import static org.kuali.rice.kew.xml.XmlConstants.HELP_ENTRY;
+import static org.kuali.rice.kew.xml.XmlConstants.HELP_KEY;
+import static org.kuali.rice.kew.xml.XmlConstants.HELP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.HELP_NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.HELP_SCHEMA_LOCATION;
+import static org.kuali.rice.kew.xml.XmlConstants.HELP_TEXT;
+import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
+import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_NAMESPACE;
+
 import java.util.Iterator;
 
 import org.jdom.Element;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.help.HelpEntry;
-import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
-
-
 /**
  * Exports {@link HelpEntry}s to XML.
  *
@@ -32,7 +39,7 @@ import org.kuali.rice.kew.xml.XmlRenderer;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HelpEntryXmlExporter implements XmlExporter, XmlConstants {
+public class HelpEntryXmlExporter implements XmlExporter {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
     

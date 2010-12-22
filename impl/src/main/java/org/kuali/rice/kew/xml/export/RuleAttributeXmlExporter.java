@@ -16,6 +16,19 @@
  */
 package org.kuali.rice.kew.xml.export;
 
+import static org.kuali.rice.kew.xml.XmlConstants.CLASS_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.DESCRIPTION;
+import static org.kuali.rice.kew.xml.XmlConstants.LABEL;
+import static org.kuali.rice.kew.xml.XmlConstants.NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.RULE_ATTRIBUTE;
+import static org.kuali.rice.kew.xml.XmlConstants.RULE_ATTRIBUTES;
+import static org.kuali.rice.kew.xml.XmlConstants.RULE_ATTRIBUTE_NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.RULE_ATTRIBUTE_SCHEMA_LOCATION;
+import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
+import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.SERVICE_NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.TYPE;
+
 import java.io.StringReader;
 import java.util.Iterator;
 
@@ -27,9 +40,7 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
-
 
 /**
  * Exports {@link RuleAttribute}s to XML.
@@ -38,7 +49,7 @@ import org.kuali.rice.kew.xml.XmlRenderer;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RuleAttributeXmlExporter implements XmlExporter, XmlConstants {
+public class RuleAttributeXmlExporter implements XmlExporter {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
     

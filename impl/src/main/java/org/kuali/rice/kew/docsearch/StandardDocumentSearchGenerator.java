@@ -67,6 +67,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.kns.util.SQLUtils;
 
 
 /**
@@ -876,7 +877,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                             //Enhancement Idea - Could possibly use recursion here (would have to set the lower bound and inclusive variables
                             //append first one here and then set the second one and break
                             timeValueToSearch = lowerTimeBound;
-							whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, ">=", getDbPlatform().getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(rangeValues[0].trim())), timeValueToSearch.trim()), "", ""));
+							whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, ">=", getDbPlatform().getDateSQL(getDbPlatform().escapeString(SQLUtils.getSqlFormattedDate(rangeValues[0].trim())), timeValueToSearch.trim()), "", ""));
 
                             dateValueToSearch = rangeValues[1];
                             sqlOperand = new StringBuffer("<=");
@@ -889,7 +890,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 }
             }
         }
-		return whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, sqlOperand.toString(), getDbPlatform().getDateSQL(getDbPlatform().escapeString(DocSearchUtils.getSqlFormattedDate(dateValueToSearch.trim())), timeValueToSearch.trim()), "", ""));
+		return whereSQLBuffer.append(constructWhereClauseElement(clauseStarter, queryTableColumnName, sqlOperand.toString(), getDbPlatform().getDateSQL(getDbPlatform().escapeString(SQLUtils.getSqlFormattedDate(dateValueToSearch.trim())), timeValueToSearch.trim()), "", ""));
     }
 
     public StringBuffer constructWhereClauseElement(String clauseStarter,String queryTableColumnName,String operand,String valueToSearch,String valuePrefix,String valueSuffix) {

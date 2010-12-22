@@ -34,6 +34,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -225,7 +226,7 @@ public class DocumentSearchTest extends KEWTestCase {
         DocumentSearchResultComponents result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull("Should have a date created value",criteria.getFromDateCreated());
         Calendar criteriaDate = Calendar.getInstance();
-        criteriaDate.setTime(DocSearchUtils.convertStringDateToTimestamp(criteria.getFromDateCreated()));
+        criteriaDate.setTime(SQLUtils.convertStringDateToTimestamp(criteria.getFromDateCreated()));
         assertEquals("Criteria date minus today's date should equal the constant value", KEWConstants.DOCUMENT_SEARCH_NO_CRITERIA_CREATE_DATE_DAYS_AGO.doubleValue(), getDifferenceInDays(criteriaDate), 0);
 
         criteria = new DocSearchCriteriaDTO();
@@ -233,7 +234,7 @@ public class DocumentSearchTest extends KEWTestCase {
         result = docSearchService.getList(user.getPrincipalId(), criteria);
         assertNotNull("Should have a date created value",criteria.getFromDateCreated());
         criteriaDate = Calendar.getInstance();
-        criteriaDate.setTime(DocSearchUtils.convertStringDateToTimestamp(criteria.getFromDateCreated()));
+        criteriaDate.setTime(SQLUtils.convertStringDateToTimestamp(criteria.getFromDateCreated()));
         assertEquals("Criteria date minus today's date should equal the constant value", KEWConstants.DOCUMENT_SEARCH_DOC_TITLE_CREATE_DATE_DAYS_AGO.doubleValue(), getDifferenceInDays(criteriaDate), 0);
     }
 

@@ -44,10 +44,10 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
 
+import static org.kuali.rice.kew.xml.XmlConstants.*;
 
 /**
  * Exports {@link DocumentType}s to XML.
@@ -56,7 +56,7 @@ import org.kuali.rice.kim.bo.Group;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class DocumentTypeXmlExporter implements XmlExporter, XmlConstants {
+public class DocumentTypeXmlExporter implements XmlExporter {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
 

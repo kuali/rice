@@ -36,8 +36,8 @@ import org.kuali.rice.core.reflect.DataDefinition;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.reflect.PropertyDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
@@ -104,6 +104,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.util.SQLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -169,12 +170,12 @@ public class DTOConverter {
     private static void populateRouteHeaderVO(RouteHeaderDTO routeHeaderVO, DocumentRouteHeaderValue routeHeader) throws WorkflowException {
         routeHeaderVO.setRouteHeaderId(routeHeader.getRouteHeaderId());
         routeHeaderVO.setAppDocId(routeHeader.getAppDocId());
-        routeHeaderVO.setDateApproved(Utilities.convertTimestamp(routeHeader.getApprovedDate()));
-        routeHeaderVO.setDateCreated(Utilities.convertTimestamp(routeHeader.getCreateDate()));
-        routeHeaderVO.setDateFinalized(Utilities.convertTimestamp(routeHeader.getFinalizedDate()));
-        routeHeaderVO.setDateLastModified(Utilities.convertTimestamp(routeHeader.getStatusModDate()));
+        routeHeaderVO.setDateApproved(SQLUtils.convertTimestamp(routeHeader.getApprovedDate()));
+        routeHeaderVO.setDateCreated(SQLUtils.convertTimestamp(routeHeader.getCreateDate()));
+        routeHeaderVO.setDateFinalized(SQLUtils.convertTimestamp(routeHeader.getFinalizedDate()));
+        routeHeaderVO.setDateLastModified(SQLUtils.convertTimestamp(routeHeader.getStatusModDate()));
         routeHeaderVO.setAppDocStatus(routeHeader.getAppDocStatus());
-        routeHeaderVO.setAppDocStatusDate(Utilities.convertTimestamp(routeHeader.getAppDocStatusDate()));
+        routeHeaderVO.setAppDocStatusDate(SQLUtils.convertTimestamp(routeHeader.getAppDocStatusDate()));
         
         /**
          * This is the original code which set everything up for lazy loading of document content
@@ -231,8 +232,8 @@ public class DTOConverter {
     public static DocumentRouteHeaderValue convertRouteHeaderVO(RouteHeaderDTO routeHeaderVO) throws WorkflowException {
         DocumentRouteHeaderValue routeHeader = new DocumentRouteHeaderValue();
         routeHeader.setAppDocId(routeHeaderVO.getAppDocId());
-        routeHeader.setApprovedDate(Utilities.convertCalendar(routeHeaderVO.getDateApproved()));
-        routeHeader.setCreateDate(Utilities.convertCalendar(routeHeaderVO.getDateCreated()));
+        routeHeader.setApprovedDate(SQLUtils.convertCalendar(routeHeaderVO.getDateApproved()));
+        routeHeader.setCreateDate(SQLUtils.convertCalendar(routeHeaderVO.getDateCreated()));
         if (StringUtils.isEmpty(routeHeader.getDocContent())) {
             routeHeader.setDocContent(KEWConstants.DEFAULT_DOCUMENT_CONTENT);
         }
@@ -247,13 +248,13 @@ public class DTOConverter {
             routeHeader.setDocumentTypeId(documentType.getDocumentTypeId());
         }
         routeHeader.setDocVersion(routeHeaderVO.getDocVersion());
-        routeHeader.setFinalizedDate(Utilities.convertCalendar(routeHeaderVO.getDateFinalized()));
+        routeHeader.setFinalizedDate(SQLUtils.convertCalendar(routeHeaderVO.getDateFinalized()));
         routeHeader.setInitiatorWorkflowId(routeHeaderVO.getInitiatorPrincipalId());
         routeHeader.setRoutedByUserWorkflowId(routeHeaderVO.getRoutedByPrincipalId());
         routeHeader.setRouteHeaderId(routeHeaderVO.getRouteHeaderId());
-        routeHeader.setStatusModDate(Utilities.convertCalendar(routeHeaderVO.getDateLastModified()));
+        routeHeader.setStatusModDate(SQLUtils.convertCalendar(routeHeaderVO.getDateLastModified()));
         routeHeader.setAppDocStatus(routeHeaderVO.getAppDocStatus());
-        routeHeader.setAppDocStatusDate(Utilities.convertCalendar(routeHeaderVO.getAppDocStatusDate()));
+        routeHeader.setAppDocStatusDate(SQLUtils.convertCalendar(routeHeaderVO.getAppDocStatusDate()));
 
         
         // Convert the variables
@@ -525,7 +526,7 @@ public class DTOConverter {
         }
 
         actionRequestVO.setAnnotation(actionRequest.getAnnotation());
-        actionRequestVO.setDateCreated(Utilities.convertTimestamp(actionRequest.getCreateDate()));
+        actionRequestVO.setDateCreated(SQLUtils.convertTimestamp(actionRequest.getCreateDate()));
         actionRequestVO.setDocVersion(actionRequest.getDocVersion());
         actionRequestVO.setPrincipalId(actionRequest.getPrincipalId());
         actionRequestVO.setForceAction(actionRequest.getForceAction());
@@ -569,7 +570,7 @@ public class DTOConverter {
             return null;
         }
         ActionTakenDTO actionTakenVO = new ActionTakenDTO();
-        actionTakenVO.setActionDate(Utilities.convertTimestamp(actionTaken.getActionDate()));
+        actionTakenVO.setActionDate(SQLUtils.convertTimestamp(actionTaken.getActionDate()));
         actionTakenVO.setActionTaken(actionTaken.getActionTaken());
         actionTakenVO.setActionTakenId(actionTaken.getActionTakenId());
         actionTakenVO.setAnnotation(actionTaken.getAnnotation());
@@ -1049,7 +1050,7 @@ public class DTOConverter {
                     noteToSave.setNoteId(note.getNoteId());
                     noteToSave.setRouteHeaderId(routeHeaderId);
                     noteToSave.setNoteAuthorWorkflowId(note.getNoteAuthorWorkflowId());
-                    noteToSave.setNoteCreateDate(Utilities.convertCalendar(note.getNoteCreateDate()));
+                    noteToSave.setNoteCreateDate(SQLUtils.convertCalendar(note.getNoteCreateDate()));
                     noteToSave.setNoteText(note.getNoteText());
                     noteToSave.setLockVerNbr(note.getLockVerNbr());
                     // if notes[i].getNoteId() == null, add note to note table, otherwise update note to note table
@@ -1087,7 +1088,7 @@ public class DTOConverter {
                 tempNoteVO.setNoteId(tempNote.getNoteId());
                 tempNoteVO.setRouteHeaderId(tempNote.getRouteHeaderId());
                 tempNoteVO.setNoteAuthorWorkflowId(tempNote.getNoteAuthorWorkflowId());
-                tempNoteVO.setNoteCreateDate(Utilities.convertTimestamp(tempNote.getNoteCreateDate()));
+                tempNoteVO.setNoteCreateDate(SQLUtils.convertTimestamp(tempNote.getNoteCreateDate()));
                 tempNoteVO.setNoteText(tempNote.getNoteText());
                 tempNoteVO.setLockVerNbr(tempNote.getLockVerNbr());
                 noteVOArray[i] = tempNoteVO;

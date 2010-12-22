@@ -27,11 +27,9 @@ import org.kuali.rice.kew.rule.RuleTemplateOption;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kew.xml.XmlRenderer;
 
-
+import static org.kuali.rice.kew.xml.XmlConstants.*;
 /**
  * Exports {@link RuleTemplate}s to XML.
  * 
@@ -39,7 +37,7 @@ import org.kuali.rice.kew.xml.XmlRenderer;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RuleTemplateXmlExporter implements XmlExporter, XmlConstants {
+public class RuleTemplateXmlExporter implements XmlExporter {
 
     protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
     

@@ -48,7 +48,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
  * @author Kuali Rice Team (rice.collab@kuali.org) 
  *
  */
-public class GroupXmlJAXBParser implements XmlConstants {
+public class GroupXmlJAXBParser {
     private static final Logger LOG = Logger.getLogger(GroupXmlJAXBParser.class);
     private static final String DEFAULT_GROUP_DESCRIPTION = "";
     private static final String DEFAULT_GROUP_SCHEMA_NAME = "Groups-1.0.3.xsd";

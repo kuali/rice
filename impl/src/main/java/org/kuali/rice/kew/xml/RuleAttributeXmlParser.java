@@ -49,11 +49,11 @@ import org.xml.sax.InputSource;
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class RuleAttributeXmlParser implements XmlConstants {
+public class RuleAttributeXmlParser {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(RuleAttributeXmlParser.class);
 
     
-    private static final String XPATH_RULE_ATTRIBUTES = "//" + RULE_ATTRIBUTES + "/" + RULE_ATTRIBUTE;
+    private static final String XPATH_RULE_ATTRIBUTES = "//" + XmlConstants.RULE_ATTRIBUTES + "/" + XmlConstants.RULE_ATTRIBUTE;
 	private static final String NAME = "name";
 	private static final String CLASS_NAME = "className";
 	private static final String LABEL = "label";
@@ -119,11 +119,11 @@ public class RuleAttributeXmlParser implements XmlConstants {
 				description = childNode.getFirstChild().getNodeValue();
 			} else if(TYPE.equals(childNode.getNodeName())){
 				type = childNode.getFirstChild().getNodeValue();
-			} else if(ROUTING_CONFIG.equals(childNode.getNodeName()) || SEARCHING_CONFIG.equals(childNode.getNodeName()) || 
-					SEARCH_RESULT_CONFIG.equals(childNode.getNodeName()) || RESOLVER_CONFIG.equals(childNode.getNodeName()) ||
+			} else if(XmlConstants.ROUTING_CONFIG.equals(childNode.getNodeName()) || XmlConstants.SEARCHING_CONFIG.equals(childNode.getNodeName()) || 
+					XmlConstants.SEARCH_RESULT_CONFIG.equals(childNode.getNodeName()) || XmlConstants.RESOLVER_CONFIG.equals(childNode.getNodeName()) ||
 					CONFIG.equals(childNode.getNodeName())){
 				xmlConfig = childNode;
-			} else if (SERVICE_NAMESPACE.equals(childNode.getNodeName())) {
+			} else if (XmlConstants.SERVICE_NAMESPACE.equals(childNode.getNodeName())) {
 				serviceNamespace = childNode.getFirstChild().getNodeValue();
 			}
 		}

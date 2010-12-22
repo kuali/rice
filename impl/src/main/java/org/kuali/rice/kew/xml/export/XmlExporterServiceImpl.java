@@ -24,23 +24,20 @@ import java.util.List;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.Format;
-import org.jdom.output.Format.TextMode;
 import org.jdom.output.XMLOutputter;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.xml.XmlConstants;
-import org.kuali.rice.kns.exception.ExportNotSupportedException;
 import org.springframework.beans.factory.BeanInitializationException;
 
-
+import static org.kuali.rice.kew.xml.XmlConstants.*;
 /**
  * An implementation of the XmlExporterService which can be configured with a set of
  * services that know how to export various pieces of the {@link ExportDataSet} to XML.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class XmlExporterServiceImpl implements XmlExporterService, XmlConstants {
+public class XmlExporterServiceImpl implements XmlExporterService {
 
     private List serviceOrder;
 

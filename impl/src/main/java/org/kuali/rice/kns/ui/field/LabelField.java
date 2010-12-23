@@ -15,12 +15,51 @@
  */
 package org.kuali.rice.kns.ui.field;
 
+import org.kuali.rice.kns.ui.element.Label;
+import org.kuali.rice.kns.ui.util.Position;
+
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class LabelField {
+public class LabelField extends FieldBase {
+	private String labelForComponentId;
+
+	private Label label;
+	private Position labelPlacement;
+
+	public LabelField() {
+		label = new Label();
+	}
+
+	public String getLabelForComponentId() {
+		return this.labelForComponentId;
+	}
+
+	public void setLabelForComponentId(String labelForComponentId) {
+		this.labelForComponentId = labelForComponentId;
+	}
+
+	public Label getLabel() {
+		return this.label;
+	}
+
+	public void setLabel(Label label) {
+		this.label = label;
+	}
+
+	public Position getLabelPlacement() {
+		return this.labelPlacement;
+	}
+
+	public void setLabelPlacement(Position labelPlacement) {
+		this.labelPlacement = labelPlacement;
+	}
+
+	public void setLabelPlacement(String labelPlacement) {
+		this.labelPlacement = Position.valueOf(labelPlacement);
+	}
 
 }

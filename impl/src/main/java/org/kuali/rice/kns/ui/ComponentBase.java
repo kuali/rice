@@ -15,25 +15,54 @@
  */
 package org.kuali.rice.kns.ui;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * 
  */
 public abstract class ComponentBase implements Component {
 	private String id;
 	private String name;
 	private String template;
-	
+
+	private boolean hidden;
+	private boolean readOnly;
+	private boolean required;
+	private boolean disclosure;
+
 	private String align;
+	private String valign;
 	private String width;
-	private Integer span;
+	private int colSpan;
+	private int rowSpan;
 	private String style;
 	private String styleClass;
 
 	public ComponentBase() {
-		
+		colSpan = 1;
+		rowSpan = 1;
+	}
+
+	/**
+	 * <p>
+	 * The following initialization is performed:
+	 * <ul>
+	 * <li>If id is not given, set it to the name prefixed with 'id_' (either
+	 * the name or id must be given)</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize()
+	 */
+	@Override
+	public void initialize() {
+		if (StringUtils.isBlank(id)) {
+			id = "id_" + name;
+		}
 	}
 
 	public String getId() {
@@ -60,12 +89,52 @@ public abstract class ComponentBase implements Component {
 		this.template = template;
 	}
 
+	public boolean isHidden() {
+		return this.hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+
+	public boolean isReadOnly() {
+		return this.readOnly;
+	}
+
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
+	}
+
+	public boolean isRequired() {
+		return this.required;
+	}
+
+	public void setRequired(boolean required) {
+		this.required = required;
+	}
+
+	public boolean isDisclosure() {
+		return this.disclosure;
+	}
+
+	public void setDisclosure(boolean disclosure) {
+		this.disclosure = disclosure;
+	}
+
 	public String getAlign() {
 		return this.align;
 	}
 
 	public void setAlign(String align) {
 		this.align = align;
+	}
+
+	public String getValign() {
+		return this.valign;
+	}
+
+	public void setValign(String valign) {
+		this.valign = valign;
 	}
 
 	public String getWidth() {
@@ -76,12 +145,20 @@ public abstract class ComponentBase implements Component {
 		this.width = width;
 	}
 
-	public Integer getSpan() {
-		return this.span;
+	public int getColSpan() {
+		return this.colSpan;
 	}
 
-	public void setSpan(Integer span) {
-		this.span = span;
+	public void setColSpan(int colSpan) {
+		this.colSpan = colSpan;
+	}
+
+	public int getRowSpan() {
+		return this.rowSpan;
+	}
+
+	public void setRowSpan(int rowSpan) {
+		this.rowSpan = rowSpan;
 	}
 
 	public String getStyle() {
@@ -99,5 +176,5 @@ public abstract class ComponentBase implements Component {
 	public void setStyleClass(String styleClass) {
 		this.styleClass = styleClass;
 	}
-	
+
 }

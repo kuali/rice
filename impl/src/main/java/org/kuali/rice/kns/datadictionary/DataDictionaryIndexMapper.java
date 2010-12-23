@@ -195,8 +195,6 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 			LOG.debug("calling getViewById by id '" + viewId + "'");
 		}
 
-		View view = index.getViewEntries().get(viewId);
-
-		return view;
+		return index.getViewById(viewId);
 	}
 }

@@ -15,12 +15,13 @@
  */
 package org.kuali.rice.kns.ui.control;
 
+import org.kuali.rice.kns.ui.Component;
+
 /**
  * This is a description of what this class does - jkneal don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class Control {
+public interface Control extends Component {
 
 }

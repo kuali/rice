@@ -1676,6 +1676,26 @@ limitations under the License.
                     </exclusion>
                 </exclusions>                
             </dependency>
+            
+            <dependency>
+                <groupId>org.apache.tiles</groupId>
+                <artifactId>tiles-extras</artifactId>
+                <version>${tiles.version}</version>
+                <exclusions>
+                    <exclusion>
+                         <groupId>commons-beanutils</groupId>
+                         <artifactId>commons-beanutils</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>commons-digester</groupId>
+                        <artifactId>commons-digester</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                </exclusions>                 
+            </dependency>           
 		</dependencies>
 	</dependencyManagement>
 

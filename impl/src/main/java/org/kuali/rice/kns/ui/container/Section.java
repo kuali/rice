@@ -20,29 +20,37 @@ import java.util.List;
 
 import org.kuali.rice.kns.web.ui.Field;
 
-
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
+ * 
  */
 public class Section extends HeaderFooterContainerBase {
-	private boolean defaultOpen;
-	private boolean renderAsTab;
-	
+
 	public Section() {
-		
+
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
 	 */
+	@Override
 	public List<Class> getSupportedComponents() {
 		List<Class> supportedComponents = new ArrayList<Class>();
 		supportedComponents.add(Group.class);
 		supportedComponents.add(Field.class);
-		
+
 		return supportedComponents;
 	}
+
+	/**
+	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
+	 */
+	@Override
+	public String getComponentTypeName() {
+		return "section";
+	}
+
 }

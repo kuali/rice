@@ -52,6 +52,13 @@ public class View extends HeaderFooterContainerBase {
 		validateModelData = true;
 		dialogMode = false;
 	}
+	
+	@Override
+	public void initialize() {
+		super.initialize();
+		
+		this.currentPageId = this.entryPageId;
+	}
 
 	/**
 	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
@@ -62,6 +69,14 @@ public class View extends HeaderFooterContainerBase {
 		supportedComponents.add(Page.class);
 
 		return supportedComponents;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
+	 */
+	@Override
+	public String getComponentTypeName() {
+		return "view";
 	}
 
 	/**

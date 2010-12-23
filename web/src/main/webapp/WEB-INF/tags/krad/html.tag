@@ -80,6 +80,7 @@
        action="/${htmlFormAction}.do"
        method="post"
        enctype="${encoding}"
+       modelAttribute="KualiForm"
        onsubmit="return hasFormAlreadyBeenSubmitted();">
 
        <a name="topOfForm"></a>

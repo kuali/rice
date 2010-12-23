@@ -15,6 +15,6 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="footer" />
+<tiles:useAttribute name="footerGroup" classname="org.kuali.rice.kns.ui.container.Footer"/>
 
 Footer Here

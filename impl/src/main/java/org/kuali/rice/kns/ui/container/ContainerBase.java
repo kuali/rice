@@ -15,19 +15,22 @@
  */
 package org.kuali.rice.kns.ui.container;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kns.ui.Component;
 import org.kuali.rice.kns.ui.ComponentBase;
+import org.kuali.rice.kns.ui.LabeledComponent;
 import org.kuali.rice.kns.ui.element.Message;
 import org.kuali.rice.kns.ui.field.ErrorsField;
+import org.kuali.rice.kns.ui.layout.LayoutManager;
 import org.kuali.rice.kns.ui.widget.Help;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in.
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
 public abstract class ContainerBase extends ComponentBase implements Container {
 	private String title;
@@ -36,14 +39,49 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private Message titleMessage;
 	private ErrorsField errors;
 	private Help help;
+	private LayoutManager layoutManager;
 
 	private List<Component> items;
 
 	public ContainerBase() {
-
+		items = new ArrayList<Component>();
 	}
 
 	public abstract List<Class> getSupportedComponents();
+
+	/**
+	 * <p>
+	 * The following initialization is performed:
+	 * <ul>
+	 * <li>The contained list of components is iterated over to check for
+	 * instances of <code>LabeledComponent</code>. If an instance is found, the
+	 * component is checked to see whether the label field should be rendered,
+	 * if so the <code>LabelField</code> is retrieved from the component and
+	 * added to the list of container components. The label field is placed
+	 * immediately before the component in the list.</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize()
+	 */
+	@Override
+	public void initialize() {
+		super.initialize();
+
+		List<Component> allItems = new ArrayList<Component>();
+		for (Component component : items) {
+			if (component instanceof LabeledComponent) {
+				boolean includeLabelField = ((LabeledComponent) component).isIncludeLabelField();
+				if (includeLabelField) {
+					allItems.add(((LabeledComponent) component).getLabelField());
+				}
+			}
+
+			allItems.add(component);
+		}
+		
+		this.items = allItems;
+	}
 
 	public String getTitle() {
 		return this.title;
@@ -91,6 +129,14 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	public void setItems(List<Component> items) {
 		this.items = items;
+	}
+
+	public LayoutManager getLayoutManager() {
+		return this.layoutManager;
+	}
+
+	public void setLayoutManager(LayoutManager layoutManager) {
+		this.layoutManager = layoutManager;
 	}
 
 }

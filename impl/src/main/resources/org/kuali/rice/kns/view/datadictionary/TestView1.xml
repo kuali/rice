@@ -24,19 +24,88 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans       http://www
       <property name="navigation">
          <bean parent="LeftMenu"/>
       </property>
-      <property name="header">
-         <bean parent="ViewHeader" p:title="Test View 1"/>
-      </property>
-      <property name="footer">
-         <bean parent="Footer"/>
-      </property>  
       <property name="entryPageId" value="editTravelAccount"/>   
       <property name="items">
         <list>
-          <bean parent="Page" p:id="editTravelAccount"/>
+          <bean parent="Page" p:id="editTravelAccount">
+             <property name="items">
+               <list>
+                 <ref bean="testSection1"/>
+               </list>
+             </property> 
+          </bean>
         </list>
       </property>     
       <property name="formAction" value="/spring/uitest"/>
    </bean>
+   
+   <bean id="testSection1" parent="PanelSection">
+      <property name="id" value="testSection1"/>
+      <property name="title" value="Test Section 1"/> 
+      <property name="items">
+        <list>
+          <ref bean="testGroup1"/>
+          <ref bean="testGroup2"/>
+        </list>
+      </property> 
+   </bean>
+   
+   <bean id="testGroup1" parent="GroupGridLayout">   
+      <property name="id" value="testGroup1"/>
+      <property name="title" value="Test Group 1"/> 
+      <property name="items">
+        <list>
+          <bean parent="AttributeLabelFieldPair" p:name="field1" p:label="Field 1">
+            <property name="control">
+              <bean parent="TextControl" p:size="5" p:maxLength="4"/>
+            </property>
+          </bean>
+          <bean parent="AttributeLabelFieldPair" p:name="field2" p:label="Field 2">
+            <property name="control">
+              <bean parent="TextControl" p:size="26" p:maxLength="25"/>
+            </property>
+          </bean>
+          <bean parent="AttributeLabelFieldPair" p:name="field3" p:label="Field 3">
+            <property name="control">
+              <bean parent="TextControl" p:size="10" p:maxLength="9"/>
+            </property>
+          </bean>
+          <bean parent="AttributeLabelFieldPair" p:name="field4" p:label="Field 4">
+            <property name="control">
+              <bean parent="TextControl" p:size="10" p:maxLength="9"/>
+            </property>
+          </bean>                              
+        </list>
+      </property>       
+   </bean>
+   
+   <bean id="testGroup2" parent="GroupGridLayout">   
+      <property name="id" value="testGroup2"/>
+      <property name="title" value="Test Group 2"/> 
+      <property name="items">
+        <list>
+          <bean parent="AttributeLabelFieldPair" p:name="field5" p:label="Field 5">
+            <property name="control">
+              <bean parent="TextControl" p:size="5" p:maxLength="4"/>
+            </property>
+          </bean>
+          <bean parent="AttributeLabelFieldPair" p:name="field6" p:label="Field 6">
+            <property name="control">
+              <bean parent="TextControl" p:size="26" p:maxLength="25"/>
+            </property>
+          </bean>
+          <bean parent="AttributeLabelFieldPair" p:name="field7" p:label="Field 7">
+            <property name="control">
+              <bean parent="TextControl" p:size="10" p:maxLength="9"/>
+            </property>
+          </bean>
+          <bean parent="AttributeLabelFieldPair" p:name="field8" p:label="Field 8">
+            <property name="control">
+              <bean parent="TextControl" p:size="10" p:maxLength="9"/>
+            </property>
+          </bean>                              
+        </list>
+      </property>       
+   </bean>   
 
 </beans>

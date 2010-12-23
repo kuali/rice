@@ -16,16 +16,24 @@
 package org.kuali.rice.kns.ui.layout;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class GridLayoutManager extends LayoutManagerBase{
-	private String numberOfColumns;
-	private String labelPlacement;
-	
+public class GridLayoutManager extends LayoutManagerBase {
+	private int numberOfColumns;
+
 	public GridLayoutManager() {
-		
+
 	}
+
+	public int getNumberOfColumns() {
+		return this.numberOfColumns;
+	}
+
+	public void setNumberOfColumns(int numberOfColumns) {
+		this.numberOfColumns = numberOfColumns;
+	}
+
 }

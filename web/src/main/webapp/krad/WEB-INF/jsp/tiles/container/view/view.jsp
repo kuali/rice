@@ -19,21 +19,21 @@
 <krad:html htmlFormAction="${View.formAction}"
                   headerTitle="${View.title}" additionalScriptFiles="${View.additionalScriptFiles}"
                   renderMultipart="true">
-
+                  
     <!----------------------------------- #VIEW HEADER --------------------------------------->
     <tiles:insertTemplate template="${View.header.template}">
-          <tiles:putAttribute name="header" value="${View.header}" />
+          <tiles:putAttribute name="headerGroup" value="${View.header}"/>
     </tiles:insertTemplate>
     
     <!----------------------------------- #VIEW NAVIGATION --------------------------------------->
     <tiles:insertTemplate template="${View.navigation.template}">
-          <tiles:putAttribute name="navigation" value="${View.navigation}" />
+          <tiles:putAttribute name="${View.navigation.componentTypeName}" value="${View.navigation}" />
           <tiles:putAttribute name="currentPageId" value="${View.currentPageId}" />
     </tiles:insertTemplate>    
 
     <%-- begin of page render --%>
     <tiles:insertTemplate template="${View.currentPage.template}">
-          <tiles:putAttribute name="page" value="${View.currentPage}" />
+          <tiles:putAttribute name="${View.currentPage.componentTypeName}" value="${View.currentPage}" />
     </tiles:insertTemplate>    
     <%-- end of page render --%>
     
@@ -42,7 +42,7 @@
     
     <!----------------------------------- #VIEW FOOTER --------------------------------------->
     <tiles:insertTemplate template="${View.footer.template}">
-          <tiles:putAttribute name="footer" value="${View.footer}" />
+          <tiles:putAttribute name="footerGroup" value="${View.footer}" />
     </tiles:insertTemplate>    
 
 </krad:html>

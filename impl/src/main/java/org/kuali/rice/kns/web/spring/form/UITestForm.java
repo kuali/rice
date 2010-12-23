@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.web.spring.form;
 
+import java.util.Date;
+
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 /**
@@ -23,5 +25,80 @@ import org.kuali.rice.kns.web.struts.form.KualiForm;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class UITestForm extends KualiForm {
+	private String field1;
+	private String field2;
+	private String field3;
+	private String field4;
+	private String field5;
+	private Date field6;
+	private int field7;
+	private boolean field8;
+
+	public UITestForm() {
+	}
+
+	public String getField1() {
+		return this.field1;
+	}
+
+	public void setField1(String field1) {
+		this.field1 = field1;
+	}
+
+	public String getField2() {
+		return this.field2;
+	}
+
+	public void setField2(String field2) {
+		this.field2 = field2;
+	}
+
+	public String getField3() {
+		return this.field3;
+	}
+
+	public void setField3(String field3) {
+		this.field3 = field3;
+	}
+
+	public String getField4() {
+		return this.field4;
+	}
+
+	public void setField4(String field4) {
+		this.field4 = field4;
+	}
+
+	public String getField5() {
+		return this.field5;
+	}
+
+	public void setField5(String field5) {
+		this.field5 = field5;
+	}
+
+	public Date getField6() {
+		return this.field6;
+	}
+
+	public void setField6(Date field6) {
+		this.field6 = field6;
+	}
+
+	public int getField7() {
+		return this.field7;
+	}
+
+	public void setField7(int field7) {
+		this.field7 = field7;
+	}
+
+	public boolean isField8() {
+		return this.field8;
+	}
+
+	public void setField8(boolean field8) {
+		this.field8 = field8;
+	}
 
 }

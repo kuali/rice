@@ -24,21 +24,17 @@ import org.kuali.rice.kns.ui.ComponentBase;
  * 
  */
 public class FieldBase extends ComponentBase implements Field {
-	private String label;
-	private String labelPlacement;
-	private String labelPlacementWhenReadOnly;
-	private String labelAlign;
-	private String labelWidth;
-	private String labelStyle;
-
-	private Integer labelSpan;
-
-	private boolean renderLabelColon;
-	private boolean hidden;
-	private boolean renderLabel;
 
 	public FieldBase() {
 
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
+	 */
+	@Override
+	public String getComponentTypeName() {
+		return "field";
 	}
 
 }

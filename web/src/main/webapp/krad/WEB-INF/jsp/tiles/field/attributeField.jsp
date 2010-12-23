@@ -15,22 +15,20 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<table>
-  <tbody>
-    <tr>
-        <td width="1%">
-            <img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif"
-                     alt="" width="20" height="20" />
-        </td>
-        <td>
-      
-             Page Body
-          
-          
-          </td>
-          <td width="20">
-            <img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20" height="20"/>
-          </td>
-       </tr>
-    </tbody>        
-</table>          
+<tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.AttributeField"/>
+
+<%-- render field label --%>
+
+<%-- render field summary --%>
+
+<%-- render field control --%>
+<tiles:insertTemplate template="${field.control.template}">
+    <tiles:putAttribute name="control" value="${field.control}"/>
+    <tiles:putAttribute name="field" value="${field}"/>
+</tiles:insertTemplate>
+
+<%-- render field constraint --%>
+
+<%-- render field quickfinder --%>
+
+<%-- render field help --%>

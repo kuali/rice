@@ -15,20 +15,59 @@
  */
 package org.kuali.rice.kns.ui.layout;
 
+import org.kuali.rice.kns.ui.util.Position;
+
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public abstract class LayoutManagerBase {
-	private boolean showHeader;
-	private String headerLevel;
-	private boolean renderLabels;
-	
-	private String tagFileHandler;
-	
-	public LayoutManagerBase(){
-		
+public abstract class LayoutManagerBase implements LayoutManager {
+	private String template;
+	private String style;
+	private String styleClass;
+
+	private Position labelPlacement;
+
+	public LayoutManagerBase() {
+
 	}
+
+	public String getTemplate() {
+		return this.template;
+	}
+
+	public void setTemplate(String template) {
+		this.template = template;
+	}
+
+	public String getStyle() {
+		return this.style;
+	}
+
+	public void setStyle(String style) {
+		this.style = style;
+	}
+
+	public String getStyleClass() {
+		return this.styleClass;
+	}
+
+	public void setStyleClass(String styleClass) {
+		this.styleClass = styleClass;
+	}
+
+	public Position getLabelPlacement() {
+		return this.labelPlacement;
+	}
+
+	public void setLabelPlacement(Position labelPlacement) {
+		this.labelPlacement = labelPlacement;
+	}
+
+	public void setLabelPlacement(String labelPlacement) {
+		this.labelPlacement = Position.valueOf(labelPlacement);
+	}
+
 }

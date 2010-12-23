@@ -16,11 +16,33 @@
 package org.kuali.rice.kns.ui.control;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class TextControl extends Control {
+public class TextControl extends ControlBase {
+	private Integer size;
+	private Integer maxLength;
+
+	public TextControl() {
+
+	}
+
+	public Integer getSize() {
+		return this.size;
+	}
+
+	public void setSize(Integer size) {
+		this.size = size;
+	}
+
+	public Integer getMaxLength() {
+		return this.maxLength;
+	}
+
+	public void setMaxLength(Integer maxLength) {
+		this.maxLength = maxLength;
+	}
 
 }

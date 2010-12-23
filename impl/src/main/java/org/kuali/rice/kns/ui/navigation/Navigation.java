@@ -28,4 +28,12 @@ public class Navigation extends ComponentBase {
 	public Navigation() {
 		
 	}
+	
+	/**
+	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
+	 */
+	@Override
+	public String getComponentTypeName() {
+		return "navigation";
+	}
 }

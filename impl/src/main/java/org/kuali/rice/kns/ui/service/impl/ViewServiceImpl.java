@@ -16,7 +16,14 @@
 package org.kuali.rice.kns.ui.service.impl;
 
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.ui.Component;
+import org.kuali.rice.kns.ui.container.FieldGroup;
+import org.kuali.rice.kns.ui.container.Group;
+import org.kuali.rice.kns.ui.container.Page;
+import org.kuali.rice.kns.ui.container.Section;
 import org.kuali.rice.kns.ui.container.View;
+import org.kuali.rice.kns.ui.field.Field;
+import org.kuali.rice.kns.ui.navigation.Navigation;
 import org.kuali.rice.kns.ui.service.ViewService;
 
 /**
@@ -31,7 +38,77 @@ public class ViewServiceImpl implements ViewService {
 	 * @see org.kuali.rice.kns.ui.service.ViewService#getViewById(java.lang.String)
 	 */
 	public View getViewById(String viewId) {
-		return dataDictionaryService.getViewById(viewId);
+		View view = dataDictionaryService.getViewById(viewId);
+
+		initializeView(view);
+
+		return view;
+	}
+
+	protected void initializeView(View view) {
+		for (Component component : view.getItems()) {
+			initializePage((Page) component);
+		}
+
+		initializeNavigation(view.getNavigation());
+
+		view.initialize();
+	}
+
+	protected void initializePage(Page page) {
+		for (Component component : page.getItems()) {
+			initializeSection((Section) component);
+		}
+
+		initializeNavigation(page.getNavigation());
+
+		page.initialize();
+	}
+
+	protected void initializeSection(Section section) {
+		for (Component component : section.getItems()) {
+			if (component instanceof Group) {
+				initializeGroup((Group) component);
+			} else if (component instanceof FieldGroup) {
+				initializeFieldGroup((FieldGroup) component);
+			} else {
+				initializeField((Field) component);
+			}
+		}
+
+		section.initialize();
+	}
+
+	protected void initializeGroup(Group group) {
+		for (Component component : group.getItems()) {
+			if (component instanceof Group) {
+				initializeGroup((Group) component);
+			} else if (component instanceof FieldGroup) {
+				initializeFieldGroup((FieldGroup) component);
+			} else {
+				initializeField((Field) component);
+			}
+		}
+
+		group.initialize();
+	}
+
+	protected void initializeFieldGroup(FieldGroup fieldGroup) {
+		for (Component component : fieldGroup.getItems()) {
+			initializeFieldGroup((FieldGroup) component);
+		}
+
+		fieldGroup.initialize();
+	}
+
+	protected void initializeField(Field field) {
+		field.initialize();
+	}
+
+	protected void initializeNavigation(Navigation navigation) {
+		if (navigation != null) {
+			navigation.initialize();
+		}
 	}
 
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {

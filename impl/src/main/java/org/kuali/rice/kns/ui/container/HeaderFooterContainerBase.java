@@ -15,19 +15,32 @@
  */
 package org.kuali.rice.kns.ui.container;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
 public abstract class HeaderFooterContainerBase extends ContainerBase {
+	private boolean renderHeader;
+
 	private Header header;
 	private Footer footer;
 
 	public HeaderFooterContainerBase() {
+		renderHeader = true;
+	}
 
+	@Override
+	public void initialize() {
+		super.initialize();
+
+		// if header title not given, use the container title
+		if (header != null && StringUtils.isBlank(header.getTitle())) {
+			header.setTitle(this.getTitle());
+		}
 	}
 
 	public Header getHeader() {
@@ -44,6 +57,14 @@ public abstract class HeaderFooterContainerBase extends ContainerBase {
 
 	public void setFooter(Footer footer) {
 		this.footer = footer;
+	}
+
+	public boolean isRenderHeader() {
+		return this.renderHeader;
+	}
+
+	public void setRenderHeader(boolean renderHeader) {
+		this.renderHeader = renderHeader;
 	}
 
 }

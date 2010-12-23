@@ -137,7 +137,7 @@ limitations under the License.
 		<surefire.forkMode>${maven.surefire.forkmode}</surefire.forkMode>
 		<surefire.reportFormat>plain</surefire.reportFormat>
 		<!-- using the argLine since the environmentVariables tag is not working (ver 2.5 of this plugin) -->
-		<surefire.argLine>-Dalt.config.location="${alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+CMSPermGenSweepingEnabled</surefire.argLine>
+		<surefire.argLine>-Dalt.config.location="${alt.config.location}" -Xmx1024m -XX:MaxPermSize=512m -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled</surefire.argLine>
 		<surefire.report.1>report-only</surefire.report.1>
 	</properties>
 

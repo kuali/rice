@@ -28,14 +28,18 @@
         <module>kns</module>
         <module>test-clients</module>
         <module>ksb2</module>
+        <module>web</module>
     </modules>
+    <properties>
+      <skip.itests>true</skip.itests>
+    </properties>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <skip>true</skip>
+                    <skip>${skip.itests}</skip>
                 </configuration>
                 <executions>
                     <execution>
@@ -45,7 +49,7 @@
                             <goal>test</goal>
                         </goals>
                         <configuration>
-                            <skip>true</skip>
+                            <skip>${skip.itests}</skip>
                         </configuration>
                     </execution>
                 </executions>
@@ -59,29 +63,9 @@
             <activation>
                 <activeByDefault>false</activeByDefault>
             </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <configuration>
-                            <skip>false</skip>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>surefire-itests</id>
-                                <phase>integration-test</phase>
-                                <goals>
-                                    <goal>test</goal>
-                                </goals>
-                                <configuration>
-                                    <skip>false</skip>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
+		    <properties>
+		      <skip.itests>false</skip.itests>
+		    </properties>
         </profile>
     </profiles>
 </project>

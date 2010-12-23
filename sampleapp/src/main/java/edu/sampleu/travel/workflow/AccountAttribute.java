@@ -15,15 +15,7 @@
  */
 package edu.sampleu.travel.workflow;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
+import edu.sampleu.travel.bo.TravelAccount;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -36,7 +28,13 @@ import org.kuali.rice.kns.workflow.WorkflowUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import edu.sampleu.travel.bo.TravelAccount;
+import javax.xml.namespace.QName;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Resolves FO's using the accounts associated with the document XPath xpath =
@@ -58,7 +56,8 @@ public class AccountAttribute extends AbstractRoleAttribute {
     public List<String> getQualifiedRoleNames(String roleName, DocumentContent documentContent) {
         List<String> qualifiedRoleNames = new ArrayList<String>();
         XPath xpath = WorkflowUtils.getXPath(documentContent.getDocument());
-        NodeList accountNums = (NodeList) xstreamSafeEval(xpath, "/documentContent/applicationContent/org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer/document/travelAccounts/vector/default/elementData/edu.sampleu.travel.workflow.bo.TravelAccount/number", documentContent.getDocument(), XPathConstants.NODESET);
+        // This xpath stream needs updating when the TravelAccount is being updated
+        NodeList accountNums = (NodeList) xstreamSafeEval(xpath, "/documentContent/applicationContent/org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer/document/travelAccounts/vector/default/elementData/edu.sampleu.travel.bo.TravelAccount/number", documentContent.getDocument(), XPathConstants.NODESET);
         for (int i = 0; i < accountNums.getLength(); i++) {
             Node accountNum = accountNums.item(i);
             String accuntNumVal = accountNum.getTextContent();
@@ -110,4 +109,4 @@ public class AccountAttribute extends AbstractRoleAttribute {
             throw new RuntimeException("XPathExpressionException occurred on xpath: " + xstreamSafeXPath, e);
         }
     }
-}
+    }

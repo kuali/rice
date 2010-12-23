@@ -16,18 +16,10 @@
 
 package edu.sampleu.travel.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.util.LinkedHashMap;
 
 @Entity
 @Table(name="TRV_ACCT")
@@ -73,20 +65,20 @@ public class TravelAccount extends PersistableBusinessObjectBase {
         this.fiscalOfficer = fiscalOfficer;
     }
 
-    @Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap propMap = new LinkedHashMap();
-        propMap.put("number", getNumber());
-        propMap.put("name", getName());
-        return propMap;
-    }
-
     public Long getFoId() {
         return foId;
     }
 
     public void setFoId(Long foId) {
         this.foId = foId;
+    }
+
+    @Override
+    protected LinkedHashMap toStringMapper() {
+        LinkedHashMap propMap = new LinkedHashMap();
+        propMap.put("number", getNumber());
+        propMap.put("name", getName());
+        return propMap;
     }
     
 }

@@ -49,6 +49,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.SQLUtils;
 
 /**
  *
@@ -212,7 +213,7 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
 		}
 
 		Pattern pattern = Pattern.compile(DEFAULT_VALIDATION_REGEX_EXPRESSION);
-		Matcher matcher = pattern.matcher(SqlBuilder.cleanNumericOfValidOperators(valueEntered).trim());
+		Matcher matcher = pattern.matcher(SQLUtils.cleanNumericOfValidOperators(valueEntered).trim()); 
 		if(!matcher.matches()){
 			bRet = false;
 		}

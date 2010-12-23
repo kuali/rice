@@ -40,7 +40,7 @@ public final class TestUtils {
 
     public static String getBaseDir() {
 	if (System.getProperty(BASEDIR_PROP) == null) {
-		System.setProperty(BASEDIR_PROP, System.getProperty("user.dir") + "/" + getModuleBaseDir());
+		System.setProperty(BASEDIR_PROP, System.getProperty("user.dir") + "/test/" + getModuleBaseDir());
 	}
 	return System.getProperty(BASEDIR_PROP);
     }

@@ -30,9 +30,9 @@ import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
  *
  */
 public final class ServiceTestUtils {
-	static	String serverHostStr = getConfigProp("kim.test.host");
-	static	String serverPortStr = getConfigProp("kim.test.port");
-	static	String appContext = getConfigProp("app.context.name");
+	public static final String serverHostStr = getConfigProp("kim.test.host");
+	public static final Integer serverPort = Integer.valueOf(getConfigProp("kim.test.port"));
+	public static final String appContext = getConfigProp("app.context.name");
 	
 	private ServiceTestUtils() {
 		throw new UnsupportedOperationException("do not call");
@@ -59,7 +59,7 @@ public final class ServiceTestUtils {
 		
 		// protocol will probably be configured eventually as well
 		String svcAddr = "http://" + serverHostStr + 
-							(null != serverPortStr ? ":" + Integer.parseInt(serverPortStr) : "") + "/" +
+							(null != serverPort ? ":" + serverPort : "") + "/" +
 							appContext + "/" + "remoting/" + svcName;
 
 		ClientProxyFactoryBean clientFactory = new JaxWsProxyFactoryBean();

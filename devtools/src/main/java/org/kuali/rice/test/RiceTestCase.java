@@ -150,7 +150,7 @@ public abstract class RiceTestCase extends BaseRiceTestCase {
      */
     protected void setBaseDirSystemProperty(String moduleBaseDir) {
         if (System.getProperty("basedir") == null) {
-            System.setProperty("basedir", System.getProperty("user.dir") + "/" + moduleBaseDir);
+            System.setProperty("basedir", System.getProperty("user.dir") + "/test/" + moduleBaseDir);
         }
     }
 

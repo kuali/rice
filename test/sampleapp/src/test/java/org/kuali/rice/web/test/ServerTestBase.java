@@ -39,7 +39,7 @@ import org.kuali.rice.test.web.HtmlUnitUtil;
 public class ServerTestBase extends RiceInternalSuiteDataTestCase {
 	
 	protected static final String HTML_PAGE_TITLE_TEXT = "Kuali Portal Index";
-	protected static final String MODULE_NAME = "web";
+	protected static final String MODULE_NAME = "sampleapp";
 	
     private String contextName = "/knstest";
     private String relativeWebappRoot = "/src/main/webapp";

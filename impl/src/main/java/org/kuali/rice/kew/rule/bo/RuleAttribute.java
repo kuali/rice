@@ -38,7 +38,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 
 
@@ -57,7 +57,7 @@ import org.kuali.rice.kew.bo.WorkflowPersistable;
   @NamedQuery(name="RuleAttribute.FindByClassName",  query="select ra from RuleAttribute ra where ra.className = :className"),
   @NamedQuery(name="RuleAttribute.GetAllRuleAttributes",  query="select ra from RuleAttribute ra")
 })
-public class RuleAttribute extends KewPersistableBusinessObjectBase implements WorkflowPersistable  {
+public class RuleAttribute extends PersistableBusinessObjectBase implements WorkflowPersistable  {
 
 	private static final long serialVersionUID = 1027673603158346349L;
 	@Id

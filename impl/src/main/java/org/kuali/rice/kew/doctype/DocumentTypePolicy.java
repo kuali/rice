@@ -28,7 +28,7 @@ import javax.persistence.MapsId;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.util.KEWConstants;
 
@@ -40,7 +40,7 @@ import org.kuali.rice.kew.util.KEWConstants;
  */
 @Entity
 @Table(name="KREW_DOC_TYP_PLCY_RELN_T")
-public class DocumentTypePolicy extends KewPersistableBusinessObjectBase {
+public class DocumentTypePolicy extends PersistableBusinessObjectBase {
 	private static final long serialVersionUID = -4612246888683336474L;
 
 	@EmbeddedId

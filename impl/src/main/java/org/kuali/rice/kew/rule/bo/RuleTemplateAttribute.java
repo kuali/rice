@@ -33,7 +33,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleValidationAttribute;
@@ -53,7 +53,7 @@ import org.kuali.rice.kns.bo.Inactivateable;
 @Entity
 @Table(name="KREW_RULE_TMPL_ATTR_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateAttributeId")
-public class RuleTemplateAttribute extends KewPersistableBusinessObjectBase implements Comparable<RuleTemplateAttribute>, Inactivateable {
+public class RuleTemplateAttribute extends PersistableBusinessObjectBase implements Comparable<RuleTemplateAttribute>, Inactivateable {
 
     private static final long serialVersionUID = -3580049225424553828L;
     @Id

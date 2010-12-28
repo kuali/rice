@@ -28,7 +28,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * Association between WorkflowDocument type -&gt; EDocLite definition, EDocLite style
@@ -38,7 +38,7 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 @Entity
 @Table(name="KREW_EDL_ASSCTN_T")
 //@Sequence(name="KREW_EDL_S", property="edocLiteAssocId")
-public class EDocLiteAssociation  extends KewPersistableBusinessObjectBase implements Serializable{
+public class EDocLiteAssociation  extends PersistableBusinessObjectBase implements Serializable{
 
 	private static final long serialVersionUID = 7300251507982374010L;
 	/**

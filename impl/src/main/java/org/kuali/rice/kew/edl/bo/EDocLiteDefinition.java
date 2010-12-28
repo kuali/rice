@@ -29,7 +29,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * EDocLite document definition
@@ -39,7 +39,7 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 @Entity
 @Table(name="KREW_EDL_DEF_T")
 //@Sequence(name="KREW_EDL_S", property="eDocLiteDefId")
-public class EDocLiteDefinition  extends KewPersistableBusinessObjectBase {
+public class EDocLiteDefinition  extends PersistableBusinessObjectBase {
     private static final long serialVersionUID = 6230450806784021509L;
     /**
      * edoclt_def_id

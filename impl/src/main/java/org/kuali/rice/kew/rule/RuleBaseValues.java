@@ -43,7 +43,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -70,7 +70,7 @@ import org.kuali.rice.kns.web.ui.Row;
 @Entity
 @Table(name="KREW_RULE_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleBaseValuesId")
-public class RuleBaseValues extends KewPersistableBusinessObjectBase {
+public class RuleBaseValues extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = 6137765574728530156L;
     @Id

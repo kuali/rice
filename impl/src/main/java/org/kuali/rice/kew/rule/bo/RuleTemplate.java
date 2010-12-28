@@ -43,7 +43,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RoleAttribute;
@@ -63,7 +63,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 @Table(name="KREW_RULE_TMPL_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateId")
 @NamedQueries({@NamedQuery(name="findAllOrderedByName", query="SELECT rt FROM RuleTemplate rt ORDER BY rt.name ASC")})
-public class RuleTemplate  extends KewPersistableBusinessObjectBase implements WorkflowPersistable  {
+public class RuleTemplate  extends PersistableBusinessObjectBase implements WorkflowPersistable  {
 
     private static final long serialVersionUID = -3387940485523951302L;
 

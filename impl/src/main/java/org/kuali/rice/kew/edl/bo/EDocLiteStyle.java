@@ -29,7 +29,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * EDocLite XSLT stylesheet
@@ -39,7 +39,7 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 @Entity
 @Table(name="KREW_STYLE_T")
 //@Sequence(name="KREW_EDL_S", property="edocLiteStyleId")
-public class EDocLiteStyle  extends KewPersistableBusinessObjectBase{
+public class EDocLiteStyle  extends PersistableBusinessObjectBase{
     private static final long serialVersionUID = 2020611019976731725L;
     /**
      * edoclt_style_id

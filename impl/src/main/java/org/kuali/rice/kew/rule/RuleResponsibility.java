@@ -34,7 +34,7 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -55,7 +55,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 @Entity
 @Table(name="KREW_RULE_RSP_T")
 //@Sequence(name="KREW_RSP_S", property="ruleResponsibilityKey")
-public class RuleResponsibility extends KewPersistableBusinessObjectBase {
+public class RuleResponsibility extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = -1565688857123316797L;
 	@Id

@@ -26,7 +26,7 @@ import javax.persistence.Table;
 import org.apache.commons.lang.ObjectUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * BO for rule expressions 
@@ -35,7 +35,7 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
 @Entity
 @Table(name="KREW_RULE_EXPR_T")
 //@Sequence(name="KREW_RULE_EXPR_S", property="id")
-public class RuleExpressionDef extends KewPersistableBusinessObjectBase {
+public class RuleExpressionDef extends PersistableBusinessObjectBase {
     
     /**
      * Primary key

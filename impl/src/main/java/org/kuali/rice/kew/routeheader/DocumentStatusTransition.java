@@ -26,7 +26,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 /**
@@ -37,7 +37,7 @@ import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
  */
 @Entity
 @Table(name="KREW_APP_DOC_STAT_TRAN_T")
-public class DocumentStatusTransition extends KewPersistableBusinessObjectBase {
+public class DocumentStatusTransition extends PersistableBusinessObjectBase {
 	private static final long serialVersionUID = -2212481684546954746L;
 
 	@Id

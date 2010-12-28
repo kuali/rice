@@ -30,7 +30,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.bo.KewPersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -46,7 +46,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 @Entity
 @Table(name="KREW_DLGN_RSP_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleDelegationId")
-public class RuleDelegation extends KewPersistableBusinessObjectBase {
+public class RuleDelegation extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 7989203310473741293L;
 	@Id

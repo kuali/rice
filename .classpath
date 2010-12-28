@@ -8,8 +8,6 @@
 	<classpathentry kind="src" output="standalone/target/test-classes" path="standalone/test/java"/>
 	<classpathentry kind="src" output="standalone/target/test-classes" path="standalone/src/test/resources"/>
 	<classpathentry kind="src" output="standalone/target/classes" path="standalone/src/main/resources"/>
-	<classpathentry kind="src" output="test/web/target" path="test/web/src/test/java"/>
-	<classpathentry kind="src" output="test/web/target" path="test/web/src/test/resources"/>
 	<classpathentry kind="src" output="test/kns/target" path="test/kns/src/test/java"/>
 	<classpathentry kind="src" output="test/kcb/target" path="test/kcb/src/test/resources"/>
 	<classpathentry kind="src" output="test/ksb/target" path="test/ksb/src/test/resources"/>

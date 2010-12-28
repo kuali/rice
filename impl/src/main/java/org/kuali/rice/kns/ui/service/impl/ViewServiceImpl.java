@@ -17,13 +17,10 @@ package org.kuali.rice.kns.ui.service.impl;
 
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.ui.Component;
-import org.kuali.rice.kns.ui.container.FieldGroup;
 import org.kuali.rice.kns.ui.container.Group;
 import org.kuali.rice.kns.ui.container.Page;
-import org.kuali.rice.kns.ui.container.Section;
 import org.kuali.rice.kns.ui.container.View;
 import org.kuali.rice.kns.ui.field.Field;
-import org.kuali.rice.kns.ui.navigation.Navigation;
 import org.kuali.rice.kns.ui.service.ViewService;
 
 /**
@@ -57,7 +54,7 @@ public class ViewServiceImpl implements ViewService {
 
 	protected void initializePage(Page page) {
 		for (Component component : page.getItems()) {
-			initializeSection((Section) component);
+			initializeGroup((Group) component);
 		}
 
 		initializeNavigation(page.getNavigation());
@@ -65,26 +62,10 @@ public class ViewServiceImpl implements ViewService {
 		page.initialize();
 	}
 
-	protected void initializeSection(Section section) {
-		for (Component component : section.getItems()) {
-			if (component instanceof Group) {
-				initializeGroup((Group) component);
-			} else if (component instanceof FieldGroup) {
-				initializeFieldGroup((FieldGroup) component);
-			} else {
-				initializeField((Field) component);
-			}
-		}
-
-		section.initialize();
-	}
-
 	protected void initializeGroup(Group group) {
 		for (Component component : group.getItems()) {
 			if (component instanceof Group) {
 				initializeGroup((Group) component);
-			} else if (component instanceof FieldGroup) {
-				initializeFieldGroup((FieldGroup) component);
 			} else {
 				initializeField((Field) component);
 			}
@@ -93,19 +74,11 @@ public class ViewServiceImpl implements ViewService {
 		group.initialize();
 	}
 
-	protected void initializeFieldGroup(FieldGroup fieldGroup) {
-		for (Component component : fieldGroup.getItems()) {
-			initializeFieldGroup((FieldGroup) component);
-		}
-
-		fieldGroup.initialize();
-	}
-
 	protected void initializeField(Field field) {
 		field.initialize();
 	}
 
-	protected void initializeNavigation(Navigation navigation) {
+	protected void initializeNavigation(Group navigation) {
 		if (navigation != null) {
 			navigation.initialize();
 		}

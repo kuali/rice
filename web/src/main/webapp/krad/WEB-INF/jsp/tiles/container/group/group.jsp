@@ -17,12 +17,12 @@
 
 <tiles:useAttribute name="group" classname="org.kuali.rice.kns.ui.container.Group"/>
 
-<div id="${group.id}" class="${group.styleClass}">
+<krad:div component="${group}">
 
-  <c:if test="${group.renderHeader}">
-    <!----------------------------------- #GROUP HEADER --------------------------------------->
+  <c:if test="${(!empty group.header) && group.renderHeader}">
+    <!----------------------------------- #GROUP '${group.id}' HEADER --------------------------------------->
     <tiles:insertTemplate template="${group.header.template}">
-          <tiles:putAttribute name="headerGroup" value="${group.header}"/>
+          <tiles:putAttribute name="${group.header.componentTypeName}" value="${group.header}"/>
     </tiles:insertTemplate>
   </c:if>
 
@@ -31,5 +31,12 @@
         <tiles:putAttribute name="items" value="${group.items}"/>
         <tiles:putAttribute name="manager" value="${group.layoutManager}"/>
   </tiles:insertTemplate>
-  
-</div>
+
+  <c:if test="${(!empty group.footer) && group.renderFooter}">
+    <!----------------------------------- #GROUP '${group.id}' FOOTER --------------------------------------->
+    <tiles:insertTemplate template="${group.footer.template}">
+          <tiles:putAttribute name="${group.footer.componentTypeName}" value="${group.footer}"/>
+    </tiles:insertTemplate>
+  </c:if>
+    
+</krad:div>

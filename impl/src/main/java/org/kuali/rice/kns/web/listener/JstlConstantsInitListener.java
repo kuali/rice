@@ -22,6 +22,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.ConfigProperties;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.ui.UIFConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
@@ -57,6 +58,9 @@ public class JstlConstantsInitListener implements ServletContextListener {
 
         // publish property constants into JSP app context with name "PropertyConstants"
         context.setAttribute("PropertyConstants", new KNSPropertyConstants());
+        
+        // publish user interface framework constants into JSP app context with name "UIFConstants"
+        context.setAttribute("UIFConstants", new UIFConstants());
     }
 
     public void contextDestroyed(ServletContextEvent sce) {}

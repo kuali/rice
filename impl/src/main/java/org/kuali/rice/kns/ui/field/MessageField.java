@@ -16,11 +16,33 @@
 package org.kuali.rice.kns.ui.field;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class MessageField {
+public class MessageField extends FieldBase {
+	private String messageText;
+	private String messageType;
+
+	public MessageField() {
+
+	}
+
+	public String getMessageText() {
+		return this.messageText;
+	}
+
+	public void setMessageText(String messageText) {
+		this.messageText = messageText;
+	}
+
+	public String getMessageType() {
+		return this.messageType;
+	}
+
+	public void setMessageType(String messageType) {
+		this.messageType = messageType;
+	}
 
 }

@@ -18,10 +18,10 @@ package org.kuali.rice.kns.ui.container;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.ui.Component;
 import org.kuali.rice.kns.ui.ComponentBase;
 import org.kuali.rice.kns.ui.LabeledComponent;
-import org.kuali.rice.kns.ui.element.Message;
 import org.kuali.rice.kns.ui.field.ErrorsField;
 import org.kuali.rice.kns.ui.layout.LayoutManager;
 import org.kuali.rice.kns.ui.widget.Help;
@@ -36,14 +36,22 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private String title;
 	private String additionalErrorKeys;
 
-	private Message titleMessage;
 	private ErrorsField errors;
 	private Help help;
 	private LayoutManager layoutManager;
 
+	private boolean renderHeader;
+	private boolean renderFooter;
+
+	private Group header;
+	private Group footer;
+
 	private List<Component> items;
 
 	public ContainerBase() {
+		renderHeader = true;
+		renderFooter = true;
+
 		items = new ArrayList<Component>();
 	}
 
@@ -68,6 +76,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	public void initialize() {
 		super.initialize();
 
+		// if header title not given, use the container title
+		if (header != null && StringUtils.isBlank(header.getTitle())) {
+			header.setTitle(this.getTitle());
+		}
+
 		List<Component> allItems = new ArrayList<Component>();
 		for (Component component : items) {
 			if (component instanceof LabeledComponent) {
@@ -79,7 +92,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 			allItems.add(component);
 		}
-		
+
 		this.items = allItems;
 	}
 
@@ -97,14 +110,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	public void setAdditionalErrorKeys(String additionalErrorKeys) {
 		this.additionalErrorKeys = additionalErrorKeys;
-	}
-
-	public Message getTitleMessage() {
-		return this.titleMessage;
-	}
-
-	public void setTitleMessage(Message titleMessage) {
-		this.titleMessage = titleMessage;
 	}
 
 	public ErrorsField getErrors() {
@@ -137,6 +142,38 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	public void setLayoutManager(LayoutManager layoutManager) {
 		this.layoutManager = layoutManager;
+	}
+
+	public Group getHeader() {
+		return this.header;
+	}
+
+	public void setHeader(Group header) {
+		this.header = header;
+	}
+
+	public Group getFooter() {
+		return this.footer;
+	}
+
+	public void setFooter(Group footer) {
+		this.footer = footer;
+	}
+
+	public boolean isRenderHeader() {
+		return this.renderHeader;
+	}
+
+	public void setRenderHeader(boolean renderHeader) {
+		this.renderHeader = renderHeader;
+	}
+
+	public boolean isRenderFooter() {
+		return this.renderFooter;
+	}
+
+	public void setRenderFooter(boolean renderFooter) {
+		this.renderFooter = renderFooter;
 	}
 
 }

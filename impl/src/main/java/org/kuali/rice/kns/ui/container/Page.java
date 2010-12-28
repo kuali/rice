@@ -18,8 +18,6 @@ package org.kuali.rice.kns.ui.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kns.ui.navigation.Navigation;
-
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
@@ -27,8 +25,8 @@ import org.kuali.rice.kns.ui.navigation.Navigation;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  */
-public class Page extends HeaderFooterContainerBase {
-	private Navigation navigation;
+public class Page extends ContainerBase {
+	private NavigationGroup navigation;
 
 	public Page() {
 
@@ -37,13 +35,14 @@ public class Page extends HeaderFooterContainerBase {
 	/**
 	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
 	 */
+	@Override
 	public List<Class> getSupportedComponents() {
 		List<Class> supportedComponents = new ArrayList<Class>();
-		supportedComponents.add(Section.class);
+		supportedComponents.add(Group.class);
 
 		return supportedComponents;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
 	 */
@@ -52,12 +51,12 @@ public class Page extends HeaderFooterContainerBase {
 		return "page";
 	}
 
-	public Navigation getNavigation() {
+	public NavigationGroup getNavigation() {
 		return this.navigation;
 	}
 
-	public void setNavigation(Navigation navigation) {
+	public void setNavigation(NavigationGroup navigation) {
 		this.navigation = navigation;
 	}
-	
+
 }

@@ -15,12 +15,66 @@
  */
 package org.kuali.rice.kns.ui.field;
 
+import org.apache.commons.lang.StringUtils;
+
+
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class ActionField {
+public class ActionField extends FieldLabelBase {
+	private String methodToCall;
+	private boolean clientSideCall;
+
+	private String actionLabel;
+
+	public ActionField() {
+
+	}
+	
+	/**
+	 * <p>
+	 * The following initialization is performed:
+	 * <ul>
+	 * <li>Set the actionLabel if blank to the Field label</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize()
+	 */
+	@Override
+	public void initialize() {
+		super.initialize();
+
+		if (StringUtils.isBlank(actionLabel)) {
+			actionLabel = this.getLabel();
+		}
+	}
+
+	public String getMethodToCall() {
+		return this.methodToCall;
+	}
+
+	public void setMethodToCall(String methodToCall) {
+		this.methodToCall = methodToCall;
+	}
+
+	public boolean isClientSideCall() {
+		return this.clientSideCall;
+	}
+
+	public void setClientSideCall(boolean clientSideCall) {
+		this.clientSideCall = clientSideCall;
+	}
+
+	public String getActionLabel() {
+		return this.actionLabel;
+	}
+
+	public void setActionLabel(String actionLabel) {
+		this.actionLabel = actionLabel;
+	}
 
 }

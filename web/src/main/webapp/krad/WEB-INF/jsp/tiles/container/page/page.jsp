@@ -25,17 +25,23 @@
                      alt="" width="20" height="20" />
         </td>
         <td>
+        
+         <c:if test="${page.renderHeader}"> 
+           <!----------------------------------- #PAGE HEADER --------------------------------------->
+           <tiles:insertTemplate template="${page.header.template}">
+              <tiles:putAttribute name="${page.header.componentTypeName}" value="${page.header}"/>
+           </tiles:insertTemplate>   
+         </c:if>
       
          <%--TODO: change id to page.id once style sheet is fixed --%>
+         <!----------------------------------- #PAGE BODY --------------------------------------->
          <div id="workarea" class="${page.styleClass}">
-         
             <%-- render sections --%>
             <c:forEach items="${page.items}" var="section" varStatus="sectionVarStatus">
               <tiles:insertTemplate template="${section.template}">
                 <tiles:putAttribute name="${section.componentTypeName}" value="${section}"/>
               </tiles:insertTemplate>
             </c:forEach>
-            
          </div>
           
         </td>

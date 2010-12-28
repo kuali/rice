@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.ui.layout;
 
-import org.kuali.rice.kns.ui.util.Position;
+import org.kuali.rice.kns.ui.UIFConstants.Position;
 
 /**
  * This is a description of what this class does - jkneal don't forget to fill
@@ -24,6 +24,7 @@ import org.kuali.rice.kns.ui.util.Position;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class LayoutManagerBase implements LayoutManager {
+	private String id;
 	private String template;
 	private String style;
 	private String styleClass;
@@ -32,6 +33,14 @@ public abstract class LayoutManagerBase implements LayoutManager {
 
 	public LayoutManagerBase() {
 
+	}
+
+	public String getId() {
+		return this.id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getTemplate() {

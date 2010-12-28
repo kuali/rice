@@ -77,7 +77,7 @@
   <c:if test="${renderForm}">
     <form:form 
        id="kualiForm"
-       action="/${htmlFormAction}.do"
+       action="${htmlFormAction}"
        method="post"
        enctype="${encoding}"
        modelAttribute="KualiForm"

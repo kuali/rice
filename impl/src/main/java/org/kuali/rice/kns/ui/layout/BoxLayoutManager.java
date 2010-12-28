@@ -15,17 +15,41 @@
  */
 package org.kuali.rice.kns.ui.layout;
 
+import org.kuali.rice.kns.ui.UIFConstants.Orientation;
+
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class BoxLayoutManager extends LayoutManagerBase {
-    private String orientation;
-    private int seperationPadding;
-	
+	private Orientation orientation;
+	private int seperationPadding;
+
 	public BoxLayoutManager() {
-		
+		orientation = Orientation.HORIZONTAL;
+		seperationPadding = 1;
 	}
+
+	public Orientation getOrientation() {
+		return this.orientation;
+	}
+
+	public void setOrientation(Orientation orientation) {
+		this.orientation = orientation;
+	}
+
+	public void setOrientation(String orientation) {
+		this.orientation = Orientation.valueOf(orientation);
+	}
+
+	public int getSeperationPadding() {
+		return this.seperationPadding;
+	}
+
+	public void setSeperationPadding(int seperationPadding) {
+		this.seperationPadding = seperationPadding;
+	}
+
 }

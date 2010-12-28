@@ -16,9 +16,8 @@
 package org.kuali.rice.kns.ui.field;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.ui.LabeledComponent;
+import org.kuali.rice.kns.ui.UIFConstants.Position;
 import org.kuali.rice.kns.ui.control.Control;
-import org.kuali.rice.kns.ui.util.Position;
 
 /**
  * This is a description of what this class does - jkneal don't forget to fill
@@ -26,7 +25,7 @@ import org.kuali.rice.kns.ui.util.Position;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AttributeField extends FieldBase implements LabeledComponent {
+public class AttributeField extends FieldLabelBase {
 	private String defaultValue;
 
 	private String attributeName;
@@ -34,30 +33,19 @@ public class AttributeField extends FieldBase implements LabeledComponent {
 
 	private String bindingPath;
 
-	private String label;
-	private String shortLabel;
-	private boolean showLabel;
-
-	private boolean includeLabelField;
-	private LabelField labelField;
-
 	private Control control;
 
 	private Position errorMessagePlacement;
 	private ErrorsField errorField;
 
 	public AttributeField() {
-		showLabel = true;
-		includeLabelField = false;
+
 	}
 
 	/**
 	 * <p>
 	 * The following initialization is performed:
 	 * <ul>
-	 * <li>Set the labelForComponentId to this component id</li>
-	 * <li>If the label text field of the labelField property is blank it is set
-	 * to the label property of the field.</li>
 	 * <li>If bindingPath not given, defaulted to the field name.</li>
 	 * </ul>
 	 * </p>
@@ -67,40 +55,10 @@ public class AttributeField extends FieldBase implements LabeledComponent {
 	@Override
 	public void initialize() {
 		super.initialize();
-		
-		labelField.setLabelForComponentId(this.getId());
-
-		if (StringUtils.isBlank(labelField.getLabel().getText())) {
-			labelField.getLabel().setText(label);
-		}
 
 		if (StringUtils.isBlank(bindingPath)) {
 			bindingPath = this.getName();
 		}
-	}
-
-	public String getLabel() {
-		return this.label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public String getShortLabel() {
-		return this.shortLabel;
-	}
-
-	public void setShortLabel(String shortLabel) {
-		this.shortLabel = shortLabel;
-	}
-
-	public boolean isShowLabel() {
-		return this.showLabel;
-	}
-
-	public void setShowLabel(boolean showLabel) {
-		this.showLabel = showLabel;
 	}
 
 	public String getDefaultValue() {
@@ -125,14 +83,6 @@ public class AttributeField extends FieldBase implements LabeledComponent {
 
 	public void setAttributeClass(Class attributeClass) {
 		this.attributeClass = attributeClass;
-	}
-
-	public LabelField getLabelField() {
-		return this.labelField;
-	}
-
-	public void setLabelField(LabelField labelField) {
-		this.labelField = labelField;
 	}
 
 	public String getBindingPath() {
@@ -165,14 +115,6 @@ public class AttributeField extends FieldBase implements LabeledComponent {
 
 	public void setErrorField(ErrorsField errorField) {
 		this.errorField = errorField;
-	}
-
-	public boolean isIncludeLabelField() {
-		return this.includeLabelField;
-	}
-
-	public void setIncludeLabelField(boolean includeLabelField) {
-		this.includeLabelField = includeLabelField;
 	}
 
 }

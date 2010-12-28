@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kns.ui.field;
 
-import org.kuali.rice.kns.ui.element.Label;
-import org.kuali.rice.kns.ui.util.Position;
-
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
@@ -25,13 +22,13 @@ import org.kuali.rice.kns.ui.util.Position;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class LabelField extends FieldBase {
+	private String labelText;
 	private String labelForComponentId;
 
-	private Label label;
-	private Position labelPlacement;
+	private boolean renderColon;
 
 	public LabelField() {
-		label = new Label();
+		renderColon = true;
 	}
 
 	public String getLabelForComponentId() {
@@ -42,24 +39,20 @@ public class LabelField extends FieldBase {
 		this.labelForComponentId = labelForComponentId;
 	}
 
-	public Label getLabel() {
-		return this.label;
+	public String getLabelText() {
+		return this.labelText;
 	}
 
-	public void setLabel(Label label) {
-		this.label = label;
+	public void setLabelText(String labelText) {
+		this.labelText = labelText;
 	}
 
-	public Position getLabelPlacement() {
-		return this.labelPlacement;
+	public boolean isRenderColon() {
+		return this.renderColon;
 	}
 
-	public void setLabelPlacement(Position labelPlacement) {
-		this.labelPlacement = labelPlacement;
-	}
-
-	public void setLabelPlacement(String labelPlacement) {
-		this.labelPlacement = Position.valueOf(labelPlacement);
+	public void setRenderColon(boolean renderColon) {
+		this.renderColon = renderColon;
 	}
 
 }

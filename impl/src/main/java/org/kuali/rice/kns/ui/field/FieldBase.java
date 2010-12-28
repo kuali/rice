@@ -18,17 +18,25 @@ package org.kuali.rice.kns.ui.field;
 import org.kuali.rice.kns.ui.ComponentBase;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in.
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
 public class FieldBase extends ComponentBase implements Field {
 
 	public FieldBase() {
 
 	}
-	
+
+	/**
+	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize()
+	 */
+	@Override
+	public void initialize() {
+		super.initialize();
+	}
+
 	/**
 	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
 	 */

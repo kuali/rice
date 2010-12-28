@@ -17,9 +17,9 @@
 
 <tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.LabelField"/>
 
-<c:set var="label" value="${field.label.text}"/>
+<c:set var="label" value="${field.labelText}"/>
 
-<c:if test="${field.label.renderColon}">
+<c:if test="${field.renderColon}">
   <c:set var="label" value="${label}:"/>
 </c:if>
 

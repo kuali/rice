@@ -15,8 +15,8 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="headerGroup" classname="org.kuali.rice.kns.ui.container.Header"/>
+<tiles:useAttribute name="group" classname="org.kuali.rice.kns.ui.container.Group"/>
 
-<div id="${headerGroup.id}" class="${headerGroup.styleClass}">
-  <h3>${headerGroup.title}</h3>
+<div id="${group.id}" class="${group.styleClass}">
+  <h3>${group.title}</h3>
 </div>

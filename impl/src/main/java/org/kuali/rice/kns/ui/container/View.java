@@ -21,29 +21,29 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.ui.navigation.Navigation;
 
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
-public class View extends HeaderFooterContainerBase {
+public class View extends ContainerBase {
 	private String entryPageId;
 	private String currentPageId;
 	private String stateHandler;
-	private String formAction;
+
+	// TODO: is this necessary or can we determine it based on request?
+	private String controllerRequestMapping;
 
 	private boolean renderForm;
 	private boolean validateModelData;
 
-	private Navigation navigation;
+	private NavigationGroup navigation;
 
 	private Map<String, Class> modelClasses;
 	private List<String> additionalScriptFiles;
-	
+
 	// scripting variables
 	private boolean dialogMode;
 
@@ -52,11 +52,11 @@ public class View extends HeaderFooterContainerBase {
 		validateModelData = true;
 		dialogMode = false;
 	}
-	
+
 	@Override
 	public void initialize() {
 		super.initialize();
-		
+
 		this.currentPageId = this.entryPageId;
 	}
 
@@ -70,7 +70,7 @@ public class View extends HeaderFooterContainerBase {
 
 		return supportedComponents;
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
 	 */
@@ -140,11 +140,11 @@ public class View extends HeaderFooterContainerBase {
 		this.validateModelData = validateModelData;
 	}
 
-	public Navigation getNavigation() {
+	public NavigationGroup getNavigation() {
 		return this.navigation;
 	}
 
-	public void setNavigation(Navigation navigation) {
+	public void setNavigation(NavigationGroup navigation) {
 		this.navigation = navigation;
 	}
 
@@ -164,12 +164,12 @@ public class View extends HeaderFooterContainerBase {
 		this.additionalScriptFiles = additionalScriptFiles;
 	}
 
-	public String getFormAction() {
-		return this.formAction;
+	public String getControllerRequestMapping() {
+		return this.controllerRequestMapping;
 	}
 
-	public void setFormAction(String formAction) {
-		this.formAction = formAction;
+	public void setControllerRequestMapping(String controllerRequestMapping) {
+		this.controllerRequestMapping = controllerRequestMapping;
 	}
 
 	public boolean isDialogMode() {

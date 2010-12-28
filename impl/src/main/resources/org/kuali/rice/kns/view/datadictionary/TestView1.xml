@@ -22,12 +22,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans       http://www
       <property name="id" value="testView1"/>
       <property name="title" value="Test View 1"/>
       <property name="navigation">
-         <bean parent="LeftMenu"/>
+         <ref bean="testViewMenu"/>
       </property>
-      <property name="entryPageId" value="editTravelAccount"/>   
+      <property name="entryPageId" value="page1"/>   
       <property name="items">
         <list>
-          <bean parent="Page" p:id="editTravelAccount">
+          <bean parent="Page" p:id="page1">
              <property name="items">
                <list>
                  <ref bean="testSection1"/>
@@ -36,8 +36,20 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans       http://www
           </bean>
         </list>
       </property>     
-      <property name="formAction" value="/spring/uitest"/>
+      <property name="controllerRequestMapping" value="uitest"/>
+      <property name="footer">
+        <ref bean="testViewFooter"/>
+      </property>
    </bean>
+   
+   <bean id="testViewMenu" parent="MenuNavigation">
+      <property name="items">
+        <list> 
+          <bean parent="ActionLinkField" p:methodToCall="navigateToPage" p:actionLabel="Page 1"/>
+          <bean parent="ActionLinkField" p:methodToCall="navigateToPage" p:actionLabel="Page 2"/>
+        </list>
+      </property>  
+   </bean>   
    
    <bean id="testSection1" parent="PanelSection">
       <property name="id" value="testSection1"/>
@@ -82,6 +94,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans       http://www
    <bean id="testGroup2" parent="GroupGridLayout">   
       <property name="id" value="testGroup2"/>
       <property name="title" value="Test Group 2"/> 
+      <property name="layoutManager.numberOfColumns" value="4"/>
       <property name="items">
         <list>
           <bean parent="AttributeLabelFieldPair" p:name="field5" p:label="Field 5">
@@ -107,5 +120,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans       http://www
         </list>
       </property>       
    </bean>   
+   
+   <bean id="testViewFooter" parent="Footer">
+      <property name="items">
+        <list> 
+          <bean parent="ActionField" p:methodToCall="save" p:actionLabel="Save"/>
+          <bean parent="ActionField" p:methodToCall="close" p:actionLabel="Close"/>
+          <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="Cancel" 
+                p:style="color: #000000;text-decoration: underline;"/>
+        </list>
+      </property>  
+   </bean>
 
 </beans>

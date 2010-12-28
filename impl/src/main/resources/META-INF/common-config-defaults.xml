@@ -109,7 +109,7 @@
     <param name="kr.externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
     <param name="travel.externalizable.images.url" override="false">/${app.context.name}/kr/static/images/</param>
     
-    <param name="krad.externalizable.images.url" override="false">/${app.context.name}/krad/static/images/</param>
+    <param name="krad.externalizable.images.url" override="false">/${app.context.name}/krad/images/</param>
 
     <!-- Code Options: (dev|snd|unt|reg|stg|trn|prd) -->
     <param name="production.environment.code" override="false">prd</param>
@@ -123,8 +123,8 @@
     <param name="mail.relay.server" override="false">mail.relay.server</param>
     <param name="mailing.list.batch" override="false">mailing.list.batch</param>
 
-    <param name="javascript.files" override="false">krad/scripts/jquery/jquery-1.4.2.js,krad/scripts/jquery/jquery-ui-1.8.5.js,krad/scripts/jquery/jquery.jgrowl.js,krad/scripts/jquery/jquery.watermark.js,krad/scripts/jquery/jquery.validate.js,krad/scripts/jquery/jquery.loading.1.6.4.js,kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
-    <param name="css.files" override="false">krad/css/kuali-red.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css,krad/css/jquery-ui-1.8.5.css,krad/css/jquery.jgrowl.css,krad/css/jquery.loading.1.6.css</param>
+    <param name="javascript.files" override="false">krad/scripts/jquery/jquery-1.4.2.js,krad/scripts/jquery/jquery-ui-1.8.5.js,krad/scripts/jquery/jquery.jgrowl.js,krad/scripts/jquery/jquery.watermark.js,krad/scripts/jquery/jquery.validate.js,krad/scripts/jquery/jquery.loading.1.6.4.js,krad/scripts/jquery/jquery.sidebar.js,krad/scripts/jquery_common.js,kr/scripts/core.js,kr/scripts/dhtml.js,kr/scripts/my_common.js,kr/scripts/jscalendar-1.0/calendar.js,kr/scripts/jscalendar-1.0/lang/calendar-en.js,kr/scripts/jscalendar-1.0/calendar-setup.js,dwr/engine.js,dwr/util.js,dwr/interface/PersonService.js,kr/scripts/objectInfo.js</param>
+    <param name="css.files" override="false">krad/css/kuali-red.css,kr/scripts/jscalendar-1.0/calendar-win2k-1.css,krad/css/jquery-ui-1.8.5.css,krad/css/jquery.jgrowl.css,krad/css/jquery.loading.1.6.css,krad/css/sidebar.css</param>
 
     <param name="portal.css.files" override="false">rice-portal/css/portal.css</param>
     <param name="portal.javascript.files" override="false">kr/scripts/my_common.js</param>

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.ui;
 
+import java.util.UUID;
+
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -41,7 +43,7 @@ public abstract class ComponentBase implements Component {
 	private int rowSpan;
 	private String style;
 	private String styleClass;
-
+	
 	public ComponentBase() {
 		colSpan = 1;
 		rowSpan = 1;
@@ -51,8 +53,8 @@ public abstract class ComponentBase implements Component {
 	 * <p>
 	 * The following initialization is performed:
 	 * <ul>
-	 * <li>If id is not given, set it to the name prefixed with 'id_' (either
-	 * the name or id must be given)</li>
+	 * <li>If id is not given and name is, set it to the name prefixed with
+	 * 'id_' , else set id to 'id_' and the next sequence number.</li>
 	 * </ul>
 	 * </p>
 	 * 
@@ -61,7 +63,13 @@ public abstract class ComponentBase implements Component {
 	@Override
 	public void initialize() {
 		if (StringUtils.isBlank(id)) {
-			id = "id_" + name;
+			if (StringUtils.isNotBlank(name)) {
+				id = "id_" + name;
+			}
+			else {
+				// TODO: revisit this when working on binding paths, need to keep in mind containers as well
+				id = "id_" + UUID.randomUUID().toString();
+			}
 		}
 	}
 

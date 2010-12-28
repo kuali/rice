@@ -200,3 +200,29 @@ function substringBetween(parseString, matchString1, matchString2) {
 		return null;
 	}
 }
+
+/**
+ * Renders a navigation group for the list with the given id. Helper
+ * methods are called based on the type to implement a certain style
+ * of navigation.
+ *  
+ * @param listId - unique id for the unordered list
+ * @param navigationType - the navigation style to render
+ */
+function doNavigation(listId, navigationType) {
+	if (navigationType == "VERTICAL_MENU") {
+		doVerticalMenu(listId);
+	}
+}
+
+/**
+ * Uses jQuery menu plug-in to build a menu for the list with the given id
+ * 
+ * @param listId - unique id for the unordered list
+ */
+function doVerticalMenu(listId) {
+	$(document).ready(function() {
+		$("#" + listId).sidebar();
+	})
+}
+

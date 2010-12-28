@@ -393,3 +393,8 @@ function placeFocus() {
 	  }
    }
 }
+
+
+function handleActionLink(methodToCall) {
+	
+}

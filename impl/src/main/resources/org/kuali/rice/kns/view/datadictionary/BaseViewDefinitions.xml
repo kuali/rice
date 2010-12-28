@@ -41,16 +41,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
   
   <!-- Sections -->
   
-  <bean id="Section" abstract="true" class="org.kuali.rice.kns.ui.container.Section" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/section/section.jsp"/>
+  <bean id="Section" abstract="true" parent="Group">
       <property name="header">
-        <bean parent="HeaderLevelOne"/>
+        <bean parent="Header"/>
+      </property> 
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property> 
   </bean>   
   
-  <bean id="PanelSection" abstract="true" class="org.kuali.rice.kns.ui.container.PanelSection" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/section/panelSection.jsp"/>
-      <property name="wrappedSectionTemplate" value="/krad/WEB-INF/jsp/tiles/container/section/section.jsp"/>
+  <bean id="PanelSection" abstract="true" class="org.kuali.rice.kns.ui.container.PanelGroup" parent="Section">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/panelGroup.jsp"/>
+      <property name="wrappedGroupTemplate" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
       <property name="panelHeader">
         <bean parent="PanelHeader"/>
       </property>
@@ -67,10 +69,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
       </property> 
   </bean> 
   
-  <bean id="GroupGridLayout" abstract="true" parent="Group" scope="prototype">
+  <bean id="GroupGridLayout" abstract="true" parent="Group">
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
       </property> 
+  </bean>
+  
+  <bean id="NavigationGroup" abstract="true" class="org.kuali.rice.kns.ui.container.NavigationGroup" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/navigationGroup.jsp"/>
+  </bean>
+  
+  <bean id="MenuNavigation" abstract="true" parent="NavigationGroup">
+      <property name="navigationType" value="VERTICAL_MENU"/>
   </bean>
   
   <!-- Fields -->
@@ -92,10 +102,26 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
       <property name="style" value="text-align: right;font-size: .8em;font-weight: bold;"/>
   </bean>  
   
+  <bean id="ActionField" abstract="true" class="org.kuali.rice.kns.ui.field.ActionField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/field/actionField.jsp"/>
+  </bean>  
+  
+  <bean id="ActionLinkField" abstract="true" parent="ActionField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/field/actionLinkField.jsp"/>
+  </bean>  
+  
+  <bean id="LinkField" abstract="true" class="org.kuali.rice.kns.ui.field.LinkField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/field/linkField.jsp"/>
+  </bean>  
+  
+  <bean id="MessageField" abstract="true" class="org.kuali.rice.kns.ui.field.MessageField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/field/messageField.jsp"/>
+  </bean>  
+  
   <!-- Headers -->
   
-  <bean id="Header" abstract="true" class="org.kuali.rice.kns.ui.container.Header" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/header.jsp"/>
+  <bean id="Header" abstract="true" class="org.kuali.rice.kns.ui.container.Group" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/headerOne.jsp"/>
   </bean>
   
   <bean id="ViewHeader" abstract="true" parent="Header" scope="prototype">
@@ -104,11 +130,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
   
   <bean id="PageHeader" abstract="true" parent="Header" scope="prototype">
       <property name="styleClass" value="pageHeader"/>
-  </bean>
-
-  <bean id="HeaderLevelOne" abstract="true" parent="Header" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/headerOne.jsp"/>
-      <property name="styleClass" value="headerLevelOne"/>
   </bean>
   
   <bean id="HeaderLevelTwo" abstract="true" parent="Header" scope="prototype">
@@ -126,20 +147,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
   </bean>
   
   <!-- Footers -->
-  <bean id="Footer" abstract="true" class="org.kuali.rice.kns.ui.container.Footer" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/footer.jsp"/>
-  </bean>  
-  
-  <!--  Navigation -->
-  
-  <bean id="LeftMenu" abstract="true" class="org.kuali.rice.kns.ui.navigation.Navigation" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/navigation/leftMenu.jsp"/>
-      <property name="styleClass" value="leftMenu"/>
-  </bean>  
-  
-  <bean id="PageTabs" abstract="true" class="org.kuali.rice.kns.ui.navigation.Navigation" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/navigation/horizontalTabs.jsp"/>
-      <property name="styleClass" value="horizontalTabs"/>
+  <bean id="Footer" abstract="true" class="org.kuali.rice.kns.ui.container.Group" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
+      <property name="renderHeader" value="false"/>
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="HORIZONTAL"/>
+      </property> 
+      <property name="styleClass" value="globalbuttons"/>
   </bean>  
   
   <!-- Layout Managers -->
@@ -166,43 +180,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
    <bean id="TextControl" abstract="true" class="org.kuali.rice.kns.ui.control.TextControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/text.jsp"/>
   </bean>  
-  
-  <!-- Elements -->
-  
-  <bean id="Action" abstract="true" class="org.kuali.rice.kns.ui.element.Action" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/action.jsp"/>
-      <property name="styleClass" value="primaryAction"/>
-  </bean>   
-
-  <bean id="SecondaryAction" abstract="true" parent="Action" scope="prototype">
-      <property name="styleClass" value="secondaryAction"/>
-  </bean>      
-  
-  <bean id="LinkAction" abstract="true" parent="Action" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/linkAction.jsp"/>
-  </bean>    
-  
-  <bean id="Label" abstract="true" class="org.kuali.rice.kns.ui.element.Label" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/label.jsp"/>
-  </bean>  
- 
-  <bean id="Image" abstract="true" class="org.kuali.rice.kns.ui.element.Image" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/image.jsp"/>
-  </bean>   
-  
-  <bean id="Message" abstract="true" class="org.kuali.rice.kns.ui.element.Message" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/message.jsp"/>
-  </bean>   
-  
-  <bean id="ResourceMessage" abstract="true" class="org.kuali.rice.kns.ui.element.ResourceMessage" parent="Message"/>
-   
-  <bean id="TableMessage" abstract="true" class="org.kuali.rice.kns.ui.element.TableMessage" parent="Message"/>
- 
-  <bean id="ParameterMessage" abstract="true" class="org.kuali.rice.kns.ui.element.ParameterMessage" parent="Message"/>
- 
-  <bean id="Spacer" abstract="true" class="org.kuali.rice.kns.ui.element.Spacer" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/element/spacer.jsp"/>
-  </bean>   
   
   <!-- Widgets -->
    

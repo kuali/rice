@@ -26,7 +26,7 @@ import org.kuali.rice.kns.web.ui.Field;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class Group extends HeaderFooterContainerBase {
+public class Group extends ContainerBase {
 
 
 	public Group() {
@@ -35,10 +35,9 @@ public class Group extends HeaderFooterContainerBase {
 	/**
 	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
 	 */
+	@Override
 	public List<Class> getSupportedComponents() {
 		List<Class> supportedComponents = new ArrayList<Class>();
-		supportedComponents.add(Group.class);
-		supportedComponents.add(FieldGroup.class);
 		supportedComponents.add(Field.class);
 		
 		return supportedComponents;

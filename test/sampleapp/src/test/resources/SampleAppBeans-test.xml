@@ -1,0 +1,24 @@
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<!-- This file is a copy of SampleAppBeans.xml that removes references to the KIM configurer and DD files
+     so that the webapp can be loaded up within KNS unit unit tests without adding KIM dependencies to the POM.
+     When run standalone, this file is not detected so it does not end up overidding and omitting KIM will
+     allow the sample app to be run standalone from within Eclipse (not Maven, as the KNS POM won't have the KIM
+     dependencies because of circular dependency issues.
+
+     This works because web.xml has been modified to use the resource string: classpath:SampleAppBeans.xml, classpath:SampleAppBeans-test*.xml
+     which performs some magic that I don't fully understand but that nevertheless results in this test context only being detected
+     from within unit tests ;)
+ -->
+<beans>
+
+	<import resource="classpath:SampleAppBeans.xml"/>
+
+	<bean id="config" class="org.kuali.rice.core.config.spring.ConfigFactoryBean">
+		<property name="configLocations">
+			<list>
+				<value>classpath:META-INF/sample-app-test-config.xml</value>
+			</list>
+		</property>
+	</bean>
+
+</beans>

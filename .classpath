@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="src" output="api/target/classes" path="api/src/main/java"/>
+	<classpathentry kind="src" output="test/sampleapp/target" path="test/sampleapp/src/test/resources"/>
+	<classpathentry kind="src" output="test/sampleapp/target" path="test/sampleapp/src/test/java"/>
 	<classpathentry kind="src" output="standalone/target/classes" path="standalone/src/main/java"/>
 	<classpathentry kind="src" output="standalone/target/test-classes" path="standalone/test/java"/>
 	<classpathentry kind="src" output="standalone/target/test-classes" path="standalone/src/test/resources"/>

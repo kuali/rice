@@ -18,6 +18,7 @@ package org.kuali.rice.kns.document;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -375,13 +376,21 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * @see org.kuali.rice.kns.document.MaintenanceDocument#populateXmlDocumentContentsFromMaintainables()
      */
     public void populateXmlDocumentContentsFromMaintainables() {
-        StringBuffer docContentBuffer = new StringBuffer();
+        StringBuilder docContentBuffer = new StringBuilder();
         docContentBuffer.append("<maintainableDocumentContents maintainableImplClass=\"").append(newMaintainableObject.getClass().getName()).append("\">");
         
         // if business objects notes are enabled then we need to persist notes to the XML
         if (getNewMaintainableObject().isBoNotesEnabled()) {
         	docContentBuffer.append("<" + NOTES_TAG_NAME + ">");
-        	docContentBuffer.append(KNSServiceLocator.getXmlObjectSerializerService().toXml(getNotes()));
+        	// copy notes to a non-ojb Proxied ArrayList to get rid of the usage of those proxies
+        	// note: XmlObjectSerializerServiceImpl should be doing this for us but it does not
+        	// appear to be working (at least in this case) and the xml comes through
+        	// with the fully qualified ListProxyDefault class name from OJB embedded inside it.
+        	List<Note> noteList = new ArrayList<Note>();
+        	for (Note note : getNotes()) {
+        		noteList.add(note);
+        	}
+        	docContentBuffer.append(KNSServiceLocator.getXmlObjectSerializerService().toXml(noteList));
         	docContentBuffer.append("</" + NOTES_TAG_NAME + ">");
         }
         if (oldMaintainableObject != null && oldMaintainableObject.getBusinessObject() != null) {
@@ -490,6 +499,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     @Override
     public void processAfterRetrieve() {
+
         populateMaintainablesFromXmlDocumentContents();
         if (oldMaintainableObject != null) {
         	oldMaintainableObject.setDocumentNumber(documentNumber);
@@ -505,6 +515,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         // the Note target must be available in order to do this.  The Note target for a
         // maintenance document could be the maintainable itself
         super.processAfterRetrieve();
+
     }
 
     /**

@@ -15,15 +15,12 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.NoteDao;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -38,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class NoteServiceImpl implements NoteService {
 
     private NoteDao noteDao;
-    private Map<Class<? extends PersistableBusinessObject>, Boolean> boNotesSupportCache = new HashMap<Class<? extends PersistableBusinessObject>, Boolean>();
 
     /**
      * Default constructor
@@ -95,28 +91,6 @@ public class NoteServiceImpl implements NoteService {
     public void deleteNote(Note note) {
         noteDao.deleteNote(note);
     }
-    
-    /**
-     * @see org.kuali.rice.kns.service.NoteService#supportsNotes(java.lang.String)
-     */
-    @Override
-	public boolean supportsNotes(Class<? extends PersistableBusinessObject> type) {
-		if (type == null) {
-			throw new IllegalArgumentException("Given type must be non-null");
-		}
-		Boolean notesSupport = Boolean.FALSE;
-		synchronized(boNotesSupportCache) {
-			notesSupport = boNotesSupportCache.get(type);
-			if (notesSupport == null) {
-				notesSupport = KNSServiceLocator.getBusinessObjectDictionaryService().areNotesSupported(type);
-				if (notesSupport == null) {
-					notesSupport = Boolean.FALSE;
-				}
-				boNotesSupportCache.put(type, notesSupport);
-			}
-		}
-		return notesSupport.booleanValue();
-	}
 
     // needed for Spring injection
     /**

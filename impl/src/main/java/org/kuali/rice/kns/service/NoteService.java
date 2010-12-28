@@ -70,15 +70,5 @@ public interface NoteService {
     public void deleteNote(Note note);
 
     public Note createNote(Note note, PersistableBusinessObject bo);
-    
-    /**
-     * Determines if the given type represents a type that supports
-     * having Notes associated with it.
-     * 
-     * @param type the name of the type to check for Note support.  This will most often be
-     * the fully qualified classname of a Class to check for Note support.
-     * @return
-     */
-    public boolean supportsNotes(Class<? extends PersistableBusinessObject> type);
 
 }

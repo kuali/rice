@@ -721,9 +721,7 @@ public class DocumentServiceImpl implements DocumentService {
             throw e;
         }
         
-        if (document.getNoteType() == NoteType.DOCUMENT_HEADER_NOTE_TYPE) {
-        	document.saveNotes();
-        }
+        document.saveNotes();
 
         savedDocument.postProcessSave(event);
 

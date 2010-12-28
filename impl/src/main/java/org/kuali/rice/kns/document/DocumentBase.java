@@ -274,15 +274,22 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.kns.document.Document#processAfterRetrieve()
      */
     public void processAfterRetrieve() {
-    	if (!StringUtils.isBlank(getNoteTarget().getObjectId())) {
+    	loadNotes();
+    }
+    
+    /**
+     * Loads the Notes for the note target on this Document.
+     */
+    protected void loadNotes() {
+    	if (isNoteTargetReady()) {
     		notes = getNoteService().getByRemoteObjectId(getNoteTarget().getObjectId());
-    	}
-    	// KULRNE-5692 - force a refresh of the attachments
-        // they are not (non-updateable) references and don't seem to update properly upon load
-    	if (notes != null) {
-    		for (Note note : notes) {
-                note.refreshReferenceObject("attachment");
-            }
+    		// KULRNE-5692 - force a refresh of the attachments
+            // they are not (non-updateable) references and don't seem to update properly upon load
+        	if (notes != null) {
+        		for (Note note : notes) {
+                    note.refreshReferenceObject("attachment");
+                }
+        	}
     	}
     }
 
@@ -668,7 +675,6 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 	public NoteType getNoteType() {
 		return NoteType.DOCUMENT_HEADER_NOTE_TYPE;
 	}
-
     
     @Override
 	public void addNote(Note note) {
@@ -694,6 +700,20 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 		this.notes = notes;
 	}
 	
+	protected boolean isNoteTargetReady() {
+		PersistableBusinessObject noteTarget = getNoteTarget();
+		if (noteTarget == null || StringUtils.isBlank(noteTarget.getObjectId())) {
+			return false;
+		}
+		return true;
+	}
+	
+	public void saveNotes() {
+		if (isNoteTargetReady()) {
+			persistNotes();
+		}
+	}
+	
 	/**
 	 * Executes the saving of all Notes on the document.  At the point in time when this is executed,
 	 * the note target must be in such a state that the note can be linked with it.  This essentially
@@ -703,7 +723,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 	 * @throws IllegalStateException if the object returned by {@link #getNoteTarget()} is not in a
 	 * state where Notes can be attached.
 	 */
-	public void saveNotes() {
+	protected void persistNotes() {
 		if (notes != null && !notes.isEmpty()) {
     		for (Note note : notes) {
     			linkNoteRemoteObjectId(note);
@@ -722,7 +742,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 	private void linkNoteRemoteObjectId(Note note) {
     	String objectId = getNoteTarget().getObjectId();
     	if (StringUtils.isBlank(objectId)) {
-    		throw new RuntimeException("Attempted to link a Note with a PersistableBusinessObject with no object id");
+    		throw new IllegalStateException("Attempted to link a Note with a PersistableBusinessObject with no object id");
     	}
     	note.setRemoteObjectIdentifier(getNoteTarget().getObjectId());
     }

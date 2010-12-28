@@ -193,7 +193,7 @@
     <param name="kns.cache.nonDatabaseComponent.max.age.seconds" override="false">3600</param>
 
 	<param name="attachments.directory" override="false">${java.io.tmpdir}/${environment}/attachments</param>
-    <param name="attachments.pending.directory" override="false">${java.io.tmpdir}/${environment}/attachments/pending</param>
+    <param name="attachments.pending.directory" override="false">${attachments.directory}/pending</param>
 
     <param name="rice.kns.illegalBusinessObjectsForSave.applyCheck" override="false">true</param>
 

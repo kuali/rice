@@ -18,7 +18,6 @@ package org.kuali.rice.kns.bo;
 
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
-import java.util.Properties;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,13 +30,11 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
 
 /**
  * Represents a user note in the system.
@@ -82,8 +79,6 @@ public class Note extends PersistableBusinessObjectBase {
 	private Attachment attachment;
     @Transient
     private AdHocRouteRecipient adHocRouteRecipient;
-    @Transient
-    private String attachmentLink;
 
     /**
      * Default constructor.
@@ -381,25 +376,6 @@ public class Note extends PersistableBusinessObjectBase {
     public void setAdHocRouteRecipient(AdHocRouteRecipient adHocRouteRecipient) {
         this.adHocRouteRecipient = adHocRouteRecipient;
     }
-
-	/**
-	 * @return the attachmentLink
-	 */
-	public String getAttachmentLink() {
-		//getAttachment() is always return null.     
-		if(getNoteIdentifier() == null || KNSServiceLocator.getAttachmentService().getAttachmentByNoteId(this.getNoteIdentifier()) == null){
-			return "";
-		}else{
-	        Properties params = new Properties();
-	        params.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOWNLOAD_BO_ATTACHMENT_METHOD);
-	        params.put(KNSConstants.DOC_FORM_KEY, "88888888");
-	        params.put(KNSConstants.NOTE_IDENTIFIER, this.getNoteIdentifier().toString());
-	        return UrlFactory.parameterizeUrl(KNSConstants.INQUIRY_ACTION, params);
-		}
-	}
-
-    
-    
 
 }
 

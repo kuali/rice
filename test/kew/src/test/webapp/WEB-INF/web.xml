@@ -117,7 +117,7 @@
 	</servlet>
 
 	<!-- The Struts Action Servlet -->
-	<servlet>
+<!-- <servlet>
 		<servlet-name>action</servlet-name>
 		<servlet-class>
 			org.apache.struts.action.ActionServlet
@@ -144,7 +144,7 @@
 		</init-param>
 		<load-on-startup>2</load-on-startup>
 	</servlet>
-
+-->
 	<servlet>
 		<servlet-name>edoclite</servlet-name>
 		<servlet-class>org.kuali.rice.kew.edl.EDLServlet</servlet-class>
@@ -184,11 +184,11 @@
 		<url-pattern>/remoting/*</url-pattern>
 	</servlet-mapping>
 
-	<servlet-mapping>
+<!-- <servlet-mapping>
 		<servlet-name>action</servlet-name>
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
-
+-->
 	<servlet-mapping>
 		<servlet-name>edoclite</servlet-name>
 		<url-pattern>/EDocLite</url-pattern>

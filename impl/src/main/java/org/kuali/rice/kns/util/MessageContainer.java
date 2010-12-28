@@ -36,17 +36,6 @@ public abstract class MessageContainer implements Serializable {
 		this.errorMap = errorMap;
 	}
 	
-	/**
-	 * @deprecated use {@link #getMessageMap()} instead
-	 * This method ...
-	 * 
-	 * @return
-	 */
-	@Deprecated
-	protected ErrorMap getErrorMap() {
-		return new ErrorMap(errorMap);
-	}
-	
 	protected MessageMap getMessageMap() {
 		return errorMap;
 	}

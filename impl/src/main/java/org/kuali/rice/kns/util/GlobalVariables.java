@@ -33,26 +33,29 @@ public class GlobalVariables {
     private static ThreadLocal<KualiForm> kualiForms = new ThreadLocal<KualiForm>();
     
     private static ThreadLocal<MessageMap> messageMaps = new ThreadLocal<MessageMap>()  {
+		@Override
 		protected MessageMap initialValue() {
 			return new MessageMap();
 		}
 	};
-	
-    // todo: generic collections
+
     private static ThreadLocal<MessageList> messageLists = new ThreadLocal<MessageList>() {
+		@Override
 		protected MessageList initialValue() {
 			return new MessageList();
 		}
 	};
 	
-    private static ThreadLocal<HashMap> auditErrorMaps = new ThreadLocal<HashMap>() {
-    	protected HashMap initialValue() {
-    		return new HashMap();
+    private static ThreadLocal<HashMap<String, AuditCluster>> auditErrorMaps = new ThreadLocal<HashMap<String, AuditCluster>>() {
+    	@Override
+    	protected HashMap<String, AuditCluster> initialValue() {
+    		return new HashMap<String, AuditCluster>();
     	}
     };
     
     private static ThreadLocal<Map<String,Object>> requestCaches = new ThreadLocal<Map<String,Object>>() {
-    	protected HashMap<String, Object> initialValue() {
+    	@Override
+		protected HashMap<String, Object> initialValue() {
     		return new HashMap<String, Object>();
     	}
     };
@@ -87,16 +90,6 @@ public class GlobalVariables {
     public static void setUserSession(UserSession userSession) {
         userSessions.set(userSession);
     }
-
-    /**
-     * @deprecated use {@link #getMessageMap()} instead.
-     * 
-     * @return ErrorMap containing error messages.
-     */
-    @Deprecated
-    public static ErrorMap getErrorMap() {
-        return new ErrorMap(getMessageMap());
-    }
     
     public static MessageMap getMessageMap() {
     	return messageMaps.get();
@@ -122,18 +115,6 @@ public class GlobalVariables {
     }
 
     /**
-     * Sets a new (clean) ErrorMap
-     *
-     * @deprecated use {@link #setMessageMap(MessageMap)} instead
-     *
-     * @param errorMap
-     */
-    @Deprecated
-    public static void setErrorMap(ErrorMap errorMap) {
-    	setMessageMap(errorMap);
-    }
-
-    /**
      * @return ArrayList containing messages.
      */
     public static MessageList getMessageList() {
@@ -152,7 +133,7 @@ public class GlobalVariables {
     /**
      * @return ArrayList containing audit error messages.
      */
-    public static HashMap getAuditErrorMap() {
+    public static Map<String, AuditCluster> getAuditErrorMap() {
         return auditErrorMaps.get();
     }
 
@@ -161,7 +142,7 @@ public class GlobalVariables {
      *
      * @param errorMap
      */
-    public static void setAuditErrorMap(HashMap errorMap) {
+    public static void setAuditErrorMap(HashMap<String, AuditCluster> errorMap) {
         auditErrorMaps.set(errorMap);
     }
 
@@ -195,7 +176,7 @@ public class GlobalVariables {
      */
     public static void clear() {
         messageMaps.set(new MessageMap());
-        auditErrorMaps.set(new HashMap());
+        auditErrorMaps.set(new HashMap<String, AuditCluster>());
         messageLists.set(new MessageList());
         requestCaches.set(new HashMap<String,Object>() );
         kualiForms.set(null);

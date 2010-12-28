@@ -42,7 +42,6 @@ import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
-import org.kuali.rice.kns.util.ErrorMap;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
@@ -829,24 +828,8 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 				methodToCallParameterValue, request);
 	}
 	
-    /**
-	 * @return the errorMapFromPreviousRequest
-	 */
-	@Deprecated
-	public ErrorMap getErrorMapFromPreviousRequest() {
-		return new ErrorMap(getMessageMapFromPreviousRequest());
-	}
-	
 	public MessageMap getMessageMapFromPreviousRequest() {
 		return this.errorMapFromPreviousRequest;
-	}
-	
-	/**
-	 * @param errorMapFromPreviousRequest the errorMapFromPreviousRequest to set
-	 */
-	@Deprecated
-	public void setErrorMapFromPreviousRequest(ErrorMap errorMapFromPreviousRequest) {
-		setMessageMapFromPreviousRequest(errorMapFromPreviousRequest);
 	}
 	
 	public void setMessageMapFromPreviousRequest(MessageMap errorMapFromPreviousRequest) {

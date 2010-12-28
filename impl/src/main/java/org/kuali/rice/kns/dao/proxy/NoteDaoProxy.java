@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.dao.proxy;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.Note;
@@ -46,7 +46,7 @@ public class NoteDaoProxy implements NoteDao {
     	return getDao(Note.class).getNoteByNoteId(noteId);
     }
 
-	public ArrayList findByremoteObjectId(String remoteObjectId) {
+	public List<Note> findByremoteObjectId(String remoteObjectId) {
 		return getDao(Note.class).findByremoteObjectId(remoteObjectId);
 	}
 

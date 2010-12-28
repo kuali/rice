@@ -15,8 +15,6 @@
 --%>
 <%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ attribute name="notesBo" required="false" type="java.util.List" description="The List of notes to display." %>
-<%@ attribute name="noteType" required="false" type="java.lang.Enum" description="An enumeration of note types to display." %>
 <%@ attribute name="displayTopicFieldInNotes" required="false" description="Whether to display the note topic column in the table of notes." %>
 <%@ attribute name="attachmentTypesValuesFinderClass" required="false" description="A finder class to give options for the types of attachments allowed as as note attachments on this document." %>
 <%@ attribute name="transparentBackground" required="false" description="Whether the tab should render as having the background transparent around the corners of the tab." %>
@@ -24,11 +22,9 @@
 
 <c:set var="noteColSpan" value="6" />
 
-<c:if test="${empty noteType}">
-  <%-- default to document header notes this default should probably be set somewhere else --%>
-  <c:set var="noteType" value="${Constants.NoteTypeEnum.DOCUMENT_HEADER_NOTE_TYPE}"/>
-  <c:set var="notesBo" value="${KualiForm.document.documentHeader.boNotes}" />
-</c:if>
+<c:set var="noteType" value="${KualiForm.document.noteType}"/>
+<c:set var="documentNotes" value="${KualiForm.document.notes}" />
+<c:set var="propPrefix" value="document." />
 
 <c:set var="documentTypeName" value="${KualiForm.docTypeName}" />
 <c:set var="documentEntry" value="${DataDictionary[documentTypeName]}" />
@@ -38,8 +34,6 @@
 <c:if test="${allowsNoteAttachments eq false}">
   <c:set var="tabTitle" value="Notes" />
 </c:if>
-
-<c:set var="propPrefix" value="${noteType.fullPath}." />
 
 <c:if test="${not empty attachmentTypesValuesFinderClass}">
   <c:set var="noteColSpan" value="${noteColSpan + 1}" />
@@ -53,7 +47,7 @@
   <c:set var="noteColSpan" value="${noteColSpan + 1}" />
 </c:if>
 
-<kul:tab tabTitle="${tabTitle}" defaultOpen="${!empty notesBo or (not empty defaultOpen and defaultOpen)}" tabErrorKey="${Constants.DOCUMENT_NOTES_ERRORS},attachmentFile" tabItemCount="${fn:length(notesBo)}" transparentBackground="${transparentBackground}" >
+<kul:tab tabTitle="${tabTitle}" defaultOpen="${!empty documentNotes or (not empty defaultOpen and defaultOpen)}" tabErrorKey="${Constants.DOCUMENT_NOTES_ERRORS},attachmentFile" tabItemCount="${fn:length(documentNotes)}" transparentBackground="${transparentBackground}" >
     <c:set var="notesAttributes" value="${DataDictionary.Note.attributes}" />
     <div class="tab-container" align=center id="G4">
     <p align=left><jsp:doBody/>
@@ -116,25 +110,25 @@
 			       </tr>
 			   </c:if>   
 
-  <c:forEach var="note" items="${notesBo}" varStatus="status">
+  <c:forEach var="note" items="${documentNotes}" varStatus="status">
 
 	<c:set var="authorUniversalIdentifier" value = "${note.authorUniversalIdentifier}" />
 	<c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, null)}" >
       <tr>
             <kul:htmlAttributeHeaderCell literalLabel="${status.index + 1}" scope="row"/>
             <td class="datacell center">
-			<bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].notePostedTimestamp"/>
+			<bean:write name="KualiForm" property="${propPrefix}note[${status.index}].notePostedTimestamp"/>
             &nbsp;</td>
 
                         <td class="datacell center">
-                        <bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].authorUniversal.name"/>
+                        <bean:write name="KualiForm" property="${propPrefix}note[${status.index}].authorUniversal.name"/>
 <%-- NEED TO ADD THIS TOPIC FIELD TO DATABASE --%>
                         <c:if test="${displayTopicFieldInNotes eq true}">
                           <td class="datacell center">
-                          <bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].noteTopicText"/></td>
+                          <bean:write name="KualiForm" property="${propPrefix}note[${status.index}].noteTopicText"/></td>
                         </c:if>
 
-                        <td class="datacell center"><bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].noteText"/></td>
+                        <td class="datacell center"><bean:write name="KualiForm" property="${propPrefix}note[${status.index}].noteText"/></td>
 
             <%-- use caution if you rename either of these two variables.  It seems that the properties are not read in sequentially
                  but instead in some other arbitrary way (sorted alphabetically?) and therefore you may end up with a reference to a null authorUniversal object --%>
@@ -153,12 +147,12 @@
                                       <c:if test="${kfunc:canViewNoteAttachment(KualiForm.document, attachmentTypeCode)}" >
                                         <html:image property="methodToCall.downloadBOAttachment.attachment[${status.index}]" src="${ConfigProperties.kr.externalizable.images.url}clip.gif" title="download attachment" alt="download attachment" style="padding:5px" onclick="excludeSubmitRestriction=true"/>
                                       </c:if>
-                                      <bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].attachment.attachmentFileName"/>
+                                      <bean:write name="KualiForm" property="${propPrefix}note[${status.index}].attachment.attachmentFileName"/>
                                       &nbsp;
                                       &nbsp;
                                       <span style="white-space: nowrap">
                                         <kul:fileSize byteSize="${note.attachment.attachmentFileSize}">
-                                            (<c:out value="${fileSize} ${fileSizeUnits}" />,  <bean:write name="KualiForm" property="${propPrefix}boNote[${status.index}].attachment.attachmentMimeTypeCode"/>)
+                                            (<c:out value="${fileSize} ${fileSizeUnits}" />,  <bean:write name="KualiForm" property="${propPrefix}note[${status.index}].attachment.attachmentMimeTypeCode"/>)
                                         </kul:fileSize>
                                       </span>
                                     </c:if>
@@ -185,15 +179,15 @@
                             <c:if test="${allowsNoteFYI}" >
                               <td class="infoline">
                                 <c:if test="${!empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}">
-                             <kul:user userIdFieldName="${propPrefix}boNote[${status.index}].adHocRouteRecipient.id" 
+                             <kul:user userIdFieldName="${propPrefix}note[${status.index}].adHocRouteRecipient.id" 
                               userId="${note.adHocRouteRecipient.id}" 
                               universalIdFieldName=""
                               universalId=""
-                              userNameFieldName="${propPrefix}boNote[${status.index}].adHocRouteRecipient.name"
+                              userNameFieldName="${propPrefix}note[${status.index}].adHocRouteRecipient.name"
                               userName="${note.adHocRouteRecipient.name}"
                               readOnly="false" 
-                              fieldConversions="principalName:${propPrefix}boNote[${status.index}].adHocRouteRecipient.id,name:${propPrefix}boNote[${status.index}].adHocRouteRecipient.name" 
-                              lookupParameters="${propPrefix}boNote[${status.index}].adHocRouteRecipient.id:principalName" />
+                              fieldConversions="principalName:${propPrefix}note[${status.index}].adHocRouteRecipient.id,name:${propPrefix}note[${status.index}].adHocRouteRecipient.name" 
+                              lookupParameters="${propPrefix}note[${status.index}].adHocRouteRecipient.id:principalName" />
                             </c:if>
                             <c:if test="${empty KualiForm.documentActions[Constants.KUALI_ACTION_CAN_SEND_NOTE_FYI]}">
                               &nbsp;

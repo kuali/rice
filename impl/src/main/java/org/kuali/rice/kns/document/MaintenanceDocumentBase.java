@@ -45,6 +45,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.DocumentAttachment;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
+import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableAttachment;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
@@ -62,6 +63,7 @@ import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
+import org.kuali.rice.kns.util.NoteType;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator;
@@ -87,6 +89,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public static final String OLD_MAINTAINABLE_TAG_NAME = "oldMaintainableObject";
     public static final String NEW_MAINTAINABLE_TAG_NAME = "newMaintainableObject";
     public static final String MAINTENANCE_ACTION_TAG_NAME = "maintenanceAction";
+    public static final String NOTES_TAG_NAME = "notes";
     
     @Transient
     transient private static MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService;
@@ -190,24 +193,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
         documentTitle += truncatedClassName + " - ";
         documentTitle += this.getDocumentHeader().getDocumentDescription() + " ";
-        // TODO: talk with Aaron about the getKeysName replacement
-        // HashMap keyVals = (HashMap) newMaintainableObject.getKeysNameAndValuePairs();
-        // Set list = keyVals.keySet();
-        // Iterator i = list.iterator();
-        // int idx = 0;
-        // while(i.hasNext()) {
-        // String key = (String) i.next();
-        // String value = (String) keyVals.get(key);
-        // if(idx != 0) {
-        // documentTitle += ", ";
-        // }
-        // documentTitle += key;
-        // documentTitle += " = ";
-        // documentTitle += value;
-        // idx++;
-        // }
-        // documentTitle += " - ";
-        // documentTitle += this.getDocumentHeader().getDocumentDescription();
         return documentTitle;
     }
 
@@ -274,7 +259,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         // then populate those instances
         if (!StringUtils.isEmpty(xmlDocumentContents)) {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
             try {
                 DocumentBuilder builder = factory.newDocumentBuilder();
                 Document xmlDocument = builder.parse(new InputSource(new StringReader(xmlDocumentContents)));
@@ -296,6 +280,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
                 String newMaintenanceAction = getMaintenanceAction(xmlDocument, NEW_MAINTAINABLE_TAG_NAME);
                 newMaintainableObject.setMaintenanceAction(newMaintenanceAction);
+                
+                if (newMaintainableObject.isBoNotesEnabled()) {
+                	List<Note> notes = getNotesFromXml(NOTES_TAG_NAME);
+                	setNotes(notes);
+                }
 
             }
             catch (ParserConfigurationException e) {
@@ -357,6 +346,18 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         }
         return maintenanceAction;
     }
+    
+    private List<Note> getNotesFromXml(String notesTagName) {
+    	String notesXml = StringUtils.substringBetween(xmlDocumentContents, "<" + notesTagName + ">", "</" + notesTagName + ">");
+    	if (StringUtils.isBlank(notesXml)) {
+    		return Collections.emptyList();
+    	}
+    	List<Note> notes = (List<Note>)KNSServiceLocator.getXmlObjectSerializerService().fromXml(notesXml);
+    	if (notes == null) {
+    		return Collections.emptyList();
+    	}
+    	return notes;
+    }
 
     /**
      * Retrieves substring of document contents from maintainable tag name. Then use xml service to translate xml into a business
@@ -376,8 +377,17 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void populateXmlDocumentContentsFromMaintainables() {
         StringBuffer docContentBuffer = new StringBuffer();
         docContentBuffer.append("<maintainableDocumentContents maintainableImplClass=\"").append(newMaintainableObject.getClass().getName()).append("\">");
+        
+        // if business objects notes are enabled then we need to persist notes to the XML
+        if (getNewMaintainableObject().isBoNotesEnabled()) {
+        	docContentBuffer.append("<" + NOTES_TAG_NAME + ">");
+        	docContentBuffer.append(KNSServiceLocator.getXmlObjectSerializerService().toXml(getNotes()));
+        	docContentBuffer.append("</" + NOTES_TAG_NAME + ">");
+        }
         if (oldMaintainableObject != null && oldMaintainableObject.getBusinessObject() != null) {
             // TODO: refactor this out into a method
+        	
+        	
             docContentBuffer.append("<" + OLD_MAINTAINABLE_TAG_NAME + ">");
 
             PersistableBusinessObject oldBo = oldMaintainableObject.getBusinessObject();
@@ -429,6 +439,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             
             newMaintainableObject.saveBusinessObject();
             
+            saveNotes();
+            
             //Attachment should be deleted from Maintenance Document attachment table
             deleteDocumentAttachment();  
             
@@ -478,8 +490,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     @Override
     public void processAfterRetrieve() {
-        super.processAfterRetrieve();
-        
         populateMaintainablesFromXmlDocumentContents();
         if (oldMaintainableObject != null) {
         	oldMaintainableObject.setDocumentNumber(documentNumber);
@@ -490,6 +500,11 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             // If a maintenance lock exists, warn the user.
             checkForLockingDocument(false);
         }
+        
+        // need to invoke the super method at the end because it establishes the notes and
+        // the Note target must be available in order to do this.  The Note target for a
+        // maintenance document could be the maintainable itself
+        super.processAfterRetrieve();
     }
 
     /**
@@ -789,13 +804,54 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     @Override
     public PersistableBusinessObject getDocumentBusinessObject() {
-        if(documentBusinessObject==null) {
-            documentBusinessObject=this.newMaintainableObject.getBusinessObject();
-        }
-        return documentBusinessObject;
+        return getNewMaintainableObject().getBusinessObject();
     }
-
+    
+    /**
+     * <p>The Note target for maintenance documents is determined by whether or not the underlying
+     * {@link Maintainable} supports business object notes or not.  This is determined via a call to 
+     * {@link Maintainable#isBoNotesEnabled()}.  The note target is then derived as follows:
+     * 
+     * <ul>
+     *   <li>If the {@link Maintainable} supports business object notes, delegate to {@link #getDocumentBusinessObject()}.
+     *   <li>Otherwise, delegate to the default implementation of getNoteTarget on the superclass which will
+     *       effectively return a reference to the {@link DocumentHeader}.
+     * </ul> 
+     * 
+     * @see org.kuali.rice.kns.document.Document#getNoteTarget()
+     */
     @Override
+    public PersistableBusinessObject getNoteTarget() {
+    	if (getNewMaintainableObject() == null) {
+    		throw new IllegalStateException("Failed to acquire the note target.  The new maintainable object on this document is null.");
+    	}
+    	if (getNewMaintainableObject().isBoNotesEnabled()) {
+    		return getDocumentBusinessObject();
+    	}
+    	return super.getNoteTarget();
+    }
+    
+    /**
+     * <p>The {@link NoteType} for maintenance documents is determined by whether or not the underlying
+     * {@link Maintainable} supports business object notes or not.  This is determined via a call to 
+     * {@link Maintainable#isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows:
+     * 
+     * <ul>
+     *   <li>If the {@link Maintainable} supports business object notes, return {@link NoteType#BUSINESS_OBJECT_NOTE_TYPE}.
+     *   <li>Otherwise, delegate to {@link DocumentBase#getNoteType()}
+     * </ul> 
+     * 
+     * @see org.kuali.rice.kns.document.Document#getNoteTarget()
+     */
+    @Override
+	public NoteType getNoteType() {
+    	if (getNewMaintainableObject().isBoNotesEnabled()) {
+    		return NoteType.BUSINESS_OBJECT_NOTE_TYPE;
+    	}
+		return super.getNoteType();
+	}
+
+	@Override
     public PropertySerializabilityEvaluator getDocumentPropertySerizabilityEvaluator() {
     	String docTypeName = "";
     	if ( newMaintainableObject != null ) {

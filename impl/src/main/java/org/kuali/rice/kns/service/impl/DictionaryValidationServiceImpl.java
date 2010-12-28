@@ -983,7 +983,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
             ReferenceDefinition reference = (ReferenceDefinition) iter.next();
 
             // do the existence and validation testing
-            success &= validateReferenceExistsAndIsActive(document.getDocumentBusinessObject(), reference);
+            success &= validateReferenceExistsAndIsActive(document, reference);
         }
         return success;
 	}
@@ -1012,7 +1012,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 		                displayFieldName = reference.getDisplayFieldName();
 		            }
 		            else {
-		                Class boClass = reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() : document.getDocumentBusinessObject().getClass();
+		                Class boClass = reference.isCollectionReference() ? reference.getCollectionBusinessObjectClass() : document.getClass();
 		                displayFieldName = dataDictionaryService.getAttributeLabel(boClass, reference.getAttributeToHighlightOnFail());
 		            }
 		

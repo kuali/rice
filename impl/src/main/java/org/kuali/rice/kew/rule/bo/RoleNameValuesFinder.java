@@ -19,11 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -46,7 +47,7 @@ public class RoleNameValuesFinder extends KeyValuesBase {
 		if (GlobalVariables.getKualiForm() != null && GlobalVariables.getKualiForm() instanceof KualiMaintenanceForm) {
 			KualiMaintenanceForm form = (KualiMaintenanceForm)GlobalVariables.getKualiForm();
 			MaintenanceDocument document = (MaintenanceDocument)form.getDocument();
-			Object businessObject = document.getDocumentBusinessObject();
+			PersistableBusinessObject businessObject = document.getNewMaintainableObject().getBusinessObject();
 			RuleBaseValues rule = null;
 			if (businessObject instanceof RuleBaseValues) {
 				rule = (RuleBaseValues)businessObject;

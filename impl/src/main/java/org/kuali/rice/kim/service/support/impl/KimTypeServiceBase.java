@@ -381,13 +381,17 @@ public class KimTypeServiceBase implements KimTypeService {
         return regex;
     }
     
-    @SuppressWarnings("unchecked")
 	protected Class<? extends Formatter> getAttributeFormatter(AttributeDefinition definition) {
         Class<? extends Formatter> formatterClass = null;
-        if (definition != null) {
-            if (definition.hasFormatterClass()) {
-                formatterClass = ClassLoaderUtils.getClass(definition.getFormatterClass());
-            }
+        if (definition != null && definition.hasFormatterClass()) {
+        		try {
+        			formatterClass = ClassLoaderUtils.getClass(definition.getFormatterClass(), Formatter.class);
+        		} catch (ClassNotFoundException e) {
+        			// supressing the ClassNotFoundException here to keep in consistent in the logic which is
+        			// calling this code (it's doing a null check) though it really seems like we should
+        			// be rethrowing this as a RuntimeException!  Either way, will log a WARN here.
+        			LOG.warn("Failed to resolve formatter class: " + definition.getFormatterClass(), e);
+        		}
         }
         return formatterClass;
     }

@@ -15,30 +15,18 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kns.bo.AdHocRoutePerson;
-import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.NoteDao;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.KNSConstants.NoteTypeEnum;
-import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -48,13 +36,9 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class NoteServiceImpl implements NoteService {
-    // set up logging
-    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(NoteServiceImpl.class);
 
     private NoteDao noteDao;
-    private PersonService personService;
-    private WorkflowDocumentService workflowDocumentService;
-    private KualiConfigurationService kualiConfigurationService;
+    private Map<Class<? extends PersistableBusinessObject>, Boolean> boNotesSupportCache = new HashMap<Class<? extends PersistableBusinessObject>, Boolean>();
 
     /**
      * Default constructor
@@ -66,10 +50,10 @@ public class NoteServiceImpl implements NoteService {
     /**
      * @see org.kuali.rice.kns.service.NoteService#saveNoteValueList(java.util.List)
      */
-    public void saveNoteList(List notes) {
+    public void saveNoteList(List<Note> notes) {
         if (notes != null) {
-            for (Iterator iter = notes.iterator(); iter.hasNext();) {
-                noteDao.save((Note) iter.next());
+            for (Note note : notes) {
+                noteDao.save(note);
             }
         }
     }
@@ -79,7 +63,7 @@ public class NoteServiceImpl implements NoteService {
      * 
      * @param Note The accounting Note object to save - can be any object that extends Note (i.e. Source and Target lines).
      */
-    public Note save(Note note) throws Exception {
+    public Note save(Note note) {
         noteDao.save(note);
         return note;
     }
@@ -89,7 +73,7 @@ public class NoteServiceImpl implements NoteService {
      * 
      * @see org.kuali.rice.kns.service.NoteService#getByRemoteObjectId(java.lang.String)
      */
-    public ArrayList getByRemoteObjectId(String remoteObjectId) {
+    public List<Note> getByRemoteObjectId(String remoteObjectId) {
 
         return noteDao.findByremoteObjectId(remoteObjectId);
     }
@@ -108,9 +92,31 @@ public class NoteServiceImpl implements NoteService {
      * 
      * @param Note The Note object to delete.
      */
-    public void deleteNote(Note note) throws Exception {
+    public void deleteNote(Note note) {
         noteDao.deleteNote(note);
     }
+    
+    /**
+     * @see org.kuali.rice.kns.service.NoteService#supportsNotes(java.lang.String)
+     */
+    @Override
+	public boolean supportsNotes(Class<? extends PersistableBusinessObject> type) {
+		if (type == null) {
+			throw new IllegalArgumentException("Given type must be non-null");
+		}
+		Boolean notesSupport = Boolean.FALSE;
+		synchronized(boNotesSupportCache) {
+			notesSupport = boNotesSupportCache.get(type);
+			if (notesSupport == null) {
+				notesSupport = KNSServiceLocator.getBusinessObjectDictionaryService().areNotesSupported(type);
+				if (notesSupport == null) {
+					notesSupport = Boolean.FALSE;
+				}
+				boNotesSupportCache.put(type, notesSupport);
+			}
+		}
+		return notesSupport.booleanValue();
+	}
 
     // needed for Spring injection
     /**
@@ -129,7 +135,7 @@ public class NoteServiceImpl implements NoteService {
         return noteDao;
     }
 
-    public Note createNote(Note note, PersistableBusinessObject bo) throws Exception {
+    public Note createNote(Note note, PersistableBusinessObject bo) {
         // TODO: Why is a deep copy being done?  Nowhere that this is called uses the given note argument
         // again after calling this method.
         Note tmpNote = (Note) ObjectUtils.deepCopy(note);
@@ -138,75 +144,5 @@ public class NoteServiceImpl implements NoteService {
         tmpNote.setAuthorUniversalIdentifier(kualiUser.getPrincipalId());
         return tmpNote;
     }
-
-    /**
-     * This method gets the property name for the note
-     * 
-     * @param note
-     * @return note property text
-     */
-    public String extractNoteProperty(Note note) {
-        String propertyName = null;
-        for (NoteTypeEnum nte : NoteTypeEnum.values()) {
-            if (StringUtils.equals(nte.getCode(), note.getNoteTypeCode())) {
-                propertyName = nte.getPath();
-            }
-        }
-        return propertyName;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.service.NoteService#sendNoteNotification(org.kuali.rice.kns.document.Document, org.kuali.rice.kns.bo.Note,
-     *      org.kuali.rice.kim.bo.Person)
-     */
-    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException {
-        AdHocRouteRecipient routeRecipient = note.getAdHocRouteRecipient();
-
-        // build notification request
-        Person requestedUser = this.getPersonService().getPersonByPrincipalName(routeRecipient.getId());
-        String senderName = sender.getFirstName() + " " + sender.getLastName();
-        String requestedName = requestedUser.getFirstName() + " " + requestedUser.getLastName();
-        
-        String notificationText = kualiConfigurationService.getPropertyString(RiceKeyConstants.MESSAGE_NOTE_NOTIFICATION_ANNOTATION);
-        if (StringUtils.isBlank(notificationText)) {
-            throw new RuntimeException("No annotation message found for note notification. Message needs added to application resources with key:" + RiceKeyConstants.MESSAGE_NOTE_NOTIFICATION_ANNOTATION);
-        }
-        notificationText = MessageFormat.format(notificationText, new Object[] { senderName, requestedName, note.getNoteText() });
-
-        List<AdHocRouteRecipient> routeRecipients = new ArrayList<AdHocRouteRecipient>();
-        routeRecipients.add(routeRecipient);
-
-        workflowDocumentService.sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(), notificationText, routeRecipients, KNSConstants.NOTE_WORKFLOW_NOTIFICATION_REQUEST_LABEL);
-
-        // clear recipient allowing an notification to be sent to another person
-        note.setAdHocRouteRecipient(new AdHocRoutePerson());
-    }
-
-    /**
-     * @param personService the personService to set
-     */
-    public void setPersonService(PersonService personService) {
-        this.personService = personService;
-    }
-
-    /**
-     * @param workflowDocumentService the workflowDocumentService to set
-     */
-    public void setWorkflowDocumentService(WorkflowDocumentService workflowDocumentService) {
-        this.workflowDocumentService = workflowDocumentService;
-    }
-
-    /**
-     * @param kualiConfigurationService the kualiConfigurationService to set
-     */
-    public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
-        this.kualiConfigurationService = kualiConfigurationService;
-    }
     
-    protected PersonService getPersonService() {
-        if ( personService == null ) {
-            personService = KIMServiceLocator.getPersonService();
-        }
-        return personService;
-    }
 }

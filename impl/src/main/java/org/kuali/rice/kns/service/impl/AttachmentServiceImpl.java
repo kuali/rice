@@ -22,7 +22,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
@@ -31,7 +30,7 @@ import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.AttachmentDao;
-import org.kuali.rice.kns.dao.NoteDao;
+import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -115,20 +114,22 @@ public class AttachmentServiceImpl implements AttachmentService {
         }
     }
     
-    public void moveAttachmentsWherePending(List notes, String objectId) {
-        for (Object obj : notes) {
-            Note note = (Note)obj;
-            Attachment attachment = note.getAttachment();
-            if(attachment!=null){
-                try {
-                    moveAttachmentFromPending(attachment, objectId);
-                }
-                catch (IOException e) {
-                    throw new RuntimeException("Problem moving pending attachment to final directory");
-                    
-                }
-            }
-        }
+    public void moveAttachmentWherePending(Note note) {
+    	if (note == null) {
+    		throw new IllegalArgumentException("Note must be non-null");
+    	}
+    	if (StringUtils.isBlank(note.getObjectId())) {
+    		throw new IllegalArgumentException("Note does not have a valid object id, object id was null or empty");
+    	}
+    	Attachment attachment = note.getAttachment();
+    	if(attachment!=null){
+    		try {
+    			moveAttachmentFromPending(attachment, note.getObjectId());
+    		}
+    		catch (IOException e) {
+    			throw new RuntimeException("Problem moving pending attachment to final directory");    
+    		}
+    	}
     }
     
     private void moveAttachmentFromPending(Attachment attachment, String objectId) throws IOException {

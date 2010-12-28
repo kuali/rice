@@ -16,10 +16,7 @@
 package org.kuali.rice.kns.bo;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.Column;
@@ -34,9 +31,7 @@ import javax.persistence.Version;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.PersistenceBrokerException;
-import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 
@@ -57,51 +52,9 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     @Transient
     protected PersistableBusinessObjectExtension extension;
 
-    // The following support notes on BusinessObjects (including DocumentHeader)
-    @Transient
-    private List boNotes = null;
-    private transient Boolean thisNotesSupport;
-    private transient static Map<Class<? extends PersistableBusinessObjectBase>,Boolean> notesSupportCache = new HashMap<Class<? extends PersistableBusinessObjectBase>,Boolean>();
-    
-    private static transient AttachmentService attachmentService;
     private static transient PersistenceService persistenceService;
     private static transient PersistenceStructureService persistenceStructureService;
-    @Transient
-    private static transient NoteService noteService;
     
-    // This is only a flag if a @Sequence is used and is set up explicitly on Maint Doc creation
-    //@Transient
-    //private boolean autoIncrementSet;
-    
-    public PersistableBusinessObjectBase() {
-        //autoIncrementSet = true;
-    }
-    
-    public boolean isBoNotesSupport() {
-        if (thisNotesSupport == null) {
-            thisNotesSupport = notesSupportCache.get(getClass());
-            if (thisNotesSupport == null) { // not cached
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("querying service for notesSupport state: " + getClass().getName());
-                }
-                // protect against concurrent modification to the cached map
-                synchronized ( notesSupportCache ) {
-                    thisNotesSupport = supportsBoNotes();
-                    if (thisNotesSupport == null) {
-                        thisNotesSupport = Boolean.FALSE;
-                    }
-                    notesSupportCache.put(getClass(), thisNotesSupport);
-				}
-            }
-        }
-
-        return thisNotesSupport;
-    }
-
-    protected Boolean supportsBoNotes() {
-        return KNSServiceLocator.getBusinessObjectDictionaryService().areNotesSupported(getClass());
-    }
-
     /**
      * @see org.kuali.rice.kns.bo.Persistable#getVersionNumber()
      */
@@ -162,36 +115,12 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     }
 
     public void afterInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    	// no need to attempt to load any notes since this is a new object
-        if (boNotes != null && !boNotes.isEmpty()) {
-        	if (isBoNotesSupport()) {
-                saveNotes();
-
-                // move attachments from pending directory
-                if (hasNoteAttachments() && StringUtils.isNotEmpty(objectId)) {
-                    getAttachmentService().moveAttachmentsWherePending(getBoNotes(), objectId);
-                }
-            }
-        }
     }
 
     public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
     }
 
     public void afterUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    	// if the bo notes have not been loaded yet, then there is no need to attempt to save them
-    	// also, the saveNotes call never attempts to remove notes removed from the note list
-    	// so, an empty list will have no affect during the save process
-        if (boNotes != null && !boNotes.isEmpty()) {
-        	if (isBoNotesSupport()) {
-                saveNotes();
-
-                // move attachments from pending directory
-                if (hasNoteAttachments() && StringUtils.isNotEmpty(objectId)) {
-                    getAttachmentService().moveAttachmentsWherePending(getBoNotes(), objectId);
-                }
-            }
-        }
     }
 
     public void beforeDelete(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
@@ -219,65 +148,11 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     
     @PostPersist
     public void afterInsert() {
-    	// no need to attempt to load any notes since this is a new object
-        if (boNotes != null && !boNotes.isEmpty()) {
-        	if (isBoNotesSupport()) {
-                saveNotes();
-
-                // move attachments from pending directory
-                if (hasNoteAttachments() && StringUtils.isNotEmpty(objectId)) {
-                    getAttachmentService().moveAttachmentsWherePending(getBoNotes(), objectId);
-                }
-            }
-        }
     }
     
     @PostUpdate
     public void afterUpdate() {
-    	// if the bo notes have not been loaded yet, then there is no need to attempt to save them
-    	// also, the saveNotes call never attempts to remove notes removed from the note list
-    	// so, an empty list will have no affect during the save process
-        if (boNotes != null && !boNotes.isEmpty()) {
-        	if (isBoNotesSupport()) {
-                saveNotes();
-
-                // move attachments from pending directory
-                if (hasNoteAttachments() && StringUtils.isNotEmpty(objectId)) {
-                    getAttachmentService().moveAttachmentsWherePending(getBoNotes(), objectId);
-                }
-            }
-        }
     }
-    
-    private void retrieveBoNotes() {
-    	if (!StringUtils.isBlank(objectId)) {
-    		boNotes = getNoteService().getByRemoteObjectId(objectId);
-    	}
-    }
-
-    /**
-     * This method is used to save any existing notes
-     */
-    private void saveNotes() {
-        if (isBoNotesSupport()) {
-            linkNoteRemoteObjectId();
-            getNoteService().saveNoteList(getBoNotes());
-        }
-    }
-
-    /**
-     * This method links the note to the objectId
-     */
-    private void linkNoteRemoteObjectId() {
-        List notes = getBoNotes();
-        if (notes != null && !notes.isEmpty()) {
-            for (Iterator iter = notes.iterator(); iter.hasNext();) {
-                Note note = (Note) iter.next();
-                note.setRemoteObjectIdentifier(getObjectId());
-            }
-        }
-    }
-
 
     /**
      * getService Refreshes the reference objects from the primitive values.
@@ -317,68 +192,9 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     }
 
 
-    private boolean hasNoteAttachments() {
-        for (Object obj : getBoNotes()) {
-            Note note = (Note) obj;
-            if (note.getAttachment() != null) {
-                return true;
+    
 
-            }
-        }
-        return false;
-    }
-
-    public List getBoNotes() {
-    	if ( boNotes == null ) {
-			if (isBoNotesSupport()) {
-				retrieveBoNotes();
-			}
-			// ensure that the list is not null after this point
-			if ( boNotes == null ) {
-				boNotes = new ArrayList(0);
-			}
-    	}
-        return boNotes;
-    }
-
-    public void setBoNotes(List boNotes) {
-        this.boNotes = boNotes;
-    }
-
-    /**
-     * return a note if in range, or an empty note if not
-     * 
-     * @param nbr
-     * @return return a note if in range, or an empty note if not
-     */
-    public Note getBoNote(int nbr) {
-        while (getBoNotes().size() <= nbr) {
-            getBoNotes().add(new Note());
-        }
-
-        Note note = (Note) getBoNotes().get(nbr);
-
-        // fix the primary key in case this is used for manual deleting
-        if (note != null && StringUtils.isEmpty(note.getObjectId())) {
-            note.setRemoteObjectIdentifier(getObjectId());
-        }
-
-        return note;
-    }
-
-    /**
-     * This method adds a note
-     * 
-     * @param note
-     * @return true if note added
-     */
-    public boolean addNote(Note note) {
-        return getBoNotes().add(note);
-    }
-
-    public boolean deleteNote(Note note) {
-        return getBoNotes().remove(note);
-    }
+    
 
 	public PersistableBusinessObjectExtension getExtension() {
 		if ( extension == null ) {
@@ -398,24 +214,6 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 		this.extension = extension;
 	}
 
-//	public boolean isAutoIncrementSet() {
-//		return autoIncrementSet;
-//	}
-//
-//	public void setAutoIncrementSet(boolean autoIncrementSet) {
-//		this.autoIncrementSet = autoIncrementSet;
-//	}
-
-	/**
-	 * @return the attachmentService
-	 */
-	protected static AttachmentService getAttachmentService() {
-		if ( attachmentService == null ) {
-			attachmentService = KNSServiceLocator.getAttachmentService();
-		}
-		return attachmentService;
-	}
-
 	/**
 	 * @return the persistenceService
 	 */
@@ -431,16 +229,6 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
 			persistenceStructureService = KNSServiceLocator.getPersistenceStructureService();
 		}
 		return persistenceStructureService;
-	}
-	
-	/**
-	 * @return the noteService
-	 */
-	protected static NoteService getNoteService() {
-		if ( noteService == null ) {
-			noteService = KNSServiceLocator.getNoteService();
-		}
-		return noteService;
 	}
 
 }

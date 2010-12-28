@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.dao;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.kuali.rice.kns.bo.Note;
 
@@ -47,7 +47,7 @@ public interface NoteDao {
      * @param id
      * @return
      */
-    public ArrayList findByremoteObjectId(String id);
+    public List<Note> findByremoteObjectId(String id);
     
     /**
      * Retrieve note by a given noteIdentifier

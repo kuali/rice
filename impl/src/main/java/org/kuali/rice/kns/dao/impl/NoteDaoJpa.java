@@ -16,15 +16,14 @@
 package org.kuali.rice.kns.dao.impl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.log4j.Logger;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.kns.bo.Attachment;
-import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.dao.NoteDao;
 import org.springframework.dao.DataAccessException;
@@ -35,8 +34,6 @@ import org.springframework.dao.DataAccessException;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NoteDaoJpa implements NoteDao {
-
-	private static Logger LOG = Logger.getLogger(NoteDaoJpa.class);
 
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -70,12 +67,12 @@ public class NoteDaoJpa implements NoteDao {
 	/**
 	 * Retrieves document associated with a given object using JPA.
 	 */
-	public ArrayList findByremoteObjectId(String remoteObjectId) {
+	public List<Note> findByremoteObjectId(String remoteObjectId) {
 		Criteria criteria = new Criteria(Note.class.getName());
 		// TODO: Notes - Chris move remoteObjectId string to constants
 		criteria.eq("remoteObjectIdentifier", remoteObjectId);
 		criteria.orderBy("notePostedTimestamp", true);
-		return new ArrayList(new QueryByCriteria(entityManager, criteria).toQuery().getResultList());
+		return new ArrayList<Note>(new QueryByCriteria(entityManager, criteria).toQuery().getResultList());
 	}
 	
 	 public Note getNoteByNoteId(Long noteId) {

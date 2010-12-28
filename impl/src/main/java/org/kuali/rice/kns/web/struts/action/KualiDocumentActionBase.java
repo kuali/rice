@@ -37,8 +37,8 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -90,6 +90,7 @@ import org.kuali.rice.kns.service.PessimisticLockService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.NoteType;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.SessionTicket;
@@ -1263,20 +1264,16 @@ public class KualiDocumentActionBase extends KualiAction {
      * @throws Exception
      */
     public ActionForward downloadBOAttachment(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    	KualiDocumentFormBase documentForm = (KualiDocumentFormBase)form;
+    	
         int attachmentIndex = selectedAttachmentIndex(request);
-
-        Note newNote = ((KualiDocumentFormBase) form).getNewNote();
-        PersistableBusinessObject noteParent = getNoteParent(((KualiDocumentFormBase) form).getDocument(), newNote);
-
-
         if (attachmentIndex >= 0) {
-            Note note = noteParent.getBoNote(attachmentIndex);
+            Note note = documentForm.getDocument().getNote(attachmentIndex);
             Attachment attachment = note.getAttachment();
             //make sure attachment is setup with backwards reference to note (rather then doing this we could also just call the attachment service (with a new method that took in the note)
             attachment.setNote(note);
 
             // since we're downloading a file, all of the editable properties from the previous request will continue to be editable.
-            KualiDocumentFormBase documentForm = (KualiDocumentFormBase) form;
             documentForm.copyPopulateEditablePropertiesToActionEditableProperties();
             
             WebUtils.saveMimeInputStreamAsFile(response, attachment.getAttachmentMimeTypeCode(), attachment.getAttachmentContents(), attachment.getAttachmentFileName(), attachment.getAttachmentFileSize().intValue());
@@ -1348,9 +1345,6 @@ public class KualiDocumentActionBase extends KualiAction {
           throw buildAuthorizationException("annotate", document);
         }
 
-        PersistableBusinessObject noteParent = getNoteParent(document, newNote);
-
-
         // create the attachment first, so that failure-to-create-attachment can be treated as a validation failure
        
         Attachment attachment = null;
@@ -1371,7 +1365,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 if (newAttachment != null) {
                     attachmentType = newAttachment.getAttachmentTypeCode();
                 }
-                attachment = getAttachmentService().createAttachment(noteParent, attachmentFile.getFileName(), attachmentFile.getContentType(), attachmentFile.getFileSize(), attachmentFile.getInputStream(), attachmentType);
+                attachment = getAttachmentService().createAttachment(document.getNoteTarget(), attachmentFile.getFileName(), attachmentFile.getContentType(), attachmentFile.getFileSize(), attachmentFile.getInputStream(), attachmentType);
             }
         }
 
@@ -1391,7 +1385,7 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         // create a new note from the data passed in
-        Note tmpNote = getNoteService().createNote(newNote, noteParent);
+        Note tmpNote = getNoteService().createNote(newNote, document.getNoteTarget());
         
         ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response, KNSPropertyConstants.NOTE, tmpNote.getNoteText(), "insertBONote", "");
         if (forward != null) {
@@ -1406,16 +1400,16 @@ public class KualiDocumentActionBase extends KualiAction {
             tmpNote.refresh();
 
 
-            DocumentHeader documentHeader = kualiDocumentFormBase.getDocument().getDocumentHeader();
+            DocumentHeader documentHeader = document.getDocumentHeader();
 
             // associate note with object now
-            noteParent.addNote(tmpNote);
+            document.addNote(tmpNote);
             
             // persist the note if the document is already saved the getObjectId check is to get around a bug with certain documents where
             // "saved" doesn't really persist, if you notice any problems with missing notes check this line
             //maintenance document BO note should only be saved into table when document is in the PROCESSED workflow status
-            if (!documentHeader.getWorkflowDocument().stateIsInitiated()&&StringUtils.isNotEmpty(noteParent.getObjectId())
-            	&& !(document instanceof MaintenanceDocument && KNSConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode().equals(tmpNote.getNoteTypeCode()))
+            if (!documentHeader.getWorkflowDocument().stateIsInitiated()&&StringUtils.isNotEmpty(document.getNoteTarget().getObjectId())
+            	&& !(document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT_NOTE_TYPE.getCode().equals(tmpNote.getNoteTypeCode()))
             ) {
                 getNoteService().save(tmpNote);
             }
@@ -1426,8 +1420,8 @@ public class KualiDocumentActionBase extends KualiAction {
                 tmpNote.addAttachment(attachment);
                 // save again for attachment, note this is because sometimes the attachment is added first to the above then ojb tries to save
                 //without the PK on the attachment I think it is safer then trying to get the sequence manually
-                if (!documentHeader.getWorkflowDocument().stateIsInitiated()&&StringUtils.isNotEmpty(noteParent.getObjectId())
-                	&& !(document instanceof MaintenanceDocument && KNSConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode().equals(tmpNote.getNoteTypeCode())) 
+                if (!documentHeader.getWorkflowDocument().stateIsInitiated()&&StringUtils.isNotEmpty(document.getNoteTarget().getObjectId())
+                	&& !(document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT_NOTE_TYPE.getCode().equals(tmpNote.getNoteTypeCode())) 
                 ) {
                     getNoteService().save(tmpNote);
                 }
@@ -1440,20 +1434,6 @@ public class KualiDocumentActionBase extends KualiAction {
 
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
-    }
-
-    /**
-     * This method...
-     * @param document
-     * @param newNote
-     * @return
-     */
-    private PersistableBusinessObject getNoteParent(Document document, Note newNote) {
-        //get the property name to set (this assumes this is a document type note)
-        String propertyName = getNoteService().extractNoteProperty(newNote);
-        //get BO to set
-        PersistableBusinessObject noteParent = (PersistableBusinessObject)ObjectUtils.getPropertyValue(document, propertyName);
-        return noteParent;
     }
 
     /**
@@ -1484,8 +1464,7 @@ public class KualiDocumentActionBase extends KualiAction {
         // ok to delete the note/attachment
         // derive the note property from the newNote on the form
         Note newNote = kualiDocumentFormBase.getNewNote();
-        PersistableBusinessObject noteParent = this.getNoteParent(document, newNote);
-        Note note = noteParent.getBoNote(getLineToDelete(request));
+        Note note = document.getNote(getLineToDelete(request));
         Attachment attachment = note.getAttachment();
         String attachmentTypeCode = null;
         if(attachment != null){
@@ -1509,7 +1488,7 @@ public class KualiDocumentActionBase extends KualiAction {
         if (!document.getDocumentHeader().getWorkflowDocument().stateIsInitiated()) {
             getNoteService().deleteNote(note);
         }
-        noteParent.deleteNote(note);
+        document.removeNote(note);
 
         return mapping.findForward(RiceConstants.MAPPING_BASIC);
     }
@@ -1530,9 +1509,7 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiDocumentFormBase kualiDocumentFormBase = (KualiDocumentFormBase) form;
         Document document = kualiDocumentFormBase.getDocument();
 
-        // derive the note property from the newNote on the form
-        PersistableBusinessObject noteParent = this.getNoteParent(document, kualiDocumentFormBase.getNewNote());
-        Note note = noteParent.getBoNote(getSelectedLine(request));
+        Note note = document.getNote(getSelectedLine(request));
 
         // verify recipient was specified
         if (StringUtils.isBlank(note.getAdHocRouteRecipient().getId())) {
@@ -1551,7 +1528,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
         // if document is saved, send notification
         if (!document.getDocumentHeader().getWorkflowDocument().stateIsInitiated()) {
-            getNoteService().sendNoteRouteNotification(document, note, GlobalVariables.getUserSession().getPerson());
+            getDocumentService().sendNoteRouteNotification(document, note, GlobalVariables.getUserSession().getPerson());
 
             // add success message
             GlobalVariables.getMessageList().add(RiceKeyConstants.MESSAGE_SEND_NOTE_NOTIFICATION_SUCCESSFUL);

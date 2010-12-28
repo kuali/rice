@@ -134,8 +134,7 @@ public class FieldBridge {
 			if (fieldControl != null && fieldControl.isSelect()
 					&& StringUtils.isBlank(field.getAdditionalDisplayPropertyName())
 					&& StringUtils.isBlank(field.getAlternateDisplayPropertyName())) {
-				Class<KeyValuesFinder> keyValuesFinderName = ClassLoaderUtils.getClass(fieldControl
-						.getValuesFinderClass());
+				Class<? extends KeyValuesFinder> keyValuesFinderName = ClassLoaderUtils.getClass(fieldControl.getValuesFinderClass(), KeyValuesFinder.class);
                 KeyValuesFinder finder = keyValuesFinderName.newInstance();
 
                 propValue = lookupFinderValue(fieldControl, prop, finder);
@@ -182,6 +181,9 @@ public class FieldBridge {
             FieldUtils.setInquiryURL(field, bo, propertyName);
 		} catch (InstantiationException e) {
             LOG.error("Unable to get instance of KeyValuesFinder: " + e.getMessage());
+            throw new RuntimeException("Unable to get instance of KeyValuesFinder: " + e.getMessage());
+		} catch (ClassNotFoundException e) {
+			LOG.error("Unable to get instance of KeyValuesFinder: " + e.getMessage());
             throw new RuntimeException("Unable to get instance of KeyValuesFinder: " + e.getMessage());
 		} catch (IllegalAccessException e) {
             LOG.error("Unable to set columns: " + e.getMessage());

@@ -15,14 +15,11 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.document.Document;
+
 
 
 /**
@@ -38,7 +35,7 @@ public interface NoteService {
      * @return A list of Notes
      * @throws Exception
      */
-    public ArrayList<Note> getByRemoteObjectId(String remoteObjectId);
+    public List<Note> getByRemoteObjectId(String remoteObjectId);
 
     /**
      * Retrieves the notes for a note identifier
@@ -53,7 +50,7 @@ public interface NoteService {
      * This method saves a list of notes
      * @param noteValues
      */
-    public void saveNoteList(List notes);
+    public void saveNoteList(List<Note> notes);
 
     /**
      * Saves a note
@@ -62,7 +59,7 @@ public interface NoteService {
      * @return The note
      * @throws Exception
      */
-    public Note save(Note note) throws Exception;
+    public Note save(Note note);
 
     /**
      * Deletes a note
@@ -70,19 +67,18 @@ public interface NoteService {
      * @param Note
      * @throws Exception
      */
-    public void deleteNote(Note note) throws Exception;
+    public void deleteNote(Note note);
 
-    public Note createNote(Note note, PersistableBusinessObject bo) throws Exception;
-
-    public String extractNoteProperty(Note note);
+    public Note createNote(Note note, PersistableBusinessObject bo);
     
     /**
-     * Builds an workflow notification request for the note and sends it to note recipient.
+     * Determines if the given type represents a type that supports
+     * having Notes associated with it.
      * 
-     * @param document - document that contains the note
-     * @param note - note to notify
-     * @param sender - user who is sending the notification
-     * @throws WorkflowException 
+     * @param type the name of the type to check for Note support.  This will most often be
+     * the fully qualified classname of a Class to check for Note support.
+     * @return
      */
-    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException;
+    public boolean supportsNotes(Class<? extends PersistableBusinessObject> type);
+
 }

@@ -83,7 +83,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
     protected String documentNumber;
     protected PersistableBusinessObject businessObject;
-    protected Class boClass;
+    protected Class<? extends PersistableBusinessObject> boClass;
     protected String maintenanceAction;
     
     protected Map<String,PersistableBusinessObject> newCollectionLines = new HashMap<String,PersistableBusinessObject>();
@@ -638,7 +638,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     /**
      * @return Returns the boClass.
      */
-    public Class getBoClass() {
+    public Class<? extends PersistableBusinessObject> getBoClass() {
         return boClass;
     }
 
@@ -646,7 +646,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
     /**
      * @param boClass The boClass to set.
      */
-    public void setBoClass(Class boClass) {
+    public void setBoClass(Class<? extends PersistableBusinessObject> boClass) {
         this.boClass = boClass;
         this.docTypeName = getDocumentTypeName();
     }

@@ -410,6 +410,9 @@
 		<property name="dataDictionaryService">
 			<ref bean="dataDictionaryService" />
 		</property>
+        <property name="kualiConfigurationService">
+            <ref bean="kualiConfigurationService"/>
+        </property>
 	</bean>
 
 	<bean id="documentHeaderService" class="org.kuali.rice.kns.service.impl.DocumentHeaderServiceImpl">
@@ -487,12 +490,6 @@
 	<bean id="noteService" class="org.kuali.rice.kns.service.impl.NoteServiceImpl">
 		<property name="noteDao">
 			<ref bean="noteDao" />
-		</property>
-		<property name="workflowDocumentService">
-			<ref bean="workflowDocumentService" />
-		</property>
-		<property name="kualiConfigurationService">
-			<ref bean="kualiConfigurationService" />
 		</property>
 	</bean>
 
@@ -1159,7 +1156,8 @@
     <property name="dateTimeService" ref="dateTimeService" />
     <property name="businessObjectDictionaryService" ref="businessObjectDictionaryService"/>
   </bean>
-	<bean id="maintenanceDocumentDaoJpa" class="org.kuali.rice.kns.dao.impl.MaintenanceDocumentDaoJpa">
+  
+  <bean id="maintenanceDocumentDaoJpa" class="org.kuali.rice.kns.dao.impl.MaintenanceDocumentDaoJpa">
 		<property name="entityManager" ref="knsApplicationEntityManager"/>
 	</bean>
 

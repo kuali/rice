@@ -47,15 +47,7 @@ public interface PersistableBusinessObject extends BusinessObject, PersistenceBr
      * @param objectId
      */
     public void setObjectId(String objectId);
-
-    
-    public abstract boolean isBoNotesSupport();
-    
-    /**
-     * @return Returns the boNotes List.
-     */
-    public abstract List getBoNotes();
-
+   
     /**
      * @see org.kuali.rice.kns.bo.BusinessObject#refreshNonUpdateableReferences()
      */
@@ -93,12 +85,6 @@ public interface PersistableBusinessObject extends BusinessObject, PersistenceBr
      * Hook to link in any editable user fields.
      */
     public void linkEditableUserFields();
-    
-    public Note getBoNote(int nbr);
-
-    public boolean addNote(Note note);
-
-    public boolean deleteNote(Note note);
 
     public PersistableBusinessObjectExtension getExtension();
     public void setExtension(PersistableBusinessObjectExtension extension);

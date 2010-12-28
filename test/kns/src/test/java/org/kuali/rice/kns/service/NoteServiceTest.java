@@ -17,7 +17,7 @@ package org.kuali.rice.kns.service;
 
 import org.junit.Test;
 import org.kuali.rice.kns.bo.Note;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.NoteType;
 import org.kuali.test.KNSTestCase;
 
 /**
@@ -39,7 +39,7 @@ public class NoteServiceTest extends KNSTestCase {
         note.setNotePostedTimestamp(KNSServiceLocator.getDateTimeService().getCurrentTimestamp());
         note.setNoteText("i like notes");
         note.setRemoteObjectIdentifier("1209348109834u");
-        note.setNoteTypeCode(KNSConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode());
+        note.setNoteTypeCode(NoteType.BUSINESS_OBJECT_NOTE_TYPE.getCode());
         try {
             KNSServiceLocator.getNoteService().save(note);
         } catch (Exception e) {

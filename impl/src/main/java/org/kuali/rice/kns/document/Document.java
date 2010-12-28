@@ -25,11 +25,13 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.DocumentHeader;
+import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 import org.kuali.rice.kns.service.DocumentSerializerService;
+import org.kuali.rice.kns.util.NoteType;
 import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.rice.kns.web.struts.action.KualiDocumentActionBase;
 import org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer;
@@ -212,14 +214,42 @@ public interface Document extends PersistableBusinessObject{
      */
     public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent);
     
+    /**
+     * Returns the NoteType which is supported for notes associated with this Document.
+     * This method should never return null.
+     * 
+     * @return the NoteType supported by this Document
+     */
+    public NoteType getNoteType();
     
     /**
-     * This is a helper to return BO for use by notes, it allows both maintenance and transactional to have consistent 
-     * notes paths without the tag or action knowing what kind of document they are
+     * Return the target PersistableBusinessObject that notes associated with this document should be attached to.
      * 
-     * @return "this" unless overriden
+     * @return the PersistableBusinessObject with which notes on this document should be associated
      */
-    public PersistableBusinessObject getDocumentBusinessObject();
+    public PersistableBusinessObject getNoteTarget();
+    
+    /**
+     * Adds the given Note to the document's list of Notes.
+     */
+    public void addNote(Note note);
+    
+    /**
+     * Gets a mutable List of all Notes on the document.
+     */
+    public List<Note> getNotes();
+    
+    /**
+     * Gets the note at the given index.
+     */
+    public Note getNote(int index);
+    
+    /**
+     * Removes the given Note from the document's list of Notes.
+     */
+    public boolean removeNote(Note note);
+    
+    public void saveNotes();
     
     /**
      * This method gets a list of the {@link PessimisticLock} objects associated with this document

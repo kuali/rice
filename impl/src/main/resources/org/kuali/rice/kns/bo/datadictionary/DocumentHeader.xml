@@ -30,7 +30,7 @@
         <ref bean="DocumentHeader-objectId"/>
       </list>
     </property>
-    <property name="objectLabel" value="Doucment Header"/>
+    <property name="objectLabel" value="Document Header"/>
   </bean>
 
 <!-- Attribute Definitions -->

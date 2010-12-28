@@ -67,7 +67,7 @@ public class GenericPermissionMaintainable extends KualiMaintainableImpl {
 	 * @see org.kuali.rice.kns.maintenance.KualiMaintainableImpl#getBoClass()
 	 */
 	@Override
-	public Class<? extends BusinessObject> getBoClass() {
+	public Class<? extends PersistableBusinessObject> getBoClass() {
 		return GenericPermission.class;
 	}
 	

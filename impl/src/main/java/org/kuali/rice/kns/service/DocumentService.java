@@ -18,9 +18,9 @@ package org.kuali.rice.kns.service;
 import java.util.List;
 
 import org.kuali.rice.kew.exception.WorkflowException;
+import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.Note;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.event.SaveEvent;
 
@@ -256,23 +256,15 @@ public interface DocumentService {
      */
     public Note createNoteFromDocument(Document document, String text) throws Exception;
     
-    /**
-     * 
-     * This method adds a note to a document
-     * @param document
-     * @param note
-     * @return the added Note
-     */
-    public boolean addNoteToDocument(Document document, Note note);
-    
-    /**
-     * 
-     * This method gets the parent for a note from a document
-     * @param document
-     * @param newNote
-     * @return Business Object that the note is attached to.
-     */
-    public PersistableBusinessObject getNoteParent(Document document, Note newNote);
-    
     public void sendAdHocRequests(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
+
+    /**
+     * Builds an workflow notification request for the note and sends it to note recipient.
+     *
+     * @param document - document that contains the note
+     * @param note - note to notify
+     * @param sender - user who is sending the notification
+     * @throws WorkflowException
+     */
+    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException;
 }

@@ -132,7 +132,9 @@ public final class ClassLoaderUtils {
 	    return (Class[]) interfaces.toArray(interfaceArray);
 	}
 	
-	public static Class getClass(String className) {
+	// TODO why not make this so that it throws ClassNoteFoundException and doesn't return null?
+	// this is more standard behavior...
+	public static Class<?> getClass(String className) {
 		if (StringUtils.isEmpty(className)) {
 			return null;
 		}
@@ -142,5 +144,10 @@ public final class ClassLoaderUtils {
 			throw new RiceRuntimeException(e);
 		}
 	}
-
+	
+	public static <T> Class<? extends T> getClass(String className, Class<T> type) throws ClassNotFoundException {
+		Class<?> theClass = ClassUtils.getClass(getDefaultClassLoader(), className);
+		return theClass.asSubclass(type);
+	}
+	
 }

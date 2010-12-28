@@ -41,6 +41,7 @@ import org.kuali.rice.core.jpa.metadata.EntityDescriptor;
 import org.kuali.rice.core.jpa.metadata.FieldDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.service.EncryptionService;
+import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -255,10 +256,11 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 			PersistableBusinessObject newBusinessObject = (PersistableBusinessObject) ObjectUtils.deepCopy(oldBusinessObject);
 
 			// set business object instance for editing
+			Class<? extends PersistableBusinessObject> businessObjectClass = ClassLoaderUtils.getClass(maintenanceForm.getBusinessObjectClassName(), PersistableBusinessObject.class); 
 			document.getOldMaintainableObject().setBusinessObject(oldBusinessObject);
-			document.getOldMaintainableObject().setBoClass(Class.forName(maintenanceForm.getBusinessObjectClassName()));
+			document.getOldMaintainableObject().setBoClass(businessObjectClass);
 			document.getNewMaintainableObject().setBusinessObject(newBusinessObject);
-			document.getNewMaintainableObject().setBoClass(Class.forName(maintenanceForm.getBusinessObjectClassName()));
+			document.getNewMaintainableObject().setBoClass(businessObjectClass);
 
 			// on a COPY, clear any fields that this user isnt authorized for, and also
 			// clear the primary key fields

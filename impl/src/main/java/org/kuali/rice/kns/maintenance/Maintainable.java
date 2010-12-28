@@ -126,9 +126,9 @@ public interface Maintainable extends java.io.Serializable, SelectiveReferenceRe
     public void setGenerateBlankRequiredValues(String docTypeName);
 
 
-    public Class getBoClass();
+    public Class<? extends PersistableBusinessObject> getBoClass();
 
-    public void setBoClass(Class boClass);
+    public void setBoClass(Class<? extends PersistableBusinessObject> boClass);
 
     /**
      * 

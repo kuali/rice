@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.document;
 
+import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.maintenance.Maintainable;
 
 
@@ -55,6 +56,11 @@ public interface MaintenanceDocument extends Document {
      */
     public void setOldMaintainableObject(Maintainable oldMaintainableObject);
 
+    /**
+     * Returns a reference to the PersistableBusinessObject that this MaintenanceDocument is maintaining.
+     */
+    public PersistableBusinessObject getDocumentBusinessObject();
+    
     /**
      * Builds the xml document string from the contents of the old and new maintainbles.
      */

@@ -17,9 +17,9 @@ package org.kuali.rice.kns.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 import org.kuali.rice.kns.bo.Attachment;
+import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 
 /**
@@ -59,10 +59,13 @@ public interface AttachmentService {
     /**
      * 
      * Moves attachments on notes from the pending directory to the real one
-     * @param notes
-     * @param objectId
+     * @param note the Note from which to move attachments.  If this Note does not
+     * have an attachment then this method does nothing.
+     * 
+     * @throws IllegalArgumentException if the given Note is null
+     * @throws IllegalArgumentException if the Note does not have a valid object id
      */
-    public void moveAttachmentsWherePending(List notes, String objectId);
+    public void moveAttachmentWherePending(Note note);
     
     /**
      * Deletes pending attachments that were last modified before the given time.  Java does not have easy access to a file's creation

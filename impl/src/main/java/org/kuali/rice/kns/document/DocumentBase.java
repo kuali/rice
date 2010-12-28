@@ -55,12 +55,15 @@ import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
+import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.DocumentSerializerService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.NoteType;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.documentserializer.AlwaysFalsePropertySerializabilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
@@ -84,10 +87,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     protected String documentNumber;
     @OneToOne(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
-    protected DocumentHeader documentHeader;
-    @Transient
-    protected transient PersistableBusinessObject documentBusinessObject; //here for reflection
-    
+    protected DocumentHeader documentHeader;    
 
     @OneToMany(fetch=FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinColumn(name="DOC_HDR_ID", insertable=false, updatable=false)
@@ -97,6 +97,11 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     private List<AdHocRoutePerson> adHocRoutePersons;
     @Transient
     private List<AdHocRouteWorkgroup> adHocRouteWorkgroups;
+    @Transient
+    private List<Note> notes;
+    
+    private static transient NoteService noteService;
+    private static transient AttachmentService attachmentService;
 
     /**
      * Constructs a DocumentBase.java.
@@ -109,6 +114,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
             pessimisticLocks = new ArrayList<PessimisticLock>();
             adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
             adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();
+            notes = new ArrayList<Note>();
         }
         catch (IllegalAccessException e) {
             throw new RuntimeException("Error instantiating DocumentHeader", e);
@@ -262,22 +268,22 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * This is the default implementation which ensures that document note attachment references are loaded.
+     * This is the default implementation which retrieves notes.  Subclasses should be sure
+     * to invoke this superclass method if they override it.
      *
      * @see org.kuali.rice.kns.document.Document#processAfterRetrieve()
      */
     public void processAfterRetrieve() {
-        // KULRNE-5692 - force a refresh of the attachments
+    	if (!StringUtils.isBlank(getNoteTarget().getObjectId())) {
+    		notes = getNoteService().getByRemoteObjectId(getNoteTarget().getObjectId());
+    	}
+    	// KULRNE-5692 - force a refresh of the attachments
         // they are not (non-updateable) references and don't seem to update properly upon load
-        DocumentHeader dh = getDocumentHeader();
-        if (dh != null) {
-            List<Note> notes = dh.getBoNotes();
-            if (notes != null) {
-                for (Note note : notes) {
-                    note.refreshReferenceObject("attachment");
-                }
+    	if (notes != null) {
+    		for (Note note : notes) {
+                note.refreshReferenceObject("attachment");
             }
-        }
+    	}
     }
 
     /**
@@ -358,9 +364,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         }
         String sourceDocumentHeaderId = getDocumentNumber();
         setNewDocumentHeader();
-        
-        getDocumentBusinessObject().getBoNotes();
-        
+                
         getDocumentHeader().setDocumentTemplateNumber(sourceDocumentHeaderId);
 
         addCopyErrorDocumentNote("copied from document " + sourceDocumentHeaderId);
@@ -402,7 +406,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
          logErrors();
          throw new RuntimeException("Couldn't create note on copy or error",e);
         }
-        KNSServiceLocator.getDocumentService().addNoteToDocument(this, note);
+        addNote(note);
     }
 
     /**
@@ -632,24 +636,95 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
         // do nothing
     }
-
+    
     /**
-     * Gets the documentBusinessObject attribute.
+     * <p>Returns the business object with which notes related to this document should be associated.
+     * By default, the {@link DocumentHeader} of this document will be returned as the note target.
+     * 
+     * <p>Sub classes can override this method if they want notes to be associated with something
+     * other than the document header.  If this method is overridden, it is advisable to also
+     * override {@link #getNoteType()}.
      * 
      * @return Returns the documentBusinessObject.
      */
-    public PersistableBusinessObject getDocumentBusinessObject() {
-        if (documentBusinessObject == null) {
-            documentBusinessObject = this;
-        }
-        return documentBusinessObject;
-
-    }
-
     @Override
-    public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        super.afterLookup(persistenceBroker);
-        //refreshPessimisticLocks();
+    public PersistableBusinessObject getNoteTarget() {
+        return getDocumentHeader();
+    }
+    
+    /**
+	 * <p>Returns the {@link NoteType} to use for notes associated with this document.
+	 * By default this returns {@link NoteType#DOCUMENT_HEADER_NOTE_TYPE} since notes are
+	 * associated with the {@link DocumentHeader} record by default.
+	 * 
+	 * <p>The case in which this should be overridden is if {@link #getNoteTarget()} is
+	 * overridden to return an object other than the {@link DocumentHeader}.
+	 *
+	 * @return the {@link NoteType} to use for notes associated with this document
+	 * 
+	 * @see org.kuali.rice.kns.document.Document#getNoteType()
+	 */
+	@Override
+	public NoteType getNoteType() {
+		return NoteType.DOCUMENT_HEADER_NOTE_TYPE;
+	}
+
+    
+    @Override
+	public void addNote(Note note) {
+		notes.add(note);
+	}
+
+	@Override
+	public boolean removeNote(Note note) {
+		return notes.remove(note);
+	}
+
+	@Override
+	public Note getNote(int index) {
+		return notes.get(index);
+	}
+
+	@Override
+	public List<Note> getNotes() {
+		return notes;
+	}
+	
+	protected void setNotes(List<Note> notes) {
+		this.notes = notes;
+	}
+	
+	/**
+	 * Executes the saving of all Notes on the document.  At the point in time when this is executed,
+	 * the note target must be in such a state that the note can be linked with it.  This essentially
+	 * means that it must be persisted in the database and have a unique object id associated.  If
+	 * that is not the case then this method will throw an IllegalStateException.
+	 * 
+	 * @throws IllegalStateException if the object returned by {@link #getNoteTarget()} is not in a
+	 * state where Notes can be attached.
+	 */
+	public void saveNotes() {
+		if (notes != null && !notes.isEmpty()) {
+    		for (Note note : notes) {
+    			linkNoteRemoteObjectId(note);
+    			getNoteService().save(note);
+    		}
+    		// move attachments from pending directory
+    		// do this in a separate loop to ensure that all notes can be saved first
+    		for (Note note : notes) {
+    			if (note.getAttachment() != null) {
+    				getAttachmentService().moveAttachmentWherePending(note);
+    			}
+    		}
+        }	
+	}
+	
+	private void linkNoteRemoteObjectId(Note note) {
+    	String objectId = getNoteTarget().getObjectId();
+    	if (StringUtils.isBlank(objectId)) {
+    		throw new RuntimeException("Attempted to link a Note with a PersistableBusinessObject with no object id");
+    	}
+    	note.setRemoteObjectIdentifier(getNoteTarget().getObjectId());
     }
 
     /**
@@ -718,4 +793,18 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     	throw new PessimisticLockingException("Document " + getDocumentNumber() +
     			" is using pessimistic locking with custom lock descriptors, but the document class has not overriden the getCustomLockDescriptor method");
     }
+    
+    protected static AttachmentService getAttachmentService() {
+		if ( attachmentService == null ) {
+			attachmentService = KNSServiceLocator.getAttachmentService();
+		}
+		return attachmentService;
+	}
+    
+    protected static NoteService getNoteService() {
+		if ( noteService == null ) {
+			noteService = KNSServiceLocator.getNoteService();
+		}
+		return noteService;
+	}
 }

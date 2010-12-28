@@ -17,6 +17,7 @@ package org.kuali.rice.kns.service.impl;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -59,12 +60,15 @@ import org.kuali.rice.kns.service.DocumentHeaderService;
 import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiRuleService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.NoteType;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
@@ -101,6 +105,8 @@ public class DocumentServiceImpl implements DocumentService {
     private PersonService personService;
 
     private DocumentHelperService documentHelperService;
+
+    private KualiConfigurationService kualiConfigurationService;
 
     /**
      * @see org.kuali.rice.kns.service.DocumentService#saveDocument(org.kuali.rice.kns.document.Document)
@@ -257,12 +263,9 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
 	public Document disapproveDocument(Document document, String annotation) throws Exception {
         checkForNulls(document);
-        //if (!getDocumentActionFlags(document).getCanDisapprove()) {
-        //    throw buildAuthorizationException("disapprove", document);
-        //}
 
         Note note = createNoteFromDocument(document,annotation);
-        addNoteToDocument(document, note);
+        document.addNote(note);
 
         //SAVE THE NOTE
         //Note: This save logic is replicated here and in KualiDocumentAction, when to save (based on doc state) should be moved
@@ -717,6 +720,10 @@ public class DocumentServiceImpl implements DocumentService {
             LOG.error("exception encountered on store of document " + e.getMessage());
             throw e;
         }
+        
+        if (document.getNoteType() == NoteType.DOCUMENT_HEADER_NOTE_TYPE) {
+        	document.saveNotes();
+        }
 
         savedDocument.postProcessSave(event);
 
@@ -790,35 +797,10 @@ public class DocumentServiceImpl implements DocumentService {
         note.setNotePostedTimestamp(getDateTimeService().getCurrentTimestamp());
         note.setVersionNumber(Long.valueOf(1));
         note.setNoteText(text);
-        if(document.isBoNotesSupport()) {
-            note.setNoteTypeCode(KNSConstants.NoteTypeEnum.BUSINESS_OBJECT_NOTE_TYPE.getCode());
-        } else {
-            note.setNoteTypeCode(KNSConstants.NoteTypeEnum.DOCUMENT_HEADER_NOTE_TYPE.getCode());
-        }
+        note.setNoteTypeCode(document.getNoteType().getCode());
 
-        PersistableBusinessObject bo = null;
-        String propertyName = getNoteService().extractNoteProperty(note);
-        bo = (PersistableBusinessObject)ObjectUtils.getPropertyValue(document, propertyName);
-        return (bo==null)?null:getNoteService().createNote(note,bo);
-    }
-
-
-    /**
-     * @see org.kuali.rice.kns.service.DocumentService#addNoteToDocument(org.kuali.rice.kns.document.Document, org.kuali.rice.kns.bo.Note)
-     */
-    @Override
-	public boolean addNoteToDocument(Document document, Note note) {
-        PersistableBusinessObject parent = getNoteParent(document,note);
-        return parent.addNote(note);
-    }
-
-    @Override
-	public PersistableBusinessObject getNoteParent(Document document, Note newNote) {
-        //get the property name to set (this assumes this is a document type note)
-        String propertyName = getNoteService().extractNoteProperty(newNote);
-        //get BO to set
-        PersistableBusinessObject noteParent = (PersistableBusinessObject)ObjectUtils.getPropertyValue(document, propertyName);
-        return noteParent;
+        PersistableBusinessObject bo = document.getNoteTarget();
+        return bo == null ? null : getNoteService().createNote(note, bo);
     }
 
     /**
@@ -1037,5 +1019,38 @@ public class DocumentServiceImpl implements DocumentService {
     	getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
     	document.setAdHocRoutePersons(adHocRoutePersons);
     	document.setAdHocRouteWorkgroups(adHocRouteWorkgroups);
+    }
+
+    /**
+     * @see org.kuali.rice.kns.service.DocumentService
+     */
+    public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException {
+        AdHocRouteRecipient routeRecipient = note.getAdHocRouteRecipient();
+
+        // build notification request
+        Person requestedUser = this.getPersonService().getPersonByPrincipalName(routeRecipient.getId());
+        String senderName = sender.getFirstName() + " " + sender.getLastName();
+        String requestedName = requestedUser.getFirstName() + " " + requestedUser.getLastName();
+
+        String notificationText = kualiConfigurationService.getPropertyString(RiceKeyConstants.MESSAGE_NOTE_NOTIFICATION_ANNOTATION);
+        if (StringUtils.isBlank(notificationText)) {
+            throw new RuntimeException("No annotation message found for note notification. Message needs added to application resources with key:" + RiceKeyConstants.MESSAGE_NOTE_NOTIFICATION_ANNOTATION);
+        }
+        notificationText = MessageFormat.format(notificationText, new Object[]{senderName, requestedName, note.getNoteText()});
+
+        List<AdHocRouteRecipient> routeRecipients = new ArrayList<AdHocRouteRecipient>();
+        routeRecipients.add(routeRecipient);
+
+        workflowDocumentService.sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(), notificationText, routeRecipients, KNSConstants.NOTE_WORKFLOW_NOTIFICATION_REQUEST_LABEL);
+
+        // clear recipient allowing an notification to be sent to another person
+        note.setAdHocRouteRecipient(new AdHocRoutePerson());
+    }
+
+    /**
+     * @param kualiConfigurationService the kualiConfigurationService to set
+     */
+    public void setKualiConfigurationService(KualiConfigurationService kualiConfigurationService) {
+        this.kualiConfigurationService = kualiConfigurationService;
     }
 }

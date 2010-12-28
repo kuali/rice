@@ -17,6 +17,7 @@ package org.kuali.rice.kns.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
@@ -78,7 +79,7 @@ public class NoteDaoOjb extends PlatformAwareDaoBaseOjb implements NoteDao {
      * @param id
      * @return
      */
-    public ArrayList findByremoteObjectId(String remoteObjectId) {
+    public List<Note> findByremoteObjectId(String remoteObjectId) {
         Criteria criteria = new Criteria();
         //TODO: Notes - Chris move remoteObjectId string to constants
         criteria.addEqualTo("RMT_OBJ_ID", remoteObjectId);
@@ -87,9 +88,9 @@ public class NoteDaoOjb extends PlatformAwareDaoBaseOjb implements NoteDao {
         //while this is currently called every time these methods could be changed to allow
         //custom sorting by BO see discussion on Notes confluence page
         defaultOrderBy(query);
-        Collection notes = findCollection(query);
+        Collection<Note> notes = findCollection(query);
 
-        return new ArrayList(notes);
+        return new ArrayList<Note>(notes);
     }
     
     public Note getNoteByNoteId(Long noteId) {
@@ -114,7 +115,8 @@ public class NoteDaoOjb extends PlatformAwareDaoBaseOjb implements NoteDao {
      * @param query
      * @return
      */
-    private Collection findCollection(Query query) throws DataAccessException {
+    @SuppressWarnings("unchecked")
+    private Collection<Note> findCollection(Query query) throws DataAccessException {
         return getPersistenceBrokerTemplate().getCollectionByQuery(query);
     }
 }

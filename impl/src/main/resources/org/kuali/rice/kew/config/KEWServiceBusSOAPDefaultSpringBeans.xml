@@ -63,11 +63,20 @@
 		<property name="busSecurity"
 			value="${secure.workflowdocument.javaservice.endpoint}" />
 	</bean>
+	
+	<bean id="kewServiceNamespaceSoapService" class="org.kuali.rice.ksb.messaging.SOAPServiceDefinition"
+		abstract="true">
+		<property name="jaxWsService" value="false" />
+		<property name="priority" value="3" />
+		<property name="retryAttempts" value="0" />
+		<property name="busSecurity"
+			value="${secure.workflowdocument.javaservice.endpoint}" />
+	</bean>
 
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker" />
 		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
+			<bean parent="kewServiceNamespaceSoapService">
 				<property name="service">
 					<ref bean="enWorkflowDocumentActionsService" />
 				</property>
@@ -94,7 +103,7 @@
 	<bean parent="kewLocalServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker" />
 		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
+			<bean parent="kewServiceNamespaceSoapService">
 				<property name="service">
 					<ref bean="enWorkflowDocumentActionsService" />
 				</property>
@@ -187,22 +196,6 @@
 		<property name="serviceName" value="enServiceInvoker" />
 	</bean>
 
-	<bean parent="kewEmbeddedServiceExporter">
-		<property name="remotedServiceRegistry" ref="enServiceInvoker" />
-		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
-				<property name="service">
-					<ref bean="enDocumentRoutingService" />
-				</property>
-				<property name="localServiceName" value="DocumentRoutingService" />
-				<property name="priority" value="5" />
-				<property name="messageExceptionHandler"
-					value="org.kuali.rice.kew.messaging.exceptionhandling.DocumentMessageExceptionHandler" />
-			</bean>
-		</property>
-	</bean>
-
-
 	<bean parent="kewLocalServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker" />
 		<property name="serviceDefinition">
@@ -220,7 +213,7 @@
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker" />
 		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
+			<bean parent="kewServiceNamespaceSoapService">
 				<property name="service">
 					<ref bean="enDocumentRoutingService" />
 				</property>
@@ -235,7 +228,7 @@
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker" />
 		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
+			<bean parent="kewServiceNamespaceSoapService">
 				<property name="service">
 					<ref bean="enBlanketApproveProcessor" />
 				</property>
@@ -250,7 +243,7 @@
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker" />
 		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
+			<bean parent="kewServiceNamespaceSoapService">
 				<property name="service">
 					<ref bean="enSearchableAttributeProcessor" />
 				</property>
@@ -263,7 +256,7 @@
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker" />
 		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
+			<bean parent="kewServiceNamespaceSoapService">
 				<property name="service">
 					<ref bean="enDocumentRequeuerService" />
 				</property>
@@ -306,7 +299,7 @@
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker" />
 		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
+			<bean parent="kewServiceNamespaceSoapService">
 				<property name="service">
 					<bean class="org.kuali.rice.kew.rule.RolePokerProcessor" />
 				</property>
@@ -319,7 +312,7 @@
 	<bean parent="kewEmbeddedServiceExporter">
 		<property name="remotedServiceRegistry" ref="enServiceInvoker" />
 		<property name="serviceDefinition">
-			<bean parent="kewSoapService">
+			<bean parent="kewServiceNamespaceSoapService">
 				<property name="service">
 					<ref bean="enActionInvocationService" />
 				</property>

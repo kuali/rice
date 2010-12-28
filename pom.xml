@@ -555,6 +555,7 @@ limitations under the License.
 		<module>web</module>
 		<module>devtools</module>
 		<module>sampleapp</module>
+		<module>standalone</module>
 		<!-- <module>ksb</module> -->
 		<!-- <module>kcb</module> -->
 		<!-- <module>kns</module> -->

@@ -19,16 +19,16 @@
     <artifactId>rice-test</artifactId>
     <packaging>pom</packaging>
     <modules>
+        <module>web</module>
+        <module>ken</module>
+        <module>kns</module>
         <module>kcb</module>
         <module>kim</module>
         <module>impl</module>
         <module>ksb</module>
         <module>kew</module>
-        <module>ken</module>
-        <module>kns</module>
         <module>test-clients</module>
         <module>ksb2</module>
-        <module>web</module>
     </modules>
     <properties>
       <skip.itests>true</skip.itests>

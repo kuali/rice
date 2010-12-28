@@ -54,7 +54,6 @@ public class StandaloneInitializeListenerTest extends BaseRiceTestCase {
             mockServletContext.setServletContextName(CONTEXT_NAME);
             mockServletContext.addInitParameter(KEWConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/rice/standalone/TestStandaloneInitializeListener.xml");
             mockServletContext.addInitParameter(TEST_INIT_PARAM, TEST_INIT_PARAM_VAL);
-            mockServletContext.addInitParameter(StandaloneInitializeListener.RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER, "false");
             
             StandaloneInitializeListener listener = new StandaloneInitializeListener();
             ServletContextEvent sce = new ServletContextEvent(mockServletContext);

@@ -62,7 +62,6 @@ public class StartupAndShutdownTest extends BaseRiceTestCase {
     protected ServletContext createContext() {
         MockServletContext mockServletContext = new MockServletContext();
         mockServletContext.setServletContextName("test");
-        mockServletContext.addInitParameter(StandaloneInitializeListener.RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER, "false");
         mockServletContext.addInitParameter("environment", "dev");
         mockServletContext.addInitParameter("mailing.list.batch", "localhost");
         mockServletContext.addInitParameter("mail.relay.server", "localhost");

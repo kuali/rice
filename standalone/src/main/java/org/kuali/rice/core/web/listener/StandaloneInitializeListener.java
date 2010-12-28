@@ -27,16 +27,13 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.JAXBConfigImpl;
-import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.ksb.messaging.MessageFetcher;
-import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.web.context.support.XmlWebApplicationContext;
+
 
 
 /**
@@ -47,14 +44,12 @@ import org.springframework.web.context.support.XmlWebApplicationContext;
 public class StandaloneInitializeListener implements ServletContextListener {
     private static final long serialVersionUID = -6603009920502691099L;
 
-    private static final Logger LOG = Logger.getLogger(StandaloneInitializeListener.class);
+    private static final Log LOG = LogFactory.getLog(StandaloneInitializeListener.class);
 
     private static final String DEFAULT_SPRING_BEANS = "classpath:org/kuali/rice/standalone/config/StandaloneSpringBeans.xml";
     private static final String DEFAULT_SPRING_BEANS_REPLACEMENT_VALUE = "${bootstrap.spring.file}";
     public static final String RICE_BASE = "rice.base";
     public static final String CATALINA_BASE = "catalina.base";
-    public static final String RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER = "rice.standalone.execute.messageFetcher";
-    private static final String DEFAULT_LOG4J_CONFIG = "org/kuali/rice/core/logging/default-log4j.properties";
 
     private XmlWebApplicationContext context = null;
 
@@ -64,16 +59,6 @@ public class StandaloneInitializeListener implements ServletContextListener {
     @Override
 	public void contextInitialized(ServletContextEvent sce) {
         long startInit = System.currentTimeMillis();
-        try {
-            Properties p = new Properties();
-            p.load(getClass().getClassLoader().getResourceAsStream(DEFAULT_LOG4J_CONFIG));
-            PropertyConfigurator.configure(p);
-        } catch (Exception e) {
-        	// if there is an issue initializing logging system, let's be sure to print the stack trace so we can debug!
-        	e.printStackTrace();
-            throw new RiceRuntimeException(e);
-        }
-
         LOG.info("Initializing Kuali Rice Standalone...");
 
         List<String> configLocations = new ArrayList<String>();
@@ -96,48 +81,37 @@ public class StandaloneInitializeListener implements ServletContextListener {
             	LOG.info("Found bootstrap Spring Beans file defined in servlet context: " + bootstrapSpringBeans);
             }
         }
-        try {
-            String basePath = findBasePath(sce.getServletContext());
-            Properties baseProps = new Properties();
-            baseProps.putAll(getContextParameters(sce.getServletContext()));
-            baseProps.putAll(System.getProperties());
-            baseProps.setProperty(RICE_BASE, basePath);
-            // HACK: need to determine best way to do this...
-            // if the additional config locations property is empty then we need
-            // to explicitly set it so that if we use it in a root config
-            // a value (an empty value) can be found, and the config parser
-            // won't blow up because "additional.config.locations" property
-            // cannot be resolved
-            // An alternative to doing this at the application/module level would
-            // be to push this functionality down into the Rice ConfigFactoryBean
-            // e.g., by writing a simple ResourceFactoryBean that would conditionally
-            // expose the resource, and then plugging the Resource into the ConfigFactoryBean
-            // However, currently, the ConfigFactoryBean operates on String locations, not
-            // Resources. Spring can coerce string <value>s into Resources, but not vice-versa
-            if (StringUtils.isEmpty(additionalConfigLocations)) {
-                baseProps.setProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
-            }  
-            JAXBConfigImpl config = new JAXBConfigImpl(baseProps);            
-            // removing this so that the defaults don't get resolved by default.  
-            //config.parseConfig();
-            ConfigContext.init(config);
-            
-            context = new XmlWebApplicationContext();
-            context.setConfigLocation(bootstrapSpringBeans);
-            context.setServletContext(sce.getServletContext());
-            context.refresh();
-            context.start();
 
-            if (shouldExecuteMessageFetcher()) {
-                // execute the MessageFetcher to grab any messages that were being processed
-                // when the system shut down originally
-                MessageFetcher messageFetcher = new MessageFetcher((Integer) null);
-                KSBServiceLocator.getThreadPool().execute(messageFetcher);
-            }
-        } catch (Exception e) {
-            LOG.fatal("Kuali Rice Standalone startup failed!", e);
-            throw new RuntimeException("Startup failed.  Exiting.", e);
-        }
+        String basePath = findBasePath(sce.getServletContext());
+        Properties baseProps = new Properties();
+        baseProps.putAll(getContextParameters(sce.getServletContext()));
+        baseProps.putAll(System.getProperties());
+        baseProps.setProperty(RICE_BASE, basePath);
+        // HACK: need to determine best way to do this...
+        // if the additional config locations property is empty then we need
+        // to explicitly set it so that if we use it in a root config
+        // a value (an empty value) can be found, and the config parser
+        // won't blow up because "additional.config.locations" property
+        // cannot be resolved
+        // An alternative to doing this at the application/module level would
+        // be to push this functionality down into the Rice ConfigFactoryBean
+        // e.g., by writing a simple ResourceFactoryBean that would conditionally
+        // expose the resource, and then plugging the Resource into the ConfigFactoryBean
+        // However, currently, the ConfigFactoryBean operates on String locations, not
+        // Resources. Spring can coerce string <value>s into Resources, but not vice-versa
+        if (StringUtils.isEmpty(additionalConfigLocations)) {
+            baseProps.setProperty(KEWConstants.ADDITIONAL_CONFIG_LOCATIONS_PARAM, "");
+        }  
+        JAXBConfigImpl config = new JAXBConfigImpl(baseProps);            
+        // removing this so that the defaults don't get resolved by default.  
+        //config.parseConfig();
+        ConfigContext.init(config);
+        
+        context = new XmlWebApplicationContext();
+        context.setConfigLocation(bootstrapSpringBeans);
+        context.setServletContext(sce.getServletContext());
+        context.refresh();
+        context.start();
         long endInit = System.currentTimeMillis();
         LOG.info("...Kuali Rice Standalone successfully initialized, startup took " + (endInit - startInit) + " ms.");
     }
@@ -194,22 +168,9 @@ public class StandaloneInitializeListener implements ServletContextListener {
     @Override
 	public void contextDestroyed(ServletContextEvent sce) {
         LOG.info("Shutting down Kuali Rice Standalone.");
-        try {
-            if (context != null) {
-                context.close();
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to shutdown Kuali Rice Standalone.", e);
+        if (context != null) {
+            context.close();
         }
-        LogManager.shutdown();
-    }
-
-    /**
-     * Determines whether or not the Message Fetcher should be executed.
-     */
-    protected boolean shouldExecuteMessageFetcher() {
-        String executeMessageFetcher = ConfigContext.getCurrentContextConfig().getProperty(RICE_STANDALONE_EXECUTE_MESSAGE_FETCHER);
-        return StringUtils.isBlank(executeMessageFetcher) ? true : new Boolean(executeMessageFetcher);
     }
 
     public XmlWebApplicationContext getContext() {

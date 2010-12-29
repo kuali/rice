@@ -20,6 +20,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>sampleapp</module>
+        <module>standalone</module>
         <module>ken</module>
         <module>kns</module>
         <module>kcb</module>

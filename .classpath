@@ -2,26 +2,26 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="src" output="api/target/classes" path="api/src/main/java"/>
-	<classpathentry kind="src" output="test/sampleapp/target" path="test/sampleapp/src/test/resources"/>
-	<classpathentry kind="src" output="test/sampleapp/target" path="test/sampleapp/src/test/java"/>
+	<classpathentry kind="src" output="test/standalone/target/test-classes" path="test/standalone/src/test/java"/>
+	<classpathentry kind="src" output="test/standalone/target/test-classes" path="test/standalone/src/test/resources"/>
+	<classpathentry kind="src" output="test/sampleapp/target/test-classes" path="test/sampleapp/src/test/resources"/>
+	<classpathentry kind="src" output="test/sampleapp/target/test-classes" path="test/sampleapp/src/test/java"/>
 	<classpathentry kind="src" output="standalone/target/classes" path="standalone/src/main/java"/>
-	<classpathentry kind="src" output="standalone/target/test-classes" path="standalone/test/java"/>
-	<classpathentry kind="src" output="standalone/target/test-classes" path="standalone/src/test/resources"/>
 	<classpathentry kind="src" output="standalone/target/classes" path="standalone/src/main/resources"/>
-	<classpathentry kind="src" output="test/kns/target" path="test/kns/src/test/java"/>
-	<classpathentry kind="src" output="test/kcb/target" path="test/kcb/src/test/resources"/>
-	<classpathentry kind="src" output="test/ksb/target" path="test/ksb/src/test/resources"/>
-	<classpathentry kind="src" output="test/kim/target" path="test/kim/src/test/resources"/>
-	<classpathentry kind="src" output="test/ksb/target" path="test/ksb/src/test/java"/>
-	<classpathentry kind="src" output="test/ken/target" path="test/ken/src/test/resources"/>
-	<classpathentry kind="src" output="test/kew/target" path="test/kew/src/test/resources"/>
-	<classpathentry kind="src" output="test/impl/target" path="test/impl/src/test/resources"/>
-	<classpathentry kind="src" output="test/ken/target" path="test/ken/src/test/java"/>
-	<classpathentry kind="src" output="test/kew/target" path="test/kew/src/test/java"/>
-	<classpathentry kind="src" output="test/kim/target" path="test/kim/src/test/java"/>
-	<classpathentry kind="src" output="test/kns/target" path="test/kns/src/test/resources"/>
-	<classpathentry kind="src" output="test/impl/target" path="test/impl/src/test/java"/>
-	<classpathentry kind="src" output="test/kcb/target" path="test/kcb/src/test/java"/>
+	<classpathentry kind="src" output="test/kns/target/test-classes" path="test/kns/src/test/java"/>
+	<classpathentry kind="src" output="test/kcb/target/test-classes" path="test/kcb/src/test/resources"/>
+	<classpathentry kind="src" output="test/ksb/target/test-classes" path="test/ksb/src/test/resources"/>
+	<classpathentry kind="src" output="test/kim/target/test-classes" path="test/kim/src/test/resources"/>
+	<classpathentry kind="src" output="test/ksb/target/test-classes" path="test/ksb/src/test/java"/>
+	<classpathentry kind="src" output="test/ken/target/test-classes" path="test/ken/src/test/resources"/>
+	<classpathentry kind="src" output="test/kew/target/test-classes" path="test/kew/src/test/resources"/>
+	<classpathentry kind="src" output="test/impl/target/test-classes" path="test/impl/src/test/resources"/>
+	<classpathentry kind="src" output="test/ken/target/test-classes" path="test/ken/src/test/java"/>
+	<classpathentry kind="src" output="test/kew/target/test-classes" path="test/kew/src/test/java"/>
+	<classpathentry kind="src" output="test/kim/target/test-classes" path="test/kim/src/test/java"/>
+	<classpathentry kind="src" output="test/kns/target/test-classes" path="test/kns/src/test/resources"/>
+	<classpathentry kind="src" output="test/impl/target/test-classes" path="test/impl/src/test/java"/>
+	<classpathentry kind="src" output="test/kcb/target/test-classes" path="test/kcb/src/test/java"/>
 	<classpathentry kind="src" output="krad/krad-app-framework/target/classes" path="krad/krad-app-framework/src/main/java"/>
 	<classpathentry kind="src" output="krad/krad-web-framework/target/classes" path="krad/krad-web-framework/src/main/java"/>
 	<classpathentry kind="src" output="edl/impl/target/test-classes" path="edl/impl/src/test/resources"/>

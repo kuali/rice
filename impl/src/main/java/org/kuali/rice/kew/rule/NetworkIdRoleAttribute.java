@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.kew.identity.Id;
-import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.identity.PrincipalName;
 
 
 /**
@@ -48,7 +48,7 @@ public class NetworkIdRoleAttribute extends AbstractIdRoleAttribute {
     }
     
     protected Id resolveId(String id) {
-	return id == null ? null : new AuthenticationUserId(id);
+	return id == null ? null : new PrincipalName(id);
     }
     
     protected String getIdName() {

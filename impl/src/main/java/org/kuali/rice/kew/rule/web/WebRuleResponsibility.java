@@ -116,7 +116,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 		if (!Utilities.isEmpty(getRuleResponsibilityName())) {
 			if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 				// setReviewer(getUserService().getWorkflowUser(new
-				// WorkflowUserId(getRuleResponsibilityName())).getAuthenticationUserId().getAuthenticationId());
+				// WorkflowUserId(getRuleResponsibilityName())).getPrincipalName().getAuthenticationId());
 				KimPrincipal principal = KEWServiceLocator.getIdentityHelperService().getPrincipal(getRuleResponsibilityName());
 				setReviewer(principal.getPrincipalName());
 				setReviewerId(principal.getPrincipalId());

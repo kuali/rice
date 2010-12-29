@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.identity;
 
-import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.user.UserId;
 
 /**
  * The name of a Principal in KIM
@@ -23,22 +23,63 @@ import org.kuali.rice.kew.user.AuthenticationUserId;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PrincipalName extends AuthenticationUserId {
+public class PrincipalName implements UserId {
 
+	private String id;
+	
 	public PrincipalName() {
 		super();
 	}
 
 	public PrincipalName(String principalName) {
-		super(principalName);
+		id = principalName;
 	}
 	
 	public String getPrincipalName() {
-		return getAuthenticationId();
+		return id;
 	}
 	
 	public void setPrincipalName(String principalName) {
-		setAuthenticationId(principalName);
+		id = principalName;
+	}
+	
+	@Override
+	public String getId() {
+		return getPrincipalName();
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return id == null || id.trim().length() == 0;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((this.id == null) ? 0 : this.id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		PrincipalName other = (PrincipalName) obj;
+		if (this.id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!this.id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "PrincipalName [id=" + this.id + "]";
+	}
 }

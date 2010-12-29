@@ -90,7 +90,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         }
 
         if ((null == person) || StringUtils.isBlank(person.getPrincipalName())) {
-            throw new IllegalArgumentException("invalid (empty) authenticationUserId");
+            throw new IllegalArgumentException("invalid (empty) PrincipalName");
         }
 
         if (LOG.isDebugEnabled()) {

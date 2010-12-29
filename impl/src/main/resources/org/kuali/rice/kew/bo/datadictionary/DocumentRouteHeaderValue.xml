@@ -45,7 +45,7 @@
             <list>
               <bean parent="SupportAttributeDefinition"
                     p:identifier="true"
-                    p:sourceName="initiatorUser.authenticationUserId.authenticationId"
+                    p:sourceName="initiatorUser.principalName.authenticationId"
                     p:targetName="principalName" />
             </list>
           </property>
@@ -243,7 +243,7 @@
               p:attributeName="initiatorWorkflowId" />
         
         <bean parent="FieldDefinition"
-              p:attributeName="initiatorUser.authenticationUserId.authenticationId" />
+              p:attributeName="initiatorUser.principalName.id" />
         -->
         <bean parent="FieldDefinition" p:attributeName="routeHeaderId"/>
         <bean parent="FieldDefinition" p:attributeName="createDate"/>

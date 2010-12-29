@@ -30,7 +30,7 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
-import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.workflow.WorkflowUtils;
 import org.w3c.dom.Node;
@@ -85,7 +85,7 @@ public class AccountAttribute extends AbstractRoleAttribute {
         qualRole.setAnnotation("Account " + accountNum + " FO");
         qualRole.setQualifiedRoleLabel("Fiscal Officer Account " + accountNum);
         List<Id> ids = new ArrayList<Id>();
-        ids.add(new AuthenticationUserId(account.getFiscalOfficer().getUserName()));
+        ids.add(new PrincipalName(account.getFiscalOfficer().getUserName()));
         qualRole.setRecipients(ids);
         return qualRole;
     }

@@ -31,7 +31,7 @@ import org.kuali.rice.kew.rule.GenericRoleAttribute;
 import org.kuali.rice.kew.rule.QualifiedRoleName;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 
 
@@ -128,7 +128,7 @@ public class ChannelReviewerRoleAttribute extends GenericRoleAttribute {
                     Id id;
                     if (name.startsWith("user")) {
                         LOG.info("Adding user: " + value);
-                        id = new AuthenticationUserId(value);
+                        id = new PrincipalName(value);
                         ids.add(id);
                     } else if (name.startsWith("group")) {
                         LOG.info("Adding group: " + value);

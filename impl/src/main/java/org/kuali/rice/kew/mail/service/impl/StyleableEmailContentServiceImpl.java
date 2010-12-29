@@ -328,7 +328,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
      *
      * <ul>
      * <li>{@link Person}</li>
-     * <li>{@link Person#getAuthenticationUserId()}</li>
+     * <li>{@link Person#getPrincipalName()}</li>
      * <li>{@link DocumentRouteHeaderValue}</li>
      * <li>{@link DocumentRouteHeaderValue#getInitiatorUser()}</li>
      * <li>{@link DocumentRouteHeaderValue#getDocumentType()}</li>

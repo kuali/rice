@@ -33,7 +33,7 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.session.Authentication;
@@ -75,7 +75,7 @@ public class DocumentSearchSecurityTest extends KEWTestCase {
     }
 
     private Person loginUser(String networkId, List<String> dummyRoleNames) {
-        AuthenticationUserId id = new AuthenticationUserId(networkId);
+        PrincipalName id = new PrincipalName(networkId);
         LOG.debug("performing user login: " + networkId);
 
         Person	user = null;

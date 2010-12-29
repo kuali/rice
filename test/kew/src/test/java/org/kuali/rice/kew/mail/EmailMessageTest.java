@@ -168,7 +168,7 @@ public class EmailMessageTest extends KEWTestCase {
      */
     @Test
     public void testGenerateReminders() throws Exception {
-        //WorkflowUser wfuser = KEWServiceLocator.getUserService().getWorkflowUser(new AuthenticationUserId("arh14"));
+        //WorkflowUser wfuser = KEWServiceLocator.getUserService().getWorkflowUser(new PrincipalName("arh14"));
         Person p = KIMServiceLocator.getPersonService().getPersonByPrincipalName("arh14");
         int count = generateDocs(new String[] { "PingDocument", "PingDocumentWithEmailAttrib" }, p);
         testEmailContentGeneration(p, count);

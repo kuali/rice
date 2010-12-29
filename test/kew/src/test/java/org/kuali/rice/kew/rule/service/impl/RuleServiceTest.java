@@ -37,7 +37,7 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -334,7 +334,7 @@ public class RuleServiceTest extends KEWTestCase {
         List<Long> ruleIds = new ArrayList<Long>();
         ruleIds.add(rule.getRuleBaseValuesId());
 
-        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new AuthenticationUserId("ewestfal"), new AuthenticationUserId("rkirkend"), ruleIds, null);
+        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new PrincipalName("ewestfal"), new PrincipalName("rkirkend"), ruleIds, null);
 
         RuleBaseValues replacedRule = KEWServiceLocator.getRuleService().getRuleByName("DTR-NotRelated");
         assertNotNull("Rule should exist.", replacedRule);
@@ -363,7 +363,7 @@ public class RuleServiceTest extends KEWTestCase {
         ruleIds.clear();
         ruleIds.add(rule.getRuleBaseValuesId());
 
-        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new AuthenticationUserId("rkirkend"), new AuthenticationUserId("bmcgough"), ruleIds, null);
+        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new PrincipalName("rkirkend"), new PrincipalName("bmcgough"), ruleIds, null);
 
         RuleBaseValues replacedRule2 = KEWServiceLocator.getRuleService().getRuleByName("RuleDocRuleRouting");
         assertNotNull(replacedRule2);
@@ -395,7 +395,7 @@ public class RuleServiceTest extends KEWTestCase {
         // do a replacement on the parent rule
         List<Long> ruleIds = new ArrayList<Long>();
         ruleIds.add(parentRule.getRuleBaseValuesId());
-        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new AuthenticationUserId("rkirkend"), new AuthenticationUserId("natjohns"), ruleIds, null);
+        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new PrincipalName("rkirkend"), new PrincipalName("natjohns"), ruleIds, null);
 
         // check that the delegations are still there and are still the same id
         parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithDelegations1");
@@ -423,7 +423,7 @@ public class RuleServiceTest extends KEWTestCase {
         ruleIds.clear();
         ruleIds.add(ewestfalDelegation.getRuleBaseValuesId());
         parentRuleId = parentRule.getRuleBaseValuesId();
-        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new AuthenticationUserId("ewestfal"), new AuthenticationUserId("xqi"), ruleIds, null);
+        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new PrincipalName("ewestfal"), new PrincipalName("xqi"), ruleIds, null);
 	// verify that the parent rule was properly re-versioned
         parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithDelegations1");
 	assertFalse("Parent rule should have been re-versioned.", parentRuleId.equals(parentRule.getRuleBaseValuesId()));
@@ -490,7 +490,7 @@ public class RuleServiceTest extends KEWTestCase {
         ruleIds.add(delegateRuleId);
         ruleIds.add(parentRuleId);
 
-        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new AuthenticationUserId("ewestfal"), new AuthenticationUserId("rkirkend"), ruleIds, new Long(10000));
+        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new PrincipalName("ewestfal"), new PrincipalName("rkirkend"), ruleIds, new Long(10000));
 
 	// after first re-versioning, we should have 1 new versions of each rule for a total of 4
 	rules = (List<RuleBaseValues>)KEWServiceLocator.getRuleService().fetchAllRules(false);
@@ -544,7 +544,7 @@ public class RuleServiceTest extends KEWTestCase {
         ruleIds.clear();
         ruleIds.add(ruleDelegation.getDelegationRuleBaseValues().getRuleBaseValuesId());
         ruleIds.add(parentRule.getRuleBaseValuesId());
-        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new AuthenticationUserId("rkirkend"), new AuthenticationUserId("xqi"), ruleIds, null);
+        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new PrincipalName("rkirkend"), new PrincipalName("xqi"), ruleIds, null);
 
 	// after second re-versioning, we should have 1 new version of each rule for a total of 6
 	rules = (List<RuleBaseValues>)KEWServiceLocator.getRuleService().fetchAllRules(false);
@@ -578,7 +578,7 @@ public class RuleServiceTest extends KEWTestCase {
         ruleIds.clear();
         ruleIds.add(ruleDelegation.getDelegationRuleBaseValues().getRuleBaseValuesId());
         ruleIds.add(parentRule.getRuleBaseValuesId());
-        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new AuthenticationUserId("ewestfal"), new AuthenticationUserId("rkirkend"), ruleIds, null);
+        KEWServiceLocator.getRuleService().replaceRuleInvolvement(new PrincipalName("ewestfal"), new PrincipalName("rkirkend"), ruleIds, null);
 
         parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithDelegateToSelf");
         assertNotNull(parentRule);
@@ -614,7 +614,7 @@ public class RuleServiceTest extends KEWTestCase {
 	ruleIds.add(delegateRuleId2);
 	ruleIds.add(delegateRuleId3);
 
-	KEWServiceLocator.getRuleService().removeRuleInvolvement(new AuthenticationUserId("jhopf"), ruleIds, new Long(10001));
+	KEWServiceLocator.getRuleService().removeRuleInvolvement(new PrincipalName("jhopf"), ruleIds, new Long(10001));
 
 	// re-fetch the parent rule and lets check it
 	parentRule = KEWServiceLocator.getRuleService().getRuleByName("RuleWithMultipleDelegations1");

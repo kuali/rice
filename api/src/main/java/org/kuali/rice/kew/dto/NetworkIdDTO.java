@@ -18,7 +18,7 @@ package org.kuali.rice.kew.dto;
 
 
 /**
- * Transport object for the AuthenticationUserId
+ * Transport object for the PrincipalName
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

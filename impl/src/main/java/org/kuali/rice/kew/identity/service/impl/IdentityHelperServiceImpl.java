@@ -26,7 +26,7 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.UserIdDTO;
 import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
-import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.user.EmplId;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
@@ -164,8 +164,8 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		} else if (userId instanceof WorkflowUserId) {
 			String principalId = ((WorkflowUserId)userId).getWorkflowId();
 			return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
-		} else if (userId instanceof AuthenticationUserId) {
-			String principalName = ((AuthenticationUserId)userId).getAuthenticationId();
+		} else if (userId instanceof PrincipalName) {
+			String principalName = ((PrincipalName)userId).getId();
 			return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		} else if (userId instanceof EmplId) {
 			String employeeId = ((EmplId)userId).getEmplId();

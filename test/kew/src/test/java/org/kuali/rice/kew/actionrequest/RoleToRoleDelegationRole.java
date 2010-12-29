@@ -23,11 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kew.engine.RouteContext;
+import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
-import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.identity.PrincipalName;
 
 
 public class RoleToRoleDelegationRole extends AbstractRoleAttribute {
@@ -100,7 +101,7 @@ public class RoleToRoleDelegationRole extends AbstractRoleAttribute {
 		List recipients = new ArrayList();
 		for (Iterator iterator = userIds.iterator(); iterator.hasNext();) {
 			String networkId = (String) iterator.next();
-			recipients.add(new AuthenticationUserId(networkId));
+			recipients.add(new PrincipalName(networkId));
 		}
 		return new ResolvedQualifiedRole(roleName, recipients);
 	}

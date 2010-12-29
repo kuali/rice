@@ -25,7 +25,7 @@ import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.rule.UnqualifiedRoleAttribute;
-import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 
 
@@ -76,7 +76,7 @@ public class MockRole extends UnqualifiedRoleAttribute {
             }
             Id recipientId;
             if ("user".equals(type)) {
-                recipientId = new AuthenticationUserId(id);
+                recipientId = new PrincipalName(id);
             } else if ("group".equals(type)) {
                 recipientId = new GroupNameId(id);
             } else {

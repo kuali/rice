@@ -87,7 +87,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
             throw new InvalidActionTakenException(errorMessage);
         }
 //        if (! workgroup.hasMember(getUser())) {
-//            throw new InvalidActionTakenException(getUser().getAuthenticationUserId() + " not a member of workgroup " + workgroup.getDisplayName());
+//            throw new InvalidActionTakenException(getUser().getPrincipalName() + " not a member of workgroup " + workgroup.getDisplayName());
 //        }
 
         List<ActionRequestValue> documentRequests = getActionRequestService().findPendingByDoc(getRouteHeaderId());

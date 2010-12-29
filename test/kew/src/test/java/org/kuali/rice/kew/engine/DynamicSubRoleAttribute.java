@@ -21,7 +21,7 @@ import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
-import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.identity.PrincipalName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +54,7 @@ public class DynamicSubRoleAttribute extends AbstractRoleAttribute {
         String networkId = nodeState.getValue();
         String label = "role " + networkId;
         List<Id> recipients = new ArrayList<Id>();
-        recipients.add(new AuthenticationUserId(networkId));
+        recipients.add(new PrincipalName(networkId));
         return new ResolvedQualifiedRole(label, recipients);
     }   
 }

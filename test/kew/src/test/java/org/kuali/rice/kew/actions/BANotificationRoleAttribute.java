@@ -22,7 +22,7 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
-import org.kuali.rice.kew.user.AuthenticationUserId;
+import org.kuali.rice.kew.identity.PrincipalName;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,11 +53,11 @@ public class BANotificationRoleAttribute extends AbstractRoleAttribute {
 
     public ResolvedQualifiedRole resolveQualifiedRole(RouteContext routeContext, String roleName, String qualifiedRole) {
         if (roleName.equals("Notify") || roleName.equals("Notify2")) {
-            return new ResolvedQualifiedRole(roleName, Arrays.asList(new Id[] { new AuthenticationUserId(qualifiedRole) }));
+            return new ResolvedQualifiedRole(roleName, Arrays.asList(new Id[] { new PrincipalName(qualifiedRole) }));
         } else if (roleName.equals("NotifyDelegate")) {
             List<Id> recipients = new ArrayList<Id>();
-            recipients.add(new AuthenticationUserId("natjohns"));
-            recipients.add(new AuthenticationUserId("shenl"));
+            recipients.add(new PrincipalName("natjohns"));
+            recipients.add(new PrincipalName("shenl"));
             return new ResolvedQualifiedRole(roleName, recipients);
         }
         throw new RuntimeException("Bad Role " + roleName);

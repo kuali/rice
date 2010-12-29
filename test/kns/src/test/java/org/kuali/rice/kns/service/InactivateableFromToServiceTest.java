@@ -15,13 +15,7 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import edu.sampleu.travel.bo.TravelAccountUseRate;
 import org.junit.Test;
 import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.kns.bo.InactivateableFromTo;
@@ -32,7 +26,12 @@ import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.KNSTestCase;
 
-import edu.sampleu.travel.bo.TravelAccountUseRate;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**

@@ -32,11 +32,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
   
   <!-- Pages -->
    
-  <bean id="Page" abstract="true" class="org.kuali.rice.kns.ui.container.Page" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/page/page.jsp"/>
+  <bean id="Page" abstract="true" parent="Group">
       <property name="header">
         <bean parent="PageHeader"/>
-      </property> 
+      </property>
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
+      </property>     
+      <property name="styleClass" value="workarea"/>   
   </bean> 
   
   <!-- Sections -->
@@ -58,15 +61,27 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
       </property>
       <property name="styleClass" value="tab-container"/>
       <property name="renderHeader" value="false"/>
-  </bean>    
+  </bean> 
+  
+  <bean id="PanelGridSection" abstract="true" parent="PanelSection">
+      <property name="layoutManager">
+        <bean parent="GridLayoutManager"/>
+      </property> 
+  </bean>     
   
   <!-- Groups -->
   
   <bean id="Group" abstract="true" class="org.kuali.rice.kns.ui.container.Group" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
       <property name="header">
-        <bean parent="HeaderLevelThree"/>
+        <bean parent="HeaderThree"/>
       </property> 
+      <property name="layoutManager">
+        <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
+      </property>  
+      <property name="summaryMessageField">
+        <bean parent="MessageField" p:messageType="SUMMARY" p:styleClass="summary"/>
+      </property>            
   </bean> 
   
   <bean id="GroupGridLayout" abstract="true" parent="Group">
@@ -82,6 +97,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
   <bean id="MenuNavigation" abstract="true" parent="NavigationGroup">
       <property name="navigationType" value="VERTICAL_MENU"/>
   </bean>
+  
+  <bean id="GroupBodyOnly" abstract="true" parent="Group">
+      <property name="renderHeader" value="false"/>
+      <property name="renderFooter" value="false"/>
+  </bean>  
   
   <!-- Fields -->
   
@@ -100,6 +120,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
   <bean id="LabelField" abstract="true" class="org.kuali.rice.kns.ui.field.LabelField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/labelField.jsp"/>
       <property name="style" value="text-align: right;font-size: .8em;font-weight: bold;"/>
+      <property name="requiredMessageField">
+        <bean parent="MessageField" p:messageText="*" p:messageType="REQUIRED" p:styleClass="required"/>
+      </property>   
   </bean>  
   
   <bean id="ActionField" abstract="true" class="org.kuali.rice.kns.ui.field.ActionField" scope="prototype">
@@ -120,30 +143,74 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
   
   <!-- Headers -->
   
-  <bean id="Header" abstract="true" class="org.kuali.rice.kns.ui.container.Group" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/headerOne.jsp"/>
+  <bean id="Header" abstract="true" class="org.kuali.rice.kns.ui.field.HeaderField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/field/headerField.jsp"/>
+      <property name="headerLevel" value="h1"/>
   </bean>
   
-  <bean id="ViewHeader" abstract="true" parent="Header" scope="prototype">
+  <bean id="HeaderTwo" abstract="true" parent="Header">
+      <property name="headerLevel" value="h2"/>
+  </bean>
+  
+  <bean id="HeaderThree" abstract="true" parent="Header">
+      <property name="headerLevel" value="h3"/>
+  </bean>
+  
+  <bean id="HeaderFour" abstract="true" parent="Header">
+      <property name="headerLevel" value="h4"/>
+  </bean>
+  
+  <bean id="HeaderFive" abstract="true" parent="Header">
+      <property name="headerLevel" value="h5"/>
+  </bean>
+  
+  <bean id="HeaderSix" abstract="true" parent="Header">
+      <property name="headerLevel" value="h6"/>
+  </bean>      
+  
+  <bean id="ViewHeader" abstract="true" parent="Header">
       <property name="styleClass" value="headerarea"/>
   </bean>
   
-  <bean id="PageHeader" abstract="true" parent="Header" scope="prototype">
+  <bean id="PageHeader" abstract="true" parent="Header">
       <property name="styleClass" value="pageHeader"/>
-  </bean>
+  </bean>  
   
-  <bean id="HeaderLevelTwo" abstract="true" parent="Header" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/headerTwo.jsp"/>
-      <property name="styleClass" value="headerLevelTwo"/>
-  </bean>
-  
-  <bean id="HeaderLevelThree" abstract="true" parent="Header" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/headerThree.jsp"/>
-      <property name="styleClass" value="headerLevelThree"/>
-  </bean>
-  
-  <bean id="PanelHeader" abstract="true" parent="Header" scope="prototype">
+  <bean id="PanelHeader" abstract="true" parent="Header">
       <property name="styleClass" value="tab-new"/>
+  </bean>
+  
+  <bean id="PagePanelHeader" parent="PageHeader">
+      <property name="group">
+       <bean parent="GroupBodyOnly">
+        <property name="items">
+          <list>
+            <bean parent="GroupBodyOnly">
+              <property name="styleClass" value="left"/>
+              <property name="items">
+                <list> 
+                  <bean parent="MessageField" p:messageText="* indicates required field" 
+                        p:messageType="REQUIRED" p:styleClass="required"/>
+                </list>
+              </property>
+            </bean>   
+                           
+            <bean parent="GroupBodyOnly">
+              <property name="styleClass" value="right"/>
+              <property name="items">
+                <list> 
+                 <bean parent="ActionField" p:methodToCall="expandAll" p:actionLabel="expand all"/>
+                 <bean parent="ActionField" p:methodToCall="closeAll" p:actionLabel="collapse all"/>
+                </list>
+              </property>
+              <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+            </bean>
+          </list>  
+        </property>
+        <property name="layoutManager.orientation" value="HORIZONTAL"/> 
+        <property name="style" value="padding-bottom: 50px;"/>
+       </bean> 
+      </property>
   </bean>
   
   <!-- Footers -->

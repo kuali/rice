@@ -26,9 +26,7 @@
   <ul id="${group.id}">
     <c:forEach items="${group.items}" var="item" varStatus="itemVarStatus">
       <li>
-         <tiles:insertTemplate template="${item.template}">
-            <tiles:putAttribute name="${item.componentTypeName}" value="${item}"/>
-         </tiles:insertTemplate>   
+         <krad:template component="${item}"/>
       </li>
     </c:forEach>
   </ul>

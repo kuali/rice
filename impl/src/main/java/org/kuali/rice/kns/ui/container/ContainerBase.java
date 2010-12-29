@@ -22,7 +22,11 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.ui.Component;
 import org.kuali.rice.kns.ui.ComponentBase;
 import org.kuali.rice.kns.ui.LabeledComponent;
+import org.kuali.rice.kns.ui.UIFConstants.MessageType;
+import org.kuali.rice.kns.ui.UIFConstants.Position;
 import org.kuali.rice.kns.ui.field.ErrorsField;
+import org.kuali.rice.kns.ui.field.HeaderField;
+import org.kuali.rice.kns.ui.field.MessageField;
 import org.kuali.rice.kns.ui.layout.LayoutManager;
 import org.kuali.rice.kns.ui.widget.Help;
 
@@ -43,8 +47,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private boolean renderHeader;
 	private boolean renderFooter;
 
-	private Group header;
+	private HeaderField header;
 	private Group footer;
+
+	private String summary;
+	private MessageField summaryMessageField;
 
 	private List<Component> items;
 
@@ -77,8 +84,13 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		super.initialize();
 
 		// if header title not given, use the container title
-		if (header != null && StringUtils.isBlank(header.getTitle())) {
-			header.setTitle(this.getTitle());
+		if (header != null && StringUtils.isBlank(header.getHeaderText())) {
+			header.setHeaderText(this.getTitle());
+		}
+
+		// setup summary message field if necessary
+		if (summaryMessageField != null && StringUtils.isBlank(summaryMessageField.getMessageText())) {
+			summaryMessageField.setMessageText(summary);
 		}
 
 		List<Component> allItems = new ArrayList<Component>();
@@ -144,11 +156,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		this.layoutManager = layoutManager;
 	}
 
-	public Group getHeader() {
+	public HeaderField getHeader() {
 		return this.header;
 	}
 
-	public void setHeader(Group header) {
+	public void setHeader(HeaderField header) {
 		this.header = header;
 	}
 
@@ -174,6 +186,22 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	public void setRenderFooter(boolean renderFooter) {
 		this.renderFooter = renderFooter;
+	}
+
+	public String getSummary() {
+		return this.summary;
+	}
+
+	public void setSummary(String summary) {
+		this.summary = summary;
+	}
+
+	public MessageField getSummaryMessageField() {
+		return this.summaryMessageField;
+	}
+
+	public void setSummaryMessageField(MessageField summaryMessageField) {
+		this.summaryMessageField = summaryMessageField;
 	}
 
 }

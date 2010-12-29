@@ -26,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -37,32 +38,52 @@ import org.springframework.web.servlet.ModelAndView;
 public class UITestController {
 	private ViewService viewService;
 
-	@RequestMapping(value="/uitest", params="methodToCall=start")
-	public ModelAndView start(@ModelAttribute("KualiForm") UITestForm uiTestForm,
-			BindingResult result, HttpServletRequest request, HttpServletResponse response) {		
-		
-		String viewId = "testView1";
+	private static final String testViewId = "testView1";
+
+	@RequestMapping(value = "/uitest", params = "methodToCall=start")
+	public ModelAndView start(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		return getUIFModelAndView(uiTestForm, testViewId, "page1");
+	}
+
+	@RequestMapping(value = "/uitest", method=RequestMethod.POST, params = "methodToCall=navigateToPage1")
+	public ModelAndView navigateToPage1(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		return getUIFModelAndView(uiTestForm, testViewId, "page1");
+	}
+
+	@RequestMapping(value = "/uitest", method=RequestMethod.POST, params = "methodToCall=navigateToPage2")
+	public ModelAndView navigateToPage2(@ModelAttribute("KualiForm") UITestForm uiTestForm, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		return getUIFModelAndView(uiTestForm, testViewId, "page2");
+	}
+
+	protected ModelAndView getUIFModelAndView(Object form, String viewId, String pageId) {
 		View view = getViewService().getViewById(viewId);
-		
+		view.setCurrentPageId(pageId);
+
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("KualiForm", uiTestForm);
+		modelAndView.addObject("KualiForm", form);
 		modelAndView.addObject("View", view);
-		
+
 		modelAndView.setViewName("View");
-		
-        return modelAndView;
+
+		return modelAndView;
 	}
 
 	protected ViewService getViewService() {
 		if (viewService == null) {
 			viewService = KNSServiceLocator.getViewService();
 		}
-		
+
 		return this.viewService;
 	}
 
 	public void setViewService(ViewService viewService) {
 		this.viewService = viewService;
 	}
-	
+
 }

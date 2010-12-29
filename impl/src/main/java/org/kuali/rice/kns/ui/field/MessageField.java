@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.ui.field;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.ui.UIFConstants.MessageType;
+
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
@@ -23,10 +26,35 @@ package org.kuali.rice.kns.ui.field;
  */
 public class MessageField extends FieldBase {
 	private String messageText;
-	private String messageType;
+	private MessageType messageType;
 
 	public MessageField() {
 
+	}
+
+	/**
+	 * Override to render only if the message text has been given
+	 * 
+	 * @see org.kuali.rice.kns.ui.ComponentBase#isRender()
+	 */
+	@Override
+	public boolean isRender() {
+		boolean render = super.isRender();
+
+		if (render) {
+			render = StringUtils.isNotBlank(messageText);
+		}
+
+		return render;
+	}
+
+	public MessageField(MessageType messageType) {
+		this.messageType = messageType;
+	}
+
+	public MessageField(String messageText, MessageType messageType) {
+		this.messageText = messageText;
+		this.messageType = messageType;
 	}
 
 	public String getMessageText() {
@@ -37,12 +65,16 @@ public class MessageField extends FieldBase {
 		this.messageText = messageText;
 	}
 
-	public String getMessageType() {
+	public MessageType getMessageType() {
 		return this.messageType;
 	}
 
-	public void setMessageType(String messageType) {
+	public void setMessageType(MessageType messageType) {
 		this.messageType = messageType;
+	}
+
+	public void setMessageType(String messageType) {
+		this.messageType = MessageType.valueOf(messageType);
 	}
 
 }

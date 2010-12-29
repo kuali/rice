@@ -23,4 +23,5 @@
   <c:set var="label" value="${label}:"/>
 </c:if>
 
-<label for="${field.labelForComponentId}">${label}</label>
+<label id="${field.id}_label" class="${field.styleClass}" 
+        for="${field.labelForComponentId}"><krad:template component="${field.requiredMessageField}"/>${label}</label>

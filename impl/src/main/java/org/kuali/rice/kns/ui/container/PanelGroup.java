@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.ui.container;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.ui.field.HeaderField;
 
 /**
  * This is a description of what this class does - jkneal don't forget to fill
@@ -28,7 +29,7 @@ public class PanelGroup extends Group {
 
 	private boolean defaultOpen;
 
-	private Group panelHeader;
+	private HeaderField panelHeader;
 
 	public PanelGroup() {
 		defaultOpen = true;
@@ -39,8 +40,8 @@ public class PanelGroup extends Group {
 		super.initialize();
 
 		// if panel title not given, use the section title on the panel
-		if (StringUtils.isBlank(panelHeader.getTitle())) {
-			panelHeader.setTitle(this.getTitle());
+		if (StringUtils.isBlank(panelHeader.getHeaderText())) {
+			panelHeader.setHeaderText(this.getTitle());
 		}
 	}
 
@@ -52,11 +53,11 @@ public class PanelGroup extends Group {
 		this.defaultOpen = defaultOpen;
 	}
 
-	public Group getPanelHeader() {
+	public HeaderField getPanelHeader() {
 		return this.panelHeader;
 	}
 
-	public void setPanelHeader(Group panelHeader) {
+	public void setPanelHeader(HeaderField panelHeader) {
 		this.panelHeader = panelHeader;
 	}
 

@@ -27,6 +27,8 @@ public class LabelField extends FieldBase {
 
 	private boolean renderColon;
 
+	private MessageField requiredMessageField;
+
 	public LabelField() {
 		renderColon = true;
 	}
@@ -53,6 +55,14 @@ public class LabelField extends FieldBase {
 
 	public void setRenderColon(boolean renderColon) {
 		this.renderColon = renderColon;
+	}
+
+	public MessageField getRequiredMessageField() {
+		return this.requiredMessageField;
+	}
+
+	public void setRequiredMessageField(MessageField requiredMessageField) {
+		this.requiredMessageField = requiredMessageField;
 	}
 
 }

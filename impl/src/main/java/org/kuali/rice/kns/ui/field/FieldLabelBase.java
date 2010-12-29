@@ -39,7 +39,6 @@ public class FieldLabelBase extends FieldBase implements LabeledComponent {
 		showLabel = true;
 		includeLabelField = false;
 
-		labelField = new LabelField();
 		labelPlacement = Position.LEFT;
 	}
 
@@ -50,6 +49,8 @@ public class FieldLabelBase extends FieldBase implements LabeledComponent {
 	 * <li>Set the labelForComponentId to this component id</li>
 	 * <li>Set the label text on the label field from the field's label property
 	 * </li>
+	 * <li>Set the render property on the label's required message field if this
+	 * field is marked as required</li>
 	 * </ul>
 	 * </p>
 	 * 
@@ -59,10 +60,19 @@ public class FieldLabelBase extends FieldBase implements LabeledComponent {
 	public void initialize() {
 		super.initialize();
 
-		labelField.setLabelForComponentId(this.getId());
+		if (labelField != null) {
+			labelField.setLabelForComponentId(this.getId());
 
-		if (StringUtils.isBlank(labelField.getLabelText())) {
-			labelField.setLabelText(label);
+			if (StringUtils.isBlank(labelField.getLabelText())) {
+				labelField.setLabelText(label);
+			}
+
+			if (this.isRequired()) {
+				labelField.getRequiredMessageField().setRender(true);
+			}
+			else {
+				labelField.getRequiredMessageField().setRender(false);
+			}
 		}
 	}
 

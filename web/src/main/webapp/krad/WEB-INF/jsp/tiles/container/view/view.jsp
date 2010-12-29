@@ -24,11 +24,9 @@
   <table width="100%">
    <c:if test="${View.renderHeader}">    
      <tr>    
-       <td colspan="2">   
+       <td colspan="4">   
          <!----------------------------------- #VIEW HEADER --------------------------------------->
-         <tiles:insertTemplate template="${View.header.template}">
-            <tiles:putAttribute name="${View.header.componentTypeName}" value="${View.header}"/>
-         </tiles:insertTemplate>
+         <krad:template component="${View.header}"/>
        </td>
      </tr>
    </c:if>  
@@ -42,24 +40,29 @@
        </tiles:insertTemplate>    
      </td>
      
+     <td width="1%">
+       <img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif"
+                     alt="" width="20" height="20" />
+     </td>
+     
      <td>
        <%-- begin of page render --%>
-       <tiles:insertTemplate template="${View.currentPage.template}">
-            <tiles:putAttribute name="${View.currentPage.componentTypeName}" value="${View.currentPage}" />
-       </tiles:insertTemplate>    
+       <krad:template component="${View.currentPage}"/>
        <%-- end of page render --%>
     
        <%-- write out hiddens needed to maintain state 
        <tiles:insertTemplate template="${view.state.template}"--%>
      </td>
+     
+     <td width="20">
+       <img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="20" height="20"/>
+     </td>     
    </tr>
     
    <tr>
-      <td colspan="2">   
+      <td colspan="4">   
         <!----------------------------------- #VIEW FOOTER --------------------------------------->
-        <tiles:insertTemplate template="${View.footer.template}">
-            <tiles:putAttribute name="${View.footer.componentTypeName}" value="${View.footer}" />
-        </tiles:insertTemplate>  
+        <krad:template component="${View.footer}"/>
       </td>
    </tr> 
   </table> 

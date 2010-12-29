@@ -18,9 +18,9 @@ package org.kuali.rice.kns.ui.service.impl;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.ui.Component;
 import org.kuali.rice.kns.ui.container.Group;
-import org.kuali.rice.kns.ui.container.Page;
 import org.kuali.rice.kns.ui.container.View;
 import org.kuali.rice.kns.ui.field.Field;
+import org.kuali.rice.kns.ui.field.GroupField;
 import org.kuali.rice.kns.ui.service.ViewService;
 
 /**
@@ -44,44 +44,55 @@ public class ViewServiceImpl implements ViewService {
 
 	protected void initializeView(View view) {
 		for (Component component : view.getItems()) {
-			initializePage((Page) component);
+			initializeGroup((Group) component);
 		}
 
 		initializeNavigation(view.getNavigation());
+		initializeField(view.getHeader());
+		initializeGroup(view.getFooter());
 
 		view.initialize();
 	}
 
-	protected void initializePage(Page page) {
-		for (Component component : page.getItems()) {
-			initializeGroup((Group) component);
+	protected void initializeGroup(Group group) {
+		if (group == null) {
+			return;
 		}
 
-		initializeNavigation(page.getNavigation());
-
-		page.initialize();
-	}
-
-	protected void initializeGroup(Group group) {
 		for (Component component : group.getItems()) {
 			if (component instanceof Group) {
 				initializeGroup((Group) component);
-			} else {
+			}
+			else {
 				initializeField((Field) component);
 			}
 		}
+
+		initializeField(group.getHeader());
+		initializeGroup(group.getFooter());
 
 		group.initialize();
 	}
 
 	protected void initializeField(Field field) {
+		if (field == null) {
+			return;
+		}
+
 		field.initialize();
+
+		if (field instanceof GroupField) {
+			GroupField groupField = (GroupField) field;
+			initializeGroup(groupField.getGroup());
+		}
 	}
 
 	protected void initializeNavigation(Group navigation) {
-		if (navigation != null) {
-			navigation.initialize();
+		if (navigation == null) {
+			return;
 		}
+
+		navigation.initialize();
 	}
 
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {

@@ -254,7 +254,7 @@ table.grid
 	border-right-style: solid;
 	border-right-width: 1px;
 }
-#workarea th.neutral
+.workarea th.neutral
 {
 	background-color: #FFFFFF;
 	border-top-style: none;
@@ -264,7 +264,7 @@ table.grid
 	background-image: none;
 
 }
-#workarea td.neutral
+.workarea td.neutral
 {
 	border-top-style: none;
 	border-right-style: none;
@@ -272,7 +272,7 @@ table.grid
 	border-left-style: none;
 
 }
-#workarea table.neutral
+.workarea table.neutral
 {
 	border-top-style: none;
 	border-right-style: none;
@@ -280,7 +280,7 @@ table.grid
 	border-left-style: none;
 
 }
-#workarea th
+.workarea th
 {
 	padding-right: 5px;
 	padding-left: 10px;
@@ -288,7 +288,7 @@ table.grid
 	 padding:4px
 }
 
-#workarea td
+.workarea td
 {
 	text-align: left;
 	background-color: #FFFFFF;
@@ -299,7 +299,7 @@ table.grid
 
 
 
-#workarea td.even
+.workarea td.even
 {
 	text-align: left;
 	background-color:#F7F7F7;
@@ -313,7 +313,7 @@ table.grid
 }
 
 
-#workarea td.odd
+.workarea td.odd
 {
 	text-align: left;
 	background-color:#EFEFEF;
@@ -326,9 +326,9 @@ table.grid
 	font-size:0.8em
 }
 
-#workarea .nobord { border: none; }
+.workarea .nobord { border: none; }
 
-#workarea td.footer
+.workarea td.footer
 {
 	margin: 0px;
 	padding: 0px;
@@ -336,7 +336,7 @@ table.grid
 	background: url(../images/tabfoot-back.gif);
 }
 
-#workarea td.footer-right
+.workarea td.footer-right
 {
 	margin: 0px;
 	padding: 0px;
@@ -345,7 +345,7 @@ table.grid
 	background: url(../images/tabfoot-back.gif);
 }
 
-#workarea td.tab-subhead
+.workarea td.tab-subhead
 {
 	font-weight: bold;
 	padding: 2px;
@@ -355,7 +355,7 @@ table.grid
 	border-left: 1px solid #999999;
 }
 
-#workarea td.tab-subhead-import
+.workarea td.tab-subhead-import
 {
 	
 	font-weight:bold;
@@ -364,19 +364,19 @@ table.grid
 	text-align:right;
 }
 
-#workarea table.datatable
+.workarea table.datatable
 {
 	width:100%;
 	margin-bottom: 20px;
 }
 
-#workarea table.tab
+.workarea table.tab
 {
 	width: 100%;
 	border: none;
 }
 
-#workarea td.subhead
+.workarea td.subhead
 {
 	background-color:#6B6B6B;
 	color:#FFFFFF;
@@ -428,7 +428,7 @@ a.fineprint:hover
 	text-decoration: underline;
 }
 
-#workarea td.tabtable1-left
+.workarea td.tabtable1-left
 {
 	background-image: url("../images/tab-back.gif");
 	background-position: right;
@@ -443,7 +443,7 @@ a.fineprint:hover
 	width: 30%;
 }
 
-#workarea td.tabtable1-left-colspan
+.workarea td.tabtable1-left-colspan
 {
 background-image: url("../images/tab-back.gif");
 background-position: right;
@@ -458,7 +458,7 @@ padding: 0px;
 width: 50%;
 }
 
-#workarea td.infoline
+.workarea td.infoline
 {
 	border-left-color: #CCC;
 	border-left-width: 1px;
@@ -470,7 +470,7 @@ width: 50%;
 	background-position: bottom;
 }
 
-#workarea td.tabtable1-mid
+.workarea td.tabtable1-mid
 {
 	background-image: url("../images/tab-bevel2.gif");
 	background-position: right;
@@ -484,7 +484,7 @@ width: 50%;
 	border: none;
 }
 
-#workarea td.tabtable1-mid1
+.workarea td.tabtable1-mid1
 {
 	background-image: url("../images/tab-back.gif");
 	background-position: right;
@@ -499,7 +499,7 @@ width: 50%;
 	color: #666666;
 }
 
-#workarea td.tabtable1-right
+.workarea td.tabtable1-right
 {
 	background-image: url("../images/tab-rightback.gif");
 	background-position: right;
@@ -510,7 +510,7 @@ width: 50%;
 	border: none;
 }
 
-#workarea td.tabtable2-left
+.workarea td.tabtable2-left
 {
 	background-image: url("../images/tab-back.gif");
 	background-position: right;
@@ -525,7 +525,7 @@ width: 50%;
 	border: none;
 }
 
-#workarea td.total-line
+.workarea td.total-line
 {
 	font-weight: bold;
 	text-align: right;
@@ -540,7 +540,7 @@ width: 50%;
 	background-image: url("../images/th-back.gif");
 }
 
-#workarea td.tabtable2-mid
+.workarea td.tabtable2-mid
 {
 	background-image: url("../images/tab-bevel3.gif");
 	background-position: right;
@@ -554,7 +554,7 @@ width: 50%;
 	border: none;
 }
 
-#workarea td.tabtable2-right
+.workarea td.tabtable2-right
 {
 	background-image: url("../images/tab-rightback1.gif");
 	background-position: right;
@@ -565,7 +565,7 @@ width: 50%;
 	border: none;
 }
 
-#workarea table.b3
+.workarea table.b3
 {
 	background-image: url(../images/tabfoot-back.gif);
 	background-repeat: repeat-x;
@@ -586,7 +586,7 @@ img.helpicon
 	vertical-align: middle;
 	border: 0px none;
 }
-#workarea div.message-container
+.workarea div.message-container
 {
 	text-align: left;
 	margin: 0px;
@@ -596,7 +596,7 @@ img.helpicon
 	color: #626262;
 }
 
-#workarea h2
+.workarea h2
 {
 	display:inline;
 	color: #FFF;
@@ -605,7 +605,7 @@ img.helpicon
 	font-size: 1.2em;
 }
 
-#workarea div.tab-container h3
+.workarea div.tab-container h3
 {
 	color:#900;
 	font-weight:bold;
@@ -622,7 +622,7 @@ img.helpicon
 	background-image: url(../images/bg-carbon-copy.png);
 }
 
-#workarea div.pretable
+.workarea div.pretable
 {
 	width: 98%;
 	text-align: left;
@@ -630,7 +630,7 @@ img.helpicon
 	padding-bottom: 5px;
 }
 
-#workarea div.tab-container
+.workarea div.tab-container
 {
 	background-position:right center;
 	background-repeat:repeat-y;
@@ -641,7 +641,7 @@ img.helpicon
 	margin: 0px;
 }
 
-#workarea div.tab-container-error
+.workarea div.tab-container-error
 {
 	background-color: #e4e4e4;
 	border-left-width: 1px;
@@ -653,14 +653,14 @@ img.helpicon
 	width: 100%;
 }
 
-#workarea td.error
+.workarea td.error
 {
 	background-color: #e4e4e4;
 	border-bottom: none;
 	border-left: 1px solid #999999;
 }
 
-#workarea input.amount
+.workarea input.amount
 {
 	text-align: right;
 }
@@ -818,7 +818,7 @@ div.excol { padding-right: 22px; }
 	padding-right: 5px;
 }
 
-#headerarea div.headerbox
+.headerarea div.headerbox
 {
 	position: absolute;
 	z-index: 1;
@@ -827,7 +827,7 @@ div.excol { padding-right: 22px; }
 	height: 55px;
 }
 
-#headerarea h1
+.headerarea h1
 {
 	fontt-size: 1em;
 	margin: 0px;
@@ -841,7 +841,7 @@ div.excol { padding-right: 22px; }
 	color: #FFF;
 }
 
-#headerarea table
+.headerarea table
 {
 	height: 54px;
 	border-left-width: 1px;
@@ -851,9 +851,9 @@ div.excol { padding-right: 22px; }
 	font-size: 0.8em;
 }
 
-#headerarea input { border: none; }
+.headerarea input { border: none; }
 
-#headerarea th
+.headerarea th
 {
 	background-color: #900;
 	padding-right: 5px;
@@ -869,7 +869,7 @@ div.excol { padding-right: 22px; }
 	background-position: 0px;
 }
 
-#headerarea td
+.headerarea td
 {
 	background-color: #998549;
 	padding: 2px;
@@ -883,7 +883,7 @@ div.excol { padding-right: 22px; }
 	color: #FFF;
 }
 
-#headerarea a
+.headerarea a
 {
 	color: #FFF;
 }
@@ -1135,3 +1135,12 @@ th.infoline {
 	-moz-border-radius-bottomleft: 0px;
 	margin-bottom: 0px;
 }
+
+.summary {
+	font-size: small;
+	font-style: italic;
+}
+
+.required {
+	color: red;
+}	

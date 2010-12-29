@@ -67,9 +67,7 @@
      <td width="${cellWidth}%" align="${item.align}" valign="${item.valign}" 
          colspan="${item.colSpan}" rowspan="${item.rowSpan}"
          style="${item.style}" class="${item.styleClass}">
-       <tiles:insertTemplate template="${item.template}">
-          <tiles:putAttribute name="${item.componentTypeName}" value="${item}"/>
-       </tiles:insertTemplate>
+       <krad:template component="${item}"/>
      </td>
      
      <%-- handle colspan for the count --%>  

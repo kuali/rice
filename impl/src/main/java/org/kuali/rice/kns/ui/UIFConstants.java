@@ -36,4 +36,8 @@ public class UIFConstants extends JSTLConstants {
 	public enum Orientation {
 		HORIZONTAL, VERTICAL
 	}
+
+	public enum MessageType {
+		NORMAL, SUMMARY, CONSTRAINT, REQUIRED
+	}
 }

@@ -28,12 +28,26 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans       http://www
       <property name="items">
         <list>
           <bean parent="Page" p:id="page1">
+             <property name="header">
+               <ref bean="PagePanelHeader"/>
+             </property>
              <property name="items">
                <list>
                  <ref bean="testSection1"/>
+                 <ref bean="testSection2"/>
                </list>
              </property> 
           </bean>
+          <bean parent="Page" p:id="page2">
+             <property name="header">
+               <ref bean="PagePanelHeader"/>
+             </property>
+             <property name="items">
+               <list>
+                 <ref bean="testSection3"/>
+               </list>
+             </property> 
+          </bean>          
         </list>
       </property>     
       <property name="controllerRequestMapping" value="uitest"/>
@@ -45,8 +59,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans       http://www
    <bean id="testViewMenu" parent="MenuNavigation">
       <property name="items">
         <list> 
-          <bean parent="ActionLinkField" p:methodToCall="navigateToPage" p:actionLabel="Page 1"/>
-          <bean parent="ActionLinkField" p:methodToCall="navigateToPage" p:actionLabel="Page 2"/>
+          <bean parent="ActionLinkField" p:methodToCall="navigateToPage1" p:actionLabel="Page 1"/>
+          <bean parent="ActionLinkField" p:methodToCall="navigateToPage2" p:actionLabel="Page 2"/>
         </list>
       </property>  
    </bean>   
@@ -72,7 +86,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans       http://www
               <bean parent="TextControl" p:size="5" p:maxLength="4"/>
             </property>
           </bean>
-          <bean parent="AttributeLabelFieldPair" p:name="field2" p:label="Field 2">
+          <bean parent="AttributeLabelFieldPair" p:name="field2" p:label="Field 2" p:required="true">
             <property name="control">
               <bean parent="TextControl" p:size="26" p:maxLength="25"/>
             </property>
@@ -88,7 +102,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans       http://www
             </property>
           </bean>                              
         </list>
-      </property>       
+      </property> 
+      <property name="summary" value="Group with grid layout and 2 columns"/>      
    </bean>
    
    <bean id="testGroup2" parent="GroupGridLayout">   
@@ -102,7 +117,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans       http://www
               <bean parent="TextControl" p:size="5" p:maxLength="4"/>
             </property>
           </bean>
-          <bean parent="AttributeLabelFieldPair" p:name="field6" p:label="Field 6">
+          <bean parent="AttributeLabelFieldPair" p:name="field6" p:label="Field 6" p:required="true">
             <property name="control">
               <bean parent="TextControl" p:size="26" p:maxLength="25"/>
             </property>
@@ -118,16 +133,56 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans       http://www
             </property>
           </bean>                              
         </list>
-      </property>       
+      </property> 
+      <property name="summary" value="Group with grid layout and 4 columns"/>       
    </bean>   
+   
+   <bean id="testSection2" parent="PanelGridSection">
+      <property name="id" value="testSection2"/>
+      <property name="title" value="Test Section 2"/> 
+      <property name="items">
+        <list>
+          <bean parent="AttributeLabelFieldPair" p:name="travelAccount1.number" p:label="Travel Account Number" p:required="true">
+            <property name="control">
+              <bean parent="TextControl" p:size="5" p:maxLength="4"/>
+            </property>
+          </bean>
+          <bean parent="AttributeLabelFieldPair" p:name="travelAccount1.name" p:label="Travel Account Name" p:required="true">
+            <property name="control">
+              <bean parent="TextControl" p:size="26" p:maxLength="25"/>
+            </property>
+          </bean>
+        </list>
+      </property> 
+      <property name="summary" value="Section without nested group, grid layout"/> 
+   </bean> 
+   
+   <bean id="testSection3" parent="PanelGridSection">
+      <property name="id" value="testSection3"/>
+      <property name="title" value="Test Section 3"/> 
+      <property name="items">
+        <list>
+          <bean parent="AttributeLabelFieldPair" p:name="travelAccount1.number" p:label="Travel Account Number" p:required="true">
+            <property name="control">
+              <bean parent="TextControl" p:size="5" p:maxLength="4"/>
+            </property>
+          </bean>
+          <bean parent="AttributeLabelFieldPair" p:name="travelAccount1.name" p:label="Travel Account Name" p:required="true">
+            <property name="control">
+              <bean parent="TextControl" p:size="26" p:maxLength="25"/>
+            </property>
+          </bean>
+        </list>
+      </property> 
+      <property name="summary" value="Section without nested group, grid layout"/> 
+   </bean>       
    
    <bean id="testViewFooter" parent="Footer">
       <property name="items">
         <list> 
           <bean parent="ActionField" p:methodToCall="save" p:actionLabel="Save"/>
           <bean parent="ActionField" p:methodToCall="close" p:actionLabel="Close"/>
-          <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="Cancel" 
-                p:style="color: #000000;text-decoration: underline;"/>
+          <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="Cancel"/>
         </list>
       </property>  
    </bean>

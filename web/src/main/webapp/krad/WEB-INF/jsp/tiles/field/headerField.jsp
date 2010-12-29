@@ -15,8 +15,16 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="group" classname="org.kuali.rice.kns.ui.container.Group"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.HeaderField"/>
 
-<div id="${group.id}" class="${group.styleClass}">
-  <h2>${group.title}</h2>
-</div>
+<c:set var="headerOpenTag" value="<${field.headerLevel}>"/>
+<c:set var="headerCloseTag" value="</${field.headerLevel}>"/>
+
+<krad:div component="${field}">
+  ${headerOpenTag}${field.headerText}${headerCloseTag}
+  
+  <%-- render header group --%>
+  <c:if test="${!empty field.group}">
+    <krad:template component="${field.group}"/>
+  </c:if>
+</krad:div>

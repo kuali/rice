@@ -17,7 +17,6 @@ package org.kuali.rice.kns.ui.field;
 
 import org.apache.commons.lang.StringUtils;
 
-
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
@@ -27,13 +26,14 @@ import org.apache.commons.lang.StringUtils;
 public class ActionField extends FieldLabelBase {
 	private String methodToCall;
 	private boolean clientSideCall;
+	private String navigateToPageId;
 
 	private String actionLabel;
 
 	public ActionField() {
 
 	}
-	
+
 	/**
 	 * <p>
 	 * The following initialization is performed:
@@ -75,6 +75,14 @@ public class ActionField extends FieldLabelBase {
 
 	public void setActionLabel(String actionLabel) {
 		this.actionLabel = actionLabel;
+	}
+
+	public String getNavigateToPageId() {
+		return this.navigateToPageId;
+	}
+
+	public void setNavigateToPageId(String navigateToPageId) {
+		this.navigateToPageId = navigateToPageId;
 	}
 
 }

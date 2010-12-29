@@ -24,12 +24,13 @@ import org.apache.commons.lang.StringUtils;
  * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
 public abstract class ComponentBase implements Component {
 	private String id;
 	private String name;
 	private String template;
+
+	private boolean render;
 
 	private boolean hidden;
 	private boolean readOnly;
@@ -43,10 +44,12 @@ public abstract class ComponentBase implements Component {
 	private int rowSpan;
 	private String style;
 	private String styleClass;
-	
+
 	public ComponentBase() {
 		colSpan = 1;
 		rowSpan = 1;
+		
+		render = true;
 	}
 
 	/**
@@ -183,6 +186,14 @@ public abstract class ComponentBase implements Component {
 
 	public void setStyleClass(String styleClass) {
 		this.styleClass = styleClass;
+	}
+
+	public boolean isRender() {
+		return this.render;
+	}
+
+	public void setRender(boolean render) {
+		this.render = render;
 	}
 
 }

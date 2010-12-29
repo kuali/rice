@@ -13,50 +13,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.ui.container;
-
-import java.util.ArrayList;
-import java.util.List;
+package org.kuali.rice.kns.ui.field;
 
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- * 
  */
-public class Page extends ContainerBase {
-	private NavigationGroup navigation;
+public class HeaderField extends GroupField {
+	private String headerText;
+	private String headerLevel;
 
-	public Page() {
+	public HeaderField() {
 
 	}
 
-	/**
-	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
-	 */
-	@Override
-	public List<Class> getSupportedComponents() {
-		List<Class> supportedComponents = new ArrayList<Class>();
-		supportedComponents.add(Group.class);
-
-		return supportedComponents;
+	public String getHeaderText() {
+		return this.headerText;
 	}
 
-	/**
-	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
-	 */
-	@Override
-	public String getComponentTypeName() {
-		return "page";
+	public void setHeaderText(String headerText) {
+		this.headerText = headerText;
 	}
 
-	public NavigationGroup getNavigation() {
-		return this.navigation;
+	public String getHeaderLevel() {
+		return this.headerLevel;
 	}
 
-	public void setNavigation(NavigationGroup navigation) {
-		this.navigation = navigation;
+	public void setHeaderLevel(String headerLevel) {
+		this.headerLevel = headerLevel;
 	}
 
 }

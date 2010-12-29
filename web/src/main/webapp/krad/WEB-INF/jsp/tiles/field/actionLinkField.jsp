@@ -22,5 +22,5 @@
     
  --%>
  
- <a id="${field.id}" href="#" onClick="handleActionLink(${field.methodToCall});return false;" 
-    style="${field.style}" class="${field.styleClass}">${field.actionLabel}</a>
+ <a id="${field.id}" href="#" onClick="handleActionLink('${field.methodToCall}','${field.navigateToPageId}');return false;" 
+     class="${field.styleClass}">${field.actionLabel}</a>

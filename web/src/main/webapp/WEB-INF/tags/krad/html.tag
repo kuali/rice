@@ -87,8 +87,9 @@
       
        <jsp:doBody/>
 
+        <div id="formComplete"></div>
+        <input type="hidden" name="methodToCall" value="navigateToPage1"/>
       </form:form>
-      <div id="formComplete"></div>
       <!----------------------------------- End Form --------------------------------------->
    </c:if>  
    

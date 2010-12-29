@@ -40,12 +40,10 @@
 </c:forEach>
 
 <%-- render items --%> 
-<div id="${manager.id}" style="${manager.style}" class="${manager.styleClass}">
+<div id="${manager.id}_layout" style="${manager.style}" class="${manager.styleClass}">
 
    <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
-       <tiles:insertTemplate template="${item.template}">
-          <tiles:putAttribute name="${item.componentTypeName}" value="${item}"/>
-       </tiles:insertTemplate>
+       <krad:template component="${item}"/>
        ${padding}
    </c:forEach>
 

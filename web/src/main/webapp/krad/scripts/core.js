@@ -395,6 +395,7 @@ function placeFocus() {
 }
 
 
-function handleActionLink(methodToCall) {
-	
+function handleActionLink(methodToCall, navigateToPageId) {
+	$("<input type='hidden' name='methodToCall' value='" + methodToCall + "'/>").appendTo($("#formComplete"));
+	submitForm();
 }

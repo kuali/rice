@@ -21,5 +21,9 @@
     Renders text in a span tag     
  --%>
  
+<c:if test="${!empty field.style}">
+  <c:set var="style" value="style=\"${field.style}\""/>
+</c:if>     
+ 
 <span id="${field.id}_${field.messageType}"  
-      class="${field.styleClass}" style="${field.style}">${field.messageText}</span>
+      class="${field.styleClass}" ${style}>${field.messageText}</span>

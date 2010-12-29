@@ -19,6 +19,8 @@ import java.util.Date;
 
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 
+import edu.sampleu.travel.bo.TravelAccount;
+
 /**
  * Form for Test UI Page
  * 
@@ -33,8 +35,11 @@ public class UITestForm extends KualiForm {
 	private Date field6;
 	private int field7;
 	private boolean field8;
+	
+	private TravelAccount travelAccount1;
 
 	public UITestForm() {
+		travelAccount1 = new TravelAccount();
 	}
 
 	public String getField1() {
@@ -99,6 +104,14 @@ public class UITestForm extends KualiForm {
 
 	public void setField8(boolean field8) {
 		this.field8 = field8;
+	}
+
+	public TravelAccount getTravelAccount1() {
+		return this.travelAccount1;
+	}
+
+	public void setTravelAccount1(TravelAccount travelAccount1) {
+		this.travelAccount1 = travelAccount1;
 	}
 
 }

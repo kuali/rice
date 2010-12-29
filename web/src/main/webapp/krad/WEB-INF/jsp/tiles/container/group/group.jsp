@@ -19,24 +19,23 @@
 
 <krad:div component="${group}">
 
-  <c:if test="${(!empty group.header) && group.renderHeader}">
+  <c:if test="${group.renderHeader}">
     <!----------------------------------- #GROUP '${group.id}' HEADER --------------------------------------->
-    <tiles:insertTemplate template="${group.header.template}">
-          <tiles:putAttribute name="${group.header.componentTypeName}" value="${group.header}"/>
-    </tiles:insertTemplate>
+    <krad:template component="${group.header}"/>
   </c:if>
-
+  
+  <%-- group summary text --%>
+  <krad:template component="${group.summaryMessageField}"/>
+  
   <%-- render items through layout manager --%>
   <tiles:insertTemplate template="${group.layoutManager.template}">
         <tiles:putAttribute name="items" value="${group.items}"/>
         <tiles:putAttribute name="manager" value="${group.layoutManager}"/>
   </tiles:insertTemplate>
 
-  <c:if test="${(!empty group.footer) && group.renderFooter}">
+  <c:if test="${group.renderFooter}">
     <!----------------------------------- #GROUP '${group.id}' FOOTER --------------------------------------->
-    <tiles:insertTemplate template="${group.footer.template}">
-          <tiles:putAttribute name="${group.footer.componentTypeName}" value="${group.footer}"/>
-    </tiles:insertTemplate>
+    <krad:template component="${group.footer}"/>
   </c:if>
     
 </krad:div>

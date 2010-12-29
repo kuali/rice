@@ -66,7 +66,7 @@ public class View extends ContainerBase {
 	@Override
 	public List<Class> getSupportedComponents() {
 		List<Class> supportedComponents = new ArrayList<Class>();
-		supportedComponents.add(Page.class);
+		supportedComponents.add(Group.class);
 
 		return supportedComponents;
 	}
@@ -85,9 +85,9 @@ public class View extends ContainerBase {
 	 * 
 	 * @return Page instance
 	 */
-	public Page getCurrentPage() {
+	public Group getCurrentPage() {
 		for (Iterator iterator = this.getItems().iterator(); iterator.hasNext();) {
-			Page page = (Page) iterator.next();
+			Group page = (Group) iterator.next();
 			if (page.getId().equals(getCurrentPageId())) {
 				return page;
 			}

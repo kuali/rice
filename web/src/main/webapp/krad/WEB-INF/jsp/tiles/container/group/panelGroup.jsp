@@ -20,7 +20,7 @@
 <c:set var="panelHeader" value="${group.panelHeader}"/>
 
 <div class="${panelHeader.styleClass}">
-  <h2><a href="#" id="show_tab-${group.id}-div"><img src="${ConfigProperties.krad.externalizable.images.url}arrow-col.png" width="16" height="16" alt="collapse">${panelHeader.title}</a></h2>
+  <h2><a href="#" id="show_tab-${group.id}-div"><img src="${ConfigProperties.krad.externalizable.images.url}arrow-col.png" width="16" height="16" alt="collapse">${panelHeader.headerText}</a></h2>
 </div>
 
 <div id="tab-${group.id}-div">
@@ -45,10 +45,10 @@
       $("#show_tab-${group.id}-div").toggle(
         function() {
           $("#tab-${group.id}-div").slideUp(600);
-          $("#show_tab-${group.id}-div").html("<img src='${ConfigProperties.krad.externalizable.images.url}arrow-col.png' width='16' height='16' alt='collapse'>${panelHeader.title}");
+          $("#show_tab-${group.id}-div").html("<img src='${ConfigProperties.krad.externalizable.images.url}arrow-col.png' width='16' height='16' alt='collapse'>${panelHeader.headerText}");
         }, function() {
           $("#tab-${group.id}-div").slideDown(600);
-          $("#show_tab-${group.id}-div").html("<img src='${ConfigProperties.krad.externalizable.images.url}arrow-exp.png' width='16' height='16' alt='expand'>${panelHeader.title}");
+          $("#show_tab-${group.id}-div").html("<img src='${ConfigProperties.krad.externalizable.images.url}arrow-exp.png' width='16' height='16' alt='expand'>${panelHeader.headerText}");
         }
       );
   });

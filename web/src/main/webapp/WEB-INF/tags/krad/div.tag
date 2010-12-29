@@ -15,10 +15,14 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ attribute name="component" required="false" 
+<%@ attribute name="component" required="true" 
               description="The UIF component for which the div will be wrapping." 
               type="org.kuali.rice.kns.ui.Component"%>
+              
+<c:if test="${!empty component.style}">
+  <c:set var="style" value="style=\"${component.style}\""/>
+</c:if>              
 
-<div id="${component.id}_div" class="${component.styleClass}" style="${component.style}">
+<div id="${component.id}_div" class="${component.styleClass}" ${style}>
    <jsp:doBody/>
 </div>

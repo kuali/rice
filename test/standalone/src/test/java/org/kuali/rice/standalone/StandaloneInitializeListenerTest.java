@@ -15,21 +15,9 @@
  */
 package org.kuali.rice.standalone;
 
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.Map;
-
-import javax.servlet.ServletContextEvent;
-
-import org.apache.commons.lang.StringUtils;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.util.ContextClassLoaderBinder;
-import org.kuali.rice.core.web.listener.StandaloneInitializeListener;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.test.BaseRiceTestCase;
-import org.springframework.mock.web.MockServletContext;
 
 
 /**
@@ -38,49 +26,11 @@ import org.springframework.mock.web.MockServletContext;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-@Ignore("when surefire.useSystemClassLoader=true all web tests pass locally w/ maven but many tests fail with hudson.  ignoring for now.")
+@Ignore
 public class StandaloneInitializeListenerTest extends BaseRiceTestCase {
-
-    private static final String CONTEXT_NAME = "rice-standalone-version";
-    private static final String TEST_INIT_PARAM = "test.init.param";
-    private static final String TEST_INIT_PARAM_VAL = "test.init.param.val";
     
     @Test public void testConfigInitialization() {
-        // switch to a different context classloader context so that we don't blow away our existing configuration
-        ContextClassLoaderBinder binder = new ContextClassLoaderBinder();
-        binder.bind(new URLClassLoader(new URL[0]));
-        try{
-            MockServletContext mockServletContext = new MockServletContext();
-            mockServletContext.setServletContextName(CONTEXT_NAME);
-            mockServletContext.addInitParameter(KEWConstants.BOOTSTRAP_SPRING_FILE, "org/kuali/rice/standalone/TestStandaloneInitializeListener.xml");
-            mockServletContext.addInitParameter(TEST_INIT_PARAM, TEST_INIT_PARAM_VAL);
-            
-            StandaloneInitializeListener listener = new StandaloneInitializeListener();
-            ServletContextEvent sce = new ServletContextEvent(mockServletContext);
-        
-            // initialize the context
-            listener.contextInitialized(sce);
-        
-            assertNotNull("A Spring Context should exist.", listener.getContext());
-            assertTrue("Context should be active.", listener.getContext().isActive());
-            assertTrue("Context should be running.", listener.getContext().isRunning());
-            
-            String riceBase = ConfigContext.getCurrentContextConfig().getProperty("rice.base");
-            assertFalse("rice base should exist.", StringUtils.isBlank(riceBase));
-            // test that the init params are pumped into the config system
-            String testInitParam = ConfigContext.getCurrentContextConfig().getProperty(TEST_INIT_PARAM);
-            assertEquals(TEST_INIT_PARAM_VAL, testInitParam);
-        
-            assertTrue(mockServletContext.getAttribute("Constants") instanceof Map);
-        
-            // now destroy the context
-            listener.contextDestroyed(sce);
-        
-            assertFalse("Context should no longer be active.", listener.getContext().isActive());
-            
-        } finally {
-            binder.unbind();
-        }
+    	//FIXME: test startup and shutdown
     }
     
 }

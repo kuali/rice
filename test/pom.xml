@@ -29,7 +29,6 @@
         <module>ksb</module>
         <module>kew</module>
         <module>test-clients</module>
-        <module>ksb2</module>
     </modules>
     <properties>
       <skip.itests>true</skip.itests>

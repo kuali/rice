@@ -16,17 +16,17 @@
  */
 package org.kuali.rice.ksb.messaging.web;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.struts.action.ActionForm;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.SqlTimestampConverter;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.util.CodeTranslator;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -44,11 +44,11 @@ public class MessageQueueForm extends ActionForm {
     private int pageSize = DEFAULT_PAGE_SIZE;
     private Long messageId;
     private String methodToCall = "";
-    private Collection<PersistedMessage> messageQueueRows;
+    private Collection<PersistedMessageBO> messageQueueRows;
     private String showEdit;
     private String command;
-    private PersistedMessage messageQueueFromDatabase;
-    private PersistedMessage messageQueueFromForm;
+    private PersistedMessageBO messageQueueFromDatabase;
+    private PersistedMessageBO messageQueueFromForm;
     private String newQueueDate;
     private String existingQueueDate;
     private String ipAddress;
@@ -77,7 +77,7 @@ public class MessageQueueForm extends ActionForm {
     }
 
     public MessageQueueForm() {
-        messageQueueFromForm = new PersistedMessage();
+        messageQueueFromForm = new PersistedMessageBO();
         maxRows = DEFAULT_MAX_ROWS;
         pageSize = DEFAULT_PAGE_SIZE;
     }
@@ -102,11 +102,11 @@ public class MessageQueueForm extends ActionForm {
         this.messageId = routeQueueId;
     }
 
-    public Collection<PersistedMessage> getMessageQueueRows() {
+    public Collection<PersistedMessageBO> getMessageQueueRows() {
         return messageQueueRows;
     }
 
-    public void setMessageQueueRows(Collection<PersistedMessage> routeQueueRows) {
+    public void setMessageQueueRows(Collection<PersistedMessageBO> routeQueueRows) {
         this.messageQueueRows = routeQueueRows;
     }
 
@@ -125,19 +125,19 @@ public class MessageQueueForm extends ActionForm {
         this.command = command;
     }
 
-    public PersistedMessage getMessageQueueFromDatabase() {
+    public PersistedMessageBO getMessageQueueFromDatabase() {
         return messageQueueFromDatabase;
     }
 
-    public void setMessageQueueFromDatabase(PersistedMessage existingRouteQueue) {
+    public void setMessageQueueFromDatabase(PersistedMessageBO existingRouteQueue) {
         this.messageQueueFromDatabase = existingRouteQueue;
     }
 
-    public PersistedMessage getMessageQueueFromForm() {
+    public PersistedMessageBO getMessageQueueFromForm() {
         return messageQueueFromForm;
     }
 
-    public void setMessageQueueFromForm(PersistedMessage routeQueue) {
+    public void setMessageQueueFromForm(PersistedMessageBO routeQueue) {
         this.messageQueueFromForm = routeQueue;
     }
 

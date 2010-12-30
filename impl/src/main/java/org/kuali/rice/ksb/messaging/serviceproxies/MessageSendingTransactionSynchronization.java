@@ -17,7 +17,7 @@ package org.kuali.rice.ksb.messaging.serviceproxies;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.springframework.transaction.support.TransactionSynchronization;
 
@@ -37,9 +37,9 @@ public class MessageSendingTransactionSynchronization implements TransactionSync
     public static boolean CALLED_TRANS_COMMITTED = false;
     public static boolean CALLED_TRANS_ROLLEDBACKED = false;
     
-    private PersistedMessage message;
+    private PersistedMessageBO message;
     
-    public MessageSendingTransactionSynchronization(PersistedMessage message) {
+    public MessageSendingTransactionSynchronization(PersistedMessageBO message) {
 	this.message = message;
     }
 

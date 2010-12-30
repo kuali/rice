@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.ksb.messaging.quartz;
 
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.JobExecutionContext;
@@ -65,7 +65,7 @@ public class MessageServiceExecutorJobListener implements JobListener {
      */
     public void jobWasExecuted(JobExecutionContext context, JobExecutionException exception) {
 	if (context.getJobInstance() instanceof MessageServiceExecutorJob && exception != null) {
-	    PersistedMessage message = (PersistedMessage)context.getJobDetail().getJobDataMap().get(MessageServiceExecutorJob.MESSAGE_KEY);
+	    PersistedMessageBO message = (PersistedMessageBO)context.getJobDetail().getJobDataMap().get(MessageServiceExecutorJob.MESSAGE_KEY);
 	    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
 	    KSBServiceLocator.getRouteQueueService().save(message);
 	}

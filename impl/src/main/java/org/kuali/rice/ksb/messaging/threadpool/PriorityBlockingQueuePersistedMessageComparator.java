@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.ksb.messaging.threadpool;
 
-import java.util.Comparator;
-
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 
+import java.util.Comparator;
 import java.util.concurrent.PriorityBlockingQueue;
 
 /**
@@ -37,8 +36,8 @@ public class PriorityBlockingQueuePersistedMessageComparator implements Comparat
 	if (! (arg0 instanceof MessageServiceInvoker) || ! (arg1 instanceof MessageServiceInvoker) ) {
 	    return 0;
 	}
-	PersistedMessage message0 = ((MessageServiceInvoker)arg0).getMessage();
-	PersistedMessage message1 = ((MessageServiceInvoker)arg1).getMessage();
+	PersistedMessageBO message0 = ((MessageServiceInvoker)arg0).getMessage();
+	PersistedMessageBO message1 = ((MessageServiceInvoker)arg1).getMessage();
 	
 	if (message0.getQueuePriority() < message1.getQueuePriority()) {
 	    return -1;

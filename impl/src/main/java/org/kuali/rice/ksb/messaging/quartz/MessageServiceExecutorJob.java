@@ -12,11 +12,9 @@
  */
 package org.kuali.rice.ksb.messaging.quartz;
 
-import java.io.Serializable;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.threadpool.KSBThreadPool;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
@@ -24,9 +22,11 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import java.io.Serializable;
+
 
 /**
- * Job saves a {@link PersistedMessage} to the message queue in the state of 'R' and then puts into a
+ * Job saves a {@link org.kuali.rice.ksb.messaging.PersistedMessageBO} to the message queue in the state of 'R' and then puts into a
  * {@link MessageServiceInvoker} for execution in {@link KSBThreadPool}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -42,7 +42,7 @@ public class MessageServiceExecutorJob implements Job, Serializable {
 
     public void execute(JobExecutionContext jec) throws JobExecutionException {
 	try {
-	    PersistedMessage message = (PersistedMessage) jec.getJobDetail().getJobDataMap().get(MESSAGE_KEY);
+	    PersistedMessageBO message = (PersistedMessageBO) jec.getJobDetail().getJobDataMap().get(MESSAGE_KEY);
 	    message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
 	    KSBServiceLocator.getRouteQueueService().save(message);
 	    KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));

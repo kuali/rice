@@ -13,15 +13,15 @@
  */
 package org.kuali.rice.ksb.messaging.exceptionhandling;
 
-import java.sql.Timestamp;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import java.sql.Timestamp;
 
 
 /**
@@ -37,7 +37,7 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
 
     private static final int DEFAULT_MAX_RETRIES = 7;
 
-    public void handleException(Throwable throwable, PersistedMessage message, Object service) throws Exception {
+    public void handleException(Throwable throwable, PersistedMessageBO message, Object service) throws Exception {
         if (isInException(message)) {
             placeInException(throwable, message);
         } else {
@@ -45,11 +45,11 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
         }
     }
 
-    public void handleExceptionLastDitchEffort(Throwable throwable, PersistedMessage message, Object service) throws Exception {
+    public void handleExceptionLastDitchEffort(Throwable throwable, PersistedMessageBO message, Object service) throws Exception {
 		LOG.error("Complete failure when attempting to put message into exception routing!  Message was: " + message, throwable);
 	}
 
-	public boolean isInException(PersistedMessage message) {
+	public boolean isInException(PersistedMessageBO message) {
         ServiceInfo serviceInfo = message.getMethodCall().getServiceInfo();
 
         if (getImmediateExceptionRouting()) {
@@ -80,7 +80,7 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
         return false;
     }
 
-    protected void requeue(Throwable throwable, PersistedMessage message) throws Exception {
+    protected void requeue(Throwable throwable, PersistedMessageBO message) throws Exception {
         Integer retryCount = message.getRetryCount();
         message.setQueueStatus(KSBConstants.ROUTE_QUEUE_QUEUED);
         long addMilliseconds = Math.round(getTimeIncrement() * Math.pow(2, retryCount));
@@ -92,13 +92,13 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
         scheduleExecution(throwable, message);
     }
 
-    protected void placeInException(Throwable throwable, PersistedMessage message) throws Exception {
+    protected void placeInException(Throwable throwable, PersistedMessageBO message) throws Exception {
         message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
         message.setQueueDate(new Timestamp(System.currentTimeMillis()));
         KSBServiceLocator.getRouteQueueService().save(message);
     }
 
-    protected void scheduleExecution(Throwable throwable, PersistedMessage message) throws Exception {
+    protected void scheduleExecution(Throwable throwable, PersistedMessageBO message) throws Exception {
         KSBServiceLocator.getExceptionRoutingService().scheduleExecution(throwable, message, null);
     }
 

@@ -12,20 +12,17 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.ksb.messaging.GlobalCallbackRegistry;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.remotedservices.TesetHarnessExplodingQueue;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.test.TestUtilities;
+
+import javax.xml.namespace.QName;
+import java.util.List;
 
 
 /**
@@ -81,11 +78,11 @@ public class ExceptionRetryCountTest extends KSBTestCase {
 	//pause to let save to queue in status 'E' happen
 	int i = 0;
 	while (i++ < 30) {
-	    List<PersistedMessage> queuedItems = KSBServiceLocator.getRouteQueueService().findAll();
+	    List<PersistedMessageBO> queuedItems = KSBServiceLocator.getRouteQueueService().findAll();
 	    if (queuedItems.size() != 1) {
 		fail("test setup wrong should have a single item in the queue.");
 	    }
-	    PersistedMessage message = queuedItems.get(0);
+	    PersistedMessageBO message = queuedItems.get(0);
 	    if (message.getQueueStatus().equals("E")) {
 		break;
 	    }
@@ -95,9 +92,9 @@ public class ExceptionRetryCountTest extends KSBTestCase {
 
 		assertEquals("Service should have been called 3 times", 3, TesetHarnessExplodingQueue.NUM_CALLS);
 
-	List<PersistedMessage> messagesQueued = KSBServiceLocator.getRouteQueueService().findByServiceName(
+	List<PersistedMessageBO> messagesQueued = KSBServiceLocator.getRouteQueueService().findByServiceName(
 		this.retryCountServiceName, "invoke");
-		PersistedMessage message = messagesQueued.get(0);
+		PersistedMessageBO message = messagesQueued.get(0);
 		assertEquals("Message should be in exception status", KSBConstants.ROUTE_QUEUE_EXCEPTION, message.getQueueStatus());
 		assertEquals("Message retry count not what was configured", new Integer(2), message.getRetryCount());
 	}

@@ -16,16 +16,16 @@
  */
 package org.kuali.rice.ksb.messaging.callforwarding;
 
-import java.sql.Timestamp;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.serviceproxies.MessageSender;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import java.sql.Timestamp;
 
 
 /**
@@ -35,9 +35,9 @@ public class ForwardedCallHandlerImpl implements ForwardedCallHandler {
 
 	private static final Logger LOG = Logger.getLogger(ForwardedCallHandlerImpl.class);
 
-	public void handleCall(PersistedMessage message) throws Exception {
+	public void handleCall(PersistedMessageBO message) throws Exception {
 		LOG.debug("Recieved forwared message from service " + message.getMethodCall().getServiceInfo().getQname());
-		PersistedMessage copy = new PersistedMessage();
+		PersistedMessageBO copy = new PersistedMessageBO();
 		copy.setExpirationDate(message.getExpirationDate());
 		copy.setIpNumber(RiceUtilities.getIpNumber());
 		copy.setServiceNamespace(message.getServiceNamespace());

@@ -18,7 +18,7 @@ package org.kuali.rice.ksb.messaging.service.impl;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandlerImpl;
 import org.kuali.rice.ksb.messaging.config.ServiceBasedServiceDefinitionRegisterer;
 import org.kuali.rice.ksb.messaging.service.BusAdminService;
@@ -37,7 +37,7 @@ public class BusAdminServiceImpl extends BaseLifecycle implements BusAdminServic
 
     private ServiceBasedServiceDefinitionRegisterer defRegisterer;
 
-    public void forward(PersistedMessage message) throws Exception {
+    public void forward(PersistedMessageBO message) throws Exception {
 	// this is just weird...
 	AsynchronousCall methodCall = message.getPayload().getMethodCall();
 	message.setMethodCall(methodCall);

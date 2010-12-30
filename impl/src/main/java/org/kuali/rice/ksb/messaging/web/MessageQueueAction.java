@@ -13,46 +13,28 @@
  */
 package org.kuali.rice.ksb.messaging.web;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-
 import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.ActionMessage;
-import org.apache.struts.action.ActionMessages;
+import org.apache.struts.action.*;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.MessageFetcher;
-import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.messaging.*;
 import org.kuali.rice.ksb.messaging.callforwarding.ForwardedCallHandler;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.service.MessageQueueService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 /**
@@ -96,7 +78,7 @@ public class MessageQueueAction extends KSBAction {
     public ActionForward saveAndResubmit(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 	    HttpServletResponse response) throws Exception {
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
-	PersistedMessage message = save(routeQueueForm);
+	PersistedMessageBO message = save(routeQueueForm);
 	KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
 
 	ActionMessages messages = new ActionMessages();
@@ -119,7 +101,7 @@ public class MessageQueueAction extends KSBAction {
     public ActionForward saveAndForward(ActionMapping mapping, ActionForm form, HttpServletRequest request,
 	    HttpServletResponse response) throws Exception {
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
-	PersistedMessage message = save(routeQueueForm);
+	PersistedMessageBO message = save(routeQueueForm);
 	ForwardedCallHandler adminService = getAdminServiceToForwardTo(message, routeQueueForm);
 	AsynchronousCall methodCall = message.getPayload().getMethodCall();
 	message.setMethodCall(methodCall);
@@ -143,14 +125,14 @@ public class MessageQueueAction extends KSBAction {
 	return mapping.findForward("report");
     }
 
-    private PersistedMessage save(MessageQueueForm routeQueueForm) {
+    private PersistedMessageBO save(MessageQueueForm routeQueueForm) {
 	Long routeQueueId = routeQueueForm.getMessageQueueFromForm().getRouteQueueId();
 	if ((routeQueueId == null) || (routeQueueId.longValue() <= 0)) {
 	    throw new IllegalArgumentException("Invalid routeQueueId passed in.  Cannot save");
 	}
 	// save the message
-	PersistedMessage existingMessage = KSBServiceLocator.getRouteQueueService().findByRouteQueueId(routeQueueId);
-	PersistedMessage message = routeQueueForm.getMessageQueueFromForm();
+	PersistedMessageBO existingMessage = KSBServiceLocator.getRouteQueueService().findByRouteQueueId(routeQueueId);
+	PersistedMessageBO message = routeQueueForm.getMessageQueueFromForm();
 	// copy the new values over
 	if (existingMessage == null) {
 	    throw new RuntimeException("Could locate the existing message, it may have already been processed.");
@@ -170,7 +152,7 @@ public class MessageQueueAction extends KSBAction {
 	return existingMessage;
     }
 
-    private ForwardedCallHandler getAdminServiceToForwardTo(PersistedMessage message, MessageQueueForm form) {
+    private ForwardedCallHandler getAdminServiceToForwardTo(PersistedMessageBO message, MessageQueueForm form) {
 	String ip = form.getIpAddress();
 	List<ServiceInfo> services = KSBServiceLocator.getServiceRegistry().fetchAll();
 	for (ServiceInfo service : services) {
@@ -200,7 +182,7 @@ public class MessageQueueAction extends KSBAction {
          * @param message
          *                The populated message to be requeued.
          */
-    protected void quickRequeueMessage(PersistedMessage message) {
+    protected void quickRequeueMessage(PersistedMessageBO message) {
 	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
 	message.setQueueDate(new Timestamp(Calendar.getInstance().getTimeInMillis()));
 	message.setRetryCount(new Integer(0));
@@ -214,7 +196,7 @@ public class MessageQueueAction extends KSBAction {
 	    throw new IllegalArgumentException("No messageId passed in with the Request.");
 	}
 
-	PersistedMessage message = routeQueueForm.getMessageQueueFromDatabase();
+	PersistedMessageBO message = routeQueueForm.getMessageQueueFromDatabase();
 	quickRequeueMessage(message);
 	KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
 
@@ -329,7 +311,7 @@ public class MessageQueueAction extends KSBAction {
 	routeQueueForm.setMessageOff(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF));
 	List<ServiceInfo> services = KSBServiceLocator.getServiceRegistry().fetchAll();
 	if (routeQueueForm.getMessageId() != null) {
-	    PersistedMessage rq = getRouteQueueService().findByRouteQueueId(routeQueueForm.getMessageId());
+	    PersistedMessageBO rq = getRouteQueueService().findByRouteQueueId(routeQueueForm.getMessageId());
 	    if (rq != null) {
 		routeQueueForm.setExistingQueueDate(RiceConstants.getDefaultDateFormat().format(new Date()));
 		routeQueueForm.setMessageQueueFromDatabase(rq);
@@ -349,7 +331,7 @@ public class MessageQueueAction extends KSBAction {
 	    }
 	    routeQueueForm.setMessageId(null);
 	} else if (!"clear".equalsIgnoreCase(request.getParameter("methodToCall"))) {
-	    List<PersistedMessage> queueEntries = findRouteQueues(request, routeQueueForm, routeQueueForm.getMaxRows() + 1);
+	    List<PersistedMessageBO> queueEntries = findRouteQueues(request, routeQueueForm, routeQueueForm.getMaxRows() + 1);
 	    if (queueEntries.size() > 0) {
 		Collections.sort(queueEntries, new Comparator() {
 		    private Comparator comp = new ComparableComparator();
@@ -363,8 +345,8 @@ public class MessageQueueAction extends KSBAction {
 			} else if (object2 == null) {
 			    return -1;
 			}
-			Long id1 = ((PersistedMessage) object1).getRouteQueueId();
-			Long id2 = ((PersistedMessage) object2).getRouteQueueId();
+			Long id1 = ((PersistedMessageBO) object1).getRouteQueueId();
+			Long id2 = ((PersistedMessageBO) object2).getRouteQueueId();
 
 			try {
 			    return this.comp.compare(id1, id2);
@@ -379,8 +361,8 @@ public class MessageQueueAction extends KSBAction {
 	return null;
     }
 
-    protected List<PersistedMessage> findRouteQueues(HttpServletRequest request, MessageQueueForm routeQueueForm, int maxRows) {
-	List<PersistedMessage> routeQueues = new ArrayList<PersistedMessage>();
+    protected List<PersistedMessageBO> findRouteQueues(HttpServletRequest request, MessageQueueForm routeQueueForm, int maxRows) {
+	List<PersistedMessageBO> routeQueues = new ArrayList<PersistedMessageBO>();
 
 	// no filter applied
 	if (StringUtils.isBlank(routeQueueForm.getFilterApplied())) {
@@ -420,16 +402,16 @@ public class MessageQueueAction extends KSBAction {
     }
 
     /**
-         * Extracts the payload from a PersistedMessage, attempts to convert it to the expected AsynchronousCall type, and
+         * Extracts the payload from a PersistedMessageBO, attempts to convert it to the expected AsynchronousCall type, and
          * returns it.
          *
          * Throws an IllegalArgumentException if the decoded payload isnt of the expected type.
          *
          * @param message
-         *                The populated PersistedMessage object to extract the payload from.
+         *                The populated PersistedMessageBO object to extract the payload from.
          * @return Returns the payload if one is present and it can be deserialized, otherwise returns null.
          */
-    protected AsynchronousCall unwrapPayload(PersistedMessage message) {
+    protected AsynchronousCall unwrapPayload(PersistedMessageBO message) {
 	if (message == null || message.getPayload() == null) {
 	    return null;
 	}
@@ -443,7 +425,7 @@ public class MessageQueueAction extends KSBAction {
 	}
 	// fail fast if its not the expected type of AsynchronousCall
 	if ((decodedPayload != null) && !(decodedPayload instanceof AsynchronousCall)) {
-	    throw new IllegalArgumentException("PersistedMessage payload was not of the expected class. " + "Expected was ["
+	    throw new IllegalArgumentException("PersistedMessageBO payload was not of the expected class. " + "Expected was ["
 		    + AsynchronousCall.class.getName() + "], actual was: [" + decodedPayload.getClass().getName() + "]");
 	}
 	return (AsynchronousCall) decodedPayload;

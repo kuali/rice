@@ -16,32 +16,8 @@
  */
 package org.kuali.rice.kew.docsearch.xml;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
-
 import org.junit.Test;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchContext;
-import org.kuali.rice.kew.docsearch.DocumentSearchResult;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
-import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
+import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -61,6 +37,18 @@ import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
+import java.io.BufferedReader;
+import java.io.StringReader;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -730,7 +718,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 //    public void testIndexingRequeue() throws Exception {
 //    	Long routeHeaderId = new Long(1);
 //
-//        PersistedMessage searchIndexingWork = new PersistedMessage();
+//        PersistedMessageBO searchIndexingWork = new PersistedMessageBO();
 //        searchIndexingWork.setProcessorClassName(SearchableAttributeProcessor.class.getName());
 //        searchIndexingWork.setRouteHeaderId(routeHeaderId);
 //        searchIndexingWork.setQueuePriority(new Integer(6));
@@ -743,7 +731,7 @@ public class StandardGenericXMLSearchableAttributeTest extends DocumentSearchTes
 //        Collection queueEntries = SpringServiceLocator.getRouteQueueService().findAll();
 //        assertEquals("should have 2 queue entries", 2, queueEntries.size());
 //        for (Iterator iter = queueEntries.iterator(); iter.hasNext();) {
-//			PersistedMessage queueEntry = (PersistedMessage) iter.next();
+//			PersistedMessageBO queueEntry = (PersistedMessageBO) iter.next();
 //			//all entries should have certain similarities
 //			assertEquals("Wrong routeHeaderid", searchIndexingWork.getRouteHeaderId(), queueEntry.getRouteHeaderId());
 //			assertEquals("Wrong queue status", searchIndexingWork.getQueueStatus(), queueEntry.getQueueStatus());

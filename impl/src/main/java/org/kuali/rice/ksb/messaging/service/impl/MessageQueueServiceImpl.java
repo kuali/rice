@@ -15,23 +15,21 @@
  */
 package org.kuali.rice.ksb.messaging.service.impl;
 
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
 import org.kuali.rice.ksb.messaging.service.MessageQueueService;
 import org.kuali.rice.ksb.util.KSBConstants;
-import org.springframework.transaction.annotation.Transactional;
+
+import javax.xml.namespace.QName;
+import java.sql.Timestamp;
+import java.util.List;
+import java.util.Map;
 
 public class MessageQueueServiceImpl implements MessageQueueService {
 
@@ -39,7 +37,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
     private static final Logger LOG = Logger.getLogger(MessageQueueServiceImpl.class);
     private MessageQueueDAO messageQueueDAO;
 
-    public void delete(PersistedMessage routeQueue) {
+    public void delete(PersistedMessageBO routeQueue) {
         if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Message Persistence is on.  Deleting stored message" + routeQueue);
@@ -48,7 +46,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
         }
     }
 
-    public void save(PersistedMessage routeQueue) {
+    public void save(PersistedMessageBO routeQueue) {
         if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Persisting Message " + routeQueue);
@@ -57,15 +55,15 @@ public class MessageQueueServiceImpl implements MessageQueueService {
         }
     }
 
-    public List<PersistedMessage> findAll() {
+    public List<PersistedMessageBO> findAll() {
         return this.getMessageQueueDAO().findAll();
     }
 
-    public List<PersistedMessage> findAll(int maxRows) {
+    public List<PersistedMessageBO> findAll(int maxRows) {
         return this.getMessageQueueDAO().findAll(maxRows);
     }
 
-    public PersistedMessage findByRouteQueueId(Long routeQueueId) {
+    public PersistedMessageBO findByRouteQueueId(Long routeQueueId) {
         return getMessageQueueDAO().findByRouteQueueId(routeQueueId);
     }
 
@@ -73,7 +71,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
         return messageQueueDAO.findByPersistedMessageByRouteQueueId(routeQueueId);
     }
 
-    public List<PersistedMessage> getNextDocuments(Integer maxDocuments) {
+    public List<PersistedMessageBO> getNextDocuments(Integer maxDocuments) {
         return this.getMessageQueueDAO().getNextDocuments(maxDocuments);
     }
 
@@ -85,11 +83,11 @@ public class MessageQueueServiceImpl implements MessageQueueService {
         this.messageQueueDAO = queueDAO;
     }
 
-    public List<PersistedMessage> findByServiceName(QName serviceName, String methodName) {
+    public List<PersistedMessageBO> findByServiceName(QName serviceName, String methodName) {
         return getMessageQueueDAO().findByServiceName(serviceName, methodName);
     }
 
-    public List<PersistedMessage> findByValues(Map<String, String> criteriaValues, int maxRows) {
+    public List<PersistedMessageBO> findByValues(Map<String, String> criteriaValues, int maxRows) {
         return getMessageQueueDAO().findByValues(criteriaValues, maxRows);
     }
 
@@ -97,8 +95,8 @@ public class MessageQueueServiceImpl implements MessageQueueService {
         return new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
     }
 
-    public PersistedMessage getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall) {
-        PersistedMessage message = new PersistedMessage();
+    public PersistedMessageBO getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall) {
+        PersistedMessageBO message = new PersistedMessageBO();
         message.setPayload(new PersistedMessagePayload(methodCall, message));
         message.setIpNumber(RiceUtilities.getIpNumber());
         message.setServiceName(serviceInfo.getQname().toString());

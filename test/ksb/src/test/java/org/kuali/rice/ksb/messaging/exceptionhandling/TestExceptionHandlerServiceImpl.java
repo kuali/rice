@@ -15,8 +15,7 @@
  */
 package org.kuali.rice.ksb.messaging.exceptionhandling;
 
-import org.kuali.rice.ksb.messaging.PersistedMessage;
-import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultExceptionServiceImpl;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.test.TestUtilities;
 
 
@@ -25,7 +24,7 @@ public class TestExceptionHandlerServiceImpl extends DefaultExceptionServiceImpl
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 	    .getLogger(TestExceptionHandlerServiceImpl.class);
     
-	public void placeInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) {
+	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO message, Object service) {
 		LOG.info("Executing placeInExceptionRouting - creating and starting the ExceptionThreader");
 		ExceptionThreader exceptionThreader = new ExceptionThreader(throwable, message, service, this);
 		exceptionThreader.start();
@@ -34,11 +33,11 @@ public class TestExceptionHandlerServiceImpl extends DefaultExceptionServiceImpl
 	private static class ExceptionThreader extends Thread {
 
 		private Throwable throwable;
-		private PersistedMessage message;
+		private PersistedMessageBO message;
 		private Object service;
 		private TestExceptionHandlerServiceImpl testExceptionService;
 		
-		public ExceptionThreader(Throwable throwable, PersistedMessage message, Object service, TestExceptionHandlerServiceImpl testExceptionService) {
+		public ExceptionThreader(Throwable throwable, PersistedMessageBO message, Object service, TestExceptionHandlerServiceImpl testExceptionService) {
 			this.throwable = throwable;
 			this.message = message;
 			this.service = service;
@@ -62,7 +61,7 @@ public class TestExceptionHandlerServiceImpl extends DefaultExceptionServiceImpl
 		}
 	}
 	
-	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) throws Exception {
+	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessageBO message, Object service) throws Exception {
 		LOG.info("Executing callRealPlaceInExceptionRouting from TestExceptionHandlerServiceImpl.");
 		super.placeInExceptionRouting(throwable, message, service);
 		LOG.info("Message was successfully placed in exception routing.");

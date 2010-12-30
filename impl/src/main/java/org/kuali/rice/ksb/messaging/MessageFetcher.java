@@ -55,7 +55,7 @@ public class MessageFetcher implements Runnable {
     private void requeueMessages() {
 	if (this.routeQueueId == null) {
 	    try {
-		for (final PersistedMessage message : getRouteQueueService().getNextDocuments(maxMessages)) {
+		for (final PersistedMessageBO message : getRouteQueueService().getNextDocuments(maxMessages)) {
 		    markEnrouteAndSaveMessage(message);
 		    executeMessage(message);
 		}
@@ -68,7 +68,7 @@ public class MessageFetcher implements Runnable {
     private void requeueDocument() {
 	try {
 	    if (this.routeQueueId != null) {
-		PersistedMessage message = getRouteQueueService().findByRouteQueueId(this.routeQueueId);
+		PersistedMessageBO message = getRouteQueueService().findByRouteQueueId(this.routeQueueId);
 		message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
 		getRouteQueueService().save(message);
 		executeMessage(message);
@@ -78,7 +78,7 @@ public class MessageFetcher implements Runnable {
 	}
     }
 
-    private void executeMessage(PersistedMessage message) {
+    private void executeMessage(PersistedMessageBO message) {
 	try {
 	    KSBServiceLocator.getThreadPool().execute(new MessageServiceInvoker(message));
 	} catch (Throwable t) {
@@ -86,7 +86,7 @@ public class MessageFetcher implements Runnable {
 	}
     }
 
-    private void markEnrouteAndSaveMessage(final PersistedMessage message) {
+    private void markEnrouteAndSaveMessage(final PersistedMessageBO message) {
 	try {
 	    KSBServiceLocator.getTransactionTemplate().execute(new TransactionCallback() {
 		public Object doInTransaction(TransactionStatus status) {

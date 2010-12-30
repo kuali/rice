@@ -15,19 +15,19 @@
  */
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
-import java.io.Serializable;
-import java.lang.reflect.Proxy;
-import java.util.List;
-
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.AsynchronousCallback;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import java.io.Serializable;
+import java.lang.reflect.Proxy;
+import java.util.List;
 
 
 /**
@@ -59,7 +59,7 @@ public class SynchronousServiceCallProxy extends AsynchronousServiceCallProxy {
     }
 
     @Override
-    protected void executeMessage(PersistedMessage message) {
+    protected void executeMessage(PersistedMessageBO message) {
 	if (!new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF))) {
 	    new MessageServiceInvoker(message).run();
 	}

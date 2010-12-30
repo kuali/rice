@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.ksb.messaging.exceptionhandling;
 
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 
 /**
  * A MessageExceptionHandler handles exception which arrise during processing of the
@@ -26,15 +26,15 @@ import org.kuali.rice.ksb.messaging.PersistedMessage;
  */
 public interface MessageExceptionHandler {
 
-	public void handleException(Throwable throwable, PersistedMessage message, Object service) throws Exception;
+	public void handleException(Throwable throwable, PersistedMessageBO message, Object service) throws Exception;
 	
-	public void handleExceptionLastDitchEffort(Throwable throwable, PersistedMessage message, Object service) throws Exception;
+	public void handleExceptionLastDitchEffort(Throwable throwable, PersistedMessageBO message, Object service) throws Exception;
 	
     /**
      * Determines whether the message would go into Exception if submitted.
-     * @param message The PersistedMessage instance to be tested.
+     * @param message The PersistedMessageBO instance to be tested.
      * @return Returns true if the message would go into exception, otherwise returns false.
      */
-    public boolean isInException(PersistedMessage message);
+    public boolean isInException(PersistedMessageBO message);
 
 }

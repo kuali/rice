@@ -15,22 +15,21 @@
  */
 package org.kuali.rice.ksb.messaging.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJob;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.quartz.JobDetail;
 import org.quartz.Trigger;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -76,7 +75,7 @@ public class QuartzQueueAction extends KSBAction {
 	QuartzQueueForm quartzForm = (QuartzQueueForm)form;
 	
 	JobDetail job = KSBServiceLocator.getScheduler().getJobDetail(quartzForm.getJobName(), quartzForm.getJobGroup());
-	PersistedMessage message = (PersistedMessage)job.getJobDataMap().get(MessageServiceExecutorJob.MESSAGE_KEY);
+	PersistedMessageBO message = (PersistedMessageBO)job.getJobDataMap().get(MessageServiceExecutorJob.MESSAGE_KEY);
 	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_EXCEPTION);
 	
 	KSBServiceLocator.getRouteQueueService().save(message);

@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.ksb.messaging.exceptionhandling;
 
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 
 /**
  * A service for putting a document into exception routing.
@@ -25,8 +25,8 @@ import org.kuali.rice.ksb.messaging.PersistedMessage;
  */
 public interface ExceptionRoutingService {
 
-    public void placeInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) throws Exception;
-    public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessage message, Object service) throws Exception;
-    public void scheduleExecution(Throwable throwable, PersistedMessage message, String description) throws Exception;
+    public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO message, Object service) throws Exception;
+    public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessageBO message, Object service) throws Exception;
+    public void scheduleExecution(Throwable throwable, PersistedMessageBO message, String description) throws Exception;
     
 }

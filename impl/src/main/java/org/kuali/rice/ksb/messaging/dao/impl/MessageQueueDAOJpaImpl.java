@@ -15,23 +15,22 @@
  */
 package org.kuali.rice.ksb.messaging.dao.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.xml.namespace.QName;
-
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
 import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.xml.namespace.QName;
+import java.util.List;
+import java.util.Map;
 
 
 public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
@@ -42,25 +41,25 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
     private EntityManager entityManager;
     
     @SuppressWarnings("unchecked")
-    public List<PersistedMessage> findAll() {
+    public List<PersistedMessageBO> findAll() {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Returning all persisted messages");
         }
         
-        Query query = entityManager.createNamedQuery("PersistedMessage.FindAll");
-        return (List<PersistedMessage>) query.getResultList();
+        Query query = entityManager.createNamedQuery("PersistedMessageBO.FindAll");
+        return (List<PersistedMessageBO>) query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
-    public List<PersistedMessage> findAll(int maxRows) {
+    public List<PersistedMessageBO> findAll(int maxRows) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Finding next " + maxRows + " messages");
         }
         
-        Query query = entityManager.createNamedQuery("PersistedMessage.FindAll");
+        Query query = entityManager.createNamedQuery("PersistedMessageBO.FindAll");
         query.setMaxResults(maxRows);
         
-        return (List<PersistedMessage>) query.getResultList();
+        return (List<PersistedMessageBO>) query.getResultList();
     }
 
     
@@ -69,26 +68,26 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
     }
 
     
-    public PersistedMessage findByRouteQueueId(Long routeQueueId) {
-        return (PersistedMessage) entityManager.find(PersistedMessage.class, routeQueueId);
+    public PersistedMessageBO findByRouteQueueId(Long routeQueueId) {
+        return (PersistedMessageBO) entityManager.find(PersistedMessageBO.class, routeQueueId);
     }
 
     @SuppressWarnings("unchecked")
-    public List<PersistedMessage> findByServiceName(QName serviceName, String methodName) {
+    public List<PersistedMessageBO> findByServiceName(QName serviceName, String methodName) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Finding messages for service name " + serviceName);
         }
         
-        Query query = entityManager.createNamedQuery("PersistedMessage.FindByServiceName");
+        Query query = entityManager.createNamedQuery("PersistedMessageBO.FindByServiceName");
         query.setParameter("serviceName", serviceName.toString());
         query.setParameter("methodName", methodName);
         
-        return (List<PersistedMessage>) query.getResultList();
+        return (List<PersistedMessageBO>) query.getResultList();
     }
 
     @SuppressWarnings("unchecked")
-    public List<PersistedMessage> findByValues(Map<String, String> criteriaValues, int maxRows) {
-        Criteria criteria = new Criteria(PersistedMessage.class.getName());
+    public List<PersistedMessageBO> findByValues(Map<String, String> criteriaValues, int maxRows) {
+        Criteria criteria = new Criteria(PersistedMessageBO.class.getName());
         for(Map.Entry<String, String> entry : criteriaValues.entrySet()) {
             criteria.eq(entry.getKey(), entry.getValue());
         }
@@ -99,10 +98,10 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List<PersistedMessage> getNextDocuments(Integer maxDocuments) {
+    public List<PersistedMessageBO> getNextDocuments(Integer maxDocuments) {
         String serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
         
-        Query query = entityManager.createNamedQuery("PersistedMessage.GetNextDocuments");
+        Query query = entityManager.createNamedQuery("PersistedMessageBO.GetNextDocuments");
         query.setParameter("serviceNamespace", serviceNamespace);
         query.setParameter("queueStatus", KSBConstants.ROUTE_QUEUE_EXCEPTION);
         query.setParameter("ipNumber", RiceUtilities.getIpNumber());
@@ -110,16 +109,16 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
         if (maxDocuments != null)
             query.setMaxResults(maxDocuments);
         
-        return (List<PersistedMessage>) query.getResultList();
+        return (List<PersistedMessageBO>) query.getResultList();
     }
 
     
-    public void remove(PersistedMessage routeQueue) {
+    public void remove(PersistedMessageBO routeQueue) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Removing message " + routeQueue);
         }
         if (routeQueue.getRouteQueueId() == null) {
-            throw new RiceRuntimeException("can't delete a PersistedMessage with no id");
+            throw new RiceRuntimeException("can't delete a PersistedMessageBO with no id");
         }
         
         routeQueue = entityManager.merge(routeQueue);
@@ -132,11 +131,11 @@ public class MessageQueueDAOJpaImpl implements MessageQueueDAO {
     }
 
     
-    public void save(PersistedMessage routeQueue) {
+    public void save(PersistedMessageBO routeQueue) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Persisting message " + routeQueue);
         }
-        PersistedMessage jpaInstance = entityManager.merge(routeQueue);
+        PersistedMessageBO jpaInstance = entityManager.merge(routeQueue);
         Long routeQueueId = jpaInstance.getRouteQueueId();
         Integer verNo = jpaInstance.getLockVerNbr();
         routeQueue.setRouteQueueId(routeQueueId);

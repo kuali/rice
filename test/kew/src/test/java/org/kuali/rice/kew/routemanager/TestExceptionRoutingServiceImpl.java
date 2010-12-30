@@ -18,7 +18,7 @@ package org.kuali.rice.kew.routemanager;
 
 import org.kuali.rice.kew.messaging.exceptionhandling.ExceptionRoutingServiceImpl;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.test.ThreadMonitor;
 
 
@@ -29,7 +29,7 @@ public class TestExceptionRoutingServiceImpl extends ExceptionRoutingServiceImpl
 	    .getLogger(TestExceptionRoutingServiceImpl.class);
     
 	@Override
-	public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) {
+	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, Long routeHeaderId) {
 		ExceptionThreader exceptionThreader = new ExceptionThreader(throwable, persistedMessage, routeHeaderId, this);
 		ThreadMonitor.addThread(exceptionThreader);
 		exceptionThreader.start();
@@ -38,11 +38,11 @@ public class TestExceptionRoutingServiceImpl extends ExceptionRoutingServiceImpl
 	private static class ExceptionThreader extends Thread {
 
 		private Throwable throwable;
-		private PersistedMessage message;
+		private PersistedMessageBO message;
 		Long routeHeaderId;
 		private TestExceptionRoutingServiceImpl testExceptionService;
 		
-		public ExceptionThreader(Throwable throwable, PersistedMessage message, Long routeHeaderId, TestExceptionRoutingServiceImpl testExceptionService) {
+		public ExceptionThreader(Throwable throwable, PersistedMessageBO message, Long routeHeaderId, TestExceptionRoutingServiceImpl testExceptionService) {
 			this.throwable = throwable;
 			this.message = message;
 			this.routeHeaderId = routeHeaderId;
@@ -59,7 +59,7 @@ public class TestExceptionRoutingServiceImpl extends ExceptionRoutingServiceImpl
 		}
 	}
 	
-	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessage message, Long routeHeaderId) throws Exception {
+	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessageBO message, Long routeHeaderId) throws Exception {
 		super.placeInExceptionRouting(throwable, message, routeHeaderId);
 	}	
 }

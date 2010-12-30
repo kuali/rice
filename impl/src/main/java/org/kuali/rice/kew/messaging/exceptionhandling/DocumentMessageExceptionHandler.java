@@ -16,7 +16,7 @@ package org.kuali.rice.kew.messaging.exceptionhandling;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler;
 import org.kuali.rice.ksb.messaging.exceptionhandling.MessageExceptionHandler;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -30,26 +30,26 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 public class DocumentMessageExceptionHandler extends DefaultMessageExceptionHandler {
 
 	@Override
-	protected void placeInException(Throwable throwable, PersistedMessage message) throws Exception {
+	protected void placeInException(Throwable throwable, PersistedMessageBO message) throws Exception {
 		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRouting(throwable, message, getRouteHeaderId(message));
 	}
 	
 	
 
 	@Override
-	public void handleExceptionLastDitchEffort(Throwable throwable, PersistedMessage message, Object service) throws Exception {
+	public void handleExceptionLastDitchEffort(Throwable throwable, PersistedMessageBO message, Object service) throws Exception {
 		KEWServiceLocator.getExceptionRoutingService().placeInExceptionRoutingLastDitchEffort(throwable, message, getRouteHeaderId(message));
 	}
 
 
 
 	@Override
-	protected void scheduleExecution(Throwable throwable, PersistedMessage message) throws Exception {
+	protected void scheduleExecution(Throwable throwable, PersistedMessageBO message) throws Exception {
 		String description = "DocumentId: " + getRouteHeaderId(message);
 		KSBServiceLocator.getExceptionRoutingService().scheduleExecution(throwable, message, description);
 	}
 
-	protected Long getRouteHeaderId(PersistedMessage message) {
+	protected Long getRouteHeaderId(PersistedMessageBO message) {
 		if (!StringUtils.isEmpty(message.getValue1()) && StringUtils.isNumeric(message.getValue1())) {
 			return Long.valueOf(message.getValue1());
 		}

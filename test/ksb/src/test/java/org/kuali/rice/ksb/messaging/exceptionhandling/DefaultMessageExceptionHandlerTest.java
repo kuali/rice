@@ -18,20 +18,15 @@ package org.kuali.rice.ksb.messaging.exceptionhandling;
 
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
-import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
-import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
 
 
 public class DefaultMessageExceptionHandlerTest extends KSBTestCase {
     
-    private PersistedMessage setupMessage(Integer retriesAttempted, Integer serviceMaxRetries) throws Exception {
-        PersistedMessage message = new PersistedMessage();
+    private PersistedMessageBO setupMessage(Integer retriesAttempted, Integer serviceMaxRetries) throws Exception {
+        PersistedMessageBO message = new PersistedMessageBO();
         message.setRetryCount(retriesAttempted);
         ServiceInfo serviceInfo = new ServiceInfo();
         serviceInfo.setServiceDefinition(new JavaServiceDefinition());
@@ -79,7 +74,7 @@ public class DefaultMessageExceptionHandlerTest extends KSBTestCase {
     
     @Test public void testIsInException() throws Exception {
         DefaultMessageExceptionHandler exceptionHandler = new DefaultMessageExceptionHandler();
-        PersistedMessage message = null;
+        PersistedMessageBO message = null;
         
         this.setMaxRetries("-10");
 

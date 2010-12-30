@@ -18,7 +18,6 @@ package org.kuali.rice.kew.mail;
 
 import mocks.MockEmailNotificationService;
 import mocks.MockEmailNotificationServiceImpl;
-
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.kew.preferences.Preferences;
@@ -153,8 +152,8 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //
 //		setUpConfigForEmail();
 //
-//		PersistedMessage dailyMessage = getMockDailyMessage();
-//		PersistedMessage weeklyMessage = getMockWeeklyMessage();
+//		PersistedMessageBO dailyMessage = getMockDailyMessage();
+//		PersistedMessageBO weeklyMessage = getMockWeeklyMessage();
 //		KEWServiceLocator.getRouteQueueService().save(dailyMessage);
 //		KEWServiceLocator.getRouteQueueService().save(weeklyMessage);
 //
@@ -166,11 +165,11 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //		messages = KEWServiceLocator.getRouteQueueService().findAll();
 //		assertEquals("Should only be 2 items present in queue", 2, messages.size());
 //
-//		PersistedMessage fetchedDaily = null;
-//		PersistedMessage fetchedWeekly = null;
+//		PersistedMessageBO fetchedDaily = null;
+//		PersistedMessageBO fetchedWeekly = null;
 //
 //		for (Iterator iter = messages.iterator(); iter.hasNext();) {
-//			PersistedMessage fetchedMessage = (PersistedMessage) iter.next();
+//			PersistedMessageBO fetchedMessage = (PersistedMessageBO) iter.next();
 //			if (fetchedMessage.getMethodName().equals("sendDailyReminder")) {
 //				fetchedDaily = fetchedMessage;
 //			} else {
@@ -191,7 +190,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //
 //		setUpConfigForEmail();
 //
-//		PersistedMessage dailyMessage = getMockDailyMessage();
+//		PersistedMessageBO dailyMessage = getMockDailyMessage();
 //		KEWServiceLocator.getRouteQueueService().save(dailyMessage);
 //
 //		Collection messages = KEWServiceLocator.getRouteQueueService().findAll();
@@ -202,11 +201,11 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //		messages = KEWServiceLocator.getRouteQueueService().findAll();
 //		assertEquals("Should only be 2 items present in queue", 2, messages.size());
 //
-//		PersistedMessage fetchedDaily = null;
-//		PersistedMessage fetchedWeekly = null;
+//		PersistedMessageBO fetchedDaily = null;
+//		PersistedMessageBO fetchedWeekly = null;
 //
 //		for (Iterator iter = messages.iterator(); iter.hasNext();) {
-//			PersistedMessage fetchedMessage = (PersistedMessage) iter.next();
+//			PersistedMessageBO fetchedMessage = (PersistedMessageBO) iter.next();
 //			if (fetchedMessage.getMethodName().equals("sendDailyReminder")) {
 //				fetchedDaily = fetchedMessage;
 //			} else {
@@ -227,7 +226,7 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //
 //		setUpConfigForEmail();
 //
-//		PersistedMessage weeklyMessage = getMockWeeklyMessage();
+//		PersistedMessageBO weeklyMessage = getMockWeeklyMessage();
 //		KEWServiceLocator.getRouteQueueService().save(weeklyMessage);
 //
 //		Collection messages = KEWServiceLocator.getRouteQueueService().findAll();
@@ -238,11 +237,11 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //		messages = KEWServiceLocator.getRouteQueueService().findAll();
 //		assertEquals("Should only be 2 items present in queue", 2, messages.size());
 //
-//		PersistedMessage fetchedDaily = null;
-//		PersistedMessage fetchedWeekly = null;
+//		PersistedMessageBO fetchedDaily = null;
+//		PersistedMessageBO fetchedWeekly = null;
 //
 //		for (Iterator iter = messages.iterator(); iter.hasNext();) {
-//			PersistedMessage fetchedMessage = (PersistedMessage) iter.next();
+//			PersistedMessageBO fetchedMessage = (PersistedMessageBO) iter.next();
 //			if (fetchedMessage.getMethodName().equals("sendDailyReminder")) {
 //				fetchedDaily = fetchedMessage;
 //			} else {
@@ -268,11 +267,11 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //		emailReminderLifecycle.start();
 //		Collection messages = KEWServiceLocator.getRouteQueueService().findAll();
 //		assertEquals("Should only be 2 items present in queue", 2, messages.size());
-//		PersistedMessage fetchedDaily = null;
-//		PersistedMessage fetchedWeekly = null;
+//		PersistedMessageBO fetchedDaily = null;
+//		PersistedMessageBO fetchedWeekly = null;
 //
 //		for (Iterator iter = messages.iterator(); iter.hasNext();) {
-//			PersistedMessage fetchedMessage = (PersistedMessage) iter.next();
+//			PersistedMessageBO fetchedMessage = (PersistedMessageBO) iter.next();
 //			if (fetchedMessage.getMethodName().equals("sendDailyReminder")) {
 //				fetchedDaily = fetchedMessage;
 //			} else {
@@ -340,8 +339,8 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //	}
 //
 //
-//	private PersistedMessage getMockDailyMessage() throws Exception {
-//		PersistedMessage dailyMessage = new PersistedMessage();
+//	private PersistedMessageBO getMockDailyMessage() throws Exception {
+//		PersistedMessageBO dailyMessage = new PersistedMessageBO();
 //		dailyMessage.setServiceName(emailReminderLifecycle.getEmailServiceName().toString());
 //		dailyMessage.setMethodName("sendDailyReminder");
 //		dailyMessage.setQueueDate(new Timestamp(System.currentTimeMillis()));
@@ -354,8 +353,8 @@ public class EmailReminderLifecycleTest extends KEWTestCase {
 //		return dailyMessage;
 //	}
 //
-//	private PersistedMessage getMockWeeklyMessage() throws Exception {
-//		PersistedMessage weeklyMessage = new PersistedMessage();
+//	private PersistedMessageBO getMockWeeklyMessage() throws Exception {
+//		PersistedMessageBO weeklyMessage = new PersistedMessageBO();
 //		weeklyMessage.setServiceName(emailReminderLifecycle.getEmailServiceName().toString());
 //		weeklyMessage.setQueueDate(new Timestamp(System.currentTimeMillis()));
 //		weeklyMessage.setMethodName("sendWeeklyReminder");

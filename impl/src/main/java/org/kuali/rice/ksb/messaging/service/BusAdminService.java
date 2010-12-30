@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.ksb.messaging.service;
 
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 
 /**
  * A service for administrative functions for a node on the service bus.
@@ -28,7 +28,7 @@ public interface BusAdminService {
     /**
      * Forward the given message to this service for processing.
      */
-    public void forward(PersistedMessage message) throws Exception;
+    public void forward(PersistedMessageBO message) throws Exception;
 
     public void ping();
 

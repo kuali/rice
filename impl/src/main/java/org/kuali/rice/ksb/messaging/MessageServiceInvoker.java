@@ -13,13 +13,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.sql.Timestamp;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -31,8 +24,14 @@ import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
+import javax.xml.namespace.QName;
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.sql.Timestamp;
+import java.util.List;
+
 /**
- * Handles invocation of a {@link PersistedMessage}.
+ * Handles invocation of a {@link PersistedMessageBO}.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -40,11 +39,11 @@ public class MessageServiceInvoker implements Runnable {
 
     protected static final Logger LOG = Logger.getLogger(MessageServiceInvoker.class);
 
-    private PersistedMessage message;
+    private PersistedMessageBO message;
     private Object service;
     private AsynchronousCall methodCall;
 
-    public MessageServiceInvoker(PersistedMessage message) {
+    public MessageServiceInvoker(PersistedMessageBO message) {
         this.message = message;
     }
 
@@ -246,11 +245,11 @@ public class MessageServiceInvoker implements Runnable {
         }
     }
 
-    public PersistedMessage getMessage() {
+    public PersistedMessageBO getMessage() {
         return this.message;
     }
 
-    public void setMessage(PersistedMessage message) {
+    public void setMessage(PersistedMessageBO message) {
         this.message = message;
     }
 

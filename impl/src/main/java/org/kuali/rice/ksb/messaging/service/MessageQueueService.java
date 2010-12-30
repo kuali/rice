@@ -16,44 +16,43 @@
  */
 package org.kuali.rice.ksb.messaging.service;
 
-import java.util.List;
-import java.util.Map;
+import org.kuali.rice.ksb.messaging.AsynchronousCall;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
+import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
+import org.kuali.rice.ksb.messaging.ServiceInfo;
 
 import javax.xml.namespace.QName;
-
-import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Service for interfacing with the queue of asynchronous messages.
  * 
- * @see PersistedMessage
+ * @see org.kuali.rice.ksb.messaging.PersistedMessageBO
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface MessageQueueService {
 
-    public List<PersistedMessage> findByServiceName(QName serviceName, String methodName);
+    public List<PersistedMessageBO> findByServiceName(QName serviceName, String methodName);
 
-    public void delete(PersistedMessage routeQueue);
+    public void delete(PersistedMessageBO routeQueue);
 
-    public void save(PersistedMessage routeQueue);
+    public void save(PersistedMessageBO routeQueue);
 
-    public List<PersistedMessage> findAll();
+    public List<PersistedMessageBO> findAll();
 
-    public List<PersistedMessage> findAll(int maxRows);
+    public List<PersistedMessageBO> findAll(int maxRows);
 
     /**
-     * Finds the PersistedMessage identified by the passed-in primary key, if one is 
+     * Finds the PersistedMessageBO identified by the passed-in primary key, if one is
      * available, otherwise returns a null object.
      * 
      * @param routeQueueId The primary key routeQueueId of the message desired.
-     * @return A populated PersistedMessage instance, if the routeQueueId exists, otherwise 
+     * @return A populated PersistedMessageBO instance, if the routeQueueId exists, otherwise
      *         a null object.
      */
-    public PersistedMessage findByRouteQueueId(Long routeQueueId);
+    public PersistedMessageBO findByRouteQueueId(Long routeQueueId);
 
 //    public List getNextDocuments();
 
@@ -61,7 +60,7 @@ public interface MessageQueueService {
      * Returns a List of RouteQueue documents which are queued for routing.  Will not
      * return more RouteQueues than the value of maxDocuments.
      */
-    public List<PersistedMessage> getNextDocuments(Integer maxDocuments);
+    public List<PersistedMessageBO> getNextDocuments(Integer maxDocuments);
 
     public PersistedMessagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId);
     
@@ -76,7 +75,7 @@ public interface MessageQueueService {
      * @return A populated (or empty) list containing the results of the search.  If no matches are made, 
      *         an empty list will be returned.
      */
-    public List<PersistedMessage> findByValues(Map<String, String> criteriaValues, int maxRows);
+    public List<PersistedMessageBO> findByValues(Map<String, String> criteriaValues, int maxRows);
 
     /**
      * Used to determine the maximum number of retries allowed by the system before the 
@@ -86,5 +85,5 @@ public interface MessageQueueService {
      */
     public Integer getMaxRetryAttempts();
 
-    public PersistedMessage getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall);
+    public PersistedMessageBO getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall);
 }

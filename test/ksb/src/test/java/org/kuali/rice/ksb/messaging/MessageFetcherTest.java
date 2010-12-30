@@ -12,10 +12,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.remotedservices.TestHarnessSharedTopic;
@@ -23,6 +19,9 @@ import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import javax.xml.namespace.QName;
+import java.util.List;
 
 /**
  * Tests {@link MessageFetcher}. Turn messaging off but leave persistence on.
@@ -50,7 +49,7 @@ public class MessageFetcherTest extends KSBTestCase {
 	@Test
 	public void testRequeueMessages() throws Exception {
 
-		List<PersistedMessage> messages = KSBServiceLocator.getRouteQueueService().getNextDocuments(null);
+		List<PersistedMessageBO> messages = KSBServiceLocator.getRouteQueueService().getNextDocuments(null);
 		assertEquals("Should have no messages in the queue.", 0, messages.size());
 		
 		// this number is way over the top but we're going to see if it works in
@@ -98,7 +97,7 @@ public class MessageFetcherTest extends KSBTestCase {
 	public void testRequeueSingleMessage() throws Exception {
 		sendMessage();
 		sendMessage();
-		PersistedMessage message = KSBServiceLocator.getRouteQueueService()
+		PersistedMessageBO message = KSBServiceLocator.getRouteQueueService()
 				.getNextDocuments(null).get(0);
 		assertNotNull("message should have been persisted", message);
 		turnOnMessaging();

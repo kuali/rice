@@ -15,14 +15,12 @@
  */
 package org.kuali.rice.ksb.messaging.threadpool;
 
-import java.sql.Timestamp;
-
 import junit.framework.TestCase;
-
 import org.junit.Test;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
-import org.kuali.rice.ksb.messaging.threadpool.PriorityBlockingQueuePersistedMessageComparator;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
+
+import java.sql.Timestamp;
 
 
 /**
@@ -35,15 +33,15 @@ import org.kuali.rice.ksb.messaging.threadpool.PriorityBlockingQueuePersistedMes
 public class PriorityBlockingQueuePersistedMessageComparatorTest extends TestCase {
 
     @Test public void testSortingByPriorityAndDate() throws Exception {
-	PersistedMessage message1 = new PersistedMessage();
+	PersistedMessageBO message1 = new PersistedMessageBO();
 	message1.setQueuePriority(1);
 	message1.setQueueDate(new Timestamp(System.currentTimeMillis()));
 	
-	PersistedMessage message2 = new PersistedMessage();
+	PersistedMessageBO message2 = new PersistedMessageBO();
 	message2.setQueuePriority(5);
 	message2.setQueueDate(new Timestamp(System.currentTimeMillis()));
 	
-	PersistedMessage message3 = new PersistedMessage();
+	PersistedMessageBO message3 = new PersistedMessageBO();
 	message3.setQueuePriority(5);
 	message3.setQueueDate(new Timestamp(System.currentTimeMillis() + 5));
 	

@@ -15,25 +15,20 @@
  */
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.proxy.BaseInvocationHandler;
 import org.kuali.rice.core.proxy.TargetedInvocationHandler;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.AsynchronousCallback;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
-import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
-import org.kuali.rice.ksb.messaging.ServiceHolder;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.messaging.*;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.List;
 
 
 /**
@@ -88,7 +83,7 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
 	}
 	// there are multiple service calls to make in the case of topics.
 	AsynchronousCall methodCall = null;
-	PersistedMessage message = null;
+	PersistedMessageBO message = null;
 	synchronized (this) {
 	    // consider moving all this topic invocation stuff to the service
 	    // invoker for speed reasons
@@ -116,12 +111,12 @@ public class AsynchronousServiceCallProxy extends BaseInvocationHandler implemen
 	return null;
     }
 
-    protected void saveMessage(PersistedMessage message) {
+    protected void saveMessage(PersistedMessageBO message) {
 	message.setQueueStatus(KSBConstants.ROUTE_QUEUE_ROUTING);
 	KSBServiceLocator.getRouteQueueService().save(message);
     }
 
-    protected void executeMessage(PersistedMessage message) throws Exception {
+    protected void executeMessage(PersistedMessageBO message) throws Exception {
 	MessageSender.sendMessage(message);
     }
 

@@ -15,18 +15,10 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.io.Serializable;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.kuali.rice.ksb.service.KSBServiceLocator;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Holds message payload content.  Needed to proxy the content so we don't have to 
@@ -51,11 +43,11 @@ public class PersistedMessagePayload implements Serializable {
     @Transient
     private AsynchronousCall methodCall;
     @Transient
-    private PersistedMessage message;
+    private PersistedMessageBO message;
     
     public PersistedMessagePayload() {}
     
-    public PersistedMessagePayload (AsynchronousCall methodCall, PersistedMessage message) {
+    public PersistedMessagePayload (AsynchronousCall methodCall, PersistedMessageBO message) {
 	this.setPayload(KSBServiceLocator.getMessageHelper().serializeObject(methodCall));
 	this.methodCall = methodCall;
 	this.message = message;
@@ -81,11 +73,11 @@ public class PersistedMessagePayload implements Serializable {
 	return this.methodCall;
     }
 
-    public PersistedMessage getMessage() {
+    public PersistedMessageBO getMessage() {
         return this.message;
     }
 
-    public void setMessage(PersistedMessage message) {
+    public void setMessage(PersistedMessageBO message) {
         this.message = message;
     }
 

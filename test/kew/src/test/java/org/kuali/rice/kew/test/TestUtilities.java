@@ -16,27 +16,8 @@
  */
 package org.kuali.rice.kew.test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.sql.DataSource;
-
 import junit.framework.Assert;
 import junit.framework.AssertionFailedError;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
@@ -61,6 +42,17 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.sql.DataSource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
+
 
 /**
  * Defines utilities for unit testing
@@ -80,14 +72,14 @@ public final class TestUtilities {
     	return packageClass.getResourceAsStream(resourceName);
     }
 
-//    public static PersistedMessage createRouteQueue(DocumentRouteHeaderValue routeHeader) throws Exception {
+//    public static PersistedMessageBO createRouteQueue(DocumentRouteHeaderValue routeHeader) throws Exception {
 //        Assert.assertNotNull(routeHeader);
 //        Assert.assertNotNull(routeHeader.getRouteHeaderId());
 //    	return createRouteQueue(routeHeader.getRouteHeaderId().toString());
 //    }
 //
-//    public static PersistedMessage createRouteQueue(String payload) throws Exception {
-//        PersistedMessage routeQueue = new PersistedMessage();
+//    public static PersistedMessageBO createRouteQueue(String payload) throws Exception {
+//        PersistedMessageBO routeQueue = new PersistedMessageBO();
 //        routeQueue.setIpNumber(InetAddress.getLocalHost().getHostAddress());
 //        // set the time back 60 seconds so that we can pull it from the queue
 //        routeQueue.setQueueDate(new Timestamp(new Date().getTime()-60*1000));

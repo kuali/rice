@@ -15,30 +15,29 @@
  */
 package org.kuali.rice.ksb.messaging.dao;
 
-import java.util.List;
-import java.util.Map;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
+import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
 
 import javax.xml.namespace.QName;
-
-import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import java.util.List;
+import java.util.Map;
 
 
 public interface MessageQueueDAO {
 
-    public void remove(PersistedMessage routeQueue);
+    public void remove(PersistedMessageBO routeQueue);
 
-    public void save(PersistedMessage routeQueue);
+    public void save(PersistedMessageBO routeQueue);
 
-    public PersistedMessage findByRouteQueueId(Long routeQueueId);
+    public PersistedMessageBO findByRouteQueueId(Long routeQueueId);
 
-    public List<PersistedMessage> findAll();
+    public List<PersistedMessageBO> findAll();
 
-    public List<PersistedMessage> findAll(int maxRows);
+    public List<PersistedMessageBO> findAll(int maxRows);
 
-    public List<PersistedMessage> getNextDocuments(Integer maxDocuments);
+    public List<PersistedMessageBO> getNextDocuments(Integer maxDocuments);
 
-    public List<PersistedMessage> findByServiceName(QName serviceName, String methodName);
+    public List<PersistedMessageBO> findByServiceName(QName serviceName, String methodName);
 
     /**
          * Finds the persisted messages that match the values passed into the criteriaValues Map, with an EqualTo criteria
@@ -50,7 +49,7 @@ public interface MessageQueueDAO {
          * @return A populated (or empty) list containing the results of the search. If no matches are made, an empty list
          *         will be returned.
          */
-    public List<PersistedMessage> findByValues(Map<String, String> criteriaValues, int maxRows);
+    public List<PersistedMessageBO> findByValues(Map<String, String> criteriaValues, int maxRows);
 
     public PersistedMessagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId);
 }

@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.proxy.BaseInvocationHandler;
@@ -29,18 +22,20 @@ import org.kuali.rice.core.proxy.TargetedInvocationHandler;
 import org.kuali.rice.core.resourceloader.ContextClassLoaderProxy;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJob;
 import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJobListener;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleTrigger;
-import org.quartz.Trigger;
+import org.quartz.*;
+
+import java.io.Serializable;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.List;
 
 
 /**
@@ -85,7 +80,7 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
     protected Object invokeInternal(Object proxy, Method method, Object[] arguments) throws Throwable {
 	// there are multiple service calls to make in the case of topics.
 	AsynchronousCall methodCall = null;
-	PersistedMessage message = null;
+	PersistedMessageBO message = null;
 	synchronized (this) {
 	    // consider moving all this topic invocation stuff to the service
 	    // invoker for speed reasons
@@ -112,7 +107,7 @@ public class DelayedAsynchronousServiceCallProxy extends BaseInvocationHandler i
 	return null;
     }
 
-    protected void scheduleMessage(PersistedMessage message) throws SchedulerException {
+    protected void scheduleMessage(PersistedMessageBO message) throws SchedulerException {
 	LOG.debug("Scheduling execution of a delayed asynchronous message.");
 	Scheduler scheduler = KSBServiceLocator.getScheduler();
 	JobDataMap jobData = new JobDataMap();

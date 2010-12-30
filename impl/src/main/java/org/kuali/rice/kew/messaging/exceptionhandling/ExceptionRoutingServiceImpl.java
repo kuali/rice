@@ -16,12 +16,6 @@
  */
 package org.kuali.rice.kew.messaging.exceptionhandling;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.log4j.MDC;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ExceptionUtils;
@@ -44,15 +38,21 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 
 public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRoutingService {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(ExceptionRoutingServiceImpl.class);
 
-    public void placeInExceptionRouting(String errorMessage, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception {
+    public void placeInExceptionRouting(String errorMessage, PersistedMessageBO persistedMessage, Long routeHeaderId) throws Exception {
  	 	RouteNodeInstance nodeInstance = null;
  	 	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeaderId, true);
  	 	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
@@ -65,7 +65,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
  	 	placeInExceptionRouting(errorMessage, nodeInstance, persistedMessage, routeContext, document, true);
  	 }
     
-    public void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception {
+    public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, Long routeHeaderId) throws Exception {
     	placeInExceptionRouting(throwable, persistedMessage, routeHeaderId, true);
     }
     
@@ -73,11 +73,11 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
      * In our case here, our last ditch effort to put the document into exception routing will try to do so without invoking
      * the Post Processor for do route status change to "Exception" status.
      */
-    public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId) throws Exception {
+    public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessageBO persistedMessage, Long routeHeaderId) throws Exception {
     	placeInExceptionRouting(throwable, persistedMessage, routeHeaderId, false);
     }
     
-    protected void placeInExceptionRouting(Throwable throwable, PersistedMessage persistedMessage, Long routeHeaderId, boolean invokePostProcessor) throws Exception {
+    protected void placeInExceptionRouting(Throwable throwable, PersistedMessageBO persistedMessage, Long routeHeaderId, boolean invokePostProcessor) throws Exception {
     	KEWServiceLocator.getRouteHeaderService().lockRouteHeader(routeHeaderId, true);
     	DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(routeHeaderId);
     	throwable = unwrapRouteManagerExceptionIfPossible(throwable);
@@ -88,7 +88,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     	placeInExceptionRouting(errorMessage, nodeInstance, persistedMessage, routeContext, document, invokePostProcessor);
     }
     
-    protected void placeInExceptionRouting(String errorMessage, RouteNodeInstance nodeInstance, PersistedMessage persistedMessage, RouteContext routeContext, DocumentRouteHeaderValue document, boolean invokePostProcessor) throws Exception {
+    protected void placeInExceptionRouting(String errorMessage, RouteNodeInstance nodeInstance, PersistedMessageBO persistedMessage, RouteContext routeContext, DocumentRouteHeaderValue document, boolean invokePostProcessor) throws Exception {
     	Long routeHeaderId = document.getRouteHeaderId();
         MDC.put("docId", routeHeaderId);
         PerformanceLogger performanceLogger = new PerformanceLogger(routeHeaderId);

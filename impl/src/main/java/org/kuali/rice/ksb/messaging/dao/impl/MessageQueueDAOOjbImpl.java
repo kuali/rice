@@ -15,41 +15,40 @@
  */
 package org.kuali.rice.ksb.messaging.dao.impl;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.dao.MessageQueueDAO;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
+
+import javax.xml.namespace.QName;
+import java.util.List;
+import java.util.Map;
 
 
 public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implements MessageQueueDAO {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MessageQueueDAOOjbImpl.class);
 
-	public void remove(PersistedMessage routeQueue) {
+	public void remove(PersistedMessageBO routeQueue) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Removing message " + routeQueue);
 		}
 		Criteria crit = new Criteria();
 		crit.addEqualTo("routeQueueId", routeQueue.getRouteQueueId());
-		getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(PersistedMessage.class, crit));
+		getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(PersistedMessageBO.class, crit));
 
 		crit = new Criteria();
 		crit.addEqualTo("routeQueueId", routeQueue.getPayload().getRouteQueueId());
 		getPersistenceBrokerTemplate().deleteByQuery(new QueryByCriteria(PersistedMessagePayload.class, crit));
 	}
 
-	public void save(PersistedMessage routeQueue) {
+	public void save(PersistedMessageBO routeQueue) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Persisting message " + routeQueue);
 		}
@@ -59,27 +58,27 @@ public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<PersistedMessage> findAll() {
+	public List<PersistedMessageBO> findAll() {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Returning all persisted messages");
 		}
-	return (List<PersistedMessage>) getPersistenceBrokerTemplate().getCollectionByQuery(
-		new QueryByCriteria(PersistedMessage.class));
+	return (List<PersistedMessageBO>) getPersistenceBrokerTemplate().getCollectionByQuery(
+		new QueryByCriteria(PersistedMessageBO.class));
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<PersistedMessage> findAll(int maxRows) {
+	public List<PersistedMessageBO> findAll(int maxRows) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Finding next " + maxRows + " messages");
 		}
-		QueryByCriteria query = new QueryByCriteria(PersistedMessage.class);
+		QueryByCriteria query = new QueryByCriteria(PersistedMessageBO.class);
 		query.setStartAtIndex(0);
 		query.setEndAtIndex(maxRows);
-		return (List<PersistedMessage>) getPersistenceBrokerTemplate().getCollectionByQuery(query);
+		return (List<PersistedMessageBO>) getPersistenceBrokerTemplate().getCollectionByQuery(query);
 	}
 
 	@SuppressWarnings("unchecked")
-    public List<PersistedMessage> findByValues(Map<String, String> criteriaValues, int maxRows) {
+    public List<PersistedMessageBO> findByValues(Map<String, String> criteriaValues, int maxRows) {
 		Criteria crit = new Criteria();
 		String value = null;
 		for (String key : criteriaValues.keySet()) {
@@ -101,18 +100,18 @@ public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 			crit.addLike(key, value);
 		}
 	}
-	QueryByCriteria query = new QueryByCriteria(PersistedMessage.class, crit);
+	QueryByCriteria query = new QueryByCriteria(PersistedMessageBO.class, crit);
 	query.setFetchSize(maxRows);
 	query.setStartAtIndex(0);
 	query.setEndAtIndex(maxRows);
-	return (List<PersistedMessage>) getPersistenceBrokerTemplate().getCollectionByQuery(query);
+	return (List<PersistedMessageBO>) getPersistenceBrokerTemplate().getCollectionByQuery(query);
     }
 
-	public PersistedMessage findByRouteQueueId(Long routeQueueId) {
+	public PersistedMessageBO findByRouteQueueId(Long routeQueueId) {
 		Criteria criteria = new Criteria();
 		criteria.addEqualTo("routeQueueId", routeQueueId);
-	return (PersistedMessage) getPersistenceBrokerTemplate().getObjectByQuery(
-		new QueryByCriteria(PersistedMessage.class, criteria));
+	return (PersistedMessageBO) getPersistenceBrokerTemplate().getObjectByQuery(
+		new QueryByCriteria(PersistedMessageBO.class, criteria));
 	}
 
     public PersistedMessagePayload findByPersistedMessageByRouteQueueId(Long routeQueueId) {
@@ -123,14 +122,14 @@ public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<PersistedMessage> getNextDocuments(Integer maxDocuments) {
+	public List<PersistedMessageBO> getNextDocuments(Integer maxDocuments) {
 		Criteria crit = new Criteria();
 		String serviceNamespace = ConfigContext.getCurrentContextConfig().getServiceNamespace();
 		crit.addEqualTo("serviceNamespace", serviceNamespace);
 		crit.addNotEqualTo("queueStatus", KSBConstants.ROUTE_QUEUE_EXCEPTION);
 		crit.addEqualTo("ipNumber", RiceUtilities.getIpNumber());
 
-		QueryByCriteria query = new QueryByCriteria(PersistedMessage.class, crit);
+		QueryByCriteria query = new QueryByCriteria(PersistedMessageBO.class, crit);
 		query.addOrderByAscending("queuePriority");
 		query.addOrderByAscending("routeQueueId");
 		query.addOrderByAscending("queueDate");
@@ -140,15 +139,15 @@ public class MessageQueueDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<PersistedMessage> findByServiceName(QName serviceName, String methodName) {
+	public List<PersistedMessageBO> findByServiceName(QName serviceName, String methodName) {
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("Finding messages for service name " + serviceName);
 		}
 		Criteria crit = new Criteria();
 		crit.addEqualTo("serviceName", serviceName.toString());
 		crit.addEqualTo("methodName", methodName);
-	return (List<PersistedMessage>) getPersistenceBrokerTemplate().getCollectionByQuery(
-		new QueryByCriteria(PersistedMessage.class, crit));
+	return (List<PersistedMessageBO>) getPersistenceBrokerTemplate().getCollectionByQuery(
+		new QueryByCriteria(PersistedMessageBO.class, crit));
 	}
 
 }

@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import javax.xml.namespace.QName;
 
 /**
  * verify that value1 and value2 are preserved when passed into message helper and making an async call.  
@@ -43,7 +42,7 @@ public class Value1AndValue2PersistedOnMessageCall extends KSBTestCase {
 	KSBJavaService testJavaAsyncService = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(serviceName, null, null, value1, value2);
 	testJavaAsyncService.invoke(new ClientAppServiceSharedPayloadObj("message content", false));
 	
-	PersistedMessage message = KSBServiceLocator.getRouteQueueService().getNextDocuments(null).get(0);
+	PersistedMessageBO message = KSBServiceLocator.getRouteQueueService().getNextDocuments(null).get(0);
 	assertEquals("value1 incorrectly saved", value1, message.getValue1());
 	assertEquals("value2 incorrectly saved", value2, message.getValue2());
 	

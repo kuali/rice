@@ -15,7 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import org.kuali.rice.ksb.messaging.PersistedMessage;
 import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultExceptionServiceImpl;
 import org.kuali.rice.test.TestUtilities;
 import org.kuali.rice.test.ThreadMonitor;
@@ -26,7 +25,7 @@ public class TestExceptionRoutingServiceImpl extends DefaultExceptionServiceImpl
     	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
 		.getLogger(TestExceptionRoutingServiceImpl.class);
     
-	public void placeInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) {
+	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO message, Object service) {
 		ExceptionThreader exceptionThreader = new ExceptionThreader(throwable, message, service, this);
 		ThreadMonitor.addThread(exceptionThreader);
 		exceptionThreader.start();
@@ -35,11 +34,11 @@ public class TestExceptionRoutingServiceImpl extends DefaultExceptionServiceImpl
 	private static class ExceptionThreader extends Thread {
 
 		private Throwable throwable;
-		private PersistedMessage message;
+		private PersistedMessageBO message;
 		private Object service;
 		private TestExceptionRoutingServiceImpl testExceptionService;
 		
-		public ExceptionThreader(Throwable throwable, PersistedMessage message, Object service, TestExceptionRoutingServiceImpl testExceptionService) {
+		public ExceptionThreader(Throwable throwable, PersistedMessageBO message, Object service, TestExceptionRoutingServiceImpl testExceptionService) {
 			this.throwable = throwable;
 			this.message = message;
 			this.service = service;
@@ -56,7 +55,7 @@ public class TestExceptionRoutingServiceImpl extends DefaultExceptionServiceImpl
 		}
 	}
 	
-	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) throws Exception {
+	public void callRealPlaceInExceptionRouting(Throwable throwable, PersistedMessageBO message, Object service) throws Exception {
 		super.placeInExceptionRouting(throwable, message, service);
 	}
 	

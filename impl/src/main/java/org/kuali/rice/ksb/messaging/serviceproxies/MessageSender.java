@@ -12,11 +12,10 @@
  */
 package org.kuali.rice.ksb.messaging.serviceproxies;
 
-import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.ksb.messaging.MessageServiceInvoker;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -31,7 +30,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  */
 public class MessageSender {
 
-    public static void sendMessage(PersistedMessage message) throws Exception {
+    public static void sendMessage(PersistedMessageBO message) throws Exception {
         if (!new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF))) {
 
             if (ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null

@@ -18,17 +18,13 @@ package org.kuali.rice.ksb.messaging.exceptionhandling;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJob;
 import org.kuali.rice.ksb.messaging.quartz.MessageServiceExecutorJobListener;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SimpleTrigger;
-import org.quartz.Trigger;
+import org.quartz.*;
 
 
 /**
@@ -43,7 +39,7 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 	
 	private static final Logger LOG = Logger.getLogger(DefaultExceptionServiceImpl.class);
 
-	public void placeInExceptionRouting(Throwable throwable, PersistedMessage message, Object service) throws Exception {
+	public void placeInExceptionRouting(Throwable throwable, PersistedMessageBO message, Object service) throws Exception {
 		LOG.error("Exception caught processing message " + message.getRouteQueueId() + " " + message.getServiceName() + ": " + throwable);
 		
 		RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
@@ -58,7 +54,7 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 		exceptionHandler.handleException(throwable, message, service);
 	}
 	
-	public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessage message, Object service) throws Exception {
+	public void placeInExceptionRoutingLastDitchEffort(Throwable throwable, PersistedMessageBO message, Object service) throws Exception {
 		LOG.error("Exception caught processing message " + message.getRouteQueueId() + " " + message.getServiceName() + ": " + throwable);
 		
 		RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
@@ -75,7 +71,7 @@ public class DefaultExceptionServiceImpl implements ExceptionRoutingService {
 	
 	
 
-	public void scheduleExecution(Throwable throwable, PersistedMessage message, String description) throws Exception {
+	public void scheduleExecution(Throwable throwable, PersistedMessageBO message, String description) throws Exception {
 		KSBServiceLocator.getRouteQueueService().delete(message);
 		Scheduler scheduler = KSBServiceLocator.getScheduler();
 		JobDataMap jobData = new JobDataMap();

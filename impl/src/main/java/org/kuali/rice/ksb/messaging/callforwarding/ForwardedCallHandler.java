@@ -16,7 +16,7 @@
  */
 package org.kuali.rice.ksb.messaging.callforwarding;
 
-import org.kuali.rice.ksb.messaging.PersistedMessage;
+import org.kuali.rice.ksb.messaging.PersistedMessageBO;
 
 /**
  *
@@ -26,6 +26,6 @@ import org.kuali.rice.ksb.messaging.PersistedMessage;
  */
 public interface ForwardedCallHandler {
 
-	public void handleCall(PersistedMessage message) throws Exception;
+	public void handleCall(PersistedMessageBO message) throws Exception;
 
 }

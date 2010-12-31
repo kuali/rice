@@ -21,6 +21,7 @@ import java.util.LinkedHashMap;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -54,9 +55,8 @@ public abstract class State extends PersistableBusinessObjectBase implements Key
     	this.value = value;
     }
 
-    //@PrePersist
-    @Override
-	public void beforeInsert(){
+    @PrePersist
+    public void customPrePersist(){
         OrmUtils.populateAutoIncValue(this, KEWServiceLocator.getEntityManagerFactory().createEntityManager());
     }
 

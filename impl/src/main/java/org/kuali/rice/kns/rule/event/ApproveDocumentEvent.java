@@ -65,7 +65,7 @@ public class ApproveDocumentEvent extends KualiDocumentEventBase {
     /**
      * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
      */
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return ApproveDocumentRule.class;
     }
 
@@ -80,8 +80,8 @@ public class ApproveDocumentEvent extends KualiDocumentEventBase {
      * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#generateEvents()
      */
     @Override
-    public List generateEvents() {
-        List events = new ArrayList();
+    public List<KualiDocumentEvent> generateEvents() {
+        List<KualiDocumentEvent> events = new ArrayList<KualiDocumentEvent>();
         events.add(new RouteDocumentEvent(getDocument()));
         return events;
     }

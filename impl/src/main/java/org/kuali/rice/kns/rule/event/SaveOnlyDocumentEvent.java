@@ -60,8 +60,8 @@ public class SaveOnlyDocumentEvent extends SaveDocumentEvent {
      * @see org.kuali.rice.kns.rule.event.SaveDocumentEvent#generateEvents()
      */
     @Override
-    public List generateEvents() {
-	return new ArrayList();
+    public List<KualiDocumentEvent> generateEvents() {
+	return new ArrayList<KualiDocumentEvent>();
     }
     
     

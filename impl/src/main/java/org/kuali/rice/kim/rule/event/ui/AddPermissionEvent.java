@@ -41,7 +41,7 @@ public class AddPermissionEvent extends KualiDocumentEventBase {
         this.permission = (KimDocumentRolePermission) ObjectUtils.deepCopy(permission);
     }
 
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddPermissionRule.class;
     }
 

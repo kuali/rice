@@ -18,6 +18,7 @@ package org.kuali.rice.kns.service;
 import java.util.Collection;
 
 import org.kuali.rice.kns.document.TransactionalDocument;
+import org.kuali.rice.kns.rule.BusinessRule;
 
 /**
  * This interface defines methods that a TransactionalDocumentDictionary Service must provide. Defines the API for the interacting
@@ -61,7 +62,7 @@ public interface TransactionalDocumentDictionaryService {
      * @param document
      * @return businessRulesClass associated with the given document's type
      */
-    public Class getBusinessRulesClass(TransactionalDocument document);
+    public Class<? extends BusinessRule> getBusinessRulesClass(TransactionalDocument document);
     /**
      * The collection of ReferenceDefinition objects defined as DefaultExistenceChecks for the MaintenanceDocument.
      * 

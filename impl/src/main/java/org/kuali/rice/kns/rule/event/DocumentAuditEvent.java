@@ -25,7 +25,7 @@ import org.kuali.rice.kns.rule.DocumentAuditRule;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DocumentAuditEvent extends KualiDocumentEventBase implements KualiDocumentEvent {
+public class DocumentAuditEvent extends KualiDocumentEventBase {
     
     /**
      * Constructs a RunAuditEvent with the given errorPathPrefix and document.
@@ -52,7 +52,7 @@ public class DocumentAuditEvent extends KualiDocumentEventBase implements KualiD
     /**
      * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
      */
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return DocumentAuditRule.class;
     }
 

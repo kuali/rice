@@ -154,7 +154,7 @@ public class PromptBeforeValidationEvent extends KualiDocumentEventBase {
     /**
      * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
      */
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return PromptBeforeValidation.class;
     }
 

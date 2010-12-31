@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -66,7 +65,7 @@ public class KualiRuleServiceImpl implements KualiRuleService {
         	LOG.debug("calling applyRules for event " + event);
         }
 
-        BusinessRule rule = (BusinessRule) getBusinessRulesInstance(event.getDocument(), event.getRuleInterfaceClass());
+        BusinessRule rule = getBusinessRulesInstance(event.getDocument(), event.getRuleInterfaceClass());
 
         boolean success = true;
         if (rule != null) {
@@ -76,10 +75,9 @@ public class KualiRuleServiceImpl implements KualiRuleService {
             increaseErrorPath(event.getErrorPathPrefix());
 
             // get any child events and apply rules
-            List events = event.generateEvents();
-            for (Iterator iter = events.iterator(); iter.hasNext();) {
-                KualiDocumentEvent element = (KualiDocumentEvent) iter.next();
-                success &= applyRules(element);
+            List<KualiDocumentEvent> events = event.generateEvents();
+            for (KualiDocumentEvent generatedEvent : events) {
+                success &= applyRules(generatedEvent);
             }
 
             // now call the event rule method
@@ -109,13 +107,13 @@ public class KualiRuleServiceImpl implements KualiRuleService {
      * 
      * @see org.kuali.rice.kns.service.KualiRuleService#generateAdHocRoutePersonEvents(org.kuali.rice.kns.document.Document)
      */
-    public List generateAdHocRoutePersonEvents(Document document) {
-        List adHocRoutePersons = document.getAdHocRoutePersons();
+    public List<AddAdHocRoutePersonEvent> generateAdHocRoutePersonEvents(Document document) {
+        List<AdHocRoutePerson> adHocRoutePersons = document.getAdHocRoutePersons();
 
-        List events = new ArrayList();
+        List<AddAdHocRoutePersonEvent> events = new ArrayList<AddAdHocRoutePersonEvent>();
 
         for (int i = 0; i < adHocRoutePersons.size(); i++) {
-            events.add(new AddAdHocRoutePersonEvent(KNSConstants.EXISTING_AD_HOC_ROUTE_PERSON_PROPERTY_NAME + "[" + i + "]", document, (AdHocRoutePerson) adHocRoutePersons.get(i)));
+            events.add(new AddAdHocRoutePersonEvent(KNSConstants.EXISTING_AD_HOC_ROUTE_PERSON_PROPERTY_NAME + "[" + i + "]", document, adHocRoutePersons.get(i)));
         }
 
         return events;
@@ -127,13 +125,13 @@ public class KualiRuleServiceImpl implements KualiRuleService {
      * 
      * @see org.kuali.rice.kns.service.KualiRuleService#generateAdHocRouteWorkgroupEvents(org.kuali.rice.kns.document.Document)
      */
-    public List generateAdHocRouteWorkgroupEvents(Document document) {
-        List adHocRouteWorkgroups = document.getAdHocRouteWorkgroups();
+    public List<AddAdHocRouteWorkgroupEvent> generateAdHocRouteWorkgroupEvents(Document document) {
+        List<AdHocRouteWorkgroup> adHocRouteWorkgroups = document.getAdHocRouteWorkgroups();
 
-        List events = new ArrayList();
+        List<AddAdHocRouteWorkgroupEvent> events = new ArrayList<AddAdHocRouteWorkgroupEvent>();
 
         for (int i = 0; i < adHocRouteWorkgroups.size(); i++) {
-            events.add(new AddAdHocRouteWorkgroupEvent(KNSConstants.EXISTING_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME + "[" + i + "]", document, (AdHocRouteWorkgroup) adHocRouteWorkgroups.get(i)));
+            events.add(new AddAdHocRouteWorkgroupEvent(KNSConstants.EXISTING_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME + "[" + i + "]", document, adHocRouteWorkgroups.get(i)));
         }
 
         return events;
@@ -150,9 +148,9 @@ public class KualiRuleServiceImpl implements KualiRuleService {
      * @return instance of the businessRulesClass for the given document's type, if that businessRulesClass implements the given
      *         ruleInterface
      */
-    public BusinessRule getBusinessRulesInstance(Document document, Class ruleInterface) {
+    public BusinessRule getBusinessRulesInstance(Document document, Class<? extends BusinessRule> ruleInterface) {
         // get the businessRulesClass
-        Class businessRulesClass = null;
+        Class<? extends BusinessRule> businessRulesClass = null;
         if (document instanceof TransactionalDocument) {
             TransactionalDocument transactionalDocument = (TransactionalDocument) document;
 
@@ -172,7 +170,7 @@ public class KualiRuleServiceImpl implements KualiRuleService {
         if (businessRulesClass != null) {
             try {
                 if (ruleInterface.isAssignableFrom(businessRulesClass)) {
-                    rule = (BusinessRule) businessRulesClass.newInstance();
+                    rule = businessRulesClass.newInstance();
                 }
             }
             catch (IllegalAccessException e) {

@@ -17,7 +17,6 @@ package org.kuali.rice.kns.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -42,7 +41,7 @@ public class OjbCollectionHelper {
             return;
         }
         
-        List originalCollections = orig.buildListOfDeletionAwareLists();
+        List<Collection<PersistableBusinessObject>> originalCollections = orig.buildListOfDeletionAwareLists();
 
         if (originalCollections != null && !originalCollections.isEmpty()) {
             /*
@@ -50,7 +49,7 @@ public class OjbCollectionHelper {
              * retrieved version will contain objects that need to be removed:
              */
             try {
-                List copyCollections = copy.buildListOfDeletionAwareLists();
+                List<Collection<PersistableBusinessObject>> copyCollections = copy.buildListOfDeletionAwareLists();
                 int size = originalCollections.size();
 
                 if (copyCollections.size() != size) {
@@ -58,9 +57,9 @@ public class OjbCollectionHelper {
                 }
 
                 for (int i = 0; i < size; i++) {
-                    Collection origSource = (Collection) originalCollections.get(i);
-                    Collection copySource = (Collection) copyCollections.get(i);
-                    List list = findUnwantedElements(copySource, origSource);
+                    Collection<PersistableBusinessObject> origSource = originalCollections.get(i);
+                    Collection<PersistableBusinessObject> copySource = copyCollections.get(i);
+                    List<PersistableBusinessObject> list = findUnwantedElements(copySource, origSource);
                     cleanse(template, origSource, list);
                 }
             }
@@ -84,7 +83,7 @@ public class OjbCollectionHelper {
             return;
         }
         
-        List originalCollections = orig.buildListOfDeletionAwareLists();
+        List<Collection<PersistableBusinessObject>> originalCollections = orig.buildListOfDeletionAwareLists();
 
         if (originalCollections != null && !originalCollections.isEmpty()) {
             /*
@@ -92,7 +91,7 @@ public class OjbCollectionHelper {
              * retrieved version will contain objects that need to be removed:
              */
             try {
-                List copyCollections = copy.buildListOfDeletionAwareLists();
+                List<Collection<PersistableBusinessObject>> copyCollections = copy.buildListOfDeletionAwareLists();
                 int size = originalCollections.size();
 
                 if (copyCollections.size() != size) {
@@ -100,9 +99,9 @@ public class OjbCollectionHelper {
                 }
 
                 for (int i = 0; i < size; i++) {
-                    Collection origSource = (Collection) originalCollections.get(i);
-                    Collection copySource = (Collection) copyCollections.get(i);
-                    List list = findUnwantedElements(copySource, origSource);
+                    Collection<PersistableBusinessObject> origSource = originalCollections.get(i);
+                    Collection<PersistableBusinessObject> copySource = copyCollections.get(i);
+                    List<PersistableBusinessObject> list = findUnwantedElements(copySource, origSource);
                     cleanse(template, origSource, list);
                 }
             }
@@ -119,15 +118,13 @@ public class OjbCollectionHelper {
      * @param unwantedItems - business objects to be permanently removed
      * @param template
      */
-    private void cleanse(OjbCollectionAware template, Collection origSource, List unwantedItems) {
+    private void cleanse(OjbCollectionAware template, Collection<PersistableBusinessObject> origSource, List<PersistableBusinessObject> unwantedItems) {
         if (unwantedItems.size() > 0) {
-            Iterator iter = unwantedItems.iterator();
-            while (iter.hasNext()) {
-            	Object obj = iter.next();
+        	for (PersistableBusinessObject unwantedItem : unwantedItems) {
             	if ( LOG.isDebugEnabled() ) {
-            		LOG.debug( "cleansing " + obj);
+            		LOG.debug( "cleansing " + unwantedItem);
             	}
-                template.getPersistenceBrokerTemplate().delete(obj);
+                template.getPersistenceBrokerTemplate().delete(unwantedItem);
             }
         }
 
@@ -141,14 +138,12 @@ public class OjbCollectionHelper {
      * @param controlList
      * @return true iff one or more items were removed
      */
-    private List findUnwantedElements(Collection fromList, Collection controlList) {
-        List toRemove = new ArrayList();
+    private List<PersistableBusinessObject> findUnwantedElements(Collection<PersistableBusinessObject> fromList, Collection<PersistableBusinessObject> controlList) {
+        List<PersistableBusinessObject> toRemove = new ArrayList<PersistableBusinessObject>();
 
-        Iterator iter = fromList.iterator();
-        while (iter.hasNext()) {
-            PersistableBusinessObject line = (PersistableBusinessObject) iter.next();
-            if (!ObjectUtils.collectionContainsObjectWithIdentitcalKey(controlList, line)) {
-                toRemove.add(line);
+        for (PersistableBusinessObject fromObject : fromList) {
+        	if (!ObjectUtils.collectionContainsObjectWithIdentitcalKey(controlList, fromObject)) {
+                toRemove.add(fromObject);
             }
         }
         return toRemove;

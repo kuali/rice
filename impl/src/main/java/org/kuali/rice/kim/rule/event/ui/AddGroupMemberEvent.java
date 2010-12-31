@@ -18,7 +18,6 @@ package org.kuali.rice.kim.rule.event.ui;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
-import org.kuali.rice.kim.rule.ui.AddMemberRule;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.event.KualiDocumentEventBase;
@@ -42,7 +41,7 @@ public class AddGroupMemberEvent extends KualiDocumentEventBase {
         this.member = (GroupDocumentMember) ObjectUtils.deepCopy(member);
     }
 
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddGroupMemberRule.class;
     }
 

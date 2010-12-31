@@ -36,8 +36,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.PersistenceBrokerException;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
@@ -58,6 +56,7 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 import org.kuali.rice.kns.rule.event.SaveDocumentEvent;
 import org.kuali.rice.kns.service.DocumentHeaderService;
+import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.service.MaintenanceDocumentService;
@@ -98,6 +97,8 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     transient private static MaintenanceDocumentService maintenanceDocumentService;
     @Transient
     transient private static DocumentHeaderService documentHeaderService;
+    @Transient
+    transient private static DocumentService documentService;
     
     @Transient
     protected Maintainable oldMaintainableObject;
@@ -448,7 +449,9 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             
             newMaintainableObject.saveBusinessObject();
             
-            saveNotes();
+            if (!getDocumentService().saveDocumentNotes(this)) {
+            	throw new IllegalStateException("Failed to save document notes, this means that the note target was not ready for notes to be attached when it should have been."); 
+            }
             
             //Attachment should be deleted from Maintenance Document attachment table
             deleteDocumentAttachment();  
@@ -843,7 +846,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
     
     /**
-     * <p>The {@link NoteType} for maintenance documents is determined by whether or not the underlying
+     * The {@link NoteType} for maintenance documents is determined by whether or not the underlying
      * {@link Maintainable} supports business object notes or not.  This is determined via a call to 
      * {@link Maintainable#isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows:
      * 
@@ -852,6 +855,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      *   <li>Otherwise, delegate to {@link DocumentBase#getNoteType()}
      * </ul> 
      * 
+     * @see org.kuali.rice.kns.document.Document#getNoteType()
      * @see org.kuali.rice.kns.document.Document#getNoteTarget()
      */
     @Override
@@ -898,48 +902,49 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         this.attachment = attachment;
     }
     
+    
     /**
      * This overridden method is used to delete the {@link DocumentHeader} object due to the system not being able to manage the {@link DocumentHeader} object via mapping files
      * 
-     * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#afterDelete(org.apache.ojb.broker.PersistenceBroker)
+     * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#postRemove()
      */
     @Override
-    public void afterDelete(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+    protected void postRemove() {
+    	super.postRemove();
         getDocumentHeaderService().deleteDocumentHeader(getDocumentHeader());
-        super.afterDelete(persistenceBroker);
     }
 
     /**
      * This overridden method is used to retrieve the {@link DocumentHeader} object due to the system not being able to manage the {@link DocumentHeader} object via mapping files
      * 
-     * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#afterLookup(org.apache.ojb.broker.PersistenceBroker)
+     * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#postLoad()
      */
     @Override
-    public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+    protected void postLoad() {
+    	super.postLoad();
         setDocumentHeader(getDocumentHeaderService().getDocumentHeaderById(getDocumentNumber()));
-        super.afterLookup(persistenceBroker);
     }
 
     /**
      * This overridden method is used to insert the {@link DocumentHeader} object due to the system not being able to manage the {@link DocumentHeader} object via mapping files
      * 
-     * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeInsert(org.apache.ojb.broker.PersistenceBroker)
+     * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#prePersist()
      */
     @Override
-    public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+    protected void prePersist() {
+    	super.prePersist();
         getDocumentHeaderService().saveDocumentHeader(getDocumentHeader());
-        super.beforeInsert(persistenceBroker);
     }
 
     /**
      * This overridden method is used to save the {@link DocumentHeader} object due to the system not being able to manage the {@link DocumentHeader} object via mapping files
      * 
-     * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeUpdate(org.apache.ojb.broker.PersistenceBroker)
+     * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#preUpdate()
      */
     @Override
-    public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+    protected void preUpdate() {
+    	super.preUpdate();
         getDocumentHeaderService().saveDocumentHeader(getDocumentHeader());
-        super.beforeUpdate(persistenceBroker);
     }
     
     /**
@@ -998,6 +1003,13 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 			documentHeaderService = KNSServiceLocator.getDocumentHeaderService();
 		}
 		return documentHeaderService;
+	}
+	
+	protected DocumentService getDocumentService() {
+		if ( documentService == null ) {
+			documentService = KNSServiceLocator.getDocumentService();
+		}
+		return documentService;
 	}
 
 	 //for issue KULRice3070

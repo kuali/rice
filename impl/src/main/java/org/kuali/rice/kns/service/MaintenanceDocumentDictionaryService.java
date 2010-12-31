@@ -25,6 +25,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.MaintenanceDocument;
+import org.kuali.rice.kns.rule.BusinessRule;
 
 /**
  * This interface defines methods that a MaintenanceDocumentDictionary Service must provide. Defines the API for the interacting
@@ -126,7 +127,7 @@ public interface MaintenanceDocumentDictionaryService {
      * @param document
      * @return businessRulesClass associated with the given document's type
      */
-    public Class getBusinessRulesClass(MaintenanceDocument document);
+    public Class<? extends BusinessRule> getBusinessRulesClass(MaintenanceDocument document);
 
     /**
      * 

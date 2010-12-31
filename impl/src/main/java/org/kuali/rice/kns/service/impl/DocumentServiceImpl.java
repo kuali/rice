@@ -20,7 +20,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -66,7 +65,6 @@ import org.kuali.rice.kns.service.MaintenanceDocumentService;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.NoteType;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.Timer;
@@ -117,7 +115,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-	public Document saveDocument(Document document, Class kualiDocumentEventClass) throws WorkflowException, ValidationException {
+	public Document saveDocument(Document document, Class<? extends KualiDocumentEvent> kualiDocumentEventClass) throws WorkflowException, ValidationException {
         checkForNulls(document);
         if (kualiDocumentEventClass == null) {
             throw new IllegalArgumentException("invalid (null) kualiDocumentEventClass");
@@ -139,16 +137,15 @@ public class DocumentServiceImpl implements DocumentService {
         return savedDocument;
     }
 
-    private KualiDocumentEvent generateKualiDocumentEvent(Document document, Class eventClass) throws ConfigurationException {
+    private KualiDocumentEvent generateKualiDocumentEvent(Document document, Class<? extends KualiDocumentEvent> eventClass) throws ConfigurationException {
     	String potentialErrorMessage = "Found error trying to generate Kuali Document Event using event class '" + 
     	eventClass.getName() + "' for document " + document.getDocumentNumber();
     	
     	try {
-    		Constructor usableConstructor = null;
-    		List<Object> paramList = null;
-    		for (Constructor currentConstructor : eventClass.getConstructors()) {
-    			paramList = new ArrayList<Object>();
-    			for (Class parameterClass : currentConstructor.getParameterTypes()) {
+    		Constructor<?> usableConstructor = null;
+    		List<Object> paramList = new ArrayList<Object>();
+    		for (Constructor<?> currentConstructor : eventClass.getConstructors()) {
+    			for (Class<?> parameterClass : currentConstructor.getParameterTypes()) {
     				if (Document.class.isAssignableFrom(parameterClass)) {
     					usableConstructor = currentConstructor;
     					paramList.add(document);
@@ -160,13 +157,10 @@ public class DocumentServiceImpl implements DocumentService {
     				break;
     			}
     		}
-    		if (ObjectUtils.isNull(usableConstructor)) {
+    		if (usableConstructor == null) {
     			throw new RuntimeException("Cannot find a constructor for class '" + eventClass.getName() + "' that takes in a document parameter");
     		}
-    		else {
-    			usableConstructor.newInstance(paramList.toArray());
-    			return (KualiDocumentEvent) usableConstructor.newInstance(paramList.toArray());
-    		}
+    		return (KualiDocumentEvent) usableConstructor.newInstance(paramList.toArray());
     	} catch (SecurityException e) {
     		throw new ConfigurationException(potentialErrorMessage, e);
     	} catch (IllegalArgumentException e) {
@@ -568,6 +562,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 	        // retrieve the Document
 	        Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
+	        
 	        return postProcessDocument(documentHeaderId, workflowDocument, document);
     	} finally {
     		// if a user session was established for this call, clear it out
@@ -601,6 +596,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         // retrieve the Document
         Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
+        
         return postProcessDocument(documentHeaderId, workflowDocument, document);
 	}
 
@@ -615,6 +611,23 @@ public class DocumentServiceImpl implements DocumentService {
         }
         return clazz;
     }
+    
+    /**
+     * Loads the Notes for the note target on this Document.
+     * 
+     * @param document the document for which to load the notes
+     */
+    protected void loadNotes(Document document) {
+    	if (isNoteTargetReady(document)) {
+    		List<Note> notes = getNoteService().getByRemoteObjectId(document.getNoteTarget().getObjectId());
+    		// KULRNE-5692 - force a refresh of the attachments
+            // they are not (non-updateable) references and don't seem to update properly upon load
+    		for (Note note : notes) {
+    			note.refreshReferenceObject("attachment");
+    		}
+    		document.setNotes(notes);
+    	}
+    }
 
     /**
      * Performs required post-processing for every document from the documentDao
@@ -626,6 +639,7 @@ public class DocumentServiceImpl implements DocumentService {
     private Document postProcessDocument(String documentHeaderId, KualiWorkflowDocument workflowDocument, Document document) {
         if (document != null) {
             document.getDocumentHeader().setWorkflowDocument(workflowDocument);
+            loadNotes(document);
             document.processAfterRetrieve();
         }
         return document;
@@ -638,22 +652,17 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#getDocumentsByListOfDocumentHeaderIds(java.lang.Class, java.util.List)
      */
     @Override
-	public List getDocumentsByListOfDocumentHeaderIds(Class clazz, List documentHeaderIds) throws WorkflowException {
-        // make sure that the supplied class is of the document type
-        if (!Document.class.isAssignableFrom(clazz)) {
-            throw new IllegalArgumentException("invalid (non-document) class of " + clazz.getName());
-        }
-
+	public List<Document> getDocumentsByListOfDocumentHeaderIds(Class<? extends Document> documentClass, List<String> documentHeaderIds) throws WorkflowException {
         // validate documentHeaderIdList and contents
         if (documentHeaderIds == null) {
             throw new IllegalArgumentException("invalid (null) documentHeaderId list");
         }
         int index = 0;
-        for (Iterator i = documentHeaderIds.iterator(); i.hasNext(); index++) {
-            String documentHeaderId = (String) i.next();
+        for (String documentHeaderId : documentHeaderIds) {
             if (StringUtils.isBlank(documentHeaderId)) {
                 throw new IllegalArgumentException("invalid (blank) documentHeaderId at list index " + index);
             }
+            index++;
         }
 
     	boolean internalUserSession = false;
@@ -667,13 +676,11 @@ public class DocumentServiceImpl implements DocumentService {
 	        }
 
 	        // retrieve all documents that match the document header ids
-	        List rawDocuments = getDocumentDao().findByDocumentHeaderIds(clazz, documentHeaderIds);
+	        List<Document> rawDocuments = getDocumentDao().findByDocumentHeaderIds(documentClass, documentHeaderIds);
 
 	        // post-process them
-	        List documents = new ArrayList();
-	        for (Iterator i = rawDocuments.iterator(); i.hasNext();) {
-	            Document document = (Document) i.next();
-
+	        List<Document> documents = new ArrayList<Document>();
+	        for (Document document : documents) {
 	            KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), GlobalVariables.getUserSession().getPerson());
 
 	            document = postProcessDocument(document.getDocumentNumber(), workflowDocument, document);
@@ -696,7 +703,7 @@ public class DocumentServiceImpl implements DocumentService {
      *
      * @see org.kuali.rice.kns.service.DocumentService#validateAndPersistDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
-    public Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws WorkflowException, ValidationException {
+    public Document validateAndPersistDocument(Document document, KualiDocumentEvent event) throws ValidationException {
         if (document == null) {
             LOG.error("document passed to validateAndPersist was null");
             throw new IllegalArgumentException("invalid (null) document");
@@ -721,7 +728,12 @@ public class DocumentServiceImpl implements DocumentService {
             throw e;
         }
         
-        document.saveNotes();
+        boolean notesSaved = saveDocumentNotes(document);
+        if (!notesSaved) {
+        	if (LOG.isInfoEnabled()) {
+        		LOG.info("Notes not saved during validateAndPersistDocument, likely means that note save needs to be deferred because note target is not ready.");
+        	}
+        }
 
         savedDocument.postProcessSave(event);
 
@@ -789,7 +801,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#createNoteFromDocument(org.kuali.rice.kns.document.Document, java.lang.String)
      */
     @Override
-	public Note createNoteFromDocument(Document document, String text) throws Exception {
+	public Note createNoteFromDocument(Document document, String text) {
         Note note = new Note();
 
         note.setNotePostedTimestamp(getDateTimeService().getCurrentTimestamp());
@@ -799,6 +811,46 @@ public class DocumentServiceImpl implements DocumentService {
 
         PersistableBusinessObject bo = document.getNoteTarget();
         return bo == null ? null : getNoteService().createNote(note, bo);
+    }
+    
+    
+	/**
+	 * @see org.kuali.rice.kns.service.DocumentService#saveDocumentNotes(org.kuali.rice.kns.document.Document)
+	 */
+	public boolean saveDocumentNotes(Document document) {
+		if (isNoteTargetReady(document)) {
+			List<Note> notes = document.getNotes();
+			for (Note note : document.getNotes()) {
+				linkNoteRemoteObjectId(note, document.getNoteTarget());
+			}
+			getNoteService().saveNoteList(notes);
+			return true;
+		}
+		return false;
+	}
+	
+	/**
+	 * Determines if the given document's note target is ready for notes to be
+	 * attached and persisted against it.  This method verifies that the document's
+	 * note target is non-null as well as checking that it has a non-empty object id. 
+	 *
+	 * @param the document on which to check for note target readiness
+	 * @return true if the note target is ready, false otherwise
+	 */
+	protected boolean isNoteTargetReady(Document document) {
+		PersistableBusinessObject noteTarget = document.getNoteTarget();
+		if (noteTarget == null || StringUtils.isBlank(noteTarget.getObjectId())) {
+			return false;
+		}
+		return true;
+	}
+	
+	private void linkNoteRemoteObjectId(Note note, PersistableBusinessObject noteTarget) {
+    	String objectId = noteTarget.getObjectId();
+    	if (StringUtils.isBlank(objectId)) {
+    		throw new IllegalStateException("Attempted to link a Note with a PersistableBusinessObject with no object id");
+    	}
+    	note.setRemoteObjectIdentifier(noteTarget.getObjectId());
     }
 
     /**

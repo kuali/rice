@@ -21,6 +21,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import org.kuali.rice.core.jpa.annotations.Sequence;
@@ -83,15 +84,15 @@ public class MaintenanceLock extends PersistableBusinessObjectBase {
 
 	/**
 	 * Uses OrmUtils to set the sequence
-	 * 
-	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeInsert()
-	 */
-	@Override
-	public void beforeInsert() {
+     * 
+     * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#prePersist()
+     */
+    @PrePersist
+	protected void customPrePersist() {
 		final EntityManagerFactory factory = KNSServiceLocator.getApplicationEntityManagerFactory();
 		OrmUtils.populateAutoIncValue(this, factory.createEntityManager());
 		
-		super.beforeInsert();
+		super.prePersist();
 	}
     
 }

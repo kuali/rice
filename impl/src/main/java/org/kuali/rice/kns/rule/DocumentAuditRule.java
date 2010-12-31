@@ -23,7 +23,7 @@ import org.kuali.rice.kns.document.Document;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface DocumentAuditRule {
+public interface DocumentAuditRule extends BusinessRule {
     public boolean processRunAuditBusinessRules(Document document);
 
 }

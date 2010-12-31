@@ -60,7 +60,7 @@ public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEve
     /**
      * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
      */
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return SaveDocumentRule.class;
     }
 
@@ -75,10 +75,10 @@ public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEve
      * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#generateEvents()
      */
     @Override
-    public List generateEvents() {
+    public List<KualiDocumentEvent> generateEvents() {
         KualiRuleService ruleService = KNSServiceLocator.getKualiRuleService();
 
-        List events = new ArrayList();
+        List<KualiDocumentEvent> events = new ArrayList<KualiDocumentEvent>();
         events.addAll(ruleService.generateAdHocRoutePersonEvents(getDocument()));
         events.addAll(ruleService.generateAdHocRouteWorkgroupEvents(getDocument()));
         

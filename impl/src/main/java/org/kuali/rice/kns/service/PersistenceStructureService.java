@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.util.ForeignKeyFieldsPopulationState;
@@ -148,11 +149,8 @@ public interface PersistenceStructureService {
      * @param clazz - class to be examined for the attribute's class
      * @param attributeName - name of the class' attribute to be examined
      * @return the class of the named attribute, if no exceptions occur
-     * @throws ObjectNotABusinessObjectRuntimeException - if the class specified is not a descendent of PersistableBusinessObject, or the class of the
-     *         named attribute is not descended from PersistableBusinessObject
-     * 
      */
-    public Class getBusinessObjectAttributeClass(Class clazz, String attributeName) throws ObjectNotABusinessObjectRuntimeException;
+    public Class<? extends PersistableBusinessObjectExtension> getBusinessObjectAttributeClass(Class<? extends PersistableBusinessObject> clazz, String attributeName);
 
     /**
      * Builds a map of reference pk attributes back to the foreign key.

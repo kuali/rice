@@ -20,6 +20,7 @@ import java.util.List;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 
 
 /**
@@ -88,7 +89,7 @@ public interface WorkflowDocumentService {
      * @param annotation
      * @param adHocRecipients
      */
-    public void route(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
+    public void route(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
      * approve this workflowDocument optionally providing an annotation for this action taken which will show up in the route log for this
@@ -99,7 +100,7 @@ public interface WorkflowDocumentService {
      * @param annotation
      * @param adHocRecipients
      */
-    public void approve(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
+    public void approve(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
      * super user approve this workflowDocument optionally providing an annotation for this action taken which will show up in the route log
@@ -159,7 +160,7 @@ public interface WorkflowDocumentService {
      * @param annotation
      * @param adHocRecipients
      */
-    public void acknowledge(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
+    public void acknowledge(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
      * blanket approve this document optionally providing an annotation for this action taken which will show up in the route log
@@ -171,7 +172,7 @@ public interface WorkflowDocumentService {
      * @param annotation
      * @param adHocRecipients
      */
-    public void blanketApprove(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
+    public void blanketApprove(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
      * clear the fyi request for this document, optinoally providing a list of ad hoc recipients for this document which should be
@@ -180,7 +181,7 @@ public interface WorkflowDocumentService {
      * @param workflowDocument
      * @param adHocRecipients
      */
-    public void clearFyi(KualiWorkflowDocument workflowDocument, List adHocRecipients) throws WorkflowException;
+    public void clearFyi(KualiWorkflowDocument workflowDocument, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
     
     /**
      * Gets the current route level name of the workflow document even if document has no active node
@@ -202,7 +203,7 @@ public interface WorkflowDocumentService {
      * @param notificationLabel
      * @throws WorkflowException
      */
-    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients, String notificationLabel) throws WorkflowException;
+    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients, String notificationLabel) throws WorkflowException;
     
     /**
      * Sends workflow notification to the list of ad hoc recipients.  This method is usually used to notify users of a note that has been added to a
@@ -213,5 +214,5 @@ public interface WorkflowDocumentService {
      * @param adHocRecipients
      * @throws WorkflowException
      */
-    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException;
+    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 }

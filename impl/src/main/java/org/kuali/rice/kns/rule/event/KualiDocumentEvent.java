@@ -52,11 +52,11 @@ public interface KualiDocumentEvent {
     public String getErrorPathPrefix();
 
     /**
-     * Returns the interface that classes must implement to recieve this event.
+     * Returns the interface that classes must implement to receive this event.
      * 
      * @return
      */
-    public Class getRuleInterfaceClass();
+    public Class<? extends BusinessRule> getRuleInterfaceClass();
 
     /**
      * Validates the event has all the necessary properties.
@@ -76,5 +76,5 @@ public interface KualiDocumentEvent {
      * 
      * @return
      */
-    public List generateEvents();
+    public List<KualiDocumentEvent> generateEvents();
 }

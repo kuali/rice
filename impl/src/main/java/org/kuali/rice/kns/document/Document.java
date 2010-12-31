@@ -40,9 +40,10 @@ import org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer;
 /**
  * This is the Document interface. All entities that are regarded as "eDocs" in the system, including Maintenance documents and
  * Transaction Processing documents should implement this interface as it defines methods that are necessary to interact with the
- * underlying frameworks and components (i.e. attachments, workflow, etc).
+ * underlying frameworks and components (i.e. notes, attachments, workflow, etc).
  */
-public interface Document extends PersistableBusinessObject{
+public interface Document extends PersistableBusinessObject {
+	
     /**
      * This retrieves the standard <code>DocumentHeader</code> object, which contains standard meta-data about a document.
      * 
@@ -205,8 +206,9 @@ public interface Document extends PersistableBusinessObject{
     /**
      * Generate any necessary events required during the save event generation
      * 
+     * @return a list of document events that were triggered by the save event
      */
-    public List generateSaveEvents();
+    public List<KualiDocumentEvent> generateSaveEvents();
     
    /**
      * Handle the doRouteStatusChange event from the post processor
@@ -215,15 +217,22 @@ public interface Document extends PersistableBusinessObject{
     public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent);
     
     /**
-     * Returns the NoteType which is supported for notes associated with this Document.
+     * Returns the note type which should be used for notes associated with this document.
      * This method should never return null.
      * 
-     * @return the NoteType supported by this Document
+     * @return the note type supported by this document, this value should never be null
      */
     public NoteType getNoteType();
     
     /**
      * Return the target PersistableBusinessObject that notes associated with this document should be attached to.
+     * In general, this method should never return null.  However, it is permissible that it will return a 
+     * business object which has not been persisted yet (and therefore does not have it's unique object id
+     * established).  This is only valid in cases where the note type is {@link NoteType#BUSINESS_OBJECT_NOTE_TYPE}.
+     * 
+     * In these cases it's the responsibility for implementers of the Document interface to handle storing transient
+     * copies of the document notes (in XML or otherwise) until the underlying note target has been persisted and can be attached
+     * to the document's notes via it's object id.
      * 
      * @return the PersistableBusinessObject with which notes on this document should be associated
      */
@@ -231,25 +240,41 @@ public interface Document extends PersistableBusinessObject{
     
     /**
      * Adds the given Note to the document's list of Notes.
+     * 
+     * @param note the Note to add, must be non-null
      */
     public void addNote(Note note);
     
     /**
-     * Gets a mutable List of all Notes on the document.
+     * Returns a mutable list of all notes on the document.
+     * 
+     * @return the list of notes associated with this document, if this document has no notes then an empty list will be returned
      */
     public List<Note> getNotes();
     
     /**
-     * Gets the note at the given index.
+	 * Sets the document's list of notes to the given list.
+	 * 
+	 * @param notes the list of notes to set on the document, must be non-null
+	 */
+	public void setNotes(List<Note> notes);
+    
+    /**
+     * Retrieves the note at the given index.
+     * 
+     * @param index the zero-based index of the note to retrieve
+     * @return the note located at the given index
+     * @throws IndexOutOfBoundsException if the index is out of range
      */
     public Note getNote(int index);
     
     /**
-     * Removes the given Note from the document's list of Notes.
+     * Removes the given note from the document's list of notes.
+     * 
+     * @param note the note to remove from the document's list of notes, must be non-null
+     * @return true if the note was successfully removed, false if the list did not contain the given note
      */
     public boolean removeNote(Note note);
-    
-    public void saveNotes();
     
     /**
      * This method gets a list of the {@link PessimisticLock} objects associated with this document

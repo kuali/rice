@@ -54,7 +54,7 @@ public class SendAdHocRequestsEvent extends KualiDocumentEventBase {
 	 * 
 	 * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
 	 */
-	public Class getRuleInterfaceClass() {
+	public Class<? extends BusinessRule> getRuleInterfaceClass() {
 		return SendAdHocRequestsRule.class;
 	}
 
@@ -69,10 +69,10 @@ public class SendAdHocRequestsEvent extends KualiDocumentEventBase {
 	 * @see org.kuali.rice.kns.rule.event.KualiDocumentEventBase#generateEvents()
 	 */
 	@Override
-	public List generateEvents() {
+	public List<KualiDocumentEvent> generateEvents() {
 		KualiRuleService ruleService = KNSServiceLocator.getKualiRuleService();
 		
-		List events = new ArrayList();
+		List<KualiDocumentEvent> events = new ArrayList<KualiDocumentEvent>();
         events.addAll(ruleService.generateAdHocRoutePersonEvents(getDocument()));
         events.addAll(ruleService.generateAdHocRouteWorkgroupEvents(getDocument()));
         return events;

@@ -19,7 +19,6 @@ import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.AddAdHocRouteWorkgroupRule;
 import org.kuali.rice.kns.rule.BusinessRule;
-import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This class represents the add AdHocRouteWorkgroup event that is part of an eDoc in Kuali. This is triggered when a user presses
@@ -64,6 +63,7 @@ public final class AddAdHocRouteWorkgroupEvent extends KualiDocumentEventBase {
     /**
      * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#validate()
      */
+    @Override
     public void validate() {
         super.validate();
         if (this.adHocRouteWorkgroup == null) {
@@ -74,7 +74,7 @@ public final class AddAdHocRouteWorkgroupEvent extends KualiDocumentEventBase {
     /**
      * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
      */
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddAdHocRouteWorkgroupRule.class;
     }
 

@@ -26,15 +26,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PostLoad;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.PersistenceBrokerException;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
@@ -156,58 +151,26 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	}
 	
     @Override
-	public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-		super.beforeInsert(persistenceBroker);
+	protected void prePersist() {
+		super.prePersist();
 		encryptExternalId();
 	}
-	
+		
 	@Override
-	public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-	    beforeUpdate();
-	}
-	
-	@Override
-	public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        super.afterLookup(persistenceBroker);
+	protected void postLoad() {
+        super.postLoad();
         decryptExternalId();
 	}
 	
-	@Override
-	@PrePersist
-	public void beforeInsert() {
-		super.beforeInsert();
-		encryptExternalId();
-    }
 
 	@Override
-	@PreUpdate
-	public void beforeUpdate() {
-		super.beforeUpdate();
+	protected void preUpdate() {
+		super.preUpdate();
 		if (!this.decryptionNeeded) {
 			encryptExternalId();
 		}
 	}
-	
-	@PostLoad
-	public void afterLookup(){
-		this.decryptionNeeded = true;
-		//decryptExternalId();
-	}
-	
-	//@Override
-	//@PostPersist
-	//public void afterInsert() {
-	//	super.afterInsert();
-	//	decryptExternalId();
-	//}
-	
-	//@Override
-	//@PostUpdate
-	//public void afterUpdate() {
-	//	super.afterUpdate();
-	//	decryptExternalId();
-	//}
-	
+		
 	protected void evaluateExternalIdentifierType() {
 		if ( cachedExtIdType == null ) {
 			Map<String, String> criteria = new HashMap<String, String>();

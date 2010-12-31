@@ -27,7 +27,7 @@ import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
  * By default, unless KualiDocumentActionBase is overridden, the sole method will be invoked upon using the "approve", "blanketApprove",
  * "performRouteReport", and "route" methodToCalls.
  */
-public interface PromptBeforeValidation {
+public interface PromptBeforeValidation extends BusinessRule {
 
     /**
      * Callback method from Maintenance action that allows checks to be done and response redirected via the PreRulesCheckEvent

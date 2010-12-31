@@ -41,7 +41,7 @@ public class AddDelegationEvent extends KualiDocumentEventBase {
         this.delegation = (RoleDocumentDelegation) ObjectUtils.deepCopy(delegation);
     }
 
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddDelegationRule.class;
     }
 

@@ -34,6 +34,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
+import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
@@ -152,13 +153,13 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
     /**
      * @see org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService#getBusinessRulesClass(MaintenanceDocument)
      */
-    public Class getBusinessRulesClass(MaintenanceDocument document) {
+    public Class<? extends BusinessRule> getBusinessRulesClass(MaintenanceDocument document) {
         Maintainable maintainable = document.getOldMaintainableObject();
         if (maintainable == null) {
             throw new IllegalArgumentException("unable to determine documentType for maintenanceDocument with no oldMaintainableObject");
         }
 
-        Class businessRulesClass = null;
+        Class<? extends BusinessRule> businessRulesClass = null;
 
         MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(maintainable.getBoClass());
         if (entry != null) {

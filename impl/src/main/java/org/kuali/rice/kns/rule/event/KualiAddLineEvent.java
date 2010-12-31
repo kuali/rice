@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.rule.event;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -24,7 +22,6 @@ import org.kuali.rice.kns.rule.AddCollectionLineRule;
 import org.kuali.rice.kns.rule.BusinessRule;
 
 public class KualiAddLineEvent extends KualiDocumentEventBase {
-    private static final Logger LOG = Logger.getLogger(KualiAddLineEvent.class);
 
     private PersistableBusinessObject bo;
     private String collectionName;
@@ -40,26 +37,7 @@ public class KualiAddLineEvent extends KualiDocumentEventBase {
         return ((AddCollectionLineRule)rule).processAddCollectionLineBusinessRules( (MaintenanceDocument)getDocument(), collectionName, bo );
     }
 
-    /**
-     * Logs the event type and some information about the associated accountingLine
-     */
-    private void logEvent() {
-        if ( LOG.isDebugEnabled() ) {
-            StringBuffer logMessage = new StringBuffer(StringUtils.substringAfterLast(this.getClass().getName(), "."));
-            logMessage.append(" with ");
-    
-            // vary logging detail as needed
-            if (bo == null) {
-                logMessage.append("null new bo");
-            } else {
-                logMessage.append( StringUtils.substringAfterLast(bo.getObjectId(), ".") );
-            }
-    
-            LOG.debug(logMessage);
-        }
-    }
-
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddCollectionLineRule.class;
     }
 }

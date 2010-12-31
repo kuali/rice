@@ -22,18 +22,14 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.document.Document;
+import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 import org.kuali.rice.kns.rule.event.SaveEvent;
 
-
-
 /**
- * This is the DocumentService interface which must have an implementation that accompanies it. This interfaces defines all of the
- * generally required methods for all document instances
- *
- *
+ * Defines various operations that support the Document framework.
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-
-// TODO put exceptions that are kuali based into here instead of implementation based
 public interface DocumentService {
 
     /**
@@ -56,7 +52,7 @@ public interface DocumentService {
      * @param documentClass
      * @return
      */
-    public Document getNewDocument(Class documentClass) throws WorkflowException;
+    public Document getNewDocument(Class<? extends Document> documentClass) throws WorkflowException;
 
     /**
      * get a document based on the document header id which is the primary key for all document types
@@ -83,7 +79,7 @@ public interface DocumentService {
      * @return List of fully-populated documents
      * @throws WorkflowException
      */
-    public List getDocumentsByListOfDocumentHeaderIds(Class clazz, List documentHeaderIds) throws WorkflowException;
+    public List<Document> getDocumentsByListOfDocumentHeaderIds(Class<? extends Document> documentClass, List<String> documentHeaderIds) throws WorkflowException;
 
     /**
      *
@@ -118,7 +114,7 @@ public interface DocumentService {
      * @return the document that was passed in
      * @throws WorkflowException
      */
-    public Document saveDocument(Document document, Class kualiDocumentEventClass) throws WorkflowException;
+    public Document saveDocument(Document document, Class<? extends KualiDocumentEvent> kualiDocumentEventClass) throws WorkflowException;
     
     /**
      * start the route the document for approval, optionally providing a list of ad hoc recipients, and additionally provideing a
@@ -130,7 +126,7 @@ public interface DocumentService {
      * @return
      * @throws ValidationErrorList
      */
-    public Document routeDocument(Document document, String annotation, List adHocRoutingRecipients) throws WorkflowException;
+    public Document routeDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRoutingRecipients) throws WorkflowException;
 
     /**
      * approve this document, optionally providing an annotation which will show up in the route log for this document for this
@@ -142,7 +138,7 @@ public interface DocumentService {
      * @return
      * @throws ValidationErrorList
      */
-    public Document approveDocument(Document document, String annotation, List adHocRoutingRecipients) throws WorkflowException;
+    public Document approveDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRoutingRecipients) throws WorkflowException;
 
     /**
      * approve this document as super user, optionally providing an annotation which will show up in the route log for this document
@@ -209,7 +205,7 @@ public interface DocumentService {
      * @param adHocRecipients
      * @return
      */
-    public Document acknowledgeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException;
+    public Document acknowledgeDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
      * blanket approve this document which will approve the document and stand in for an approve for all typically generated
@@ -225,7 +221,7 @@ public interface DocumentService {
      * @return
      * @throws ValidationErrorList
      */
-    public Document blanketApproveDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException;
+    public Document blanketApproveDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
      * clear the fyi request for this document, optionally providing a list of ad hoc recipients for this document, which should be
@@ -235,10 +231,10 @@ public interface DocumentService {
      * @param adHocRecipients
      * @return
      */
-    public Document clearDocumentFyi(Document document, List adHocRecipients) throws WorkflowException;
+    public Document clearDocumentFyi(Document document, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 
     /**
-     * Sets the title and app document id in the flex document
+     * Sets the title and app document id in the workflow document
      *
      * @param document
      * @throws WorkflowException
@@ -247,14 +243,26 @@ public interface DocumentService {
     
     
     /**
+     * This method creates a note from a given document and note text.  The resulting Note will
+     * have it's note type set to the value of {@link Document#getNoteType()}.  Additionally, it's
+     * remoteObjectId will be set to the object id of the document's note target.
      * 
-     * This method creates a note from a given document and note text
-     * @param document
-     * @param text
-     * @return
-     * @throws Exception
+     * @param document the document from which to use the note type and note target when creating the note
+     * @param text the text value to include in the resulting note
+     * @return the note that was created
      */
-    public Note createNoteFromDocument(Document document, String text) throws Exception;
+    public Note createNoteFromDocument(Document document, String text);
+    
+    /**
+     * Saves the notes associated with the given document if they are in a state where they can be
+     * saved.  In certain cases they may not be ready to be saved.  For example, in maintenance documents
+     * where the notes are associated with the business object instead of the document header, the notes
+     * cannot be saved until the business object itself has been persisted.
+     * 
+     * @param document the document for which to save notes
+     * @return true if the notes were saved, false if they were not
+     */
+    public boolean saveDocumentNotes(Document document);
     
     public void sendAdHocRequests(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException;
 

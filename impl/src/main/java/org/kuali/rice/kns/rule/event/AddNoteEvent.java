@@ -19,7 +19,6 @@ import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.AddNoteRule;
 import org.kuali.rice.kns.rule.BusinessRule;
-import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
  * This class represents the add note event that is part of an eDoc in Kuali. This is triggered when a user presses the add button
@@ -59,6 +58,7 @@ public final class AddNoteEvent extends KualiDocumentEventBase {
         return note;
     }
 
+    @Override
     public void validate() {
         super.validate();
         if (getNote() == null) {
@@ -69,7 +69,7 @@ public final class AddNoteEvent extends KualiDocumentEventBase {
     /**
      * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
      */
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddNoteRule.class;
     }
 

@@ -16,11 +16,9 @@
 package org.kuali.rice.kim.rule.event.ui;
 
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
-import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.ui.AddPersonDocumentRoleQualifierRule;
-import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.event.KualiDocumentEventBase;
 
@@ -51,7 +49,7 @@ public class AddPersonDocumentRoleQualifierEvent extends KualiDocumentEventBase 
 	 * 
 	 * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#getRuleInterfaceClass()
 	 */
-	public Class getRuleInterfaceClass() {
+	public Class<? extends BusinessRule> getRuleInterfaceClass() {
 		return AddPersonDocumentRoleQualifierRule.class;
 	}
 

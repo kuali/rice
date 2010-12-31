@@ -17,7 +17,6 @@ package org.kuali.rice.kim.rule.event.ui;
 
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kim.rule.ui.AddDelegationMemberRule;
 import org.kuali.rice.kim.rule.ui.AddPersonDelegationMemberRule;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
@@ -42,7 +41,7 @@ public class AddPersonDelegationMemberEvent extends KualiDocumentEventBase {
         this.delegationMember = (RoleDocumentDelegationMember) ObjectUtils.deepCopy(member);
     }
 
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddPersonDelegationMemberRule.class;
     }
 

@@ -19,6 +19,8 @@ import java.util.List;
 
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
+import org.kuali.rice.kns.rule.event.AddAdHocRoutePersonEvent;
+import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 
 
@@ -44,7 +46,7 @@ public interface KualiRuleService {
      * @param document
      * @return List
      */
-    public List generateAdHocRoutePersonEvents(Document document);
+    public List<AddAdHocRoutePersonEvent> generateAdHocRoutePersonEvents(Document document);
 
     /**
      * Builds a list containing ad hoc route workgroup events appropriate for the context.
@@ -52,7 +54,7 @@ public interface KualiRuleService {
      * @param document
      * @return List
      */
-    public List generateAdHocRouteWorkgroupEvents(Document document);
+    public List<AddAdHocRouteWorkgroupEvent> generateAdHocRouteWorkgroupEvents(Document document);
 
     /**
      * Allows code in actions or business objects to directly access rule methods in the class.
@@ -61,5 +63,5 @@ public interface KualiRuleService {
      * @param ruleInterface
      * @return BusinessRule
      */
-    public BusinessRule getBusinessRulesInstance(Document document, Class ruleInterface);
+    public BusinessRule getBusinessRulesInstance(Document document, Class<? extends BusinessRule> ruleInterface);
 }

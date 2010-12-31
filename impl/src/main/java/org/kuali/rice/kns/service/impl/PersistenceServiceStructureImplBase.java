@@ -31,6 +31,7 @@ import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
 import org.kuali.rice.core.ojb.BaseOjbConfigurer;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.util.spring.CacheNoCopy;
@@ -166,10 +167,7 @@ public class PersistenceServiceStructureImplBase {
 	 *      java.lang.String)
 	 */
 	@CacheNoCopy
-	public Class getBusinessObjectAttributeClass(Class clazz, String attributeName) throws ObjectNotABusinessObjectRuntimeException {
-		if (clazz.isAssignableFrom(PersistableBusinessObject.class)) {
-			throw new ObjectNotABusinessObjectRuntimeException(clazz.getName() + " is not a PersistableBusinessObject");
-		}
+	public Class<? extends PersistableBusinessObjectExtension> getBusinessObjectAttributeClass(Class<? extends PersistableBusinessObject> clazz, String attributeName) {
 		String baseAttributeName = attributeName;
 		String subAttributeString = null;
 		if (attributeName.contains(".")) {

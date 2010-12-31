@@ -22,6 +22,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.kns.document.TransactionalDocument;
+import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.TransactionalDocumentDictionaryService;
@@ -92,8 +93,8 @@ public class TransactionalDocumentDictionaryServiceImpl implements Transactional
     /**
      * @see org.kuali.rice.kns.service.TransactionalDocumentDictionaryService#getBusinessRulesClass(org.kuali.bo.TransactionalDocument)
      */
-    public Class getBusinessRulesClass(TransactionalDocument document) {
-        Class businessRulesClass = null;
+    public Class<? extends BusinessRule> getBusinessRulesClass(TransactionalDocument document) {
+        Class<? extends BusinessRule> businessRulesClass = null;
 
         //TransactionalDocumentEntry entry = getTransactionalDocumentEntry(document);
         String docTypeName = document.getDocumentHeader().getWorkflowDocument().getDocumentType();

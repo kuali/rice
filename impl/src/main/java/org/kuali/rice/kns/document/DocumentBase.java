@@ -33,8 +33,6 @@ import javax.persistence.Transient;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
@@ -163,6 +161,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.kns.bo.BusinessObject#refresh()
      */
+    @Override
     public void refresh() {
         KNSServiceLocator.getPersistenceService().retrieveNonKeyFields(this);
     }
@@ -186,6 +185,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      *
      * @see org.kuali.rice.kns.document.Document#refreshReferenceObject(java.lang.String)
      */
+    @Override
     public void refreshReferenceObject(String referenceObjectName) {
         KNSServiceLocator.getPersistenceService().retrieveReferenceObject(this, referenceObjectName);
     }
@@ -194,6 +194,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @param fieldValues
      * @return consistently-formatted String containing the given fieldnames and their values
      */
+    @Override
     protected String toStringBuilder(LinkedHashMap fieldValues) {
         String built = null;
         String className = StringUtils.uncapitalize(StringUtils.substringAfterLast(this.getClass().getName(), "."));
@@ -268,29 +269,10 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
 
     /**
-     * This is the default implementation which retrieves notes.  Subclasses should be sure
-     * to invoke this superclass method if they override it.
-     *
      * @see org.kuali.rice.kns.document.Document#processAfterRetrieve()
      */
     public void processAfterRetrieve() {
-    	loadNotes();
-    }
-    
-    /**
-     * Loads the Notes for the note target on this Document.
-     */
-    protected void loadNotes() {
-    	if (isNoteTargetReady()) {
-    		notes = getNoteService().getByRemoteObjectId(getNoteTarget().getObjectId());
-    		// KULRNE-5692 - force a refresh of the attachments
-            // they are not (non-updateable) references and don't seem to update properly upon load
-        	if (notes != null) {
-        		for (Note note : notes) {
-                    note.refreshReferenceObject("attachment");
-                }
-        	}
-    	}
+    	// do nothing
     }
 
     /**
@@ -633,8 +615,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * 
      * @see org.kuali.rice.kns.document.Document#generateSaveEvents()
      */
-    public List generateSaveEvents() {
-        return new ArrayList();
+    public List<KualiDocumentEvent> generateSaveEvents() {
+        return new ArrayList<KualiDocumentEvent>();
     }
 
     /**
@@ -645,12 +627,12 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
     
     /**
-     * <p>Returns the business object with which notes related to this document should be associated.
+     * Returns the business object with which notes related to this document should be associated.
      * By default, the {@link DocumentHeader} of this document will be returned as the note target.
      * 
      * <p>Sub classes can override this method if they want notes to be associated with something
-     * other than the document header.  If this method is overridden, it is advisable to also
-     * override {@link #getNoteType()}.
+     * other than the document header.  If this method is overridden, the {@link #getNoteType()}
+     * method should be overridden to return {@link NoteType#BUSINESS_OBJECT_NOTE_TYPE}
      * 
      * @return Returns the documentBusinessObject.
      */
@@ -660,14 +642,14 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     }
     
     /**
-	 * <p>Returns the {@link NoteType} to use for notes associated with this document.
+	 * Returns the {@link NoteType} to use for notes associated with this document.
 	 * By default this returns {@link NoteType#DOCUMENT_HEADER_NOTE_TYPE} since notes are
 	 * associated with the {@link DocumentHeader} record by default.
 	 * 
 	 * <p>The case in which this should be overridden is if {@link #getNoteTarget()} is
-	 * overridden to return an object other than the {@link DocumentHeader}.
+	 * overridden to return an object other than the DocumentHeader.
 	 *
-	 * @return the {@link NoteType} to use for notes associated with this document
+	 * @return the note type to use for notes associated with this document
 	 * 
 	 * @see org.kuali.rice.kns.document.Document#getNoteType()
 	 */
@@ -675,77 +657,55 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 	public NoteType getNoteType() {
 		return NoteType.DOCUMENT_HEADER_NOTE_TYPE;
 	}
-    
+
+	/**
+	 * @see org.kuali.rice.kns.document.Document#addNote(org.kuali.rice.kns.bo.Note)
+	 */
     @Override
 	public void addNote(Note note) {
+    	if (note == null) {
+    		throw new IllegalArgumentException("Note cannot be null.");
+    	}
 		notes.add(note);
 	}
 
+    /**
+     * @see org.kuali.rice.kns.document.Document#removeNote(org.kuali.rice.kns.bo.Note)
+     */
 	@Override
 	public boolean removeNote(Note note) {
+		if (note == null) {
+    		throw new IllegalArgumentException("Note cannot be null.");
+    	}
 		return notes.remove(note);
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.document.Document#getNote(int)
+	 */
 	@Override
 	public Note getNote(int index) {
 		return notes.get(index);
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.document.Document#getNotes()
+	 */
 	@Override
 	public List<Note> getNotes() {
 		return notes;
 	}
 	
-	protected void setNotes(List<Note> notes) {
+	/**
+	 * @see org.kuali.rice.kns.document.Document#setNotes(java.util.List)
+	 */
+	@Override
+	public void setNotes(List<Note> notes) {
+		if (notes == null) {
+			throw new IllegalArgumentException("List of notes must be non-null.");
+		}
 		this.notes = notes;
 	}
-	
-	protected boolean isNoteTargetReady() {
-		PersistableBusinessObject noteTarget = getNoteTarget();
-		if (noteTarget == null || StringUtils.isBlank(noteTarget.getObjectId())) {
-			return false;
-		}
-		return true;
-	}
-	
-	public void saveNotes() {
-		if (isNoteTargetReady()) {
-			persistNotes();
-		}
-	}
-	
-	/**
-	 * Executes the saving of all Notes on the document.  At the point in time when this is executed,
-	 * the note target must be in such a state that the note can be linked with it.  This essentially
-	 * means that it must be persisted in the database and have a unique object id associated.  If
-	 * that is not the case then this method will throw an IllegalStateException.
-	 * 
-	 * @throws IllegalStateException if the object returned by {@link #getNoteTarget()} is not in a
-	 * state where Notes can be attached.
-	 */
-	protected void persistNotes() {
-		if (notes != null && !notes.isEmpty()) {
-    		for (Note note : notes) {
-    			linkNoteRemoteObjectId(note);
-    			getNoteService().save(note);
-    		}
-    		// move attachments from pending directory
-    		// do this in a separate loop to ensure that all notes can be saved first
-    		for (Note note : notes) {
-    			if (note.getAttachment() != null) {
-    				getAttachmentService().moveAttachmentWherePending(note);
-    			}
-    		}
-        }	
-	}
-	
-	private void linkNoteRemoteObjectId(Note note) {
-    	String objectId = getNoteTarget().getObjectId();
-    	if (StringUtils.isBlank(objectId)) {
-    		throw new IllegalStateException("Attempted to link a Note with a PersistableBusinessObject with no object id");
-    	}
-    	note.setRemoteObjectIdentifier(getNoteTarget().getObjectId());
-    }
 
     /**
      * @see org.kuali.rice.kns.document.Document#getPessimisticLocks()

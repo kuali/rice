@@ -17,6 +17,7 @@ package org.kuali.rice.kim.rule.ui;
 
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kns.rule.BusinessRule;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -24,6 +25,6 @@ import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface AddPersonDocumentDelegationMemberQualifierRule {
+public interface AddPersonDocumentDelegationMemberQualifierRule extends BusinessRule {
 	public boolean processAddPersonDocumentDelegationMemberQualifier(RoleDocumentDelegationMember newDelegationMember, IdentityManagementPersonDocument document);
 }

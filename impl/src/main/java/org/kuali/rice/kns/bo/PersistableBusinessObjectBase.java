@@ -16,20 +16,25 @@
 package org.kuali.rice.kns.bo;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
+import javax.persistence.PostRemove;
 import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
+import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
+import org.apache.ojb.broker.PersistenceBrokerAware;
 import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceService;
@@ -39,7 +44,7 @@ import org.kuali.rice.kns.service.PersistenceStructureService;
  * Business Object Base Business Object
  */
 @MappedSuperclass
-public abstract class PersistableBusinessObjectBase extends BusinessObjectBase implements PersistableBusinessObject {
+public abstract class PersistableBusinessObjectBase extends BusinessObjectBase implements PersistableBusinessObject, PersistenceBrokerAware {
     private static final long serialVersionUID = 1451642350593233282L;
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistableBusinessObjectBase.class);
     @Version
@@ -111,47 +116,172 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
         this.newCollectionRecord = isNewCollectionRecord;
     }
 
-    public void afterDelete(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    }
-
-    public void afterInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    }
-
-    public void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    }
-
-    public void afterUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    }
-
-    public void beforeDelete(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    }
-
-    public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-        setObjectId(UUID.randomUUID().toString());
-    }
-
-    public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    	beforeUpdate();
+    /**
+     * Implementation of the OJB afterDelete hook which delegates to {@link #postRemove()}.  This method is final
+     * because it is recommended that sub-classes override and implement postRemove if they need to take
+     * advantage of this persistence hook.
+     * 
+     * @see org.apache.ojb.broker.PersistenceBrokerAware#afterDelete(org.apache.ojb.broker.PersistenceBroker)
+     */
+    public final void afterDelete(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+    	postRemove();
     }
     
-    @PrePersist
-    public void beforeInsert() {
-    	setObjectId(UUID.randomUUID().toString());
+    /**
+     * Default implementation of the JPA {@link PostRemove} hook.  This implementation currently does nothing,
+     * however sub-classes can override and implement this method if needed.
+     * 
+     * <p>This method is currently invoked by the corresponding OJB {@link #afterDelete(PersistenceBroker)} hook.
+     */
+    @PostRemove
+    protected void postRemove() {
+    	// do nothing
     }
 
+    /**
+     * Implementation of the OJB afterInsert hook which delegates to {@link #postPersist()}.  This method is final
+     * because it is recommended that sub-classes override and implement postPersist if they need to take
+     * advantage of this persistence hook.
+     * 
+     * @see org.apache.ojb.broker.PersistenceBrokerAware#afterInsert(org.apache.ojb.broker.PersistenceBroker)
+     */
+    public final void afterInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+    	postPersist();
+    }
+
+    /**
+     * Default implementation of the JPA {@link PostPersist} hook.  This implementation currently does nothing,
+     * however sub-classes can override and implement this method if needed.
+     * 
+     * <p>This method is currently invoked by the corresponding OJB {@link #afterInsert(PersistenceBroker)} hook.
+     */
+    @PostPersist
+    protected void postPersist() {
+    	// do nothing
+    }
+
+    /**
+     * Implementation of the OJB afterLookup hook which delegates to {@link #postLoad()}.  This method is final
+     * because it is recommended that sub-classes override and implement postLoad if they need to take
+     * advantage of this persistence hook.
+     * 
+     * @see org.apache.ojb.broker.PersistenceBrokerAware#afterLookup(org.apache.ojb.broker.PersistenceBroker)
+     */
+    public final void afterLookup(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+    	postLoad();
+    }
+    
+    /**
+     * Default implementation of the JPA {@link PostLoad} hook.  This implementation currently does nothing,
+     * however sub-classes can override and implement this method if needed.
+     * 
+     * <p>This method is currently invoked by the corresponding OJB {@link #afterLookup(PersistenceBroker)} hook.
+     */
+    @PostLoad
+    protected void postLoad() {
+    	// do nothing
+    }
+
+    /**
+     * Implementation of the OJB afterUpdate hook which delegates to {@link #postUpdate()}.  This method is final
+     * because it is recommended that sub-classes override and implement postUpdate if they need to take
+     * advantage of this persistence hook.
+     *  
+     * @see org.apache.ojb.broker.PersistenceBrokerAware#afterUpdate(org.apache.ojb.broker.PersistenceBroker)
+     */
+    public final void afterUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+    	postUpdate();
+    }
+    
+    /**
+     * Default implementation of the JPA {@link PostUpdate} hook.  This implementation currently does nothing,
+     * however sub-classes can override and implement this method if needed.
+     * 
+     * <p>This method is currently invoked by the corresponding OJB {@link #afterUpdate(PersistenceBroker)} hook.
+     */
+    @PostUpdate
+    protected void postUpdate() {
+    	// do nothing
+    }
+
+    /**
+     * Implementation of the OJB beforeDelete hook which delegates to {@link #preRemove()}.  This method is final
+     * because it is recommended that sub-classes override and implement preRemove if they need to take
+     * advantage of this persistence hook.
+     * 
+     * @see org.apache.ojb.broker.PersistenceBrokerAware#beforeDelete(org.apache.ojb.broker.PersistenceBroker)
+     */
+    public final void beforeDelete(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+    	preRemove();
+    }
+    
+    /**
+     * Default implementation of the JPA {@link PreRemove} hook.  This implementation currently does nothing,
+     * however sub-classes can implement this method if needed.
+     * 
+     * <p>This method is currently invoked by the corresponding OJB {@link #beforeDelete(PersistenceBroker)} hook.
+     */
+    @PreRemove
+    protected void preRemove() {
+    	// do nothing
+    }
+
+    /**
+     * Implementation of the OJB beforeInsert hook which delegates to {@link #prePersist()}.  This method is final
+     * because it is recommended that sub-classes override and implement prePersist if they need to take
+     * advantage of this persistence hook.
+     * 
+     * @see org.apache.ojb.broker.PersistenceBrokerAware#beforeInsert(org.apache.ojb.broker.PersistenceBroker)
+     */
+    public final void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+    	prePersist();
+    }
+    
+    /**
+     * Default implementation of the JPA {@link PrePersist} hook which generates the unique objectId for this 
+     * persistable business object if it does not already have one.  Any sub-class which overrides this method
+     * should take care to invoke super.prePersist to ensure that the objectId for this persistable
+     * business object is generated properly.
+     * 
+     * <p>This method is currently invoked by the corresponding OJB {@link #beforeInsert(PersistenceBroker)} hook.
+     */
+    @PrePersist
+    protected void prePersist() {
+    	generateAndSetObjectIdIfNeeded();
+    }
+
+    /**
+     * Implementation of the OJB beforeUpdate hook which delegates to {@link #preUpdate()}.  This method is final
+     * because it is recommended that sub-classes override and implement preUpdate if they need to take
+     * advantage of this persistence hook.
+     * 
+     * @see org.apache.ojb.broker.PersistenceBrokerAware#beforeUpdate(org.apache.ojb.broker.PersistenceBroker)
+     */
+    public final void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
+    	preUpdate();
+    }
+
+    /**
+     * Default implementation of the JPA {@link PreUpdate} hook which generates the unique objectId for this 
+     * persistable business object if it does not already have one.  Any sub-class which overrides this method
+     * should take care to invoke super.preUpdate to ensure that the objectId for this persistable
+     * business object is generated properly.
+     * 
+     * <p>This method is currently invoked by the corresponding OJB {@link #beforeUpdate(PersistenceBroker)} hook.
+     */
     @PreUpdate
-    public void beforeUpdate() {
-        if (StringUtils.isEmpty(getObjectId())) {
+    protected void preUpdate() {
+    	generateAndSetObjectIdIfNeeded();
+    }
+        
+    /**
+     * If this PersistableBusinessObject does not already have a unique objectId, this method will generate
+     * one and set it's value on this object.
+     */
+    private void generateAndSetObjectIdIfNeeded() {
+    	if (StringUtils.isEmpty(getObjectId())) {
             setObjectId(UUID.randomUUID().toString());
         }
-    }
-    
-    @PostPersist
-    public void afterInsert() {
-    }
-    
-    @PostUpdate
-    public void afterUpdate() {
     }
 
     /**
@@ -184,24 +314,20 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     /**
      * @see org.kuali.rice.kns.bo.PersistableBusinessObject#buildListOfDeletionAwareLists()
      */
-    public List buildListOfDeletionAwareLists() {
-        return new ArrayList();
+    public List<Collection<PersistableBusinessObject>> buildListOfDeletionAwareLists() {
+        return new ArrayList<Collection<PersistableBusinessObject>>();
     }
 
     public void linkEditableUserFields() {
+    	// do nothing
     }
-
-
-    
-
-    
 
 	public PersistableBusinessObjectExtension getExtension() {
 		if ( extension == null ) {
 			try {
-				Class extensionClass = getPersistenceStructureService().getBusinessObjectAttributeClass( getClass(), "extension" );
+				Class<? extends PersistableBusinessObjectExtension> extensionClass = getPersistenceStructureService().getBusinessObjectAttributeClass( getClass(), "extension" );
 				if ( extensionClass != null ) {
-					extension = (PersistableBusinessObjectExtension)extensionClass.newInstance();
+					extension = extensionClass.newInstance();
 				}
 			} catch ( Exception ex ) {
 				LOG.error( "unable to create extension object", ex );

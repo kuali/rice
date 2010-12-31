@@ -15,17 +15,16 @@
  */
 package org.kuali.rice.kns.bo;
 
+import java.util.Collection;
 import java.util.List;
-
-import org.apache.ojb.broker.PersistenceBrokerAware;
 
 /**
  * Declares common methods for all persistable objects.
  */
-public interface PersistableBusinessObject extends BusinessObject, PersistenceBrokerAware {
+public interface PersistableBusinessObject extends BusinessObject {
 
     /**
-     * @return object versionm number, used by optimistic locking
+     * @return object version number, used by optimistic locking
      */
     public Long getVersionNumber();
 
@@ -67,7 +66,7 @@ public interface PersistableBusinessObject extends BusinessObject, PersistenceBr
      * 
      * @return List of collections which need to be monitored for changes by OJB
      */
-    public List buildListOfDeletionAwareLists();
+    public List<Collection<PersistableBusinessObject>> buildListOfDeletionAwareLists();
 
     /**
      * Returns the boolean indicating whether this record is a new record of a maintenance document collection.
@@ -87,6 +86,7 @@ public interface PersistableBusinessObject extends BusinessObject, PersistenceBr
     public void linkEditableUserFields();
 
     public PersistableBusinessObjectExtension getExtension();
+
     public void setExtension(PersistableBusinessObjectExtension extension);
-    //public void setAutoIncrementSet(boolean autoIncrementSet);
+
 }

@@ -491,6 +491,7 @@
 		<property name="noteDao">
 			<ref bean="noteDao" />
 		</property>
+		<property name="attachmentService" ref="attachmentService"/>
 	</bean>
 
 	<bean id="attachmentService" class="org.kuali.rice.kns.service.impl.AttachmentServiceImpl">

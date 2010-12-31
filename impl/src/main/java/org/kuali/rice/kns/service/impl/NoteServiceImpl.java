@@ -17,10 +17,12 @@ package org.kuali.rice.kns.service.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.NoteDao;
+import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -35,6 +37,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class NoteServiceImpl implements NoteService {
 
     private NoteDao noteDao;
+    
+    private AttachmentService attachmentService;
 
     /**
      * Default constructor
@@ -49,18 +53,29 @@ public class NoteServiceImpl implements NoteService {
     public void saveNoteList(List<Note> notes) {
         if (notes != null) {
             for (Note note : notes) {
-                noteDao.save(note);
+                save(note);
             }
         }
     }
 
     /**
-     * Saves a Note to the DB.
+     * Saves a Note to the data store.  Will also ensure that any attachments associated with the Note are persisted 
      * 
-     * @param Note The accounting Note object to save - can be any object that extends Note (i.e. Source and Target lines).
+     * @param note the note to save, must be non-null and must have a valid remoteObjectIdentifier
+     * @return the note that was saved
      */
     public Note save(Note note) {
+    	if (note == null) {
+    		throw new IllegalArgumentException("Note must be non-null.");
+    	}
+    	if (StringUtils.isBlank(note.getRemoteObjectIdentifier())) {
+    		throw new IllegalStateException("The remote object identifier must be established on a Note before it can be saved.  Given note had a null remote object identifier.");
+    	}
         noteDao.save(note);
+        // move attachment from pending directory
+        if (note.getAttachment() != null) {
+        	attachmentService.moveAttachmentWherePending(note);
+        }
         return note;
     }
 
@@ -117,6 +132,14 @@ public class NoteServiceImpl implements NoteService {
         tmpNote.setRemoteObjectIdentifier(bo.getObjectId());
         tmpNote.setAuthorUniversalIdentifier(kualiUser.getPrincipalId());
         return tmpNote;
+    }
+    
+    public void setAttachmentService(AttachmentService attachmentService) {
+    	this.attachmentService = attachmentService;
+    }
+    
+    protected AttachmentService getAttachmentService() {
+    	return this.attachmentService;
     }
     
 }

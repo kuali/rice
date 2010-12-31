@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kns.workflow.service.impl;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -39,11 +43,6 @@ import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -89,7 +88,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             throw new IllegalArgumentException("invalid (null) person");
         }
 
-        if ((null == person) || StringUtils.isBlank(person.getPrincipalName())) {
+        if (StringUtils.isBlank(person.getPrincipalName())) {
             throw new IllegalArgumentException("invalid (empty) PrincipalName");
         }
 
@@ -111,9 +110,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
             if (e.getMessage().contains("Could not locate the given document type name")) {
                 throw new DocumentTypeNotFoundException("unknown document type '" + documentTypeId + "'");
             }
-            else {
-                throw e;
-            }
+            throw e;
         }
 
         t0.log();
@@ -150,7 +147,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     /**
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#acknowledge(org.kuali.rice.kew.rule.FlexDoc)
      */
-    public void acknowledge(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    public void acknowledge(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("acknowleding document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
@@ -162,7 +159,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     /**
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#approve(org.kuali.rice.kew.rule.FlexDoc)
      */
-    public void approve(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    public void approve(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("approving document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
@@ -206,7 +203,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     /**
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#blanketApprove(org.kuali.rice.kew.rule.FlexDoc)
      */
-    public void blanketApprove(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    public void blanketApprove(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("blanket approving document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
@@ -229,7 +226,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     /**
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#clearFyi(org.kuali.rice.kew.rule.FlexDoc)
      */
-    public void clearFyi(KualiWorkflowDocument workflowDocument, List adHocRecipients) throws WorkflowException {
+    public void clearFyi(KualiWorkflowDocument workflowDocument, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("clearing FYI for document(" + workflowDocument.getRouteHeaderId() + ")");
         }
@@ -238,14 +235,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         workflowDocument.fyi();
     }
 
-    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
     	sendWorkflowNotification(workflowDocument, annotation, adHocRecipients, null);
     }
     
     /**
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#sendWorkflowNotification(org.kuali.rice.kns.workflow.service.KualiWorkflowDocument, java.lang.String, java.util.List)
      */
-    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients, String notificationLabel) throws WorkflowException {
+    public void sendWorkflowNotification(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients, String notificationLabel) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("sending FYI for document(" + workflowDocument.getRouteHeaderId() + ")");
         }
@@ -267,7 +264,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
     /**
      * @see org.kuali.rice.kns.workflow.service.WorkflowDocumentService#route(org.kuali.rice.kew.rule.FlexDoc)
      */
-    public void route(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    public void route(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         if (LOG.isDebugEnabled()) {
             LOG.debug("routing document(" + workflowDocument.getRouteHeaderId() + ",'" + annotation + "')");
         }
@@ -315,7 +312,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
         return freshCopyWorkflowDoc.getCurrentRouteNodeNames();
     }
 
-    private void handleAdHocRouteRequests(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients) throws WorkflowException {
+    private void handleAdHocRouteRequests(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
     	handleAdHocRouteRequests(workflowDocument, annotation, adHocRecipients, null);
     }
     
@@ -329,7 +326,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      * @throws InvalidRouteTypeException
      * @throws InvalidActionRequestException
      */
-    private void handleAdHocRouteRequests(KualiWorkflowDocument workflowDocument, String annotation, List adHocRecipients, String notificationLabel) throws WorkflowException {
+    private void handleAdHocRouteRequests(KualiWorkflowDocument workflowDocument, String annotation, List<AdHocRouteRecipient> adHocRecipients, String notificationLabel) throws WorkflowException {
 
         if (adHocRecipients != null && adHocRecipients.size() > 0) {
             String currentNode = null;
@@ -347,13 +344,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 currentNode = currentNodes[i];
             }
 
-            for (Iterator iter = adHocRecipients.iterator(); iter.hasNext();) {
-                AdHocRouteRecipient recipient = (AdHocRouteRecipient) iter.next();
+            
+            for (AdHocRouteRecipient recipient : adHocRecipients) {
                 if (StringUtils.isNotEmpty(recipient.getId())) {
+                	String newAnnotation = annotation;
                 	if ( StringUtils.isBlank( annotation ) ) {
                 		try {
                 			String message = KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceKeyConstants.MESSAGE_ADHOC_ANNOTATION);                		
-                			annotation = MessageFormat.format(message, GlobalVariables.getUserSession().getPrincipalName() );
+                			newAnnotation = MessageFormat.format(message, GlobalVariables.getUserSession().getPrincipalName() );
                 		} catch ( Exception ex ) {
                 			LOG.warn("Unable to set annotation", ex );
                 		}
@@ -364,14 +362,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 		if (principal == null) {
                 			throw new RiceRuntimeException("Could not locate principal with name '" + recipient.getId() + "'");
                 		}
-                        workflowDocument.adHocRouteDocumentToPrincipal(recipient.getActionRequested(), currentNode, annotation, principal.getPrincipalId(), "", true, notificationLabel);
+                        workflowDocument.adHocRouteDocumentToPrincipal(recipient.getActionRequested(), currentNode, newAnnotation, principal.getPrincipalId(), "", true, notificationLabel);
                     }
                     else {
                     	Group group = KIMServiceLocator.getIdentityManagementService().getGroup(recipient.getId());
                 		if (group == null) {
                 			throw new RiceRuntimeException("Could not locate group with id '" + recipient.getId() + "'");
                 		}
-                    	workflowDocument.adHocRouteDocumentToGroup(recipient.getActionRequested(), currentNode, annotation, group.getGroupId() , "", true, notificationLabel);
+                    	workflowDocument.adHocRouteDocumentToGroup(recipient.getActionRequested(), currentNode, newAnnotation, group.getGroupId() , "", true, notificationLabel);
                     }
                 }
             }
@@ -384,12 +382,11 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
      *
      * @param adHocRecipients
      */
-    private List filterAdHocRecipients(List adHocRecipients, String[] validTypes) {
+    private List<AdHocRouteRecipient> filterAdHocRecipients(List<AdHocRouteRecipient> adHocRecipients, String[] validTypes) {
         // now filter out any but ack or fyi from the ad hoc list
-        List realAdHocRecipients = new ArrayList();
+        List<AdHocRouteRecipient> realAdHocRecipients = new ArrayList<AdHocRouteRecipient>();
         if (adHocRecipients != null) {
-            for (Iterator iter = adHocRecipients.iterator(); iter.hasNext();) {
-                AdHocRouteRecipient proposedRecipient = (AdHocRouteRecipient) iter.next();
+            for (AdHocRouteRecipient proposedRecipient : adHocRecipients) {
                 if (StringUtils.isNotBlank(proposedRecipient.getActionRequested())) {
                     for (int i = 0; i < validTypes.length; i++) {
                         if (validTypes[i].equals(proposedRecipient.getActionRequested())) {

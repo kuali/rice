@@ -22,13 +22,9 @@ import java.util.LinkedHashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.PersistenceBrokerException;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityAddressInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
@@ -313,25 +309,15 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 
 	// handle automatic updating of the timestamp
 	
-    public void beforeInsert(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    	super.beforeInsert( persistenceBroker );
+	@Override
+    protected void prePersist() {
+    	super.prePersist();
         lastUpdateTimestamp = new Timestamp(System.currentTimeMillis());
     }
 
-    public void beforeUpdate(PersistenceBroker persistenceBroker) throws PersistenceBrokerException {
-    	super.beforeUpdate( persistenceBroker );
-        lastUpdateTimestamp = new Timestamp(System.currentTimeMillis());
-    }
-    
-    @PrePersist
-    public void beforeInsert() {
-    	super.beforeInsert();
-        lastUpdateTimestamp = new Timestamp(System.currentTimeMillis());
-    }
-
-    @PreUpdate
-    public void beforeUpdate() {
-    	super.beforeUpdate();
+	@Override
+    protected void preUpdate() {
+    	super.preUpdate();
         lastUpdateTimestamp = new Timestamp(System.currentTimeMillis());
     }
 	

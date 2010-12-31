@@ -99,6 +99,7 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
     /**
      * @see java.lang.Object#toString()
      */
+    @Override
     public String toString() {
         return getName();
     }
@@ -115,8 +116,8 @@ abstract public class KualiDocumentEventBase implements KualiDocumentEvent {
     /**
      * @see org.kuali.rice.kns.rule.event.KualiDocumentEvent#generateEvents()
      */
-    public List generateEvents() {
-        return new ArrayList();
+    public List<KualiDocumentEvent> generateEvents() {
+        return new ArrayList<KualiDocumentEvent>();
     }
 
     /**

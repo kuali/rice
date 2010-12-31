@@ -25,8 +25,6 @@ import javax.persistence.IdClass;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
-import org.apache.ojb.broker.PersistenceBroker;
-import org.apache.ojb.broker.PersistenceBrokerException;
 import org.hibernate.annotations.Type;
 
 
@@ -164,33 +162,5 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 	public void setEncrypted(boolean encrypted) {
 		this.encrypted = encrypted;
 	}
-
-	public void beforeInsert() {
-		// TODO kellerj - THIS METHOD NEEDS JAVADOCS
-		super.beforeInsert();
-	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#beforeInsert(org.apache.ojb.broker.PersistenceBroker)
-	 */
-	@Override
-	public void beforeInsert(PersistenceBroker persistenceBroker)
-			throws PersistenceBrokerException {
-		// TODO kellerj - THIS METHOD NEEDS JAVADOCS
-		super.beforeInsert(persistenceBroker);
-	}
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.PersistableBusinessObjectBase#afterLookup(org.apache.ojb.broker.PersistenceBroker)
-	 */
-	@Override
-	public void afterLookup(PersistenceBroker persistenceBroker)
-			throws PersistenceBrokerException {
-		// TODO kellerj - THIS METHOD NEEDS JAVADOCS
-		super.afterLookup(persistenceBroker);
-	}
+		
 }

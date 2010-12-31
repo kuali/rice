@@ -41,7 +41,7 @@ public class AddMemberEvent extends KualiDocumentEventBase {
         this.member = (KimDocumentRoleMember) ObjectUtils.deepCopy(member);
     }
 
-    public Class getRuleInterfaceClass() {
+    public Class<? extends BusinessRule> getRuleInterfaceClass() {
         return AddMemberRule.class;
     }
 

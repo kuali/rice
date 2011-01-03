@@ -20,55 +20,69 @@ import java.util.List;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 
-
-
 /**
- * This interface defines methods that a Note service must provide
+ * This service provides various operations related to {@link Note} objects.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface NoteService {
+	
     /**
-     * Retrieves a list of notes for a object id
+     * Retrieves a list of notes that are associated with the given object id.
+     * This object id will generally be the object id of the {@link PersistableBusinessObject}
+     * that the note was attached to when it was created.
      *
-     * @param remoteObjectId
-     * @return A list of Notes
-     * @throws Exception
+     * @param remoteObjectId the object id that the notes being searched for are associated with
+     * @return the list of notes which are associated with the given object id.  If no such notes are found, an empty list will be returned.
      */
     public List<Note> getByRemoteObjectId(String remoteObjectId);
 
     /**
-     * Retrieves the notes for a note identifier
+     * Retrieves the note with the given id.
      *
-     * @param noteId
-     * @return A Note
+     * @param noteId the note id to search by
+     * @return the note with the given note id, or null if no note is found
+     * @throws IllegalArgumentException if the specified id is null
      */
     public Note getNoteByNoteId(Long noteId);
     
     /**
-     *
-     * This method saves a list of notes
-     * @param noteValues
+     * Saves the given lists of notes.  If the given list is null or empty,
+     * this method will do nothing.
+     * 
+     * @param noteValues the list of notes to save
+     * @throws IllegalStateException if any of the notes in the list have an invalid remoteObjectId
      */
     public void saveNoteList(List<Note> notes);
 
     /**
-     * Saves a note
+     * Saves the specified note.  This method returns a reference to the note that was
+     * saved.  Callers of this method should reassign their reference to the note
+     * passed in with the one that is returned.
      *
-     * @param note
-     * @return The note
-     * @throws Exception
+     * @param note the note to save
+     * @return the saved note
+     * @throws IllegalAgumentException if the specified note is null
+     * @throws IllegalStateException if the given note's remoteObjectId is not valid
      */
     public Note save(Note note);
 
     /**
-     * Deletes a note
+     * Deletes the specified note.
      *
-     * @param Note
-     * @throws Exception
+     * @param note the note to delete
+     * @throws IllegalArgumentException if the given note is null
      */
     public void deleteNote(Note note);
 
-    public Note createNote(Note note, PersistableBusinessObject bo);
+    /**
+     * Creates a new note which is a copy of the given note and is associated with
+     * the specified PersistableBusinessObject and Person.
+     * 
+     * @param noteToCopy the note to copy
+     * @param bo the business object to associate the Note with
+     * @return a copy of the given note which
+     */
+    public Note createNote(Note noteToCopy, PersistableBusinessObject bo, String authorPrincipalId);
 
 }

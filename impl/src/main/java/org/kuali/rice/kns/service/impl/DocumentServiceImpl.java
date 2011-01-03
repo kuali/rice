@@ -810,7 +810,12 @@ public class DocumentServiceImpl implements DocumentService {
         note.setNoteTypeCode(document.getNoteType().getCode());
 
         PersistableBusinessObject bo = document.getNoteTarget();
-        return bo == null ? null : getNoteService().createNote(note, bo);
+        // TODO gah! this is awful
+        Person kualiUser = GlobalVariables.getUserSession().getPerson();
+        if (kualiUser == null) {
+        	throw new IllegalStateException("Current UserSession has a null Person.");
+        }
+        return bo == null ? null : getNoteService().createNote(note, bo, kualiUser.getPrincipalId());
     }
     
     

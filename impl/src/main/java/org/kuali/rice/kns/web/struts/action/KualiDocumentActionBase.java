@@ -1385,7 +1385,12 @@ public class KualiDocumentActionBase extends KualiAction {
         }
 
         // create a new note from the data passed in
-        Note tmpNote = getNoteService().createNote(newNote, document.getNoteTarget());
+        // TODO gah! this is awful
+        Person kualiUser = GlobalVariables.getUserSession().getPerson();
+        if (kualiUser == null) {
+        	throw new IllegalStateException("Current UserSession has a null Person.");
+        }
+        Note tmpNote = getNoteService().createNote(newNote, document.getNoteTarget(), kualiUser.getPrincipalId());
         
         ActionForward forward = checkAndWarnAboutSensitiveData(mapping, form, request, response, KNSPropertyConstants.NOTE, tmpNote.getNoteText(), "insertBONote", "");
         if (forward != null) {

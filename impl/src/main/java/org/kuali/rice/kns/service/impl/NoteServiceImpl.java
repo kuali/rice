@@ -40,9 +40,6 @@ public class NoteServiceImpl implements NoteService {
     
     private AttachmentService attachmentService;
 
-    /**
-     * Default constructor
-     */
     public NoteServiceImpl() {
         super();
     }
@@ -53,23 +50,21 @@ public class NoteServiceImpl implements NoteService {
     public void saveNoteList(List<Note> notes) {
         if (notes != null) {
             for (Note note : notes) {
+            	if (StringUtils.isBlank(note.getRemoteObjectIdentifier())) {
+            		throw new IllegalStateException("The remote object identifier must be established on a Note before it can be saved.  The following note in the given list had a null or empty remote object identifier: " + note);
+            	}
                 save(note);
             }
         }
     }
 
     /**
-     * Saves a Note to the data store.  Will also ensure that any attachments associated with the Note are persisted 
-     * 
-     * @param note the note to save, must be non-null and must have a valid remoteObjectIdentifier
-     * @return the note that was saved
+     * @see org.kuali.rice.kns.service.NoteService#save(org.kuali.rice.kns.bo.Note)
      */
     public Note save(Note note) {
-    	if (note == null) {
-    		throw new IllegalArgumentException("Note must be non-null.");
-    	}
+    	validateNoteNotNull(note);
     	if (StringUtils.isBlank(note.getRemoteObjectIdentifier())) {
-    		throw new IllegalStateException("The remote object identifier must be established on a Note before it can be saved.  Given note had a null remote object identifier.");
+    		throw new IllegalStateException("The remote object identifier must be established on a Note before it can be saved.  Given note had a null or empty remote object identifier.");
     	}
         noteDao.save(note);
         // move attachment from pending directory
@@ -80,34 +75,54 @@ public class NoteServiceImpl implements NoteService {
     }
 
     /**
-     * Retrieves a Note by its associated object id.
-     * 
      * @see org.kuali.rice.kns.service.NoteService#getByRemoteObjectId(java.lang.String)
      */
     public List<Note> getByRemoteObjectId(String remoteObjectId) {
-
+    	if (StringUtils.isBlank(remoteObjectId)) {
+    		throw new IllegalArgumentException("The remoteObjectId must not be null or blank.");
+    	}
         return noteDao.findByremoteObjectId(remoteObjectId);
     }
     
     /**
-     * Retrieves a Note by note identifier.
-     * 
      * @see org.kuali.rice.kns.service.NoteService#getNoteByNoteId(java.lang.Long)
      */
     public Note getNoteByNoteId(Long noteId) {
+    	if (noteId == null) {
+    		throw new IllegalArgumentException("The noteId must not be null.");
+    	}
 		return noteDao.getNoteByNoteId(noteId);
 	}
 
     /**
-     * Deletes a Note from the DB.
-     * 
-     * @param Note The Note object to delete.
+     * @see org.kuali.rice.kns.service.NoteService#deleteNote(org.kuali.rice.kns.bo.Note)
      */
     public void deleteNote(Note note) {
+    	validateNoteNotNull(note);
         noteDao.deleteNote(note);
     }
+    
+    /**
+     * TODO this method seems awfully out of place in this service
+     * 
+     * @see org.kuali.rice.kns.service.NoteService#createNote(org.kuali.rice.kns.bo.Note, org.kuali.rice.kns.bo.PersistableBusinessObject)
+     */
+    public Note createNote(Note noteToCopy, PersistableBusinessObject bo, String authorPrincipalId) {
+    	validateNoteNotNull(noteToCopy);
+    	if (bo == null) {
+    		throw new IllegalArgumentException("The bo must not be null.");
+    	}
+    	if (StringUtils.isBlank(authorPrincipalId)) {
+    		throw new IllegalArgumentException("The authorPrincipalId must not be null.");
+    	}
+        // TODO: Why is a deep copy being done?  Nowhere that this is called uses the given note argument
+        // again after calling this method.
+        Note tmpNote = (Note) ObjectUtils.deepCopy(noteToCopy);
+        tmpNote.setRemoteObjectIdentifier(bo.getObjectId());
+        tmpNote.setAuthorUniversalIdentifier(authorPrincipalId);
+        return tmpNote;
+    }
 
-    // needed for Spring injection
     /**
      * Sets the data access object
      * 
@@ -120,18 +135,8 @@ public class NoteServiceImpl implements NoteService {
     /**
      * Retrieves a data access object
      */
-    public NoteDao getNoteDao() {
+    protected NoteDao getNoteDao() {
         return noteDao;
-    }
-
-    public Note createNote(Note note, PersistableBusinessObject bo) {
-        // TODO: Why is a deep copy being done?  Nowhere that this is called uses the given note argument
-        // again after calling this method.
-        Note tmpNote = (Note) ObjectUtils.deepCopy(note);
-        Person kualiUser = GlobalVariables.getUserSession().getPerson();
-        tmpNote.setRemoteObjectIdentifier(bo.getObjectId());
-        tmpNote.setAuthorUniversalIdentifier(kualiUser.getPrincipalId());
-        return tmpNote;
     }
     
     public void setAttachmentService(AttachmentService attachmentService) {
@@ -140,6 +145,12 @@ public class NoteServiceImpl implements NoteService {
     
     protected AttachmentService getAttachmentService() {
     	return this.attachmentService;
+    }
+    
+    private void validateNoteNotNull(Note note) {
+    	if (note == null) {
+    		throw new IllegalArgumentException("Note must not be null.");
+    	}
     }
     
 }

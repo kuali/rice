@@ -18,13 +18,11 @@ package org.kuali.rice.kns.service.impl;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.NoteDao;
 import org.kuali.rice.kns.service.AttachmentService;
 import org.kuali.rice.kns.service.NoteService;
-import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -15,15 +15,15 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.Control"/>
+<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.TextAreaControl"/>
 <tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.AttributeField"/>
 
 <%--
-    Standard HTML Text Input
+    Standard HTML TextArea Input
     
  --%>
 
-<form:input id="${field.id}" path="${field.bindingPath}" 
-            size="${control.size}" maxlength="${control.maxLength}" 
-            cssClass="${control.styleClass}" cssStyle="${field.style}"
-            tabindex="${control.tabIndex}"/>
+<form:textarea id="${field.id}" path="${field.bindingPath}" 
+               rows="${control.rows}" cols="${control.cols}" 
+               cssClass="${control.styleClass}" cssStyle="${field.style}"
+               tabindex="${control.tabIndex}"/>

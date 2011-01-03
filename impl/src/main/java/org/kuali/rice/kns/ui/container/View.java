@@ -15,10 +15,11 @@
  */
 package org.kuali.rice.kns.ui.container;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -38,6 +39,7 @@ public class View extends ContainerBase {
 
 	private boolean renderForm;
 	private boolean validateModelData;
+	private String persistenceMode;
 
 	private NavigationGroup navigation;
 
@@ -64,8 +66,8 @@ public class View extends ContainerBase {
 	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
 	 */
 	@Override
-	public List<Class> getSupportedComponents() {
-		List<Class> supportedComponents = new ArrayList<Class>();
+	public Set<Class> getSupportedComponents() {
+		Set<Class> supportedComponents = new HashSet<Class>();
 		supportedComponents.add(Group.class);
 
 		return supportedComponents;
@@ -179,4 +181,13 @@ public class View extends ContainerBase {
 	public void setDialogMode(boolean dialogMode) {
 		this.dialogMode = dialogMode;
 	}
+
+	public String getPersistenceMode() {
+		return this.persistenceMode;
+	}
+
+	public void setPersistenceMode(String persistenceMode) {
+		this.persistenceMode = persistenceMode;
+	}
+
 }

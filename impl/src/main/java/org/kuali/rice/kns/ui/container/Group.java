@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kns.ui.container;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.kuali.rice.kns.web.ui.Field;
 
@@ -36,8 +36,8 @@ public class Group extends ContainerBase {
 	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
 	 */
 	@Override
-	public List<Class> getSupportedComponents() {
-		List<Class> supportedComponents = new ArrayList<Class>();
+	public Set<Class> getSupportedComponents() {
+		Set<Class> supportedComponents = new HashSet<Class>();
 		supportedComponents.add(Field.class);
 		
 		return supportedComponents;

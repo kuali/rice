@@ -15,35 +15,16 @@
  */
 package org.kuali.rice.kns.ui.control;
 
-import org.kuali.rice.kns.ui.ComponentBase;
-
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ControlBase extends ComponentBase implements Control {
-	private int tabIndex;
+public class CheckboxControl extends ControlBase {
 
-	public ControlBase() {
+	public CheckboxControl() {
 
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
-	 */
-	@Override
-	public String getComponentTypeName() {
-		return "control";
-	}
-
-	public int getTabIndex() {
-		return this.tabIndex;
-	}
-
-	public void setTabIndex(int tabIndex) {
-		this.tabIndex = tabIndex;
 	}
 
 }

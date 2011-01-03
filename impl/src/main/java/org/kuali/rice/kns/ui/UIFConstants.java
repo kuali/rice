@@ -25,6 +25,11 @@ import org.kuali.rice.core.util.JSTLConstants;
 public class UIFConstants extends JSTLConstants {
 	public static final String CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME = "methodToCall";
 
+	public static class PersistenceMode {
+		public static final String REQUEST = "REQUEST";
+		public static final String SESSION = "SESSION";
+	}
+
 	public enum Position {
 		BOTTOM, LEFT, RIGHT, TOP
 	}
@@ -39,5 +44,12 @@ public class UIFConstants extends JSTLConstants {
 
 	public enum MessageType {
 		NORMAL, SUMMARY, CONSTRAINT, REQUIRED
+	}
+	
+	public static class ViewType {
+		public static final String INQUIRY = "INQUIRY";
+		public static final String LOOKUP = "LOOKUP";
+		public static final String MAINTENANCE = "MAINTENANCE";
+		public static final String TRANSACTIONAL = "TRANSACTIONAL";
 	}
 }

@@ -15,7 +15,9 @@
  */
 package org.kuali.rice.kns.ui.control;
 
-import org.kuali.rice.kns.ui.ComponentBase;
+import java.util.List;
+
+import org.kuali.rice.core.util.KeyLabelPair;
 
 /**
  * This is a description of what this class does - jkneal don't forget to fill
@@ -23,27 +25,19 @@ import org.kuali.rice.kns.ui.ComponentBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ControlBase extends ComponentBase implements Control {
-	private int tabIndex;
+public abstract class MultiValueControlBase extends ControlBase {
+	private List<KeyLabelPair> options;
 
-	public ControlBase() {
+	public MultiValueControlBase() {
 
 	}
 
-	/**
-	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
-	 */
-	@Override
-	public String getComponentTypeName() {
-		return "control";
+	public List<KeyLabelPair> getOptions() {
+		return this.options;
 	}
 
-	public int getTabIndex() {
-		return this.tabIndex;
-	}
-
-	public void setTabIndex(int tabIndex) {
-		this.tabIndex = tabIndex;
+	public void setOptions(List<KeyLabelPair> options) {
+		this.options = options;
 	}
 
 }

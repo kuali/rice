@@ -15,35 +15,35 @@
  */
 package org.kuali.rice.kns.ui.control;
 
-import org.kuali.rice.kns.ui.ComponentBase;
-
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ControlBase extends ComponentBase implements Control {
-	private int tabIndex;
+public class SelectControl extends MultiValueControlBase {
+	private int size;
+	private boolean multiple;
 
-	public ControlBase() {
-
+	public SelectControl() {
+		size = 1;
+		multiple = false;
 	}
 
-	/**
-	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
-	 */
-	@Override
-	public String getComponentTypeName() {
-		return "control";
+	public int getSize() {
+		return this.size;
 	}
 
-	public int getTabIndex() {
-		return this.tabIndex;
+	public void setSize(int size) {
+		this.size = size;
 	}
 
-	public void setTabIndex(int tabIndex) {
-		this.tabIndex = tabIndex;
+	public boolean isMultiple() {
+		return this.multiple;
+	}
+
+	public void setMultiple(boolean multiple) {
+		this.multiple = multiple;
 	}
 
 }

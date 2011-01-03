@@ -190,7 +190,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
               <property name="items">
                 <list> 
                   <bean parent="MessageField" p:messageText="* indicates required field" 
-                        p:messageType="REQUIRED" p:styleClass="required"/>
+                        p:messageType="REQUIRED"/>
                 </list>
               </property>
             </bean>   
@@ -244,9 +244,29 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
         
   <!-- Controls -->
   
-   <bean id="TextControl" abstract="true" class="org.kuali.rice.kns.ui.control.TextControl" scope="prototype">
+  <bean id="TextControl" abstract="true" class="org.kuali.rice.kns.ui.control.TextControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/text.jsp"/>
   </bean>  
+  
+  <bean id="CheckboxControl" abstract="true" class="org.kuali.rice.kns.ui.control.CheckboxControl" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/control/checkbox.jsp"/>
+  </bean> 
+  
+  <bean id="HiddenControl" abstract="true" class="org.kuali.rice.kns.ui.control.HiddenControl" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/control/hidden.jsp"/>
+  </bean>  
+  
+  <bean id="TextAreaControl" abstract="true" class="org.kuali.rice.kns.ui.control.TextAreaControl" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/control/textArea.jsp"/>
+  </bean> 
+  
+  <bean id="SelectControl" abstract="true" class="org.kuali.rice.kns.ui.control.SelectControl" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/control/select.jsp"/>
+  </bean>     
+  
+  <bean id="RadioGroupControl" abstract="true" class="org.kuali.rice.kns.ui.control.RadioGroupControl" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/control/radioGroup.jsp"/>
+  </bean>   
   
   <!-- Widgets -->
    

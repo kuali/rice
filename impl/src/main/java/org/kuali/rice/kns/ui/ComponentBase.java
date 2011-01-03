@@ -20,10 +20,9 @@ import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * 
+ * @see org.kuali.rice.kns.ui.Component
  */
 public abstract class ComponentBase implements Component {
 	private String id;

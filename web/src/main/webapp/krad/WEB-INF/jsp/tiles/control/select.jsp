@@ -15,15 +15,23 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.Control"/>
+<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.SelectControl"/>
 <tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.AttributeField"/>
 
 <%--
-    Standard HTML Text Input
+    Standard HTML Select Input
     
  --%>
-
-<form:input id="${field.id}" path="${field.bindingPath}" 
-            size="${control.size}" maxlength="${control.maxLength}" 
-            cssClass="${control.styleClass}" cssStyle="${field.style}"
-            tabindex="${control.tabIndex}"/>
+ 
+<form:select id="${field.id}" path="${field.bindingPath}" 
+             size="${control.size}" multiple="${control.multiple}"
+             cssClass="${control.styleClass}" 
+             tabindex="${control.tabIndex}">
+             
+  <c:forEach items="${control.options}" var="option" varStatus="optionVarStatus">
+    <form:option value="${option.key}">${option.htmlSpacePadding}${option.label}</form:option>
+  </c:forEach>           
+             
+</form:select>             
+ 
+ 

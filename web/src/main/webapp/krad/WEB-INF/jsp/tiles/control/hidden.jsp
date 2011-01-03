@@ -15,15 +15,12 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.Control"/>
+<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.HiddenControl"/>
 <tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.AttributeField"/>
 
 <%--
-    Standard HTML Text Input
+    Standard HTML Hidden Input
     
  --%>
 
-<form:input id="${field.id}" path="${field.bindingPath}" 
-            size="${control.size}" maxlength="${control.maxLength}" 
-            cssClass="${control.styleClass}" cssStyle="${field.style}"
-            tabindex="${control.tabIndex}"/>
+<form:hidden id="${field.id}" path="${field.bindingPath}"/>

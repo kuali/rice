@@ -15,15 +15,15 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.Control"/>
+<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.CheckboxControl"/>
 <tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.AttributeField"/>
 
 <%--
-    Standard HTML Text Input
+    Standard HTML Checkbox Input
     
  --%>
-
-<form:input id="${field.id}" path="${field.bindingPath}" 
-            size="${control.size}" maxlength="${control.maxLength}" 
+ 
+<form:checkbox id="${field.id}" 
+            path="${field.bindingPath}" 
             cssClass="${control.styleClass}" cssStyle="${field.style}"
-            tabindex="${control.tabIndex}"/>
+            tabindex="${control.tabIndex}"/> 

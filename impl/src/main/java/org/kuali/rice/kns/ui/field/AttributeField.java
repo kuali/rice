@@ -16,8 +16,10 @@
 package org.kuali.rice.kns.ui.field;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.ui.UIFConstants.Position;
 import org.kuali.rice.kns.ui.control.Control;
+import org.kuali.rice.kns.ui.control.MultiValueControlBase;
 
 /**
  * This is a description of what this class does - jkneal don't forget to fill
@@ -37,6 +39,8 @@ public class AttributeField extends FieldLabelBase {
 
 	private Position errorMessagePlacement;
 	private ErrorsField errorField;
+
+	private KeyValuesFinder optionsFinder;
 
 	public AttributeField() {
 
@@ -58,6 +62,11 @@ public class AttributeField extends FieldLabelBase {
 
 		if (StringUtils.isBlank(bindingPath)) {
 			bindingPath = this.getName();
+		}
+		
+		// TODO: remove later, this should be done within  the service lifecycle
+		if (control instanceof MultiValueControlBase) {
+			((MultiValueControlBase) control).setOptions(optionsFinder.getKeyValues());
 		}
 	}
 
@@ -115,6 +124,14 @@ public class AttributeField extends FieldLabelBase {
 
 	public void setErrorField(ErrorsField errorField) {
 		this.errorField = errorField;
+	}
+
+	public KeyValuesFinder getOptionsFinder() {
+		return this.optionsFinder;
+	}
+
+	public void setOptionsFinder(KeyValuesFinder optionsFinder) {
+		this.optionsFinder = optionsFinder;
 	}
 
 }

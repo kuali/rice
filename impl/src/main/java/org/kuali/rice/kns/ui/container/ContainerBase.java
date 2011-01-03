@@ -22,8 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.ui.Component;
 import org.kuali.rice.kns.ui.ComponentBase;
 import org.kuali.rice.kns.ui.LabeledComponent;
-import org.kuali.rice.kns.ui.UIFConstants.MessageType;
-import org.kuali.rice.kns.ui.UIFConstants.Position;
 import org.kuali.rice.kns.ui.field.ErrorsField;
 import org.kuali.rice.kns.ui.field.HeaderField;
 import org.kuali.rice.kns.ui.field.MessageField;
@@ -31,16 +29,16 @@ import org.kuali.rice.kns.ui.layout.LayoutManager;
 import org.kuali.rice.kns.ui.widget.Help;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
- * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * 
+ * @see org.kuali.rice.kns.ui.container.Container
  */
 public abstract class ContainerBase extends ComponentBase implements Container {
 	private String title;
+	
 	private String additionalErrorKeys;
-
 	private ErrorsField errors;
+	
 	private Help help;
 	private LayoutManager layoutManager;
 
@@ -61,8 +59,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 		items = new ArrayList<Component>();
 	}
-
-	public abstract List<Class> getSupportedComponents();
 
 	/**
 	 * <p>

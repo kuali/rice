@@ -15,35 +15,34 @@
  */
 package org.kuali.rice.kns.ui.control;
 
-import org.kuali.rice.kns.ui.ComponentBase;
-
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class ControlBase extends ComponentBase implements Control {
-	private int tabIndex;
+public class TextAreaControl extends ControlBase {
+	private int rows;
+	private int cols;
 
-	public ControlBase() {
+	public TextAreaControl() {
 
 	}
 
-	/**
-	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
-	 */
-	@Override
-	public String getComponentTypeName() {
-		return "control";
+	public int getRows() {
+		return this.rows;
 	}
 
-	public int getTabIndex() {
-		return this.tabIndex;
+	public void setRows(int rows) {
+		this.rows = rows;
 	}
 
-	public void setTabIndex(int tabIndex) {
-		this.tabIndex = tabIndex;
+	public int getCols() {
+		return this.cols;
+	}
+
+	public void setCols(int cols) {
+		this.cols = cols;
 	}
 
 }

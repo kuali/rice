@@ -17,7 +17,6 @@ package org.kuali.rice.kim.inquiry;
 
 import java.util.Map;
 
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -31,7 +30,7 @@ import org.kuali.rice.kns.inquiry.KualiInquirableImpl;
  */
 public class PersonInquirableImpl extends KualiInquirableImpl {
 
-	PersonService<Person> personService; 
+	PersonService personService; 
 	
 	/**
 	 * This overridden method ...
@@ -44,7 +43,7 @@ public class PersonInquirableImpl extends KualiInquirableImpl {
 		return getPersonService().getPerson( fieldValues.get( "principalId" ).toString() );
 	}
 
-	public PersonService<Person> getPersonService() {
+	public PersonService getPersonService() {
 		if ( personService == null ) {
 			personService = KIMServiceLocator.getPersonService();
 		}

@@ -30,7 +30,7 @@ public final class UserUtils {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UserUtils.class);
 
-	private static PersonService<Person> personService;
+	private static PersonService personService;
 	
 	private UserUtils() {
 		throw new UnsupportedOperationException("do not call");
@@ -57,7 +57,7 @@ public final class UserUtils {
 	/**
 	 * @return the personService
 	 */
-	public static PersonService<Person> getPersonService() {
+	public static PersonService getPersonService() {
 		if ( personService == null ) {
 			personService = KIMServiceLocator.getPersonService();
 		}

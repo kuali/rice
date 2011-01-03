@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -37,7 +36,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 //			.getLogger(BusinessObjectAuthorizerBase.class);
 
 	private static IdentityManagementService identityManagementService;
-	private static PersonService<Person> personService;
+	private static PersonService personService;
 	private static KualiModuleService kualiModuleService;
 	private static DataDictionaryService dataDictionaryService;
 	private static PersistenceStructureService persistenceStructureService;
@@ -251,7 +250,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 		return identityManagementService;
 	}
 
-	protected static final PersonService<Person> getPersonService() {
+	protected static final PersonService getPersonService() {
 		if (personService == null) {
 			personService = KIMServiceLocator.getPersonService();
 		}

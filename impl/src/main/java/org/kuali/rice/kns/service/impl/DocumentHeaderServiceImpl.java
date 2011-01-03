@@ -37,7 +37,7 @@ public class DocumentHeaderServiceImpl implements DocumentHeaderService {
     /**
      * @see org.kuali.rice.kns.service.DocumentHeaderService#getDocumentHeaderBaseClass()
      */
-    public Class getDocumentHeaderBaseClass() {
+    public Class<? extends DocumentHeader> getDocumentHeaderBaseClass() {
         Class documentHeaderClass = documentHeaderDao.getDocumentHeaderBaseClass();
         if ( (documentHeaderClass == null) || (!DocumentHeader.class.isAssignableFrom(documentHeaderClass)) ) {
             throw new RuntimeException("invalid document header base class '" + documentHeaderClass + "' returned by dao '" + documentHeaderDao.getClass().getName() + "'");

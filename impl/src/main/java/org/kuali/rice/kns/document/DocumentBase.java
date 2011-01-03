@@ -107,8 +107,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public DocumentBase() {
         try {
             // create a new document header object
-            Class documentHeaderClass = KNSServiceLocator.getDocumentHeaderService().getDocumentHeaderBaseClass();
-            setDocumentHeader((DocumentHeader) documentHeaderClass.newInstance());
+            Class<? extends DocumentHeader> documentHeaderClass = KNSServiceLocator.getDocumentHeaderService().getDocumentHeaderBaseClass();
+            setDocumentHeader(documentHeaderClass.newInstance());
             pessimisticLocks = new ArrayList<PessimisticLock>();
             adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
             adHocRouteWorkgroups = new ArrayList<AdHocRouteWorkgroup>();

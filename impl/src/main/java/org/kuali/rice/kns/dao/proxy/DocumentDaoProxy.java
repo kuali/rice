@@ -22,7 +22,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.EntityManager;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
@@ -40,17 +39,13 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class DocumentDaoProxy implements DocumentDao {
 
-	private static Logger LOG = Logger.getLogger(DocumentDaoProxy.class);
-
     private DocumentDao documentDaoJpa;
     private DocumentDao documentDaoOjb;
 
     private static KualiModuleService kualiModuleService;
     private static Map<String, DocumentDao> documentDaoValues = new ConcurrentHashMap<String, DocumentDao>();
 
-    private static final String DOCUMENT_AD_HOC_SERVICE_NAME = "documentAdHocService";
-
-    private DocumentDao getDao(Class clazz) {
+    private DocumentDao getDao(Class<? extends Document> clazz) {
     	ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
         if (moduleService != null) {
             ModuleConfiguration moduleConfig = moduleService.getModuleConfiguration();
@@ -64,38 +59,34 @@ public class DocumentDaoProxy implements DocumentDao {
             if (StringUtils.isNotEmpty(dataSourceName)) {
                 if (documentDaoValues.get(dataSourceName) != null) {
                     return documentDaoValues.get(dataSourceName);
-                } else {
-                    if (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled("rice.kns"))) {
-                        //using JPA
-                        if (entityManager != null) {
-                        	// we set the entity manager directly in the constructor
-                        	DocumentDaoJpa documentDaoJpa =
-                        		new DocumentDaoJpa(entityManager, this.documentDaoJpa.getBusinessObjectDao(),
-                        				this.documentDaoJpa.getDocumentAdHocService());
+                }
+                if (OrmUtils.isJpaAnnotated(clazz) && (OrmUtils.isJpaEnabled() || OrmUtils.isJpaEnabled("rice.kns"))) {
+                	//using JPA
+                	if (entityManager != null) {
+                		// we set the entity manager directly in the constructor
+                		DocumentDaoJpa documentDaoJpaInstance =
+                			new DocumentDaoJpa(entityManager, this.documentDaoJpa.getBusinessObjectDao(),
+                					this.documentDaoJpa.getDocumentAdHocService());
 
-                            documentDaoValues.put(dataSourceName, documentDaoJpa);
-                            return documentDaoJpa;
-                        } else {
-                            throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
-                        }
+                		documentDaoValues.put(dataSourceName, documentDaoJpaInstance);
+                		return documentDaoJpaInstance;
+                	}
+                	throw new ConfigurationException("EntityManager is null. EntityManager must be set in the Module Configuration bean in the appropriate spring beans xml. (see nested exception for details).");
+                }
+                //using OJB
+                DocumentDaoOjb documentDaoOjbInstance =
+                	new DocumentDaoOjb(
+                			this.documentDaoOjb.getBusinessObjectDao(),
+                			this.documentDaoOjb.getDocumentAdHocService());
 
-                    } else {
-                        //using OJB
-                    	DocumentDaoOjb documentDaoOjb =
-                    		new DocumentDaoOjb(
-                    			this.documentDaoOjb.getBusinessObjectDao(),
-                    			this.documentDaoOjb.getDocumentAdHocService());
+                // set the data source alias
+                documentDaoOjbInstance.setJcdAlias(dataSourceName);
 
-                    	// set the data source alias
-                        documentDaoOjb.setJcdAlias(dataSourceName);
-
-                        documentDaoValues.put(dataSourceName, documentDaoOjb);
-                        return documentDaoOjb;
-                    }
+                documentDaoValues.put(dataSourceName, documentDaoOjbInstance);
+                return documentDaoOjbInstance;
 
                 }
 
-            }
         }
         return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? documentDaoJpa : documentDaoOjb;
     }
@@ -103,14 +94,14 @@ public class DocumentDaoProxy implements DocumentDao {
 	/**
 	 * @see org.kuali.rice.kns.dao.DocumentDao#findByDocumentHeaderId(java.lang.Class, java.lang.String)
 	 */
-	public Document findByDocumentHeaderId(Class clazz, String id) {
+	public Document findByDocumentHeaderId(Class<? extends Document> clazz, String id) {
 		return getDao(clazz).findByDocumentHeaderId(clazz, id);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.DocumentDao#findByDocumentHeaderIds(java.lang.Class, java.util.List)
 	 */
-	public List findByDocumentHeaderIds(Class clazz, List idList) {
+	public List<Document> findByDocumentHeaderIds(Class<? extends Document> clazz, List<String> idList) {
 		return getDao(clazz).findByDocumentHeaderIds(clazz, idList);
 	}
 
@@ -120,9 +111,8 @@ public class DocumentDaoProxy implements DocumentDao {
 	public BusinessObjectDao getBusinessObjectDao() {
 		if (OrmUtils.isJpaEnabled()) {
 			return documentDaoJpa.getBusinessObjectDao();
-		} else {
-			return documentDaoOjb.getBusinessObjectDao();
 		}
+		return documentDaoOjb.getBusinessObjectDao();
 	}
 
 	/**
@@ -131,9 +121,8 @@ public class DocumentDaoProxy implements DocumentDao {
 	public DocumentAdHocService getDocumentAdHocService() {
 		if (OrmUtils.isJpaEnabled()) {
 			return documentDaoJpa.getDocumentAdHocService();
-		} else {
-			return documentDaoOjb.getDocumentAdHocService();
 		}
+		return documentDaoOjb.getDocumentAdHocService();
     }
 
 	/**

@@ -21,6 +21,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.DateTimeService;
@@ -178,7 +179,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#routeDocument(org.kuali.rice.kns.document.Document, java.lang.String, java.util.List)
      */
     @Override
-	public Document routeDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
+	public Document routeDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws ValidationException, WorkflowException {
         checkForNulls(document);
         //if (!getDocumentActionFlags(document).getCanRoute()) {
         //    throw buildAuthorizationException("route", document);
@@ -197,7 +198,7 @@ public class DocumentServiceImpl implements DocumentService {
      *      java.util.List)
      */
     @Override
-	public Document approveDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
+	public Document approveDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws ValidationException, WorkflowException {
         checkForNulls(document);
         //if (!getDocumentActionFlags(document).getCanApprove()) {
         //    throw buildAuthorizationException("approve", document);
@@ -303,7 +304,7 @@ public class DocumentServiceImpl implements DocumentService {
      *      java.util.List)
      */
     @Override
-	public Document acknowledgeDocument(Document document, String annotation, List adHocRecipients) throws WorkflowException {
+	public Document acknowledgeDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         checkForNulls(document);
         //if (!getDocumentActionFlags(document).getCanAcknowledge()) {
         //    throw buildAuthorizationException("acknowledge", document);
@@ -320,7 +321,7 @@ public class DocumentServiceImpl implements DocumentService {
      *      java.util.List)
      */
     @Override
-	public Document blanketApproveDocument(Document document, String annotation, List adHocRecipients) throws ValidationException, WorkflowException {
+	public Document blanketApproveDocument(Document document, String annotation, List<AdHocRouteRecipient> adHocRecipients) throws ValidationException, WorkflowException {
         checkForNulls(document);
         //if (!getDocumentActionFlags(document).getCanBlanketApprove()) {
         //    throw buildAuthorizationException("blanket approve", document);
@@ -338,11 +339,8 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#clearDocumentFyi(org.kuali.rice.kns.document.Document, java.util.List)
      */
     @Override
-	public Document clearDocumentFyi(Document document, List adHocRecipients) throws WorkflowException {
+	public Document clearDocumentFyi(Document document, List<AdHocRouteRecipient> adHocRecipients) throws WorkflowException {
         checkForNulls(document);
-        //if (!getDocumentActionFlags(document).getCanFYI()) {
-         //   throw buildAuthorizationException("clear FYI", document);
-        //}
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
         getWorkflowDocumentService().clearFyi(document.getDocumentHeader().getWorkflowDocument(), adHocRecipients);
@@ -360,19 +358,19 @@ public class DocumentServiceImpl implements DocumentService {
         }
     }
 
-    private Document validateAndPersistDocumentAndSaveAdHocRoutingRecipients(Document document, KualiDocumentEvent event) throws WorkflowException {
+    private Document validateAndPersistDocumentAndSaveAdHocRoutingRecipients(Document document, KualiDocumentEvent event) {
         /*
          * Using this method to wrap validateAndPersistDocument to keep everything in one transaction. This avoids modifying the
          * signature on validateAndPersistDocument method
          */
-        ArrayList<AdHocRouteRecipient> adHocRoutingRecipients = new ArrayList();
+        List<AdHocRouteRecipient> adHocRoutingRecipients = new ArrayList<AdHocRouteRecipient>();
         adHocRoutingRecipients.addAll(document.getAdHocRoutePersons());
         adHocRoutingRecipients.addAll(document.getAdHocRouteWorkgroups());
 
         for (AdHocRouteRecipient recipient : adHocRoutingRecipients) {
 			recipient.setdocumentNumber(document.getDocumentNumber());
 		}
-        HashMap criteria = new HashMap();
+        Map<String, String> criteria = new HashMap<String, String>();
         criteria.put("documentNumber", document.getDocumentNumber());
         getBusinessObjectService().deleteMatching(AdHocRouteRecipient.class, criteria);
 
@@ -422,7 +420,7 @@ public class DocumentServiceImpl implements DocumentService {
      * @see org.kuali.rice.kns.service.DocumentService#getNewDocument(java.lang.Class)
      */
     @Override
-	public Document getNewDocument(Class documentClass) throws WorkflowException {
+	public Document getNewDocument(Class<? extends Document> documentClass) throws WorkflowException {
         if (documentClass == null) {
             throw new IllegalArgumentException("invalid (null) documentClass");
         }
@@ -456,7 +454,7 @@ public class DocumentServiceImpl implements DocumentService {
         }
 
         // get the class for this docTypeName
-        Class documentClass = getDocumentClassByTypeName(documentTypeName);
+        Class<? extends Document> documentClass = getDocumentClassByTypeName(documentTypeName);
 
         // get the current user
         Person currentUser = GlobalVariables.getUserSession().getPerson();
@@ -478,8 +476,8 @@ public class DocumentServiceImpl implements DocumentService {
         DocumentHeader documentHeader = null;
         try {
             // create a new document header object
-            Class documentHeaderClass = getDocumentHeaderService().getDocumentHeaderBaseClass();
-            documentHeader = (DocumentHeader) documentHeaderClass.newInstance();
+            Class<? extends DocumentHeader> documentHeaderClass = getDocumentHeaderService().getDocumentHeaderBaseClass();
+            documentHeader = documentHeaderClass.newInstance();
             documentHeader.setWorkflowDocument(workflowDocument);
             documentHeader.setDocumentNumber(workflowDocument.getRouteHeaderId().toString());
             // status and notes are initialized correctly in the constructor
@@ -496,15 +494,15 @@ public class DocumentServiceImpl implements DocumentService {
         try {
             // all maintenance documents have same class
             if (MaintenanceDocumentBase.class.isAssignableFrom(documentClass)) {
-                Class[] defaultConstructor = new Class[]{String.class};
-                Constructor cons = documentClass.getConstructor(defaultConstructor);
+                Class<?>[] defaultConstructor = new Class[]{String.class};
+                Constructor<? extends Document> cons = documentClass.getConstructor(defaultConstructor);
                 if (ObjectUtils.isNull(cons)) {
                     throw new ConfigurationException("Could not find constructor with document type name parameter needed for Maintenance Document Base class");
                 }
-                document = (Document) cons.newInstance(documentTypeName);
+                document = cons.newInstance(documentTypeName);
             } else {
                 // non-maintenance document
-                document = (Document) documentClass.newInstance();
+                document = documentClass.newInstance();
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Error instantiating Document", e);
@@ -558,7 +556,7 @@ public class DocumentServiceImpl implements DocumentService {
 	        workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
 	        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
 
-	        Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
+	        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
 
 	        // retrieve the Document
 	        Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
@@ -592,7 +590,7 @@ public class DocumentServiceImpl implements DocumentService {
         Person person = getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
         workflowDocument = workflowDocumentService.createWorkflowDocument(Long.valueOf(documentHeaderId), person);
 
-        Class documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
+        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
 
         // retrieve the Document
         Document document = getDocumentDao().findByDocumentHeaderId(documentClass, documentHeaderId);
@@ -600,12 +598,12 @@ public class DocumentServiceImpl implements DocumentService {
         return postProcessDocument(documentHeaderId, workflowDocument, document);
 	}
 
-    private Class getDocumentClassByTypeName(String documentTypeName) {
+    private Class<? extends Document> getDocumentClassByTypeName(String documentTypeName) {
         if (StringUtils.isBlank(documentTypeName)) {
             throw new IllegalArgumentException("invalid (blank) documentTypeName");
         }
 
-        Class clazz = getDataDictionaryService().getDocumentClassByTypeName(documentTypeName);
+        Class<? extends Document> clazz = getDataDictionaryService().getDocumentClassByTypeName(documentTypeName);
         if (clazz == null) {
             throw new UnknownDocumentTypeException("unable to get class for unknown documentTypeName '" + documentTypeName + "'");
         }
@@ -680,7 +678,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 	        // post-process them
 	        List<Document> documents = new ArrayList<Document>();
-	        for (Document document : documents) {
+	        for (Document document : rawDocuments) {
 	            KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(document.getDocumentNumber()), GlobalVariables.getUserSession().getPerson());
 
 	            document = postProcessDocument(document.getDocumentNumber(), workflowDocument, document);

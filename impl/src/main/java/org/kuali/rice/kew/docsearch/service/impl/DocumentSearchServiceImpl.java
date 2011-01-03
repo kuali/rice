@@ -377,7 +377,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
     		m.put("principalName", searchName);
 
     		// This will search for people with the ability for the valid operands.
-    		List<Person> pList = KIMServiceLocator.getPersonService().findPeople(m, false);
+    		KIMServiceLocator.getPersonService().findPeople(m, false);
 		}catch(Exception ex) {
 			LOG.debug(ex, ex);
 			return false;

@@ -29,9 +29,7 @@ import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityExternalIdentifierImpl;
-import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
@@ -41,8 +39,8 @@ import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
-import org.springframework.util.AutoPopulatingList;
 import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.util.AutoPopulatingList;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -78,7 +76,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		externalIdentifier.setExternalIdentifierTypeCode("SSN");
 		KNSServiceLocator.getBusinessObjectService().save(externalIdentifier);
 		
-		List<PersonImpl> people = personService.getPersonByExternalIdentifier( "SSN", "000-00-0000" );
+		List<Person> people = personService.getPersonByExternalIdentifier( "SSN", "000-00-0000" );
 		assertNotNull( "result object must not be null", people );
 		assertEquals( "exactly one record should be returned", 1, people.size() );
 		assertEquals( "the returned principal is not correct", "p1", people.get(0).getPrincipalId() );
@@ -159,7 +157,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 	public void testFindPeople() {
 		HashMap<String,String> criteria = new HashMap<String,String>();
 		criteria.put( "firstName", "KULUSER" );
-		List<PersonImpl> people = personService.findPeople( criteria );
+		List<Person> people = personService.findPeople( criteria );
 		assertNotNull( "result must not be null", people );
 		assertEquals( "wrong number of people returned", 1, people.size() );
 		Person p = people.get( 0 );

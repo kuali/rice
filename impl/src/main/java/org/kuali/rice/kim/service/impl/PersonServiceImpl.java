@@ -57,7 +57,7 @@ import org.kuali.rice.kns.util.ObjectUtils;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class PersonServiceImpl implements PersonService<PersonImpl> {
+public class PersonServiceImpl implements PersonService {
 
 	private static Logger LOG = Logger.getLogger( PersonServiceImpl.class );
 	protected static final String ENTITY_EXT_ID_PROPERTY_PREFIX = "externalIdentifiers.";
@@ -81,7 +81,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	protected int personCacheMaxSize = 3000;
 	protected int personCacheMaxAgeSeconds = 3600;
 
-	protected Map<String,MaxAgeSoftReference<PersonImpl>> personCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<PersonImpl>>( personCacheMaxSize ) );
+	protected Map<String,MaxAgeSoftReference<Person>> personCache = Collections.synchronizedMap( new HashMap<String,MaxAgeSoftReference<Person>>( personCacheMaxSize ) );
 	// PERSON/ENTITY RELATED METHODS
 
 	protected List<String> personEntityTypeCodes = new ArrayList<String>( 4 );
@@ -139,13 +139,12 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#getPerson(java.lang.String)
 	 */
-	public PersonImpl getPerson(String principalId) {
+	public Person getPerson(String principalId) {
 		if ( StringUtils.isBlank(principalId) ) {
 			return null;
 		}
-		PersonImpl person = null;
-		// check the cache		
-		person = getPersonImplFromPrincipalIdCache( principalId );
+		// check the cache
+		Person person = getPersonImplFromPrincipalIdCache( principalId );
 		if ( person != null ) {
 			return person;
 		}
@@ -158,9 +157,9 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		}
 		// convert the principal and entity to a Person
 		// skip if the person was created from the DB cache
-		if ( person == null && entity != null ) {
+		if (entity != null ) {
 			person = convertEntityToPerson( entity, principal );
-			addPersonImplToCache( person );
+			addPersonToCache( person );
 		}
 		return person;
 	}
@@ -183,42 +182,41 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 			// allow runtime exceptions to pass through
 			if ( ex instanceof RuntimeException ) {
 				throw (RuntimeException)ex;
-			} else {
-				throw new RuntimeException( "Problem building person object", ex );
 			}
+			throw new RuntimeException( "Problem building person object", ex );
 		}
 	}
 	
-	protected PersonImpl getPersonImplFromPrincipalNameCache( String principalName ) {
-		SoftReference<PersonImpl> personRef = personCache.get( "principalName="+principalName );
+	protected Person getPersonImplFromPrincipalNameCache( String principalName ) {
+		SoftReference<Person> personRef = personCache.get( "principalName="+principalName );
 		if ( personRef != null ) {
 			return personRef.get();
 		}
 		return null;
 	}
 
-	protected PersonImpl getPersonImplFromPrincipalIdCache( String principalId ) {
-		SoftReference<PersonImpl> personRef = personCache.get( "principalId="+principalId );
+	protected Person getPersonImplFromPrincipalIdCache( String principalId ) {
+		SoftReference<Person> personRef = personCache.get( "principalId="+principalId );
 		if ( personRef != null ) {
 			return personRef.get();
 		}
 		return null;
 	}
 	
-	protected PersonImpl getPersonImplFromEmployeeIdCache( String principalId ) {
-		SoftReference<PersonImpl> personRef = personCache.get( "employeeId="+principalId );
+	protected Person getPersonImplFromEmployeeIdCache( String principalId ) {
+		SoftReference<Person> personRef = personCache.get( "employeeId="+principalId );
 		if ( personRef != null ) {
 			return personRef.get();
 		}
 		return null;
 	}
 	
-	protected void addPersonImplToCache( PersonImpl person ) {
+	protected void addPersonToCache( Person person ) {
 		if ( person != null ) {
 			synchronized (personCache) {
-				personCache.put( "principalName="+person.getPrincipalName(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
-				personCache.put( "principalId="+person.getPrincipalId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
-				personCache.put( "employeeId="+person.getEmployeeId(), new MaxAgeSoftReference<PersonImpl>( personCacheMaxAgeSeconds, person ) );
+				personCache.put( "principalName="+person.getPrincipalName(), new MaxAgeSoftReference<Person>( personCacheMaxAgeSeconds, person ) );
+				personCache.put( "principalId="+person.getPrincipalId(), new MaxAgeSoftReference<Person>( personCacheMaxAgeSeconds, person ) );
+				personCache.put( "employeeId="+person.getEmployeeId(), new MaxAgeSoftReference<Person>( personCacheMaxAgeSeconds, person ) );
 			}
 		}
 	}
@@ -231,11 +229,11 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#getPersonByPrincipalName(java.lang.String)
 	 */
-	public PersonImpl getPersonByPrincipalName(String principalName) {
+	public Person getPersonByPrincipalName(String principalName) {
 		if ( StringUtils.isBlank(principalName) ) {
 			return null;
 		}
-		PersonImpl person = null;
+		Person person = null;
 		// check the cache		
 		person = getPersonImplFromPrincipalNameCache( principalName );
 		if ( person != null ) {
@@ -252,26 +250,26 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		if ( entity != null ) {
 			person = convertEntityToPerson( entity, principal );
 		}
-		addPersonImplToCache( person );
+		addPersonToCache( person );
 		return person;
 	}
 
-	public PersonImpl getPersonByEmployeeId(String employeeId) {
+	public Person getPersonByEmployeeId(String employeeId) {
 		if ( StringUtils.isBlank( employeeId  ) ) {
 			return null;
 		}
 		
-		PersonImpl person = getPersonImplFromEmployeeIdCache( employeeId );
+		Person person = getPersonImplFromEmployeeIdCache( employeeId );
 		if ( person != null ) {
 			return person;
 		}
 		
 		Map<String,String> criteria = new HashMap<String,String>( 1 );
 		criteria.put( KIMPropertyConstants.Person.EMPLOYEE_ID, employeeId );
-		List<PersonImpl> people = findPeople( criteria ); 
+		List<Person> people = findPeople( criteria ); 
 		if ( !people.isEmpty() ) {
 			person = people.get(0);
-			addPersonImplToCache( person );
+			addPersonToCache( person );
 		}
 		return person;
 	}
@@ -279,15 +277,15 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#findPeople(Map)
 	 */
-	public List<PersonImpl> findPeople(Map<String, String> criteria) {
+	public List<Person> findPeople(Map<String, String> criteria) {
 		return findPeople(criteria, true);
 	}
 	
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#findPeople(java.util.Map, boolean)
 	 */
-	public List<PersonImpl> findPeople(Map<String, String> criteria, boolean unbounded) {
-		List<PersonImpl> people = null;
+	public List<Person> findPeople(Map<String, String> criteria, boolean unbounded) {
+		List<Person> people = null;
 		// protect from NPEs
 		if ( criteria == null ) {
 			criteria = Collections.emptyMap();
@@ -301,7 +299,11 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 		criteria.remove("lookupRoleName");
 		criteria.remove("lookupRoleNamespaceCode");
 		if ( StringUtils.isNotBlank(namespaceCode) && StringUtils.isNotBlank(roleName) ) {
-			int searchResultsLimit = LookupUtils.getSearchResultsLimit(PersonImpl.class);
+			Integer searchResultsLimit = LookupUtils.getSearchResultsLimit(PersonImpl.class);
+			int searchResultsLimitInt = Integer.MAX_VALUE;
+			if (searchResultsLimit != null) {
+				searchResultsLimitInt = searchResultsLimit.intValue();
+			}
 			if ( LOG.isDebugEnabled() ) {
 				LOG.debug("Performing Person search including role filter: " + namespaceCode + "/" + roleName );
 			}
@@ -332,12 +334,12 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 				// get sublist of principals that have the given roles
 				principalIds = getRoleManagementService().getPrincipalIdSubListWithRole(principalIds, namespaceCode, roleName, null);
 				// re-convert into people objects, wrapping in CollectionIncomplete if needed
-				if ( !unbounded && principalIds.size() > searchResultsLimit ) {
+				if ( !unbounded && principalIds.size() > searchResultsLimitInt ) {
 					int actualResultSize = principalIds.size();
 					// trim the list down before converting to people
-					principalIds = new ArrayList<String>(principalIds).subList(0, searchResultsLimit); // yes, this is a little wasteful
+					principalIds = new ArrayList<String>(principalIds).subList(0, searchResultsLimitInt); // yes, this is a little wasteful
 					people = getPeople(principalIds); // convert the results to people
-					people = new CollectionIncomplete<PersonImpl>( people.subList(0, searchResultsLimit), new Long(actualResultSize) );
+					people = new CollectionIncomplete<Person>( people.subList(0, searchResultsLimitInt), new Long(actualResultSize) );
 				} else {
 					people = getPeople(principalIds);
 				}
@@ -347,12 +349,12 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 				}
 				// run the role criteria to get the principals with the role
 				Collection<String> principalIds = getRoleManagementService().getRoleMemberPrincipalIds(namespaceCode, roleName, null);
-				if ( !unbounded && principalIds.size() > searchResultsLimit ) {
+				if ( !unbounded && principalIds.size() > searchResultsLimitInt ) {
 					int actualResultSize = principalIds.size();
 					// trim the list down before converting to people
-					principalIds = new ArrayList<String>(principalIds).subList(0, searchResultsLimit); // yes, this is a little wasteful
+					principalIds = new ArrayList<String>(principalIds).subList(0, searchResultsLimitInt); // yes, this is a little wasteful
 					people = getPeople(principalIds); // convert the results to people
-					people = new CollectionIncomplete<PersonImpl>( people.subList(0, searchResultsLimit), new Long(actualResultSize) );
+					people = new CollectionIncomplete<Person>( people.subList(0, searchResultsLimitInt), new Long(actualResultSize) );
 				} else {
 					people = getPeople(principalIds); // convert the results to people
 				}
@@ -367,11 +369,11 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected List<PersonImpl> findPeopleInternal(Map<String,String> criteria, boolean unbounded ) {
+	protected List<Person> findPeopleInternal(Map<String,String> criteria, boolean unbounded ) {
 		// convert the criteria to a form that can be used by the ORM layer
 		Map<String,String> entityCriteria = convertPersonPropertiesToEntityProperties( criteria );
 
-		List<PersonImpl> people = new ArrayList<PersonImpl>(); 
+		List<Person> people = new ArrayList<Person>(); 
 
 		List<? extends KimEntityDefaultInfo> entities = getIdentityManagementService().lookupEntityDefaultInfo( entityCriteria, unbounded );
 
@@ -558,15 +560,15 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	}
 
 	
-	protected List<PersonImpl> getPeople( Collection<String> principalIds ) {
-		List<PersonImpl> people = new ArrayList<PersonImpl>( principalIds.size() );
+	protected List<Person> getPeople( Collection<String> principalIds ) {
+		List<Person> people = new ArrayList<Person>( principalIds.size() );
 		for ( String principalId : principalIds ) {
 			people.add( getPerson(principalId) );
 		}
 		return people;
 	}
 	
-	protected List<String> peopleToPrincipalIds( List<? extends Person> people ) {
+	protected List<String> peopleToPrincipalIds( List<Person> people ) {
 		List<String> principalIds = new ArrayList<String>();
 		
 		for ( Person person : people ) {
@@ -579,7 +581,7 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
 	/**
 	 * @see org.kuali.rice.kim.service.PersonService#getPersonByExternalIdentifier(java.lang.String, java.lang.String)
 	 */
-	public List<PersonImpl> getPersonByExternalIdentifier(String externalIdentifierTypeCode, String externalId) {
+	public List<Person> getPersonByExternalIdentifier(String externalIdentifierTypeCode, String externalId) {
 		if (StringUtils.isBlank( externalIdentifierTypeCode ) || StringUtils.isBlank( externalId ) ) {
 			return null;
 		}
@@ -642,9 +644,8 @@ public class PersonServiceImpl implements PersonService<PersonImpl> {
         		// property type indicates a Person object
         		if ( type != null ) {
         			return Person.class.isAssignableFrom(type);
-        		} else {
-        			LOG.warn( "Unable to determine type of nested property: " + bo.getClass().getName() + " / " + propertyName );
         		}
+        		LOG.warn( "Unable to determine type of nested property: " + bo.getClass().getName() + " / " + propertyName );
         	}
         } catch (Exception ex) {
         	if ( LOG.isDebugEnabled() ) {

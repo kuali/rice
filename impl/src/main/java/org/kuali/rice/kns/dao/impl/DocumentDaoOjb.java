@@ -16,17 +16,12 @@
 package org.kuali.rice.kns.dao.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.bo.AdHocRoutePerson;
-import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
@@ -74,15 +69,15 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      * @param id
      * @return Document with given id
      */
-    public Document findByDocumentHeaderId(Class clazz, String id) throws DataAccessException {
-        List idList = new ArrayList();
+    public Document findByDocumentHeaderId(Class<? extends Document> clazz, String id) throws DataAccessException {
+        List<String> idList = new ArrayList<String>();
         idList.add(id);
 
-        List documentList = findByDocumentHeaderIds(clazz, idList);
+        List<Document> documentList = findByDocumentHeaderIds(clazz, idList);
 
         Document document = null;
         if ((null != documentList) && (documentList.size() > 0)) {
-            document = (Document) documentList.get(0);
+            document = documentList.get(0);
         }
 
         return document;
@@ -95,13 +90,19 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      * @param idList
      * @return List
      */
-    public List findByDocumentHeaderIds(Class clazz, List idList) throws DataAccessException {
+    public List<Document> findByDocumentHeaderIds(Class<? extends Document> clazz, List<String> idList) throws DataAccessException {
         Criteria criteria = new Criteria();
         criteria.addIn(KNSPropertyConstants.DOCUMENT_NUMBER, idList);
 
         QueryByCriteria query = QueryFactory.newQuery(clazz, criteria);
-        ArrayList <Document> tempList = new ArrayList(this.getPersistenceBrokerTemplate().getCollectionByQuery(query));
-        for (Document doc : tempList) documentAdHocService.addAdHocs(doc);
+        
+        // this cast is correct because OJB produces a collection which contains elements of the class defined on the query
+        @SuppressWarnings("unchecked")
+        List <Document> tempList = new ArrayList<Document>(this.getPersistenceBrokerTemplate().getCollectionByQuery(query));
+        
+        for (Document doc : tempList) {
+        	documentAdHocService.addAdHocs(doc);
+        }
         return tempList;
     }
 

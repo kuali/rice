@@ -33,7 +33,7 @@ public interface DocumentHeaderService {
      * 
      * @return the class to be used for new document header objects
      */
-    public Class getDocumentHeaderBaseClass();
+    public Class<? extends DocumentHeader> getDocumentHeaderBaseClass();
 
     /**
      * This method retrieves a document header using the given documentHeaderId

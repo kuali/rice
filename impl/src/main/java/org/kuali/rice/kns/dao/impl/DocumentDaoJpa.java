@@ -16,20 +16,13 @@
 package org.kuali.rice.kns.dao.impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.bo.AdHocRoutePerson;
-import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
@@ -42,8 +35,8 @@ import org.springframework.dao.DataAccessException;
  * This class is the OJB implementation of the DocumentDao interface.
  */
 public class DocumentDaoJpa implements DocumentDao {
-    private static Logger LOG = Logger.getLogger(DocumentDaoJpa.class);
-    private BusinessObjectDao businessObjectDao;
+    
+	private BusinessObjectDao businessObjectDao;
     private DocumentAdHocService documentAdHocService;
 
 	@PersistenceContext
@@ -67,10 +60,9 @@ public class DocumentDaoJpa implements DocumentDao {
 			entityManager.persist(document.getDocumentHeader());
 			entityManager.persist(document);
 			return document;
-		} else {
-			OrmUtils.reattach(document, attachedDoc);
-			return entityManager.merge(attachedDoc);
 		}
+		OrmUtils.reattach(document, attachedDoc);
+		return entityManager.merge(attachedDoc);
     }
 
 	/**
@@ -80,8 +72,8 @@ public class DocumentDaoJpa implements DocumentDao {
      * @param id
      * @return Document with given id
      */
-    public Document findByDocumentHeaderId(Class clazz, String id) throws DataAccessException {
-        Document document = (Document)entityManager.find(clazz, id);
+    public Document findByDocumentHeaderId(Class<? extends Document> clazz, String id) throws DataAccessException {
+        Document document = entityManager.find(clazz, id);
 
         return document;
     }
@@ -93,9 +85,9 @@ public class DocumentDaoJpa implements DocumentDao {
      * @param idList
      * @return List
      */
-    public List findByDocumentHeaderIds(Class clazz, List idList) throws DataAccessException {
+    public List<Document> findByDocumentHeaderIds(Class<? extends Document> clazz, List<String> idList) throws DataAccessException {
 		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName());
-		criteria.in(KNSPropertyConstants.DOCUMENT_NUMBER, (List) idList);
+		criteria.in(KNSPropertyConstants.DOCUMENT_NUMBER, idList);
 		List<Document> list = new ArrayList<Document>();
 		try {
 			list = new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();

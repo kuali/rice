@@ -45,9 +45,11 @@ import org.kuali.rice.kns.service.PersistenceStructureService;
  */
 @MappedSuperclass
 public abstract class PersistableBusinessObjectBase extends BusinessObjectBase implements PersistableBusinessObject, PersistenceBrokerAware {
-    private static final long serialVersionUID = 1451642350593233282L;
+    
+	private static final long serialVersionUID = 1451642350593233282L;
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PersistableBusinessObjectBase.class);
-    @Version
+    
+	@Version
     @Column(name="VER_NBR")
     protected Long versionNumber;
     @Column(name="OBJ_ID")

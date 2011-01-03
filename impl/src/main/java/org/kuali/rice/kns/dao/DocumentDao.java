@@ -28,9 +28,9 @@ public interface DocumentDao {
 
 	Document save(Document document);
 
-	public Document findByDocumentHeaderId(Class clazz, String id);
+	public Document findByDocumentHeaderId(Class<? extends Document> clazz, String id);
 
-	public List findByDocumentHeaderIds(Class clazz, List idList);
+	public List<Document> findByDocumentHeaderIds(Class<? extends Document> clazz, List<String> idList);
 
 	public BusinessObjectDao getBusinessObjectDao();
 

@@ -54,7 +54,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 
 	private static final long serialVersionUID = 1L;
 	
-	protected static PersonService<Person> personService;
+	protected static PersonService personService;
 	protected static IdentityManagementService identityManagementService;
 
 	private String lookupRoleNamespaceCode;
@@ -492,7 +492,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 * @return the personService
 	 */
 	@SuppressWarnings("unchecked")
-	public static PersonService<Person> getPersonService() {
+	public static PersonService getPersonService() {
 		if ( personService == null ) {
 			personService = KIMServiceLocator.getPersonService();
 		}

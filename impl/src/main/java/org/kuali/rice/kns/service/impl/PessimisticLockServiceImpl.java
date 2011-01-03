@@ -55,7 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PessimisticLockServiceImpl implements PessimisticLockService {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PessimisticLockServiceImpl.class);
 
-    private PersonService<Person> personService;
+    private PersonService personService;
     private BusinessObjectService businessObjectService;
     private DataDictionaryService dataDictionaryService;
     private IdentityManagementService identityManagementService;

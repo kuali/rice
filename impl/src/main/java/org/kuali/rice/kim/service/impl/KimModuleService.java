@@ -47,7 +47,7 @@ import org.kuali.rice.kns.util.KNSConstants;
  */
 public class KimModuleService extends ModuleServiceBase {
 
-	private PersonService<Person> personService;
+	private PersonService personService;
 	private RoleService kimRoleService;
 	private GroupService groupService;
 	private KimTypeInfoService kimTypeInfoService;
@@ -151,7 +151,7 @@ public class KimModuleService extends ModuleServiceBase {
 	}
 
 	@SuppressWarnings("unchecked")
-	protected PersonService<Person> getPersonService() {
+	protected PersonService getPersonService() {
 		if ( personService == null ) {
 			personService = KIMServiceLocator.getPersonService();
 		}

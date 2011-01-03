@@ -41,12 +41,12 @@ import org.kuali.rice.kns.bo.BusinessObject;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public interface PersonService<T extends Person> {
+public interface PersonService {
 
 	/**
 	 * Retrieve a single Person object by Principal ID.
 	 */
-	T getPerson( String principalId );
+	Person getPerson( String principalId );
 	
 	/**
 	 * Retrieve a person by an arbitrary external identifier.  This method could
@@ -57,27 +57,27 @@ public interface PersonService<T extends Person> {
 	 * @param externalId The external identifier.
 	 * @return List of Person objects.
 	 */
-	List<T> getPersonByExternalIdentifier( String externalIdentifierTypeCode, String externalId );
+	List<Person> getPersonByExternalIdentifier( String externalIdentifierTypeCode, String externalId );
 	
 	/**
 	 * Gets a single Person by their principal name (user ID).
 	 */
-	T getPersonByPrincipalName( String principalName );
+	Person getPersonByPrincipalName( String principalName );
 	
 	/**
 	 * Gets a single Person by their employee id.
 	 */
-	T getPersonByEmployeeId( String employeeId ); 
+	Person getPersonByEmployeeId( String employeeId ); 
 	
 	/**
 	 * Perform an unbounded search for person records.
 	 */
-	List<? extends Person> findPeople( Map<String, String> criteria );
+	List<Person> findPeople( Map<String, String> criteria );
 
 	/**
 	 * Perform a Person lookup.  If bounded, it will follow the configured KNS lookup limit.
 	 */
-	List<? extends Person> findPeople( Map<String, String> criteria, boolean unbounded );
+	List<Person> findPeople( Map<String, String> criteria, boolean unbounded );
 	
 	/**
 	 * Get the class object which points to the class used by the underlying implementation.

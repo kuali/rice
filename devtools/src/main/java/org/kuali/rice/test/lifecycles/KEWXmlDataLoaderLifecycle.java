@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.batch;
+package org.kuali.rice.test.lifecycles;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
+import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 
 /**
  * A lifecycle for loading KEW XML datasets.

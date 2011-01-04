@@ -187,21 +187,21 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         List<WorkflowServiceError> errors = new ArrayList<WorkflowServiceError>();
 
         // validate the network id's
-        if (!validatePersonByName(criteria.getApprover())) {
+        if (!validatePersonByPrincipalName(criteria.getApprover())) {
             errors.add(new WorkflowServiceErrorImpl("Approver network id is invalid", "docsearch.DocumentSearchService.networkid.approver"));
         } else {
             if (criteria.getApprover() != null && !"".equals(criteria.getApprover().trim())) {
                 criteria.setApprover(criteria.getApprover().trim());
             }
         }
-        if (!validatePersonByName(criteria.getViewer())) {
+        if (!validatePersonByPrincipalName(criteria.getViewer())) {
             errors.add(new WorkflowServiceErrorImpl("Viewer network id is invalid", "docsearch.DocumentSearchService.networkid.viewer"));
         } else {
             if (criteria.getViewer() != null && !"".equals(criteria.getViewer().trim())) {
                 criteria.setViewer(criteria.getViewer().trim());
             }
         }
-        if (!validatePersonByName(criteria.getInitiator())) {
+        if (!validatePersonByPrincipalName(criteria.getInitiator())) {
             errors.add(new WorkflowServiceErrorImpl("Initiator network id is invalid", "docsearch.DocumentSearchService.networkid.initiator"));
         } else {
             if (criteria.getInitiator() != null && !"".equals(criteria.getInitiator().trim())) {
@@ -368,21 +368,12 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		}
 	}
 
-	private boolean validatePersonByName(String searchName){
-		if(searchName == null || "".equals(searchName.trim())){
+	private boolean validatePersonByPrincipalName(String principalName){
+		if(StringUtils.isBlank(principalName)) {
 			return true;
 		}
-		try{
-			Map<String, String> m = new HashMap<String, String>();
-    		m.put("principalName", searchName);
-
-    		// This will search for people with the ability for the valid operands.
-    		KIMServiceLocator.getPersonService().findPeople(m, false);
-		}catch(Exception ex) {
-			LOG.debug(ex, ex);
-			return false;
-		}
-		return true;
+		Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
+		return person != null;
 	}
 
 	private boolean validateDate(String dateFieldName, String dateFieldValue, String dateFieldErrorKey) {

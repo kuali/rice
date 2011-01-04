@@ -15,8 +15,9 @@
  */
 package org.kuali.rice.kns.ui.field;
 
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.ui.LabeledComponent;
 import org.kuali.rice.kns.ui.UIFConstants.Position;
 
 /**
@@ -25,19 +26,20 @@ import org.kuali.rice.kns.ui.UIFConstants.Position;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class FieldLabelBase extends FieldBase implements LabeledComponent {
+public class FieldLabelBase extends FieldBase {
 	private String label;
 	private String shortLabel;
 	private boolean showLabel;
 
-	private boolean includeLabelField;
 	private LabelField labelField;
 
-	private Position labelPlacement;
+	private String labelPlacement;
+
+	private boolean labelFieldRendered;
 
 	public FieldLabelBase() {
 		showLabel = true;
-		includeLabelField = false;
+		labelFieldRendered = false;
 
 		labelPlacement = Position.LEFT;
 	}
@@ -51,14 +53,15 @@ public class FieldLabelBase extends FieldBase implements LabeledComponent {
 	 * </li>
 	 * <li>Set the render property on the label's required message field if this
 	 * field is marked as required</li>
+	 * <li>If label placement is right, set render colon to false</li>
 	 * </ul>
 	 * </p>
 	 * 
 	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize()
 	 */
 	@Override
-	public void initialize() {
-		super.initialize();
+	public void initialize(Map<String, String> options) {
+		super.initialize(options);
 
 		if (labelField != null) {
 			labelField.setLabelForComponentId(this.getId());
@@ -72,6 +75,10 @@ public class FieldLabelBase extends FieldBase implements LabeledComponent {
 			}
 			else {
 				labelField.getRequiredMessageField().setRender(false);
+			}
+
+			if (StringUtils.equals(labelPlacement, Position.RIGHT)) {
+				labelField.setRenderColon(false);
 			}
 		}
 	}
@@ -100,14 +107,6 @@ public class FieldLabelBase extends FieldBase implements LabeledComponent {
 		this.showLabel = showLabel;
 	}
 
-	public boolean isIncludeLabelField() {
-		return this.includeLabelField;
-	}
-
-	public void setIncludeLabelField(boolean includeLabelField) {
-		this.includeLabelField = includeLabelField;
-	}
-
 	public LabelField getLabelField() {
 		return this.labelField;
 	}
@@ -116,16 +115,33 @@ public class FieldLabelBase extends FieldBase implements LabeledComponent {
 		this.labelField = labelField;
 	}
 
-	public Position getLabelPlacement() {
+	public String getLabelPlacement() {
 		return this.labelPlacement;
 	}
 
-	public void setLabelPlacement(Position labelPlacement) {
+	public void setLabelPlacement(String labelPlacement) {
 		this.labelPlacement = labelPlacement;
 	}
 
-	public void setLabelPlacement(String labelPlacement) {
-		this.labelPlacement = Position.valueOf(labelPlacement);
+	/**
+	 * Indicates whether the contained <code>LabelField</code> has been rendered
+	 * as part of another field and thus should not be rendered with the
+	 * attribute
+	 * 
+	 * @return boolean true if the label field has been rendered, false if it
+	 *         should be rendered with the attribute
+	 */
+	public boolean isLabelFieldRendered() {
+		return this.labelFieldRendered;
+	}
+
+	/**
+	 * Setter for the label field rendered indicator
+	 * 
+	 * @param labelFieldRendered
+	 */
+	public void setLabelFieldRendered(boolean labelFieldRendered) {
+		this.labelFieldRendered = labelFieldRendered;
 	}
 
 }

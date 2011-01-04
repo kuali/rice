@@ -32,7 +32,7 @@
  --%>
 
 <c:set var="numberOfColumns" value="${manager.numberOfColumns}"/>
-<c:set var="cellWidth" value="${100/numberOfColumns}"/>
+<c:set var="defaultCellWidth" value="${100/numberOfColumns}"/>
 
 <table id="${manager.id}" width="100%" cellpadding="0" cellspacing="0" style="${manager.style}" class="${manager.styleClass}">
 
@@ -57,14 +57,14 @@
         </c:if>
      </c:forEach>
      
-     <%-- determine cell width --%>
-     <c:set var="cellWidth" value="${cellWidth * item.colSpan}"/>
+     <%-- determine cell width by using default or configured width --%>
+     <c:set var="cellWidth" value="${defaultCellWidth * item.colSpan}%"/>
      <c:if test="${!empty item.width}">
         <c:set var="cellWidth" value="${item.width}"/>
      </c:if>
      
      <%-- render cell and item template --%>
-     <td width="${cellWidth}%" align="${item.align}" valign="${item.valign}" 
+     <td width="${cellWidth}" align="${item.align}" valign="${item.valign}" 
          colspan="${item.colSpan}" rowspan="${item.rowSpan}"
          style="${item.style}" class="${item.styleClass}">
        <krad:template component="${item}"/>

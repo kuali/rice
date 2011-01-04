@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.ui.field;
 
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 
 /**
@@ -42,11 +44,11 @@ public class ActionField extends FieldLabelBase {
 	 * </ul>
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize()
+	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize(java.util.Map)
 	 */
 	@Override
-	public void initialize() {
-		super.initialize();
+	public void initialize(Map<String, String> options) {
+		super.initialize(options);
 
 		if (StringUtils.isBlank(actionLabel)) {
 			actionLabel = this.getLabel();

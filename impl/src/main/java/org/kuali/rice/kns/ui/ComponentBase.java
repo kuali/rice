@@ -15,11 +15,17 @@
  */
 package org.kuali.rice.kns.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.ui.initializer.ComponentInitializer;
 
 /**
+ * Base implementation of <code>Component</code>
+ * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * 
  * @see org.kuali.rice.kns.ui.Component
@@ -44,10 +50,14 @@ public abstract class ComponentBase implements Component {
 	private String style;
 	private String styleClass;
 
+	private List<ComponentInitializer> componentInitializers;
+
 	public ComponentBase() {
+		componentInitializers = new ArrayList<ComponentInitializer>();
+
 		colSpan = 1;
 		rowSpan = 1;
-		
+
 		render = true;
 	}
 
@@ -57,13 +67,15 @@ public abstract class ComponentBase implements Component {
 	 * <ul>
 	 * <li>If id is not given and name is, set it to the name prefixed with
 	 * 'id_' , else set id to 'id_' and the next sequence number.</li>
+	 * <li>Executes any configured <code>ComponentInitializer</code> instances</li>
 	 * </ul>
 	 * </p>
 	 * 
 	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize()
 	 */
 	@Override
-	public void initialize() {
+	public void initialize(Map<String, String> options) {
+		// set id
 		if (StringUtils.isBlank(id)) {
 			if (StringUtils.isNotBlank(name)) {
 				id = "id_" + name;
@@ -72,6 +84,11 @@ public abstract class ComponentBase implements Component {
 				// TODO: revisit this when working on binding paths, need to keep in mind containers as well
 				id = "id_" + UUID.randomUUID().toString();
 			}
+		}
+
+		// invoke initializers
+		for (ComponentInitializer initializer : componentInitializers) {
+			initializer.initialize(this, options);
 		}
 	}
 
@@ -193,6 +210,26 @@ public abstract class ComponentBase implements Component {
 
 	public void setRender(boolean render) {
 		this.render = render;
+	}
+
+	/**
+	 * <code>ComponentInitializer</code> instances that should be invoked to
+	 * initialize the component
+	 * <p>
+	 * These provide dynamic initialization behavior for the component and are
+	 * configured through the components definition. Each initializer will get
+	 * invoked by the initialize method.
+	 * </p>
+	 * 
+	 * @return List of component initializers
+	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize
+	 */
+	public List<ComponentInitializer> getComponentInitializers() {
+		return this.componentInitializers;
+	}
+
+	public void setComponentInitializers(List<ComponentInitializer> componentInitializers) {
+		this.componentInitializers = componentInitializers;
 	}
 
 }

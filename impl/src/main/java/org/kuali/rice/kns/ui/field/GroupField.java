@@ -15,19 +15,50 @@
  */
 package org.kuali.rice.kns.ui.field;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.kuali.rice.kns.ui.Component;
 import org.kuali.rice.kns.ui.container.Group;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Field that contains a nested <code>Group</code>. Can be used to group
+ * together fields by providing a group without header and footer, or simply to
+ * nest full groups. The items <code>List</code> provided is for convenience and
+ * will set the items <code>List</code> in the nested <code>Group</code>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class GroupField extends FieldLabelBase {
 	private Group group;
 
-	public GroupField() {
+	private List<Component> items;
 
+	public GroupField() {
+		items = new ArrayList<Component>();
+	}
+
+	/**
+	 * <p>
+	 * The following initialization is performed:
+	 * <ul>
+	 * <li>Sets the items on the group (if empty) from the field's items list
+	 * (if not empty)</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize()
+	 */
+	@Override
+	public void initialize(Map<String, String> options) {
+		super.initialize(options);
+
+		if (group != null) {
+			if (!items.isEmpty() && group.getItems().isEmpty()) {
+				group.setItems(items);
+			}
+		}
 	}
 
 	public Group getGroup() {
@@ -36,6 +67,14 @@ public class GroupField extends FieldLabelBase {
 
 	public void setGroup(Group group) {
 		this.group = group;
+	}
+
+	public List<Component> getItems() {
+		return this.items;
+	}
+
+	public void setItems(List<Component> items) {
+		this.items = items;
 	}
 
 }

@@ -394,8 +394,28 @@ function placeFocus() {
    }
 }
 
-
+/**
+ * Handles a link that should post the form. Should be called from the methods
+ * onClick event
+ * 
+ * @param methodToCall -
+ *          the value that should be set for the methodToCall parameter
+ * @param navigateToPageId -
+ *          the id for the page that the link should navigate to
+ */
 function handleActionLink(methodToCall, navigateToPageId) {
-	$("<input type='hidden' name='methodToCall' value='" + methodToCall + "'/>").appendTo($("#formComplete"));
+	setMethodToCall(methodToCall);
 	submitForm();
+}
+
+/**
+ * Writes a hidden for property 'methodToCall' set to the given value. This is
+ * useful for submitting forms with JavaScript where the methodToCall needs to
+ * be set before the form is submitted.
+ * 
+ * @param methodToCall -
+ *          the value that should be set for the methodToCall parameter
+ */
+function setMethodToCall(methodToCall) {
+	$("<input type='hidden' name='methodToCall' value='" + methodToCall + "'/>").appendTo($("#formComplete"));
 }

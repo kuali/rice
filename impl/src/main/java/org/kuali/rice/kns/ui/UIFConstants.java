@@ -30,22 +30,30 @@ public class UIFConstants extends JSTLConstants {
 		public static final String SESSION = "SESSION";
 	}
 
-	public enum Position {
-		BOTTOM, LEFT, RIGHT, TOP
+	public static class Position {
+		public static final String BOTTOM = "BOTTOM";
+		public static final String LEFT = "LEFT";
+		public static final String RIGHT = "RIGHT";
+		public static final String TOP = "TOP";
 	}
 
-	public enum NavigationType {
-		VERTICAL_MENU, HORIZONTAL_TABS
+	public static class NavigationType {
+		public static final String VERTICAL_MENU = "VERTICAL_MENU";
+		public static final String HORIZONTAL_TABS = "HORIZONTAL_TABS";
 	}
 
-	public enum Orientation {
-		HORIZONTAL, VERTICAL
+	public static class Orientation {
+		public static final String HORIZONTAL = "HORIZONTAL";
+		public static final String VERTICAL = "VERTICAL";
 	}
 
-	public enum MessageType {
-		NORMAL, SUMMARY, CONSTRAINT, REQUIRED
+	public static class MessageType {
+		public static final String NORMAL = "NORMAL";
+		public static final String SUMMARY = "SUMMARY";
+		public static final String CONSTRAINT = "CONSTRAINT";
+		public static final String REQUIRED = "REQUIRED";
 	}
-	
+
 	public static class ViewType {
 		public static final String INQUIRY = "INQUIRY";
 		public static final String LOOKUP = "LOOKUP";

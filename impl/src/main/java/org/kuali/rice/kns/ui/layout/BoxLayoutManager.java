@@ -24,31 +24,27 @@ import org.kuali.rice.kns.ui.UIFConstants.Orientation;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BoxLayoutManager extends LayoutManagerBase {
-	private Orientation orientation;
-	private int seperationPadding;
+	private String orientation;
+	private String seperationPadding;
 
 	public BoxLayoutManager() {
 		orientation = Orientation.HORIZONTAL;
-		seperationPadding = 1;
+		seperationPadding = "1px";
 	}
 
-	public Orientation getOrientation() {
+	public String getOrientation() {
 		return this.orientation;
 	}
 
-	public void setOrientation(Orientation orientation) {
+	public void setOrientation(String orientation) {
 		this.orientation = orientation;
 	}
 
-	public void setOrientation(String orientation) {
-		this.orientation = Orientation.valueOf(orientation);
-	}
-
-	public int getSeperationPadding() {
+	public String getSeperationPadding() {
 		return this.seperationPadding;
 	}
 
-	public void setSeperationPadding(int seperationPadding) {
+	public void setSeperationPadding(String seperationPadding) {
 		this.seperationPadding = seperationPadding;
 	}
 

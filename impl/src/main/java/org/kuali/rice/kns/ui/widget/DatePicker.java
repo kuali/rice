@@ -16,11 +16,15 @@
 package org.kuali.rice.kns.ui.widget;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * Used for rendering a calendar in the UI that can be used to selected dates
+ * for field values
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class Calendar {
+public class DatePicker extends WidgetBase {
+
+	public DatePicker() {
+
+	}
 
 }

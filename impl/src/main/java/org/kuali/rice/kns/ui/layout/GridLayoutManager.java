@@ -25,7 +25,7 @@ public class GridLayoutManager extends LayoutManagerBase {
 	private int numberOfColumns;
 
 	public GridLayoutManager() {
-
+		numberOfColumns = 2;
 	}
 
 	public int getNumberOfColumns() {

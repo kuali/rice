@@ -18,10 +18,11 @@ package org.kuali.rice.kns.ui.control;
 import org.kuali.rice.kns.ui.ComponentBase;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Base class for all <code>Control</code> implementations
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * 
+ * @see org.kuali.rice.kns.ui.control.Control
  */
 public abstract class ControlBase extends ComponentBase implements Control {
 	private int tabIndex;
@@ -34,7 +35,7 @@ public abstract class ControlBase extends ComponentBase implements Control {
 	 * @see org.kuali.rice.kns.ui.Component#getComponentTypeName()
 	 */
 	@Override
-	public String getComponentTypeName() {
+	public final String getComponentTypeName() {
 		return "control";
 	}
 

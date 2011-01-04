@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.ui.container;
 
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.ui.field.HeaderField;
 
@@ -35,9 +37,12 @@ public class PanelGroup extends Group {
 		defaultOpen = true;
 	}
 
+	/**
+	 * @see org.kuali.rice.kns.ui.container.ContainerBase#initialize(java.util.Map)
+	 */
 	@Override
-	public void initialize() {
-		super.initialize();
+	public void initialize(Map<String, String> options) {
+		super.initialize(options);
 
 		// if panel title not given, use the section title on the panel
 		if (StringUtils.isBlank(panelHeader.getHeaderText())) {

@@ -20,26 +20,27 @@ var $dialog = null;
 // common event registering done here through JQuery ready event
 $(document).ready(function() {
 
-//	 if (!dialogMode) {
-//	   $.jGrowl("Save Successful", {
-//	   sticky : true
-//	   });
-//	 }
+// if (!dialogMode) {
+// $.jGrowl("Save Successful", {
+// sticky : true
+// });
+// }
 
-	//$.loading(true, { img:'images/jquery/loading.gif', align:'center', text: 'Loading...'});
- //$("#red").loading();
+	// $.loading(true, { img:'images/jquery/loading.gif', align:'center', text:
+	// 'Loading...'});
+ // $("#red").loading();
 
 
-	//$(":input").watermark("Fill Me ...");
+	// $(":input").watermark("Fill Me ...");
 
-	//initializeInquiryHandlers();
+	// initializeInquiryHandlers();
 
-	//initializeLookupHandlers();
+	// initializeLookupHandlers();
 
-//	if (dialogMode) {
-//		initializeReturnHandlers();
-//		resizeDialog();
-//	}
+// if (dialogMode) {
+// initializeReturnHandlers();
+// resizeDialog();
+// }
 
 	// this is for nested inquiries to keep opening in the same dialog
 	// if (dialogMode) {
@@ -50,7 +51,7 @@ $(document).ready(function() {
 	$( "input:submit" ).button();
 	
 	// validate form
-	//$("form").validate();
+	// $("form").validate();
 
 })
 
@@ -149,8 +150,8 @@ function showIFrameDialog(href, title) {
 
 	var iframe = "<div><iframe id='dialogIFrame' src='" + href + "' height='100%' width='100%'/></div>";
 			
-//	var iframe = "<div><iframe id='dialogIFrame' src='" + href + "' height='"
-//			+ height + "px'  width='" + width + "px'/></div>";
+// var iframe = "<div><iframe id='dialogIFrame' src='" + href + "' height='"
+// + height + "px' width='" + width + "px'/></div>";
 
 	// create dialog with iframe source
 	if (dialogMode) {
@@ -202,12 +203,13 @@ function substringBetween(parseString, matchString1, matchString2) {
 }
 
 /**
- * Renders a navigation group for the list with the given id. Helper
- * methods are called based on the type to implement a certain style
- * of navigation.
- *  
- * @param listId - unique id for the unordered list
- * @param navigationType - the navigation style to render
+ * Renders a navigation group for the list with the given id. Helper methods are
+ * called based on the type to implement a certain style of navigation.
+ * 
+ * @param listId -
+ *          unique id for the unordered list
+ * @param navigationType -
+ *          the navigation style to render
  */
 function doNavigation(listId, navigationType) {
 	if (navigationType == "VERTICAL_MENU") {
@@ -218,11 +220,28 @@ function doNavigation(listId, navigationType) {
 /**
  * Uses jQuery menu plug-in to build a menu for the list with the given id
  * 
- * @param listId - unique id for the unordered list
+ * @param listId -
+ *          unique id for the unordered list
  */
 function doVerticalMenu(listId) {
 	$(document).ready(function() {
 		$("#" + listId).sidebar();
 	})
+}
+
+/**
+ * Uses jQuery DatePicker to render a calendar that can be used to select date
+ * values for the field with the given control id. The second argument is a Map
+ * of options that are available for the DatePicker. See
+ * <link>http://jqueryui.com/demos/datepicker/#option-showOptions</link> for
+ * documentation on these options
+ * 
+ * @param controlId -
+ *          id for the control that the date picker should populate
+ */
+function doDatePicker(controlId, options) {
+  $(function() {
+   	$("#" + controlId).datepicker(options);
+	});	
 }
 

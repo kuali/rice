@@ -19,7 +19,7 @@
 <!-- begin of view render -->
 <krad:html htmlFormAction="${pageContext.request.contextPath}/spring/${View.controllerRequestMapping}"
                   headerTitle="${View.title}" additionalScriptFiles="${View.additionalScriptFiles}"
-                  renderMultipart="true">
+                  renderForm="${View.renderForm}" renderMultipart="true">
         
   <table width="100%">
    <c:if test="${View.renderHeader}">    

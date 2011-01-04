@@ -29,7 +29,7 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	private String style;
 	private String styleClass;
 
-	private Position labelPlacement;
+	private String labelPlacement;
 
 	public LayoutManagerBase() {
 
@@ -67,16 +67,12 @@ public abstract class LayoutManagerBase implements LayoutManager {
 		this.styleClass = styleClass;
 	}
 
-	public Position getLabelPlacement() {
+	public String getLabelPlacement() {
 		return this.labelPlacement;
 	}
 
-	public void setLabelPlacement(Position labelPlacement) {
-		this.labelPlacement = labelPlacement;
-	}
-
 	public void setLabelPlacement(String labelPlacement) {
-		this.labelPlacement = Position.valueOf(labelPlacement);
+		this.labelPlacement = labelPlacement;
 	}
 
 }

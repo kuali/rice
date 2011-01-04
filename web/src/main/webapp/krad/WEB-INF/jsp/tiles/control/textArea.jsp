@@ -23,7 +23,7 @@
     
  --%>
 
-<form:textarea id="${field.id}" path="${field.bindingPath}" 
+<form:textarea id="${control.id}" path="${field.bindingPath}" 
                rows="${control.rows}" cols="${control.cols}" 
-               cssClass="${control.styleClass}" cssStyle="${field.style}"
+               cssClass="${control.styleClass}" cssStyle="${control.style}"
                tabindex="${control.tabIndex}"/>

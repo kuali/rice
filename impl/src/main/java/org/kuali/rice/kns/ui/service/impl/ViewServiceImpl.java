@@ -15,16 +15,15 @@
  */
 package org.kuali.rice.kns.ui.service.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.ui.Component;
-import org.kuali.rice.kns.ui.container.Group;
 import org.kuali.rice.kns.ui.container.View;
-import org.kuali.rice.kns.ui.field.Field;
-import org.kuali.rice.kns.ui.field.GroupField;
 import org.kuali.rice.kns.ui.service.ViewService;
 
 /**
- * @see org.kuali.rice.kns.ui.service.ViewService
+ * Implementation of <code>ViewService</code>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -35,64 +34,20 @@ public class ViewServiceImpl implements ViewService {
 	 * @see org.kuali.rice.kns.ui.service.ViewService#getViewById(java.lang.String)
 	 */
 	public View getViewById(String viewId) {
+		return getView(viewId, new HashMap<String, String>());
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.ui.service.ViewService#getView(java.lang.String,
+	 *      java.util.Map)
+	 */
+	public View getView(String viewId, Map<String, String> options) {
 		View view = dataDictionaryService.getViewById(viewId);
 
-		initializeView(view);
+		// invoke initialize phase on the views lifecycle service
+		view.getViewLifecycleService().performInitialization(view, options);
 
 		return view;
-	}
-
-	protected void initializeView(View view) {
-		for (Component component : view.getItems()) {
-			initializeGroup((Group) component);
-		}
-
-		initializeNavigation(view.getNavigation());
-		initializeField(view.getHeader());
-		initializeGroup(view.getFooter());
-
-		view.initialize();
-	}
-
-	protected void initializeGroup(Group group) {
-		if (group == null) {
-			return;
-		}
-
-		for (Component component : group.getItems()) {
-			if (component instanceof Group) {
-				initializeGroup((Group) component);
-			}
-			else {
-				initializeField((Field) component);
-			}
-		}
-
-		initializeField(group.getHeader());
-		initializeGroup(group.getFooter());
-
-		group.initialize();
-	}
-
-	protected void initializeField(Field field) {
-		if (field == null) {
-			return;
-		}
-
-		field.initialize();
-
-		if (field instanceof GroupField) {
-			GroupField groupField = (GroupField) field;
-			initializeGroup(groupField.getGroup());
-		}
-	}
-
-	protected void initializeNavigation(Group navigation) {
-		if (navigation == null) {
-			return;
-		}
-
-		navigation.initialize();
 	}
 
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {

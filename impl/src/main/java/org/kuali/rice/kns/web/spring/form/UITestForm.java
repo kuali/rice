@@ -35,7 +35,12 @@ public class UITestForm extends KualiForm {
 	private Date field6;
 	private int field7;
 	private boolean field8;
-	
+
+	private boolean field9;
+	private boolean field10;
+	private boolean field11;
+	private boolean field12;
+
 	private TravelAccount travelAccount1;
 
 	public UITestForm() {
@@ -112,6 +117,38 @@ public class UITestForm extends KualiForm {
 
 	public void setTravelAccount1(TravelAccount travelAccount1) {
 		this.travelAccount1 = travelAccount1;
+	}
+
+	public boolean isField9() {
+		return this.field9;
+	}
+
+	public void setField9(boolean field9) {
+		this.field9 = field9;
+	}
+
+	public boolean isField10() {
+		return this.field10;
+	}
+
+	public void setField10(boolean field10) {
+		this.field10 = field10;
+	}
+
+	public boolean isField11() {
+		return this.field11;
+	}
+
+	public void setField11(boolean field11) {
+		this.field11 = field11;
+	}
+
+	public boolean isField12() {
+		return this.field12;
+	}
+
+	public void setField12(boolean field12) {
+		this.field12 = field12;
 	}
 
 }

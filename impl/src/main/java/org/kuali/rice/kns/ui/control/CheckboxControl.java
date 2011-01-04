@@ -16,8 +16,8 @@
 package org.kuali.rice.kns.ui.control;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Represents a HTML Checkbox control. Used for boolean attributes (where the
+ * value is either on/off, true/false)
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

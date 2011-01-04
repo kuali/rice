@@ -36,6 +36,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                <list>
                  <ref bean="testSection1"/>
                  <ref bean="testSection2"/>
+                 <ref bean="testSection4"/>
                </list>
              </property> 
           </bean>
@@ -82,22 +83,22 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="title" value="Test Group 1"/> 
       <property name="items">
         <list>
-          <bean parent="AttributeLabelFieldPair" p:name="field1" p:label="Field 1">
+          <bean parent="AttributeField" p:name="field1" p:label="Field 1">
             <property name="control">
               <bean parent="TextControl" p:size="5" p:maxLength="4"/>
             </property>
           </bean>
-          <bean parent="AttributeLabelFieldPair" p:name="field2" p:label="Field 2" p:required="true">
+          <bean parent="AttributeField" p:name="field2" p:label="Field 2" p:required="true">
             <property name="control">
               <bean parent="TextControl" p:size="26" p:maxLength="25"/>
             </property>
           </bean>
-          <bean parent="AttributeLabelFieldPair" p:name="field3" p:label="Field 3">
+          <bean parent="AttributeField" p:name="field3" p:label="Field 3">
             <property name="control">
-              <bean parent="TextControl" p:size="10" p:maxLength="9"/>
+              <bean parent="DateControl" p:size="10" p:maxLength="9"/>
             </property>
           </bean>
-          <bean parent="AttributeLabelFieldPair" p:name="field4" p:label="Field 4">
+          <bean parent="AttributeField" p:name="field4" p:label="Field 4">
             <property name="control">
               <bean parent="SelectControl"/>
             </property>
@@ -116,22 +117,22 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager.numberOfColumns" value="4"/>
       <property name="items">
         <list>
-          <bean parent="AttributeLabelFieldPair" p:name="field5" p:label="Field 5">
+          <bean parent="AttributeField" p:name="field5" p:label="Field 5">
             <property name="control">
               <bean parent="TextControl" p:size="5" p:maxLength="4"/>
             </property>
           </bean>
-          <bean parent="AttributeLabelFieldPair" p:name="field6" p:label="Field 6" p:required="true">
+          <bean parent="AttributeField" p:name="field6" p:label="Field 6" p:required="true">
             <property name="control">
               <bean parent="TextControl" p:size="26" p:maxLength="25"/>
             </property>
           </bean>
-          <bean parent="AttributeLabelFieldPair" p:name="field7" p:label="Field 7">
+          <bean parent="AttributeField" p:name="field7" p:label="Field 7">
             <property name="control">
               <bean parent="TextControl" p:size="10" p:maxLength="9"/>
             </property>
           </bean>
-          <bean parent="AttributeLabelFieldPair" p:name="field8" p:label="Field 8">
+          <bean parent="AttributeField" p:name="field8" p:label="Field 8">
             <property name="control">
               <bean parent="CheckboxControl"/>
             </property>
@@ -141,17 +142,17 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Group with grid layout and 4 columns"/>       
    </bean>   
    
-   <bean id="testSection2" parent="PanelGridSection">
+   <bean id="testSection2" parent="PanelGridSection" p:defaultOpen="false">
       <property name="id" value="testSection2"/>
       <property name="title" value="Test Section 2"/> 
       <property name="items">
         <list>
-          <bean parent="AttributeLabelFieldPair" p:name="travelAccount1.number" p:label="Travel Account Number" p:required="true">
+          <bean parent="AttributeField" p:name="travelAccount1.number" p:label="Travel Account Number" p:required="true">
             <property name="control">
               <bean parent="TextControl" p:size="5" p:maxLength="4"/>
             </property>
           </bean>
-          <bean parent="AttributeLabelFieldPair" p:name="travelAccount1.name" p:label="Travel Account Name" p:required="true">
+          <bean parent="AttributeField" p:name="travelAccount1.name" p:label="Travel Account Name" p:required="true">
             <property name="control">
               <bean parent="TextAreaControl" p:rows="5" p:cols="30"/>
             </property>
@@ -161,12 +162,109 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Section without nested group, grid layout"/> 
    </bean> 
    
+   <bean id="testSection4" parent="PanelGridSection">
+      <property name="id" value="testSection4"/>
+      <property name="title" value="Test Section 4"/> 
+      <property name="layoutManager.numberOfColumns" value="4"/>
+      <property name="items">
+        <list>
+          <bean parent="FieldGroup" p:label="Field Group 1" p:width="40%" p:labelField.width="10%">
+            <property name="items">
+              <list>
+                <bean parent="AttributeField" p:name="field5" p:label="Field 11">
+                  <property name="control">
+                    <bean parent="TextControl" p:size="5" p:maxLength="4"/>
+                  </property>
+                </bean>    
+                <bean parent="AttributeField" p:name="field5" p:label="Field 12">
+                  <property name="control">
+                    <bean parent="TextControl" p:size="21" p:maxLength="20"/>
+                  </property>
+                </bean>                
+                <bean parent="AttributeField" p:name="field9" p:label="Field 13">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>  
+                <bean parent="AttributeField" p:name="field5" p:label="Field 14">
+                  <property name="control">
+                    <bean parent="TextControl" p:size="10" p:maxLength="9"/>
+                  </property>
+                </bean>                                        
+              </list>
+            </property>
+          </bean>
+          <bean parent="FieldGroup" p:label="Currency Type" p:width="40%" p:labelField.width="10%">
+            <property name="items">
+              <list>
+                <bean parent="AttributeField" p:name="field10" p:label="Checks" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>    
+                <bean parent="AttributeField" p:name="field11" p:label="Dollars" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>                
+                <bean parent="AttributeField" p:name="field12" p:label="Coins" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>                        
+              </list>
+            </property>
+          </bean>
+          <bean parent="FieldGroup" p:label="Field Group 3" p:width="40%" p:labelField.width="10%">
+            <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
+            <property name="items">
+              <list>
+                <bean parent="AttributeField" p:name="field5" p:label="Field 11" p:showLabel="false">
+                  <property name="control">
+                    <bean parent="TextControl" p:size="5" p:maxLength="4"/>
+                  </property>
+                </bean>    
+                <bean parent="AttributeField" p:name="field5" p:label="Field 12" p:showLabel="false">
+                  <property name="control">
+                    <bean parent="TextControl" p:size="21" p:maxLength="20"/>
+                  </property>
+                </bean>                
+              </list>
+            </property>
+          </bean>
+          <bean parent="FieldGroup" p:label="Field Group 4" p:width="40%" p:labelField.width="10%">
+            <property name="group.layoutManager.orientation" value="HORIZONTAL"/>
+            <property name="items">
+              <list>
+                <bean parent="AttributeField" p:name="field10" p:label="Field 8" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>    
+                <bean parent="AttributeField" p:name="field11" p:label="Field 9" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>                
+                <bean parent="AttributeField" p:name="field12" p:label="Field 10" p:labelPlacement="RIGHT">
+                  <property name="control">
+                    <bean parent="CheckboxControl"/>
+                  </property>
+                </bean>                        
+              </list>
+            </property>
+          </bean>          
+        </list>
+      </property> 
+      <property name="summary" value="Section with some field groups"/> 
+   </bean> 
+   
    <bean id="testSection3" parent="PanelGridSection">
       <property name="id" value="testSection3"/>
       <property name="title" value="Test Section 3"/> 
       <property name="items">
         <list>
-          <bean parent="AttributeLabelFieldPair" p:name="travelAccount1.number" p:label="Travel Account Number" p:required="true">
+          <bean parent="AttributeField" p:name="travelAccount1.number" p:label="Travel Account Number" p:required="true">
             <property name="control">
               <bean parent="RadioGroupControl"/>
             </property>
@@ -174,9 +272,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
               <bean class="edu.sampleu.travel.document.keyvalue.AccountTypeKeyValues"/>
             </property>            
           </bean>
-          <bean parent="AttributeLabelFieldPair" p:name="travelAccount1.name" p:label="Travel Account Name" p:required="true">
+          <bean parent="AttributeField" p:name="travelAccount1.name" p:label="Account File" p:required="true">
             <property name="control">
-              <bean parent="TextControl" p:size="26" p:maxLength="25"/>
+              <bean parent="FileControl" p:size="30"/>
             </property>
           </bean>
         </list>
@@ -187,7 +285,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    <bean id="testViewFooter" parent="Footer">
       <property name="items">
         <list> 
-          <bean parent="ActionField" p:methodToCall="save" p:actionLabel="Save"/>
+          <bean parent="ActionField" p:methodToCall="navigateToPage2" p:actionLabel="Save"/>
           <bean parent="ActionField" p:methodToCall="close" p:actionLabel="Close"/>
           <bean parent="ActionLinkField" p:methodToCall="cancel" p:actionLabel="Cancel"/>
         </list>

@@ -15,24 +15,13 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.TextControl"/>
+<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.FileControl"/>
 <tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.AttributeField"/>
 
 <%--
-    Standard HTML Text Input
+    Standard HTML File Input
     
  --%>
-
-<form:input id="${control.id}" path="${field.bindingPath}" 
-            size="${control.size}" maxlength="${control.maxLength}" 
-            cssClass="${control.styleClass}" cssStyle="${control.style}"
-            tabindex="${control.tabIndex}"/>
-
-<%-- render date picker widget --%> 
-<c:if test="${(!empty control.datePicker) && control.datePicker.render}">              
-   <tiles:insertTemplate template="${control.datePicker.template}">
-      <tiles:putAttribute name="${control.datePicker.componentTypeName}" value="${control.datePicker}"/>
-      <tiles:putAttribute name="control" value="${control}"/>
-   </tiles:insertTemplate>  
-</c:if> 
  
+<input type="file" id="${field.id}"
+       size="${control.size}" class="${control.styleClass}" tabIndex="${control.tabIndex}"/> 

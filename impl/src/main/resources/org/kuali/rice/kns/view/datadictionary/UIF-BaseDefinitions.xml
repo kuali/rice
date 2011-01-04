@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 xmlns:p="http://www.springframework.org/schema/p" 
-xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+xsi:schemaLocation="http://www.springframework.org/schema/beans         
+                    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
 <!--
  Copyright 2007-2009 The Kuali Foundation
  
@@ -22,6 +23,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
 
   <bean id="View" abstract="true" class="org.kuali.rice.kns.ui.container.View" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/view/view.jsp"/>
+      <property name="viewLifecycleService">
+        <ref bean="ViewLifecycleService"/>
+      </property>
       <property name="header">
         <bean parent="ViewHeader"/>
       </property> 
@@ -29,6 +33,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
         <bean parent="Footer"/>
       </property>            
   </bean>
+  
+  <bean id="ViewLifecycleService" 
+        class="org.kuali.rice.kns.ui.service.impl.ViewLifecycleServiceImpl"/>
   
   <!-- Pages -->
    
@@ -67,6 +74,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
       </property> 
+      <property name="componentInitializers">
+        <list>
+          <ref bean="LabelFieldGenerator"/>
+        </list>
+      </property>      
   </bean>     
   
   <!-- Groups -->
@@ -87,7 +99,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
   <bean id="GroupGridLayout" abstract="true" parent="Group">
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
-      </property> 
+      </property>
+      <property name="componentInitializers">
+        <list>
+          <ref bean="LabelFieldGenerator"/>
+        </list>
+      </property>
   </bean>
   
   <bean id="NavigationGroup" abstract="true" class="org.kuali.rice.kns.ui.container.NavigationGroup" scope="prototype">
@@ -107,14 +124,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
   
   <bean id="AttributeField" abstract="true" class="org.kuali.rice.kns.ui.field.AttributeField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/attributeField.jsp"/>
-  </bean>  
-  
-  <bean id="AttributeLabelFieldPair" abstract="true" class="org.kuali.rice.kns.ui.field.AttributeField" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/field/attributeField.jsp"/>
-      <property name="includeLabelField" value="TRUE"/>
       <property name="labelField">
         <bean parent="LabelField" p:align="right"/>
-      </property>
+      </property>      
   </bean>  
   
   <bean id="LabelField" abstract="true" class="org.kuali.rice.kns.ui.field.LabelField" scope="prototype">
@@ -139,7 +151,23 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
   
   <bean id="MessageField" abstract="true" class="org.kuali.rice.kns.ui.field.MessageField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/messageField.jsp"/>
-  </bean>  
+  </bean> 
+  
+  <bean id="GroupField" abstract="true" class="org.kuali.rice.kns.ui.field.GroupField" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/field/groupField.jsp"/>
+      <property name="group">
+         <bean parent="Group"/>
+      </property>
+      <property name="labelField">
+        <bean parent="LabelField" p:align="right"/>
+      </property>        
+  </bean>    
+  
+  <bean id="FieldGroup" abstract="true" parent="GroupField">
+      <property name="group">
+         <bean parent="GroupBodyOnly"/>
+      </property>  
+  </bean> 
   
   <!-- Headers -->
   
@@ -268,6 +296,37 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans         http://w
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/radioGroup.jsp"/>
   </bean>   
   
+  <bean id="FileControl" abstract="true" class="org.kuali.rice.kns.ui.control.FileControl" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/control/file.jsp"/>
+  </bean>  
+  
+  <bean id="DateControl" abstract="true" parent="TextControl">
+      <property name="datePicker">
+        <ref bean="DatePicker"/>
+      </property>
+  </bean>    
+  
   <!-- Widgets -->
+  
+  <bean id="DatePicker" class="org.kuali.rice.kns.ui.widget.DatePicker" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/datePicker.jsp"/>
+      <property name="widgetOptions">
+          <map>
+              <entry key="showOn" value="button"/>
+              <!-- TODO: fix me, this should use the ConfigProperties.krad.externalizable.images.url once EL expressions are working -->
+              <entry key="buttonImage" value="/kr-dev/krad/images/cal.gif"/>
+              <entry key="buttonImageOnly" value="true"/>
+              <entry key="showAnim" value="slide"/>
+              <entry key="showButtonPanel" value="true"/>
+              <entry key="changeMonth" value="true"/>
+              <entry key="changeYear" value="true"/>
+          </map>
+      </property>
+  </bean> 
+  
+  
+  <!-- Initializers -->
+  
+  <bean id="LabelFieldGenerator" class="org.kuali.rice.kns.ui.initializer.LabelFieldGenerator"/>
    
 </beans>

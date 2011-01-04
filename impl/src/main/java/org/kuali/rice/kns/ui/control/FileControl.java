@@ -16,16 +16,29 @@
 package org.kuali.rice.kns.ui.control;
 
 /**
- * Represents a HTML Hidden control, generally rendered as an input control of
- * type 'hidden'. This is used to hold a value that the user will not see but
- * will be posted back with the form
+ * Represents a HTML File control, generally rendered as an input control with
+ * type 'file'. Allows user to upload a file to the application
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HiddenControl extends ControlBase {
+public class FileControl extends ControlBase {
+	private int size;
 
-	public HiddenControl() {
+	public FileControl() {
 
+	}
+
+	/**
+	 * Horizontal display size of the control (in number of characters)
+	 * 
+	 * @return int size
+	 */
+	public int getSize() {
+		return this.size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
 	}
 
 }

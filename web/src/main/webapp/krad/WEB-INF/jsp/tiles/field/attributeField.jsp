@@ -17,18 +17,33 @@
 
 <tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.AttributeField"/>
 
-<%-- render field label --%>
+<%-- check to see if label has been rendered in another field (grid layout) and should be shown --%>
+<c:set var="renderLabel" value="${!field.labelFieldRendered && field.showLabel}"/>
 
-<%-- render field summary --%>
+<krad:span field="${field}" idSuffix="attribute">
 
-<%-- render field control --%>
-<tiles:insertTemplate template="${field.control.template}">
-    <tiles:putAttribute name="control" value="${field.control}"/>
-    <tiles:putAttribute name="field" value="${field}"/>
-</tiles:insertTemplate>
+  <%-- render field label left --%>
+  <c:if test="${renderLabel && (field.labelPlacement eq 'LEFT')}">
+    <krad:template component="${field.labelField}"/>
+  </c:if>
 
-<%-- render field constraint --%>
+  <%-- render field summary --%>
 
-<%-- render field quickfinder --%>
+  <%-- render field control --%>
+  <tiles:insertTemplate template="${field.control.template}">
+      <tiles:putAttribute name="control" value="${field.control}"/>
+      <tiles:putAttribute name="field" value="${field}"/>
+  </tiles:insertTemplate>
 
-<%-- render field help --%>
+  <%-- render field label right --%>
+  <c:if test="${renderLabel && (field.labelPlacement eq 'RIGHT')}">
+    <krad:template component="${field.labelField}"/>
+  </c:if>
+
+  <%-- render field constraint --%>
+
+  <%-- render field quickfinder --%>
+
+  <%-- render field help --%>
+  
+</krad:span>  

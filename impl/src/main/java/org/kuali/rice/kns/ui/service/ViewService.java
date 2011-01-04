@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.ui.service;
 
+import java.util.Map;
+
 import org.kuali.rice.kns.ui.container.View;
 
 /**
@@ -35,9 +37,31 @@ public interface ViewService {
 	 * </p>
 	 * 
 	 * @param viewId
-	 *            - unique id for view
-	 * @return View instance associated with the id or null if id is not found
+	 *            - unique id for view configured on its definition
+	 * @return View instance associated with the id or Null if id is not found
 	 */
 	public View getViewById(String viewId);
+
+	/**
+	 * Returns the <code>View</code> entry identified by the given id
+	 * <p>
+	 * The id matches the id configured for the View through the dictionary.
+	 * Before the View is returned the initialize phase is performed
+	 * </p>
+	 * <p>
+	 * Any configuration sent through the options Map is used to initialize the
+	 * View. This map contains present options the view is aware of and will
+	 * typically come from request parameters. e.g. For maintenance Views there
+	 * is the maintenance type option (new, edit, copy)
+	 * </p>
+	 * 
+	 * @param viewId
+	 *            - unique id for view configured on its definition
+	 * @param options
+	 *            - Map of options (if any), where the map key is the option
+	 *            name and the map value is the option value
+	 * @return View instance associated with the id or Null if id is not found
+	 */
+	public View getView(String viewId, Map<String, String> options);
 
 }

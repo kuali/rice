@@ -16,8 +16,8 @@
 package org.kuali.rice.kns.ui.control;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Represents a group of HTML Radio controls. Provides preset options for the
+ * user to choose by a series of radio controls. Only one option can be selected
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

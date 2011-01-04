@@ -15,13 +15,13 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.CheckboxControl"/>
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.AttributeField"/>
+<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.ui.widget.DatePicker"/>
+<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.TextControl"/>
 
 <%--
-    Standard HTML Checkbox Input
-    
+    Invokes JS method to implement a script based calendar date picker
  --%>
  
-<form:checkbox id="${field.id}" path="${field.bindingPath}" 
-            cssClass="${control.styleClass}" cssStyle="${field.style}" tabindex="${control.tabIndex}"/> 
+<script type="text/javascript">
+  doDatePicker('${control.id}', ${widget.widgetOptionsJSString});
+</script>

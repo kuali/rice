@@ -22,7 +22,5 @@
     
  --%>
  
-<input type="submit" 
-       id="${field.id}" 
-       name="${UIFConstants.CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME}" 
-       value="${field.actionLabel}"/>
+<input type="submit" id="${field.id}" onClick="setMethodToCall('${field.methodToCall}');"
+       name="${field.name}" value="${field.actionLabel}"/>

@@ -23,28 +23,42 @@
     
       Places each component of the given list into a horizontal or vertical row.
       
-      The components can be padded with spaces for horizontal orientation and line breaks
-      for vertical orientation. The amount of padding is configured by the seperationPadding 
-      property of the layout manager.
+      The amount of padding is configured by the seperationPadding 
+      property of the layout manager. The padding is implemented by using a clear image and setting the width or
+      height to the padding configuration.
  --%>
- 
-<%-- setup the correct item padding --%> 
-<c:set var="paddingChar" value="&nbsp;"/>
-<c:if test="${manager.orientation eq UIFConstants.Orientation.VERTICAL}">
-   <c:set var="paddingChar" value="</br>"/>
-</c:if>
 
-<c:set var="padding" value="${paddingChar}"/>
-<c:forEach var="i" begin="2" end="${manager.seperationPadding}" step="1">
-   <c:set var="padding" value="${padding}${paddingChar}"/>
-</c:forEach>
+<%-- setup the correct item padding --%> 
+<c:set var="paddingWidth" value="1px"/>
+<c:set var="paddingHeight" value="1px"/>
+
+<c:choose>
+  <c:when test="${manager.orientation eq UIFConstants.Orientation.VERTICAL}">
+     <c:set var="paddingHeight" value="${manager.seperationPadding}"/>
+  </c:when>
+  <c:otherwise>
+     <c:set var="paddingWidth" value="${manager.seperationPadding}"/>
+  </c:otherwise>
+</c:choose>
 
 <%-- render items --%> 
 <div id="${manager.id}_layout" style="${manager.style}" class="${manager.styleClass}">
 
    <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
        <krad:template component="${item}"/>
-       ${padding}
+       
+       <%-- add line breaks for vertical orientation --%>
+       <c:if test="${manager.orientation eq UIFConstants.Orientation.VERTICAL}">
+         <br/>
+       </c:if>       
+       
+       <%-- add padding --%>
+       <img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="${paddingWidth}" height="${paddingHeight}"/>       
+       
+       <%-- add line breaks for vertical orientation --%>
+       <c:if test="${manager.orientation eq UIFConstants.Orientation.VERTICAL}">
+         <br/>
+       </c:if>
    </c:forEach>
 
 </div> 

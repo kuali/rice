@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.kns.ui.control;
 
+import org.kuali.rice.kns.ui.widget.DatePicker;
+
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Represents a HTML Text control, generally rendered as a input field of type
+ * 'text'. This can display and receive a single value
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -25,10 +27,17 @@ public class TextControl extends ControlBase {
 	private int size;
 	private int maxLength;
 
+	private DatePicker datePicker;
+
 	public TextControl() {
 
 	}
 
+	/**
+	 * Horizontal display size of the control (in number of characters)
+	 * 
+	 * @return int size
+	 */
 	public int getSize() {
 		return this.size;
 	}
@@ -37,12 +46,33 @@ public class TextControl extends ControlBase {
 		this.size = size;
 	}
 
+	/**
+	 * Maximum number of the characters the control value is allowed to have.
+	 * Note this can be smaller or longer than the actual control size
+	 * 
+	 * @return int max length
+	 */
 	public int getMaxLength() {
 		return this.maxLength;
 	}
 
 	public void setMaxLength(int maxLength) {
 		this.maxLength = maxLength;
+	}
+
+	/**
+	 * Renders a calendar that can be used to select a date value for the text
+	 * control. The <code>Calendar</code> instance contains configuration such
+	 * as the date format string
+	 * 
+	 * @return Calendar
+	 */
+	public DatePicker getDatePicker() {
+		return this.datePicker;
+	}
+
+	public void setDatePicker(DatePicker datePicker) {
+		this.datePicker = datePicker;
 	}
 
 }

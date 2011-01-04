@@ -15,13 +15,11 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.CheckboxControl"/>
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.AttributeField"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.ActionField"/>
 
 <%--
-    Standard HTML Checkbox Input
+    Field that contains a nested Group
     
  --%>
  
-<form:checkbox id="${field.id}" path="${field.bindingPath}" 
-            cssClass="${control.styleClass}" cssStyle="${field.style}" tabindex="${control.tabIndex}"/> 
+<krad:template component="${field.group}"/>

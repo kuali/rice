@@ -15,9 +15,10 @@
  */
 package org.kuali.rice.kns.ui.field;
 
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
-import org.kuali.rice.kns.ui.UIFConstants.Position;
 import org.kuali.rice.kns.ui.control.Control;
 import org.kuali.rice.kns.ui.control.MultiValueControlBase;
 
@@ -37,7 +38,7 @@ public class AttributeField extends FieldLabelBase {
 
 	private Control control;
 
-	private Position errorMessagePlacement;
+	private String errorMessagePlacement;
 	private ErrorsField errorField;
 
 	private KeyValuesFinder optionsFinder;
@@ -51,21 +52,26 @@ public class AttributeField extends FieldLabelBase {
 	 * The following initialization is performed:
 	 * <ul>
 	 * <li>If bindingPath not given, defaulted to the field name.</li>
+	 * <li>Set the control id if blank to the field id</li>
 	 * </ul>
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize()
+	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize(java.util.Map)
 	 */
 	@Override
-	public void initialize() {
-		super.initialize();
+	public void initialize(Map<String, String> options) {
+		super.initialize(options);
 
 		if (StringUtils.isBlank(bindingPath)) {
 			bindingPath = this.getName();
 		}
-		
+
+		if (control != null && StringUtils.isBlank(control.getId())) {
+			control.setId(this.getId());
+		}
+
 		// TODO: remove later, this should be done within  the service lifecycle
-		if (control instanceof MultiValueControlBase) {
+		if (control != null && control instanceof MultiValueControlBase) {
 			((MultiValueControlBase) control).setOptions(optionsFinder.getKeyValues());
 		}
 	}
@@ -110,11 +116,11 @@ public class AttributeField extends FieldLabelBase {
 		this.control = control;
 	}
 
-	public Position getErrorMessagePlacement() {
+	public String getErrorMessagePlacement() {
 		return this.errorMessagePlacement;
 	}
 
-	public void setErrorMessagePlacement(Position errorMessagePlacement) {
+	public void setErrorMessagePlacement(String errorMessagePlacement) {
 		this.errorMessagePlacement = errorMessagePlacement;
 	}
 

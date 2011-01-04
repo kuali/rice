@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.ui.container;
 
-import org.kuali.rice.kns.ui.UIFConstants.NavigationType;
-
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
@@ -24,22 +22,18 @@ import org.kuali.rice.kns.ui.UIFConstants.NavigationType;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class NavigationGroup extends Group {
-	private NavigationType navigationType;
+	private String navigationType;
 
 	public NavigationGroup() {
 
 	}
 
-	public NavigationType getNavigationType() {
+	public String getNavigationType() {
 		return this.navigationType;
 	}
 
-	public void setNavigationType(NavigationType navigationType) {
-		this.navigationType = navigationType;
-	}
-
 	public void setNavigationType(String navigationType) {
-		this.navigationType = NavigationType.valueOf(navigationType);
+		this.navigationType = navigationType;
 	}
 
 }

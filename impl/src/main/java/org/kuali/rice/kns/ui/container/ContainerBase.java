@@ -17,11 +17,11 @@ package org.kuali.rice.kns.ui.container;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.ui.Component;
 import org.kuali.rice.kns.ui.ComponentBase;
-import org.kuali.rice.kns.ui.LabeledComponent;
 import org.kuali.rice.kns.ui.field.ErrorsField;
 import org.kuali.rice.kns.ui.field.HeaderField;
 import org.kuali.rice.kns.ui.field.MessageField;
@@ -35,10 +35,10 @@ import org.kuali.rice.kns.ui.widget.Help;
  */
 public abstract class ContainerBase extends ComponentBase implements Container {
 	private String title;
-	
+
 	private String additionalErrorKeys;
 	private ErrorsField errors;
-	
+
 	private Help help;
 	private LayoutManager layoutManager;
 
@@ -64,20 +64,16 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * <p>
 	 * The following initialization is performed:
 	 * <ul>
-	 * <li>The contained list of components is iterated over to check for
-	 * instances of <code>LabeledComponent</code>. If an instance is found, the
-	 * component is checked to see whether the label field should be rendered,
-	 * if so the <code>LabelField</code> is retrieved from the component and
-	 * added to the list of container components. The label field is placed
-	 * immediately before the component in the list.</li>
+	 * <li>Sets the headerText of the header Group if it is blank</li>
+	 * <li>Set the messageText of the summary MessageField if it is blank</li>
 	 * </ul>
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize()
+	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize(java.util.Map)
 	 */
 	@Override
-	public void initialize() {
-		super.initialize();
+	public void initialize(Map<String, String> options) {
+		super.initialize(options);
 
 		// if header title not given, use the container title
 		if (header != null && StringUtils.isBlank(header.getHeaderText())) {
@@ -88,20 +84,6 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		if (summaryMessageField != null && StringUtils.isBlank(summaryMessageField.getMessageText())) {
 			summaryMessageField.setMessageText(summary);
 		}
-
-		List<Component> allItems = new ArrayList<Component>();
-		for (Component component : items) {
-			if (component instanceof LabeledComponent) {
-				boolean includeLabelField = ((LabeledComponent) component).isIncludeLabelField();
-				if (includeLabelField) {
-					allItems.add(((LabeledComponent) component).getLabelField());
-				}
-			}
-
-			allItems.add(component);
-		}
-
-		this.items = allItems;
 	}
 
 	public String getTitle() {

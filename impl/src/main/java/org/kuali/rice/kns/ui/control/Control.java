@@ -18,10 +18,31 @@ package org.kuali.rice.kns.ui.control;
 import org.kuali.rice.kns.ui.Component;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * Represents an interactive element in the UI (typically an HTML control)
+ * <p>
+ * Each control that can be rendered in the UIF should be an implement the
+ * <code>Control</code> interface. The control is a regular component, thus has
+ * a corresponding template that will render the control for the UI. Controls
+ * provide the mechanism for gathering data from the User or for the User to
+ * initiate an action. HTML controls must be rendered within a <code>Form</code>
+ * element.
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Control extends Component {
+
+	/**
+	 * Unique index of the control within the tab order
+	 * <p>
+	 * Tab index provides a way to set the order users will tab through the
+	 * controls. The control with index 1 will receive focus when the page is
+	 * rendered. Tabing from the field will then take the user to the control
+	 * with index 2, then index 3, and so on.
+	 * </p>
+	 * 
+	 * @return int the tab index for the control
+	 */
+	public int getTabIndex();
 
 }

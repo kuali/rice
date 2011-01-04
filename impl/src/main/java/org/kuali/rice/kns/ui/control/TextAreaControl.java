@@ -16,8 +16,8 @@
 package org.kuali.rice.kns.ui.control;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Represents a HTML TextArea control. Generally used for values that are very
+ * large (such as a description)
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
@@ -29,6 +29,11 @@ public class TextAreaControl extends ControlBase {
 
 	}
 
+	/**
+	 * Number of rows the control should span (horizontal length)
+	 * 
+	 * @return int number of rows
+	 */
 	public int getRows() {
 		return this.rows;
 	}
@@ -37,6 +42,11 @@ public class TextAreaControl extends ControlBase {
 		this.rows = rows;
 	}
 
+	/**
+	 * Number of columns the control should span (vertical length)
+	 * 
+	 * @return int number of columns
+	 */
 	public int getCols() {
 		return this.cols;
 	}

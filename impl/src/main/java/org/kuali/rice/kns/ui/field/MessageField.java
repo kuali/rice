@@ -26,7 +26,7 @@ import org.kuali.rice.kns.ui.UIFConstants.MessageType;
  */
 public class MessageField extends FieldBase {
 	private String messageText;
-	private MessageType messageType;
+	private String messageType;
 
 	public MessageField() {
 
@@ -48,11 +48,11 @@ public class MessageField extends FieldBase {
 		return render;
 	}
 
-	public MessageField(MessageType messageType) {
+	public MessageField(String messageType) {
 		this.messageType = messageType;
 	}
 
-	public MessageField(String messageText, MessageType messageType) {
+	public MessageField(String messageText, String messageType) {
 		this.messageText = messageText;
 		this.messageType = messageType;
 	}
@@ -65,16 +65,12 @@ public class MessageField extends FieldBase {
 		this.messageText = messageText;
 	}
 
-	public MessageType getMessageType() {
+	public String getMessageType() {
 		return this.messageType;
 	}
 
-	public void setMessageType(MessageType messageType) {
-		this.messageType = messageType;
-	}
-
 	public void setMessageType(String messageType) {
-		this.messageType = MessageType.valueOf(messageType);
+		this.messageType = messageType;
 	}
 
 }

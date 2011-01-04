@@ -16,6 +16,9 @@
 package org.kuali.rice.kns.ui;
 
 import java.io.Serializable;
+import java.util.Map;
+
+import org.kuali.rice.kns.ui.service.ViewHelperService;
 
 /**
  * All classes of the UIF that are used as a rendering element implement the
@@ -52,6 +55,13 @@ public interface Component extends Serializable {
 	 * @return String id
 	 */
 	public String getId();
+	
+	/**
+	 * Sets the unique id (within a given tree) for the component
+	 * 
+	 * @param id - string to set as the component id
+	 */
+	public void setId(String id);
 
 	/**
 	 * The name for the component type
@@ -91,9 +101,12 @@ public interface Component extends Serializable {
 	 * lifecylce.
 	 * </p>
 	 * 
+	 * @param options
+	 *            - Map of options (if any), where the map key is the option
+	 *            name and the map value is the option value
 	 * @see ViewHelperService#initializeView
 	 */
-	public void initialize();
+	public void initialize(Map<String, String> options);
 
 	/**
 	 * The name for the component
@@ -266,7 +279,6 @@ public interface Component extends Serializable {
 	 * vertically the component should take up within the container. This is
 	 * only applicable for table based layout managers. Default is 1
 	 * </p>
-	 * `
 	 * 
 	 * @return int number of rows to span
 	 */

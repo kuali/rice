@@ -30,15 +30,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.commons.lang.reflect.FieldUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.kuali.rice.kns.service.XmlObjectSerializerService;
 
+import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
 import com.thoughtworks.xstream.converters.reflection.PureJavaReflectionProvider;
@@ -46,7 +45,6 @@ import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
 import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
-import com.thoughtworks.xstream.mapper.MapperWrapper;
 
 
 /**
@@ -162,43 +160,6 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
 			persistenceService = KNSServiceLocator.getPersistenceService();
 		}
 		return persistenceService;
-	}
-	
-	public void setPersistenceService(PersistenceService persistenceService) {
-		this.persistenceService = persistenceService;
-	}
-	
-	/**
-	 * A custom implementation of XStream which allows us to throw out "boNotes" references on PersistableBusinessObject
-	 * classes.  This is to accomodate the refactoring done in Rice 1.1 where "boNotes" were removed from
-	 * PersistableBusinessObject and moved onto the Document.
-	 * 
-	 * @author Kuali Rice Team (rice.collab@kuali.org)
-	 */
-	private static class XStream extends com.thoughtworks.xstream.XStream {
-		
-		private static final String LEGACY_NOTES_FIELD_NAME = "boNotes";
-		
-		public XStream(ReflectionProvider reflectionProvider) {
-			super(reflectionProvider);
-		}
-		
-		@Override
-		protected MapperWrapper wrapMapper(MapperWrapper next) {
-			return new MapperWrapper(next) {
-				@Override
-				public boolean shouldSerializeMember(Class definedIn, String fieldName) {
-					if (PersistableBusinessObject.class.isAssignableFrom(definedIn)) {
-						if (LEGACY_NOTES_FIELD_NAME.equals(fieldName) && FieldUtils.getField(definedIn, fieldName, true) == null) {
-							LOG.warn("Encountered legacy xml for boNotes on a business object");
-							return false;
-						}
-					}
-					return super.shouldSerializeMember(definedIn, fieldName);
-				}
-			};
-		}
-		
 	}
     
 }

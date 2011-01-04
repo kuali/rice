@@ -98,8 +98,8 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     @Transient
     private List<Note> notes;
     
-    private static transient NoteService noteService;
-    private static transient AttachmentService attachmentService;
+    private transient NoteService noteService;
+    private transient AttachmentService attachmentService;
 
     /**
      * Constructs a DocumentBase.java.
@@ -195,7 +195,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @return consistently-formatted String containing the given fieldnames and their values
      */
     @Override
-    protected String toStringBuilder(LinkedHashMap fieldValues) {
+    protected String toStringBuilder(LinkedHashMap<String, Object> fieldValues) {
         String built = null;
         String className = StringUtils.uncapitalize(StringUtils.substringAfterLast(this.getClass().getName(), "."));
 
@@ -212,10 +212,10 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 
             prefix.append("(");
             suffix.append("(");
-            for (Iterator i = fieldValues.entrySet().iterator(); i.hasNext();) {
-                Map.Entry e = (Map.Entry) i.next();
+            for (Iterator<Map.Entry<String, Object>> i = fieldValues.entrySet().iterator(); i.hasNext();) {
+                Map.Entry<String, Object> e = i.next();
 
-                String fieldName = e.getKey().toString();
+                String fieldName = e.getKey();
                 Object fieldValue = e.getValue();
 
                 String fieldValueString = String.valueOf(e.getValue()); // prevent NullPointerException;
@@ -252,8 +252,9 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     /**
      * @return Map containing the fieldValues of the key fields for this class, indexed by fieldName
      */
+    @Override
     protected LinkedHashMap<String,Object> toStringMapper(){
-        LinkedHashMap m = new LinkedHashMap();
+        LinkedHashMap<String, Object> m = new LinkedHashMap<String, Object>();
 
         m.put("documentNumber", getDocumentNumber());
         m.put("versionNumber", getVersionNumber());
@@ -460,16 +461,12 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     	if (workflowAttributes != null) {
     		return new AlwaysFalsePropertySerializabilityEvaluator();
     	}
-    	else {
-	        if (workflowProperties == null) {
-	            return new AlwaysTruePropertySerializibilityEvaluator();
-	        }
-	        else {
-	            PropertySerializabilityEvaluator evaluator = new BusinessObjectPropertySerializibilityEvaluator();
-	            evaluator.initializeEvaluator(this);
-	            return evaluator;
-	        }
+    	if (workflowProperties == null) {
+    		return new AlwaysTruePropertySerializibilityEvaluator();
     	}
+    	PropertySerializabilityEvaluator evaluator = new BusinessObjectPropertySerializibilityEvaluator();
+    	evaluator.initializeEvaluator(this);
+    	return evaluator;
     }
     
     /**
@@ -548,7 +545,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.kns.document.Document#prepareForSave(org.kuali.rice.kns.rule.event.KualiDocumentEvent)
      */
     public void prepareForSave(KualiDocumentEvent event) {
-
+    	// do nothing by default
     }
 
     public void validateBusinessRules(KualiDocumentEvent event) {
@@ -584,16 +581,16 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     	if ( LOG.isInfoEnabled() ) {
 	        if (GlobalVariables.getMessageMap().hasErrors()) {
 	
-	            for (Iterator i = GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext();) {
-	                Map.Entry e = (Map.Entry) i.next();
+	            for (Iterator<Map.Entry<String, AutoPopulatingList<ErrorMessage>>> i = GlobalVariables.getMessageMap().getAllPropertiesAndErrors().iterator(); i.hasNext();) {
+	                Map.Entry<String, AutoPopulatingList<ErrorMessage>> e = i.next();
 	
 	                StringBuffer logMessage = new StringBuffer();
 	                logMessage.append("[" + e.getKey() + "] ");
 	                boolean first = true;
 	
-	                AutoPopulatingList errorList = (AutoPopulatingList) e.getValue();
-	                for (Iterator j = errorList.iterator(); j.hasNext();) {
-	                    ErrorMessage em = (ErrorMessage) j.next();
+	                AutoPopulatingList<ErrorMessage> errorList = e.getValue();
+	                for (Iterator<ErrorMessage> j = errorList.iterator(); j.hasNext();) {
+	                    ErrorMessage em = j.next();
 	
 	                    if (first) {
 	                        first = false;
@@ -774,14 +771,14 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     			" is using pessimistic locking with custom lock descriptors, but the document class has not overriden the getCustomLockDescriptor method");
     }
     
-    protected static AttachmentService getAttachmentService() {
+    protected AttachmentService getAttachmentService() {
 		if ( attachmentService == null ) {
 			attachmentService = KNSServiceLocator.getAttachmentService();
 		}
 		return attachmentService;
 	}
     
-    protected static NoteService getNoteService() {
+    protected NoteService getNoteService() {
 		if ( noteService == null ) {
 			noteService = KNSServiceLocator.getNoteService();
 		}

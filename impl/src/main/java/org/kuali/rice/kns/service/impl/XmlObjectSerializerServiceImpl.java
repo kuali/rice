@@ -111,10 +111,16 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
         public ProxyConverter(Mapper mapper, ReflectionProvider reflectionProvider) {
             super(mapper, reflectionProvider);
         }
+        
+        @Override
+        // since the ReflectionConverter supertype defines canConvert without using a parameterized Class type, we must declare
+        // the overridden version the same way
+        @SuppressWarnings("unchecked")
         public boolean canConvert(Class clazz) {
             return clazz.getName().contains("CGLIB");
         }
 
+        @Override
         public void marshal(Object obj, HierarchicalStreamWriter writer, MarshallingContext context) {
             super.marshal(getPersistenceService().resolveProxy(obj), writer, context);
         }

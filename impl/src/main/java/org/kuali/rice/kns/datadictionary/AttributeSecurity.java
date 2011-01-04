@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
-import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.kew.attribute.Attribute;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
 

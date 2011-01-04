@@ -30,17 +30,6 @@ public final class AuthorizationConstants {
     		throw new UnsupportedOperationException("do not call");
     	}
     }
-
-    public static final class MaintenanceEditMode {
-        public static final String APPROVER_EDIT_ENTRY = "approverEditEntry";
-        public static final String UNVIEWABLE = EditMode.UNVIEWABLE;
-        public static final String VIEW_ONLY = EditMode.VIEW_ONLY;
-        public static final String FULL_ENTRY = EditMode.FULL_ENTRY;
-        
-    	private MaintenanceEditMode() {
-    		throw new UnsupportedOperationException("do not call");
-    	}
-    }
     
 	private AuthorizationConstants() {
 		throw new UnsupportedOperationException("do not call");

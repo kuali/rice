@@ -67,7 +67,6 @@
       enActionListEmailService,
       enWorkflowUtilityService,
       enWorkflowDocumentActionsService,
-      enRemoveReplaceDocumentService,
       enUserOptionsService,
       enDocumentSecurityService,
       enEmailContentService,

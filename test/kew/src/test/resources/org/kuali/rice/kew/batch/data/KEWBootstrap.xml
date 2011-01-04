@@ -92,25 +92,6 @@
         </group>
     </groups>
 
-    <!-- Rule attributes for core doctypes -->
-    <!-- TODO: determine why this attribute is in bootstrap and if it doesn't need to be remove it! -->
-    <ruleAttributes xmlns="ns:workflow/RuleAttribute" xsi:schemaLocation="ns:workflow/RuleAttribute resource:RuleAttribute">
-        <ruleAttribute>
-            <name>RuleRoutingAttribute</name>
-            <className>org.kuali.rice.kew.rule.RuleRoutingAttribute</className>
-            <label>Rule Routing Attribute</label>
-            <description>Attribute used by rules to rout</description>
-            <type>RuleAttribute</type>
-        </ruleAttribute>
-        <ruleAttribute>
-			<name>RemoveReplaceRuleRoutingAttribute</name>
-			<className>org.kuali.rice.kew.rule.RemoveReplaceRuleRoutingAttribute</className>
-			<label>RemoveReplaceRuleRoutingAttribute</label>
-			<description>An attribute for routing rules that have been changed via the Remove/Replace User document</description>
-			<type>RuleAttribute</type>
-		</ruleAttribute>
-    </ruleAttributes>
-
     <!-- Templates for core rules -->
 
     <ruleTemplates xmlns="ns:workflow/RuleTemplate" xsi:schemaLocation="ns:workflow/RuleTemplate resource:RuleTemplate">
@@ -130,16 +111,6 @@
         <ruleTemplate allowOverwrite="true">
             <name>Ack2Template</name>
             <description>Acknowledgement 2 Template</description>
-        </ruleTemplate>
-        <ruleTemplate>
-            <name>RemoveReplaceRuleTemplate</name>
-            <description>Remove/Replace Rule Routing</description>
-                <attributes>
-                    <attribute>
-                        <name>RemoveReplaceRuleRoutingAttribute</name>
-                        <required>true</required>
-                    </attribute>
-                </attributes>
         </ruleTemplate>
     </ruleTemplates>
 
@@ -217,36 +188,6 @@
                 <start name="placeholder">
                     <activationType>S</activationType>
                 </start>
-            </routeNodes>
-        </documentType>
-        <documentType>
-            <name>RemoveReplaceUserDocument</name>
-            <parent>RiceDocument</parent>
-            <description>A document to remove or replace users within rules and workgroups.</description>
-            <label>Remove/Replace User</label>
-            <postProcessorName>org.kuali.rice.kew.removereplace.RemoveReplacePostProcessor</postProcessorName>
-            <docHandler>${workflow.url}/RemoveReplace.do?methodToCall=docHandler</docHandler>
-            <active>true</active>
-            <routingVersion>1</routingVersion>
-            <routePaths>
-                <routePath>
-                    <start name="Adhoc Routing" nextNode="Rule Approval"/>
-                    <requests name="Rule Approval"/>
-                </routePath>
-            </routePaths>
-            <routeNodes>
-                <start name="Adhoc Routing">
-                    <activationType>P</activationType>
-                    <mandatoryRoute>false</mandatoryRoute>
-                    <finalApproval>false</finalApproval>
-                </start>
-                <requests name="Rule Approval">
-                    <activationType>P</activationType>
-                    <ruleTemplate>RemoveReplaceRuleTemplate</ruleTemplate>
-                    <mandatoryRoute>false</mandatoryRoute>
-                    <finalApproval>false</finalApproval>
-                </requests>
-
             </routeNodes>
         </documentType>
     </documentTypes>

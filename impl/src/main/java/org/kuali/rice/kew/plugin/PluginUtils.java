@@ -16,14 +16,6 @@
  */
 package org.kuali.rice.kew.plugin;
 
-import java.io.File;
-import java.io.FileFilter;
-import java.io.FilenameFilter;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
@@ -31,6 +23,13 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoaderUtil;
 import org.kuali.rice.kew.resourceloader.CoreResourceLoader;
+
+import javax.xml.namespace.QName;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FilenameFilter;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -71,18 +70,6 @@ public final class PluginUtils {
 	private PluginUtils() {
 		throw new UnsupportedOperationException("do not call");
 	}
-
-    public static class PluginDirectoryFilter implements FileFilter {
-        private final File sharedPluginDirectory;
-        public PluginDirectoryFilter(File sharedPluginDirectory) {
-            this.sharedPluginDirectory = sharedPluginDirectory;
-        }
-        public boolean accept(File file) {
-            return file.isDirectory() && !file.getName().equalsIgnoreCase("cvs") &&
-            (sharedPluginDirectory == null ||
-                    !file.getName().equals(sharedPluginDirectory.getName()));
-        }
-    }
 
     public static class PluginZipFileFilter implements FileFilter {
         public boolean accept(File file) {

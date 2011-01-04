@@ -131,7 +131,6 @@
                 <idref local="enActionListEmailService" />
                 <idref local="enWorkflowUtilityService" />
                 <idref local="enWorkflowDocumentActionsService" />
-                <idref local="enRemoveReplaceDocumentService"/>
                 <idref local="enQuickLinksService" />
                 <idref local="enDocumentRequeuerService"/>
                 <!-- it's important that this service remains non-transactionally proxied for various reasons
@@ -522,11 +521,6 @@
   <!-- XML parsing/export has not been promoted out of KEW into the core yet, until then let's wire up the GroupXmlServiceImpl here -->
   <bean id="enGroupXmlService" class="org.kuali.rice.kew.xml.GroupXmlServiceImpl" />
   <bean id="enUserXmlService" class="org.kuali.rice.kew.xml.UserXmlServiceImpl"/>
-
-    <bean id="enRemoveReplaceDocumentService" class="org.kuali.rice.kew.removereplace.service.impl.RemoveReplaceDocumentServiceImpl">
-      <property name="removeReplaceDocumentDAO" ref="enRemoveReplaceDocumentDAO" />
-    </bean>
-
 
 	<bean id="enWorkflowUtilityService" class="org.kuali.rice.kew.service.impl.WorkflowUtilityWebServiceImpl" lazy-init="true" />
     <bean id="enDocumentRoutingService" class="org.kuali.rice.kew.messaging.RouteDocumentMessageService"/>

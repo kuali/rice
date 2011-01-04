@@ -15,15 +15,10 @@
  */
 package org.kuali.rice.kew.util;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.core.util.RiceConstants;
+
+import java.sql.Date;
+import java.util.*;
 
 public final class KEWConstants {
 
@@ -863,7 +858,6 @@ public final class KEWConstants {
     public static final String DAILY_EMAIL_ACTIVE = "dailyEmail.active";
     public static final String WEEKLY_EMAIL_ACTIVE = "weeklyEmail.active";
 
-    public static final String REMOVE_REPLACE_DOCUMENT_TYPE = "RemoveReplaceUserDocument";
     public static final String ACTION_LIST_NO_REFRESH = "ActionList.norefresh";
 
 

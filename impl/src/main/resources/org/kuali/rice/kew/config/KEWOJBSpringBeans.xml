@@ -112,10 +112,7 @@
   <bean id="enQuickLinksDAO" class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOOjbImpl" depends-on="kewOjbConfigurer">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>
-  
-  <bean id="enRemoveReplaceDocumentDAO" class="org.kuali.rice.kew.removereplace.dao.impl.RemoveReplaceDocumentDAOOjbImpl" depends-on="kewOjbConfigurer">
-    <property name="jcdAlias" value="enWorkflowDataSource"/>
-  </bean>
+
   <bean id="enResponsibilityIdDAO" class="org.kuali.rice.kew.responsibility.dao.impl.ResponsibilityIdDAOOjbImpl" lazy-init="true" depends-on="kewOjbConfigurer">
     <property name="jcdAlias" value="enWorkflowDataSource" />
   </bean>

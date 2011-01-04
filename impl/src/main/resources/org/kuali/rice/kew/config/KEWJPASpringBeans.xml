@@ -95,9 +95,6 @@
   <bean id="enQuickLinksDAO" parent="kewJpaParent"
     class="org.kuali.rice.kew.quicklinks.dao.impl.QuickLinksDAOJpaImpl" />
 
-  <bean id="enRemoveReplaceDocumentDAO" parent="kewJpaParent"
-    class="org.kuali.rice.kew.removereplace.dao.impl.RemoveReplaceDocumentDAOJpaImpl" />
-
   <bean id="enResponsibilityIdDAO" parent="kewJpaParent"
     class="org.kuali.rice.kew.responsibility.dao.impl.ResponsibilityIdDAOJpaImpl" />
 
@@ -157,7 +154,6 @@
         <idref local="enExtractDAO" />
         <idref local="enHelpDAO" />
         <idref local="enNoteDAO" />
-        <idref local="enRemoveReplaceDocumentDAO" />
         <idref local="enRouteNodeDAO" />
         <idref local="enRuleAttributeDAO" />
         <idref local="enRuleDAO" />

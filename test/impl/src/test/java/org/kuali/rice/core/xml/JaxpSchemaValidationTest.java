@@ -16,30 +16,22 @@
  */
 package org.kuali.rice.core.xml;
 
-import java.io.InputStream;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.UnmarshallerHandler;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.Validator;
-import javax.xml.validation.ValidatorHandler;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.core.xml.dto.GroupXmlDto;
 import org.kuali.rice.core.xml.schema.RiceXmlSchemaFactory;
-import org.kuali.rice.kew.xml.GroupNamespaceURIEliminationFilterPOC;
-import org.kuali.rice.kew.xml.GroupNamespaceURIMemberTransformationFilterPOC;
-import org.kuali.rice.kew.xml.GroupNamespaceURITransformationFilterPOC;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.XMLFilter;
 import org.xml.sax.XMLReader;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.Validator;
+import javax.xml.validation.ValidatorHandler;
+import java.io.InputStream;
 
 public class JaxpSchemaValidationTest extends Assert {
 
@@ -171,58 +163,7 @@ public class JaxpSchemaValidationTest extends Assert {
 		assertTrue(getCompileErrors()==0);
 		
 	}
-	
-	@Test	
-	public void testValidatorAfterFiltering() throws Exception {
-		setCompileErrors(0);
-		InputStream xmlFile = getClass().getResourceAsStream("GroupInstance0.xml");
-		assertNotNull(xmlFile);
 
-		SAXParserFactory spf = SAXParserFactory.newInstance();
-		spf.setNamespaceAware(true);
-
-		JAXBContext jaxbContext = JAXBContext.newInstance(GroupXmlDto.class);
-		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-		UnmarshallerHandler handler = unmarshaller.getUnmarshallerHandler();
-
-		// Plug in chained filters
-		XMLFilter eliminationFilter = new GroupNamespaceURIEliminationFilterPOC();
-		XMLFilter transformationFilter = new GroupNamespaceURITransformationFilterPOC();
-		XMLFilter memberTransformationFilter = new GroupNamespaceURIMemberTransformationFilterPOC();
-
-		// Initialize filter chain
-//		eliminationFilter.setParent(spf.newSAXParser().getXMLReader());
-//		transformationFilter.setParent(eliminationFilter);
-//		memberTransformationFilter.setParent(transformationFilter);
-//		memberTransformationFilter.setContentHandler(handler);
-//		memberTransformationFilter.parse(new InputSource(in));
-
-		// create intermediate sax sources for each filter.
-		// Need to figure out how to chain SAXSource(,)
-		eliminationFilter.setParent(spf.newSAXParser().getXMLReader());
-		eliminationFilter.setContentHandler(handler);
-		SAXSource saxSource1 = new SAXSource(eliminationFilter, new InputSource(xmlFile));
-		
-		transformationFilter.setParent(spf.newSAXParser().getXMLReader());
-		transformationFilter.setContentHandler(handler);
-		SAXSource saxSource2 = new SAXSource(transformationFilter, saxSource1.getInputSource());
-		
-		memberTransformationFilter.setParent(spf.newSAXParser().getXMLReader());
-		memberTransformationFilter.setContentHandler(handler);
-		SAXSource saxSource3 = new SAXSource(memberTransformationFilter, saxSource2.getInputSource());
-
-		// get a new filtered source
-//		SAXSource saxSource = new SAXSource(memberTransformationFilter, new InputSource(xmlFile));
-
-		assertTrue(getCompileErrors()==0);
-
-		Validator validator = RiceXmlSchemaFactory.getSchema(GROUP_SCHEMA).newValidator();
-		validator.setErrorHandler(new XmlTestSchemaValidationErrorHandler());
-		validator.validate(saxSource3);
-		
-//		assertTrue(getCompileErrors()==0);
-		
-	}
 ///////// local helper methods //////////////
 	
 	

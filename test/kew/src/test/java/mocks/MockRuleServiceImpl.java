@@ -16,26 +16,19 @@
  */
 package mocks;
 
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.jdom.Element;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.identity.Id;
-import org.kuali.rice.kew.rule.MyRules2;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 
@@ -55,9 +48,6 @@ public class MockRuleServiceImpl implements RuleService {
         return null;
     }
     public Long isLockedForRouting(Long currentRuleBaseValuesId) {
-        return null;
-    }
-    public Long route2(Long routeHeaderId, MyRules2 myRules, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception {
         return null;
     }
     public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception {
@@ -110,10 +100,6 @@ public class MockRuleServiceImpl implements RuleService {
             respList.add(resp);
             responsibilitiesByReviewer.put(resp.getRuleResponsibilityName(), respList);
         }
-    }
-
-    public Long route2(MyRules2 myRules, KimPrincipal principal, String annotation) throws Exception {
-        throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
     }
 
     public void delete(Long ruleBaseValuesId) {
@@ -217,12 +203,6 @@ public class MockRuleServiceImpl implements RuleService {
 	}
 	public String getRuleDocmentTypeName(List rules) {
 		return KEWConstants.DEFAULT_RULE_DOCUMENT_NAME;
-	}
-	public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId) {
-	    throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
-	}
-	public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId) {
-	    throw new UnsupportedOperationException("not implemented in MockRuleServiceImpl");
 	}
 	/**
 	 * This overridden method ...

@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.kew.service;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import javax.transaction.TransactionManager;
-import javax.transaction.UserTransaction;
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ModuleConfigurer.RunMode;
@@ -54,7 +48,6 @@ import org.kuali.rice.kew.mail.service.EmailService;
 import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.notification.service.NotificationService;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
-import org.kuali.rice.kew.removereplace.service.RemoveReplaceDocumentService;
 import org.kuali.rice.kew.responsibility.service.ResponsibilityIdService;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
@@ -70,6 +63,12 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.export.XmlExporterService;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.springframework.transaction.PlatformTransactionManager;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import javax.transaction.TransactionManager;
+import javax.transaction.UserTransaction;
+import javax.xml.namespace.QName;
 
 
 /**
@@ -438,10 +437,6 @@ public final class KEWServiceLocator {
 
     public static DocumentSearchService getDocumentSearchService() {
     	return (DocumentSearchService) getBean(DOCUMENT_SEARCH_SERVICE);
-    }
-
-    public static RemoveReplaceDocumentService getRemoveReplaceDocumentService() {
-	return (RemoveReplaceDocumentService) getBean(REMOVE_REPLACE_DOCUMENT_SERVICE);
     }
 
     public static ExtractService getExtractService() {

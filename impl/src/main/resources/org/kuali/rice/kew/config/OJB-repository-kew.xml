@@ -909,32 +909,6 @@
     </collection-descriptor>
   </class-descriptor>
 
-  <class-descriptor class="org.kuali.rice.kew.removereplace.RemoveReplaceDocument" table="KREW_RMV_RPLC_DOC_T">
-    <field-descriptor column="DOC_HDR_ID" name="documentId" jdbc-type="BIGINT" primarykey="true"/>
-    <field-descriptor column="OPRN" name="operation" jdbc-type="VARCHAR"/>
-    <field-descriptor column="PRNCPL_ID" name="userWorkflowId" jdbc-type="VARCHAR"/>
-    <field-descriptor column="RPLC_PRNCPL_ID" name="replacementUserWorkflowId" jdbc-type="VARCHAR"/>
-    <field-descriptor column="VER_NBR" name="lockVerNbr" jdbc-type="INTEGER" locking="true"/>
-    <collection-descriptor name="ruleTargets" element-class-ref="org.kuali.rice.kew.removereplace.RuleTarget"
-      auto-delete="true" auto-retrieve="true" auto-update="object">
-      <inverse-foreignkey field-ref="documentId"/>
-    </collection-descriptor>
-    <collection-descriptor name="workgroupTargets" element-class-ref="org.kuali.rice.kew.removereplace.WorkgroupTarget"
-      auto-delete="true" auto-retrieve="true" auto-update="object">
-      <inverse-foreignkey field-ref="documentId"/>
-    </collection-descriptor>
-  </class-descriptor>
-
-  <class-descriptor class="org.kuali.rice.kew.removereplace.RuleTarget" table="KREW_RMV_RPLC_RULE_T">
-    <field-descriptor column="DOC_HDR_ID" name="documentId" jdbc-type="BIGINT" primarykey="true"/>
-    <field-descriptor column="RULE_ID" name="ruleId" jdbc-type="BIGINT" primarykey="true"/>
-  </class-descriptor>
-
-  <class-descriptor class="org.kuali.rice.kew.removereplace.WorkgroupTarget" table="KREW_RMV_RPLC_GRP_T">
-    <field-descriptor column="DOC_HDR_ID" name="documentId" jdbc-type="BIGINT" primarykey="true"/>
-    <field-descriptor column="GRP_ID" name="workgroupId" jdbc-type="BIGINT" primarykey="true"/>
-  </class-descriptor>
-
     <class-descriptor class="org.kuali.rice.kew.edl.extract.Dump" table="KREW_EDL_DMP_T">
     <field-descriptor column="DOC_HDR_ID" name="docId" jdbc-type="BIGINT" primarykey="true" />
     <field-descriptor column="DOC_TYP_NM" name="docTypeName" jdbc-type="VARCHAR" />

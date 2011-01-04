@@ -73,9 +73,6 @@
     <class>org.kuali.rice.kew.role.Role</class>
     <class>org.kuali.rice.kew.role.RoleAttribute</class>
     -->
-    <class>org.kuali.rice.kew.removereplace.RemoveReplaceDocument</class>
-    <class>org.kuali.rice.kew.removereplace.RuleTarget</class>
-    <class>org.kuali.rice.kew.removereplace.WorkgroupTarget</class>
     <class>org.kuali.rice.kew.edl.extract.Dump</class>
     <class>org.kuali.rice.kew.edl.extract.Fields</class>
     <class>org.kuali.rice.kew.documentlink.DocumentLink</class>

@@ -16,21 +16,18 @@
  */
 package org.kuali.rice.kew.rule.service;
 
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.identity.Id;
-import org.kuali.rice.kew.rule.MyRules2;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.xml.XmlLoader;
 import org.kuali.rice.kew.xml.export.XmlExporter;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -50,8 +47,6 @@ public interface RuleService extends XmlLoader, XmlExporter {
      */
     public RuleBaseValues getRuleByName(String name);
 
-    //public Long route(MyRules myRules, WorkflowUser user, String annotation) throws Exception;
-    public Long route2(Long routeHeaderId, MyRules2 myRules, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception;
     public Long routeRuleWithDelegate(Long routeHeaderId, RuleBaseValues parentRule, RuleBaseValues delegateRule, KimPrincipal principal, String annotation, boolean blanketApprove) throws Exception;
     //public void save(RuleBaseValues ruleBaseValues) throws Exception;
     public void save2(RuleBaseValues ruleBaseValues) throws Exception;
@@ -95,23 +90,6 @@ public interface RuleService extends XmlLoader, XmlExporter {
      * the given rules.
      */
     public String getRuleDocmentTypeName(List rules);
-
-    /**
-     * Replaces entities who have responsibilities on the given set of rules with the specified new entity.  In this case
-     * the Id can be the id of either a Workgroup or a User.
-     *
-     * <p>This method should handle any versioning of the rules that is required.
-     */
-    public void replaceRuleInvolvement(Id entityToBeReplaced, Id newEntity, List<Long> ruleIds, Long documentId) throws WorkflowException;
-
-    /**
-     * Removes entities who have responsibilities on the given set of rules.  In the case that a targeted rule
-     * contains only a single responsibility the rule will be inactivated instead of removing the responsibility.
-     * The Id can be the id of either a Workgroup or a User.
-     *
-     * <p>This method should handle any versioning of the rules that is required.
-     */
-    public void removeRuleInvolvement(Id entityToBeRemoved, List<Long> ruleIds, Long documentId) throws WorkflowException;
 
     /**
      * Checks if the Rule with the given value is a duplicate of an existing rule in the system.

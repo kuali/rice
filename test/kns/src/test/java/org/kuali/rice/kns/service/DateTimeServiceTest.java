@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.kns.service;
 
+import org.junit.Test;
+import org.kuali.test.KNSTestCase;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import org.junit.Test;
-import org.kuali.rice.kns.test.KualiTestAssertionUtils;
-import org.kuali.test.KNSTestCase;
 
 /**
  * This class tests the DateTime service.
@@ -216,29 +215,29 @@ public class DateTimeServiceTest extends KNSTestCase {
         date1 = sdf.parse("01/01/2006");
         date2 = sdf.parse("06/30/2006");
 
-        KualiTestAssertionUtils.assertEquality("181", Integer.toString(KNSServiceLocator.getDateTimeService().dateDiff(date1, date2, true)));
+        assertEquals("181", Integer.toString(KNSServiceLocator.getDateTimeService().dateDiff(date1, date2, true)));
 
         date1 = sdf.parse("07/01/2006");
         date2 = sdf.parse("12/31/2006");
 
-        KualiTestAssertionUtils.assertEquality("184", Integer.toString(KNSServiceLocator.getDateTimeService().dateDiff(date1, date2, true)));
+        assertEquals("184", Integer.toString(KNSServiceLocator.getDateTimeService().dateDiff(date1, date2, true)));
 
         // within same month
         date1 = sdf.parse("07/01/2006");
         date2 = sdf.parse("07/20/2006");
 
-        KualiTestAssertionUtils.assertEquality("19", Integer.toString(KNSServiceLocator.getDateTimeService().dateDiff(date1, date2, false)));
+        assertEquals("19", Integer.toString(KNSServiceLocator.getDateTimeService().dateDiff(date1, date2, false)));
 
         // same day
         date1 = sdf.parse("07/20/2006");
         date2 = sdf.parse("07/20/2006");
 
-        KualiTestAssertionUtils.assertEquality("0", Integer.toString(KNSServiceLocator.getDateTimeService().dateDiff(date1, date2, false)));
+        assertEquals("0", Integer.toString(KNSServiceLocator.getDateTimeService().dateDiff(date1, date2, false)));
 
         // end date is prior to start date
         date1 = sdf.parse("07/25/2006");
         date2 = sdf.parse("07/20/2006");
 
-        KualiTestAssertionUtils.assertEquality("-5", Integer.toString(KNSServiceLocator.getDateTimeService().dateDiff(date1, date2, false)));
+        assertEquals("-5", Integer.toString(KNSServiceLocator.getDateTimeService().dateDiff(date1, date2, false)));
     }
 }

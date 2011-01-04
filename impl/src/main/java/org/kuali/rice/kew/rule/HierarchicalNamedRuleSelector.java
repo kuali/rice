@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.sql.Timestamp;
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -25,6 +22,9 @@ import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyRoutingNode;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.Utilities;
+
+import java.sql.Timestamp;
+import java.util.Map;
 
 
 /**
@@ -49,10 +49,10 @@ public class HierarchicalNamedRuleSelector extends NamedRuleSelector {
         Map<String, String> cfgMap = Utilities.getKeyValueCollectionAsMap(nodeInstance.getState());
         String stop_id = cfgMap.get(HierarchyRoutingNode.STOP_ID);
         if (stop_id == null) {
-            LOG.error("STOP ID from nodeInstance was NULL: " + nodeInstance);
+            LOG.warn("STOP ID from nodeInstance was NULL: " + nodeInstance);
             return null;
         }
-        LOG.error("STOP ID from nodeInstance: " + nodeInstance.getRouteNodeInstanceId() + ": " + stop_id);
+        LOG.info("STOP ID from nodeInstance: " + nodeInstance.getRouteNodeInstanceId() + ": " + stop_id);
         return nodeInstance.getProcess().getRouteNode().getRouteNodeName() + "-" + stop_id;
     }
 }

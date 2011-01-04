@@ -37,7 +37,7 @@ import java.util.UUID;
  * <p>The object id represents a globally unique identifier for the business object.  In practice,
  * this can be used by other portions of the system to link to persistable business objects which
  * might be stored in different locations or even different persistent data stores.  In general, it
- * is not the responsibility of the client who implements a persistable business boject to handle
+ * is not the responsibility of the client who implements a persistable business object to handle
  * generating this value.  The framework will handle this automatically at the point in time when
  * the business object is persisted.  If the client does need to do this themselves, however, care
  * should be taken that an appropriate globally unique value generator algorithm is used 

@@ -1414,7 +1414,7 @@ public class KualiDocumentActionBase extends KualiAction {
             // "saved" doesn't really persist, if you notice any problems with missing notes check this line
             //maintenance document BO note should only be saved into table when document is in the PROCESSED workflow status
             if (!documentHeader.getWorkflowDocument().stateIsInitiated()&&StringUtils.isNotEmpty(document.getNoteTarget().getObjectId())
-            	&& !(document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT_NOTE_TYPE.getCode().equals(tmpNote.getNoteTypeCode()))
+            	&& !(document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT.getCode().equals(tmpNote.getNoteTypeCode()))
             ) {
                 getNoteService().save(tmpNote);
             }
@@ -1426,7 +1426,7 @@ public class KualiDocumentActionBase extends KualiAction {
                 // save again for attachment, note this is because sometimes the attachment is added first to the above then ojb tries to save
                 //without the PK on the attachment I think it is safer then trying to get the sequence manually
                 if (!documentHeader.getWorkflowDocument().stateIsInitiated()&&StringUtils.isNotEmpty(document.getNoteTarget().getObjectId())
-                	&& !(document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT_NOTE_TYPE.getCode().equals(tmpNote.getNoteTypeCode())) 
+                	&& !(document instanceof MaintenanceDocument && NoteType.BUSINESS_OBJECT.getCode().equals(tmpNote.getNoteTypeCode())) 
                 ) {
                     getNoteService().save(tmpNote);
                 }

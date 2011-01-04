@@ -39,7 +39,7 @@ public class NoteServiceTest extends KNSTestCase {
         note.setNotePostedTimestamp(KNSServiceLocator.getDateTimeService().getCurrentTimestamp());
         note.setNoteText("i like notes");
         note.setRemoteObjectIdentifier("1209348109834u");
-        note.setNoteTypeCode(NoteType.BUSINESS_OBJECT_NOTE_TYPE.getCode());
+        note.setNoteTypeCode(NoteType.BUSINESS_OBJECT.getCode());
         try {
             KNSServiceLocator.getNoteService().save(note);
         } catch (Exception e) {

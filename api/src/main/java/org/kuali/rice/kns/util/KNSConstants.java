@@ -458,29 +458,6 @@ public final class KNSConstants {
 
     public static final String XML_MIME_TYPE = "application/xml";
 
-    public static enum NoteTypeEnum {
-        BUSINESS_OBJECT_NOTE_TYPE("BO", "documentBusinessObject"), DOCUMENT_HEADER_NOTE_TYPE("DH", "documentHeader");
-        private String noteTypeCode;
-        private String noteTypePath;
-
-        private NoteTypeEnum(String noteTypeCode, String noteTypePath) {
-            this.noteTypeCode = noteTypeCode;
-            this.noteTypePath = noteTypePath;
-        }
-
-        public String getCode() {
-            return this.noteTypeCode;
-        }
-
-        public String getPath() {
-            return this.noteTypePath;
-        }
-
-        public String getFullPath() {
-            return DOCUMENT_PROPERTY_NAME + "." + getPath();
-        }
-    }
-
     public static final String AND_LOGICAL_OPERATOR = "&&";
     public static final String OR_LOGICAL_OPERATOR = "|";
     public static final String NOT_LOGICAL_OPERATOR = "!";

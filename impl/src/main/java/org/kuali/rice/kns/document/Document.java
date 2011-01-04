@@ -228,7 +228,7 @@ public interface Document extends PersistableBusinessObject {
      * Return the target PersistableBusinessObject that notes associated with this document should be attached to.
      * In general, this method should never return null.  However, it is permissible that it will return a 
      * business object which has not been persisted yet (and therefore does not have it's unique object id
-     * established).  This is only valid in cases where the note type is {@link NoteType#BUSINESS_OBJECT_NOTE_TYPE}.
+     * established).  This is only valid in cases where the note type is {@link NoteType#BUSINESS_OBJECT}.
      * 
      * In these cases it's the responsibility for implementers of the Document interface to handle storing transient
      * copies of the document notes (in XML or otherwise) until the underlying note target has been persisted and can be attached

@@ -24,7 +24,7 @@ package org.kuali.rice.kns.util;
  */
 public enum NoteType {
     
-	BUSINESS_OBJECT_NOTE_TYPE("BO"), DOCUMENT_HEADER_NOTE_TYPE("DH");
+	BUSINESS_OBJECT("BO"), DOCUMENT_HEADER("DH");
     
 	private String noteTypeCode;
 

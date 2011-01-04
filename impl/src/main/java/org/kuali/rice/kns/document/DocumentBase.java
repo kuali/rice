@@ -629,7 +629,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * 
      * <p>Sub classes can override this method if they want notes to be associated with something
      * other than the document header.  If this method is overridden, the {@link #getNoteType()}
-     * method should be overridden to return {@link NoteType#BUSINESS_OBJECT_NOTE_TYPE}
+     * method should be overridden to return {@link NoteType#BUSINESS_OBJECT}
      * 
      * @return Returns the documentBusinessObject.
      */
@@ -640,7 +640,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     
     /**
 	 * Returns the {@link NoteType} to use for notes associated with this document.
-	 * By default this returns {@link NoteType#DOCUMENT_HEADER_NOTE_TYPE} since notes are
+	 * By default this returns {@link NoteType#DOCUMENT_HEADER} since notes are
 	 * associated with the {@link DocumentHeader} record by default.
 	 * 
 	 * <p>The case in which this should be overridden is if {@link #getNoteTarget()} is
@@ -652,7 +652,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
 	 */
 	@Override
 	public NoteType getNoteType() {
-		return NoteType.DOCUMENT_HEADER_NOTE_TYPE;
+		return NoteType.DOCUMENT_HEADER;
 	}
 
 	/**

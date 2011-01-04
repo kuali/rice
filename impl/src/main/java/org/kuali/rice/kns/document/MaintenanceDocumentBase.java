@@ -851,7 +851,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      * {@link Maintainable#isBoNotesEnabled()}.  The {@link NoteType} is then derived as follows:
      * 
      * <ul>
-     *   <li>If the {@link Maintainable} supports business object notes, return {@link NoteType#BUSINESS_OBJECT_NOTE_TYPE}.
+     *   <li>If the {@link Maintainable} supports business object notes, return {@link NoteType#BUSINESS_OBJECT}.
      *   <li>Otherwise, delegate to {@link DocumentBase#getNoteType()}
      * </ul> 
      * 
@@ -861,7 +861,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     @Override
 	public NoteType getNoteType() {
     	if (getNewMaintainableObject().isBoNotesEnabled()) {
-    		return NoteType.BUSINESS_OBJECT_NOTE_TYPE;
+    		return NoteType.BUSINESS_OBJECT;
     	}
 		return super.getNoteType();
 	}

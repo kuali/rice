@@ -49,11 +49,10 @@ public class DocumentDaoJpa implements DocumentDao {
         this.documentAdHocService = documentAdHocService;
     }
 
-    /*
-     * (non-Javadoc)
-     *
+    /**
      * @see org.kuali.dao.DocumentDao#save(null)
      */
+    @Override
     public Document save(Document document) throws DataAccessException {
 		Document attachedDoc = findByDocumentHeaderId(document.getClass(),document.getDocumentNumber());
 		if (attachedDoc == null) {
@@ -72,8 +71,9 @@ public class DocumentDaoJpa implements DocumentDao {
      * @param id
      * @return Document with given id
      */
-    public Document findByDocumentHeaderId(Class<? extends Document> clazz, String id) throws DataAccessException {
-        Document document = entityManager.find(clazz, id);
+    @Override
+    public <T extends Document> T findByDocumentHeaderId(Class<T> clazz, String id) {
+        T document = entityManager.find(clazz, id);
 
         return document;
     }
@@ -85,16 +85,17 @@ public class DocumentDaoJpa implements DocumentDao {
      * @param idList
      * @return List
      */
-    public List<Document> findByDocumentHeaderIds(Class<? extends Document> clazz, List<String> idList) throws DataAccessException {
+    @Override
+    public <T extends Document> List<T> findByDocumentHeaderIds(Class<T> clazz, List<String> idList) {
 		org.kuali.rice.core.jpa.criteria.Criteria criteria = new org.kuali.rice.core.jpa.criteria.Criteria(clazz.getName());
 		criteria.in(KNSPropertyConstants.DOCUMENT_NUMBER, idList);
-		List<Document> list = new ArrayList<Document>();
+		List<T> list = new ArrayList<T>();
 		try {
 			list = new org.kuali.rice.core.jpa.criteria.QueryByCriteria(entityManager, criteria).toQuery().getResultList();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 		}
-        for (Document doc : list) {
+        for (T doc : list) {
         	documentAdHocService.addAdHocs(doc);
 			entityManager.refresh(doc);
         }
@@ -111,6 +112,7 @@ public class DocumentDaoJpa implements DocumentDao {
     	throw new UnsupportedOperationException("Don't use this depricated method.");
     }
 
+    @Override
     public BusinessObjectDao getBusinessObjectDao() {
         return businessObjectDao;
     }
@@ -136,6 +138,7 @@ public class DocumentDaoJpa implements DocumentDao {
     /**
 	 * @return the documentAdHocService
 	 */
+    @Override
 	public DocumentAdHocService getDocumentAdHocService() {
 		return this.documentAdHocService;
 	}

@@ -371,6 +371,11 @@
 			<groupId>org.reflections</groupId>
 			<artifactId>reflections</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.javassist</groupId>
+			<artifactId>javassist</artifactId>
+		</dependency>
 
 		<dependency>
 		    <groupId>org.apache.ws.security</groupId>

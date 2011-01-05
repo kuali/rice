@@ -47,11 +47,10 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
         this.documentAdHocService = documentAdHocService;
     }
 
-    /*
-     * (non-Javadoc)
-     *
+    /**
      * @see org.kuali.dao.DocumentDao#save(null)
      */
+    @Override
     public Document save(Document document) throws DataAccessException {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug( "About to store document: " + document, new Throwable() );
@@ -69,13 +68,14 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      * @param id
      * @return Document with given id
      */
-    public Document findByDocumentHeaderId(Class<? extends Document> clazz, String id) throws DataAccessException {
+    @Override
+    public <T extends Document> T findByDocumentHeaderId(Class<T> clazz, String id) {
         List<String> idList = new ArrayList<String>();
         idList.add(id);
 
-        List<Document> documentList = findByDocumentHeaderIds(clazz, idList);
+        List<T> documentList = findByDocumentHeaderIds(clazz, idList);
 
-        Document document = null;
+        T document = null;
         if ((null != documentList) && (documentList.size() > 0)) {
             document = documentList.get(0);
         }
@@ -90,7 +90,8 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      * @param idList
      * @return List
      */
-    public List<Document> findByDocumentHeaderIds(Class<? extends Document> clazz, List<String> idList) throws DataAccessException {
+    @Override
+    public <T extends Document> List<T> findByDocumentHeaderIds(Class<T> clazz, List<String> idList) {
         Criteria criteria = new Criteria();
         criteria.addIn(KNSPropertyConstants.DOCUMENT_NUMBER, idList);
 
@@ -98,9 +99,9 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
         
         // this cast is correct because OJB produces a collection which contains elements of the class defined on the query
         @SuppressWarnings("unchecked")
-        List <Document> tempList = new ArrayList<Document>(this.getPersistenceBrokerTemplate().getCollectionByQuery(query));
+        List<T> tempList = new ArrayList<T>(this.getPersistenceBrokerTemplate().getCollectionByQuery(query));
         
-        for (Document doc : tempList) {
+        for (T doc : tempList) {
         	documentAdHocService.addAdHocs(doc);
         }
         return tempList;
@@ -125,6 +126,7 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      * @see org.kuali.rice.kns.dao.DocumentDao#getBusinessObjectDao()
      * @return the {@link BusinessObjectDao}
      */
+    @Override
     public BusinessObjectDao getBusinessObjectDao() {
         return businessObjectDao;
     }
@@ -140,6 +142,7 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
     /**
 	 * @return the documentAdHocService
 	 */
+    @Override
 	public DocumentAdHocService getDocumentAdHocService() {
 		return this.documentAdHocService;
 	}

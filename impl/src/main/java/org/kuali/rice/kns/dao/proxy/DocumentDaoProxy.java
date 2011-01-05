@@ -90,24 +90,35 @@ public class DocumentDaoProxy implements DocumentDao {
         }
         return (OrmUtils.isJpaAnnotated(clazz) && OrmUtils.isJpaEnabled()) ? documentDaoJpa : documentDaoOjb;
     }
-
+    
+    /**
+	 * @see org.kuali.rice.kns.dao.DocumentDao#save(org.kuali.rice.kns.document.Document)
+	 */
+    @Override
+	public Document save(Document document) {
+		return getDao(document.getClass()).save(document);
+	}
+    
 	/**
 	 * @see org.kuali.rice.kns.dao.DocumentDao#findByDocumentHeaderId(java.lang.Class, java.lang.String)
 	 */
-	public Document findByDocumentHeaderId(Class<? extends Document> clazz, String id) {
+    @Override
+	public <T extends Document> T findByDocumentHeaderId(Class<T> clazz, String id) {
 		return getDao(clazz).findByDocumentHeaderId(clazz, id);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.DocumentDao#findByDocumentHeaderIds(java.lang.Class, java.util.List)
 	 */
-	public List<Document> findByDocumentHeaderIds(Class<? extends Document> clazz, List<String> idList) {
+    @Override
+	public <T extends Document> List<T> findByDocumentHeaderIds(Class<T> clazz, List<String> idList) {
 		return getDao(clazz).findByDocumentHeaderIds(clazz, idList);
 	}
 
 	/**
 	 * @see org.kuali.rice.kns.dao.DocumentDao#getBusinessObjectDao()
 	 */
+    @Override
 	public BusinessObjectDao getBusinessObjectDao() {
 		if (OrmUtils.isJpaEnabled()) {
 			return documentDaoJpa.getBusinessObjectDao();
@@ -118,19 +129,13 @@ public class DocumentDaoProxy implements DocumentDao {
 	/**
 	 * @see org.kuali.rice.kns.dao.DocumentDao#getDocumentAdHocService()
 	 */
+    @Override
 	public DocumentAdHocService getDocumentAdHocService() {
 		if (OrmUtils.isJpaEnabled()) {
 			return documentDaoJpa.getDocumentAdHocService();
 		}
 		return documentDaoOjb.getDocumentAdHocService();
     }
-
-	/**
-	 * @see org.kuali.rice.kns.dao.DocumentDao#save(org.kuali.rice.kns.document.Document)
-	 */
-	public Document save(Document document) {
-		return getDao(document.getClass()).save(document);
-	}
 	
 	public void setDocumentDaoJpa(DocumentDao documentDaoJpa) {
 		this.documentDaoJpa = documentDaoJpa;

@@ -26,11 +26,11 @@ import org.kuali.rice.kns.service.DocumentAdHocService;
  */
 public interface DocumentDao {
 
-	Document save(Document document);
+	public Document save(Document document);
 
-	public Document findByDocumentHeaderId(Class<? extends Document> clazz, String id);
+	public <T extends Document> T findByDocumentHeaderId(Class<T> clazz, String id);
 
-	public List<Document> findByDocumentHeaderIds(Class<? extends Document> clazz, List<String> idList);
+	public <T extends Document> List<T> findByDocumentHeaderIds(Class<T> clazz, List<String> idList);
 
 	public BusinessObjectDao getBusinessObjectDao();
 

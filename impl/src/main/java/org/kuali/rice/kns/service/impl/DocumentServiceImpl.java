@@ -674,7 +674,7 @@ public class DocumentServiceImpl implements DocumentService {
 	        }
 
 	        // retrieve all documents that match the document header ids
-	        List<Document> rawDocuments = getDocumentDao().findByDocumentHeaderIds(documentClass, documentHeaderIds);
+	        List<? extends Document> rawDocuments = getDocumentDao().findByDocumentHeaderIds(documentClass, documentHeaderIds);
 
 	        // post-process them
 	        List<Document> documents = new ArrayList<Document>();
@@ -820,6 +820,7 @@ public class DocumentServiceImpl implements DocumentService {
 	/**
 	 * @see org.kuali.rice.kns.service.DocumentService#saveDocumentNotes(org.kuali.rice.kns.document.Document)
 	 */
+    @Override
 	public boolean saveDocumentNotes(Document document) {
 		if (isNoteTargetReady(document)) {
 			List<Note> notes = document.getNotes();
@@ -1077,6 +1078,7 @@ public class DocumentServiceImpl implements DocumentService {
     /**
      * @see org.kuali.rice.kns.service.DocumentService
      */
+    @Override
     public void sendNoteRouteNotification(Document document, Note note, Person sender) throws WorkflowException {
         AdHocRouteRecipient routeRecipient = note.getAdHocRouteRecipient();
 

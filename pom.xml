@@ -553,7 +553,7 @@ limitations under the License.
 		<module>api</module>
 		<module>impl</module>
 		<module>web</module>
-		<module>devtools</module>
+		<module>internal-test-tools</module>
 		<module>sampleapp</module>
 		<module>standalone</module>
 		<!-- <module>ksb</module> -->
@@ -565,7 +565,7 @@ limitations under the License.
 		<module>core</module>
 		<module>test</module>
 		<module>edl</module>
-    <module>krad</module>
+        <module>krad</module>
   </modules>
 
 	<repositories>

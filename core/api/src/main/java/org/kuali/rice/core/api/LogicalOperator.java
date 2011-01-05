@@ -45,10 +45,10 @@ public enum LogicalOperator {
 		this.op = op;
 	}
 	
-	public static Collection<LogicalOperator> QUERY_CHARACTERS =
+	public static final Collection<LogicalOperator> QUERY_CHARACTERS =
 		Collections.unmodifiableCollection(Arrays.asList(LIKE_MANY, LIKE_ONE, LIKE_MANY_P, GREATER_THAN, LESS_THAN, BETWEEN, OR, NOT, EQUAL));
 	
-	public static Collection<LogicalOperator> RANGE_CHARACTERS =
+	public static final Collection<LogicalOperator> RANGE_CHARACTERS =
 		Collections.unmodifiableCollection(Arrays.asList(GREATER_THAN_EQUAL, LESS_THAN_EQUAL, GREATER_THAN, LESS_THAN, BETWEEN));
 	
 	public String op() {

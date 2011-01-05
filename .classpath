@@ -45,8 +45,8 @@
 	<classpathentry kind="src" output="edl/web/target/classes" path="edl/web/src/main/java"/>
 	<classpathentry kind="src" output="core/impl/target/classes" path="core/impl/src/main/java"/>
 	<classpathentry kind="src" output="core/api/target/classes" path="core/api/src/main/java"/>
-	<classpathentry kind="src" output="devtools/target/classes" path="devtools/src/main/java"/>
-	<classpathentry kind="src" output="devtools/target/classes" path="devtools/src/main/resources"/>
+	<classpathentry kind="src" output="internal-test-tools/target/classes" path="internal-test-tools/src/main/java"/>
+	<classpathentry kind="src" output="internal-test-tools/target/classes" path="internal-test-tools/src/main/resources"/>
 	<classpathentry kind="src" output="impl/target/classes" path="impl/src/main/java"/>
 	<classpathentry kind="src" output="impl/target/classes" path="impl/src/main/resources"/>
 	<classpathentry kind="src" output="sampleapp/target/classes" path="sampleapp/src/main/java"/>

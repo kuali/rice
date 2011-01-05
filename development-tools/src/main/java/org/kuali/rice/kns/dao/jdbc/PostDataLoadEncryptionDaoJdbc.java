@@ -12,11 +12,12 @@
  */
 package org.kuali.rice.kns.dao.jdbc;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.dao.PostDataLoadEncryptionDao;
 
 public class PostDataLoadEncryptionDaoJdbc extends PlatformAwareDaoBaseJdbc implements PostDataLoadEncryptionDao {
-    private static final Logger LOG = Logger.getLogger(PostDataLoadEncryptionDaoJdbc.class);
+    private static final Log LOG = LogFactory.getLog(PostDataLoadEncryptionDaoJdbc.class);
 
     private void executeSql(String sql) {
 	LOG.info("Executing sql: " + sql);

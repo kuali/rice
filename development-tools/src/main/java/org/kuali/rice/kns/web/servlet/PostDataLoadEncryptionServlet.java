@@ -15,24 +15,21 @@
  */
 package org.kuali.rice.kns.web.servlet;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServlet;
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PostDataLoadEncryptionService;
 import org.springframework.core.io.FileSystemResource;
+
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServlet;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * This is a servlet that can be used to invoke the PostDataLoadEncryptionService.
@@ -43,13 +40,38 @@ import org.springframework.core.io.FileSystemResource;
  * 
  * This was done as a Servlet for now because Rice does not have a batch runner yet similar
  * to what KFS has (which is where a lot of the code below was borrowed from).
- * 
+ *
+ *
+ *  <code>
+
+   <!--
+		Add the following to your web.xml these if you want to run the servlet in order to encrypt
+        some data in the Rice database.
+		(this would most likely be used for external identifiers in KIM that require encryption)
+
+		It is not recommended to enable this service for a production instance except during initial
+		data load.  It is not secured in any way and would allow for easy corruption of data if mishandled.
+	-->
+
+	<servlet>
+	    <servlet-name>postDataLoadEncryption</servlet-name>
+	    <servlet-class>org.kuali.rice.kns.web.servlet.PostDataLoadEncryptionServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>postDataLoadEncryption</servlet-name>
+		<url-pattern>/postDataLoadEncryption</url-pattern>
+	</servlet-mapping>
+
+    </code>
+ *
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class PostDataLoadEncryptionServlet extends HttpServlet {
 
-	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(PostDataLoadEncryptionServlet.class);
+	private static final Log LOG = LogFactory.getLog(PostDataLoadEncryptionServlet.class);
 	
 	private static final String ATTRIBUTES_TO_ENCRYPT_PROPERTIES = "attributesToEncryptProperties";
 	private static final String CHECK_OJB_ENCRYPT_CONFIG = "checkOjbEncryptConfig";
@@ -71,7 +93,7 @@ public class PostDataLoadEncryptionServlet extends HttpServlet {
 	}
 
 	public void execute(String attributesToEncryptPropertyFileName, boolean checkOjbEncryptConfig) {
-		PostDataLoadEncryptionService postDataLoadEncryptionService = KNSServiceLocator.getPostDataLoadEncryptionService();
+		PostDataLoadEncryptionService postDataLoadEncryptionService = KNSServiceLocator.getService(PostDataLoadEncryptionService.POST_DATA_LOAD_ENCRYPTION_SERVICE);
         Properties attributesToEncryptProperties = new Properties();
         try {
             attributesToEncryptProperties.load(new FileSystemResource(attributesToEncryptPropertyFileName).getInputStream());

@@ -12,11 +12,13 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.util.Set;
-
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 
+import java.util.Set;
+
 public interface PostDataLoadEncryptionService {
+
+    public static final String POST_DATA_LOAD_ENCRYPTION_SERVICE = "postDataLoadEncryptionService";
 	
 	public void checkArguments(Class businessObjectClass, Set<String> attributeNames);
 	

@@ -12,8 +12,7 @@
  */
 package org.kuali.rice.kns.service;
 
-import javax.persistence.EntityManagerFactory;
-
+import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
@@ -33,7 +32,7 @@ import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.opensymphony.oscache.general.GeneralCacheAdministrator;
+import javax.persistence.EntityManagerFactory;
 
 public class KNSServiceLocator {
 
@@ -47,12 +46,6 @@ public class KNSServiceLocator {
 
     public static final EncryptionService getEncryptionService() {
     	return (EncryptionService) getService(ENCRYPTION_SERVICE);
-    }
-    
-    public static final String POST_DATA_LOAD_ENCRYPTION_SERVICE = "postDataLoadEncryptionService";
-    
-    public static final PostDataLoadEncryptionService getPostDataLoadEncryptionService() {
-    	return (PostDataLoadEncryptionService) getService(POST_DATA_LOAD_ENCRYPTION_SERVICE);
     }
     
 	public static final String EXCEPTION_INCIDENT_REPORT_SERVICE = "knsExceptionIncidentService";

@@ -12,9 +12,6 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import java.util.HashMap;
-import java.util.Set;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversionDefaultImpl;
 import org.apache.ojb.broker.metadata.ClassDescriptor;
@@ -25,6 +22,9 @@ import org.kuali.rice.kns.exception.ClassNotPersistableException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.PostDataLoadEncryptionService;
 import org.kuali.rice.kns.util.OjbKualiEncryptDecryptFieldConversion;
+
+import java.util.HashMap;
+import java.util.Set;
 
 public class PostDataLoadEncryptionServiceImpl extends PersistenceServiceImplBase implements PostDataLoadEncryptionService {
     private BusinessObjectService businessObjectService;

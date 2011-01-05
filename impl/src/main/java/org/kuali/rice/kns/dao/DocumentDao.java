@@ -15,10 +15,10 @@
  */
 package org.kuali.rice.kns.dao;
 
-import java.util.List;
-
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.DocumentAdHocService;
+
+import java.util.List;
 
 /**
  * This is the data access interface for Document objects.
@@ -26,7 +26,7 @@ import org.kuali.rice.kns.service.DocumentAdHocService;
  */
 public interface DocumentDao {
 
-	public Document save(Document document);
+	public <T extends Document> T save(T document);
 
 	public <T extends Document> T findByDocumentHeaderId(Class<T> clazz, String id);
 

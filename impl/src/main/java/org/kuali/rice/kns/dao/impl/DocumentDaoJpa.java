@@ -15,13 +15,6 @@
  */
 package org.kuali.rice.kns.dao.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
@@ -30,6 +23,12 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.DocumentAdHocService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.dao.DataAccessException;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is the OJB implementation of the DocumentDao interface.
@@ -53,8 +52,8 @@ public class DocumentDaoJpa implements DocumentDao {
      * @see org.kuali.dao.DocumentDao#save(null)
      */
     @Override
-    public Document save(Document document) throws DataAccessException {
-		Document attachedDoc = findByDocumentHeaderId(document.getClass(),document.getDocumentNumber());
+    public <T extends Document> T save(T document) throws DataAccessException {
+		T attachedDoc = (T) findByDocumentHeaderId(document.getClass(),document.getDocumentNumber());
 		if (attachedDoc == null) {
 			entityManager.persist(document.getDocumentHeader());
 			entityManager.persist(document);
@@ -73,9 +72,7 @@ public class DocumentDaoJpa implements DocumentDao {
      */
     @Override
     public <T extends Document> T findByDocumentHeaderId(Class<T> clazz, String id) {
-        T document = entityManager.find(clazz, id);
-
-        return document;
+        return entityManager.find(clazz, id);
     }
 
     /**

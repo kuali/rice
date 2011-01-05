@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kns.dao.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.QueryByCriteria;
@@ -31,6 +28,9 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.OjbCollectionAware;
 import org.springframework.dao.DataAccessException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is the OJB implementation of the DocumentDao interface.
@@ -51,7 +51,7 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
      * @see org.kuali.dao.DocumentDao#save(null)
      */
     @Override
-    public Document save(Document document) throws DataAccessException {
+    public <T extends Document> T save(T document) throws DataAccessException {
     	if ( LOG.isDebugEnabled() ) {
     		LOG.debug( "About to store document: " + document, new Throwable() );
     	}

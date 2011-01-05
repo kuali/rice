@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.kns.dao.proxy;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.persistence.EntityManager;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.util.OrmUtils;
@@ -35,6 +29,11 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Transactional
 public class DocumentDaoProxy implements DocumentDao {
@@ -95,7 +94,7 @@ public class DocumentDaoProxy implements DocumentDao {
 	 * @see org.kuali.rice.kns.dao.DocumentDao#save(org.kuali.rice.kns.document.Document)
 	 */
     @Override
-	public Document save(Document document) {
+	public <T extends Document> T save(T document) {
 		return getDao(document.getClass()).save(document);
 	}
     

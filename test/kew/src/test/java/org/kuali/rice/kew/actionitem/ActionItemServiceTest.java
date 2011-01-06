@@ -40,7 +40,7 @@ import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 public class ActionItemServiceTest extends KEWTestCase {
 
@@ -369,6 +369,6 @@ public class ActionItemServiceTest extends KEWTestCase {
 		}
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put("groupId", groupId);
-		return (GroupImpl) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(GroupImpl.class, criteria);
+		return (GroupImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(GroupImpl.class, criteria);
 	}
 }

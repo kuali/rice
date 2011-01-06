@@ -41,7 +41,7 @@ public class NoteServiceTest extends KNSTestCase {
         note.setRemoteObjectIdentifier("1209348109834u");
         note.setNoteTypeCode(NoteType.BUSINESS_OBJECT.getCode());
         try {
-            KNSServiceLocatorInternal.getNoteService().save(note);
+            KNSServiceLocator.getNoteService().save(note);
         } catch (Exception e) {
             fail("Saving a note should not fail");
         }

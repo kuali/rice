@@ -25,7 +25,7 @@ import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DocumentAdHocService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Implementation for {@link DocumentAdHocService}.
@@ -66,7 +66,7 @@ public class DocumentAdHocServiceImpl implements DocumentAdHocService {
 	}
 
     protected BusinessObjectService getBusinessObjectService() {
-    	return KNSServiceLocatorInternal.getBusinessObjectService();
+    	return KNSServiceLocator.getBusinessObjectService();
     }
 
 }

@@ -406,7 +406,7 @@ public class ModuleServiceBase implements ModuleService {
 	 */
 	public BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

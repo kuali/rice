@@ -63,14 +63,14 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     private static transient PersistenceStructureService persistenceStructureService;
     
     /**
-     * @see org.kuali.rice.kns.bo.Persistable#getVersionNumber()
+     * @see PersistableBusinessObject#getVersionNumber()
      */
     public Long getVersionNumber() {
         return versionNumber;
     }
 
     /**
-     * @see org.kuali.rice.kns.bo.Persistable#setVersionNumber(java.lang.Long)
+     * @see PersistableBusinessObject#getVersionNumber()
      */
     public void setVersionNumber(Long versionNumber) {
         this.versionNumber = versionNumber;
@@ -112,7 +112,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     /**
      * Sets the newCollectionRecord attribute value.
      * 
-     * @param newCollectionRecord The newCollectionRecord to set.
+     * @param isNewCollectionRecord The newCollectionRecord to set.
      */
     public void setNewCollectionRecord(boolean isNewCollectionRecord) {
         this.newCollectionRecord = isNewCollectionRecord;
@@ -296,7 +296,7 @@ public abstract class PersistableBusinessObjectBase extends BusinessObjectBase i
     }
 
     /**
-     * @see org.kuali.rice.kns.bo.BusinessObject#refreshNonUpdateableReferences()
+     * @see BusinessObject#refresh()
      */
     public void refreshNonUpdateableReferences() {
         getPersistenceService().refreshAllNonUpdatingReferences(this);

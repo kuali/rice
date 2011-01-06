@@ -38,6 +38,7 @@ import org.kuali.rice.kim.test.bo.BOContainingPerson;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.springframework.core.io.DefaultResourceLoader;
@@ -75,7 +76,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		externalIdentifier.setEntityId(principal.getEntityId());
 		externalIdentifier.setExternalId("000-00-0000");
 		externalIdentifier.setExternalIdentifierTypeCode("SSN");
-		KNSServiceLocatorInternal.getBusinessObjectService().save(externalIdentifier);
+		KNSServiceLocator.getBusinessObjectService().save(externalIdentifier);
 		
 		List<Person> people = personService.getPersonByExternalIdentifier( "SSN", "000-00-0000" );
 		assertNotNull( "result object must not be null", people );
@@ -228,7 +229,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		
 		KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" );
 		KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
-		BusinessObjectService bos = KNSServiceLocatorInternal.getBusinessObjectService();
+		BusinessObjectService bos = KNSServiceLocator.getBusinessObjectService();
 		bos.delete( new ArrayList(bos.findAll( BOContainingPerson.class )) );
 		BOContainingPerson bo = new BOContainingPerson();
 		bo.setBoPrimaryKey( "ONE" );

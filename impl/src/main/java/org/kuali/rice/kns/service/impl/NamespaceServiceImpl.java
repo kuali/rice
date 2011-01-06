@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.kuali.rice.kns.bo.Namespace;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.NamespaceService;
 
 /**
@@ -33,7 +33,7 @@ public class NamespaceServiceImpl implements NamespaceService {
 	public Namespace getNamespace(String namespaceCode) {
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put("code", namespaceCode);
-		return (Namespace) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(Namespace.class, criteria);
+		return (Namespace) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(Namespace.class, criteria);
 	}
 
 }

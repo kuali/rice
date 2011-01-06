@@ -51,10 +51,7 @@ import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -1306,7 +1303,7 @@ public class RoleServiceBase {
     
     protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

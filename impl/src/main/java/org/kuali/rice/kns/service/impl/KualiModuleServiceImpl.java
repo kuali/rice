@@ -23,6 +23,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.exception.KualiException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
@@ -146,7 +147,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
      */
     @Override
 	public String getNamespaceName(final String namespaceCode){
-    	Namespace parameterNamespace = KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(
+    	Namespace parameterNamespace = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(
 				Namespace.class, new HashMap<String, String>() {{put(KNSPropertyConstants.CODE, namespaceCode);}});
     	return parameterNamespace==null ? "" : parameterNamespace.getName();
     }

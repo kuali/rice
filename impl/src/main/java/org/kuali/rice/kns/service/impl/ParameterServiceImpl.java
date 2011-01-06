@@ -25,10 +25,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.service.ParameterServerService;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -126,7 +123,7 @@ public class ParameterServiceImpl extends ParameterServiceBase implements Parame
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return this.businessObjectService;
 	}	

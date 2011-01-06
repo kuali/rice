@@ -1265,7 +1265,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 
 	 public BusinessObjectService getBusinessObjectService() {
-		 return businessObjectService != null ? businessObjectService : KNSServiceLocatorInternal.getBusinessObjectService();
+		 return businessObjectService != null ? businessObjectService : KNSServiceLocator.getBusinessObjectService();
 	 }
 
 	 public void setBusinessObjectService(BusinessObjectService businessObjectService) {

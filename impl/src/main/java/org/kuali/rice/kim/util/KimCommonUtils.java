@@ -42,6 +42,7 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
@@ -318,7 +319,7 @@ public final class KimCommonUtils {
 	public static String encryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
 		Map<String, String> criteria = new HashMap<String, String>();
 	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
-	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
 			if(StringUtils.isNotEmpty(externalIdentifier)){
 				try{
@@ -334,7 +335,7 @@ public final class KimCommonUtils {
     public static String decryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
         Map<String, String> criteria = new HashMap<String, String>();
 	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
-	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
 			if(StringUtils.isNotEmpty(externalIdentifier)){
 				try{

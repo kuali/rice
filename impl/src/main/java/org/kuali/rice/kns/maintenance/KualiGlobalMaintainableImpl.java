@@ -24,6 +24,7 @@ import org.kuali.rice.kns.bo.GlobalBusinessObjectDetail;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -105,7 +106,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         Map pkMap = new HashMap();
         pkMap.put(KNSPropertyConstants.DOCUMENT_NUMBER, finDocNumber);
         PersistableBusinessObject newBo = null;
-        newBo = (PersistableBusinessObject) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(gboClass, pkMap);
+        newBo = (PersistableBusinessObject) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(gboClass, pkMap);
         if (newBo == null) {
             throw new RuntimeException("The Global Business Object could not be retrieved from the DB.  " + "This should never happen under normal circumstances.  If this is a legitimate case " + "Then this exception should be removed.");
         }
@@ -151,7 +152,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
      */
     @Override
     public void saveBusinessObject() {
-        BusinessObjectService boService = KNSServiceLocatorInternal.getBusinessObjectService();
+        BusinessObjectService boService = KNSServiceLocator.getBusinessObjectService();
         GlobalBusinessObject gbo = (GlobalBusinessObject) businessObject;
 
         // delete any indicated BOs

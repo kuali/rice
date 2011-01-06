@@ -20,6 +20,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.PostDataLoadEncryptionService;
 import org.springframework.core.io.FileSystemResource;
@@ -118,7 +119,7 @@ public class PostDataLoadEncryptionServlet extends HttpServlet {
             }
             postDataLoadEncryptionService.checkArguments(businessObjectClass, attributeNames, checkOjbEncryptConfig);
             postDataLoadEncryptionService.createBackupTable(businessObjectClass);
-            BusinessObjectService businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+            BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
             try {
                 postDataLoadEncryptionService.prepClassDescriptor(businessObjectClass, attributeNames);
                 Collection objectsToEncrypt = businessObjectService.findAll(businessObjectClass);

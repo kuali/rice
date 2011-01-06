@@ -72,6 +72,7 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -460,7 +461,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

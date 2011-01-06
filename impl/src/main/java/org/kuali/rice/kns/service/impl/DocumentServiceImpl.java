@@ -927,7 +927,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     protected synchronized NoteService getNoteService() {
         if (this.noteService == null) {
-            this.noteService = KNSServiceLocatorInternal.getNoteService();
+            this.noteService = KNSServiceLocator.getNoteService();
         }
         return this.noteService;
     }
@@ -947,7 +947,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     protected synchronized BusinessObjectService getBusinessObjectService() {
         if (this.businessObjectService == null) {
-            this.businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+            this.businessObjectService = KNSServiceLocator.getBusinessObjectService();
         }
         return this.businessObjectService;
     }

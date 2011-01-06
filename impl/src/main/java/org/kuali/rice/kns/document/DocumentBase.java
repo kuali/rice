@@ -778,7 +778,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     
     protected NoteService getNoteService() {
 		if ( noteService == null ) {
-			noteService = KNSServiceLocatorInternal.getNoteService();
+			noteService = KNSServiceLocator.getNoteService();
 		}
 		return noteService;
 	}

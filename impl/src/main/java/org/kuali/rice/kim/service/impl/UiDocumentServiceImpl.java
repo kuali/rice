@@ -118,6 +118,7 @@ import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
@@ -1429,7 +1430,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

@@ -179,22 +179,10 @@ public class KNSServiceLocatorInternal {
 	return (MaintenanceDocumentService) getService(MAINTENANCE_DOCUMENT_SERVICE);
     }
 
-    public static final String NOTE_SERVICE = "noteService";
-
-    public static NoteService getNoteService() {
-	return (NoteService) getService(NOTE_SERVICE);
-    }
-
     public static final String KUALI_RULE_SERVICE = "kualiRuleService";
 
     public static KualiRuleService getKualiRuleService() {
 	return (KualiRuleService) getService(KUALI_RULE_SERVICE);
-    }
-
-    public static final String BUSINESS_OBJECT_SERVICE = "businessObjectService";
-
-    public static BusinessObjectService getBusinessObjectService() {
-	return (BusinessObjectService) getService(BUSINESS_OBJECT_SERVICE);
     }
 
     public static final String NAMESPACE_SERVICE = "namespaceService";

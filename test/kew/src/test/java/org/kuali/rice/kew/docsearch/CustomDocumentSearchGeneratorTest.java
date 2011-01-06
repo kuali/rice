@@ -30,6 +30,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -86,7 +87,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         assertEquals("Criteria threshold should equal system result set threshold", newLimit, criteria.getThreshold().intValue());
 
         // delete the parameter
-        KNSServiceLocatorInternal.getBusinessObjectService().delete(KNSServiceLocatorInternal.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP));
+        KNSServiceLocator.getBusinessObjectService().delete(KNSServiceLocatorInternal.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE, KEWConstants.DOC_SEARCH_RESULT_CAP));
 
         // old parameter value will still be cached, let's flush the cache
         KNSServiceLocatorInternal.getParameterService().clearCache();
@@ -106,7 +107,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
         ps.setParameterTypeCode("CONFG");
         //ps.setParameterWorkgroupName(KEWConstants.WORKFLOW_SUPER_USER_WORKGROUP_NAME);
         ps.setParameterDetailTypeCode(KNSConstants.DetailTypes.DOCUMENT_SEARCH_DETAIL_TYPE);
-        KNSServiceLocatorInternal.getBusinessObjectService().save(ps);
+        KNSServiceLocator.getBusinessObjectService().save(ps);
     }
 
     /**

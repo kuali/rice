@@ -56,6 +56,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -244,7 +245,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         if(newResponsibility!=null && StringUtils.isNotBlank(newResponsibility.getResponsibilityId())){
         	Map<String, String> criteria = new HashMap<String, String>();
         	criteria.put(KimConstants.PrimaryKeyConstants.RESPONSIBILITY_ID, newResponsibility.getResponsibilityId());
-        	KimResponsibilityImpl responsibilityImpl = (KimResponsibilityImpl) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(KimResponsibilityImpl.class, criteria);
+        	KimResponsibilityImpl responsibilityImpl = (KimResponsibilityImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimResponsibilityImpl.class, criteria);
         	newResponsibility.setKimResponsibility(responsibilityImpl);
         }
 

@@ -46,6 +46,7 @@ import org.kuali.rice.kns.maintenance.KualiGlobalMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.DictionaryValidationService;
 import org.kuali.rice.kns.service.DocumentService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -375,7 +376,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         Map pkMap = new LinkedHashMap();
         pkMap.put(KNSPropertyConstants.DOCUMENT_NUMBER, documentNumber);
 
-        List returnedBOs = (List) KNSServiceLocatorInternal.getBusinessObjectService().findMatching(businessObjectClass, pkMap);
+        List returnedBOs = (List) KNSServiceLocator.getBusinessObjectService().findMatching(businessObjectClass, pkMap);
         if (returnedBOs.size() > 0) {
             globalBO = (GlobalBusinessObject)returnedBOs.get(0);
         }

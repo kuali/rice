@@ -43,7 +43,7 @@ public class BusinessObjectServiceTest extends KNSTestCase {
      */
     @Test
     public void testSave() throws Exception {
-        BusinessObjectService businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+        BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
         
         AccountManager am = new AccountManager();
         am.setUserName("bhutchin");
@@ -70,7 +70,7 @@ public class BusinessObjectServiceTest extends KNSTestCase {
      */
     @Test
     public void testRetrieve() {
-    	BusinessObjectService businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+    	BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
     	
     	AccountManager manager = new AccountManager();
     	manager.setUserName("mgorilla");

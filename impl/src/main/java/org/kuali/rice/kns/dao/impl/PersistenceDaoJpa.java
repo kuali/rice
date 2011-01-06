@@ -33,7 +33,7 @@ import org.kuali.rice.core.jpa.metadata.JoinColumnDescriptor;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
 import org.kuali.rice.core.jpa.metadata.ObjectDescriptor;
 import org.kuali.rice.kns.dao.PersistenceDao;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 public class PersistenceDaoJpa implements PersistenceDao {
 	static org.apache.commons.logging.Log LOG = org.apache.commons.logging.LogFactory.getLog(PersistenceDaoJpa.class);
@@ -152,7 +152,7 @@ public class PersistenceDaoJpa implements PersistenceDao {
 
 			searchKey.put(foreignKeyProperty, localValue);
 		}
-		return KNSServiceLocatorInternal.getBusinessObjectService().findMatching(cd.getTargetEntity(), searchKey);
+		return KNSServiceLocator.getBusinessObjectService().findMatching(cd.getTargetEntity(), searchKey);
 	}
 	
 	/**

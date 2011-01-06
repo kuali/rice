@@ -210,9 +210,8 @@ public class Attachment extends PersistableBusinessObjectBase {
     }
 
     /**
-     * (non-Javadoc)
      *
-     * @see org.kuali.rice.kns.service.DocumentAttachmentService#retrieveAttachmentContents(org.kuali.rice.kns.document.DocumentAttachment)
+     *
      */
     public InputStream getAttachmentContents() throws IOException {
         return KNSServiceLocator.getAttachmentService().retrieveAttachmentContents(this);

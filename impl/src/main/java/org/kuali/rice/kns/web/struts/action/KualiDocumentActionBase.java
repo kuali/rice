@@ -1791,14 +1791,14 @@ public class KualiDocumentActionBase extends KualiAction {
 
     protected NoteService getNoteService() {
 		if ( noteService == null ) {
-			noteService = KNSServiceLocatorInternal.getNoteService();
+			noteService = KNSServiceLocator.getNoteService();
 		}
 		return this.noteService;
 	}
 
 	protected BusinessObjectService getBusinessObjectService() {
     	if ( businessObjectService == null ) {
-    		businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+    		businessObjectService = KNSServiceLocator.getBusinessObjectService();
     	}
 		return this.businessObjectService;
 	}

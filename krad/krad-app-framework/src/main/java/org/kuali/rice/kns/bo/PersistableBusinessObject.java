@@ -93,7 +93,7 @@ public interface PersistableBusinessObject extends BusinessObject {
     public void setExtension(PersistableBusinessObjectExtension extension);
     
     /**
-     * @see org.kuali.rice.kns.bo.BusinessObject#refreshNonUpdateableReferences()
+     * @see BusinessObject#refresh()
      */
     public abstract void refreshNonUpdateableReferences();
 

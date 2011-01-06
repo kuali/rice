@@ -50,7 +50,7 @@ public interface NoteService {
      * Saves the given lists of notes.  If the given list is null or empty,
      * this method will do nothing.
      * 
-     * @param noteValues the list of notes to save
+     * @param notes the list of notes to save
      * @throws IllegalStateException if any of the notes in the list have an invalid remoteObjectId
      */
     public void saveNoteList(List<Note> notes);
@@ -62,7 +62,7 @@ public interface NoteService {
      *
      * @param note the note to save
      * @return the saved note
-     * @throws IllegalAgumentException if the specified note is null
+     * @throws IllegalArgumentException if the specified note is null
      * @throws IllegalStateException if the given note's remoteObjectId is not valid
      */
     public Note save(Note note);

@@ -717,7 +717,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
     
     public void deleteDocumentAttachment() { 
-        KNSServiceLocatorInternal.getBusinessObjectService().delete(attachment);
+        KNSServiceLocator.getBusinessObjectService().delete(attachment);
         attachment = null;     
     }
     
@@ -741,7 +741,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         // Make sure the business object's version number matches that of the database's copy.
         if (newMaintainableObject != null) {
         	if ( KNSServiceLocator.getPersistenceStructureService().isPersistable( newMaintainableObject.getBusinessObject().getClass() ) ) {
-	        	PersistableBusinessObject pbObject = KNSServiceLocatorInternal.getBusinessObjectService().retrieve(newMaintainableObject.getBusinessObject());
+	        	PersistableBusinessObject pbObject = KNSServiceLocator.getBusinessObjectService().retrieve(newMaintainableObject.getBusinessObject());
 	        	Long pbObjectVerNbr = ObjectUtils.isNull(pbObject) ? null : pbObject.getVersionNumber();
 	        	Long newObjectVerNbr = newMaintainableObject.getBusinessObject().getVersionNumber();
 	        	if (pbObjectVerNbr != null && !(pbObjectVerNbr.equals(newObjectVerNbr))) {
@@ -798,7 +798,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void postProcessSave(KualiDocumentEvent event) {
         PersistableBusinessObject bo = getNewMaintainableObject().getBusinessObject();
         if (bo instanceof GlobalBusinessObject) {
-            KNSServiceLocatorInternal.getBusinessObjectService().save(bo);
+            KNSServiceLocator.getBusinessObjectService().save(bo);
         }
         //currently only global documents could change the list of what they're affecting during routing,
         //so could restrict this to only happening with them, but who knows if that will change, so safest

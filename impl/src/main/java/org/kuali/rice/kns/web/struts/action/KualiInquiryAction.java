@@ -41,6 +41,7 @@ import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.NoteService;
@@ -463,7 +464,7 @@ public class KualiInquiryAction extends KualiAction {
     
     protected NoteService getNoteService() {
 		if ( noteService == null ) {
-			noteService = KNSServiceLocatorInternal.getNoteService();
+			noteService = KNSServiceLocator.getNoteService();
 		}
 		return this.noteService;
 	}

@@ -37,6 +37,7 @@ import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
 import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.xml.sax.SAXException;
@@ -175,7 +176,7 @@ public class UserXmlParser {
 			entity.getNames().add(name);
 		}
 
-		entity = (KimEntityImpl) KNSServiceLocatorInternal.getBusinessObjectService().save(entity);
+		entity = (KimEntityImpl) KNSServiceLocator.getBusinessObjectService().save(entity);
 		
 		return entity;
     }
@@ -195,7 +196,7 @@ public class UserXmlParser {
 		principal.setPrincipalId(principalId);
 		principal.setPrincipalName(principalName);
 		principal.setEntityId(entityId);
-		principal = (KimPrincipalImpl) KNSServiceLocatorInternal.getBusinessObjectService().save(principal);
+		principal = (KimPrincipalImpl) KNSServiceLocator.getBusinessObjectService().save(principal);
 		
 		return principal;
     }

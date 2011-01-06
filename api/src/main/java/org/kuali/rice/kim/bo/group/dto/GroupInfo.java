@@ -67,7 +67,7 @@ public class GroupInfo implements Group, Serializable {
 	@XmlElement(name = "attributes", namespace = "http://rice.kuali.org/xsd/kim/group")	
 	protected AttributeSet attributes;
 	
-	
+
 	public String getGroupDescription() {
 		return this.groupDescription;
 	}
@@ -91,7 +91,7 @@ public class GroupInfo implements Group, Serializable {
 	public AttributeSet getAttributes() {
 		return this.attributes;
 	}
-	
+
 	public void setGroupDescription(String groupDescription) {
 		this.groupDescription = groupDescription;
 	}
@@ -115,7 +115,7 @@ public class GroupInfo implements Group, Serializable {
 	public void setAttributes(AttributeSet attributes) {
 		this.attributes = attributes;
 	}
-	
+
 	public boolean isActive() {
 		return this.active;
 	}

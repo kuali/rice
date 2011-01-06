@@ -37,7 +37,7 @@ import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -130,7 +130,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("permissionId", fieldValues.get("permissionId").toString());
-		KimPermissionImpl permissionImpl = (KimPermissionImpl) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(KimPermissionImpl.class, criteria);
+		KimPermissionImpl permissionImpl = (KimPermissionImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionImpl.class, criteria);
 		return getPermissionsSearchResultsCopy(permissionImpl);
 	}
 
@@ -152,7 +152,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("permissionId", permissionSearchResultCopy.getPermissionId());
 		List<RolePermissionImpl> rolePermissions = 
-			(List<RolePermissionImpl>) KNSServiceLocatorInternal.getBusinessObjectService().findMatching(RolePermissionImpl.class, criteria);
+			(List<RolePermissionImpl>) KNSServiceLocator.getBusinessObjectService().findMatching(RolePermissionImpl.class, criteria);
 		List<RoleImpl> assignedToRoles = new ArrayList<RoleImpl>();
 		for(RolePermissionImpl rolePermissionImpl: rolePermissions){
 			assignedToRoles.add(getRoleImpl(rolePermissionImpl.getRoleId()));

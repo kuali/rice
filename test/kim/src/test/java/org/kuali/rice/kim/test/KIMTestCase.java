@@ -19,6 +19,7 @@ import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.test.service.ServiceTestUtils;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -119,7 +120,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		Map<String, Object> fieldValues = new HashMap<String, Object>();
 		fieldValues.put("namespaceCode", "KUALI");
 		fieldValues.put("name", "Default");
-		KimPermissionTemplateImpl template = (KimPermissionTemplateImpl) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(KimPermissionTemplateImpl.class, fieldValues);
+		KimPermissionTemplateImpl template = (KimPermissionTemplateImpl) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionTemplateImpl.class, fieldValues);
 		if (template == null) {
 			fail("Failed to locate the default Permission Template.");
 		}

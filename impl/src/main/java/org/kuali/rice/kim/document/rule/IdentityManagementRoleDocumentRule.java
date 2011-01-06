@@ -67,7 +67,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
@@ -748,7 +748,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	 */
 	public BusinessObjectService getBusinessObjectService() {
 		if(businessObjectService == null){
-			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

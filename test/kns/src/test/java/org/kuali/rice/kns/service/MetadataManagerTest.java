@@ -86,7 +86,7 @@ public class MetadataManagerTest extends KNSTestCase {
 	 */
 	@Test
 	public void testPKObjectForEntity() {
-		ParameterType parameterType = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(ParameterType.class, "CONFG");
+		ParameterType parameterType = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ParameterType.class, "CONFG");
 		assertNotNull("ParameterType should not be null", parameterType);
 		
 		Object pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(parameterType);
@@ -110,7 +110,7 @@ public class MetadataManagerTest extends KNSTestCase {
 	 */
 	@Test
 	public void testPKObjectForExtension() {
-		final Account account = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(Account.class, "a1");
+		final Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, "a1");
 		assertNotNull("Account should not be null", account);
 		final AccountExtension accountExtension = (AccountExtension)account.getExtension();
 		

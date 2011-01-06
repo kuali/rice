@@ -510,7 +510,7 @@ public class KualiInquirableImpl implements Inquirable {
 
 	public BusinessObjectService getBusinessObjectService() {
 		if (businessObjectService == null ) {
-			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

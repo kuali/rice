@@ -36,6 +36,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
@@ -175,7 +176,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 		if ( cachedExtIdType == null ) {
 			Map<String, String> criteria = new HashMap<String, String>();
 		    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierTypeCode);
-		    cachedExtIdType = (ExternalIdentifierType) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		    cachedExtIdType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		    encryptionRequired = cachedExtIdType!= null && cachedExtIdType.isEncryptionRequired(); 
 		}
 	}

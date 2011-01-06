@@ -1172,7 +1172,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
     public static BusinessObjectService getBusinessObjectService() {
         if ( businessObjectService == null ) {
-            businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+            businessObjectService = KNSServiceLocator.getBusinessObjectService();
         }
         return businessObjectService;
     }
@@ -1470,7 +1470,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 		if(businessObject == null)
 			return;
 		
-		KNSServiceLocatorInternal.getBusinessObjectService().delete(businessObject);
+		KNSServiceLocator.getBusinessObjectService().delete(businessObject);
 		businessObject = null;	
 	}
 

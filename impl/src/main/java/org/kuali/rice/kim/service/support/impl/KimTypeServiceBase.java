@@ -51,10 +51,7 @@ import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -93,7 +90,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
+			businessObjectService = KNSServiceLocator.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

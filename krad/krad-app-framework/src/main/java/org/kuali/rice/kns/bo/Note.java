@@ -152,7 +152,7 @@ public class Note extends PersistableBusinessObjectBase {
     /**
      * Sets the authorUniversalIdentifier attribute.
      * 
-     * @param authorUniversalIdentifier The authorUniversalIdentifier to set.
+     * @param noteAuthorIdentifier The author ID to be set as the AuthorUniversalIdentifier
      */
     public void setAuthorUniversalIdentifier(String noteAuthorIdentifier) {
         this.authorUniversalIdentifier = noteAuthorIdentifier;

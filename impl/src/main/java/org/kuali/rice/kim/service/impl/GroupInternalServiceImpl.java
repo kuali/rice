@@ -31,7 +31,7 @@ import org.kuali.rice.kim.service.GroupInternalService;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -43,7 +43,7 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
  */
 public class GroupInternalServiceImpl implements GroupInternalService {
     protected BusinessObjectService getBusinessObjectService() {
-    	return KNSServiceLocatorInternal.getBusinessObjectService();
+    	return KNSServiceLocator.getBusinessObjectService();
     }
 
 

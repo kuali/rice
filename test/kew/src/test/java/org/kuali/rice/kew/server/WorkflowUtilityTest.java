@@ -63,6 +63,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -656,7 +657,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         // Now set up the app constant that checks force action properly and try a new document
         String parameterValue = "Y";
         lastApproverActivateParameter.setParameterValue(parameterValue);
-        KNSServiceLocatorInternal.getBusinessObjectService().save(lastApproverActivateParameter);
+        KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
 
         lastApproverActivateParameter = KNSServiceLocatorInternal.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("Parameter should not be null.", lastApproverActivateParameter);
@@ -717,7 +718,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         // set parameter value back to it's original value
         lastApproverActivateParameter.setParameterValue("");
-        KNSServiceLocatorInternal.getBusinessObjectService().save(lastApproverActivateParameter);
+        KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
     }
 
     @Test public void testIsFinalApprover() throws Exception {

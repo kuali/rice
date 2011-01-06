@@ -50,6 +50,7 @@ import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
 import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
@@ -81,10 +82,9 @@ import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.FormatException;
 
@@ -1068,7 +1068,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
     
     public DocumentSearchGenerator getDocumentSearchGenerator() {
-        DocumentEntry documentEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getName());
+        DocumentEntry documentEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getName());
         Class<? extends DocumentSearchGenerator> docSearchGeneratorClass = null;
         if (documentEntry != null) {
             docSearchGeneratorClass = documentEntry.getDocumentSearchGeneratorClass();
@@ -1629,7 +1629,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     private IdentityManagementService getIdentityManagementService() {
-    	return KIMServiceLocator.getIdentityManagementService();
+    	return KIMServiceLocatorInternal.getIdentityManagementService();
     }
 
 	/**

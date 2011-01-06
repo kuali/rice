@@ -37,11 +37,11 @@ import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
@@ -89,13 +89,13 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     
     protected void setKimType(String kimTypeId, IdentityManagementGroupDocumentForm groupDocumentForm){
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
-			KimTypeInfo kType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+			KimTypeInfo kType = KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId);
 			groupDocumentForm.setKimType(kType);
 			if (groupDocumentForm.getGroupDocument() != null) {
 				groupDocumentForm.getGroupDocument().setKimType(kType);
 			}
 		} else if ( groupDocumentForm.getGroupDocument() != null && StringUtils.isNotBlank(groupDocumentForm.getGroupDocument().getGroupTypeId() ) ) {
-			groupDocumentForm.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(
+			groupDocumentForm.setKimType(KIMServiceLocatorInternal.getTypeInfoService().getKimType(
 					groupDocumentForm.getGroupDocument().getGroupTypeId()));
 			groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
 		}
@@ -147,7 +147,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
 
 
     protected void loadGroupIntoDocument( String groupId, IdentityManagementGroupDocumentForm groupDocumentForm){
-        GroupInfo group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
+        GroupInfo group = KIMServiceLocatorInternal.getGroupService().getGroupInfo(groupId);
         getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
     }    
         
@@ -191,7 +191,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.isNotEmpty(newMember.getMemberNamespaceCode())
         		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
-        	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
+        	GroupInfo tempGroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
         	if (tempGroup != null) {
         		newMember.setMemberId(tempGroup.getGroupId());
         	}
@@ -201,13 +201,13 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         if (StringUtils.isEmpty(newMember.getMemberId()) 
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
+        	KimPrincipalInfo principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
         	if (principal != null) {
         		newMember.setMemberId(principal.getPrincipalId());
         	}
         }
         if(checkKimDocumentGroupMember(newMember) && 
-        		KNSServiceLocator.getKualiRuleService().applyRules(new AddGroupMemberEvent("", groupDocumentForm.getGroupDocument(), newMember))){
+        		KNSServiceLocatorInternal.getKualiRuleService().applyRules(new AddGroupMemberEvent("", groupDocumentForm.getGroupDocument(), newMember))){
         	newMember.setDocumentNumber(groupDocumentForm.getDocument().getDocumentNumber());
         	groupDocumentForm.getGroupDocument().addMember(newMember);
 	        groupDocumentForm.setMember(groupDocumentForm.getGroupDocument().getBlankMember());

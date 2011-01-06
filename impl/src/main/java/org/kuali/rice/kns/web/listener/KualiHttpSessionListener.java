@@ -23,7 +23,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -57,9 +57,9 @@ public class KualiHttpSessionListener implements HttpSessionListener {
             try {
                 // document service needs the usersession to operate but we need the document from document service to verify it exists
                 GlobalVariables.setUserSession((UserSession)se.getSession().getAttribute(KNSConstants.USER_SESSION_KEY));
-                Document document = KNSServiceLocator.getDocumentService().getByDocumentHeaderId(documentNumber);
+                Document document = KNSServiceLocatorInternal.getDocumentService().getByDocumentHeaderId(documentNumber);
                 if (ObjectUtils.isNotNull(document)) {
-                    KNSServiceLocator.getPessimisticLockService().releaseAllLocksForUser(document.getPessimisticLocks(), GlobalVariables.getUserSession().getPerson());
+                    KNSServiceLocatorInternal.getPessimisticLockService().releaseAllLocksForUser(document.getPessimisticLocks(), GlobalVariables.getUserSession().getPerson());
                 }
             } catch (WorkflowException e) {
                 throw new RuntimeException(e);

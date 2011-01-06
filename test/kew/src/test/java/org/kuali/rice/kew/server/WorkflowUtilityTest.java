@@ -60,10 +60,10 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -570,7 +570,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
      */
     @Test public void testIsLastApproverActivation() throws Exception {
         // first test without the parameter set
-        Parameter lastApproverActivateParameter = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        Parameter lastApproverActivateParameter = KNSServiceLocatorInternal.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("last approver parameter should exist.", lastApproverActivateParameter);
         assertTrue("initial parameter value should be null or empty.", StringUtils.isBlank(lastApproverActivateParameter.getParameterValue()));
         String originalParameterValue = lastApproverActivateParameter.getParameterValue();
@@ -656,9 +656,9 @@ public class WorkflowUtilityTest extends KEWTestCase {
         // Now set up the app constant that checks force action properly and try a new document
         String parameterValue = "Y";
         lastApproverActivateParameter.setParameterValue(parameterValue);
-        KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
+        KNSServiceLocatorInternal.getBusinessObjectService().save(lastApproverActivateParameter);
 
-        lastApproverActivateParameter = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
+        lastApproverActivateParameter = KNSServiceLocatorInternal.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.FEATURE_DETAIL_TYPE, KEWConstants.IS_LAST_APPROVER_ACTIVATE_FIRST_IND);
         assertNotNull("Parameter should not be null.", lastApproverActivateParameter);
         assertEquals("Parameter should be Y.", parameterValue, lastApproverActivateParameter.getParameterValue());
 
@@ -717,7 +717,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
 
         // set parameter value back to it's original value
         lastApproverActivateParameter.setParameterValue("");
-        KNSServiceLocator.getBusinessObjectService().save(lastApproverActivateParameter);
+        KNSServiceLocatorInternal.getBusinessObjectService().save(lastApproverActivateParameter);
     }
 
     @Test public void testIsFinalApprover() throws Exception {
@@ -1056,7 +1056,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule did not have force action set to true",Boolean.TRUE,ruleVO.getForceAction());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         responsibilityVO = ruleVO.getRuleResponsibilities()[0];
-        Group ruleTestGroup = KIMServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
+        Group ruleTestGroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
         assertEquals("Rule workgroup id is incorrect",RuleTestGeneralSetup.RULE_TEST_GROUP_ID, ruleTestGroup.getGroupId());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
@@ -1138,7 +1138,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule did not have force action set to true",Boolean.TRUE,ruleVO.getForceAction());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         RuleResponsibilityDTO responsibilityVO = ruleVO.getRuleResponsibilities()[0];
-        Group ruleTestGroup2 = KIMServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
+        Group ruleTestGroup2 = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
         assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP2,ruleTestGroup2.getGroupName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(4),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_FYI_REQ,responsibilityVO.getActionRequestedCd());
@@ -1194,7 +1194,7 @@ public class WorkflowUtilityTest extends KEWTestCase {
         assertEquals("Rule did not have force action set to true",Boolean.TRUE,ruleVO.getForceAction());
         assertEquals("Number of Rule Responsibilities Returned Should be 1",1,ruleVO.getRuleResponsibilities().length);
         responsibilityVO = ruleVO.getRuleResponsibilities()[0];
-        ruleTestGroup2 = KIMServiceLocator.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
+        ruleTestGroup2 = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(responsibilityVO.getGroupId());
         assertEquals("Rule workgroup name is incorrect",RuleTestOrgReviewSetup.RULE_TEST_WORKGROUP, ruleTestGroup2.getGroupName());
         assertEquals("Rule priority is incorrect",Integer.valueOf(1),responsibilityVO.getPriority());
         assertEquals("Rule action request is incorrect",KEWConstants.ACTION_REQUEST_APPROVE_REQ,responsibilityVO.getActionRequestedCd());

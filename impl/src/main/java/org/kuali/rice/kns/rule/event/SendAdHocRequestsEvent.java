@@ -21,7 +21,7 @@ import java.util.List;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.SendAdHocRequestsRule;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiRuleService;
 
 /**
@@ -70,7 +70,7 @@ public class SendAdHocRequestsEvent extends KualiDocumentEventBase {
 	 */
 	@Override
 	public List<KualiDocumentEvent> generateEvents() {
-		KualiRuleService ruleService = KNSServiceLocator.getKualiRuleService();
+		KualiRuleService ruleService = KNSServiceLocatorInternal.getKualiRuleService();
 		
 		List<KualiDocumentEvent> events = new ArrayList<KualiDocumentEvent>();
         events.addAll(ruleService.generateAdHocRoutePersonEvents(getDocument()));

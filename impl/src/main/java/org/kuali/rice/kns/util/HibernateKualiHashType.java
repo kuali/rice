@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This class calls core service to hash values going to the database
@@ -64,7 +64,7 @@ public class HibernateKualiHashType extends HibernateImmutableValueUserType impl
 				converted = StringUtils.stripEnd( converted.toString(), EncryptionService.HASH_POST_PREFIX );
 			} else {
 				try {
-					converted = KNSServiceLocator.getEncryptionService().hash(converted);
+					converted = KNSServiceLocatorInternal.getEncryptionService().hash(converted);
 				} catch (GeneralSecurityException e) {
 					throw new RuntimeException("Unable to hash value to db: " + e.getMessage());
 				}

@@ -53,10 +53,7 @@ import org.kuali.rice.kim.rule.ui.AddRoleRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentGroupRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
-import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.UiDocumentService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -64,7 +61,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -105,7 +102,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
         GlobalVariables.getMessageMap().addToErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
-        //KNSServiceLocator.getDictionaryValidationService().validateDocument(document);
+        //KNSServiceLocatorInternal.getDictionaryValidationService().validateDocument(document);
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), true, false);
         valid &= validDuplicatePrincipalName(personDoc);
         KimEntityDefaultInfo origEntity = getIdentityManagementService().getEntityDefaultInfo(personDoc.getEntityId());
@@ -396,7 +393,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
     	for(PersonDocumentRole role : roles ) {
     		KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( role.getKimRoleType() );
         	if(CollectionUtils.isEmpty(role.getRolePrncpls()) && !role.getDefinitions().isEmpty()){
-        		KimTypeInfo kimTypeInfo = KIMServiceLocator.getTypeInfoService().getKimType(role.getKimRoleType().getKimTypeId());
+        		KimTypeInfo kimTypeInfo = KIMServiceLocatorInternal.getTypeInfoService().getKimType(role.getKimRoleType().getKimTypeId());
         		AttributeSet blankQualifiers = attributeValidationHelper.getBlankValueQualifiersMap(kimTypeInfo.getAttributeDefinitions());
         		AttributeSet localErrors = kimTypeService.validateAttributes(
         			role.getKimRoleType().getKimTypeId(), blankQualifiers);
@@ -572,28 +569,28 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	public IdentityService getIdentityService() {
 		if ( identityService == null ) {
-			identityService = KIMServiceLocator.getIdentityService();
+			identityService = KIMServiceLocatorInternal.getIdentityService();
 		}
 		return identityService;
 	}
 
 	public RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleService();
+			roleService = KIMServiceLocatorInternal.getRoleService();
 		}
 		return roleService;
 	}
 
 	public UiDocumentService getUIDocumentService() {
 		if ( uiDocumentService == null ) {
-			uiDocumentService = KIMServiceLocator.getUiDocumentService();
+			uiDocumentService = KIMServiceLocatorInternal.getUiDocumentService();
 		}
 		return uiDocumentService;
 	}
 
 	public IdentityManagementKimDocumentAuthorizer getAuthorizer(IdentityManagementPersonDocument document) {
 		if ( authorizer == null ) {
-			authorizer = (IdentityManagementKimDocumentAuthorizer)KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
+			authorizer = (IdentityManagementKimDocumentAuthorizer) KNSServiceLocatorInternal.getDocumentHelperService().getDocumentAuthorizer(document);
 		}
 		return authorizer;
 	}
@@ -689,7 +686,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 	 */
 	public BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

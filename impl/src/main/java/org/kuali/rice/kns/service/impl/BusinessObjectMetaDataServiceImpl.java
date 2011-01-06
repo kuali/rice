@@ -37,7 +37,7 @@ import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
@@ -298,7 +298,7 @@ public class BusinessObjectMetaDataServiceImpl implements BusinessObjectMetaData
 				}
 			}
 		} else {
-			ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(boClass);
+			ModuleService moduleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(boClass);
 			if(moduleService!=null && moduleService.isExternalizable(boClass)){
 				relationship = getRelationshipMetadata(boClass, attributeName, attributePrefix);
 				//relationship = moduleService.getBusinessObjectRelationship(boClass, attributeName, attributePrefix);

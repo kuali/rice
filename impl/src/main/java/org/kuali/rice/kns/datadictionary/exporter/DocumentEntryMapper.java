@@ -19,7 +19,7 @@ import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * DocumentEntryMapper
@@ -30,7 +30,7 @@ public abstract class DocumentEntryMapper {
     
     protected DocumentTypeDTO getDocumentType(String documentTypeName) {
         try {
-            return KNSServiceLocator.getWorkflowInfoService().getDocType(documentTypeName);
+            return KNSServiceLocatorInternal.getWorkflowInfoService().getDocType(documentTypeName);
         } catch (WorkflowException e) {
             throw new RuntimeException("Caught Exception trying to get the Workflow Document Type", e);
         }
@@ -63,7 +63,7 @@ public abstract class DocumentEntryMapper {
             entryMap.set("description", docType.getDocTypeDescription());
         }
 
-        DocumentHelperService documentHelperService = KNSServiceLocator.getDocumentHelperService();
+        DocumentHelperService documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
         entryMap.set("documentAuthorizerClass", documentHelperService.getDocumentAuthorizer(entry.getDocumentTypeName()).getClass().getName());
         entryMap.set("documentPresentationControllerClass", documentHelperService.getDocumentPresentationController(entry.getDocumentTypeName()).getClass().getName());
 

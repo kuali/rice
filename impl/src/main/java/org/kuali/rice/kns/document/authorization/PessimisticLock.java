@@ -28,6 +28,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
@@ -171,7 +172,7 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
      * @return the ownedByUser
      */
     public Person getOwnedByUser() {
-        ownedByUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().updatePersonIfNecessary(ownedByPrincipalIdentifier, ownedByUser);
+        ownedByUser = KIMServiceLocator.getPersonService().updatePersonIfNecessary(ownedByPrincipalIdentifier, ownedByUser);
         return ownedByUser;
     }
 

@@ -37,7 +37,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -175,10 +175,10 @@ public class DisapproveAction extends ActionTakenEvent {
 
         if( !StringUtils.isBlank(groupName))
         {
-            Group systemUserWorkgroup = KIMServiceLocator.getIdentityManagementService().
+            Group systemUserWorkgroup = KIMServiceLocatorInternal.getIdentityManagementService().
                 getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
 
-            List<String> principalIds = KIMServiceLocator.
+            List<String> principalIds = KIMServiceLocatorInternal.
             getIdentityManagementService().getGroupMemberPrincipalIds( systemUserWorkgroup.getGroupId());
 
             if (systemUserWorkgroup != null)

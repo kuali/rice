@@ -38,11 +38,8 @@ import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
@@ -562,7 +559,7 @@ public class FieldBridge {
 
 	public static DataDictionaryService getDataDictionaryService() {
     	if (dataDictionaryService == null) {
-    		dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+    		dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
     	}
 		return dataDictionaryService;
 	}
@@ -576,14 +573,14 @@ public class FieldBridge {
 
 	public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
     	if (businessObjectDictionaryService == null) {
-    		businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+    		businessObjectDictionaryService = KNSServiceLocatorInternal.getBusinessObjectDictionaryService();
     	}
 		return businessObjectDictionaryService; 
 	}
 	
 	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
     	if (maintenanceDocumentDictionaryService == null) {
-    		maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+    		maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
     	}
 		return maintenanceDocumentDictionaryService; 
 	}

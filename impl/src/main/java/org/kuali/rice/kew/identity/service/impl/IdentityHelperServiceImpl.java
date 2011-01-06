@@ -38,6 +38,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 /**
  *
@@ -52,7 +53,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		if (principalName == null) {
 			throw new IllegalArgumentException("Can't lookup a principal ID for a null principal name.");
 		}
-		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+		KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		if (principal == null) {
 			throw new RiceRuntimeException("Given principal name of '" + principalName + "' was invalid.  Failed to lookup a corresponding principal ID.");
 		}
@@ -65,7 +66,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		}
 
 	public String getIdForGroupName(String namespace, String groupName) {
-		Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespace, groupName);
+		Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(namespace, groupName);
 		if (group == null) {
 			throw new RiceRuntimeException("Given namespace of '" + namespace + "' and name of '" + groupName + "' was invalid.  Failed to lookup a corresponding group ID.");
 		}
@@ -79,7 +80,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 
 	public KimPrincipal getPrincipal(String principalId) {
-		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+		KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
 		if (principal == null) {
 			throw new RiceRuntimeException("Could not locate a principal with the given principalId of " + principalId);
 		}
@@ -87,7 +88,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 
 	public KimPrincipal getPrincipalByPrincipalName(String principalName) {
-		KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+		KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		if (principal == null) {
 			throw new RiceRuntimeException("Could not locate a principal with the given principalName of " + principalName);
 		}
@@ -95,7 +96,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 
 	public Group getGroupByName(String namespaceCode, String name) {
-		Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, name);
+		Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(namespaceCode, name);
 		if (group == null) {
 			throw new RiceRuntimeException("Could not locate a group with the given namspace of '" + namespaceCode + "' and group name of '" + name + "'");
 		}
@@ -128,7 +129,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 
 
 	public Group getGroup(String groupId) {
-		Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+		Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(groupId);
 		if (group == null) {
 			throw new RiceRuntimeException("Could not locate a group with the given groupId of " + groupId);
 		}
@@ -139,9 +140,9 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 		if (groupId == null || groupId.isEmpty()) {
 			return null;
 		} else if (groupId instanceof WorkflowGroupId) {
-			return KIMServiceLocator.getIdentityManagementService().getGroup(""+((WorkflowGroupId)groupId).getGroupId());
+			return KIMServiceLocatorInternal.getIdentityManagementService().getGroup(""+((WorkflowGroupId)groupId).getGroupId());
 		} else if (groupId instanceof GroupNameId) {
-			return KIMServiceLocator.getIdentityManagementService().getGroupByName(((GroupNameId)groupId).getNamespace(), ((GroupNameId)groupId).getNameId());
+			return KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(((GroupNameId)groupId).getNamespace(), ((GroupNameId)groupId).getNameId());
 		}
 		throw new IllegalArgumentException("Invalid GroupId type was passed: " + groupId);
 	}
@@ -163,10 +164,10 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 			return null;
 		} else if (userId instanceof WorkflowUserId) {
 			String principalId = ((WorkflowUserId)userId).getWorkflowId();
-			return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+			return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
 		} else if (userId instanceof PrincipalName) {
 			String principalName = ((PrincipalName)userId).getId();
-			return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+			return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		} else if (userId instanceof EmplId) {
 			String employeeId = ((EmplId)userId).getEmplId();
 			Person person = getPersonByEmployeeId(employeeId);
@@ -181,10 +182,10 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 			return null;
 		} else if (userId instanceof WorkflowIdDTO) {
 			String principalId = ((WorkflowIdDTO)userId).getWorkflowId();
-			return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+			return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
 		} else if (userId instanceof NetworkIdDTO) {
 			String principalName = ((NetworkIdDTO)userId).getNetworkId();
-			return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+			return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
 		} else if (userId instanceof EmplIdDTO) {
 			String employeeId = ((EmplIdDTO)userId).getEmplId();
 			Person person = getPersonByEmployeeId(employeeId);
@@ -194,7 +195,7 @@ public class IdentityHelperServiceImpl implements IdentityHelperService {
 	}
 
 	public Recipient getGroupRecipient(String groupId) {
-		Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+		Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(groupId);
 		return new KimGroupRecipient(group);
 	}
 	

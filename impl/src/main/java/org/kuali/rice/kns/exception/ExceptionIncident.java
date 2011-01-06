@@ -18,11 +18,10 @@ package org.kuali.rice.kns.exception;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This class contains the exception incident information, exception, form and
@@ -202,7 +201,7 @@ public class ExceptionIncident implements KualiExceptionIncident {
             LOG.trace(lm);
         }
         
-        String env=KNSServiceLocator.getKualiConfigurationService().
+        String env= KNSServiceLocatorInternal.getKualiConfigurationService().
                         getPropertyString("environment");
         String format="%s:%s:%s";
         String componentName=properties.get(COMPONENT_NAME);

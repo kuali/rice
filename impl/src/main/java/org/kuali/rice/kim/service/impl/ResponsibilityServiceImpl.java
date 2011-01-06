@@ -18,7 +18,6 @@ package org.kuali.rice.kim.service.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -27,7 +26,6 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
@@ -37,25 +35,18 @@ import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl;
-import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.dao.KimResponsibilityDao;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.ResponsibilityService;
-import org.kuali.rice.kim.service.ResponsibilityUpdateService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -307,7 +298,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     	for ( KimResponsibilityImpl responsibility : responsibilities ) {
     		String serviceName = responsibility.getTemplate().getKimType().getKimTypeServiceName();
     		if ( serviceName != null ) {
-    			KimResponsibilityTypeService responsibiltyTypeService = (KimResponsibilityTypeService)KIMServiceLocator.getService(serviceName);
+    			KimResponsibilityTypeService responsibiltyTypeService = (KimResponsibilityTypeService) KIMServiceLocatorInternal.getService(serviceName);
     			if ( responsibiltyTypeService != null ) {
     	    		responsibilityTypeServices.put(responsibility.getTemplateId(), responsibiltyTypeService);    				
     			} else {
@@ -407,9 +398,9 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     @SuppressWarnings("unchecked")
 	public List<? extends KimResponsibilityInfo> lookupResponsibilityInfo( Map<String,String> searchCriteria, boolean unbounded ) {
 		Collection baseResults = null; 
-		Lookupable responsibilityLookupable = KNSServiceLocator.getLookupable(
-				KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(ResponsibilityImpl.class)
-				);
+		Lookupable responsibilityLookupable = KNSServiceLocatorInternal.getLookupable(
+                KNSServiceLocatorInternal.getBusinessObjectDictionaryService().getLookupableID(ResponsibilityImpl.class)
+        );
 		responsibilityLookupable.setBusinessObjectClass(ResponsibilityImpl.class);
 		if ( unbounded ) {
 			baseResults = responsibilityLookupable.getSearchResultsUnbounded( searchCriteria );
@@ -441,7 +432,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
 
 	protected RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleManagementService();		
+			roleService = KIMServiceLocatorInternal.getRoleManagementService();
 		}
 
 		return roleService;
@@ -461,7 +452,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
 
 	protected KimResponsibilityTypeService getDefaultResponsibilityTypeService() {
 		if (responsibilityTypeService == null) {
-			responsibilityTypeService = (KimResponsibilityTypeService)KIMServiceLocator.getBean(DEFAULT_RESPONSIBILITY_TYPE_SERVICE);
+			responsibilityTypeService = (KimResponsibilityTypeService) KIMServiceLocatorInternal.getBean(DEFAULT_RESPONSIBILITY_TYPE_SERVICE);
 		}
 		return responsibilityTypeService;
 	}

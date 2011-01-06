@@ -44,7 +44,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.workflow.attribute.KualiXmlAttribute;
 import org.kuali.rice.kns.workflow.attribute.KualiXmlAttributeHelper;
 import org.kuali.rice.kns.workflow.attribute.KualiXmlRuleAttributeImpl;
@@ -308,7 +308,7 @@ public class KualiXMLAttributeImplTest extends KNSTestCase {
      * changed.
      */
     @Test public void testLabelSource() {
-        DataDictionaryService myDDService = KNSServiceLocator.getDataDictionaryService();
+        DataDictionaryService myDDService = KNSServiceLocatorInternal.getDataDictionaryService();
         XPath xpath = XPathHelper.newXPath();
         String nonsenseString = "BananaRama";
         for (Object tempEntity : myDDService.getDataDictionary().getBusinessObjectEntries().values()) {

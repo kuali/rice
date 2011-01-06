@@ -23,7 +23,7 @@ import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.bo.CampusType;
 import org.kuali.rice.kns.bo.CampusTypeImpl;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KeyValuesService;
 
 /**
@@ -37,7 +37,7 @@ public class CampusTypeValuesFinder extends KeyValuesBase {
 	public List<KeyValue> getKeyValues() {
 
         // get a list of all CampusTypes
-        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
+        KeyValuesService boService = KNSServiceLocatorInternal.getKeyValuesService();
         List<CampusType> campusTypes = (List) boService.findAll(CampusTypeImpl.class);
         // copy the list of codes before sorting, since we can't modify the results from this method
         if ( campusTypes == null ) {

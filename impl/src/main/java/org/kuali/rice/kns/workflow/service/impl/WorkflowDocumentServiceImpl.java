@@ -32,10 +32,10 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.Timer;
@@ -350,7 +350,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 	String newAnnotation = annotation;
                 	if ( StringUtils.isBlank( annotation ) ) {
                 		try {
-                			String message = KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceKeyConstants.MESSAGE_ADHOC_ANNOTATION);                		
+                			String message = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(RiceKeyConstants.MESSAGE_ADHOC_ANNOTATION);
                 			newAnnotation = MessageFormat.format(message, GlobalVariables.getUserSession().getPrincipalName() );
                 		} catch ( Exception ex ) {
                 			LOG.warn("Unable to set annotation", ex );
@@ -358,14 +358,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 	}
                     if (AdHocRouteRecipient.PERSON_TYPE.equals(recipient.getType())) {
                         // TODO make the 1 a constant
-                    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());
+                    	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());
                 		if (principal == null) {
                 			throw new RiceRuntimeException("Could not locate principal with name '" + recipient.getId() + "'");
                 		}
                         workflowDocument.adHocRouteDocumentToPrincipal(recipient.getActionRequested(), currentNode, newAnnotation, principal.getPrincipalId(), "", true, notificationLabel);
                     }
                     else {
-                    	Group group = KIMServiceLocator.getIdentityManagementService().getGroup(recipient.getId());
+                    	Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(recipient.getId());
                 		if (group == null) {
                 			throw new RiceRuntimeException("Could not locate group with id '" + recipient.getId() + "'");
                 		}

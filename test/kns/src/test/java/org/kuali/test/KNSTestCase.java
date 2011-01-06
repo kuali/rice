@@ -14,7 +14,7 @@ package org.kuali.test;
 
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
@@ -72,7 +72,7 @@ public abstract class KNSTestCase extends RiceInternalSuiteDataTestCase {
 		GlobalVariables.setMessageMap(new MessageMap());
 		if (needsSpring) {
 			transactionalLifecycle = new TransactionalLifecycle();
-			transactionalLifecycle.setTransactionManager(KNSServiceLocator.getTransactionManager());
+			transactionalLifecycle.setTransactionManager(KNSServiceLocatorInternal.getTransactionManager());
 			transactionalLifecycle.start();
 		}
 	}

@@ -27,7 +27,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectAuthorizer;
@@ -59,13 +59,8 @@ import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions
 import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
 import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.inquiry.InquiryRestrictions;
-import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -659,7 +654,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 
 	private DataDictionaryService getDataDictionaryService() {
 		if (dataDictionaryService == null) {
-			dataDictionaryService = KNSServiceLocator
+			dataDictionaryService = KNSServiceLocatorInternal
 					.getDataDictionaryService();
 		}
 		return dataDictionaryService;
@@ -667,7 +662,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 
 	private IdentityManagementService getIdentityManagementService() {
 		if (identityManagementService == null) {
-			identityManagementService = KIMServiceLocator
+			identityManagementService = KIMServiceLocatorInternal
 					.getIdentityManagementService();
 		}
 		return identityManagementService;
@@ -675,7 +670,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 
 	private BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
 		if (businessObjectDictionaryService == null) {
-			businessObjectDictionaryService = KNSServiceLocator
+			businessObjectDictionaryService = KNSServiceLocatorInternal
 					.getBusinessObjectDictionaryService();
 		}
 		return businessObjectDictionaryService;
@@ -683,14 +678,14 @@ public class BusinessObjectAuthorizationServiceImpl implements
 
 	private DocumentHelperService getDocumentHelperService() {
 		if (documentHelperService == null) {
-			documentHelperService = KNSServiceLocator.getDocumentHelperService();
+			documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
 		}
 		return documentHelperService;
 	}
 
 	private MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if (maintenanceDocumentDictionaryService == null) {
-			maintenanceDocumentDictionaryService = KNSServiceLocator
+			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal
 					.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
@@ -698,7 +693,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 
 	private KualiConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
-			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+			kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
 		}
 		return kualiConfigurationService;
 	}

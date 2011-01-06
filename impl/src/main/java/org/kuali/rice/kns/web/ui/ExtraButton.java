@@ -18,7 +18,7 @@ package org.kuali.rice.kns.web.ui;
 import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -77,13 +77,13 @@ public class ExtraButton implements Serializable {
 			this.extraButtonSource = extraButtonSource
 					.replace(
 							"${kr.externalizable.images.url}",
-							KNSServiceLocator
+							KNSServiceLocatorInternal
 									.getKualiConfigurationService()
 									.getPropertyString(
 											KNSConstants.EXTERNALIZABLE_IMAGES_URL_KEY))
 					.replace(
 							"${externalizable.images.url}",
-							KNSServiceLocator
+							KNSServiceLocatorInternal
 									.getKualiConfigurationService()
 									.getPropertyString(
 											KNSConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));

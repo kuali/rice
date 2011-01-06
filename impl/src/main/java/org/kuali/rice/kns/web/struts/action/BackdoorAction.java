@@ -26,11 +26,11 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.BackdoorForm;
@@ -134,14 +134,14 @@ public class BackdoorAction extends KualiAction {
     	AttributeSet permissionDetails = new AttributeSet();
     	permissionDetails.put(KimAttributes.NAMESPACE_CODE, KEWConstants.KEW_NAMESPACE);
     	permissionDetails.put(KimAttributes.ACTION_CLASS, "org.kuali.rice.kew.web.backdoor.AdministrationAction");
-    	boolean isAdmin = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(getUserSession(request).getPrincipalId(), KNSConstants.KNS_NAMESPACE,	KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, new AttributeSet());
+    	boolean isAdmin = KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(getUserSession(request).getPrincipalId(), KNSConstants.KNS_NAMESPACE,	KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, new AttributeSet());
         backdoorForm.setIsAdmin(isAdmin);
     }
 
     public void initForm(HttpServletRequest request, ActionForm form) throws Exception {
     	BackdoorForm backdoorForm = (BackdoorForm) form;
 
-    	Boolean showBackdoorLogin = KNSServiceLocator.getParameterService().getIndicatorParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
+    	Boolean showBackdoorLogin = KNSServiceLocatorInternal.getParameterService().getIndicatorParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.BACKDOOR_DETAIL_TYPE, KEWConstants.SHOW_BACK_DOOR_LOGIN_IND);
         backdoorForm.setShowBackdoorLogin(showBackdoorLogin);
         setFormGroupPermission(backdoorForm, request);
         if (backdoorForm.getGraphic() != null) {

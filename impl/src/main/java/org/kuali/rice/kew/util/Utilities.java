@@ -41,6 +41,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 
 /**
@@ -83,7 +84,7 @@ public final class Utilities {
     }
     
     public static String getKNSParameterValue(String nameSpace, String detailType, String name) {
-        Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(nameSpace, detailType, name);
+        Parameter parameter = KNSServiceLocatorInternal.getParameterService().retrieveParameter(nameSpace, detailType, name);
         if (parameter == null) {
             return null;
         }
@@ -95,7 +96,7 @@ public final class Utilities {
     }
     
     public static boolean getKNSParameterBooleanValue(String nameSpace, String detailType, String name, boolean defaultValue) {
-        Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(nameSpace, detailType, name);
+        Parameter parameter = KNSServiceLocatorInternal.getParameterService().retrieveParameter(nameSpace, detailType, name);
         if (parameter == null || StringUtils.isBlank(parameter.getParameterValue())) {
             return defaultValue;
         }

@@ -38,6 +38,8 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+
 /**
  * OJB implementation of {@link ActionItemDAO}.
  *
@@ -190,7 +192,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
-    	List<String> workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+    	List<String> workgroupIds = KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria(ActionItem.class.getName());
         Criteria delegatorWorkflowIdCriteria = new Criteria(ActionItem.class.getName());
         delegatorWorkflowIdCriteria.eq("delegatorWorkflowId", principalId);
@@ -230,7 +232,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     private IdentityManagementService getIdentityManagementService() {
-        return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
+        return (IdentityManagementService) KIMServiceLocatorInternal.getService(KIMServiceLocatorInternal.KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
 
     public EntityManager getEntityManager() {

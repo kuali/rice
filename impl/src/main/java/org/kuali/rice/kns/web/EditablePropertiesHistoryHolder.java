@@ -23,7 +23,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
 
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 
 /**
@@ -139,7 +139,7 @@ public class EditablePropertiesHistoryHolder implements java.io.Serializable {
 	 */
 	protected KualiConfigurationService getConfigurationService() {
 		if (configurationService == null) {
-			configurationService = KNSServiceLocator.getKualiConfigurationService();
+			configurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
 		}
 		return configurationService;
 	}

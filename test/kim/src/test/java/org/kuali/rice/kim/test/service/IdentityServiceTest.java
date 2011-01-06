@@ -33,6 +33,7 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.PersonServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -167,7 +168,7 @@ public class IdentityServiceTest extends KIMTestCase {
 	}
 
 	protected Map<String,String> setUpEntityLookupCriteria(String principalId) {
-		PersonServiceImpl personServiceImpl = (PersonServiceImpl) KIMServiceLocator.getService(KIMServiceLocator.KIM_PERSON_SERVICE);
+		PersonServiceImpl personServiceImpl = (PersonServiceImpl) KIMServiceLocatorInternal.getService(KIMServiceLocator.KIM_PERSON_SERVICE);
 		Map<String,String> criteria = new HashMap<String,String>(1);
 		criteria.put(KIMPropertyConstants.Person.PRINCIPAL_ID, principalId);
 		return personServiceImpl.convertPersonPropertiesToEntityProperties(criteria);

@@ -41,10 +41,8 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 import java.text.MessageFormat;
@@ -361,7 +359,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 			return true;
 		}
 		try {
-			return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId.trim()) != null;
+			return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(networkId.trim()) != null;
 		} catch (Exception ex) {
 			LOG.debug(ex, ex);
 			return false;
@@ -410,7 +408,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         if (Utilities.isEmpty(workgroupName)) {
             return true;
         }
-        Group group = KIMServiceLocator.getIdentityManagementService().getGroup(id);
+        Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(id);
         return group != null;
     }
 
@@ -809,21 +807,21 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
 	public static DictionaryValidationService getDictionaryValidationService() {
 		if (dictionaryValidationService == null) {
-			dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
+			dictionaryValidationService = KNSServiceLocatorInternal.getDictionaryValidationService();
 		}
 		return dictionaryValidationService;
 	}
 
 	public static DataDictionaryService getDataDictionaryService() {
 		if (dataDictionaryService == null) {
-			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}
 
 	public static KualiConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
-			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+			kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
 		}
 		return kualiConfigurationService;
 	}

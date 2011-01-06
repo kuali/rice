@@ -30,7 +30,7 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -85,7 +85,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 				//TODO: this needs to be changed to use the KimResponsibilityInfo object
 				// but the changes are involved in the UiDocumentService based on the copyProperties method used
 				// to move the data to/from the document/real objects
-				kimResponsibility = ((ResponsibilityServiceImpl)KIMServiceLocator.getResponsibilityService()).getResponsibilityImpl(getRoleResponsibility().getResponsibilityId());
+				kimResponsibility = ((ResponsibilityServiceImpl) KIMServiceLocatorInternal.getResponsibilityService()).getResponsibilityImpl(getRoleResponsibility().getResponsibilityId());
 			}
 		} catch( RuntimeException ex ) {
 			ex.printStackTrace();
@@ -177,7 +177,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 			//TODO: this needs to be changed to use the KimResponsibilityInfo object
 			// but the changes are involved in the UiDocumentService based on the copyProperties method used
 			// to move the data to/from the document/real objects
-			roleResponsibility = ((ResponsibilityServiceImpl)KIMServiceLocator.getResponsibilityService()).getRoleResponsibilityImpl(getRoleResponsibilityId());
+			roleResponsibility = ((ResponsibilityServiceImpl) KIMServiceLocatorInternal.getResponsibilityService()).getRoleResponsibilityImpl(getRoleResponsibilityId());
 		}
 		return roleResponsibility;
 	}

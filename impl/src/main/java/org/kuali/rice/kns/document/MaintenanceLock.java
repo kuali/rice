@@ -27,7 +27,7 @@ import javax.persistence.Table;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
@@ -89,7 +89,7 @@ public class MaintenanceLock extends PersistableBusinessObjectBase {
      */
     @PrePersist
 	protected void customPrePersist() {
-		final EntityManagerFactory factory = KNSServiceLocator.getApplicationEntityManagerFactory();
+		final EntityManagerFactory factory = KNSServiceLocatorInternal.getApplicationEntityManagerFactory();
 		OrmUtils.populateAutoIncValue(this, factory.createEntityManager());
 		
 		super.prePersist();

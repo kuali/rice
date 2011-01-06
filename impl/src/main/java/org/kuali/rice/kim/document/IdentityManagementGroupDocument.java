@@ -40,7 +40,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
@@ -126,7 +126,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	 * @return the kimType
 	 */
 	public KimTypeInfo getKimType() {
-		return KIMServiceLocator.getTypeInfoService().getKimType(getGroupTypeId());
+		return KIMServiceLocatorInternal.getTypeInfoService().getKimType(getGroupTypeId());
 	}
 	
 	/**
@@ -143,7 +143,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	public void doRouteStatusChange(DocumentRouteStatusChangeDTO statusChangeEvent) {
 		super.doRouteStatusChange(statusChangeEvent);
 		if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
-			KIMServiceLocator.getUiDocumentService().saveGroup(this);
+			KIMServiceLocatorInternal.getUiDocumentService().saveGroup(this);
 		}
 	}
 

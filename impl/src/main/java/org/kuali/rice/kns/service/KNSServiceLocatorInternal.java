@@ -12,9 +12,8 @@
  */
 package org.kuali.rice.kns.service;
 
+
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
-import org.kuali.rice.core.api.CoreConstants;
-import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
@@ -34,7 +33,7 @@ import org.springframework.transaction.support.TransactionTemplate;
 
 import javax.persistence.EntityManagerFactory;
 
-public class KNSServiceLocator {
+public class KNSServiceLocatorInternal {
 
     public static final String VALIDATION_COMPLETION_UTILS = "validationCompletionUtils";
 
@@ -94,12 +93,6 @@ public class KNSServiceLocator {
 
     public static PostProcessorService getPostProcessorService() {
 	return (PostProcessorService) getService(POST_PROCESSOR_SERVICE);
-    }
-
-    //public static final String DATETIME_SERVICE = "dateTimeService";
-
-    public static DateTimeService getDateTimeService() {
-	return (DateTimeService) getService(CoreConstants.Services.DATETIME_SERVICE);
     }
 
     public static final String LOOKUP_SERVICE = "lookupService";
@@ -192,18 +185,6 @@ public class KNSServiceLocator {
 	return (NoteService) getService(NOTE_SERVICE);
     }
 
-    public static final String PERSISTENCE_SERVICE = "persistenceService";
-
-    public static PersistenceService getPersistenceService() {
-	return (PersistenceService) getService(PERSISTENCE_SERVICE);
-    }
-
-    public static final String PERSISTENCE_STRUCTURE_SERVICE = "persistenceStructureService";
-
-    public static PersistenceStructureService getPersistenceStructureService() {
-	return (PersistenceStructureService) getService(PERSISTENCE_STRUCTURE_SERVICE);
-    }
-
     public static final String KUALI_RULE_SERVICE = "kualiRuleService";
 
     public static KualiRuleService getKualiRuleService() {
@@ -249,13 +230,6 @@ public class KNSServiceLocator {
 
     public static DictionaryValidationService getDictionaryValidationService() {
 	return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
-    }
-
-    // AttachmentService
-    public static final String ATTACHMENT_SERVICE = "attachmentService";
-
-    public static AttachmentService getAttachmentService() {
-	return (AttachmentService) getService(ATTACHMENT_SERVICE);
     }
 
     // SequenceAccessorService

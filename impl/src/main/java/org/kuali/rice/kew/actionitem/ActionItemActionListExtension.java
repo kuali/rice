@@ -28,6 +28,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 /**
  * Alternate model object for action list fetches that do not automatically use
@@ -79,7 +80,7 @@ public class ActionItemActionListExtension extends ActionItem {
         }
 
         if (getDelegatorGroupId() != null) {
-        	delegatorGroup = KIMServiceLocator.getIdentityManagementService().getGroup(getDelegatorGroupId());
+        	delegatorGroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(getDelegatorGroupId());
         	if (delegatorGroup !=null)
         		delegatorName = delegatorGroup.getGroupName();
         }

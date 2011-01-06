@@ -29,7 +29,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -97,7 +97,7 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 	 */
 	public KimPermissionInfo getKimPermission() {
 		if ( kimPermission == null || !StringUtils.equals( kimPermission.getPermissionId(), permissionId ) ) {
-			kimPermission = KIMServiceLocator.getPermissionService().getPermission(permissionId);
+			kimPermission = KIMServiceLocatorInternal.getPermissionService().getPermission(permissionId);
 		}
 		return kimPermission;
 	}

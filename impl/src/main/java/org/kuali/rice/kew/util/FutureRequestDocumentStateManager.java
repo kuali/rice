@@ -24,7 +24,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 
 /**
@@ -71,7 +71,7 @@ public class FutureRequestDocumentStateManager {
 
     public FutureRequestDocumentStateManager (DocumentRouteHeaderValue document, Group kimGroup)
     {
-        IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService ims = KIMServiceLocatorInternal.getIdentityManagementService();
         List<String> principalIds =
             ims.getGroupMemberPrincipalIds(kimGroup.getGroupId());
 

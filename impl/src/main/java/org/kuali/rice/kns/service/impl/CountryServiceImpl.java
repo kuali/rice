@@ -24,7 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.Country;
 import org.kuali.rice.kns.service.CountryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -98,7 +98,7 @@ public class CountryServiceImpl implements CountryService {
      * @see org.kuali.kfs.sys.service.CountryService#getDefaultCountry()
      */
     public Country getDefaultCountry() {
-        String postalCountryCode = KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE,
+        String postalCountryCode = KNSServiceLocatorInternal.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE,
 	        	KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.DEFAULT_COUNTRY);
         return this.getByPrimaryId(postalCountryCode);
     }

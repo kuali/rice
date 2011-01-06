@@ -20,21 +20,17 @@ import java.sql.Timestamp;
 //import org.apache.ojb.broker.query.Criteria;
 //import org.kuali.rice.core.jpa.criteria.Criteria;
 //import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
-import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.dao.BusinessObjectDaoTestCaseBase;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -73,7 +69,7 @@ public class TestOJBTest extends BusinessObjectDaoTestCaseBase {
         System.err.println(fullQueryCriteria.toString());
 
         
-        QueryByCriteria q = new QueryByCriteria(KNSServiceLocator.getApplicationEntityManagerFactory().createEntityManager(), fullQueryCriteria);
+        QueryByCriteria q = new QueryByCriteria(KNSServiceLocatorInternal.getApplicationEntityManagerFactory().createEntityManager(), fullQueryCriteria);
        
         System.err.println(q.toString());
 

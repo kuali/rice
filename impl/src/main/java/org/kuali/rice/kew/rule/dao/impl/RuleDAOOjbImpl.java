@@ -31,7 +31,7 @@ import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -247,13 +247,13 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         
         if (!Utilities.isEmpty(principalId) && searchUserInWorkgroups)
         {
-            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+            KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
 
             if (principal == null)
             {
             	throw new RiceRuntimeException("Failed to locate user for the given workflow id: " + principalId);
             }
-            workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+            workgroupIds = KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
         ReportQueryByCriteria query = getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups);
         if (query != null) {

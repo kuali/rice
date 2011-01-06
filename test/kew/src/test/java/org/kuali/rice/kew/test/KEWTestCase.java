@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.web.jetty.JettyServer;
@@ -26,7 +25,7 @@ import org.kuali.rice.kew.batch.KEWXmlDataLoader;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
@@ -221,8 +220,8 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 		@Override
 		public void stop() throws Exception {
 			KEWServiceLocator.getCacheAdministrator().flushAll();
-			KIMServiceLocator.getIdentityManagementService().flushAllCaches();
-			KIMServiceLocator.getRoleManagementService().flushRoleCaches();
+			KIMServiceLocatorInternal.getIdentityManagementService().flushAllCaches();
+			KIMServiceLocatorInternal.getRoleManagementService().flushRoleCaches();
 			super.stop();
 		}
 

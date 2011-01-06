@@ -44,6 +44,7 @@ import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.springframework.jdbc.core.StatementCallback;
 import org.springframework.transaction.TransactionStatus;
@@ -173,7 +174,7 @@ public class ActionListTest extends KEWTestCase {
     	String jitruePrincipalId = getPrincipalIdForName("jitrue");
     	String user1PrincipalId = getPrincipalIdForName("user1");
 
-    	Group NonSIT = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT");
+    	Group NonSIT = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT");
 
     	ActionListFilter noFilter = new ActionListFilter();
     	ActionListFilter excludeSecondaryFilter = new ActionListFilter();
@@ -222,7 +223,7 @@ public class ActionListTest extends KEWTestCase {
     	assertNull("Should not be to a workgroup.", actionItem.getGroupId());
 
     	// all members of NonSIT should have a single primary Approve Request
-        List<String> memberPrincipalIds = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getGroupId());
+        List<String> memberPrincipalIds = KIMServiceLocatorInternal.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getGroupId());
         for (String memberPrincipalId : memberPrincipalIds)
         {
             //will want to convert to Kim Principal

@@ -36,7 +36,7 @@ import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
@@ -139,7 +139,7 @@ public class ActionListFilterAction extends KualiAction {
 
     private List<? extends KeyValue> getUserWorkgroupsDropDownList(String principalId) {
     	List<String> userWorkgroups =
-            KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+            KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         List<KeyValue> sortedUserWorkgroups = new ArrayList<KeyValue>();
     	KeyValue keyValue = null;
     	keyValue = new ConcreteKeyValue(KEWConstants.NO_FILTERING, KEWConstants.NO_FILTERING);
@@ -150,7 +150,7 @@ public class ActionListFilterAction extends KualiAction {
     		Group group;
             for (String groupId : userWorkgroups)
             {
-                group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+                group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(groupId);
                 keyValue = new ConcreteKeyValue(groupId, group.getGroupName());
                 sortedUserWorkgroups.add(keyValue);
             }

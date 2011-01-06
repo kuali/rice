@@ -45,6 +45,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -53,7 +54,7 @@ import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.LookupableHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -406,7 +407,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
 
     private IdentityManagementService getIdentityManagementService() {
-       return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
+       return (IdentityManagementService) KIMServiceLocatorInternal.getService(KIMServiceLocatorInternal.KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
 
     private RuleTemplateService getRuleTemplateService() {
@@ -436,7 +437,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         }
 
         if  (!Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
-            Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
             }
@@ -633,9 +634,9 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         			BusinessObject ruleDelegation = (BusinessObject) delegationList.get(0);
     				// Retrieve the rule delegation lookupable helper service and the primary key names, if they have not been obtained yet.
         	        if (ruleDelegationLookupableHelperService == null) {
-        				ruleDelegationLookupableHelperService = KNSServiceLocator.getLookupable(
-        						KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(
-        								ruleDelegation.getClass())).getLookupableHelperService();
+        				ruleDelegationLookupableHelperService = KNSServiceLocatorInternal.getLookupable(
+                                KNSServiceLocatorInternal.getBusinessObjectDictionaryService().getLookupableID(
+                                        ruleDelegation.getClass())).getLookupableHelperService();
         				if (ruleDelegationLookupableHelperService.getBusinessObjectClass() == null) {
         					ruleDelegationLookupableHelperService.setBusinessObjectClass(ruleDelegation.getClass());
         				}

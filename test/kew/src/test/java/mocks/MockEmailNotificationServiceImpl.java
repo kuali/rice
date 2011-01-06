@@ -28,7 +28,7 @@ import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.mail.service.impl.CustomizableActionListEmailServiceImpl;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 
 public class MockEmailNotificationServiceImpl extends CustomizableActionListEmailServiceImpl implements MockEmailNotificationService {
@@ -121,7 +121,7 @@ public class MockEmailNotificationServiceImpl extends CustomizableActionListEmai
     }
 
     public int immediateReminderEmailsSent(String networkId, Long documentId, String actionRequestCd) {
-    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
+    	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(networkId);
         List actionItemsSentUser = immediateReminders.get(principal.getPrincipalId());
         if (actionItemsSentUser == null) {
             return 0;

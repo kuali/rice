@@ -39,7 +39,7 @@ import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimPermissionDao;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
@@ -49,7 +49,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
@@ -119,14 +119,14 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( permissionTemplate == null ) {
     		throw new IllegalArgumentException( "permissionTemplate may not be null" );
     	}
-    	KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType( permissionTemplate.getKimTypeId() );
+    	KimTypeInfo kimType = KIMServiceLocatorInternal.getTypeInfoService().getKimType( permissionTemplate.getKimTypeId() );
     	String serviceName = kimType.getKimTypeServiceName();
     	// if no service specified, return a default implementation
     	if ( StringUtils.isBlank( serviceName ) ) {
     		return getDefaultPermissionTypeService();
     	}
     	try {
-	    	Object service = KIMServiceLocator.getService( serviceName );
+	    	Object service = KIMServiceLocatorInternal.getService(serviceName);
 	    	// if we have a service name, it must exist
 	    	if ( service == null ) {
 				throw new RuntimeException("null returned for permission type service for service name: " + serviceName);
@@ -138,13 +138,13 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	    	return (KimPermissionTypeService)service;
     	} catch( Exception ex ) {
     		// sometimes service locators throw exceptions rather than returning null, handle that
-    		throw new RuntimeException( "Error retrieving service: " + serviceName + " from the KIMServiceLocator.", ex );
+    		throw new RuntimeException( "Error retrieving service: " + serviceName + " from the KIMServiceLocatorInternal.", ex );
     	}
     }
     
     protected KimPermissionTypeService getDefaultPermissionTypeService() {
     	if ( defaultPermissionTypeService == null ) {
-    		defaultPermissionTypeService = (KimPermissionTypeService)KIMServiceLocator.getBean(DEFAULT_PERMISSION_TYPE_SERVICE);
+    		defaultPermissionTypeService = (KimPermissionTypeService) KIMServiceLocatorInternal.getBean(DEFAULT_PERMISSION_TYPE_SERVICE);
     	}
 		return defaultPermissionTypeService;
 	}
@@ -463,7 +463,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	
 	protected RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleManagementService();		
+			roleService = KIMServiceLocatorInternal.getRoleManagementService();
 		}
 
 		return roleService;
@@ -484,9 +484,9 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	@SuppressWarnings("unchecked")
 	public List<KimPermissionInfo> lookupPermissions(Map<String, String> searchCriteria, boolean unbounded ){
 		Collection baseResults = null;
-		Lookupable permissionLookupable = KNSServiceLocator.getLookupable(
-				KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
-				);
+		Lookupable permissionLookupable = KNSServiceLocatorInternal.getLookupable(
+                KNSServiceLocatorInternal.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
+        );
 		permissionLookupable.setBusinessObjectClass(PermissionImpl.class);
 		if ( unbounded ) {
 		    baseResults = permissionLookupable.getSearchResultsUnbounded( searchCriteria );
@@ -586,7 +586,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	private DataDictionaryService dataDictionaryService;
 	protected DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
-			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}

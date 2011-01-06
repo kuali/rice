@@ -33,7 +33,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.springframework.jdbc.core.ConnectionCallback;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.StatementCallback;
@@ -219,7 +219,7 @@ public final class TestUtilities {
      * Asserts that the given document id is in the given user's action list.
      */
     public static void assertInActionList(String principalId, Long documentId) {
-    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+    	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection<ActionItem> actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
@@ -235,7 +235,7 @@ public final class TestUtilities {
      * Asserts that the given document id is NOT in the given user's action list.
      */
     public static void assertNotInActionList(String principalId, Long documentId) {
-    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+    	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
     	Assert.assertNotNull("Given principal id was invalid: " + principalId, principal);
     	Collection actionList = KEWServiceLocator.getActionListService().findByPrincipalId(principalId);
     	for (Iterator iterator = actionList.iterator(); iterator.hasNext();) {
@@ -264,7 +264,7 @@ public final class TestUtilities {
 				foundRequest = true;
 				break;
 			} else if (actionRequest.isGroupRequest() && 
-			        KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequest.getGroup().getGroupId())) {
+			        KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(principalId, actionRequest.getGroup().getGroupId())) {
 				foundRequest = true;
 				break;
 			}

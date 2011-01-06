@@ -44,7 +44,7 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 		PersonDocumentGroup newGroup = addGroupEvent.getGroup();
 	    boolean rulePassed = true;
 	    rulePassed = validAssignGroup(document, newGroup);
-//    	List<String> groupIds = KIMServiceLocator.getUiDocumentService().getPopulatableGroupIds();
+//    	List<String> groupIds = KIMServiceLocatorInternal.getUiDocumentService().getPopulatableGroupIds();
 
         if (newGroup == null || StringUtils.isBlank(newGroup.getGroupId())) {
             rulePassed = false;

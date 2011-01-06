@@ -27,14 +27,12 @@ import org.apache.commons.codec.binary.Base64;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.LookupResults;
 import org.kuali.rice.kns.bo.MultipleValueLookupMetadata;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.SelectedObjectIds;
 import org.kuali.rice.kns.dao.PersistedLookupMetadataDao;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.ui.ResultRow;
 

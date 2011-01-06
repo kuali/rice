@@ -91,7 +91,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -552,7 +552,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
 			results = Collections.singletonList(actionRequest.getPrincipalId());
 		} else if (actionRequest.getGroupId() != null) {
 			List<String> principalIdsForGroup = 
-				KIMServiceLocator.getGroupService().getMemberPrincipalIds(actionRequest.getGroupId());
+				KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(actionRequest.getGroupId());
 			if (principalIdsForGroup != null) {
 				results = principalIdsForGroup;
 			}
@@ -698,7 +698,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             }
             if (request.isUserRequest() && request.getPrincipalId().equals(principalId)) {
                 KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
-            } else if (request.isGroupRequest() && KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, request.getGroup().getGroupId())) {
+            } else if (request.isGroupRequest() && KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(principalId, request.getGroup().getGroupId())) {
                 KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
             }
         }

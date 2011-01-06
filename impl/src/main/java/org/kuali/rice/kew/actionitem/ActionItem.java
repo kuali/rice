@@ -48,6 +48,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 
 /**
@@ -242,7 +243,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 
     private Group getGroup(String groupId) {
     	if( groupId ==null )	return null;
-    	return KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+    	return KIMServiceLocatorInternal.getIdentityManagementService().getGroup(groupId);
     }
 
     public Group getGroup(){
@@ -287,7 +288,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     }
     
     public KimPrincipal getPrincipal(){
-        return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
     }
 
     public Object copy(boolean preserveKeys) {

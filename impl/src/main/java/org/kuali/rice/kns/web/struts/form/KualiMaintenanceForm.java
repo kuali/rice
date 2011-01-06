@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.config.ConfigurationException;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.Document;
@@ -36,7 +37,7 @@ import org.kuali.rice.kns.document.MaintenanceDocumentBase;
 import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -116,7 +117,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
         if (StringUtils.isNotBlank(docTypeName)) {          
         	if(this.getDocument() == null){
             setDocTypeName(docTypeName);
-            Class documentClass = KNSServiceLocator.getDataDictionaryService().getDocumentClassByTypeName(docTypeName);
+            Class documentClass = KNSServiceLocatorInternal.getDataDictionaryService().getDocumentClassByTypeName(docTypeName);
             if (documentClass == null) {
                 throw new UnknownDocumentTypeException("unable to get class for unknown documentTypeName '" + docTypeName + "'");
             }
@@ -231,7 +232,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
             }
             
             // update add lines
-            localNewCollectionValues = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().resolvePrincipalNamesToPrincipalIds((BusinessObject)maintenanceDocument.getNewMaintainableObject().getBusinessObject(), localNewCollectionValues);
+            localNewCollectionValues = KIMServiceLocator.getPersonService().resolvePrincipalNamesToPrincipalIds((BusinessObject)maintenanceDocument.getNewMaintainableObject().getBusinessObject(), localNewCollectionValues);
             cachedValues.putAll( maintenanceDocument.getNewMaintainableObject().populateNewCollectionLines( localNewCollectionValues, maintenanceDocument, getMethodToCall() ) );
             GlobalVariables.getMessageMap().removeFromErrorPath("document.newMaintainableObject");
 
@@ -288,7 +289,7 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
 
         
         // get business object being maintained and its keys
-        List keyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject().getBusinessObject().getClass());
+        List keyFieldNames = KNSServiceLocatorInternal.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(((MaintenanceDocumentBase) getDocument()).getNewMaintainableObject().getBusinessObject().getClass());
 
         // sections for maintenance document
         Maintainable oldMaintainable = ((MaintenanceDocumentBase) getDocument()).getOldMaintainableObject();
@@ -449,14 +450,14 @@ public class KualiMaintenanceForm extends KualiDocumentFormBase {
     public String getAdditionalSectionsFile() {
         if ( businessObjectClassName != null ) {
             try {
-                MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+                MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
                 String docTypeName = maintenanceDocumentDictionaryService.getDocumentTypeName(Class.forName(businessObjectClassName));
                 return maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(businessObjectClassName).getAdditionalSectionsFile();
             } catch ( ClassNotFoundException ex ) {
                 LOG.error( "Unable to resolve business object class", ex);
             }
         }else{
-            MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+            MaintenanceDocumentDictionaryService maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
             return maintenanceDocumentDictionaryService.getMaintenanceDocumentEntry(this.getDocTypeName()).getAdditionalSectionsFile();
         }
         return null;

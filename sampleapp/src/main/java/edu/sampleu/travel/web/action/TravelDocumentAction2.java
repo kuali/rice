@@ -26,7 +26,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.exception.ValidationException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -40,7 +40,7 @@ public class TravelDocumentAction2 extends KualiTransactionalDocumentActionBase 
 
     public ActionForward insertAccount(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         TravelDocumentForm2 travelForm = (TravelDocumentForm2) form;
-        TravelAccount travAcct = (TravelAccount) KNSServiceLocator.getBusinessObjectService().retrieve(travelForm.getTravelAccount());
+        TravelAccount travAcct = (TravelAccount) KNSServiceLocatorInternal.getBusinessObjectService().retrieve(travelForm.getTravelAccount());
         // Make sure a travel account was actually retrieved.
         if (travAcct == null) {
         	GlobalVariables.getMessageMap().putError("travelAccount.number", RiceKeyConstants.ERROR_CUSTOM, "Invalid travel account number");

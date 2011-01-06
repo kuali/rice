@@ -25,7 +25,7 @@ import javax.persistence.EntityManager;
 
 import org.kuali.rice.kns.datadictionary.spring.DataDictionaryLocationConfigurer;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.PersistenceService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
@@ -200,10 +200,10 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 	public void afterPropertiesSet() throws Exception {
 		if (isInitializeDataDictionary() && getDataDictionaryPackages() != null && !getDataDictionaryPackages().isEmpty() ) {
 			if ( getDataDictionaryService() == null ) {
-				setDataDictionaryService(KNSServiceLocator.getDataDictionaryService());
+				setDataDictionaryService(KNSServiceLocatorInternal.getDataDictionaryService());
 			}
 			if ( getDataDictionaryService() == null ) {
-				setDataDictionaryService((DataDictionaryService)applicationContext.getBean( KNSServiceLocator.DATA_DICTIONARY_SERVICE ));
+				setDataDictionaryService((DataDictionaryService)applicationContext.getBean( KNSServiceLocatorInternal.DATA_DICTIONARY_SERVICE ));
 			}
 			DataDictionaryLocationConfigurer ddl = new DataDictionaryLocationConfigurer( getDataDictionaryService() );
 			ddl.setDataDictionaryPackages(getDataDictionaryPackages());
@@ -213,10 +213,10 @@ public class ModuleConfiguration implements InitializingBean, ApplicationContext
 		    for (String repositoryLocation : getDatabaseRepositoryFilePaths()) {
 				// Need the OJB persistence service because it is the only one ever using the database repository files
 		    	if (getPersistenceService() == null) {
-		    		setPersistenceService(KNSServiceLocator.getPersistenceServiceOjb());
+		    		setPersistenceService(KNSServiceLocatorInternal.getPersistenceServiceOjb());
 		    	}
 		    	if ( persistenceService == null ) {
-		    		setPersistenceService((PersistenceService)applicationContext.getBean( KNSServiceLocator.PERSISTENCE_SERVICE_OJB  ));
+		    		setPersistenceService((PersistenceService)applicationContext.getBean( KNSServiceLocatorInternal.PERSISTENCE_SERVICE_OJB  ));
 		    	}
 		    	getPersistenceService().loadRepositoryDescriptor( repositoryLocation );
 			}

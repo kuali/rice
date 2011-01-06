@@ -18,13 +18,11 @@ package org.kuali.rice.kns.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ParameterEvaluator;
 import org.kuali.rice.kns.service.ParameterService;
-import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * ParameterServiceProxyImpl is an implementation of ParameterServiceProxy
@@ -134,7 +132,7 @@ public class ParameterServiceProxyImpl implements ParameterService {
 
 	public ParameterService getParameterService() {
 		if ( parameterService == null ) {
-			parameterService = KNSServiceLocator.getParameterServerService();
+			parameterService = KNSServiceLocatorInternal.getParameterServerService();
 		}
 		return parameterService;
 	}

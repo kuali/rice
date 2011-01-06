@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentAttributeDataBusinessObjectBase;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -113,7 +113,7 @@ public class AttributeValidationHelper {
 	
 	public BusinessObjectService getBusinessObjectService() {
 		if(businessObjectService == null){
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

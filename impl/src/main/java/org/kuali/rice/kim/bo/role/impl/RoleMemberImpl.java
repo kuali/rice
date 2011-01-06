@@ -18,7 +18,6 @@ package org.kuali.rice.kim.bo.role.impl;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -33,17 +32,14 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.apache.commons.lang.builder.EqualsBuilder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMemberCompleteInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.RoleService;
 import org.springframework.util.AutoPopulatingList;
@@ -160,14 +156,14 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	private transient static KimTypeInfoService kimTypeInfoService;
 	protected KimTypeInfoService getTypeInfoService() {
 		if(kimTypeInfoService == null){
-			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}
 	private transient static RoleService roleService;
 	protected RoleService getRoleService() {
 		if(roleService == null){
-			roleService = KIMServiceLocator.getRoleManagementService();
+			roleService = KIMServiceLocatorInternal.getRoleManagementService();
 		}
 		return roleService;
 	}

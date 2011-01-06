@@ -21,7 +21,7 @@ import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 public class RoutingWithEmptyWorkGroupTest extends KEWTestCase {
 
@@ -58,7 +58,7 @@ public class RoutingWithEmptyWorkGroupTest extends KEWTestCase {
 			if ("Node2".equals(actionRequest.getNodeName())) {
 				assertTrue("action request should be for a group", actionRequest.isGroupRequest());
 				assertTrue("action request should be marked as \"done\"", actionRequest.isDone());
-				assertTrue("Group should have no members.", KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId()).isEmpty());
+				assertTrue("Group should have no members.", KIMServiceLocatorInternal.getIdentityManagementService().getGroupMemberPrincipalIds(actionRequest.getGroupId()).isEmpty());
 			}
 		}
 	}

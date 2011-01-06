@@ -26,10 +26,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.document.KimTypeAttributesHelper;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KimTypeInfoService;
-import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.UiDocumentService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -111,21 +108,21 @@ public class KimDocumentRoleMemberLookupableHelperServiceImpl extends KualiLooku
 
 	public RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleService();
+			roleService = KIMServiceLocatorInternal.getRoleService();
 		}
 		return roleService;
 	}
 
 	public KimTypeInfoService getKimTypeInfoService() {
 		if ( kimTypeInfoService == null ) {
-			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}
 	
 	public UiDocumentService getUiDocumentService() {
 		if ( uiDocumentService == null ) {
-			uiDocumentService = KIMServiceLocator.getUiDocumentService();
+			uiDocumentService = KIMServiceLocatorInternal.getUiDocumentService();
 		}
 		return uiDocumentService;
 	}

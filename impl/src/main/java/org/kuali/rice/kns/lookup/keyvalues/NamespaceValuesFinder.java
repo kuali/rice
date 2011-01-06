@@ -22,7 +22,7 @@ import java.util.List;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.Namespace;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KeyValuesService;
 
 /**
@@ -38,7 +38,7 @@ public class NamespaceValuesFinder extends KeyValuesBase {
 	public List<KeyValue> getKeyValues() {
 
         // get a list of all CampusTypes
-        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
+        KeyValuesService boService = KNSServiceLocatorInternal.getKeyValuesService();
         List<Namespace> bos = (List) boService.findAll(Namespace.class);
         // copy the list of codes before sorting, since we can't modify the results from this method
         if ( bos == null ) {

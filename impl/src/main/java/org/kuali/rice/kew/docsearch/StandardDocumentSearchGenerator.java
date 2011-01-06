@@ -60,6 +60,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityNamePrincipalNameInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -979,7 +980,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         List<String> initiatorPrincipalIds = new ArrayList<String>();
         initiatorPrincipalIds.addAll(initiatorPrincipalIdSet);
         if(initiatorPrincipalIds != null && !initiatorPrincipalIds.isEmpty()){ // don't call the service if the search returned nothing.
-	        Map<String, KimEntityNamePrincipalNameInfo> entityNames = KIMServiceLocator.getIdentityService().getDefaultNamesForPrincipalIds(initiatorPrincipalIds);
+	        Map<String, KimEntityNamePrincipalNameInfo> entityNames = KIMServiceLocatorInternal.getIdentityService().getDefaultNamesForPrincipalIds(initiatorPrincipalIds);
 	        for (DocSearchDTO docSearchRow : docList) {
 	        	KimEntityNamePrincipalNameInfo name = entityNames.get(docSearchRow.getInitiatorWorkflowId());
 	        	if (name != null) {
@@ -1114,10 +1115,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
          */
 
         /*
-        Person user = KIMServiceLocator.getPersonService().getPerson(docCriteriaDTO.getInitiatorWorkflowId());
+        Person user = KIMServiceLocatorInternal.getPersonService().getPerson(docCriteriaDTO.getInitiatorWorkflowId());
 
         if (user != null) {
-            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
+            KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
 
             docCriteriaDTO.setInitiatorNetworkId(user.getPrincipalName());
             docCriteriaDTO.setInitiatorName(user.getName());
@@ -1472,7 +1473,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
             crit.in("PRNCPL_ID", principalList, String.class);
 
-            //Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(viewer.trim());
+            //Person person = KIMServiceLocatorInternal.getPersonService().getPersonByPrincipalName(viewer.trim());
             //String principalId = person.getPrincipalId();
             returnSql = whereClausePredicatePrefix + "( (DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and " + crit.buildWhere() + " )";
 
@@ -1480,7 +1481,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
             if(principalList != null && !principalList.isEmpty()){
                 for(String principalId: principalList){
-                        viewerGroupIds.addAll(KIMServiceLocator.getGroupService().getGroupIdsForPrincipal(principalId));
+                        viewerGroupIds.addAll(KIMServiceLocatorInternal.getGroupService().getGroupIdsForPrincipal(principalId));
                 }
             }
 
@@ -1511,7 +1512,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public String getWorkgroupViewerSql(String id, String workgroupName, String whereClausePredicatePrefix) {
         String sql = "";
         if (!Utilities.isEmpty(workgroupName)) {
-            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(id);
+            Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(id);
             sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = " + group.getGroupId();
         }
         return sql;
@@ -1557,7 +1558,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             Map<String, String> m = new HashMap<String, String>();
             m.put("name", docTypeFullName);
 
-            Collection c = KNSServiceLocator.getBusinessObjectDao().findMatching(DocumentType.class, m);
+            Collection c = KNSServiceLocatorInternal.getBusinessObjectDao().findMatching(DocumentType.class, m);
 */
             DocumentTypeService docSrv = (DocumentTypeService) KEWServiceLocator.getDocumentTypeService();
             DocumentType docType = docSrv.findByName(docTypeFullName.trim());
@@ -1750,7 +1751,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     	if(fromDate != null && !"".equals(fromDate)) {
     		try {   			
-    			KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(fromDate);  			
+    			KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(fromDate);
     		} catch (Exception exc) { throw new RiceRuntimeException("Invalid date format", exc); }
     	}
     	

@@ -26,7 +26,7 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KeyValuesService;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +58,7 @@ public class PersistableBusinessObjectValuesFinder <T extends PersistableBusines
     	List<KeyValue> labels = new ArrayList<KeyValue>();
 
     	try {
-    	    KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
+    	    KeyValuesService boService = KNSServiceLocatorInternal.getKeyValuesService();
             Collection<T> objects = boService.findAll(businessObjectClass);
             if(includeBlankRow) {
             	labels.add(new ConcreteKeyValue("", ""));

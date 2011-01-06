@@ -40,6 +40,7 @@ import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.bo.DocumentHeader;
@@ -53,10 +54,7 @@ import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
-import org.kuali.rice.kns.service.AttachmentService;
-import org.kuali.rice.kns.service.DocumentSerializerService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.NoteService;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -107,7 +105,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     public DocumentBase() {
         try {
             // create a new document header object
-            Class<? extends DocumentHeader> documentHeaderClass = KNSServiceLocator.getDocumentHeaderService().getDocumentHeaderBaseClass();
+            Class<? extends DocumentHeader> documentHeaderClass = KNSServiceLocatorInternal.getDocumentHeaderService().getDocumentHeaderBaseClass();
             setDocumentHeader(documentHeaderClass.newInstance());
             pessimisticLocks = new ArrayList<PessimisticLock>();
             adHocRoutePersons = new ArrayList<AdHocRoutePerson>();
@@ -139,7 +137,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     public String getDocumentTitle() {
         try {
-            String documentTypeLabel = KNSServiceLocator.getWorkflowInfoService().getDocType(this.getDocumentHeader().getWorkflowDocument().getDocumentType()).getDocTypeLabel();
+            String documentTypeLabel = KNSServiceLocatorInternal.getWorkflowInfoService().getDocType(this.getDocumentHeader().getWorkflowDocument().getDocumentType()).getDocTypeLabel();
             if (null == documentTypeLabel) {
                 documentTypeLabel = "";
             }
@@ -290,10 +288,10 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.kns.document.Document#doActionTaken(org.kuali.rice.kew.dto.ActionTakenEventDTO)
      */
     public void doActionTaken(ActionTakenEventDTO event) {
-        if ( (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) && (!getNonLockingActionTakenCodes().contains(event.getActionTaken().getActionTaken())) ) {
-            //DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(this);
+        if ( (KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) && (!getNonLockingActionTakenCodes().contains(event.getActionTaken().getActionTaken())) ) {
+            //DocumentAuthorizer documentAuthorizer = KNSServiceLocatorInternal.getDocumentAuthorizationService().getDocumentAuthorizer(this);
             //documentAuthorizer.establishWorkflowPessimisticLocking(this);
-        	KNSServiceLocator.getPessimisticLockService().establishWorkflowPessimisticLocking(this);
+        	KNSServiceLocatorInternal.getPessimisticLockService().establishWorkflowPessimisticLocking(this);
         }
     }
     
@@ -315,11 +313,11 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.kns.document.Document#afterWorkflowEngineProcess(boolean)
      */
     public void afterWorkflowEngineProcess(boolean successfullyProcessed) {
-        if (KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) {
+        if (KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getClass().getName()).getUseWorkflowPessimisticLocking()) {
             if (successfullyProcessed) {
-                //DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(this);
+                //DocumentAuthorizer documentAuthorizer = KNSServiceLocatorInternal.getDocumentAuthorizationService().getDocumentAuthorizer(this);
                 //documentAuthorizer.releaseWorkflowPessimisticLocking(this);
-            	KNSServiceLocator.getPessimisticLockService().releaseWorkflowPessimisticLocking(this);
+            	KNSServiceLocatorInternal.getPessimisticLockService().releaseWorkflowPessimisticLocking(this);
             }
         }
     }
@@ -366,7 +364,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @throws WorkflowException
      */
     protected void setNewDocumentHeader() throws WorkflowException {
-        TransactionalDocument newDoc = (TransactionalDocument) KNSServiceLocator.getDocumentService().getNewDocument(getDocumentHeader().getWorkflowDocument().getDocumentType());
+        TransactionalDocument newDoc = (TransactionalDocument) KNSServiceLocatorInternal.getDocumentService().getNewDocument(getDocumentHeader().getWorkflowDocument().getDocumentType());
         newDoc.getDocumentHeader().setDocumentDescription(getDocumentHeader().getDocumentDescription());
         newDoc.getDocumentHeader().setOrganizationDocumentNumber(getDocumentHeader().getOrganizationDocumentNumber());
 
@@ -390,7 +388,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     protected void addCopyErrorDocumentNote(String noteText) {
         Note note = null;
         try {
-            note = KNSServiceLocator.getDocumentService().createNoteFromDocument(this,noteText);
+            note = KNSServiceLocatorInternal.getDocumentService().createNoteFromDocument(this,noteText);
         }
         catch (Exception e) {
          logErrors();
@@ -419,7 +417,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      * @see org.kuali.rice.kns.document.Document#serializeDocumentToXml()
      */
     public String serializeDocumentToXml() {
-        DocumentSerializerService documentSerializerService = KNSServiceLocator.getDocumentSerializerService();
+        DocumentSerializerService documentSerializerService = KNSServiceLocatorInternal.getDocumentSerializerService();
         String xml = documentSerializerService.serializeDocumentToXmlForRouting(this);
         return xml;
     }
@@ -433,7 +431,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         KualiTransactionalDocumentInformation transInfo = new KualiTransactionalDocumentInformation();
         DocumentInitiator initiator = new DocumentInitiator();
         String initiatorPrincipalId = getDocumentHeader().getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
-        Person initiatorUser = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
+        Person initiatorUser = KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
         initiator.setPerson(initiatorUser);
         transInfo.setDocumentInitiator(initiator);
         KualiDocumentXmlMaterializer xmlWrapper = new KualiDocumentXmlMaterializer();
@@ -451,7 +449,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
      */
     public PropertySerializabilityEvaluator getDocumentPropertySerizabilityEvaluator() {
         String docTypeName = getDocumentHeader().getWorkflowDocument().getDocumentType();
-        DocumentEntry documentEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(docTypeName);
+        DocumentEntry documentEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(docTypeName);
         WorkflowProperties workflowProperties = documentEntry.getWorkflowProperties();
         WorkflowAttributes workflowAttributes = documentEntry.getWorkflowAttributes();
         return createPropertySerializabilityEvaluator(workflowProperties, workflowAttributes);
@@ -557,7 +555,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
         // perform validation against rules engine
         LOG.info("invoking rules engine on document " + getDocumentNumber());
         boolean isValid = true;
-        isValid = KNSServiceLocator.getKualiRuleService().applyRules(event);
+        isValid = KNSServiceLocatorInternal.getKualiRuleService().applyRules(event);
 
         // check to see if the br eval passed or failed
         if (!isValid) {
@@ -719,7 +717,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     @Deprecated 
     public void refreshPessimisticLocks() {
         this.pessimisticLocks.clear();
-        this.pessimisticLocks = KNSServiceLocator.getPessimisticLockService().getPessimisticLocksForDocument(this.documentNumber);
+        this.pessimisticLocks = KNSServiceLocatorInternal.getPessimisticLockService().getPessimisticLocksForDocument(this.documentNumber);
     }
 
     /**
@@ -780,7 +778,7 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     
     protected NoteService getNoteService() {
 		if ( noteService == null ) {
-			noteService = KNSServiceLocator.getNoteService();
+			noteService = KNSServiceLocatorInternal.getNoteService();
 		}
 		return noteService;
 	}

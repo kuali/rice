@@ -25,7 +25,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 
 /**
@@ -88,7 +88,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
     }
 
     private String performReleaseWorkgroupAuthority(boolean forValidationOnly) {
-        if (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId)){
+        if (!KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId)){
             return (getPrincipal().getPrincipalName() + " not a member of workgroup " + groupId);
         }
 

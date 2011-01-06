@@ -29,7 +29,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.KualiException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -59,7 +59,7 @@ public class ExportViewHelper {
 		if (kualiForm instanceof LookupForm) {
 			LookupForm lookupForm = (LookupForm) kualiForm;
 			if (!StringUtils.isBlank(lookupForm.getBusinessObjectClassName())) {
-				return KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(lookupForm.getBusinessObjectClassName());
+				return KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(lookupForm.getBusinessObjectClassName());
 			}
 		}
 		return null;

@@ -23,7 +23,7 @@ import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.NamespaceService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationMediationService;
 import org.kuali.rice.kns.service.RiceApplicationConfigurationService;
@@ -53,7 +53,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     	    if ( parameterValue != null ) {
                 return parameterValue;
             }
-    	    NamespaceService nsService = KNSServiceLocator.getNamespaceService();
+    	    NamespaceService nsService = KNSServiceLocatorInternal.getNamespaceService();
     	    String applicationNamespaceCode = null;
     	    Namespace namespace = nsService.getNamespace(namespaceCode);
     	    if (namespace != null) {
@@ -110,7 +110,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     	
 
     	RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-    	List<QName> serviceNames = remoteResourceServiceLocator.getServiceNamesForUnqualifiedName(KNSServiceLocator.RICE_APPLICATION_CONFIGURATION_SERVICE);
+    	List<QName> serviceNames = remoteResourceServiceLocator.getServiceNamesForUnqualifiedName(KNSServiceLocatorInternal.RICE_APPLICATION_CONFIGURATION_SERVICE);
 		
 		List<ParameterDetailType> nonDatabaseComponents = new ArrayList<ParameterDetailType>();
 		//add cache per serviceName
@@ -150,7 +150,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     
     protected RiceApplicationConfigurationService findRiceApplicationConfigurationService(String namespace) {
     	try {
-    		return (RiceApplicationConfigurationService)GlobalResourceLoader.getService(new QName(namespace, KNSServiceLocator.RICE_APPLICATION_CONFIGURATION_SERVICE));
+    		return (RiceApplicationConfigurationService)GlobalResourceLoader.getService(new QName(namespace, KNSServiceLocatorInternal.RICE_APPLICATION_CONFIGURATION_SERVICE));
     	} catch (Exception e) {
     		// if the service doesn't exist an exception is thrown
     		LOG.warn("Failed to locate RiceApplicationConfigurationService with namespace: " + namespace,e);
@@ -202,7 +202,7 @@ public class RiceApplicationConfigurationMediationServiceImpl implements RiceApp
     	}
     	if ( racService == null ) {
 	    	RemoteResourceServiceLocator remoteResourceServiceLocator = KSBResourceLoaderFactory.getRemoteResourceLocator();
-	    	List<QName> serviceNames = remoteResourceServiceLocator.getServiceNamesForUnqualifiedName(KNSServiceLocator.RICE_APPLICATION_CONFIGURATION_SERVICE);
+	    	List<QName> serviceNames = remoteResourceServiceLocator.getServiceNamesForUnqualifiedName(KNSServiceLocatorInternal.RICE_APPLICATION_CONFIGURATION_SERVICE);
 			for ( QName serviceName : serviceNames ) {
 				racService = findRiceApplicationConfigurationService(serviceName);
 				if ( racService != null ) {

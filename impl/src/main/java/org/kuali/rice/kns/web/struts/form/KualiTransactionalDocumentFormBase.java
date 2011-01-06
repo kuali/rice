@@ -26,6 +26,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -78,7 +79,7 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
      * @return
      */
     protected String discoverDocumentTypeName() {
-        return ((DataDictionaryService) KNSServiceLocator.getDataDictionaryService()).getDataDictionary().getDocumentEntry(getDocument().getClass().getName()).getDocumentTypeName();
+        return ((DataDictionaryService) KNSServiceLocatorInternal.getDataDictionaryService()).getDataDictionary().getDocumentEntry(getDocument().getClass().getName()).getDocumentTypeName();
     }
 
     /**
@@ -171,7 +172,7 @@ public class KualiTransactionalDocumentFormBase extends KualiDocumentFormBase {
 
     @SuppressWarnings("unchecked")
 	protected TransactionalDocument instantiateTransactionalDocumentByDocumentTypeName( String documentTypeName ) {
-    	Class<TransactionalDocument> transDocClass = KNSServiceLocator.getTransactionalDocumentDictionaryService().getDocumentClassByName(documentTypeName);
+    	Class<TransactionalDocument> transDocClass = KNSServiceLocatorInternal.getTransactionalDocumentDictionaryService().getDocumentClassByName(documentTypeName);
     	if ( transDocClass != null ) {
     		try {
     			return transDocClass.newInstance();

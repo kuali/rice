@@ -43,7 +43,7 @@ import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -156,7 +156,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 
 	public KimTypeInfo getKimRoleType() {
 		if ( kimRoleType == null ) {
-			kimRoleType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+			kimRoleType = KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId);
 		}
 		return kimRoleType;
 	}
@@ -202,7 +202,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 
 	public Map<String,Object> getAttributeEntry() {
 		if (attributeEntry == null || attributeEntry.isEmpty()) {
-			attributeEntry = KIMServiceLocator.getUiDocumentService().getAttributeEntries(getDefinitions());
+			attributeEntry = KIMServiceLocatorInternal.getUiDocumentService().getAttributeEntries(getDefinitions());
 		}
 		
 		return this.attributeEntry;

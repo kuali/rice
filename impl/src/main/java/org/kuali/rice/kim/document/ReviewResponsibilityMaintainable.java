@@ -26,7 +26,7 @@ import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -91,7 +91,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 				details.put( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
 			}
 			
-			KIMServiceLocator.getResponsibilityUpdateService().saveResponsibility( resp.getResponsibilityId(), 
+			KIMServiceLocatorInternal.getResponsibilityUpdateService().saveResponsibility( resp.getResponsibilityId(),
 					reviewTemplateId,
 					resp.getNamespaceCode(), 
 					resp.getName(), 
@@ -105,7 +105,7 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 	}
 	
 	protected void populateReviewTemplateInfo() {
-		KimResponsibilityTemplateInfo template = KIMServiceLocator.getResponsibilityService().getResponsibilityTemplateByName( KEWConstants.KEW_NAMESPACE, KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
+		KimResponsibilityTemplateInfo template = KIMServiceLocatorInternal.getResponsibilityService().getResponsibilityTemplateByName( KEWConstants.KEW_NAMESPACE, KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
 		
 		reviewTemplateId = template.getResponsibilityTemplateId();
 	}

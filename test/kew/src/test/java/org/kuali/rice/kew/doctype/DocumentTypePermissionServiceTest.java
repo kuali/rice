@@ -22,9 +22,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -46,7 +46,7 @@ public class DocumentTypePermissionServiceTest extends KEWTestCase {
 	@Test
 	public void canBlanketApprove() throws Exception {
 		DocumentType testDocType = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType");
-		KimPrincipal ewestfalPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
+		KimPrincipal ewestfalPrincipal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
 		assertNotNull(testDocType);
 		assertTrue("ewestfal should be a blanket approver", service.canBlanketApprove(ewestfalPrincipal.getPrincipalId(), testDocType, KEWConstants.ROUTE_HEADER_INITIATED_CD, ewestfalPrincipal.getPrincipalId()));
 		
@@ -56,13 +56,13 @@ public class DocumentTypePermissionServiceTest extends KEWTestCase {
 	@Test
 	public void testCanInitiate() throws Exception {
 		DocumentType testDocType = KEWServiceLocator.getDocumentTypeService().findByName("TestDocumentType");
-		KimPrincipal ewestfalPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
+		KimPrincipal ewestfalPrincipal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
 		assertNotNull(testDocType);
 		assertTrue("ewestfal should be allowed to initiate", service.canInitiate(ewestfalPrincipal.getPrincipalId(), testDocType));
 	}
 	
 	private void turnOnKimPermissionPriority() throws Exception {
-		Parameter kimPriorityParam = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+		Parameter kimPriorityParam = KNSServiceLocatorInternal.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
 		if (kimPriorityParam == null) {
 			kimPriorityParam = new Parameter();
 			//kimPriorityParam.set

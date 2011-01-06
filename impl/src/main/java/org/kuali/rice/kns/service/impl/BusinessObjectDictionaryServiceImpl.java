@@ -45,7 +45,7 @@ import org.kuali.rice.kns.inquiry.InquiryPresentationControllerBase;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -445,7 +445,7 @@ public class BusinessObjectDictionaryServiceImpl implements
         try {
             MaintenanceDocumentEntry entry = getMaintenanceDocumentEntry(businessObjectClass);
             if (entry != null) {
-                label = KNSServiceLocator.getWorkflowInfoService().getDocType(entry.getDocumentTypeName()).getDocTypeLabel();
+                label = KNSServiceLocatorInternal.getWorkflowInfoService().getDocType(entry.getDocumentTypeName()).getDocTypeLabel();
             }
 
         } catch (WorkflowException e) {
@@ -846,7 +846,8 @@ public class BusinessObjectDictionaryServiceImpl implements
 
         return forceInquiry;
     }
-    /**
+
+    /**
 	 * @see org.kuali.rice.kns.service.BusinessObjectDictionaryService#noLookupFieldLookup(java.lang.Class,
 	 *      java.lang.String)
      */

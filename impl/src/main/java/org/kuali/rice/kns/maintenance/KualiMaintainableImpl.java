@@ -32,6 +32,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
@@ -50,17 +51,8 @@ import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
-import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.MaintenanceDocumentService;
-import org.kuali.rice.kns.service.ModuleService;
-import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
@@ -213,7 +205,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      */
     protected Map<String, String> decryptEncryptedData(Map<String, String> fieldValues, MaintenanceDocument maintenanceDocument, String methodToCall) {
     	try {
-    		MaintenanceDocumentRestrictions auths = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
+    		MaintenanceDocumentRestrictions auths = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(maintenanceDocument, GlobalVariables.getUserSession().getPerson());
 	        for (Iterator<String> iter = fieldValues.keySet().iterator(); iter.hasNext();) {
                 String fieldName = iter.next();
                 String fieldValue = (String) fieldValues.get(fieldName);
@@ -292,7 +284,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
      */
     public List<Section> getCoreSections(MaintenanceDocument document, Maintainable oldMaintainable) {
         List<Section> sections = new ArrayList<Section>();
-        MaintenanceDocumentRestrictions maintenanceRestrictions = KNSServiceLocator.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(document, GlobalVariables.getUserSession().getPerson());
+        MaintenanceDocumentRestrictions maintenanceRestrictions = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService().getMaintenanceDocumentRestrictions(document, GlobalVariables.getUserSession().getPerson());
         
         MaintenanceDocumentPresentationController maintenanceDocumentPresentationController = (MaintenanceDocumentPresentationController) getDocumentHelperService()
 		.getDocumentPresentationController(document);
@@ -488,7 +480,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
                 } else {
                     //templatedBo = (PersistableBusinessObject) ObjectUtils.createHybridBusinessObject(collectionClass, nextBo, template);
                 	try {
-                		ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(collectionClass);
+                		ModuleService moduleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(collectionClass);
                 		if (moduleService != null && moduleService.isExternalizable(collectionClass))
                 			templatedBo = (PersistableBusinessObject)moduleService.createNewObjectFromExternalizableClass(collectionClass);
                 		else
@@ -1166,70 +1158,70 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
     public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
         if ( maintenanceDocumentDictionaryService == null ) {
-            maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+            maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
         }
         return maintenanceDocumentDictionaryService;
     }
 
     public static DataDictionaryService getDataDictionaryService() {
         if ( dataDictionaryService == null ) {
-            dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+            dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
         }
         return dataDictionaryService;
     }
 
     public static BusinessObjectService getBusinessObjectService() {
         if ( businessObjectService == null ) {
-            businessObjectService = KNSServiceLocator.getBusinessObjectService();
+            businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
         }
         return businessObjectService;
     }
 
     public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
         if ( businessObjectDictionaryService == null ) {
-            businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+            businessObjectDictionaryService = KNSServiceLocatorInternal.getBusinessObjectDictionaryService();
         }
         return businessObjectDictionaryService;
     }
 
     public static EncryptionService getEncryptionService() {
         if ( encryptionService == null ) {
-            encryptionService = KNSServiceLocator.getEncryptionService();
+            encryptionService = KNSServiceLocatorInternal.getEncryptionService();
         }
         return encryptionService;
     }
 
     public static org.kuali.rice.kim.service.PersonService getPersonService() {
         if ( personService == null ) {
-            personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
+            personService = KIMServiceLocator.getPersonService();
         }
         return personService;
     }
 
     public static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
         if ( businessObjectMetaDataService == null ) {
-            businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+            businessObjectMetaDataService = KNSServiceLocatorInternal.getBusinessObjectMetaDataService();
         }
         return businessObjectMetaDataService;
     }
 
     public static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
     	if (businessObjectAuthorizationService == null) {
-    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+    		businessObjectAuthorizationService = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService();
     	}
     	return businessObjectAuthorizationService;
     }
     
     public static MaintenanceDocumentService getMaintenanceDocumentService() {
     	if (maintenanceDocumentService == null) {
-    		maintenanceDocumentService = KNSServiceLocator.getMaintenanceDocumentService();
+    		maintenanceDocumentService = KNSServiceLocatorInternal.getMaintenanceDocumentService();
     	}
     	return maintenanceDocumentService;
     }
     
     public static DocumentHelperService getDocumentHelperService() {
     	if (documentHelperService == null) {
-    		documentHelperService = KNSServiceLocator.getDocumentHelperService();
+    		documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
     	}
     	return documentHelperService;
     }
@@ -1478,7 +1470,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 		if(businessObject == null)
 			return;
 		
-		KNSServiceLocator.getBusinessObjectService().delete(businessObject);
+		KNSServiceLocatorInternal.getBusinessObjectService().delete(businessObject);
 		businessObject = null;	
 	}
 

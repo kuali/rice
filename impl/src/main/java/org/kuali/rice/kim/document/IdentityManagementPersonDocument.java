@@ -61,11 +61,11 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.GlobalVariables;
 
@@ -352,7 +352,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         super.doRouteStatusChange(statusChangeEvent);
         if (getDocumentHeader().getWorkflowDocument().stateIsProcessed()) {
         	setIfRolesEditable();
-            KIMServiceLocator.getUiDocumentService().saveEntityPerson(this);
+            KIMServiceLocatorInternal.getUiDocumentService().saveEntityPerson(this);
         }
     }
 
@@ -501,8 +501,8 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     }
 
     public KimTypeAttributesHelper getKimTypeAttributesHelper(String roleId) {
-        KimRoleInfo roleInfo = KIMServiceLocator.getRoleService().getRole(roleId);
-        KimTypeInfo kimTypeInfo = KIMServiceLocator.getTypeInfoService().getKimType(roleInfo.getKimTypeId());
+        KimRoleInfo roleInfo = KIMServiceLocatorInternal.getRoleService().getRole(roleId);
+        KimTypeInfo kimTypeInfo = KIMServiceLocatorInternal.getTypeInfoService().getKimType(roleInfo.getKimTypeId());
         return new KimTypeAttributesHelper(kimTypeInfo);
         //addDelegationRoleKimTypeAttributeHelper(roleId, helper);
     }
@@ -540,14 +540,14 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
-	        documentHelperService = KNSServiceLocator.getDocumentHelperService();
+	        documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
 		}
 	    return this.documentHelperService;
 	}
 
 	protected UiDocumentService getUiDocumentService() {
 	    if (uiDocumentService == null ) {
-	    	uiDocumentService = KIMServiceLocator.getUiDocumentService();
+	    	uiDocumentService = KIMServiceLocatorInternal.getUiDocumentService();
 		}
 	    return this.uiDocumentService;
 	}

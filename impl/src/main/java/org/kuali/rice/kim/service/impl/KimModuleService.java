@@ -27,11 +27,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.reference.KimCode;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KimTypeInfoService;
-import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -160,21 +156,21 @@ public class KimModuleService extends ModuleServiceBase {
 
 	protected RoleService getKimRoleService() {
 		if ( kimRoleService == null ) {
-			kimRoleService = KIMServiceLocator.getRoleManagementService();
+			kimRoleService = KIMServiceLocatorInternal.getRoleManagementService();
 		}
 		return kimRoleService;
 	}
 
 	protected GroupService getGroupService() {
 		if ( groupService == null ) {
-			groupService = KIMServiceLocator.getGroupService();
+			groupService = KIMServiceLocatorInternal.getGroupService();
 		}
 		return groupService;
 	}
 
 	protected KimTypeInfoService getTypeInfoService() {
 		if(kimTypeInfoService == null){
-			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

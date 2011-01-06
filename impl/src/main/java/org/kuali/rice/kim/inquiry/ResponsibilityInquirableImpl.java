@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -38,7 +38,7 @@ import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -105,7 +105,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
     	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
 		if(assignedToRoles!=null && !assignedToRoles.isEmpty()){
 			List<String> primaryKeys = Collections.singletonList(ROLE_ID);
-			RoleService roleService = KIMServiceLocator.getRoleService();
+			RoleService roleService = KIMServiceLocatorInternal.getRoleService();
 			for(RoleImpl roleImpl: assignedToRoles){
 				KimRoleInfo roleInfo = roleService.getRole(roleImpl.getRoleId());
 				AnchorHtmlData inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleImpl.class, roleInfo, primaryKeys, 
@@ -128,13 +128,13 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("responsibilityId", fieldValues.get("responsibilityId").toString());
-		KimResponsibilityImpl responsibilityImpl = (KimResponsibilityImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimResponsibilityImpl.class, criteria);
+		KimResponsibilityImpl responsibilityImpl = (KimResponsibilityImpl) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(KimResponsibilityImpl.class, criteria);
 		return getResponsibilitiesSearchResultsCopy(responsibilityImpl);
 	}
 
 	public ResponsibilityService getResponsibilityService() {
 		if (responsibilityService == null ) {
-			responsibilityService = KIMServiceLocator.getResponsibilityService();
+			responsibilityService = KIMServiceLocatorInternal.getResponsibilityService();
 		}
 		return responsibilityService;
 	}
@@ -151,7 +151,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("responsibilityId", responsibilitySearchResultCopy.getResponsibilityId());
 		List<RoleResponsibilityImpl> roleResponsibilitys = 
-			(List<RoleResponsibilityImpl>)KNSServiceLocator.getBusinessObjectService().findMatching(RoleResponsibilityImpl.class, criteria);
+			(List<RoleResponsibilityImpl>) KNSServiceLocatorInternal.getBusinessObjectService().findMatching(RoleResponsibilityImpl.class, criteria);
 		List<RoleImpl> assignedToRoles = new ArrayList<RoleImpl>();
 		for(RoleResponsibilityImpl roleResponsibilityImpl: roleResponsibilitys){
 			assignedToRoles.add(getRoleImpl(roleResponsibilityImpl.getRoleId()));

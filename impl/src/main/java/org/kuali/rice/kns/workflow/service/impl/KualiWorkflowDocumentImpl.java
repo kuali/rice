@@ -37,7 +37,8 @@ import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
@@ -161,7 +162,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
     }
     
     public String getInitiatorNetworkId() {
-    	return KIMServiceLocator.getIdentityManagementService().getPrincipal(getInitiatorPrincipalId()).getPrincipalName();
+    	return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(getInitiatorPrincipalId()).getPrincipalName();
     }
     
     public String getInitiatorPrincipalId() {
@@ -169,7 +170,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
     }
     
     public String getRoutedByUserNetworkId() {
-    	return KIMServiceLocator.getIdentityManagementService().getPrincipal(getRoutedByPrincipalId()).getPrincipalName();
+    	return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(getRoutedByPrincipalId()).getPrincipalName();
     }
     
     public String getRoutedByPrincipalId() {
@@ -269,7 +270,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         KualiWorkflowInfo workflowInfo = null;
         try {
             routeHeaderId = getRouteHeaderId();
-            workflowInfo = KNSServiceLocator.getWorkflowInfoService();
+            workflowInfo = KNSServiceLocatorInternal.getWorkflowInfoService();
             String principalId = workflowDocument.getPrincipalId();
             ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(routeHeaderId);
             for (int actionRequestIndex = 0; actionRequestIndex < actionRequests.length; actionRequestIndex++) {
@@ -278,7 +279,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
                         isAdHocRequested = true;
                     }
                     else if (actionRequests[actionRequestIndex].isGroupRequest()) {
-                    	if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequests[actionRequestIndex].getGroupId())) {
+                    	if (KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(principalId, actionRequests[actionRequestIndex].getGroupId())) {
                     		isAdHocRequested = true;
                     	}
                     }
@@ -590,7 +591,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getAllPriorApprovers()
      */
     public Set<Person> getAllPriorApprovers() throws WorkflowException {
-        org.kuali.rice.kim.service.PersonService personService = org.kuali.rice.kim.service.KIMServiceLocator.getPersonService();
+        org.kuali.rice.kim.service.PersonService personService = KIMServiceLocator.getPersonService();
         ActionTakenDTO[] actionsTaken = workflowDocument.getActionsTaken();
         Set<String> principalIds = new HashSet<String>();
         Set<Person> persons = new HashSet<Person>();

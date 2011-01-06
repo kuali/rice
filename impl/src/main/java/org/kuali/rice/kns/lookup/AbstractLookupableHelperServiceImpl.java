@@ -41,18 +41,8 @@ import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.InputHtmlData;
-import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.ParameterService;
-import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -166,7 +156,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * @return Returns the dataDictionaryService.
 	  */
 	 public DataDictionaryService getDataDictionaryService() {
-		 return dataDictionaryService != null ? dataDictionaryService : KNSServiceLocator.getDataDictionaryService();
+		 return dataDictionaryService != null ? dataDictionaryService : KNSServiceLocatorInternal.getDataDictionaryService();
 	 }
 
 	 /**
@@ -182,7 +172,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * @return Returns the businessObjectDictionaryService.
 	  */
 	 public BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
-		 return businessObjectDictionaryService != null ? businessObjectDictionaryService : KNSServiceLocator.getBusinessObjectDictionaryService();
+		 return businessObjectDictionaryService != null ? businessObjectDictionaryService : KNSServiceLocatorInternal.getBusinessObjectDictionaryService();
 	 }
 
 	 /**
@@ -198,7 +188,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * @return Returns the businessObjectMetaDataService.
 	  */
 	 public BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
-		 return businessObjectMetaDataService != null ? businessObjectMetaDataService : KNSServiceLocator.getBusinessObjectMetaDataService();
+		 return businessObjectMetaDataService != null ? businessObjectMetaDataService : KNSServiceLocatorInternal.getBusinessObjectMetaDataService();
 	 }
 
 	 /**
@@ -230,7 +220,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * @return Returns the encryptionService.
 	  */
 	 protected EncryptionService getEncryptionService() {
-		 return encryptionService != null ? encryptionService : KNSServiceLocator.getEncryptionService();
+		 return encryptionService != null ? encryptionService : KNSServiceLocatorInternal.getEncryptionService();
 	 }
 
 	 /**
@@ -245,7 +235,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
 	 public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		 if ( maintenanceDocumentDictionaryService == null ) {
-			 maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+			 maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
 		 }
 		 return maintenanceDocumentDictionaryService;
 	 }
@@ -254,7 +244,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
 	 public BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
 		 if ( businessObjectAuthorizationService == null ) {
-			 businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+			 businessObjectAuthorizationService = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService();
 		 }
 		 return businessObjectAuthorizationService;
 	 }
@@ -263,7 +253,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
 	 public Inquirable getKualiInquirable() {
 		 if ( kualiInquirable == null ) {
-			 kualiInquirable = KNSServiceLocator.getKualiInquirable();
+			 kualiInquirable = KNSServiceLocatorInternal.getKualiInquirable();
 		 }
 		 return kualiInquirable;
 	 }
@@ -280,7 +270,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
 	 public KualiConfigurationService getKualiConfigurationService() {
     if ( configurationService == null ) {
-        configurationService = KNSServiceLocator.getKualiConfigurationService();
+        configurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
     }
         return configurationService;
     }
@@ -293,7 +283,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
     public ParameterService getParameterService() {
 	if ( parameterService == null ) {
-	    parameterService = KNSServiceLocator.getParameterService();
+	    parameterService = KNSServiceLocatorInternal.getParameterService();
 		 }
         return parameterService;
 	 }
@@ -413,7 +403,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 			 allowsMaintain = getBusinessObjectAuthorizationService().canMaintain(businessObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);            
 		 }     
 
-		 allowsDelete = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getAllowsRecordDeletion(businessObjectClass);
+		 allowsDelete = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getAllowsRecordDeletion(businessObjectClass);
 
 		 return allowsDelete&&allowsMaintain;
 	 }
@@ -538,7 +528,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		 String prependTitleText = displayText+" "
 		 +getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(getBusinessObjectClass().getName()).getObjectLabel()
 		 +" "
-		 +KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
+		 + KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(TITLE_ACTION_URL_PREPENDTEXT_PROPERTY);
 		 return HtmlData.getTitleText(prependTitleText, businessObject, pkNames, businessObjectRestrictions);
 	 }
 
@@ -737,7 +727,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 final public HtmlData getReturnUrl(BusinessObject businessObject, Map fieldConversions, String lookupImpl, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions){
 		 String href = getReturnHref(businessObject, fieldConversions, lookupImpl, returnKeys);
 		 String returnUrlAnchorLabel =
-			 KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
+			 KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
 		 AnchorHtmlData anchor = new AnchorHtmlData(href, HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys, businessObjectRestrictions));
 		 anchor.setDisplayText(returnUrlAnchorLabel);
 		 return anchor;
@@ -775,7 +765,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
 	 protected HtmlData getReturnInputHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions){
 		 String returnUrlAnchorLabel =
-			 KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
+			 KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
 		 String name = KNSConstants.MULTIPLE_VALUE_LOOKUP_SELECTED_OBJ_ID_PARAM_PREFIX+lookupForm.getLookupObjectId();
 		 InputHtmlData input = new InputHtmlData(name, InputHtmlData.CHECKBOX_INPUT_TYPE);
 		 input.setTitle(HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys, businessObjectRestrictions));
@@ -792,7 +782,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 
 	 protected HtmlData getReturnAnchorHtmlData(BusinessObject businessObject, Properties parameters, LookupForm lookupForm, List returnKeys, BusinessObjectRestrictions businessObjectRestrictions){
 		 String returnUrlAnchorLabel =
-			 KNSServiceLocator.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
+			 KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(TITLE_RETURN_URL_PREPENDTEXT_PROPERTY);
 		 AnchorHtmlData anchor = new AnchorHtmlData(
 				 getReturnHref(parameters, lookupForm, returnKeys),
 				 HtmlData.getTitleText(returnUrlAnchorLabel, businessObject, returnKeys, businessObjectRestrictions));
@@ -913,7 +903,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * @return Returns the lookupService.
 	  */
 	 protected LookupService getLookupService() {
-		 return lookupService != null ? lookupService : KNSServiceLocator.getLookupService();
+		 return lookupService != null ? lookupService : KNSServiceLocatorInternal.getLookupService();
 	 }
 
 	 /**
@@ -1101,7 +1091,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 		for (Iterator iter = displayList.iterator(); iter.hasNext();) {
 			BusinessObject element = (BusinessObject) iter.next();
 
-			final String lookupId = KNSServiceLocator.getLookupResultsService().getLookupId(element);
+			final String lookupId = KNSServiceLocatorInternal.getLookupResultsService().getLookupId(element);
 			if (lookupId != null) {
 				lookupForm.setLookupObjectId(lookupId);
 			}
@@ -1267,7 +1257,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 
 	 protected SequenceAccessorService getSequenceAccessorService() {
-		 return sequenceAccessorService != null ? sequenceAccessorService : KNSServiceLocator.getSequenceAccessorService();
+		 return sequenceAccessorService != null ? sequenceAccessorService : KNSServiceLocatorInternal.getSequenceAccessorService();
 	 }
 
 	 public void setSequenceAccessorService(SequenceAccessorService sequenceAccessorService) {
@@ -1275,7 +1265,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 
 	 public BusinessObjectService getBusinessObjectService() {
-		 return businessObjectService != null ? businessObjectService : KNSServiceLocator.getBusinessObjectService();
+		 return businessObjectService != null ? businessObjectService : KNSServiceLocatorInternal.getBusinessObjectService();
 	 }
 
 	 public void setBusinessObjectService(BusinessObjectService businessObjectService) {
@@ -1283,7 +1273,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	 }
 
 	 protected LookupResultsService getLookupResultsService() {
-		 return lookupResultsService != null ? lookupResultsService : KNSServiceLocator.getLookupResultsService();
+		 return lookupResultsService != null ? lookupResultsService : KNSServiceLocatorInternal.getLookupResultsService();
 	 }
 
 	 public void setLookupResultsService(LookupResultsService lookupResultsService) {

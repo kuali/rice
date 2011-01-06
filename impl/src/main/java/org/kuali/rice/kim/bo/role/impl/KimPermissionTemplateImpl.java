@@ -26,7 +26,7 @@ import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.KimPermissionTemplate;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -72,7 +72,7 @@ public class KimPermissionTemplateImpl extends PersistableBusinessObjectBase imp
 	}
 
 	public KimTypeInfo getKimType() {
-		return KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+		return KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId);
 	}
 
 	/**

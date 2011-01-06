@@ -36,7 +36,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 
 
@@ -182,10 +182,10 @@ public class DTOConverterTest extends KEWTestCase {
     @Test public void testConvertActionItem() throws Exception {
         // get test data
         String testWorkgroupName = "TestWorkgroup";
-        Group testWorkgroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, testWorkgroupName);
+        Group testWorkgroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, testWorkgroupName);
         String testWorkgroupId = testWorkgroup.getGroupId();
-        assertTrue("Test workgroup '" + testWorkgroupName + "' should have at least one user", KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getGroupId()).size() > 0);
-        String workflowId = KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getGroupId()).get(0);
+        assertTrue("Test workgroup '" + testWorkgroupName + "' should have at least one user", KIMServiceLocatorInternal.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getGroupId()).size() > 0);
+        String workflowId = KIMServiceLocatorInternal.getIdentityManagementService().getDirectGroupMemberPrincipalIds(testWorkgroup.getGroupId()).get(0);
         assertNotNull("User from workgroup should not be null", workflowId);
         String actionRequestCd = KEWConstants.ACTION_REQUEST_ACKNOWLEDGE_REQ;
         Long actionRequestId = Long.valueOf(4);

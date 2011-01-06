@@ -24,12 +24,12 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 
 /**
@@ -80,7 +80,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 
 	public Map<String,Object> getAttributeEntry() {
 		if(attributeEntry==null || attributeEntry.isEmpty())
-			attributeEntry = KIMServiceLocator.getUiDocumentService().getAttributeEntries(getDefinitions());
+			attributeEntry = KIMServiceLocatorInternal.getUiDocumentService().getAttributeEntries(getDefinitions());
 		return attributeEntry;
 	}
 
@@ -133,7 +133,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 
 	protected SequenceAccessorService getSequenceAccessorService(){
 		if(this.sequenceAccessorService==null){
-	    	this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+	    	this.sequenceAccessorService = KNSServiceLocatorInternal.getSequenceAccessorService();
 		}
 		return this.sequenceAccessorService;
 	}

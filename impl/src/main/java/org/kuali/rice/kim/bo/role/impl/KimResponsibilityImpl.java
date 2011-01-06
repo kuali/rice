@@ -38,12 +38,12 @@ import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.springframework.util.AutoPopulatingList;
 
 /**
@@ -279,7 +279,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	transient private DataDictionaryService dataDictionaryService;
 	public DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
-			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}
@@ -287,7 +287,7 @@ public class KimResponsibilityImpl extends PersistableBusinessObjectBase impleme
 	private transient static KimTypeInfoService kimTypeInfoService;
 	protected KimTypeInfoService getTypeInfoService() {
 		if(kimTypeInfoService == null){
-			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

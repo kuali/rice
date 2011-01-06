@@ -78,7 +78,7 @@ public class MaintenanceDocumentDaoOjb extends PlatformAwareDaoBaseOjb implement
 //            }
 //            criteria.addIn("documentNumber", documentNumbers);
 //
-//            MaintenanceDocumentEntry entry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getMaintenanceDocumentEntryForBusinessObjectClass(businessObjectClass);
+//            MaintenanceDocumentEntry entry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getMaintenanceDocumentEntryForBusinessObjectClass(businessObjectClass);
 //            return getPersistenceBrokerTemplate().getCollectionByQuery(QueryFactory.newQuery(entry.getStandardDocumentBaseClass(), criteria));
 //        } else {
 //            return maintenanceLocks;

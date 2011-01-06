@@ -21,7 +21,7 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -38,7 +38,7 @@ public class GroupXmlExporterTest extends XmlExporterTestCase {
      */
     @Override
     protected void assertExport() throws Exception {
-        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
         List<? extends Group> oldGroups = identityManagementService.getGroupsForPrincipal(identityManagementService.getPrincipalByPrincipalName("ewestfal").getPrincipalId());
 
         ExportDataSet dataSet = new ExportDataSet();
@@ -59,7 +59,7 @@ public class GroupXmlExporterTest extends XmlExporterTestCase {
         //clearLifeCycle.getTablesToClear().add("EN_DOC_TYP_T");
         //clearLifeCycle.start();
         //new ClearCacheLifecycle().stop();
-        //KIMServiceLocator.getGroupService().
+        //KIMServiceLocatorInternal.getGroupService().
 
         // import the exported xml
         //loadXmlStream(new BufferedInputStream(new ByteArrayInputStream(xmlBytes)));

@@ -26,7 +26,6 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
@@ -36,11 +35,8 @@ import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.datadictionary.HelpDefinition;
 import org.kuali.rice.kns.datadictionary.LookupDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.form.KualiHelpForm;
@@ -65,26 +61,26 @@ public class KualiHelpAction extends KualiAction {
 
     private DataDictionaryService getDataDictionaryService() {
         if ( dataDictionaryService == null ) {
-            dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+            dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
         }
         return dataDictionaryService;
     }
     private KualiConfigurationService getConfigurationService() {
         if ( kualiConfigurationService == null ) {
-            kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+            kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
         }
         return kualiConfigurationService;
     }
     private ParameterService getParameterService() {
         if ( parameterService == null ) {
-            parameterService = KNSServiceLocator.getParameterService();
+            parameterService = KNSServiceLocatorInternal.getParameterService();
         }
         return parameterService;
     }
 
     private MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
         if ( maintenanceDocumentDictionaryService == null ) {
-            maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+            maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
         }
         return maintenanceDocumentDictionaryService;
     }
@@ -230,7 +226,7 @@ public class KualiHelpAction extends KualiAction {
         HelpDefinition helpDefinition = null;
         String apcHelpUrl = null;
         if (entry != null) {
-            DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(entry.getDocumentTypeName());
+            DocumentTypeDTO docType = KNSServiceLocatorInternal.getWorkflowInfoService().getDocType(entry.getDocumentTypeName());
             label = docType.getDocTypeLabel();
             description = docType.getDocTypeDescription();
             if (StringUtils.isNotBlank(docType.getHelpDefinitionUrl())) {
@@ -424,7 +420,7 @@ public class KualiHelpAction extends KualiAction {
     	}
     	// handle doc search custom help urls
     	if (!StringUtils.isEmpty(helpForm.getSearchDocumentTypeName())) {
-    	    DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(helpForm.getSearchDocumentTypeName());
+    	    DocumentTypeDTO docType = KNSServiceLocatorInternal.getWorkflowInfoService().getDocType(helpForm.getSearchDocumentTypeName());
     	    if (!StringUtils.isEmpty(docType.getDocSearchHelpUrl())) {
     	        String docSearchHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getDocSearchHelpUrl();
 

@@ -23,7 +23,7 @@ import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kim.bo.ui.PersonDocumentName;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -41,7 +41,7 @@ public class NameTitleValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
 
-    	List<String> values = KNSServiceLocator.getParameterService().getParameterValues(
+    	List<String> values = KNSServiceLocatorInternal.getParameterService().getParameterValues(
     			KimConstants.NAMESPACE_CODE, PARAM_BO_CLASSNAME, "PREFIXES"
     			);
         List<KeyValue> labels = new ArrayList<KeyValue>();

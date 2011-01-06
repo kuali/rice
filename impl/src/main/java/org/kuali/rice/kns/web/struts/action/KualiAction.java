@@ -37,7 +37,7 @@ import org.kuali.rice.core.service.Demonstration;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -45,7 +45,7 @@ import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -139,7 +139,7 @@ public abstract class KualiAction extends DispatchAction {
         // check if demonstration encryption is enabled
         if ( LOG.isEnabledFor(Level.WARN) ) {
 	        if ( OUTPUT_ENCRYPTION_WARNING == null ) {
-	        	OUTPUT_ENCRYPTION_WARNING = KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocator.getEncryptionService() instanceof Demonstration; 
+	        	OUTPUT_ENCRYPTION_WARNING = KNSServiceLocatorInternal.getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.CHECK_ENCRYPTION_SERVICE_OVERRIDE_IND) && KNSServiceLocatorInternal.getEncryptionService() instanceof Demonstration;
 	        }
 	        if ( OUTPUT_ENCRYPTION_WARNING.booleanValue() ) {
 	            LOG.warn("WARNING: This implementation of Kuali uses the demonstration encryption framework.");
@@ -454,7 +454,7 @@ public abstract class KualiAction extends DispatchAction {
 				if ( LOG.isDebugEnabled() ) {
 					LOG.debug( "BO Class " + boClassName + " not found in the current context, checking the RiceApplicationConfigurationService." );
 				}
-				baseLookupUrl = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getBaseLookupUrl(boClassName);
+				baseLookupUrl = KNSServiceLocatorInternal.getRiceApplicationConfigurationMediationService().getBaseLookupUrl(boClassName);
 				if ( LOG.isDebugEnabled() ) {
 					LOG.debug( "URL Returned from KSB: " + baseLookupUrl );
 				}
@@ -691,7 +691,7 @@ public abstract class KualiAction extends DispatchAction {
         	Class.forName(boClassName);
         	inquiryUrl = getApplicationBaseUrl() + "/kr/" + KNSConstants.DIRECT_INQUIRY_ACTION;
         } catch ( ClassNotFoundException ex ) {
-        	inquiryUrl = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getBaseInquiryUrl(boClassName);
+        	inquiryUrl = KNSServiceLocatorInternal.getRiceApplicationConfigurationMediationService().getBaseInquiryUrl(boClassName);
         }
         inquiryUrl = UrlFactory.parameterizeUrl(inquiryUrl, parameters);
         return new ActionForward(inquiryUrl, true);
@@ -837,7 +837,7 @@ public abstract class KualiAction extends DispatchAction {
         String fullParameter = (String) request.getAttribute(KNSConstants.METHOD_TO_CALL_ATTRIBUTE);
         String conversionFields = StringUtils.substringBetween(fullParameter, KNSConstants.METHOD_TO_CALL_PARM1_LEFT_DEL, KNSConstants.METHOD_TO_CALL_PARM1_RIGHT_DEL);
 
-        String deploymentBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY);
+        String deploymentBaseUrl = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY);
         String workgroupLookupUrl = deploymentBaseUrl + "/Lookup.do?lookupableImplServiceName=WorkGroupLookupableImplService&methodToCall=start&docFormKey=" + GlobalVariables.getUserSession().addObjectWithGeneratedKey(form);
 
         if (conversionFields != null) {
@@ -891,7 +891,7 @@ public abstract class KualiAction extends DispatchAction {
     	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
     	AttributeSet permissionDetails = KimCommonUtils.getNamespaceAndActionClass(this.getClass());
     	
-        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE, 
+        if (!KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
         {
             throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
@@ -909,7 +909,7 @@ public abstract class KualiAction extends DispatchAction {
 
     protected static KualiModuleService getKualiModuleService() {
         if ( kualiModuleService == null ) {
-            kualiModuleService = KNSServiceLocator.getKualiModuleService();
+            kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
         }
         return kualiModuleService;
     }
@@ -1125,21 +1125,21 @@ public abstract class KualiAction extends DispatchAction {
     
     protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
     	if (businessObjectAuthorizationService == null) {
-    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+    		businessObjectAuthorizationService = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService();
     	}
     	return businessObjectAuthorizationService;
     }
     
     protected EncryptionService getEncryptionService() {
     	if (encryptionService == null) {
-    		encryptionService = KNSServiceLocator.getEncryptionService();
+    		encryptionService = KNSServiceLocatorInternal.getEncryptionService();
     	}
     	return encryptionService;
     }
 
 	public static String getApplicationBaseUrl() {
 		if ( applicationBaseUrl == null ) {
-			applicationBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
+			applicationBaseUrl = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
 		}
 		return applicationBaseUrl;
 	}

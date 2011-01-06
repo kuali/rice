@@ -38,6 +38,7 @@ import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -504,7 +505,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 */
 	public static IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}

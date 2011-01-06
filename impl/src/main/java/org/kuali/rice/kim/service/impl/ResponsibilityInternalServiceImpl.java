@@ -32,7 +32,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.service.ResponsibilityInternalService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -139,7 +139,7 @@ public class ResponsibilityInternalServiceImpl implements ResponsibilityInternal
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

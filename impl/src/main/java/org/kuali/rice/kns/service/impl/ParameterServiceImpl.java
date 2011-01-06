@@ -23,11 +23,10 @@ import java.util.Map;
 
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.ParameterServerService;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -50,7 +49,7 @@ public class ParameterServiceImpl extends ParameterServiceBase implements Parame
 	protected LookupService lookupService;
 	
 	public Parameter retrieveParameter(String namespaceCode, String detailTypeCode, String parameterName) {
-	    String applicationNamespace = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_CODE);
+	    String applicationNamespace = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_CODE);
 	    if (StringUtils.isEmpty(applicationNamespace)) {
 	        applicationNamespace = KNSConstants.DEFAULT_APPLICATION_CODE;
 	    }
@@ -104,7 +103,7 @@ public class ParameterServiceImpl extends ParameterServiceBase implements Parame
     }    
 	
 	public List<ParameterDetailType> getNonDatabaseComponents() {
-		return KNSServiceLocator.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
+		return KNSServiceLocatorInternal.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -120,14 +119,14 @@ public class ParameterServiceImpl extends ParameterServiceBase implements Parame
 
 	protected LookupService getLookupService() {
 		if ( lookupService == null ) {
-			lookupService = KNSServiceLocator.getLookupService();
+			lookupService = KNSServiceLocatorInternal.getLookupService();
 		}
 		return lookupService;
 	}
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return this.businessObjectService;
 	}	

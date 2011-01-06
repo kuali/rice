@@ -23,7 +23,7 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -323,7 +323,7 @@ public abstract class GroupServiceBase {
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
@@ -333,7 +333,7 @@ public abstract class GroupServiceBase {
 	 */
     protected LookupService getLookupService() {
 		if(lookupService == null) {
-			lookupService = KNSServiceLocator.getLookupService();
+			lookupService = KNSServiceLocatorInternal.getLookupService();
 		}
 		return lookupService;
     }

@@ -27,7 +27,7 @@ import org.kuali.rice.kns.exception.ExceptionIncident;
 import org.kuali.rice.kns.exception.KualiException;
 import org.kuali.rice.kns.exception.KualiExceptionIncident;
 import org.kuali.rice.kns.mail.MailMessage;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiExceptionIncidentService;
 import org.kuali.rice.kns.service.MailService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -131,7 +131,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         // First check if message template already define mailing list
         Set emails=messageTemplate.getToAddresses();
         if (emails == null || emails.isEmpty()) {
-            String mailingList=KNSServiceLocator.getKualiConfigurationService().getPropertyString(REPORT_MAIL_LIST);
+            String mailingList= KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(REPORT_MAIL_LIST);
             if (mailingList == null || mailingList.trim().length() == 0) {
                 String em=REPORT_MAIL_LIST+"?";
                 LOG.error(em);

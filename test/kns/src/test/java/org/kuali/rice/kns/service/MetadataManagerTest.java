@@ -86,14 +86,14 @@ public class MetadataManagerTest extends KNSTestCase {
 	 */
 	@Test
 	public void testPKObjectForEntity() {
-		ParameterType parameterType = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ParameterType.class, "CONFG");
+		ParameterType parameterType = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(ParameterType.class, "CONFG");
 		assertNotNull("ParameterType should not be null", parameterType);
 		
 		Object pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(parameterType);
 		assertEquals("Single pkValue should be of class String", String.class, pkValue.getClass());
 		assertEquals("Single pkValue should be \"CONFG\"", "CONFG", pkValue);
 		
-		Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter("KR-NS", "Lookup", "MULTIPLE_VALUE_RESULTS_PER_PAGE");
+		Parameter parameter = KNSServiceLocatorInternal.getParameterService().retrieveParameter("KR-NS", "Lookup", "MULTIPLE_VALUE_RESULTS_PER_PAGE");
 		assertNotNull("State should not be null", parameter);
 		
 		pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(parameter);
@@ -110,7 +110,7 @@ public class MetadataManagerTest extends KNSTestCase {
 	 */
 	@Test
 	public void testPKObjectForExtension() {
-		final Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, "a1");
+		final Account account = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(Account.class, "a1");
 		assertNotNull("Account should not be null", account);
 		final AccountExtension accountExtension = (AccountExtension)account.getExtension();
 		

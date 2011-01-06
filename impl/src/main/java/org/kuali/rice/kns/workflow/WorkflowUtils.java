@@ -28,7 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowFunctionResolver;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -122,7 +122,7 @@ public final class WorkflowUtils {
         params.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, "getAttributeHelpText");
         params.put(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE, field.getBusinessObjectClassName());
         params.put(KNSPropertyConstants.ATTRIBUTE_NAME, field.getPropertyName());
-        String baseUrl = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getBaseHelpUrl(field.getBusinessObjectClassName());
+        String baseUrl = KNSServiceLocatorInternal.getRiceApplicationConfigurationMediationService().getBaseHelpUrl(field.getBusinessObjectClassName());
         if (baseUrl == null) {
         	return null;
         }
@@ -137,7 +137,7 @@ public final class WorkflowUtils {
      * @return the label from the data dictionary for the given Class and attributeName or null if not found
      */
     public static final String getBusinessObjectAttributeLabel(Class businessObjectClass, String attributeName) {
-        return KNSServiceLocator.getDataDictionaryService().getAttributeLabel(businessObjectClass, attributeName);
+        return KNSServiceLocatorInternal.getDataDictionaryService().getAttributeLabel(businessObjectClass, attributeName);
     }
 
 

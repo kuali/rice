@@ -22,7 +22,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.test.KIMTestCase;
 
@@ -38,7 +38,7 @@ public class PermissionServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		setPermissionService(KIMServiceLocator.getPermissionService());
+		setPermissionService(KIMServiceLocatorInternal.getPermissionService());
 	}
 
 	@Test

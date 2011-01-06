@@ -27,8 +27,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -65,10 +64,10 @@ public class DisplayInactivationBlockersForm extends KualiForm {
 			throw new IllegalArgumentException("BO Class is not a BusinessObject: " + businessObjectClassName);
 		}
 		
-		EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
-		BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+		EncryptionService encryptionService = KNSServiceLocatorInternal.getEncryptionService();
+		BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService();
 		
-		List primaryKeyFieldNames = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+		List primaryKeyFieldNames = KNSServiceLocatorInternal.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
 		for (Iterator i = primaryKeyFieldNames.iterator(); i.hasNext();) {
 			String primaryKeyFieldName = (String) i.next();
 			

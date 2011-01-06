@@ -22,7 +22,6 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ModuleConfigurer.RunMode;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.KimType;
-import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -33,15 +32,14 @@ import org.kuali.rice.kim.util.KimConstants;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public final class KIMServiceLocator {
+public final class KIMServiceLocatorInternal {
 
-	private static final Logger LOG = Logger.getLogger(KIMServiceLocator.class);
+	private static final Logger LOG = Logger.getLogger(KIMServiceLocatorInternal.class);
 
 	public static final String KIM_RUN_MODE_PROPERTY = "kim.mode";
 	
     public static final String KIM_IDENTITY_MANAGEMENT_SERVICE = "kimIdentityManagementService";
     public static final String KIM_ROLE_MANAGEMENT_SERVICE = "kimRoleManagementService";
-	public static final String KIM_PERSON_SERVICE = "personService";
 
     public static final String KIM_IDENTITY_SERVICE = "kimIdentityService";
     public static final String KIM_IDENTITY_UPDATE_SERVICE = "kimIdentityUpdateService";
@@ -184,14 +182,6 @@ public final class KIMServiceLocator {
 
     public static UiDocumentService getUiDocumentService() {
     	return (UiDocumentService)getService(KIM_UI_DOCUMENT_SERVICE);
-    }
-
-    @SuppressWarnings("unchecked")
-	public static PersonService getPersonService() {
-    	if ( LOG.isDebugEnabled() ) {
-			LOG.debug("Fetching service " + KIM_PERSON_SERVICE);
-		}
-    	return (PersonService) GlobalResourceLoader.getResourceLoader().getService(new QName(KIM_PERSON_SERVICE));
     }
 
     public static GroupInternalService getGroupInternalService() {

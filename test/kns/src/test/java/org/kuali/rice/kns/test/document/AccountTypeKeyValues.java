@@ -21,7 +21,7 @@ import java.util.List;
 
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.test.document.bo.AccountType;
 
 public class AccountTypeKeyValues extends KeyValuesBase {
@@ -29,7 +29,7 @@ public class AccountTypeKeyValues extends KeyValuesBase {
     public List getKeyValues() {
         List keyValues = new ArrayList();
 
-        Collection<AccountType> bos = KNSServiceLocator.getBusinessObjectService().findAll( AccountType.class );
+        Collection<AccountType> bos = KNSServiceLocatorInternal.getBusinessObjectService().findAll( AccountType.class );
         
         keyValues.add(new ConcreteKeyValue("", ""));
         for ( AccountType typ : bos ) {

@@ -44,7 +44,7 @@ import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -235,7 +235,7 @@ public class LookupUtils {
      *
      */
     private static Integer getApplicationSearchResultsLimit() {
-        String limitString = KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
+        String limitString = KNSServiceLocatorInternal.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.LOOKUP_RESULTS_LIMIT);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -259,7 +259,7 @@ public class LookupUtils {
      * @return
      */
     public static Integer getApplicationMaximumSearchResulsPerPageForMultipleValueLookups() {
-        String limitString = KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
+        String limitString = KNSServiceLocatorInternal.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.LOOKUP_PARM_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.MULTIPLE_VALUE_LOOKUP_RESULTS_PER_PAGE);
         if (limitString != null) {
             return Integer.valueOf(limitString);
         }
@@ -436,7 +436,7 @@ public class LookupUtils {
     public static String getBaseLookupUrl(boolean isMultipleValue) {
     	if ( isMultipleValue ) {
     		if ( BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL == null ) {
-    			String lookupUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
+    			String lookupUrl = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
     			if (!lookupUrl.endsWith("/")) {
     				lookupUrl = lookupUrl + "/";
     			}
@@ -446,7 +446,7 @@ public class LookupUtils {
     		return BASE_MULTIPLE_VALUE_LOOKUP_ACTION_URL;
     	} else {
     		if ( BASE_LOOKUP_ACTION_URL == null ) {
-    			String lookupUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
+    			String lookupUrl = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
     			if (!lookupUrl.endsWith("/")) {
     				lookupUrl = lookupUrl + "/";
     			}
@@ -460,7 +460,7 @@ public class LookupUtils {
     public static String getBaseInquiryUrl() {
     	if ( BASE_INQUIRY_ACTION_URL == null ) {
 	    	StringBuffer inquiryUrl = new StringBuffer( 
-	    			KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) );
+	    			KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) );
 			if (inquiryUrl.charAt(inquiryUrl.length()-1) != '/' ) {
 				inquiryUrl.append( '/' );
 			}
@@ -488,7 +488,7 @@ public class LookupUtils {
      */
     private static void setFieldDirectInquiry(Field field) {
         if (StringUtils.isNotBlank(field.getFieldConversions())) {
-            boolean directInquiriesEnabled = KNSServiceLocator.getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
+            boolean directInquiriesEnabled = KNSServiceLocatorInternal.getParameterService().getIndicatorParameter(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.SystemGroupParameterNames.ENABLE_DIRECT_INQUIRIES_IND);
             if (directInquiriesEnabled) {
                 if (StringUtils.isNotBlank(field.getFieldConversions())) {
                     String fieldConversions = field.getFieldConversions();

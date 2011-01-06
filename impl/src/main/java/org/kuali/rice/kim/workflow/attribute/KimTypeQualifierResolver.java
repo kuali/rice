@@ -35,10 +35,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KimTypeInfoService;
-import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -128,7 +125,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	if ( typeService != null ) {
     		// QUESTION: can roles be modified in a way which requires routing?
     		// get the existing role members
-    		List<RoleMembershipInfo> currentRoleMembers = KIMServiceLocator.getRoleService().getRoleMembers( Collections.singletonList( roleDoc.getRoleId() ), null );
+    		List<RoleMembershipInfo> currentRoleMembers = KIMServiceLocatorInternal.getRoleService().getRoleMembers( Collections.singletonList( roleDoc.getRoleId() ), null );
     		// loop over the role members on the document, check  if added or removed
     		for ( KimDocumentRoleMember rm : roleDoc.getMembers() ) {
     			boolean foundMember = false;
@@ -246,21 +243,21 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 	
 	public KimTypeInfoService getKimTypeInfoService() {
 		if ( kimTypeInfoService == null ) {
-			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}
 
 	public static GroupService getGroupService() {
 		if ( groupService == null ) {
-			groupService = KIMServiceLocator.getGroupService();
+			groupService = KIMServiceLocatorInternal.getGroupService();
 		}
 		return groupService;
 	}
 
 	public static RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleService();
+			roleService = KIMServiceLocatorInternal.getRoleService();
 		}
 		return roleService;
 	}

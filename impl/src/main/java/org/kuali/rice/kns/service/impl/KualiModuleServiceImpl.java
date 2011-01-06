@@ -23,7 +23,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.exception.KualiException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -146,7 +146,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
      */
     @Override
 	public String getNamespaceName(final String namespaceCode){
-    	Namespace parameterNamespace = KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(
+    	Namespace parameterNamespace = KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(
 				Namespace.class, new HashMap<String, String>() {{put(KNSPropertyConstants.CODE, namespaceCode);}});
     	return parameterNamespace==null ? "" : parameterNamespace.getName();
     }
@@ -169,7 +169,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
 				installedModuleServices.addAll(
 						GlobalResourceLoader.<KualiModuleService>getService(KualiModuleService.class.getSimpleName().substring(0, 1).toLowerCase() + KualiModuleService.class.getSimpleName().substring(1)).getInstalledModuleServices());
 			} catch ( NoSuchBeanDefinitionException ex ) {
-				installedModuleServices.addAll( ((KualiModuleService)applicationContext.getBean( KNSServiceLocator.KUALI_MODULE_SERVICE )).getInstalledModuleServices() );
+				installedModuleServices.addAll( ((KualiModuleService)applicationContext.getBean( KNSServiceLocatorInternal.KUALI_MODULE_SERVICE )).getInstalledModuleServices() );
 			}
 		}
 	}

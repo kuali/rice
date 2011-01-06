@@ -21,14 +21,14 @@ import java.util.Map;
 
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.datadictionary.DataDictionaryException;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -68,7 +68,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	        permissionDetails.put(KimAttributes.NAMESPACE_CODE, parm.getParameterNamespaceCode());
 	        permissionDetails.put(KimAttributes.COMPONENT_NAME, parm.getParameterDetailTypeCode());
 	        permissionDetails.put(KimAttributes.PARAMETER_NAME, parm.getParameterName());
-	        allowsEdit = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
+	        allowsEdit = KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(
 	        				GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 	        				KNSConstants.KNS_NAMESPACE,
 	        				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
@@ -85,7 +85,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
         boolean result = false;
 
         try {
-            List<ParameterDetailType> dataDictionaryAndSpringComponents = KNSServiceLocator.getParameterServerService().getNonDatabaseComponents();
+            List<ParameterDetailType> dataDictionaryAndSpringComponents = KNSServiceLocatorInternal.getParameterServerService().getNonDatabaseComponents();
             for (ParameterDetailType pdt : dataDictionaryAndSpringComponents) {
                 if (pdt.getParameterNamespaceCode().equals(namespace) && pdt.getParameterDetailTypeCode().equals(component)) {
                     result = true;

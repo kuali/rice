@@ -40,7 +40,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestCase {
 //    public void setUp() throws Exception {
 //        super.setUp();
 //        documentAuthorizer = new DocumentAuthorizerBase();
-//        pessimisticLock = KNSServiceLocator.getPessimisticLockService();
+//        pessimisticLock = KNSServiceLocatorInternal.getPessimisticLockService();
 //    }
 //
 //    @Override
@@ -110,7 +110,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestCase {
 //    }
 //
 //    protected Person getWorkflowPessimisticLockOwnerUser() {
-//        Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
+//        Person person = KIMServiceLocatorInternal.getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
 //        if (person == null) {
 //            throw new RuntimeException("Cannot find user with network id '" + KNSConstants.SYSTEM_USER);
 //        }
@@ -125,7 +125,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestCase {
 //     */
     @Test
     public void testEstablishLocks_DefaultDocumentAuthorizerBase() throws Exception {
-//        PessimisticLockService lockService = KNSServiceLocator.getPessimisticLockService();
+//        PessimisticLockService lockService = KNSServiceLocatorInternal.getPessimisticLockService();
 //
 //        // test no lock creation needed
 //        Document document = new MockDocument(getNonSuperUser(), false);
@@ -228,7 +228,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestCase {
     @Test
     public void testEstablishLocks_CustomDocumentAuthorizerBase() throws Exception {
 //        GlobalVariables.setUserSession(new UserSession("quickstart"));
-//        PessimisticLockService lockService = KNSServiceLocator.getPessimisticLockService();
+//        PessimisticLockService lockService = KNSServiceLocatorInternal.getPessimisticLockService();
 //        DocumentAuthorizer documentAuthorizer = new TestDocumentAuthorizerBase();
 //        String lockDescriptor1 = "test the first lock";
 //        String lockDescriptor2 = "this is the second lock";
@@ -550,14 +550,14 @@ public class DocumentAuthorizerBaseTest extends KNSTestCase {
 //        initiatorUser = getNonSuperUser();
 //        authorizerUser = getNonSuperUser();
 //        document = new MockDocument(initiatorUser, false);
-//        document.addPessimisticLock(KNSServiceLocator.getPessimisticLockService().generateNewLock(document.getDocumentNumber(), getSecondNonSuperUser()));
+//        document.addPessimisticLock(KNSServiceLocatorInternal.getPessimisticLockService().generateNewLock(document.getDocumentNumber(), getSecondNonSuperUser()));
 //        assertTrue(authorizerUser + " should have Initiate Authorization due to initator being " + initiatorUser, lockDocumentAuthorizer.hasInitiateAuthorization(document, authorizerUser));
 //        //assertFalse(authorizerUser + " should not have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
 //
 //        initiatorUser = getNonSuperUser();
 //        authorizerUser = getNonSuperUser();
 //        document = new MockDocument(initiatorUser, false);
-//        document.addPessimisticLock(KNSServiceLocator.getPessimisticLockService().generateNewLock(document.getDocumentNumber(), authorizerUser));
+//        document.addPessimisticLock(KNSServiceLocatorInternal.getPessimisticLockService().generateNewLock(document.getDocumentNumber(), authorizerUser));
 //        assertTrue(authorizerUser + " should have Initiate Authorization due to initator being " + initiatorUser, lockDocumentAuthorizer.hasInitiateAuthorization(document, authorizerUser));
 //        //assertTrue(authorizerUser + " should have Pre Route Edit Authorization", lockDocumentAuthorizer.hasPreRouteEditAuthorization(document, authorizerUser));
     }
@@ -600,7 +600,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestCase {
 //     */
 //    private DocumentFormPlaceholder implementDocumentAuthorizerMethods(PessimisticLockTestDocumentAuthorizer documentAuthorizer, Document document, Person kualiUser) {
 //        // Person kualiUser = GlobalVariables.getUserSession().getPerson();
-//        // DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
+//        // DocumentAuthorizer documentAuthorizer = KNSServiceLocatorInternal.getDocumentAuthorizationService().getDocumentAuthorizer(document);
 //        Map editMode = documentAuthorizer.getEditMode(document, kualiUser);
 //        if (documentAuthorizer.usesPessimisticLocking(document)) {
 //            editMode = this.pessimisticLock.establishLocks(document, editMode, kualiUser);
@@ -711,7 +711,7 @@ public class DocumentAuthorizerBaseTest extends KNSTestCase {
 //        private MockPerson() {};
 //
 //        public MockPerson(Person user) {
-//            this(user.getPrincipalId(), user.getPrincipalName(), KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.KIM_GROUP_KFS_NAMESPACE_CODE, KNSServiceLocator.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)));
+//            this(user.getPrincipalId(), user.getPrincipalName(), KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), org.kuali.rice.kim.util.KimConstants.KIM_GROUP_KFS_NAMESPACE_CODE, KNSServiceLocatorInternal.getKualiConfigurationService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.CoreApcParms.SUPERVISOR_WORKGROUP)));
 //        }
 //
 //        public MockPerson(String universalId, String userId, boolean supervisor) {

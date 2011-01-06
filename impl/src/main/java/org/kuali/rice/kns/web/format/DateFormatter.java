@@ -18,7 +18,7 @@ package org.kuali.rice.kns.web.format;
 // end Kuali Foundation modification
 
 // begin Kuali Foundation modification
-// import order changed, and java.util.Calendar, org.kuali.KeyConstants and org.kuali.rice.KNSServiceLocator added
+// import order changed, and java.util.Calendar, org.kuali.KeyConstants and org.kuali.rice.KNSServiceLocatorInternal added
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.Calendar;

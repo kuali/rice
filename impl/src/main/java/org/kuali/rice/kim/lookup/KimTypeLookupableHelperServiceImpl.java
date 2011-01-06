@@ -26,7 +26,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimGroupTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
@@ -78,7 +78,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     @SuppressWarnings("unchecked")
 	@Override
     protected String getReturnHref(Properties parameters, LookupForm lookupForm, List returnKeys) {
-    	KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(parameters.getProperty(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
+    	KimTypeInfo kimType = KIMServiceLocatorInternal.getTypeInfoService().getKimType(parameters.getProperty(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID));
     	String href = "";
     	//TODO: clean this up.
     	boolean showReturnHref = true;

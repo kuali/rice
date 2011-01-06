@@ -35,11 +35,11 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.exception.AuthenticationException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -190,7 +190,7 @@ public class UserLoginFilter implements Filter {
 	
     private IdentityManagementService getIdentityManagementService() {
     	if (this.identityManagementService == null) {
-    		this.identityManagementService = KIMServiceLocator.getIdentityManagementService();
+    		this.identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
     	}
     	
     	return this.identityManagementService;
@@ -198,7 +198,7 @@ public class UserLoginFilter implements Filter {
     
     private KualiConfigurationService getKualiConfigurationService() {
     	if (this.kualiConfigurationService == null) {
-    		this.kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+    		this.kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
     	}
     	
     	return this.kualiConfigurationService;
@@ -206,7 +206,7 @@ public class UserLoginFilter implements Filter {
     
     private ParameterService getParameterService() {
     	if (this.parameterService == null) {
-    		this.parameterService = KNSServiceLocator.getParameterService();
+    		this.parameterService = KNSServiceLocatorInternal.getParameterService();
     	}
     	
     	return this.parameterService;

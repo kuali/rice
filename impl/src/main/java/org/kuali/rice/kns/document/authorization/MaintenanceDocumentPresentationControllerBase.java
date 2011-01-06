@@ -21,7 +21,7 @@ import java.util.Set;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
@@ -69,7 +69,7 @@ public class MaintenanceDocumentPresentationControllerBase extends
 
 	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if (maintenanceDocumentDictionaryService == null) {
-			maintenanceDocumentDictionaryService = KNSServiceLocator
+			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal
 					.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;

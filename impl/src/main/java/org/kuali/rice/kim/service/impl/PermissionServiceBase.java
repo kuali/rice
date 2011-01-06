@@ -27,7 +27,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 
@@ -59,7 +59,7 @@ public class PermissionServiceBase {
 	
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
@@ -108,7 +108,7 @@ public class PermissionServiceBase {
 	
 	protected SequenceAccessorService getSequenceAccessorService() {
 		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+			sequenceAccessorService = KNSServiceLocatorInternal.getSequenceAccessorService();
 		}
 		return sequenceAccessorService;
 	}

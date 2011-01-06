@@ -54,7 +54,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 /**
  * Represents the prototype definition of a node in the route path of {@link DocumentType}.
@@ -209,7 +209,7 @@ public class RouteNode implements Serializable {
 
     public Group getExceptionWorkgroup() {
     	if (!StringUtils.isBlank(exceptionWorkgroupId)) {
-    		return KIMServiceLocator.getIdentityManagementService().getGroup(exceptionWorkgroupId);
+    		return KIMServiceLocatorInternal.getIdentityManagementService().getGroup(exceptionWorkgroupId);
     	}
     	return null;
     }

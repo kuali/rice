@@ -18,7 +18,7 @@ package org.kuali.rice.kns.workflow.service;
 
 
 import org.junit.Test;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.test.KNSTestCase;
 
 
@@ -31,7 +31,7 @@ public class WorkflowInfoServiceTest extends KNSTestCase {
     @Test public void testRouteHeaderExists_NullId() throws IllegalArgumentException {
         boolean errorThrown = false;
         try {
-            boolean result = KNSServiceLocator.getWorkflowInfoService().routeHeaderExists(null);
+            boolean result = KNSServiceLocatorInternal.getWorkflowInfoService().routeHeaderExists(null);
         }
         catch (IllegalArgumentException e) {
             errorThrown = true;
@@ -43,7 +43,7 @@ public class WorkflowInfoServiceTest extends KNSTestCase {
         boolean errorThrown = false;
         boolean result = true;
         try {
-            result = KNSServiceLocator.getWorkflowInfoService().routeHeaderExists(new Long(-10));
+            result = KNSServiceLocatorInternal.getWorkflowInfoService().routeHeaderExists(new Long(-10));
         }
         catch (Exception e) {
             errorThrown = true;
@@ -56,7 +56,7 @@ public class WorkflowInfoServiceTest extends KNSTestCase {
         boolean errorThrown = false;
         boolean result = true;
         try {
-            result = KNSServiceLocator.getWorkflowInfoService().routeHeaderExists(new Long(0));
+            result = KNSServiceLocatorInternal.getWorkflowInfoService().routeHeaderExists(new Long(0));
         }
         catch (Exception e) {
             errorThrown = true;

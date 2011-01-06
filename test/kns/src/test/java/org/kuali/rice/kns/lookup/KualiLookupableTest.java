@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.test.KNSTestCase;
@@ -37,7 +37,7 @@ public class KualiLookupableTest extends KNSTestCase {
     public void setUp() throws Exception {
         super.setUp();
         lookupableImpl = new KualiLookupableImpl();
-        lookupableImpl.setLookupableHelperService((LookupableHelperService)KNSServiceLocator.getService("lookupableHelperService"));
+        lookupableImpl.setLookupableHelperService((LookupableHelperService) KNSServiceLocatorInternal.getService("lookupableHelperService"));
         lookupableImpl.setBusinessObjectClass(Account.class);
     }
 
@@ -51,7 +51,7 @@ public class KualiLookupableTest extends KNSTestCase {
     	lookupProps.put("number", "a1");
     	lookupProps.put("name", "a1");
     	
-    	Account account = (Account)KNSServiceLocator.getLookupService().findObjectBySearch(Account.class, lookupProps);
+    	Account account = (Account) KNSServiceLocatorInternal.getLookupService().findObjectBySearch(Account.class, lookupProps);
 //        ObjectCode objCode = getObjectCodeService().getByPrimaryId(TestConstants.Data1.UNIVERSITY_FISCAL_YEAR, TestConstants.Data1.CHART_OF_ACCOUNTS_CODE, TestConstants.Data1.OBJECT_CODE);
 
         Map fieldConversions = new HashMap();

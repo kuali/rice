@@ -25,6 +25,7 @@ import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.DocumentAdHocService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.OjbCollectionAware;
 import org.springframework.dao.DataAccessException;
@@ -56,7 +57,7 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
     		LOG.debug( "About to store document: " + document, new Throwable() );
     	}
         Document retrievedDocument = findByDocumentHeaderId(document.getClass(),document.getDocumentNumber());
-        KNSServiceLocator.getOjbCollectionHelper().processCollections(this, document, retrievedDocument);
+        KNSServiceLocatorInternal.getOjbCollectionHelper().processCollections(this, document, retrievedDocument);
         this.getPersistenceBrokerTemplate().store(document);
         return document;
     }
@@ -154,7 +155,4 @@ public class DocumentDaoOjb extends PlatformAwareDaoBaseOjb implements DocumentD
     public void setDocumentAdHocService(DocumentAdHocService dahs) {
     	this.documentAdHocService = dahs;
     }
-
-
-
 }

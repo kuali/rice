@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.LookupDao;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
@@ -86,7 +86,7 @@ public class LookupServiceImpl implements LookupService {
     }
     
     public boolean allPrimaryKeyValuesPresentAndNotWildcard(Class boClass, Map formProps) {
-        List pkFields = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(boClass);
+        List pkFields = KNSServiceLocatorInternal.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(boClass);
         Iterator pkIter = pkFields.iterator();
         boolean returnVal = true;
         while (returnVal && pkIter.hasNext()) {

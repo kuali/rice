@@ -31,13 +31,13 @@ import org.kuali.rice.kim.bo.impl.PermissionImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -193,7 +193,7 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 				}
 			}
 			//need to find roles that current role is a member of and build search string
-			List<String> parentRoleIds = KIMServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
+			List<String> parentRoleIds = KIMServiceLocatorInternal.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
 			for (String parentRoleId : parentRoleIds) {
 				Map<String, String> roleSearchCriteria = new HashMap<String, String>();
 				roleSearchCriteria.put("roleId", parentRoleId);
@@ -275,14 +275,14 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 	 */
 	public LookupService getLookupService() {
 		if ( lookupService == null ) {
-			lookupService = KNSServiceLocator.getLookupService();
+			lookupService = KNSServiceLocatorInternal.getLookupService();
 		}
 		return lookupService;
 	}
 
 	public RoleService getRoleService() {
 		if (roleService == null) {
-			roleService = KIMServiceLocator.getRoleService();
+			roleService = KIMServiceLocatorInternal.getRoleService();
 		}
 		return roleService;
 	}

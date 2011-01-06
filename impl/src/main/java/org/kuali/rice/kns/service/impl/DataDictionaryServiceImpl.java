@@ -51,7 +51,7 @@ import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -891,7 +891,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
 	public KualiWorkflowInfo getWorkflowInfoService() {
 		if ( workflowInfoService == null ) {
-			workflowInfoService = KNSServiceLocator.getWorkflowInfoService();
+			workflowInfoService = KNSServiceLocatorInternal.getWorkflowInfoService();
 		}
 		return workflowInfoService;
 	}

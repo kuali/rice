@@ -27,7 +27,7 @@ import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -122,7 +122,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 
 	protected final MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if (maintenanceDocumentDictionaryService == null) {
-			maintenanceDocumentDictionaryService = KNSServiceLocator
+			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal
 					.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;

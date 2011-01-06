@@ -32,7 +32,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
@@ -242,7 +242,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
 
         // If this class is an EBO, just call the module service to get the results
         if ( ExternalizableBusinessObject.class.isAssignableFrom( getBusinessObjectClass() ) ) {
-        	ModuleService eboModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
+        	ModuleService eboModuleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
         	BusinessObjectEntry ddEntry = eboModuleService.getExternalizableBusinessObjectDictionaryEntry(getBusinessObjectClass());
         	Map<String,String> filteredFieldValues = new HashMap<String, String>();
         	for (String fieldName : nonBlankFieldValues.keySet()) {
@@ -276,7 +276,7 @@ public class KualiLookupableHelperServiceImpl extends AbstractLookupableHelperSe
             		LOG.debug( "properties: " + eboFieldValues );
             	}
             	// run search against attached EBO's module service
-            	ModuleService eboModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName) );
+            	ModuleService eboModuleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService( getExternalizableBusinessObjectClass( getBusinessObjectClass(), eboPropertyName) );
             	// KULRICE-4401 made eboResults an empty list and only filled if service is found.
          	 	List eboResults = Collections.emptyList();
          	 	if (eboModuleService != null) 

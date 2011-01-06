@@ -24,7 +24,7 @@ import org.kuali.rice.kns.datadictionary.WorkflowProperties;
 import org.kuali.rice.kns.datadictionary.WorkflowProperty;
 import org.kuali.rice.kns.datadictionary.WorkflowPropertyGroup;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This implementation of {@link PropertySerializabilityEvaluator} uses the &lt;workflowProperties&gt; defined within the data dictionary
@@ -42,7 +42,7 @@ public class BusinessObjectPropertySerializibilityEvaluator extends PropertySeri
      * @see org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator#initializeEvaluator(org.kuali.rice.kns.document.Document)
      */
     public void initializeEvaluator(Document document) {
-        DataDictionary dictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+        DataDictionary dictionary = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary();
         DocumentEntry docEntry = dictionary.getDocumentEntry(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
         WorkflowProperties workflowProperties = docEntry.getWorkflowProperties();
         List<WorkflowPropertyGroup> groups = workflowProperties.getWorkflowPropertyGroups();

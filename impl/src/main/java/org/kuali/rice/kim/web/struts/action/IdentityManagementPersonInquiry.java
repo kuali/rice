@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
@@ -55,7 +55,7 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
         String principalId = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID);
         String principalName = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_NAME);
         if ( StringUtils.isBlank(principalId) && StringUtils.isNotBlank(principalName) ) {
-        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	KimPrincipalInfo principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
         	if ( principal != null ) {
         		principalId = principal.getPrincipalId();
         	}
@@ -70,7 +70,7 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
 
 	protected void populateRoleInformation( IdentityManagementPersonDocument personDoc ) {
 		for (PersonDocumentRole role : personDoc.getRoles()) {
-	        KimTypeService kimTypeService = (KimTypeService)KIMServiceLocator.getService(getKimTypeServiceName(role.getKimRoleType()));
+	        KimTypeService kimTypeService = (KimTypeService) KIMServiceLocatorInternal.getService(getKimTypeServiceName(role.getKimRoleType()));
 	        //it is possible that the the kimTypeService is coming from a remote application 
 	        // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 	        try {

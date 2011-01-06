@@ -28,7 +28,7 @@ import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -244,13 +244,13 @@ public class RuleDAOJpaImpl implements RuleDAO {
         if (!Utilities.isEmpty(principalId) && searchUserInWorkgroups) {
             KimPrincipal principal = null;
 
-            principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+            principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
 
             if (principal == null)
             {
             	throw new RiceRuntimeException("Failed to locate user for the given principal id: " + principalId);
             }
-            kimGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+            kimGroupIds = KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
         addResponsibilityCriteria(crit, kimGroupIds, principalId, searchUser, searchUserInWorkgroups);
         //if (responsibilityCrit != null) {

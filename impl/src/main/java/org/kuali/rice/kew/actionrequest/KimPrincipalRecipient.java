@@ -16,7 +16,6 @@
 package org.kuali.rice.kew.actionrequest;
 
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 
 /**
  * Represents an ActionRequest recipient who is a KimGroup

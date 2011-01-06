@@ -18,7 +18,7 @@ package org.kuali.rice.kns.datadictionary.validation;
 import java.util.regex.Pattern;
 
 import org.kuali.rice.kns.datadictionary.exporter.ExportMap;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * Abstraction of the regular expressions used to validate attribute values.
@@ -35,7 +35,7 @@ abstract public class FieldLevelValidationPattern extends ValidationPattern {
      * @see org.kuali.rice.kns.datadictionary.validation.ValidationPattern#getRegexString()
      */
     protected String getRegexString() {
-        return (String) KNSServiceLocator.getKualiConfigurationService().getPropertyString("validationPatternRegex." + getPatternTypeName());
+        return (String) KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString("validationPatternRegex." + getPatternTypeName());
     }
 
     /**

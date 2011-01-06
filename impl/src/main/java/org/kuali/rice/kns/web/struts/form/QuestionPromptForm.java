@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kns.question.Question;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.WebUtils;
 
@@ -150,7 +150,7 @@ public class QuestionPromptForm extends KualiForm {
         }
 
         if (getMethodToCall().equals(KNSConstants.START_METHOD)) { // don't do this for the processAnswer action otherwise it blows up
-            Question kualiQuestion = KNSServiceLocator.getQuestion(questionType);
+            Question kualiQuestion = KNSServiceLocatorInternal.getQuestion(questionType);
             if (kualiQuestion == null) {
                 throw new RuntimeException("question implementation not found: " + request.getParameter(KNSConstants.QUESTION_IMPL_ATTRIBUTE_NAME));
             }

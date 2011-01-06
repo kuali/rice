@@ -50,7 +50,7 @@ import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -62,14 +62,14 @@ public class SectionBridge {
     private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
     private static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
     	if (businessObjectAuthorizationService == null) {
-    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+    		businessObjectAuthorizationService = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService();
     	}
     	return businessObjectAuthorizationService;
     }
     private static DataDictionaryService dataDictionaryService;
     private static DataDictionaryService getDataDictionaryService() {
     	if (dataDictionaryService == null) {
-    		dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+    		dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
     	}
     	return dataDictionaryService;
     }
@@ -758,7 +758,7 @@ public class SectionBridge {
     		//TODO: Revisit this. Changing since getPrimaryKeys and listPrimaryKeyFieldNames are apparently same.
     		//May be we might want to replace listPrimaryKeyFieldNames with getPrimaryKeys... Not sure.
 	    	List primaryKeyPropertyNames = 
-	    		KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+	    		KNSServiceLocatorInternal.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
 	        if (primaryKeyPropertyNames.contains(field.getPropertyName())) {
 	            field.setReadOnly(true);
 	        }
@@ -883,7 +883,7 @@ public class SectionBridge {
     
 	public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
     	if (maintenanceDocumentDictionaryService == null) {
-    		maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+    		maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
     	}
 		return maintenanceDocumentDictionaryService; 
 	}

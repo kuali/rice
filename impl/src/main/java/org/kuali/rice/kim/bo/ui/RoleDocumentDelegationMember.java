@@ -37,7 +37,7 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.document.KimTypeAttributesHelper;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.springframework.util.AutoPopulatingList;
@@ -237,9 +237,9 @@ public class RoleDocumentDelegationMember extends KimDocumentBoActivatableToFrom
 	}
 
 	protected void populateDerivedValues() {
-    	BusinessObject member = KIMServiceLocator.getUiDocumentService().getMember(getMemberTypeCode(), getMemberId());
+    	BusinessObject member = KIMServiceLocatorInternal.getUiDocumentService().getMember(getMemberTypeCode(), getMemberId());
     	if ( member != null ) {
-	        setMemberNamespaceCode(KIMServiceLocator.getUiDocumentService().getMemberNamespaceCode(getMemberTypeCode(), member));
+	        setMemberNamespaceCode(KIMServiceLocatorInternal.getUiDocumentService().getMemberNamespaceCode(getMemberTypeCode(), member));
     	}
 	}
 	

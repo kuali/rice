@@ -40,7 +40,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
 
@@ -292,7 +292,7 @@ public abstract class ActionTakenEvent {
 	
 	protected List<String> getGroupIdsForPrincipal() {
 		if (groupIdsForPrincipal == null) {
-			groupIdsForPrincipal = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(getPrincipal().getPrincipalId());
+			groupIdsForPrincipal = KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(getPrincipal().getPrincipalId());
 		}
 		return groupIdsForPrincipal;
 	}

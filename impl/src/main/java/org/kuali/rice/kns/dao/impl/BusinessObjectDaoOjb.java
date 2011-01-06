@@ -31,7 +31,7 @@ import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -230,7 +230,7 @@ public class BusinessObjectDaoOjb extends PlatformAwareDaoBaseOjb implements Bus
 					savedBo.refreshReferenceObject(boCollection);
 				}
 			}
-            KNSServiceLocator.getOjbCollectionHelper().processCollections(this, bo, savedBo);
+            KNSServiceLocatorInternal.getOjbCollectionHelper().processCollections(this, bo, savedBo);
         }
 
 		getPersistenceBrokerTemplate().store(bo);

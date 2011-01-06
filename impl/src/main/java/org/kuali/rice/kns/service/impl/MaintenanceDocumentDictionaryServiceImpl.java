@@ -36,7 +36,7 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -59,7 +59,7 @@ public class MaintenanceDocumentDictionaryServiceImpl implements MaintenanceDocu
      */
     protected DocumentTypeDTO getDocumentType(String documentTypeName) {
         try {
-            return KNSServiceLocator.getWorkflowInfoService().getDocType(documentTypeName);
+            return KNSServiceLocatorInternal.getWorkflowInfoService().getDocType(documentTypeName);
         } catch (WorkflowException e) {
             throw new RuntimeException("Caught exception attempting to get document type for doc type name '" + documentTypeName + "'", e);
         }

@@ -25,7 +25,7 @@ import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.RoutingTypeDefinition;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * QualifierResolver which uses Data Dictionary defined workflow attributes to gather a collection
@@ -94,7 +94,7 @@ public class DataDictionaryQualifierResolver extends QualifierResolverBase {
         List<AttributeSet> qualifiers = null;
         
         if (document != null && routingTypeDefinition != null) {
-            qualifiers = KNSServiceLocator.getWorkflowAttributePropertyResolutionService().resolveRoutingTypeQualifiers(document, routingTypeDefinition);
+            qualifiers = KNSServiceLocatorInternal.getWorkflowAttributePropertyResolutionService().resolveRoutingTypeQualifiers(document, routingTypeDefinition);
         } else {
             qualifiers = new ArrayList<AttributeSet>();
             AttributeSet basicQualifier = new AttributeSet();
@@ -110,7 +110,7 @@ public class DataDictionaryQualifierResolver extends QualifierResolverBase {
      * @return the data dictionary document entry
      */
     protected DocumentEntry getDocumentEntry(RouteContext context) {
-        return KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(context.getDocument().getDocumentType().getName());
+        return KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(context.getDocument().getDocumentType().getName());
     }
 
     /**

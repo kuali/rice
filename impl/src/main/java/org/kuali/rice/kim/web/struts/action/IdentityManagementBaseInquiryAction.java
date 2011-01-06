@@ -22,7 +22,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
@@ -40,7 +40,7 @@ public abstract class IdentityManagementBaseInquiryAction extends KualiAction {
 
     protected UiDocumentService getUiDocumentService() {
 		if ( uiDocumentService == null ) {
-			uiDocumentService = KIMServiceLocator.getUiDocumentService();
+			uiDocumentService = KIMServiceLocatorInternal.getUiDocumentService();
 		}
 		return uiDocumentService;
 	}

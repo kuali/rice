@@ -55,11 +55,8 @@ import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 import org.kuali.rice.kns.rule.event.SaveDocumentEvent;
-import org.kuali.rice.kns.service.DocumentHeaderService;
-import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.MaintenanceDocumentService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MaintenanceUtils;
@@ -354,7 +351,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     	if (StringUtils.isBlank(notesXml)) {
     		return Collections.emptyList();
     	}
-    	List<Note> notes = (List<Note>)KNSServiceLocator.getXmlObjectSerializerService().fromXml(notesXml);
+    	List<Note> notes = (List<Note>) KNSServiceLocatorInternal.getXmlObjectSerializerService().fromXml(notesXml);
     	if (notes == null) {
     		return Collections.emptyList();
     	}
@@ -367,7 +364,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     protected PersistableBusinessObject getBusinessObjectFromXML(String maintainableTagName) {
         String maintXml = StringUtils.substringBetween(xmlDocumentContents, "<" + maintainableTagName + ">", "</" + maintainableTagName + ">");
-        PersistableBusinessObject businessObject = (PersistableBusinessObject) KNSServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
+        PersistableBusinessObject businessObject = (PersistableBusinessObject) KNSServiceLocatorInternal.getXmlObjectSerializerService().fromXml(maintXml);
         return businessObject;
     }
 
@@ -391,7 +388,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         	for (Note note : getNotes()) {
         		noteList.add(note);
         	}
-        	docContentBuffer.append(KNSServiceLocator.getXmlObjectSerializerService().toXml(noteList));
+        	docContentBuffer.append(KNSServiceLocatorInternal.getXmlObjectSerializerService().toXml(noteList));
         	docContentBuffer.append("</" + NOTES_TAG_NAME + ">");
         }
         if (oldMaintainableObject != null && oldMaintainableObject.getBusinessObject() != null) {
@@ -402,7 +399,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
             PersistableBusinessObject oldBo = oldMaintainableObject.getBusinessObject();
             ObjectUtils.materializeAllSubObjects(oldBo); // hack to resolve XStream not dealing well with Proxies
-            docContentBuffer.append(KNSServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(oldBo));
+            docContentBuffer.append(KNSServiceLocatorInternal.getBusinessObjectSerializerService().serializeBusinessObjectToXml(oldBo));
 
             // add the maintainable's maintenanceAction
             docContentBuffer.append("<" + MAINTENANCE_ACTION_TAG_NAME + ">");
@@ -415,7 +412,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
         PersistableBusinessObject newBo = newMaintainableObject.getBusinessObject();
         ObjectUtils.materializeAllSubObjects(newBo); // hack to resolve XStream not dealing well with Proxies
-        docContentBuffer.append(KNSServiceLocator.getBusinessObjectSerializerService().serializeBusinessObjectToXml(newBo));
+        docContentBuffer.append(KNSServiceLocatorInternal.getBusinessObjectSerializerService().serializeBusinessObjectToXml(newBo));
 
         // add the maintainable's maintenanceAction
         docContentBuffer.append("<" + MAINTENANCE_ACTION_TAG_NAME + ">");
@@ -720,7 +717,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     }
     
     public void deleteDocumentAttachment() { 
-        KNSServiceLocator.getBusinessObjectService().delete(attachment);
+        KNSServiceLocatorInternal.getBusinessObjectService().delete(attachment);
         attachment = null;     
     }
     
@@ -744,7 +741,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
         // Make sure the business object's version number matches that of the database's copy.
         if (newMaintainableObject != null) {
         	if ( KNSServiceLocator.getPersistenceStructureService().isPersistable( newMaintainableObject.getBusinessObject().getClass() ) ) {
-	        	PersistableBusinessObject pbObject = KNSServiceLocator.getBusinessObjectService().retrieve(newMaintainableObject.getBusinessObject());
+	        	PersistableBusinessObject pbObject = KNSServiceLocatorInternal.getBusinessObjectService().retrieve(newMaintainableObject.getBusinessObject());
 	        	Long pbObjectVerNbr = ObjectUtils.isNull(pbObject) ? null : pbObject.getVersionNumber();
 	        	Long newObjectVerNbr = newMaintainableObject.getBusinessObject().getVersionNumber();
 	        	if (pbObjectVerNbr != null && !(pbObjectVerNbr.equals(newObjectVerNbr))) {
@@ -759,7 +756,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
             LOG.info("invoking rules engine on document " + getDocumentNumber());
         }
         boolean isValid = true;
-        isValid = KNSServiceLocator.getKualiRuleService().applyRules(event);
+        isValid = KNSServiceLocatorInternal.getKualiRuleService().applyRules(event);
 
         // check to see if the br eval passed or failed
         if (!isValid) {
@@ -801,7 +798,7 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     public void postProcessSave(KualiDocumentEvent event) {
         PersistableBusinessObject bo = getNewMaintainableObject().getBusinessObject();
         if (bo instanceof GlobalBusinessObject) {
-            KNSServiceLocator.getBusinessObjectService().save(bo);
+            KNSServiceLocatorInternal.getBusinessObjectService().save(bo);
         }
         //currently only global documents could change the list of what they're affecting during routing,
         //so could restrict this to only happening with them, but who knows if that will change, so safest
@@ -986,35 +983,35 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
     
 	protected MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if ( maintenanceDocumentDictionaryService == null ) {
-			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}
 
 	protected MaintenanceDocumentService getMaintenanceDocumentService() {
 		if ( maintenanceDocumentService == null ) {
-			maintenanceDocumentService = KNSServiceLocator.getMaintenanceDocumentService();
+			maintenanceDocumentService = KNSServiceLocatorInternal.getMaintenanceDocumentService();
 		}
 		return maintenanceDocumentService;
 	}
 
 	protected DocumentHeaderService getDocumentHeaderService() {
 		if ( documentHeaderService == null ) {
-			documentHeaderService = KNSServiceLocator.getDocumentHeaderService();
+			documentHeaderService = KNSServiceLocatorInternal.getDocumentHeaderService();
 		}
 		return documentHeaderService;
 	}
 	
 	protected DocumentService getDocumentService() {
 		if ( documentService == null ) {
-			documentService = KNSServiceLocator.getDocumentService();
+			documentService = KNSServiceLocatorInternal.getDocumentService();
 		}
 		return documentService;
 	}
 
 	 //for issue KULRice3070
 	 protected boolean checkAllowsRecordDeletion() {
-		 Boolean allowsRecordDeletion = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getAllowsRecordDeletion(this.getNewMaintainableObject().getBoClass());
+		 Boolean allowsRecordDeletion = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getAllowsRecordDeletion(this.getNewMaintainableObject().getBoClass());
 		 if ( allowsRecordDeletion != null ) {
 			 return allowsRecordDeletion.booleanValue();
 		 }
@@ -1033,10 +1030,10 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
 
 		 boolean allowsMaintain = false;
 
-		 String maintDocTypeName = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getDocumentTypeName(businessObject.getClass());
+		 String maintDocTypeName = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getDocumentTypeName(businessObject.getClass());
 
 		 if (StringUtils.isNotBlank(maintDocTypeName)) {
-			 allowsMaintain = KNSServiceLocator.getBusinessObjectAuthorizationService().canMaintain(businessObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);            
+			 allowsMaintain = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService().canMaintain(businessObject, GlobalVariables.getUserSession().getPerson(), maintDocTypeName);
 		 }     
 		 return allowsMaintain;
 	 }

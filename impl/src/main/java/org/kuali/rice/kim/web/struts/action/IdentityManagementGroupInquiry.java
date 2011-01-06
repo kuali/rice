@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
@@ -44,13 +44,13 @@ public class IdentityManagementGroupInquiry extends IdentityManagementBaseInquir
         
         GroupInfo group = null;
         if (StringUtils.isNotEmpty(groupId)) {
-        	group = KIMServiceLocator.getGroupService().getGroupInfo(groupId);
+        	group = KIMServiceLocatorInternal.getGroupService().getGroupInfo(groupId);
         } else {
         	String namespaceCode = request.getParameter(KimConstants.UniqueKeyConstants.NAMESPACE_CODE);
         	String groupName = request.getParameter(KimConstants.UniqueKeyConstants.GROUP_NAME);
         	
         	if (!StringUtils.isBlank(namespaceCode) && !StringUtils.isBlank(groupName)) {
-        		group = KIMServiceLocator.getGroupService().getGroupInfoByName(namespaceCode, groupName);
+        		group = KIMServiceLocatorInternal.getGroupService().getGroupInfoByName(namespaceCode, groupName);
             }
         }
         getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);

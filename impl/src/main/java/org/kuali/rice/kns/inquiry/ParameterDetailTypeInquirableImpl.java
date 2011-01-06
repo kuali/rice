@@ -21,7 +21,7 @@ import java.util.Map;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.datadictionary.DataDictionaryException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * Since ParameterDetailType can be either DataDictionary or DB based, we need a custom {@link Inquirable} to
@@ -56,7 +56,7 @@ public class ParameterDetailTypeInquirableImpl extends KualiInquirableImpl {
 
 			List<ParameterDetailType> components;
 	        try {
-	        	components = KNSServiceLocator.getParameterServerService().getNonDatabaseComponents();
+	        	components = KNSServiceLocatorInternal.getParameterServerService().getNonDatabaseComponents();
 	        } catch (DataDictionaryException ex) {
 	            throw new RuntimeException(
 	            		"Problem parsing data dictionary during full load required for inquiry to function: " + 

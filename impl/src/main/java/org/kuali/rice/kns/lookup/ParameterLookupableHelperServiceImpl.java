@@ -29,12 +29,12 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -61,7 +61,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         permissionDetails.put(KimAttributes.NAMESPACE_CODE, parm.getParameterNamespaceCode());
         permissionDetails.put(KimAttributes.COMPONENT_NAME, parm.getParameterDetailTypeCode());
         permissionDetails.put(KimAttributes.PARAMETER_NAME, parm.getParameterName());
-        allowsEdit = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
+        allowsEdit = KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(
         		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 				KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,
@@ -75,7 +75,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         List<? extends BusinessObject> results;
         
         // get the DD detail types
-        List<ParameterDetailType> ddDetailTypes = KNSServiceLocator.getParameterServerService().getNonDatabaseComponents();
+        List<ParameterDetailType> ddDetailTypes = KNSServiceLocatorInternal.getParameterServerService().getNonDatabaseComponents();
         if (fieldValues.containsKey("parameterDetailType.parameterDetailTypeName") && !StringUtils.isBlank(fieldValues.get("parameterDetailType.parameterDetailTypeName"))) {
         	final Set<ParameterDetailType> matchingDetailTypes = new HashSet<ParameterDetailType>();
             // perform a basic database lookup for detail types codes

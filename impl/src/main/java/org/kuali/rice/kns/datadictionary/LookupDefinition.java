@@ -23,7 +23,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.exception.DuplicateEntryException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -156,8 +156,8 @@ public class LookupDefinition extends DataDictionaryDefinitionBase {
             throw new IllegalArgumentException("invalid (blank) menubar");
         }
         // TODO: catch exception if service locator call fails
-        this.menubar = menubar.replace("${kr.externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.EXTERNALIZABLE_IMAGES_URL_KEY)).replace("${externalizable.images.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
-        this.menubar = this.menubar.replace("${application.url}", KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
+        this.menubar = menubar.replace("${kr.externalizable.images.url}", KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.EXTERNALIZABLE_IMAGES_URL_KEY)).replace("${externalizable.images.url}", KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_EXTERNALIZABLE_IMAGES_URL_KEY));
+        this.menubar = this.menubar.replace("${application.url}", KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
     }
 
 

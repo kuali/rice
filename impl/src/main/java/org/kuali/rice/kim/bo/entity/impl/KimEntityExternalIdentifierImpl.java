@@ -36,7 +36,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -175,7 +175,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 		if ( cachedExtIdType == null ) {
 			Map<String, String> criteria = new HashMap<String, String>();
 		    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierTypeCode);
-		    cachedExtIdType = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+		    cachedExtIdType = (ExternalIdentifierType) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		    encryptionRequired = cachedExtIdType!= null && cachedExtIdType.isEncryptionRequired(); 
 		}
 	}
@@ -184,7 +184,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 		evaluateExternalIdentifierType();
 		if ( encryptionRequired && StringUtils.isNotEmpty(this.externalId) ) {
 			try {
-				this.externalId = KNSServiceLocator.getEncryptionService().encrypt(this.externalId);
+				this.externalId = KNSServiceLocatorInternal.getEncryptionService().encrypt(this.externalId);
 				this.decryptionNeeded = true;
 			}
 			catch ( Exception e ) {
@@ -197,7 +197,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 		evaluateExternalIdentifierType();
 		if ( encryptionRequired && StringUtils.isNotEmpty(externalId) ) {
 			try {
-				this.externalId = KNSServiceLocator.getEncryptionService().decrypt(this.externalId);
+				this.externalId = KNSServiceLocatorInternal.getEncryptionService().decrypt(this.externalId);
 			}
 			catch ( Exception e ) {
 				LOG.info("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");
@@ -209,7 +209,7 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 		evaluateExternalIdentifierType();
 		if ( encryptionRequired && StringUtils.isNotEmpty(externalId) ) {
 			try {
-				return KNSServiceLocator.getEncryptionService().decrypt(this.externalId);
+				return KNSServiceLocatorInternal.getEncryptionService().decrypt(this.externalId);
 			}
 			catch ( Exception e ) {
 				LOG.info("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");

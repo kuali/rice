@@ -39,10 +39,10 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -67,7 +67,7 @@ public final class KimCommonUtils {
 
 	private static KualiModuleService getKualiModuleService() {
 		if (kualiModuleService == null) {
-			kualiModuleService = KNSServiceLocator.getKualiModuleService();
+			kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
 		}
 		return kualiModuleService;
 	}
@@ -162,19 +162,19 @@ public final class KimCommonUtils {
 	}
 
 	/**
-	 * @deprecated Please use KIMServiceLocator.getKimTypeService(KimType) instead
+	 * @deprecated Please use KIMServiceLocatorInternal.getKimTypeService(KimType) instead
 	 */
 	@Deprecated
 	public static KimTypeService getKimTypeService(KimType kimType){
-		return KIMServiceLocator.getKimTypeService(kimType);
+		return KIMServiceLocatorInternal.getKimTypeService(kimType);
 	}
 
 	/**
-	 * @deprecated Please use KIMServiceLocator.getKimTypeService(QName) instead
+	 * @deprecated Please use KIMServiceLocatorInternal.getKimTypeService(QName) instead
 	 */
 	@Deprecated
 	public static KimTypeService getKimTypeService( String serviceName ) {
-		return KIMServiceLocator.getKimTypeService(resolveKimTypeServiceName(serviceName));
+		return KIMServiceLocatorInternal.getKimTypeService(resolveKimTypeServiceName(serviceName));
     }
 
 	public static void copyProperties(Object targetToCopyTo, Object sourceToCopyFrom){
@@ -187,7 +187,7 @@ public final class KimCommonUtils {
 	}
 
 	public static String getKimBasePath(){
-		String kimBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KimConstants.KimUIConstants.KIM_URL_KEY);
+		String kimBaseUrl = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KimConstants.KimUIConstants.KIM_URL_KEY);
 		if (!kimBaseUrl.endsWith(KimConstants.KimUIConstants.URL_SEPARATOR)) {
 			kimBaseUrl = kimBaseUrl + KimConstants.KimUIConstants.URL_SEPARATOR;
 		}
@@ -318,11 +318,11 @@ public final class KimCommonUtils {
 	public static String encryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
 		Map<String, String> criteria = new HashMap<String, String>();
 	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
-	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
 			if(StringUtils.isNotEmpty(externalIdentifier)){
 				try{
-					return KNSServiceLocator.getEncryptionService().encrypt(externalIdentifier);
+					return KNSServiceLocatorInternal.getEncryptionService().encrypt(externalIdentifier);
 				}catch (GeneralSecurityException e) {
 		            LOG.info("Unable to encrypt value : " + e.getMessage() + " or it is already encrypted");
 		        }
@@ -334,11 +334,11 @@ public final class KimCommonUtils {
     public static String decryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
         Map<String, String> criteria = new HashMap<String, String>();
 	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
-	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
+	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
 		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
 			if(StringUtils.isNotEmpty(externalIdentifier)){
 				try{
-					return KNSServiceLocator.getEncryptionService().decrypt(externalIdentifier);
+					return KNSServiceLocatorInternal.getEncryptionService().decrypt(externalIdentifier);
 				}catch (GeneralSecurityException e) {
 		            LOG.info("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");
 		        }
@@ -349,7 +349,7 @@ public final class KimCommonUtils {
 
 	public static IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}
@@ -376,7 +376,7 @@ public final class KimCommonUtils {
 
     public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String, String> infoMap, String groupId, String kimTypeId) {
         List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
-        List<KimTypeAttributeInfo> attributeInfoList = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitions();
+        List<KimTypeAttributeInfo> attributeInfoList = KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitions();
 
         for (String key : infoMap.keySet()) {
             KimTypeAttributeInfo typeAttributeInfo = getAttributeInfo(attributeInfoList, key);

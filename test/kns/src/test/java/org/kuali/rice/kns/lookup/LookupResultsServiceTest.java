@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.test.KNSTestCase;
 
 /**
@@ -53,10 +53,10 @@ public class LookupResultsServiceTest extends KNSTestCase {
 		parameterPK.put("parameterNamespaceCode", MOCK_PARAMETER_NMSPC);
 		parameterPK.put("parameterDetailTypeCode", MOCK_PARAMETER_DETAIL_TYPE_CODE);
 		parameterPK.put("parameterName", MOCK_PARAMETER_NAME);
-		final Parameter parameter = (Parameter)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(Parameter.class, parameterPK);
+		final Parameter parameter = (Parameter) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(Parameter.class, parameterPK);
 		final Person person = KIMServiceLocator.getPersonService().getPerson(LookupResultsServiceTest.MOCK_PERSON);
 		final LookupResultsDDBo ddBo = new LookupResultsDDBo("horse");
-		final LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
+		final LookupResultsService lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
 		
 		org.junit.Assert.assertEquals("Parameter's lookup id should be its object id", parameter.getObjectId(), lookupResultsService.getLookupId(parameter));
 		org.junit.Assert.assertNull("Person's lookup id should be null", lookupResultsService.getLookupId(person));
@@ -73,8 +73,8 @@ public class LookupResultsServiceTest extends KNSTestCase {
 		parameterPK.put("parameterNamespaceCode", MOCK_PARAMETER_NMSPC);
 		parameterPK.put("parameterDetailTypeCode", MOCK_PARAMETER_DETAIL_TYPE_CODE);
 		parameterPK.put("parameterName", MOCK_PARAMETER_NAME);
-		final Parameter parameter = (Parameter)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(Parameter.class, parameterPK);
-		final LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
+		final Parameter parameter = (Parameter) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(Parameter.class, parameterPK);
+		final LookupResultsService lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
 		
 		try {
 			Set<String> parameterIds = new HashSet<String>();
@@ -102,7 +102,7 @@ public class LookupResultsServiceTest extends KNSTestCase {
 	 */
 	@Test public void testDataDictionaryBusinessObjectSearch() {
 		final LookupResultsDDBo ddBo = new LookupResultsDDBo("gorilla");
-		final LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
+		final LookupResultsService lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
 		
 		try {
 			Set<String> ddBoIds = new HashSet<String>();
@@ -129,7 +129,7 @@ public class LookupResultsServiceTest extends KNSTestCase {
 	 */
 	@Test public void testBadSearch() {
 		boolean threwException = false;
-		final LookupResultsService lookupResultsService = KNSServiceLocator.getLookupResultsService();
+		final LookupResultsService lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
 		try {
 			lookupResultsService.retrieveSelectedResultBOs("test data2", PersonImpl.class, LookupResultsServiceTest.MOCK_PERSON);
 		} catch (RuntimeException re) {

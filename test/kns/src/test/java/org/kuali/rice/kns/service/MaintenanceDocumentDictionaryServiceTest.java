@@ -31,7 +31,7 @@ public class MaintenanceDocumentDictionaryServiceTest extends KNSTestCase {
         // test the boClass null argument
         exceptionThrown = false;
         try {
-            KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((Class) null, "accountNumber");
+            KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((Class) null, "accountNumber");
         }
         catch (IllegalArgumentException e) {
             exceptionThrown = true;
@@ -44,7 +44,7 @@ public class MaintenanceDocumentDictionaryServiceTest extends KNSTestCase {
         // test the docTypeName null argument
         exceptionThrown = false;
         try {
-            KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((String) null, "accountNumber");
+            KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((String) null, "accountNumber");
         }
         catch (IllegalArgumentException e) {
             exceptionThrown = true;
@@ -57,7 +57,7 @@ public class MaintenanceDocumentDictionaryServiceTest extends KNSTestCase {
         // test the fieldName null argument
         exceptionThrown = false;
         try {
-            KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue("docTypeName", null);
+            KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue("docTypeName", null);
         }
         catch (IllegalArgumentException e) {
             exceptionThrown = true;
@@ -71,7 +71,7 @@ public class MaintenanceDocumentDictionaryServiceTest extends KNSTestCase {
 //    @Test public void testGetFieldDefaultValue_Account() {
 //
 //        String result;
-//        result = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(AccountManager.class, "defaultType");
+//        result = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(AccountManager.class, "defaultType");
 //        LOG.debug(result);
 //        assertEquals("Standard", result);
 //
@@ -80,15 +80,15 @@ public class MaintenanceDocumentDictionaryServiceTest extends KNSTestCase {
 //    @Test public void testGetFieldDefaultValue_SubAccount() {
 //
 //        String result;
-//        result = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(SubAccount.class, "subAccountActiveIndicator");
+//        result = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(SubAccount.class, "subAccountActiveIndicator");
 //        LOG.debug(result);
 //        assertEquals("true", result);
 //
-//        result = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(SubAccount.class, "a21SubAccount.subAccountTypeCode");
+//        result = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(SubAccount.class, "a21SubAccount.subAccountTypeCode");
 //        LOG.debug(result);
 //        assertEquals("EX", result);
 //
-//        result = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(SubAccount.class, "a21SubAccount.offCampusCode");
+//        result = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(SubAccount.class, "a21SubAccount.offCampusCode");
 //        LOG.debug(result);
 //        assertEquals("false", result);
 //
@@ -98,11 +98,11 @@ public class MaintenanceDocumentDictionaryServiceTest extends KNSTestCase {
 //
 //        String result;
 //
-//        result = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(SubObjCd.class, "universityFiscalYear");
+//        result = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(SubObjCd.class, "universityFiscalYear");
 //        LOG.debug(result);
 //        assertEquals(getValueFromFinder(FiscalYearFinder.class), result);
 //
-//        result = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(SubObjCd.class, "financialSubObjectActiveIndicator");
+//        result = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue(SubObjCd.class, "financialSubObjectActiveIndicator");
 //        LOG.debug(result);
 //        assertEquals("true", result);
 //

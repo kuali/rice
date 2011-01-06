@@ -18,7 +18,7 @@ package org.kuali.rice.kim.lookup;
 import java.util.Properties;
 
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -58,7 +58,7 @@ public class PersonLookupableImpl extends KualiLookupableImpl {
 
 	public UiDocumentService getUiDocumentService() {
 		if ( uiDocumentService == null ) {
-			uiDocumentService = KIMServiceLocator.getUiDocumentService();
+			uiDocumentService = KIMServiceLocatorInternal.getUiDocumentService();
 		}
 		return uiDocumentService;
 	}

@@ -33,12 +33,12 @@ import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.service.GroupUpdateService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 
 /**
@@ -87,7 +87,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         groupMember.setMemberId(principalId);
 
         groupMember = (GroupMemberImpl)getBusinessObjectService().save(groupMember);
-        KIMServiceLocator.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(), groupMember.getGroupId());
+        KIMServiceLocatorInternal.getGroupInternalService().updateForUserAddedToGroup(groupMember.getMemberId(), groupMember.getGroupId());
         getIdentityManagementNotificationService().groupUpdated();
         return true;
     }
@@ -114,7 +114,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
     * @see org.kuali.rice.kim.service.GroupUpdateService#removeAllGroupMembers(java.lang.String)
     */
    public void removeAllGroupMembers(String groupId) {
-       List<String> memberPrincipalsBefore = KIMServiceLocator.getGroupService().getMemberPrincipalIds(groupId);
+       List<String> memberPrincipalsBefore = KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(groupId);
 
        Collection<GroupMemberImpl> toDeactivate = getActiveGroupMembers(groupId, null, null);
        java.sql.Timestamp today = new java.sql.Timestamp(System.currentTimeMillis());
@@ -126,7 +126,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
        // Save
        getBusinessObjectService().save(new ArrayList<GroupMemberImpl>(toDeactivate));
-       List<String> memberPrincipalsAfter = KIMServiceLocator.getGroupService().getMemberPrincipalIds(groupId);
+       List<String> memberPrincipalsAfter = KIMServiceLocatorInternal.getGroupService().getMemberPrincipalIds(groupId);
 
        if (!CollectionUtils.isEmpty(memberPrincipalsAfter)) {
     	   // should never happen!
@@ -134,7 +134,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
        }
 
        // do updates
-       KIMServiceLocator.getGroupInternalService().updateForWorkgroupChange(groupId, memberPrincipalsBefore, memberPrincipalsAfter);
+       KIMServiceLocatorInternal.getGroupInternalService().updateForWorkgroupChange(groupId, memberPrincipalsBefore, memberPrincipalsAfter);
        getIdentityManagementNotificationService().groupUpdated();
    }
 
@@ -170,7 +170,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         	GroupMemberImpl member = groupMembers.iterator().next();
         	member.setActiveToDate(new java.sql.Timestamp(System.currentTimeMillis()));
         	getBusinessObjectService().save(member);
-            KIMServiceLocator.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(), member.getGroupId());
+            KIMServiceLocatorInternal.getGroupInternalService().updateForUserRemovedFromGroup(member.getMemberId(), member.getGroupId());
             getIdentityManagementNotificationService().groupUpdated();
             return true;
         }
@@ -250,7 +250,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
     		group.setGroupId(sas.getNextAvailableSequenceNumber(
     				"KRIM_GRP_ID_S", GroupImpl.class).toString());
     	}
-		GroupImpl savedGroup = KIMServiceLocator.getGroupInternalService().saveWorkgroup(group);
+		GroupImpl savedGroup = KIMServiceLocatorInternal.getGroupInternalService().saveWorkgroup(group);
 		getIdentityManagementNotificationService().groupUpdated();
 		return savedGroup;
 	}
@@ -315,7 +315,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
 	protected SequenceAccessorService getSequenceAccessorService() {
 		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+			sequenceAccessorService = KNSServiceLocatorInternal.getSequenceAccessorService();
 		}
 		return sequenceAccessorService;
 	}

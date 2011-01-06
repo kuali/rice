@@ -27,7 +27,7 @@ import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.DateFormatter;
@@ -205,7 +205,7 @@ public abstract class HtmlData implements Serializable {
 	private static BusinessObjectAuthorizationService businessObjectAuthorizationService;
 	private static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
 		if (businessObjectAuthorizationService == null) {
-			businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+			businessObjectAuthorizationService = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService();
 		}
 		return businessObjectAuthorizationService;
 	}
@@ -216,7 +216,7 @@ public abstract class HtmlData implements Serializable {
 		for (String key : keyValueMap.keySet()) {
 			String fieldVal = keyValueMap.get(key).toString();
 			
-			titleText.append(KNSServiceLocator.getDataDictionaryService()
+			titleText.append(KNSServiceLocatorInternal.getDataDictionaryService()
 					.getAttributeLabel(element, key)
 					+ "=" + fieldVal.toString() + " ");
 		}

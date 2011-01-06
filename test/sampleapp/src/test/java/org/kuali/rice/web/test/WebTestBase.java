@@ -26,7 +26,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.test.web.HtmlUnitUtil;
 
@@ -81,7 +81,7 @@ public abstract class WebTestBase extends ServerTestBase {
     public void setUp() throws Exception {
         super.setUp();
         GlobalVariables.setUserSession(new UserSession(USER_NETWORK_ID));
-        documentService = KNSServiceLocator.getDocumentService();
+        documentService = KNSServiceLocatorInternal.getDocumentService();
         webClient = new WebClient();
 
         setPortalPage(buildPageFromUrl(HtmlUnitUtil.BASE_URL, HTML_PAGE_TITLE_TEXT));

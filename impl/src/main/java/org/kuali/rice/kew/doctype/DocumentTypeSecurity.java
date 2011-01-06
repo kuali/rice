@@ -38,7 +38,7 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -139,7 +139,7 @@ public class DocumentTypeSecurity implements Serializable {
         	value = Utilities.substituteConfigParameters(value);
             String namespaceCode = Utilities.parseGroupNamespaceCode(value);
             String groupName = Utilities.parseGroupName(value);
-        	Group groupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+        	Group groupObject = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
         	if (groupObject == null) {
         		throw new WorkflowException("Could not find group: " + value);
         	}
@@ -157,7 +157,7 @@ public class DocumentTypeSecurity implements Serializable {
             if (!Utilities.isEmpty(groupName)) {
               groupName = Utilities.substituteConfigParameters(groupName).trim();
               String namespaceCode = Utilities.substituteConfigParameters(((Element) groupNode).getAttribute(XmlConstants.NAMESPACE)).trim();
-              Group groupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+              Group groupObject = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
               
               
               if (groupObject != null) {

@@ -31,7 +31,7 @@ import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.identity.PrincipalName;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.workflow.WorkflowUtils;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -77,7 +77,7 @@ public class AccountAttribute extends AbstractRoleAttribute {
         String accountNum = qualifiedRole;
         TravelAccount account = new TravelAccount();
         account.setNumber(accountNum);
-        account = (TravelAccount) KNSServiceLocator.getBusinessObjectService().retrieve(account);
+        account = (TravelAccount) KNSServiceLocatorInternal.getBusinessObjectService().retrieve(account);
         if (account == null) {
             throw new RuntimeException("Account " + accountNum + " does not exist!");
         }

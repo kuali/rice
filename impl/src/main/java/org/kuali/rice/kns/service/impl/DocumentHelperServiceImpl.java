@@ -31,7 +31,7 @@ import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizer
 import org.kuali.rice.kns.document.authorization.TransactionalDocumentPresentationControllerBase;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This class is a utility service intended to help retrieve objects related to particular documents.
@@ -165,7 +165,7 @@ public class DocumentHelperServiceImpl implements DocumentHelperService {
      */
     public DataDictionaryService getDataDictionaryService() {
         if (dataDictionaryService == null) {
-            this.dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+            this.dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
         }
         return this.dataDictionaryService;
     }

@@ -35,7 +35,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.session.Authentication;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 
 
@@ -81,7 +81,7 @@ public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderVa
 	  if (session.getUserSession() == null) {
 		  return false;
 	  }
-	  return KIMServiceLocator.getIdentityManagementService().isAuthorized(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
+	  return KIMServiceLocatorInternal.getIdentityManagementService().isAuthorized(session.getUserSession().getPrincipalId(), KEWConstants.KEW_NAMESPACE,	KEWConstants.PermissionNames.UNRESTRICTED_DOCUMENT_SEARCH, new AttributeSet(), new AttributeSet());
   }
 
   protected boolean checkStandardAuthorization(DocumentTypeSecurity security, UserSession userSession, String docTypeName, Long documentId, String initiatorPrincipalId, SecuritySession session) {
@@ -188,7 +188,7 @@ public boolean routeLogAuthorized(UserSession userSession, DocumentRouteHeaderVa
   }
 
 	private boolean isMemberOfGroupWithName(String namespace, String groupName, String principalId) {
-		for (Group group : KIMServiceLocator.getIdentityManagementService().getGroupsForPrincipal(principalId)) {
+		for (Group group : KIMServiceLocatorInternal.getIdentityManagementService().getGroupsForPrincipal(principalId)) {
 			if (StringUtils.equals(namespace, group.getNamespaceCode()) && StringUtils.equals(groupName, group.getGroupName())) {
 				return true;
 			}

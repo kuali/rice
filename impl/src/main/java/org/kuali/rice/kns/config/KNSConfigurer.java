@@ -25,7 +25,7 @@ import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.core.config.ModuleConfigurer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
 public class KNSConfigurer extends ModuleConfigurer {
@@ -66,9 +66,9 @@ public class KNSConfigurer extends ModuleConfigurer {
     private void loadDataDictionary() {
 		if (isLoadDataDictionary()) {
             LOG.info("KNS Configurer - Loading DD");
-			DataDictionaryService dds = KNSServiceLocator.getDataDictionaryService();
+			DataDictionaryService dds = KNSServiceLocatorInternal.getDataDictionaryService();
 			if ( dds == null ) {
-				dds = (DataDictionaryService) GlobalResourceLoader.getService( KNSServiceLocator.DATA_DICTIONARY_SERVICE );
+				dds = (DataDictionaryService) GlobalResourceLoader.getService( KNSServiceLocatorInternal.DATA_DICTIONARY_SERVICE );
 			}
 			dds.getDataDictionary().parseDataDictionaryConfigurationFiles(false);
 

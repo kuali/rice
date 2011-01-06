@@ -49,14 +49,8 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.exception.InfrastructureException;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.PersistenceService;
-import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.service.TransactionalDocumentDictionaryService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
@@ -261,7 +255,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	 */
 	@Override
 	public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
-		MaintenanceDocumentEntry entry = KNSServiceLocator.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+		MaintenanceDocumentEntry entry = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
 		for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
 			validateBusinessObjectOnMaintenanceDocumentHelper(businessObject, sectionDefinition.getMaintainableItems(), "");
 		}
@@ -1044,7 +1038,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
 
         String attrValueStr = attrValue.toString();
-        if (!KNSServiceLocator.getParameterService().getParameterEvaluator(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName(), attrValueStr).evaluationSucceeds()) {
+        if (!KNSServiceLocatorInternal.getParameterService().getParameterEvaluator(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName(), attrValueStr).evaluationSucceeds()) {
         //if (!configService.evaluateConstrainedValue(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName(),attrValueStr)) {
             success &= false;
             GlobalVariables.getMessageMap().putError(apcRule.getAttributeName(), apcRule.getErrorMessage());
@@ -1131,7 +1125,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 
     private WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {
     	if (workflowAttributePropertyResolutionService == null) {
-    		workflowAttributePropertyResolutionService = KNSServiceLocator.getWorkflowAttributePropertyResolutionService();
+    		workflowAttributePropertyResolutionService = KNSServiceLocatorInternal.getWorkflowAttributePropertyResolutionService();
     	}
     	return workflowAttributePropertyResolutionService;
     }

@@ -27,6 +27,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
@@ -40,18 +41,8 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.AddCollectionLineRule;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
-import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.InactivationBlockingDetectionService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.PersistenceService;
-import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.ForeignKeyFieldsPopulationState;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -120,17 +111,17 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         // SpringServiceLocator, and configure the bean defs for spring.
         try {
             this.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
-            this.setDdService(KNSServiceLocator.getDataDictionaryService());
+            this.setDdService(KNSServiceLocatorInternal.getDataDictionaryService());
             this.setPersistenceService(KNSServiceLocator.getPersistenceService());
-            this.setBoService(KNSServiceLocator.getBusinessObjectService());
-            this.setBoDictionaryService(KNSServiceLocator.getBusinessObjectDictionaryService());
-            this.setDictionaryValidationService(KNSServiceLocator.getDictionaryValidationService());
-            this.setConfigService(KNSServiceLocator.getKualiConfigurationService());
-            this.setDocumentHelperService(KNSServiceLocator.getDocumentHelperService());
-            this.setMaintDocDictionaryService(KNSServiceLocator.getMaintenanceDocumentDictionaryService());
-            this.setWorkflowDocumentService(KNSServiceLocator.getWorkflowDocumentService());
-            this.setPersonService( org.kuali.rice.kim.service.KIMServiceLocator.getPersonService() );
-            this.setBusinessObjectAuthorizationService(KNSServiceLocator.getBusinessObjectAuthorizationService());
+            this.setBoService(KNSServiceLocatorInternal.getBusinessObjectService());
+            this.setBoDictionaryService(KNSServiceLocatorInternal.getBusinessObjectDictionaryService());
+            this.setDictionaryValidationService(KNSServiceLocatorInternal.getDictionaryValidationService());
+            this.setConfigService(KNSServiceLocatorInternal.getKualiConfigurationService());
+            this.setDocumentHelperService(KNSServiceLocatorInternal.getDocumentHelperService());
+            this.setMaintDocDictionaryService(KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService());
+            this.setWorkflowDocumentService(KNSServiceLocatorInternal.getWorkflowDocumentService());
+            this.setPersonService( KIMServiceLocator.getPersonService() );
+            this.setBusinessObjectAuthorizationService(KNSServiceLocatorInternal.getBusinessObjectAuthorizationService());
         } catch ( Exception ex ) {
             // do nothing, avoid blowing up if called prior to spring initialization
         }
@@ -280,9 +271,9 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
         String inactivationBlockingDetectionServiceBeanName = inactivationBlockingMetadata.getInactivationBlockingDetectionServiceBeanName();
         if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
-            inactivationBlockingDetectionServiceBeanName = KNSServiceLocator.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
+            inactivationBlockingDetectionServiceBeanName = KNSServiceLocatorInternal.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
         }
-        InactivationBlockingDetectionService inactivationBlockingDetectionService = KNSServiceLocator.getInactivationBlockingDetectionService(inactivationBlockingDetectionServiceBeanName);
+        InactivationBlockingDetectionService inactivationBlockingDetectionService = KNSServiceLocatorInternal.getInactivationBlockingDetectionService(inactivationBlockingDetectionServiceBeanName);
 
         boolean foundBlockingRecord = inactivationBlockingDetectionService.hasABlockingRecord(newBo, inactivationBlockingMetadata);
 
@@ -337,7 +328,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             // Encrypt value if it is a secure field
             if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(inactivationBlockingMetadata.getBlockedBusinessObjectClass(), keyName)) {
                 try {
-                    keyValue = KNSServiceLocator.getEncryptionService().encrypt(keyValue);
+                    keyValue = KNSServiceLocatorInternal.getEncryptionService().encrypt(keyValue);
                 }
                 catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);
@@ -1232,7 +1223,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
         boolean success = true;
 
         // apply the rule, see if it fails
-        if (!KNSServiceLocator.getParameterService().getParameterEvaluator(parameterNamespace, parameterDetailTypeCode, parameterName, valueToTest).evaluationSucceeds()) {
+        if (!KNSServiceLocatorInternal.getParameterService().getParameterEvaluator(parameterNamespace, parameterDetailTypeCode, parameterName, valueToTest).evaluationSucceeds()) {
             success = false;
         }
 
@@ -1598,7 +1589,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
 
     protected RoleService getRoleService(){
         if(this.roleService==null){
-            this.roleService = KIMServiceLocator.getRoleService();
+            this.roleService = KIMServiceLocatorInternal.getRoleService();
         }
         return this.roleService;
     }

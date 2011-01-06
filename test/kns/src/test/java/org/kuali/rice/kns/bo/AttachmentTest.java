@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.test.KNSTestCase;
 
@@ -147,7 +148,7 @@ public class AttachmentTest extends KNSTestCase{
 			GlobalVariables.setUserSession(new UserSession("quickstart"));
 			
 	        Person kualiUser = GlobalVariables.getUserSession().getPerson();
-			PersistableBusinessObject parentNote = KNSServiceLocator.getNoteService().createNote(dummyNote, dummyAttachment, kualiUser.getPrincipalId());
+			PersistableBusinessObject parentNote = KNSServiceLocatorInternal.getNoteService().createNote(dummyNote, dummyAttachment, kualiUser.getPrincipalId());
 			dummyAttachment = KNSServiceLocator.getAttachmentService().createAttachment( parentNote,
 																					   	 "dummy.txt", 
 																					     "MimeTypeCode",

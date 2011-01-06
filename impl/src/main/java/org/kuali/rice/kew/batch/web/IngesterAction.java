@@ -25,7 +25,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.batch.*;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
@@ -207,7 +207,7 @@ public class IngesterAction extends KualiAction {
     	AttributeSet roleQualifier = new AttributeSet();
     	AttributeSet permissionDetails = KimCommonUtils.getNamespaceAndActionClass(this.getClass());
 
-        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
+        if (!KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))
         {
             throw new AuthorizationException(GlobalVariables.getUserSession().getPrincipalName(),

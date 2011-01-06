@@ -32,12 +32,8 @@ import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
 import org.kuali.rice.kns.exception.KualiException;
-import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -152,7 +148,7 @@ public class ModuleServiceBase implements ModuleService {
 		if(businessObjectInterfaceClass.isInterface())
 			boClass = getExternalizableBusinessObjectImplementation(businessObjectInterfaceClass);
 		return boClass==null?null:
-			KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntryForConcreteClass(boClass.getName());
+			KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntryForConcreteClass(boClass.getName());
 	}
 
 	public String getExternalizableBusinessObjectInquiryUrl(Class inquiryBusinessObjectClass, Map<String, String[]> parameters) {
@@ -190,7 +186,7 @@ public class ModuleServiceBase implements ModuleService {
 	}
 
 	protected String getInquiryUrl(Class inquiryBusinessObjectClass){
-		String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
+		String riceBaseUrl = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
 		String inquiryUrl = riceBaseUrl;
 		if (!inquiryUrl.endsWith("/")) {
 			inquiryUrl = inquiryUrl + "/";
@@ -206,7 +202,7 @@ public class ModuleServiceBase implements ModuleService {
 	public String getExternalizableBusinessObjectLookupUrl(Class inquiryBusinessObjectClass, Map<String, String> parameters) {
 		Properties urlParameters = new Properties();
 
-		String riceBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
+		String riceBaseUrl = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY);
 		String lookupUrl = riceBaseUrl;
 		if (!lookupUrl.endsWith("/")) {
 			lookupUrl = lookupUrl + "/";
@@ -251,7 +247,7 @@ public class ModuleServiceBase implements ModuleService {
 		//Get the business object entry for this business object from data dictionary
 		//using the class name (without the package) as key
 		BusinessObjectEntry entry =
-			KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntries().get(
+			KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntries().get(
 					businessObject.getClass().getSimpleName());
 		RelationshipDefinition relationshipDefinition = entry.getRelationshipDefinition(externalizableRelationshipName);
 		List<PrimitiveAttributeDefinition> primitiveAttributeDefinitions = relationshipDefinition.getPrimitiveAttributes();
@@ -294,7 +290,7 @@ public class ModuleServiceBase implements ModuleService {
 		String className = businessObject.getClass().getName();
 		String key = className.substring(className.lastIndexOf(".")+1);
 		BusinessObjectEntry entry =
-			KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntries().get(key);
+			KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntries().get(key);
 		RelationshipDefinition relationshipDefinition = entry.getRelationshipDefinition(externalizableRelationshipName);
 		List<PrimitiveAttributeDefinition> primitiveAttributeDefinitions = relationshipDefinition.getPrimitiveAttributes();
 		Map<String, Object> fieldValuesInEBO = new HashMap<String, Object>();
@@ -344,12 +340,12 @@ public class ModuleServiceBase implements ModuleService {
 	public void afterPropertiesSet() throws Exception {
 		KualiModuleService kualiModuleService = null;
 		try {
-			kualiModuleService = KNSServiceLocator.getKualiModuleService();
+			kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
 			if ( kualiModuleService == null ) {
-				kualiModuleService = ((KualiModuleService)applicationContext.getBean( KNSServiceLocator.KUALI_MODULE_SERVICE ));
+				kualiModuleService = ((KualiModuleService)applicationContext.getBean( KNSServiceLocatorInternal.KUALI_MODULE_SERVICE ));
 			}
 		} catch ( NoSuchBeanDefinitionException ex ) {
-			kualiModuleService = ((KualiModuleService)applicationContext.getBean( KNSServiceLocator.KUALI_MODULE_SERVICE ));
+			kualiModuleService = ((KualiModuleService)applicationContext.getBean( KNSServiceLocatorInternal.KUALI_MODULE_SERVICE ));
 		}
 		kualiModuleService.getInstalledModuleServices().add( this );
 	}
@@ -400,7 +396,7 @@ public class ModuleServiceBase implements ModuleService {
 
 	public BusinessObjectDictionaryService getBusinessObjectDictionaryService () {
 		if ( businessObjectDictionaryService == null ) {
-			businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+			businessObjectDictionaryService = KNSServiceLocatorInternal.getBusinessObjectDictionaryService();
 		}
 		return businessObjectDictionaryService;
 	}
@@ -410,7 +406,7 @@ public class ModuleServiceBase implements ModuleService {
 	 */
 	public BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
@@ -420,7 +416,7 @@ public class ModuleServiceBase implements ModuleService {
      * @return Returns the lookupService.
      */
     protected LookupService getLookupService() {
-        return lookupService != null ? lookupService : KNSServiceLocator.getLookupService();
+        return lookupService != null ? lookupService : KNSServiceLocatorInternal.getLookupService();
     }
 
 	/**

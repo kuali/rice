@@ -31,12 +31,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.springframework.util.AutoPopulatingList;
@@ -206,10 +204,10 @@ public class KimDocumentRoleMember  extends KimDocumentBoActivatableToFromEditab
 	}
 
 	protected void populateDerivedValues() {
-    	BusinessObject member = KIMServiceLocator.getUiDocumentService().getMember(getMemberTypeCode(), getMemberId());
+    	BusinessObject member = KIMServiceLocatorInternal.getUiDocumentService().getMember(getMemberTypeCode(), getMemberId());
     	if ( member != null ) {
-	        setMemberName(KIMServiceLocator.getUiDocumentService().getMemberName(getMemberTypeCode(), member));
-	        setMemberNamespaceCode(KIMServiceLocator.getUiDocumentService().getMemberNamespaceCode(getMemberTypeCode(), member));
+	        setMemberName(KIMServiceLocatorInternal.getUiDocumentService().getMemberName(getMemberTypeCode(), member));
+	        setMemberNamespaceCode(KIMServiceLocatorInternal.getUiDocumentService().getMemberNamespaceCode(getMemberTypeCode(), member));
     	}
 	}
 	

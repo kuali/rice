@@ -25,7 +25,7 @@ import org.kuali.rice.kew.role.QualifierResolver;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -76,7 +76,7 @@ public abstract class QualifierResolverBase implements QualifierResolver {
 
 	public DocumentService getDocumentService() {
 		if ( documentService == null ) {
-			documentService = KNSServiceLocator.getDocumentService();
+			documentService = KNSServiceLocatorInternal.getDocumentService();
 		}
 		return documentService;
 	}

@@ -35,17 +35,14 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.reference.dto.ExternalIdentifierTypeInfo;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kim.service.RoleManagementService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -431,7 +428,7 @@ public class PersonServiceImpl implements PersonService {
 							if ( extIdType != null && extIdType.isEncryptionRequired() ) {
 								try {
 									criteria.put(key, 
-											KNSServiceLocator.getEncryptionService().encrypt(criteria.get(key))
+											KNSServiceLocatorInternal.getEncryptionService().encrypt(criteria.get(key))
 											);
 								} catch (GeneralSecurityException ex) {
 									LOG.error("Unable to encrypt value for external ID search of type " + extIdTypeCode, ex );
@@ -833,14 +830,14 @@ public class PersonServiceImpl implements PersonService {
 
 	protected IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}
 
 	protected RoleManagementService getRoleManagementService() {
 		if ( roleManagementService == null ) {
-			roleManagementService = KIMServiceLocator.getRoleManagementService();
+			roleManagementService = KIMServiceLocatorInternal.getRoleManagementService();
 		}
 		return roleManagementService;
 	}
@@ -852,14 +849,14 @@ public class PersonServiceImpl implements PersonService {
 	
 	protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
 		if ( businessObjectMetaDataService == null ) {
-			businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+			businessObjectMetaDataService = KNSServiceLocatorInternal.getBusinessObjectMetaDataService();
 		}
 		return businessObjectMetaDataService;
 	}
 
 	protected MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if ( maintenanceDocumentDictionaryService == null ) {
-			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}

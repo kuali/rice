@@ -69,7 +69,7 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 	 */
 	@Test
 	public void testFindMatchingActive() throws Exception {
-		InactivateableFromToService inactivateableFromToService = KNSServiceLocator.getInactivateableFromToService();
+		InactivateableFromToService inactivateableFromToService = KNSServiceLocatorInternal.getInactivateableFromToService();
 
 		Map fieldValues = new HashMap();
 		fieldValues.put(KNSPropertyConstants.ACTIVE_AS_OF_DATE, "04/01/2010");
@@ -113,7 +113,7 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 	 */
 	@Test
 	public void testFindMatchingActive_inactive() throws Exception {
-		LookupService lookupService = KNSServiceLocator.getLookupService();
+		LookupService lookupService = KNSServiceLocatorInternal.getLookupService();
 
 		Map fieldValues = new HashMap();
 		fieldValues.put(KNSPropertyConstants.ACTIVE, "N");
@@ -147,7 +147,7 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 	 */
 	@Test
 	public void testFindMatchingActive_nullBeginDate() throws Exception {
-		InactivateableFromToService inactivateableFromToService = KNSServiceLocator.getInactivateableFromToService();
+		InactivateableFromToService inactivateableFromToService = KNSServiceLocatorInternal.getInactivateableFromToService();
 
 		Map fieldValues = new HashMap();
 		fieldValues.put(KNSPropertyConstants.ACTIVE_AS_OF_DATE, "04/01/2010");
@@ -160,7 +160,7 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 		TravelAccountUseRate useRate = (TravelAccountUseRate) results.get(0);
 		assertTrue("Incorrect inactive record returned, does not match expected id", "6".equals(useRate.getId()));
 		
-		LookupService lookupService = KNSServiceLocator.getLookupService();
+		LookupService lookupService = KNSServiceLocatorInternal.getLookupService();
 
 		fieldValues = new HashMap();
 		fieldValues.put(KNSPropertyConstants.ACTIVE, "N");
@@ -178,7 +178,7 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 	 */
 	@Test
 	public void testFindMatchingActive_nullEndDate() throws Exception {
-		InactivateableFromToService inactivateableFromToService = KNSServiceLocator.getInactivateableFromToService();
+		InactivateableFromToService inactivateableFromToService = KNSServiceLocatorInternal.getInactivateableFromToService();
 
 		Map fieldValues = new HashMap();
 		fieldValues.put(KNSPropertyConstants.ACTIVE_AS_OF_DATE, "04/01/2030");
@@ -199,7 +199,7 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 	 */
 	@Test
 	public void testFindMatchingActive_nullBeginEndDate() throws Exception {
-		InactivateableFromToService inactivateableFromToService = KNSServiceLocator.getInactivateableFromToService();
+		InactivateableFromToService inactivateableFromToService = KNSServiceLocatorInternal.getInactivateableFromToService();
 
 		Map fieldValues = new HashMap();
 		fieldValues.put(KNSPropertyConstants.ACTIVE_AS_OF_DATE, "04/01/2010");
@@ -220,7 +220,7 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 	 */
 	@Test
 	public void testFilterOutNonActive() throws Exception {
-		InactivateableFromToService inactivateableFromToService = KNSServiceLocator.getInactivateableFromToService();
+		InactivateableFromToService inactivateableFromToService = KNSServiceLocatorInternal.getInactivateableFromToService();
 
 		List<InactivateableFromTo> filterList = new ArrayList<InactivateableFromTo>();
 		filterList.add(constructUseRate("1", "a1", "01/01/2010", "01/01/2011"));
@@ -248,7 +248,7 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 	 */
 	@Test
 	public void testFindMatchingCurrent() throws Exception {
-		InactivateableFromToService inactivateableFromToService = KNSServiceLocator.getInactivateableFromToService();
+		InactivateableFromToService inactivateableFromToService = KNSServiceLocatorInternal.getInactivateableFromToService();
 
 		Map fieldValues = new HashMap();
 		fieldValues.put(KNSPropertyConstants.ACTIVE_AS_OF_DATE, "06/01/2010");
@@ -269,7 +269,7 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 	 */
 	@Test
 	public void testFilterOutNonCurrent() throws Exception {
-		InactivateableFromToService inactivateableFromToService = KNSServiceLocator.getInactivateableFromToService();
+		InactivateableFromToService inactivateableFromToService = KNSServiceLocatorInternal.getInactivateableFromToService();
 
 		List<InactivateableFromTo> filterList = new ArrayList<InactivateableFromTo>();
 		filterList.add(constructUseRate("1", "a1", "01/01/2010", "01/01/2011"));

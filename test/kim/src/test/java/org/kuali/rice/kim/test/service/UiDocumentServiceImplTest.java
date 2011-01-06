@@ -48,12 +48,13 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.
@@ -67,7 +68,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		uiDocumentService = KIMServiceLocator.getUiDocumentService();
+		uiDocumentService = KIMServiceLocatorInternal.getUiDocumentService();
 	}
 
 	@Test
@@ -76,12 +77,12 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
 
 		try {
-            personDoc.getDocumentHeader().setWorkflowDocument(KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
+            personDoc.getDocumentHeader().setWorkflowDocument(KNSServiceLocatorInternal.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
         } catch (WorkflowException e) {
             e.printStackTrace();
         }
 		uiDocumentService.saveEntityPerson(personDoc);
-		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getService("kimIdentityDelegateService")).getEntityImpl(personDoc.getEntityId());
+		KimEntityImpl entity = ((IdentityServiceImpl) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntityImpl(personDoc.getEntityId());
         KimEntityEntityTypeImpl entityType = entity.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
 		assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (KimEntityAddressImpl)entityType.getAddresses().get(0));
@@ -96,7 +97,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		//verify that update doesn't cause external identifier to be encrypted twice
 		// and that update doesn't cause any problems
 		uiDocumentService.saveEntityPerson(personDoc);
-		KimEntityImpl entity2 = ((IdentityServiceImpl)KIMServiceLocator.getService("kimIdentityDelegateService")).getEntityImpl(personDoc.getEntityId());
+		KimEntityImpl entity2 = ((IdentityServiceImpl) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntityImpl(personDoc.getEntityId());
         KimEntityEntityTypeImpl entityType2 = entity2.getEntityTypes().get(0);
         personDoc.getExternalIdentifiers();
         assertAddressTrue((PersonDocumentAddress)personDoc.getAddrs().get(0), (KimEntityAddressImpl)entityType2.getAddresses().get(0));
@@ -122,7 +123,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	@Test
 	public void testLoadToPersonDocument() {
 
-		KimEntityImpl entity = ((IdentityServiceImpl)KIMServiceLocator.getService("kimIdentityDelegateService")).getEntityImpl("entity123eId");
+		KimEntityImpl entity = ((IdentityServiceImpl) KIMServiceLocatorInternal.getService("kimIdentityDelegateService")).getEntityImpl("entity123eId");
 		assertNotNull(entity);
 		IdentityManagementPersonDocument personDoc = new IdentityManagementPersonDocument();
 		uiDocumentService.loadEntityToPersonDoc(personDoc, "entity123pId");
@@ -143,7 +144,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 	@Ignore
 	public void testSetAttributeEntry() {
 		PersonDocumentRole personDocRole = initPersonDocRole();
-        KimTypeService kimTypeService = (KimTypeServiceBase)KIMServiceLocator.getService(personDocRole.getKimRoleType().getKimTypeServiceName());
+        KimTypeService kimTypeService = (KimTypeServiceBase) KIMServiceLocatorInternal.getService(personDocRole.getKimRoleType().getKimTypeServiceName());
 		personDocRole.setDefinitions(kimTypeService.getAttributeDefinitions(personDocRole.getKimTypeId()));
 
 		personDocRole.setAttributeEntry( uiDocumentService.getAttributeEntries( personDocRole.getDefinitions() ) );
@@ -177,7 +178,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		List<KimTypeAttributeImpl> attributeDefinitions = new ArrayList<KimTypeAttributeImpl>();
 		Map pkMap = new HashMap();
 		pkMap.put("kimTypeAttributeId", "kimAttr3");
-		KimTypeAttributeImpl attr1 = (KimTypeAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
+		KimTypeAttributeImpl attr1 = (KimTypeAttributeImpl) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
 
 //		attr1.setKimAttributeId("kimAttrDefn2");
 //		attr1.setSortCode("a");
@@ -190,7 +191,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 //		attr1.setKimTypeAttributeId("kimAttr4");
 
 		pkMap.put("kimTypeAttributeId", "kimAttr4");
-		KimTypeAttributeImpl attr2 = (KimTypeAttributeImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
+		KimTypeAttributeImpl attr2 = (KimTypeAttributeImpl) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(KimTypeAttributeImpl.class, pkMap);
 
 		attributeDefinitions.add(attr2);
 		kimType.setAttributeDefinitions(attributeDefinitions);

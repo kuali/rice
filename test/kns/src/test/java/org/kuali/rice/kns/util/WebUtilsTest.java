@@ -17,8 +17,6 @@ package org.kuali.rice.kns.util;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.test.KNSTestCase;
 
 /**

@@ -24,7 +24,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -73,7 +73,7 @@ public class KimTypeAttributesHelper implements Serializable {
 	
 	public Map<String,Object> getAttributeEntry() {
 		if(attributeEntry==null || attributeEntry.isEmpty())
-			attributeEntry = KIMServiceLocator.getUiDocumentService().getAttributeEntries(getDefinitions());
+			attributeEntry = KIMServiceLocatorInternal.getUiDocumentService().getAttributeEntries(getDefinitions());
 		return attributeEntry;
 	}
 

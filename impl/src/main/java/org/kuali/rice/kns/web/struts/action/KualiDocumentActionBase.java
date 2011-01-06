@@ -45,7 +45,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
@@ -73,20 +73,8 @@ import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.kns.rule.event.AddNoteEvent;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.rule.event.SendAdHocRequestsEvent;
-import org.kuali.rice.kns.service.AttachmentService;
-import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.KualiRuleService;
-import org.kuali.rice.kns.service.NoteService;
-import org.kuali.rice.kns.service.ParameterConstants;
-import org.kuali.rice.kns.service.ParameterService;
-import org.kuali.rice.kns.service.PessimisticLockService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -199,7 +187,7 @@ public class KualiDocumentActionBase extends KualiAction {
             } else {
             // populates authorization-related fields in KualiDocumentFormBase instances, which are derived from
             // information which is contained in the form but which may be unavailable until this point
-            //DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentAuthorizationService().getDocumentAuthorizer(document);
+            //DocumentAuthorizer documentAuthorizer = KNSServiceLocatorInternal.getDocumentAuthorizationService().getDocumentAuthorizer(document);
             //formBase.populateAuthorizationFields(documentAuthorizer);
              populateAuthorizationFields(formBase);
              populateAdHocActionRequestCodes(formBase);
@@ -380,7 +368,7 @@ public class KualiDocumentActionBase extends KualiAction {
         KualiWorkflowDocument workflowDoc = doc.getDocumentHeader().getWorkflowDocument();
         kualiDocumentFormBase.setDocTypeName(workflowDoc.getDocumentType());
         // KualiDocumentFormBase.populate() needs this updated in the session
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDoc);
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDoc);
     }
 
 
@@ -484,7 +472,7 @@ public class KualiDocumentActionBase extends KualiAction {
             //fill id if not already filled
             AdHocRouteWorkgroup newWorkgroup = kualiDocumentFormBase.getNewAdHocRouteWorkgroup();
             if (newWorkgroup.getId() == null) {
-                newWorkgroup.setId(KIMServiceLocator.getIdentityManagementService().getGroupByName(newWorkgroup.getRecipientNamespaceCode(), newWorkgroup.getRecipientName()).getGroupId());
+                newWorkgroup.setId(KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(newWorkgroup.getRecipientNamespaceCode(), newWorkgroup.getRecipientName()).getGroupId());
             }
             kualiDocumentFormBase.getAdHocRouteWorkgroups().add(newWorkgroup);
             AdHocRouteWorkgroup workgroup = new AdHocRouteWorkgroup();
@@ -625,7 +613,7 @@ public class KualiDocumentActionBase extends KualiAction {
 		boolean containsSensitiveData = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
 
 		// check if warning is configured in which case we will prompt, or if not business rules will thrown an error
-		boolean warnForSensitiveData = KNSServiceLocator.getParameterService().getIndicatorParameter(
+		boolean warnForSensitiveData = KNSServiceLocatorInternal.getParameterService().getIndicatorParameter(
 				KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
 				KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
 
@@ -904,7 +892,7 @@ public class KualiDocumentActionBase extends KualiAction {
 		disapprovalNoteText = introNoteMessage + reason;
 		
 		// check for sensitive data in note
-		boolean warnForSensitiveData = KNSServiceLocator.getParameterService().getIndicatorParameter(
+		boolean warnForSensitiveData = KNSServiceLocatorInternal.getParameterService().getIndicatorParameter(
 				KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
 				KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
 		if (warnForSensitiveData) {
@@ -1689,7 +1677,7 @@ public class KualiDocumentActionBase extends KualiAction {
     	if (formBase.isFormDocumentInitialized()) {
         	Document document = formBase.getDocument();
         	Person user = GlobalVariables.getUserSession().getPerson();
-    		DocumentPresentationController documentPresentationController = KNSServiceLocator.getDocumentHelperService().getDocumentPresentationController(document);
+    		DocumentPresentationController documentPresentationController = KNSServiceLocatorInternal.getDocumentHelperService().getDocumentPresentationController(document);
             DocumentAuthorizer documentAuthorizer = getDocumentHelperService().getDocumentAuthorizer(document);
             Set<String> documentActions =  documentPresentationController.getDocumentActions(document);
             documentActions = documentAuthorizer.getDocumentActions(document, user, documentActions);
@@ -1740,56 +1728,56 @@ public class KualiDocumentActionBase extends KualiAction {
 	 */
 	protected DataDictionaryService getDataDictionaryService() {
 		if ( dataDictionaryService == null ) {
-			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}
 
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
-	        documentHelperService = KNSServiceLocator.getDocumentHelperService();
+	        documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
 		}
 	    return this.documentHelperService;
 	}
 
 	protected DocumentService getDocumentService() {
 		if ( documentService == null ) {
-			documentService = KNSServiceLocator.getDocumentService();
+			documentService = KNSServiceLocatorInternal.getDocumentService();
 		}
 		return this.documentService;
 	}
 
 	protected KualiConfigurationService getKualiConfigurationService() {
 		if ( kualiConfigurationService == null ) {
-			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+			kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
 		}
 		return this.kualiConfigurationService;
 	}
 
 	protected ParameterService getParameterService() {
         if ( parameterService == null ) {
-            parameterService = KNSServiceLocator.getParameterService();
+            parameterService = KNSServiceLocatorInternal.getParameterService();
         }
         return this.parameterService;
     }
 	
 	protected PessimisticLockService getPessimisticLockService() {
 		if ( pessimisticLockService == null ) {
-			pessimisticLockService = KNSServiceLocator.getPessimisticLockService();
+			pessimisticLockService = KNSServiceLocatorInternal.getPessimisticLockService();
 		}
 		return this.pessimisticLockService;
 	}
 
 	protected KualiRuleService getKualiRuleService() {
 		if ( kualiRuleService == null ) {
-			kualiRuleService = KNSServiceLocator.getKualiRuleService();
+			kualiRuleService = KNSServiceLocatorInternal.getKualiRuleService();
 		}
 		return this.kualiRuleService;
 	}
 
 	protected IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 		}
 		return this.identityManagementService;
 	}
@@ -1803,14 +1791,14 @@ public class KualiDocumentActionBase extends KualiAction {
 
     protected NoteService getNoteService() {
 		if ( noteService == null ) {
-			noteService = KNSServiceLocator.getNoteService();
+			noteService = KNSServiceLocatorInternal.getNoteService();
 		}
 		return this.noteService;
 	}
 
 	protected BusinessObjectService getBusinessObjectService() {
     	if ( businessObjectService == null ) {
-    		businessObjectService = KNSServiceLocator.getBusinessObjectService();
+    		businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
     	}
 		return this.businessObjectService;
 	}
@@ -1818,21 +1806,21 @@ public class KualiDocumentActionBase extends KualiAction {
     @Override
 	protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
     	if ( businessObjectAuthorizationService == null ) {
-    		businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
+    		businessObjectAuthorizationService = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService();
     	}
     	return businessObjectAuthorizationService;
     }
 
 	public BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
     	if ( businessObjectMetaDataService == null ) {
-    		businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+    		businessObjectMetaDataService = KNSServiceLocatorInternal.getBusinessObjectMetaDataService();
     	}
 		return this.businessObjectMetaDataService;
 	}
 
 	public EntityManagerFactory getEntityManagerFactory() {
     	if ( entityManagerFactory == null ) {
-    		entityManagerFactory = KNSServiceLocator.getApplicationEntityManagerFactory();
+    		entityManagerFactory = KNSServiceLocatorInternal.getApplicationEntityManagerFactory();
     	}
 		return this.entityManagerFactory;
 	}

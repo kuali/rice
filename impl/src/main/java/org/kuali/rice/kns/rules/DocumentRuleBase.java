@@ -17,6 +17,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
@@ -34,12 +35,8 @@ import org.kuali.rice.kns.rule.RouteDocumentRule;
 import org.kuali.rice.kns.rule.SaveDocumentRule;
 import org.kuali.rice.kns.rule.SendAdHocRequestsRule;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.ParameterConstants;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -77,35 +74,35 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     public static IdentityManagementService getIdentityManagementService() {
         if ( identityManagementService == null ) {
-            identityManagementService = KIMServiceLocator.getIdentityManagementService();
+            identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
         }
         return identityManagementService;
     }
 
     protected DocumentHelperService getDocumentHelperService() {
         if ( documentHelperService == null ) {
-            documentHelperService = KNSServiceLocator.getDocumentHelperService();
+            documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
         }
         return documentHelperService;
     }
 
     protected DictionaryValidationService getDictionaryValidationService() {
         if ( dictionaryValidationService == null ) {
-            dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
+            dictionaryValidationService = KNSServiceLocatorInternal.getDictionaryValidationService();
         }
         return dictionaryValidationService;
     }
 
     protected KualiWorkflowInfo getWorkflowInfoService() {
         if ( workflowInfoService == null ) {
-            workflowInfoService = KNSServiceLocator.getWorkflowInfoService();
+            workflowInfoService = KNSServiceLocatorInternal.getWorkflowInfoService();
         }
         return workflowInfoService;
     }
 
     protected KualiConfigurationService getKualiConfigurationService() {
         if ( kualiConfigurationService == null ) {
-            kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+            kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
         }
         return kualiConfigurationService;
     }
@@ -501,7 +498,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     	}
     	
     	boolean patternFound = WebUtils.containsSensitiveDataPatternMatch(fieldValue);
-		boolean warnForSensitiveData = KNSServiceLocator.getParameterService().getIndicatorParameter(
+		boolean warnForSensitiveData = KNSServiceLocatorInternal.getParameterService().getIndicatorParameter(
 				KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT,
 				KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS_WARNING_IND);
     	if (patternFound && !warnForSensitiveData) {
@@ -515,7 +512,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
     
     protected DataDictionaryService getDataDictionaryService() {
     	if (dataDictionaryService == null) {
-    		dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+    		dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
     	}
     	return dataDictionaryService;
     }

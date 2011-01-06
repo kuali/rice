@@ -17,7 +17,6 @@ package org.kuali.rice.kns.dao.impl;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -32,7 +31,6 @@ import javax.persistence.PersistenceException;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.ojb.broker.query.QueryFactory;
 import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
@@ -47,7 +45,7 @@ import org.kuali.rice.kns.dao.LookupDao;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -90,14 +88,14 @@ public class LookupDaoJpa implements LookupDao {
 				continue;
 			}
 			Boolean caseInsensitive = Boolean.TRUE;
-			if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
-				caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
+			if (KNSServiceLocatorInternal.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
+				caseInsensitive = !KNSServiceLocatorInternal.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
 			}
 			if (caseInsensitive == null) {
 				caseInsensitive = Boolean.TRUE;
 			}
 
-			boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
+			boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocatorInternal.
 					getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName); 
 			// build criteria
 			addCriteria(propertyName, searchValue, propertyType, caseInsensitive, treatWildcardsAndOperatorsAsLiteral, criteria);
@@ -130,13 +128,13 @@ public class LookupDaoJpa implements LookupDao {
 		while (propsIter.hasNext()) {
 			String propertyName = (String) propsIter.next();
 			Boolean caseInsensitive = Boolean.TRUE;
-			if (KNSServiceLocator.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
-				caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
+			if (KNSServiceLocatorInternal.getDataDictionaryService().isAttributeDefined(example.getClass(), propertyName)) {
+				caseInsensitive = !KNSServiceLocatorInternal.getDataDictionaryService().getAttributeForceUppercase(example.getClass(), propertyName);
 			}
 			if (caseInsensitive == null) {
 				caseInsensitive = Boolean.TRUE;
 			}
-            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
+            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocatorInternal.
     				getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName);
 			if (formProps.get(propertyName) instanceof Collection) {
 				Iterator iter = ((Collection) formProps.get(propertyName)).iterator();
@@ -168,7 +166,7 @@ public class LookupDaoJpa implements LookupDao {
 			} else if (StringUtils.indexOfAny(pkValue, KNSConstants.QUERY_CHARACTERS) != -1) {
 				throw new RuntimeException("Value \"" + pkValue + "\" for PK field " + pkFieldName + " contains wildcard/operator characters.");
 			}
-            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
+            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocatorInternal.
     				getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(businessObjectClass, pkFieldName);
 			createCriteria(businessObject, pkValue, pkFieldName, false, treatWildcardsAndOperatorsAsLiteral, criteria);
 		}
@@ -522,7 +520,7 @@ public class LookupDaoJpa implements LookupDao {
 
 		String jpql = " (select max(" + alias + "." + KNSPropertyConstants.ACTIVE_FROM_DATE + ") from "
 				+ example.getClass().getName() + " as " + alias + " where ";
-		String activeDateDBStr = KNSServiceLocator.getDatabasePlatform().getDateSQL(dateTimeService.toDateTimeString(activeTimestamp), null);
+		String activeDateDBStr = KNSServiceLocatorInternal.getDatabasePlatform().getDateSQL(dateTimeService.toDateTimeString(activeTimestamp), null);
 		jpql += alias + "." + KNSPropertyConstants.ACTIVE_FROM_DATE + " <= '" + activeDateDBStr + "'";
 
 		// join back to main query with the group by fields

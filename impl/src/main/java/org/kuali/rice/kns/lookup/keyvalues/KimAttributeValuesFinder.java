@@ -22,7 +22,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
 
 /**
@@ -40,9 +40,9 @@ public class KimAttributeValuesFinder extends KeyValuesBase {
 	 */
 	@Override
 	public List<KeyValue> getKeyValues() {
-        KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+        KimTypeInfo kimType = KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId);
         if ( kimType != null ) {
-	        KimTypeService service = KIMServiceLocator.getKimTypeService(kimType);
+	        KimTypeService service = KIMServiceLocatorInternal.getKimTypeService(kimType);
 	        if ( service != null ) {
 				return new ArrayList<KeyValue>(service.getAttributeValidValues(kimTypeId,kimAttributeName));
 	        } 

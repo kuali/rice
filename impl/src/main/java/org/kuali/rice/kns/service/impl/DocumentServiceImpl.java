@@ -53,17 +53,8 @@ import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 import org.kuali.rice.kns.rule.event.RouteDocumentEvent;
 import org.kuali.rice.kns.rule.event.SaveDocumentEvent;
 import org.kuali.rice.kns.rule.event.SaveEvent;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.DocumentHeaderService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.KualiRuleService;
-import org.kuali.rice.kns.service.MaintenanceDocumentService;
-import org.kuali.rice.kns.service.NoteService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -133,7 +124,7 @@ public class DocumentServiceImpl implements DocumentService {
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService().save(savedDocument.getDocumentHeader().getWorkflowDocument(), null);
         
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
 
         return savedDocument;
     }
@@ -188,7 +179,7 @@ public class DocumentServiceImpl implements DocumentService {
         Document savedDocument = validateAndPersistDocument(document, new RouteDocumentEvent(document));
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService().route(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -207,7 +198,7 @@ public class DocumentServiceImpl implements DocumentService {
         Document savedDocument = validateAndPersistDocument(document, new ApproveDocumentEvent(document));
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService().approve(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -221,7 +212,7 @@ public class DocumentServiceImpl implements DocumentService {
         getDocumentDao().save(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserApprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -234,7 +225,7 @@ public class DocumentServiceImpl implements DocumentService {
         getDocumentDao().save(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserCancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -247,7 +238,7 @@ public class DocumentServiceImpl implements DocumentService {
         getDocumentDao().save(document);
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().superUserDisapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -269,7 +260,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().disapprove(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -292,7 +283,7 @@ public class DocumentServiceImpl implements DocumentService {
         }
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().cancel(document.getDocumentHeader().getWorkflowDocument(), annotation);
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         //getBusinessObjectService().delete(document.getAdHocRoutePersons());
         //getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
         removeAdHocPersonsAndWorkgroups(document);
@@ -311,7 +302,7 @@ public class DocumentServiceImpl implements DocumentService {
         //}
         prepareWorkflowDocument(document);
         getWorkflowDocumentService().acknowledge(document.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -330,7 +321,7 @@ public class DocumentServiceImpl implements DocumentService {
         Document savedDocument = validateAndPersistDocument(document, new BlanketApproveDocumentEvent(document));
         prepareWorkflowDocument(savedDocument);
         getWorkflowDocumentService().blanketApprove(savedDocument.getDocumentHeader().getWorkflowDocument(), annotation, adHocRecipients);
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),savedDocument.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(savedDocument);
         return savedDocument;
     }
@@ -344,7 +335,7 @@ public class DocumentServiceImpl implements DocumentService {
         // populate document content so searchable attributes will be indexed properly
         document.populateDocumentForRouting();
         getWorkflowDocumentService().clearFyi(document.getDocumentHeader().getWorkflowDocument(), adHocRecipients);
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
         removeAdHocPersonsAndWorkgroups(document);
         return document;
     }
@@ -470,7 +461,7 @@ public class DocumentServiceImpl implements DocumentService {
 
         // initiate new workflow entry, get the workflow doc
         KualiWorkflowDocument workflowDocument = getWorkflowDocumentService().createWorkflowDocument(documentTypeName, GlobalVariables.getUserSession().getPerson());
-        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
+        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
 
         // create a new document header object
         DocumentHeader documentHeader = null;
@@ -554,7 +545,7 @@ public class DocumentServiceImpl implements DocumentService {
 	        	LOG.debug("Retrieving doc id: " + documentHeaderId + " from workflow service.");
 	        }
 	        workflowDocument = getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(documentHeaderId), GlobalVariables.getUserSession().getPerson());
-	        KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
+	        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),workflowDocument);
 
 	        Class<? extends Document> documentClass = getDocumentClassByTypeName(workflowDocument.getDocumentType());
 
@@ -867,7 +858,7 @@ public class DocumentServiceImpl implements DocumentService {
 		prepareWorkflowDocument(document);
 		getWorkflowDocumentService().sendWorkflowNotification(document.getDocumentHeader().getWorkflowDocument(),
         		annotation, adHocRecipients);
-		KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
+		KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(),document.getDocumentHeader().getWorkflowDocument());
 		//getBusinessObjectService().delete(document.getAdHocRoutePersons());
 		//getBusinessObjectService().delete(document.getAdHocRouteWorkgroups());
 		removeAdHocPersonsAndWorkgroups(document);
@@ -936,7 +927,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     protected synchronized NoteService getNoteService() {
         if (this.noteService == null) {
-            this.noteService = KNSServiceLocator.getNoteService();
+            this.noteService = KNSServiceLocatorInternal.getNoteService();
         }
         return this.noteService;
     }
@@ -956,7 +947,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     protected synchronized BusinessObjectService getBusinessObjectService() {
         if (this.businessObjectService == null) {
-            this.businessObjectService = KNSServiceLocator.getBusinessObjectService();
+            this.businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
         }
         return this.businessObjectService;
     }
@@ -976,7 +967,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     protected synchronized WorkflowDocumentService getWorkflowDocumentService() {
         if (this.workflowDocumentService == null) {
-            this.workflowDocumentService = KNSServiceLocator.getWorkflowDocumentService();
+            this.workflowDocumentService = KNSServiceLocatorInternal.getWorkflowDocumentService();
         }
         return this.workflowDocumentService;
     }
@@ -996,7 +987,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     protected synchronized DocumentDao getDocumentDao() {
         if (this.documentDao == null) {
-            this.documentDao = KNSServiceLocator.getDocumentDao();
+            this.documentDao = KNSServiceLocatorInternal.getDocumentDao();
         }
         return documentDao;
     }
@@ -1016,7 +1007,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     protected synchronized DataDictionaryService getDataDictionaryService() {
         if (this.dataDictionaryService == null) {
-            this.dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+            this.dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
         }
         return this.dataDictionaryService;
     }
@@ -1034,7 +1025,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     protected synchronized DocumentHeaderService getDocumentHeaderService() {
         if (this.documentHeaderService == null) {
-            this.documentHeaderService = KNSServiceLocator.getDocumentHeaderService();
+            this.documentHeaderService = KNSServiceLocatorInternal.getDocumentHeaderService();
         }
         return this.documentHeaderService;
     }
@@ -1054,7 +1045,7 @@ public class DocumentServiceImpl implements DocumentService {
      */
     public DocumentHelperService getDocumentHelperService() {
         if (documentHelperService == null) {
-            this.documentHelperService = KNSServiceLocator.getDocumentHelperService();
+            this.documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
         }
         return this.documentHelperService;
     }

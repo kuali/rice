@@ -18,7 +18,7 @@ package org.kuali.rice.kns.bo;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestCase;
@@ -36,7 +36,7 @@ public class BusinessObjectRefreshTest extends KNSTestCase {
 	@Test
 	public void testLazyRefreshField() {
 		final String accountNumber = "a1";
-		Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
+		Account account = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
 		
 		Assert.assertEquals("Retrieved account should have name a1", "a1", account.getName());
 		Assert.assertEquals("Retrieved account should have a account manager with user name fred", "fred", account.getAccountManager().getUserName());
@@ -51,7 +51,7 @@ public class BusinessObjectRefreshTest extends KNSTestCase {
 	@Test
 	public void testLazyRefreshWholeObject() {
 		final String accountNumber = "a1";
-		Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
+		Account account = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
 		
 		Assert.assertEquals("Retrieved account should have name a1", "a1", account.getName());
 		Assert.assertEquals("Retrieved account should have a account manager with user name fred", "fred", account.getAccountManager().getUserName());
@@ -66,16 +66,16 @@ public class BusinessObjectRefreshTest extends KNSTestCase {
 	@Test
 	public void testLazyCollectionRefresh() {
 		final Long fredManagerId = 1L;
-		AccountManager manager = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(AccountManager.class, new Long(fredManagerId));
+		AccountManager manager = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(AccountManager.class, new Long(fredManagerId));
 		
 		Assert.assertEquals("Retrieve manager should have a name 'fred'", "fred", manager.getUserName());
 		Assert.assertEquals("Manager should have one account", new Integer(1), new Integer(manager.getAccounts().size()));
 		
 		final String accountNumber = "a2";
-		Account account = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
+		Account account = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(Account.class, accountNumber);
 
 		account.setAmId(1L);
-		account = (Account)KNSServiceLocator.getBusinessObjectService().save(account);
+		account = (Account) KNSServiceLocatorInternal.getBusinessObjectService().save(account);
 		
 		manager.refreshReferenceObject("accounts");
 		Assert.assertEquals("Manager should have one account", new Integer(2), new Integer(manager.getAccounts().size()));
@@ -84,10 +84,10 @@ public class BusinessObjectRefreshTest extends KNSTestCase {
 	@Test
 	public void testEagerRefreshField() {
 		final CountyImplId countyId = new CountyImplId("US", "COCONINO", "AZ");
-		County county = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(CountyImpl.class, countyId);
+		County county = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(CountyImpl.class, countyId);
 		
 		final StateImplId arizonaStateId = new StateImplId("US", "AZ");
-		final State arizonaState = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(StateImpl.class, arizonaStateId);
+		final State arizonaState = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(StateImpl.class, arizonaStateId);
 		
 		Assert.assertEquals("On retrieval from database, state code should be AZ", arizonaState.getPostalStateCode(), county.getState().getPostalStateCode());
 		Assert.assertEquals("On retrieval from database, state name should be ARIZONA", arizonaState.getPostalStateName(), county.getState().getPostalStateName());
@@ -97,7 +97,7 @@ public class BusinessObjectRefreshTest extends KNSTestCase {
 		county.refresh();
 		
 		final StateImplId californiaStateId = new StateImplId("US", "CA");
-		final State californiaState = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(StateImpl.class, californiaStateId);
+		final State californiaState = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(StateImpl.class, californiaStateId);
 		
 		Assert.assertEquals("Does eager fetching automatically refresh?", californiaState.getPostalStateCode(), county.getState().getPostalStateCode());
 		Assert.assertEquals("On refresh, state name should be CALIFORNIA", californiaState.getPostalStateName(), county.getState().getPostalStateName());

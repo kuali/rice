@@ -70,7 +70,7 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -93,7 +93,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 	private List<String> to;
 	private List<String> cc = new ArrayList<String>();
 	private List<String> bc = new ArrayList<String>();
-	private static final String DEFAULT_EMAIL_FROM_ADDRESS = KNSServiceLocator.getParameterService().getParameterValue(KEWConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
+	private static final String DEFAULT_EMAIL_FROM_ADDRESS = KNSServiceLocatorInternal.getParameterService().getParameterValue(KEWConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
 	
 
 

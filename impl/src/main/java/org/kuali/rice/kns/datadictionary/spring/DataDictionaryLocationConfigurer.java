@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.core.config.ConfigurationException;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.springframework.beans.factory.InitializingBean;
 
 /**
@@ -44,7 +44,7 @@ public class DataDictionaryLocationConfigurer implements InitializingBean {
 		if(dataDictionaryService!=null)
 			dataDictionaryService.addDataDictionaryLocations(getDataDictionaryPackages());
 		else
-			KNSServiceLocator.getDataDictionaryService().addDataDictionaryLocations(getDataDictionaryPackages());
+			KNSServiceLocatorInternal.getDataDictionaryService().addDataDictionaryLocations(getDataDictionaryPackages());
 	}
 
 	public List<String> getDataDictionaryPackages() {

@@ -24,7 +24,7 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.State;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This class...
@@ -38,7 +38,7 @@ public class StateValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
     	if ( labels == null ) {
-    		List<State> baseCodes = KNSServiceLocator.getStateService().findAllStates();
+    		List<State> baseCodes = KNSServiceLocatorInternal.getStateService().findAllStates();
     		List<State> codes = new ArrayList<State>( baseCodes );
     		Collections.sort(codes, new Comparator<State> () {
 				@Override

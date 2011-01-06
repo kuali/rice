@@ -15,11 +15,7 @@
  */
 package org.kuali.rice.kns.util;
 
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.service.ModuleService;
 
 /**
  * A class with utilities related to externalizable business objects

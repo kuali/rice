@@ -18,7 +18,6 @@ package org.kuali.rice.kns.workflow;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
@@ -28,16 +27,14 @@ import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
 import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
-import org.kuali.rice.kew.docsearch.service.SearchableAttributeProcessingService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.test.document.SearchAttributeIndexTestDocument;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Field;
@@ -78,9 +75,9 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 	 */
 	@Test
 	public void regularApproveTest() throws Exception {
-		LOG.warn("message.delivery state: "+KNSServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
+		LOG.warn("message.delivery state: "+ KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString("message.delivery"));
 		
-		final DocumentService documentService = KNSServiceLocator.getDocumentService();
+		final DocumentService documentService = KNSServiceLocatorInternal.getDocumentService();
 		final String principalName = "quickstart";
         final String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
         GlobalVariables.setUserSession(new UserSession(principalName));
@@ -188,9 +185,9 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 	 */
 	@Test
 	public void blanketApproveTest() throws Exception {
-		LOG.warn("message.delivery state: "+KNSServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
+		LOG.warn("message.delivery state: "+ KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString("message.delivery"));
 		
-		final DocumentService documentService = KNSServiceLocator.getDocumentService();
+		final DocumentService documentService = KNSServiceLocatorInternal.getDocumentService();
 		final String principalName = "admin";
         final String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
         GlobalVariables.setUserSession(new UserSession(principalName));

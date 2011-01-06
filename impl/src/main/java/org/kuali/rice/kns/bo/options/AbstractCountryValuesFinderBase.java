@@ -25,7 +25,7 @@ import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.Country;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -45,7 +45,7 @@ public abstract class AbstractCountryValuesFinderBase extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
 		List<Country> boList = retrieveCountriesForValuesFinder();
-		final Country defaultCountry = KNSServiceLocator.getCountryService().getDefaultCountry();
+		final Country defaultCountry = KNSServiceLocatorInternal.getCountryService().getDefaultCountry();
 		List<KeyValue> labels = new ArrayList<KeyValue>( boList.size() + 1 );
 		
         labels.add(new ConcreteKeyValue("", ""));

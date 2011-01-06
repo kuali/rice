@@ -30,6 +30,7 @@ import org.kuali.rice.kns.dao.LookupDao;
 import org.kuali.rice.kns.dao.impl.LookupDaoJpa;
 import org.kuali.rice.kns.dao.impl.LookupDaoOjb;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,7 +83,7 @@ public class LookupDaoProxy implements LookupDao {
                         classSpecificLookupDaoOjb.setJcdAlias(dataSourceName);
                         classSpecificLookupDaoOjb.setPersistenceStructureService(KNSServiceLocator.getPersistenceStructureService());
                         classSpecificLookupDaoOjb.setDateTimeService(KNSServiceLocator.getDateTimeService());
-                        classSpecificLookupDaoOjb.setBusinessObjectDictionaryService(KNSServiceLocator.getBusinessObjectDictionaryService());
+                        classSpecificLookupDaoOjb.setBusinessObjectDictionaryService(KNSServiceLocatorInternal.getBusinessObjectDictionaryService());
                         lookupDaoValues.put(dataSourceName, classSpecificLookupDaoOjb);
                         return classSpecificLookupDaoOjb;
                     }
@@ -138,7 +139,7 @@ public class LookupDaoProxy implements LookupDao {
 
 	private static KualiModuleService getKualiModuleService() {
         if (kualiModuleService == null) {
-            kualiModuleService = KNSServiceLocator.getKualiModuleService();
+            kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
         }
         return kualiModuleService;
     }

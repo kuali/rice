@@ -47,13 +47,10 @@ import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.ResponsibilityService;
-import org.kuali.rice.kim.service.RoleManagementService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -422,7 +419,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	 */
 	public PermissionService getPermissionService() {
 		if ( permissionService == null ) {
-			permissionService = KIMServiceLocator.getPermissionService();
+			permissionService = KIMServiceLocatorInternal.getPermissionService();
 		}
 		return permissionService;
 	}
@@ -432,7 +429,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	 */
 	public RoleManagementService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleManagementService();
+			roleService = KIMServiceLocatorInternal.getRoleManagementService();
 		}
 		return roleService;
 	}
@@ -442,7 +439,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 	 */
 	public ResponsibilityService getResponsibilityService() {
 		if ( responsibilityService == null ) {
-			responsibilityService = KIMServiceLocator.getResponsibilityService();
+			responsibilityService = KIMServiceLocatorInternal.getResponsibilityService();
 		}
 		return responsibilityService;
 	}
@@ -459,7 +456,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 
 	public DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
-			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}
@@ -473,14 +470,14 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 
 	public DocumentHelperService getDocumentHelperService() {
 		if(documentHelperService == null){
-			documentHelperService = KNSServiceLocator.getDocumentHelperService();
+			documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
 		}
 		return documentHelperService;
 	}
 
 	public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if(maintenanceDocumentDictionaryService == null){
-			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}

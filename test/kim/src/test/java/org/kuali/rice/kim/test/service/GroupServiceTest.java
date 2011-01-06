@@ -17,14 +17,11 @@ package org.kuali.rice.kim.test.service;
 
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.GroupService;
 import org.kuali.rice.kim.service.GroupUpdateService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.test.KIMTestCase;
 
 /**
@@ -40,8 +37,8 @@ public class GroupServiceTest extends KIMTestCase {
 
 	public void setUp() throws Exception {
 		super.setUp();
-		setGroupService(KIMServiceLocator.getGroupService());
-		setGroupUpdateService(KIMServiceLocator.getGroupUpdateService());
+		setGroupService(KIMServiceLocatorInternal.getGroupService());
+		setGroupUpdateService(KIMServiceLocatorInternal.getGroupUpdateService());
 	}
 	
 	@Test

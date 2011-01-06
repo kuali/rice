@@ -22,13 +22,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.PessimisticLockService;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
 import org.kuali.rice.kns.util.FieldUtils;
@@ -63,7 +64,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
     @Override
     public List<HtmlData> getCustomActionUrls(BusinessObject businessObject, List pkNames) {
         PessimisticLock lock = (PessimisticLock)businessObject;
-        if ( (lock.isOwnedByUser(GlobalVariables.getUserSession().getPerson())) || (KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(GlobalVariables.getUserSession().getPerson())) ) {
+        if ( (lock.isOwnedByUser(GlobalVariables.getUserSession().getPerson())) || (KNSServiceLocatorInternal.getPessimisticLockService().isPessimisticLockAdminUser(GlobalVariables.getUserSession().getPerson())) ) {
             List<HtmlData> anchorHtmlDataList = new ArrayList<HtmlData>();
             anchorHtmlDataList.add(getUrlData(businessObject, KNSConstants.DELETE_METHOD, pkNames));
             return anchorHtmlDataList;
@@ -80,7 +81,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
     @Override
     public List<Row> getRows() {
         Person currentUser = GlobalVariables.getUserSession().getPerson();
-        if (KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(currentUser)) {
+        if (KNSServiceLocatorInternal.getPessimisticLockService().isPessimisticLockAdminUser(currentUser)) {
             return super.getRows();
         } else {
             if ( (ObjectUtils.isNull(localRows)) || localRows.isEmpty() ) {
@@ -118,14 +119,14 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
         LookupUtils.removeHiddenCriteriaFields( getBusinessObjectClass(), fieldValues );
         // force criteria if not admin user
         Person currentUser = GlobalVariables.getUserSession().getPerson();
-        if (!KNSServiceLocator.getPessimisticLockService().isPessimisticLockAdminUser(currentUser)) {
+        if (!KNSServiceLocatorInternal.getPessimisticLockService().isPessimisticLockAdminUser(currentUser)) {
             fieldValues.put(KNSPropertyConstants.OWNED_BY_PRINCIPAL_ID,GlobalVariables.getUserSession().getPerson().getPrincipalId());
         }
 
         //set owner's principal id and remove owner principal name field 
         String principalName = fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME);
         if (!StringUtils.isEmpty(principalName)) {
-            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+            KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
             if (principal != null) { 
                 fieldValues.put(OWNER_PRINCIPAL_ID_PROPERTY_NAME, principal.getPrincipalId());
             }

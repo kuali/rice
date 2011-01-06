@@ -26,7 +26,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.dao.SequenceAccessorDao;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
@@ -98,7 +98,7 @@ public class SequenceAccessorDaoJdbc extends PlatformAwareDaoBaseJdbc implements
     
     private KualiModuleService getKualiModuleService() {
         if ( kualiModuleService == null ) 
-            kualiModuleService = KNSServiceLocator.getKualiModuleService();
+            kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
         return kualiModuleService;
     }
 }

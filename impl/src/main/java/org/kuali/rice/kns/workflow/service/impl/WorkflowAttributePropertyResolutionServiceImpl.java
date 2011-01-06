@@ -46,7 +46,7 @@ import org.kuali.rice.kns.datadictionary.SearchingTypeDefinition;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
@@ -612,7 +612,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
 
     protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
         if ( businessObjectMetaDataService == null ) {
-            businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+            businessObjectMetaDataService = KNSServiceLocatorInternal.getBusinessObjectMetaDataService();
         }
         return businessObjectMetaDataService;
     }

@@ -22,7 +22,7 @@ import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * Contains field-related information for DataDictionary entries.  Used by lookups and inquiries.
@@ -260,7 +260,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
      * @see org.kuali.rice.kns.datadictionary.DataDictionaryDefinition#completeValidation(java.lang.Class, java.lang.Object)
      */
     public void completeValidation(Class rootBusinessObjectClass, Class otherBusinessObjectClass) {
-    	BusinessObjectMetaDataService boMetadataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+    	BusinessObjectMetaDataService boMetadataService = KNSServiceLocatorInternal.getBusinessObjectMetaDataService();
 
         if (!DataDictionary.isPropertyOf(rootBusinessObjectClass, getAttributeName())) {
             throw new AttributeValidationException("unable to find attribute '" + attributeName + "' in rootBusinessObjectClass '" + rootBusinessObjectClass.getName() + "' (" + "" + ")");

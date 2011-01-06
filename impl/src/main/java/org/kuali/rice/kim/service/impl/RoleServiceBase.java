@@ -45,17 +45,14 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.dao.KimRoleDao;
-import org.kuali.rice.kim.service.IdentityManagementNotificationService;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.ResponsibilityInternalService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -1309,7 +1306,7 @@ public class RoleServiceBase {
     
     protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
@@ -1319,7 +1316,7 @@ public class RoleServiceBase {
 	 */
     protected LookupService getLookupService() {
 		if(lookupService == null) {
-			lookupService = KNSServiceLocator.getLookupService();
+			lookupService = KNSServiceLocatorInternal.getLookupService();
 		}
 		return lookupService;
 	}
@@ -1333,7 +1330,7 @@ public class RoleServiceBase {
     
     protected IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 		}
 
 		return identityManagementService;
@@ -1341,14 +1338,14 @@ public class RoleServiceBase {
 
 	protected SequenceAccessorService getSequenceAccessorService() {
 		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
+			sequenceAccessorService = KNSServiceLocatorInternal.getSequenceAccessorService();
 		}
 		return sequenceAccessorService;
 	}
 	
 	protected ResponsibilityInternalService getResponsibilityInternalService() {
 		if ( responsibilityInternalService == null ) {
-			responsibilityInternalService = KIMServiceLocator.getResponsibilityInternalService();
+			responsibilityInternalService = KIMServiceLocatorInternal.getResponsibilityInternalService();
 		}
 		return responsibilityInternalService;
 	}

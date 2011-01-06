@@ -19,7 +19,7 @@ import java.util.List;
 
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ParameterEvaluator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -158,7 +158,7 @@ public class ParameterEvaluatorImpl implements ParameterEvaluator {
 	 */
 	protected DataDictionaryService getDataDictionaryService() {
 		if ( dataDictionaryService == null ) {
-			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}

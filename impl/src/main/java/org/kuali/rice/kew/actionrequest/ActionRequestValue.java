@@ -62,6 +62,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 
 /**
@@ -208,7 +209,7 @@ public class ActionRequestValue implements WorkflowPersistable {
             LOG.error("Attempting to get a group with a blank group id");
             return null;
         }
-        return KIMServiceLocator.getIdentityManagementService().getGroup(getGroupId());
+        return KIMServiceLocatorInternal.getIdentityManagementService().getGroup(getGroupId());
     }
 
     public String getRouteLevelName() {
@@ -571,7 +572,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 			if (group == null){
 				LOG.error("Was unable to retrieve workgroup " + getGroupId());
 			}
-    		isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, group.getGroupId());
+    		isRecipientInGraph = KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(principalId, group.getGroupId());
     	}
 
 
@@ -595,7 +596,7 @@ public class ActionRequestValue implements WorkflowPersistable {
     		if (recipient instanceof KimPrincipalRecipient) {
     			isRecipientInGraph = getPrincipalId().equals(((KimPrincipalRecipient) recipient).getPrincipalId());
     		} else if (recipient instanceof KimGroupRecipient){
-    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipalId(), ((KimGroupRecipient)recipient).getGroup().getGroupId());
+    			isRecipientInGraph = KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(getPrincipalId(), ((KimGroupRecipient)recipient).getGroup().getGroupId());
     		}
 
     	} else if (isGroupRequest()) {
@@ -605,7 +606,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 			}
     		if (recipient instanceof KimPrincipalRecipient) {
     			KimPrincipalRecipient principalRecipient = (KimPrincipalRecipient)recipient;
-    			isRecipientInGraph = KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalRecipient.getPrincipalId(), group.getGroupId());
+    			isRecipientInGraph = KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(principalRecipient.getPrincipalId(), group.getGroupId());
     		} else if (recipient instanceof KimGroupRecipient) {
     			isRecipientInGraph = ((KimGroupRecipient) recipient).getGroup().getGroupId().equals(group.getGroupId());
     		}
@@ -954,7 +955,7 @@ public class ActionRequestValue implements WorkflowPersistable {
 	}
 
     public String getGroupName() {
-        return KIMServiceLocator.getIdentityManagementService().getGroup(this.groupId).getGroupName();
+        return KIMServiceLocatorInternal.getIdentityManagementService().getGroup(this.groupId).getGroupName();
     }
 
 	/**

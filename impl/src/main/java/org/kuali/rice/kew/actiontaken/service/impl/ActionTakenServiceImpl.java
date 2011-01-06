@@ -28,7 +28,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -59,7 +59,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
 
     public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken)
     {
-        IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService ims = KIMServiceLocatorInternal.getIdentityManagementService();
         ActionTakenValue foundActionTaken = null;
         List<String> principalIds = new ArrayList<String>();
         if (actionRequest.isGroupRequest()) {
@@ -150,7 +150,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         if(StringUtils.isBlank(principalId)){
             errors.add(new WorkflowServiceErrorImpl("ActionTaken personid null.", "actiontaken.personid.empty", actionTaken.getActionTakenId().toString()));
         } else {
-        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
+        	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
         	if (principal == null) {
                 errors.add(new WorkflowServiceErrorImpl("ActionTaken personid invalid.", "actiontaken.personid.invalid", actionTaken.getActionTakenId().toString()));
             }

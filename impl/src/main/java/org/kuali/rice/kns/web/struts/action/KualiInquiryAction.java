@@ -31,7 +31,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RedirectingActionForward;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Attachment;
@@ -41,7 +41,7 @@ import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -68,7 +68,7 @@ public class KualiInquiryAction extends KualiAction {
             try {
             	if(!KNSConstants.DOWNLOAD_BO_ATTACHMENT_METHOD.equals(methodToCall)){	
             		Class businessObjectClass = Class.forName(((InquiryForm) form).getBusinessObjectClassName());
-            		if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.INQUIRE_INTO_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
+            		if (!KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.INQUIRE_INTO_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
             			throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
                     		"inquire",
                     		businessObjectClass.getSimpleName());
@@ -117,7 +117,7 @@ public class KualiInquiryAction extends KualiAction {
         }
         
         Class boClass = Class.forName(inquiryForm.getBusinessObjectClassName());
-        ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(boClass);
+        ModuleService responsibleModuleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(boClass);
 		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)){
 			String redirectUrl = responsibleModuleService.getExternalizableBusinessObjectInquiryUrl(boClass, (Map<String, String[]>) request.getParameterMap());
 			ActionForward redirectingActionForward = new RedirectingActionForward(redirectUrl);
@@ -350,7 +350,7 @@ public class KualiInquiryAction extends KualiAction {
     		BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
     		checkBO(bo);
     		if (bo != null) {
-	    		BusinessObjectEntry businessObjectEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName());
+	    		BusinessObjectEntry businessObjectEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName());
 	    		Class<? extends Exporter> exporterClass = businessObjectEntry.getExporterClass();
 	    		if (exporterClass != null) {
 	    			Exporter exporter = exporterClass.newInstance();
@@ -463,7 +463,7 @@ public class KualiInquiryAction extends KualiAction {
     
     protected NoteService getNoteService() {
 		if ( noteService == null ) {
-			noteService = KNSServiceLocator.getNoteService();
+			noteService = KNSServiceLocatorInternal.getNoteService();
 		}
 		return this.noteService;
 	}

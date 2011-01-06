@@ -27,7 +27,7 @@ import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KualiDateMask;
 
@@ -359,7 +359,7 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
         if (suppressPersonal != null) {
             return suppressPersonal.booleanValue();
         }
-        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
+        KimEntityPrivacyPreferences privacy = KIMServiceLocatorInternal.getIdentityService().getEntityPrivacyPreferences(getEntityId());
 
         suppressPersonal = false;
         if (privacy != null) {

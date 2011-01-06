@@ -60,7 +60,7 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.ParameterConstants;
 import org.kuali.rice.kns.service.ParameterService;
@@ -457,7 +457,7 @@ public final class WebUtils {
 		boolean dataDictionarySessionDoc = false;
 		if (!sessionDoc) {
 			DocumentEntry documentEntry = null;
-			DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+			DataDictionary dataDictionary = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary();
 			if (docForm instanceof KualiMaintenanceForm) {
 				KualiMaintenanceForm maintenanceForm = (KualiMaintenanceForm) docForm;
 				if (dataDictionary != null) {
@@ -532,7 +532,7 @@ public final class WebUtils {
     	String displayMaskValue = null;
     	Object propertyValue = ObjectUtils.getPropertyValue(formObject, propertyName);
     	
-    	DataDictionaryEntryBase entry = (DataDictionaryEntryBase) KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(className);
+    	DataDictionaryEntryBase entry = (DataDictionaryEntryBase) KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(className);
     	AttributeDefinition a = entry.getAttributeDefinition(fieldName);
     	
     	AttributeSecurity attributeSecurity = a.getAttributeSecurity();
@@ -548,7 +548,7 @@ public final class WebUtils {
     	String displayMaskValue = null;
     	Object propertyValue = ObjectUtils.getPropertyValue(formObject, propertyName);
     	
-    	DataDictionaryEntryBase entry = (DataDictionaryEntryBase) KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(className);
+    	DataDictionaryEntryBase entry = (DataDictionaryEntryBase) KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(className);
     	AttributeDefinition a = entry.getAttributeDefinition(fieldName);
     	
     	AttributeSecurity attributeSecurity = a.getAttributeSecurity();
@@ -568,10 +568,10 @@ public final class WebUtils {
 		    	throw new RuntimeException("Unable to resolve class name: " + businessObjectClassName);
 		    }
 		    if ( form instanceof KualiDocumentFormBase ) {
-		    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField( GlobalVariables.getUserSession().getPerson(),
+		    	return KNSServiceLocatorInternal.getBusinessObjectAuthorizationService().canFullyUnmaskField( GlobalVariables.getUserSession().getPerson(),
 		    			businessObjClass, fieldName, ((KualiDocumentFormBase)form).getDocument() );
 		    } else {
-		    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(),
+		    	return KNSServiceLocatorInternal.getBusinessObjectAuthorizationService().canFullyUnmaskField(GlobalVariables.getUserSession().getPerson(),
 		    			businessObjClass, fieldName, null);
 		    }
     }
@@ -584,31 +584,31 @@ public final class WebUtils {
 	    	throw new RuntimeException("Unable to resolve class name: " + businessObjectClassName);
 	    }
 	    if ( form instanceof KualiDocumentFormBase ) {
-	    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField( GlobalVariables.getUserSession().getPerson(),
+	    	return KNSServiceLocatorInternal.getBusinessObjectAuthorizationService().canPartiallyUnmaskField( GlobalVariables.getUserSession().getPerson(),
 	    			businessObjClass, fieldName, ((KualiDocumentFormBase)form).getDocument() );
 	    } else {
-	    	return KNSServiceLocator.getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(),
+	    	return KNSServiceLocatorInternal.getBusinessObjectAuthorizationService().canPartiallyUnmaskField(GlobalVariables.getUserSession().getPerson(),
 	    			businessObjClass, fieldName, null);
 	    }
     }
     
     public static boolean canAddNoteAttachment(Document document) {
     	boolean canViewNoteAttachment = false;
-    	DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
+    	DocumentAuthorizer documentAuthorizer = KNSServiceLocatorInternal.getDocumentHelperService().getDocumentAuthorizer(document);
     	canViewNoteAttachment = documentAuthorizer.canAddNoteAttachment(document, null, GlobalVariables.getUserSession().getPerson());
     	return canViewNoteAttachment;
     }
     
     public static boolean canViewNoteAttachment(Document document, String attachmentTypeCode) {
     	boolean canViewNoteAttachment = false;
-    	DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
+    	DocumentAuthorizer documentAuthorizer = KNSServiceLocatorInternal.getDocumentHelperService().getDocumentAuthorizer(document);
     	canViewNoteAttachment = documentAuthorizer.canViewNoteAttachment(document, attachmentTypeCode, GlobalVariables.getUserSession().getPerson());
     	return canViewNoteAttachment;
     }
     
     public static boolean canDeleteNoteAttachment(Document document, String attachmentTypeCode, String authorUniversalIdentifier) {
     	boolean canDeleteNoteAttachment = false;
-    	DocumentAuthorizer documentAuthorizer = KNSServiceLocator.getDocumentHelperService().getDocumentAuthorizer(document);
+    	DocumentAuthorizer documentAuthorizer = KNSServiceLocatorInternal.getDocumentHelperService().getDocumentAuthorizer(document);
     	canDeleteNoteAttachment = documentAuthorizer.canDeleteNoteAttachment(document, attachmentTypeCode, "false", GlobalVariables.getUserSession().getPerson());
     	if(canDeleteNoteAttachment){
     		return canDeleteNoteAttachment;
@@ -693,7 +693,7 @@ public final class WebUtils {
     	if (StringUtils.isBlank(fieldValue)) {
     		return false;
     	}
-    	ParameterService parameterService = KNSServiceLocator.getParameterService();
+    	ParameterService parameterService = KNSServiceLocatorInternal.getParameterService();
     	List<String> sensitiveDataPatterns = parameterService.getParameterValues(KNSConstants.KNS_NAMESPACE, ParameterConstants.ALL_COMPONENT, 
     			KNSConstants.SystemGroupParameterNames.SENSITIVE_DATA_PATTERNS);
     	for (String pattern : sensitiveDataPatterns){
@@ -740,7 +740,7 @@ public final class WebUtils {
      */
     public static KualiConfigurationService getKualiConfigurationService() {
     	if (configurationService == null) {
-    		configurationService = KNSServiceLocator.getKualiConfigurationService();
+    		configurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
     	}
     	return configurationService;
     }

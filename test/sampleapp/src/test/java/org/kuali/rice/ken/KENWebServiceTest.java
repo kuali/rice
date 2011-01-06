@@ -23,7 +23,7 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.core.GlobalNotificationServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.test.TransactionalLifecycle;
@@ -73,7 +73,7 @@ public class KENWebServiceTest extends ServerTestBase {
 	public void setUp() throws Exception {
 		super.setUp();
 		transactionalLifecycle = new TransactionalLifecycle();
-		transactionalLifecycle.setTransactionManager(KNSServiceLocator.getTransactionManager());
+		transactionalLifecycle.setTransactionManager(KNSServiceLocatorInternal.getTransactionManager());
 		transactionalLifecycle.start();
 	}
 

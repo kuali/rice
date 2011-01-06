@@ -40,12 +40,8 @@ import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.SelectiveReferenceRefresher;
 import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.KualiExceptionIncidentService;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
-import org.kuali.rice.kns.service.MaintenanceDocumentService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.web.ui.Section;
@@ -446,42 +442,42 @@ public final class MaintenanceUtils {
 
 	private static MaintenanceDocumentService getMaintenanceDocumentService() {
 		if ( maintenanceDocumentService == null ) {
-			maintenanceDocumentService = KNSServiceLocator.getMaintenanceDocumentService();
+			maintenanceDocumentService = KNSServiceLocatorInternal.getMaintenanceDocumentService();
 		}
 		return maintenanceDocumentService;
 	}
 
 	private static WorkflowDocumentService getWorkflowDocumentService() {
 		if ( workflowDocumentService == null ) {
-			workflowDocumentService = KNSServiceLocator.getWorkflowDocumentService();
+			workflowDocumentService = KNSServiceLocatorInternal.getWorkflowDocumentService();
 		}
 		return workflowDocumentService;
 	}
 
 	private static KualiConfigurationService getKualiConfigurationService() {
 		if ( kualiConfigurationService == null ) {
-			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+			kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
 		}
 		return kualiConfigurationService;
 	}
 
 	private static KualiExceptionIncidentService getKualiExceptionIncidentService() {
 		if ( kualiExceptionIncidentService == null ) {
-			kualiExceptionIncidentService = KNSServiceLocator.getKualiExceptionIncidentService();
+			kualiExceptionIncidentService = KNSServiceLocatorInternal.getKualiExceptionIncidentService();
 		}
 		return kualiExceptionIncidentService;
 	}
     
 	private static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if ( maintenanceDocumentDictionaryService == null ) {
-			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}
 	
 	private static DataDictionaryService getDataDictionaryService() {
 		if ( dataDictionaryService == null ) {
-			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}

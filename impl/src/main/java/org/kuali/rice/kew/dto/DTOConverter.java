@@ -104,6 +104,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.util.SQLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -628,7 +629,7 @@ public class DTOConverter {
         }
         String groupId = responsiblePartyVO.getGroupId();
         if (groupId != null) {
-        	Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
+        	Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(groupId);
         	if (group == null) {
         		throw new RiceRuntimeException("Failed to locate group with ID: " + groupId);
         	}

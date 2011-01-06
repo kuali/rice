@@ -23,9 +23,8 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.datadictionary.DataDictionaryException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ParameterService;
-import org.kuali.rice.kns.service.RiceApplicationConfigurationService;
 
 public class ParameterDetailTypeLookupableHelperServiceImpl extends KualiLookupableHelperServiceImpl {
 
@@ -43,7 +42,7 @@ public class ParameterDetailTypeLookupableHelperServiceImpl extends KualiLookupa
 
         List<ParameterDetailType> components;
         try {
-        	components = KNSServiceLocator.getParameterServerService().getNonDatabaseComponents();
+        	components = KNSServiceLocatorInternal.getParameterServerService().getNonDatabaseComponents();
         }
         catch (DataDictionaryException ex) {
             throw new RuntimeException("Problem parsing data dictionary during full load required for lookup to function: " + ex.getMessage(), ex);

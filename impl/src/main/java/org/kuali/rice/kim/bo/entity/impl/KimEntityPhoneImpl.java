@@ -31,7 +31,7 @@ import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.reference.PhoneType;
 import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -216,7 +216,7 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
         if (suppressPhone != null) {
             return suppressPhone.booleanValue();
         }
-        KimEntityPrivacyPreferences privacy = KIMServiceLocator.getIdentityService().getEntityPrivacyPreferences(getEntityId());
+        KimEntityPrivacyPreferences privacy = KIMServiceLocatorInternal.getIdentityService().getEntityPrivacyPreferences(getEntityId());
 
         suppressPhone = false;
         if (privacy != null) {

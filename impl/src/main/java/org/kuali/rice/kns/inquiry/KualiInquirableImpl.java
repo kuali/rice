@@ -39,15 +39,8 @@ import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.service.ModuleService;
-import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
@@ -107,7 +100,7 @@ public class KualiInquirableImpl implements Inquirable {
 
         CollectionIncomplete searchResults = null;
 		ModuleService moduleService =
-			KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(getBusinessObjectClass());
+			KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(getBusinessObjectClass());
 		if (moduleService != null && moduleService.isExternalizable(getBusinessObjectClass())) {
 			BusinessObject bo = moduleService.getExternalizableBusinessObject(getBusinessObjectClass(), fieldValues);
 			if(bo!=null) {
@@ -138,7 +131,7 @@ public class KualiInquirableImpl implements Inquirable {
             throw new RuntimeException("Business object class not set in inquirable.");
         }
 
-        InquiryRestrictions inquiryRestrictions = KNSServiceLocator.getBusinessObjectAuthorizationService().getInquiryRestrictions(bo, GlobalVariables.getUserSession().getPerson());
+        InquiryRestrictions inquiryRestrictions = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService().getInquiryRestrictions(bo, GlobalVariables.getUserSession().getPerson());
 
         Collection<InquirySectionDefinition> inquirySections = getBusinessObjectDictionaryService().getInquirySections(getBusinessObjectClass());
         for (Iterator<InquirySectionDefinition> iter = inquirySections.iterator(); iter.hasNext();) {
@@ -332,7 +325,7 @@ public class KualiInquirableImpl implements Inquirable {
 
             // Encrypt value if it is a field that has restriction that prevents a value from being shown to user,
             // because we don't want the browser history to store the restricted attribute's value in the URL
-            AttributeSecurity attributeSecurity = KNSServiceLocator.getDataDictionaryService().getAttributeSecurity(businessObject.getClass().getName(), keyName);
+            AttributeSecurity attributeSecurity = KNSServiceLocatorInternal.getDataDictionaryService().getAttributeSecurity(businessObject.getClass().getName(), keyName);
             if(attributeSecurity != null && attributeSecurity.hasRestrictionThatRemovesValueFromUI()){
             	try {
                     keyValue = getEncryptionService().encrypt(keyValue);
@@ -433,7 +426,7 @@ public class KualiInquirableImpl implements Inquirable {
 
     public LookupService getLookupService() {
 	if ( lookupService == null ) {
-	    lookupService = KNSServiceLocator.getLookupService();
+	    lookupService = KNSServiceLocatorInternal.getLookupService();
 	}
         return lookupService;
     }
@@ -444,7 +437,7 @@ public class KualiInquirableImpl implements Inquirable {
 
     public BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
 	if ( businessObjectDictionaryService == null ) {
-	    businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+	    businessObjectDictionaryService = KNSServiceLocatorInternal.getBusinessObjectDictionaryService();
 	}
         return businessObjectDictionaryService;
     }
@@ -466,7 +459,7 @@ public class KualiInquirableImpl implements Inquirable {
 
     public DataDictionaryService getDataDictionaryService() {
 	if ( dataDictionaryService == null ) {
-	    dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+	    dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
 	}
         return this.dataDictionaryService;
     }
@@ -477,7 +470,7 @@ public class KualiInquirableImpl implements Inquirable {
 
     public EncryptionService getEncryptionService() {
 	if ( encryptionService == null ) {
-	    encryptionService = KNSServiceLocator.getEncryptionService();
+	    encryptionService = KNSServiceLocatorInternal.getEncryptionService();
 	}
         return this.encryptionService;
     }
@@ -494,7 +487,7 @@ public class KualiInquirableImpl implements Inquirable {
      */
     protected KualiConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
-			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
+			kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
 		}
         return this.kualiConfigurationService;
     }
@@ -505,7 +498,7 @@ public class KualiInquirableImpl implements Inquirable {
 
 	public BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
 		if (businessObjectMetaDataService == null) {
-			businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+			businessObjectMetaDataService = KNSServiceLocatorInternal.getBusinessObjectMetaDataService();
 		}
 		return this.businessObjectMetaDataService;
 	}
@@ -517,7 +510,7 @@ public class KualiInquirableImpl implements Inquirable {
 
 	public BusinessObjectService getBusinessObjectService() {
 		if (businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

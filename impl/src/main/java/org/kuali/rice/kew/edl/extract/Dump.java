@@ -38,7 +38,7 @@ import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  *
@@ -81,7 +81,7 @@ public class Dump {
 
     //@PrePersist
     public void beforeInsert(){
-        OrmUtils.populateAutoIncValue(this, KNSServiceLocator.getEntityManagerFactory().createEntityManager());
+        OrmUtils.populateAutoIncValue(this, KNSServiceLocatorInternal.getEntityManagerFactory().createEntityManager());
     }
 
 

@@ -21,7 +21,7 @@ import java.util.List;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rule.BusinessRule;
 import org.kuali.rice.kns.rule.SaveDocumentRule;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiRuleService;
 
 /**
@@ -76,7 +76,7 @@ public class SaveDocumentEvent extends KualiDocumentEventBase implements SaveEve
      */
     @Override
     public List<KualiDocumentEvent> generateEvents() {
-        KualiRuleService ruleService = KNSServiceLocator.getKualiRuleService();
+        KualiRuleService ruleService = KNSServiceLocatorInternal.getKualiRuleService();
 
         List<KualiDocumentEvent> events = new ArrayList<KualiDocumentEvent>();
         events.addAll(ruleService.generateAdHocRoutePersonEvents(getDocument()));

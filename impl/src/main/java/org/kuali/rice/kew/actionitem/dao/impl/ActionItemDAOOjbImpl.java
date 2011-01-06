@@ -37,6 +37,7 @@ import org.kuali.rice.kew.util.WebFriendlyRecipient;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 /**
  * OJB implementation of {@link ActionItemDAO}.
@@ -151,7 +152,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
-    	List<String> workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+    	List<String> workgroupIds = KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria();
         Criteria delegatorWorkflowIdCriteria = new Criteria();
         delegatorWorkflowIdCriteria.addEqualTo("delegatorWorkflowId", principalId);
@@ -189,7 +190,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     private IdentityManagementService getIdentityManagementService() {
-        return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
+        return (IdentityManagementService) KIMServiceLocatorInternal.getService(KIMServiceLocatorInternal.KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
 
 	/**

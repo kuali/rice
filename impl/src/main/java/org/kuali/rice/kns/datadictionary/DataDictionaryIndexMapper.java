@@ -23,7 +23,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ModuleService;
 
 /**
@@ -110,7 +110,7 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 			Class boClass = null;
 			try{
 				boClass = Class.forName(className);
-				ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(boClass);
+				ModuleService responsibleModuleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(boClass);
 				if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)) {
 					return responsibleModuleService.getExternalizableBusinessObjectDictionaryEntry(boClass);
 				}

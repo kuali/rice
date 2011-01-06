@@ -51,15 +51,7 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
-import org.kuali.rice.kim.service.AuthenticationService;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.GroupUpdateService;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.IdentityUpdateService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.PermissionService;
-import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -296,7 +288,8 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 		}
 		return null;
 	}
-	protected List<String> getGroupMemberPrincipalIdsCache( String groupId ) {
+
+	protected List<String> getGroupMemberPrincipalIdsCache( String groupId ) {
 		MaxAgeSoftReference<List<String>> memberIdsRef = groupMemberPrincipalIdsCache.get( groupId );
 		if ( memberIdsRef != null ) {
 			return memberIdsRef.get();
@@ -1019,35 +1012,35 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 
 	public AuthenticationService getAuthenticationService() {
 		if ( authenticationService == null ) {
-			authenticationService = KIMServiceLocator.getAuthenticationService();
+			authenticationService = KIMServiceLocatorInternal.getAuthenticationService();
 		}
 		return authenticationService;
 	}
 
 	public IdentityService getIdentityService() {
 		if ( identityService == null ) {
-			identityService = KIMServiceLocator.getIdentityService();
+			identityService = KIMServiceLocatorInternal.getIdentityService();
 		}
 		return identityService;
 	}
 
 	public GroupService getGroupService() {
 		if ( groupService == null ) {
-			groupService = KIMServiceLocator.getGroupService();
+			groupService = KIMServiceLocatorInternal.getGroupService();
 		}
 		return groupService;
 	}
 
 	public PermissionService getPermissionService() {
 		if ( permissionService == null ) {
-			permissionService = KIMServiceLocator.getPermissionService();
+			permissionService = KIMServiceLocatorInternal.getPermissionService();
 		}
 		return permissionService;
 	}
 
 	public ResponsibilityService getResponsibilityService() {
 		if ( responsibilityService == null ) {
-			responsibilityService = KIMServiceLocator.getResponsibilityService();
+			responsibilityService = KIMServiceLocatorInternal.getResponsibilityService();
 		}
 		return responsibilityService;
 	}
@@ -1194,7 +1187,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	public GroupUpdateService getGroupUpdateService() {
 		try {
 			if ( groupUpdateService == null ) {
-				groupUpdateService = KIMServiceLocator.getGroupUpdateService();
+				groupUpdateService = KIMServiceLocatorInternal.getGroupUpdateService();
 				if ( groupUpdateService == null ) {
 					throw new UnsupportedOperationException( "null returned for GroupUpdateService, unable to update group data");
 				}
@@ -1208,7 +1201,7 @@ public class IdentityManagementServiceImpl implements IdentityManagementService,
 	public IdentityUpdateService getIdentityUpdateService() {
 		try {
 			if ( identityUpdateService == null ) {
-				identityUpdateService = KIMServiceLocator.getIdentityUpdateService();
+				identityUpdateService = KIMServiceLocatorInternal.getIdentityUpdateService();
 				if ( identityUpdateService == null ) {
 					throw new UnsupportedOperationException( "null returned for IdentityUpdateService, unable to update identity data");
 				}

@@ -41,7 +41,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Field;
@@ -116,7 +116,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 	 */
     @Test
 	public void testWildcardsAndMultiSelectsOnDDSearchableAttributes() throws Exception {
-		DocumentService docService = KNSServiceLocator.getDocumentService();
+		DocumentService docService = KNSServiceLocatorInternal.getDocumentService();
 		//docSearchService = KEWServiceLocator.getDocumentSearchService();
 		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("AccountWithDDAttributes");
         String principalName = "quickstart";
@@ -331,7 +331,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
     @Test
     public void testValidateUserSearchInputsNoCast() throws Exception {
     	DataDictionarySearchableAttribute searchableAttribute = new DataDictionarySearchableAttribute();
-    	final DocumentService documentService = KNSServiceLocator.getDocumentService();
+    	final DocumentService documentService = KNSServiceLocatorInternal.getDocumentService();
     	
     	AccountWithDDAttributesDocument document = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(documentService);
     	documentService.saveDocument(document);
@@ -377,7 +377,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
      */
     @Test
     public void testMultiSelectIntegration() throws Exception {
-    	final DocumentService docService = KNSServiceLocator.getDocumentService();
+    	final DocumentService docService = KNSServiceLocatorInternal.getDocumentService();
 		//docSearchService = KEWServiceLocator.getDocumentSearchService();
 		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("AccountWithDDAttributes");
         String principalName = "quickstart";

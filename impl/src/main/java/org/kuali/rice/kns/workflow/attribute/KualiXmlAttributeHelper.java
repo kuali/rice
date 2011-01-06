@@ -39,7 +39,7 @@ import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -354,7 +354,7 @@ public class KualiXmlAttributeHelper {
             requestedShortLabel = true;
         }
         if (StringUtils.isNotBlank(businessObjectName)) {
-            DataDictionaryService DDService = KNSServiceLocator.getDataDictionaryService();
+            DataDictionaryService DDService = KNSServiceLocatorInternal.getDataDictionaryService();
 
             String title = null;
             String targetVal = lastXPath; // Assume the attribute is the last term in the XPath expression

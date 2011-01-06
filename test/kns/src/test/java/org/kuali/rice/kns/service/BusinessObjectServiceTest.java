@@ -16,13 +16,9 @@
 package org.kuali.rice.kns.service;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.kuali.rice.kns.bo.State;
-import org.kuali.rice.kns.bo.StateImpl;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestCase;
@@ -47,7 +43,7 @@ public class BusinessObjectServiceTest extends KNSTestCase {
      */
     @Test
     public void testSave() throws Exception {
-        BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
+        BusinessObjectService businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
         
         AccountManager am = new AccountManager();
         am.setUserName("bhutchin");
@@ -74,7 +70,7 @@ public class BusinessObjectServiceTest extends KNSTestCase {
      */
     @Test
     public void testRetrieve() {
-    	BusinessObjectService businessObjectService = KNSServiceLocator.getBusinessObjectService();
+    	BusinessObjectService businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
     	
     	AccountManager manager = new AccountManager();
     	manager.setUserName("mgorilla");
@@ -106,7 +102,7 @@ public class BusinessObjectServiceTest extends KNSTestCase {
     /*
     @Test
     public void testFindMatchingByCriteria() {
-    	final BusinessObjectService boService = KNSServiceLocator.getBusinessObjectService();
+    	final BusinessObjectService boService = KNSServiceLocatorInternal.getBusinessObjectService();
     	
     	final Collection<? extends State> allStates = boService.findAll(StateImpl.class);
     	

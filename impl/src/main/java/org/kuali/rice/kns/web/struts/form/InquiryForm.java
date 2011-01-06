@@ -32,12 +32,8 @@ import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.inquiry.Inquirable;
-import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -125,13 +121,13 @@ public class InquiryForm extends KualiForm {
             Class customInquirableClass = null;
 
             try {
-                customInquirableClass = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(boClassName).getInquiryDefinition().getInquirableClass();
+                customInquirableClass = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(boClassName).getInquiryDefinition().getInquirableClass();
             }
             catch (Exception e) {
                 LOG.error("Unable to correlate business object class with maintenance document entry");
             }
 
-            Inquirable kualiInquirable = KNSServiceLocator.getKualiInquirable(); // get inquirable impl from Spring
+            Inquirable kualiInquirable = KNSServiceLocatorInternal.getKualiInquirable(); // get inquirable impl from Spring
 
             if (customInquirableClass != null) {
                 Class[] defaultConstructor = new Class[] {};
@@ -156,7 +152,7 @@ public class InquiryForm extends KualiForm {
      * @return the alt keys
      */
     private List<List<String>> getAltkeys(Class<?> clazz) {
-    	final KualiModuleService kualiModuleService = KNSServiceLocator.getKualiModuleService();
+    	final KualiModuleService kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
     	final ModuleService moduleService = kualiModuleService.getResponsibleModuleService(clazz);
 
         List<List<String>> altKeys = null;
@@ -169,10 +165,10 @@ public class InquiryForm extends KualiForm {
 
     protected void populatePKFieldValues(HttpServletRequest request, String boClassName, boolean passedFromPreviousInquiry) {
         try {
-            EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
-            DataDictionaryService dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
-            BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocator.getBusinessObjectAuthorizationService();
-            BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+            EncryptionService encryptionService = KNSServiceLocatorInternal.getEncryptionService();
+            DataDictionaryService dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
+            BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService();
+            BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocatorInternal.getBusinessObjectMetaDataService();
 
             Class businessObjectClass = Class.forName(boClassName);
 
@@ -250,7 +246,7 @@ public class InquiryForm extends KualiForm {
      */
     protected void populateExportCapabilities(HttpServletRequest request, String boClassName) {
     	setCanExport(false);
-    	BusinessObjectEntry businessObjectEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(boClassName);
+    	BusinessObjectEntry businessObjectEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(boClassName);
     	Class<? extends Exporter> exporterClass = businessObjectEntry.getExporterClass();
     	if (exporterClass != null) {
     		try {

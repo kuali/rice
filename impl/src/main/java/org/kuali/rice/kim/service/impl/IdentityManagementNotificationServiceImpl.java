@@ -17,6 +17,7 @@ package org.kuali.rice.kim.service.impl;
 
 import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 
@@ -33,21 +34,21 @@ public class IdentityManagementNotificationServiceImpl implements
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#groupUpdated()
      */
     public void groupUpdated() {
-        KIMServiceLocator.getIdentityManagementService().flushGroupCaches();
+        KIMServiceLocatorInternal.getIdentityManagementService().flushGroupCaches();
     }
 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#permissionUpdated()
      */
     public void permissionUpdated() {
-        KIMServiceLocator.getIdentityManagementService().flushPermissionCaches();
+        KIMServiceLocatorInternal.getIdentityManagementService().flushPermissionCaches();
     }
 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#principalUpdated()
      */
     public void principalUpdated() {
-        KIMServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
+        KIMServiceLocatorInternal.getIdentityManagementService().flushEntityPrincipalCaches();
         KIMServiceLocator.getPersonService().flushPersonCaches();
     }
 
@@ -55,34 +56,34 @@ public class IdentityManagementNotificationServiceImpl implements
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#responsibilityUpdated()
      */
     public void responsibilityUpdated() {
-        KIMServiceLocator.getIdentityManagementService().flushResponsibilityCaches();
+        KIMServiceLocatorInternal.getIdentityManagementService().flushResponsibilityCaches();
     }
 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#roleUpdated()
      */
     public void roleUpdated() {
-        KIMServiceLocator.getRoleManagementService().flushRoleCaches();
+        KIMServiceLocatorInternal.getRoleManagementService().flushRoleCaches();
     }
 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#roleMemberUpdated()
      */
     public void roleMemberUpdated() {
-    	KIMServiceLocator.getRoleManagementService().flushRoleMemberCaches();
+    	KIMServiceLocatorInternal.getRoleManagementService().flushRoleMemberCaches();
     }
     
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#delegationUpdated()
      */
     public void delegationUpdated() {
-    	KIMServiceLocator.getRoleManagementService().flushDelegationCaches();
+    	KIMServiceLocatorInternal.getRoleManagementService().flushDelegationCaches();
     }
 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#delegationMemberUpdated()
      */
     public void delegationMemberUpdated() {
-    	KIMServiceLocator.getRoleManagementService().flushDelegationMemberCaches();
+    	KIMServiceLocatorInternal.getRoleManagementService().flushDelegationMemberCaches();
     }
 }

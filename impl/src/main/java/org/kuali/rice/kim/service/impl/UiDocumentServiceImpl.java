@@ -102,16 +102,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.IdentityManagementNotificationService;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KimTypeInfoService;
-import org.kuali.rice.kim.service.ResponsibilityService;
-import org.kuali.rice.kim.service.RoleManagementService;
-import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.UiDocumentService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -127,7 +118,7 @@ import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -233,7 +224,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		// boservice.save(bos) does not handle deleteawarelist
 		getBusinessObjectService().save(bos);
 
-		//KIMServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
+		//KIMServiceLocatorInternal.getIdentityManagementService().flushEntityPrincipalCaches();
 		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
 		service.principalUpdated();
 
@@ -242,7 +233,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		}
 		if ( inactivatingPrincipal ) {
 			//when a person is inactivated, inactivate their group, role, and delegation memberships
-			KIMServiceLocator.getRoleManagementService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
+			KIMServiceLocatorInternal.getRoleManagementService().principalInactivated(identityManagementPersonDocument.getPrincipalId());
 		}
 	}
 
@@ -1438,49 +1429,49 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
 
 	protected IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}
 
 	protected IdentityService getIdentityService() {
 		if ( identityService == null ) {
-			identityService = KIMServiceLocator.getIdentityService();
+			identityService = KIMServiceLocatorInternal.getIdentityService();
 		}
 		return identityService;
 	}
 
 	protected GroupService getGroupService() {
 		if ( groupService == null ) {
-			groupService = KIMServiceLocator.getGroupService();
+			groupService = KIMServiceLocatorInternal.getGroupService();
 		}
 		return groupService;
 	}
 
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
-	        documentHelperService = KNSServiceLocator.getDocumentHelperService();
+	        documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
 		}
 	    return this.documentHelperService;
 	}
 
 	protected RoleService getRoleService() {
 	   	if(roleService == null){
-	   		roleService = KIMServiceLocator.getRoleService();
+	   		roleService = KIMServiceLocatorInternal.getRoleService();
     	}
 		return roleService;
 	}
 
 	protected RoleManagementService getRoleManagementService() {
 	   	if(roleManagementService == null){
-	   		roleManagementService = KIMServiceLocator.getRoleManagementService();
+	   		roleManagementService = KIMServiceLocatorInternal.getRoleManagementService();
     	}
 		return roleManagementService;
 	}
@@ -1491,7 +1482,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected ResponsibilityService getResponsibilityService() {
 	   	if ( responsibilityService == null ) {
-    		responsibilityService = KIMServiceLocator.getResponsibilityService();
+    		responsibilityService = KIMServiceLocatorInternal.getResponsibilityService();
     	}
 		return responsibilityService;
 	}
@@ -1691,7 +1682,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
 			String fakeName = "";
-			KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
+			KimPrincipal kp = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(memberId);
 			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
 				fakeName = kp.getPrincipalName();
 			}
@@ -1706,7 +1697,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
 			String fakeName = "";
-			KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
+			KimPrincipal kp = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(memberId);
 			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
 				fakeName = kp.getPrincipalName();
 			}			
@@ -1984,11 +1975,11 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		getBusinessObjectService().save(bos);
 		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
         service.roleUpdated();
-		KIMServiceLocator.getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(identityManagementRoleDocument, origRoleResponsibilities));
+		KIMServiceLocatorInternal.getResponsibilityInternalService().updateActionRequestsForResponsibilityChange(getChangedRoleResponsibilityIds(identityManagementRoleDocument, origRoleResponsibilities));
 		if(!kimRole.isActive()){
 			// when a role is inactivated, inactivate the memberships of principals, groups, and roles in
 			// that role, delegations, and delegation members, and that roles memberships in other roles
-			KIMServiceLocator.getRoleManagementService().roleInactivated(identityManagementRoleDocument.getRoleId());
+			KIMServiceLocatorInternal.getRoleManagementService().roleInactivated(identityManagementRoleDocument.getRoleId());
 		}
 	}
 
@@ -2140,7 +2131,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         boolean activatingInactive = false;
         String newRoleMemberIdAssigned = "";
 
-        identityManagementRoleDocument.setKimType(KIMServiceLocator.getTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()));
+        identityManagementRoleDocument.setKimType(KIMServiceLocatorInternal.getTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()));
         KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( identityManagementRoleDocument.getKimType() );
 
         if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getMembers())){
@@ -2292,7 +2283,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	protected AttributeDefinition getKNSAttributeDefinition(String kimTypId, String attrDefnId) {
 		final KimTypeInfo type = getKimTypeInfoService().getKimType(kimTypId);
 		if (type != null) {
-			final KimTypeService typeService = (KimTypeService)KIMServiceLocator.getBean(type.getKimTypeServiceName());
+			final KimTypeService typeService = (KimTypeService) KIMServiceLocatorInternal.getBean(type.getKimTypeServiceName());
 			if (typeService != null) {
 				final KimTypeAttributeInfo attributeInfo = type.getAttributeDefinition(attrDefnId);
 				if (attributeInfo != null) {
@@ -2570,13 +2561,13 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		//newIds = getGroupService().getMemberPrincipalIds(kimGroup.getGroupId()); // for the action list update
 
 		// Do an async update of the action list for the updated groups
-		KIMServiceLocator.getGroupInternalService().updateForWorkgroupChange(kimGroup.getGroupId(), oldIds, newIds);
+		KIMServiceLocatorInternal.getGroupInternalService().updateForWorkgroupChange(kimGroup.getGroupId(), oldIds, newIds);
 		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
         service.groupUpdated();
 		if(!kimGroup.isActive()){
 			// when a group is inactivated, inactivate the memberships of principals in that group
 			// and the memberships of that group in roles
-			KIMServiceLocator.getRoleService().groupInactivated(identityManagementGroupDocument.getGroupId());
+			KIMServiceLocatorInternal.getRoleService().groupInactivated(identityManagementGroupDocument.getGroupId());
 		}
 
 	}
@@ -2710,7 +2701,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	public KimTypeInfoService getKimTypeInfoService() {
 		if ( kimTypeInfoService == null ) {
-			kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

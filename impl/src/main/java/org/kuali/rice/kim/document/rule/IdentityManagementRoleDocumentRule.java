@@ -56,7 +56,7 @@ import org.kuali.rice.kim.rules.ui.KimDocumentResponsibilityRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationRule;
 import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.impl.RoleServiceBase;
@@ -67,7 +67,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
@@ -104,7 +104,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	
     public IdentityService getIdentityService() {
         if ( identityService == null) {
-            identityService = KIMServiceLocator.getIdentityService();
+            identityService = KIMServiceLocatorInternal.getIdentityService();
         }
         return identityService;
     }
@@ -616,7 +616,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			// Verify that the new role is not already related to the role either directly or indirectly
 			if (newMember.isRole()){
 				// get all nested role member ids that are of type role
-				RoleService roleService = KIMServiceLocator.getRoleService();
+				RoleService roleService = KIMServiceLocatorInternal.getRoleService();
 				roleMemberIds = ((RoleServiceBase) roleService).getRoleTypeRoleMemberIds(newMember.getMemberId());
 
 				// check to see if the document role is not a member of the new member role
@@ -737,7 +737,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 
 	public ResponsibilityService getResponsibilityService() {
 		if(responsibilityService == null){
-			responsibilityService = KIMServiceLocator.getResponsibilityService();
+			responsibilityService = KIMServiceLocatorInternal.getResponsibilityService();
 		}
 		return responsibilityService;
 	}
@@ -748,7 +748,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	 */
 	public BusinessObjectService getBusinessObjectService() {
 		if(businessObjectService == null){
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

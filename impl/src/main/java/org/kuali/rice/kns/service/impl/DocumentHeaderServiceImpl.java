@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.dao.DocumentHeaderDao;
 import org.kuali.rice.kns.service.DocumentHeaderService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -59,14 +59,14 @@ public class DocumentHeaderServiceImpl implements DocumentHeaderService {
      * @see org.kuali.rice.kns.service.DocumentHeaderService#saveDocumentHeader(org.kuali.rice.kns.bo.DocumentHeader)
      */
     public void saveDocumentHeader(DocumentHeader documentHeader) {
-        KNSServiceLocator.getBusinessObjectService().save(documentHeader);
+        KNSServiceLocatorInternal.getBusinessObjectService().save(documentHeader);
     }
     
     /**
      * @see org.kuali.rice.kns.service.DocumentHeaderService#deleteDocumentHeader(org.kuali.rice.kns.bo.DocumentHeader)
      */
     public void deleteDocumentHeader(DocumentHeader documentHeader) {
-        KNSServiceLocator.getBusinessObjectService().delete(documentHeader);
+        KNSServiceLocatorInternal.getBusinessObjectService().delete(documentHeader);
     }
 
     /**

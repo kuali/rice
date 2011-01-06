@@ -23,7 +23,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -46,7 +46,7 @@ public class KualiLogoutAction extends Action {
         // can't check for the existence of a simple parameter, so catch exception and
         // defualt to config parameter
         try {
-            redirectString = KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.LOGOFF_REDIRECT_URL_PARAMETER);
+            redirectString = KNSServiceLocatorInternal.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KNSConstants.LOGOFF_REDIRECT_URL_PARAMETER);
         }
         catch(IllegalArgumentException ex) {
             redirectString = ConfigContext.getCurrentContextConfig().getProperty(KNSConstants.LOGOFF_REDIRECT_URL_PROPERTY);

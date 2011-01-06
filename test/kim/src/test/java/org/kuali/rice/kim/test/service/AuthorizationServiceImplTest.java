@@ -29,11 +29,11 @@ import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -79,8 +79,8 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		
-		permissionService = KIMServiceLocator.getPermissionService();
-		roleService = KIMServiceLocator.getRoleService();
+		permissionService = KIMServiceLocatorInternal.getPermissionService();
+		roleService = KIMServiceLocatorInternal.getRoleService();
 		
 		if (true) return;
 		
@@ -100,7 +100,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		p1Member.setRoleId(role1Id);
 		p1Member.setRoleMemberId(getNewRoleMemberId());
 		members1.add(p1Member);
-		KNSServiceLocator.getBusinessObjectService().save(role1);
+		KNSServiceLocatorInternal.getBusinessObjectService().save(role1);
 		
 		// set up Role "r2" with principal p3, group g1 and role r1
 		RoleImpl role2 = new RoleImpl();
@@ -130,7 +130,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		r1Member.setRoleId(role2Id);
 		r1Member.setRoleMemberId(getNewRoleMemberId());
 		members2.add(r1Member);
-		KNSServiceLocator.getBusinessObjectService().save(role2);
+		KNSServiceLocatorInternal.getBusinessObjectService().save(role2);
 		
 		// setup permissions
 		
@@ -144,7 +144,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		permission1.setPermissionId(permission1Id);
 		permission1.setTemplateId(defaultTemplate.getPermissionTemplateId());
 		permission1.setTemplate(defaultTemplate);
-		KNSServiceLocator.getBusinessObjectService().save(permission1);
+		KNSServiceLocatorInternal.getBusinessObjectService().save(permission1);
 		
 		KimPermissionImpl permission2 = new KimPermissionImpl();
 		permission2.setActive(true);
@@ -154,7 +154,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		permission2.setPermissionId(permission2Id);
 		permission2.setTemplateId(defaultTemplate.getPermissionTemplateId());
 		permission2.setTemplate(defaultTemplate);
-		KNSServiceLocator.getBusinessObjectService().save(permission2);
+		KNSServiceLocatorInternal.getBusinessObjectService().save(permission2);
 		
 		KimPermissionImpl permission3 = new KimPermissionImpl();
 		permission3.setActive(true);
@@ -164,7 +164,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		permission3.setPermissionId(permission3Id);
 		permission3.setTemplateId(defaultTemplate.getPermissionTemplateId());
 		permission3.setTemplate(defaultTemplate);
-		KNSServiceLocator.getBusinessObjectService().save(permission3);
+		KNSServiceLocatorInternal.getBusinessObjectService().save(permission3);
 
 		// assign permissions to roles
 		// p1 -> r1
@@ -176,21 +176,21 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		role1Perm1.setRoleId(role1Id);
 		role1Perm1.setPermissionId(permission1Id);
 		role1Perm1.setRolePermissionId(getNewRolePermissionId());
-		KNSServiceLocator.getBusinessObjectService().save(role1Perm1);
+		KNSServiceLocatorInternal.getBusinessObjectService().save(role1Perm1);
 		
 		RolePermissionImpl role1Perm2 = new RolePermissionImpl();
 		role1Perm2.setActive(true);
 		role1Perm2.setRoleId(role1Id);
 		role1Perm2.setPermissionId(permission2Id);
 		role1Perm2.setRolePermissionId(getNewRolePermissionId());
-		KNSServiceLocator.getBusinessObjectService().save(role1Perm2);
+		KNSServiceLocatorInternal.getBusinessObjectService().save(role1Perm2);
 		
 		RolePermissionImpl role2Perm3 = new RolePermissionImpl();
 		role2Perm3.setActive(true);
 		role2Perm3.setRoleId(role2Id);
 		role2Perm3.setPermissionId(permission3Id);
 		role2Perm3.setRolePermissionId(getNewRolePermissionId());
-		KNSServiceLocator.getBusinessObjectService().save(role2Perm3);
+		KNSServiceLocatorInternal.getBusinessObjectService().save(role2Perm3);
 	}
 
 	@Test

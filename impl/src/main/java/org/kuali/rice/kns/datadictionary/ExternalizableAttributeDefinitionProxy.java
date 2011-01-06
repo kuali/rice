@@ -27,7 +27,7 @@ import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.CompletionException;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * A single attribute definition in the DataDictionary, which contains
@@ -89,7 +89,7 @@ public class ExternalizableAttributeDefinitionProxy extends AttributeDefinition 
 		BusinessObjectEntry delegateEntry = null;
 		if ( delegate == null ) {
 			try {
-				delegateEntry = KNSServiceLocator
+				delegateEntry = KNSServiceLocatorInternal
 						.getKualiModuleService()
 						.getResponsibleModuleService(
 								Class

@@ -56,12 +56,8 @@ import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
-import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.PropertyRenderingConfigElement;
@@ -95,7 +91,7 @@ public final class FieldUtils {
                 if ( inquirableClass != null ) {
                     inq = inquirableClass.newInstance();
                 } else {
-                    inq = KNSServiceLocator.getKualiInquirable();
+                    inq = KNSServiceLocatorInternal.getKualiInquirable();
                     if ( LOG.isDebugEnabled() ) {
                         LOG.debug( "Default Inquirable Class: " + inq.getClass() );
         }
@@ -636,7 +632,7 @@ public final class FieldUtils {
                 	field.setEncryptedValue(fieldValue.toString());
                 }
                 else {
-                	field.setEncryptedValue(KNSServiceLocator.getEncryptionService().encrypt(fieldValue) + EncryptionService.ENCRYPTION_POST_PREFIX);
+                	field.setEncryptedValue(KNSServiceLocatorInternal.getEncryptionService().encrypt(fieldValue) + EncryptionService.ENCRYPTION_POST_PREFIX);
                 }
             }
             catch (GeneralSecurityException e) {
@@ -1432,28 +1428,28 @@ public final class FieldUtils {
 
     private static DataDictionaryService getDataDictionaryService() {
     	if (dataDictionaryService == null) {
-    		dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+    		dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
     	}
     	return dataDictionaryService;
     }
 
     private static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
     	if (businessObjectMetaDataService == null) {
-    		businessObjectMetaDataService = KNSServiceLocator.getBusinessObjectMetaDataService();
+    		businessObjectMetaDataService = KNSServiceLocatorInternal.getBusinessObjectMetaDataService();
     	}
     	return businessObjectMetaDataService;
     }
 
     private static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
     	if (businessObjectDictionaryService == null) {
-    		businessObjectDictionaryService = KNSServiceLocator.getBusinessObjectDictionaryService();
+    		businessObjectDictionaryService = KNSServiceLocatorInternal.getBusinessObjectDictionaryService();
     	}
     	return businessObjectDictionaryService;
     }
 
     private static KualiModuleService getKualiModuleService() {
     	if (kualiModuleService == null) {
-    		kualiModuleService = KNSServiceLocator.getKualiModuleService();
+    		kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
     	}
     	return kualiModuleService;
     }

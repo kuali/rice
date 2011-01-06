@@ -26,11 +26,11 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionUpdateService;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * 
@@ -92,7 +92,7 @@ public class PermissionUpdateServiceImpl extends PermissionServiceBase implement
 	    		}
 	    	}
 	    	getBusinessObjectService().save(perm);
-	    	KIMServiceLocator.getIdentityManagementService().flushPermissionCaches();
+	    	KIMServiceLocatorInternal.getIdentityManagementService().flushPermissionCaches();
 	    	flushPermissionImplCache();
     	} catch ( RuntimeException ex ) {
     		LOG.error( "Exception in savePermission: ", ex );
@@ -101,7 +101,7 @@ public class PermissionUpdateServiceImpl extends PermissionServiceBase implement
 	}
 	
 	public String getNextAvailablePermissionId() throws UnsupportedOperationException {
-        Long nextSeq = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PERM_ID_S, KimPermissionImpl.class);
+        Long nextSeq = KNSServiceLocatorInternal.getSequenceAccessorService().getNextAvailableSequenceNumber(KimConstants.SequenceNames.KRIM_PERM_ID_S, KimPermissionImpl.class);
 
         if (nextSeq == null) {
             LOG.error("Unable to get new permission id from sequence " + KimConstants.SequenceNames.KRIM_PERM_ID_S);

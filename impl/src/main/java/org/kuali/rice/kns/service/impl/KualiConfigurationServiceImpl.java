@@ -20,7 +20,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 
 //@Transactional
@@ -122,6 +122,6 @@ public class KualiConfigurationServiceImpl extends AbstractStaticConfigurationSe
     // type matching
     // - consider using 'getBeanNamesOfType' with the 'allowEagerInit' flag turned off, for example.
     private BusinessObjectService getBusinessObjectService() {
-        return KNSServiceLocator.getBusinessObjectService();
+        return KNSServiceLocatorInternal.getBusinessObjectService();
     }
 }

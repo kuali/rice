@@ -27,7 +27,7 @@ import javax.persistence.Transient;
 
 import org.kuali.rice.kim.bo.types.KimAttributeData;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -98,7 +98,7 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 	}
 	public KimTypeInfo getKimType() {
 		if ( kimType == null ) {
-			kimType = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId);
+			kimType = KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId);
 		}
 		return kimType;
 	}

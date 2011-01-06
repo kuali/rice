@@ -52,7 +52,7 @@ import org.kuali.rice.kim.bo.role.dto.DelegateInfo;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.RoleManagementService;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -608,7 +608,7 @@ public class ActionRequestFactory {
 	 */
     protected static RoleManagementService getRoleManagementService() {
 		if ( roleManagementService == null ) {
-			roleManagementService = KIMServiceLocator.getRoleManagementService();
+			roleManagementService = KIMServiceLocatorInternal.getRoleManagementService();
 		}
 		return roleManagementService;
 	}
@@ -628,7 +628,7 @@ public class ActionRequestFactory {
 	 */
     protected static IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocator.getIdentityManagementService();
+			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}

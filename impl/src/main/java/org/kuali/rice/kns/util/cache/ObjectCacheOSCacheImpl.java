@@ -23,7 +23,7 @@ import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.cache.ObjectCacheInternal;
 import org.apache.ojb.broker.cache.ObjectCacheTwoLevelImpl;
 import org.apache.ojb.broker.cache.RuntimeCacheException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 import com.opensymphony.oscache.base.Cache;
 import com.opensymphony.oscache.base.NeedsRefreshException;
@@ -62,7 +62,7 @@ public class ObjectCacheOSCacheImpl implements ObjectCacheInternal {
      * Required default constructor.
      */
     public ObjectCacheOSCacheImpl() {
-        admin = KNSServiceLocator.getPersistenceCacheAdministrator();
+        admin = KNSServiceLocatorInternal.getPersistenceCacheAdministrator();
     }
 
     /**

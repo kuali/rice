@@ -43,6 +43,7 @@ import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.cache.CopiedObject;
@@ -180,7 +181,7 @@ public final class ObjectUtils {
     public static BusinessObject createHybridBusinessObject(Class businessObjectClass, BusinessObject source, Map<String, String> template) throws FormatException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
         BusinessObject obj = null;
         try {
-    		ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(businessObjectClass);
+    		ModuleService moduleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(businessObjectClass);
     		if (moduleService != null && moduleService.isExternalizable(businessObjectClass))
     			obj = (BusinessObject)moduleService.createNewObjectFromExternalizableClass(businessObjectClass);
     		else
@@ -491,7 +492,7 @@ public final class ObjectUtils {
 			}
 		}
 
-		Class<? extends Formatter> formatterClass = KNSServiceLocator.getDataDictionaryService().getAttributeFormatter(
+		Class<? extends Formatter> formatterClass = KNSServiceLocatorInternal.getDataDictionaryService().getAttributeFormatter(
 				boClass, boPropertyName);
 		if (formatterClass == null) {
 			try {
@@ -606,7 +607,7 @@ public final class ObjectUtils {
                 if (propertyList instanceof PersistentBag) {
                 	try {
 	                	PersistentBag bag = (PersistentBag) propertyList;
-	                	PersistableBusinessObject pbo = (PersistableBusinessObject) KNSServiceLocator.getEntityManagerFactory().createEntityManager().find(bo.getClass(), bag.getKey());
+	                	PersistableBusinessObject pbo = (PersistableBusinessObject) KNSServiceLocatorInternal.getEntityManagerFactory().createEntityManager().find(bo.getClass(), bag.getKey());
 	        			Field field1 = pbo.getClass().getDeclaredField(propertyDescriptor.getName());
 	        			Field field2 = bo.getClass().getDeclaredField(propertyDescriptor.getName());
 	        			field1.setAccessible(true);
@@ -1110,7 +1111,7 @@ public final class ObjectUtils {
 		try {
 			if (ExternalizableBusinessObject.class.isAssignableFrom(clazz)) {
 				Class eboInterface = ExternalizableBusinessObjectUtils.determineExternalizableBusinessObjectSubInterface(clazz);
-				ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(eboInterface);
+				ModuleService moduleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(eboInterface);
 				return moduleService.createNewObjectFromExternalizableClass(eboInterface);
 			}
 			else {

@@ -16,15 +16,13 @@
 package org.kuali.rice.kns.datadictionary;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.ria.bo.RIADocTypeMap;
 import org.kuali.rice.kew.ria.document.RIADocument;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * DataDictionaryMapper impl that consults the RIA table for reverse
@@ -66,7 +64,7 @@ public class RIADataDictionaryMapper extends DataDictionaryIndexMapper {
 	private boolean isMapped(String documentTypeName) {
 		Map map = new HashMap(1);
 		map.put(RIA_DOC_TYPE_NAME, documentTypeName);
-		RIADocTypeMap riaDocTypeMap = (RIADocTypeMap) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(RIADocTypeMap.class, map);
+		RIADocTypeMap riaDocTypeMap = (RIADocTypeMap) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(RIADocTypeMap.class, map);
 		if (riaDocTypeMap != null 
 			&& StringUtils.isNotEmpty(riaDocTypeMap.getRiaDocTypeName())) {
 			return true;

@@ -16,7 +16,6 @@
 package org.kuali.rice.kns.dao.impl;
 
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -39,7 +38,7 @@ import org.kuali.rice.kns.dao.LookupDao;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -86,11 +85,11 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
         while (propsIter.hasNext()) {
             String propertyName = (String) propsIter.next();
             Boolean caseInsensitive = Boolean.TRUE;
-        	if ( KNSServiceLocator.getDataDictionaryService().isAttributeDefined( example.getClass(), propertyName )) {
-        		caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase( example.getClass(), propertyName );
+        	if ( KNSServiceLocatorInternal.getDataDictionaryService().isAttributeDefined( example.getClass(), propertyName )) {
+        		caseInsensitive = !KNSServiceLocatorInternal.getDataDictionaryService().getAttributeForceUppercase( example.getClass(), propertyName );
         	}
         	if ( caseInsensitive == null ) { caseInsensitive = Boolean.TRUE; }
-        	boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator
+        	boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocatorInternal
         			.getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName);
         	
             if (formProps.get(propertyName) instanceof Collection) {
@@ -113,7 +112,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
     public Criteria getCollectionCriteriaFromMapUsingPrimaryKeysOnly(Class businessObjectClass, Map formProps) {
         BusinessObject businessObject = checkBusinessObjectClass(businessObjectClass);
         Criteria criteria = new Criteria();
-        List pkFields = KNSServiceLocator.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+        List pkFields = KNSServiceLocatorInternal.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
         Iterator pkIter = pkFields.iterator();
         while (pkIter.hasNext()) {
             String pkFieldName = (String) pkIter.next();
@@ -125,7 +124,7 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
             else if (StringUtils.indexOfAny(pkValue, KNSConstants.QUERY_CHARACTERS) != -1) {
                 throw new RuntimeException("Value \"" + pkValue + "\" for PK field " + pkFieldName + " contains wildcard/operator characters.");
             }
-            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator.
+            boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocatorInternal.
             		getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(businessObjectClass, pkFieldName);
             createCriteria(businessObject, pkValue, pkFieldName, false, treatWildcardsAndOperatorsAsLiteral, criteria);
         }
@@ -236,12 +235,12 @@ public class LookupDaoOjb extends PlatformAwareDaoBaseOjb implements LookupDao {
                 continue;
             }
         	Boolean caseInsensitive = Boolean.TRUE;
-        	if ( KNSServiceLocator.getDataDictionaryService().isAttributeDefined( example.getClass(), propertyName )) {
-        		caseInsensitive = !KNSServiceLocator.getDataDictionaryService().getAttributeForceUppercase( example.getClass(), propertyName );
+        	if ( KNSServiceLocatorInternal.getDataDictionaryService().isAttributeDefined( example.getClass(), propertyName )) {
+        		caseInsensitive = !KNSServiceLocatorInternal.getDataDictionaryService().getAttributeForceUppercase( example.getClass(), propertyName );
         	}
         	if ( caseInsensitive == null ) { caseInsensitive = Boolean.TRUE; }
 
-        	boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocator
+        	boolean treatWildcardsAndOperatorsAsLiteral = KNSServiceLocatorInternal
 					.getBusinessObjectDictionaryService().isLookupFieldTreatWildcardsAndOperatorsAsLiteral(example.getClass(), propertyName);
         	
             // build criteria

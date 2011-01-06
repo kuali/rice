@@ -17,7 +17,7 @@ package org.kuali.rice.kns.document;
 
 import javax.persistence.MappedSuperclass;
 
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This is the base class implementation for all transaction processing eDocs. 
@@ -39,7 +39,7 @@ public abstract class TransactionalDocumentBase extends DocumentBase implements 
      * Copyable.
      */
     public boolean getAllowsCopy() {
-        return KNSServiceLocator.getTransactionalDocumentDictionaryService().getAllowsCopy(this).booleanValue() && this instanceof Copyable;
+        return KNSServiceLocatorInternal.getTransactionalDocumentDictionaryService().getAllowsCopy(this).booleanValue() && this instanceof Copyable;
     }
 
     /**

@@ -44,6 +44,7 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -320,7 +321,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
         if(!Utilities.isEmpty(networkIdParam)){
         workflowId = networkIdParam;
-        workflowId = KIMServiceLocator.getIdentityService().getPrincipalByPrincipalName(networkIdParam).getPrincipalId();
+        workflowId = KIMServiceLocatorInternal.getIdentityService().getPrincipalByPrincipalName(networkIdParam).getPrincipalId();
         }
 
         Iterator<RuleDelegation> rules = getRuleDelegationService().search(parentRuleBaseValueId, parentResponsibilityId, docTypeSearchName, ruleId, ruleTemplateId, ruleDescription, workgroupId, workflowId, delegationParam, isActive, attributes, userDirectiveParam).iterator();
@@ -370,7 +371,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
 
 
     private IdentityManagementService getIdentityManagementService() {
-       return (IdentityManagementService) KIMServiceLocator.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
+       return (IdentityManagementService) KIMServiceLocatorInternal.getService(KIMServiceLocatorInternal.KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
 
     private RuleTemplateService getRuleTemplateService() {
@@ -400,14 +401,14 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
         }
 
         if  (!Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
-            Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
             }
         }
 
         if  (!Utilities.isEmpty(personId)) {
-            //Person person = KIMServiceLocator.getPersonService().getPerson(personId);
+            //Person person = KIMServiceLocatorInternal.getPersonService().getPerson(personId);
             Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(personId);/** IU fix EN-1552 */
             if (person == null) {
                 GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);

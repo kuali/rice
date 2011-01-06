@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.web.format.BooleanFormatter;
 import org.kuali.rice.kns.web.format.DateFormatter;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -73,7 +73,7 @@ public class ObjectUtilsTest extends KNSTestCase {
 	}
 
 	private void changeAttributeDefinitionFormatter(Class boClass, String attributeName, Class formatterClass) {
-		DataDictionaryEntryBase entry = (DataDictionaryEntryBase) KNSServiceLocator.getDataDictionaryService()
+		DataDictionaryEntryBase entry = (DataDictionaryEntryBase) KNSServiceLocatorInternal.getDataDictionaryService()
 				.getDataDictionary().getDictionaryObjectEntry(boClass.getName());
 		if (entry != null) {
 			AttributeDefinition attributeDefinition = entry.getAttributeDefinition(attributeName);

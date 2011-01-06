@@ -28,8 +28,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -200,7 +198,7 @@ public class Parameter extends PersistableBusinessObjectBase {
 		//	ParameterDetailTypeId id = new ParameterDetailTypeId();
 		//	id.setParameterNamespaceCode(parameterNamespaceCode);
 		//	id.setParameterDetailTypeCode(parameterDetailTypeCode);
-		//	parameterDetailType = KNSServiceLocator.getBusinessObjectService().findBySinglePrimaryKey(ParameterDetailType.class, id);
+		//	parameterDetailType = KNSServiceLocatorInternal.getBusinessObjectService().findBySinglePrimaryKey(ParameterDetailType.class, id);
 		//}
 		return parameterDetailType;
 	}

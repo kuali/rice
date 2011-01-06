@@ -28,10 +28,10 @@ import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
 import org.kuali.rice.kim.service.IdentityArchiveService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * Unit test for the IdentityArchiveService
@@ -46,9 +46,9 @@ public class IdentityArchiveServiceTest extends KIMTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		final Map<String, Object> emptyMap = Collections.emptyMap();
-		KNSServiceLocator.getBusinessObjectService().deleteMatching(KimEntityDefaultInfoCacheImpl.class, emptyMap);
+		KNSServiceLocatorInternal.getBusinessObjectService().deleteMatching(KimEntityDefaultInfoCacheImpl.class, emptyMap);
 		if (null == identityArchiveService) {
-			identityArchiveService = KIMServiceLocator.getIdentityArchiveService();
+			identityArchiveService = KIMServiceLocatorInternal.getIdentityArchiveService();
 		}
 	}
 

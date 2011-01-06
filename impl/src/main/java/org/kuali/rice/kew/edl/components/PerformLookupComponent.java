@@ -32,7 +32,7 @@ import org.kuali.rice.kew.edl.EDLModelComponent;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWPropertyConstants;
 import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
 import org.w3c.dom.Document;
@@ -52,7 +52,7 @@ public class PerformLookupComponent implements EDLModelComponent {
 	
 	protected String constructRedirectUrl(Document dom, Element configElement, EDLContext edlContext) {
 		StringBuilder buf = new StringBuilder(30);
-		buf.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
+		buf.append(KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
 		buf.append("/kr/").append(KNSConstants.LOOKUP_ACTION);
 		
 		Properties parameters = new Properties();
@@ -155,7 +155,7 @@ public class PerformLookupComponent implements EDLModelComponent {
 
 	protected String constructReturnUrl(Document dom, Element configElement, EDLContext edlContext) {
 		StringBuilder baseUrl = new StringBuilder(30);
-		baseUrl.append(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
+		baseUrl.append(KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY));
 		baseUrl.append("/kew/EDocLite");
 		
 		Properties parameters = new Properties();

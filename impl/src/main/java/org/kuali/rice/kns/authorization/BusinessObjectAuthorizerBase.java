@@ -22,11 +22,12 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -244,7 +245,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 
 	protected static final IdentityManagementService getIdentityManagementService() {
 		if (identityManagementService == null) {
-			identityManagementService = KIMServiceLocator
+			identityManagementService = KIMServiceLocatorInternal
 					.getIdentityManagementService();
 		}
 		return identityManagementService;
@@ -259,14 +260,14 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 
 	protected static final KualiModuleService getKualiModuleService() {
 		if (kualiModuleService == null) {
-			kualiModuleService = KNSServiceLocator.getKualiModuleService();
+			kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
 		}
 		return kualiModuleService;
 	}
 
 	protected static final DataDictionaryService getDataDictionaryService() {
 		if (dataDictionaryService == null) {
-			dataDictionaryService = KNSServiceLocator
+			dataDictionaryService = KNSServiceLocatorInternal
 					.getDataDictionaryService();
 		}
 		return dataDictionaryService;

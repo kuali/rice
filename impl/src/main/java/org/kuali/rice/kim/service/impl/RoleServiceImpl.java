@@ -48,7 +48,7 @@ import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
@@ -57,7 +57,6 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
 import org.apache.commons.collections.CollectionUtils;
 
 /**
@@ -612,16 +611,16 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 		String serviceName = typeInfo.getKimTypeServiceName();
 		if ( serviceName != null ) {
 			try {
-				KimTypeService service = (KimTypeService)KIMServiceLocator.getService( serviceName );
+				KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
 				if ( service != null && service instanceof KimRoleTypeService) {
 					return (KimRoleTypeService)service;
 				} else {
-					return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+					return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 				}
 			} catch ( Exception ex ) {
 				LOG.error( "Unable to find role type service with name: " + serviceName );
 				LOG.error( ex.getClass().getName() + " : " + ex.getMessage() );
-				return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+				return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 			}
 		}
 		return null;
@@ -1173,7 +1172,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     @SuppressWarnings("unchecked")
 	protected void inactivateApplicationRoleMemberships( String principalId, Timestamp yesterday){
     	// get all role type services
-    	Collection<KimTypeInfo> types = KIMServiceLocator.getTypeInfoService().getAllTypes();
+    	Collection<KimTypeInfo> types = KIMServiceLocatorInternal.getTypeInfoService().getAllTypes();
     	// create sub list of only application role types
     	ArrayList<KimTypeInfo> applicationRoleTypes = new ArrayList<KimTypeInfo>( types.size() );
     	for ( KimTypeInfo typeInfo : types ) {

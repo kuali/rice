@@ -22,7 +22,7 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 import static org.kuali.rice.kew.xml.XmlConstants.*;
 
@@ -80,7 +80,7 @@ public class GroupXmlExporter implements XmlExporter {
 
         if (group.getKimTypeId() != null) {
             Element typeElement = renderer.renderElement(groupElement, TYPE);
-            KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType(group.getKimTypeId());
+            KimTypeInfo kimType = KIMServiceLocatorInternal.getTypeInfoService().getKimType(group.getKimTypeId());
             renderer.renderTextElement(typeElement, NAMESPACE, kimType.getNamespaceCode());
             renderer.renderTextElement(typeElement, NAME, kimType.getName());
         }
@@ -94,20 +94,20 @@ public class GroupXmlExporter implements XmlExporter {
             }
         }
 
-        java.util.List<String> memberGroupIds = KIMServiceLocator.getIdentityManagementService().getDirectMemberGroupIds(group.getGroupId());
+        java.util.List<String> memberGroupIds = KIMServiceLocatorInternal.getIdentityManagementService().getDirectMemberGroupIds(group.getGroupId());
 
-        java.util.List<String> memberPrincipalIds = KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(group.getGroupId());
+        java.util.List<String> memberPrincipalIds = KIMServiceLocatorInternal.getIdentityManagementService().getDirectGroupMemberPrincipalIds(group.getGroupId());
 
         if (memberGroupIds.size() > 0 || memberPrincipalIds.size() > 0) {
             Element membersElement = renderer.renderElement(groupElement, MEMBERS);
             for (String memberGroupId : memberGroupIds) {
-                Group memberGroup = KIMServiceLocator.getIdentityManagementService().getGroup(memberGroupId);
+                Group memberGroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(memberGroupId);
                 Element groupNameElement = renderer.renderElement(membersElement, GROUP_NAME);
                 renderer.renderTextElement(groupNameElement, NAME, memberGroup.getGroupName());
                 renderer.renderTextElement(groupNameElement, NAMESPACE, memberGroup.getNamespaceCode());
             }
             for (String memberPrincipalId : memberPrincipalIds) {
-                renderer.renderTextElement(membersElement, PRINCIPAL_NAME, KIMServiceLocator.getIdentityManagementService().getPrincipal(memberPrincipalId).getPrincipalName());
+                renderer.renderTextElement(membersElement, PRINCIPAL_NAME, KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(memberPrincipalId).getPrincipalName());
             }
         }
     }

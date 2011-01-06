@@ -23,7 +23,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
@@ -52,14 +52,14 @@ public class GenericPermissionMaintenanceDocumentRule extends
 			validateDetailValuesFormat(perm.getDetailValues());
 			// detailValues
 			// get the type from the template for validation
-			KimPermissionTemplateInfo template = KIMServiceLocator.getPermissionService().getPermissionTemplate( perm.getTemplateId() );
+			KimPermissionTemplateInfo template = KIMServiceLocatorInternal.getPermissionService().getPermissionTemplate( perm.getTemplateId() );
 			if ( template == null ) {
 				GlobalVariables.getMessageMap().addToErrorPath( MAINTAINABLE_ERROR_PATH );
 				GlobalVariables.getMessageMap().putError( DETAIL_VALUES_PROPERTY, ERROR_MISSING_TEMPLATE, perm.getTemplateId() );
 				GlobalVariables.getMessageMap().removeFromErrorPath( MAINTAINABLE_ERROR_PATH );
 				rulesPassed = false;
 			} else {
-				KimTypeInfo kimType = KIMServiceLocator.getTypeInfoService().getKimType( template.getKimTypeId() );
+				KimTypeInfo kimType = KIMServiceLocatorInternal.getTypeInfoService().getKimType( template.getKimTypeId() );
 				AttributeSet details = perm.getDetails();
 				// check that add passed attributes are defined
 				for ( String attributeName : details.keySet() ) {
@@ -121,7 +121,7 @@ public class GenericPermissionMaintenanceDocumentRule extends
     		return null;
     	}
     	try {
-	    	Object service = KIMServiceLocator.getService( serviceName );
+	    	Object service = KIMServiceLocatorInternal.getService(serviceName);
 	    	// if we have a service name, it must exist
 	    	if ( service == null ) {
 				LOG.warn("null returned for permission type service for service name: " + serviceName);
@@ -134,7 +134,7 @@ public class GenericPermissionMaintenanceDocumentRule extends
 	    	}
 	    	return (KimPermissionTypeService)service;
     	} catch( Exception ex ) {
-    		LOG.error( "Error retrieving service: " + serviceName + " from the KIMServiceLocator.", ex );
+    		LOG.error( "Error retrieving service: " + serviceName + " from the KIMServiceLocatorInternal.", ex );
     	}
     	return null;
     }

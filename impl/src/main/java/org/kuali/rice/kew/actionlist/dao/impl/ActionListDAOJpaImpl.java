@@ -36,7 +36,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValueActionListExtension;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 /**
  * OJB implementation of the {@link ActionListDAO}.
@@ -305,7 +305,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 userCrit.eq("delegatorWorkflowId", principalId);
                 
                 List<String> userGroupIds = new ArrayList<String>();
-                for(String id:KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
+                for(String id: KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
                 	userGroupIds.add(id);
                 }
                 if (!userGroupIds.isEmpty()) {
@@ -328,7 +328,7 @@ public class ActionListDAOJpaImpl implements ActionListDAO {
                 Criteria orCrit = new Criteria(objectsToRetrieve.getName());
                 userCrit.eq("delegatorWorkflowId", principalId);
                 List<String> userGroupIds = new ArrayList<String>();
-                for(String id:KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
+                for(String id: KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(principalId)){
                 	userGroupIds.add(id);
                 }
                 if (!userGroupIds.isEmpty()) {

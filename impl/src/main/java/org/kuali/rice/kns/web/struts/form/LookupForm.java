@@ -26,7 +26,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.ui.Field;
@@ -144,7 +144,7 @@ public class LookupForm extends KualiForm {
     public void populate(HttpServletRequest request) {
         super.populate(request);
 
-        DataDictionaryService ddService = KNSServiceLocator.getDataDictionaryService();
+        DataDictionaryService ddService = KNSServiceLocatorInternal.getDataDictionaryService();
 
         try {
             Lookupable localLookupable = null;
@@ -153,7 +153,7 @@ public class LookupForm extends KualiForm {
                 String localBusinessObjectClassName = getParameter(request, KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);
                 if ( ExternalizableBusinessObjectUtils.isExternalizableBusinessObjectInterface(localBusinessObjectClassName) ) {
                 	Class localBusinessObjectClass = Class.forName(localBusinessObjectClassName);
-                	localBusinessObjectClassName = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(localBusinessObjectClass).getExternalizableBusinessObjectImplementation(localBusinessObjectClass).getName();
+                	localBusinessObjectClassName = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(localBusinessObjectClass).getExternalizableBusinessObjectImplementation(localBusinessObjectClass).getName();
                 }
                 setBusinessObjectClassName(localBusinessObjectClassName);
                 if (StringUtils.isBlank(localBusinessObjectClassName)) {
@@ -162,14 +162,14 @@ public class LookupForm extends KualiForm {
                 }
 
                 // call data dictionary service to get lookup impl for bo class
-                String lookupImplID = KNSServiceLocator.getBusinessObjectDictionaryService().getLookupableID(Class.forName(localBusinessObjectClassName));
+                String lookupImplID = KNSServiceLocatorInternal.getBusinessObjectDictionaryService().getLookupableID(Class.forName(localBusinessObjectClassName));
                 if (lookupImplID == null) {
                     lookupImplID = "kualiLookupable";
                 }
 
                 setLookupableImplServiceName(lookupImplID);
             }
-            localLookupable = KNSServiceLocator.getLookupable(getLookupableImplServiceName());
+            localLookupable = KNSServiceLocatorInternal.getLookupable(getLookupableImplServiceName());
 
             if (localLookupable == null) {
                 LOG.error("Lookup impl not found for lookup impl name " + getLookupableImplServiceName());
@@ -709,7 +709,7 @@ public class LookupForm extends KualiForm {
 		boolean renderSearchButtons = true;
 
 		if (disableSearchButtons
-				|| KNSServiceLocator.getBusinessObjectDictionaryService().disableSearchButtonsInLookup(
+				|| KNSServiceLocatorInternal.getBusinessObjectDictionaryService().disableSearchButtonsInLookup(
 						getLookupable().getBusinessObjectClass())) {
 			renderSearchButtons = false;
 		}

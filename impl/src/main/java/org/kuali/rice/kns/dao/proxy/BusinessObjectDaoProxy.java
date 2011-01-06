@@ -33,6 +33,7 @@ import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.impl.BusinessObjectDaoJpa;
 import org.kuali.rice.kns.dao.impl.BusinessObjectDaoOjb;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.springframework.transaction.annotation.Transactional;
@@ -256,7 +257,7 @@ public class BusinessObjectDaoProxy implements BusinessObjectDao {
 
     private static KualiModuleService getKualiModuleService() {
         if (kualiModuleService == null) {
-            kualiModuleService = KNSServiceLocator.getKualiModuleService();
+            kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
         }
         return kualiModuleService;
     }

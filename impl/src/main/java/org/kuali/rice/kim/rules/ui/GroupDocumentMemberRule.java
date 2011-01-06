@@ -25,7 +25,7 @@ import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.GroupServiceBase;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
@@ -64,7 +64,7 @@ public class GroupDocumentMemberRule extends DocumentRuleBase implements AddGrou
 	    }
 	    
 	    // check for circular reference
-		GroupService groupService = KIMServiceLocator.getGroupService();
+		GroupService groupService = KIMServiceLocatorInternal.getGroupService();
 		if (((GroupServiceBase) groupService).isGroupMemberOfGroup(document.getGroupId(),newMember.getMemberId())){
             GlobalVariables.getMessageMap().putError(ERROR_PATH, RiceKeyConstants.ERROR_ASSIGN_GROUP_MEMBER_CIRCULAR, new String[] {newMember.getMemberId()});
 			return false;

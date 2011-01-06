@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.PermissionAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -37,7 +37,7 @@ import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -103,7 +103,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		List<String> primaryKeys = new ArrayList<String>();
 		primaryKeys.add(ROLE_ID);
 		if(assignedToRoles!=null && !assignedToRoles.isEmpty()){
-			RoleService roleService = KIMServiceLocator.getRoleService();
+			RoleService roleService = KIMServiceLocatorInternal.getRoleService();
 			KimRoleInfo roleInfo;
 			AnchorHtmlData inquiryHtmlData;
 			for(RoleImpl roleImpl: assignedToRoles){
@@ -130,13 +130,13 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 	public BusinessObject getBusinessObject(Map fieldValues) {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("permissionId", fieldValues.get("permissionId").toString());
-		KimPermissionImpl permissionImpl = (KimPermissionImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionImpl.class, criteria);
+		KimPermissionImpl permissionImpl = (KimPermissionImpl) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(KimPermissionImpl.class, criteria);
 		return getPermissionsSearchResultsCopy(permissionImpl);
 	}
 
 	public PermissionService getPermissionService() {
 		if (permissionService == null ) {
-			permissionService = KIMServiceLocator.getPermissionService();
+			permissionService = KIMServiceLocatorInternal.getPermissionService();
 		}
 		return permissionService;
 	}
@@ -152,7 +152,7 @@ public class PermissionInquirableImpl extends RoleMemberInquirableImpl {
 		Map<String, String> criteria = new HashMap<String, String>();
 		criteria.put("permissionId", permissionSearchResultCopy.getPermissionId());
 		List<RolePermissionImpl> rolePermissions = 
-			(List<RolePermissionImpl>)KNSServiceLocator.getBusinessObjectService().findMatching(RolePermissionImpl.class, criteria);
+			(List<RolePermissionImpl>) KNSServiceLocatorInternal.getBusinessObjectService().findMatching(RolePermissionImpl.class, criteria);
 		List<RoleImpl> assignedToRoles = new ArrayList<RoleImpl>();
 		for(RolePermissionImpl rolePermissionImpl: rolePermissions){
 			assignedToRoles.add(getRoleImpl(rolePermissionImpl.getRoleId()));

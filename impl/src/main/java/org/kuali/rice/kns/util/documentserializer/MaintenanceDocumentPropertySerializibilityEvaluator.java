@@ -27,7 +27,7 @@ import org.kuali.rice.kns.datadictionary.MaintainableItemDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableSubSectionHeaderDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 
 public class MaintenanceDocumentPropertySerializibilityEvaluator 
@@ -39,7 +39,7 @@ public class MaintenanceDocumentPropertySerializibilityEvaluator
      * @see org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator#initializeEvaluator(org.kuali.rice.kns.document.Document)
      */
     public void initializeEvaluator(BusinessObject businessObject){
-        DataDictionary dictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+        DataDictionary dictionary = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary();
         MaintenanceDocumentEntry maintenanceDocumentEntry = 
         	dictionary.getMaintenanceDocumentEntryForBusinessObjectClass(businessObject.getClass());
         serializableProperties = new PropertySerializerTrie();

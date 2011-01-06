@@ -36,7 +36,7 @@ import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -202,7 +202,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 
 		KimPrincipal principal = null;
 		if (!StringUtils.isBlank(userid)) {
-			principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(userid);
+			principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(userid);
 		}
 		if (principal == null) {
 			errors.add(new WorkflowServiceErrorImpl("unable to retrieve user for userid '" + userid + "'", "uh.accountattribute.userid.invalid"));

@@ -31,7 +31,7 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.exception.KualiExceptionIncident;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiExceptionIncidentService;
 import org.kuali.rice.kns.util.IncidentReportUtils;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -105,7 +105,7 @@ public class KualiExceptionHandlerAction extends Action {
 					// Only process the post exception handling when the
 					// service
 					// is specified
-					KualiExceptionIncidentService reporterService = KNSServiceLocator
+					KualiExceptionIncidentService reporterService = KNSServiceLocatorInternal
 							.getKualiExceptionIncidentService();
 					// An instance of the ExceptionIncident is created by
 					// the
@@ -171,7 +171,7 @@ public class KualiExceptionHandlerAction extends Action {
 			throws Exception {
 		// Only process the exception handling when the service
 		// is specified
-		KualiExceptionIncidentService reporterService = KNSServiceLocator
+		KualiExceptionIncidentService reporterService = KNSServiceLocatorInternal
 				.getKualiExceptionIncidentService();
 		// Get exception properties from the Http Request
 		Map<String, String> properties = (Map<String, String>) request

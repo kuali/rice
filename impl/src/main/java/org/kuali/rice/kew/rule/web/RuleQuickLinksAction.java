@@ -46,9 +46,9 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -211,7 +211,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 				searchCriteria.put("detailCriteria",
 						KimAttributes.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
 						);
-				permissions = KIMServiceLocator.getPermissionService().lookupPermissions( searchCriteria, false );
+				permissions = KIMServiceLocatorInternal.getPermissionService().lookupPermissions( searchCriteria, false );
 //				sqlLogger.setLevel( Level.INFO );
 			}
 			return permissions;
@@ -331,7 +331,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 						KimAttributes.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
 						+ ","
 						+ KimAttributes.ROUTE_NODE_NAME+"="+getRouteNodeName() );
-				responsibilities = KIMServiceLocator.getResponsibilityService().lookupResponsibilityInfo(searchCriteria, true);
+				responsibilities = KIMServiceLocatorInternal.getResponsibilityService().lookupResponsibilityInfo(searchCriteria, true);
 			}
 			return responsibilities;
 		}
@@ -364,14 +364,14 @@ public class RuleQuickLinksAction extends KewKualiAction {
     
 	public DocumentHelperService getDocumentHelperService() {
 		if(documentHelperService == null){
-			documentHelperService = KNSServiceLocator.getDocumentHelperService();
+			documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
 		}
 		return documentHelperService;
 	}
 
 	public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if(maintenanceDocumentDictionaryService == null){
-			maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}

@@ -17,9 +17,9 @@ import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.test.service.ServiceTestUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -84,8 +84,8 @@ public abstract class KIMTestCase extends BaselineTestCase {
 	public class ClearCacheLifecycle extends BaseLifecycle {
 		@Override
 		public void stop() throws Exception {
-			KIMServiceLocator.getIdentityManagementService().flushAllCaches();
-			KIMServiceLocator.getRoleManagementService().flushRoleCaches();
+			KIMServiceLocatorInternal.getIdentityManagementService().flushAllCaches();
+			KIMServiceLocatorInternal.getRoleManagementService().flushRoleCaches();
 			super.stop();
 		}
 
@@ -108,7 +108,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 	}
 	
 	protected KimTypeInfo getDefaultKimType() {
-		KimTypeInfo type = KIMServiceLocator.getTypeInfoService().getKimType("1");
+		KimTypeInfo type = KIMServiceLocatorInternal.getTypeInfoService().getKimType("1");
 		if (type == null) {
 			fail("Failed to locate the default Kim Type.");
 		}
@@ -119,7 +119,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 		Map<String, Object> fieldValues = new HashMap<String, Object>();
 		fieldValues.put("namespaceCode", "KUALI");
 		fieldValues.put("name", "Default");
-		KimPermissionTemplateImpl template = (KimPermissionTemplateImpl)KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(KimPermissionTemplateImpl.class, fieldValues);
+		KimPermissionTemplateImpl template = (KimPermissionTemplateImpl) KNSServiceLocatorInternal.getBusinessObjectService().findByPrimaryKey(KimPermissionTemplateImpl.class, fieldValues);
 		if (template == null) {
 			fail("Failed to locate the default Permission Template.");
 		}
@@ -139,7 +139,7 @@ public abstract class KIMTestCase extends BaselineTestCase {
 	}
 	
 	protected String getIdFromSequence(String sequenceName) {
-		Long sequenceId = KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
+		Long sequenceId = KNSServiceLocatorInternal.getSequenceAccessorService().getNextAvailableSequenceNumber(sequenceName);
 		return "" + sequenceId;
 	}
 

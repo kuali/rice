@@ -22,7 +22,7 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -44,7 +44,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
 
     @Test
     public void testCopyInfoAttributesToGroupAttributes() {
-        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 
         GroupInfo groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 
@@ -76,7 +76,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
 
     @Test
     public void testCopyInfoToGroup() {
-        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 
         GroupInfo groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 
@@ -88,7 +88,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
 
     @Test
     public void testFailedCopyInfoAttributesToGroupAttributes() {
-    	IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+    	IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 
 		GroupInfo groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 		AttributeSet testAttributeSet = groupInfo.getAttributes();

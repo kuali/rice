@@ -17,7 +17,7 @@ package org.kuali.rice.kns.dao.impl;
 
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.kns.dao.PlatformAwareDao;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
 public abstract class PlatformAwareDaoBaseOjb extends PersistenceBrokerDaoSupport implements PlatformAwareDao {
@@ -25,7 +25,7 @@ public abstract class PlatformAwareDaoBaseOjb extends PersistenceBrokerDaoSuppor
  
     public synchronized DatabasePlatform getDbPlatform(){
         if (this.dbPlatform == null) {
-            this.dbPlatform = KNSServiceLocator.getDatabasePlatform();
+            this.dbPlatform = KNSServiceLocatorInternal.getDatabasePlatform();
         }
         return dbPlatform;
     }

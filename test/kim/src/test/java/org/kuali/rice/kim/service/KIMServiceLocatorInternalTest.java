@@ -26,26 +26,26 @@ import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
- * Tests the {@link KIMServiceLocator} class. 
+ * Tests the {@link KIMServiceLocatorInternal} class.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KIMServiceLocatorTest extends KIMTestCase {
+public class KIMServiceLocatorInternalTest extends KIMTestCase {
 
 	@Test
 	public void testGetKimTypeService_KimType() {
 		
 		// test by passing null
 		
-		KimTypeService typeService1 = KIMServiceLocator.getKimTypeService((KimType)null);
+		KimTypeService typeService1 = KIMServiceLocatorInternal.getKimTypeService((KimType) null);
 		assertNull("type service should be null", typeService1);
 		
 		// test by passing a KimType with a null service name
 		
 		KimTypeInfo nullKimType = new KimTypeInfo();
 		nullKimType.setKimTypeServiceName(null);
-		KimTypeService typeService2 = KIMServiceLocator.getKimTypeService(nullKimType);
+		KimTypeService typeService2 = KIMServiceLocatorInternal.getKimTypeService(nullKimType);
 		assertNotNull("type service shoudl have been found", typeService2);
 		assertEquals("should be the default kim type", KimTypeServiceBase.class, typeService2.getClass());
 		
@@ -53,16 +53,16 @@ public class KIMServiceLocatorTest extends KIMTestCase {
 		
 		KimTypeInfo emptyKimType = new KimTypeInfo();
 		nullKimType.setKimTypeServiceName("");
-		KimTypeService typeService3 = KIMServiceLocator.getKimTypeService(emptyKimType);
+		KimTypeService typeService3 = KIMServiceLocatorInternal.getKimTypeService(emptyKimType);
 		assertNotNull("type service should have been found", typeService3);
 		assertEquals("should be the default kim type", KimTypeServiceBase.class, typeService3.getClass());
 		
 		// test by passing a KimType that refers to the Permission TypeService
 		
-		KimType permissionKimType = KIMServiceLocator.getTypeInfoService().getKimTypeByName(KimConstants.NAMESPACE_CODE, "Permission");
+		KimType permissionKimType = KIMServiceLocatorInternal.getTypeInfoService().getKimTypeByName(KimConstants.NAMESPACE_CODE, "Permission");
 		assertNotNull("The KR-IDM:Permission KimType should exist.", permissionKimType);
 		
-		KimTypeService typeService4 = KIMServiceLocator.getKimTypeService(permissionKimType);
+		KimTypeService typeService4 = KIMServiceLocatorInternal.getKimTypeService(permissionKimType);
 		assertNotNull("type service should have been found", typeService4);
 		
 	}
@@ -73,25 +73,25 @@ public class KIMServiceLocatorTest extends KIMTestCase {
 		// test by passing null
 		
 		try {
-			KIMServiceLocator.getKimTypeService((QName)null);
+			KIMServiceLocatorInternal.getKimTypeService((QName) null);
 			fail("getKimTypeService with a null QName should have thrown an IllegalArgumentException");
 		} catch (IllegalArgumentException e) {}
 		
 		// test by passing an invalid QName
 		
-		KimTypeService typeService1 = KIMServiceLocator.getKimTypeService(new QName("badNamespace", "badServiceName"));
+		KimTypeService typeService1 = KIMServiceLocatorInternal.getKimTypeService(new QName("badNamespace", "badServiceName"));
 		assertNull("A null KimTypeService should have been returned.", typeService1);
 		
 		// test by passing a QName for a valid service, but not one which is a KimTypeService, null should be returned
 		
 		// fetch the group service instead
-		KimTypeService typeService2 = KIMServiceLocator.getKimTypeService(new QName(KIMServiceLocator.KIM_GROUP_SERVICE));
+		KimTypeService typeService2 = KIMServiceLocatorInternal.getKimTypeService(new QName(KIMServiceLocatorInternal.KIM_GROUP_SERVICE));
 		assertNull("A null KimTypeService should have been returned.", typeService2);
 
 		// test by passing the QName for the Permission TypeService
 		
 		QName permissionServiceName = new QName("permissionPermissionTypeService");
-		KimTypeService typeService3 = KIMServiceLocator.getKimTypeService(permissionServiceName);
+		KimTypeService typeService3 = KIMServiceLocatorInternal.getKimTypeService(permissionServiceName);
 		assertNotNull("permission type service should have been found", typeService3);
 		
 	}

@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.PermissionAssigneeInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
 /**
@@ -101,7 +101,7 @@ public class PermissionDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServ
      */
     protected IdentityManagementService getIdentityManagementService(){
         if (identityManagementService == null ) {
-        	identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        	identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
         }
         return identityManagementService;
     }

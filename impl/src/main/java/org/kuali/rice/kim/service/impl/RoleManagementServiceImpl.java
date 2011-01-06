@@ -29,8 +29,6 @@ import java.util.Set;
 import javax.jws.WebParam;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.MaxAgeSoftReference;
 import org.kuali.rice.core.util.MaxSizeMap;
 import org.kuali.rice.core.util.RiceDebugUtils;
@@ -45,11 +43,7 @@ import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KimTypeInfoService;
-import org.kuali.rice.kim.service.RoleManagementService;
-import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.RoleUpdateService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.springframework.beans.factory.InitializingBean;
@@ -482,16 +476,16 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		String serviceName = typeInfo.getKimTypeServiceName();
 		if ( serviceName != null ) {
 			try {
-				KimTypeService service = (KimTypeService)KIMServiceLocator.getService( serviceName );
+				KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
 				if ( service != null && service instanceof KimRoleTypeService) {
 					return (KimRoleTypeService)service;
 				} else {
-					return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+					return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 				}
 			} catch ( Exception ex ) {
 				LOG.error( "Unable to find role type service with name: " + serviceName );
 				LOG.error( ex.getClass().getName() + " : " + ex.getMessage() );
-				return (KimRoleTypeService)KIMServiceLocator.getService( "kimNoMembersRoleTypeService" );
+				return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 			}
 		}
 		return null;
@@ -646,7 +640,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		sb.append( "   Principal : " ).append( principalId );
 		if ( principalId != null ) {
-			KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal( principalId );
+			KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal( principalId );
 			if ( principal != null ) {
 				sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
 			}
@@ -781,14 +775,14 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	
 	public RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocator.getRoleService();
+			roleService = KIMServiceLocatorInternal.getRoleService();
 		}
 		return roleService;
 	}
 	
 	public KimTypeInfoService getTypeInfoService() {
 		if (typeInfoService == null) {
-			typeInfoService = KIMServiceLocator.getTypeInfoService();
+			typeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
 		}
 		return typeInfoService;
 	}
@@ -796,7 +790,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	public RoleUpdateService getRoleUpdateService() {
 		try {
 			if ( roleUpdateService == null ) {
-				roleUpdateService = KIMServiceLocator.getRoleUpdateService();
+				roleUpdateService = KIMServiceLocatorInternal.getRoleUpdateService();
 				if ( roleUpdateService == null ) {
 					throw new UnsupportedOperationException( "null returned for RoleUpdateService, unable to update role data");
 				}

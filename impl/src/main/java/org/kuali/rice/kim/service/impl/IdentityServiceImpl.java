@@ -72,7 +72,7 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -204,9 +204,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 
 	protected Collection lookupEntityImpls(Map<String,String> searchCriteria, boolean unbounded) {
 		if ( unbounded ) {
-			return KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria );
+			return KNSServiceLocatorInternal.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria );
 		} else {
-			return KNSServiceLocator.getLookupService().findCollectionBySearch( KimEntityImpl.class, searchCriteria );
+			return KNSServiceLocatorInternal.getLookupService().findCollectionBySearch( KimEntityImpl.class, searchCriteria );
 		}
 	}
 
@@ -307,7 +307,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 */
 	@SuppressWarnings("unchecked")
 	protected List<KimEntityImpl> lookupEntitys(Map<String, String> searchCriteria) {
-		return new ArrayList(KNSServiceLocator.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria ));
+		return new ArrayList(KNSServiceLocatorInternal.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria ));
 	}
 
 	/**
@@ -460,7 +460,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}

@@ -37,7 +37,7 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.xml.sax.SAXException;
 
@@ -92,7 +92,7 @@ public class GroupXmlParser {
             }
         }
         for (GroupInfo groupInfo : groupInfos) {
-            IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+            IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 
             // check if group already exists
             GroupInfo foundGroup = identityManagementService.getGroupByName(groupInfo.getNamespaceCode(), groupInfo.getGroupName());
@@ -134,7 +134,7 @@ public class GroupXmlParser {
     @SuppressWarnings("unchecked")
 	private GroupInfo parseGroup(Element element) throws InvalidXmlException {
         GroupInfo groupInfo = new GroupInfo();
-        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
         groupInfo.setGroupName(element.getChildText(NAME, GROUP_NAMESPACE));
 
         if (groupInfo.getGroupName() == null) {
@@ -167,7 +167,7 @@ public class GroupXmlParser {
             Element typeElement = element.getChild(TYPE, GROUP_NAMESPACE);
             String typeNamespace = typeElement.getChildText(NAMESPACE, GROUP_NAMESPACE);
             String typeName = typeElement.getChildText(NAME, GROUP_NAMESPACE);
-            KimTypeInfo kimTypeInfo = KIMServiceLocator.getTypeInfoService().getKimTypeByName(typeNamespace, typeName);
+            KimTypeInfo kimTypeInfo = KIMServiceLocatorInternal.getTypeInfoService().getKimTypeByName(typeNamespace, typeName);
             if (kimTypeInfo != null) {
             	typeId = kimTypeInfo.getKimTypeId();
                 kimTypeAttributes = kimTypeInfo.getAttributeDefinitions();
@@ -175,7 +175,7 @@ public class GroupXmlParser {
                 throw new InvalidXmlException("Invalid type name and namespace specified.");
             }
         } else { //set to default type
-            KimTypeInfo kimTypeDefault = KIMServiceLocator.getTypeInfoService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
+            KimTypeInfo kimTypeDefault = KIMServiceLocatorInternal.getTypeInfoService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
             if (kimTypeDefault != null) {
             	typeId = kimTypeDefault.getKimTypeId();
                 kimTypeAttributes = kimTypeDefault.getAttributeDefinitions();
@@ -287,7 +287,7 @@ public class GroupXmlParser {
     }
 
     private void addGroupMembers(GroupInfo groupInfo, String key) throws InvalidXmlException {
-        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
         List<String> groupIds = memberGroupIds.get(key);
         if (groupIds != null) {
             for (String groupId : groupIds) {

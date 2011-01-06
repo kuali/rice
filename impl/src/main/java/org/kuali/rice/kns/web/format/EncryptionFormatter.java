@@ -17,7 +17,7 @@ package org.kuali.rice.kns.web.format;
 
 import java.security.GeneralSecurityException;
 
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
  * This formatter calls the encryption service to encrypt/decrypt values.
@@ -33,7 +33,7 @@ public class EncryptionFormatter extends Formatter {
 
         String decryptedValue = null;
         try {
-            decryptedValue = KNSServiceLocator.getEncryptionService().decrypt(target);
+            decryptedValue = KNSServiceLocatorInternal.getEncryptionService().decrypt(target);
         }
         catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to decrypt value.");
@@ -45,7 +45,7 @@ public class EncryptionFormatter extends Formatter {
     public Object format(Object target) {
         String encryptedValue = null;
         try {
-            encryptedValue = KNSServiceLocator.getEncryptionService().encrypt(target);
+            encryptedValue = KNSServiceLocatorInternal.getEncryptionService().encrypt(target);
         }
         catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt secure field.");

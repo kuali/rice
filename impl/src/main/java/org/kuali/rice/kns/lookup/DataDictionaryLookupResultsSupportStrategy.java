@@ -26,12 +26,10 @@ import java.util.Set;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.SelectedObjectIds;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.web.format.Formatter;
 
 /**
@@ -100,7 +98,7 @@ public class DataDictionaryLookupResultsSupportStrategy implements
 		}
 		
 		final String lookupableId = boEntry.getLookupDefinition().getLookupableID();
-		return KNSServiceLocator.getLookupable(lookupableId);
+		return KNSServiceLocatorInternal.getLookupable(lookupableId);
 	}
 	
 	/**

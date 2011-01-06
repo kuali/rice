@@ -32,7 +32,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 
 
@@ -93,7 +93,7 @@ public class PreferencesServiceImpl implements PreferencesService {
         	optionMap.put(option.getOptionId(), option);
         }
         
-        KualiConfigurationService kcs = KNSServiceLocator.getKualiConfigurationService();
+        KualiConfigurationService kcs = KNSServiceLocatorInternal.getKualiConfigurationService();
         
         String stagingDirectory = kcs.getPropertyString("staging.directory");                                                    
                                                                                                     

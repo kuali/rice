@@ -27,7 +27,7 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.xml.sax.InputSource;
 
 /**
@@ -52,13 +52,13 @@ public class PrincipalIdRoleAttributeTest extends KEWTestCase {
 		WorkflowAttributeDefinitionDTO principalIdDef1 = new WorkflowAttributeDefinitionDTO(
 				"PrincipalIdRoleAttribute");
 		PropertyDefinitionDTO principalIdProp1 = new PropertyDefinitionDTO(
-				PRINCIPAL_ID_PROP, KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
+				PRINCIPAL_ID_PROP, KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
 		principalIdDef1.addProperty(principalIdProp1);
 
 		WorkflowAttributeDefinitionDTO principalIdDef2 = new WorkflowAttributeDefinitionDTO(
 				"PrincipalIdRoleAttribute");
 		PropertyDefinitionDTO principalIdProp2 = new PropertyDefinitionDTO(
-				PRINCIPAL_ID_PROP, KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("bmcgough").getPrincipalId());
+				PRINCIPAL_ID_PROP, KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName("bmcgough").getPrincipalId());
 		principalIdDef2.addProperty(principalIdProp2);
 
 		document.addAttributeDefinition(principalIdDef1);
@@ -106,7 +106,7 @@ public class PrincipalIdRoleAttributeTest extends KEWTestCase {
 		WorkflowAttributeDefinitionDTO principalIdDef1 = new WorkflowAttributeDefinitionDTO(
 				"PrincipalIdRoleAttribute");
 		PropertyDefinitionDTO principalIdProp1 = new PropertyDefinitionDTO(
-				PRINCIPAL_ID_PROP, KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
+				PRINCIPAL_ID_PROP, KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName("rkirkend").getPrincipalId());
 		principalIdDef1.addProperty(principalIdProp1);
 
 		document.addAttributeDefinition(principalIdDef1);

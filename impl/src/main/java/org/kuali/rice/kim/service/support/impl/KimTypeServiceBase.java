@@ -35,7 +35,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -54,7 +54,7 @@ import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -86,28 +86,28 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	protected KimTypeInfoService getTypeInfoService() {
 		if ( typeInfoService == null ) {
-			typeInfoService = KIMServiceLocator.getTypeInfoService();
+			typeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
 		}
 		return typeInfoService;
 	}
 
 	protected BusinessObjectService getBusinessObjectService() {
 		if ( businessObjectService == null ) {
-			businessObjectService = KNSServiceLocator.getBusinessObjectService();
+			businessObjectService = KNSServiceLocatorInternal.getBusinessObjectService();
 		}
 		return businessObjectService;
 	}
 
 	protected DictionaryValidationService getDictionaryValidationService() {
 		if ( dictionaryValidationService == null ) {
-			dictionaryValidationService = KNSServiceLocator.getDictionaryValidationService();
+			dictionaryValidationService = KNSServiceLocatorInternal.getDictionaryValidationService();
 		}
 		return dictionaryValidationService;
 	}
 
 	protected DataDictionaryService getDataDictionaryService() {
 		if ( dataDictionaryService == null ) {
-			dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
 		}
 		return this.dataDictionaryService;
 	}
@@ -581,7 +581,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "getAttributeValidValues(" + kimTypeId + "," + attributeName + ")");			
 		}
-		KimTypeAttributeInfo attrib = KIMServiceLocator.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(attributeName);
+		KimTypeAttributeInfo attrib = KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(attributeName);
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "Found Attribute definition: " + attrib );
 		}
@@ -631,7 +631,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			if ( LOG.isDebugEnabled() ) {
 				LOG.debug( "Unable to find class " + componentClassName + " in available classloaders. Deferring to the service bus." );
 			}
-			baseDefinition = KNSServiceLocator.getRiceApplicationConfigurationMediationService().getBusinessObjectAttributeDefinition(componentClassName, attributeName);
+			baseDefinition = KNSServiceLocatorInternal.getRiceApplicationConfigurationMediationService().getBusinessObjectAttributeDefinition(componentClassName, attributeName);
 		}
 		
 		if (baseDefinition != null) {

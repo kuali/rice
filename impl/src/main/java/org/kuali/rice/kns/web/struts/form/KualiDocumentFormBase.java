@@ -41,6 +41,7 @@ import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.HeaderNavigation;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -177,14 +178,14 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
             // populate workflowDocument in documentHeader, if needed
         	// KULRICE-4444 Obtain Document Header using the Workflow Service to minimize overhead
             try {
-            	workflowDocument = KNSServiceLocator.getSessionDocumentService().getDocumentFromSession( GlobalVariables.getUserSession(), getDocument().getDocumentNumber());
+            	workflowDocument = KNSServiceLocatorInternal.getSessionDocumentService().getDocumentFromSession( GlobalVariables.getUserSession(), getDocument().getDocumentNumber());
          	 	if ( workflowDocument == null)
          	 	{
                     // gets the workflow document from doc service, doc service will also set the workflow document in the
                     // user's session
          	 		Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(KNSConstants.SYSTEM_USER);
-         	 	 	workflowDocument = KNSServiceLocator.getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(getDocument().getDocumentNumber()), person);
-         	 	 	KNSServiceLocator.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
+         	 	 	workflowDocument = KNSServiceLocatorInternal.getWorkflowDocumentService().createWorkflowDocument(Long.valueOf(getDocument().getDocumentNumber()), person);
+         	 	 	KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
          	 	 	if (workflowDocument == null)
          	 	 	{
          	 	 		throw new WorkflowException("Unable to retrieve workflow document # " + getDocument().getDocumentNumber() + " from workflow document service createWorkflowDocument");
@@ -211,7 +212,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         StringBuffer urlBuffer = new StringBuffer();
         
         if(user != null && StringUtils.isNotEmpty(linkBody) ) {
-        	ModuleService moduleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(Person.class);
+        	ModuleService moduleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(Person.class);
         	Map<String, String[]> parameters = new HashMap<String, String[]>();
         	parameters.put(KimAttributes.PRINCIPAL_ID, new String[] { user.getPrincipalId() });
         	String inquiryUrl = moduleService.getExternalizableBusinessObjectInquiryUrl(Person.class, parameters);
@@ -235,7 +236,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
         Properties parameters = new Properties();
         parameters.put(KNSConstants.PARAMETER_DOC_ID, documentId);
         parameters.put(KNSConstants.PARAMETER_COMMAND, KNSConstants.METHOD_DISPLAY_DOC_SEARCH_VIEW);
-        return UrlFactory.parameterizeUrl(KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KNSConstants.DOC_HANDLER_ACTION, parameters);
+        return UrlFactory.parameterizeUrl(KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.WORKFLOW_URL_KEY) + "/" + KNSConstants.DOC_HANDLER_ACTION, parameters);
     }
     
     protected String buildHtmlLink(String url, String linkBody) {
@@ -402,7 +403,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     @SuppressWarnings("unchecked")
 	public Map getAdHocActionRequestCodes() {
         //Map adHocActionRequestCodes = new HashMap();
-        //KNSServiceLocator.getDocumentHelperService()
+        //KNSServiceLocatorInternal.getDocumentHelperService()
         /*if (getWorkflowDocument() != null) {
             if (getWorkflowDocument().isFYIRequested()) {
                 adHocActionRequestCodes.put(KEWConstants.ACTION_REQUEST_FYI_REQ, KEWConstants.ACTION_REQUEST_FYI_REQ_LABEL);
@@ -577,7 +578,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
     public Person getInitiator() {
     	String initiatorPrincipalId = getWorkflowDocument().getRouteHeader().getInitiatorPrincipalId();
-    	return org.kuali.rice.kim.service.KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
+    	return KIMServiceLocator.getPersonService().getPerson(initiatorPrincipalId);
     }
 
     /**
@@ -783,7 +784,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
     @Override
     protected void customInitMaxUploadSizes() {
         super.customInitMaxUploadSizes();
-        addMaxUploadSize(KNSServiceLocator.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
+        addMaxUploadSize(KNSServiceLocatorInternal.getParameterService().getParameterValue(KNSConstants.KNS_NAMESPACE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, KNSConstants.ATTACHMENT_MAX_FILE_SIZE_PARM_NM));
     }
 
     
@@ -842,7 +843,7 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 
 		String docTypeName = getDocTypeName();
 		if (StringUtils.isNotBlank(docTypeName)) {
-			DataDictionary dataDictionary = KNSServiceLocator.getDataDictionaryService().getDataDictionary();
+			DataDictionary dataDictionary = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary();
 			Class<? extends DerivedValuesSetter> derivedValuesSetterClass = dataDictionary.getDocumentEntry(docTypeName).getDerivedValuesSetterClass();
 			if (derivedValuesSetterClass != null) {
 				DerivedValuesSetter derivedValuesSetter = null;
@@ -878,13 +879,13 @@ public abstract class KualiDocumentFormBase extends KualiForm implements Seriali
 	
 	/** gets the document class from the datadictionary if {@link KualiDocumentFormBase#getDefaultDocumentTypeName()} is overriden to return a valid value otherwise behavior is nondeterministic. */
 	private Class<? extends Document> getDocumentClass() {
-		return KNSServiceLocator.getDataDictionaryService().getDocumentClassByTypeName(getDefaultDocumentTypeName());
+		return KNSServiceLocatorInternal.getDataDictionaryService().getDocumentClassByTypeName(getDefaultDocumentTypeName());
 	}
 	
 	/**initializes the header tabs from what is defined in the datadictionary if {@link KualiDocumentFormBase#getDefaultDocumentTypeName()} is overriden to return a valid value. */
     protected void initializeHeaderNavigationTabs() {
     	if (StringUtils.isNotBlank(getDefaultDocumentTypeName())) {
-    		final DocumentEntry docEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getDocumentEntry(getDocumentClass().getName());
+    		final DocumentEntry docEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(getDocumentClass().getName());
     		final List<HeaderNavigation> navList = docEntry.getHeaderNavigationList();
     		final HeaderNavigation[] list = new HeaderNavigation[navList.size()];
     		super.setHeaderNavigationTabs(navList.toArray(list));

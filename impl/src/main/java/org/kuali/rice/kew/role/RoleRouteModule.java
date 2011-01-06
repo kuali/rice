@@ -38,7 +38,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.ResponsibilityService;
 
 /**
@@ -328,7 +328,7 @@ public class RoleRouteModule implements RouteModule {
 
 	protected ResponsibilityService getResponsibilityService() {
 		if ( responsibilityService == null ) {
-			responsibilityService = KIMServiceLocator.getResponsibilityService();
+			responsibilityService = KIMServiceLocatorInternal.getResponsibilityService();
 		}
 		return responsibilityService;
 	}

@@ -24,7 +24,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.ria.RIAConstants;
 import org.kuali.rice.kew.ria.bo.RIADocTypeMap;
 import org.kuali.rice.kew.ria.service.RIADocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 public class RIADocumentServiceImpl implements RIADocumentService {
 	private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(RIADocumentServiceImpl.class);
@@ -43,7 +43,7 @@ public class RIADocumentServiceImpl implements RIADocumentService {
 	    Map<String, String> criteria = new HashMap<String, String>();
 	    criteria.put(RIAConstants.RIA_DOC_TYPE_NAME, riaDocTypeName);
 	               
-	    List<RIADocTypeMap> riaDocTypeMaps = (List<RIADocTypeMap>)KNSServiceLocator.getBusinessObjectService().findMatchingOrderBy(RIADocTypeMap.class, criteria, RIAConstants.RIA_UPDATED_AT, false);
+	    List<RIADocTypeMap> riaDocTypeMaps = (List<RIADocTypeMap>) KNSServiceLocatorInternal.getBusinessObjectService().findMatchingOrderBy(RIADocTypeMap.class, criteria, RIAConstants.RIA_UPDATED_AT, false);
 	        
 	    if (riaDocTypeMaps == null || riaDocTypeMaps.isEmpty()) {
 	    	log.error("Document Type for name: " + riaDocTypeName + " does not exist.");

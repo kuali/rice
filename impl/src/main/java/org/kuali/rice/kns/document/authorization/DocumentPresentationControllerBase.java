@@ -20,7 +20,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -287,7 +287,7 @@ public class DocumentPresentationControllerBase implements DocumentPresentationC
 
 	protected ParameterService getParameterService() {
 		if ( parameterService == null ) {
-			parameterService = KNSServiceLocator.getParameterService();
+			parameterService = KNSServiceLocatorInternal.getParameterService();
 		}
 		return parameterService;
 	}

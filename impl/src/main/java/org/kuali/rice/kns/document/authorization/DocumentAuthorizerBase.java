@@ -32,7 +32,7 @@ import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectAuthorizerBase;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 
@@ -241,7 +241,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 	protected final boolean canSendAnyTypeAdHocRequests(Document document, Person user) {
 		if(canSendAdHocRequests(document, KEWConstants.ACTION_REQUEST_FYI_REQ, user)) {
 		    try {
-                DocumentTypeDTO docType = KNSServiceLocator.getWorkflowInfoService().getDocType(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
+                DocumentTypeDTO docType = KNSServiceLocatorInternal.getWorkflowInfoService().getDocType(document.getDocumentHeader().getWorkflowDocument().getDocumentType());
                 ProcessDTO process = docType.getRoutePath().getPrimaryProcess();
                 if (process != null) {
                     if (process.getInitialRouteNode() == null) {

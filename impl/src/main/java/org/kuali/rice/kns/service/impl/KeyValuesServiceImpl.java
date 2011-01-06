@@ -23,7 +23,7 @@ import java.util.Map;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KeyValuesService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
@@ -45,7 +45,7 @@ public class KeyValuesServiceImpl implements KeyValuesService {
      */
     @Override
 	public <T extends BusinessObject> Collection<T> findAll(Class<T> clazz) {
-    	ModuleService responsibleModuleService = KNSServiceLocator.getKualiModuleService().getResponsibleModuleService(clazz);
+    	ModuleService responsibleModuleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(clazz);
 		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(clazz)){
 			return (Collection<T>) responsibleModuleService.getExternalizableBusinessObjectsList((Class<ExternalizableBusinessObject>) clazz, Collections.<String, Object>emptyMap());
 		}

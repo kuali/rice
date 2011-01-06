@@ -31,14 +31,14 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -64,7 +64,7 @@ public class KualiLookupAction extends KualiAction {
         } else {
             try {
                 Class businessObjectClass = Class.forName(((LookupForm) form).getBusinessObjectClassName());
-                if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
+                if (!KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
                     throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),
                     		KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
                     		businessObjectClass.getSimpleName());
@@ -81,13 +81,13 @@ public class KualiLookupAction extends KualiAction {
     private static DocumentHelperService documentHelperService;
     private static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
     	if (maintenanceDocumentDictionaryService == null) {
-    		maintenanceDocumentDictionaryService = KNSServiceLocator.getMaintenanceDocumentDictionaryService();
+    		maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
     	}
     	return maintenanceDocumentDictionaryService;
     }
     private static DocumentHelperService getDocumentHelperService() {
     	if (documentHelperService == null) {
-    	    documentHelperService = KNSServiceLocator.getDocumentHelperService();
+    	    documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
     	}
     	return documentHelperService;
     }
@@ -147,7 +147,7 @@ public class KualiLookupAction extends KualiAction {
 
 		hideHeaderBarIfNeeded(form, request);
 
-		int numCols = KNSServiceLocator.getBusinessObjectDictionaryService().getLookupNumberOfColumns(
+		int numCols = KNSServiceLocatorInternal.getBusinessObjectDictionaryService().getLookupNumberOfColumns(
 				Class.forName(lookupForm.getBusinessObjectClassName()));
 		lookupForm.setNumColumns(numCols);
 

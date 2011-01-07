@@ -32,7 +32,6 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 
 import java.util.*;
 
@@ -69,7 +68,7 @@ public class BlanketApproveEngine extends StandardWorkflowEngine {
 
     private static Set<String> wrapInSet(String nodeName) {
         Set<String> nodeNames = new HashSet<String>();
-        if (!Utilities.isEmpty(nodeName)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(nodeName)) {
             nodeNames.add(nodeName);
         }
         return nodeNames;

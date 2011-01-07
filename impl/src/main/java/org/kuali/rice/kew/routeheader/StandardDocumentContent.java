@@ -20,7 +20,6 @@ import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -69,7 +68,7 @@ public class StandardDocumentContent implements DocumentContent, Serializable {
 	}
 
 	private void initialize(String docContent, RouteContext routeContext) throws XmlException {
-		if (Utilities.isEmpty(docContent)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(docContent)) {
 			this.docContent = "";
 			this.document = null;
 		} else {

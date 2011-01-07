@@ -15,21 +15,15 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.junit.Ignore;
-import org.junit.Test;
-import org.kuali.rice.kew.KEWHtmlUnitTestCase;
-import org.kuali.rice.kew.util.Utilities;
-
 import com.gargoylesoftware.htmlunit.ElementNotFoundException;
 import com.gargoylesoftware.htmlunit.html.HtmlAnchor;
 import com.gargoylesoftware.htmlunit.html.HtmlInput;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.kuali.rice.kew.KEWHtmlUnitTestCase;
+
+import java.util.*;
 
 /**
  * Tests the web GUI for the Document Search.
@@ -120,7 +114,7 @@ public class DocumentSearchActionTest extends KEWHtmlUnitTestCase {
         expectedValues.put(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, ADMIN_USER_NETWORK_ID);
 
         // check basic search
-        HtmlPage basicSearchPage = performLogin(ADMIN_USER_NETWORK_ID, "DocumentSearch.do?criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName + "&searchableAttributes=givenname:" + searchAttributeUrlValue + ((Utilities.isEmpty(urlParameters)) ? "" : "&" + urlParameters));
+        HtmlPage basicSearchPage = performLogin(ADMIN_USER_NETWORK_ID, "DocumentSearch.do?criteria.initiator=delyea&criteria.docTypeFullName=" + documentTypeName + "&searchableAttributes=givenname:" + searchAttributeUrlValue + ((org.apache.commons.lang.StringUtils.isEmpty(urlParameters)) ? "" : "&" + urlParameters));
         checkStandardCriteriaFields(basicSearchPage, expectedValues, Arrays.asList(new String[]{"criteria.docTypeFullName","criteria.initiator","fromDateCreated"}), Arrays.asList(new String[]{}));
         verifySearchableAttribute(true,basicSearchPage, SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, expectedValues.get(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME), false);
         // test that header bar is hidden
@@ -132,7 +126,7 @@ public class DocumentSearchActionTest extends KEWHtmlUnitTestCase {
         }
 
         // check advanced search
-        HtmlPage advancedSearchPage = getPage("DocumentSearch.do?criteria.initiator=delyea&isAdvancedSearch=" + DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING + "&criteria.docTypeFullName=" + documentTypeName + "&searchableAttributes=givenname:" + searchAttributeUrlValue + ((Utilities.isEmpty(urlParameters)) ? "" : "&" + urlParameters));
+        HtmlPage advancedSearchPage = getPage("DocumentSearch.do?criteria.initiator=delyea&isAdvancedSearch=" + DocSearchCriteriaDTO.ADVANCED_SEARCH_INDICATOR_STRING + "&criteria.docTypeFullName=" + documentTypeName + "&searchableAttributes=givenname:" + searchAttributeUrlValue + ((org.apache.commons.lang.StringUtils.isEmpty(urlParameters)) ? "" : "&" + urlParameters));
         checkStandardCriteriaFields(advancedSearchPage, expectedValues, Arrays.asList(new String[]{"criteria.docTypeFullName","criteria.initiator","fromDateCreated","criteria.appDocId","criteria.docTitle"}), Arrays.asList(new String[]{}));
         verifySearchableAttribute(true,advancedSearchPage, SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME, expectedValues.get(SEARCH_ATTRIBUTE_FORM_FIELD_PROPERTY_NAME), false);
         // test that header bar is hidden

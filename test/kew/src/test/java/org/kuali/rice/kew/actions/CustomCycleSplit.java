@@ -20,7 +20,6 @@ import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.SplitNode;
 import org.kuali.rice.kew.engine.node.SplitResult;
-import org.kuali.rice.kew.util.Utilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class CustomCycleSplit implements SplitNode {
     
     public SplitResult process(RouteContext context, RouteHelper helper) throws Exception {
         List<String> branchNames = new ArrayList<String>();
-        if (Utilities.isEmpty(cycleBranchName) || Utilities.isEmpty(nonCycleBranchName)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(cycleBranchName) || org.apache.commons.lang.StringUtils.isEmpty(nonCycleBranchName)) {
             throw new Exception("Must specify cycle and non-cycle branch names.");
         }
         if (timesCycled++ == timesToCycle) {

@@ -16,34 +16,11 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.routeheader.DocumentContent;
@@ -57,9 +34,14 @@ import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
-import org.springframework.util.AutoPopulatingList;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 /**
@@ -201,7 +183,7 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
                     Field field = (Field) iterator3.next();
                     if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
                         extensionLabels.put(field.getPropertyName(), field.getFieldLabel());
-                    //} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
+                    //} else if (!org.apache.commons.lang.StringUtils.isEmpty(field.getDefaultLookupableName())) {
                     //    extensionLabels.put(field.getDefaultLookupableName(), field.getFieldLabel());
                     } else {
                         extensionLabels.put(field.getPropertyName(), field.getFieldLabel());

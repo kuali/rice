@@ -24,7 +24,6 @@ import org.kuali.rice.kew.exception.*;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 import java.util.ArrayList;
@@ -57,14 +56,14 @@ public class SuperUserNodeApproveEvent extends SuperUserActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException {
 
-        if (Utilities.isEmpty(nodeName)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(nodeName)) {
             throw new InvalidActionTakenException("No approval node name set");
         }
 
         DocumentType docType = getRouteHeader().getDocumentType();
 
         String errorMessage = super.validateActionRules();
-        if (!Utilities.isEmpty(errorMessage)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             LOG.info("User not authorized");
             List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();
             errors.add(new WorkflowServiceErrorImpl(errorMessage, SuperUserActionTakenEvent.AUTHORIZATION));

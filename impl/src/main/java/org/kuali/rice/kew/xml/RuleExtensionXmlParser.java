@@ -27,7 +27,6 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -119,7 +118,7 @@ public class RuleExtensionXmlParser {
     private RuleExtensionValue parseRuleExtensionValue(Element element, RuleExtension ruleExtension) throws XmlException {
 	String key = element.getChildText(KEY, NAMESPACE);
 	String value = element.getChildText(VALUE, NAMESPACE);
-	if (Utilities.isEmpty(key)) {
+	if (org.apache.commons.lang.StringUtils.isEmpty(key)) {
 	    throw new XmlException("RuleExtensionValue must have a non-empty key.");
 	}
 	if (value == null) {

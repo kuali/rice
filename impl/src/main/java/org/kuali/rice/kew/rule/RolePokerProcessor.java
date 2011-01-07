@@ -16,14 +16,13 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -35,7 +34,7 @@ public class RolePokerProcessor implements RolePoker {
 
 	public void reResolveRole(Long documentId, String roleName, String qualifiedRoleNameLabel) {
 		KEWServiceLocator.getRouteHeaderService().lockRouteHeader(documentId, true);
-		if (Utilities.isEmpty(roleName)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(roleName)) {
 			throw new IllegalArgumentException("Can't poke a role without a role name!");
 		}
 		DocumentRouteHeaderValue document = KEWServiceLocator.getRouteHeaderService().getRouteHeader(documentId);

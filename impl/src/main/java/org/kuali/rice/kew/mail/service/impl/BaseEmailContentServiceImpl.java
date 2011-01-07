@@ -52,7 +52,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
         // first check the configured value
         String fromAddress = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.MAILER_DETAIL_TYPE, KEWConstants.EMAIL_REMINDER_FROM_ADDRESS);
         // if there's no value configured, use the default
-        if (Utilities.isEmpty(fromAddress)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(fromAddress)) {
             fromAddress = defaultEmailFromAddress;
         }
         return fromAddress;
@@ -60,7 +60,7 @@ public abstract class BaseEmailContentServiceImpl implements EmailContentService
 
     public String getDocumentTypeEmailAddress(DocumentType documentType) {
         String fromAddress = (documentType == null ? null : documentType.getNotificationFromAddress());
-        if (Utilities.isEmpty(fromAddress)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(fromAddress)) {
             fromAddress = getApplicationEmailAddress();
         }
         return fromAddress;

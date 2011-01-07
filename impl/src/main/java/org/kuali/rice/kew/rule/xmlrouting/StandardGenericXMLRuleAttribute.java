@@ -29,7 +29,6 @@ import org.kuali.rice.kew.rule.RuleExtensionValue;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.w3c.dom.Element;
@@ -245,7 +244,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
 //                    try {
 //                        xpathExpression = (String) xpath.evaluate(findXpathExpression, getConfigXML(), XPathConstants.STRING);
 //                        LOG.debug("routingConfig XPath expression: " + xpathExpression);
-//                        if (!Utilities.isEmpty(xpathExpression)) {
+//                        if (!org.apache.commons.lang.StringUtils.isEmpty(xpathExpression)) {
 //                            LOG.debug("DocContent: " + docContent.getDocContent());
 //                            Boolean match = (Boolean) xpath.evaluate(xpathExpression, docContent.getDocument(), XPathConstants.BOOLEAN);
 //                            LOG.debug("routingConfig match? " + match);
@@ -269,7 +268,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
 //                Node xpathNode = xpathExpressions.item(i);
 //                xpathExpression = xpathNode.getFirstChild().getNodeValue();
 //                LOG.debug("global XPath expression: " + xpathExpression);
-//                if (!Utilities.isEmpty(xpathExpression)) {
+//                if (!org.apache.commons.lang.StringUtils.isEmpty(xpathExpression)) {
 //                    LOG.debug("DocContent: " + docContent.getDocContent());
 //                    Boolean match = (Boolean) xpath.evaluate(xpathExpression, docContent.getDocument(), XPathConstants.BOOLEAN);
 //                    LOG.debug("Global match? " + match);
@@ -501,7 +500,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                     LOG.debug("Replacing field '" + fieldName + "'");
                     Map map = getParamMap();
                     String fieldValue = (String) map.get(fieldName);
-                    if (map != null && !Utilities.isEmpty(fieldValue)) {
+                    if (map != null && !org.apache.commons.lang.StringUtils.isEmpty(fieldValue)) {
                         LOG.debug("Replacing %" + fieldName + "% with field value: '" + fieldValue + "'");
                         documentContent = documentContent.replaceAll("%" + fieldName + "%", fieldValue);
                     } else {
@@ -517,7 +516,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                     NamedNodeMap fieldAttributes = field.getAttributes();
                     String fieldName = fieldAttributes.getNamedItem("name").getNodeValue();
                     Map map = getParamMap();
-                    if (map != null && !Utilities.isEmpty((String) map.get(fieldName))) {
+                    if (map != null && !org.apache.commons.lang.StringUtils.isEmpty((String) map.get(fieldName))) {
                         documentContent.append("<field name=\"");
                         documentContent.append(fieldName);
                         documentContent.append("\"><value>");
@@ -548,7 +547,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                 NamedNodeMap fieldAttributes = field.getAttributes();
                 String fieldName = fieldAttributes.getNamedItem("name").getNodeValue();
                 Map map = getParamMap();
-                if (map != null && !Utilities.isEmpty((String) map.get(fieldName))) {
+                if (map != null && !org.apache.commons.lang.StringUtils.isEmpty((String) map.get(fieldName))) {
                     RuleExtensionValue value = new RuleExtensionValue();
                     value.setKey(fieldName);
                     value.setValue((String) map.get(fieldName));
@@ -621,7 +620,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
         try {
             return validate(getConfigXML(), new String[] { "ALL", "RULE" }, getParamMap(), new ErrorGenerator() {
                 public Object generateInvalidFieldError(Node field, String fieldName, String message) {
-                    if (Utilities.isEmpty(message)) {
+                    if (org.apache.commons.lang.StringUtils.isEmpty(message)) {
                         message = "invalid field value";
                     } else {
                         LOG.info("Message: '" + message + "'");

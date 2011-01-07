@@ -33,7 +33,6 @@ import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 import java.util.*;
@@ -95,7 +94,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
     public String validateActionRules(List<ActionRequestValue> actionRequests) {
         if ( (nodeNames != null) && (!nodeNames.isEmpty()) ) {
             String nodeName = isGivenNodeListValid();
-            if (!Utilities.isEmpty(nodeName)) {
+            if (!org.apache.commons.lang.StringUtils.isEmpty(nodeName)) {
                 return "Document already at or beyond route node " + nodeName;
             }
         }
@@ -133,7 +132,7 @@ public class BlanketApproveAction extends ActionTakenEvent {
 
         List<ActionRequestValue> actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         String errorMessage = validateActionRules(actionRequests);
-        if (!Utilities.isEmpty(errorMessage)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
 

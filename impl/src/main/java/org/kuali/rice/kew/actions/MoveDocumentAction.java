@@ -30,7 +30,6 @@ import org.kuali.rice.kew.messaging.MessageServiceNames;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
 import java.util.Collection;
@@ -106,7 +105,7 @@ public class MoveDocumentAction extends ActionTakenEvent {
         List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         Collection activeNodes = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(getRouteHeader().getRouteHeaderId());
         String errorMessage = validateActionRules(actionRequests,activeNodes);
-        if (!Utilities.isEmpty(errorMessage)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
 

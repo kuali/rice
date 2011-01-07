@@ -23,7 +23,6 @@ import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.xml.XmlException;
-import org.kuali.rice.kew.util.Utilities;
 
 import java.io.File;
 import java.io.IOException;
@@ -93,7 +92,7 @@ public class PluginConfigParser {
 
 	private String parseListenerProperties(Element element) throws XmlException {
 		String listenerClass = element.getChildText(LISTENER_CLASS_TAG);
-		if (Utilities.isEmpty(listenerClass)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(listenerClass)) {
 			throw new XmlException("Listener Class tag must have a class property defined");
 		}
 		return listenerClass;
@@ -112,10 +111,10 @@ public class PluginConfigParser {
 	private String [] parseParameter(Element element) throws XmlException {
 		String name = element.getAttributeValue(NAME_ATTRIBUTE);
 		String value = element.getAttributeValue(VALUE_ATTRIBUTE);
-		if (Utilities.isEmpty(name)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(name)) {
 			throw new XmlException("Parameter tag must have a name attribute defined");
 		}
-		if (Utilities.isEmpty(value)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(value)) {
 			throw new XmlException("Parameter tag must have a value attribute defined");
 		}
 		return new String [] {name, value};

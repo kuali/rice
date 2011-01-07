@@ -16,32 +16,12 @@
  */
 package org.kuali.rice.kew.rule.web;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
-import org.kuali.rice.kew.rule.KeyValueId;
-import org.kuali.rice.kew.rule.RoleAttribute;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.*;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
@@ -51,10 +31,14 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -113,7 +97,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 									fieldValue = field.getPropertyValue();
 								}
 								fields.add(new KeyValueId(field.getPropertyName(), fieldValue, ruleTemplateAttribute.getRuleTemplateAttributeId()+""));
-							//} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
+							//} else if (!org.apache.commons.lang.StringUtils.isEmpty(field.getDefaultLookupableName())) {
 							//	String fieldValue = "";
 							//	RuleExtensionValue extensionValue = getRuleExtensionValue(ruleTemplateAttribute.getRuleTemplateAttributeId(), (String) field.getDefaultLookupableName());
 							//	if (extensionValue != null) {
@@ -212,7 +196,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 							Field field = (Field) element2;
 							if (ruleAttribute.getType().equals(KEWConstants.RULE_XML_ATTRIBUTE_TYPE)) {
 								fields.add(new KeyValueId(field.getPropertyName(), field.getPropertyValue(), ruleTemplateAttribute.getRuleTemplateAttributeId() + ""));
-							//} else if (!Utilities.isEmpty(field.getDefaultLookupableName())) {
+							//} else if (!org.apache.commons.lang.StringUtils.isEmpty(field.getDefaultLookupableName())) {
 							//	fields.add(new KeyValueId(field.getDefaultLookupableName(), field.getPropertyValue(), ruleTemplateAttribute.getRuleTemplateAttributeId() + ""));
 							} else {
 								fields.add(new KeyValueId(field.getPropertyName(), field.getPropertyValue(), ruleTemplateAttribute.getRuleTemplateAttributeId() + ""));
@@ -272,7 +256,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 	}
 
 	private void loadRuleTemplateName() {
-		if (Utilities.isEmpty(getRuleTemplateName()) && getRuleTemplateId() != null) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(getRuleTemplateName()) && getRuleTemplateId() != null) {
 			RuleTemplate ruleTemplate = getRuleTemplateService().findByRuleTemplateId(getRuleTemplateId());
 			if (ruleTemplate != null) {
 				setRuleTemplateName(ruleTemplate.getName());
@@ -500,7 +484,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 			errors.add(keyPrefix + "activeInd", new ActionMessage("routetemplate.ruleservice.activeind.required"));
 		}
 
-		if (Utilities.isEmpty(getDescription())) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(getDescription())) {
 			errors.add(keyPrefix + "description", new ActionMessage("routetemplate.ruleservice.description.required"));
 		}
 
@@ -551,7 +535,7 @@ public class WebRuleBaseValues extends RuleBaseValues {
 	}
 
 	private Timestamp decodeTimestamp(String dateValue) throws ParseException {
-		if (Utilities.isEmpty(dateValue)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(dateValue)) {
 			return null;
 		}
 		/*  Not the best solution below but does allow our forcing of the 4 digit year

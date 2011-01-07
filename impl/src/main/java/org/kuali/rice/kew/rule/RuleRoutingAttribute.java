@@ -27,7 +27,6 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
@@ -131,7 +130,7 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
     }
 
     public String getDocContent() {
-        if (!Utilities.isEmpty(getDoctypeName())) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(getDoctypeName())) {
             return "<ruleRouting><doctype>" + getDoctypeName() + "</doctype></ruleRouting>";
         } else {
             return "";
@@ -183,7 +182,7 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
     public List getRuleExtensionValues() {
         List extensions = new ArrayList();
 
-        if (!Utilities.isEmpty(getDoctypeName())) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(getDoctypeName())) {
             RuleExtensionValue extension = new RuleExtensionValue();
             extension.setKey(DOC_TYPE_NAME_KEY);
             extension.setValue(getDoctypeName());
@@ -196,11 +195,11 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
     public List validateRoutingData(Map paramMap) {
         List errors = new ArrayList();
         setDoctypeName((String) paramMap.get(DOC_TYPE_NAME_PROPERTY));
-        if (isRequired() && Utilities.isEmpty(getDoctypeName())) {
+        if (isRequired() && org.apache.commons.lang.StringUtils.isEmpty(getDoctypeName())) {
             errors.add(new WorkflowServiceErrorImpl("doc type is not valid.", "routetemplate.ruleroutingattribute.doctype.invalid"));
         }
 
-        if (!Utilities.isEmpty(getDoctypeName())) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(getDoctypeName())) {
             DocumentTypeService service = (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
             DocumentType documentType = service.findByName(getDoctypeName());
             if (documentType == null) {

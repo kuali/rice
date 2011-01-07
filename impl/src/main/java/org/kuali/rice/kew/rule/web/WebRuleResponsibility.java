@@ -16,21 +16,11 @@
  */
 package org.kuali.rice.kew.rule.web;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.*;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -39,6 +29,12 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -113,7 +109,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	private void loadWebValues() throws Exception {
-		if (!Utilities.isEmpty(getRuleResponsibilityName())) {
+		if (!org.apache.commons.lang.StringUtils.isEmpty(getRuleResponsibilityName())) {
 			if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
 				// setReviewer(getUserService().getWorkflowUser(new
 				// WorkflowUserId(getRuleResponsibilityName())).getPrincipalName().getAuthenticationId());
@@ -295,7 +291,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 
 	public void validateResponsibility(String keyPrefix, ActionErrors errors) {
 		if (KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID.equals(getRuleResponsibilityType())) {
-			boolean invalidUser = Utilities.isEmpty(getReviewer());
+			boolean invalidUser = org.apache.commons.lang.StringUtils.isEmpty(getReviewer());
 			if (!invalidUser)
 			{
 				//chb: 10Jan2009: not using KEW IdentityHelperService b/c we want to deal w/ exception here
@@ -313,7 +309,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				errors.add(keyPrefix + "reviewer", new ActionMessage("routetemplate.ruleservice.user.invalid"));
 			}
 		} else if (KEWConstants.RULE_RESPONSIBILITY_GROUP_ID.equals(getRuleResponsibilityType())) {
-			boolean invalidWorkgroup = Utilities.isEmpty(getReviewer());
+			boolean invalidWorkgroup = org.apache.commons.lang.StringUtils.isEmpty(getReviewer());
 			;
 			if (!invalidWorkgroup) {
 			    Group workgroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(getReviewerId());

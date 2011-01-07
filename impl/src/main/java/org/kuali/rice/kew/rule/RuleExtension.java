@@ -16,32 +16,22 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Version;
-
+import org.apache.commons.lang.ObjectUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.util.CollectionUtils;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -194,9 +184,9 @@ public class RuleExtension implements WorkflowPersistable {
         if (o == null) return false;
         if (!(o instanceof RuleExtension)) return false;
         RuleExtension pred = (RuleExtension) o;
-        return Utilities.equals(ruleBaseValues.getRuleTemplate(), pred.getRuleBaseValues().getRuleTemplate()) &&
-               Utilities.equals(ruleTemplateAttribute, pred.getRuleTemplateAttribute()) &&
-               Utilities.collectionsEquivalent(extensionValues, pred.getExtensionValues());
+        return ObjectUtils.equals(ruleBaseValues.getRuleTemplate(), pred.getRuleBaseValues().getRuleTemplate()) &&
+               ObjectUtils.equals(ruleTemplateAttribute, pred.getRuleTemplateAttribute()) &&
+               CollectionUtils.collectionsEquivalent(extensionValues, pred.getExtensionValues());
     }
 
     public String toString() {

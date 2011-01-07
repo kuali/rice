@@ -16,16 +16,15 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.StringTokenizer;
-
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.StringTokenizer;
 
 
 /**
@@ -80,7 +79,7 @@ public class BasicJoinEngine implements JoinEngine {
 
     public boolean isJoined(RouteNodeInstance nodeInstance) {
         NodeState expectedState = nodeInstance.getNodeState(EXPECTED_JOINERS);
-        if (expectedState == null || Utilities.isEmpty(expectedState.getValue())) {
+        if (expectedState == null || org.apache.commons.lang.StringUtils.isEmpty(expectedState.getValue())) {
             return true;
         }
         NodeState actualState = nodeInstance.getNodeState(ACTUAL_JOINERS);

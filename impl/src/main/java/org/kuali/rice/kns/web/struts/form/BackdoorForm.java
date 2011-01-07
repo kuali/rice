@@ -82,7 +82,7 @@ public class BackdoorForm extends KualiForm {
     	return this.graphic;
     }
     public void setGraphic(String choice){
-    	if(!org.kuali.rice.kew.util.Utilities.isEmpty(choice)&&choice.trim().equals("no")){
+    	if(!org.apache.commons.lang.StringUtils.isEmpty(choice)&&choice.trim().equals("no")){
     		this.graphic="no";
     	}else{
     		this.graphic="yes";

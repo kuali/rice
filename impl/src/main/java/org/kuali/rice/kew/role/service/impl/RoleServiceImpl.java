@@ -16,15 +16,7 @@
  */
 package org.kuali.rice.kew.role.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-
+import org.apache.commons.collections.CollectionUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -43,9 +35,11 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
+
+import javax.xml.namespace.QName;
+import java.util.*;
 
 
 /**
@@ -59,7 +53,7 @@ public class RoleServiceImpl implements RoleService {
     public void reResolveRole(DocumentType documentType, String roleName) throws WorkflowException {
     	String infoString = "documentType="+(documentType == null ? null : documentType.getName())+", role="+roleName;
         if (documentType == null ||
-                Utilities.isEmpty(roleName)) {
+                org.apache.commons.lang.StringUtils.isEmpty(roleName)) {
             throw new IllegalArgumentException("Cannot pass null or empty arguments to reResolveRole: "+infoString);
         }
         LOG.debug("Re-resolving role asynchronously for "+infoString);
@@ -77,8 +71,8 @@ public class RoleServiceImpl implements RoleService {
     public void reResolveQualifiedRole(DocumentType documentType, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
     	String infoString = "documentType="+(documentType == null ? null : documentType.getName())+", role="+roleName+", qualifiedRole="+qualifiedRoleNameLabel;
         if (documentType == null ||
-                Utilities.isEmpty(roleName) ||
-                Utilities.isEmpty(qualifiedRoleNameLabel)) {
+                org.apache.commons.lang.StringUtils.isEmpty(roleName) ||
+                org.apache.commons.lang.StringUtils.isEmpty(qualifiedRoleNameLabel)) {
             throw new IllegalArgumentException("Cannot pass null or empty arguments to reResolveQualifiedRole: "+infoString);
         }
         LOG.debug("Re-resolving qualified role asynchronously for "+infoString);
@@ -101,8 +95,8 @@ public class RoleServiceImpl implements RoleService {
     public void reResolveQualifiedRole(DocumentRouteHeaderValue routeHeader, String roleName, String qualifiedRoleNameLabel) throws WorkflowException {
         String infoString = "routeHeader="+(routeHeader == null ? null : routeHeader.getRouteHeaderId())+", role="+roleName+", qualifiedRole="+qualifiedRoleNameLabel;
         if (routeHeader == null ||
-                Utilities.isEmpty(roleName) ||
-                Utilities.isEmpty(qualifiedRoleNameLabel)) {
+                org.apache.commons.lang.StringUtils.isEmpty(roleName) ||
+                org.apache.commons.lang.StringUtils.isEmpty(qualifiedRoleNameLabel)) {
             throw new IllegalArgumentException("Cannot pass null arguments to reResolveQualifiedRole: "+infoString);
         }
         LOG.debug("Re-resolving qualified role synchronously for "+infoString);
@@ -140,7 +134,7 @@ public class RoleServiceImpl implements RoleService {
     public void reResolveRole(DocumentRouteHeaderValue routeHeader, String roleName) throws WorkflowException {
     	String infoString = "routeHeader="+(routeHeader == null ? null : routeHeader.getRouteHeaderId())+", role="+roleName;
         if (routeHeader == null ||
-                Utilities.isEmpty(roleName)) {
+                org.apache.commons.lang.StringUtils.isEmpty(roleName)) {
             throw new IllegalArgumentException("Cannot pass null arguments to reResolveRole: "+infoString);
         }
         LOG.debug("Re-resolving role synchronously for "+infoString);
@@ -210,7 +204,7 @@ public class RoleServiceImpl implements RoleService {
     private List findNodeInstances(DocumentRouteHeaderValue routeHeader, String roleName) throws WorkflowException {
         List nodeInstances = new ArrayList();
         Collection activeNodeInstances = KEWServiceLocator.getRouteNodeService().getActiveNodeInstances(routeHeader.getRouteHeaderId());
-        if (Utilities.isEmpty(activeNodeInstances)) {
+        if (CollectionUtils.isEmpty(activeNodeInstances)) {
             throw new WorkflowException("Document does not currently have any active nodes so re-resolving is not legal.");
         }
         for (Iterator iterator = activeNodeInstances.iterator(); iterator.hasNext();) {

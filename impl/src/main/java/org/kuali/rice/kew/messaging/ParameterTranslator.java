@@ -19,8 +19,6 @@ package org.kuali.rice.kew.messaging;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kuali.rice.kew.util.Utilities;
-
 
 /**
  * A simple utility class which can handle translated a comma-seperated String
@@ -44,14 +42,14 @@ public class ParameterTranslator {
 	}
 	
 	public void addParameter(String value) {
-		if (!Utilities.isEmpty(untranslatedString)) {
+		if (!org.apache.commons.lang.StringUtils.isEmpty(untranslatedString)) {
 			untranslatedString += ",";
 		}
 		untranslatedString += escape(value);
 	}
 	
 	private String escape(String value) {
-		if (Utilities.isEmpty(value)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(value)) {
 			return "";
 		}
     	// escape '\' and ',' with "\\" and "\,"

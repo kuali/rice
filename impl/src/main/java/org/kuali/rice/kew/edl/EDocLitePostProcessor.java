@@ -22,7 +22,6 @@ import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.postprocessor.*;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -156,7 +155,7 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
         }
 
         String urlstring = getURL(doc);
-        if (Utilities.isEmpty(urlstring)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(urlstring)) {
             LOG.warn("No eventNotificationURL defined in EDLContent");
             return;
         }

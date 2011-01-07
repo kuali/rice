@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.actions;
 
 
+import org.apache.commons.lang.ObjectUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -29,7 +30,6 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -298,7 +298,7 @@ public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     	for (Iterator iterator = nodeInstances.iterator(); iterator.hasNext(); ) {
 			RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
 			String branchName = (nodeInstance.getBranch().getParentBranch() == null ? null : nodeInstance.getBranch().getParentBranch().getName());
-			assertTrue("Parent branch should be '" + parentBranchName + "'.", Utilities.equals(parentBranchName, branchName));
+			assertTrue("Parent branch should be '" + parentBranchName + "'.", ObjectUtils.equals(parentBranchName, branchName));
 		}
     }
 

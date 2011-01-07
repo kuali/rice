@@ -97,7 +97,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 				for (int i = 0; i < nodes.getLength(); i++) {
 					Node field = nodes.item(i);
 					NamedNodeMap fieldAttributes = field.getAttributes();
-					if (getParamMap() != null && !Utilities.isEmpty((String) getParamMap().get(fieldAttributes.getNamedItem("name").getNodeValue()))) {
+					if (getParamMap() != null && !org.apache.commons.lang.StringUtils.isEmpty((String) getParamMap().get(fieldAttributes.getNamedItem("name").getNodeValue()))) {
 						docContent = docContent.replaceAll("%" + fieldAttributes.getNamedItem("name").getNodeValue() + "%", (String) getParamMap().get(fieldAttributes.getNamedItem("name").getNodeValue()));
 					}
 				}
@@ -113,7 +113,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 				for (int i = 0; i < nodes.getLength(); i++) {
 					Node field = nodes.item(i);
 					NamedNodeMap fieldAttributes = field.getAttributes();
-					if (getParamMap() != null && !Utilities.isEmpty((String) getParamMap().get(fieldAttributes.getNamedItem("name").getNodeValue()))) {
+					if (getParamMap() != null && !org.apache.commons.lang.StringUtils.isEmpty((String) getParamMap().get(fieldAttributes.getNamedItem("name").getNodeValue()))) {
 						documentContent.append("<field name=\"");
 						documentContent.append(fieldAttributes.getNamedItem("name").getNodeValue());
 						documentContent.append("\"><value>");
@@ -166,11 +166,11 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
     				String xpathExpression = null;
     				try {
                         fieldDataType = (String) xpath.evaluate(findDataTypeXpathExpression, getConfigXML(), XPathConstants.STRING);
-    					if (Utilities.isEmpty(fieldDataType)) {
+    					if (org.apache.commons.lang.StringUtils.isEmpty(fieldDataType)) {
     						fieldDataType = DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
     					}
     				    xpathExpression = (String) xpath.evaluate(findXpathExpression, getConfigXML(), XPathConstants.STRING);
-    					if (!Utilities.isEmpty(xpathExpression)) {
+    					if (!org.apache.commons.lang.StringUtils.isEmpty(xpathExpression)) {
 
                             try {
                                 NodeList searchValues = (NodeList) xpath.evaluate(xpathExpression, document.getDocumentElement(), XPathConstants.NODESET);
@@ -317,7 +317,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 						NamedNodeMap searchDefAttributes = childNode.getAttributes();
 						// data type operations
 						String dataType = (searchDefAttributes.getNamedItem("dataType") == null) ? null : searchDefAttributes.getNamedItem("dataType").getNodeValue();
-						if (!Utilities.isEmpty(dataType)) {
+						if (!org.apache.commons.lang.StringUtils.isEmpty(dataType)) {
 							myField.setFieldDataType(dataType);
 						} else {
 							// no data type means we default to String which disallows range search
@@ -456,7 +456,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 		rangeFields.add(rangeBoundField);
 		if (!mainField.getFieldType().equals(Field.HIDDEN)) {
 			// disabling the additional quickfinder field for now, should be included as a single field in the KNS instead of 2 as it was in KEW
-//			if (!Utilities.isEmpty(quickfinderService)) {
+//			if (!org.apache.commons.lang.StringUtils.isEmpty(quickfinderService)) {
 //				rangeFields.add(new Field("", "", Field.QUICKFINDER, "", "", null, quickfinderService));
 //			}
 			if (rangeBoundField.isDatePicker()) {
@@ -524,7 +524,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
     private String getPotentialRangeBoundLabelFromAttributes(NamedNodeMap rangeBoundAttributes) {
         if (rangeBoundAttributes != null) {
             String boundLabel = (rangeBoundAttributes.getNamedItem("label") == null) ? null : rangeBoundAttributes.getNamedItem("label").getNodeValue();
-            if (!Utilities.isEmpty(boundLabel)) {
+            if (!org.apache.commons.lang.StringUtils.isEmpty(boundLabel)) {
                 return boundLabel;
             }
         }
@@ -561,7 +561,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 	}
 
 	private String getStringValue(NamedNodeMap nodeMap, String attributeName) {
-		return ( (nodeMap == null) || (nodeMap.getNamedItem(attributeName) == null) || (Utilities.isEmpty(nodeMap.getNamedItem(attributeName).getNodeValue())) ) ? null : nodeMap.getNamedItem(attributeName).getNodeValue();
+		return ( (nodeMap == null) || (nodeMap.getNamedItem(attributeName) == null) || (org.apache.commons.lang.StringUtils.isEmpty(nodeMap.getNamedItem(attributeName).getNodeValue())) ) ? null : nodeMap.getNamedItem(attributeName).getNodeValue();
 	}
 
 	private void parseVisibility(Field field, Element visibilityElement) {
@@ -709,7 +709,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
         						}
 
         					}
-        					if (Utilities.isEmpty(fieldDataType)) {
+        					if (org.apache.commons.lang.StringUtils.isEmpty(fieldDataType)) {
         						fieldDataType = DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
         					}
         					// get the searchable attribute value by using the data type
@@ -731,12 +731,12 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
         						NamedNodeMap rangeDefinitionAttributes = (rangeDefinitionNode != null) ? rangeDefinitionNode.getAttributes() : null;
         						lowerBoundEnteredValue = (String) getParamMap().get(lowerBoundFieldDefName);
         						upperBoundEnteredValue = (String) getParamMap().get(upperBoundFieldDefName);
-        						if (!Utilities.isEmpty(lowerBoundEnteredValue)) {
+        						if (!org.apache.commons.lang.StringUtils.isEmpty(lowerBoundEnteredValue)) {
                                     lowerBoundRangeAttributes = getAttributesForPotentialChildNode(rangeDefinitionNode, "lower");
         							errors.addAll(performValidation(attributeValue,
         									lowerBoundFieldDefName, lowerBoundEnteredValue, constructRangeFieldErrorPrefix(fieldDefTitle,lowerBoundRangeAttributes), findXpathExpressionPrefix));
         						}
-                                if (!Utilities.isEmpty(upperBoundEnteredValue)) {
+                                if (!org.apache.commons.lang.StringUtils.isEmpty(upperBoundEnteredValue)) {
                                     upperBoundRangeAttributes = getAttributesForPotentialChildNode(rangeDefinitionNode, "upper");
         							errors.addAll(performValidation(attributeValue,
         									upperBoundFieldDefName, upperBoundEnteredValue, constructRangeFieldErrorPrefix(fieldDefTitle,upperBoundRangeAttributes), findXpathExpressionPrefix));
@@ -817,7 +817,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 		} else {
 			String findValidation = findXpathExpressionPrefix + "/validation/regex";
 			String regex = (String) xpath.evaluate(findValidation, getConfigXML(), XPathConstants.STRING);
-			if (!Utilities.isEmpty(regex)) {
+			if (!org.apache.commons.lang.StringUtils.isEmpty(regex)) {
 				Pattern pattern = Pattern.compile(regex);
 				Matcher matcher = pattern.matcher(enteredValue);
 				if (!matcher.matches()) {

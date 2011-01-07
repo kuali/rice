@@ -33,7 +33,6 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -114,10 +113,10 @@ public class RuleTemplateXmlParser {
         if (allowOverwriteAttrib != null) {
             allowOverwrite = Boolean.valueOf(allowOverwriteAttrib.getValue()).booleanValue();
         }
-        if (Utilities.isEmpty(name)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(name)) {
             throw new XmlException("RuleTemplate must have a name");
         }
-        if (Utilities.isEmpty(description)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(description)) {
             throw new XmlException("RuleTemplate must have a description");
         }
 
@@ -264,7 +263,7 @@ public class RuleTemplateXmlParser {
 
         if (defaultsElement != null) {
             String delegationType = defaultsElement.getChildText(DELEGATION_TYPE, RULE_TEMPLATE_NAMESPACE);
-            isDelegation = !Utilities.isEmpty(delegationType);
+            isDelegation = !org.apache.commons.lang.StringUtils.isEmpty(delegationType);
 
             String description = defaultsElement.getChildText(DESCRIPTION, RULE_TEMPLATE_NAMESPACE);
             
@@ -460,7 +459,7 @@ public class RuleTemplateXmlParser {
         String attributeName = element.getChildText(NAME, RULE_TEMPLATE_NAMESPACE);
         String requiredValue = element.getChildText(REQUIRED, RULE_TEMPLATE_NAMESPACE);
         String activeValue = element.getChildText(ACTIVE, RULE_TEMPLATE_NAMESPACE);
-        if (Utilities.isEmpty(attributeName)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(attributeName)) {
             throw new XmlException("Attribute name must be non-empty");
         }
         boolean required = DEFAULT_ATTRIBUTE_REQUIRED;

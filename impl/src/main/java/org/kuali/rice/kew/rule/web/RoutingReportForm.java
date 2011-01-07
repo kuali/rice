@@ -16,13 +16,6 @@
  */
 package org.kuali.rice.kew.rule.web;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMapping;
@@ -34,9 +27,14 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.ui.Row;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -91,7 +89,7 @@ public class RoutingReportForm extends KualiForm {
 
         ActionErrors errors = new ActionErrors();
         if (getReportType() != null && getReportType().equals(RoutingReportAction.DOC_TYPE_REPORTING)) {
-            if (!Utilities.isEmpty(getDocumentType())) {
+            if (!org.apache.commons.lang.StringUtils.isEmpty(getDocumentType())) {
                 DocumentType docType = getDocumentTypeService().findByName(getDocumentType());
                 if (docType == null) {
                     ActionMessage error = new ActionMessage("routereport.documenttype.invalid");

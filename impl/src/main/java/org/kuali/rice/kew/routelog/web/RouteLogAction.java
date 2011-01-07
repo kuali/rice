@@ -16,20 +16,6 @@
  */
 package org.kuali.rice.kew.routelog.web;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.xml.namespace.QName;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -39,13 +25,8 @@ import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.service.DocumentSecurityService;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.dto.*;
 import org.kuali.rice.kew.dto.DTOConverter.RouteNodeInstanceLoader;
-import org.kuali.rice.kew.dto.DocumentDetailDTO;
-import org.kuali.rice.kew.dto.ReportCriteriaDTO;
-import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
-import org.kuali.rice.kew.dto.StateDTO;
 import org.kuali.rice.kew.engine.node.Branch;
 import org.kuali.rice.kew.engine.node.NodeState;
 import org.kuali.rice.kew.engine.node.RouteNode;
@@ -61,6 +42,11 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.namespace.QName;
+import java.util.*;
 
 
 /**
@@ -78,9 +64,9 @@ public class RouteLogAction extends KewKualiAction {
 
         RouteLogForm rlForm = (RouteLogForm) form;
         Long routeHeaderId = null;
-        if (! Utilities.isEmpty(rlForm.getRouteHeaderId())) {
+        if (! org.apache.commons.lang.StringUtils.isEmpty(rlForm.getRouteHeaderId())) {
             routeHeaderId = new Long(rlForm.getRouteHeaderId());
-        } else if (! Utilities.isEmpty(rlForm.getDocId())) {
+        } else if (! org.apache.commons.lang.StringUtils.isEmpty(rlForm.getDocId())) {
             routeHeaderId = new Long(rlForm.getDocId());
         } else {
         	throw new WorkflowRuntimeException("No paramater provided to fetch document");
@@ -535,9 +521,9 @@ public class RouteLogAction extends KewKualiAction {
 		RouteLogForm routeLogForm = (RouteLogForm) form;
 
 		Long routeHeaderId = null;
-		if (!Utilities.isEmpty(routeLogForm.getRouteHeaderId())) {
+		if (!org.apache.commons.lang.StringUtils.isEmpty(routeLogForm.getRouteHeaderId())) {
 			routeHeaderId = new Long(routeLogForm.getRouteHeaderId());
-		} else if (!Utilities.isEmpty(routeLogForm.getDocId())) {
+		} else if (!org.apache.commons.lang.StringUtils.isEmpty(routeLogForm.getDocId())) {
 			routeHeaderId = new Long(routeLogForm.getDocId());
 		} else {
 			throw new WorkflowRuntimeException("No paramater provided to fetch document");

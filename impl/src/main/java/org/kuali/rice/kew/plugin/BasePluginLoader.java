@@ -22,7 +22,6 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.ContextClassLoaderBinder;
 import org.kuali.rice.core.xml.XmlException;
-import org.kuali.rice.kew.util.Utilities;
 
 import javax.xml.namespace.QName;
 import java.io.File;
@@ -141,7 +140,7 @@ public abstract class BasePluginLoader implements PluginLoader {
 
     protected void configureExtraClasspath(PluginClassLoader classLoader, PluginConfig config) throws MalformedURLException {
 		String extraClassesDirs = config.getProperty(Config.EXTRA_CLASSES_DIR);
-		if (!Utilities.isEmpty(extraClassesDirs)) {
+		if (!org.apache.commons.lang.StringUtils.isEmpty(extraClassesDirs)) {
 			String[] extraClasses = extraClassesDirs.split(",");
 			for (int index = 0; index < extraClasses.length; index++) {
 				File extraClassesDir = new File(extraClasses[index]);
@@ -151,7 +150,7 @@ public abstract class BasePluginLoader implements PluginLoader {
 			}
 		}
 		String extraLibDirs = config.getProperty(Config.EXTRA_LIB_DIR);
-		if (!Utilities.isEmpty(extraLibDirs)) {
+		if (!org.apache.commons.lang.StringUtils.isEmpty(extraLibDirs)) {
 			String[] extraLibs = extraLibDirs.split(",");
 			for (int index = 0; index < extraLibs.length; index++) {
 				File extraLibDir = new File(extraLibs[index]);

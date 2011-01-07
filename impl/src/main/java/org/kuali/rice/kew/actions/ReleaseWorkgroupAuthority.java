@@ -16,16 +16,15 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.List;
-
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+
+import java.util.List;
 
 
 /**
@@ -80,7 +79,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
 
     public void recordAction() throws InvalidActionTakenException {
         String error = performReleaseWorkgroupAuthority(false);
-        if (!Utilities.isEmpty(error)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(error)) {
             throw new InvalidActionTakenException(error);
         }
 

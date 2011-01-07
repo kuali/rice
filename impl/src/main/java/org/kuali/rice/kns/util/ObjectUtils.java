@@ -15,22 +15,6 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.beans.PropertyDescriptor;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.security.MessageDigest;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.EntityNotFoundException;
-
 import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
@@ -50,6 +34,17 @@ import org.kuali.rice.kns.util.cache.CopiedObject;
 import org.kuali.rice.kns.web.format.CollectionFormatter;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
+
+import javax.persistence.EntityNotFoundException;
+import java.beans.PropertyDescriptor;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.security.MessageDigest;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This class contains various Object, Proxy, and serialization utilities.
@@ -170,7 +165,7 @@ public final class ObjectUtils {
      * @param template a map defining the relationships between the fields of the newly created BO, and the source BO.  For each K (key), V (value)
      * entry, the value of property V on the source BO will be assigned to the K property of the newly created BO
      * 
-     * @see org.kuali.rice.kns.maintenance.util.MaintenanceUtils
+     * @see MaintenanceUtils
      * 
      * @throws NoSuchMethodException
      * @throws InvocationTargetException
@@ -325,7 +320,7 @@ public final class ObjectUtils {
 	 * Gets the property value from the business object, then based on the value
 	 * type select a formatter and format the value
 	 * 
-	 * @param element
+	 * @param businessObject
 	 *            BusinessObject instance that contains the property
 	 * @param propertyName
 	 *            Name of property in BusinessObject to get value for
@@ -353,7 +348,7 @@ public final class ObjectUtils {
 	 * References the data dictionary to find any registered formatter class then if not found checks for associated formatter for the
 	 * property type. Value is then formatted using the found Formatter
 	 * 
-	 * @param element
+	 * @param businessObject
 	 *            BusinessObject instance that contains the property
 	 * @param propertyName
 	 *            Name of property in BusinessObject to get value for
@@ -1076,23 +1071,6 @@ public final class ObjectUtils {
         }
         return currentObject;
     }
-
-    /**
-     * Returns the equality of the two given objects, automatically handling when one or both of the objects is null.
-     * 
-     * @param obj1
-     * @param obj2
-     * 
-     * @return true if both objects are null or both are equal
-     */
-    public static boolean nullSafeEquals(Object obj1, Object obj2) {
-        if (obj1 != null && obj2 != null) {
-            return obj1.equals(obj2);
-        }
-        else {
-            return (obj1 == obj2);
-        }
-    }
     
     /**
      * This method safely creates a object from a class
@@ -1100,7 +1078,7 @@ public final class ObjectUtils {
      * If the class is an {@link ExternalizableBusinessObject}, this method will determine the interface for the EBO and query the
 	 * appropriate module service to create a new instance.
      * 
-     * @param boClass
+     * @param clazz
      * 
      * @return a newInstance() of clazz
      */

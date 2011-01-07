@@ -16,12 +16,11 @@
  */
 package org.kuali.rice.kew.plugin;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.util.Utilities;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -39,7 +38,7 @@ public class PluginRegistryFactory {
         List<String> pluginDirectories = new ArrayList<String>();
         // TODO: maybe ensure that if these directories are the same, that
         // only one gets through
-        if (!Utilities.isEmpty(pluginDir)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(pluginDir)) {
             pluginDirectories.add(pluginDir);
         }
         registry.setPluginDirectories(pluginDirectories);

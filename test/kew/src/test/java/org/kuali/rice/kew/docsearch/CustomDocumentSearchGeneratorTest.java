@@ -26,7 +26,6 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Parameter;
@@ -54,7 +53,7 @@ public class CustomDocumentSearchGeneratorTest extends DocumentSearchTestBase {
     }
 
 	private DocumentType getValidDocumentType(String documentTypeFullName) {
-		if (Utilities.isEmpty(documentTypeFullName)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(documentTypeFullName)) {
 			return null;
 		}
 		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeFullName);

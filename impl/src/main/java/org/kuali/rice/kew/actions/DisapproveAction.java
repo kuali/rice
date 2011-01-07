@@ -16,12 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
@@ -39,6 +33,8 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import java.util.*;
 
 
 /**
@@ -129,7 +125,7 @@ public class DisapproveAction extends ActionTakenEvent {
         List actionRequests = getActionRequestService().findAllValidRequests(getPrincipal().getPrincipalId(), getRouteHeaderId(), KEWConstants.ACTION_REQUEST_COMPLETE_REQ);
         LOG.debug("Checking to see if the action is legal");
         String errorMessage = validateActionRules(actionRequests);
-        if (!Utilities.isEmpty(errorMessage)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
 

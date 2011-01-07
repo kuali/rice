@@ -28,7 +28,6 @@ import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
@@ -56,7 +55,7 @@ public class BeanConverterTester extends KEWTestCase {
         String applicationContent = null;
         String xmlContent = constructContent(attributeContent, searchableContent, applicationContent);
         DocumentContentDTO contentVO = DTOConverter.convertDocumentContent(xmlContent, new Long(-1234));
-        assertFalse("Content cannot be empty.", Utilities.isEmpty(contentVO.getFullContent()));
+        assertFalse("Content cannot be empty.", org.apache.commons.lang.StringUtils.isEmpty(contentVO.getFullContent()));
         assertEquals("Attribute content is invalid.", "", contentVO.getAttributeContent());
         assertEquals("Searchable content is invalid.", "", contentVO.getSearchableContent());
         assertEquals("Application content is invalid.", "", contentVO.getApplicationContent());
@@ -93,7 +92,7 @@ public class BeanConverterTester extends KEWTestCase {
         // test the old school (Workflow 1.6) flex document XML
         String fleXml = "<flexdoc><meinAttribute>nein</meinAttribute></flexdoc>";
         contentVO = DTOConverter.convertDocumentContent(fleXml, null);
-        assertFalse("Content cannot be empty.", Utilities.isEmpty(contentVO.getFullContent()));
+        assertFalse("Content cannot be empty.", org.apache.commons.lang.StringUtils.isEmpty(contentVO.getFullContent()));
         assertEquals("Attribute content is invalid.", fleXml, contentVO.getAttributeContent());
         assertEquals("Searchable content is invalid.", "", contentVO.getSearchableContent());
         assertEquals("Application content is invalid.", "", contentVO.getApplicationContent());
@@ -143,7 +142,7 @@ public class BeanConverterTester extends KEWTestCase {
     }
 
     private String constructContent(String type, String content) {
-        if (Utilities.isEmpty(content)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(content)) {
             return "";
         }
         return "<"+type+">"+content+"</"+type+">";
@@ -158,17 +157,17 @@ public class BeanConverterTester extends KEWTestCase {
     }
 
     private void assertContent(DocumentContentDTO contentVO, String attributeContent, String searchableContent, String applicationContent) {
-        if (Utilities.isEmpty(attributeContent)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(attributeContent)) {
         	attributeContent = "";
         } else {
             attributeContent = "<"+ATTRIBUTE_CONTENT+">"+attributeContent+"</"+ATTRIBUTE_CONTENT+">";
         }
-        if (Utilities.isEmpty(searchableContent)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(searchableContent)) {
         	searchableContent = "";
         } else {
             searchableContent = "<"+SEARCHABLE_CONTENT+">"+searchableContent+"</"+SEARCHABLE_CONTENT+">";
         }
-        assertFalse("Content cannot be empty.", Utilities.isEmpty(contentVO.getFullContent()));
+        assertFalse("Content cannot be empty.", org.apache.commons.lang.StringUtils.isEmpty(contentVO.getFullContent()));
         assertEquals("Attribute content is invalid.", attributeContent, contentVO.getAttributeContent());
         assertEquals("Searchable content is invalid.", searchableContent, contentVO.getSearchableContent());
         assertEquals("Application content is invalid.", applicationContent, contentVO.getApplicationContent());

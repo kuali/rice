@@ -31,7 +31,6 @@ import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.springframework.jdbc.core.ConnectionCallback;
@@ -208,7 +207,7 @@ public final class TestUtilities {
 				return;
 			}
 		}
-		throw new AssertionFailedError((Utilities.isEmpty(message) ? "" : message + ": ") + "Was [" + StringUtils.join(nodeNames, ", ") + "], Expected " + nodeName);
+		throw new AssertionFailedError((org.apache.commons.lang.StringUtils.isEmpty(message) ? "" : message + ": ") + "Was [" + StringUtils.join(nodeNames, ", ") + "], Expected " + nodeName);
 	}
 
     public static void assertAtNode(WorkflowDocument document, String nodeName) throws WorkflowException {

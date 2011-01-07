@@ -16,22 +16,6 @@
  */
 package org.kuali.rice.kew.rule.web;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -58,14 +42,18 @@ import org.kuali.rice.kew.rule.service.RuleTemplateService;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -85,7 +73,7 @@ public class RoutingReportAction extends KewKualiAction {
             throws Exception {
         this.initiateForm(request, form);
         RoutingReportForm routingForm = (RoutingReportForm)form;
-        if (Utilities.isEmpty(routingForm.getDateRef())) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(routingForm.getDateRef())) {
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             routingForm.setEffectiveHour("5");
             routingForm.setEffectiveMinute("0");
@@ -94,13 +82,13 @@ public class RoutingReportAction extends KewKualiAction {
             routingForm.setReportType(TEMPLATE_REPORTING);
         }
         if (DOC_TYPE_REPORTING.equals(routingForm.getReportType())) {
-            if (Utilities.isEmpty(routingForm.getDocumentTypeParam())) {
+            if (org.apache.commons.lang.StringUtils.isEmpty(routingForm.getDocumentTypeParam())) {
                 throw new RuntimeException("No document type was given");
             }
-            if (Utilities.isEmpty(routingForm.getInitiatorPrincipalId())) {
+            if (org.apache.commons.lang.StringUtils.isEmpty(routingForm.getInitiatorPrincipalId())) {
                 throw new RuntimeException("No initiator principal id was given");
             }
-            if (Utilities.isEmpty(routingForm.getDocumentContent())) {
+            if (org.apache.commons.lang.StringUtils.isEmpty(routingForm.getDocumentContent())) {
                 throw new RuntimeException("No document content was given");
             }
         } else if (!(TEMPLATE_REPORTING.equals(routingForm.getReportType()))) {
@@ -119,7 +107,7 @@ public class RoutingReportAction extends KewKualiAction {
 		    GlobalVariables.getMessageMap().putError("Document type is required.", "doctype.documenttypeservice.doctypename.required");
 		}
 		Timestamp date = null;
-		if (!Utilities.isEmpty(routingForm.getDateRef())) {
+		if (!org.apache.commons.lang.StringUtils.isEmpty(routingForm.getDateRef())) {
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			try {
 				Calendar calendar = Calendar.getInstance();
@@ -308,9 +296,9 @@ public class RoutingReportAction extends KewKualiAction {
         RoutingReportForm routingReportForm = (RoutingReportForm) form;
         if (routingReportForm.getReportType() == null) {
             // no report type means we must check for potential setup
-            if ( (!Utilities.isEmpty(routingReportForm.getDocumentTypeParam())) ||
-                 (!Utilities.isEmpty(routingReportForm.getInitiatorPrincipalId())) ||
-                 (!Utilities.isEmpty(routingReportForm.getDocumentContent())) ) {
+            if ( (!org.apache.commons.lang.StringUtils.isEmpty(routingReportForm.getDocumentTypeParam())) ||
+                 (!org.apache.commons.lang.StringUtils.isEmpty(routingReportForm.getInitiatorPrincipalId())) ||
+                 (!org.apache.commons.lang.StringUtils.isEmpty(routingReportForm.getDocumentContent())) ) {
                 // at least one parameter was passed... attempt to use Doc Type Report
                 routingReportForm.setReportType(DOC_TYPE_REPORTING);
             } else {
@@ -320,7 +308,7 @@ public class RoutingReportAction extends KewKualiAction {
         }
 
         if (routingReportForm.getReportType().equals(DOC_TYPE_REPORTING)) {
-            if (Utilities.isEmpty(routingReportForm.getDocumentTypeParam())) {
+            if (org.apache.commons.lang.StringUtils.isEmpty(routingReportForm.getDocumentTypeParam())) {
                 throw new RuntimeException("Document Type was not given");
             } else {
                 DocumentType docType = getDocumentTypeService().findByName(routingReportForm.getDocumentTypeParam());
@@ -328,16 +316,16 @@ public class RoutingReportAction extends KewKualiAction {
                     throw new RuntimeException("Document Type is invalid");
                 }
             }
-            if (Utilities.isEmpty(routingReportForm.getInitiatorPrincipalId())) {
+            if (org.apache.commons.lang.StringUtils.isEmpty(routingReportForm.getInitiatorPrincipalId())) {
                 throw new RuntimeException("Initiator Principal ID was not given");
             } else {
                 KEWServiceLocator.getIdentityHelperService().getPrincipal(routingReportForm.getInitiatorPrincipalId());
             }
-            if (Utilities.isEmpty(routingReportForm.getDocumentContent())) {
+            if (org.apache.commons.lang.StringUtils.isEmpty(routingReportForm.getDocumentContent())) {
                 throw new RuntimeException("Document Content was not given");
             }
 
-            if (!Utilities.isEmpty(routingReportForm.getDocumentType())) {
+            if (!org.apache.commons.lang.StringUtils.isEmpty(routingReportForm.getDocumentType())) {
                 DocumentType docType = getDocumentTypeService().findByName(routingReportForm.getDocumentType());
                 if (docType == null) {
                     throw new RuntimeException("Document Type is missing or invalid");
@@ -437,7 +425,7 @@ public class RoutingReportAction extends KewKualiAction {
 
 	public ActionForward loadTemplate(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		RoutingReportForm routingReportForm = (RoutingReportForm) form;
-		if (Utilities.isEmpty(routingReportForm.getDateRef())) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(routingReportForm.getDateRef())) {
 			SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
 			routingReportForm.setEffectiveHour("5");
 			routingReportForm.setEffectiveMinute("0");

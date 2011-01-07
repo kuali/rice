@@ -16,36 +16,17 @@
  */
 package org.kuali.rice.kew.engine.node.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.collections.ComparatorUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.engine.node.Branch;
-import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.engine.node.NodeGraphContext;
-import org.kuali.rice.kew.engine.node.NodeGraphSearchCriteria;
-import org.kuali.rice.kew.engine.node.NodeGraphSearchResult;
-import org.kuali.rice.kew.engine.node.NodeMatcher;
-import org.kuali.rice.kew.engine.node.NodeState;
+import org.kuali.rice.kew.engine.node.*;
 import org.kuali.rice.kew.engine.node.Process;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.engine.node.RouteNodeUtils;
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
+
+import java.util.*;
 
 
 
@@ -485,7 +466,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     	if (rootBranch != null) {
     	    state = rootBranch.getBranchState(REVOKED_NODE_INSTANCES_STATE_KEY);
     	}
-    	if (state == null || Utilities.isEmpty(state.getValue())) {
+    	if (state == null || org.apache.commons.lang.StringUtils.isEmpty(state.getValue())) {
     		return revokedNodeInstances;
     	}
     	String[] revokedNodes = state.getValue().split(",");

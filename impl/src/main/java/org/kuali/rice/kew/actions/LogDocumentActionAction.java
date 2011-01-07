@@ -16,16 +16,15 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.List;
-
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
+import java.util.List;
 
 
 /**
@@ -72,7 +71,7 @@ public class LogDocumentActionAction extends ActionTakenEvent {
         MDC.put("docId", getRouteHeader().getRouteHeaderId());
 
         String errorMessage = validateActionRules();
-        if (!Utilities.isEmpty(errorMessage)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
 

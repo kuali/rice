@@ -377,7 +377,7 @@ public class DocumentTypeXmlParser {
                 throw xpee;
             }
             String processName = KEWConstants.PRIMARY_PROCESS_NAME;
-            if (Utilities.isEmpty(startName)) {
+            if (org.apache.commons.lang.StringUtils.isEmpty(startName)) {
                 try {
                     startName = (String) getXPath().evaluate("./@" + INITIAL_NODE, processNode, XPathConstants.STRING);
                 } catch (XPathExpressionException xpee) {
@@ -390,7 +390,7 @@ public class DocumentTypeXmlParser {
                     LOG.error("Error obtaining routePath processName attribute", xpee);
                     throw xpee;
                 }
-                if (Utilities.isEmpty(startName)) {
+                if (org.apache.commons.lang.StringUtils.isEmpty(startName)) {
                     throw new XmlException("Invalid routePath: no initialNode attribute defined!");
                 }
             }
@@ -942,7 +942,7 @@ public class DocumentTypeXmlParser {
             Node processNameNode = attributes.getNamedItem(PROCESS_NAME);
             String processName = (processNameNode == null ? null : processNameNode.getNodeValue());
             Process process = new Process();
-            if (Utilities.isEmpty(processName)) {
+            if (org.apache.commons.lang.StringUtils.isEmpty(processName)) {
                 process.setInitial(true);
                 process.setName(KEWConstants.PRIMARY_PROCESS_NAME);
             } else {
@@ -1177,7 +1177,7 @@ public class DocumentTypeXmlParser {
         	exceptionWorkgroupNamespace = Utilities.substituteConfigParameters(
         			(String) getXPath().evaluate("./" + EXCEPTION_GROUP_NAME + "/@" + NAMESPACE, node, XPathConstants.STRING)).trim();
         }
-        if (Utilities.isEmpty(exceptionWorkgroupName) && XmlHelper.pathExists(xpath, "./" + EXCEPTION_WORKGROUP_NAME, node)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(exceptionWorkgroupName) && XmlHelper.pathExists(xpath, "./" + EXCEPTION_WORKGROUP_NAME, node)) {
         	LOG.warn((new StringBuilder(160)).append("Document Type XML is using deprecated element '").append(EXCEPTION_WORKGROUP_NAME).append(
 				"', please use '").append(EXCEPTION_GROUP_NAME).append("' instead.").toString());
         	// for backward compatibility we also need to be able to support exceptionWorkgroupName
@@ -1185,7 +1185,7 @@ public class DocumentTypeXmlParser {
         	exceptionWorkgroupName = Utilities.parseGroupName(exceptionWg);
         	exceptionWorkgroupNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
         }
-        if (Utilities.isEmpty(exceptionWorkgroupName) && XmlHelper.pathExists(xpath, "./" + EXCEPTION_WORKGROUP, node)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(exceptionWorkgroupName) && XmlHelper.pathExists(xpath, "./" + EXCEPTION_WORKGROUP, node)) {
         	LOG.warn((new StringBuilder(160)).append("Document Type XML is using deprecated element '").append(EXCEPTION_WORKGROUP).append(
 				"', please use '").append(EXCEPTION_GROUP_NAME).append("' instead.").toString());
             // for backward compatibility we also need to be able to support exceptionWorkgroup
@@ -1193,13 +1193,13 @@ public class DocumentTypeXmlParser {
             exceptionWorkgroupName = Utilities.parseGroupName(exceptionWg);
             exceptionWorkgroupNamespace = Utilities.parseGroupNamespaceCode(exceptionWg);
         }
-        if (Utilities.isEmpty(exceptionWorkgroupName)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(exceptionWorkgroupName)) {
             if (routeNode.getDocumentType().getDefaultExceptionWorkgroup() != null) {
                 exceptionWorkgroupName = routeNode.getDocumentType().getDefaultExceptionWorkgroup().getGroupName();
                 exceptionWorkgroupNamespace = routeNode.getDocumentType().getDefaultExceptionWorkgroup().getNamespaceCode();
             }
         }
-        if (!Utilities.isEmpty(exceptionWorkgroupName)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(exceptionWorkgroupName)) {
             exceptionWorkgroup = getIdentityManagementService().getGroupByName(exceptionWorkgroupNamespace, exceptionWorkgroupName);
             if (exceptionWorkgroup == null) {
                 throw new GroupNotFoundException("Could not locate exception workgroup with namespace '" + exceptionWorkgroupNamespace + "' and name '" + exceptionWorkgroupName + "'");
@@ -1271,7 +1271,7 @@ public class DocumentTypeXmlParser {
                 nodeType = RoleNode.class.getName();
             }
         }
-        if (Utilities.isEmpty(nodeType)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(nodeType)) {
             throw new XmlException("Could not determine node type for the node named '" + routeNode.getRouteNodeName() + "'");
         }
         routeNode.setNodeType(nodeType);

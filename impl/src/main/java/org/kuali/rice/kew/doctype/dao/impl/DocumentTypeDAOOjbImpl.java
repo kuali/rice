@@ -27,7 +27,6 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.util.Utilities;
 import org.springmodules.orm.ojb.OjbFactoryUtils;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
 
@@ -144,10 +143,10 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 		LOG.debug("climbHierarchy: " + climbHierarchy);
 
 		Criteria crit = new Criteria();
-		if (documentType != null && !Utilities.isEmpty(documentType.getLabel())) {
+		if (documentType != null && !org.apache.commons.lang.StringUtils.isEmpty(documentType.getLabel())) {
 			crit.addLike("UPPER(label)", documentType.getLabel().trim().toUpperCase());
 		}
-		if (documentType != null && !Utilities.isEmpty(documentType.getName())) {
+		if (documentType != null && !org.apache.commons.lang.StringUtils.isEmpty(documentType.getName())) {
 			String docTypeName = documentType.getName();
 			crit.addLike("UPPER(name)", ("%" + docTypeName.trim() + "%").toUpperCase());
 		}
@@ -172,7 +171,7 @@ public class DocumentTypeDAOOjbImpl extends PersistenceBrokerDaoSupport implemen
 				crit.addAndCriteria(parentCrit);
 			}
 		} else {
-			if (documentType != null && !Utilities.isEmpty(documentType.getName())) {
+			if (documentType != null && !org.apache.commons.lang.StringUtils.isEmpty(documentType.getName())) {
 				DocumentType searchDocumentType = findByName(documentType.getName());
 				if ((searchDocumentType != null) && climbHierarchy) {
 					LOG.debug("searchDocumentType: "+ searchDocumentType);

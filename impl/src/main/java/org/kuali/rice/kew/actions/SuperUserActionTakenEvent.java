@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -29,8 +25,10 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -75,7 +73,7 @@ public abstract class SuperUserActionTakenEvent extends ActionTakenEvent {
     public void recordAction() throws InvalidActionTakenException {
 
         String errorMessage = validateActionRules();
-        if (!Utilities.isEmpty(errorMessage)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             LOG.info("User not authorized");
             List<WorkflowServiceErrorImpl> errors = new ArrayList<WorkflowServiceErrorImpl>();
             errors.add(new WorkflowServiceErrorImpl(errorMessage, AUTHORIZATION));

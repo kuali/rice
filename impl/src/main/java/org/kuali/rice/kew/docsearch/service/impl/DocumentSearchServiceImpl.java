@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.docsearch.service.impl;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
@@ -23,6 +24,7 @@ import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.docsearch.dao.DocumentSearchDAO;
@@ -37,7 +39,6 @@ import org.kuali.rice.kew.useroptions.UserOptions;
 import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -210,7 +211,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         if (! validateWorkgroup(criteria.getWorkgroupViewerId(), criteria.getWorkgroupViewerName())) {
             errors.add(new WorkflowServiceErrorImpl("Workgroup Viewer Name is not a workgroup", "docsearch.DocumentSearchService.workgroup.viewer"));
         } else {
-            if (!Utilities.isEmpty(criteria.getWorkgroupViewerName())){
+            if (!org.apache.commons.lang.StringUtils.isEmpty(criteria.getWorkgroupViewerName())){
                 criteria.setWorkgroupViewerName(criteria.getWorkgroupViewerName().trim());
             }
         }
@@ -405,7 +406,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	}
 
     private boolean validateWorkgroup(String id, String workgroupName) {
-        if (Utilities.isEmpty(workgroupName)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(workgroupName)) {
             return true;
         }
         Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(id);
@@ -461,7 +462,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		savedSearchString.append(criteria.getAppDocId() == null || "".equals(criteria.getAppDocId()) ? "" : ",,appDocId=" + criteria.getAppDocId());
 		savedSearchString.append(criteria.getApprover() == null || "".equals(criteria.getApprover()) ? "" : ",,approver=" + criteria.getApprover());
 
-        if (! Utilities.isEmpty(criteria.getDocRouteNodeId()) && !criteria.getDocRouteNodeId().equals("-1")) {
+        if (! org.apache.commons.lang.StringUtils.isEmpty(criteria.getDocRouteNodeId()) && !criteria.getDocRouteNodeId().equals("-1")) {
             RouteNode routeNode = KEWServiceLocator.getRouteNodeService().findRouteNodeById(new Long(criteria.getDocRouteNodeId()));
             // this block will result in NPE if routeNode is not found; is the intent to preserve the requested criteria? if so, then the following line fixes it
             //savedSearchString.append(",,docRouteNodeId=" + (routeNode != null ? routeNode.getRouteNodeId() : criteria.getDocRouteNodeId()));
@@ -573,7 +574,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		for (SearchAttributeCriteriaComponent component : searchableAttributes) {
 			// the following code will remove quickfinder fields
 			if ( (component.getFormKey() == null) ||
-                 (component.getValue() == null && (Utilities.isEmpty(component.getValues()))) ) {
+                 (component.getValue() == null && (CollectionUtils.isEmpty(component.getValues()))) ) {
 				continue;
 			}
 
@@ -584,7 +585,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 				searchableAttributeBuffer.append(component.getFormKey());
 				searchableAttributeBuffer.append(":");
 				searchableAttributeBuffer.append(component.getValue());
-            } else if (!Utilities.isEmpty(component.getValues())) {
+            } else if (!CollectionUtils.isEmpty(component.getValues())) {
                 for (String value : component.getValues()) {
                     if (searchableAttributeBuffer.length() > 0) {
                         searchableAttributeBuffer.append(",");
@@ -612,7 +613,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 //		List searchableAttributes = new ArrayList();
 //		Map criteriaComponentsByKey = new HashMap();
 //
-//		if (!Utilities.isEmpty(documentTypeName)) {
+//		if (!org.apache.commons.lang.StringUtils.isEmpty(documentTypeName)) {
 //			DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
 //			if (docType == null) {
 //				String errorMsg = "Cannot find document type for given name '" + documentTypeName + "'";
@@ -714,7 +715,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 	 */
    private static DocumentType getValidDocumentType(String docTypeName) {
 
-	   if (Utilities.isEmpty(docTypeName)) {
+	   if (org.apache.commons.lang.StringUtils.isEmpty(docTypeName)) {
 			return null;
 		}
    		DocumentType dTypeCriteria = new DocumentType();
@@ -740,7 +741,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
    }
 
 	private DocumentType getValidDocumentTypeOld(String documentTypeFullName) {
-		if (Utilities.isEmpty(documentTypeFullName)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(documentTypeFullName)) {
 			return null;
 		}
 		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeFullName);
@@ -755,7 +756,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		DocSearchCriteriaDTO criteria = new DocSearchCriteriaDTO();
 		if (savedSearch != null) {
 			String docTypeFullName = getOptionCriteriaField(savedSearch, "docTypeFullName");
-			if (!Utilities.isEmpty(docTypeFullName)) {
+			if (!org.apache.commons.lang.StringUtils.isEmpty(docTypeFullName)) {
 				criteria = new DocSearchCriteriaDTO();
 			}
 			criteria.setDocTypeFullName(getOptionCriteriaField(savedSearch, "docTypeFullName"));

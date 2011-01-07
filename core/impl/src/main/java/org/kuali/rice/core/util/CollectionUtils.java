@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.util;
 
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 
@@ -31,6 +32,22 @@ public final class CollectionUtils {
 	private CollectionUtils() {
 		throw new UnsupportedOperationException("do not call");
 	}
+
+    /**
+     * Performs a "brute force" comparison of collections by testing whether the collections contain each other.
+     * This circumvents any particular uniqueness or ordering constraints on the collections
+     * (for instance, lists that are unordered but contain the same elements, where a hashset would not suffice
+     * for comparison purposes because it enforces element uniqueness)
+     */
+    public static boolean collectionsEquivalent(Collection<?> a, Collection<?> b) {
+        if (a == null && b == null) {
+			return true;
+		}
+        if (a == null ^ b == null) {
+			return false;
+		}
+        return a.containsAll(b) && b.containsAll(a);
+    }
 	
 	/**
 	 * Creates an Iterable view of a Iterator.  This allows Iterators to be used in a foreach loop.

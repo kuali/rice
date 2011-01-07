@@ -23,7 +23,6 @@ import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.XmlRenderer;
 
 import java.io.StringReader;
@@ -65,7 +64,7 @@ public class RuleAttributeXmlExporter implements XmlExporter {
         renderer.renderTextElement(attributeElement, DESCRIPTION, ruleAttribute.getDescription());
         renderer.renderTextElement(attributeElement, TYPE, ruleAttribute.getType());
         renderer.renderTextElement(attributeElement, SERVICE_NAMESPACE, ruleAttribute.getServiceNamespace());
-        if (!Utilities.isEmpty(ruleAttribute.getXmlConfigData())) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(ruleAttribute.getXmlConfigData())) {
             try {
                 Document configDoc = new SAXBuilder().build(new StringReader(ruleAttribute.getXmlConfigData()));
                 XmlHelper.propagateNamespace(configDoc.getRootElement(), RULE_ATTRIBUTE_NAMESPACE);

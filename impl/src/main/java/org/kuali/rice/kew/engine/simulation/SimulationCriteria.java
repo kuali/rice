@@ -16,12 +16,11 @@
  */
 package org.kuali.rice.kew.engine.simulation;
 
+import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kim.bo.Person;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.Person;
 
 
 /**
@@ -132,7 +131,7 @@ public class SimulationCriteria {
 	}
 
 	public boolean isDocumentTypeSimulation() {
-		return !Utilities.isEmpty(documentTypeName);
+		return !org.apache.commons.lang.StringUtils.isEmpty(documentTypeName);
 	}
 
 	public List<SimulationActionToTake> getActionsToTake() {

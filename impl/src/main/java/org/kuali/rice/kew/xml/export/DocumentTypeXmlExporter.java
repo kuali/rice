@@ -35,7 +35,6 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
 
@@ -166,7 +165,7 @@ public class DocumentTypeXmlExporter implements XmlExporter {
     }
 
     private void exportSecurity(Element parent, String securityXML) {
-      if (!Utilities.isEmpty(securityXML)) {
+      if (!org.apache.commons.lang.StringUtils.isEmpty(securityXML)) {
         try {
           org.jdom.Document securityDoc = new SAXBuilder().build(new StringReader(securityXML));
           XmlHelper.propagateNamespace(securityDoc.getRootElement(), DOCUMENT_TYPE_NAMESPACE);

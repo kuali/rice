@@ -16,28 +16,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -47,8 +25,17 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+
+import javax.persistence.*;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 /**
@@ -110,7 +97,7 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
     }
 
     private Timestamp convertStringToTimestamp(String value) {
-        if (Utilities.isEmpty(value)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(value)) {
             return null;
         } else {
             Timestamp t;

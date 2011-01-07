@@ -16,23 +16,17 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.cxf.common.util.StringUtils;
-import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
-import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
-import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.actionrequest.*;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
+import java.util.List;
 
 
 /**
@@ -71,12 +65,12 @@ public class AdHocAction extends ActionTakenEvent {
 
 	public void recordAction() throws InvalidActionTakenException {
 		String errorMessage = validateActionRules();
-        if (!Utilities.isEmpty(errorMessage)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(errorMessage)) {
             throw new InvalidActionTakenException(errorMessage);
         }
 		List targetNodes = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(getRouteHeaderId());
         String error = adhocRouteAction(targetNodes, false);
-        if (!Utilities.isEmpty(error)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(error)) {
             throw new InvalidActionTakenException(error);
         }
     }

@@ -25,7 +25,6 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
-import org.kuali.rice.kew.util.Utilities;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -140,10 +139,10 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 		LOG.debug("climbHierarchy: " + climbHierarchy);
 
 		Criteria crit = new Criteria(DocumentType.class.getName());
-		if (documentType != null && !Utilities.isEmpty(documentType.getLabel())) {
+		if (documentType != null && !org.apache.commons.lang.StringUtils.isEmpty(documentType.getLabel())) {
 			crit.like("UPPER(__JPA_ALIAS[[0]]__.label)", documentType.getLabel().trim().toUpperCase());
 		}
-		if (documentType != null && !Utilities.isEmpty(documentType.getName())) {
+		if (documentType != null && !org.apache.commons.lang.StringUtils.isEmpty(documentType.getName())) {
 			String docTypeName = documentType.getName();
 			crit.like("UPPER(__JPA_ALIAS[[0]]__.name)", ("%" + docTypeName.trim() + "%").toUpperCase());
 		}
@@ -168,7 +167,7 @@ public class DocumentTypeDAOJpaImpl implements DocumentTypeDAO {
 				crit.and(parentCrit);
 			}
 		} else {
-			if (documentType != null && !Utilities.isEmpty(documentType.getName())) {
+			if (documentType != null && !org.apache.commons.lang.StringUtils.isEmpty(documentType.getName())) {
 				DocumentType searchDocumentType = findByName(documentType.getName());
 				if ((searchDocumentType != null) && climbHierarchy) {
 					LOG.debug("searchDocumentType: "+ searchDocumentType);

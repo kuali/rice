@@ -15,19 +15,11 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import java.sql.Date;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.lookupable.MyColumns;
 import org.kuali.rice.kew.rule.OddSearchAttribute;
@@ -40,7 +32,6 @@ import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -69,6 +60,9 @@ import org.kuali.rice.kns.web.ui.Column;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.sql.Date;
+import java.util.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -241,14 +235,14 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             docTypeSearchName = "%" + docTypeSearchName.trim() + "%";
         }
 
-        if (!Utilities.isEmpty(networkIdParam)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(networkIdParam)) {
         	Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(networkIdParam);
         	if (person != null) {
         		workflowId = person.getPrincipalId();
         	}
         }
         
-        if (!Utilities.isEmpty(groupIdParam) || !Utilities.isEmpty(groupNameParam)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(groupIdParam) || !org.apache.commons.lang.StringUtils.isEmpty(groupNameParam)) {
             Group group = null;
             if (groupIdParam != null && !"".equals(groupIdParam)) {
                 group = getIdentityManagementService().getGroup(groupIdParam.trim());
@@ -351,7 +345,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             }
         }
 
-        if (!Utilities.isEmpty(ruleDescription)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(ruleDescription)) {
             ruleDescription = ruleDescription.replace('*', '%');
             ruleDescription = "%" + ruleDescription.trim() + "%";
         }
@@ -367,7 +361,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         while (rules.hasNext()) {
             RuleBaseValues record = (RuleBaseValues) rules.next();
 
-            if (Utilities.isEmpty(record.getDescription())) {
+            if (org.apache.commons.lang.StringUtils.isEmpty(record.getDescription())) {
             	
                 record.setDescription("");
             }
@@ -426,24 +420,24 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         String groupNamespace = (String)fieldValues.get(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
         String principalName = (String)fieldValues.get(PERSON_REVIEWER_PROPERTY_NAME);
 
-        if (Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(groupName) && !org.apache.commons.lang.StringUtils.isEmpty(groupNamespace)) {
             String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAME_PROPERTY_NAME);
             GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
         }
 
-        if  (!Utilities.isEmpty(groupName) && Utilities.isEmpty(groupNamespace)) {
+        if  (!org.apache.commons.lang.StringUtils.isEmpty(groupName) && org.apache.commons.lang.StringUtils.isEmpty(groupNamespace)) {
             String attributeLabel = getDataDictionaryService().getAttributeLabel(getBusinessObjectClass(), GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME);
             GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAMESPACE_PROPERTY_NAME, RiceKeyConstants.ERROR_REQUIRED, attributeLabel);
         }
 
-        if  (!Utilities.isEmpty(groupName) && !Utilities.isEmpty(groupNamespace)) {
+        if  (!org.apache.commons.lang.StringUtils.isEmpty(groupName) && !org.apache.commons.lang.StringUtils.isEmpty(groupNamespace)) {
             Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
             }
         }
 
-        if  (!Utilities.isEmpty(principalName)) {
+        if  (!org.apache.commons.lang.StringUtils.isEmpty(principalName)) {
             Person person = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName);
             if (person == null) {
                 GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);

@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.rule.web;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
@@ -25,10 +22,12 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * This class handles Actions for the DisbursementVoucher.
@@ -67,7 +66,7 @@ public class RuleAction extends KewKualiAction {
     }
 
     protected boolean validateCreateRule(RuleForm form) {
-        if (Utilities.isEmpty(form.getRuleTemplateName())) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(form.getRuleTemplateName())) {
             GlobalVariables.getMessageMap().putError(RULE_TEMPLATE_NAME_PROPERTY, RULE_TEMPLATE_ERROR);
         } else {
             RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(form.getRuleTemplateName().trim());
@@ -76,7 +75,7 @@ public class RuleAction extends KewKualiAction {
             }
         }
 
-        if (Utilities.isEmpty(form.getDocumentTypeName())) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(form.getDocumentTypeName())) {
             GlobalVariables.getMessageMap().putError(DOC_TYPE_NAME_PROPERTY, DOCUMENT_TYPE_ERROR);
         } else {
             DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName(form.getDocumentTypeName());

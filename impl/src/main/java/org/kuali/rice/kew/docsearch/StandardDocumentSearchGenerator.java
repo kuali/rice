@@ -17,24 +17,7 @@
 package org.kuali.rice.kew.docsearch;
 
 
-import java.math.BigDecimal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
-
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -54,7 +37,6 @@ import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -63,12 +45,15 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.SQLUtils;
+import org.kuali.rice.kns.util.*;
+
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
 /**
@@ -168,7 +153,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     }
 
     public DocumentType getValidDocumentType(String documentTypeFullName) {
-        if (!Utilities.isEmpty(documentTypeFullName)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(documentTypeFullName)) {
             DocumentType documentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeFullName);
             if (documentType == null) {
                 throw new RuntimeException("No Valid Document Type Found for document type name '" + documentTypeFullName + "'");
@@ -188,7 +173,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         if (searchableAttributes != null && !searchableAttributes.isEmpty()) {
             Map<String, Object> paramMap = new HashMap<String, Object>();
             for (SearchAttributeCriteriaComponent component : searchableAttributes) {
-                if (!Utilities.isEmpty(component.getValues())) {
+                if (!CollectionUtils.isEmpty(component.getValues())) {
                     paramMap.put(component.getFormKey(),component.getValues());
                 } else {
                     paramMap.put(component.getFormKey(),component.getValue());
@@ -199,7 +184,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 for (SearchableAttribute searchableAttribute : documentType.getSearchableAttributes()) {
                     List<WorkflowAttributeValidationError> searchableErrors = validateSearchableAttribute(
                             searchableAttribute, paramMap, DocSearchUtils.getDocumentSearchContext("", documentType.getName(), ""));
-                    if(!Utilities.isEmpty(searchableErrors)){
+                    if(!CollectionUtils.isEmpty(searchableErrors)){
                         for (WorkflowAttributeValidationError error : searchableErrors) {
 	                    	if (error.getMessageMap() != null && error.getMessageMap().hasErrors()) {
 	                    		// In order to pass the map along we've added a member to the WorkflowServiceErrorImpl
@@ -698,7 +683,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             } else if(criteriaComponent.isAllowInlineRange()) {
                 whereSqlTemp.append(constructWhereClauseDateElement(initialClauseStarter, queryTableColumnName, criteriaComponent.isSearchInclusive(), false, attributeValueSearched, criteriaComponent.isAllowInlineRange()));
             } else {
-                if (!Utilities.isEmpty(attributeValuesSearched)) {
+                if (!CollectionUtils.isEmpty(attributeValuesSearched)) {
                     // for a multivalue date search we need multiple ranges entered
                     whereSqlTemp.append(initialClauseStarter).append(" (");
                     boolean firstValue = true;
@@ -731,7 +716,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             }
             // apply wildcarding if wildcard character is specified
             // after conversion of doc search to lookup, wildcards are always allowed
-            if (!Utilities.isEmpty(attributeValuesSearched)) {
+            if (!CollectionUtils.isEmpty(attributeValuesSearched)) {
                 List<String> newList = new ArrayList<String>();
                 for (String attributeValueEntered : attributeValuesSearched) {
                     newList.add(attributeValueEntered.trim().replace('*', DATABASE_WILDCARD_CHARACTER));
@@ -751,7 +736,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 suffixToUse = suffix.toString() + ")";
             }
 
-            if (!Utilities.isEmpty(attributeValuesSearched)) {
+            if (!CollectionUtils.isEmpty(attributeValuesSearched)) {
                 // for a multivalue search we need multiple 'or' clause statements entered
                 whereSqlTemp.append(initialClauseStarter).append(" (");
                 boolean firstValue = true;
@@ -1054,9 +1039,9 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             for (KeyValueSort existingData : existingRow.getSearchableAttributes()) {
                 if (existingData.getKey().equals(newData.getKey())) {
                     String existingRowValue = existingData.getValue();
-                    if (!Utilities.isEmpty(newRowValue)) {
+                    if (!org.apache.commons.lang.StringUtils.isEmpty(newRowValue)) {
                         String valueToSet = "";
-                        if (Utilities.isEmpty(existingRowValue)) {
+                        if (org.apache.commons.lang.StringUtils.isEmpty(existingRowValue)) {
                             valueToSet = newRowValue;
                         } else {
                             valueToSet = existingRowValue + "<br>" + newRowValue;
@@ -1161,7 +1146,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
                 while (attributeResultSet.next()) {
                     searchAttValue.setSearchableAttributeKey(attributeResultSet.getString("KEY_CD"));
                     searchAttValue.setupAttributeValue(attributeResultSet, "VAL");
-                    if ( (!Utilities.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
+                    if ( (!org.apache.commons.lang.StringUtils.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
                         docCriteriaDTO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
                     }
                 }
@@ -1189,7 +1174,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
             String prefixName = searchAttValue.getAttributeDataType().toUpperCase();
             searchAttValue.setSearchableAttributeKey(rs.getString(prefixName + "_KEY"));
             searchAttValue.setupAttributeValue(rs, prefixName + "_VALUE");
-            if ( (!Utilities.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
+            if ( (!org.apache.commons.lang.StringUtils.isEmpty(searchAttValue.getSearchableAttributeKey())) && (searchAttValue.getSearchableAttributeValue() != null) ) {
             docCriteriaDTO.addSearchableAttribute(new KeyValueSort(searchAttValue.getSearchableAttributeKey(),searchAttValue.getSearchableAttributeDisplayValue(),searchAttValue.getSearchableAttributeValue(),searchAttValue));
             }
         }
@@ -1511,7 +1496,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
 
     public String getWorkgroupViewerSql(String id, String workgroupName, String whereClausePredicatePrefix) {
         String sql = "";
-        if (!Utilities.isEmpty(workgroupName)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(workgroupName)) {
             Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(id);
             sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = " + group.getGroupId();
         }
@@ -1728,7 +1713,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         List<SearchAttributeCriteriaComponent> newAttributes = new ArrayList<SearchAttributeCriteriaComponent>();
         for (SearchAttributeCriteriaComponent component : criteria.getSearchableAttributes()) {
             if (component != null) {
-                if ( (StringUtils.isNotBlank(component.getValue())) || (!Utilities.isEmpty(component.getValues())) ) {
+                if ( (StringUtils.isNotBlank(component.getValue())) || (!CollectionUtils.isEmpty(component.getValues())) ) {
                     newAttributes.add(component);
                 }
             }

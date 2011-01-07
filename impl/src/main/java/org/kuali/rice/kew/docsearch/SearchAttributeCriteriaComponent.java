@@ -16,11 +16,11 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang.StringUtils;
+
 import java.io.Serializable;
 import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.Utilities;
 
 
 /**
@@ -107,7 +107,7 @@ public class SearchAttributeCriteriaComponent implements Serializable {
 	}
     
     public boolean isNonBlankValueGiven() {
-        return ( (StringUtils.isNotBlank(getValue())) || (!Utilities.isEmpty(getValues())) );
+        return ( (StringUtils.isNotBlank(getValue())) || (!CollectionUtils.isEmpty(getValues())) );
     }
 
 	/**

@@ -549,7 +549,7 @@ public class ActionRequestServiceImpl implements ActionRequestService {
         Collection documentsAffected = getRouteHeaderService().findPendingByResponsibilityIds(responsibilityIds);
         String cacheWaitValue = Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.RULE_DETAIL_TYPE, KEWConstants.RULE_CACHE_REQUEUE_DELAY);
         Long cacheWait = KEWConstants.DEFAULT_CACHE_REQUEUE_WAIT_TIME;
-        if (!Utilities.isEmpty(cacheWaitValue)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(cacheWaitValue)) {
             try {
                 cacheWait = Long.valueOf(cacheWaitValue);
             } catch (NumberFormatException e) {

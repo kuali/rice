@@ -16,32 +16,24 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 
 /**
@@ -289,10 +281,10 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
         if (o == null) return false;
         if (!(o instanceof RuleResponsibility)) return false;
         RuleResponsibility pred = (RuleResponsibility) o;
-        return Utilities.equals(ruleResponsibilityName, pred.getRuleResponsibilityName()) &&
-               Utilities.equals(actionRequestedCd, pred.getActionRequestedCd()) &&
-               Utilities.equals(priority, pred.getPriority()) &&
-               Utilities.equals(approvePolicy, pred.getApprovePolicy());
+        return ObjectUtils.equals(ruleResponsibilityName, pred.getRuleResponsibilityName()) &&
+               ObjectUtils.equals(actionRequestedCd, pred.getActionRequestedCd()) &&
+               ObjectUtils.equals(priority, pred.getPriority()) &&
+               ObjectUtils.equals(approvePolicy, pred.getApprovePolicy());
     }
     
     /**

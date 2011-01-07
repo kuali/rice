@@ -16,10 +16,10 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectBase;
 import org.kuali.rice.kns.web.ui.Field;
@@ -109,12 +109,12 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
 	 * @see org.kuali.rice.kew.docsearch.DocumentRouteHeaderEBO#isStandardCriteriaConsideredEmpty(boolean)
 	 */
     public boolean isStandardCriteriaConsideredEmpty(boolean excludeDocumentTypeName) {
-        boolean docTypeNameIsEmpty = Utilities.isEmpty(this.docTypeFullName);
-        boolean standardFieldsAreEmpty = ((Utilities.isEmpty(routeHeaderId)) &&
-        /* (Utilities.isEmpty(overrideInd)) && */
-        (Utilities.isEmpty(initiator)) && (Utilities.isEmpty(workgroupViewerName)) &&
-        /* (Utilities.isEmpty(docRouteNodeLogic)) && */
-        (Utilities.isEmpty(docVersion)) && (Utilities.isEmpty(fromDateCreated)) && (Utilities.isEmpty(toDateCreated)) && (Utilities.isEmpty(appDocId)) && (Utilities.isEmpty(approver)) && (Utilities.isEmpty(docRouteNodeId)) && (Utilities.isEmpty(docRouteStatus)) && (Utilities.isEmpty(docTitle)) && (Utilities.isEmpty(viewer)) && (Utilities.isEmpty(fromDateApproved)) && (Utilities.isEmpty(toDateApproved)) && (Utilities.isEmpty(fromDateFinalized)) && (Utilities.isEmpty(toDateFinalized)) && (Utilities.isEmpty(fromDateLastModified)) && (Utilities.isEmpty(toDateLastModified)));
+        boolean docTypeNameIsEmpty = org.apache.commons.lang.StringUtils.isEmpty(this.docTypeFullName);
+        boolean standardFieldsAreEmpty = ((org.apache.commons.lang.StringUtils.isEmpty(routeHeaderId)) &&
+        /* (org.apache.commons.lang.StringUtils.isEmpty(overrideInd)) && */
+        (org.apache.commons.lang.StringUtils.isEmpty(initiator)) && (org.apache.commons.lang.StringUtils.isEmpty(workgroupViewerName)) &&
+        /* (org.apache.commons.lang.StringUtils.isEmpty(docRouteNodeLogic)) && */
+        (org.apache.commons.lang.StringUtils.isEmpty(docVersion)) && (org.apache.commons.lang.StringUtils.isEmpty(fromDateCreated)) && (org.apache.commons.lang.StringUtils.isEmpty(toDateCreated)) && (org.apache.commons.lang.StringUtils.isEmpty(appDocId)) && (org.apache.commons.lang.StringUtils.isEmpty(approver)) && (org.apache.commons.lang.StringUtils.isEmpty(docRouteNodeId)) && (org.apache.commons.lang.StringUtils.isEmpty(docRouteStatus)) && (org.apache.commons.lang.StringUtils.isEmpty(docTitle)) && (org.apache.commons.lang.StringUtils.isEmpty(viewer)) && (org.apache.commons.lang.StringUtils.isEmpty(fromDateApproved)) && (org.apache.commons.lang.StringUtils.isEmpty(toDateApproved)) && (org.apache.commons.lang.StringUtils.isEmpty(fromDateFinalized)) && (org.apache.commons.lang.StringUtils.isEmpty(toDateFinalized)) && (org.apache.commons.lang.StringUtils.isEmpty(fromDateLastModified)) && (org.apache.commons.lang.StringUtils.isEmpty(toDateLastModified)));
         if (excludeDocumentTypeName) {
             return standardFieldsAreEmpty;
         } else {
@@ -423,7 +423,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     }
 
     private String safeTrimmer(String value) {
-        if (!Utilities.isEmpty(value)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(value)) {
             return value.trim();
         }
         return value;
@@ -504,7 +504,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
         Set<String> alreadyAddedRangeAttributes = new HashSet<String>();
         for (SearchAttributeCriteriaComponent searchableAttribute : searchableAttributes)
         {
-            if (!Utilities.isEmpty(searchableAttribute.getValue()))
+            if (!org.apache.commons.lang.StringUtils.isEmpty(searchableAttribute.getValue()))
             {
                 // single value entered
                 if (searchableAttribute.isRangeSearch())
@@ -540,7 +540,7 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
                 {
                     abbreviatedString.append(searchableAttribute.getSavedKey()).append("=").append(searchableAttribute.getValue()).append(";");
                 }
-            } else if (!Utilities.isEmpty(searchableAttribute.getValues()))
+            } else if (!CollectionUtils.isEmpty(searchableAttribute.getValues()))
             {
                 // multiple values entered
                 StringBuffer tempAbbreviatedString = new StringBuffer();

@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import org.kuali.rice.kew.util.Utilities;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -43,7 +41,7 @@ public class StandardDocSearchCriteriaFieldContainer implements java.io.Serializ
 	public StandardDocSearchCriteriaFieldContainer() {}
 	
 	public StandardDocSearchCriteriaFieldContainer(String labelKey, StandardSearchCriteriaField field) {
-		if (!Utilities.isEmpty(labelKey)) {
+		if (!org.apache.commons.lang.StringUtils.isEmpty(labelKey)) {
 			this.labelMessageKey = labelKey;
 		}
 		this.fieldKey = field.getKey();
@@ -51,10 +49,10 @@ public class StandardDocSearchCriteriaFieldContainer implements java.io.Serializ
 	}
 
 	public StandardDocSearchCriteriaFieldContainer(String fieldKey, String labelKey, List<StandardSearchCriteriaField> fields) {
-		if (!Utilities.isEmpty(labelKey)) {
+		if (!org.apache.commons.lang.StringUtils.isEmpty(labelKey)) {
 			this.labelMessageKey = labelKey;
 		}
-		if (!Utilities.isEmpty(fieldKey)) {
+		if (!org.apache.commons.lang.StringUtils.isEmpty(fieldKey)) {
 			this.fieldKey = fieldKey;
 		}
 		this.fields = fields;

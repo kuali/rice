@@ -122,18 +122,6 @@ public final class Utilities {
         }
     }
 
-    public static boolean isEmpty(String value) {
-        return value == null || value.trim().equals("");
-    }
-
-    public static boolean isEmpty(Collection collection) {
-        return collection == null || collection.isEmpty();
-    }
-
-    public static boolean equals (Object a, Object b) {
-        return ((a == null && b == null) || (a != null && a.equals(b)));
-    }
-
     /**
      *
      *	Consider moving out of this class if this bugs
@@ -211,22 +199,6 @@ public final class Utilities {
         } catch (Exception ex) {
             return false;
         }
-    }
-
-    /**
-     * Performs a "brute force" comparison of collections by testing whether the collections contain each other.
-     * This circuments any particular uniqueness or ordering constraints on the collections
-     * (for instance, lists that are unordered but contain the same elements, where a hashset would not suffice
-     * for comparison purposes because it enforces element uniqueness)
-     */
-    public static boolean collectionsEquivalent(Collection a, Collection b) {
-        if (a == null && b == null) {
-			return true;
-		}
-        if (a == null ^ b == null) {
-			return false;
-		}
-        return a.containsAll(b) && b.containsAll(a);
     }
 
     public static String getIpNumber() {

@@ -15,33 +15,8 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -54,7 +29,6 @@ import org.kuali.rice.kew.actionlist.DefaultCustomActionListAttribute;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -78,8 +52,12 @@ import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 
@@ -805,7 +783,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
      * @throws WorkflowException
      */
     public void setRouteHeaderData(RouteHeaderDTO routeHeaderVO) throws WorkflowException {
-        if (!Utilities.equals(getDocTitle(), routeHeaderVO.getDocTitle())) {
+        if (!ObjectUtils.equals(getDocTitle(), routeHeaderVO.getDocTitle())) {
         	KEWServiceLocator.getActionListService().updateActionItemsForTitleChange(getRouteHeaderId(), routeHeaderVO.getDocTitle());
         }
         setDocTitle(routeHeaderVO.getDocTitle());
@@ -842,7 +820,7 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
             Iterator it = branchState.iterator();
             while (it.hasNext()) {
                 BranchState state = (BranchState) it.next();
-                if (Utilities.equals(state.getKey(), BranchState.VARIABLE_PREFIX + name)) {
+                if (ObjectUtils.equals(state.getKey(), BranchState.VARIABLE_PREFIX + name)) {
                     return state;
                 }
             }

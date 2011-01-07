@@ -18,8 +18,6 @@ package org.kuali.rice.kew.actions.asyncservices;
 
 import java.io.Serializable;
 
-import org.kuali.rice.kew.util.Utilities;
-
 
 /**
  * Used for mass actions from the action list.
@@ -38,7 +36,7 @@ public class ActionInvocation implements Serializable {
 		if (actionItemId == null) {
 			throw new IllegalArgumentException("Action Item Id cannot be null.");
 		}
-		if (Utilities.isEmpty(actionCode)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(actionCode)) {
 			throw new IllegalArgumentException("Action Code cannot be empty.");
 		}
 		this.actionItemId = actionItemId;

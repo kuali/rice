@@ -20,6 +20,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.kuali.rice.core.util.CollectionUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -1126,7 +1127,7 @@ public class RuleServiceImpl implements RuleService {
                 if (parentRulesDocTypeName == null) {
                     parentRulesDocTypeName = currentDocTypeName;
                 } else {
-                    if (!Utilities.equals(currentDocTypeName, parentRulesDocTypeName)) {
+                    if (!ObjectUtils.equals(currentDocTypeName, parentRulesDocTypeName)) {
                         throw new RuntimeException("There are multiple rules being routed and they have different document type definitions!  " + parentRulesDocTypeName + " and " + currentDocTypeName);
                     }
                 }
@@ -1401,12 +1402,12 @@ public class RuleServiceImpl implements RuleService {
         Iterator it = rules.iterator();
         while (it.hasNext()) {
             RuleBaseValues r = (RuleBaseValues) it.next();
-            if (Utilities.equals(rule.getActiveInd(), r.getActiveInd()) &&
-        	Utilities.equals(docTypeName, r.getDocTypeName()) &&
-                    Utilities.equals(ruleTemplateName, r.getRuleTemplateName()) &&
-                    Utilities.equals(rule.getRuleExpressionDef(), r.getRuleExpressionDef()) &&
-                    Utilities.collectionsEquivalent(responsibilities, r.getResponsibilities()) &&
-                    Utilities.collectionsEquivalent(extensions, r.getRuleExtensions())) {
+            if (ObjectUtils.equals(rule.getActiveInd(), r.getActiveInd()) &&
+        	ObjectUtils.equals(docTypeName, r.getDocTypeName()) &&
+                    ObjectUtils.equals(ruleTemplateName, r.getRuleTemplateName()) &&
+                    ObjectUtils.equals(rule.getRuleExpressionDef(), r.getRuleExpressionDef()) &&
+                    CollectionUtils.collectionsEquivalent(responsibilities, r.getResponsibilities()) &&
+                    CollectionUtils.collectionsEquivalent(extensions, r.getRuleExtensions())) {
                 // we have a duplicate
                 return r.getRuleBaseValuesId();
             }

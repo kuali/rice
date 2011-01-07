@@ -62,7 +62,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -286,7 +285,7 @@ public class DTOConverter {
             Element applicationContentElement = standardDocContent.getApplicationContent();
             if (documentContentVO.getApplicationContent() != null) {
                 // application content has changed
-                if (!Utilities.isEmpty(documentContentVO.getApplicationContent())) {
+                if (!org.apache.commons.lang.StringUtils.isEmpty(documentContentVO.getApplicationContent())) {
                     applicationContentElement = document.createElement(KEWConstants.APPLICATION_CONTENT_ELEMENT);
                     XmlHelper.appendXml(applicationContentElement, documentContentVO.getApplicationContent());
                 } else {
@@ -316,7 +315,7 @@ public class DTOConverter {
         Element contentSectionElement = existingAttributeElement;
         // if they've updated the content, we're going to re-build the content section element from scratch
         if (content != null) {
-            if (!Utilities.isEmpty(content)) {
+            if (!org.apache.commons.lang.StringUtils.isEmpty(content)) {
                 contentSectionElement = document.createElement(elementName);
                 // if they didn't merely clear the content, let's build the content section element by combining the children
                 // of the incoming XML content

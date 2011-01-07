@@ -15,27 +15,15 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
@@ -45,6 +33,17 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DocumentTypeSecurity implements Serializable {
@@ -74,7 +73,7 @@ public class DocumentTypeSecurity implements Serializable {
   public DocumentTypeSecurity(String standardServiceNamespace, String documentTypeSecurityXml)
   {
     try {
-      if (Utilities.isEmpty(documentTypeSecurityXml)) {
+      if (org.apache.commons.lang.StringUtils.isEmpty(documentTypeSecurityXml)) {
         return;
       }
 
@@ -82,7 +81,7 @@ public class DocumentTypeSecurity implements Serializable {
       Element securityElement = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource).getDocumentElement();
 
       String active = (String) xpath.evaluate("./@active", securityElement, XPathConstants.STRING);
-      if (Utilities.isEmpty(active) || "true".equals(active.toLowerCase())) {
+      if (org.apache.commons.lang.StringUtils.isEmpty(active) || "true".equals(active.toLowerCase())) {
         // true is the default
         this.setActive(Boolean.valueOf(true));
       }
@@ -95,7 +94,7 @@ public class DocumentTypeSecurity implements Serializable {
       if (initiatorNodes != null && initiatorNodes.getLength()>0) {
         Node initiatorNode = initiatorNodes.item(0);
         String value = initiatorNode.getTextContent();
-        if (Utilities.isEmpty(value) || value.toLowerCase().equals("true")) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(value) || value.toLowerCase().equals("true")) {
           this.setInitiatorOk(Boolean.valueOf(true));
         }
         else {
@@ -108,7 +107,7 @@ public class DocumentTypeSecurity implements Serializable {
       if (routeLogAuthNodes != null && routeLogAuthNodes.getLength()>0) {
         Node routeLogAuthNode = routeLogAuthNodes.item(0);
         String value = routeLogAuthNode.getTextContent();
-        if (Utilities.isEmpty(value) || value.toLowerCase().equals("true")) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(value) || value.toLowerCase().equals("true")) {
           this.routeLogAuthenticatedOk = Boolean.valueOf(true);
         }
         else {
@@ -122,7 +121,7 @@ public class DocumentTypeSecurity implements Serializable {
           Node searchableAttributeNode = searchableAttributeNodes.item(i);
           String name = (String) xpath.evaluate("./@name", searchableAttributeNode, XPathConstants.STRING);
           String idType = (String) xpath.evaluate("./@idType", searchableAttributeNode, XPathConstants.STRING);
-          if (!Utilities.isEmpty(name) && !Utilities.isEmpty(idType)) {
+          if (!org.apache.commons.lang.StringUtils.isEmpty(name) && !org.apache.commons.lang.StringUtils.isEmpty(idType)) {
             KeyValue searchableAttribute = new ConcreteKeyValue(name, idType);
             searchableAttributes.add(searchableAttribute);
           }
@@ -135,7 +134,7 @@ public class DocumentTypeSecurity implements Serializable {
         for (int i = 0; i < workgroupNodes.getLength(); i++) {
           Node workgroupNode = workgroupNodes.item(i);
           String value = workgroupNode.getTextContent().trim();
-          if (!Utilities.isEmpty(value)) {
+          if (!org.apache.commons.lang.StringUtils.isEmpty(value)) {
         	value = Utilities.substituteConfigParameters(value);
             String namespaceCode = Utilities.parseGroupNamespaceCode(value);
             String groupName = Utilities.parseGroupName(value);
@@ -154,7 +153,7 @@ public class DocumentTypeSecurity implements Serializable {
           Node groupNode = groupNodes.item(i);
           if (groupNode.getNodeType() == Node.ELEMENT_NODE) {
         	String groupName = groupNode.getTextContent().trim();
-            if (!Utilities.isEmpty(groupName)) {
+            if (!org.apache.commons.lang.StringUtils.isEmpty(groupName)) {
               groupName = Utilities.substituteConfigParameters(groupName).trim();
               String namespaceCode = Utilities.substituteConfigParameters(((Element) groupNode).getAttribute(XmlConstants.NAMESPACE)).trim();
               Group groupObject = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
@@ -184,7 +183,7 @@ public class DocumentTypeSecurity implements Serializable {
           if (StringUtils.isBlank(allowedValue)) {
         	  allowedValue = "true";
           }
-          if (!Utilities.isEmpty(value)) {
+          if (!org.apache.commons.lang.StringUtils.isEmpty(value)) {
         	  if (Boolean.parseBoolean(allowedValue)) {
         		  allowedRoles.add(value);
         	  } else {

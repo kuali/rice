@@ -23,7 +23,6 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -125,17 +124,17 @@ public class RuleAttributeXmlParser {
 				serviceNamespace = childNode.getFirstChild().getNodeValue();
 			}
 		}
-		if (Utilities.isEmpty(name)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(name)) {
 			throw new XmlException("RuleAttribute must have a name");
 		}
-		if (Utilities.isEmpty(className)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(className)) {
 			throw new XmlException("RuleAttribute must have a className");
 		}
-		if (Utilities.isEmpty(label)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(label)) {
 			LOG.warn("Label empty defaulting to name");
 			label = name;
 		}
-		if (Utilities.isEmpty(type)) {
+		if (org.apache.commons.lang.StringUtils.isEmpty(type)) {
 			LOG.debug("No type specified, default to " + KEWConstants.RULE_ATTRIBUTE_TYPE);
 			type = KEWConstants.RULE_ATTRIBUTE_TYPE;
 			//throw new XmlException("RuleAttribute must have an attribute type");

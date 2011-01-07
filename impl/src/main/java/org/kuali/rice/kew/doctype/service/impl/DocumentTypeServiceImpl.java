@@ -16,12 +16,7 @@
  */
 package org.kuali.rice.kew.doctype.service.impl;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
+import org.apache.commons.collections.CollectionUtils;
 import org.jdom.Element;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.dao.DocumentTypeDAO;
@@ -35,10 +30,15 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.DocumentTypeXmlParser;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -304,7 +304,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         		}
     		}
     		// check to see that no current documents exist in database
-    		if (!Utilities.isEmpty(documentTypeDAO.findAllCurrentByName(documentType.getName()))) {
+    		if (!CollectionUtils.isEmpty(documentTypeDAO.findAllCurrentByName(documentType.getName()))) {
     		    String errorMsg = "Found invalid 'current' document with name '" + documentType.getName() + "'.  None should exist.";
     		    LOG.error(errorMsg);
     		    throw new RuntimeException(errorMsg);

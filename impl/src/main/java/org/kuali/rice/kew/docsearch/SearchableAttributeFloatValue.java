@@ -16,6 +16,17 @@
  */
 package org.kuali.rice.kew.docsearch;
 
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.kew.bo.WorkflowPersistable;
+import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.SQLUtils;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,31 +36,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.jdbc.SqlBuilder;
-import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
-import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.SQLUtils;
 
 /**
  *
@@ -111,7 +97,7 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
     }
 
     private BigDecimal convertStringToBigDecimal(String value) {
-        if (Utilities.isEmpty(value)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(value)) {
             return null;
         } else {
             return new BigDecimal(value);

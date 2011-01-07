@@ -28,7 +28,6 @@ import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.dao.RuleDelegationDAO;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
@@ -189,7 +188,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
                 searchUser = Boolean.TRUE;
             }
         }
-        if (!Utilities.isEmpty(principalId) && searchUserInWorkgroups)
+        if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) && searchUserInWorkgroups)
         {
             KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
 
@@ -231,7 +230,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         }
 
         Criteria ruleResponsibilityNameCrit = null;
-        if (!Utilities.isEmpty(workflowId)) {
+        if (!org.apache.commons.lang.StringUtils.isEmpty(workflowId)) {
             // workflow user id exists
             if (searchUser != null && searchUser) {
                 // searching user wishes to search for rules specific to user
@@ -289,7 +288,7 @@ public class RuleDelegationDAOOjbImpl extends PersistenceBrokerDaoSupport implem
         if (extensionValues != null && !extensionValues.isEmpty()) {
             for (Iterator iter2 = extensionValues.entrySet().iterator(); iter2.hasNext();) {
                 Map.Entry entry = (Map.Entry) iter2.next();
-                if (!Utilities.isEmpty((String) entry.getValue())) {
+                if (!org.apache.commons.lang.StringUtils.isEmpty((String) entry.getValue())) {
                     // Criteria extensionCrit = new Criteria();
                     // extensionCrit.addEqualTo("extensionValues.key",
                     // entry.getKey());

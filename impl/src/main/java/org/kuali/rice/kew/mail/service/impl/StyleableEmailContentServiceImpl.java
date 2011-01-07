@@ -35,7 +35,6 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.user.UserUtils;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
@@ -378,13 +377,13 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
                 CustomEmailAttribute customEmailAttribute = getCustomEmailAttribute(user, actionItem);
                 if (customEmailAttribute != null) {
                     String customBody = customEmailAttribute.getCustomEmailBody();
-                    if (!Utilities.isEmpty(customBody)) {
+                    if (!org.apache.commons.lang.StringUtils.isEmpty(customBody)) {
                         Element bodyElement = doc.createElement("customBody");
                         bodyElement.appendChild(doc.createTextNode(customBody));
                         root.appendChild(bodyElement);
                     }
                     String customEmailSubject = customEmailAttribute.getCustomEmailSubject();
-                    if (!Utilities.isEmpty(customEmailSubject)) {
+                    if (!org.apache.commons.lang.StringUtils.isEmpty(customEmailSubject)) {
                         Element subjectElement = doc.createElement("customSubject");
                         subjectElement.appendChild(doc.createTextNode(customEmailSubject));
                         root.appendChild(subjectElement);

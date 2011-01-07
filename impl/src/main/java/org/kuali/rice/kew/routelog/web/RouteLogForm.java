@@ -16,14 +16,13 @@
  */
 package org.kuali.rice.kew.routelog.web;
 
+import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.kns.util.UrlFactory;
+import org.kuali.rice.kns.web.struts.form.KualiForm;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kns.util.UrlFactory;
-import org.kuali.rice.kns.web.struts.form.KualiForm;
 
 
 /**
@@ -70,7 +69,7 @@ public class RouteLogForm extends KualiForm {
         this.docId = docId;
     }
     public boolean isShowFutureHasError() {
-        return !Utilities.isEmpty(getShowFutureError());
+        return !org.apache.commons.lang.StringUtils.isEmpty(getShowFutureError());
     }
     public String getShowFutureError() {
         return showFutureError;

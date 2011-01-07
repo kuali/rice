@@ -151,7 +151,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
      * there is extensive looping in the node graph.
      */
     private List<RouteNodeInstance> determineNodeInstancesToProcess(List<RouteNodeInstance> activeNodeInstances, String nodeName) throws InvalidActionTakenException {
-        if (Utilities.isEmpty(nodeName)) {
+        if (org.apache.commons.lang.StringUtils.isEmpty(nodeName)) {
             return activeNodeInstances;
         }
         List<RouteNodeInstance> nodeInstancesToProcess = new ArrayList<RouteNodeInstance>();
@@ -203,14 +203,14 @@ public class SimulationEngine extends StandardWorkflowEngine {
                 for (Iterator<Recipient> userIt = criteria.getDestinationRecipients().iterator(); userIt.hasNext();) {
                     Recipient recipient = (Recipient) userIt.next();
                     if (request.isRecipientRoutedRequest(recipient)) {
-                        if ( (Utilities.isEmpty(criteria.getDestinationNodeName())) || (criteria.getDestinationNodeName().equals(request.getNodeInstance().getName())) ) {
+                        if ( (org.apache.commons.lang.StringUtils.isEmpty(criteria.getDestinationNodeName())) || (criteria.getDestinationNodeName().equals(request.getNodeInstance().getName())) ) {
                             return true;
                         }
                     }
                 }
             }
         }
-        return (Utilities.isEmpty(criteria.getDestinationNodeName()) && processContext.isComplete() && processContext.getNextNodeInstances().isEmpty())
+        return (org.apache.commons.lang.StringUtils.isEmpty(criteria.getDestinationNodeName()) && processContext.isComplete() && processContext.getNextNodeInstances().isEmpty())
             || nodeInstance.getRouteNode().getRouteNodeName().equals(criteria.getDestinationNodeName());
     }
 
@@ -255,7 +255,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
     }
 
     private void validateCriteria(SimulationCriteria criteria) {
-    	if (criteria.getDocumentId() == null && Utilities.isEmpty(criteria.getDocumentTypeName())) {
+    	if (criteria.getDocumentId() == null && org.apache.commons.lang.StringUtils.isEmpty(criteria.getDocumentTypeName())) {
 		throw new IllegalArgumentException("No document type name or route header id given, cannot simulate a document without a document type name or a route header id.");
     	}
     	if (criteria.getXmlContent() == null) {
@@ -274,7 +274,7 @@ public class SimulationEngine extends StandardWorkflowEngine {
     	DocumentRouteHeaderValue document = null;
     	if (criteria.isDocumentSimulation()) {
             document = getDocumentForSimulation(documentId);
-            if (!Utilities.isEmpty(criteria.getXmlContent())) {
+            if (!org.apache.commons.lang.StringUtils.isEmpty(criteria.getXmlContent())) {
                 document.setDocContent(criteria.getXmlContent());
             }
     	} else if (criteria.isDocumentTypeSimulation()) {

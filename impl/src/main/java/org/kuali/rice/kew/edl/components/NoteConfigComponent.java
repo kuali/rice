@@ -43,7 +43,6 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
@@ -106,7 +105,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 		form.setCurrentUserName(edlContext.getUserSession().getPerson().getName());
 		form.setCurrentDate(getCurrentDate());
 		String methodToCall = form.getMethodToCall();
-		if (!Utilities.isEmpty(methodToCall)) {
+		if (!org.apache.commons.lang.StringUtils.isEmpty(methodToCall)) {
 			if ("save".equalsIgnoreCase(methodToCall)) {
 				this.saveNote(form, edlContext, dom);
 			} else if ("edit".equalsIgnoreCase(methodToCall)) {
@@ -281,7 +280,7 @@ public class NoteConfigComponent implements EDLModelComponent {
         				attachment.setNote(noteToSave);
         				noteToSave.getAttachments().add(attachment);
         			}
-        	if(Utilities.isEmpty(noteToSave.getNoteText())&&noteToSave.getAttachments().size()==0){
+        	if(org.apache.commons.lang.StringUtils.isEmpty(noteToSave.getNoteText())&&noteToSave.getAttachments().size()==0){
         		if (form.getShowEdit()!=null && form.getShowEdit().equals("yes")) {
                     form.setNote(new Note());
                 } else {
@@ -628,20 +627,20 @@ public class NoteConfigComponent implements EDLModelComponent {
 		public NoteForm(RequestParser requestParser) {
 
 			showEdit = requestParser.getParameterValue("showEdit");
-			if (!Utilities.isEmpty(requestParser.getParameterValue("showAdd"))) {
+			if (!org.apache.commons.lang.StringUtils.isEmpty(requestParser.getParameterValue("showAdd"))) {
 				showAdd = Boolean.valueOf(requestParser.getParameterValue("showAdd"));
 			}
-			if (!Utilities.isEmpty(requestParser.getParameterValue("noteIdNumber"))) {
+			if (!org.apache.commons.lang.StringUtils.isEmpty(requestParser.getParameterValue("noteIdNumber"))) {
 				noteIdNumber = Long.valueOf(requestParser.getParameterValue("noteIdNumber"));
 			}
 			methodToCall = requestParser.getParameterValue("methodToCall");
 			sortOrder = "DESCENDING";
-			if (!Utilities.isEmpty(requestParser.getParameterValue("sortNotes"))) {
+			if (!org.apache.commons.lang.StringUtils.isEmpty(requestParser.getParameterValue("sortNotes"))) {
 				sortNotes = Boolean.valueOf(requestParser.getParameterValue("sortNotes"));
 			}
 			addText = requestParser.getParameterValue("addText");
 			noteText = requestParser.getParameterValue("noteText");
-			if (!Utilities.isEmpty(requestParser.getParameterValue("idInEdit"))) {
+			if (!org.apache.commons.lang.StringUtils.isEmpty(requestParser.getParameterValue("idInEdit"))) {
 				idInEdit = Long.valueOf(requestParser.getParameterValue("idInEdit"));
 			}
 			if (noteIdNumber != null) {

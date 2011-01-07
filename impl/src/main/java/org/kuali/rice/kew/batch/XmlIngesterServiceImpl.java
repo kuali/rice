@@ -16,9 +16,9 @@
  */
 package org.kuali.rice.kew.batch;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.ClassLoaderEntityResolver;
 import org.kuali.rice.kew.xml.XmlLoader;
 import org.springframework.beans.factory.BeanInitializationException;
@@ -125,7 +125,7 @@ public class XmlIngesterServiceImpl implements XmlIngesterService {
         if (msg == null) {
             msg = "";
         }
-        msg += message + "\n" + Utilities.collectStackTrace(t);
+        msg += message + "\n" + ExceptionUtils.getFullStackTrace(t);
         xmlDoc.setProcessingMessage(msg);
     }
 

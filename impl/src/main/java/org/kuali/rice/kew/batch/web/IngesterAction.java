@@ -16,6 +16,7 @@
  */
 package org.kuali.rice.kew.batch.web;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
@@ -24,7 +25,6 @@ import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.batch.*;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
@@ -176,7 +176,7 @@ public class IngesterAction extends KualiAction {
                 } catch (Exception e) {
                     String message = "Error during ingest";
                     LOG.error(message, e);
-                    messages.add(message + ": " + e  + ":\n" + Utilities.collectStackTrace(e));
+                    messages.add(message + ": " + e  + ":\n" + ExceptionUtils.getFullStackTrace(e));
                 }
                 if (totalProcessed == 0) {
                     String message = "No xml docs ingested";

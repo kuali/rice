@@ -26,8 +26,6 @@ import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.*;
@@ -134,14 +132,6 @@ public final class Utilities {
 
     public static boolean equals (Object a, Object b) {
         return ((a == null && b == null) || (a != null && a.equals(b)));
-    }
-
-    public static String collectStackTrace(Throwable t) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        t.printStackTrace(pw);
-        pw.close();
-        return sw.toString();
     }
 
     /**

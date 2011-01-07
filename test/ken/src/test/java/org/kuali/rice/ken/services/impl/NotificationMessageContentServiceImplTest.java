@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.ken.services.impl;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.ken.bo.Notification;
@@ -25,7 +26,6 @@ import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
@@ -148,7 +148,7 @@ public class NotificationMessageContentServiceImplTest extends KENTestCase {
     public void testParseSerializedNotificationXml() throws Exception {
 	InputStream is = this.getClass().getResourceAsStream(sampleEdlFile);
 	
-	byte[] bytes = Util.readFully(is);
+	byte[] bytes = IOUtils.toByteArray(is);
 	
 	NotificationMessageContentService impl = services.getNotificationMessageContentService();
 	

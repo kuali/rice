@@ -32,9 +32,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.stream.StreamSource;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -259,24 +257,6 @@ public final class Util {
             return null;
         }
         return child.getTextContent();
-    }
-
-    /**
-     * Reads the entire contents of a stream and returns a byte array
-     * 
-     * @param stream
-     *            the stream to read fully
-     * @return a byte array containing the contents of the stream
-     * @throws IOException
-     */
-    public static byte[] readFully(InputStream stream) throws IOException {
-        byte[] buf = new byte[1024];
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        int read;
-        while ((read = stream.read(buf)) != -1) {
-            baos.write(buf, 0, read);
-        }
-        return baos.toByteArray();
     }
     
     /**

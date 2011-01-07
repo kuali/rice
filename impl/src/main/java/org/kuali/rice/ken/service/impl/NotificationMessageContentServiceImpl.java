@@ -17,6 +17,7 @@ package org.kuali.rice.ken.service.impl;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.dao.GenericDao;
@@ -110,7 +111,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
         // this is sort of redundant...but DOM does not perform validation
         // so we have to read all the bytes and then hand them to DOM
         // after our first-pass validation, for a second parse
-        byte[] bytes = Util.readFully(stream);
+        byte[] bytes = IOUtils.toByteArray(stream);
 
         return parseNotificationRequestMessage(bytes);
     }

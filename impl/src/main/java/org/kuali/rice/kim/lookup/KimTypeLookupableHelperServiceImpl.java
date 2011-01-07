@@ -48,6 +48,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings("unchecked")
+	@Override
 	protected List<? extends BusinessObject> getSearchResultsHelper(Map<String, String> fieldValues, boolean unbounded) {
 		List<KimTypeImpl> searchResults = (List<KimTypeImpl>)super.getSearchResultsHelper(fieldValues, unbounded);
 		List<KimTypeImpl> filteredSearchResults = new ArrayList<KimTypeImpl>();
@@ -93,8 +94,8 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     		// OR it is not an application role
     		showReturnHref = kimType!=null && 
     			( StringUtils.isBlank( kimType.getKimTypeServiceName() )
-    					|| (KimCommonUtils.getKimTypeService(kimType) instanceof KimRoleTypeService
-    						&&!((KimRoleTypeService)KimCommonUtils.getKimTypeService(kimType)).isApplicationRoleType() )
+    					|| (KIMServiceLocatorInternal.getKimTypeService(kimType) instanceof KimRoleTypeService
+    						&&!((KimRoleTypeService)KIMServiceLocatorInternal.getKimTypeService(kimType)).isApplicationRoleType() )
     					);
     	} else{
     		docTypeName = KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME;
@@ -115,7 +116,7 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 
 	static boolean hasRoleTypeService(KimType kimType){
 		return (kimType!=null && kimType.getKimTypeServiceName()==null) || 
-					(KimCommonUtils.getKimTypeService(kimType) instanceof KimRoleTypeService);
+					(KIMServiceLocatorInternal.getKimTypeService(kimType) instanceof KimRoleTypeService);
 	}
 
 	static boolean hasRoleTypeService(KimType kimType, KimTypeService kimTypeService){
@@ -125,12 +126,12 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
 	
     static boolean hasGroupTypeService(KimType kimType){
 		return (kimType!=null && kimType.getKimTypeServiceName()==null) || 
-					(KimCommonUtils.getKimTypeService(kimType) instanceof KimGroupTypeService);
+					(KIMServiceLocatorInternal.getKimTypeService(kimType) instanceof KimGroupTypeService);
     }
 
 	public static boolean hasDerivedRoleTypeService(KimType kimType){
 		boolean hasDerivedRoleTypeService = false;
-		KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
+		KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
 		//it is possible that the the roleTypeService is coming from a remote application 
 	    // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 		try {

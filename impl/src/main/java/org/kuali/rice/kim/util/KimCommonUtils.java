@@ -162,22 +162,6 @@ public final class KimCommonUtils {
 		return QName.valueOf(kimTypeServiceName);
 	}
 
-	/**
-	 * @deprecated Please use KIMServiceLocatorInternal.getKimTypeService(KimType) instead
-	 */
-	@Deprecated
-	public static KimTypeService getKimTypeService(KimType kimType){
-		return KIMServiceLocatorInternal.getKimTypeService(kimType);
-	}
-
-	/**
-	 * @deprecated Please use KIMServiceLocatorInternal.getKimTypeService(QName) instead
-	 */
-	@Deprecated
-	public static KimTypeService getKimTypeService( String serviceName ) {
-		return KIMServiceLocatorInternal.getKimTypeService(resolveKimTypeServiceName(serviceName));
-    }
-
 	public static void copyProperties(Object targetToCopyTo, Object sourceToCopyFrom){
 		if(targetToCopyTo!=null && sourceToCopyFrom!=null)
 		try{

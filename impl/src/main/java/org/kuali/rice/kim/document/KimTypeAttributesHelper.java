@@ -26,7 +26,6 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
@@ -66,7 +65,7 @@ public class KimTypeAttributesHelper implements Serializable {
 
 	public KimTypeService getKimTypeService(KimTypeInfo kimType){
 		if(this.kimTypeService==null){
-	    	this.kimTypeService = KimCommonUtils.getKimTypeService(kimType);
+	    	this.kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
 		}
 		return this.kimTypeService;
 	}
@@ -80,9 +79,8 @@ public class KimTypeAttributesHelper implements Serializable {
     public String getKimAttributeDefnId(AttributeDefinition definition){
     	if (definition instanceof KimDataDictionaryAttributeDefinition) {
     		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	} else {
-    		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	}
+    	} 
+    	return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
     }
     
 	/**

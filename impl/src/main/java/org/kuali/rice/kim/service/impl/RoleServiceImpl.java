@@ -184,7 +184,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 	}
 	
 	private List<RoleMemberImpl> getStoredRoleMembersUsingExactMatchOnQualification(String principalId, List<String> groupIds, List<String> roleIds, AttributeSet qualification) {
-    	List<String> copyRoleIds = new ArrayList(roleIds);
+    	List<String> copyRoleIds = new ArrayList<String>(roleIds);
     	List<RoleMemberImpl> rms = new ArrayList<RoleMemberImpl>();
     	
     	for(String roleId : roleIds) {
@@ -614,9 +614,8 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 				KimTypeService service = (KimTypeService) KIMServiceLocatorInternal.getService(serviceName);
 				if ( service != null && service instanceof KimRoleTypeService) {
 					return (KimRoleTypeService)service;
-				} else {
-					return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
-				}
+				} 
+				return (KimRoleTypeService) KIMServiceLocatorInternal.getService("kimNoMembersRoleTypeService");
 			} catch ( Exception ex ) {
 				LOG.error( "Unable to find role type service with name: " + serviceName );
 				LOG.error( ex.getClass().getName() + " : " + ex.getMessage() );
@@ -632,7 +631,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     		KimDelegationImpl delegation = getKimDelegationImpl(delegationId);
     		KimTypeInfo delegationType = delegation.getKimType();
     		if ( delegationType != null ) {
-    			KimTypeService tempService = KimCommonUtils.getKimTypeService(delegationType);
+    			KimTypeService tempService = KIMServiceLocatorInternal.getKimTypeService(delegationType);
     			if ( tempService != null && tempService instanceof KimDelegationTypeService ) {
     				service = (KimDelegationTypeService)tempService;
     			} else {
@@ -805,20 +804,19 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     		// if the role type service is null, assume that all qualifiers match
 			if ( getRoleTypeService( rm.getRoleId() ) == null ) {
 				return true;
-			} else {
-				List<RoleMembershipInfo> lrmi = roleIdToMembershipMap.get( mi.getRoleId() );
-				if ( lrmi == null ) {
-					lrmi = new ArrayList<RoleMembershipInfo>();
-					roleIdToMembershipMap.put( mi.getRoleId(), lrmi );
-				}
-				lrmi.add( mi );
+			} 
+			List<RoleMembershipInfo> lrmi = roleIdToMembershipMap.get( mi.getRoleId() );
+			if ( lrmi == null ) {
+				lrmi = new ArrayList<RoleMembershipInfo>();
+				roleIdToMembershipMap.put( mi.getRoleId(), lrmi );
 			}
+			lrmi.add( mi );
     	}
     	return false;
   	}
 
 	private List<RoleMemberImpl> getStoredRoleGroupsUsingExactMatchOnQualification(List<String> groupIds, Set<String> roleIds, AttributeSet qualification) {
-    	List<String> copyRoleIds = new ArrayList(roleIds);
+    	List<String> copyRoleIds = new ArrayList<String>(roleIds);
     	List<RoleMemberImpl> rms = new ArrayList<RoleMemberImpl>();
     	
     	for(String roleId : roleIds) {
@@ -855,7 +853,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     	// for efficiency, retrieve all roles and store in a map
     	Map<String,RoleImpl> roles = getRoleImplMap(allRoleIds);
     	// get all roles to which the principal is assigned
-    	List<String> copyRoleIds = new ArrayList(allRoleIds);
+    	List<String> copyRoleIds = new ArrayList<String>(allRoleIds);
     	List<RoleMemberImpl> rps = new ArrayList<RoleMemberImpl>();
     	
     	for(String roleId : allRoleIds) {

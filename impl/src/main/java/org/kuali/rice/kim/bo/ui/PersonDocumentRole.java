@@ -124,8 +124,8 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
+	protected LinkedHashMap<String, Object> toStringMapper() {
+		LinkedHashMap<String, Object> m = new LinkedHashMap<String, Object>();
 		m.put( "roleId", roleId );
 		return m;
 	}
@@ -179,7 +179,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 
 	public AttributeDefinitionMap getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
-	        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( this.getKimRoleType() );
+	        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService( this.getKimRoleType() );
 	        //it is possible that the the roleTypeService is coming from a remote application 
 	        // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 	        try {

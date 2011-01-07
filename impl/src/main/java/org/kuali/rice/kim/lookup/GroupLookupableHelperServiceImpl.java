@@ -211,13 +211,11 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 		if (getAttrRows().isEmpty()) {
 			setAttrDefinitions(new AttributeDefinitionMap());
 			return getGrpRows();
-		} else {
-			List<Row> fullRows = new ArrayList<Row>();
-			fullRows.addAll(getGrpRows());
-			fullRows.addAll(getAttrRows());
-			return fullRows;
-		}
-
+		} 
+		List<Row> fullRows = new ArrayList<Row>();
+		fullRows.addAll(getGrpRows());
+		fullRows.addAll(getAttrRows());
+		return fullRows;
 	}
 
 
@@ -403,7 +401,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
 					KimTypeInfo kimType = getTypeInfoService().getKimType( field.getPropertyValue() );
-					KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
+					KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
 			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
 			        setAttrDefinitions(definitions);
 		            for (AttributeDefinition definition  : definitions.values()) {

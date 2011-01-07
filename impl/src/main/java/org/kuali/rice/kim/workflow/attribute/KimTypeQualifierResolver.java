@@ -35,9 +35,11 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.service.*;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KimTypeInfoService;
+import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.workflow.attribute.QualifierResolverBase;
@@ -89,7 +91,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	if ( typeService == null ) {       		
         	KimTypeInfo typeInfo = getKimTypeInfoService().getKimType(typeId);
         	if ( typeInfo != null ) {
-        		typeService = KimCommonUtils.getKimTypeService(typeInfo);
+        		typeService = KIMServiceLocatorInternal.getKimTypeService(typeInfo);
         		typeServices.put(typeId, typeService);
         	} else {
         		LOG.warn( "Unable to retrieve KIM Type Info object for id: " + typeId );

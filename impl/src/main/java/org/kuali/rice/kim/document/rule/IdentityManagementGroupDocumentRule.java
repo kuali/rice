@@ -33,7 +33,6 @@ import org.kuali.rice.kim.rules.ui.GroupDocumentMemberRule;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
@@ -135,7 +134,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
-        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
+        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(groupQualifiers);
 		errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);
@@ -144,10 +143,9 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 		
     	if (validationErrors.isEmpty()) {
     		return true;
-    	} else {
-    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
-    		return false;
-    	}
+    	} 
+    	attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
+    	return false;
     }
     
 	protected boolean validateActiveDate(String errorPath, Timestamp activeFromDate, Timestamp activeToDate) {

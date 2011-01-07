@@ -61,7 +61,6 @@ import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.impl.RoleServiceBase;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.document.Document;
@@ -295,7 +294,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		int roleMemberCount = 0;
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
-        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
+        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         final AttributeDefinitionMap attributeDefinitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
         final Set<String> uniqueAttributeNames = figureOutUniqueQualificationSet(roleMembers, attributeDefinitions);
@@ -320,10 +319,9 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		
     	if (validationErrors.isEmpty()) {
     		return true;
-    	} else {
-    		attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
-    		return false;
-    	}
+    	} 
+    	attributeValidationHelper.moveValidationErrorsToErrorMap(validationErrors);
+    	return false;
     }
     
     /**
@@ -441,7 +439,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		int memberCounter = 0;
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
-        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimType);
+        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         KimDocumentRoleMember roleMember;
         String errorPath;
@@ -610,22 +608,21 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 			MessageMap errorMap = GlobalVariables.getMessageMap();
 			errorMap.putError("member.memberId", RiceKeyConstants.ERROR_INVALID_ROLE, new String[] {""});
 			return false;
-		} else {
-			Set<String> roleMemberIds = null;
-			// if the role member is a role, check to make sure we won't be creating a circular reference.
-			// Verify that the new role is not already related to the role either directly or indirectly
-			if (newMember.isRole()){
-				// get all nested role member ids that are of type role
-				RoleService roleService = KIMServiceLocatorInternal.getRoleService();
-				roleMemberIds = ((RoleServiceBase) roleService).getRoleTypeRoleMemberIds(newMember.getMemberId());
+		} 
+		Set<String> roleMemberIds = null;
+		// if the role member is a role, check to make sure we won't be creating a circular reference.
+		// Verify that the new role is not already related to the role either directly or indirectly
+		if (newMember.isRole()){
+			// get all nested role member ids that are of type role
+			RoleService roleService = KIMServiceLocatorInternal.getRoleService();
+			roleMemberIds = ((RoleServiceBase) roleService).getRoleTypeRoleMemberIds(newMember.getMemberId());
 
-				// check to see if the document role is not a member of the new member role
-				IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addMemberEvent.getDocument();
-				if (roleMemberIds.contains(document.getRoleId())){
-					MessageMap errorMap = GlobalVariables.getMessageMap();
-					errorMap.putError("member.memberId", RiceKeyConstants.ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR, new String[] {newMember.getMemberId()});        	
-					return false;
-				}
+			// check to see if the document role is not a member of the new member role
+			IdentityManagementRoleDocument document = (IdentityManagementRoleDocument)addMemberEvent.getDocument();
+			if (roleMemberIds.contains(document.getRoleId())){
+				MessageMap errorMap = GlobalVariables.getMessageMap();
+				errorMap.putError("member.memberId", RiceKeyConstants.ERROR_ASSIGN_ROLE_MEMBER_CIRCULAR, new String[] {newMember.getMemberId()});        	
+				return false;
 			}
 		}
 		return true;

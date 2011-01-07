@@ -26,11 +26,8 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.SequenceAccessorService;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill
@@ -126,16 +123,9 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 
 	protected KimTypeService getKimTypeService(KimTypeInfo kimType){
 		if( kimTypeService==null){
-	    	kimTypeService = KimCommonUtils.getKimTypeService(kimType);
+	    	kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
 		}
 		return kimTypeService;
-	}
-
-	protected SequenceAccessorService getSequenceAccessorService(){
-		if(this.sequenceAccessorService==null){
-	    	this.sequenceAccessorService = KNSServiceLocatorInternal.getSequenceAccessorService();
-		}
-		return this.sequenceAccessorService;
 	}
 
 }

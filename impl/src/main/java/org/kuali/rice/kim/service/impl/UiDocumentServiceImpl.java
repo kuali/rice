@@ -102,7 +102,17 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.service.*;
+import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.IdentityManagementNotificationService;
+import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.IdentityService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KimTypeInfoService;
+import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.service.RoleManagementService;
+import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
@@ -563,7 +573,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	protected AttributeDefinitionMap getAttributeDefinitionsForRole(PersonDocumentRole role) {
-    	KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( role.getKimRoleType() );
+    	KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService( role.getKimRoleType() );
     	//it is possible that the the kimTypeService is coming from a remote application
         // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
         try {
@@ -604,9 +614,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	protected String getAttributeDefnId(AttributeDefinition definition) {
     	if (definition instanceof KimDataDictionaryAttributeDefinition) {
     		return ((KimDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	} else {
-    		return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
-    	}
+    	} 
+    	return ((KimNonDataDictionaryAttributeDefinition)definition).getKimAttrDefnId();
     }
 
 	private KimPrincipalImpl getPrincipalImpl(String principalId) {
@@ -1266,7 +1275,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							RoleMemberImpl roleMemberImpl = new RoleMemberImpl();
 							roleMemberImpl.setRoleId(role.getRoleId());
 							roleMemberImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
-							roleMemberImpl.setMemberTypeCode(RoleImpl.PRINCIPAL_MEMBER_TYPE);
+							roleMemberImpl.setMemberTypeCode(Role.PRINCIPAL_MEMBER_TYPE);
 							roleMembers.add(roleMemberImpl);
 						}
 					} else {
@@ -1275,7 +1284,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 							roleMemberImpl.setRoleId(role.getRoleId());
 							// TODO : principalId is not ready here yet ?
 							roleMemberImpl.setMemberId(identityManagementPersonDocument.getPrincipalId());
-							roleMemberImpl.setMemberTypeCode(RoleImpl.PRINCIPAL_MEMBER_TYPE);
+							roleMemberImpl.setMemberTypeCode(Role.PRINCIPAL_MEMBER_TYPE);
 							roleMemberImpl.setRoleMemberId(roleMember.getRoleMemberId());
 							if (roleMember.getActiveFromDate() != null) {
 								roleMemberImpl.setActiveFromDate(new java.sql.Timestamp(roleMember.getActiveFromDate().getTime()));
@@ -2133,7 +2142,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         String newRoleMemberIdAssigned = "";
 
         identityManagementRoleDocument.setKimType(KIMServiceLocatorInternal.getTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()));
-        KimTypeService kimTypeService = KimCommonUtils.getKimTypeService( identityManagementRoleDocument.getKimType() );
+        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService( identityManagementRoleDocument.getKimType() );
 
         if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getMembers())){
             for(KimDocumentRoleMember documentRoleMember: identityManagementRoleDocument.getMembers()){

@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.xml;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
@@ -157,7 +157,7 @@ public class RuleAttributeXmlParser {
 		ruleAttribute.setServiceNamespace(serviceNamespace);
 		
 		if(xmlConfig != null){
-		    ruleAttribute.setXmlConfigData(XmlHelper.jotNode(xmlConfig));
+		    ruleAttribute.setXmlConfigData(XmlJotter.jotNode(xmlConfig));
 		} else {
 			if(KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(type)){
 				throw new XmlException("A routing config must be present to be of type: "+type);

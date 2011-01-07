@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Attribute;
 import org.jdom.Element;
 import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.edl.extract.Dump;
@@ -57,7 +58,7 @@ public class EDLDatabasePostProcessor extends EDocLitePostProcessor {
 	        DocumentRouteHeaderValue val = KEWServiceLocator.getRouteHeaderService().getRouteHeader(event.getRouteHeaderId());
 	        Document doc = getEDLContent(val);
 	        if (LOG.isDebugEnabled()) {
-                LOG.debug("Submitting doc: " + XmlHelper.jotNode(doc));
+                LOG.debug("Submitting doc: " + XmlJotter.jotNode(doc));
             }
 			DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(event.getRouteHeaderId());
 			extractEDLData(routeHeader, getNodeNames(event.getRouteHeaderId()));
@@ -89,7 +90,7 @@ public class EDLDatabasePostProcessor extends EDocLitePostProcessor {
 	        DocumentRouteHeaderValue val = KEWServiceLocator.getRouteHeaderService().getRouteHeader(event.getRouteHeaderId());
 	        Document doc = getEDLContent(val);
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Submitting doc: " + XmlHelper.jotNode(doc));
+                LOG.debug("Submitting doc: " + XmlJotter.jotNode(doc));
             }
 			DocumentRouteHeaderValue routeHeader = getRouteHeaderService().getRouteHeader(event.getRouteHeaderId());
 			extractEDLData(routeHeader, new String[] {event.getNewNodeName()});

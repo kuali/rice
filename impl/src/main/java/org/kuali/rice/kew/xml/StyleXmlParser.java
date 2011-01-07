@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.xml;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.edl.service.StyleService;
@@ -150,7 +150,7 @@ public class StyleXmlParser {
             throw generateMissingChildException(XmlConstants.STYLE_STYLE, "xsl:stylesheet");
         }
         try {
-            style.setXmlContent(XmlHelper.jotNode(stylesheet, true));
+            style.setXmlContent(XmlJotter.jotNode(stylesheet, true));
         } catch (XmlException te) {
             throw generateSerializationException(XmlConstants.STYLE_STYLE, te);
         }

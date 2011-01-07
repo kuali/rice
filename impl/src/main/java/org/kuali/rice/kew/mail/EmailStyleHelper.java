@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.mail;
 
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -42,7 +42,7 @@ public class EmailStyleHelper {
     
     public EmailContent generateEmailContent(Templates style, Document document) {
 	DOMResult result = new DOMResult();
-        LOG.debug("Input document: " + XmlHelper.jotNode(document.getDocumentElement(), true));
+        LOG.debug("Input document: " + XmlJotter.jotNode(document.getDocumentElement(), true));
         try {
             style.newTransformer().transform(new DOMSource(document), result);
         } catch (TransformerException te) {
@@ -54,7 +54,7 @@ public class EmailStyleHelper {
         Node node = result.getNode();
         
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Email document: " + XmlHelper.jotNode(document));
+            LOG.debug("Email document: " + XmlJotter.jotNode(document));
         }
         XPathFactory xpf = XPathFactory.newInstance();
         XPath xpath = xpf.newXPath();

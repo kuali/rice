@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.xml;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
@@ -171,7 +171,7 @@ public class EDocLiteXmlParser {
             throw generateMissingChildException("style", "xsl:stylesheet");
         }
         try {
-            style.setXmlContent(XmlHelper.jotNode(stylesheet, true));
+            style.setXmlContent(XmlJotter.jotNode(stylesheet, true));
         } catch (XmlException te) {
             throw generateSerializationException("style", te);
         }
@@ -236,7 +236,7 @@ public class EDocLiteXmlParser {
         }
 
         try {
-            def.setXmlContent(XmlHelper.jotNode(e, true));
+            def.setXmlContent(XmlJotter.jotNode(e, true));
         } catch (XmlException te) {
             throw generateSerializationException(EDLXmlUtils.EDL_E, te);
         }

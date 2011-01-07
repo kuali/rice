@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.edl;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.w3c.dom.Document;
@@ -71,7 +71,7 @@ public class EDLController {
 			EDLModelComponent eldModelComp = (EDLModelComponent)((Class)processorEntry.getValue()).newInstance();
 			eldModelComp.updateDOM(dom, configElement, edlContext);
 			if (LOG.isDebugEnabled()) {
-				LOG.debug("Just completed notification to component " + eldModelComp + " doc content looks like. " + XmlHelper.jotNode(dom));
+				LOG.debug("Just completed notification to component " + eldModelComp + " doc content looks like. " + XmlJotter.jotNode(dom));
 			}
 			
 		}

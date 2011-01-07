@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.edl.WidgetURIResolver;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
@@ -304,7 +304,7 @@ public class StyleServiceImpl implements StyleService {
             throw generateMissingChildException("style", "xsl:stylesheet");
         }
         try {
-            style.setXmlContent(XmlHelper.jotNode(stylesheet, true));
+            style.setXmlContent(XmlJotter.jotNode(stylesheet, true));
         } catch (XmlException te) {
             throw generateSerializationException("style", te);
         }

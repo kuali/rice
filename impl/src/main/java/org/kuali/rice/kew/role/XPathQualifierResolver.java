@@ -17,7 +17,7 @@ package org.kuali.rice.kew.role;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
@@ -136,7 +136,7 @@ public class XPathQualifierResolver implements QualifierResolver, XmlConfiguredA
 				List<AttributeSet> attributeSets = new ArrayList<AttributeSet>();
 				NodeList baseElements = (NodeList)xPath.evaluate(config.getBaseXPathExpression(), xmlContent, XPathConstants.NODESET);
 				if (LOG.isDebugEnabled()) {
-					LOG.debug("Found " + baseElements.getLength() + " baseElements to parse for AttributeSets using document XML:" + XmlHelper.jotDocument(xmlContent));
+					LOG.debug("Found " + baseElements.getLength() + " baseElements to parse for AttributeSets using document XML:" + XmlJotter.jotDocument(xmlContent));
 				}
 				for (int index = 0; index < baseElements.getLength(); index++) {
 					Node baseNode = baseElements.item(index);

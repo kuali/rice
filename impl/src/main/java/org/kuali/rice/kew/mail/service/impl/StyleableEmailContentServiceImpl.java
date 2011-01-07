@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.edl.service.StyleService;
@@ -103,7 +104,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
         Element element = XmlHelper.propertiesToXml(doc, o, name);
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug(XmlHelper.jotNode(element));
+            LOG.debug(XmlJotter.jotNode(element));
         }
 
         if (node == null) {
@@ -450,7 +451,7 @@ public class StyleableEmailContentServiceImpl extends BaseEmailContentServiceImp
     	}
     	
     	if (LOG.isDebugEnabled()) {
-            LOG.debug(XmlHelper.jotNode(element));
+            LOG.debug(XmlJotter.jotNode(element));
         }
 
         node.appendChild(element);

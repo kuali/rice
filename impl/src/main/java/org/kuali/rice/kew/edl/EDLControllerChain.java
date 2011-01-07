@@ -18,7 +18,7 @@ package org.kuali.rice.kew.edl;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.w3c.dom.Document;
@@ -82,7 +82,7 @@ public class EDLControllerChain {
         transformer.setParameter("user", user);
         transformer.setParameter("loggedInUser", loggedInUser);
         if (LOG.isDebugEnabled()) {
-        	LOG.debug("Transforming dom " + XmlHelper.jotNode(dom, true));
+        	LOG.debug("Transforming dom " + XmlJotter.jotNode(dom, true));
         }
         transformer.transform(new DOMSource(dom), new StreamResult(response.getOutputStream()));
 	}

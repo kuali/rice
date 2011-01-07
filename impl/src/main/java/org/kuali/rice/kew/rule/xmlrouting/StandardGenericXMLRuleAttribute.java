@@ -19,7 +19,7 @@ package org.kuali.rice.kew.rule.xmlrouting;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -322,7 +322,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
             NodeList xPathExpressions = (NodeList) xpath.evaluate(findFieldExpressions, configXml, XPathConstants.NODESET);
             for (int index = 0; index < xPathExpressions.getLength(); index++) {
                 Element expressionElement = (Element) xPathExpressions.item(index);
-                String expression = XmlHelper.jotNode(expressionElement);
+                String expression = XmlJotter.jotNode(expressionElement);
                 if (!isEvaluateForMissingExtensions()) {
                     Node parentNode = expressionElement.getParentNode().getParentNode();
                     Node fieldAttribute = parentNode.getAttributes().getNamedItem("name");
@@ -363,7 +363,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
             NodeList xPathExpressions = (NodeList) xpath.evaluate(findGlobalExpressions, configXml, XPathConstants.NODESET);
             for (int index = 0; index < xPathExpressions.getLength(); index++) {
                 Element expressionElement = (Element) xPathExpressions.item(index);
-                String expression = XmlHelper.jotNode(expressionElement);
+                String expression = XmlJotter.jotNode(expressionElement);
                 if (!StringUtils.isEmpty(expression)) {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Adding global XPath expression: " + expression);
@@ -491,7 +491,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                 NodeList customNodes = xmlDocumentContent.getChildNodes();
                 for (int i = 0; i < customNodes.getLength(); i++) {
                     Node childNode = customNodes.item(i);
-                    documentContent += XmlHelper.jotNode(childNode);
+                    documentContent += XmlJotter.jotNode(childNode);
                 }
 
                 for (int i = 0; i < nodes.getLength(); i++) {

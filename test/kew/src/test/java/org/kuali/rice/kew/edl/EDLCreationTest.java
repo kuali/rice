@@ -16,13 +16,6 @@
  */
 package org.kuali.rice.kew.edl;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
@@ -30,6 +23,13 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kns.UserSession;
 import org.w3c.dom.Document;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 
 public class EDLCreationTest extends KEWTestCase {
@@ -53,7 +53,7 @@ public class EDLCreationTest extends KEWTestCase {
 //		Transformer transformer = TransformerFactory.newInstance().newTransformer();
 //		edlController.setEdlContext(getEDLContext(edlController, request, transformer, user));
 //		Document dom = edlController.notifyComponents();
-//		System.out.print(XmlHelper.jotNode(dom));
+//		System.out.print(XmlJotter.jotNode(dom));
 //		transform(dom, edlController.getStyle().newTransformer());
 	}
 
@@ -72,7 +72,7 @@ public class EDLCreationTest extends KEWTestCase {
 //		EDLContext edlContext = getEDLContext(edlController, request, transformer, user);
 //		edlController.setEdlContext(edlContext);
 //		Document dom = edlController.notifyComponents();
-//		System.out.print(XmlHelper.jotNode(dom));
+//		System.out.print(XmlJotter.jotNode(dom));
 //		transform(dom, transformer);
 //
 //		//now let's route our document
@@ -93,7 +93,7 @@ public class EDLCreationTest extends KEWTestCase {
 //		transformer = edlController.getStyle().newTransformer();
 //		edlController.setEdlContext(getEDLContext(edlController, request, transformer, user));
 //		dom = edlController.notifyComponents();
-//		System.out.print(XmlHelper.jotNode(dom));
+//		System.out.print(XmlJotter.jotNode(dom));
 //		transform(dom, transformer);
 	}
 

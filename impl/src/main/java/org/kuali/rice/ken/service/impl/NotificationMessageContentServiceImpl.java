@@ -20,7 +20,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.ken.bo.*;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
@@ -314,7 +314,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 contentElement = (Element) contentNode;
                 /* Take the literal XML content value of the DOM node.
                    This should be symmetric/reversable */
-                content = XmlHelper.jotNode(contentNode, true);
+                content = XmlJotter.jotNode(contentNode, true);
             }
 
             notification.setContent(content);

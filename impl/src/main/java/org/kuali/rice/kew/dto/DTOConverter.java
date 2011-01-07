@@ -27,6 +27,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.*;
@@ -304,7 +305,7 @@ public class DTOConverter {
             if (searchableContentElement != null) {
                 root.appendChild(searchableContentElement);
             }
-            documentContent = XmlHelper.jotNode(document);
+            documentContent = XmlJotter.jotNode(document);
         } catch (Exception e) {
             handleException("Error parsing document content.", e);
         }
@@ -411,13 +412,13 @@ public class DTOConverter {
         try {
             DocumentContent documentContent = new StandardDocumentContent(documentContentValue);
             if (documentContent.getApplicationContent() != null) {
-                documentContentVO.setApplicationContent(XmlHelper.jotNode(documentContent.getApplicationContent()));
+                documentContentVO.setApplicationContent(XmlJotter.jotNode(documentContent.getApplicationContent()));
             }
             if (documentContent.getAttributeContent() != null) {
-                documentContentVO.setAttributeContent(XmlHelper.jotNode(documentContent.getAttributeContent()));
+                documentContentVO.setAttributeContent(XmlJotter.jotNode(documentContent.getAttributeContent()));
             }
             if (documentContent.getSearchableContent() != null) {
-                documentContentVO.setSearchableContent(XmlHelper.jotNode(documentContent.getSearchableContent()));
+                documentContentVO.setSearchableContent(XmlJotter.jotNode(documentContent.getSearchableContent()));
             }
         } catch (Exception e) {
             handleException("Error parsing document content.", e);

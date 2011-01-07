@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.batch;
 
 import org.junit.Test;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.rule.xmlrouting.WorkflowNamespaceContext;
 import org.kuali.rice.kew.test.TestUtils;
 import org.kuali.rice.kew.xml.ClassLoaderEntityResolver;
@@ -114,7 +114,7 @@ public class XmlSchemaTest extends BaseRiceTestCase {
         URL url = getClass().getResource("XmlConfig.xml");
         Document d = validate(url.openStream());
         //d = XmlHelper.trimXml(url.openStream());
-        System.out.println(XmlHelper.jotNode(d));
+        System.out.println(XmlJotter.jotNode(d));
         XPath xpath = XPathFactory.newInstance().newXPath();
         xpath.setNamespaceContext(new WorkflowNamespaceContext());
         Node node = (Node) xpath.evaluate("/data/ruleAttributes/ruleAttribute[name='XMLSearchableAttribute']/searchingConfig/fieldDef[@name='givenname' and @workflowType='ALL']/@title",

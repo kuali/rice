@@ -15,30 +15,26 @@
  */
 package edu.sampleu.travel.workflow;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.identity.Id;
+import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.GenericRoleAttribute;
 import org.kuali.rice.kew.rule.QualifiedRoleName;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
-import org.kuali.rice.kew.identity.PrincipalName;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.util.*;
 
 
 /**
@@ -108,7 +104,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 //        try {
 //            attrs = content.parseContent(documentContent.getAttributeContent());
 //        } catch (XPathExpressionException xpee) {
-//            throw new WorkflowRuntimeException("Error parsing attribute content: " + XmlHelper.jotNode(documentContent.getAttributeContent()));
+//            throw new WorkflowRuntimeException("Error parsing attribute content: " + XmlJotter.jotNode(documentContent.getAttributeContent()));
 //        }
 //        for (Map<String, String> props: attrs) {
 //            String attrTraveler = props.get("traveler");

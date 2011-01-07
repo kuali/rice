@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.edl.components;
 
-
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLModelComponent;
@@ -360,7 +360,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 				this.from = DEFAULT_EMAIL_FROM_ADDRESS;
 				Document document = generateXmlInput(form, edlContext, edlDom);
 				if (LOG.isDebugEnabled()) {
-					LOG.debug("XML input for email tranformation:\n" + XmlHelper.jotNode(document));
+					LOG.debug("XML input for email tranformation:\n" + XmlJotter.jotNode(document));
 				}
 				Templates style = loadStyleSheet(styleName);
 				EmailContent emailContent = emailStyleHelper

@@ -17,7 +17,7 @@
 package org.kuali.rice.core.config;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -91,7 +91,7 @@ class HierarchicalConfigParser {
         try {
             doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(configStream);
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Contents of config " + fileLoc + ": \n" + XmlHelper.jotNode(doc, true));
+                LOG.debug("Contents of config " + fileLoc + ": \n" + XmlJotter.jotNode(doc, true));
             }
         } catch (SAXException se) {
             IOException ioe = new IOException("Error parsing config resource: " + fileLoc);
@@ -125,7 +125,7 @@ class HierarchicalConfigParser {
                 override = new Boolean(param.getAttribute("override"));
             }
             if (name == null) {
-                LOG.error("Unnamed parameter in config resource '" + fileLoc + "': " + XmlHelper.jotNode(param));
+                LOG.error("Unnamed parameter in config resource '" + fileLoc + "': " + XmlJotter.jotNode(param));
                 continue;
             }
             NodeList contents = param.getChildNodes();
@@ -133,7 +133,7 @@ class HierarchicalConfigParser {
             try {
                 content.setLength(0);
                 for (int j = 0; j < contents.getLength(); j++) {
-                    content.append(XmlHelper.jotNode(contents.item(j), true));
+                    content.append(XmlJotter.jotNode(contents.item(j), true));
                 }
                 String contentValue;
                 try {

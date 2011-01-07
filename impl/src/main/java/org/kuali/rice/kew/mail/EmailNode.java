@@ -19,6 +19,7 @@ import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.dto.DTOConverter;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
@@ -66,7 +67,7 @@ public class EmailNode implements SimpleNode {
 	loadConfiguration(context);
 	Document document = generateXmlInput(context);
 	if (LOG.isDebugEnabled()) {
-	    LOG.debug("XML input for email tranformation:\n" + XmlHelper.jotNode(document));
+	    LOG.debug("XML input for email tranformation:\n" + XmlJotter.jotNode(document));
 	}
 	Templates style = loadStyleSheet(styleName);
 	EmailContent emailContent = emailStyleHelper.generateEmailContent(style, document);

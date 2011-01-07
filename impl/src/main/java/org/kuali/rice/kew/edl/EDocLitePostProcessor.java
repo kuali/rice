@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.edl;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.postprocessor.*;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
@@ -66,7 +66,7 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
     private static void submitURL(String urlstring, Document eventDoc) throws IOException {
         String content;
         try {
-            content = XmlHelper.jotNode(eventDoc, true);
+            content = XmlJotter.jotNode(eventDoc, true);
         } catch (XmlException te) {
             LOG.error("Error writing serializing event doc: " + eventDoc);
             throw te;
@@ -152,7 +152,7 @@ public class EDocLitePostProcessor extends DefaultPostProcessor {
         DocumentRouteHeaderValue val = KEWServiceLocator.getRouteHeaderService().getRouteHeader(docId);
         Document doc = getEDLContent(val);
         if(LOG.isDebugEnabled()){
-        	LOG.debug("Submitting doc: " + XmlHelper.jotNode(doc));
+        	LOG.debug("Submitting doc: " + XmlJotter.jotNode(doc));
         }
 
         String urlstring = getURL(doc);

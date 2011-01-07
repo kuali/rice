@@ -17,7 +17,7 @@ package org.kuali.rice.kew.edl.components;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLModelComponent;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -120,7 +120,7 @@ public class PerformLookupComponent implements EDLModelComponent {
 			XPath xPath = XPathFactory.newInstance().newXPath();
 			try {
 				String parameterValue = xPath.evaluate("//field[@name='" + parameterValuePropertyName + "']/value", currentVersion);
-				System.out.println(XmlHelper.jotNode(currentVersion, true));
+				System.out.println(XmlJotter.jotNode(currentVersion, true));
 				if (StringUtils.isNotBlank(parameterValue)) {
 					lookupParameters.put(parameterName, parameterValue);
 				}

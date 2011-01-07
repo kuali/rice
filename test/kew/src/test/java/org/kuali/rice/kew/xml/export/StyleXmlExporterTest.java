@@ -19,6 +19,7 @@ package org.kuali.rice.kew.xml.export;
 import org.jdom.Document;
 import org.junit.Test;
 import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -91,6 +92,6 @@ public class StyleXmlExporterTest extends XmlExporterTestCase {
 
     private String canonicalize(String xml) throws Exception {
     	Document document = XmlHelper.buildJDocument(new StringReader(xml));
-    	return XmlHelper.jotDocument(document);
+    	return XmlJotter.jotDocument(document);
     }
 }

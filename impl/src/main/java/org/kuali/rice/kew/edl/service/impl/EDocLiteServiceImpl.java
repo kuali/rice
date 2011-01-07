@@ -18,7 +18,7 @@ package org.kuali.rice.kew.edl.service.impl;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.edl.*;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
@@ -246,7 +246,7 @@ public class EDocLiteServiceImpl implements EDocLiteService {
         }
 
         try {
-            def.setXmlContent(XmlHelper.jotNode(e, true));
+            def.setXmlContent(XmlJotter.jotNode(e, true));
         } catch (XmlException te) {
             throw generateSerializationException(EDLXmlUtils.EDL_E, te);
         }

@@ -19,7 +19,7 @@ package org.kuali.rice.kew.docsearch.xml;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
@@ -87,7 +87,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 				NodeList customNodes = xmlDocumentContent.getChildNodes();
 				for (int i = 0; i < customNodes.getLength(); i++) {
 					Node childNode = customNodes.item(i);
-					docContent += XmlHelper.jotNode(childNode);
+					docContent += XmlJotter.jotNode(childNode);
 				}
 				String findField = "//searchingConfig/" + FIELD_DEF_E;
 				NodeList nodes = (NodeList) xpath.evaluate(findField, getConfigXML(), XPathConstants.NODESET);

@@ -18,6 +18,7 @@ package org.kuali.rice.kew.edl;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -89,7 +90,7 @@ public class EDLControllerFactory {
 				defaultDomEDL.replaceChild(defaultDom.importNode(documentData, true), defaultDomData);
 			}
 			if (LOG.isDebugEnabled()) {
-				LOG.debug("Created default Node from document id " + document.getRouteHeaderId() + " content " + XmlHelper.jotNode(defaultDom));
+				LOG.debug("Created default Node from document id " + document.getRouteHeaderId() + " content " + XmlJotter.jotNode(defaultDom));
 			}
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException("Problems creating controller for EDL " + edlAssociation.getEdlName() + " document " + document.getRouteHeaderId(), e);

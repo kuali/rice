@@ -19,7 +19,7 @@ package org.kuali.rice.kew.edl.components;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.dto.ActionTakenDTO;
 import org.kuali.rice.kew.edl.EDLContext;
 import org.kuali.rice.kew.edl.EDLModelComponent;
@@ -77,7 +77,7 @@ public class AnnotationComponent implements EDLModelComponent {
                         Person person = KIMServiceLocator.getPersonService().getPerson(actionTaken.getPrincipalId());
                         EDLXmlUtils.createTextElementOnParent(currentVersion, "annotation", person.getName() + ": " + annotation);
                         if (LOG.isDebugEnabled()) {
-                            LOG.debug("dom: " + XmlHelper.jotNode(dom));
+                            LOG.debug("dom: " + XmlJotter.jotNode(dom));
                         }
                     }
                 }

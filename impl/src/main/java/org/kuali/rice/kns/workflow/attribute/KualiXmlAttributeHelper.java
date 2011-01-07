@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.DataDictionaryService;
@@ -233,7 +233,7 @@ public class KualiXmlAttributeHelper {
 
         }
         if (LOG.isDebugEnabled()) {
-            LOG.debug(XmlHelper.jotNode(root));
+            LOG.debug(XmlJotter.jotNode(root));
             StringWriter xmlBuffer = new StringWriter();
             try {
 

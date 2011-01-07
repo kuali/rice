@@ -17,7 +17,7 @@
 package org.kuali.rice.kew.rule;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -99,18 +99,18 @@ public class GenericAttributeContent {
         if (attributeContent == null) {
             return attrs;
         }
-        log.info("Parsing content: "+ XmlHelper.jotNode(attributeContent));
+        log.info("Parsing content: "+ XmlJotter.jotNode(attributeContent));
         NodeList attrNodes = (NodeList) attr_expr.evaluate(attributeContent, XPathConstants.NODESET);
         if (attrNodes != null) {
             for (int i = 0; i < attrNodes.getLength(); i++) {
                 Map<String, String> props = new HashMap<String, String>();
                 attrs.add(props);
                 Node node = attrNodes.item(i);
-                log.info("Found matching attribute: " + XmlHelper.jotNode(node));
+                log.info("Found matching attribute: " + XmlJotter.jotNode(node));
                 NodeList fieldNodes = (NodeList) FIELD_EXPR.evaluate(node, XPathConstants.NODESET);
                 for (int j = 0; j < fieldNodes.getLength(); j++) {
                     node = fieldNodes.item(j);
-                    log.info("Found matching attribute content field: " + XmlHelper.jotNode(node));
+                    log.info("Found matching attribute content field: " + XmlJotter.jotNode(node));
                     Boolean b = (Boolean) NAME_EXPR.evaluate(node, XPathConstants.BOOLEAN);
                     if (!b.booleanValue()) {
                         log.error("Encountered field with no name, skipping!");

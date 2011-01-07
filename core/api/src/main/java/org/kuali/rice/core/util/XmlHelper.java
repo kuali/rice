@@ -25,8 +25,6 @@ import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.input.DOMBuilder;
 import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
 import org.kuali.rice.core.xml.XmlException;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -38,8 +36,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -48,20 +44,20 @@ import java.io.*;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 
 
 /**
- * Provides a set of utilities for XML-related operations.
+ * Provides a set of utilities for XML-related operations on org.jdom & org.w3c
+ * xml Objects.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public final class XmlHelper {
-	private static final Log LOG = LogFactory.getLog(XmlHelper.class);
+    private static final Log LOG = LogFactory.getLog(XmlHelper.class);
 
-	private XmlHelper() {
-         throw new UnsupportedOperationException("do not call");
-	}
+    private XmlHelper() {
+        throw new UnsupportedOperationException("do not call");
+    }
 
     /**
      * Creates jdom Document from a Reader.  Does not close the reader.
@@ -69,18 +65,18 @@ public final class XmlHelper {
      * @param xmlStream the reader representing the xmlstream
      * @return jdom document
      */
-	public static org.jdom.Document buildJDocument(Reader xmlStream) {
-		// use SAX Builder
-		// don't verify for speed reasons
-		final SAXBuilder builder = new SAXBuilder(false);
-		try {
-			return builder.build(xmlStream);
-		} catch (IOException e) {
-			throw new XmlException("Invalid xml string. ", e);
-		} catch (JDOMException e) {
+    public static org.jdom.Document buildJDocument(Reader xmlStream) {
+        // use SAX Builder
+        // don't verify for speed reasons
+        final SAXBuilder builder = new SAXBuilder(false);
+        try {
+            return builder.build(xmlStream);
+        } catch (IOException e) {
+            throw new XmlException("Invalid xml string. ", e);
+        } catch (JDOMException e) {
             throw new XmlException("Invalid xml string. ", e);
         }
-	}
+    }
 
     /**
      * Creates jdom Document from a w3c Document.  Does not close the reader.
@@ -88,112 +84,72 @@ public final class XmlHelper {
      * @param document the w3c document
      * @return jdom document
      */
-	public static org.jdom.Document buildJDocument(org.w3c.dom.Document document) {
-		return new DOMBuilder().build(document);
-	}
+    public static org.jdom.Document buildJDocument(org.w3c.dom.Document document) {
+        return new DOMBuilder().build(document);
+    }
 
-	/**
-	 * Find all Elements in document of a particular name
-	 *
-	 * @param root the starting Element to scan
-	 * @param elementName name of the Element to scan for
-	 * @return collection of the Elements found.
-     * returns an empty collection if none are found.
-	 */
-	public static Collection<Element> findElements(Element root, String elementName) {
-		Collection<Element> elementList = new ArrayList<Element>();
+    /**
+     * Find all Elements in document of a particular name
+     *
+     * @param root the starting Element to scan
+     * @param elementName name of the Element to scan for
+     * @return collection of the Elements found.
+     *         returns an empty collection if none are found.
+     */
+    public static Collection<Element> findElements(Element root, String elementName) {
+        Collection<Element> elementList = new ArrayList<Element>();
 
-		if (root == null) {
-			return elementList;
-		}
+        if (root == null) {
+            return elementList;
+        }
 
-		XmlHelper.findElements(root, elementName, elementList);
+        XmlHelper.findElements(root, elementName, elementList);
 
-		return elementList;
-	}
+        return elementList;
+    }
 
-	public static String jotDocument(org.jdom.Document document) {
-		XMLOutputter outputer = new XMLOutputter(Format.getPrettyFormat());
-		StringWriter writer = new StringWriter();
-		try {
-			outputer.output(document, writer);
-		} catch (IOException e) {
-			throw new XmlException("Could not write XML data export.", e);
-		}
-		return writer.toString();
-	}
+    public static void appendXml(Node parentNode, String xml) throws SAXException, IOException, ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setValidating(false);
+        org.w3c.dom.Document xmlDocument = factory.newDocumentBuilder().parse(new InputSource(new StringReader(xml)));
+        org.w3c.dom.Element xmlDocumentElement = xmlDocument.getDocumentElement();
+        Node importedNode = parentNode.getOwnerDocument().importNode(xmlDocumentElement, true);
+        parentNode.appendChild(importedNode);
+    }
 
-    public static String jotDocument(org.w3c.dom.Document doc) {
-		return jotNode(doc.getDocumentElement());
-	}
+    public static org.w3c.dom.Document readXml(String xml) throws TransformerException {
+        Source source = new StreamSource(new BufferedReader(new StringReader(xml)));
+        DOMResult result = new DOMResult();
+        Transformer transformer = TransformerFactory.newInstance().newTransformer();
+        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+        transformer.transform(source, result);
+        return (org.w3c.dom.Document) result.getNode();
+    }
 
-	public static String jotNode(org.jdom.Element element) {
-		XMLOutputter outputer = new XMLOutputter(Format.getPrettyFormat());
-		StringWriter writer = new StringWriter();
-		try {
-			outputer.output(element, writer);
-		} catch (IOException e) {
-			throw new XmlException("Could not write XML data export.", e);
-		}
-		return writer.toString();
-	}
+    public static void propagateNamespace(Element element, Namespace namespace) {
+        element.setNamespace(namespace);
+        for (Object childElement : element.getChildren()) {
+            propagateNamespace((Element) childElement, namespace);
+        }
+    }
 
-	public static String jotNode(org.w3c.dom.Node node) {
-		// default to true since this is used mostly for debugging
-		return jotNode(node, true);
-	}
+    public static org.w3c.dom.Document trimXml(InputStream input) throws SAXException, IOException, ParserConfigurationException {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setIgnoringElementContentWhitespace(true);
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        org.w3c.dom.Document oldDocument = builder.parse(input);
+        org.w3c.dom.Element naviElement = oldDocument.getDocumentElement();
+        trimElement(naviElement);
+        return oldDocument;
+    }
 
-	public static String jotNode(org.w3c.dom.Node node, boolean indent) {
-		try {
-			return nodeToString(node, indent);
-		} catch (TransformerException te) {
-			throw new XmlException(te);
-		}
-	}
-
-	public static void appendXml(Node parentNode, String xml) throws SAXException, IOException, ParserConfigurationException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setValidating(false);
-		org.w3c.dom.Document xmlDocument = factory.newDocumentBuilder().parse(new InputSource(new StringReader(xml)));
-		org.w3c.dom.Element xmlDocumentElement = xmlDocument.getDocumentElement();
-		Node importedNode = parentNode.getOwnerDocument().importNode(xmlDocumentElement, true);
-		parentNode.appendChild(importedNode);
-	}
-
-	public static org.w3c.dom.Document readXml(String xml) throws TransformerException {
-		Source source = new StreamSource(new BufferedReader(new StringReader(xml)));
-		DOMResult result = new DOMResult();
-		Transformer transformer = TransformerFactory.newInstance().newTransformer();
-		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-		transformer.transform(source, result);
-		return (org.w3c.dom.Document) result.getNode();
-	}
-
-	public static void propagateNamespace(Element element, Namespace namespace) {
-		element.setNamespace(namespace);
-		for (Iterator iterator = element.getChildren().iterator(); iterator.hasNext();) {
-			Element childElement = (Element) iterator.next();
-			propagateNamespace(childElement, namespace);
-		}
-	}
-
-	public static org.w3c.dom.Document trimXml(InputStream input) throws SAXException, IOException, ParserConfigurationException {
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setIgnoringElementContentWhitespace(true);
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		org.w3c.dom.Document oldDocument = builder.parse(input);
-		org.w3c.dom.Element naviElement = oldDocument.getDocumentElement();
-		trimElement(naviElement);
-		return oldDocument;
-	}
-
-	public static Document trimSAXXml(InputStream input) throws JDOMException, SAXException, IOException, ParserConfigurationException {
-		SAXBuilder builder = new SAXBuilder(false);
-		Document oldDocument = builder.build(input);
-		Element naviElement = oldDocument.getRootElement();
-		trimSAXElement(naviElement);
-		return oldDocument;
-	}
+    public static Document trimSAXXml(InputStream input) throws JDOMException, SAXException, IOException, ParserConfigurationException {
+        SAXBuilder builder = new SAXBuilder(false);
+        Document oldDocument = builder.build(input);
+        Element naviElement = oldDocument.getRootElement();
+        trimSAXElement(naviElement);
+        return oldDocument;
+    }
 
     /**
      * Convenience method that performs an xpath evaluation to determine whether the expression
@@ -201,30 +157,34 @@ public final class XmlHelper {
      * This is method exists only to disambiguate the cases of determining the *presence* of a node
      * and determining the *boolean value of the node as converted from a string*, as the syntaxes
      * are very similar and could be misleading.
-     * @param xpath the XPath object
+     *
+     * @param xpath      the XPath object
      * @param expression the XPath expression
-     * @param object the object on which to evaluate the expression as required by the XPath API, typically a Node
+     * @param object     the object on which to evaluate the expression as required by the XPath API, typically a Node
      * @return whether the result of the expression evaluation, which is whether or not a node was present
-     * @throws XPathExpressionException
+     * @throws XPathExpressionException if the expression fails
      */
     public static boolean pathExists(XPath xpath, String expression, Object object) throws XPathExpressionException {
         return ((Boolean) xpath.evaluate(expression, object, XPathConstants.BOOLEAN)).booleanValue();
     }
 
     public static org.w3c.dom.Element propertiesToXml(org.w3c.dom.Document doc, Object o, String elementName) throws Exception {
-        Class c = o.getClass();
+        Class<?> c = o.getClass();
         org.w3c.dom.Element wrapper = doc.createElement(elementName);
         Method[] methods = c.getMethods();
         for (Method method : methods) {
             String name = method.getName();
-            if ("getClass".equals(name)) continue;
-            if (!name.startsWith("get") ||
-                    method.getParameterTypes().length > 0) continue;
+            if ("getClass".equals(name)) {
+                continue;
+            }
+            if (!name.startsWith("get") || method.getParameterTypes().length > 0) {
+                continue;
+            }
             name = name.substring("get".length());
             name = StringUtils.uncapitalize(name);
-            String value = null;
             try {
-                Object result = method.invoke(o, null);
+                Object result = method.invoke(o);
+                final String value;
                 if (result == null) {
                     LOG.debug("value of " + name + " method on object " + o.getClass() + " is null");
                     value = "";
@@ -241,86 +201,61 @@ public final class XmlHelper {
         return wrapper;
     }
 
-	/**
-	 * This function is tail-recursive and just adds the root to the list if it
-	 * matches and checks the children.
-	 *
-	 * @param root
-	 * @param elementName
-	 * @param list
-	 */
-	private static void findElements(Element root, String elementName, Collection<Element> list) {
-		if (root != null) {
-			if (root.getName().equals(elementName)) {
-				list.add(root);
-			}
+    /**
+     * This function is tail-recursive and just adds the root to the list if it
+     * matches and checks the children.
+     *
+     * @param root the root element to search under
+     * @param elementName the element name to find
+     * @param list a list of found element
+     */
+    private static void findElements(Element root, String elementName, Collection<Element> list) {
+        if (root != null) {
+            if (root.getName().equals(elementName)) {
+                list.add(root);
+            }
 
-			Iterator iter = root.getChildren().iterator();
-
-			while (iter.hasNext()) {
-				Element item = (Element) iter.next();
-
-				if (item != null) {
-					XmlHelper.findElements(item, elementName, list);
-				}
-			}
-		}
-	}
+            for (Object item : root.getChildren()) {
+                if (item != null) {
+                    XmlHelper.findElements((Element) item, elementName, list);
+                }
+            }
+        }
+    }
 
     private static void trimElement(Node node) throws SAXException, IOException, ParserConfigurationException {
 
-		if (node.hasChildNodes()) {
-			NodeList children = node.getChildNodes();
-			for (int i = 0; i < children.getLength(); i++) {
-				Node child = children.item(i);
-				if (child != null) {
-					trimElement(child);
-				}
-			}
-		} else {
-			if (node.getNodeType() == Node.TEXT_NODE) {
-				String text = node.getNodeValue();
-				if (StringUtils.isEmpty(text)) {
-					text = "";
-				} else {
-					text = text.trim();
-				}
-				node.setNodeValue(text);
-			}
-		}
-	}
+        if (node.hasChildNodes()) {
+            NodeList children = node.getChildNodes();
+            for (int i = 0; i < children.getLength(); i++) {
+                Node child = children.item(i);
+                if (child != null) {
+                    trimElement(child);
+                }
+            }
+        } else {
+            if (node.getNodeType() == Node.TEXT_NODE) {
+                String text = node.getNodeValue();
+                text = StringUtils.isEmpty(text) ? "" : text.trim();
+                node.setNodeValue(text);
+            }
+        }
+    }
 
     private static void trimSAXElement(Element element) throws SAXException, IOException, ParserConfigurationException {
 
-		if (! element.getChildren().isEmpty()) {
-
-			java.util.List children = element.getChildren();
-			for (int i = 0; i < children.size(); i++) {
-				Element child = (Element) children.get(i);
-				if (child != null) {
-					trimSAXElement(child);
-				}
-			}
-		} else {
-			String text = element.getTextTrim();
-			if (StringUtils.isEmpty(text)) {
-				text = "";
-			}
-			element.setText(text);
-
-		}
-	}
-
-    private static String nodeToString(org.w3c.dom.Node node, boolean indent) throws TransformerException {
-		Source source = new DOMSource(node);
-		StringWriter writer = new StringWriter();
-		Result result = new StreamResult(writer);
-		Transformer transformer = TransformerFactory.newInstance().newTransformer();
-		transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-		if (indent) {
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-		}
-		transformer.transform(source, result);
-		return writer.toString();
-	}
+        if (!element.getChildren().isEmpty()) {
+            for (Object child : element.getChildren()) {
+                if (child != null) {
+                    trimSAXElement((Element) child);
+                }
+            }
+        } else {
+            String text = element.getTextTrim();
+            if (StringUtils.isEmpty(text)) {
+                text = "";
+            }
+            element.setText(text);
+        }
+    }
 }

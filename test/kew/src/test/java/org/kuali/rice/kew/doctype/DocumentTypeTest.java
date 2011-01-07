@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.doctype.service.impl.DocumentTypeServiceImpl;
@@ -177,7 +177,7 @@ public class DocumentTypeTest extends KEWTestCase {
         dataSet.getDocumentTypes().add(parsedDocument);
         String regex = "(?s).*<defaultExceptionGroupName namespace=\"" + KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE + "\">TestWorkgroup</defaultExceptionGroupName>.*";
         LOG.warn("Using regex: " + regex);
-        assertTrue(XmlHelper.jotNode(exporter.export(dataSet)).matches(regex));
+        assertTrue(XmlJotter.jotNode(exporter.export(dataSet)).matches(regex));
         //assertNotNull(parsedDocument.getDefaultExceptionWorkgroup());
         //assertEquals("Wrong default exception workgroup", "TestWorkgroup", parsedDocument.getDefaultExceptionWorkgroup().getDisplayName());
         assertEquals("Wrong doc handler url", "http://someurl/path/_blank", parsedDocument.getDocHandlerUrl());

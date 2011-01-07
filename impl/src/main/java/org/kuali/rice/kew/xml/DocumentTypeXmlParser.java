@@ -18,6 +18,7 @@ package org.kuali.rice.kew.xml;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
@@ -274,7 +275,7 @@ public class DocumentTypeXmlParser {
         else if (securityList.getLength() > 0) {
            try {
              Node securityNode = securityList.item(0);
-             String securityText = XmlHelper.jotNode(securityNode);
+             String securityText = XmlJotter.jotNode(securityNode);
              documentType.setDocumentTypeSecurityXml(securityText);
            }
            catch (Exception e) {
@@ -1156,7 +1157,7 @@ public class DocumentTypeXmlParser {
         // set fields that all route nodes of all types should have defined
         routeNode.setDocumentType(documentType);
         routeNode.setRouteNodeName((String) getXPath().evaluate("./@name", node, XPathConstants.STRING));
-        routeNode.setContentFragment(XmlHelper.jotNode(node));
+        routeNode.setContentFragment(XmlJotter.jotNode(node));
 
         if (XmlHelper.pathExists(xpath, "./activationType", node)) {
             routeNode.setActivationType(ActivationTypeEnum.parse((String) getXPath().evaluate("./activationType", node, XPathConstants.STRING)).getCode());

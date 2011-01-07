@@ -19,7 +19,7 @@ package org.kuali.rice.kew.edl.components;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.edl.*;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -122,7 +122,7 @@ public class WorkflowDocumentState implements EDLModelComponent {
 			Map<String, String> globalFieldErrors = (Map)edlContext.getRequestParser().getAttribute(RequestParser.GLOBAL_FIELD_ERRORS_KEY);
 			EDLXmlUtils.addErrorsAndMessagesToDocument(dom, globalErrors, globalMessages, globalFieldErrors);
             if (LOG.isDebugEnabled()) {
-            	LOG.debug("Transforming dom " + XmlHelper.jotNode(dom, true));
+            	LOG.debug("Transforming dom " + XmlJotter.jotNode(dom, true));
             }
 		} catch (Exception e) {
 			throw new WorkflowRuntimeException(e);

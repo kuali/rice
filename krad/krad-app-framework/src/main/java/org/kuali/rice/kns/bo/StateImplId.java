@@ -15,32 +15,30 @@
  */
 package org.kuali.rice.kns.bo;
 
+import org.kuali.rice.core.persistence.CompositePrimaryKeyBase;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 
 /**
- * PK for CountyImpl 
+ * PK for StateImpl 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class CountyImplId extends CompositePrimaryKeyBase {
+public class StateImplId extends CompositePrimaryKeyBase {
 	@Id
 	@Column(name="POSTAL_CNTRY_CD")
     private String postalCountryCode;
 	@Id
-	@Column(name="COUNTY_CD")
-    private String countyCode;
-	@Id
-	@Column(name="STATE_CD")
-    private String stateCode;
+	@Column(name="POSTAL_STATE_CD")
+    private String postalStateCode;
 	
-	public CountyImplId() {}
+	public StateImplId() {}
 	
-	public CountyImplId(String postalCountryCode, String countyCode, String stateCode) {
+	public StateImplId(String postalCountryCode, String postalStateCode) {
 		this.postalCountryCode = postalCountryCode;
-		this.countyCode = countyCode;
-		this.stateCode = stateCode;
+		this.postalStateCode = postalStateCode;
 	}
 	
 	/**
@@ -50,15 +48,10 @@ public class CountyImplId extends CompositePrimaryKeyBase {
 		return this.postalCountryCode;
 	}
 	/**
-	 * @return the countyCode
+	 * @return the postalStateCode
 	 */
-	public String getCountyCode() {
-		return this.countyCode;
+	public String getPostalStateCode() {
+		return this.postalStateCode;
 	}
-	/**
-	 * @return the stateCode
-	 */
-	public String getStateCode() {
-		return this.stateCode;
-	}
+	
 }

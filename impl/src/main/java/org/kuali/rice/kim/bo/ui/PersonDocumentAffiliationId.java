@@ -21,7 +21,7 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kns.bo.CompositePrimaryKeyBase;
+import org.kuali.rice.core.persistence.CompositePrimaryKeyBase;
 
 /**
  * This is a description of what this class does - jksmith don't forget to fill this in. 

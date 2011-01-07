@@ -12,24 +12,12 @@
  */
 package org.kuali.rice.kns.web.struts.action;
 
-import java.io.IOException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.log4j.MDC;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.apache.struts.Globals;
-import org.apache.struts.action.Action;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.apache.struts.action.InvalidCancelException;
-import org.apache.struts.action.RequestProcessor;
+import org.apache.struts.action.*;
 import org.apache.struts.config.FormBeanConfig;
 import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.util.RequestUtils;
@@ -40,15 +28,7 @@ import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SessionDocumentService;
-import org.kuali.rice.kns.util.ErrorContainer;
-import org.kuali.rice.kns.util.ExceptionUtils;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.InfoContainer;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.util.WarningContainer;
-import org.kuali.rice.kns.util.WebUtils;
+import org.kuali.rice.kns.util.*;
 import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -58,6 +38,12 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springmodules.orm.ojb.OjbOperationException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * This class handles setup of user session and restoring of action form.
@@ -605,13 +591,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	}
 
 	private void logException(Exception e) {
-		LOG.error("unhandled exception thrown by KualiRequestProcessor.processActionPerform");
-
-		if (e.getCause() != null) {
-			ExceptionUtils.logStackTrace(LOG, e.getCause());
-		} else {
-			ExceptionUtils.logStackTrace(LOG, e);
-		}
+		LOG.error("unhandled exception thrown by KualiRequestProcessor.processActionPerform", e);
 	}
 
 	/**

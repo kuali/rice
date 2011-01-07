@@ -16,10 +16,10 @@
  */
 package org.kuali.rice.core.proxy;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-
-import org.kuali.rice.core.util.ExceptionUtils;
 
 /**
  * An abstract base class for InvocationHanlders which can be used to implement
@@ -59,7 +59,7 @@ public abstract class BaseInvocationHandler implements InvocationHandler {
 		try {
 			return invokeInternal(proxy, method, arguments);
 		} catch (Throwable t) {
-			throw ExceptionUtils.unwrapActualCause(t);
+			throw ExceptionUtils.getCause(t);
 		}
 	}
 

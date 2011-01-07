@@ -15,6 +15,19 @@
  */
 package org.kuali.rice.ken.service.impl;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.log4j.Logger;
+import org.apache.ojb.broker.OptimisticLockException;
+import org.kuali.rice.ken.service.ProcessingResult;
+import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionException;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
+
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -24,19 +37,6 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.apache.ojb.broker.OptimisticLockException;
-import org.kuali.rice.ken.service.ProcessingResult;
-import org.kuali.rice.ken.util.Util;
-import org.springframework.dao.DataAccessException;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionException;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.UnexpectedRollbackException;
-import org.springframework.transaction.support.TransactionCallback;
-import org.springframework.transaction.support.TransactionTemplate;
 
 /**
  * Base class for jobs that must obtain a set of work items atomically
@@ -110,7 +110,7 @@ public abstract class ConcurrentJob<T> {
     /**
      * Template method that subclasses should override to process a given work item and mark it
      * as untaken afterwards
-     * @param item the work item
+     * @param items the work item
      * @return a collection of success messages
      */
     protected abstract Collection<?> processWorkItems(Collection<T> items);
@@ -143,8 +143,7 @@ public abstract class ConcurrentJob<T> {
         } catch (DataAccessException dae) {
             // Spring does not detect OJB's org.apache.ojb.broker.OptimisticLockException and turn it into a
             // org.springframework.dao.OptimisticLockingFailureException?
-            OptimisticLockException optimisticLockException = Util.findExceptionInStack(dae, OptimisticLockException.class);
-            if (optimisticLockException != null) {
+            if (ExceptionUtils.indexOfType(dae, OptimisticLockException.class) != -1) {
                 // anticipated in the case that another thread is trying to grab items
                 LOG.info("Contention while taking work items");
             } else {

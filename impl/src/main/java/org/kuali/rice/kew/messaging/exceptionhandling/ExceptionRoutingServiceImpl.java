@@ -16,9 +16,9 @@
  */
 package org.kuali.rice.kew.messaging.exceptionhandling;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.core.exception.RiceRuntimeException;
-import org.kuali.rice.core.util.ExceptionUtils;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -218,7 +218,7 @@ public class ExceptionRoutingServiceImpl implements WorkflowDocumentExceptionRou
     }
 
     private Throwable unwrapRouteManagerExceptionIfPossible(Throwable throwable) {
-    	throwable = ExceptionUtils.unwrapActualCause(throwable);
+    	throwable = ExceptionUtils.getCause(throwable);
     	if (throwable != null && (! (throwable instanceof RouteManagerException)) && throwable.getCause() instanceof RouteManagerException) {
     		throwable = throwable.getCause();
     	}

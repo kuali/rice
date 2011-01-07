@@ -50,28 +50,14 @@ public final class Util {
     
     public static final java.lang.String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
     public static final java.lang.String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
-    public static final java.lang.String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
-    //public static final EntityResolver ENTITY_RESOLVER = new ClassLoaderEntityResolver("schema", "notification");
-    public static final NamespaceContext NOTIFICATION_NAMESPACE_CONTEXT;
+    public static final NamespaceContext NOTIFICATION_NAMESPACE_CONTEXT
+        = new ConfiguredNamespaceContext(Collections.singletonMap("nreq", "ns:notification/NotificationRequest"));
 
-    //  XSD Zulu (UTC) date format necessary for XML request messages
-    private static final DateFormat DATEFORMAT_ZULU = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-    
-    // Server current date time
-    private static final DateFormat DATEFORMAT_CURR_TZ = new SimpleDateFormat(
-    "MM/dd/yyyy hh:mm a");
-    
-    static {
-        Map<String, String> prefixToNS = new HashMap<String, String>();
-        prefixToNS.put("nreq", "ns:notification/NotificationRequest");
-        NOTIFICATION_NAMESPACE_CONTEXT = new ConfiguredNamespaceContext(prefixToNS);
+    private static final String ZULU_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
+    private static final TimeZone ZULU_TZ = TimeZone.getTimeZone("UTC");
 
-        // set the timezone to Zulu for the XML/XSD formatter
-        DATEFORMAT_ZULU.setTimeZone(TimeZone.getTimeZone("UTC"));
-        // set the timezone for current time
-         
-    }
+    private static final String CURR_TZ_FORMAT = "MM/dd/yyyy hh:mm a";
     
 	private Util() {
 		throw new UnsupportedOperationException("do not call");
@@ -90,15 +76,13 @@ public final class Util {
 
     /**
      * Parses a date/time string under XSD dateTime type syntax
-     * @see #DATEFORMAT_ZULU
+     * @see #ZULU_FORMAT
      * @param dateTimeString an XSD dateTime-formatted String
      * @return a Date representing the time value of the String parameter 
      * @throws ParseException if an error occurs during parsing 
      */
     public static Date parseXSDDateTime(String dateTimeString) throws ParseException {
-        synchronized (DATEFORMAT_ZULU) {
-            return DATEFORMAT_ZULU.parse(dateTimeString);
-        }
+            return createZulu().parse(dateTimeString);
     }
 
     /**
@@ -107,9 +91,7 @@ public final class Util {
      * @return date value formatted into XSD dateTime format
      */
     public static String toXSDDateTimeString(Date d) {
-        synchronized (DATEFORMAT_ZULU) {
-            return DATEFORMAT_ZULU.format(d);
-        }
+        return createZulu().format(d);
     }
     
     /**
@@ -125,9 +107,7 @@ public final class Util {
      * @return the specified date formatted for the UI
      */
     public static String toUIDateTimeString(Date d) {
-        synchronized (DATEFORMAT_CURR_TZ) {
-           return DATEFORMAT_CURR_TZ.format(d);
-        }
+        return createCurrTz().format(d);
     }
 
     /**
@@ -135,9 +115,7 @@ public final class Util {
      * @return the date parsed from UI date time format
      */
     public static Date parseUIDateTime(String s) throws ParseException {
-        synchronized (DATEFORMAT_CURR_TZ) {
-           return DATEFORMAT_CURR_TZ.parse(s);
-        }
+        return createCurrTz().parse(s);
     }
 
     /**
@@ -413,20 +391,16 @@ public final class Util {
         }
         return reference;
     }
-    
-    /**
-     * This method searches for an exception of the specified type in the stack trace of the given
-     * exception.
-     * @param topLevelException the exception whose stack to traverse
-     * @param exceptionClass the exception class to look for
-     * @return the first instance of an exception of the specified class if found, or null otherwise
-     */
-    public static <T extends Throwable> T findExceptionInStack(Throwable topLevelException, Class<T> exceptionClass) {
-        Throwable t = topLevelException;
-        while (t != null) {
-            if (exceptionClass.isAssignableFrom(t.getClass())) return (T) t;
-            t = t.getCause();
-        }
-        return null;
+
+    /** date formats are not thread safe so creating a new one each time it is needed. */
+    private static DateFormat createZulu() {
+        final DateFormat df = new SimpleDateFormat(ZULU_FORMAT);
+        df.setTimeZone(ZULU_TZ);
+        return df;
+    }
+
+    /** date formats are not thread safe so creating a new one each time it is needed. */
+    private static DateFormat createCurrTz() {
+        return new SimpleDateFormat(CURR_TZ_FORMAT);
     }
 }

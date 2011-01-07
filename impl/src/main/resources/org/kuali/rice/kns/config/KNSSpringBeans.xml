@@ -326,14 +326,6 @@
 		</property>
 	</bean>
 
-	<bean id="postDataLoadEncryptionDao" parent="platformAwareDaoJdbc" class="org.kuali.rice.kns.dao.jdbc.PostDataLoadEncryptionDaoJdbc" />
-
-	<bean id="postDataLoadEncryptionService" class="org.kuali.rice.kns.service.impl.PostDataLoadEncryptionServiceImpl">
-		<property name="postDataLoadEncryptionDao" ref="postDataLoadEncryptionDao" />
-		<property name="businessObjectService" ref="businessObjectService" />
-		<property name="encryptionService" ref="encryptionService" />
-	</bean>
-
 	<bean id="businessObjectService" class="org.kuali.rice.kns.service.impl.BusinessObjectServiceImpl">
 		<property name="businessObjectDao">
 			<ref bean="businessObjectDao" />

@@ -20,7 +20,8 @@ import org.apache.commons.lang.text.StrLookup;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.core.util.XmlJotter;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -29,7 +30,6 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
@@ -134,7 +134,7 @@ public class ConfigParserImpl implements ConfigParser {
         try {
             doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(configStream);
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Contents of config " + location + ": \n" + XmlJotter.jotNode(doc, true));
+                LOG.debug("Contents of config " + location + ": \n" + XmlHelper.jotNode(doc, true));
             }
         } catch (SAXException se) {
             IOException ioe = new IOException("Error parsing config resource: " + location);
@@ -164,7 +164,7 @@ public class ConfigParserImpl implements ConfigParser {
             Element param = (Element) node;
             String name = param.getAttribute(NAME_ATTR);
             if (name == null) {
-                LOG.error("Unnamed parameter in config resource '" + location + "': " + XmlJotter.jotNode(param));
+                LOG.error("Unnamed parameter in config resource '" + location + "': " + XmlHelper.jotNode(param));
                 continue;
             }
             Boolean override = Boolean.TRUE;
@@ -239,9 +239,9 @@ public class ConfigParserImpl implements ConfigParser {
         try {
             sb.setLength(0);
             for (int j = 0; j < children.getLength(); j++) {
-                sb.append(XmlJotter.writeNode(children.item(j), true));
+                sb.append(XmlHelper.jotNode(children.item(j), true));
             }
-        } catch (TransformerException te) {
+        } catch (XmlException te) {
             IOException ioe = new IOException("Error obtaining parameter '" + name + "' from config resource: " + location);
             ioe.initCause(te);
             throw ioe;

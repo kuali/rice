@@ -16,19 +16,7 @@
  */
 package org.kuali.rice.kew.dto;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -38,33 +26,22 @@ import org.kuali.rice.core.reflect.PropertyDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionitem.ActionItem;
-import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
-import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
-import org.kuali.rice.kew.actionrequest.Recipient;
+import org.kuali.rice.kew.actionrequest.*;
 import org.kuali.rice.kew.actions.AdHocRevoke;
 import org.kuali.rice.kew.actions.MovePoint;
 import org.kuali.rice.kew.actions.ValidActions;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
 import org.kuali.rice.kew.definition.AttributeDefinition;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchResult;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.docsearch.web.SearchAttributeFormContainer;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
-import org.kuali.rice.kew.engine.node.Branch;
-import org.kuali.rice.kew.engine.node.BranchState;
+import org.kuali.rice.kew.engine.node.*;
 import org.kuali.rice.kew.engine.node.Process;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.engine.node.State;
 import org.kuali.rice.kew.engine.simulation.SimulationActionToTake;
 import org.kuali.rice.kew.engine.simulation.SimulationCriteria;
 import org.kuali.rice.kew.exception.DocumentTypeNotFoundException;
@@ -72,25 +49,12 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.service.NoteService;
-import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
-import org.kuali.rice.kew.postprocessor.AfterProcessEvent;
-import org.kuali.rice.kew.postprocessor.BeforeProcessEvent;
-import org.kuali.rice.kew.postprocessor.DeleteEvent;
-import org.kuali.rice.kew.postprocessor.DocumentLockingEvent;
-import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
-import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
+import org.kuali.rice.kew.postprocessor.*;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
-import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
-import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
+import org.kuali.rice.kew.rule.*;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -98,7 +62,6 @@ import org.kuali.rice.kew.user.RoleRecipient;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
@@ -109,6 +72,11 @@ import org.kuali.rice.kns.util.SQLUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.sql.Timestamp;
+import java.util.*;
 
 
 /**
@@ -336,7 +304,7 @@ public class DTOConverter {
             if (searchableContentElement != null) {
                 root.appendChild(searchableContentElement);
             }
-            documentContent = XmlHelper.writeNode(document);
+            documentContent = XmlHelper.jotNode(document);
         } catch (Exception e) {
             handleException("Error parsing document content.", e);
         }
@@ -361,7 +329,7 @@ public class DTOConverter {
             }
         }
         // if they have new definitions we're going to append those to the existing content section
-        if (!Utilities.isEmpty(definitions)) {
+        if (!ArrayUtils.isEmpty(definitions)) {
             String errorMessage = "";
             boolean inError = false;
             if (contentSectionElement == null) {
@@ -443,13 +411,13 @@ public class DTOConverter {
         try {
             DocumentContent documentContent = new StandardDocumentContent(documentContentValue);
             if (documentContent.getApplicationContent() != null) {
-                documentContentVO.setApplicationContent(XmlHelper.writeNode(documentContent.getApplicationContent()));
+                documentContentVO.setApplicationContent(XmlHelper.jotNode(documentContent.getApplicationContent()));
             }
             if (documentContent.getAttributeContent() != null) {
-                documentContentVO.setAttributeContent(XmlHelper.writeNode(documentContent.getAttributeContent()));
+                documentContentVO.setAttributeContent(XmlHelper.jotNode(documentContent.getAttributeContent()));
             }
             if (documentContent.getSearchableContent() != null) {
-                documentContentVO.setSearchableContent(XmlHelper.writeNode(documentContent.getSearchableContent()));
+                documentContentVO.setSearchableContent(XmlHelper.jotNode(documentContent.getSearchableContent()));
             }
         } catch (Exception e) {
             handleException("Error parsing document content.", e);

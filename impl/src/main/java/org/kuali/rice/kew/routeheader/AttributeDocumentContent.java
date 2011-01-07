@@ -16,13 +16,13 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.web.RoutingReportAction;
 import org.kuali.rice.kew.util.KEWConstants;
+
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -39,7 +39,7 @@ public class AttributeDocumentContent extends StandardDocumentContent {
     
 	private static final long serialVersionUID = 6789132279492877000L;
 
-	public AttributeDocumentContent(List attributes) throws InvalidXmlException {
+	public AttributeDocumentContent(List attributes) throws XmlException {
         super(generateDocContent(attributes));
     }
     

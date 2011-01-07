@@ -17,18 +17,23 @@
 
 package org.kuali.rice.kew.xml;
 
-import java.io.StringReader;
+import org.junit.Test;
+import org.kuali.rice.test.BaseRiceTestCase;
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
-import org.junit.Test;
-import org.kuali.rice.kew.util.XmlHelper;
-import org.kuali.rice.test.BaseRiceTestCase;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXParseException;
+import java.io.IOException;
+import java.io.StringReader;
 
 
 public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
@@ -92,12 +97,12 @@ public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
     }
 
     @Test public void testValidActivationTypes() throws Exception {
-        XmlHelper.validate(new InputSource(getClass().getResourceAsStream("ValidActivationTypes.xml")));
+       validate(new InputSource(getClass().getResourceAsStream("ValidActivationTypes.xml")));
     }
 
     @Test public void testBadActivationType() throws Exception {
         try {
-            XmlHelper.validate(new InputSource(getClass().getResourceAsStream("BadActivationType.xml")));
+            validate(new InputSource(getClass().getResourceAsStream("BadActivationType.xml")));
             fail("Bad activation type passed validation");
         } catch (SAXParseException spe) {
             // expected
@@ -106,12 +111,12 @@ public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
     }
 
     @Test public void testValidPolicyNames() throws Exception {
-        XmlHelper.validate(new InputSource(getClass().getResourceAsStream("ValidPolicyNames.xml")));
+        validate(new InputSource(getClass().getResourceAsStream("ValidPolicyNames.xml")));
     }
 
     @Test public void testBadPolicyName() throws Exception {
         try {
-            XmlHelper.validate(new InputSource(getClass().getResourceAsStream("BadPolicyName.xml")));
+            validate(new InputSource(getClass().getResourceAsStream("BadPolicyName.xml")));
             fail("Bad policy name passed validation");
         } catch (SAXParseException spe) {
             // expected
@@ -136,12 +141,12 @@ public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
     */
 
     @Test public void testNoDocHandler() throws Exception {
-        XmlHelper.validate(new InputSource(getClass().getResourceAsStream("NoDocHandler.xml")));
+        validate(new InputSource(getClass().getResourceAsStream("NoDocHandler.xml")));
     }
 
     @Test public void testInvalidParentDocType() throws Exception {
         // although semantically invalid, this should actually pass XML validation as it is syntactically valid
-        XmlHelper.validate(new InputSource(getClass().getResourceAsStream("InvalidParent.xml")));
+        validate(new InputSource(getClass().getResourceAsStream("InvalidParent.xml")));
     }
     
     /**
@@ -150,7 +155,7 @@ public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
      * @throws Exception
      */
     @Test public void testDualDocumentTypeIngestion() throws Exception {
-        XmlHelper.validate(new InputSource(getClass().getResourceAsStream("DualDocumentTypes.xml")));
+        validate(new InputSource(getClass().getResourceAsStream("DualDocumentTypes.xml")));
     }
 
     /**
@@ -159,7 +164,7 @@ public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
      * @throws Exception
      */
     @Test public void testRoutePathOnly() throws Exception {
-        XmlHelper.validate(new InputSource(getClass().getResourceAsStream("RoutePathOnlyDocument.xml")));
+        validate(new InputSource(getClass().getResourceAsStream("RoutePathOnlyDocument.xml")));
     }
 
     /**
@@ -168,7 +173,28 @@ public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
      * @throws Exception
      */
     @Test public void testNoRoutePathOnly() throws Exception {
-        XmlHelper.validate(new InputSource(getClass().getResourceAsStream("NoRoutePathOnlyDocument.xml")));
+        validate(new InputSource(getClass().getResourceAsStream("NoRoutePathOnlyDocument.xml")));
     }
 
+
+    public static void validate(final InputSource source) throws ParserConfigurationException, IOException, SAXException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setValidating(true);
+        dbf.setNamespaceAware( true );
+        dbf.setAttribute("http://java.sun.com/xml/jaxp/properties/schemaLanguage", XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        db.setEntityResolver(new ClassLoaderEntityResolver());
+        db.setErrorHandler(new ErrorHandler() {
+            public void warning(SAXParseException se) throws SAXException {
+                throw se;
+            }
+            public void error(SAXParseException se) throws SAXException {
+                throw se;
+            }
+            public void fatalError(SAXParseException se) throws SAXException {
+                throw se;
+            }
+        });
+        db.parse(source);
+    }
 }

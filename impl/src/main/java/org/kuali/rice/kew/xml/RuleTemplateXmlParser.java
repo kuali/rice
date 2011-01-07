@@ -16,17 +16,6 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Attribute;
@@ -34,7 +23,8 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleDelegation;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
@@ -44,8 +34,17 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.kuali.rice.kew.xml.XmlConstants.*;
 /**
@@ -75,30 +74,30 @@ public class RuleTemplateXmlParser {
      */
     private int templateAttributeCounter = 0;
 
-    public List<RuleTemplate> parseRuleTemplates(InputStream input) throws IOException, InvalidXmlException {
+    public List<RuleTemplate> parseRuleTemplates(InputStream input) throws IOException, XmlException {
 
         try {
             Document doc = XmlHelper.trimSAXXml(input);
             Element root = doc.getRootElement();
             return parseRuleTemplates(root);
         } catch (JDOMException e) {
-            throw new InvalidXmlException("Parse error.", e);
+            throw new XmlException("Parse error.", e);
         } catch (SAXException e) {
-            throw new InvalidXmlException("Parse error.", e);
+            throw new XmlException("Parse error.", e);
         } catch (ParserConfigurationException e) {
-            throw new InvalidXmlException("Parse error.", e);
+            throw new XmlException("Parse error.", e);
         }
     }
 
-    public List<RuleTemplate> parseRuleTemplates(Element element) throws InvalidXmlException {
+    public List<RuleTemplate> parseRuleTemplates(Element element) throws XmlException {
         List<RuleTemplate> ruleTemplates = new ArrayList<RuleTemplate>();
 
         // iterate over any RULE_TEMPLATES elements
-        Vector ruleTemplatesElements = XmlHelper.findElements(element, RULE_TEMPLATES);
+        Collection<Element> ruleTemplatesElements = XmlHelper.findElements(element, RULE_TEMPLATES);
         Iterator ruleTemplatesIterator = ruleTemplatesElements.iterator();
         while (ruleTemplatesIterator.hasNext()) {
             Element ruleTemplatesElement = (Element) ruleTemplatesIterator.next();
-            Vector ruleTemplateElements = XmlHelper.findElements(ruleTemplatesElement, RULE_TEMPLATE);
+            Collection<Element> ruleTemplateElements = XmlHelper.findElements(ruleTemplatesElement, RULE_TEMPLATE);
             for (Iterator iterator = ruleTemplateElements.iterator(); iterator.hasNext();) {
                 ruleTemplates.add(parseRuleTemplate((Element) iterator.next(), ruleTemplates));
             }
@@ -106,7 +105,7 @@ public class RuleTemplateXmlParser {
         return ruleTemplates;
     }
 
-    private RuleTemplate parseRuleTemplate(Element element, List<RuleTemplate> ruleTemplates) throws InvalidXmlException {
+    private RuleTemplate parseRuleTemplate(Element element, List<RuleTemplate> ruleTemplates) throws XmlException {
         String name = element.getChildText(NAME, RULE_TEMPLATE_NAMESPACE);
         String description = element.getChildText(DESCRIPTION, RULE_TEMPLATE_NAMESPACE);
         Attribute allowOverwriteAttrib = element.getAttribute("allowOverwrite");
@@ -116,10 +115,10 @@ public class RuleTemplateXmlParser {
             allowOverwrite = Boolean.valueOf(allowOverwriteAttrib.getValue()).booleanValue();
         }
         if (Utilities.isEmpty(name)) {
-            throw new InvalidXmlException("RuleTemplate must have a name");
+            throw new XmlException("RuleTemplate must have a name");
         }
         if (Utilities.isEmpty(description)) {
-            throw new InvalidXmlException("RuleTemplate must have a description");
+            throw new XmlException("RuleTemplate must have a description");
         }
 
         // look up the rule template by name first
@@ -164,7 +163,7 @@ public class RuleTemplateXmlParser {
      * Updates the rule template default options.  Updates any existing options, removes any omitted ones.
      * @param ruleTemplateElement the rule template XML element
      * @param updatedRuleTemplate the RuleTemplate being updated
-     * @throws InvalidXmlException
+     * @throws XmlException
      */
     /*
      <element name="description" type="c:LongStringType"/>
@@ -178,7 +177,7 @@ public class RuleTemplateXmlParser {
      <element name="supportsAcknowledge" type="boolean" default="true"/>
      <element name="supportsFYI" type="boolean" default="true"/>
     */
-    protected void updateRuleTemplateDefaultOptions(Element ruleTemplateElement, RuleTemplate updatedRuleTemplate) throws InvalidXmlException {
+    protected void updateRuleTemplateDefaultOptions(Element ruleTemplateElement, RuleTemplate updatedRuleTemplate) throws XmlException {
         Element defaultsElement = ruleTemplateElement.getChild(RULE_DEFAULTS, RULE_TEMPLATE_NAMESPACE);
 
         // update the rule defaults; this yields whether or not this is a delegation rule template
@@ -194,7 +193,7 @@ public class RuleTemplateXmlParser {
      * @param defaultsElement the ruleDefaults element
      * @param updatedRuleTemplate the Rule Template being updated
      */
-    protected void updateRuleTemplateOptions(Element defaultsElement, RuleTemplate updatedRuleTemplate, boolean isDelegation) throws InvalidXmlException {
+    protected void updateRuleTemplateOptions(Element defaultsElement, RuleTemplate updatedRuleTemplate, boolean isDelegation) throws XmlException {
         // the possible defaults options
         // NOTE: the current implementation will remove any existing RuleTemplateOption records for any values which are null, i.e. not set in the incoming XML.
         // to pro-actively set default values for omitted options, simply set those values here, and records will be added if not present
@@ -244,7 +243,7 @@ public class RuleTemplateXmlParser {
      * @param updatedRuleTemplate the Rule Template being updated
      * @return whether this is a delegation rule template
      */
-    protected boolean updateRuleDefaults(Element defaultsElement, RuleTemplate updatedRuleTemplate) throws InvalidXmlException {
+    protected boolean updateRuleDefaults(Element defaultsElement, RuleTemplate updatedRuleTemplate) throws XmlException {
         // NOTE: implementation detail: in contrast with the other options, the delegate template, and the rule attributes,
         // we unconditionally blow away the default rule and re-create it (we don't update the existing one, if there is one)
         if (updatedRuleTemplate.getRuleTemplateId() != null) {
@@ -271,7 +270,7 @@ public class RuleTemplateXmlParser {
             
             // would normally be validated via schema but might not be present if invoking RuleXmlParser directly
             if (description == null) {
-                throw new InvalidXmlException("Description must be specified in rule defaults");
+                throw new XmlException("Description must be specified in rule defaults");
             }
             
             String fromDate = defaultsElement.getChildText(FROM_DATE, RULE_TEMPLATE_NAMESPACE);
@@ -281,7 +280,7 @@ public class RuleTemplateXmlParser {
             Boolean active = BooleanUtils.toBooleanObject(defaultsElement.getChildText(ACTIVE, RULE_TEMPLATE_NAMESPACE));
 
             if (isDelegation && !KEWConstants.DELEGATION_PRIMARY.equals(delegationType) && !KEWConstants.DELEGATION_SECONDARY.equals(delegationType)) {
-                throw new InvalidXmlException("Invalid delegation type '" + delegationType + "'." + "  Expected one of: "
+                throw new XmlException("Invalid delegation type '" + delegationType + "'." + "  Expected one of: "
                         + KEWConstants.DELEGATION_PRIMARY + "," + KEWConstants.DELEGATION_SECONDARY);
             }
     
@@ -360,9 +359,9 @@ public class RuleTemplateXmlParser {
      * @param ruleTemplateElement the XML ruleTemplate element
      * @param updatedRuleTemplate the rule template to update
      * @param parsedRuleTemplates the rule templates parsed in this parsing run
-     * @throws InvalidXmlException if a delegation template was specified but could not be found
+     * @throws XmlException if a delegation template was specified but could not be found
      */
-    protected void updateDelegationTemplate(Element ruleTemplateElement, RuleTemplate updatedRuleTemplate, List<RuleTemplate> parsedRuleTemplates) throws InvalidXmlException {
+    protected void updateDelegationTemplate(Element ruleTemplateElement, RuleTemplate updatedRuleTemplate, List<RuleTemplate> parsedRuleTemplates) throws XmlException {
         String delegateTemplateName = ruleTemplateElement.getChildText(DELEGATION_TEMPLATE, RULE_TEMPLATE_NAMESPACE);
 
         if (delegateTemplateName != null) {
@@ -384,7 +383,7 @@ public class RuleTemplateXmlParser {
             }
 
             if (delegateTemplate == null) {
-                throw new InvalidXmlException("Cannot find delegation template " + delegateTemplateName);
+                throw new XmlException("Cannot find delegation template " + delegateTemplateName);
             }
 
             updatedRuleTemplate.setDelegationTemplateId(delegateTemplate.getDelegationTemplateId());
@@ -398,9 +397,9 @@ public class RuleTemplateXmlParser {
      * Updates the attributes set on the RuleTemplate
      * @param ruleTemplateElement the XML ruleTemplate element
      * @param updatedRuleTemplate the RuleTemplate being updated
-     * @throws InvalidXmlException if there was a problem parsing the rule template attributes
+     * @throws XmlException if there was a problem parsing the rule template attributes
      */
-    protected void updateRuleTemplateAttributes(Element ruleTemplateElement, RuleTemplate updatedRuleTemplate) throws InvalidXmlException {
+    protected void updateRuleTemplateAttributes(Element ruleTemplateElement, RuleTemplate updatedRuleTemplate) throws XmlException {
         // add any newly defined rule template attributes to the rule template,
         // update the active and required flags of any existing ones.
         // if this is an update of an existing rule template, related attribute objects will be present in this rule template object,
@@ -439,11 +438,11 @@ public class RuleTemplateXmlParser {
      * @param attributesElement the jdom Element object for the Rule Template attributes
      * @param ruleTemplate the RuleTemplate object
      * @return the RuleTemplateAttributes defined on the rule template element
-     * @throws InvalidXmlException
+     * @throws XmlException
      */
-    private List<RuleTemplateAttribute> parseRuleTemplateAttributes(Element attributesElement, RuleTemplate ruleTemplate) throws InvalidXmlException {
+    private List<RuleTemplateAttribute> parseRuleTemplateAttributes(Element attributesElement, RuleTemplate ruleTemplate) throws XmlException {
         List<RuleTemplateAttribute> ruleTemplateAttributes = new ArrayList<RuleTemplateAttribute>();
-        Vector attributeElements = XmlHelper.findElements(attributesElement, ATTRIBUTE);
+        Collection<Element> attributeElements = XmlHelper.findElements(attributesElement, ATTRIBUTE);
         for (Iterator iterator = attributeElements.iterator(); iterator.hasNext();) {
             ruleTemplateAttributes.add(parseRuleTemplateAttribute((Element) iterator.next(), ruleTemplate));
         }
@@ -455,14 +454,14 @@ public class RuleTemplateXmlParser {
      * @param element the attribute XML element
      * @param ruleTemplate the ruleTemplate to update
      * @return a parsed rule template attribute
-     * @throws InvalidXmlException if the attribute does not exist
+     * @throws XmlException if the attribute does not exist
      */
-    private RuleTemplateAttribute parseRuleTemplateAttribute(Element element, RuleTemplate ruleTemplate) throws InvalidXmlException {
+    private RuleTemplateAttribute parseRuleTemplateAttribute(Element element, RuleTemplate ruleTemplate) throws XmlException {
         String attributeName = element.getChildText(NAME, RULE_TEMPLATE_NAMESPACE);
         String requiredValue = element.getChildText(REQUIRED, RULE_TEMPLATE_NAMESPACE);
         String activeValue = element.getChildText(ACTIVE, RULE_TEMPLATE_NAMESPACE);
         if (Utilities.isEmpty(attributeName)) {
-            throw new InvalidXmlException("Attribute name must be non-empty");
+            throw new XmlException("Attribute name must be non-empty");
         }
         boolean required = DEFAULT_ATTRIBUTE_REQUIRED;
         if (requiredValue != null) {
@@ -474,7 +473,7 @@ public class RuleTemplateXmlParser {
         }
         RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(attributeName);
         if (ruleAttribute == null) {
-            throw new InvalidXmlException("Could not locate rule attribute for name '" + attributeName + "'");
+            throw new XmlException("Could not locate rule attribute for name '" + attributeName + "'");
         }
         RuleTemplateAttribute templateAttribute = new RuleTemplateAttribute();
         templateAttribute.setRuleAttribute(ruleAttribute);
@@ -486,14 +485,14 @@ public class RuleTemplateXmlParser {
         return templateAttribute;
     }
     
-    public Timestamp formatDate(String dateLabel, String dateString) throws InvalidXmlException {
+    public Timestamp formatDate(String dateLabel, String dateString) throws XmlException {
     	if (StringUtils.isBlank(dateString)) {
     		return null;
     	}
     	try {
     		return new Timestamp(RiceConstants.getDefaultDateFormat().parse(dateString).getTime());
     	} catch (ParseException e) {
-    		throw new InvalidXmlException(dateLabel + " is not in the proper format.  Should have been: " + RiceConstants.DEFAULT_DATE_FORMAT_PATTERN);
+    		throw new XmlException(dateLabel + " is not in the proper format.  Should have been: " + RiceConstants.DEFAULT_DATE_FORMAT_PATTERN);
     	}
     }
 

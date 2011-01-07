@@ -16,41 +16,10 @@
  */
 package org.kuali.rice.kew.routeheader.service.impl;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.Recipient;
-import org.kuali.rice.kew.actions.AcknowledgeAction;
-import org.kuali.rice.kew.actions.ActionTakenEvent;
-import org.kuali.rice.kew.actions.AdHocAction;
-import org.kuali.rice.kew.actions.AdHocRevoke;
-import org.kuali.rice.kew.actions.ApproveAction;
-import org.kuali.rice.kew.actions.BlanketApproveAction;
-import org.kuali.rice.kew.actions.CancelAction;
-import org.kuali.rice.kew.actions.ClearFYIAction;
-import org.kuali.rice.kew.actions.CompleteAction;
-import org.kuali.rice.kew.actions.DisapproveAction;
-import org.kuali.rice.kew.actions.LogDocumentActionAction;
-import org.kuali.rice.kew.actions.MoveDocumentAction;
-import org.kuali.rice.kew.actions.MovePoint;
-import org.kuali.rice.kew.actions.ReleaseWorkgroupAuthority;
-import org.kuali.rice.kew.actions.ReturnToPreviousNodeAction;
-import org.kuali.rice.kew.actions.RevokeAdHocAction;
-import org.kuali.rice.kew.actions.RouteDocumentAction;
-import org.kuali.rice.kew.actions.SaveActionEvent;
-import org.kuali.rice.kew.actions.SuperUserActionRequestApproveEvent;
-import org.kuali.rice.kew.actions.SuperUserApproveEvent;
-import org.kuali.rice.kew.actions.SuperUserCancelEvent;
-import org.kuali.rice.kew.actions.SuperUserDisapproveEvent;
-import org.kuali.rice.kew.actions.SuperUserNodeApproveEvent;
-import org.kuali.rice.kew.actions.SuperUserReturnToPreviousNodeAction;
-import org.kuali.rice.kew.actions.TakeWorkgroupAuthority;
+import org.kuali.rice.kew.actions.*;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocation;
 import org.kuali.rice.kew.actions.asyncservices.ActionInvocationService;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
@@ -68,8 +37,10 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.WorkflowDocumentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -163,7 +134,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
 		}
 		Set<String> nodeNames = new HashSet<String>();
 		if (node != null) {
-			nodeNames = Utilities.asSet(node.getRouteNodeName());
+			nodeNames = Collections.singleton(node.getRouteNodeName());
 		}
 		KimPrincipal principal = loadPrincipal(principalId);
 		ActionTakenEvent action = new BlanketApproveAction(routeHeader, principal, annotation, nodeNames);

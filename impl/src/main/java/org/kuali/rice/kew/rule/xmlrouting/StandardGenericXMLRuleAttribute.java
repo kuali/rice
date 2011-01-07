@@ -16,23 +16,10 @@
  */
 package org.kuali.rice.kew.rule.xmlrouting;
 
-import java.io.BufferedReader;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
+import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.kew.attribute.XMLAttributeUtils;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
@@ -43,7 +30,6 @@ import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 import org.w3c.dom.Element;
@@ -51,6 +37,15 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.BufferedReader;
+import java.io.StringReader;
+import java.util.*;
+import java.util.regex.Pattern;
 
 
 /**
@@ -327,7 +322,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
             NodeList xPathExpressions = (NodeList) xpath.evaluate(findFieldExpressions, configXml, XPathConstants.NODESET);
             for (int index = 0; index < xPathExpressions.getLength(); index++) {
                 Element expressionElement = (Element) xPathExpressions.item(index);
-                String expression = XmlHelper.getTextContent(expressionElement);
+                String expression = XmlHelper.jotNode(expressionElement);
                 if (!isEvaluateForMissingExtensions()) {
                     Node parentNode = expressionElement.getParentNode().getParentNode();
                     Node fieldAttribute = parentNode.getAttributes().getNamedItem("name");
@@ -368,7 +363,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
             NodeList xPathExpressions = (NodeList) xpath.evaluate(findGlobalExpressions, configXml, XPathConstants.NODESET);
             for (int index = 0; index < xPathExpressions.getLength(); index++) {
                 Element expressionElement = (Element) xPathExpressions.item(index);
-                String expression = XmlHelper.getTextContent(expressionElement);
+                String expression = XmlHelper.jotNode(expressionElement);
                 if (!StringUtils.isEmpty(expression)) {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Adding global XPath expression: " + expression);
@@ -496,7 +491,7 @@ public class StandardGenericXMLRuleAttribute implements GenericXMLRuleAttribute,
                 NodeList customNodes = xmlDocumentContent.getChildNodes();
                 for (int i = 0; i < customNodes.getLength(); i++) {
                     Node childNode = customNodes.item(i);
-                    documentContent += XmlHelper.writeNode(childNode);
+                    documentContent += XmlHelper.jotNode(childNode);
                 }
 
                 for (int i = 0; i < nodes.getLength(); i++) {

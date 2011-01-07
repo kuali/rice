@@ -16,17 +16,16 @@
  */
 package org.kuali.rice.kew.edl;
 
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.xml.transform.Templates;
-
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import javax.xml.transform.Templates;
+import java.util.Iterator;
+import java.util.Map;
 
 
 /**

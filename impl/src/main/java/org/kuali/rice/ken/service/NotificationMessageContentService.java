@@ -15,15 +15,14 @@
  */
 package org.kuali.rice.ken.service;
 
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.xml.parsers.ParserConfigurationException;
-
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationResponse;
-import org.kuali.rice.ken.exception.InvalidXMLException;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Notification Message Content service - handles parsing the notification XML message and also marshalling out BOs for the response.
@@ -39,9 +38,9 @@ public interface NotificationMessageContentService {
      * @throws SAXException
      * @throws ParserConfigurationException
      * @throws IOException
-     * @throws InvalidXMLException
+     * @throws XmlException
      */
-    public Notification parseNotificationRequestMessage(InputStream stream) throws IOException, InvalidXMLException;
+    public Notification parseNotificationRequestMessage(InputStream stream) throws IOException, XmlException;
     
     /**
      * Parses a Notification request message into business objects.  Performs syntactic and semantic validation.  
@@ -49,9 +48,9 @@ public interface NotificationMessageContentService {
      * @param notificationMessageAsXml
      * @return
      * @throws IOException
-     * @throws InvalidXMLException
+     * @throws XmlException
      */
-    public Notification parseNotificationRequestMessage(String notificationMessageAsXml) throws IOException, InvalidXMLException;
+    public Notification parseNotificationRequestMessage(String notificationMessageAsXml) throws IOException, XmlException;
     
     /**
      * Generates a Notification response message

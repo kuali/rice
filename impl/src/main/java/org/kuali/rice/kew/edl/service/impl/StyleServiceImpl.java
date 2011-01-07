@@ -17,25 +17,12 @@
 
 package org.kuali.rice.kew.edl.service.impl;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.net.MalformedURLException;
-import java.util.List;
-import java.util.Properties;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.Templates;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.URIResolver;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.RiceUtilities;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.edl.WidgetURIResolver;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.edl.dao.EDocLiteDAO;
@@ -46,16 +33,23 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.StyleXmlParser;
 import org.kuali.rice.kew.xml.export.StyleXmlExporter;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Templates;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.URIResolver;
+import javax.xml.transform.stream.StreamSource;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.net.MalformedURLException;
+import java.util.List;
+import java.util.Properties;
 
 
 /**
@@ -310,8 +304,8 @@ public class StyleServiceImpl implements StyleService {
             throw generateMissingChildException("style", "xsl:stylesheet");
         }
         try {
-            style.setXmlContent(XmlHelper.writeNode(stylesheet, true));
-        } catch (TransformerException te) {
+            style.setXmlContent(XmlHelper.jotNode(stylesheet, true));
+        } catch (XmlException te) {
             throw generateSerializationException("style", te);
         }
         return style;
@@ -342,7 +336,7 @@ public class StyleServiceImpl implements StyleService {
         return generateException("Style '" + element + "' element must contain a '" + child + "' child element", null);
     }
 
-    private static WorkflowServiceErrorException generateSerializationException(String element, TransformerException cause) {
+    private static WorkflowServiceErrorException generateSerializationException(String element, XmlException cause) {
         return generateException("Error serializing EDocLite '" + element + "' element", cause);
     }
 

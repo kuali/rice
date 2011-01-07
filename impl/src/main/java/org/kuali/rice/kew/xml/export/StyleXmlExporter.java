@@ -16,16 +16,16 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import java.io.StringReader;
-import java.util.Iterator;
-
 import org.apache.log4j.Logger;
 import org.jdom.Element;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
-import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.XmlRenderer;
+
+import java.io.StringReader;
+import java.util.Iterator;
 
 import static org.kuali.rice.kew.xml.XmlConstants.*;
 
@@ -68,7 +68,7 @@ public class StyleXmlExporter implements XmlExporter {
         try {
             Element styleEl = XmlHelper.buildJDocument(new StringReader(style.getXmlContent())).getRootElement();
             styleWrapperEl.addContent(styleEl.detach());
-		} catch (InvalidXmlException e) {
+		} catch (XmlException e) {
 			throw new RuntimeException("Error building JDom document for style", e);
 		}
 	}	

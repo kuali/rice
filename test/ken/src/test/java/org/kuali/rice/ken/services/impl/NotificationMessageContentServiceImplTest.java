@@ -15,16 +15,12 @@
  */
 package org.kuali.rice.ken.services.impl;
 
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.util.List;
-
 import org.junit.Test;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationRecipient;
 import org.kuali.rice.ken.bo.NotificationResponse;
 import org.kuali.rice.ken.bo.NotificationSender;
-import org.kuali.rice.ken.exception.InvalidXMLException;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
@@ -32,6 +28,10 @@ import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * Tests NotificationMessageContentService
@@ -99,7 +99,7 @@ public class NotificationMessageContentServiceImplTest extends KENTestCase {
         try {
             testParseNotificationRequestMessage(SAMPLE_MALFORMED_EVENT_MESSAGE);
             fail("malformed event message passed validation");
-        } catch (InvalidXMLException ixe) {
+        } catch (XmlException ixe) {
             // expected
             return;
         }
@@ -109,7 +109,7 @@ public class NotificationMessageContentServiceImplTest extends KENTestCase {
         try {
             testParseNotificationRequestMessage(SAMPLE_BADNAMESPACE_EVENT_MESSAGE);
             fail("malformed event message passed validation");
-        } catch (InvalidXMLException ixe) {
+        } catch (XmlException ixe) {
             // expected
             return;
         }
@@ -119,7 +119,7 @@ public class NotificationMessageContentServiceImplTest extends KENTestCase {
         try {
             testParseNotificationRequestMessage(SAMPLE_MALFORMED_SIMPLE_MESSAGE);
             fail("malformed simple message passed validation");
-        } catch (InvalidXMLException ixe) {
+        } catch (XmlException ixe) {
             // expected
         }
     }

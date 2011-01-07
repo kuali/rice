@@ -15,22 +15,14 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -40,6 +32,13 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import static org.kuali.rice.kew.xml.XmlConstants.*;
 
@@ -61,17 +60,17 @@ public class GroupXmlParser {
     private HashMap<String, List<String>> memberPrincipalIds = new HashMap<String, List<String>>();
     private AttributeSet groupAttributes = new AttributeSet();
 
-    public List<GroupInfo> parseGroups(InputStream input) throws IOException, InvalidXmlException {
+    public List<GroupInfo> parseGroups(InputStream input) throws IOException, XmlException {
         try {
             Document doc = XmlHelper.trimSAXXml(input);
             Element root = doc.getRootElement();
             return parseGroups(root);
         } catch (JDOMException e) {
-            throw new InvalidXmlException("Parse error.", e);
+            throw new XmlException("Parse error.", e);
         } catch (SAXException e){
-            throw new InvalidXmlException("Parse error.",e);
+            throw new XmlException("Parse error.",e);
         } catch(ParserConfigurationException e){
-            throw new InvalidXmlException("Parse error.",e);
+            throw new XmlException("Parse error.",e);
         }
     }
 
@@ -80,10 +79,10 @@ public class GroupXmlParser {
      * Parses and saves groups
      * @param element top-level 'data' element which should contain a <groups> child element
      * @return a list of parsed and saved, current, groups;
-     * @throws InvalidXmlException
+     * @throws XmlException
      */
     @SuppressWarnings("unchecked")
-	public List<GroupInfo> parseGroups(Element element) throws InvalidXmlException {
+	public List<GroupInfo> parseGroups(Element element) throws XmlException {
         List<GroupInfo> groupInfos = new ArrayList<GroupInfo>();
         for (Element groupsElement: (List<Element>) element.getChildren(GROUPS, GROUP_NAMESPACE)) {
 
@@ -132,20 +131,20 @@ public class GroupXmlParser {
     }
 
     @SuppressWarnings("unchecked")
-	private GroupInfo parseGroup(Element element) throws InvalidXmlException {
+	private GroupInfo parseGroup(Element element) throws XmlException {
         GroupInfo groupInfo = new GroupInfo();
         IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
         groupInfo.setGroupName(element.getChildText(NAME, GROUP_NAMESPACE));
 
         if (groupInfo.getGroupName() == null) {
-            throw new InvalidXmlException("Group must have a name.");
+            throw new XmlException("Group must have a name.");
         }
 
         String groupNamespace = element.getChildText(NAMESPACE, GROUP_NAMESPACE);
         if (groupNamespace != null) {
             groupInfo.setNamespaceCode(groupNamespace.trim());
         } else {
-            throw new InvalidXmlException("Namespace must have a value.");
+            throw new XmlException("Namespace must have a value.");
         }
 
         String id = element.getChildText(ID, GROUP_NAMESPACE);
@@ -172,7 +171,7 @@ public class GroupXmlParser {
             	typeId = kimTypeInfo.getKimTypeId();
                 kimTypeAttributes = kimTypeInfo.getAttributeDefinitions();
             } else  {
-                throw new InvalidXmlException("Invalid type name and namespace specified.");
+                throw new XmlException("Invalid type name and namespace specified.");
             }
         } else { //set to default type
             KimTypeInfo kimTypeDefault = KIMServiceLocatorInternal.getTypeInfoService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
@@ -208,7 +207,7 @@ public class GroupXmlParser {
                 String value = attr.getAttributeValue(VALUE);
                 attributeSet.put(key, value);
                 if (!validAttributeKeys.contains(key)) {
-                    throw new InvalidXmlException("Invalid attribute specified.");
+                    throw new XmlException("Invalid attribute specified.");
                 }
             }
             if (attributeSet.size() > 0) {
@@ -227,7 +226,7 @@ public class GroupXmlParser {
                 if (principal != null) {
                     addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), principal.getPrincipalId());
                 } else {
-                    throw new InvalidXmlException("Principal Name "+principalName+" cannot be found.");
+                    throw new XmlException("Principal Name "+principalName+" cannot be found.");
                 }
             } else if (elementName.equals(PRINCIPAL_ID)) {
                 String xmlPrincipalId = member.getText().trim();
@@ -235,7 +234,7 @@ public class GroupXmlParser {
                 if (principal != null) {
                     addPrincipalToGroup(groupInfo.getNamespaceCode(), groupInfo.getGroupName(), principal.getPrincipalId());
                 } else {
-                    throw new InvalidXmlException("Principal Id "+xmlPrincipalId+" cannot be found.");
+                    throw new XmlException("Principal Id "+xmlPrincipalId+" cannot be found.");
                 }
             // Groups are handled differently since the member group may not be saved yet.  Therefore they need to be validated after the groups are saved.
             } else if (elementName.equals(GROUP_ID)) {
@@ -286,7 +285,7 @@ public class GroupXmlParser {
         memberGroupNames.put(key, groupNames);
     }
 
-    private void addGroupMembers(GroupInfo groupInfo, String key) throws InvalidXmlException {
+    private void addGroupMembers(GroupInfo groupInfo, String key) throws XmlException {
         IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
         List<String> groupIds = memberGroupIds.get(key);
         if (groupIds != null) {
@@ -295,7 +294,7 @@ public class GroupXmlParser {
                 if (group != null) {
                     identityManagementService.addGroupToGroup(group.getGroupId(), groupInfo.getGroupId());
                 } else {
-                    throw new InvalidXmlException("Group Id "+groupId+" cannot be found.");
+                    throw new XmlException("Group Id "+groupId+" cannot be found.");
                 }
             }
         }
@@ -306,7 +305,7 @@ public class GroupXmlParser {
                 if (group != null) {
                 	identityManagementService.addGroupToGroup(group.getGroupId(), groupInfo.getGroupId());
                 } else {
-                    throw new InvalidXmlException("Group "+groupName+" cannot be found.");
+                    throw new XmlException("Group "+groupName+" cannot be found.");
                 }
             }
         }

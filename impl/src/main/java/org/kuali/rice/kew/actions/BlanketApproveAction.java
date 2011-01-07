@@ -16,11 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.Recipient;
@@ -40,6 +35,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
+import java.util.*;
 
 
 /**
@@ -64,7 +61,8 @@ public class BlanketApproveAction extends ActionTakenEvent {
     }
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, String nodeName) {
-        this(rh, principal, annotation, Utilities.asSet(nodeName));
+        this(rh, principal, annotation, Collections.singleton(nodeName));
+
     }
 
     public BlanketApproveAction(DocumentRouteHeaderValue rh, KimPrincipal principal, String annotation, Set nodeNames) {

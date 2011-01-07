@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.service;
 
-import javax.xml.transform.TransformerException;
-
 /**
  * This interface defines methods that an XmlObjectSerializer Service must provide. This will wrap our needs for xml to object and
  * object to xml functionality.
@@ -39,10 +37,5 @@ public interface XmlObjectSerializerService {
      * @return
      */
     public Object fromXml(String xml);
-
-    /**
-     * Renders an org.w3c.Node to a String.
-     */
-    public String writeNode(org.w3c.dom.Node node, boolean indent) throws TransformerException;
 
 }

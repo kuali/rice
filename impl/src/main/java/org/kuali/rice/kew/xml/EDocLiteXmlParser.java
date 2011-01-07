@@ -16,19 +16,9 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.edl.EDLXmlUtils;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.bo.EDocLiteDefinition;
@@ -39,11 +29,20 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 
 /**
@@ -172,8 +171,8 @@ public class EDocLiteXmlParser {
             throw generateMissingChildException("style", "xsl:stylesheet");
         }
         try {
-            style.setXmlContent(XmlHelper.writeNode(stylesheet, true));
-        } catch (TransformerException te) {
+            style.setXmlContent(XmlHelper.jotNode(stylesheet, true));
+        } catch (XmlException te) {
             throw generateSerializationException("style", te);
         }
         return style;
@@ -237,8 +236,8 @@ public class EDocLiteXmlParser {
         }
 
         try {
-            def.setXmlContent(XmlHelper.writeNode(e, true));
-        } catch (TransformerException te) {
+            def.setXmlContent(XmlHelper.jotNode(e, true));
+        } catch (XmlException te) {
             throw generateSerializationException(EDLXmlUtils.EDL_E, te);
         }
         return def;
@@ -252,7 +251,7 @@ public class EDocLiteXmlParser {
         return generateException("EDocLite '" + element + "' element must contain a '" + child + "' child element", null);
     }
 
-    private static WorkflowServiceErrorException generateSerializationException(String element, TransformerException cause) {
+    private static WorkflowServiceErrorException generateSerializationException(String element, XmlException cause) {
         return generateException("Error serializing EDocLite '" + element + "' element", cause);
     }
 

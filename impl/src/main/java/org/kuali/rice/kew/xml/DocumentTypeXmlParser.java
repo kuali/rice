@@ -16,41 +16,18 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.document.DocumentTypeMaintainable;
-import org.kuali.rice.kew.engine.node.ActivationTypeEnum;
-import org.kuali.rice.kew.engine.node.BranchPrototype;
-import org.kuali.rice.kew.engine.node.NodeType;
+import org.kuali.rice.kew.engine.node.*;
 import org.kuali.rice.kew.engine.node.Process;
-import org.kuali.rice.kew.engine.node.RoleNode;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.exception.InvalidParentDocTypeException;
-import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
@@ -62,7 +39,6 @@ import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
@@ -70,12 +46,20 @@ import org.kuali.rice.kns.exception.GroupNotFoundException;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.*;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+
 import static org.kuali.rice.kew.xml.XmlConstants.*;
 
 
@@ -108,7 +92,7 @@ public class DocumentTypeXmlParser {
         return xpath;
     }
     
-    public List parseDocumentTypes(InputStream input) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException, GroupNotFoundException {
+    public List parseDocumentTypes(InputStream input) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, GroupNotFoundException {
         Document routeDocument=XmlHelper.trimXml(input);
         Map documentTypesByName = new HashMap();
         for (Iterator iterator = parseAllDocumentTypes(routeDocument).iterator(); iterator.hasNext();) {
@@ -124,7 +108,7 @@ public class DocumentTypeXmlParser {
      * @param routeDocument The DOM document to parse.
      * @return A list containing the desired document types.
      */
-    private List<DocumentType> parseAllDocumentTypes(Document routeDocument) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException, GroupNotFoundException {
+    private List<DocumentType> parseAllDocumentTypes(Document routeDocument) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, GroupNotFoundException {
     	// A mapping from the names of uninitialized parent doc types to the child nodes that depend on the parent doc.
     	Map<String,List<DocTypeNode>> pendingChildDocs = new HashMap<String,List<DocTypeNode>>();
     	// A mapping from the names of uninitialized parent doc types to the names of the dependent children.
@@ -242,7 +226,7 @@ public class DocumentTypeXmlParser {
     	return docTypeBeans;
     }
 
-    private DocumentType parseDocumentType(boolean isOverwrite, Node documentTypeNode) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, TransformerException, GroupNotFoundException {
+    private DocumentType parseDocumentType(boolean isOverwrite, Node documentTypeNode) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, WorkflowException, GroupNotFoundException {
         DocumentType documentType = getFullDocumentType(isOverwrite, documentTypeNode);
 //        parseStructure(isOverwrite, documentTypeNode, documentType, new RoutePathContext());
         // reset variables
@@ -256,7 +240,7 @@ public class DocumentTypeXmlParser {
         return documentType;
     }
 
-    private DocumentType getFullDocumentType(boolean isOverwrite, Node documentTypeNode) throws XPathExpressionException, GroupNotFoundException, InvalidXmlException, WorkflowException, SAXException, IOException, ParserConfigurationException, TransformerException {
+    private DocumentType getFullDocumentType(boolean isOverwrite, Node documentTypeNode) throws XPathExpressionException, GroupNotFoundException, XmlException, WorkflowException, SAXException, IOException, ParserConfigurationException {
         DocumentType documentType = getDocumentType(isOverwrite, documentTypeNode);
         /*
          * The following code does not need to apply the isOverwrite mode logic because it already checks to see if each node
@@ -266,7 +250,7 @@ public class DocumentTypeXmlParser {
         NodeList policiesList = (NodeList) getXPath().evaluate("./" + POLICIES, documentTypeNode, XPathConstants.NODESET);
         if (policiesList.getLength() > 1) {
             // more than one <policies> tag is invalid
-            throw new InvalidXmlException("More than one " + POLICIES + " node is present in a document type node");
+            throw new XmlException("More than one " + POLICIES + " node is present in a document type node");
         }
         else if (policiesList.getLength() > 0) {
             // if there is exactly one <policies> tag then parse it and use the values
@@ -276,7 +260,7 @@ public class DocumentTypeXmlParser {
 
         NodeList attributeList = (NodeList) getXPath().evaluate("./attributes", documentTypeNode, XPathConstants.NODESET);
         if (attributeList.getLength() > 1) {
-            throw new InvalidXmlException("More than one attributes node is present in a document type node");
+            throw new XmlException("More than one attributes node is present in a document type node");
         }
         else if (attributeList.getLength() > 0) {
             NodeList attributeNodes = (NodeList) getXPath().evaluate("./attribute", attributeList.item(0), XPathConstants.NODESET);
@@ -285,23 +269,23 @@ public class DocumentTypeXmlParser {
 
         NodeList securityList = (NodeList) getXPath().evaluate("./" + SECURITY, documentTypeNode, XPathConstants.NODESET);
         if (securityList.getLength() > 1) {
-            throw new InvalidXmlException("More than one " + SECURITY + " node is present in a document type node");
+            throw new XmlException("More than one " + SECURITY + " node is present in a document type node");
         }
         else if (securityList.getLength() > 0) {
            try {
              Node securityNode = securityList.item(0);
-             String securityText = XmlHelper.writeNode(securityNode);
+             String securityText = XmlHelper.jotNode(securityNode);
              documentType.setDocumentTypeSecurityXml(securityText);
            }
            catch (Exception e) {
-             throw new InvalidXmlException(e);
+             throw new XmlException(e);
            }
         }
         parseStructure(isOverwrite, documentTypeNode, documentType, new RoutePathContext());
         return documentType;
     }
 
-    private void parseStructure(boolean isOverwrite, Node documentTypeNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, InvalidXmlException, GroupNotFoundException, TransformerException {
+    private void parseStructure(boolean isOverwrite, Node documentTypeNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, XmlException, GroupNotFoundException {
         // TODO have a validation function that takes an xpath statement and blows chunks if that
         // statement returns false
         boolean hasRoutePathsElement = false;
@@ -332,7 +316,7 @@ public class DocumentTypeXmlParser {
             // check to see if we have one but not the other element of routePaths and routeNodes
             else if (!hasRouteNodesElement || !hasRoutePathsElement) {
                 // throw an exception since an ingestion can only have neither or both of the routePaths and routeNodes elements
-                throw new InvalidXmlException("A overwriting document type ingestion can not have only one of the " + ROUTE_PATHS + " and " + ROUTE_NODES + " elements.  Either both or neither should be defined.");
+                throw new XmlException("A overwriting document type ingestion can not have only one of the " + ROUTE_PATHS + " and " + ROUTE_NODES + " elements.  Either both or neither should be defined.");
             }
         }
 
@@ -362,9 +346,9 @@ public class DocumentTypeXmlParser {
             throw xpee;
         }
         if (nodeList.getLength() > 1) {
-            throw new InvalidXmlException("More than one start node is present in route path");
+            throw new XmlException("More than one start node is present in route path");
         } else if (nodeList.getLength() == 0) {
-            throw new InvalidXmlException("No start node is present in route path");
+            throw new XmlException("No start node is present in route path");
         }
         try {
             nodeList = (NodeList) getXPath().evaluate(".//" + ROUTE_NODES, documentTypeNode, XPathConstants.NODESET);
@@ -373,9 +357,9 @@ public class DocumentTypeXmlParser {
             throw xpee;
         }
         if (nodeList.getLength() > 1) {
-            throw new InvalidXmlException("More than one routeNodes node is present in documentType node");
+            throw new XmlException("More than one routeNodes node is present in documentType node");
         } else if (nodeList.getLength() == 0) {
-            throw new InvalidXmlException("No routeNodes node is present in documentType node");
+            throw new XmlException("No routeNodes node is present in documentType node");
         }
         Node routeNodesNode = nodeList.item(0);
         checkForOrphanedRouteNodes(documentTypeNode, routeNodesNode);
@@ -406,7 +390,7 @@ public class DocumentTypeXmlParser {
                     throw xpee;
                 }
                 if (Utilities.isEmpty(startName)) {
-                    throw new InvalidXmlException("Invalid routePath: no initialNode attribute defined!");
+                    throw new XmlException("Invalid routePath: no initialNode attribute defined!");
                 }
             }
             RouteNode routeNode = createRouteNode(null, startName, processNode, routeNodesNode, documentType, context);
@@ -418,7 +402,7 @@ public class DocumentTypeXmlParser {
 
     }
 
-    private DocumentType getDocumentType(boolean isOverwrite, Node documentTypeNode) throws XPathExpressionException, GroupNotFoundException, InvalidXmlException, WorkflowException, SAXException, IOException, ParserConfigurationException, TransformerException {
+    private DocumentType getDocumentType(boolean isOverwrite, Node documentTypeNode) throws XPathExpressionException, GroupNotFoundException, XmlException, WorkflowException, SAXException, IOException, ParserConfigurationException {
         DocumentType documentType = null;
         String documentTypeName = getDocumentTypeNameFromNode(documentTypeNode);
         DocumentType previousDocumentType = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
@@ -685,7 +669,7 @@ public class DocumentTypeXmlParser {
             }
             DocumentType parentDocumentType = KEWServiceLocator.getDocumentTypeService().findByName(parentDocumentTypeName);
             if (parentDocumentType == null) {
-                //throw new InvalidXmlException("Invalid parent document type: '" + parentDocumentTypeName + "'");
+                //throw new XmlException("Invalid parent document type: '" + parentDocumentTypeName + "'");
                 LOG.info("Parent document type '" + parentDocumentTypeName +
                         "' could not be found; attempting to delay processing of '" + documentTypeName + "'...");
                 throw new InvalidParentDocTypeException(parentDocumentTypeName, documentTypeName,
@@ -744,7 +728,7 @@ public class DocumentTypeXmlParser {
         }
         // first check to see if the user ingested both a workgroup name and a policy
         if (StringUtils.isNotBlank(blanketWorkGroup) && StringUtils.isNotBlank(blanketApprovePolicy)) {
-            throw new InvalidXmlException("Only one of the blanket approve xml tags can be set");
+            throw new XmlException("Only one of the blanket approve xml tags can be set");
         }
         else if (StringUtils.isNotBlank(blanketWorkGroup)) {
             if (isOverwrite) {
@@ -817,7 +801,7 @@ public class DocumentTypeXmlParser {
         NodeList appDocStatusList = (NodeList) getXPath().evaluate("./" + APP_DOC_STATUSES, documentTypeNode, XPathConstants.NODESET);
         if (appDocStatusList.getLength() > 1) {
             // more than one <validDocumentStatuses> tag is invalid
-            throw new InvalidXmlException("More than one " + APP_DOC_STATUSES + " node is present in a document type node");
+            throw new XmlException("More than one " + APP_DOC_STATUSES + " node is present in a document type node");
         }
         else if (appDocStatusList.getLength() > 0) {
             // if there is exactly one <validDocumentStatuses> tag then parse it and use the values
@@ -871,7 +855,7 @@ public class DocumentTypeXmlParser {
         return workgroup;
     }
     
-    public DocumentType generateNewDocumentTypeFromExisting(String documentTypeName) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, GroupNotFoundException, WorkflowException, TransformerException {
+    public DocumentType generateNewDocumentTypeFromExisting(String documentTypeName) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException, GroupNotFoundException, WorkflowException {
         // export the document type that exists in the database
         DocumentType docTypeFromDatabase = KEWServiceLocator.getDocumentTypeService().findByName(documentTypeName);
         if (ObjectUtils.isNotNull(docTypeFromDatabase)) {
@@ -909,9 +893,9 @@ public class DocumentTypeXmlParser {
     }
 
     /**
-     * Checks for route nodes that are declared but never used and throws an InvalidXmlException if one is discovered.
+     * Checks for route nodes that are declared but never used and throws an XmlException if one is discovered.
      */
-    private void checkForOrphanedRouteNodes(Node documentTypeNode, Node routeNodesNode) throws XPathExpressionException, InvalidXmlException {
+    private void checkForOrphanedRouteNodes(Node documentTypeNode, Node routeNodesNode) throws XPathExpressionException, XmlException {
         NodeList nodesInPath = (NodeList) getXPath().evaluate("./routePaths/routePath//*/@name", documentTypeNode, XPathConstants.NODESET);
         List<String> nodeNamesInPath = new ArrayList<String>(nodesInPath.getLength());
         for (int index = 0; index < nodesInPath.getLength(); index++) {
@@ -946,7 +930,7 @@ public class DocumentTypeXmlParser {
                 String orphanedNode = (String) iterator.next();
                 message += orphanedNode + (iterator.hasNext() ? ", " : "");
             }
-            throw new InvalidXmlException(message);
+            throw new XmlException(message);
         }
     }
 
@@ -979,7 +963,7 @@ public class DocumentTypeXmlParser {
             documentType.addProcess(process);
     }
 
-    private RouteNode createRouteNode(RouteNode previousRouteNode, String nodeName, Node routePathNode, Node routeNodesNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, InvalidXmlException, GroupNotFoundException, TransformerException {
+    private RouteNode createRouteNode(RouteNode previousRouteNode, String nodeName, Node routePathNode, Node routeNodesNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, XmlException, GroupNotFoundException {
         if (nodeName == null) return null;
 
         Node currentNode;
@@ -992,7 +976,7 @@ public class DocumentTypeXmlParser {
         if (currentNode == null) {
             String message = "Next node '" + nodeName + "' for node '" + previousRouteNode.getRouteNodeName() + "' not found!";
             LOG.error(message);
-            throw new InvalidXmlException(message);
+            throw new XmlException(message);
         }
         boolean nodeIsABranch;
         try {
@@ -1002,7 +986,7 @@ public class DocumentTypeXmlParser {
             throw xpee;
         }
         if (nodeIsABranch) {
-            throw new InvalidXmlException("Next node cannot be a branch node");
+            throw new XmlException("Next node cannot be a branch node");
         }
 
         String localName;
@@ -1111,7 +1095,7 @@ public class DocumentTypeXmlParser {
         			}
         		}
         		if (!statusValidated){
-        				InvalidXmlException xpee = new InvalidXmlException("AppDocStatus value " +  nextDocStatusName + " not allowable."); 
+        				XmlException xpee = new XmlException("AppDocStatus value " +  nextDocStatusName + " not allowable.");
         				LOG.error("Error validating nextAppDocStatus name: " +  nextDocStatusName + " against acceptable values.", xpee);
         				throw xpee; 
         		}
@@ -1122,7 +1106,7 @@ public class DocumentTypeXmlParser {
         return currentRouteNode;
     }
 
-    private void getSplitNextNodes(Node splitNode, Node routePathNode, RouteNode splitRouteNode, Node routeNodesNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, InvalidXmlException, GroupNotFoundException, TransformerException {
+    private void getSplitNextNodes(Node splitNode, Node routePathNode, RouteNode splitRouteNode, Node routeNodesNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, XmlException, GroupNotFoundException {
         NodeList splitBranchNodes;
         try {
             splitBranchNodes = (NodeList) getXPath().evaluate("./branch", splitNode, XPathConstants.NODESET);
@@ -1152,7 +1136,7 @@ public class DocumentTypeXmlParser {
         }
     }
 
-    private RouteNode makeRouteNodePrototype(String nodeTypeName, String nodeName, String nodeExpression, Node routeNodesNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, GroupNotFoundException, InvalidXmlException, TransformerException {
+    private RouteNode makeRouteNodePrototype(String nodeTypeName, String nodeName, String nodeExpression, Node routeNodesNode, DocumentType documentType, RoutePathContext context) throws XPathExpressionException, GroupNotFoundException, XmlException {
         NodeList nodeList;
         try {
             nodeList = (NodeList) getXPath().evaluate(nodeExpression, routeNodesNode, XPathConstants.NODESET);
@@ -1161,10 +1145,10 @@ public class DocumentTypeXmlParser {
             throw xpee;
         }
         if (nodeList.getLength() > 1) {
-            throw new InvalidXmlException("More than one node under routeNodes has the same name of '" + nodeName + "'");
+            throw new XmlException("More than one node under routeNodes has the same name of '" + nodeName + "'");
         }
         if (nodeList.getLength() == 0) {
-            throw new InvalidXmlException("No node definition was found with the name '" + nodeName + "'");
+            throw new XmlException("No node definition was found with the name '" + nodeName + "'");
         }
         Node node = nodeList.item(0);
 
@@ -1172,7 +1156,7 @@ public class DocumentTypeXmlParser {
         // set fields that all route nodes of all types should have defined
         routeNode.setDocumentType(documentType);
         routeNode.setRouteNodeName((String) getXPath().evaluate("./@name", node, XPathConstants.STRING));
-        routeNode.setContentFragment(XmlHelper.writeNode(node));
+        routeNode.setContentFragment(XmlHelper.jotNode(node));
 
         if (XmlHelper.pathExists(xpath, "./activationType", node)) {
             routeNode.setActivationType(ActivationTypeEnum.parse((String) getXPath().evaluate("./activationType", node, XPathConstants.STRING)).getCode());
@@ -1243,7 +1227,7 @@ public class DocumentTypeXmlParser {
             if (n instanceof Element) {
                 Element e = (Element) n;
                 String name = e.getNodeName();
-                String content = XmlHelper.getTextContent(e);
+                String content = getTextContent(e);
                 routeNode.getConfigParams().add(new RouteNodeConfigParam(routeNode, name, content));
             }
         }
@@ -1258,7 +1242,7 @@ public class DocumentTypeXmlParser {
             String ruleTemplateName = (String) getXPath().evaluate("./ruleTemplate", node, XPathConstants.STRING);
             RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(ruleTemplateName);
             if (ruleTemplate == null) {
-                throw new InvalidXmlException("Rule template for node '" + routeNode.getRouteNodeName() + "' not found: " + ruleTemplateName);
+                throw new XmlException("Rule template for node '" + routeNode.getRouteNodeName() + "' not found: " + ruleTemplateName);
             }
             routeNode.setRouteMethodName(ruleTemplateName);
             routeNode.setRouteMethodCode(KEWConstants.ROUTE_LEVEL_FLEX_RM);
@@ -1287,7 +1271,7 @@ public class DocumentTypeXmlParser {
             }
         }
         if (Utilities.isEmpty(nodeType)) {
-            throw new InvalidXmlException("Could not determine node type for the node named '" + routeNode.getRouteNodeName() + "'");
+            throw new XmlException("Could not determine node type for the node named '" + routeNode.getRouteNodeName() + "'");
         }
         routeNode.setNodeType(nodeType);
 
@@ -1307,7 +1291,13 @@ public class DocumentTypeXmlParser {
         return routeNode;
     }
 
-    private List getDocumentTypePolicies(NodeList documentTypePolicies, DocumentType documentType) throws XPathExpressionException, InvalidXmlException {
+    private static String getTextContent(org.w3c.dom.Element element) {
+		NodeList children = element.getChildNodes();
+		Node node = children.item(0);
+		return node.getNodeValue();
+	}
+
+    private List getDocumentTypePolicies(NodeList documentTypePolicies, DocumentType documentType) throws XPathExpressionException, XmlException {
         List policies = new ArrayList();
         Set policyNames = new HashSet();
 
@@ -1346,14 +1336,14 @@ public class DocumentTypeXmlParser {
             				}            					
             			}
             			if (!found){
-            				throw new InvalidXmlException("Application Document Status string value: " + policyStringValue + " is invalid.");
+            				throw new XmlException("Application Document Status string value: " + policyStringValue + " is invalid.");
             			}
             		}
             		
             	} else {
             		//DocumentStatusPolicy requires a <stringValue> tag
             		if (KEWConstants.DOCUMENT_STATUS_POLICY.equalsIgnoreCase(DocumentTypePolicyEnum.lookup(policy.getPolicyName()).getName())){
-            			throw new InvalidXmlException("Application Document Status Policy requires a <stringValue>");            			
+            			throw new XmlException("Application Document Status Policy requires a <stringValue>");
             		}
             	}
             } catch (XPathExpressionException xpee) {
@@ -1362,7 +1352,7 @@ public class DocumentTypeXmlParser {
             }
             
             if (!policyNames.add(policy.getPolicyName())) {
-                throw new InvalidXmlException("Policy '" + policy.getPolicyName() + "' has already been defined on this document");
+                throw new XmlException("Policy '" + policy.getPolicyName() + "' has already been defined on this document");
             } else {
                 policies.add(policy);
             }
@@ -1371,7 +1361,7 @@ public class DocumentTypeXmlParser {
         return policies;
     }
 
-    private List getDocumentTypeStatuses(NodeList documentTypeStatuses, DocumentType documentType) throws XPathExpressionException, InvalidXmlException {
+    private List getDocumentTypeStatuses(NodeList documentTypeStatuses, DocumentType documentType) throws XPathExpressionException, XmlException {
         List statuses = new ArrayList();
         Set statusNames = new HashSet();
 
@@ -1382,7 +1372,7 @@ public class DocumentTypeXmlParser {
         	String statusName = myNode.getFirstChild().getNodeValue();
         	status.setStatusName(statusName);
         	if (!statusNames.add(status.getStatusName())) {
-        		throw new InvalidXmlException("Application Status '" + status.getStatusName() + "' has already been defined on this document");
+        		throw new XmlException("Application Status '" + status.getStatusName() + "' has already been defined on this document");
         	} else {
         		statuses.add(status);
         	}      

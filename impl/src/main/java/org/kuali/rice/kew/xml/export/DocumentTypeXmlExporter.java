@@ -16,19 +16,13 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -36,16 +30,18 @@ import org.kuali.rice.kew.engine.node.BranchPrototype;
 import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.*;
 
 import static org.kuali.rice.kew.xml.XmlConstants.*;
 
@@ -173,7 +169,7 @@ public class DocumentTypeXmlExporter implements XmlExporter {
       if (!Utilities.isEmpty(securityXML)) {
         try {
           org.jdom.Document securityDoc = new SAXBuilder().build(new StringReader(securityXML));
-          XmlHelper.propogateNamespace(securityDoc.getRootElement(), DOCUMENT_TYPE_NAMESPACE);
+          XmlHelper.propagateNamespace(securityDoc.getRootElement(), DOCUMENT_TYPE_NAMESPACE);
           parent.addContent(securityDoc.getRootElement().detach());
         } catch (IOException e) {
           throw new WorkflowRuntimeException("Error parsing doctype security XML.");
@@ -360,9 +356,9 @@ public class DocumentTypeXmlExporter implements XmlExporter {
 	    try {
 		Document document = XmlHelper.buildJDocument(new StringReader(contentFragment));
 		Element rootElement = document.detachRootElement();
-		XmlHelper.propogateNamespace(rootElement, parent.getNamespace());
+		XmlHelper.propagateNamespace(rootElement, parent.getNamespace());
 		parent.addContent(rootElement);
-	    } catch (InvalidXmlException e) {
+	    } catch (XmlException e) {
 		throw new WorkflowRuntimeException("Failed to load the content fragment.", e);
 	    }
 	}

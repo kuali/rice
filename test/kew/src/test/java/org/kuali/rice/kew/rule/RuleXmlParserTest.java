@@ -16,16 +16,11 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.batch.KEWXmlDataLoader;
-import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -34,6 +29,11 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.springframework.test.AssertThrows;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class RuleXmlParserTest extends KEWTestCase {
@@ -60,29 +60,29 @@ public class RuleXmlParserTest extends KEWTestCase {
         assertEquals("Three more rules should have been returned from the cached service", ruleSize + 3, newRuleSize);
     }
 
-    @Test public void testDuplicateRule() throws IOException, InvalidXmlException {
+    @Test public void testDuplicateRule() throws IOException, XmlException {
         InputStream stream = getClass().getResourceAsStream("DuplicateRuleToImport.xml");
         assertNotNull(stream);
         log.info("Importing duplicate again");
         try {
             KEWServiceLocator.getRuleService().loadXml(stream, null);
         } catch (WorkflowServiceErrorException wsee) {
-            assertNotNull(TestUtilities.findExceptionInStack(wsee, InvalidXmlException.class));
+            assertNotNull(TestUtilities.findExceptionInStack(wsee, XmlException.class));
         }
     }
 
-    @Test public void testDuplicateRuleWithExpression() throws IOException, InvalidXmlException {
+    @Test public void testDuplicateRuleWithExpression() throws IOException, XmlException {
         InputStream stream = getClass().getResourceAsStream("DuplicateRuleToImportWithExpression.xml");
         assertNotNull(stream);
         log.info("Importing duplicate again");
         try {
             KEWServiceLocator.getRuleService().loadXml(stream, null);
         } catch (WorkflowServiceErrorException wsee) {
-            assertNotNull(TestUtilities.findExceptionInStack(wsee, InvalidXmlException.class));
+            assertNotNull(TestUtilities.findExceptionInStack(wsee, XmlException.class));
         }
     }
 
-    @Test public void testNotDuplicateRule() throws IOException, InvalidXmlException {
+    @Test public void testNotDuplicateRule() throws IOException, XmlException {
         InputStream stream = getClass().getResourceAsStream("NotADuplicateRuleToImport.xml");
         assertNotNull(stream);
         log.info("Importing a unique rule");
@@ -93,7 +93,7 @@ public class RuleXmlParserTest extends KEWTestCase {
         KEWServiceLocator.getRuleService().loadXml(stream, null);
     }
 
-    @Test public void testNotDuplicateRuleWithExpression() throws IOException, InvalidXmlException {
+    @Test public void testNotDuplicateRuleWithExpression() throws IOException, XmlException {
         InputStream stream = getClass().getResourceAsStream("NotADuplicateRuleToImportWithExpression.xml");
         assertNotNull(stream);
         log.info("Importing a unique rule");
@@ -279,7 +279,7 @@ public class RuleXmlParserTest extends KEWTestCase {
             }
         };
         at.runTest();
-        assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(at.getActualException(), InvalidXmlException.class));
+        assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(at.getActualException(), XmlException.class));
     }
 
     /**
@@ -298,10 +298,10 @@ public class RuleXmlParserTest extends KEWTestCase {
             }
         };
         at.runTest();
-        assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(at.getActualException(), InvalidXmlException.class));
+        assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(at.getActualException(), XmlException.class));
     }
 
-    @Test public void testParameterReplacement() throws IOException, InvalidXmlException {
+    @Test public void testParameterReplacement() throws IOException, XmlException {
         ConfigContext.getCurrentContextConfig().putProperty("test.replacement.user", "user3");
         ConfigContext.getCurrentContextConfig().putProperty("test.replacement.workgroup", "WorkflowAdmin");
         List<RuleBaseValues> rules = new RuleXmlParser().parseRules(getClass().getResourceAsStream("ParameterizedRule.xml"));

@@ -18,12 +18,12 @@ package org.kuali.rice.kew.engine;
 
 import org.jdom.Document;
 import org.jdom.Element;
+import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.kew.identity.Id;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.AbstractRoleAttribute;
 import org.kuali.rice.kew.rule.ResolvedQualifiedRole;
 import org.kuali.rice.kew.rule.Role;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 
 import java.util.*;
@@ -61,9 +61,9 @@ public class ChartOrgDispatchAttribute extends AbstractRoleAttribute {
     
     private List<String> parseWorkgroups(DocumentContent documentContent) {
         Document document = XmlHelper.buildJDocument(documentContent.getDocument());
-        Vector dispatchElements = XmlHelper.findElements(document.getRootElement(), DISPATCH_ROLE);
+        Collection<Element> dispatchElements = XmlHelper.findElements(document.getRootElement(), DISPATCH_ROLE);
         List<String> workgroupNames = new ArrayList<String>();
-        for (Iterator iterator = dispatchElements.iterator(); iterator.hasNext();) {
+        for (Iterator<Element> iterator = dispatchElements.iterator(); iterator.hasNext();) {
             Element element = (Element) iterator.next();
             workgroupNames.add(element.getText());
         }

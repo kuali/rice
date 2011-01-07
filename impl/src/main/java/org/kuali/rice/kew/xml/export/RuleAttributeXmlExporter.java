@@ -16,31 +16,20 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import static org.kuali.rice.kew.xml.XmlConstants.CLASS_NAME;
-import static org.kuali.rice.kew.xml.XmlConstants.DESCRIPTION;
-import static org.kuali.rice.kew.xml.XmlConstants.LABEL;
-import static org.kuali.rice.kew.xml.XmlConstants.NAME;
-import static org.kuali.rice.kew.xml.XmlConstants.RULE_ATTRIBUTE;
-import static org.kuali.rice.kew.xml.XmlConstants.RULE_ATTRIBUTES;
-import static org.kuali.rice.kew.xml.XmlConstants.RULE_ATTRIBUTE_NAMESPACE;
-import static org.kuali.rice.kew.xml.XmlConstants.RULE_ATTRIBUTE_SCHEMA_LOCATION;
-import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
-import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_NAMESPACE;
-import static org.kuali.rice.kew.xml.XmlConstants.SERVICE_NAMESPACE;
-import static org.kuali.rice.kew.xml.XmlConstants.TYPE;
-
-import java.io.StringReader;
-import java.util.Iterator;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.XmlRenderer;
+
+import java.io.StringReader;
+import java.util.Iterator;
+
+import static org.kuali.rice.kew.xml.XmlConstants.*;
 
 /**
  * Exports {@link RuleAttribute}s to XML.
@@ -79,7 +68,7 @@ public class RuleAttributeXmlExporter implements XmlExporter {
         if (!Utilities.isEmpty(ruleAttribute.getXmlConfigData())) {
             try {
                 Document configDoc = new SAXBuilder().build(new StringReader(ruleAttribute.getXmlConfigData()));
-                XmlHelper.propogateNamespace(configDoc.getRootElement(), RULE_ATTRIBUTE_NAMESPACE);
+                XmlHelper.propagateNamespace(configDoc.getRootElement(), RULE_ATTRIBUTE_NAMESPACE);
                 attributeElement.addContent(configDoc.getRootElement().detach());
             } catch (Exception e) {
             	LOG.error("Error parsing attribute XML configuration.", e);

@@ -13,15 +13,6 @@
  */
 package org.kuali.rice.kew.actionrequest.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
@@ -46,14 +37,12 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.routemodule.RouteModule;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kew.util.ResponsibleParty;
-import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kew.util.*;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import java.util.*;
 
 
 /**
@@ -178,15 +167,15 @@ public class ActionRequestServiceImpl implements ActionRequestService {
     }
 
     public void activateRequest(ActionRequestValue actionRequest) {
-        activateRequests(Utilities.asList(actionRequest), new ActivationContext(!ActivationContext.CONTEXT_IS_SIMULATION));
+        activateRequests(Collections.singletonList(actionRequest), new ActivationContext(!ActivationContext.CONTEXT_IS_SIMULATION));
     }
 
     public void activateRequest(ActionRequestValue actionRequest, boolean simulate) {
-        activateRequests(Utilities.asList(actionRequest), new ActivationContext(simulate));
+        activateRequests(Collections.singletonList(actionRequest), new ActivationContext(simulate));
     }
 
     public void activateRequest(ActionRequestValue actionRequest, ActivationContext activationContext) {
-        activateRequests(Utilities.asList(actionRequest), activationContext);
+        activateRequests(Collections.singletonList(actionRequest), activationContext);
     }
 
     public List activateRequestNoNotification(ActionRequestValue actionRequest, boolean simulate) {

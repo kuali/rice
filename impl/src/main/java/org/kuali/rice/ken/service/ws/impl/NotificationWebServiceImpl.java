@@ -15,18 +15,18 @@
  */
 package org.kuali.rice.ken.service.ws.impl;
 
-import java.io.IOException;
-import java.rmi.RemoteException;
-
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.ken.bo.NotificationResponse;
-import org.kuali.rice.ken.exception.InvalidXMLException;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ws.NotificationWebService;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.PerformanceLog;
 import org.kuali.rice.ken.util.PerformanceLog.PerformanceStopWatch;
+
+import java.io.IOException;
+import java.rmi.RemoteException;
 
 /**
  * Web service interface implementation that delegates directly to Spring service
@@ -69,7 +69,7 @@ public class NotificationWebServiceImpl /*extends ServletEndpointSupport*/ imple
             response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
             response.setMessage("Failed to process the message content: " + ioe.getMessage());
             LOG.error("Failed to process the message content", ioe);
-        } catch(InvalidXMLException ixe) {
+        } catch(XmlException ixe) {
             response = new NotificationResponse();
             response.setStatus(NotificationConstants.RESPONSE_STATUSES.FAILURE);
             response.setMessage("Failed to process the message content because the XML message provided to the system was invalid: " + ixe.getMessage());

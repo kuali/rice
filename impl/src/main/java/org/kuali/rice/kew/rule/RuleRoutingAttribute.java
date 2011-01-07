@@ -16,18 +16,10 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -36,9 +28,13 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.StringReader;
+import java.util.*;
 
 
 /**
@@ -164,9 +160,9 @@ public class RuleRoutingAttribute implements WorkflowAttribute {
             Document doc2 = (Document) XmlHelper.buildJDocument(new StringReader(docContent.getDocContent()));
             
             List<RuleRoutingAttribute> doctypeAttributes = new ArrayList<RuleRoutingAttribute>();
-            List ruleRoutings = XmlHelper.findElements(doc2.getRootElement(), "docTypeName");
+            Collection<Element> ruleRoutings = XmlHelper.findElements(doc2.getRootElement(), "docTypeName");
             List<String> usedDTs = new ArrayList<String>();
-            for (Iterator iter = ruleRoutings.iterator(); iter.hasNext();) {
+            for (Iterator<Element> iter = ruleRoutings.iterator(); iter.hasNext();) {
                 Element ruleRoutingElement = (Element) iter.next();
 
                 //Element docTypeElement = ruleRoutingElement.getChild("doctype");

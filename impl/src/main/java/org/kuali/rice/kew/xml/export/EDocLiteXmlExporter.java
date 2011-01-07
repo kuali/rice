@@ -16,21 +16,21 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import java.io.StringReader;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.jdom.Element;
 import org.jdom.Namespace;
+import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.bo.EDocLiteDefinition;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kew.xml.XmlRenderer;
+
+import java.io.StringReader;
+import java.util.Iterator;
+import java.util.List;
 
 import static org.kuali.rice.kew.xml.XmlConstants.*;
 /**

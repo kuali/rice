@@ -15,38 +15,14 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationContentType;
-import org.kuali.rice.ken.bo.NotificationPriority;
-import org.kuali.rice.ken.bo.NotificationProducer;
-import org.kuali.rice.ken.bo.NotificationRecipient;
-import org.kuali.rice.ken.bo.NotificationResponse;
-import org.kuali.rice.ken.bo.NotificationSender;
-import org.kuali.rice.ken.exception.InvalidXMLException;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.ken.bo.*;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.util.CompoundNamespaceContext;
@@ -63,8 +39,19 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * NotificationMessageContentService implementation - uses both Xalan and XStream in various places to manage the marshalling/unmarshalling of
@@ -106,7 +93,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
      * This method implements by taking in a String and then converting that to a byte[];
      * @see org.kuali.rice.ken.service.NotificationMessageContentService#parseNotificationRequestMessage(java.lang.String)
      */
-    public Notification parseNotificationRequestMessage(String notificationMessageAsXml) throws IOException, InvalidXMLException {
+    public Notification parseNotificationRequestMessage(String notificationMessageAsXml) throws IOException, XmlException {
         // this is sort of redundant...but DOM does not perform validation
         // so we have to read all the bytes and then hand them to DOM
         // after our first-pass validation, for a second parse
@@ -119,7 +106,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
      * This method implements by taking in an InputStream and then coverting that to a byte[].
      * @see org.kuali.rice.ken.service.NotificationMessageContentService#parseNotificationRequestMessage(java.io.InputStream)
      */
-    public Notification parseNotificationRequestMessage(InputStream stream) throws IOException, InvalidXMLException {
+    public Notification parseNotificationRequestMessage(InputStream stream) throws IOException, XmlException {
         // this is sort of redundant...but DOM does not perform validation
         // so we have to read all the bytes and then hand them to DOM
         // after our first-pass validation, for a second parse
@@ -135,17 +122,17 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
      * @param bytes
      * @return Notification
      * @throws IOException
-     * @throws InvalidXMLException
+     * @throws XmlException
      */
-    private Notification parseNotificationRequestMessage(byte[] bytes) throws IOException, InvalidXMLException {
+    private Notification parseNotificationRequestMessage(byte[] bytes) throws IOException, XmlException {
         /* First we'll fully parse the DOM with validation turned on */
         Document doc;
         try {
             doc = Util.parseWithNotificationEntityResolver(new InputSource(new ByteArrayInputStream(bytes)), true, true, notificationContentTypeService);
         } catch (ParserConfigurationException pce) {
-            throw new InvalidXMLException("Error obtaining XML parser", pce);
+            throw new XmlException("Error obtaining XML parser", pce);
         } catch (SAXException se) {
-            throw new InvalidXMLException("Error validating notification request", se);
+            throw new XmlException("Error validating notification request", se);
         }
 
         Element root = doc.getDocumentElement();
@@ -201,7 +188,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                     recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
                     recipient.setRecipientId(node.getTextContent());
                 } else {
-                    throw new InvalidXMLException("Invalid 'recipientType' value: '" + node.getLocalName() +
+                    throw new XmlException("Invalid 'recipientType' value: '" + node.getLocalName() +
                 	    "'.  Needs to either be 'user' or 'group'");
                 }
                 recipients.add(recipient);
@@ -247,7 +234,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
             /* validate the delivery type */
             if(!NotificationConstants.DELIVERY_TYPES.ACK.equalsIgnoreCase(deliveryType) &&
                !NotificationConstants.DELIVERY_TYPES.FYI.equalsIgnoreCase(deliveryType)) {
-                throw new InvalidXMLException("Invalid 'deliveryType' value: '" + deliveryType +
+                throw new XmlException("Invalid 'deliveryType' value: '" + deliveryType +
                     "'.  Must be either 'ACK' or 'FYI'.");
             }
             notification.setDeliveryType(deliveryType);
@@ -260,7 +247,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 try {
                     d = Util.parseXSDDateTime(sendDateTime);
                 } catch (ParseException pe) {
-                    throw new InvalidXMLException("Invalid 'sendDateTime' value: " + sendDateTime, pe);
+                    throw new XmlException("Invalid 'sendDateTime' value: " + sendDateTime, pe);
                 }
                 notification.setSendDateTime(new Timestamp(d.getTime()));
             }
@@ -268,7 +255,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 try {
                     d = Util.parseXSDDateTime(autoRemoveDateTime);
                 } catch (ParseException pe) {
-                    throw new InvalidXMLException("Invalid 'autoRemoveDateTime' value: " + autoRemoveDateTime, pe);
+                    throw new XmlException("Invalid 'autoRemoveDateTime' value: " + autoRemoveDateTime, pe);
                 }
                 notification.setAutoRemoveDateTime(new Timestamp(d.getTime()));
             }
@@ -317,21 +304,17 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
              * element occuring once, but we don't want "any" element, we want an element named 'content').
              */
             if (contentNode == null) {
-                throw new InvalidXMLException("The 'content' element is mandatory.");
+                throw new XmlException("The 'content' element is mandatory.");
             }
             if (contentNode != null) {
                 if (!(contentNode instanceof Element)) {
                     // don't know what could possibly cause this
-                    throw new InvalidXMLException("The 'content' node is not an Element! (???).");
+                    throw new XmlException("The 'content' node is not an Element! (???).");
                 }
                 contentElement = (Element) contentNode;
                 /* Take the literal XML content value of the DOM node.
                    This should be symmetric/reversable */
-                try {
-                    content = Util.writeNode(contentNode, true);
-                } catch (TransformerException te) {
-                    throw new InvalidXMLException("Error serializing notification request content.", te);
-                }
+                content = XmlHelper.jotNode(contentNode, true);
             }
 
             notification.setContent(content);
@@ -346,7 +329,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 
             return notification;
         } catch (XPathExpressionException xpee) {
-            throw new InvalidXMLException("Error parsing request", xpee);
+            throw new XmlException("Error parsing request", xpee);
         }
     }
 
@@ -363,9 +346,9 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
      * @param contentElement
      * @param content
      * @throws IOException
-     * @throws InvalidXMLException
+     * @throws XmlException
      */
-    private void validateContent(Notification notification, String contentType, Element contentElement, String content) throws IOException, InvalidXMLException {
+    private void validateContent(Notification notification, String contentType, Element contentElement, String content) throws IOException, XmlException {
         // this debugging relies on a DOM 3 API that is only available with Xerces 2.7.1+ (TypeInfo)
         // commented out for now
         /*LOG.debug(contentElement.getSchemaTypeInfo());
@@ -379,7 +362,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
         String expectedNamespaceURI = CONTENT_TYPE_NAMESPACE_PREFIX + contentTypeTitleCase;
         String actualNamespaceURI = contentElement.getNamespaceURI();
         if (!actualNamespaceURI.equals(expectedNamespaceURI)) {
-            throw new InvalidXMLException("Namespace URI of 'content' node, '" + actualNamespaceURI + "', does not match expected namespace URI, '" + expectedNamespaceURI + "', for content type '" + contentType + "'");
+            throw new XmlException("Namespace URI of 'content' node, '" + actualNamespaceURI + "', does not match expected namespace URI, '" + expectedNamespaceURI + "', for content type '" + contentType + "'");
         }
     }
 
@@ -462,7 +445,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
         try {
             doc = Util.parse(new InputSource(new ByteArrayInputStream(xmlAsBytes)), false, false, null);
         } catch (Exception pce) {
-            throw new InvalidXMLException("Error obtaining XML parser", pce);
+            throw new XmlException("Error obtaining XML parser", pce);
         }
 
         Element root = doc.getDocumentElement();
@@ -582,7 +565,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
 
             return notification;
         } catch (XPathExpressionException xpee) {
-            throw new InvalidXMLException("Error parsing request", xpee);
+            throw new XmlException("Error parsing request", xpee);
         }
     }
 }

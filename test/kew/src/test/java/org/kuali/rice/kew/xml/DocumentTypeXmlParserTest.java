@@ -17,28 +17,23 @@
 
 package org.kuali.rice.kew.xml;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
 import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.exception.InvalidXmlException;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.exception.GroupNotFoundException;
-import org.springframework.test.AssertThrows;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class DocumentTypeXmlParserTest extends KEWTestCase {
     private List testDoc(String docName, Class expectedException) throws Exception {
@@ -86,7 +81,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testLoadDocWithDuplicatePolicyName() throws Exception {
-        testDoc("DuplicatePolicyName", InvalidXmlException.class);
+        testDoc("DuplicatePolicyName", XmlException.class);
     }
 
     @Test public void testLoadDocWithBadPolicyName() throws Exception {
@@ -94,7 +89,7 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testLoadDocWithBadNextNode() throws Exception {
-        testDoc("BadNextNode", InvalidXmlException.class);
+        testDoc("BadNextNode", XmlException.class);
     }
 
     @Test public void testLoadDocWithNoDocHandler() throws Exception {
@@ -117,15 +112,15 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testLoadDocWithBadRuleTemplate() throws Exception {
-        testDoc("BadRuleTemplate", InvalidXmlException.class);
+        testDoc("BadRuleTemplate", XmlException.class);
     }
 
     @Test public void testLoadDocWithInvalidParent() throws Exception {
-        testDoc("InvalidParent", InvalidXmlException.class);
+        testDoc("InvalidParent", XmlException.class);
     }
     
     @Test public void testLoadDocWithOrphanedNodes() throws Exception {
-    	testDoc("OrphanedNodes", InvalidXmlException.class);
+    	testDoc("OrphanedNodes", XmlException.class);
     }
     
     @Test public void testBlanketApprovePolicy() throws Exception {
@@ -416,11 +411,11 @@ public class DocumentTypeXmlParserTest extends KEWTestCase {
     }
 
     @Test public void testLoadDocWithInvalidDocumentStatusPolicy() throws Exception {
-        testDoc("DocumentStatusPolicyInvalidStringValue", InvalidXmlException.class);
+        testDoc("DocumentStatusPolicyInvalidStringValue", XmlException.class);
     }
     
     @Test public void testLoadDocWithBlankDocumentStatusPolicyStringValue() throws Exception {
-        testDoc("DocumentStatusPolicyMissingStringValue", InvalidXmlException.class);
+        testDoc("DocumentStatusPolicyMissingStringValue", XmlException.class);
     }
     
 

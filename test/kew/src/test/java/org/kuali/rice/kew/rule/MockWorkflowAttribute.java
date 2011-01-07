@@ -16,16 +16,16 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.jdom.Document;
 import org.jdom.Element;
+import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.kew.routeheader.DocumentContent;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
-import org.kuali.rice.kew.util.XmlHelper;
+
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -52,7 +52,8 @@ public class MockWorkflowAttribute implements WorkflowAttribute {
     public List parseDocContent(String docContent) {
         try {
             Document doc = XmlHelper.buildJDocument(new StringReader(docContent));
-            Element mockValueElement = XmlHelper.findElement(doc.getRootElement(), MOCK_VALUE_ELEMENT);
+            Collection<Element> elements = XmlHelper.findElements(doc.getRootElement(), MOCK_VALUE_ELEMENT);
+            Element mockValueElement = elements.iterator().next();
             List attributes = new ArrayList();
             if (mockValueElement != null) {
                 attributes.add(new MockWorkflowAttribute(mockValueElement.getText()));

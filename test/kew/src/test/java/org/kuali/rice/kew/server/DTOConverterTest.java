@@ -16,21 +16,13 @@
 package org.kuali.rice.kew.server;
 
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.dto.ActionItemDTO;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.ActionTakenDTO;
-import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.dto.DocumentContentDTO;
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
-import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.kew.dto.*;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -38,6 +30,9 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 
 public class DTOConverterTest extends KEWTestCase {
@@ -82,9 +77,9 @@ public class DTOConverterTest extends KEWTestCase {
         attributeContent = "invalid<xml, I can't believe you would do such a thing<<<";
         try {
             contentVO = DTOConverter.convertDocumentContent(constructContent(attributeContent, searchableContent, applicationContent), null);
-            fail("Parsing bad xml should have thrown an InvalidXmlException.");
-        } catch (InvalidXmlException e) {
-            log.info("Expected InvalidXmlException was thrown.");
+            fail("Parsing bad xml should have thrown an XmlException.");
+        } catch (XmlException e) {
+            log.info("Expected XmlException was thrown.");
             // if we got the exception we are good to go
         }
 

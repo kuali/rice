@@ -15,30 +15,23 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.ojb.broker.query.Criteria;
-//import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.bo.NotificationRecipient;
 import org.kuali.rice.ken.bo.NotificationResponse;
 import org.kuali.rice.ken.dao.NotificationDao;
 import org.kuali.rice.ken.deliverer.impl.KEWActionListMessageDeliverer;
-import org.kuali.rice.ken.exception.InvalidXMLException;
-import org.kuali.rice.ken.service.NotificationAuthorizationService;
-import org.kuali.rice.ken.service.NotificationMessageContentService;
-import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
-import org.kuali.rice.ken.service.NotificationRecipientService;
-import org.kuali.rice.ken.service.NotificationService;
-import org.kuali.rice.ken.service.NotificationWorkflowDocumentService;
+import org.kuali.rice.ken.service.*;
 import org.kuali.rice.ken.util.NotificationConstants;
+
+import java.io.IOException;
+import java.sql.Timestamp;
+import java.util.Collection;
+import java.util.HashMap;
+
+//import org.kuali.rice.core.jpa.criteria.Criteria;
 
 /**
  * NotificationService implementation - this is the default out-of-the-box implementation of the service.
@@ -97,7 +90,7 @@ public class NotificationServiceImpl implements NotificationService {
 	 * is saved.
 	 * @see org.kuali.rice.ken.service.NotificationService#sendNotification(java.lang.String)
 	 */
-	public NotificationResponse sendNotification(String notificationMessageAsXml) throws IOException, InvalidXMLException {
+	public NotificationResponse sendNotification(String notificationMessageAsXml) throws IOException, XmlException {
 		// try to parse out the XML with the message content service
 		Notification notification = messageContentService.parseNotificationRequestMessage(notificationMessageAsXml);
 

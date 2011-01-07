@@ -21,6 +21,7 @@ import junit.framework.AssertionFailedError;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.kew.edl.bo.EDocLiteAssociation;
 import org.kuali.rice.kew.edl.bo.EDocLiteDefinition;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
@@ -29,7 +30,6 @@ import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Element;
 
 import javax.xml.transform.Templates;
@@ -204,7 +204,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
     	assertEquals(1, config.size());
     	Element key1 = (Element)edlController.getConfigProcessors().keySet().iterator().next();
     	Element key2 = (Element)config.keySet().iterator().next();
-    	assertEquals("Key values should be the same", XmlHelper.getTextContent(key1), XmlHelper.getTextContent(key2));
+    	assertEquals("Key values should be the same", XmlHelper.jotNode(key1), XmlHelper.jotNode(key2));
     	assertEquals("Values should be the same", edlController.getConfigProcessors().get(key1), config.get(key2));
 
     	// now import the EDocLite again and it should be cleared from the cache

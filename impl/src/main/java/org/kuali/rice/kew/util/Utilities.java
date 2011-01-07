@@ -16,32 +16,21 @@
  */
 package org.kuali.rice.kew.util;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrSubstitutor;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.*;
 
 
 /**
@@ -54,7 +43,7 @@ public final class Utilities {
      * Commons-Lang StrSubstitor which substitutes variables specified like ${name} in strings,
      * using a lookup implementation that pulls variables from the core config
      */
-    private static StrSubstitutor substitutor = new StrSubstitutor(new ConfigStringLookup());
+    private static final StrSubstitutor SUBSTITUTOR = new StrSubstitutor(new ConfigStringLookup());
     
     private Utilities() {
     	throw new UnsupportedOperationException("do not call");
@@ -80,7 +69,7 @@ public final class Utilities {
      * @return a string with any variables substituted with configuration parameter values
      */
     public static String substituteConfigParameters(String string) {
-        return substitutor.replace(string);
+        return SUBSTITUTOR.replace(string);
     }
     
     public static String getKNSParameterValue(String nameSpace, String detailType, String name) {
@@ -143,10 +132,6 @@ public final class Utilities {
         return collection == null || collection.isEmpty();
     }
 
-    public static boolean isEmpty(Object[] array) {
-        return array == null || array.length == 0;
-    }
-
     public static boolean equals (Object a, Object b) {
         return ((a == null && b == null) || (a != null && a.equals(b)));
     }
@@ -157,32 +142,6 @@ public final class Utilities {
         t.printStackTrace(pw);
         pw.close();
         return sw.toString();
-    }
-
-    public static Set asSet(Object[] objects) {
-        Set set = new HashSet();
-        if (objects != null) {
-            for (Object object : objects) {
-                set.add(object);
-            }
-        }
-        return set;
-    }
-
-    public static Set asSet(Object object) {
-        Set set = new HashSet();
-        if (object != null) {
-            set.add(object);
-        }
-        return set;
-    }
-
-    public static List asList(Object object) {
-        List<Object> list = new ArrayList<Object>(1);
-        if (object != null) {
-            list.add(object);
-        }
-        return list;
     }
 
     /**
@@ -237,32 +196,6 @@ public final class Utilities {
         }
     }
 
-    public static boolean validateDate(String date, boolean dateOptional) {
-        if ((date == null) || date.trim().equals("")) {
-            if (dateOptional) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        try {
-            Date parsedDate = RiceConstants.getDefaultDateFormat().parse(date.trim());
-            if (! RiceConstants.getDefaultDateFormat().format(parsedDate).equals(date)) {
-				return false;
-			}
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(parsedDate);
-            int yearInt = calendar.get(Calendar.YEAR);
-            if (yearInt <= 0 || yearInt > 2999) {
-              return false;
-            }
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
-    }
-
     public static boolean checkDateRanges(String fromDate, String toDate) {
         try {
             Date parsedDate = KNSServiceLocator.getDateTimeService().convertToDate(fromDate.trim());
@@ -314,14 +247,6 @@ public final class Utilities {
         }
     }
 
-    public static String getHostName() {
-        try {
-            return InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            throw new WorkflowRuntimeException("Error retrieving host name.", e);
-        }
-    }
-
     /**
      * Helper method that takes a List of {@link KeyValue} and presents it as a Map
      * @param collection collection of {@link KeyValue}
@@ -339,8 +264,6 @@ public final class Utilities {
      * Helper method that takes a List of {@link KeyValue} and presents it as a Map containing
      * KeyValue values
      * @param <T> the key type
-     * @param <U> the value type
-     * @param <Z> the collection/map value type, which must be a KeyValue<T,U>
      * @param collection collection of {@link KeyValue}
      * @return a Map<T,Z> where keys of the KeyValues in the collection are mapped to their respective KeyValue object
      */

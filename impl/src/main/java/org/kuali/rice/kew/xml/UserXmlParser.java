@@ -15,32 +15,26 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
-import org.kuali.rice.kew.exception.InvalidXmlException;
-import org.kuali.rice.kew.util.XmlHelper;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEmploymentInformationImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.entity.impl.*;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Parses users from XML.
@@ -69,21 +63,21 @@ public class UserXmlParser {
     private static final String LAST_NAME_ELEMENT = "lastName";    
     private static final String TYPE_ELEMENT = "type";
     
-    public void parseUsers(InputStream input) throws IOException, InvalidXmlException {
+    public void parseUsers(InputStream input) throws IOException, XmlException {
         try {
             Document doc = XmlHelper.trimSAXXml(input);
             Element root = doc.getRootElement();
             parseUsers(root);
         } catch (JDOMException e) {
-            throw new InvalidXmlException("Parse error.", e);
+            throw new XmlException("Parse error.", e);
         } catch (SAXException e){
-            throw new InvalidXmlException("Parse error.",e);
+            throw new XmlException("Parse error.",e);
         } catch(ParserConfigurationException e){
-            throw new InvalidXmlException("Parse error.",e);
+            throw new XmlException("Parse error.",e);
         }
     }
 
-    public void parseUsers(Element root) throws InvalidXmlException {
+    public void parseUsers(Element root) throws XmlException {
     	for (Iterator usersElementIt = root.getChildren(USERS_ELEMENT, NAMESPACE).iterator(); usersElementIt.hasNext();) {
     		Element usersElement = (Element) usersElementIt.next();
     		for (Iterator iterator = usersElement.getChildren(USER_ELEMENT, NAMESPACE).iterator(); iterator.hasNext();) {

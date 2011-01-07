@@ -15,18 +15,12 @@
  */
 package org.kuali.rice.ken.services.impl;
 
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.bo.NotificationResponse;
-import org.kuali.rice.ken.exception.InvalidXMLException;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.service.NotificationService;
 import org.kuali.rice.ken.service.ProcessingResult;
@@ -37,6 +31,12 @@ import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.quartz.SchedulerException;
+
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -84,7 +84,7 @@ public class NotificationServiceImplTest extends KENTestCase {
 
     @Test
     // deadlocks
-    public void testSendNotificationAsXml_validInput() throws InterruptedException, SchedulerException, IOException, InvalidXMLException  {
+    public void testSendNotificationAsXml_validInput() throws InterruptedException, SchedulerException, IOException, XmlException  {
         services.getNotificationMessageDeliveryResolverService().resolveNotificationMessageDeliveries();
         
         Thread.sleep(10000);
@@ -141,19 +141,19 @@ public class NotificationServiceImplTest extends KENTestCase {
 
         try {
             nSvc.sendNotification(notificationMessageAsXml);
-            fail("InvalidXMLException not thrown");
+            fail("XmlException not thrown");
         } catch (IOException ioe) {
-            fail("Wrong exception thrown, expected InvalidXMLException: " + ioe);
-        } catch (InvalidXMLException ixe) {
+            fail("Wrong exception thrown, expected XmlException: " + ioe);
+        } catch (XmlException ixe) {
             // expected
         } catch (Exception e) {
-            fail("Wrong exception thrown, expected InvalidXMLException: " + e);
+            fail("Wrong exception thrown, expected XmlException: " + e);
         }
 
     }
 
     @Test
-    public void testSendNotificationAsXml_producerNotAuthorized() throws IOException, InvalidXMLException {
+    public void testSendNotificationAsXml_producerNotAuthorized() throws IOException, XmlException {
         NotificationService nSvc = services.getNotificationService();
 
         final String notificationMessageAsXml = IOUtils.toString(getClass().getResourceAsStream("producer_not_authorized.xml"));

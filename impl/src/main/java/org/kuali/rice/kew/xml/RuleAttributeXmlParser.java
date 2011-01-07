@@ -16,30 +16,28 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -61,16 +59,16 @@ public class RuleAttributeXmlParser {
 	private static final String TYPE = "type";
 	private static final String CONFIG = "configuration";
 	
-	public List parseRuleAttributes(InputStream input) throws IOException, InvalidXmlException {
+	public List parseRuleAttributes(InputStream input) throws IOException, XmlException {
 		try {
 			Element root = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new InputSource(input)).getDocumentElement();
 			return parseRuleAttributes(root);
 		} catch (Exception e) {
-			throw new InvalidXmlException("error parsing xml data", e);
+			throw new XmlException("error parsing xml data", e);
 		}
 	}
 	
-	public List parseRuleAttributes(Element element) throws InvalidXmlException {
+	public List parseRuleAttributes(Element element) throws XmlException {
 		List ruleAttributes = new ArrayList();
 		try {
 			XPath xpath = XPathHelper.newXPath();
@@ -94,12 +92,12 @@ public class RuleAttributeXmlParser {
 				}
 			}
 		} catch (XPathExpressionException e1) {
-			throw new InvalidXmlException("Could not find a rule attribute.", e1);
+			throw new XmlException("Could not find a rule attribute.", e1);
 		}
 		return ruleAttributes;
 	}
 	
-	private RuleAttribute parseRuleAttribute(Node ruleAttributeNode) throws InvalidXmlException {
+	private RuleAttribute parseRuleAttribute(Node ruleAttributeNode) throws XmlException {
 		String name = "";
 		String className = "";
 		String label = "";
@@ -128,10 +126,10 @@ public class RuleAttributeXmlParser {
 			}
 		}
 		if (Utilities.isEmpty(name)) {
-			throw new InvalidXmlException("RuleAttribute must have a name");
+			throw new XmlException("RuleAttribute must have a name");
 		}
 		if (Utilities.isEmpty(className)) {
-			throw new InvalidXmlException("RuleAttribute must have a className");
+			throw new XmlException("RuleAttribute must have a className");
 		}
 		if (Utilities.isEmpty(label)) {
 			LOG.warn("Label empty defaulting to name");
@@ -140,7 +138,7 @@ public class RuleAttributeXmlParser {
 		if (Utilities.isEmpty(type)) {
 			LOG.debug("No type specified, default to " + KEWConstants.RULE_ATTRIBUTE_TYPE);
 			type = KEWConstants.RULE_ATTRIBUTE_TYPE;
-			//throw new InvalidXmlException("RuleAttribute must have an attribute type");
+			//throw new XmlException("RuleAttribute must have an attribute type");
 		}
 		RuleAttribute ruleAttribute = new RuleAttribute();
 		ruleAttribute.setName(name.trim());
@@ -159,18 +157,14 @@ public class RuleAttributeXmlParser {
 		ruleAttribute.setServiceNamespace(serviceNamespace);
 		
 		if(xmlConfig != null){
-			try {
-				ruleAttribute.setXmlConfigData(XmlHelper.writeNode(xmlConfig));
-			} catch (TransformerException e) {
-				throw new InvalidXmlException("XML config is invalid", e);
-			}	
+		    ruleAttribute.setXmlConfigData(XmlHelper.jotNode(xmlConfig));
 		} else {
 			if(KEWConstants.RULE_XML_ATTRIBUTE_TYPE.equals(type)){
-				throw new InvalidXmlException("A routing config must be present to be of type: "+type);
+				throw new XmlException("A routing config must be present to be of type: "+type);
 			} else if(KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(type)){
-				throw new InvalidXmlException("A searching config must be present to be of type: "+type);
+				throw new XmlException("A searching config must be present to be of type: "+type);
 			} else if(KEWConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE.equals(type)){
-				throw new InvalidXmlException("A searching config must be present to be of type: "+type);
+				throw new XmlException("A searching config must be present to be of type: "+type);
 			}
 		}
 		return ruleAttribute;

@@ -17,16 +17,11 @@
 package org.kuali.rice.kew.edl.components;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.edl.EDLContext;
-import org.kuali.rice.kew.edl.EDLModelComponent;
-import org.kuali.rice.kew.edl.EDLXmlUtils;
-import org.kuali.rice.kew.edl.RequestParser;
-import org.kuali.rice.kew.edl.UserAction;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.kew.edl.*;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -100,7 +95,7 @@ public class WorkflowDocumentActions implements EDLModelComponent {
 		}
 		//strip out the data element
 		Element dataElement = (Element) dom.getElementsByTagName(EDLXmlUtils.DATA_E).item(0);
-		String docContent = XmlHelper.writeNode(dataElement);//use the transformer on edlcontext
+		String docContent = XmlHelper.jotNode(dataElement);//use the transformer on edlcontext
 		document.setApplicationContent(docContent);
 		takeAction(document, dom, edlContext);
 	}

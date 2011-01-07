@@ -16,14 +16,10 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
-
 import org.jdom.Element;
 import org.jdom.Namespace;
-import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleExtensionValue;
@@ -32,7 +28,11 @@ import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kew.util.XmlHelper;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -54,32 +54,32 @@ public class RuleExtensionXmlParser {
     private static final String KEY = "key";
     private static final String VALUE = "value";
 
-    public List parseRuleExtensions(Element element, RuleBaseValues rule) throws InvalidXmlException {
+    public List parseRuleExtensions(Element element, RuleBaseValues rule) throws XmlException {
 	List ruleExtensions = new ArrayList();
-	Vector ruleElements = XmlHelper.findElements(element, RULE_EXTENSION);
+	Collection<Element> ruleElements = XmlHelper.findElements(element, RULE_EXTENSION);
 	for (Iterator iterator = ruleElements.iterator(); iterator.hasNext();) {
 	    ruleExtensions.add(parseRuleExtension((Element) iterator.next(), rule));
 	}
 	return ruleExtensions;
     }
 
-    private RuleExtension parseRuleExtension(Element element, RuleBaseValues rule) throws InvalidXmlException {
+    private RuleExtension parseRuleExtension(Element element, RuleBaseValues rule) throws XmlException {
 	String attributeName = element.getChildText(ATTRIBUTE, NAMESPACE);
 	String templateName = element.getChildText(RULE_TEMPLATE, NAMESPACE);
 	Element valuesElement = element.getChild(RULE_EXTENSION_VALUES, NAMESPACE);
 	if (attributeName == null) {
-	    throw new InvalidXmlException("Rule extension must have a valid attribute.");
+	    throw new XmlException("Rule extension must have a valid attribute.");
 	}
 	if (templateName == null) {
-	    throw new InvalidXmlException("Rule extension must have a valid rule template.");
+	    throw new XmlException("Rule extension must have a valid rule template.");
 	}
 	RuleAttribute ruleAttribute = KEWServiceLocator.getRuleAttributeService().findByName(attributeName);
 	if (ruleAttribute == null) {
-	    throw new InvalidXmlException("Could not locate attribute for the given name '" + attributeName + "'");
+	    throw new XmlException("Could not locate attribute for the given name '" + attributeName + "'");
 	}
 	RuleTemplate ruleTemplate = KEWServiceLocator.getRuleTemplateService().findByRuleTemplateName(templateName);
 	if (ruleTemplate == null) {
-	    throw new InvalidXmlException("Could not locate rule template for the given name '" + templateName + "'");
+	    throw new XmlException("Could not locate rule template for the given name '" + templateName + "'");
 	}
 	RuleExtension extension = new RuleExtension();
 	extension.setRuleBaseValues(rule);
@@ -96,19 +96,19 @@ public class RuleExtensionXmlParser {
 
 	if (!attributeFound) {
 	    // TODO: need test case for this
-	    throw new InvalidXmlException("Attribute '" + attributeName + "' not found on template '" + ruleTemplate.getName() + "'");
+	    throw new XmlException("Attribute '" + attributeName + "' not found on template '" + ruleTemplate.getName() + "'");
 	}
 
 	extension.setExtensionValues(parseRuleExtensionValues(valuesElement, extension));
 	return extension;
     }
 
-    private List parseRuleExtensionValues(Element element, RuleExtension ruleExtension) throws InvalidXmlException {
+    private List parseRuleExtensionValues(Element element, RuleExtension ruleExtension) throws XmlException {
 	List values = new ArrayList();
 	if (element == null) {
 	    return values;
 	}
-	List valueElements = XmlHelper.findElements(element, RULE_EXTENSION_VALUE);
+	Collection<Element> valueElements = XmlHelper.findElements(element, RULE_EXTENSION_VALUE);
 	for (Iterator iterator = valueElements.iterator(); iterator.hasNext();) {
 	    Element valueElement = (Element) iterator.next();
 	    values.add(parseRuleExtensionValue(valueElement, ruleExtension));
@@ -116,14 +116,14 @@ public class RuleExtensionXmlParser {
 	return values;
     }
 
-    private RuleExtensionValue parseRuleExtensionValue(Element element, RuleExtension ruleExtension) throws InvalidXmlException {
+    private RuleExtensionValue parseRuleExtensionValue(Element element, RuleExtension ruleExtension) throws XmlException {
 	String key = element.getChildText(KEY, NAMESPACE);
 	String value = element.getChildText(VALUE, NAMESPACE);
 	if (Utilities.isEmpty(key)) {
-	    throw new InvalidXmlException("RuleExtensionValue must have a non-empty key.");
+	    throw new XmlException("RuleExtensionValue must have a non-empty key.");
 	}
 	if (value == null) {
-	    throw new InvalidXmlException("RuleExtensionValue must have a non-null value.");
+	    throw new XmlException("RuleExtensionValue must have a non-null value.");
 	}
 	RuleExtensionValue extensionValue = new RuleExtensionValue(key, value);
 	extensionValue.setExtension(ruleExtension);

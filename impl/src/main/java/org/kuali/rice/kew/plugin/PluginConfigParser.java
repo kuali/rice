@@ -16,6 +16,15 @@
  */
 package org.kuali.rice.kew.plugin;
 
+import org.apache.commons.lang.StringUtils;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+import org.kuali.rice.core.config.Config;
+import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.kew.util.Utilities;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -23,15 +32,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.commons.lang.StringUtils;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.kew.exception.InvalidXmlException;
-import org.kuali.rice.kew.util.Utilities;
 
 
 /**
@@ -50,11 +50,11 @@ public class PluginConfigParser {
     private static final String VALUE_ATTRIBUTE = "value";
     private static final String CLASS_ATTRIBUTE = "class";
 
-    public PluginConfig parse(File configFile, Config parentConfig) throws IOException, InvalidXmlException {
+    public PluginConfig parse(File configFile, Config parentConfig) throws IOException, XmlException {
     	return parse(configFile.toURL(), parentConfig);
     }
 
-	public PluginConfig parse(URL url, Config parentConfig) throws IOException, InvalidXmlException {
+	public PluginConfig parse(URL url, Config parentConfig) throws IOException, XmlException {
 		SAXBuilder builder = new SAXBuilder(false);
 		try {
             // NOTE: need to be wary of whether streams are closed properly
@@ -70,36 +70,36 @@ public class PluginConfigParser {
 		}
 	}
 
-	public void parseResourceLoader(Element element, PluginConfig pluginConfig) throws InvalidXmlException {
+	public void parseResourceLoader(Element element, PluginConfig pluginConfig) throws XmlException {
 		List loaderElements = element.getChildren(RESOURCE_LOADER_TAG);
 		if (loaderElements.size() > 1) {
-			throw new InvalidXmlException("Only one <resourceLoader> tag may be defined.");
+			throw new XmlException("Only one <resourceLoader> tag may be defined.");
 		} else if (!loaderElements.isEmpty()) {
 			Element loaderElement = (Element)loaderElements.get(0);
 			String attributeClass = loaderElement.getAttributeValue(CLASS_ATTRIBUTE);
 			if (StringUtils.isEmpty(attributeClass)) {
-				throw new InvalidXmlException("<resourceLoader> element must define a 'class' attribute.");
+				throw new XmlException("<resourceLoader> element must define a 'class' attribute.");
 			}
 			pluginConfig.setResourceLoaderClassname(attributeClass);
 		}
 	}
 
-	public void parseListeners(Element element, PluginConfig pluginConfig) throws InvalidXmlException {
+	public void parseListeners(Element element, PluginConfig pluginConfig) throws XmlException {
 		List listeners = element.getChildren(LISTENER_TAG);
 		for (Iterator iterator = listeners.iterator(); iterator.hasNext();) {
 		    pluginConfig.addListener(parseListenerProperties((Element)iterator.next()));
 		}
 	}
 
-	private String parseListenerProperties(Element element) throws InvalidXmlException {
+	private String parseListenerProperties(Element element) throws XmlException {
 		String listenerClass = element.getChildText(LISTENER_CLASS_TAG);
 		if (Utilities.isEmpty(listenerClass)) {
-			throw new InvalidXmlException("Listener Class tag must have a class property defined");
+			throw new XmlException("Listener Class tag must have a class property defined");
 		}
 		return listenerClass;
 	}
 
-	public Map parseParameters(Element element) throws InvalidXmlException {
+	public Map parseParameters(Element element) throws XmlException {
         Map parsedParms = new HashMap();
 	    List parameters = element.getChildren(PARAMETER_TAG);
 		for (Iterator iterator = parameters.iterator(); iterator.hasNext();) {
@@ -109,14 +109,14 @@ public class PluginConfigParser {
 		return parsedParms;
 	}
 
-	private String [] parseParameter(Element element) throws InvalidXmlException {
+	private String [] parseParameter(Element element) throws XmlException {
 		String name = element.getAttributeValue(NAME_ATTRIBUTE);
 		String value = element.getAttributeValue(VALUE_ATTRIBUTE);
 		if (Utilities.isEmpty(name)) {
-			throw new InvalidXmlException("Parameter tag must have a name attribute defined");
+			throw new XmlException("Parameter tag must have a name attribute defined");
 		}
 		if (Utilities.isEmpty(value)) {
-			throw new InvalidXmlException("Parameter tag must have a value attribute defined");
+			throw new XmlException("Parameter tag must have a value attribute defined");
 		}
 		return new String [] {name, value};
 	}

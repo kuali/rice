@@ -15,55 +15,31 @@
  */
 package org.kuali.rice.ken.util;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TimeZone;
-
-import javax.xml.namespace.NamespaceContext;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.dao.GenericDao;
-import org.kuali.rice.ken.bo.Notification;
-import org.kuali.rice.ken.bo.NotificationChannel;
-import org.kuali.rice.ken.bo.NotificationContentType;
-import org.kuali.rice.ken.bo.NotificationPriority;
-import org.kuali.rice.ken.bo.NotificationProducer;
-import org.kuali.rice.ken.bo.NotificationRecipient;
-import org.kuali.rice.ken.bo.NotificationSender;
+import org.kuali.rice.ken.bo.*;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.xml.sax.EntityResolver;
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
+import org.xml.sax.*;
+
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.stream.StreamSource;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * A general Utility class for the Notification system.
@@ -267,17 +243,6 @@ public final class Util {
     }
 
     /**
-     * This method returns the value of the first chile of the element node.
-     * @param element
-     * @return String
-     */
-    public static String getTextContent(org.w3c.dom.Element element) {
-        NodeList children = element.getChildNodes();
-        Node node = children.item(0);
-        return node.getNodeValue();
-    }
-
-    /**
      * Returns a node child with the specified tag name of the specified parent node,
      * or null if no such child node is found. 
      * @param parent the parent node
@@ -334,36 +299,6 @@ public final class Util {
             baos.write(buf, 0, read);
         }
         return baos.toByteArray();
-    }
-
-    /**
-     * Serializes a node to XML (without indentation)
-     * @param node the node to serialize
-     * @return the serialized node
-     * @throws TransformerException if transformation fails
-     */
-    public static String writeNode(org.w3c.dom.Node node) throws TransformerException {
-        return writeNode(node, false);
-    }
-
-    /**
-     * Serializes a node to XML
-     * @param node the node to serialize
-     * @param indent whether to apply indentation to the output
-     * @return the serialized node
-     * @throws TransformerException if transformation fails
-     */
-    public static String writeNode(org.w3c.dom.Node node, boolean indent) throws TransformerException {
-        Source source = new DOMSource(node);
-        StringWriter writer = new StringWriter();
-        Result result = new StreamResult(writer);
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        if (indent) {
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        }
-        transformer.transform(source, result);
-        return writer.toString();
     }
     
     /**

@@ -15,29 +15,28 @@
  */
 package org.kuali.rice.kew.role;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
+import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.rule.XmlConfiguredAttribute;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Resolves qualifiers based on XPath configuration in the resolver's attribute.
@@ -137,8 +136,7 @@ public class XPathQualifierResolver implements QualifierResolver, XmlConfiguredA
 				List<AttributeSet> attributeSets = new ArrayList<AttributeSet>();
 				NodeList baseElements = (NodeList)xPath.evaluate(config.getBaseXPathExpression(), xmlContent, XPathConstants.NODESET);
 				if (LOG.isDebugEnabled()) {
-					LOG.debug("Found " + baseElements.getLength() + " baseElements to parse for AttributeSets using document XML:");
-					XmlHelper.printDocumentStructure(xmlContent);
+					LOG.debug("Found " + baseElements.getLength() + " baseElements to parse for AttributeSets using document XML:" + XmlHelper.jotDocument(xmlContent));
 				}
 				for (int index = 0; index < baseElements.getLength(); index++) {
 					Node baseNode = baseElements.item(index);

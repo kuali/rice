@@ -15,28 +15,27 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.io.InputStream;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.edl.bo.EDocLiteStyle;
 import org.kuali.rice.kew.edl.service.StyleService;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+import java.io.InputStream;
 
 
 /**
@@ -151,8 +150,8 @@ public class StyleXmlParser {
             throw generateMissingChildException(XmlConstants.STYLE_STYLE, "xsl:stylesheet");
         }
         try {
-            style.setXmlContent(XmlHelper.writeNode(stylesheet, true));
-        } catch (TransformerException te) {
+            style.setXmlContent(XmlHelper.jotNode(stylesheet, true));
+        } catch (XmlException te) {
             throw generateSerializationException(XmlConstants.STYLE_STYLE, te);
         }
         return style;
@@ -166,7 +165,7 @@ public class StyleXmlParser {
         return generateException("Style '" + element + "' element must contain a '" + child + "' child element", null);
     }
 
-    private static WorkflowServiceErrorException generateSerializationException(String element, TransformerException cause) {
+    private static WorkflowServiceErrorException generateSerializationException(String element, XmlException cause) {
         return generateException("Error serializing Style '" + element + "' element", cause);
     }
 }

@@ -16,18 +16,8 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.Serializable;
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
@@ -37,6 +27,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
 
 
 /**
@@ -64,16 +59,16 @@ public class StandardDocumentContent implements DocumentContent, Serializable {
 
 	private RouteContext routeContext;
 
-	public StandardDocumentContent(String docContent) throws InvalidXmlException {
+	public StandardDocumentContent(String docContent) throws XmlException {
 		this(docContent, null);
 	}
 
-	public StandardDocumentContent(String docContent, RouteContext routeContext) throws InvalidXmlException {
+	public StandardDocumentContent(String docContent, RouteContext routeContext) throws XmlException {
 		this.routeContext = routeContext;
 		initialize(docContent, routeContext);
 	}
 
-	private void initialize(String docContent, RouteContext routeContext) throws InvalidXmlException {
+	private void initialize(String docContent, RouteContext routeContext) throws XmlException {
 		if (Utilities.isEmpty(docContent)) {
 			this.docContent = "";
 			this.document = null;
@@ -83,11 +78,11 @@ public class StandardDocumentContent implements DocumentContent, Serializable {
 				this.document = parseDocContent(docContent);
 				extractElements(this.document);
 			} catch (IOException e) {
-				throw new InvalidXmlException("I/O Error when attempting to parse document content.", e);
+				throw new XmlException("I/O Error when attempting to parse document content.", e);
 			} catch (SAXException e) {
-				throw new InvalidXmlException("XML parse error when attempting to parse document content.", e);
+				throw new XmlException("XML parse error when attempting to parse document content.", e);
 			} catch (ParserConfigurationException e) {
-				throw new InvalidXmlException("XML parser configuration error when attempting to parse document content.", e);
+				throw new XmlException("XML parser configuration error when attempting to parse document content.", e);
 			}
 		}
 	}

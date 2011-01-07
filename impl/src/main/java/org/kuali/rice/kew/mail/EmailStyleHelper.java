@@ -15,6 +15,11 @@
  */
 package org.kuali.rice.kew.mail;
 
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+
 import javax.xml.transform.Templates;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.dom.DOMResult;
@@ -23,11 +28,6 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
-import org.kuali.rice.kew.exception.WorkflowRuntimeException;
-import org.kuali.rice.kew.util.XmlHelper;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 
 
 /**

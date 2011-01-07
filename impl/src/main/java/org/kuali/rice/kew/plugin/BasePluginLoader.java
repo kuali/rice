@@ -16,21 +16,20 @@
  */
 package org.kuali.rice.kew.plugin;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.ContextClassLoaderBinder;
-import org.kuali.rice.kew.exception.InvalidXmlException;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.util.Utilities;
+
+import javax.xml.namespace.QName;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 
 /**
@@ -185,7 +184,7 @@ public abstract class BasePluginLoader implements PluginLoader {
             throw new PluginException(getLogPrefix() + " Could not locate the plugin config file at path " + url, e);
         } catch (IOException ioe) {
             throw new PluginException(getLogPrefix() + " Could not read the plugin config file", ioe);
-        } catch (InvalidXmlException ixe) {
+        } catch (XmlException ixe) {
             throw new PluginException(getLogPrefix() + " Could not parse the plugin config file", ixe);
         }
     }

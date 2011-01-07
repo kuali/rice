@@ -16,23 +16,22 @@
  */
 package org.kuali.rice.kew.engine.node.var;
 
-import java.io.StringReader;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.engine.node.BranchState;
 import org.kuali.rice.kew.engine.node.PropertiesUtil;
 import org.kuali.rice.kew.engine.node.SimpleNode;
 import org.kuali.rice.kew.engine.node.SimpleResult;
-import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
 
 
 /**
@@ -65,7 +64,7 @@ public class SetVarNode implements SimpleNode {
         String name = e.getElementsByTagName("name").item(0).getTextContent();
         // FIXME: validation should be checked in documenttypexmlparser to start with
         if (name == null) {
-            throw new InvalidXmlException("SetVar node required 'name' attribute to be specified");
+            throw new XmlException("SetVar node required 'name' attribute to be specified");
         }
         String valueRef = e.getElementsByTagName("value").item(0).getTextContent();
         Object retrievedVal = PropertiesUtil.retrieveProperty(valueRef, PropertyScheme.LITERAL_SCHEME, context);

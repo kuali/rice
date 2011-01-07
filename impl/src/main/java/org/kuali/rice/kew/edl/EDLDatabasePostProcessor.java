@@ -15,30 +15,19 @@
  */
 package org.kuali.rice.kew.edl;
 
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Attribute;
 import org.jdom.Element;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
 import org.kuali.rice.kew.edl.extract.Dump;
 import org.kuali.rice.kew.edl.extract.ExtractService;
 import org.kuali.rice.kew.edl.extract.Fields;
-import org.kuali.rice.kew.exception.InvalidXmlException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.exception.WorkflowServiceErrorException;
-import org.kuali.rice.kew.postprocessor.ActionTakenEvent;
-import org.kuali.rice.kew.postprocessor.DeleteEvent;
-import org.kuali.rice.kew.postprocessor.DocumentRouteLevelChange;
-import org.kuali.rice.kew.postprocessor.DocumentRouteStatusChange;
-import org.kuali.rice.kew.postprocessor.ProcessDocReport;
+import org.kuali.rice.kew.postprocessor.*;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
@@ -46,9 +35,15 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 
 
@@ -177,15 +172,15 @@ public class EDLDatabasePostProcessor extends EDocLitePostProcessor {
 		StandardDocumentContent standardDocContent = null;
 		try {
 			standardDocContent = new StandardDocumentContent(routeHeader.getDocumentContent().getDocumentContent());
-		} catch (InvalidXmlException e) {
+		} catch (XmlException e) {
 			throw new WorkflowRuntimeException("Caught exception retrieving doc content", e);
 		}
 		Element rootElement = getRootElement(standardDocContent);
 		List<Element> fields = new ArrayList<Element>();
-		List fieldElements = XmlHelper.findElements(rootElement, "field");
-        ListIterator elementIter = fieldElements.listIterator();
+		Collection<Element> fieldElements = XmlHelper.findElements(rootElement, "field");
+        Iterator<Element> elementIter = fieldElements.iterator();
         while (elementIter.hasNext()) {
-        	Element field = (Element) elementIter.next();
+        	Element field = elementIter.next();
         	Element version = field.getParentElement();
         	if (version.getAttribute("current").getValue().equals("true")) {
                	if (field.getAttribute("name")!= null) {

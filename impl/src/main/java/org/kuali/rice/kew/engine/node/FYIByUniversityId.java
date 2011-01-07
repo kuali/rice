@@ -16,13 +16,10 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jdom.Element;
+import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.engine.RouteHelper;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -31,9 +28,12 @@ import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.XmlHelper;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 
 /**
@@ -51,8 +51,8 @@ public class FYIByUniversityId extends RequestActivationNode {
 
         LOG.debug("processing FYIByUniversityId node");
         Element rootElement = getRootElement(new StandardDocumentContent(context.getDocument().getDocContent()));
- 		List fieldElements = XmlHelper.findElements(rootElement, "field");
-        ListIterator elementIter = fieldElements.listIterator();
+ 		Collection<Element> fieldElements = XmlHelper.findElements(rootElement, "field");
+        Iterator<Element> elementIter = fieldElements.iterator();
         while (elementIter.hasNext()) {
         	Element field = (Element) elementIter.next();
         	Element version = field.getParentElement();

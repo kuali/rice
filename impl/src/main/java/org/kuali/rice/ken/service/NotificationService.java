@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.ken.service;
 
-import java.io.IOException;
-import java.util.Collection;
-
+import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationResponse;
-import org.kuali.rice.ken.exception.InvalidXMLException;
+
+import java.io.IOException;
+import java.util.Collection;
 
 /**
  * The NotificationService class is responsible for processing notification messages 
@@ -38,7 +38,7 @@ public interface NotificationService {
      * @param notificationMessageAsXml
      * @return NotificationResponse response object
      */
-    public NotificationResponse sendNotification(String notificationMessageAsXml) throws IOException, InvalidXMLException;
+    public NotificationResponse sendNotification(String notificationMessageAsXml) throws IOException, XmlException;
     
     /**
      * This method allows consumers to send notification messages.  This particular service 

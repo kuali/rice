@@ -16,27 +16,6 @@
 
 package org.kuali.rice.kns.service.impl;
 
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.PersistenceService;
-import org.kuali.rice.kns.service.XmlObjectSerializerService;
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.converters.MarshallingContext;
 import com.thoughtworks.xstream.converters.reflection.ObjectAccessException;
@@ -45,6 +24,16 @@ import com.thoughtworks.xstream.converters.reflection.ReflectionConverter;
 import com.thoughtworks.xstream.converters.reflection.ReflectionProvider;
 import com.thoughtworks.xstream.io.HierarchicalStreamWriter;
 import com.thoughtworks.xstream.mapper.Mapper;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.ojb.broker.core.proxy.ListProxyDefaultImpl;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.PersistenceService;
+import org.kuali.rice.kns.service.XmlObjectSerializerService;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 /**
@@ -88,20 +77,6 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
     	}
         return xstream.fromXML(xml);
     }
-
-    public String writeNode(org.w3c.dom.Node node, boolean indent) throws TransformerException {
-        Source source = new DOMSource(node);
-        StringWriter writer = new StringWriter();
-        Result result = new StreamResult(writer);
-        Transformer transformer = TransformerFactory.newInstance().newTransformer();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-        if (indent) {
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        }
-        transformer.transform(source, result);
-        return writer.toString();
-    }
-
 
     /**
      * This custom converter only handles proxies for BusinessObjects.  List-type proxies are handled by configuring XStream to treat

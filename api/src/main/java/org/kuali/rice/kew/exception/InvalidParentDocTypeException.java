@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kew.exception;
 
+import org.kuali.rice.core.xml.XmlException;
+
 /**
  * This error is thrown whenever a child document type is trying to be processed before its 
  * parent document type has been parsed; this provides a means for delaying the processing
@@ -23,21 +25,12 @@ package org.kuali.rice.kew.exception;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class InvalidParentDocTypeException extends InvalidXmlException {
+public class InvalidParentDocTypeException extends XmlException {
 	
 	/** The name of the parent document that still needs to be parsed. */
 	private final String parentName;
 	/** The name of the child document that was expecting the parentName document to exist. */
 	private final String childName;
-	
-	/**
-	 * Constructs an InvalidParentDocTypeException with null document type parent & child names.
-	 */
-	public InvalidParentDocTypeException() {
-		super();
-		parentName = null;
-		childName = null;
-	}
 	
 	/**
 	 * Constructs an InvalidParentDocTypeException, given a document type parent name and a child name.
@@ -46,7 +39,7 @@ public class InvalidParentDocTypeException extends InvalidXmlException {
 	 * @param docChild The name of the unprocessed document type child.
 	 */
 	public InvalidParentDocTypeException(String docParent, String docChild) {
-		super();
+		super("parent: " + docParent + " child: " + docChild);
 		parentName = docParent;
 		childName = docChild;
 	}

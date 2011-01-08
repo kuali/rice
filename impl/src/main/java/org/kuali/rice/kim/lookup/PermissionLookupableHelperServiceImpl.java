@@ -163,12 +163,6 @@ public class PermissionLookupableHelperServiceImpl extends RoleMemberLookupableH
 				KimPermissionImpl.class, permissionSearchCriteria, unbounded));	
 	}
 	
-	@SuppressWarnings("unchecked")
-	private List<RoleImpl> searchRoles(Map<String, String> roleSearchCriteria, boolean unbounded){
-		return (List<RoleImpl>)getLookupService().findCollectionBySearchHelper(
-					RoleImpl.class, roleSearchCriteria, unbounded);
-	}
-	
 	private List<PermissionImpl> getPermissionsWithRoleSearchCriteria(Map<String, String> roleSearchCriteria, boolean unbounded){
 		return getPermissionsForRoleSearchResults(searchRoles(roleSearchCriteria, unbounded), unbounded);
 	}

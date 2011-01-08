@@ -16,15 +16,20 @@
 package org.kuali.rice.kim.lookup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+import org.kuali.rice.kim.bo.impl.RoleImpl;
+import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -315,5 +320,47 @@ public abstract class RoleMemberLookupableHelperServiceImpl extends KimLookupabl
 			actualSizeIfTruncated = ((CollectionIncomplete)result).getActualSizeIfTruncated();
 		return actualSizeIfTruncated;
 	}
+	
+	@SuppressWarnings("unchecked")
+	protected List<RoleImpl> searchRoles(Map<String, String> roleSearchCriteria, boolean unbounded){
+		List<RoleImpl> roles = (List<RoleImpl>)getLookupService().findCollectionBySearchHelper(
+				RoleImpl.class, roleSearchCriteria, unbounded);
+		String membersCrt = roleSearchCriteria.get("members.memberId");
+		List<RoleImpl> roles2Remove = new ArrayList<RoleImpl>();
+		if(StringUtils.isNotBlank(membersCrt)){
+			List<String> memberSearchIds = new ArrayList<String>();
+			List<String> memberIds = new ArrayList<String>(); 
+			if(membersCrt.contains(KimConstants.KimUIConstants.OR_OPERATOR))
+				memberSearchIds = new ArrayList<String>(Arrays.asList(membersCrt.split("\\|")));
+			else
+				memberSearchIds.add(membersCrt);
+			for(RoleImpl roleImpl : roles){	
+				List<RoleMemberImpl> roleMembers = roleImpl.getMembers();
+				memberIds.clear(); 
+		        CollectionUtils.filter(roleMembers, new Predicate() {
+					public boolean evaluate(Object object) {
+						RoleMemberImpl member = (RoleMemberImpl) object;
+						// keep active member
+						return member.isActive();
+					}
+				});
+		       
+		        if(roleMembers != null && !roleMembers.isEmpty()){
+		        	for(RoleMemberImpl memberImpl : roleMembers)
+		        		memberIds.add(memberImpl.getMemberId());
+		        	if(((List<String>)CollectionUtils.intersection(memberSearchIds, memberIds)).isEmpty())
+		        		roles2Remove.add(roleImpl);
+		        }
+		        else
+		        {
+		        	roles2Remove.add(roleImpl);
+		        }
+			}
+		}
+		if(!roles2Remove.isEmpty())
+			roles.removeAll(roles2Remove);
+		return roles;
+	}
+
 
 }

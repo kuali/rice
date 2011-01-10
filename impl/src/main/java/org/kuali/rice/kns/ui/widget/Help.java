@@ -16,11 +16,15 @@
 package org.kuali.rice.kns.ui.widget;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * This is a description of what this class does - jkneal don't forget to fill
+ * this in.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class Help {
+public class Help extends WidgetBase {
+
+	public Help() {
+
+	}
 
 }

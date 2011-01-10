@@ -15,6 +15,9 @@
  */
 package org.kuali.rice.kns.ui.layout;
 
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.ui.UIFConstants.Orientation;
 
 /**
@@ -25,11 +28,39 @@ import org.kuali.rice.kns.ui.UIFConstants.Orientation;
  */
 public class BoxLayoutManager extends LayoutManagerBase {
 	private String orientation;
-	private String seperationPadding;
+	private String padding;
+
+	private String itemSpanStyle;
 
 	public BoxLayoutManager() {
 		orientation = Orientation.HORIZONTAL;
-		seperationPadding = "1px";
+		padding = "1px";
+	}
+
+	/**
+	 * <p>
+	 * The following initialization is performed:
+	 * <ul>
+	 * <li>Set the itemSpanStyle</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @see org.kuali.rice.kns.ui.ComponentBase#initialize(java.util.Map)
+	 */
+	@Override
+	public void initialize(Map<String, String> options) {
+		super.initialize(options);
+
+		if (StringUtils.isBlank(itemSpanStyle)) {
+			if (StringUtils.equals(orientation, Orientation.VERTICAL)) {
+				// set span to block which will cause a line break and margin bottom for padding
+				itemSpanStyle = "display: block;margin-bottom: " + padding + ";";
+			}
+			else {
+				// set margin right for padding
+				itemSpanStyle = "margin-right: " + padding + ";";
+			}
+		}
 	}
 
 	public String getOrientation() {
@@ -40,12 +71,32 @@ public class BoxLayoutManager extends LayoutManagerBase {
 		this.orientation = orientation;
 	}
 
-	public String getSeperationPadding() {
-		return this.seperationPadding;
+	public String getPadding() {
+		return this.padding;
 	}
 
-	public void setSeperationPadding(String seperationPadding) {
-		this.seperationPadding = seperationPadding;
+	public void setPadding(String padding) {
+		this.padding = padding;
+	}
+
+	/**
+	 * Used by the render to set the style on the span element that wraps the
+	 * item. By using a wrapping span the items can be aligned based on the
+	 * orientation and given the correct padding
+	 * 
+	 * @return String css style string
+	 */
+	public String getItemSpanStyle() {
+		return this.itemSpanStyle;
+	}
+
+	/**
+	 * Setter for the span style
+	 * 
+	 * @param itemSpanStyle
+	 */
+	public void setItemSpanStyle(String itemSpanStyle) {
+		this.itemSpanStyle = itemSpanStyle;
 	}
 
 }

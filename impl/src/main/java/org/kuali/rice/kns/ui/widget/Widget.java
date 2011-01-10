@@ -15,12 +15,13 @@
  */
 package org.kuali.rice.kns.ui.widget;
 
+import org.kuali.rice.kns.ui.Component;
+
 /**
  * This is a description of what this class does - jkneal don't forget to fill this in. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
-public class QuickFinder extends WidgetBase {
+public interface Widget extends Component {
 
 }

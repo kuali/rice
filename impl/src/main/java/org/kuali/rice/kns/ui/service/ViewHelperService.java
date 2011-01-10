@@ -15,12 +15,33 @@
  */
 package org.kuali.rice.kns.ui.service;
 
+import java.util.Map;
+
+import org.kuali.rice.kns.ui.container.View;
+
 /**
- * This is a description of what this class does - jkneal don't forget to fill this in. 
+ * Provides methods for implementing the various phases of a <code>View</code>
+ * 
+ * <ul>
+ * <li>Initialize Phase: Invoked when the view is first requested to setup
+ * necessary state</li>
+ * </ul>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public interface ViewHelperService {
+
+	/**
+	 * Performs the Initialization phase for the <code>View</code>. During this
+	 * phase each component of the tree is invoked to setup state based on the
+	 * configuration and request options.
+	 * 
+	 * @param view
+	 *            - View instance that should be initialized
+	 * @param options
+	 *            - Map of options (if any), where the map key is the option
+	 *            name and the map value is the option value
+	 */
+	public void performInitialization(View view, Map<String, String> options);
 
 }

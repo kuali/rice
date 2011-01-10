@@ -60,6 +60,18 @@ public class GroupField extends FieldLabelBase {
 			}
 		}
 	}
+	
+	/**
+	 * @see org.kuali.rice.kns.ui.ComponentBase#getNestedComponents()
+	 */
+	@Override
+	public List<Component> getNestedComponents() {
+		List<Component> components = super.getNestedComponents();
+
+		components.add(group);
+
+		return components;
+	}
 
 	public Group getGroup() {
 		return this.group;

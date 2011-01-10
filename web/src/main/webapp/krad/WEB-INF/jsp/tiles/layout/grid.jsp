@@ -34,7 +34,7 @@
 <c:set var="numberOfColumns" value="${manager.numberOfColumns}"/>
 <c:set var="defaultCellWidth" value="${100/numberOfColumns}"/>
 
-<table id="${manager.id}" width="100%" cellpadding="0" cellspacing="0" style="${manager.style}" class="${manager.styleClass}">
+<table id="${manager.id}" style="${manager.style}" class="${manager.styleClass}">
 
   <c:set var="colCount" value="0"/>
   <c:set var="carryOverColCount" value="0"/>

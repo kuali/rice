@@ -25,7 +25,6 @@ import org.kuali.rice.kns.ui.widget.DatePicker;
  */
 public class TextControl extends ControlBase {
 	private int size;
-	private int maxLength;
 
 	private DatePicker datePicker;
 
@@ -44,20 +43,6 @@ public class TextControl extends ControlBase {
 
 	public void setSize(int size) {
 		this.size = size;
-	}
-
-	/**
-	 * Maximum number of the characters the control value is allowed to have.
-	 * Note this can be smaller or longer than the actual control size
-	 * 
-	 * @return int max length
-	 */
-	public int getMaxLength() {
-		return this.maxLength;
-	}
-
-	public void setMaxLength(int maxLength) {
-		this.maxLength = maxLength;
 	}
 
 	/**

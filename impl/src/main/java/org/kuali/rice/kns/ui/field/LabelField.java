@@ -15,6 +15,10 @@
  */
 package org.kuali.rice.kns.ui.field;
 
+import java.util.List;
+
+import org.kuali.rice.kns.ui.Component;
+
 /**
  * This is a description of what this class does - jkneal don't forget to fill
  * this in.
@@ -31,6 +35,18 @@ public class LabelField extends FieldBase {
 
 	public LabelField() {
 		renderColon = true;
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.ui.ComponentBase#getNestedComponents()
+	 */
+	@Override
+	public List<Component> getNestedComponents() {
+		List<Component> components = super.getNestedComponents();
+
+		components.add(requiredMessageField);
+
+		return components;
 	}
 
 	public String getLabelForComponentId() {

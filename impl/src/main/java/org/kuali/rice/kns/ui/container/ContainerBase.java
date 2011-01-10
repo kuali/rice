@@ -29,15 +29,15 @@ import org.kuali.rice.kns.ui.layout.LayoutManager;
 import org.kuali.rice.kns.ui.widget.Help;
 
 /**
- * @author Kuali Rice Team (rice.collab@kuali.org)
+ * Base <code>Container</code> implementation
  * 
- * @see org.kuali.rice.kns.ui.container.Container
+ * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public abstract class ContainerBase extends ComponentBase implements Container {
 	private String title;
 
 	private String additionalErrorKeys;
-	private ErrorsField errors;
+	private ErrorsField errorsField;
 
 	private Help help;
 	private LayoutManager layoutManager;
@@ -66,6 +66,7 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	 * <ul>
 	 * <li>Sets the headerText of the header Group if it is blank</li>
 	 * <li>Set the messageText of the summary MessageField if it is blank</li>
+	 * <li>Initialize LayoutManager</li>
 	 * </ul>
 	 * </p>
 	 * 
@@ -84,6 +85,30 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		if (summaryMessageField != null && StringUtils.isBlank(summaryMessageField.getMessageText())) {
 			summaryMessageField.setMessageText(summary);
 		}
+
+		if (layoutManager != null) {
+			layoutManager.initialize(options);
+		}
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.ui.ComponentBase#getNestedComponents()
+	 */
+	@Override
+	public List<Component> getNestedComponents() {
+		List<Component> components = super.getNestedComponents();
+
+		components.add(header);
+		components.add(footer);
+		components.add(errorsField);
+		components.add(help);
+		components.add(summaryMessageField);
+
+		for (Component component : items) {
+			components.add(component);
+		}
+
+		return components;
 	}
 
 	public String getTitle() {
@@ -102,12 +127,12 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		this.additionalErrorKeys = additionalErrorKeys;
 	}
 
-	public ErrorsField getErrors() {
-		return this.errors;
+	public ErrorsField getErrorsField() {
+		return this.errorsField;
 	}
 
-	public void setErrors(ErrorsField errors) {
-		this.errors = errors;
+	public void setErrorsField(ErrorsField errorsField) {
+		this.errorsField = errorsField;
 	}
 
 	public Help getHelp() {

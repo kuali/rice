@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.kns.ui.field;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.ui.Component;
 import org.kuali.rice.kns.ui.UIFConstants.Position;
 
 /**
@@ -70,10 +72,11 @@ public class FieldLabelBase extends FieldBase {
 				labelField.setLabelText(label);
 			}
 
-			if (this.isRequired()) {
+			if ((getRequired() != null) && getRequired().booleanValue()) {
 				labelField.getRequiredMessageField().setRender(true);
 			}
 			else {
+				setRequired(new Boolean(false));
 				labelField.getRequiredMessageField().setRender(false);
 			}
 
@@ -81,6 +84,18 @@ public class FieldLabelBase extends FieldBase {
 				labelField.setRenderColon(false);
 			}
 		}
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.ui.ComponentBase#getNestedComponents()
+	 */
+	@Override
+	public List<Component> getNestedComponents() {
+		List<Component> components = super.getNestedComponents();
+
+		components.add(labelField);
+
+		return components;
 	}
 
 	public String getLabel() {

@@ -24,41 +24,18 @@
       Places each component of the given list into a horizontal or vertical row.
       
       The amount of padding is configured by the seperationPadding 
-      property of the layout manager. The padding is implemented by using a clear image and setting the width or
-      height to the padding configuration.
+      property of the layout manager. The padding is implemented by setting the margin of the wrapping
+      span style. For vertical orientation, the span style is set to block.
  --%>
-
-<%-- setup the correct item padding --%> 
-<c:set var="paddingWidth" value="1px"/>
-<c:set var="paddingHeight" value="1px"/>
-
-<c:choose>
-  <c:when test="${manager.orientation eq UIFConstants.Orientation.VERTICAL}">
-     <c:set var="paddingHeight" value="${manager.seperationPadding}"/>
-  </c:when>
-  <c:otherwise>
-     <c:set var="paddingWidth" value="${manager.seperationPadding}"/>
-  </c:otherwise>
-</c:choose>
 
 <%-- render items --%> 
 <div id="${manager.id}_layout" style="${manager.style}" class="${manager.styleClass}">
 
    <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
+     <%-- wrapping span gives a way to pad items and line break for vertical orientation --%>
+     <span style="${manager.itemSpanStyle}">
        <krad:template component="${item}"/>
-       
-       <%-- add line breaks for vertical orientation --%>
-       <c:if test="${manager.orientation eq UIFConstants.Orientation.VERTICAL}">
-         <br/>
-       </c:if>       
-       
-       <%-- add padding --%>
-       <img src="${ConfigProperties.kr.externalizable.images.url}pixel_clear.gif" alt="" width="${paddingWidth}" height="${paddingHeight}"/>       
-       
-       <%-- add line breaks for vertical orientation --%>
-       <c:if test="${manager.orientation eq UIFConstants.Orientation.VERTICAL}">
-         <br/>
-       </c:if>
+     </span>  
    </c:forEach>
 
 </div> 

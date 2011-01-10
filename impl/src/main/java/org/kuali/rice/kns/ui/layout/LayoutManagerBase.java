@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.ui.layout;
 
-import org.kuali.rice.kns.ui.UIFConstants.Position;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - jkneal don't forget to fill
@@ -32,6 +32,16 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	private String labelPlacement;
 
 	public LayoutManagerBase() {
+
+	}
+
+	/**
+	 * Default initialize implementation
+	 * 
+	 * @see org.kuali.rice.kns.ui.layout.LayoutManager#initialize(java.util.Map)
+	 */
+	@Override
+	public void initialize(Map<String, String> options) {
 
 	}
 

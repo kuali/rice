@@ -367,6 +367,8 @@ table.grid
 .workarea table.datatable
 {
 	width:100%;
+    margin-right: auto;
+	margin-left: auto;
 	margin-bottom: 20px;
 }
 
@@ -1139,6 +1141,8 @@ th.infoline {
 .summary {
 	font-size: small;
 	font-style: italic;
+	margin-bottom: 5px;
+	display: inline-block;
 }
 
 .required {

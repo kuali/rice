@@ -23,9 +23,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="View" abstract="true" class="org.kuali.rice.kns.ui.container.View" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/view/view.jsp"/>
-      <property name="viewLifecycleService">
-        <ref bean="ViewLifecycleService"/>
-      </property>
+      <property name="viewHelperServiceBeanId" value="ViewHelperService"/>
       <property name="header">
         <bean parent="ViewHeader"/>
       </property> 
@@ -33,9 +31,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <bean parent="Footer"/>
       </property>            
   </bean>
-  
-  <bean id="ViewLifecycleService" 
-        class="org.kuali.rice.kns.ui.service.impl.ViewLifecycleServiceImpl"/>
   
   <!-- Pages -->
    
@@ -128,6 +123,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         <bean parent="LabelField" p:align="right"/>
       </property>      
   </bean>  
+  
+  <bean id="FormField" abstract="true" parent="AttributeField">
+      <property name="bindToForm" value="true"/>
+      <property name="bindToModel" value="false"/>
+  </bean>    
   
   <bean id="LabelField" abstract="true" class="org.kuali.rice.kns.ui.field.LabelField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/labelField.jsp"/>
@@ -255,6 +255,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <bean id="BoxLayoutManager" abstract="true" class="org.kuali.rice.kns.ui.layout.BoxLayoutManager" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/box.jsp"/>
+      <property name="orientation" value="HORIZONTAL"/>
+      <property name="padding" value="1px"/>
       <property name="labelPlacement" value="TOP"/>
   </bean>  
   

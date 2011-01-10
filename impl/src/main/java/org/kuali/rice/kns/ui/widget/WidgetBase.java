@@ -24,7 +24,7 @@ import org.kuali.rice.kns.ui.ComponentBase;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class WidgetBase extends ComponentBase {
+public abstract class WidgetBase extends ComponentBase implements Widget {
 	private Map<String, String> widgetOptions;
 
 	public WidgetBase() {

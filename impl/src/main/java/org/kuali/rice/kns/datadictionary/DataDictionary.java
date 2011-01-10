@@ -22,9 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -39,7 +37,6 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.CompletionException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.ui.container.View;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -52,13 +49,11 @@ import org.springframework.core.io.Resource;
  * Collection of named BusinessObjectEntry objects, each of which contains
  * information relating to the display, validation, and general maintenance of a
  * BusinessObject.
- * 
- * 
  */
-public class DataDictionary {
+public class DataDictionary  {
 
-    private DefaultListableBeanFactory ddBeans = new DefaultListableBeanFactory();
-    private XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(ddBeans);
+	protected DefaultListableBeanFactory ddBeans = new DefaultListableBeanFactory();
+    protected XmlBeanDefinitionReader xmlReader = new XmlBeanDefinitionReader(ddBeans);
 
 	// logger
 	private static final Log LOG = LogFactory.getLog(DataDictionary.class);
@@ -66,18 +61,20 @@ public class DataDictionary {
 	/**
 	 * The encapsulation of DataDictionary indices
 	 */
-	private DataDictionaryIndex ddIndex = new DataDictionaryIndex(ddBeans);
+	protected DataDictionaryIndex ddIndex = new DataDictionaryIndex(ddBeans);
 
 	/**
 	 * The DataDictionaryMapper
 	 * The default mapper simply consults the initialized indices
 	 * on workflow document type
 	 */
-	private DataDictionaryMapper ddMapper = new DataDictionaryIndexMapper();
+	protected DataDictionaryMapper ddMapper = new DataDictionaryIndexMapper();
 
-	private List<String> configFileLocations = new ArrayList<String>();
+	protected List<String> configFileLocations = new ArrayList<String>();
+	
 
-    public DataDictionary() { }
+	public DataDictionary() {
+	}
     
 	public List<String> getConfigFileLocations() {
         return this.configFileLocations;
@@ -120,12 +117,13 @@ public class DataDictionary {
             if (! resource.exists()) {
                 throw new DataDictionaryException("DD Resource " + sourceName + " not found");  
             }
+            
             String indexName = sourceName.substring(sourceName.lastIndexOf("/") + 1, sourceName.indexOf(".xml"));
             configFileLocations.add( sourceName );
         }
     }    
 
-    private Resource getFileResource(String sourceName) {
+    protected Resource getFileResource(String sourceName) {
         DefaultResourceLoader resourceLoader = new DefaultResourceLoader(ClassLoaderUtils.getDefaultClassLoader());
         return resourceLoader.getResource(sourceName);
     }
@@ -165,8 +163,8 @@ public class DataDictionary {
             ddIndex.run();
         }
     }
-	    
-    static boolean validateEBOs = true;
+
+	static boolean validateEBOs = true;
     
     public void validateDD( boolean validateEbos ) {
     	DataDictionary.validateEBOs = validateEbos;

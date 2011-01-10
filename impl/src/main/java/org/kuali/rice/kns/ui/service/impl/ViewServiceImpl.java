@@ -18,8 +18,11 @@ package org.kuali.rice.kns.ui.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.ui.container.View;
+import org.kuali.rice.kns.ui.service.ViewHelperService;
 import org.kuali.rice.kns.ui.service.ViewService;
 
 /**
@@ -28,6 +31,8 @@ import org.kuali.rice.kns.ui.service.ViewService;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ViewServiceImpl implements ViewService {
+	private static final Logger LOG = Logger.getLogger(ViewServiceImpl.class);
+
 	protected DataDictionaryService dataDictionaryService;
 
 	/**
@@ -44,10 +49,31 @@ public class ViewServiceImpl implements ViewService {
 	public View getView(String viewId, Map<String, String> options) {
 		View view = dataDictionaryService.getViewById(viewId);
 
-		// invoke initialize phase on the views lifecycle service
-		view.getViewLifecycleService().performInitialization(view, options);
+		// invoke initialize phase on the views helper service
+		ViewHelperService lifecycleService = getLifecycleService(view);
+		lifecycleService.performInitialization(view, options);
 
 		return view;
+	}
+
+	/**
+	 * Retrieves the <code>ViewHelperService</code> configured for the view
+	 * from the application context. If a service is not found a
+	 * <code>RuntimeException</code> will be thrown.
+	 * 
+	 * @param view
+	 *            - view instance with configured service
+	 * @return ViewHelperService instance
+	 */
+	protected ViewHelperService getLifecycleService(View view) {
+		ViewHelperService lifecycleService = KNSServiceLocator.getService(view.getViewHelperServiceBeanId());
+
+		if (lifecycleService == null) {
+			LOG.error("Unable to find ViewHelperService for view: " + view.getId());
+			throw new RuntimeException("Unable to find ViewHelperService for view: " + view.getId());
+		}
+
+		return lifecycleService;
 	}
 
 	public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {

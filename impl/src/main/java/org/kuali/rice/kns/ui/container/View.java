@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.kns.ui.container;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.kuali.rice.kns.ui.service.ViewLifecycleService;
+import org.kuali.rice.kns.ui.Component;
 
 /**
  * Root of the component tree which encompasses a set of related
@@ -60,10 +61,12 @@ public class View extends ContainerBase {
 
 	private NavigationGroup navigation;
 
-	private Map<String, Class> modelClasses;
+	private Class<?> formClass;
+	private Map<String, Class<?>> modelClasses;
+
 	private List<String> additionalScriptFiles;
 
-	private ViewLifecycleService viewLifecycleService;
+	private String viewHelperServiceBeanId;
 
 	// scripting variables
 	private boolean dialogMode;
@@ -72,6 +75,8 @@ public class View extends ContainerBase {
 		renderForm = true;
 		validateModelData = true;
 		dialogMode = false;
+
+		modelClasses = new HashMap<String, Class<?>>();
 	}
 
 	/**
@@ -90,6 +95,18 @@ public class View extends ContainerBase {
 		super.initialize(options);
 
 		this.currentPageId = this.entryPageId;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.ui.ComponentBase#getNestedComponents()
+	 */
+	@Override
+	public List<Component> getNestedComponents() {
+		List<Component> components = super.getNestedComponents();
+
+		components.add(navigation);
+
+		return components;
 	}
 
 	/**
@@ -242,6 +259,14 @@ public class View extends ContainerBase {
 		this.navigation = navigation;
 	}
 
+	public Class<?> getFormClass() {
+		return this.formClass;
+	}
+
+	public void setFormClass(Class<?> formClass) {
+		this.formClass = formClass;
+	}
+
 	/**
 	 * Declares the model classes that will provide the view's data
 	 * <p>
@@ -255,7 +280,7 @@ public class View extends ContainerBase {
 	 * 
 	 * @return Map<String, Class> of model entries
 	 */
-	public Map<String, Class> getModelClasses() {
+	public Map<String, Class<?>> getModelClasses() {
 		return this.modelClasses;
 	}
 
@@ -264,7 +289,7 @@ public class View extends ContainerBase {
 	 * 
 	 * @param modelClasses
 	 */
-	public void setModelClasses(Map<String, Class> modelClasses) {
+	public void setModelClasses(Map<String, Class<?>> modelClasses) {
 		this.modelClasses = modelClasses;
 	}
 
@@ -330,23 +355,23 @@ public class View extends ContainerBase {
 	}
 
 	/**
-	 * Implementation of the <code>ViewLifecycleService</code> that handles the
+	 * Spring bean id of the <code>ViewHelperService</code> that handles the
 	 * various phases of the Views lifecycle
 	 * 
-	 * @return ViewLifecycleService instance
-	 * @see org.kuali.rice.kns.ui.service.ViewLifecycleService
+	 * @return String id for the spring bean
+	 * @see org.kuali.rice.kns.ui.service.ViewHelperService
 	 */
-	public ViewLifecycleService getViewLifecycleService() {
-		return this.viewLifecycleService;
+	public String getViewHelperServiceBeanId() {
+		return this.viewHelperServiceBeanId;
 	}
 
 	/**
-	 * Setter for the <code>ViewLifecycleService</code> instance
+	 * Setter for the <code>ViewHelperService</code> bean id
 	 * 
 	 * @param viewLifecycleService
 	 */
-	public void setViewLifecycleService(ViewLifecycleService viewLifecycleService) {
-		this.viewLifecycleService = viewLifecycleService;
+	public void setViewHelperServiceBeanId(String viewHelperServiceBeanId) {
+		this.viewHelperServiceBeanId = viewHelperServiceBeanId;
 	}
 
 }

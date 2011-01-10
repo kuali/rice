@@ -513,7 +513,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
      * @throws IllegalArgumentException
      *             if the given Class is null or is not a BusinessObject class
      */
-    private AttributeDefinition getAttributeDefinition(String entryName, String attributeName) {
+    public AttributeDefinition getAttributeDefinition(String entryName, String attributeName) {
         if (StringUtils.isBlank(attributeName)) {
             throw new IllegalArgumentException("invalid (blank) attributeName");
         }

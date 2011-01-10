@@ -21,6 +21,6 @@ package org.kuali.rice.kns.ui.widget;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class BreadCrumbs {
+public class BreadCrumbs extends WidgetBase {
 
 }

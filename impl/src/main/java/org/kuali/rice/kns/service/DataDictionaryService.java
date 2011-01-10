@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.kuali.rice.kns.bo.BusinessObject;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
@@ -266,6 +267,11 @@ public interface DataDictionaryService {
      * the Class that returns a values list for this attribute
      */
     public Class<? extends KeyValuesFinder> getAttributeValuesFinderClass(String entryName, String attributeName);
+    
+    /**
+     * AttributeDefinition associated with the given attributeName within the given entry
+     */
+    public AttributeDefinition getAttributeDefinition(String entryName, String attributeName);
 
     /**
      * the label to be used for displaying the collection.

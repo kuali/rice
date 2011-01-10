@@ -16,9 +16,10 @@
 package org.kuali.rice.kns.ui;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
-import org.kuali.rice.kns.ui.service.ViewHelperService;
+import org.kuali.rice.kns.ui.initializer.ComponentInitializer;
 
 /**
  * All classes of the UIF that are used as a rendering element implement the
@@ -55,11 +56,12 @@ public interface Component extends Serializable {
 	 * @return String id
 	 */
 	public String getId();
-	
+
 	/**
 	 * Sets the unique id (within a given tree) for the component
 	 * 
-	 * @param id - string to set as the component id
+	 * @param id
+	 *            - string to set as the component id
 	 */
 	public void setId(String id);
 
@@ -104,9 +106,33 @@ public interface Component extends Serializable {
 	 * @param options
 	 *            - Map of options (if any), where the map key is the option
 	 *            name and the map value is the option value
-	 * @see ViewHelperService#initializeView
+	 * @see ViewHelperService#initializeComponent
 	 */
 	public void initialize(Map<String, String> options);
+
+	/**
+	 * List of components that are contained with the component
+	 * <p>
+	 * Used by <code>ViewHelperService</code> for the various lifecycle
+	 * callbacks
+	 * 
+	 * @return List<Component> child components
+	 */
+	public List<Component> getNestedComponents();
+
+	/**
+	 * <code>ComponentInitializer</code> instances that should be invoked to
+	 * initialize the component
+	 * <p>
+	 * These provide dynamic initialization behavior for the component and are
+	 * configured through the components definition. Each initializer will get
+	 * invoked by the initialize method.
+	 * </p>
+	 * 
+	 * @return List of component initializers
+	 * @see ViewHelperService#initializeComponent
+	 */
+	public List<ComponentInitializer> getComponentInitializers();
 
 	/**
 	 * The name for the component
@@ -179,7 +205,7 @@ public interface Component extends Serializable {
 	 * @return boolean true if the component is required, false if it is not
 	 *         required
 	 */
-	public boolean isRequired();
+	public Boolean getRequired();
 
 	/**
 	 * CSS style string to be applied to the component

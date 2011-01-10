@@ -15,9 +15,11 @@
  */
 package org.kuali.rice.kns.ui.container;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.ui.Component;
 import org.kuali.rice.kns.ui.field.HeaderField;
 
 /**
@@ -48,6 +50,18 @@ public class PanelGroup extends Group {
 		if (StringUtils.isBlank(panelHeader.getHeaderText())) {
 			panelHeader.setHeaderText(this.getTitle());
 		}
+	}
+	
+	/**
+	 * @see org.kuali.rice.kns.ui.ComponentBase#getNestedComponents()
+	 */
+	@Override
+	public List<Component> getNestedComponents() {
+		List<Component> components = super.getNestedComponents();
+
+		components.add(panelHeader);
+
+		return components;
 	}
 
 	public boolean isDefaultOpen() {

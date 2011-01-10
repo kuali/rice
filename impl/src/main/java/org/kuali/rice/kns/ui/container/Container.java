@@ -171,7 +171,7 @@ public interface Container extends Component {
 	 * 
 	 * @return ErrorsField holding the container errors
 	 */
-	public ErrorsField getErrors();
+	public ErrorsField getErrorsField();
 
 	/**
 	 * Help configuration object for the container

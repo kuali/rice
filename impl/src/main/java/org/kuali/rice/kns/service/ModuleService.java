@@ -20,10 +20,12 @@ import java.util.Map;
 
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
-import org.kuali.rice.kns.bo.ModuleConfiguration;
-import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContextAware;
+
+import org.kuali.rice.kns.bo.ModuleConfiguration;
+import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+
 
 /**
  * This interface defines service methods for modules.

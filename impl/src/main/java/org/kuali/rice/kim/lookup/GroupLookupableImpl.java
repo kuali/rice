@@ -21,7 +21,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.KualiLookupableImpl;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -45,7 +45,7 @@ public class GroupLookupableImpl extends KualiLookupableImpl {
 	        parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
 	        parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_TYPE_NAME);
             url = getCreateNewUrl(UrlFactory.parameterizeUrl(
-            		KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters));            		
+            		KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters));            		
         }
         return url;
     }

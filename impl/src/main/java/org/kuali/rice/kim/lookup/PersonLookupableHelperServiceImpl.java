@@ -26,7 +26,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
@@ -69,7 +69,7 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
 	        if (StringUtils.isNotBlank(getReturnLocation())) {
 	        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
 			}
-	        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION, parameters);
+	        href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_ACTION, parameters);
 	
 	        AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
 	        		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
@@ -86,7 +86,7 @@ public class PersonLookupableHelperServiceImpl  extends KimLookupableHelperServi
         parameters.put(KEWConstants.COMMAND_PARAMETER, KEWConstants.INITIATE_COMMAND);
         parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, KimConstants.KimUIConstants.KIM_PERSON_DOCUMENT_TYPE_NAME);
         parameters.put(KimConstants.PrimaryKeyConstants.PRINCIPAL_ID, ((Person)bo).getPrincipalId());
-        String href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION, parameters);
+        String href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_PERSON_INQUIRY_ACTION, parameters);
 	    ((AnchorHtmlData)inqUrl).setHref(href);
 	    return inqUrl;
 	}

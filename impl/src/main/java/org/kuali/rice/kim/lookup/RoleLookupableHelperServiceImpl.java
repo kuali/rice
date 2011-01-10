@@ -33,7 +33,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimRoleDao;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -92,7 +92,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
         if (StringUtils.isNotBlank(getReturnLocation())) {
         	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
 		}
-        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
+        href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_ROLE_DOCUMENT_ACTION, parameters);
         
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
         		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
@@ -305,7 +305,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
 	        hrefPart = href.substring(idx1, idx2);
 	    }
-		return UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+docTypeAction, parameters)+hrefPart;
+		return UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+docTypeAction, parameters)+hrefPart;
 	}
 
 } 

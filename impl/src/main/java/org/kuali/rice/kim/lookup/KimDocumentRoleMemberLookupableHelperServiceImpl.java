@@ -28,7 +28,7 @@ import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.document.KimTypeAttributesHelper;
 import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -100,7 +100,7 @@ public class KimDocumentRoleMemberLookupableHelperServiceImpl extends KualiLooku
 						attributesToDisplay.append(KimConstants.KimUIConstants.COMMA_SEPARATOR);
 					}
 				}
-				return KimCommonUtils.stripEnd(attributesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
+				return KimCommonUtilsInternal.stripEnd(attributesToDisplay.toString(), KimConstants.KimUIConstants.COMMA_SEPARATOR);
 			}
 		}
 		return "";

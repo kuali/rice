@@ -18,6 +18,7 @@ package org.kuali.rice.kim.service.support.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
@@ -53,5 +54,26 @@ public class KimPermissionTypeServiceBase extends KimTypeServiceBase implements 
 			}
 		}
 		return matchingPermissions;
+	}
+	
+	/**
+	 * 
+	 * Internal method for checking if property name matches
+	 * 
+	 * @param requestedDetailsPropertyName name of requested details property
+	 * @param permissionDetailsPropertyName name of permission details property
+	 * @return boolean 
+	 */
+	protected boolean doesPropertyNameMatch(
+			String requestedDetailsPropertyName,
+			String permissionDetailsPropertyName) {
+		if (StringUtils.isBlank(permissionDetailsPropertyName)) {
+			return true;
+		}
+		if ( requestedDetailsPropertyName == null ) {
+		    requestedDetailsPropertyName = ""; // prevent NPE
+		}
+		return StringUtils.equals(requestedDetailsPropertyName, permissionDetailsPropertyName)
+				|| (requestedDetailsPropertyName.startsWith(permissionDetailsPropertyName+"."));
 	}
 }

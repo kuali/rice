@@ -15,37 +15,26 @@
  */
 package org.kuali.rice.kim.util;
 
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.xml.namespace.QName;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
-import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
@@ -55,100 +44,13 @@ import org.kuali.rice.kns.util.GlobalVariables;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public final class KimCommonUtils {
-    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimCommonUtils.class);
+public final class KimCommonUtilsInternal {
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KimCommonUtilsInternal.class);
 
-    private static KualiModuleService kualiModuleService;
-    private static Map<String,KimTypeService> kimTypeServiceCache = new HashMap<String,KimTypeService>();
     private static IdentityManagementService identityManagementService;
 
-	private KimCommonUtils() {
+	private KimCommonUtilsInternal() {
 		throw new UnsupportedOperationException("do not call");
-	}
-
-	private static KualiModuleService getKualiModuleService() {
-		if (kualiModuleService == null) {
-			kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
-		}
-		return kualiModuleService;
-	}
-
-	public static String getClosestParentDocumentTypeName(
-			DocumentType documentType,
-			Set<String> potentialParentDocumentTypeNames) {
-		if ( potentialParentDocumentTypeNames == null || documentType == null ) {
-			return null;
-		}
-		if (potentialParentDocumentTypeNames.contains(documentType.getName())) {
-			return documentType.getName();
-		} else {
-			if ((documentType.getDocTypeParentId() == null)
-					|| documentType.getDocTypeParentId().equals(
-							documentType.getDocumentTypeId())) {
-				return null;
-			} else {
-				return getClosestParentDocumentTypeName(documentType
-						.getParentDocType(), potentialParentDocumentTypeNames);
-			}
-		}
-	}
-
-	public static boolean storedValueNotSpecifiedOrInputValueMatches(AttributeSet storedValues, AttributeSet inputValues, String attributeName) {
-		return ((storedValues == null) || (inputValues == null)) || !storedValues.containsKey(attributeName) || storedValues.get(attributeName).equals(inputValues.get(attributeName));
-	}
-
-	public static boolean doesPropertyNameMatch(
-			String requestedDetailsPropertyName,
-			String permissionDetailsPropertyName) {
-		if (StringUtils.isBlank(permissionDetailsPropertyName)) {
-			return true;
-		}
-		if ( requestedDetailsPropertyName == null ) {
-		    requestedDetailsPropertyName = ""; // prevent NPE
-		}
-		return StringUtils.equals(requestedDetailsPropertyName, permissionDetailsPropertyName)
-				|| (requestedDetailsPropertyName.startsWith(permissionDetailsPropertyName+"."));
-	}
-
-	public static AttributeSet getNamespaceAndComponentSimpleName( Class<? extends Object> clazz) {
-		AttributeSet attributeSet = new AttributeSet();
-		attributeSet.put(KimAttributes.NAMESPACE_CODE, getNamespaceCode(clazz));
-		attributeSet.put(KimAttributes.COMPONENT_NAME, getComponentSimpleName(clazz));
-		return attributeSet;
-	}
-
-	public static AttributeSet getNamespaceAndComponentFullName( Class<? extends Object> clazz) {
-		AttributeSet attributeSet = new AttributeSet();
-		attributeSet.put(KimAttributes.NAMESPACE_CODE, getNamespaceCode(clazz));
-		attributeSet.put(KimAttributes.COMPONENT_NAME, getComponentFullName(clazz));
-		return attributeSet;
-	}
-
-	public static AttributeSet getNamespaceAndActionClass( Class<? extends Object> clazz) {
-		AttributeSet attributeSet = new AttributeSet();
-		attributeSet.put(KimAttributes.NAMESPACE_CODE, getNamespaceCode(clazz));
-		attributeSet.put(KimAttributes.ACTION_CLASS, clazz.getName());
-		return attributeSet;
-	}
-
-	public static String getNamespaceCode(Class<? extends Object> clazz) {
-		ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
-		if (moduleService == null) {
-			return KimConstants.KIM_TYPE_DEFAULT_NAMESPACE;
-		}
-		return moduleService.getModuleConfiguration().getNamespaceCode();
-	}
-
-	public static String getComponentSimpleName(Class<? extends Object> clazz) {
-		return clazz.getSimpleName();
-	}
-
-	public static String getComponentFullName(Class<? extends Object> clazz) {
-		return clazz.getName();
-	}
-
-	public static boolean isAttributeSetEntryEquals( AttributeSet map1, AttributeSet map2, String key ) {
-		return StringUtils.equals( map1.get( key ), map2.get( key ) );
 	}
 
 	/**
@@ -215,6 +117,8 @@ public final class KimCommonUtils {
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
+        } else {
+        	return true;
         }
 	    UserSession userSession = GlobalVariables.getUserSession();
 
@@ -222,6 +126,7 @@ public final class KimCommonUtils {
         if (privacy != null) {
             suppressName = privacy.isSuppressName();
         }
+        
         return suppressName
                 && userSession != null
                 && !StringUtils.equals(userSession.getPerson().getEntityId(), entityId)
@@ -233,6 +138,8 @@ public final class KimCommonUtils {
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
+        } else {
+        	return true;
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
@@ -251,6 +158,8 @@ public final class KimCommonUtils {
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
+        } else {
+        	return false;
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
@@ -269,6 +178,8 @@ public final class KimCommonUtils {
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
+        } else { 
+        	return true;
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
@@ -287,6 +198,8 @@ public final class KimCommonUtils {
         KimEntityDefaultInfo entityInfo = getIdentityManagementService().getEntityDefaultInfo(entityId);
         if (entityInfo != null) {
             privacy = entityInfo.getPrivacyPreferences();
+        } else { 
+        	return true;
         }
         UserSession userSession = GlobalVariables.getUserSession();
 
@@ -300,39 +213,7 @@ public final class KimCommonUtils {
                 && !canOverrideEntityPrivacyPreferences(entityInfo.getPrincipals().get(0).getPrincipalId());
     }
 
-	public static String encryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
-		Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
-	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
-		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
-			if(StringUtils.isNotEmpty(externalIdentifier)){
-				try{
-					return KNSServiceLocatorInternal.getEncryptionService().encrypt(externalIdentifier);
-				}catch (GeneralSecurityException e) {
-		            LOG.info("Unable to encrypt value : " + e.getMessage() + " or it is already encrypted");
-		        }
-			}
-		}
-		return externalIdentifier;
-    }
-
-    public static String decryptExternalIdentifier(String externalIdentifier, String externalIdentifierType){
-        Map<String, String> criteria = new HashMap<String, String>();
-	    criteria.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_CODE, externalIdentifierType);
-	    ExternalIdentifierType externalIdentifierTypeObject = (ExternalIdentifierType) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(ExternalIdentifierTypeImpl.class, criteria);
-		if( externalIdentifierTypeObject!= null && externalIdentifierTypeObject.isEncryptionRequired()){
-			if(StringUtils.isNotEmpty(externalIdentifier)){
-				try{
-					return KNSServiceLocatorInternal.getEncryptionService().decrypt(externalIdentifier);
-				}catch (GeneralSecurityException e) {
-		            LOG.info("Unable to decrypt value : " + e.getMessage() + " or it is already decrypted");
-		        }
-			}
-		}
-		return externalIdentifier;
-    }
-
-	public static IdentityManagementService getIdentityManagementService() {
+	private static IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
 			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
 		}

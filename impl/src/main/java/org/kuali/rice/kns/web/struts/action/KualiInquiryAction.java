@@ -32,7 +32,6 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.RedirectingActionForward;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Attachment;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -47,6 +46,7 @@ import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.NoteService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.struts.form.InquiryForm;
@@ -69,7 +69,7 @@ public class KualiInquiryAction extends KualiAction {
             try {
             	if(!KNSConstants.DOWNLOAD_BO_ATTACHMENT_METHOD.equals(methodToCall)){	
             		Class businessObjectClass = Class.forName(((InquiryForm) form).getBusinessObjectClassName());
-            		if (!KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.INQUIRE_INTO_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
+            		if (!KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.INQUIRE_INTO_RECORDS, KNSUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
             			throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 
                     		"inquire",
                     		businessObjectClass.getSimpleName());

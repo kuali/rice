@@ -49,7 +49,7 @@ import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -976,7 +976,7 @@ public class RoleServiceBase {
 		RoleResponsibilityActionInfo roleResponsibilityActionInfo;
 		for(RoleResponsibilityActionImpl responsibilityActionImpl: responsibilityImpls){
 			roleResponsibilityActionInfo = new RoleResponsibilityActionInfo();
-			KimCommonUtils.copyProperties(roleResponsibilityActionInfo, responsibilityActionImpl);
+			KimCommonUtilsInternal.copyProperties(roleResponsibilityActionInfo, responsibilityActionImpl);
 			roleResponsibilityActionInfos.add(roleResponsibilityActionInfo);
 		}
 		return roleResponsibilityActionInfos;
@@ -1001,7 +1001,7 @@ public class RoleServiceBase {
 	    	for(KimDelegationImpl delegation: delegations)
 	    		memberQueryString.append(delegation.getDelegationId()+KimConstants.KimUIConstants.OR_OPERATOR);
 	    	delegationMemberFieldValues.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, 
-	    			KimCommonUtils.stripEnd(memberQueryString.toString(), KimConstants.KimUIConstants.OR_OPERATOR));
+	    			KimCommonUtilsInternal.stripEnd(memberQueryString.toString(), KimConstants.KimUIConstants.OR_OPERATOR));
 	    	List<KimDelegationMemberImpl> delegateMembers = (List<KimDelegationMemberImpl>)getLookupService().findCollectionBySearchHelper(
 					KimDelegationMemberImpl.class, delegationMemberFieldValues, true);
 	    	KimDelegationImpl delegationTemp;

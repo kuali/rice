@@ -29,7 +29,7 @@ import org.kuali.rice.kim.bo.reference.KimCode;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.service.impl.ModuleServiceBase;
@@ -202,7 +202,7 @@ public class KimModuleService extends ModuleServiceBase {
 
 	@Override
 	protected String getInquiryUrl(Class inquiryBusinessObjectClass){
-		String inquiryUrl = KimCommonUtils.getKimBasePath();
+		String inquiryUrl = KimCommonUtilsInternal.getKimBasePath();
 		if (!inquiryUrl.endsWith("/")) {
 			inquiryUrl = inquiryUrl + "/";
 		}

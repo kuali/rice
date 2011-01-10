@@ -36,7 +36,7 @@ import org.kuali.rice.kim.service.GroupUpdateService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
@@ -95,7 +95,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
     public GroupInfo createGroup(GroupInfo groupInfo) {
         GroupImpl group = new GroupImpl();
 
-        group = KimCommonUtils.copyInfoToGroup(groupInfo, group);
+        group = KimCommonUtilsInternal.copyInfoToGroup(groupInfo, group);
 
         saveGroup(group);
 
@@ -103,7 +103,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
             List<GroupAttributeDataImpl> groupAttributes =
-            		KimCommonUtils.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), newGroupInfo.getGroupId(), newGroupInfo.getKimTypeId());
+            		KimCommonUtilsInternal.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), newGroupInfo.getGroupId(), newGroupInfo.getKimTypeId());
             saveGroupAttributes(groupAttributes);
         }
         return getGroupInfo(newGroupInfo.getGroupId());
@@ -191,7 +191,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
             throw new IllegalArgumentException("Group not found for update.");
         }
 
-        group = KimCommonUtils.copyInfoToGroup(groupInfo, group);
+        group = KimCommonUtilsInternal.copyInfoToGroup(groupInfo, group);
 
         //delete old group attributes
         Map<String,String> criteria = new HashMap<String,String>();
@@ -204,7 +204,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
         //create new group attributes
         if(groupInfo.getAttributes() != null && groupInfo.getAttributes().size() > 0) {
             List<GroupAttributeDataImpl> groupAttributes =
-            		KimCommonUtils.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), group.getGroupId(), group.getKimTypeId());
+            		KimCommonUtilsInternal.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), group.getGroupId(), group.getKimTypeId());
             saveGroupAttributes(groupAttributes);
         }
 

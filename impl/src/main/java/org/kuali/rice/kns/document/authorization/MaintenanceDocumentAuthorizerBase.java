@@ -23,13 +23,13 @@ import java.util.Set;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSUtils;
 
 public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		implements MaintenanceDocumentAuthorizer {
@@ -102,7 +102,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		if (businessObject instanceof MaintenanceDocument) {
 			MaintenanceDocument maintDoc = (MaintenanceDocument)businessObject;
 			if ( maintDoc.getNewMaintainableObject() != null ) {			
-				attributes.putAll(KimCommonUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
+				attributes.putAll(KNSUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
 			}
 		}
 	}
@@ -114,7 +114,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 		if (businessObject instanceof MaintenanceDocument) {
 			MaintenanceDocument maintDoc = (MaintenanceDocument)businessObject;
 			if ( maintDoc.getNewMaintainableObject() != null ) {			
-				attributes.putAll(KimCommonUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
+				attributes.putAll(KNSUtils.getNamespaceAndComponentSimpleName(maintDoc.getNewMaintainableObject().getBoClass()));
 				attributes.put(KNSConstants.MAINTENANCE_ACTN,maintDoc.getNewMaintainableObject().getMaintenanceAction());
 			}
 		}

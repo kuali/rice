@@ -28,7 +28,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
-import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * This is a description of what this class does - mpham don't forget to fill
@@ -65,7 +64,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 		}
 		// find the parent documents which match
 		DocumentType docType = getDocumentTypeService().findByName(requestedDetails.get(KimAttributes.DOCUMENT_TYPE_NAME));
-		String matchingDocTypeName = KimCommonUtils.getClosestParentDocumentTypeName(docType, permissionDocTypeNames);
+		String matchingDocTypeName = getClosestParentDocumentTypeName(docType, permissionDocTypeNames);
 		// re-loop over the permissions and build a new list of the ones which have the
 		// matching document type names in their details
 		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();

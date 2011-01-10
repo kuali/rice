@@ -24,13 +24,13 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PersonService;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSUtils;
 
 public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 //	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
@@ -87,7 +87,7 @@ public class BusinessObjectAuthorizerBase implements BusinessObjectAuthorizer {
 			BusinessObject primaryBusinessObjectOrDocument,
 			Map<String, String> attributes) {
 		attributes
-				.putAll(KimCommonUtils
+				.putAll(KNSUtils
 						.getNamespaceAndComponentSimpleName(primaryBusinessObjectOrDocument
 								.getClass()));
 	}

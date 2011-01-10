@@ -27,7 +27,6 @@ import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase;
-import org.kuali.rice.kim.util.KimCommonUtils;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -75,7 +74,7 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 					.addAll(potentialDocumentTypeMatches.get(requestedDetails
 							.get(KimAttributes.DOCUMENT_TYPE_NAME)));
 		} else {
-			String closestParentDocumentTypeName = KimCommonUtils.getClosestParentDocumentTypeName(
+			String closestParentDocumentTypeName = getClosestParentDocumentTypeName(
 					getDocumentTypeService().findByName(
 							requestedDetails
 									.get(KimAttributes.DOCUMENT_TYPE_NAME)),

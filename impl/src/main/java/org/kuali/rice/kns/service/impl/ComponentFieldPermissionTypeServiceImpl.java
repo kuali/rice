@@ -23,7 +23,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -58,7 +58,7 @@ public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeSe
 					blankPropertyMatches.add( kpi );
 				} else if ( StringUtils.equals( propertyName, permPropertyName ) ) {
 					propertyMatches.add( kpi );
-				} else if ( KimCommonUtils.doesPropertyNameMatch(propertyName, permPropertyName) ) {
+				} else if ( doesPropertyNameMatch(propertyName, permPropertyName) ) {
 					prefixPropertyMatches.add( kpi );
 				}
 			}

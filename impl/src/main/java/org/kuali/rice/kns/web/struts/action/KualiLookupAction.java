@@ -32,7 +32,6 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
@@ -42,6 +41,7 @@ import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.ResultRow;
@@ -64,7 +64,7 @@ public class KualiLookupAction extends KualiAction {
         } else {
             try {
                 Class businessObjectClass = Class.forName(((LookupForm) form).getBusinessObjectClassName());
-                if (!KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KimCommonUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
+                if (!KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(GlobalVariables.getUserSession().getPrincipalId(), KNSConstants.KNS_NAMESPACE, KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS, KNSUtils.getNamespaceAndComponentSimpleName(businessObjectClass), null)) {
                     throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(),
                     		KimConstants.PermissionTemplateNames.LOOK_UP_RECORDS,
                     		businessObjectClass.getSimpleName());

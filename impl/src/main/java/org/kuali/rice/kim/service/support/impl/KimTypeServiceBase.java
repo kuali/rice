@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -32,6 +33,7 @@ import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -940,4 +942,21 @@ public class KimTypeServiceBase implements KimTypeService {
 		return new AttributeSet();
 	}
 
+	protected String getClosestParentDocumentTypeName(
+			DocumentType documentType,
+			Set<String> potentialParentDocumentTypeNames) {
+		if ( potentialParentDocumentTypeNames == null || documentType == null ) {
+			return null;
+		}
+		if (potentialParentDocumentTypeNames.contains(documentType.getName())) {
+			return documentType.getName();
+		} 
+		if ((documentType.getDocTypeParentId() == null)
+				|| documentType.getDocTypeParentId().equals(
+						documentType.getDocumentTypeId())) {
+			return null;
+		} 
+		return getClosestParentDocumentTypeName(documentType
+				.getParentDocType(), potentialParentDocumentTypeNames);
+	}
 }

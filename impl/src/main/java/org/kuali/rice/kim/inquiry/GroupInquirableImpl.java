@@ -18,7 +18,7 @@ package org.kuali.rice.kim.inquiry;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Namespace;
@@ -84,7 +84,7 @@ public class GroupInquirableImpl extends KualiInquirableImpl {
 	        parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.PARAM_MAINTENANCE_VIEW_MODE_INQUIRY);
 	        hrefPart = href.substring(idx1, idx2);
 	    }
-		return UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+
+		return UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+
 				KimConstants.KimUIConstants.KIM_GROUP_INQUIRY_ACTION, parameters)+hrefPart;
 	}
 

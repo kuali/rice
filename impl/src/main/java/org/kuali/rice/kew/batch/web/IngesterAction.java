@@ -16,6 +16,16 @@
  */
 package org.kuali.rice.kew.batch.web;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
@@ -23,24 +33,19 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kew.batch.*;
+import org.kuali.rice.kew.batch.CompositeXmlDocCollection;
+import org.kuali.rice.kew.batch.FileXmlDocCollection;
+import org.kuali.rice.kew.batch.XmlDoc;
+import org.kuali.rice.kew.batch.XmlDocCollection;
+import org.kuali.rice.kew.batch.ZipXmlDocCollection;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.kns.web.struts.action.KualiAction;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 
 /**
@@ -205,7 +210,7 @@ public class IngesterAction extends KualiAction {
     {
     	String principalId = GlobalVariables.getUserSession().getPrincipalId();
     	AttributeSet roleQualifier = new AttributeSet();
-    	AttributeSet permissionDetails = KimCommonUtils.getNamespaceAndActionClass(this.getClass());
+    	AttributeSet permissionDetails = KNSUtils.getNamespaceAndActionClass(this.getClass());
 
         if (!KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier ))

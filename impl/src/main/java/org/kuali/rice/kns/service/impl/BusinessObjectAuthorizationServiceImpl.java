@@ -28,7 +28,6 @@ import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectAuthorizer;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
@@ -59,9 +58,15 @@ import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions
 import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
 import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.inquiry.InquiryRestrictions;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DocumentHelperService;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 public class BusinessObjectAuthorizationServiceImpl implements
@@ -633,7 +638,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 //			permissionDetails.put(KimAttributes.PROPERTY_NAME, attributeName
 //					.substring(attributeName.indexOf(".") + 1));
 //		} else {
-			permissionDetails = KimCommonUtils
+			permissionDetails = KNSUtils
 					.getNamespaceAndComponentSimpleName(businessObject
 							.getClass());
 			permissionDetails.put(KimAttributes.PROPERTY_NAME, attributeName);

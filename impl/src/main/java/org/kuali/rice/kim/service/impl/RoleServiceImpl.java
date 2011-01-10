@@ -55,7 +55,7 @@ import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -1331,7 +1331,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 	    	for(KimDelegationImpl delegation: delegations)
 	    		memberQueryString.append(delegation.getDelegationId()+KimConstants.KimUIConstants.OR_OPERATOR);
 	    	delegationMemberFieldValues.put(KimConstants.PrimaryKeyConstants.DELEGATION_ID, 
-	    			KimCommonUtils.stripEnd(memberQueryString.toString(), KimConstants.KimUIConstants.OR_OPERATOR));
+	    			KimCommonUtilsInternal.stripEnd(memberQueryString.toString(), KimConstants.KimUIConstants.OR_OPERATOR));
 	    	List<KimDelegationMemberImpl> delegateMembers = (List<KimDelegationMemberImpl>)getLookupService().findCollectionBySearchHelper(
 					KimDelegationMemberImpl.class, delegationMemberFieldValues, true);
 	    	KimDelegationImpl delegationTemp;
@@ -1414,7 +1414,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
 		RoleResponsibilityInfo roleResponsibilityInfo;
 		for(RoleResponsibilityImpl roleResponsibilityImpl: responsibilityImpls){
 			roleResponsibilityInfo = new RoleResponsibilityInfo();
-			KimCommonUtils.copyProperties(roleResponsibilityInfo, roleResponsibilityImpl);
+			KimCommonUtilsInternal.copyProperties(roleResponsibilityInfo, roleResponsibilityImpl);
 			roleResponsibilities.add(roleResponsibilityInfo);
 		}
 		return roleResponsibilities;

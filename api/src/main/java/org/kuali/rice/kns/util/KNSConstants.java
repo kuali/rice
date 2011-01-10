@@ -275,6 +275,7 @@ public final class KNSConstants {
     public static final String FIELD_NAME_TO_FOCUS_ON_AFTER_SUBMIT = "fieldNameToFocusOnAfterSubmit";
 
     public static final String DEFAULT_APPLICATION_CODE = "KUALI";
+    public static final String DEFAULT_NAMESPACE = "KUALI";
     public static final String APPLICATION_CODE = "app.namespace";
     public static final String LOOKUP_ACTION = "lookup.do";
     public static final String MULTIPLE_VALUE_LOOKUP_ACTION = "multipleValueLookup.do";
@@ -291,6 +292,9 @@ public final class KNSConstants {
     public static final String KUALI_LOOKUPABLE_IMPL = "kualiLookupable";
     public static final String PARAMETER_DOC_ID = "docId";
     public static final String PARAMETER_COMMAND = "command";
+	public static final String ACTION_CLASS = "actionClass";
+	public static final String NAMESPACE_CODE = "namespaceCode";
+	public static final String COMPONENT_NAME = "componentName";
 //    public static final String LOOKUP_METHOD = "performLookup";
     public static final String LOOKUP_DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL = "From";
     public static final String LOOKUP_DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL = "To";

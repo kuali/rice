@@ -22,11 +22,22 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.type.KualiDecimal;
+import org.kuali.rice.core.xml.dto.AttributeSet;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
 
 /**
  * Miscellaneous Utility Methods.
  */
+/**
+ * This is a description of what this class does - jjhanso don't forget to fill this in. 
+ * 
+ * @author Kuali Rice Team (rice.collab@kuali.org)
+ *
+ */
 public final class KNSUtils {
+	private static KualiModuleService kualiModuleService;
 	
 	private KNSUtils() {
 		throw new UnsupportedOperationException("do not call");
@@ -110,5 +121,55 @@ public final class KNSUtils {
 		return KNSConstants.SINGLE_QUOTE+
 			StringUtils.join(list.iterator(), KNSConstants.SINGLE_QUOTE+","+KNSConstants.SINGLE_QUOTE)+
 			KNSConstants.SINGLE_QUOTE;
+	}
+	
+	private static KualiModuleService getKualiModuleService() {
+		if (kualiModuleService == null) {
+			kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
+		}
+		return kualiModuleService;
+	}
+	
+	
+	/**
+	 * TODO this method will probably need to be exposed in a public KNSUtils class as it is used
+	 * by several different modules.  That will have to wait until ModuleService and KualiModuleService are moved
+	 * to core though.
+	 */
+	public static String getNamespaceCode(Class<? extends Object> clazz) {
+		ModuleService moduleService = getKualiModuleService().getResponsibleModuleService(clazz);
+		if (moduleService == null) {
+			return KNSConstants.DEFAULT_NAMESPACE;
+		}
+		return moduleService.getModuleConfiguration().getNamespaceCode();
+	}
+	
+	public static AttributeSet getNamespaceAndComponentSimpleName( Class<? extends Object> clazz) {
+		AttributeSet attributeSet = new AttributeSet();
+		attributeSet.put(KNSConstants.NAMESPACE_CODE, getNamespaceCode(clazz));
+		attributeSet.put(KNSConstants.COMPONENT_NAME, getComponentSimpleName(clazz));
+		return attributeSet;
+	}
+
+	public static AttributeSet getNamespaceAndComponentFullName( Class<? extends Object> clazz) {
+		AttributeSet attributeSet = new AttributeSet();
+		attributeSet.put(KNSConstants.NAMESPACE_CODE, getNamespaceCode(clazz));
+		attributeSet.put(KNSConstants.COMPONENT_NAME, getComponentFullName(clazz));
+		return attributeSet;
+	}
+
+	public static AttributeSet getNamespaceAndActionClass( Class<? extends Object> clazz) {
+		AttributeSet attributeSet = new AttributeSet();
+		attributeSet.put(KNSConstants.NAMESPACE_CODE, getNamespaceCode(clazz));
+		attributeSet.put(KNSConstants.ACTION_CLASS, clazz.getName());
+		return attributeSet;
+	}
+	
+	private static String getComponentSimpleName(Class<? extends Object> clazz) {
+		return clazz.getSimpleName();
+	}
+
+	private static String getComponentFullName(Class<? extends Object> clazz) {
+		return clazz.getName();
 	}
 }

@@ -42,7 +42,7 @@ import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -109,7 +109,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
         if (StringUtils.isNotBlank(getReturnLocation())) {
         	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
 		}
-        href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters);
+        href = UrlFactory.parameterizeUrl(KimCommonUtilsInternal.getKimBasePath()+KimConstants.KimUIConstants.KIM_GROUP_DOCUMENT_ACTION, parameters);
         
         AnchorHtmlData anchorHtmlData = new AnchorHtmlData(href, 
         		KNSConstants.DOC_HANDLER_METHOD, KNSConstants.MAINTENANCE_EDIT_METHOD_TO_CALL);
@@ -121,7 +121,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
      * 
      * @param  fieldValues  names and values returned by the Group Lookup screen
      * @return  groupImplList  a list of GroupImpl objects
-     * @see  KimCommonUtils#copyInfoToGroup(GroupInfo, GroupImpl)
+     * @see  KimCommonUtilsInternal#copyInfoToGroup(GroupInfo, GroupImpl)
      */
     @Override
     public List<GroupImpl> getSearchResults(java.util.Map<String,String> fieldValues)  {
@@ -129,8 +129,8 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
     	List<GroupImpl> groupImplList = new ArrayList<GroupImpl>();
     	for(Group g : groupInfoObjs){    		
     		GroupImpl impl = new GroupImpl();
-    		impl = KimCommonUtils.copyInfoToGroup(g, impl);
-    		impl.setGroupAttributes(KimCommonUtils.copyInfoAttributesToGroupAttributes(g.getAttributes(), g.getGroupId(), g.getKimTypeId()));
+    		impl = KimCommonUtilsInternal.copyInfoToGroup(g, impl);
+    		impl.setGroupAttributes(KimCommonUtilsInternal.copyInfoAttributesToGroupAttributes(g.getAttributes(), g.getGroupId(), g.getKimTypeId()));
     		groupImplList.add(impl);    		
     	}
     	return groupImplList;

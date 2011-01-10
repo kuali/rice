@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.test.KIMTestCase;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 
 import java.util.List;
@@ -55,7 +55,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
         assertTrue(infoAttributes.containsValue("Doc"));
         List<GroupAttributeDataImpl> attributeDataList;
         try {
-        attributeDataList = KimCommonUtils.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), groupInfo.getGroupId(), groupInfo.getKimTypeId());
+        attributeDataList = KimCommonUtilsInternal.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), groupInfo.getGroupId(), groupInfo.getKimTypeId());
         assertTrue(attributeDataList != null);
         assertTrue(attributeDataList.size() > 0);
         assertTrue(attributeDataList.size() == groupInfo.getAttributes().size());
@@ -81,7 +81,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
         GroupInfo groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 
         GroupImpl groupImpl = new GroupImpl();
-        KimCommonUtils.copyInfoToGroup(groupInfo, groupImpl);
+        KimCommonUtilsInternal.copyInfoToGroup(groupInfo, groupImpl);
         // Figure out why we do individual checks here, i dont think they are needed
         assertEquals(groupInfo.isActive(), groupImpl.isActive());
     }
@@ -95,7 +95,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
         testAttributeSet.put("someDummyKey", "someDummyValue");
         groupInfo.setAttributes(testAttributeSet);
     	try {
-            List<GroupAttributeDataImpl> attributeDataList = KimCommonUtils.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), groupInfo.getGroupId(), groupInfo.getKimTypeId());
+            List<GroupAttributeDataImpl> attributeDataList = KimCommonUtilsInternal.copyInfoAttributesToGroupAttributes(groupInfo.getAttributes(), groupInfo.getGroupId(), groupInfo.getKimTypeId());
     		fail("Ingested a group with an unknown attributeSet");
     	}
     	catch (IllegalArgumentException expectedException) {
@@ -105,15 +105,15 @@ public class KimCommonUtilsTest extends KIMTestCase {
 
     @Test
     public void testStripEnd() {
-    	assertNull(KimCommonUtils.stripEnd(null, null));
-    	assertEquals("", KimCommonUtils.stripEnd("", null));
-    	assertEquals("", KimCommonUtils.stripEnd("", ""));
-    	assertEquals("b", KimCommonUtils.stripEnd("b", ""));
-    	assertEquals("", KimCommonUtils.stripEnd("b", "b"));
-    	assertEquals("b", KimCommonUtils.stripEnd("b", "bb"));
-    	assertEquals("wx", KimCommonUtils.stripEnd("wxyz", "yz"));
-    	assertEquals("wx", KimCommonUtils.stripEnd("wxyz     ", "yz     "));
-    	assertEquals("wxyz", KimCommonUtils.stripEnd("wxyz", "abc"));
+    	assertNull(KimCommonUtilsInternal.stripEnd(null, null));
+    	assertEquals("", KimCommonUtilsInternal.stripEnd("", null));
+    	assertEquals("", KimCommonUtilsInternal.stripEnd("", ""));
+    	assertEquals("b", KimCommonUtilsInternal.stripEnd("b", ""));
+    	assertEquals("", KimCommonUtilsInternal.stripEnd("b", "b"));
+    	assertEquals("b", KimCommonUtilsInternal.stripEnd("b", "bb"));
+    	assertEquals("wx", KimCommonUtilsInternal.stripEnd("wxyz", "yz"));
+    	assertEquals("wx", KimCommonUtilsInternal.stripEnd("wxyz     ", "yz     "));
+    	assertEquals("wxyz", KimCommonUtilsInternal.stripEnd("wxyz", "abc"));
 
 
     }

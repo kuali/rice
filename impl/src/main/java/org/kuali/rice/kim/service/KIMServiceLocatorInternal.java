@@ -23,7 +23,7 @@ import org.kuali.rice.core.config.ModuleConfigurer.RunMode;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 
 /**
@@ -86,7 +86,7 @@ public final class KIMServiceLocatorInternal {
 			LOG.warn( "null KimType passed into getKimTypeService" );
 			return null;
 		}
-		return getKimTypeService(KimCommonUtils.resolveKimTypeServiceName(kimType.getKimTypeServiceName()));
+		return getKimTypeService(KimCommonUtilsInternal.resolveKimTypeServiceName(kimType.getKimTypeServiceName()));
 	}
 	
 	/**

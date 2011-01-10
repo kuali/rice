@@ -29,7 +29,7 @@ import org.kuali.rice.kim.lookup.KimTypeLookupableHelperServiceImpl;
 import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -65,7 +65,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 		ActionForward forward =  super.performLookup(mapping, form, request, response);
 		String path = forward.getPath();
 		//Making the hack look cleaner!
-		forward.setPath(KimCommonUtils.getPathWithKimContext(path, getActionName()));
+		forward.setPath(KimCommonUtilsInternal.getPathWithKimContext(path, getActionName()));
 		return forward;
 	}
 
@@ -95,7 +95,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 	@Override
     protected String getReturnLocation(HttpServletRequest request, ActionMapping mapping){
     	String returnLocation = super.getReturnLocation(request, mapping);
-    	return KimCommonUtils.getPathWithKimContext(returnLocation, getActionName());
+    	return KimCommonUtilsInternal.getPathWithKimContext(returnLocation, getActionName());
     }
 
 	@Override
@@ -112,7 +112,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         	dest = mapping.findForward(KNSConstants.MAPPING_PORTAL);
             ActionForward newDest = new ActionForward();
             //why is this being done?
-            KimCommonUtils.copyProperties(newDest, dest);
+            KimCommonUtilsInternal.copyProperties(newDest, dest);
             newDest.setPath(getApplicationBaseUrl());
             return newDest;
         }
@@ -123,7 +123,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
 
 	protected ActionForward getBasePathForward(HttpServletRequest request, ActionForward forward){
 		ActionForward newDest = new ActionForward();
-        KimCommonUtils.copyProperties(newDest, forward);
+        KimCommonUtilsInternal.copyProperties(newDest, forward);
         newDest.setPath(getApplicationBaseUrl());
         return newDest;
     }

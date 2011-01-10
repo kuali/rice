@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/WEB-INF/jsp/krad/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/test/tldHeader.jsp"%>
 
 <c:set var="isMaintenance" value="false" />
 <c:set var="showDocumentInfo" value="false" />

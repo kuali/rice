@@ -19,6 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.kns.UserSession;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.WebUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -54,6 +57,15 @@ public class KradControllerHandlerInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		
+		final UserSession session = WebUtils.getUserSessionFromRequest(request);
+        
+        if (session == null) {
+        	throw new IllegalStateException("the user session has not been established");
+        }
+        
+    	GlobalVariables.setUserSession(session);
+    	GlobalVariables.clear();
+    	
 		return true;
 	}
 

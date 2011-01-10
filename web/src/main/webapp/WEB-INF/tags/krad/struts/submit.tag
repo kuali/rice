@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/jsp/krad/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/test/tldHeader.jsp"%>
 
 <%@ attribute name="property" required="true" description="" %>
 <%@ attribute name="value" required="true" description="" %>

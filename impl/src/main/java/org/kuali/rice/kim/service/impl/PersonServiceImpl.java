@@ -42,6 +42,7 @@ import org.kuali.rice.kns.bo.BusinessObjectRelationship;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -428,7 +429,7 @@ public class PersonServiceImpl implements PersonService {
 							if ( extIdType != null && extIdType.isEncryptionRequired() ) {
 								try {
 									criteria.put(key, 
-											KNSServiceLocatorInternal.getEncryptionService().encrypt(criteria.get(key))
+											KNSServiceLocator.getEncryptionService().encrypt(criteria.get(key))
 											);
 								} catch (GeneralSecurityException ex) {
 									LOG.error("Unable to encrypt value for external ID search of type " + extIdTypeCode, ex );

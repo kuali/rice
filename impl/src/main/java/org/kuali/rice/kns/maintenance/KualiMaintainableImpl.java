@@ -50,7 +50,7 @@ import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions
 import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
 import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
+import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.FieldUtils;
@@ -1186,7 +1186,7 @@ public class KualiMaintainableImpl implements Maintainable, Serializable {
 
     public static EncryptionService getEncryptionService() {
         if ( encryptionService == null ) {
-            encryptionService = KNSServiceLocatorInternal.getEncryptionService();
+            encryptionService = KNSServiceLocator.getEncryptionService();
         }
         return encryptionService;
     }

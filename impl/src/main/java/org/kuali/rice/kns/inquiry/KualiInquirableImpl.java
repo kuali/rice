@@ -470,7 +470,7 @@ public class KualiInquirableImpl implements Inquirable {
 
     public EncryptionService getEncryptionService() {
 	if ( encryptionService == null ) {
-	    encryptionService = KNSServiceLocatorInternal.getEncryptionService();
+	    encryptionService = KNSServiceLocator.getEncryptionService();
 	}
         return this.encryptionService;
     }

@@ -26,7 +26,7 @@ import org.kuali.rice.kns.lookup.keyvalues.ApcValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Utility map for the action form to provide a way for calling functions through jstl.
@@ -219,7 +219,7 @@ public class ActionFormUtilMap extends HashMap {
         }
 
         try {
-            encrypted = KNSServiceLocatorInternal.getEncryptionService().encrypt(value);
+            encrypted = KNSServiceLocator.getEncryptionService().encrypt(value);
         }
         catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt value in action form: " + e.getMessage());

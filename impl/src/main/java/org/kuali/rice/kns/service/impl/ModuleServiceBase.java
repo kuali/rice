@@ -31,7 +31,7 @@ import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
-import org.kuali.rice.kns.exception.KualiException;
+import org.kuali.rice.core.KualiException;
 import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;

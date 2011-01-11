@@ -13,7 +13,7 @@
  */
 
 // begin Kuali Foundation modification
-package org.kuali.rice.kns.web.struts.pojo;
+package org.kuali.rice.core.util;
 // end Kuali Foundation modification
 
 import java.lang.reflect.Array;

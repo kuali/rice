@@ -20,7 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.mask.Mask;
-import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
+import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
@@ -234,7 +234,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
      * the quickfinderParameterStringBuilderClass specifies the java class that will be used
      * to determine the default value(s) for field(s) on the target lookup when the quickfinder
      * is used. The classname specified in this field must implement
-     * {@link org.kuali.rice.kns.lookup.valueFinder.ValueFinder}.  See {@link #getQuickfinderParameterString()}
+     * {@link org.kuali.rice.kns.lookup.valuefinder.ValueFinder}.  See {@link #getQuickfinderParameterString()}
      * for the result string format.
 	 * @return the quickfinderParameterStringBuilderClass
 	 */
@@ -424,7 +424,7 @@ public class FieldDefinition extends DataDictionaryDefinitionBase implements Fie
     /**
                       The defaultValueFinderClass specifies the java class that will be
                       used to determine the default value of a field.  The classname
-                      specified in this field must implement org.kuali.rice.kns.lookup.valueFinder.ValueFinder
+                      specified in this field must implement org.kuali.rice.kns.lookup.valuefinder.ValueFinder
      */
     public void setDefaultValueFinderClass(Class<? extends ValueFinder> defaultValueFinderClass) {
         if (defaultValueFinderClass == null) {

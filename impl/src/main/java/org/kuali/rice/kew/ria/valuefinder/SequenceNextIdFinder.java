@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kew.ria.valuefinder;
 
-import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
+import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
@@ -23,7 +23,7 @@ import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
  * via the SequenceAccessorService
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class SequenceNextIdFinder implements ValueFinder { 
+public class SequenceNextIdFinder implements ValueFinder {
 	/**
 	 * The database sequence to query
 	 */

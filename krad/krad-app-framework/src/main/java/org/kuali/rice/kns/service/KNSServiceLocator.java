@@ -3,6 +3,7 @@ package org.kuali.rice.kns.service;
 import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.service.EncryptionService;
 
 public class KNSServiceLocator {
     public static final String ATTACHMENT_SERVICE = "attachmentService";
@@ -16,7 +17,7 @@ public class KNSServiceLocator {
     }
 
     public static AttachmentService getAttachmentService() {
-        return (AttachmentService) getService(ATTACHMENT_SERVICE);
+        return  getService(ATTACHMENT_SERVICE);
     }
 
     public static PersistenceService getPersistenceService() {
@@ -28,14 +29,18 @@ public class KNSServiceLocator {
     }
 
     public static DateTimeService getDateTimeService() {
-        return (DateTimeService) getService(CoreConstants.Services.DATETIME_SERVICE);
+        return getService(CoreConstants.Services.DATETIME_SERVICE);
     }
 
     public static NoteService getNoteService() {
-        return (NoteService) getService(NOTE_SERVICE);
+        return getService(NOTE_SERVICE);
     }
 
     public static BusinessObjectService getBusinessObjectService() {
-        return (BusinessObjectService) getService(BUSINESS_OBJECT_SERVICE);
+        return getService(BUSINESS_OBJECT_SERVICE);
+    }
+
+    public static final EncryptionService getEncryptionService() {
+    	return getService(CoreConstants.Services.ENCRYPTION_SERVICE);
     }
 }

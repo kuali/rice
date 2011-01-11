@@ -20,7 +20,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
-import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
+import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 
 /**
     The maintainableField element defines the specifications
@@ -284,7 +284,7 @@ template documentation from MaintenanceUtils.java:
     /**
 The defaultValueFinderClass specifies the java class that will be
                       used to determine the default value of a lookup field.  The classname
-                      specified in this field must implement org.kuali.rice.kns.lookup.valueFinder.ValueFinder
+                      specified in this field must implement org.kuali.rice.kns.lookup.valuefinder.ValueFinder
    */
     public void setDefaultValueFinderClass(Class<? extends ValueFinder> defaultValueFinderClass) {
         this.defaultValueFinderClass = defaultValueFinderClass;

@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.exception;
 
+import org.kuali.rice.core.KualiException;
+
 /**
  * This class represents an exception that is thrown when the configuration service tries to redefine a configuration property with
  * a key which is already in use.

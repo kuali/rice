@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.KualiException;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 /**
@@ -165,7 +166,7 @@ public class ExceptionIncident implements KualiExceptionIncident {
         map.put(EXCEPTION_MESSAGE, exception.getMessage());
         map.put(DISPLAY_MESSAGE, getDisplayMessage(exception));
         map.put(STACK_TRACE, getExceptionStackTrace(exception));
-        if(exception instanceof KualiException ){
+        if(exception instanceof KualiException){
         	boolean hideIncidentReport = ((KualiException) exception).isHideIncidentReport();
         	map.put(EXCEPTION_HIDE_INCIDENT_REPORT, String.valueOf(hideIncidentReport));
         }else{

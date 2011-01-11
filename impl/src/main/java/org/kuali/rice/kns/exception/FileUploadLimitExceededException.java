@@ -17,6 +17,7 @@ package org.kuali.rice.kns.exception;
 
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.KualiException;
 
 /**
  * This class represents an FileUploadLimitExceededException.

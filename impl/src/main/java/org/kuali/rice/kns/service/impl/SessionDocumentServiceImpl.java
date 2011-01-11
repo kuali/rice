@@ -32,10 +32,7 @@ import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.SessionDocument;
 import org.kuali.rice.kns.dao.SessionDocumentDao;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.SessionDocumentService;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.KualiLRUMap;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -304,7 +301,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 
 	protected EncryptionService getEncryptionService() {
 		if ( encryptionService == null ) {
-			encryptionService = KNSServiceLocatorInternal.getEncryptionService();
+			encryptionService = KNSServiceLocator.getEncryptionService();
 		}
 		return encryptionService;
 	}

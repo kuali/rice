@@ -16,7 +16,7 @@
 package org.kuali.rice.kim.lookup.valuefinder;
 
 import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
+import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 
@@ -44,7 +44,7 @@ public abstract class KIMNextIdFinder implements ValueFinder {
     }
 
     /**
-     * @see org.kuali.rice.kns.lookup.valueFinder.ValueFinder#getValue()
+     * @see org.kuali.rice.kns.lookup.valuefinder.ValueFinder#getValue()
      */
     public String getValue() {
         return getLongValue().toString();

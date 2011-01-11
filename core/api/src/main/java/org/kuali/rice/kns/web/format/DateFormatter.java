@@ -19,12 +19,14 @@ package org.kuali.rice.kns.web.format;
 
 // begin Kuali Foundation modification
 // import order changed, and java.util.Calendar, org.kuali.KeyConstants and org.kuali.rice.KNSServiceLocatorInternal added
+
 import java.sql.Date;
 import java.text.ParseException;
 import java.util.Calendar;
 
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.DateTimeService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -33,23 +35,16 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
  * end Kuali Foundation modification
  */
 public class DateFormatter extends Formatter {
-    // begin Kuali Foundation modification
-    // serialVersionUID changed from 1L
     private static final long serialVersionUID = 7612442662886603084L;
 
+    protected DateTimeService dateTimeService;
 
-    private static DateTimeService dateTimeService;
-    // end Kuali Foundation modification
+    public DateFormatter() {
+        super();
+        this.dateTimeService = GlobalResourceLoader.getService(CoreConstants.Services.DATETIME_SERVICE);
+    }
 
-	// begin Kuali Foundation modification
-	// static variables DATE_ERROR_KEY and PARSE_MSG removed
-	// method public String getErrorKey() removed
-	// end Kuali Foundation modification
-
-	// begin Kuali Foundation modification
-	// added this method
     /**
-     *
      * For a given user input date, this method returns the exact string the user entered after the last slash. This allows the
      * formatter to distinguish between ambiguous values such as "/06" "/6" and "/0006"
      *
@@ -75,17 +70,16 @@ public class DateFormatter extends Formatter {
      * @return a java.util.Date intialized with the provided string
      */
     protected Object convertToObject(String target) {
-    	// begin Kuali Foundation modification
+        // begin Kuali Foundation modification
         try {
-            Date result = getDateTimeService().convertToSqlDate(target);
+            Date result = this.dateTimeService.convertToSqlDate(target);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(result);
             if (calendar.get(Calendar.YEAR) < 1000 && verbatimYear(target).length() < 4) {
                 throw new FormatException("illegal year format", RiceKeyConstants.ERROR_DATE, target);
             }
             return result;
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             throw new FormatException("parsing", RiceKeyConstants.ERROR_DATE, target, e);
         }
         // end Kuali Foundation modification
@@ -104,17 +98,10 @@ public class DateFormatter extends Formatter {
         if ("".equals(value)) {
             return null;
         }
-        return getDateTimeService().toDateString((java.util.Date)value);
+        return this.dateTimeService.toDateString((java.util.Date) value);
         // end Kuali Foundation modification
     }
 
-
-    public static DateTimeService getDateTimeService() {
-        if ( dateTimeService == null ) {
-            dateTimeService = KNSServiceLocator.getDateTimeService();
-        }
-        return dateTimeService;
-    }
 
     /**
      * This method is invoked to validate a date string using the KNS Service
@@ -124,12 +111,11 @@ public class DateFormatter extends Formatter {
      * @return
      */
     public boolean validate(String dateString) {
-        boolean isValid=false;
+        boolean isValid = false;
 
-        DateTimeService service=getDateTimeService();
         try {
-            service.convertToSqlTimestamp(dateString);
-            isValid=true;
+            this.dateTimeService.convertToSqlTimestamp(dateString);
+            isValid = true;
         } catch (Exception e) {
 
         }

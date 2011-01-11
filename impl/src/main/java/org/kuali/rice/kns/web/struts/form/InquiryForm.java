@@ -165,7 +165,7 @@ public class InquiryForm extends KualiForm {
 
     protected void populatePKFieldValues(HttpServletRequest request, String boClassName, boolean passedFromPreviousInquiry) {
         try {
-            EncryptionService encryptionService = KNSServiceLocatorInternal.getEncryptionService();
+            EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
             DataDictionaryService dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
             BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService();
             BusinessObjectMetaDataService businessObjectMetaDataService = KNSServiceLocatorInternal.getBusinessObjectMetaDataService();

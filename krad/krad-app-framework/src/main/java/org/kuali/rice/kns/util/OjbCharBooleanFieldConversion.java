@@ -13,20 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.lookup.valueFinder;
-
+package org.kuali.rice.kns.util;
 
 /**
- * This interface defines basic methods value finders.
+ * This class converts the "Y" or "N" value from the database into a true or false in Java.
  * 
  * 
+ * @deprecated Use OjbCharBooleanConversion instead
  */
-public interface ValueFinder {
+public final class OjbCharBooleanFieldConversion extends OjbCharBooleanFieldConversionBase {
+    private static final long serialVersionUID = 5192588414458129183L;
+    private static String S_TRUE = "Y";
+    private static String S_FALSE = "N";
 
     /**
-     * Returns a value for default initialization.
-     * 
-     * @return String
+     * no args constructor
      */
-    public String getValue();
+    public OjbCharBooleanFieldConversion() {
+        super();
+    }
+
+    protected String getTrueValue() {
+        return "Y";
+    }
+
+    protected String getFalseValue() {
+        return "N";
+    }
 }

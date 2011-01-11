@@ -21,7 +21,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.FieldDefinition;
 import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
 import org.kuali.rice.kns.inquiry.InquiryPresentationController;
-import org.kuali.rice.kns.lookup.valueFinder.ValueFinder;
+import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
 
 
 /**
@@ -146,7 +146,8 @@ public interface BusinessObjectDictionaryService {
      * returns boolean indicating whether lookup search field marked to not do a direct inquiry
      */
     public Boolean noDirectInquiryFieldLookup(Class businessObjectClass, String attributeName);
-
+
+
     /**
      * returns boolean indicating whether inquiry result field marked to force an inquiry
      */

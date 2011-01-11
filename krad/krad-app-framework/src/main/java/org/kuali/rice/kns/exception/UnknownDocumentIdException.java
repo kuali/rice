@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.exception;
 
+import org.kuali.rice.core.KualiException;
+
 /**
  * This class represents an UnknownDocumentIdException.
  * 

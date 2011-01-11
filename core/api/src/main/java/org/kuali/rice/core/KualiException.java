@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.exception;
+package org.kuali.rice.core;
 
 /**
  * This is a default exception class that others inherit. When an exception is thrown,

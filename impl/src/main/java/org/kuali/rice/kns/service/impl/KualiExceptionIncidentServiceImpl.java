@@ -22,9 +22,9 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.KualiException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.ExceptionIncident;
-import org.kuali.rice.kns.exception.KualiException;
 import org.kuali.rice.kns.exception.KualiExceptionIncident;
 import org.kuali.rice.kns.mail.MailMessage;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;

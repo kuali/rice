@@ -21,61 +21,64 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import org.apache.commons.lang.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
-import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
- * This class calls core service to hash values going to the database
+ * Hibernate UserType to encrypt and decript data on its way to the database 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class HibernateKualiHashType extends HibernateImmutableValueUserType implements UserType {
+public class HibernateKualiEncryptDecryptUserType extends HibernateImmutableValueUserType implements UserType {
 	/**
 	 * Retrieves a value from the given ResultSet and decrypts it
 	 * 
 	 * @see org.hibernate.usertype.UserType#nullSafeGet(java.sql.ResultSet, java.lang.String[], java.lang.Object)
 	 */
 	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
-
 		String value = rs.getString(names[0]);
 		String converted = null;
-		
-		if ( value == null ) {
-			return "";
-		}
-		return value + EncryptionService.HASH_POST_PREFIX;
-	}
 
-	/**
-	 * sets the hash value on the PreparedStatement
-	 * 
-	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
-	 */
-	public void nullSafeSet(PreparedStatement st, Object value,  int index) throws HibernateException, SQLException {
-		
-		Object converted = value;
-		if ( converted != null ) {
-			// don't convert if already a hashed value
-			if ( converted.toString().endsWith( EncryptionService.HASH_POST_PREFIX ) ) {
-				converted = StringUtils.stripEnd( converted.toString(), EncryptionService.HASH_POST_PREFIX );
-			} else {
-				try {
-					converted = KNSServiceLocatorInternal.getEncryptionService().hash(converted);
-				} catch (GeneralSecurityException e) {
-					throw new RuntimeException("Unable to hash value to db: " + e.getMessage());
-				}
+		if (value != null) {
+	        try {
+	            converted = KNSServiceLocator.getEncryptionService().decrypt(value);
+	        }
+	        catch (GeneralSecurityException gse) {
+	            throw new RuntimeException("Unable to decrypt value from db: " + gse.getMessage());
+	        }
+	        
+	        if (converted == null) {
+				converted = value;
 			}
 		}
 
-		if (converted == null) {
-			st.setNull(index, Types.VARCHAR);
-		} else {
-			st.setString(index, (String)converted);
+        return converted;
+	}
+
+	/**
+	 * Encrypts the value if possible and then sets that on the PreparedStatement
+	 * 
+	 * @see org.hibernate.usertype.UserType#nullSafeSet(java.sql.PreparedStatement, java.lang.Object, int)
+	 */
+	public void nullSafeSet(PreparedStatement st, Object value, int index) throws HibernateException, SQLException {
+		String converted = null;
+
+		if (value != null) {
+	        try {
+	            converted = KNSServiceLocator.getEncryptionService().encrypt(value);
+	        }
+	        catch (GeneralSecurityException gse) {
+	            throw new RuntimeException("Unable to encrypt value to db: " + gse.getMessage());
+	        }
 		}
+        
+        if (converted == null) {
+        	st.setNull(index, Types.VARCHAR);
+        } else {
+        	st.setString(index, converted);
+        }
 	}
 
 	/**

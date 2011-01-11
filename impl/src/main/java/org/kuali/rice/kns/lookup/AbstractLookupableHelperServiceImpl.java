@@ -220,7 +220,7 @@ public abstract class AbstractLookupableHelperServiceImpl implements LookupableH
 	  * @return Returns the encryptionService.
 	  */
 	 protected EncryptionService getEncryptionService() {
-		 return encryptionService != null ? encryptionService : KNSServiceLocatorInternal.getEncryptionService();
+		 return encryptionService != null ? encryptionService : KNSServiceLocator.getEncryptionService();
 	 }
 
 	 /**

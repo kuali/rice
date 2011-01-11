@@ -17,15 +17,21 @@ package org.kuali.rice.kns.web.format;
 
 import java.security.GeneralSecurityException;
 
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.service.EncryptionService;
 
 /**
  * This formatter calls the encryption service to encrypt/decrypt values.
- * 
- * 
  */
 public class EncryptionFormatter extends Formatter {
     private static final long serialVersionUID = -4109390572922205211L;
+    protected EncryptionService encryptionService;
+
+    public EncryptionFormatter() {
+        super();
+        this.encryptionService = GlobalResourceLoader.getService(CoreConstants.Services.ENCRYPTION_SERVICE);
+    }
 
     protected Object convertToObject(String target) {
         if (Formatter.isEmptyValue(target))
@@ -33,9 +39,8 @@ public class EncryptionFormatter extends Formatter {
 
         String decryptedValue = null;
         try {
-            decryptedValue = KNSServiceLocatorInternal.getEncryptionService().decrypt(target);
-        }
-        catch (GeneralSecurityException e) {
+            decryptedValue = this.encryptionService.decrypt(target);
+        } catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to decrypt value.");
         }
 
@@ -45,9 +50,8 @@ public class EncryptionFormatter extends Formatter {
     public Object format(Object target) {
         String encryptedValue = null;
         try {
-            encryptedValue = KNSServiceLocatorInternal.getEncryptionService().encrypt(target);
-        }
-        catch (GeneralSecurityException e) {
+            encryptedValue = this.encryptionService.encrypt(target);
+        } catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt secure field.");
         }
 

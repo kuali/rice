@@ -20,7 +20,9 @@ import java.text.ParseException;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.core.api.CoreConstants;
+import org.kuali.rice.core.api.DateTimeService;
+import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
@@ -30,6 +32,14 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 public class TimestampAMPMFormatter extends Formatter {
     private static final long serialVersionUID = 7612442662886603084L;
 
+    protected DateTimeService dateTimeService;
+
+
+    public TimestampAMPMFormatter() {
+        super();
+        this.dateTimeService = GlobalResourceLoader.getService(CoreConstants.Services.DATETIME_SERVICE);
+    }
+
     /**
      * Unformats its argument and return a java.util.Date instance initialized with the resulting string.
      * 
@@ -37,7 +47,7 @@ public class TimestampAMPMFormatter extends Formatter {
      */
     public Object convertToObject(String target) {
         try {
-        	return KNSServiceLocator.getDateTimeService().convertToSqlTimestamp(target);
+        	return this.dateTimeService.convertToSqlTimestamp(target);
         }
         catch (ParseException e) {
             throw new FormatException("parsing", RiceKeyConstants.ERROR_DATE_TIME, target, e);
@@ -57,6 +67,6 @@ public class TimestampAMPMFormatter extends Formatter {
         if (value instanceof String && StringUtils.isEmpty((String) value)) {
             return null;
         }
-        return KNSServiceLocator.getDateTimeService().toDateTimeString((Date)value);
+        return this.dateTimeService.toDateTimeString((Date)value);
     }
 }

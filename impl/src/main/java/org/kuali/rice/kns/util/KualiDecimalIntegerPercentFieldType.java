@@ -23,7 +23,7 @@ import java.sql.Types;
 
 import org.hibernate.HibernateException;
 import org.hibernate.usertype.UserType;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * Hibernate UserType to encrypt and decript data on its way to the database 
@@ -43,7 +43,7 @@ public class KualiDecimalIntegerPercentFieldType extends HibernateImmutableValue
 
 		if (value != null) {
 	        try {
-	            converted = KNSServiceLocatorInternal.getEncryptionService().decrypt(value);
+	            converted = KNSServiceLocator.getEncryptionService().decrypt(value);
 	        }
 	        catch (GeneralSecurityException gse) {
 	            throw new RuntimeException("Unable to decrypt value from db: " + gse.getMessage());
@@ -67,7 +67,7 @@ public class KualiDecimalIntegerPercentFieldType extends HibernateImmutableValue
 
 		if (value != null) {
 	        try {
-	            converted = KNSServiceLocatorInternal.getEncryptionService().encrypt(value);
+	            converted = KNSServiceLocator.getEncryptionService().encrypt(value);
 	        }
 	        catch (GeneralSecurityException gse) {
 	            throw new RuntimeException("Unable to encrypt value to db: " + gse.getMessage());

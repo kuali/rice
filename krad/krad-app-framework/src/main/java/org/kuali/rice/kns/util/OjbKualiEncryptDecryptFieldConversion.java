@@ -18,7 +18,7 @@ package org.kuali.rice.kns.util;
 import java.security.GeneralSecurityException;
 
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -38,8 +38,8 @@ public class OjbKualiEncryptDecryptFieldConversion implements FieldConversion {
 
         try {
         	//check if the encryption service is enable before using it
-        	if(KNSServiceLocatorInternal.getEncryptionService().isEnabled()) {
-            	converted = KNSServiceLocatorInternal.getEncryptionService().encrypt(converted);
+        	if(KNSServiceLocator.getEncryptionService().isEnabled()) {
+            	converted = KNSServiceLocator.getEncryptionService().encrypt(converted);
         	}
         }
         catch (GeneralSecurityException e) {
@@ -60,8 +60,8 @@ public class OjbKualiEncryptDecryptFieldConversion implements FieldConversion {
 
         try {
         	//check if the encryption service is enable before using it
-        	if(KNSServiceLocatorInternal.getEncryptionService().isEnabled()) {
-            	converted = KNSServiceLocatorInternal.getEncryptionService().decrypt(converted);
+        	if(KNSServiceLocator.getEncryptionService().isEnabled()) {
+            	converted = KNSServiceLocator.getEncryptionService().decrypt(converted);
         	}
         }
         catch (GeneralSecurityException e) {

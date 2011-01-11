@@ -25,7 +25,7 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.web.test.ServerTestBase;
 
 /**
@@ -43,7 +43,7 @@ public class DemonstrationGradeEncryptionServiceImplTest extends ServerTestBase 
 
     @Test
     public void testEncrypt() throws Exception {
-        assertEquals(KNSServiceLocatorInternal.getEncryptionService().decrypt(KNSServiceLocatorInternal.getEncryptionService().encrypt(TEST_VALUE)), TEST_VALUE);
+        assertEquals(KNSServiceLocator.getEncryptionService().decrypt(KNSServiceLocator.getEncryptionService().encrypt(TEST_VALUE)), TEST_VALUE);
         EncryptionService encryptionService = new DemonstrationGradeEncryptionServiceImpl();
         ((DemonstrationGradeEncryptionServiceImpl) encryptionService).setSecretKey(NOT_SO_SECRET_KEY_ONLY_INTENDED_FOR_TESTING);
 
@@ -63,13 +63,13 @@ public class DemonstrationGradeEncryptionServiceImplTest extends ServerTestBase 
         System.err.println("This should be unintelligible: " + encrypted);
         System.err.println("Here is a freshly generated secret key: " + ((DemonstrationGradeEncryptionServiceImpl) encryptionService).generateEncodedKey());
 
-        encryptionService = KNSServiceLocatorInternal.getEncryptionService();
+        encryptionService = KNSServiceLocator.getEncryptionService();
         valueToHide = "999999999";
         // valueToHide = StringUtils.rightPad(valueToHide, 16);
         encrypted = encryptionService.encrypt(valueToHide) + EncryptionService.ENCRYPTION_POST_PREFIX;
         System.out.print(encrypted);
         encrypted = StringUtils.stripEnd(encrypted, EncryptionService.ENCRYPTION_POST_PREFIX);
-        clearText = KNSServiceLocatorInternal.getEncryptionService().decrypt(encrypted);
+        clearText = KNSServiceLocator.getEncryptionService().decrypt(encrypted);
         assertTrue(clearText.equals(valueToHide));
 
         valueToHide = "My friend Joe";

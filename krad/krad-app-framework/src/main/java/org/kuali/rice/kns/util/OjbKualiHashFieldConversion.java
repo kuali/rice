@@ -20,7 +20,7 @@ import java.security.GeneralSecurityException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.accesslayer.conversions.FieldConversion;
 import org.kuali.rice.core.service.EncryptionService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 
 /**
@@ -42,7 +42,7 @@ public class OjbKualiHashFieldConversion implements FieldConversion {
                 converted = StringUtils.stripEnd( converted.toString(), EncryptionService.HASH_POST_PREFIX );
             } else {
                 try {
-                    converted = KNSServiceLocatorInternal.getEncryptionService().hash(converted);
+                    converted = KNSServiceLocator.getEncryptionService().hash(converted);
                 } catch (GeneralSecurityException e) {
                     throw new RuntimeException("Unable to hash value to db: " + e.getMessage());
                 }

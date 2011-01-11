@@ -25,8 +25,8 @@ import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.collections.comparators.ComparableComparator;
+import org.kuali.rice.core.KualiException;
 import org.kuali.rice.core.util.type.TypeUtils;
-import org.kuali.rice.kns.exception.KualiException;
 
 /**
  * This class compares the two beans using multiple property names.
@@ -153,7 +153,7 @@ public class BeanPropertyComparator implements Comparator, Serializable {
         return compared;
     }
     
-    public static class BeanComparisonException extends KualiException{
+    public static class BeanComparisonException extends KualiException {
         private static final long serialVersionUID = 2622379680100640029L;
 
         /**

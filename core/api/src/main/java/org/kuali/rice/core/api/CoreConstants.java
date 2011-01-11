@@ -23,11 +23,12 @@ package org.kuali.rice.core.api;
  *
  */
 public final class CoreConstants {
-	
-	public final static class Services {
+
+    public final static class Services {
         public static final String DATETIME_SERVICE = "dateTimeService";
-        
-    	private Services() {
+        public static final String ENCRYPTION_SERVICE = "encryptionService";
+
+        private Services() {
     		throw new UnsupportedOperationException("do not call");
     	}
 	}

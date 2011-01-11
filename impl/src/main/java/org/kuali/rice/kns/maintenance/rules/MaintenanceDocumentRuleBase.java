@@ -328,7 +328,7 @@ public class MaintenanceDocumentRuleBase extends DocumentRuleBase implements Mai
             // Encrypt value if it is a secure field
             if (businessObjectAuthorizationService.attributeValueNeedsToBeEncryptedOnFormsAndLinks(inactivationBlockingMetadata.getBlockedBusinessObjectClass(), keyName)) {
                 try {
-                    keyValue = KNSServiceLocatorInternal.getEncryptionService().encrypt(keyValue);
+                    keyValue = KNSServiceLocator.getEncryptionService().encrypt(keyValue);
                 }
                 catch (GeneralSecurityException e) {
                     LOG.error("Exception while trying to encrypted value for inquiry framework.", e);

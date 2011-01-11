@@ -60,6 +60,7 @@ import org.kuali.rice.kns.exception.DocumentTypeAuthorizationException;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.event.KualiAddLineEvent;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
@@ -89,7 +90,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 	public KualiMaintenanceDocumentAction() {
 		super();
 		maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
-		encryptionService = KNSServiceLocatorInternal.getEncryptionService();
+		encryptionService = KNSServiceLocator.getEncryptionService();
 	}
 
 	@Override

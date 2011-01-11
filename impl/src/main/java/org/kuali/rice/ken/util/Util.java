@@ -244,22 +244,6 @@ public final class Util {
     }
     
     /**
-     * Returns the text value of a child element with the given name, of the given parent element,
-     * or null if the child does not exist or does not have a child text node
-     * @param parent parent element
-     * @param name name of child element
-     * @return the text value of a child element with the given name, of the given parent element,
-     * or null if the child does not exist or does not have a child text node
-     */
-    public static String getChildElementTextValue(Node parent, String name) {
-        Element child = getChildElement(parent, name);
-        if (child == null) {
-            return null;
-        }
-        return child.getTextContent();
-    }
-    
-    /**
      * This method will clone a given Notification object, one level deep, returning a fresh new instance 
      * without any references.
      * @param notification the object to clone

@@ -26,12 +26,7 @@ import org.kuali.rice.core.service.EncryptionService;
  */
 public class EncryptionFormatter extends Formatter {
     private static final long serialVersionUID = -4109390572922205211L;
-    protected EncryptionService encryptionService;
-
-    public EncryptionFormatter() {
-        super();
-        this.encryptionService = GlobalResourceLoader.getService(CoreConstants.Services.ENCRYPTION_SERVICE);
-    }
+    private transient EncryptionService encryptionService;
 
     protected Object convertToObject(String target) {
         if (Formatter.isEmptyValue(target))
@@ -39,7 +34,7 @@ public class EncryptionFormatter extends Formatter {
 
         String decryptedValue = null;
         try {
-            decryptedValue = this.encryptionService.decrypt(target);
+            decryptedValue = getEncryptionFormatter().decrypt(target);
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to decrypt value.");
         }
@@ -50,11 +45,18 @@ public class EncryptionFormatter extends Formatter {
     public Object format(Object target) {
         String encryptedValue = null;
         try {
-            encryptedValue = this.encryptionService.encrypt(target);
+            encryptedValue = getEncryptionFormatter().encrypt(target);
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Unable to encrypt secure field.");
         }
 
         return encryptedValue;
+    }
+    
+    protected EncryptionService getEncryptionFormatter() {
+    	if (this.encryptionService == null) {
+    		this.encryptionService = GlobalResourceLoader.getService(CoreConstants.Services.ENCRYPTION_SERVICE);
+    	}
+    	return this.encryptionService;
     }
 }

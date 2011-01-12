@@ -37,12 +37,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 public class DateFormatter extends Formatter {
     private static final long serialVersionUID = 7612442662886603084L;
 
-    protected DateTimeService dateTimeService;
-
-    public DateFormatter() {
-        super();
-        this.dateTimeService = GlobalResourceLoader.getService(CoreConstants.Services.DATETIME_SERVICE);
-    }
+    private transient DateTimeService dateTimeService;
 
     /**
      * For a given user input date, this method returns the exact string the user entered after the last slash. This allows the
@@ -72,7 +67,7 @@ public class DateFormatter extends Formatter {
     protected Object convertToObject(String target) {
         // begin Kuali Foundation modification
         try {
-            Date result = this.dateTimeService.convertToSqlDate(target);
+            Date result = getDateTimeService().convertToSqlDate(target);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(result);
             if (calendar.get(Calendar.YEAR) < 1000 && verbatimYear(target).length() < 4) {
@@ -98,7 +93,7 @@ public class DateFormatter extends Formatter {
         if ("".equals(value)) {
             return null;
         }
-        return this.dateTimeService.toDateString((java.util.Date) value);
+        return getDateTimeService().toDateString((java.util.Date) value);
         // end Kuali Foundation modification
     }
 
@@ -114,7 +109,7 @@ public class DateFormatter extends Formatter {
         boolean isValid = false;
 
         try {
-            this.dateTimeService.convertToSqlTimestamp(dateString);
+            getDateTimeService().convertToSqlTimestamp(dateString);
             isValid = true;
         } catch (Exception e) {
 
@@ -122,6 +117,13 @@ public class DateFormatter extends Formatter {
 
         return isValid;
 
+    }
+    
+    protected DateTimeService getDateTimeService() {
+    	if (this.dateTimeService == null) {
+    		this.dateTimeService = GlobalResourceLoader.getService(CoreConstants.Services.DATETIME_SERVICE);
+    	}
+    	return this.dateTimeService;
     }
 
 }

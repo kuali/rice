@@ -18,17 +18,17 @@ package org.kuali.rice.kns.web.format;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-
 public class DateViewTimestampObjectFormatter extends DateFormatter {
+	@Override
 	protected Object convertToObject(String target) {
 		return new Timestamp(((Date) super.convertToObject(target)).getTime());
 	}
 
+	@Override
 	public Object format(Object value) {
 		if (value == null)
 			return null;
-		return this.dateTimeService.toDateTimeString((Timestamp) value);
+		return getDateTimeService().toDateTimeString((Timestamp) value);
 
 	}
 }

@@ -32,13 +32,7 @@ import org.kuali.rice.kns.util.RiceKeyConstants;
 public class TimestampAMPMFormatter extends Formatter {
     private static final long serialVersionUID = 7612442662886603084L;
 
-    protected DateTimeService dateTimeService;
-
-
-    public TimestampAMPMFormatter() {
-        super();
-        this.dateTimeService = GlobalResourceLoader.getService(CoreConstants.Services.DATETIME_SERVICE);
-    }
+    private transient DateTimeService dateTimeService;
 
     /**
      * Unformats its argument and return a java.util.Date instance initialized with the resulting string.
@@ -47,7 +41,7 @@ public class TimestampAMPMFormatter extends Formatter {
      */
     public Object convertToObject(String target) {
         try {
-        	return this.dateTimeService.convertToSqlTimestamp(target);
+        	return getDateTimeService().convertToSqlTimestamp(target);
         }
         catch (ParseException e) {
             throw new FormatException("parsing", RiceKeyConstants.ERROR_DATE_TIME, target, e);
@@ -67,6 +61,13 @@ public class TimestampAMPMFormatter extends Formatter {
         if (value instanceof String && StringUtils.isEmpty((String) value)) {
             return null;
         }
-        return this.dateTimeService.toDateTimeString((Date)value);
+        return getDateTimeService().toDateTimeString((Date)value);
+    }
+    
+    protected DateTimeService getDateTimeService() {
+    	if (this.dateTimeService == null) {
+    		this.dateTimeService = GlobalResourceLoader.getService(CoreConstants.Services.DATETIME_SERVICE);
+    	}
+    	return this.dateTimeService;
     }
 }

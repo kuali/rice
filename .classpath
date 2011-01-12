@@ -181,7 +181,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/ojb/db-ojb/1.0.4-patch4/db-ojb-1.0.4-patch4.jar" sourcepath="M2_REPO/ojb/db-ojb/1.0.4-patch4/db-ojb-1.0.4-patch4-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/opensymphony/oscache/2.4.1/oscache-2.4.1.jar"sourcepath="M2_REPO/opensymphony/oscache/2.4.1/oscache-2.4.1-sources.jar" />
+	<classpathentry kind="var" path="M2_REPO/opensymphony/oscache/2.4.1/oscache-2.4.1.jar" sourcepath="M2_REPO/opensymphony/oscache/2.4.1/oscache-2.4.1-sources.jar" />
 	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security-cas/1.0.7/acegi-security-cas-1.0.7.jar" sourcepath="M2_REPO/org/acegisecurity/acegi-security-cas/1.0.7/acegi-security-cas-1.0.7-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/acegisecurity/acegi-security/1.0.7/acegi-security-1.0.7.jar" sourcepath="M2_REPO/org/acegisecurity/acegi-security/1.0.7/acegi-security-1.0.7-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/apache/cxf/cxf-api/2.3.1/cxf-api-2.3.1.jar" sourcepath="M2_REPO/org/apache/cxf/cxf-api/2.3.1/cxf-api-2.3.1-sources.jar">

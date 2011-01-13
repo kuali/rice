@@ -462,5 +462,75 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1.jar" sourcepath="M2_REPO/javax/servlet/jsp/jsp-api/2.1/jsp-api-2.1-sources.jar"/>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-api/2.2.2/tiles-api-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-api/2.2.2/tiles-api-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-api/2.2.2/tiles-api-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-compat/2.2.2/tiles-compat-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-compat/2.2.2/tiles-compat-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-compat/2.2.2/tiles-compat-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-core/2.2.2/tiles-core-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-core/2.2.2/tiles-core-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-core/2.2.2/tiles-core-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-el/2.2.2/tiles-el-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-el/2.2.2/tiles-el-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-el/2.2.2/tiles-el-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-extras/2.2.2/tiles-extras-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-extras/2.2.2/tiles-extras-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-extras/2.2.2/tiles-extras-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-freemarker/2.2.2/tiles-freemarker-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-freemarker/2.2.2/tiles-freemarker-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-freemarker/2.2.2/tiles-freemarker-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-jsp/2.2.2/tiles-jsp-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-jsp/2.2.2/tiles-jsp-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-jsp/2.2.2/tiles-jsp-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-mvel/2.2.2/tiles-mvel-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-mvel/2.2.2/tiles-mvel-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-mvel/2.2.2/tiles-mvel-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-ognl/2.2.2/tiles-ognl-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-ognl/2.2.2/tiles-ognl-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-ognl/2.2.2/tiles-ognl-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-servlet/2.2.2/tiles-servlet-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-servlet/2.2.2/tiles-servlet-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-servlet/2.2.2/tiles-servlet-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-servlet-wildcard/2.2.2/tiles-servlet-wildcard-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-servlet-wildcard/2.2.2/tiles-servlet-wildcard-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-servlet-wildcard/2.2.2/tiles-servlet-wildcard-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-template/2.2.2/tiles-template-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-template/2.2.2/tiles-template-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-template/2.2.2/tiles-template-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/org/apache/tiles/tiles-velocity/2.2.2/tiles-velocity-2.2.2.jar" sourcepath="M2_REPO/org/apache/tiles/tiles-velocity/2.2.2/tiles-velocity-2.2.2-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/org/apache/tiles/tiles-velocity/2.2.2/tiles-velocity-2.2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="var" path="M2_REPO/ognl/ognl/2.7.3/ognl-2.7.3.jar" sourcepath="M2_REPO/ognl/ognl/2.7.3/ognl-2.7.3-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:file:/C:/Users/jkneal/.m2/repository/ognl/ognl/2.7.3/ognl-2.7.3-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

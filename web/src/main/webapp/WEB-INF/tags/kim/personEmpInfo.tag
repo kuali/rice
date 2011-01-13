@@ -25,8 +25,8 @@
        		<th><div align="left">&nbsp</div></th> 
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.employeeId}" noColon="true" /></div></th>
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.primary}" noColon="true" /></div></th>
-       		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}" noColon="true" /></div></th>
-       		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" noColon="true" /></div></th>
+       		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.employmentStatusCode}" noColon="true" /></div></th>
+       		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.employmentTypeCode}" noColon="true" /></div></th>
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.baseSalaryAmount}" noColon="true" /></div></th>
        		<th><div align="center"><kul:htmlAttributeLabel attributeEntry="${docEmploymentInfoAttributes.primaryDepartmentCode}" noColon="true" /></div></th>
 	        <c:if test="${not inquiry}">	
@@ -47,11 +47,11 @@
                 </div>
                 </td>                
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employeeStatusCode" attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}" readOnly="${readOnlyEntity}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employmentTypeCode" attributeEntry="${docEmploymentInfoAttributes.employmentStatusCode}" readOnly="${readOnlyEntity}" />
                 </div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" readOnly="${readOnlyEntity}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].newEmpInfo.employmentTypeCode" attributeEntry="${docEmploymentInfoAttributes.employmentTypeCode}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
@@ -84,11 +84,11 @@
                 </div>
                 </td>	                 
 				<td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeStatusCode" attributeEntry="${docEmploymentInfoAttributes.employeeStatusCode}"  readOnlyAlternateDisplay="${fn:escapeXml(empInfo.employmentStatus.employmentStatusName)}" readOnly="${readOnlyEntity}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employmentStatusCode" attributeEntry="${docEmploymentInfoAttributes.employmentStatusCode}"  readOnlyAlternateDisplay="${fn:escapeXml(empInfo.employmentStatus.employmentStatusName)}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td align="left" valign="middle" class="infoline">
-                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employeeTypeCode" attributeEntry="${docEmploymentInfoAttributes.employeeTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(empInfo.employmentType.employmentTypeName)}" readOnly="${readOnlyEntity}" />
+                	<div align="center"><kul:htmlControlAttribute property="document.affiliations[${afflnIdx}].empInfos[${status.index}].employmentTypeCode" attributeEntry="${docEmploymentInfoAttributes.employmentTypeCode}" readOnlyAlternateDisplay="${fn:escapeXml(empInfo.employmentType.employmentTypeName)}" readOnly="${readOnlyEntity}" />
                 	</div>
                 </td>
                 <td align="left" valign="middle" class="infoline">

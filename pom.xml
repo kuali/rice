@@ -290,20 +290,6 @@
 						<version>2.4</version>
 					</plugin>
 					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-source-plugin</artifactId>
-						<version>2.0.2</version>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-javadoc-plugin</artifactId>
-						<version>2.2</version>
-						<configuration>
-							<aggregate>true</aggregate>
-							<maxmemory>512m</maxmemory>
-						</configuration>
-					</plugin>
-					<plugin>
 						<groupId>com.atlassian.maven.plugins</groupId>
 						<artifactId>maven-licenses-plugin</artifactId>
 						<version>0.3-kuali</version>
@@ -334,6 +320,64 @@
                                                 <groupId>com.google.code.maven-svn-revision-number-plugin</groupId>
                                                 <artifactId>maven-svn-revision-number-plugin</artifactId>
                                         </plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>release</id>
+			<!-- profile used to add additional settings for the release process without affecting local development speed -->
+			
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<pluginManagement>
+					<plugins>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-javadoc-plugin</artifactId>
+							<version>2.2</version>
+							<configuration>
+								<aggregate>true</aggregate>
+								<maxmemory>512m</maxmemory>
+							</configuration>
+							<executions>
+								<execution>
+									<id>attach-javadocs</id>
+									<phase>verify</phase>
+									<goals>
+										<goal>jar</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+						
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-source-plugin</artifactId>
+							<version>2.1.2</version>
+							<executions>
+								<execution>
+									<id>attach-sources</id>
+									<phase>verify</phase>
+									<goals>
+										<goal>jar-no-fork</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>						
+					</plugins>
+				</pluginManagement>
+				
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>

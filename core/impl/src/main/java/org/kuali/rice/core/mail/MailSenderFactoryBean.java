@@ -22,8 +22,6 @@ import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.mail.Mailer;
-import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -96,7 +94,7 @@ public class MailSenderFactoryBean extends AbstractFactoryBean {
     @SuppressWarnings("unchecked")
 	@Override
     public Class getObjectType() {
-	return Properties.class;
+	return JavaMailSenderImpl.class;
     }
 
 }

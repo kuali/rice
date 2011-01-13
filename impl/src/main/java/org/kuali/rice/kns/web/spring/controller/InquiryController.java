@@ -46,28 +46,33 @@ import org.springframework.web.servlet.ModelAndView;
  *
  */
 @Controller
+@RequestMapping(value="/inquiry")
 public class InquiryController {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InquiryController.class);
-		
+	
+//	@ModelAttribute("KualiForm")
+//	public InquiryForm prepareForm() {
+//		InquiryForm form = new InquiryForm();
+//		form.setUsingSpring(true);
+//		
+//		return form;
+//	}
+	
 	@InitBinder
     public void initBinder(WebDataBinder binder) {
         binder.registerCustomEditor(boolean.class, new KradBooleanBinder());
     }
 
-	@RequestMapping(value="/krad/inquiry*", params="methodToCall=start")
+	@RequestMapping(params="methodToCall=start")
 	public ModelAndView start(@ModelAttribute("KualiForm") InquiryForm inquiryForm,
 			BindingResult result, HttpServletRequest request, HttpServletResponse response) {		
 		return continueWithInquiry(inquiryForm, result, request, response);
 	}
 	
-	@RequestMapping(value="/krad/inquiry*", params="methodToCall=continueWithInquiry")
+	@RequestMapping(params="methodToCall=continueWithInquiry")
 	public ModelAndView continueWithInquiry(@ModelAttribute("KualiForm") InquiryForm inquiryForm,
 			BindingResult result, HttpServletRequest request, HttpServletResponse response) {
-				
-		String boClassName = request.getParameter("businessObjectClassName");
 		
-//		InquiryForm inquiryForm = new InquiryForm();
-//		inquiryForm.setBusinessObjectClassName(boClassName);
 		inquiryForm.populate(request);
 		
 		BusinessObject bo = retrieveBOFromInquirable(inquiryForm);

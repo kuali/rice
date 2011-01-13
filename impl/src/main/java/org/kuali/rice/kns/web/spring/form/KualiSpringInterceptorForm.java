@@ -39,7 +39,7 @@ import org.kuali.rice.kns.web.struts.pojo.PojoFormBase;
  */
 public class KualiSpringInterceptorForm extends PojoFormBase {
 	
-	private boolean isUsingSpring = false;
+	protected boolean isUsingSpring = false;
 
 	public boolean isUsingSpring() {
     	return this.isUsingSpring;
@@ -73,13 +73,13 @@ public class KualiSpringInterceptorForm extends PojoFormBase {
 	@Override
     public void reset(ActionMapping mapping, HttpServletRequest request) {
 	    if (!isUsingSpring) {
-	    super.reset(mapping, request);} else {throw new RuntimeException("Attempted to call ActionForm");}
+	    super.reset(mapping, request);}
     }
 
 	@Override
     public void reset(ActionMapping mapping, ServletRequest request) {
 	    if (!isUsingSpring) {
-	    super.reset(mapping, request);} else {throw new RuntimeException("Attempted to call ActionForm");}
+	    super.reset(mapping, request);}
     }
 
 	@Override
@@ -154,7 +154,9 @@ public class KualiSpringInterceptorForm extends PojoFormBase {
 	@Override
     public String getActionEditablePropertiesGuid() {
 	    if (!isUsingSpring) {
-	    return super.getActionEditablePropertiesGuid();} else {throw new RuntimeException("Attempted to call PojoFormBase");}
+	    return super.getActionEditablePropertiesGuid();}
+	    
+	    return null;
     }
 
 	@Override
@@ -190,7 +192,11 @@ public class KualiSpringInterceptorForm extends PojoFormBase {
 	@Override
     protected String getParameter(HttpServletRequest request, String parameterName) {
 	    if (!isUsingSpring) {
-	    return super.getParameter(request, parameterName);} else {throw new RuntimeException("Attempted to call PojoFormBase");}
+	    return super.getParameter(request, parameterName);
+	    }
+	    
+	    // letting this one work as it might be needed in some post binding stuff
+	    return request.getParameter(parameterName);
     }
 
 	@Override
@@ -232,7 +238,9 @@ public class KualiSpringInterceptorForm extends PojoFormBase {
 	@Override
     public Map getUnconvertedValues() {
 	    if (!isUsingSpring) {
-	    return super.getUnconvertedValues();} else {throw new RuntimeException("Attempted to call PojoFormBase");}
+	    return super.getUnconvertedValues();}
+	    
+	    return null;
     }
 
 	@Override
@@ -256,7 +264,7 @@ public class KualiSpringInterceptorForm extends PojoFormBase {
 	@Override
     public void populate(HttpServletRequest request) {
 	    if (!isUsingSpring) {
-	    super.populate(request);} else {throw new RuntimeException("Attempted to call PojoFormBase");}
+	    super.populate(request);}
     }
 
 	@Override
@@ -280,7 +288,7 @@ public class KualiSpringInterceptorForm extends PojoFormBase {
 	@Override
     public void registerEditableProperty(String editablePropertyName) {
 	    if (!isUsingSpring) {
-	    super.registerEditableProperty(editablePropertyName);} else {throw new RuntimeException("Attempted to call PojoFormBase");}
+	    super.registerEditableProperty(editablePropertyName);}
     }
 
 	@Override

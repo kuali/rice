@@ -34,9 +34,9 @@ public class KradAnnotationMethodHandlerAdapter extends AnnotationMethodHandlerA
 		if (target != null) {
 			if (target instanceof KualiSpringInterceptorForm) {
 				KualiSpringInterceptorForm kualiForm = (KualiSpringInterceptorForm) target;
-				if (kualiForm.isUsingSpring()) {
+//				if (kualiForm.isUsingSpring()) {
 					return new KradServletRequestDataBinder(target, objectName);
-				}
+//				}
 			}
 		}
 	    return super.createBinder(request, target, objectName);

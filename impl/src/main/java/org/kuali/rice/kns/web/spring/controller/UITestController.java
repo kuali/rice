@@ -19,8 +19,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.ui.container.View;
-import org.kuali.rice.kns.ui.service.ViewService;
+import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.web.spring.form.UITestForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;

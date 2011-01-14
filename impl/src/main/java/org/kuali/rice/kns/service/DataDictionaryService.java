@@ -33,7 +33,7 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
-import org.kuali.rice.kns.ui.container.View;
+import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.web.format.Formatter;
 
 

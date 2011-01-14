@@ -25,7 +25,7 @@ import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.question.Question;
-import org.kuali.rice.kns.ui.service.ViewService;
+import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;

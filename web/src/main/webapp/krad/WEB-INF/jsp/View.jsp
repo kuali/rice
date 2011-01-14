@@ -16,6 +16,5 @@
 
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<!-- let view handler render page -->
-
-<tiles:insertTemplate template="${View.template}"/>
+<%-- let view handler render page --%>
+<krad:template component="${View}"/>

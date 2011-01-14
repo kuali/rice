@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.HeaderField"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.HeaderField"/>
 
 <c:set var="headerOpenTag" value="<${field.headerLevel}>"/>
 <c:set var="headerCloseTag" value="</${field.headerLevel}>"/>

@@ -15,41 +15,26 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="group" classname="org.kuali.rice.kns.ui.container.PanelGroup"/>
+<tiles:useAttribute name="group" classname="org.kuali.rice.kns.uif.decorator.PanelGroupDecorator"/>
 
 <c:set var="panelHeader" value="${group.panelHeader}"/>
+<c:set var="openPanelHeaderContents" value="<img src='${ConfigProperties.krad.externalizable.images.url}arrow-exp.png' width='16' height='16' alt='collapse'>${panelHeader.headerText}"/>
+<c:set var="closedPanelHeaderContents" value="<img src='${ConfigProperties.krad.externalizable.images.url}arrow-col.png' width='16' height='16' alt='expand'>${panelHeader.headerText}"/>
 
-<div class="${panelHeader.styleClass}">
-  <h2><a href="#" id="show_tab-${group.id}-div"><img src="${ConfigProperties.krad.externalizable.images.url}arrow-col.png" width="16" height="16" alt="collapse">${panelHeader.headerText}</a></h2>
-</div>
-
-<div id="tab-${group.id}-div">
-  <%-- render default group --%>
-  <tiles:insertTemplate template="${group.wrappedGroupTemplate}">
-        <tiles:putAttribute name="group" value="${group}"/>
-  </tiles:insertTemplate>
-</div>
+<c:set var="panelToggleLink" value="panel_toogle_${group.decoratedGroup.id}"/>
+<c:set var="panelDiv" value="panel_${group.decoratedGroup.id}_div"/>
 
 <c:set var="isOpen" value="${group.defaultOpen}"/>
 
+<div id="${panelHeader.id}" class="${panelHeader.styleClass}">
+  <h2><a href="#" id="${panelToggleLink}"></a></h2>
+</div>
+
+<%-- render decorated group --%>
+<div id="${panelDiv}" class="${group.styleClass}">
+  <krad:template component="${group.decoratedGroup}"/>
+</div>
+
 <script type="text/javascript">
-  $(document).ready(function() {
-     <c:if test="${isOpen}">
-       $("#tab-${group.id}-div").slideDown(000);
-     </c:if>
-       
-     <c:if test="${!isOpen}">
-       $("#tab-${group.id}-div").slideUp(000);
-     </c:if>
-  
-      $("#show_tab-${group.id}-div").toggle(
-        function() {
-          $("#tab-${group.id}-div").slideUp(600);
-          $("#show_tab-${group.id}-div").html("<img src='${ConfigProperties.krad.externalizable.images.url}arrow-col.png' width='16' height='16' alt='collapse'>${panelHeader.headerText}");
-        }, function() {
-          $("#tab-${group.id}-div").slideDown(600);
-          $("#show_tab-${group.id}-div").html("<img src='${ConfigProperties.krad.externalizable.images.url}arrow-exp.png' width='16' height='16' alt='expand'>${panelHeader.headerText}");
-        }
-      );
-  });
+  doPanel("${panelToggleLink}", "${openPanelHeaderContents}", "${closedPanelHeaderContents}", "${panelDiv}", ${isOpen});
 </script>

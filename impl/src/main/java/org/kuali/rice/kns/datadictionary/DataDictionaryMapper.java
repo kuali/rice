@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.kuali.rice.kns.ui.container.View;
+import org.kuali.rice.kns.uif.container.View;
 
 /**
  * Maps one Document type to other document Type.

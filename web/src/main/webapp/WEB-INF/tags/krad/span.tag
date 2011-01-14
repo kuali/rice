@@ -17,7 +17,7 @@
 
 <%@ attribute name="field" required="true" 
               description="The UIF Field for which the span will be wrapping." 
-              type="org.kuali.rice.kns.ui.field.Field"%>
+              type="org.kuali.rice.kns.uif.field.Field"%>
 <%@ attribute name="idSuffix" required="false" 
               description="String to suffix the id with"%>               
               

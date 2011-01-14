@@ -17,7 +17,7 @@
 
 <%@ attribute name="component" required="true" 
               description="The UIF component for which the div will be wrapping." 
-              type="org.kuali.rice.kns.ui.Component"%>
+              type="org.kuali.rice.kns.uif.Component"%>
               
 <c:if test="${!empty component.style}">
   <c:set var="style" value="style=\"${component.style}\""/>

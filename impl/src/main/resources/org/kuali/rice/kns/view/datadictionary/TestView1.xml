@@ -200,7 +200,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Group with grid layout and various col/row spans"/>      
    </bean> 
    
-   <bean id="testSection5" parent="PanelSection" p:defaultOpen="false">
+   <bean id="testSection5" parent="PanelSection">
       <property name="id" value="testSection5"/>
       <property name="title" value="Banking Info"/> 
       <property name="items">
@@ -210,7 +210,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
    </bean>   
    
-   <bean id="testSection2" parent="PanelGridSection" p:defaultOpen="false">
+   <bean id="testSection2" parent="PanelGridSection">
       <property name="id" value="testSection2"/>
       <property name="title" value="Test Section 2"/> 
       <property name="fieldBindByNamePrefix" value="travelAccount1"/> 

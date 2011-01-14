@@ -15,8 +15,8 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.TextAreaControl"/>
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.AttributeField"/>
+<tiles:useAttribute name="control" classname="org.kuali.rice.kns.uif.control.TextAreaControl"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.AttributeField"/>
 
 <%--
     Standard HTML TextArea Input

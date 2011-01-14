@@ -21,7 +21,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 
   <!-- Views -->
 
-  <bean id="View" abstract="true" class="org.kuali.rice.kns.ui.container.View" scope="prototype">
+  <bean id="View" abstract="true" class="org.kuali.rice.kns.uif.container.View" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/view/view.jsp"/>
       <property name="viewHelperServiceBeanId" value="ViewHelperService"/>
       <property name="header">
@@ -55,13 +55,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property> 
   </bean>   
   
-  <bean id="PanelSection" abstract="true" class="org.kuali.rice.kns.ui.container.PanelGroup" parent="Section">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/panelGroup.jsp"/>
-      <property name="wrappedGroupTemplate" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
-      <property name="panelHeader">
-        <bean parent="PanelHeader"/>
+  <bean id="PanelSection" abstract="true" parent="Section">
+      <property name="decorators">
+        <map>
+          <entry key="panel"><ref bean="PanelGroupDecorator"/></entry>
+        </map>  
       </property>
-      <property name="styleClass" value="tab-container"/>
       <property name="renderHeader" value="false"/>
   </bean> 
   
@@ -78,7 +77,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <!-- Groups -->
   
-  <bean id="Group" abstract="true" class="org.kuali.rice.kns.ui.container.Group" scope="prototype">
+  <bean id="Group" abstract="true" class="org.kuali.rice.kns.uif.container.Group" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
       <property name="header">
         <bean parent="HeaderThree"/>
@@ -102,7 +101,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean>
   
-  <bean id="NavigationGroup" abstract="true" class="org.kuali.rice.kns.ui.container.NavigationGroup" scope="prototype">
+  <bean id="NavigationGroup" abstract="true" class="org.kuali.rice.kns.uif.container.NavigationGroup" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/navigationGroup.jsp"/>
   </bean>
   
@@ -115,9 +114,19 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="renderFooter" value="false"/>
   </bean>  
   
+  <!-- Decorators -->
+  
+  <bean id="PanelGroupDecorator" class="org.kuali.rice.kns.uif.decorator.PanelGroupDecorator" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/panelGroup.jsp"/>
+      <property name="panelHeader">
+        <bean parent="PanelHeader"/>
+      </property>
+      <property name="styleClass" value="tab-container"/>
+  </bean> 
+  
   <!-- Fields -->
   
-  <bean id="AttributeField" abstract="true" class="org.kuali.rice.kns.ui.field.AttributeField" scope="prototype">
+  <bean id="AttributeField" abstract="true" class="org.kuali.rice.kns.uif.field.AttributeField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/attributeField.jsp"/>
       <property name="labelField">
         <bean parent="LabelField" p:align="right"/>
@@ -129,7 +138,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="bindToModel" value="false"/>
   </bean>    
   
-  <bean id="LabelField" abstract="true" class="org.kuali.rice.kns.ui.field.LabelField" scope="prototype">
+  <bean id="LabelField" abstract="true" class="org.kuali.rice.kns.uif.field.LabelField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/labelField.jsp"/>
       <property name="style" value="text-align: right;font-size: .8em;font-weight: bold;"/>
       <property name="requiredMessageField">
@@ -137,7 +146,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>   
   </bean>  
   
-  <bean id="ActionField" abstract="true" class="org.kuali.rice.kns.ui.field.ActionField" scope="prototype">
+  <bean id="ActionField" abstract="true" class="org.kuali.rice.kns.uif.field.ActionField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/actionField.jsp"/>
   </bean>  
   
@@ -145,15 +154,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/actionLinkField.jsp"/>
   </bean>  
   
-  <bean id="LinkField" abstract="true" class="org.kuali.rice.kns.ui.field.LinkField" scope="prototype">
+  <bean id="LinkField" abstract="true" class="org.kuali.rice.kns.uif.field.LinkField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/linkField.jsp"/>
   </bean>  
   
-  <bean id="MessageField" abstract="true" class="org.kuali.rice.kns.ui.field.MessageField" scope="prototype">
+  <bean id="MessageField" abstract="true" class="org.kuali.rice.kns.uif.field.MessageField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/messageField.jsp"/>
   </bean> 
   
-  <bean id="GroupField" abstract="true" class="org.kuali.rice.kns.ui.field.GroupField" scope="prototype">
+  <bean id="GroupField" abstract="true" class="org.kuali.rice.kns.uif.field.GroupField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/groupField.jsp"/>
       <property name="group">
          <bean parent="Group"/>
@@ -171,7 +180,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <!-- Headers -->
   
-  <bean id="Header" abstract="true" class="org.kuali.rice.kns.ui.field.HeaderField" scope="prototype">
+  <bean id="Header" abstract="true" class="org.kuali.rice.kns.uif.field.HeaderField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/headerField.jsp"/>
       <property name="headerLevel" value="h1"/>
   </bean>
@@ -242,7 +251,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>
   
   <!-- Footers -->
-  <bean id="Footer" abstract="true" class="org.kuali.rice.kns.ui.container.Group" scope="prototype">
+  <bean id="Footer" abstract="true" class="org.kuali.rice.kns.uif.container.Group" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
       <property name="renderHeader" value="false"/>
       <property name="layoutManager">
@@ -253,52 +262,52 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <!-- Layout Managers -->
 
-  <bean id="BoxLayoutManager" abstract="true" class="org.kuali.rice.kns.ui.layout.BoxLayoutManager" scope="prototype">
+  <bean id="BoxLayoutManager" abstract="true" class="org.kuali.rice.kns.uif.layout.BoxLayoutManager" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/box.jsp"/>
       <property name="orientation" value="HORIZONTAL"/>
       <property name="padding" value="1px"/>
       <property name="labelPlacement" value="TOP"/>
   </bean>  
   
-  <bean id="GridLayoutManager" abstract="true" class="org.kuali.rice.kns.ui.layout.GridLayoutManager" scope="prototype">
+  <bean id="GridLayoutManager" abstract="true" class="org.kuali.rice.kns.uif.layout.GridLayoutManager" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/grid.jsp"/>
       <property name="numberOfColumns" value="2"/>
       <property name="labelPlacement" value="LEFT"/>
       <property name="styleClass" value="datatable"/>
   </bean>  
   
-  <bean id="TableLayoutManager" abstract="true" class="org.kuali.rice.kns.ui.layout.TableLayoutManager" scope="prototype">
+  <bean id="TableLayoutManager" abstract="true" class="org.kuali.rice.kns.uif.layout.TableLayoutManager" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/table.jsp"/>
       <property name="labelPlacement" value="TOP"/>
   </bean>  
         
   <!-- Controls -->
   
-  <bean id="TextControl" abstract="true" class="org.kuali.rice.kns.ui.control.TextControl" scope="prototype">
+  <bean id="TextControl" abstract="true" class="org.kuali.rice.kns.uif.control.TextControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/text.jsp"/>
   </bean>  
   
-  <bean id="CheckboxControl" abstract="true" class="org.kuali.rice.kns.ui.control.CheckboxControl" scope="prototype">
+  <bean id="CheckboxControl" abstract="true" class="org.kuali.rice.kns.uif.control.CheckboxControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/checkbox.jsp"/>
   </bean> 
   
-  <bean id="HiddenControl" abstract="true" class="org.kuali.rice.kns.ui.control.HiddenControl" scope="prototype">
+  <bean id="HiddenControl" abstract="true" class="org.kuali.rice.kns.uif.control.HiddenControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/hidden.jsp"/>
   </bean>  
   
-  <bean id="TextAreaControl" abstract="true" class="org.kuali.rice.kns.ui.control.TextAreaControl" scope="prototype">
+  <bean id="TextAreaControl" abstract="true" class="org.kuali.rice.kns.uif.control.TextAreaControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/textArea.jsp"/>
   </bean> 
   
-  <bean id="SelectControl" abstract="true" class="org.kuali.rice.kns.ui.control.SelectControl" scope="prototype">
+  <bean id="SelectControl" abstract="true" class="org.kuali.rice.kns.uif.control.SelectControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/select.jsp"/>
   </bean>     
   
-  <bean id="RadioGroupControl" abstract="true" class="org.kuali.rice.kns.ui.control.RadioGroupControl" scope="prototype">
+  <bean id="RadioGroupControl" abstract="true" class="org.kuali.rice.kns.uif.control.RadioGroupControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/radioGroup.jsp"/>
   </bean>   
   
-  <bean id="FileControl" abstract="true" class="org.kuali.rice.kns.ui.control.FileControl" scope="prototype">
+  <bean id="FileControl" abstract="true" class="org.kuali.rice.kns.uif.control.FileControl" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/control/file.jsp"/>
   </bean>  
   
@@ -310,7 +319,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <!-- Widgets -->
   
-  <bean id="DatePicker" class="org.kuali.rice.kns.ui.widget.DatePicker" scope="prototype">
+  <bean id="DatePicker" class="org.kuali.rice.kns.uif.widget.DatePicker" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/datePicker.jsp"/>
       <property name="widgetOptions">
           <map>
@@ -329,6 +338,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <!-- Initializers -->
   
-  <bean id="LabelFieldGenerator" class="org.kuali.rice.kns.ui.initializer.LabelFieldGenerator"/>
+  <bean id="LabelFieldGenerator" class="org.kuali.rice.kns.uif.initializer.LabelFieldGenerator"/>
    
 </beans>

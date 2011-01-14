@@ -38,10 +38,13 @@ import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.CompletionException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
-import org.kuali.rice.kns.ui.container.View;
+import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.util.ComponentDecoratorBeanPostProcessor;
 import org.kuali.rice.kns.util.ObjectUtils;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
+import org.springframework.context.expression.StandardBeanExpressionResolver;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 
@@ -143,9 +146,21 @@ public class DataDictionary  {
     }
     
     public void parseDataDictionaryConfigurationFiles( boolean allowConcurrentValidation ) {
+		// configure the bean factory, setup component decorator post processor
+		// and allow Spring EL
+		try {
+			BeanPostProcessor postProcessor = ComponentDecoratorBeanPostProcessor.class.newInstance();
+			ddBeans.addBeanPostProcessor(postProcessor);
+			ddBeans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
+		}
+		catch (Exception e1) {
+			LOG.error("Cannot create component decorator post processor: " + e1.getMessage(), e1);
+			throw new RuntimeException("Cannot create component decorator post processor: " + e1.getMessage(), e1);
+		}
+    	
         // expand configuration locations into files
-
         LOG.info( "Starting DD XML File Load" );
+        
         String[] configFileLocationsArray = new String[configFileLocations.size()];
         configFileLocationsArray = configFileLocations.toArray( configFileLocationsArray );
         configFileLocations.clear(); // empty the list out so other items can be added

@@ -16,17 +16,19 @@
 
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
+<tiles:useAttribute name="view" classname="org.kuali.rice.kns.uif.container.View"/>
+
 <!-- begin of view render -->
-<krad:html htmlFormAction="${pageContext.request.contextPath}/spring/${View.controllerRequestMapping}"
-                  headerTitle="${View.title}" additionalScriptFiles="${View.additionalScriptFiles}"
-                  renderForm="${View.renderForm}" renderMultipart="true">
+<krad:html htmlFormAction="${pageContext.request.contextPath}/spring/${view.controllerRequestMapping}"
+                  headerTitle="${view.title}" additionalScriptFiles="${view.additionalScriptFiles}"
+                  renderForm="${view.renderForm}" renderMultipart="true">
         
   <table width="100%">
-   <c:if test="${View.renderHeader}">    
+   <c:if test="${view.renderHeader}">    
      <tr>    
        <td colspan="4">   
          <!----------------------------------- #VIEW HEADER --------------------------------------->
-         <krad:template component="${View.header}"/>
+         <krad:template component="${view.header}"/>
        </td>
      </tr>
    </c:if>  
@@ -34,9 +36,9 @@
    <tr>   
      <td width="30px">
        <!----------------------------------- #VIEW NAVIGATION --------------------------------------->
-       <tiles:insertTemplate template="${View.navigation.template}">
-            <tiles:putAttribute name="${View.navigation.componentTypeName}" value="${View.navigation}" />
-            <tiles:putAttribute name="currentPageId" value="${View.currentPageId}" />
+       <tiles:insertTemplate template="${view.navigation.template}">
+            <tiles:putAttribute name="${view.navigation.componentTypeName}" value="${view.navigation}" />
+            <tiles:putAttribute name="currentPageId" value="${view.currentPageId}" />
        </tiles:insertTemplate>    
      </td>
      
@@ -47,7 +49,7 @@
      
      <td>
        <%-- begin of page render --%>
-       <krad:template component="${View.currentPage}"/>
+       <krad:template component="${view.currentPage}"/>
        <%-- end of page render --%>
     
        <%-- write out hiddens needed to maintain state 
@@ -62,7 +64,7 @@
    <tr>
       <td colspan="4">   
         <!----------------------------------- #VIEW FOOTER --------------------------------------->
-        <krad:template component="${View.footer}"/>
+        <krad:template component="${view.footer}"/>
       </td>
    </tr> 
   </table> 

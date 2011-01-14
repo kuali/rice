@@ -245,3 +245,42 @@ function doDatePicker(controlId, options) {
 	});	
 }
 
+/**
+ * Sets up the script necessary to toggle a group as a panel
+ * 
+ * @param panelToggleLink -
+ *          id for the link that should toggle the panel
+ * @param openPanelHeaderContents -
+ *          contents that should go in the panel header when the panel is open
+ * @param closedPanelHeaderContents -
+ *          contents that should go in the panel header when the panel is closed
+ * @param panelDiv -
+ *          id for the div that wraps the panel contents
+ * @param isOpen -
+ *          boolean that indicates whether the panel should be set to open
+ *          initially (true) or closed (false)
+ */
+function doPanel(panelToggleLink, openPanelHeaderContents, closedPanelHeaderContents, 
+		             panelDiv, isOpen) {
+  $(document).ready(function() {
+  	if (isOpen) {
+  		$("#" + panelDiv).slideDown(000);
+  		$("#" + panelToggleLink).html(openPanelHeaderContents);
+  	}
+  	else {
+  		$("#" + panelDiv).slideUp(000);
+  		$("#" + panelToggleLink).html(closedPanelHeaderContents);
+  	} 
+ 
+    $("#" + panelToggleLink).toggle(
+       function() {
+         $("#" + panelDiv).slideUp(300);
+         $("#" + panelToggleLink).html(closedPanelHeaderContents);
+       }, function() {
+         $("#" + panelDiv).slideDown(300);
+         $("#" + panelToggleLink).html(openPanelHeaderContents);
+       }
+    );
+  });
+}
+

@@ -25,7 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
-import org.kuali.rice.kns.ui.container.View;
+import org.kuali.rice.kns.uif.container.View;
 
 /**
  * A DataDictionaryMapper that simply consults the statically initialized

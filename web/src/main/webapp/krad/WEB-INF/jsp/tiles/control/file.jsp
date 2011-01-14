@@ -15,8 +15,8 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="control" classname="org.kuali.rice.kns.ui.control.FileControl"/>
-<tiles:useAttribute name="field" classname="org.kuali.rice.kns.ui.field.AttributeField"/>
+<tiles:useAttribute name="control" classname="org.kuali.rice.kns.uif.control.FileControl"/>
+<tiles:useAttribute name="field" classname="org.kuali.rice.kns.uif.field.AttributeField"/>
 
 <%--
     Standard HTML File Input

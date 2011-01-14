@@ -22,7 +22,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.ConfigProperties;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.ui.UIFConstants;
+import org.kuali.rice.kns.uif.UIFConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 

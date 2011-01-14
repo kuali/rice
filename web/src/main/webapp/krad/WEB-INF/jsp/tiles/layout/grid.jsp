@@ -16,7 +16,7 @@
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <tiles:useAttribute name="items" classname="java.util.List"/>
-<tiles:useAttribute name="manager" classname="org.kuali.rice.kns.ui.layout.GridLayoutManager"/>
+<tiles:useAttribute name="manager" classname="org.kuali.rice.kns.uif.layout.GridLayoutManager"/>
 
 <%--
     Grid Layout Manager:

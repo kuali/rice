@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="group" classname="org.kuali.rice.kns.ui.container.NavigationGroup"/>
+<tiles:useAttribute name="group" classname="org.kuali.rice.kns.uif.container.NavigationGroup"/>
 
 <%-- renders standard unordered list and calls doNavigation function --%>
 

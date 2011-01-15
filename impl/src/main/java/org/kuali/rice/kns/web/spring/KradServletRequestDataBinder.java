@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.web.spring;
 
+import javax.servlet.ServletRequest;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.TypeMismatchException;
@@ -54,6 +55,11 @@ public class KradServletRequestDataBinder extends ServletRequestDataBinder {
 	    if(target instanceof KualiForm) {
 	    	((KualiForm) target).setUsingSpring(true);
 	    }
+    }
+
+	@Override
+    public void bind(ServletRequest request) {
+	    super.bind(request);
     }
 
     /**

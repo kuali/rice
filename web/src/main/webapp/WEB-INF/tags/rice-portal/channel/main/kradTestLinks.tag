@@ -20,6 +20,7 @@
   
   <ul class="chan">
 	 <li><portal:portalLink displayTitle="true" title="Test View 1" url="${ConfigProperties.application.url}/spring/uitest?methodToCall=start" /></li>
+     <li><portal:portalLink displayTitle="true" title="KRAD Form 1" url="${ConfigProperties.application.url}/spring/kradformtest?methodToCall=start" /></li>
   </ul>
 
   

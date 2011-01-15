@@ -165,7 +165,7 @@
 
 <html:form styleId="kualiForm" action="/${htmlFormAction}.do"
 	method="post" enctype="${encoding}"
-	onsubmit="return hasFormAlreadyBeenSubmitted();">
+	onsubmit="return hasFormAlreadyBeenSubmitted();" modelAttribute="KualiForm">
 <c:choose>
 	<c:when test="${lookup}" >
 	</c:when>

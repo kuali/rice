@@ -15,19 +15,14 @@
  */
 package org.kuali.rice.kns.web.spring.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
-import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kns.document.Copyable;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.struts.form.KualiTransactionalDocumentFormBase;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * This is a description of what this class does - delyea don't forget to fill this in. 
@@ -43,9 +38,7 @@ public class KualiTransactionalDocumentControllerBase extends KualiDocumentContr
      * Method that will take the current document and call its copy method if Copyable.
      */
 	@RequestMapping(params="methodToCall=copy")
-    public ActionForward copy(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        KualiTransactionalDocumentFormBase tmpForm = (KualiTransactionalDocumentFormBase) form;
-
+    public ModelAndView copy(@ModelAttribute("KualiForm") KualiTransactionalDocumentFormBase tmpForm) throws Exception {
         Document document = tmpForm.getDocument();
         
         if (!tmpForm.getDocumentActions().containsKey(KNSConstants.KUALI_ACTION_CAN_COPY)) {
@@ -54,7 +47,7 @@ public class KualiTransactionalDocumentControllerBase extends KualiDocumentContr
 
         ((Copyable) tmpForm.getTransactionalDocument()).toCopy();
 
-        return mapping.findForward(RiceConstants.MAPPING_BASIC);
+        return new ModelAndView(getBasicViewName(), "KualiForm", tmpForm);
     }
 
 //    @SuppressWarnings("unchecked")

@@ -20,25 +20,13 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.exception.DocumentAuthorizationException;
-import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.exception.ValidationException;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.DocumentService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.spring.controller.KualiTransactionalDocumentControllerBase;
-import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
-import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,7 +47,12 @@ import edu.sampleu.travel.krad.form.TravelDocumentKradForm;
 public class TravelDocumentController extends KualiTransactionalDocumentControllerBase {
 	private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(TravelDocumentController.class);
 
-    @RequestMapping(params="methodToCall=insertAccount")
+    @Override
+    protected String getBasicViewName() {
+    	return "test/TravelRequest";
+    }
+
+	@RequestMapping(params="methodToCall=insertAccount")
     public ModelAndView insertAccount(@ModelAttribute("KualiForm") TravelDocumentKradForm travelForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        TravelDocumentForm2 travelForm = (TravelDocumentForm2) form;
         TravelAccount travAcct = (TravelAccount) KNSServiceLocator.getBusinessObjectService().retrieve(travelForm.getTravelAccount());
@@ -81,7 +74,7 @@ public class TravelDocumentController extends KualiTransactionalDocumentControll
         }
         travelForm.setTravelAccount(new TravelAccount());
 //        return mapping.findForward(RiceConstants.MAPPING_BASIC);
-        return new ModelAndView("test/KualiDirectInquiry", "KualiForm", travelForm);
+        return new ModelAndView(getBasicViewName(), "KualiForm", travelForm);
     }
 
 	@RequestMapping(params="methodToCall=deleteAccount")
@@ -94,13 +87,13 @@ public class TravelDocumentController extends KualiTransactionalDocumentControll
     		((TravelDocument2) travelForm.getDocument()).getTravelAccounts().remove(Integer.parseInt(strIndex));
     	}
 //        return mapping.findForward(RiceConstants.MAPPING_BASIC);
-        return new ModelAndView("test/KualiDirectInquiry", "KualiForm", travelForm);
+        return new ModelAndView(getBasicViewName(), "KualiForm", travelForm);
     }
 
 	@RequestMapping(params="methodToCall=refresh")
     public ModelAndView refresh(@ModelAttribute("KualiForm") TravelDocumentKradForm travelForm, HttpServletRequest request, HttpServletResponse response) throws Exception {
 //        return mapping.findForward(RiceConstants.MAPPING_BASIC);
-        return new ModelAndView("test/KualiDirectInquiry", "KualiForm", travelForm);
+        return new ModelAndView(getBasicViewName(), "KualiForm", travelForm);
     }
 
 }

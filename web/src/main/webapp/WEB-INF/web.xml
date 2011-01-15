@@ -39,7 +39,7 @@
 		<filter-name>UserPreferencesFilter</filter-name>
 		<filter-class>org.kuali.rice.kew.web.UserPreferencesFilter</filter-class>
 	</filter>
-    
+
     <filter>
         <filter-name>JTidyFilter</filter-name>
         <filter-class>org.w3c.tidy.servlet.filter.JTidyFilter</filter-class>
@@ -120,7 +120,7 @@
         <filter-name>UserLoginFilter</filter-name>
         <servlet-name>krad</servlet-name>
     </filter-mapping>     
-    
+
     <filter-mapping>
         <filter-name>JTidyFilter</filter-name>
         <servlet-name>krad</servlet-name>
@@ -314,10 +314,15 @@
 		<url-pattern>/kew/EDocLite</url-pattern>
 	</servlet-mapping>
     
-     <servlet-mapping>
+    <servlet-mapping>
       <servlet-name>krad</servlet-name>
       <url-pattern>/spring/*</url-pattern>
     </servlet-mapping>    
+
+    <servlet-mapping>
+      <servlet-name>krad</servlet-name>
+      <url-pattern>*.mvc</url-pattern>
+    </servlet-mapping>
 
 	<session-config>
 		<session-timeout>60</session-timeout>

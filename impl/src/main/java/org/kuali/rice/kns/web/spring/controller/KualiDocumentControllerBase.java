@@ -55,6 +55,9 @@ public class KualiDocumentControllerBase {
 		KEWConstants.SUPERUSER_COMMAND, 
 		KEWConstants.HELPDESK_ACTIONLIST_COMMAND };
 
+    protected String getBasicViewName() {
+    	throw new RuntimeException("A valid view name must be returned.");
+    }
     /**
      * This method may be used to funnel all document handling through, we could do useful things like log and record various
      * openings and status Additionally it may be nice to have a single dispatcher that can know how to dispatch to a redirect url
@@ -97,7 +100,7 @@ public class KualiDocumentControllerBase {
             kualiDocumentFormBase.setSuppressAllButtons(true);
         }
 //        return mapping.findForward(RiceConstants.MAPPING_BASIC);
-        return new ModelAndView("test/KualiDirectInquiry", "KualiForm", kualiDocumentFormBase);
+        return new ModelAndView(getBasicViewName(), "KualiForm", kualiDocumentFormBase);
     }
 
     /**

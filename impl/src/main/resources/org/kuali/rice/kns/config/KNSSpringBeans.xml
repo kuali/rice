@@ -206,7 +206,8 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UIF-BaseDefinitions.xml</value>
-                <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>                
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
             </list>
 		</property>
         <property name="packagePrefixes">
@@ -250,6 +251,7 @@
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UIF-BaseDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>                       
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
             </list>
 		</property>
         <property name="packagePrefixes">
@@ -328,6 +330,7 @@
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UIF-BaseDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>       
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
 			</list>
 		</property>
 	</bean>
@@ -1181,7 +1184,7 @@
     	<property name="entityManager" ref="knsApplicationEntityManager"/>
    	</bean>
    	
-   	  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">
       <list>
         <idref bean="NoResultExceptionInterceptor" />
@@ -1205,11 +1208,11 @@
   
   <!-- New KRAD Spring Beans -->
   
-  <bean id="viewService" class="org.kuali.rice.kns.ui.service.impl.ViewServiceImpl">
+  <bean id="viewService" class="org.kuali.rice.kns.uif.service.impl.ViewServiceImpl">
       <property name="dataDictionaryService" ref="dataDictionaryService"/>
   </bean>
   
-  <bean id="ViewHelperService"  class="org.kuali.rice.kns.ui.service.impl.ViewHelperServiceImpl">
+  <bean id="ViewHelperService"  class="org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl">
       <property name="dataDictionaryService" ref="dataDictionaryService"/>
   </bean>
   

@@ -21,12 +21,13 @@ import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This class is used to convert KNS style Formatter classes to Property Editors that can be used by Spring 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 public class KualiFormatterPropertyEditor extends PropertyEditorSupport {
+    private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiFormatterPropertyEditor.class);
 
 	Formatter formatter;
 
@@ -35,10 +36,10 @@ public class KualiFormatterPropertyEditor extends PropertyEditorSupport {
      * 
      * @param formatter
      */
-    public KualiFormatterPropertyEditor(Class formatterClass) {
+    public KualiFormatterPropertyEditor(Class<? extends Formatter> formatterClass) {
 	    super();
         try {
-            formatter = (Formatter) formatterClass.newInstance();
+            formatter = formatterClass.newInstance();
         }
         catch (InstantiationException e) {
             throw new FormatException("Couldn't create an instance of class " + formatterClass, e);
@@ -54,12 +55,22 @@ public class KualiFormatterPropertyEditor extends PropertyEditorSupport {
 
 	@Override
 	public String getAsText() {
-		return (String) formatter.formatForPresentation(getValue());
+		try {
+			return (String) formatter.formatForPresentation(getValue());
+		} catch (FormatException e) {
+			LOG.error("FormatException: " + e.getLocalizedMessage(), e);
+			throw e;
+		}
 	}
 
 	@Override
 	public void setAsText(String text) throws IllegalArgumentException {
-		this.setValue(formatter.convertFromPresentationFormat(text));
+		try {
+			this.setValue(formatter.convertFromPresentationFormat(text));
+		} catch (FormatException e) {
+			LOG.error("FormatException: " + e.getLocalizedMessage(), e);
+			throw e;
+		}
 //		String input = null;
 //		
 //		if(text != null) {

@@ -49,7 +49,8 @@ public interface KualiModuleService {
      * module is found.
      * 
      * @param boClass
-     * @return
+     * @return ModuleService representing the service responsible for the passed in Class
+     * @throws ModuleServiceNotFoundException if boClass is an ExternalizableBusinessObject that no ModuleService is responsible for.
      */
     ModuleService getResponsibleModuleService(Class boClass);
     

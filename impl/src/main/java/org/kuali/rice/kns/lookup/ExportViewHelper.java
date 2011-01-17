@@ -29,6 +29,7 @@ import org.kuali.rice.core.util.WriterOutputStream;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.exception.ExportNotSupportedException;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
@@ -91,7 +92,7 @@ public class ExportViewHelper {
 			try {
 				exporter = getBusinessObjectEntry().getExporterClass().newInstance();
 			} catch (Exception e) {
-				throw new KualiException("Failed to load export class: " + businessObjectEntry.getExporterClass());
+				throw new ExportNotSupportedException("Failed to load export class: " + businessObjectEntry.getExporterClass(),e);
 			}
 			List<String> supportedFormats = exporter.getSupportedFormats(businessObjectEntry.getBusinessObjectClass());
 			if (supportedFormats.contains(exportFormat)) {

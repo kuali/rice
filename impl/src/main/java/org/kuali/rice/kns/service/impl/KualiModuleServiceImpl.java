@@ -23,10 +23,7 @@ import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kns.bo.ExternalizableBusinessObject;
 import org.kuali.rice.kns.bo.Namespace;
 import org.kuali.rice.core.KualiException;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
@@ -104,7 +101,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
 			} else {
 				message = "There is no responsible module for the externalized business object interface: "+boClass;
 			}
-    		throw new KualiException(message);
+    		throw new ModuleServiceNotFoundException(message);
     	} 
     	//Returning null for business objects other than externalizable to keep the framework backward compatible
     	return null;

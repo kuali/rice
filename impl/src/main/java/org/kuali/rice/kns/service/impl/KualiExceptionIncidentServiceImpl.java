@@ -76,9 +76,9 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         }
         
         if (mailService == null) {
-            String errMessage="MailService ?";
-            LOG.fatal(errMessage);
-            throw new KualiException(errMessage);
+            String errorMessage = "mailService property of KualiExceptionIncidentServiceImpl is null";
+            LOG.fatal(errorMessage);
+            throw new IllegalStateException(errorMessage);
         }
         
         // Send mail
@@ -110,7 +110,7 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         }
         
         if (messageTemplate == null) {
-            throw new KualiException(String.format(
+            throw new IllegalStateException(String.format(
                     "%s.templateMessage is null or not set",
                     this.getClass().getName()));
         }
@@ -133,9 +133,9 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
         if (emails == null || emails.isEmpty()) {
             String mailingList= KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(REPORT_MAIL_LIST);
             if (mailingList == null || mailingList.trim().length() == 0) {
-                String em=REPORT_MAIL_LIST+"?";
+                String em=REPORT_MAIL_LIST+" is not set or messageTemplate does not have ToAddresses already set.";
                 LOG.error(em);
-                throw new KualiException(em);
+                throw new IllegalStateException(em);
             } else {
                 msg.setToAddresses(new HashSet<String>(split(mailingList,
                         KNSConstants.FIELD_CONVERSIONS_SEPARATOR)));

@@ -24,7 +24,7 @@ package org.kuali.rice.core;
  *
  */
 
-public class KualiException extends RuntimeException {
+public abstract class KualiException extends RuntimeException {
 
     private static final long serialVersionUID = 2395877766757834813L;
     private boolean hideIncidentReport = false;

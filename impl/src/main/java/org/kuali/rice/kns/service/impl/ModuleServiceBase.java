@@ -31,7 +31,6 @@ import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.datadictionary.PrimitiveAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.RelationshipDefinition;
-import org.kuali.rice.core.KualiException;
 import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
@@ -130,7 +129,7 @@ public class ModuleServiceBase implements ModuleService {
 		if (isExternalizableBusinessObjectLookupable(implementationClass)) {
 		    return (List<T>) getLookupService().findCollectionBySearchHelper(implementationClass, fieldValues, unbounded);
 		} else {
-		   throw new KualiException("External business object is not lookupable: "+implementationClass);
+		   throw new BusinessObjectNotLookupableException("External business object is not a Lookupable:  " + implementationClass);
 		}
 	}
 

@@ -1,0 +1,207 @@
+Architecture to cover
+
+o   Goals
+
+o   Components (id, template, style, class), Containers, Fields, Widgets
+
+o   Layout Managers
+
+o   View
+
+o   View Helper (initialize, conditional, binding, validate), ViewHelperService, ViewInitializers
+
+o   Templates/Tiles
+
+o   Script, jQuery Plugins
+
+o   Controller Base
+
+ 
+h2. Goals
+
+One of the founding modules of Kuali Rice was the Kuali Nervous System.  Designed to help developers create powerful, open-source, enterprise-availble applications such as Kuali Financial Systems and Kuali Coeus Research Administration, the Kuali Nervous System provided a framework which relied heavily on configuration, giving developers an easy course to rapid development.  It provided a standard set of tools - lookups, inquiries, documents - based on proven-value Java technologies.  And it provided these capabilities in a way which provided excellent integration with the rest of the growing Kuali Rice stack, especially with Kuali Enterprise Workflow.  Obviously, in its support of KC and the KFS, the Nervous System has proven that it can act as the bedrock of a robust enterprise application.
+
+However, web technology constantly evolves.  Over the past few years, a great deal of progress has been made in the development of strong client-side web technologies, driven by asynchronous web requests (AJAX) and the growth in use of powerful, cross-browser-enabled JavaScript libraries.  Users experiences of the web have changed, and therefore, so have their expectations.  They expect a more interactive, progression-based interface for their applications.
+
+Meanwhile, the needs of applications also evolve.  The initial functional requirements the Kuali Nervous System needed to support were modest and straight-forward.  But the multiple applications build on the KNS have ended up having some complicated requirements which the KNS couldn't solve in a straight forward way.
+
+Given the intense interactivity required by the Kuali Student application, there came a general consensus that the Kuali Nervous System was going to have to embrace new web technologies while providing even better rapid development tools.  Also, the whole concept of a "Nervous System" struck many users as slightly gross.  (And wrong: the nervous system more often seems like the skeleton that holds the application together, rather than the brain.)
+
+And so, the Kuali Rice team embarked on creating a better, more interactive Kuali Nervous System, now rechristened KRAD: the Kuali Rapid Application Development framework.
+
+KRAD's goals are to create a more flexible interface, allowing more richness of interaction, yet still retaining the powerful configuration options which allow developers using the framework the ability to quickly create rapid applications.  As such, KRAD has settled on three major goals: better support for rich user interfaces, more flexibility in the user interface, and improved configuration and tooling for KRAD applications.
+
+h3. Rich UI Support
+
+Over the past few years, web-based user interfaces have taken off.  Many of these technologies have leveraged browser-based JavaScript and Cascading Style Sheets to create impressive effects or to radically increase interactivity by communicating with a web-server in between the normal request/response page cycle.  Because of these huge advances, today's web application users have much higher expectations of interactivity.
+
+KRAD will power up its interactivity offerings by using the JQuery library, currently the de facto standard of rich functionality over the web.  Integrating with JQuery means that KRAD will be able to provide several long-requested interactive features:
+- *Lightboxes*  Anyone who has opened an inquiry page in a Kuali application knows that it creates a new tab or even a new window to display, stealing focus away from the originating page.  Users can easily end up with a slew of inquiry tabs to navigate among.  With a Lightbox, an inquiry would display on top of the original page, something like a dialogue box, allowing quick return to the original page and reducing clutter.  Lightboxes can also be used with quick finder lookups on maintenance or transactional documents.
+- *Messages*  There are many ways in which rich functionality can be incorporated to inform the user of their progress in an application.  KRAD will support many different kinds of notification schemes to keep the user on top of application progress.  For instance, on forms, there will be much more flexibility than in the KNS to display simple constraint messages on fields and fields can also be preset with sample data - known as a watermark - which is removed when focus is given to the field but hints the user into entering the appropriate data.  Notifications will appear when background processes have completed.  There will be rollover help on fields and time notifications when a given process is completing which help the user understand that the application needs to finish a process.  This wide range of interactive messages will make it easier for users to have a fuller picture of all the application is doing.
+- *Progressive Disclosure* No one likes forms which present too many choices, especially when a form presents choices that don't apply to the user's circumstance.  For instance, if a user has to enter a state tax rate on a form, the tax rate field shouldn't show up until the user has chosen a state and the application has determined that the state needs to have a tax rate filled in.  The KNS adopted a principle of "progressive disclosure" - that a form should only show the parts that a user needs currently, and that those parts should appear or disappear based on earlier decisions by the user.  However, this was difficult to implement in the KNS and the fact that a return/request cycle was necessary before the form changed made the experience trying for users as well.  KRAD will support a much more interactive progressive disclosure experience which will make "mini-trips" to the server through AJAX, pulling back needed pieces of the form only when key fields have been entered.
+- *Themes* Practically the first customization implementing institutions work on in deployed Kuali applications is skinning the site with their own schools' colors.  Rightly so that institutions should be able to display some pride.  By heavy leveraging of CSS, a requirement simply of making much rich user interface technology work, it will become much easier to redesign a look and feel of a site to match the expectations of your users...or the desire to show off some school pride.
+
+This is just a subset of the way that richer user interface functionality will be integrated into KRAD.  There are many possibilities but one overriding goal: to make it easier for users to interact with applications built on the Kuali platform.
+
+h3. More UI Flexibility
+
+One of the features of the Nervous System users pick up on quickly is the fact that so many screens can be generated purely through configuration.  A business object lookup and inquiry, as well as the screen for maintenance documents, can be generated entirely from an XML file.  Freeing developers from having to concern themselves with the particulars of the HTML generation for these screens makes the user interface of Kuali applications more consistent, to say nothing of the boost to developer productivity it gives.
+
+However, there were other screens which could not be so easily generated.  Transactional documents depended on perhaps several JSP files, supported by hierarchies of tags.  Non-document screens had to have JSPs coded as well.  The KNS provided tags - such as documentPage, tab, htmlControlAttribute, and so on - which eased the development task a bit, but the hard fact was that developers still had to spend much more time coding these pages.
+
+It should therefore be little surprise that one of KRAD's major goals is improving this situation.  If transactional documents and non-document screens could make use of the Rich UI support through configuration, that would make it much easier to develop these incredibly important pieces of functionality.
+
+However, as any KNS developer knows, transactional documents are much more flexible than lookups or maintenance documents.  Maintenance documents are basically stacks of two or four columns apart, perhaps broken up by a standard collection interface.  A transactional document can look like practically anything.  Transactional documents are also the main user interfaces for most Kuali applications.  Therefore, how can the twin goals of developer productivity and user interface flexibility be achieved?
+
+The designers of KRAD take a step back in building user interfaces.  Instead of deferring to the free-form power of a JSP page, isn't it possible to see a page in terms of granular components, grouped together and laid out in a standard fashion?  KRAD will provide precisely this: a series of fields and widgets, all of which are groupable through various means (for example, to create a tab interface already so common in Kuali applications), which can be configured through XML.  They will be laid out on the page by one of a number of layout managers, a concept familiar from the Java Struts user interface framework.
+
+Each of these granular components will, in turn, be backed by a visual rendering provided by the Apache Tiles library.  Specific tiles can be switched out with custom tiles via Spring.
+
+These improvements, which will bring an extraordinary amount of flexibility to the UI rendering system, will be covered in some detail.
+
+h3. Improved Configuration and Tooling
+
+[TBR]  A lot of user feedback about the Kuali Nervous System centered on the repetitive tasks of setting up configuration.  Every business object has an object-relational mapping and an entry in the data dictionary; that entry is made up of field configuration which can get long quickly; and then corresponding Java code to be the actual business object.  Even more pieces are added to this recipe when attempting to put together a document.
+
+KRAD is adopting a series of design principles to alleviate some of the work required for this configuration.  KRAD intends to introduce a series of simple to use tools to generate configuration based on defaults, letting developers focus on tweaking the configuration to match business logic.
+
+KRAD is also simplifying configuration in general.  The idea of "convention over configuration" will mean that standard defaults will be provided for what had to be manually configured before.  These defaults can be overridden but if they fit the needs of the application, no further configuration will be necessary.  This will cut down a huge amount on the "XML push-ups" required by KRAD application developers, but still provide a great deal of flexibility.
+
+h3. Other Goals
+
+KRAD will not only attempt to improve these areas of development, but it will also improve what it already does so well: provide support for lookups, inquiries, and maintenance documents.  (TBR: WHAT IMPROVEMENTS?)
+
+KRAD's ultimate goal is to provide the kind of framework which will allow more interactive, more complex application functionality.  This has been pushed especially by the requirements of Kuali Student, an application which needs to handle incredibly complex transactions and yet be usable by a large population, many of whom - such as applying students - untrained in its use.  At the same time, KRAD is still going to provide the tight integration with the other components of Kuali Rice, such as Kuali Enterprise Workflow.  Because it is built with such complex requirements in mind, there's little doubt that KRAD is going to be able to support the next generation of open source enterprise applications.
+
+h2. Visual Hierarchy in KRAD applications
+
+One of the most appreciated features of the Kuali Nervous System was that it allowed the set up of the view of certain kinds of documents - Maintenance documents, which maintain rarely changing reference data - inside of the data dictionary for the document.  There was no need to go to JSP: simply configure sections, explain which fields should be on each section, and the KNS generated the view for the document as easily as that.
+
+Of course, the views for maintenance documents did not have too many complexities associated with them.  They showed fields in either two or four columns - depending on if the document was creating a new record or editing an old one - and they supported two levels of collections (collections of collections) on the business object - but no deeper level than that.  Over the years, a great deal of work has been done to make the maintenance document framework more flexible in its view, but the trade off for being so easy to set up was that it couldn't reach the functional complexity that transactional documents allowed.  And of course transactional documents required JSP.
+
+With KRAD, increasing the flexibility of the view so that more of it could be configured became a top feature requirement.
+
+KRAD introduces a concept of a "View" and a hierarchy of pieces which can be added to a view.  A view can represent a whole page.  Inside that page, a number of different groups are arranged - some as tabs, perhaps, others as field sets within other groups or even collections of field sets.  Some of these groups finally were made up of fields, controls, and widgets (controls providing an extra level of interactive functionality by incorporating rich user interface techniques).  All of these - views, groups, fields, controls, and widgets - all are Components of a KRAD render, and therefore all implement the org.kuali.rice.kns.uif.Component interface.
+
+We'll examine each piece of this visual hierarchy in turn.
+
+h3. Containers
+
+A container is simply a Component with a main job of containing other components to render.  Containers may even contain other Containers to render.  Naturally, the task of Containers is fundamental to how to render pages in the application.
+
+h4. Views
+
+As discussed, Components arrange other Components inside a tree.  A Container may hold other Containers, each of which holds other elements like Controls or Fields.
+
+Every tree, though, needs a root.  org.kuali.rice.kns.uif.container.View represents a root Container for all visual Components on a document.  Even multi-page documents like the Proposal in Kuali Coeus will have one root view.  [JAMES!  HERE!]
+
+h4. Groups
+
+The Group is the workhorse of Containers.  It basically acts as the branches of the Component hierarchy tree: it can hold any other kind of Component, including other Groups.  As such, a KRAD page will have at least one and probably quite a few Groups set up.
+
+A Group could represent a tab, just like in the KNS.  [JAMES!  CODE FOR A GROUP TAB!]
+
+A Group doesn't have to represent anything so visually literal, however.  A Group could also be set up to represent two sets of Controls right next to each other.  [JAMES!  CODE FOR THIS TOO!]
+
+h5. Collection Groups
+h5. Navigation Groups
+
+A NavigationGroup is, like a CollectionGroup, a special kind of Group which renders elements used in navigation.  [JAMES!  CONTINUE AS CODE FILLS OUT!]
+
+h4. Layout Managers
+
+Controls, Fields, and Widgets - and even other Groups - can be thrown into a Container.  The question then becomes how KRAD will lay out those controls.
+
+The designers of KRAD decided to apply a venerable idea present in the first version of the Java Advanced Window Toolkit - the concept of Layout Managers.  A LayoutManager is simply a bean which will build the HTML to display Components with a certain algorithm.
+
+For instance, there is the GridLayoutManager.  The GridLayoutManager places sub-Components into a set of side-by-side columns.  For instance, in when a KNS maintenance document copies a business object, it shows four columns side by side: two columns for the original business object's labels and controls and two columns for the copied object's labels and controls.  In KRAD, GridLayoutManager will provide the support for that kind of layout.
+
+KRAD also provides the BoxLayoutManager, which works just like the BoxLayoutManager in the Java AWT.  A BoxLayoutManager is given an aspect - either HORIZONTAL or VERTICAL - and it renders all sub-Components either side by side in the case of HORIZONTAL or on top of each other in the case of VERTICAL.  A simple enough behavior, but nesting Groups with different BoxLayoutManager aspects provides a simple yet flexible way to arrange sub-Components.  The BoxLayoutManager also provides the ability to set the padding in between sub-Components.
+
+[TableLayoutManager; others?  Revisit as coding continues...]
+h3. Controls
+
+Anyone who has developed a KNS application knows that property attributes in the data dictionary for a business object or document can be associated with a control - a way to get input for the attribute.  Normal web controls include text fields, text areas, drop down select boxes, and more.  Much like the KNS, KRAD associates each of these input types with an object implementing the org.kuali.rice.kns.uif.control.Control interface.
+
+h4. TextControl
+
+An org.kuali.rice.kns.uif.control.TextControl represents a simple HTML text field, mapping to an <input type="text" /> tag.  Simple, indeed, but widely used as well - easily the most frequently used of all Controls.  [JAMES, CONTINUE]
+
+||Property Name||Type||Description||
+|size|int|The size of the displayed TextControl|
+|datePicker|org.kuali.rice.kns.uif.widget.DatePicker|A DatePicker associated with this text control, assisting the user to choose a date and then formatting it correctly if the text represents a date.|
+
+h4. TextAreaControl
+
+This Control represents a text area on the page.  It maps to the HTML <textarea> tag.
+
+h4. FileControl
+
+A Control which uploads files.  It maps to the HTML <input type="file" /> tag.
+
+h4. HiddenControl
+
+This Control represents an attribute which stores its value in HTML, so that its state can be maintained, but which does not render in any meaningful way that an application user can see.  It maps to the <input type="hidden" />
+
+h4. Checkbox Control
+
+The org.kuali.rice.kns.uif.control.CheckboxControl is KRAD's favored way of getting input for boolean values.  It maps to an <input type="checkbox" /> HTML tag but it also adds a hidden variable to tell the input that the checkbox was rendered.  If the hidden field is present in the request parameters but not the checkbox itself, then KRAD knows to set the value on the business object as false.  On lookup fields, CheckboxControls convert into groups of radio buttons with values "Yes", "No", and "All".
+
+h4. MultiValue Controls
+
+Certain controls let the user choose among multiple values.  All of these controls extend org.kuali.rice.kns.uif.control.MultiValueControlBase.  To make these controls work, KRAD needs to know what the set of choice values are and MultiValueControlBase supports those through the property options which takes a java.util.List of venerable org.kuali.rice.core.util.KeyLabelPair objects.  Each KeyLabelPair maps a code value to a the display label which is what the user sees for the control (these two values could be the same but often times, the label is a more user-friendly representation of the key code).  [JAMES: HOW TO SET UP OPTIONS FINDERS IN KRAD?]
+
+h5. SelectControl
+
+A SelectControl presents a list of clickable elements to the user, where each clickable element shows a label.  These controls map to the HTML <select> tag.  By default, only one value in a SelectControl can be chosen, but by setting the mulitple property to true, multiple rows can be chosen.
+
+||Property Name||Type||Description||
+|options|java.util.List<org.kuali.rice.core.util.KeyLabelPair>|The List of options that will be displayed in this Select Control.|
+|multiple|boolean|If true, allows any number of KeyLabelPairs in the Select Control to be chosen by ctrl- or cmd-clicking multiple values.  If false, only allows one value to be chosen.|
+|size|int|If the SelectControl is set to select multiple values, the number of rows of values that should be shown on the screen without scrolling.|
+
+h5. RadioGroupControl
+
+A RadioGroupControl represents several <input type="radio" /> HTML tags.  Unlike the SelectControl, which displays all of its values as one visual element, the RadioGroupControl represents each label as a value sitting by a friendly button which can be pushed.  Also in contrast to the SelectControl, RadioGroupControls only ever let one value at a time be chosen.  They're fairly rare in traditional KNS applications, being used only where there's an extremely limited number of choices, one of which must be unequivocally chosen.
+
+||Property Name||Type||Description||
+|options|java.util.List<org.kuali.rice.core.util.KeyLabelPair>|The List of options that will be displayed in this Select Control.|
+
+h3. Fields
+h3. Widgets
+
+Widgets contrast with Controls in that they don't map to simple HTML input tags.  Indeed, several widgets are used in conjunction with Controls to make the Control more powerful.  For instance, many text fields in KRAD applications will be rendered with a tiny magnifying glass icon next to the field - a QuickFinder.  When the user clicks on the icon, they go to a Lookup screen for the business object which feeds values to the text field.  The text field is a Control; the quickfinder icon is a Widget - behavior that's standard to KRAD but not HTML.
+
+h4. BreadCrumbs
+h4. DatePicker
+h4. Help
+h4. Inquiry
+h4. QuickFinder
+
+h3. Data Bindings
+h3. Components
+
+Now that we've explored each component type in detail, let's see what they share and what all KRAD visual elements have in common.
+
+||Property|Type|Explanation||
+|id|java.lang.String|
+|componentTypeName|||
+|template|the path to the JSP representing the tile for this component||
+|nestedComponents|||
+|componentInitializers|||
+|name|java.lang.String||
+|render|boolean|Determines if this component should be rendered.|
+|hidden|boolean||
+|readOnly|boolean||
+|required|java.lang.Booolean||
+|style|java.lang.String||
+|styleClass|java.lang.String|The name of the CSS class which this component will render in.|
+|width|java.lang.String||
+|align|java.lang.String||
+|valign|java.lang.String||
+|colSpan|int||
+|rowSpan|int||
+|decorators|java.util.Map<java.lang.String,org.kuali.rice.kns.uif.decorator.ComponentDecorator>||
+
+h4. Tiles as Templates
+h4. Component Decorators

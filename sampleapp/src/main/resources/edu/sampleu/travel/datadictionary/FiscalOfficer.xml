@@ -91,10 +91,40 @@
           </property>
           <property name="title" value=""/>
         </bean>
+        <ref bean="FiscalOfficer-inquirySection-account" />
       </list>
     </property>
     <property name="title" value="Travel Fiscal Officer Inquiry"/>
   </bean>
+
+  <bean id="FiscalOfficer-inquirySection-account" parent="InquirySectionDefinition">
+    <property name="title" value="Accounts" />
+    <property name="numberOfColumns" value="1" />
+    <property name="inquiryFields">
+      <list>
+        <bean parent="InquiryCollectionDefinition">
+          <property name="attributeName" value="accounts" />
+          <property name="businessObjectClass"
+            value="edu.sampleu.travel.bo.TravelAccount" />
+          <property name="numberOfColumns" value="1" />
+          <property name="summaryTitle" value="Travel Account Number" />
+          <property name="inquiryFields">
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="number" />
+              <bean parent="FieldDefinition" p:attributeName="name" />
+              <bean parent="FieldDefinition" p:attributeName="extension.accountTypeCode" />
+            </list>
+          </property>
+          <property name="summaryFields">
+            <list>
+              <bean parent="FieldDefinition" p:attributeName="number" />
+            </list>
+          </property>
+        </bean>
+      </list>
+    </property>
+  </bean>
+  
 
 <!-- Business Object Lookup Definition -->
 

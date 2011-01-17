@@ -34,9 +34,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              </property>
              <property name="items">
                <list>
-                 <ref bean="testSection1"/>
-                 <ref bean="testSection2"/>
-                 <ref bean="testSection3"/>
+                 <ref bean="KradFormView1.testSection1"/>
+                 <ref bean="KradFormView1.testSection2"/>
+                 <ref bean="KradFormView1.testSection3"/>
                </list>
              </property> 
           </bean>
@@ -81,8 +81,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>  
    </bean>
 
-   <bean id="testSection1" parent="PanelGridSection">
-      <property name="id" value="testSection1"/>
+   <bean id="KradFormView1.testSection1" parent="PanelGridSection">
+      <property name="id" value="KradFormView1.testSection1"/>
       <property name="title" value="Travel Account Objects" /> 
       <property name="fieldBindByNamePrefix" value="travelAccount1"/> 
       <property name="items">
@@ -114,8 +114,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Group with grid layout and various col/row spans"/>      
    </bean> 
 
-   <bean id="testSection2" parent="PanelGridSection">
-      <property name="id" value="testSection2"/>
+   <bean id="KradFormView1.testSection2" parent="PanelGridSection">
+      <property name="id" value="KradFormView1.testSection2"/>
       <property name="title" value="Simple Objects" />
       <property name="items">
         <list>
@@ -161,8 +161,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Group with grid layout and various col/row spans"/>      
    </bean> 
 
-   <bean id="testSection3" parent="PanelGridSection">
-      <property name="id" value="testSection3"/>
+   <bean id="KradFormView1.testSection3" parent="PanelGridSection">
+      <property name="id" value="KradFormView1.testSection3"/>
       <property name="title" value="Complex Objects" />
       <property name="items">
         <list>

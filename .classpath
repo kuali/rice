@@ -124,9 +124,9 @@
 			<attribute name="javadoc_location" value="jar:file:/C:/m2repo/commons-io/commons-io/2.0/commons-io-2.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.5/commons-lang-2.5.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.5/commons-lang-2.5-sources.jar">
+	<classpathentry kind="var" path="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6.jar" sourcepath="M2_REPO/commons-lang/commons-lang/2.6/commons-lang-2.6-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/m2repo/commons-lang/commons-lang/2.5/commons-lang-2.5-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:file:/C:/m2repo/commons-lang/commons-lang/2.6/commons-lang-2.6-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/commons-pool/commons-pool/1.5.5/commons-pool-1.5.5.jar" sourcepath="M2_REPO/commons-pool/commons-pool/1.5.5/commons-pool-1.5.5-sources.jar">

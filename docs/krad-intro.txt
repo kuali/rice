@@ -19,7 +19,7 @@ o   Controller Base
  
 h2. Goals
 
-One of the founding modules of Kuali Rice was the Kuali Nervous System.  Designed to help developers create powerful, open-source, enterprise-availble applications such as Kuali Financial Systems and Kuali Coeus Research Administration, the Kuali Nervous System provided a framework which relied heavily on configuration, giving developers an easy course to rapid development.  It provided a standard set of tools - lookups, inquiries, documents - based on proven-value Java technologies.  And it provided these capabilities in a way which provided excellent integration with the rest of the growing Kuali Rice stack, especially with Kuali Enterprise Workflow.  Obviously, in its support of KC and the KFS, the Nervous System has proven that it can act as the bedrock of a robust enterprise application.
+One of the founding modules of Kuali Rice was the Kuali Nervous System.  Designed to help developers create powerful, open-source, enterprise availble applications such as Kuali Financial Systems and Kuali Coeus Research Administration, the Kuali Nervous System provided a framework which relied heavily on configuration, giving developers an easy course to rapid development.  It provided a standard set of tools - lookups, inquiries, documents - based on proven-value Java technologies.  And it provided these capabilities in a way which provided excellent integration with the rest of the growing Kuali Rice stack, especially with Kuali Enterprise Workflow.  Obviously, in its support of KC and the KFS, the Nervous System has proven that it can act as the bedrock of a robust enterprise application.
 
 However, web technology constantly evolves.  Over the past few years, a great deal of progress has been made in the development of strong client-side web technologies, driven by asynchronous web requests (AJAX) and the growth in use of powerful, cross-browser-enabled JavaScript libraries.  Users experiences of the web have changed, and therefore, so have their expectations.  They expect a more interactive, progression-based interface for their applications.
 
@@ -85,6 +85,12 @@ KRAD introduces a concept of a "View" and a hierarchy of pieces which can be add
 
 We'll examine each piece of this visual hierarchy in turn.
 
+h3. Introduction to Components
+
+All Components share three parts: a bean definition (referred to as the Component name); a type - the Java object which backs all of that type of Component (referred to, not surprisingly, as the Component type), and template, a JSP Tile which is ultimately responsible for rendering the HTML for a given Component.
+
+[HERE JAMES!]
+
 h3. Containers
 
 A container is simply a Component with a main job of containing other components to render.  Containers may even contain other Containers to render.  Naturally, the task of Containers is fundamental to how to render pages in the application.
@@ -93,7 +99,11 @@ h4. Views
 
 As discussed, Components arrange other Components inside a tree.  A Container may hold other Containers, each of which holds other elements like Controls or Fields.
 
-Every tree, though, needs a root.  org.kuali.rice.kns.uif.container.View represents a root Container for all visual Components on a document.  Even multi-page documents like the Proposal in Kuali Coeus will have one root view.  [JAMES!  HERE!]
+Every tree, though, needs a root.  org.kuali.rice.kns.uif.container.View represents a root Container for all visual Components to be rendered for a document or a screen.  It will be what holds the header and footer as well as any navigation that needs to be available for the document.  On multiple page documents, like the Proposal in Kuali Coeus, all pages will be children of a single view.
+
+The View also manages data processing for the data that is bound to its components.  The View will be configured to know what data needs to be persisted in the session rather than merely the request scope and how form posting should be processed.  It will also hold information on how to conduct validation of models.
+
+Common pieces of functionality will have rendering encapsulated into a common view.  Developers of KNS applications will understand immediately that there will be an InquiryView, a LookupView, as well as MaintenanceDocumentView and TransactionalDocumentView.  Applications can also extend views for common views of their own: for example, Kuali Financial Systems will likely extend TransactionalView to create the AccountingDocumentView.
 
 h4. Groups
 
@@ -179,7 +189,7 @@ h4. Inquiry
 h4. QuickFinder
 
 h3. Data Bindings
-h3. Components
+h3. Component Architecture
 
 Now that we've explored each component type in detail, let's see what they share and what all KRAD visual elements have in common.
 

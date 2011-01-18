@@ -23,6 +23,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.Inquirable;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -39,6 +42,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * This is a description of what this class does - swgibson don't forget to fill this in. 
  * 
@@ -49,6 +54,8 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping(value="/inquiry")
 public class InquiryController {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InquiryController.class);
+	
+	protected ViewService viewService;
 	
 //	@ModelAttribute("KualiForm")
 //	public InquiryForm prepareForm() {
@@ -78,9 +85,17 @@ public class InquiryController {
 		BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
         checkBO(bo);
         
+        inquiryForm.setBo(bo);
+        
         populateSections(request, inquiryForm, bo);
         
-        return new ModelAndView("test/KualiDirectInquiry", "KualiForm", inquiryForm);
+        //return new ModelAndView("test/KualiDirectInquiry", "KualiForm", inquiryForm);
+        
+        // temporary create default view
+        String viewId = StringUtils.substringAfterLast(inquiryForm.getBusinessObjectClassName(), ".");
+        viewId += "-InquiryView";
+                
+        return this.getUIFModelAndView(inquiryForm, viewId, "page1");
 	}
 	
 	
@@ -136,5 +151,30 @@ public class InquiryController {
         }
         return bo;
     }
+	
+	protected ModelAndView getUIFModelAndView(Object form, String viewId, String pageId) {
+		View view = getViewService().getViewById(viewId);
+		view.setCurrentPageId(pageId);
+
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.addObject("KualiForm", form);
+		modelAndView.addObject("View", view);
+
+		modelAndView.setViewName("View");
+
+		return modelAndView;
+	}
+
+	protected ViewService getViewService() {
+		if (viewService == null) {
+			viewService = KNSServiceLocator.getViewService();
+		}
+
+		return this.viewService;
+	}
+
+	public void setViewService(ViewService viewService) {
+		this.viewService = viewService;
+	}
 	
 }

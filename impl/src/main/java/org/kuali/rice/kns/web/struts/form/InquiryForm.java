@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
+import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
@@ -53,8 +54,21 @@ public class InquiryForm extends KualiForm {
     private Map editingMode;
     private String formKey;
     private boolean canExport;
+    
+    // added for KRAD
+    private BusinessObject bo;
+    
 
-    @Override
+    public BusinessObject getBo() {
+		return this.bo;
+	}
+
+	public void setBo(BusinessObject bo) {
+		this.bo = bo;
+	}
+	// end added for krad
+
+	@Override
     public void addRequiredNonEditableProperties(){
     	super.addRequiredNonEditableProperties();
     	registerRequiredNonEditableProperty(KNSConstants.BUSINESS_OBJECT_CLASS_ATTRIBUTE);

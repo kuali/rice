@@ -208,6 +208,7 @@
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UIF-BaseDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
             </list>
 		</property>
         <property name="packagePrefixes">
@@ -252,6 +253,7 @@
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UIF-BaseDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>                       
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
             </list>
 		</property>
         <property name="packagePrefixes">
@@ -331,6 +333,7 @@
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/UIF-BaseDefinitions.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>       
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
 			</list>
 		</property>
 	</bean>

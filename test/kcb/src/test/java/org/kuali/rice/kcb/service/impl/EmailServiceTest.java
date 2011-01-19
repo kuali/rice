@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kcb.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
@@ -28,6 +25,12 @@ import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
+
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * This class tests the implementation of the email service.

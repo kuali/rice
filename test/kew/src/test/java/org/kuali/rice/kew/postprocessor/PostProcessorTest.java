@@ -16,9 +16,6 @@
  */
 package org.kuali.rice.kew.postprocessor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -31,6 +28,10 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class PostProcessorTest extends KEWTestCase {
 

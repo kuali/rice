@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kcb.service.impl;
 
-import java.util.Collection;
-
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
@@ -29,6 +27,10 @@ import org.kuali.rice.kcb.test.KCBTestData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
+
+import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -76,7 +78,7 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         MessageDelivery md2 = messageDeliveryService.getMessageDelivery(md.getId());
         assertNotNull(md2);
         
-        assertEquals(md, md2);
+        assertEqualsMD(md, md2);
     }
 
     @Test
@@ -162,7 +164,7 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
     public void testReadById() {
         MessageDelivery m = messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId());
 
-        assertEquals(MESSAGE_DELIV, m);
+        assertEqualsMD(MESSAGE_DELIV, m);
     }
 
     @Test
@@ -177,10 +179,10 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         MessageDelivery m2 = messageDeliveryService.getMessageDelivery(m.getId());
         assertNotNull(m2);
         
-        assertEquals(m, m2);
+        assertEqualsMD(m, m2);
     }
     
-    private void assertEquals(MessageDelivery expected, MessageDelivery actual) {
+    private void assertEqualsMD(MessageDelivery expected, MessageDelivery actual) {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getDelivererSystemId(), actual.getDelivererSystemId());
         assertEquals(expected.getDelivererTypeName(), actual.getDelivererTypeName());

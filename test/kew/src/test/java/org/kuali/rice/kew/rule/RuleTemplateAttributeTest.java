@@ -15,16 +15,16 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the RuleTemplateAttribute class.

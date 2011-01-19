@@ -16,8 +16,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import javax.xml.namespace.QName;
-
 import org.apache.commons.httpclient.URI;
 import org.apache.cxf.aegis.databinding.AegisDatabinding;
 import org.apache.cxf.binding.soap.SoapFault;
@@ -34,6 +32,10 @@ import org.kuali.rice.ksb.messaging.remotedservices.JaxWsEchoService;
 import org.kuali.rice.ksb.messaging.remotedservices.SOAPService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
+
+import javax.xml.namespace.QName;
+
+import static org.junit.Assert.*;
 
 
 /**

@@ -26,6 +26,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import static org.junit.Assert.*;
 
 public class EmailReminderLifecycleTest extends KEWTestCase {
 

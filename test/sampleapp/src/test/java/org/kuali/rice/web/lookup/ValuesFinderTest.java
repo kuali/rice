@@ -15,17 +15,18 @@
  */
 package org.kuali.rice.web.lookup;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.junit.Ignore;
-import org.junit.Test;
-import org.kuali.rice.web.test.WebTestBase;
-
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlOption;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSelect;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.kuali.rice.web.test.WebTestBase;
+
+import java.util.HashMap;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 //import edu.sampleu.travel.document.keyvalue.TravelRequestType;
 

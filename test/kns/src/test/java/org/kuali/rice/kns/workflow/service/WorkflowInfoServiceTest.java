@@ -21,6 +21,9 @@ import org.junit.Test;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.test.KNSTestCase;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * This class tests the WorkflowUser service.

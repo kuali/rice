@@ -15,14 +15,12 @@
  */
 package org.kuali.rice.ksb.security.credentials;
 
-import junit.framework.TestCase;
-
 import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
 import org.acegisecurity.providers.x509.X509AuthenticationToken;
-import org.kuali.rice.ksb.security.credentials.SecurityUtils;
-import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
-import org.kuali.rice.ksb.security.credentials.X509Credentials;
+import org.junit.Test;
 import org.kuali.rice.ksb.security.credentials.X509CredentialsSourceTest.KualiX509Certificate;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * 
@@ -30,8 +28,9 @@ import org.kuali.rice.ksb.security.credentials.X509CredentialsSourceTest.KualiX5
  * @since 0.9
  *
  */
-public class SecurityUtilsTest extends TestCase {
-	
+public class SecurityUtilsTest {
+
+    @Test
 	public void testUsernamePasswordCredentials() {
 		final UsernamePasswordCredentials c = new UsernamePasswordCredentials("test", "test");
 		final UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken) SecurityUtils.convertCredentialsToSecurityContext(c);
@@ -39,7 +38,8 @@ public class SecurityUtilsTest extends TestCase {
 		assertEquals(token.getPrincipal(), c.getUsername());
 		assertEquals(token.getCredentials(), c.getPassword());
 	}
-	
+
+    @Test
 	public void testX509CertificateCredentials() {
 		final X509Credentials c = new X509Credentials(new KualiX509Certificate());
 		final X509AuthenticationToken token = (X509AuthenticationToken) SecurityUtils.convertCredentialsToSecurityContext(c);

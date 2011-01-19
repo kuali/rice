@@ -15,16 +15,11 @@
  */
 package org.kuali.rice.test;
 
-import java.lang.annotation.Annotation;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Method;
-
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.lang.annotation.*;
+import java.lang.reflect.Method;
 
 /**
  * Tests that ordering of annotation definitions is preserved 

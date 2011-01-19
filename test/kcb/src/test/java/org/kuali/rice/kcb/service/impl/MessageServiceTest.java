@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kcb.service.impl;
 
-import java.util.Collection;
-
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
@@ -26,6 +24,10 @@ import org.kuali.rice.kcb.test.KCBTestData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
+
+import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -68,7 +70,7 @@ public class MessageServiceTest extends BusinessObjectTestCase {
         Message m2 = messageService.getMessage(m.getId());
         assertNotNull(m2);
 
-        assertEquals(m, m2);
+        assertEqualsMD(m, m2);
         
         Message m1 = new Message();
         m1.setContent("a");
@@ -155,7 +157,7 @@ public class MessageServiceTest extends BusinessObjectTestCase {
     public void testReadById() {
         Message m = messageService.getMessage(MESSAGE.getId());
 
-        assertEquals(MESSAGE, m);
+        assertEqualsMD(MESSAGE, m);
     }
 
     @Test
@@ -169,7 +171,7 @@ public class MessageServiceTest extends BusinessObjectTestCase {
         Message m2 = messageService.getMessage(m.getId());
         assertNotNull(m2);
         
-        assertEquals(m, m2);
+        assertEqualsMD(m, m2);
     }
     
     /**
@@ -177,7 +179,7 @@ public class MessageServiceTest extends BusinessObjectTestCase {
      * @param expected the expected Message
      * @param actual the actual Message
      */
-    private void assertEquals(Message expected, Message actual) {
+    private void assertEqualsMD(Message expected, Message actual) {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getCreationDateTime(), actual.getCreationDateTime());
         assertEquals(expected.getContent(), actual.getContent());

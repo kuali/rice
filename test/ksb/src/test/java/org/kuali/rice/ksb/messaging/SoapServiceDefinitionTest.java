@@ -15,13 +15,14 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import org.junit.Test;
+import org.kuali.rice.ksb.test.KSBTestCase;
+
 import java.net.URL;
 import java.util.ArrayList;
 
-import org.junit.Test;
-import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
-import org.kuali.rice.ksb.messaging.SOAPServiceDefinition;
-import org.kuali.rice.ksb.test.KSBTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * 

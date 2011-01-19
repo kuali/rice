@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.ken.dao;
 
-import java.util.HashMap;
-
 import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationChannelReviewer;
 import org.kuali.rice.ken.bo.NotificationProducer;
@@ -25,6 +23,11 @@ import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+
+import java.util.HashMap;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * This class test basic persistence for the NotificationChannel business object.

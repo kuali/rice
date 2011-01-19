@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.engine;
 
-import java.util.Map;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
@@ -25,7 +23,10 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.Utilities;
 
+import java.util.Map;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests the parsing of route node config params 

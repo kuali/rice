@@ -16,9 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
@@ -31,6 +28,10 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the super user actions available on the API.

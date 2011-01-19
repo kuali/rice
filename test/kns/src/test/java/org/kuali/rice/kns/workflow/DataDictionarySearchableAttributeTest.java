@@ -15,25 +15,10 @@
  */
 package org.kuali.rice.kns.workflow;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchContext;
-import org.kuali.rice.kew.docsearch.DocumentSearchResult;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.SearchAttributeCriteriaComponent;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -49,6 +34,12 @@ import org.kuali.rice.kns.web.ui.Row;
 import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
 import org.kuali.rice.test.TransactionalTest;
 import org.kuali.test.KNSTestCase;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * This class performs various DataDictionarySearchableAttribute-related tests on the doc search, including verification of proper wildcard functionality. 

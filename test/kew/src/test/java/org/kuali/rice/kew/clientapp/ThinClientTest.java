@@ -15,18 +15,11 @@
  */
 package org.kuali.rice.kew.clientapp;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.JAXBConfigImpl;
-import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
@@ -36,6 +29,14 @@ import org.kuali.rice.kew.dto.RouteHeaderDTO;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
+
+import javax.xml.namespace.QName;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * 

@@ -12,13 +12,6 @@
  */
 package org.kuali.rice.kim.test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
@@ -35,6 +28,14 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.kuali.rice.test.SQLDataLoader;
 import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.kuali.rice.test.lifecycles.KEWXmlDataLoaderLifecycle;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.fail;
 
 /**
  * This is test base that should be used for all KIM unit tests. All non-web unit tests for KIM should extend this base

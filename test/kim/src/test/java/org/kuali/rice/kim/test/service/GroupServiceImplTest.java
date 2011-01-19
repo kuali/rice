@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -28,6 +22,14 @@ import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.service.impl.GroupServiceImpl;
 import org.kuali.rice.kim.service.impl.GroupUpdateServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 

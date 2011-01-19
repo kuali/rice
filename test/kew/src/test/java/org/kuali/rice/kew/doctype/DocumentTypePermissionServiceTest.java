@@ -27,6 +27,9 @@ import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in. 
  * 

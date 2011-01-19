@@ -25,6 +25,8 @@ import org.kuali.rice.kew.KEWHtmlUnitTestCase;
 
 import java.util.*;
 
+import static org.junit.Assert.*;
+
 /**
  * Tests the web GUI for the Document Search.
  * 

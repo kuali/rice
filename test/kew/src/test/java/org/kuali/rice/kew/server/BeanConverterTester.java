@@ -17,9 +17,6 @@
 package org.kuali.rice.kew.server;
 
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.xml.XmlException;
@@ -35,6 +32,10 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
+import static org.junit.Assert.*;
 
 public class BeanConverterTester extends KEWTestCase {
 

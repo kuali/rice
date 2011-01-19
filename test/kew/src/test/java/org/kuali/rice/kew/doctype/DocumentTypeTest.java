@@ -16,14 +16,7 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import mocks.MockPostProcessor;
-
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -49,6 +42,10 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 public class DocumentTypeTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(DocumentTypeTest.class);

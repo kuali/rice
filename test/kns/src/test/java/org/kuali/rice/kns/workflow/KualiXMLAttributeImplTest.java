@@ -15,22 +15,6 @@
  */
 package org.kuali.rice.kns.workflow;
 
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-
-import junit.framework.AssertionFailedError;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.junit.Ignore;
@@ -54,6 +38,21 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -282,7 +281,7 @@ public class KualiXMLAttributeImplTest extends KNSTestCase {
                             }
                         }
                     }
-                    catch (AssertionFailedError afe) {
+                    catch (AssertionError afe) {
                         LOG.warn("Assertion Failed for attribute '" + attributeName + "' with error " + potentialFailMessage, afe);
                         testFailed = true;
                     }

@@ -15,6 +15,12 @@
  */
 package org.kuali.rice.test;
 
+import org.kuali.rice.test.data.PerSuiteUnitTestData;
+import org.kuali.rice.test.data.UnitTestData;
+import org.springframework.jdbc.core.ConnectionCallback;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,15 +28,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.sql.DataSource;
-
-import org.kuali.rice.test.ClearDatabaseLifecycle;
-import org.kuali.rice.test.RiceTestCase;
-import org.kuali.rice.test.TestHarnessServiceLocator;
-import org.kuali.rice.test.data.PerSuiteUnitTestData;
-import org.kuali.rice.test.data.UnitTestData;
-import org.springframework.jdbc.core.ConnectionCallback;
-import org.springframework.jdbc.core.JdbcTemplate;
+import static org.junit.Assert.*;
 
 /**
  * This class is used by the {@link DataLoaderAnnotationTest} and {@link DataLoaderAnnotationOverrideTest} classes to verify parent class annotation usage

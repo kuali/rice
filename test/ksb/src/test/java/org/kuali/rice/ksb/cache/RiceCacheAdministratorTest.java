@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.ksb.cache;
 
+import org.junit.Test;
+import org.kuali.rice.ksb.test.KSBTestCase;
+
 import javax.xml.namespace.QName;
 
-import org.junit.Test;
-import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
-import org.kuali.rice.ksb.test.KSBTestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class RiceCacheAdministratorTest extends KSBTestCase {
 	

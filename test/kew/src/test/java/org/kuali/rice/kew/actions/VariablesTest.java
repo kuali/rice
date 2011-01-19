@@ -27,6 +27,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import static org.junit.Assert.*;
 
 /**
  * Test case that tests setting and getting variables, both programmatically

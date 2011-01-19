@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
@@ -35,6 +32,10 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.FutureRequestDocumentStateManager;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests users requesting to see all future requests, not seeing any future requests on documents and the clearing of those

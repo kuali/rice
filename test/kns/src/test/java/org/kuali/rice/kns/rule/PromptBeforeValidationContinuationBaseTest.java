@@ -24,6 +24,8 @@ import org.kuali.rice.kns.rules.PromptBeforeValidationBase.ContextSession;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
+import static org.junit.Assert.assertEquals;
+
 @KNSWithTestSpringContext
 public class PromptBeforeValidationContinuationBaseTest extends KNSTestCase {
 

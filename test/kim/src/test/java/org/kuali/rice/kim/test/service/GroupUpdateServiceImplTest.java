@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -36,6 +28,11 @@ import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.springframework.util.CollectionUtils;
+
+import javax.xml.namespace.QName;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * Unit test for {@link GroupUpdateServiceImpl}

@@ -33,6 +33,8 @@ import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 /**
  * Tests NotificationMessageContentService
  * @author Kuali Rice Team (rice.collab@kuali.org)

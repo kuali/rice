@@ -15,9 +15,8 @@
  */
 package org.kuali.rice.kns.datadictionary.validation;
 
-import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
+import static org.junit.Assert.fail;
 
-import junit.framework.AssertionFailedError;
 
 public final class ValidationTestUtils {
     private static final String[] TEST_INPUTS = { "", "!!!", "[a-9]", "^A-Z", "abc", "a bc", "a_bc", "123", "12 3", "12_3", "a1b2c3", "a1b2_c3", "a 1b2c3", "a 1b2_c3", "foo.bar", "foo.bar_baz", ".bar_foo baz" };
@@ -28,7 +27,7 @@ public final class ValidationTestUtils {
     
     public static final void assertPatternMatches(ValidationPattern pattern, boolean[] expectedValues) {
         if (expectedValues.length != TEST_INPUTS.length) {
-            throw new AssertionFailedError("expectedValues length was " + expectedValues.length + ", expected TEST_INPUTS.length of " + TEST_INPUTS.length);
+            fail("expectedValues length was " + expectedValues.length + ", expected TEST_INPUTS.length of " + TEST_INPUTS.length);
         }
 
         for (int i = 0; i < TEST_INPUTS.length; ++i) {
@@ -37,7 +36,7 @@ public final class ValidationTestUtils {
 
             boolean actualResult = pattern.matches(testInput);
             if (actualResult != expectedResult) {
-                throw new AssertionFailedError("for input '" + testInput + "', expected " + expectedResult + " but got " + actualResult);
+                fail("for input '" + testInput + "', expected " + expectedResult + " but got " + actualResult);
             }
         }
     }

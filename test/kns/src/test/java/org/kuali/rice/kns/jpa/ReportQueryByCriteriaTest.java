@@ -22,6 +22,8 @@ import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.test.KNSTestCase;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * Junit test cases for org.kuali.rice.core.jpa.criteria.ReportQueryByCriteria
  * 
@@ -34,7 +36,7 @@ public class ReportQueryByCriteriaTest extends KNSTestCase {
         Criteria criteria = new Criteria(Account.class.getName(), "a");
         
         String query = criteria.toQuery(QueryByCriteriaType.SELECT, new String[0]);
-        super.assertTrue(StringUtils.equalsIgnoreCase(query, "select a from org.kuali.rice.kns.test.document.bo.Account as a"));
+        assertTrue(StringUtils.equalsIgnoreCase(query, "select a from org.kuali.rice.kns.test.document.bo.Account as a"));
     }
 
     @Test
@@ -45,7 +47,7 @@ public class ReportQueryByCriteriaTest extends KNSTestCase {
         attr[0] = "number";
         
         String query = criteria.toQuery(QueryByCriteriaType.SELECT, attr);
-        super.assertTrue(StringUtils.equalsIgnoreCase(query, "select a.number from org.kuali.rice.kns.test.document.bo.Account as a"));
+        assertTrue(StringUtils.equalsIgnoreCase(query, "select a.number from org.kuali.rice.kns.test.document.bo.Account as a"));
     }
     
     @Test
@@ -58,7 +60,7 @@ public class ReportQueryByCriteriaTest extends KNSTestCase {
         attr[2] = "amId";
         
         String query = criteria.toQuery(QueryByCriteriaType.SELECT, attr);
-        super.assertTrue(StringUtils.equalsIgnoreCase(query, "select a.number, a.name, a.amId from org.kuali.rice.kns.test.document.bo.Account as a"));
+        assertTrue(StringUtils.equalsIgnoreCase(query, "select a.number, a.name, a.amId from org.kuali.rice.kns.test.document.bo.Account as a"));
     }
 
 }

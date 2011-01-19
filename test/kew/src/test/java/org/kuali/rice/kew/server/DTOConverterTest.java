@@ -16,21 +16,13 @@
 package org.kuali.rice.kew.server;
 
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.dto.ActionItemDTO;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.ActionTakenDTO;
-import org.kuali.rice.kew.dto.DTOConverter;
-import org.kuali.rice.kew.dto.DocumentContentDTO;
-import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.*;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -38,6 +30,10 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
+import static org.junit.Assert.*;
 
 public class DTOConverterTest extends KEWTestCase {
 

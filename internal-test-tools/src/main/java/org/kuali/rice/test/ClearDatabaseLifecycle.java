@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.test;
 
-import junit.framework.Assert;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.springframework.jdbc.core.ConnectionCallback;

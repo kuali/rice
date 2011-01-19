@@ -16,11 +16,8 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
 import org.kuali.rice.ksb.messaging.remotedservices.GenericTestService;
 import org.kuali.rice.ksb.messaging.remotedservices.TestServiceInterface;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
@@ -30,6 +27,10 @@ import org.kuali.rice.ksb.messaging.serviceconnectors.ServiceConnectorFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 
+import javax.xml.namespace.QName;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  *

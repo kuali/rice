@@ -24,6 +24,8 @@ import org.kuali.rice.ksb.util.KSBConstants;
 
 import javax.xml.namespace.QName;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * verify that value1 and value2 are preserved when passed into message helper and making an async call.  
  * 

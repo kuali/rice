@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.actionrequest.bo.RuleMaintenanceActionRequestCodeValuesFinder;
@@ -34,6 +29,13 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.KualiMaintenanceForm;
+
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests the code that handles the default values for the rule templates.

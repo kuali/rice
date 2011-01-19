@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.ken.services.impl;
 
-import java.util.Collection;
-import java.util.HashMap;
-
 import org.junit.Test;
 import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.UserChannelSubscription;
@@ -27,6 +24,11 @@ import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+
+import java.util.Collection;
+import java.util.HashMap;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests the user preferences service impl.

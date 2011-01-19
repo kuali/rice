@@ -15,17 +15,12 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.ActionListFilter;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.document.DocumentTypeMaintainable;
-import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.preferences.service.impl.PreferencesServiceImpl;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -35,6 +30,12 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class is used to test the {@link DocumentTypeMaintainable} 

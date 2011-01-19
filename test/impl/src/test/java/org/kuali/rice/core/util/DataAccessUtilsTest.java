@@ -15,12 +15,13 @@
  */
 package org.kuali.rice.core.util;
 
-import java.util.Set;
-
 import org.apache.ojb.broker.OptimisticLockException;
-import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.dao.OptimisticLockingFailureException;
+
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the DataAccessUtils.
@@ -28,7 +29,7 @@ import org.springframework.dao.OptimisticLockingFailureException;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class DataAccessUtilsTest extends Assert {
+public class DataAccessUtilsTest {
 
     /**
      * Tests the standard optimistic lock exception types (currently just OJB and Spring)

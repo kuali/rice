@@ -15,11 +15,14 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import org.junit.Test;
+import org.kuali.rice.ksb.test.KSBTestCase;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-import org.kuali.rice.ksb.test.KSBTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Tests equality between RESTServiceDefinition objects

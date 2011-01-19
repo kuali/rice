@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.rule.RuleBaseValues;
 import org.kuali.rice.kew.rule.RuleTemplateOption;
@@ -27,7 +23,12 @@ import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.xml.RuleTemplateXmlParser;
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 
 /**

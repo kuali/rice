@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kcb.service.impl;
 
-import java.util.Collection;
-
 import org.junit.Test;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.kcb.bo.RecipientDelivererConfig;
@@ -27,6 +25,10 @@ import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
+
+import java.util.Collection;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests persisting RecipientDelivererConfig 

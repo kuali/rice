@@ -13,10 +13,6 @@
  */
 package org.kuali.rice.kew.plugin;
 
-import java.io.File;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,11 +20,13 @@ import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.core.util.ClassLoaderUtils;
-import org.kuali.rice.kew.plugin.Plugin;
-import org.kuali.rice.kew.plugin.ZipFilePluginLoader;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 
+import javax.xml.namespace.QName;
+import java.io.File;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the ZipFilePluginLoader. The zip file which is checked in has the following format:

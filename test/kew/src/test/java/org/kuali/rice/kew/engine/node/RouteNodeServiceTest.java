@@ -30,6 +30,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import static org.junit.Assert.*;
 
 public class RouteNodeServiceTest extends KEWTestCase {
 

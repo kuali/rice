@@ -16,15 +16,17 @@
  */
 package org.kuali.rice.kew.notes;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.NoteDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class NoteWebServiceTest extends KEWTestCase {
 	

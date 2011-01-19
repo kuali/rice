@@ -15,20 +15,6 @@
  */
 package org.kuali.rice.core.jpa.criteria;
 
-import java.math.BigDecimal;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.persistence.EntityManager;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
@@ -43,6 +29,15 @@ import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.test.TransactionalTest;
 import org.kuali.test.KNSTestCase;
+
+import javax.persistence.EntityManager;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * This class tests the various features of Rice's JPA Criteria API.

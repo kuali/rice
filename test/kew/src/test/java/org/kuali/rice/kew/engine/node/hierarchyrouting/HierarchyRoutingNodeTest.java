@@ -15,14 +15,8 @@
  */
 package org.kuali.rice.kew.engine.node.hierarchyrouting;
 
-import java.io.StringReader;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyProvider;
 import org.kuali.rice.kew.engine.node.hierarchyrouting.HierarchyProvider.Stop;
 import org.kuali.rice.kew.engine.node.hierarchyrouting.SimpleHierarchyProvider.SimpleStop;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -33,7 +27,11 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
+import java.util.List;
 
+import static org.junit.Assert.*;
 
 /**
  * Tests HeirarchyRoutingNode

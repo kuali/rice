@@ -15,20 +15,17 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.Test;
 import org.kuali.rice.core.jpa.metadata.MetadataManager;
-import org.kuali.rice.kns.bo.CountryImpl;
-import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.bo.ParameterId;
-import org.kuali.rice.kns.bo.ParameterType;
-import org.kuali.rice.kns.bo.StateImpl;
-import org.kuali.rice.kns.bo.StateImplId;
+import org.kuali.rice.kns.bo.*;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountExtension;
 import org.kuali.test.KNSTestCase;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for MetadataManager methods

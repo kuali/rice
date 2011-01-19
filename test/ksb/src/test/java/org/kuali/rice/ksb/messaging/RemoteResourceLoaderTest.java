@@ -15,24 +15,10 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.core.util.DataAccessUtils;
-import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
-import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocatorImpl;
-import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
-import org.kuali.rice.ksb.messaging.RoutingTableDiffCalculator;
-import org.kuali.rice.ksb.messaging.ServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.exceptionhandling.DefaultMessageExceptionHandler;
 import org.kuali.rice.ksb.messaging.exceptionhandling.MessageExceptionHandler;
 import org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue;
@@ -40,6 +26,14 @@ import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
+
+import javax.xml.namespace.QName;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 
 /**

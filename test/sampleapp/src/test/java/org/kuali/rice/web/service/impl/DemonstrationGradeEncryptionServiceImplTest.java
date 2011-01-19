@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.web.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
@@ -27,6 +24,11 @@ import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.service.impl.DemonstrationGradeEncryptionServiceImpl;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.web.test.ServerTestBase;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a class that tests the {@link DemonstrationGradeEncryptionServiceImpl} class

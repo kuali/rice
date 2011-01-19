@@ -15,16 +15,6 @@
  */
 package org.kuali.rice.kim.service.impl;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.xml.dto.AttributeSet;
@@ -33,9 +23,14 @@ import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
 import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.service.impl.RoleServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.xml.namespace.QName;
+import java.sql.Timestamp;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

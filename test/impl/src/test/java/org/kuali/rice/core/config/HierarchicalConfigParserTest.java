@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.core.config;
 
+import org.junit.Test;
+
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
-import org.junit.Test;
-import org.kuali.rice.core.config.SimpleConfig;
-
-public class HierarchicalConfigParserTest extends TestCase {
+public class HierarchicalConfigParserTest {
 
 	private static String simpleConfig = "SIMPLE_CONFIG";
 	private static String jaxbConfig = "JAXB_CONFIG";

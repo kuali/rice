@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.actions;
 
 import mocks.MockEmailNotificationService;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
@@ -29,6 +28,7 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import static org.junit.Assert.*;
 
 public class DisapproveActionTest extends KEWTestCase {
 

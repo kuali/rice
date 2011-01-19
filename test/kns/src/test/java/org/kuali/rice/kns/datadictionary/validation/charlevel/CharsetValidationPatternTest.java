@@ -18,6 +18,9 @@ package org.kuali.rice.kns.datadictionary.validation.charlevel;
 import org.junit.Test;
 import org.kuali.rice.test.BaseRiceTestCase;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class CharsetValidationPatternTest extends BaseRiceTestCase {
     private CharsetValidationPattern charsetPattern;
 

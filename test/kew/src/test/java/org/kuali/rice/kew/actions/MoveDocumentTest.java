@@ -17,9 +17,6 @@
 package org.kuali.rice.kew.actions;
 
 
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.dto.MovePointDTO;
@@ -31,6 +28,10 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 public class MoveDocumentTest extends KEWTestCase {
 

@@ -15,20 +15,17 @@
  */
 package org.kuali.rice.ken.services.ws.impl;
 
-import java.text.DateFormat;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-import java.util.TimeZone;
-
 import org.apache.commons.lang.RandomStringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
+
+import java.text.DateFormat;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Load tester for notification

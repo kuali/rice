@@ -21,6 +21,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * This is a description of what this class does - chang don't forget to fill this in. 
  * 

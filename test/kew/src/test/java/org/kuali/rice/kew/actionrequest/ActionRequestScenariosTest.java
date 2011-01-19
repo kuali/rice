@@ -16,9 +16,6 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -28,6 +25,10 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This test exercises various Action Request graph scenarios and tests them for correctness.

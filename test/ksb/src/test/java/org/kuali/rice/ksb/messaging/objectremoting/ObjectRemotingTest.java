@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging.objectremoting;
 
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.eclipse.jetty.webapp.WebAppClassLoader;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
@@ -33,9 +29,15 @@ import org.kuali.rice.ksb.testclient1.TestClient1ObjectToBeRemoted;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 
+import javax.xml.namespace.QName;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 public class ObjectRemotingTest extends KSBTestCase {
-	
+
 	@Override
 	public boolean startClient1() {
 		return true;

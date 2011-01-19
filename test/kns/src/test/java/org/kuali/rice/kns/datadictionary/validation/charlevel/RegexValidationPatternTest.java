@@ -18,6 +18,9 @@ package org.kuali.rice.kns.datadictionary.validation.charlevel;
 import org.junit.Test;
 import org.kuali.rice.test.BaseRiceTestCase;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 /**
  * This is a description of what this class does - ctdang don't forget to fill this in. 
  * 

@@ -15,13 +15,13 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.util.Properties;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.UrlFactory;
 import org.kuali.test.KNSTestCase;
+
+import java.util.Properties;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the UrlFactory methods.

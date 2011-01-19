@@ -24,6 +24,8 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * This class...
  * 

@@ -35,6 +35,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 
 public class RuleXmlParserTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(RuleXmlParserTest.class);

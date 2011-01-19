@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actions.BlanketApproveTest.NotifySetup;
@@ -28,6 +24,12 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class RoleTest extends KEWTestCase {
 

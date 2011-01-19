@@ -18,6 +18,8 @@ package org.kuali.rice.kns.service;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
 
+import static org.junit.Assert.assertTrue;
+
 public class MaintenanceDocumentDictionaryServiceTest extends KNSTestCase {
 
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(MaintenanceDocumentDictionaryServiceTest.class);

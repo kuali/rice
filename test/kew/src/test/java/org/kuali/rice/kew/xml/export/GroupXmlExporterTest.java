@@ -15,13 +15,15 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import java.util.List;
-
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.

@@ -15,15 +15,15 @@
  */
 package org.kuali.rice.core.util.type;
 
-import java.math.BigDecimal;
-
 import org.junit.Test;
-import org.kuali.rice.core.util.type.AbstractKualiDecimal;
-import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kns.web.format.CurrencyFormatter;
 import org.kuali.rice.kns.web.format.FormatException;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.test.BaseRiceTestCase;
+
+import java.math.BigDecimal;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests the KualiDecimal methods.

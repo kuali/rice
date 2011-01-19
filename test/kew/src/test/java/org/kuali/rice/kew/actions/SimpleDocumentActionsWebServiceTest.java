@@ -15,14 +15,8 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
-import junit.framework.Assert;
-
 import org.apache.commons.lang.StringUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -37,6 +31,12 @@ import org.kuali.rice.kew.webservice.DocumentResponse;
 import org.kuali.rice.kew.webservice.SimpleDocumentActionsWebService;
 import org.kuali.rice.kew.webservice.StandardResponse;
 import org.kuali.rice.kim.bo.Group;
+
+import javax.xml.namespace.QName;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - Daniel Epstein don't forget

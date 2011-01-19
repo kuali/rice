@@ -15,12 +15,8 @@
  */
 package org.kuali.rice.kew.actionrequest.service.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import mocks.MockDocumentRequeuerImpl;
 import mocks.MockEmailNotificationService;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
@@ -41,6 +37,10 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 

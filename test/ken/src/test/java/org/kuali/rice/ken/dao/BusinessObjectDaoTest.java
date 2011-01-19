@@ -15,17 +15,14 @@
  */
 package org.kuali.rice.ken.dao;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
 import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.test.TestConstants;
 import org.springframework.dao.DataAccessException;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests the various methods offered up by the BusinessObjectDao.

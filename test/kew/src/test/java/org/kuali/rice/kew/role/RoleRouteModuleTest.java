@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.kew.role;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -36,15 +30,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationImpl;
-import org.kuali.rice.kim.bo.role.impl.KimDelegationMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
-import org.kuali.rice.kim.bo.role.impl.KimResponsibilityTemplateImpl;
-import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityActionImpl;
-import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
+import org.kuali.rice.kim.bo.role.impl.*;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
@@ -54,6 +40,10 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests Role-based routing integration between KEW and KIM.

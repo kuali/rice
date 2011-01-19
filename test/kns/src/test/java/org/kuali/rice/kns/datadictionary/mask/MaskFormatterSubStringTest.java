@@ -19,6 +19,8 @@ package org.kuali.rice.kns.datadictionary.mask;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
 
+import static org.junit.Assert.*;
+
 /**
  * Unit Tests for MaskFormatterSubString.java
  *

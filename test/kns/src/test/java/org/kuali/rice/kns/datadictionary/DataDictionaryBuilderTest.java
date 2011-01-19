@@ -23,6 +23,9 @@ import org.junit.Test;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 /**
  * This class is used to test the DataDictionaryBuilder.
  * 

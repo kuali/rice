@@ -37,6 +37,8 @@ import org.kuali.rice.kns.test.document.bo.AccountType2;
 import org.kuali.rice.kns.test.document.bo.AccountType2Parent;
 import org.kuali.test.KNSTestCase;
 
+import static org.junit.Assert.*;
+
 /**
  * This is a test case for the data dictionary's ability to index entries by a "base" superclass. 
  * 

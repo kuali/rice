@@ -16,14 +16,7 @@
  */
 package org.kuali.rice.kew.support.xstream;
 
-import java.io.ByteArrayInputStream;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-
-import junit.framework.TestCase;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.xml.xstream.XStreamSafeEvaluator;
@@ -31,8 +24,16 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import java.io.ByteArrayInputStream;
 
-public class XStreamSafeEvaluatorTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+
+public class XStreamSafeEvaluatorTest {
 		
 	private static final String XML =
 			"<document>"+
@@ -84,8 +85,8 @@ public class XStreamSafeEvaluatorTest extends TestCase {
 	 * Set up an XPath instance using our XPathHelper which should configure the namespace and
 	 * WorkflowFunctionResolver for us.
 	 */
+    @Before
 	public void setUp() throws Exception {
-		super.setUp();
 		document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new ByteArrayInputStream(XML.getBytes()));
 		xpath = XPathHelper.newXPath(document);
 	}

@@ -15,14 +15,14 @@
  */
 package org.kuali.rice.kns.util.properties;
 
-import java.util.Iterator;
-
 import org.junit.Test;
 import org.kuali.rice.kns.exception.DuplicateKeyException;
 import org.kuali.rice.kns.exception.PropertiesException;
-import org.kuali.rice.kns.util.properties.FilePropertySource;
-import org.kuali.rice.kns.util.properties.PropertyHolder;
 import org.kuali.test.KNSTestCase;
+
+import java.util.Iterator;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests the PropertyHolder methods.

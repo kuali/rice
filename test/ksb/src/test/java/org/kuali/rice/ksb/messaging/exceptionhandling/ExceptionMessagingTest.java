@@ -29,6 +29,9 @@ import org.kuali.rice.test.TestUtilities;
 import javax.xml.namespace.QName;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * Tests various exception messaging cases

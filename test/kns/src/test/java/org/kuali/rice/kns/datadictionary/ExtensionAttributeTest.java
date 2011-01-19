@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.datadictionary;
 
-import java.util.ArrayList;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -40,6 +38,10 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.test.KNSTestCase;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.*;
 
 public class ExtensionAttributeTest extends KNSTestCase {
 

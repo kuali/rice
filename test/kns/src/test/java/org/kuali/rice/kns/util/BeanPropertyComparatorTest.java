@@ -15,13 +15,15 @@
  */
 package org.kuali.rice.kns.util;
 
+import org.junit.Test;
+import org.kuali.rice.kns.util.BeanPropertyComparator.BeanComparisonException;
+import org.kuali.test.KNSTestCase;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-import org.kuali.rice.kns.util.BeanPropertyComparator.BeanComparisonException;
-import org.kuali.test.KNSTestCase;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the BeanPropertyComparator methods.

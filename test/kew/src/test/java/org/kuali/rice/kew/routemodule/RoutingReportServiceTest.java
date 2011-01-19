@@ -17,9 +17,6 @@
 package org.kuali.rice.kew.routemodule;
 
 
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.DocumentDetailDTO;
@@ -32,6 +29,10 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class RoutingReportServiceTest extends KEWTestCase {
     

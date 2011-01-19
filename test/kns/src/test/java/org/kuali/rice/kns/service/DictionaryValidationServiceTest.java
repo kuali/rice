@@ -23,6 +23,8 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.test.KNSTestCase;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * This class tests the DictionaryValidationService (currently only recursive validation is tested).
  *

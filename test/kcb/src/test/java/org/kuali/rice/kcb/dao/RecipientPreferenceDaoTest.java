@@ -15,12 +15,15 @@
  */
 package org.kuali.rice.kcb.dao;
 
-import java.util.HashMap;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.RecipientPreference;
 import org.kuali.rice.kcb.test.BusinessObjectTestCase;
+
+import java.util.HashMap;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * This class test basic persistence for the RecipientPreference business object.

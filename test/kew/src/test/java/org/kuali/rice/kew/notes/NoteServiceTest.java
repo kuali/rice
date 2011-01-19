@@ -16,19 +16,19 @@
  */
 package org.kuali.rice.kew.notes;
 
-import java.io.FileReader;
-import java.io.StringWriter;
-import java.sql.Timestamp;
-import java.util.Date;
-
 import org.junit.Test;
-import org.kuali.rice.kew.notes.Attachment;
-import org.kuali.rice.kew.notes.Note;
 import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 
+import java.io.FileReader;
+import java.io.StringWriter;
+import java.sql.Timestamp;
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class NoteServiceTest extends KEWTestCase {
 		

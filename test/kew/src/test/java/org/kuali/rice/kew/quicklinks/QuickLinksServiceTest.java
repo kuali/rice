@@ -15,14 +15,16 @@
  */
 package org.kuali.rice.kew.quicklinks;
 
-import java.util.List;
-
 import org.junit.Test;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kew.quicklinks.service.QuickLinksService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.test.SQLDataLoader;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Test the QuickLinks Service

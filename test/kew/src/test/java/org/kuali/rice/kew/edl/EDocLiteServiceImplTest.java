@@ -16,7 +16,6 @@
  */
 package org.kuali.rice.kew.edl;
 
-import junit.framework.AssertionFailedError;
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -37,6 +36,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.Assert.*;
 
 /**
  * Tests EDocLiteServiceImpl
@@ -83,7 +83,7 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
         String defXml = "<edl></edl>";
         try {
             edls.saveEDocLiteDefinition(new ByteArrayInputStream(defXml.getBytes()));
-            throw new AssertionFailedError("Storing edl with no name succeeded");
+            fail("Storing edl with no name succeeded");
         } catch (WorkflowServiceErrorException wsee) {
             // expected due to lack of name
         }
@@ -99,14 +99,14 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
         String styleXml = "<style></style>";
         try {
             edls.saveEDocLiteStyle(new ByteArrayInputStream(styleXml.getBytes()));
-            throw new AssertionFailedError("Storing style with no name succeeded");
+            fail("Storing style with no name succeeded");
         } catch (WorkflowServiceErrorException wsee) {
             // expected due to lack of name
         }
         styleXml = "<style name=\"test\"></style>";
         try {
             edls.saveEDocLiteStyle(new ByteArrayInputStream(styleXml.getBytes()));
-            throw new AssertionFailedError("Storing style with no xsl:stylesheet element succeeded");
+            fail("Storing style with no xsl:stylesheet element succeeded");
         } catch (WorkflowServiceErrorException wsee) {
             // expected due to lack of stylesheet content
         }
@@ -124,14 +124,14 @@ public class EDocLiteServiceImplTest extends KEWTestCase {
         String assocXml = "<association></association>";
         try {
             edls.saveEDocLiteAssociation(new ByteArrayInputStream(assocXml.getBytes()));
-            throw new AssertionFailedError("Storing association with no docType succeeded");
+            fail("Storing association with no docType succeeded");
         } catch (WorkflowServiceErrorException wsee) {
             // expected due to lack of doctype
         }
         assocXml = "<association><docType></docType></association>";
         try {
             edls.saveEDocLiteAssociation(new ByteArrayInputStream(assocXml.getBytes()));
-            throw new AssertionFailedError("Storing association with empty docType succeeded");
+            fail("Storing association with empty docType succeeded");
         } catch (WorkflowServiceErrorException wsee) {
             // expected due to emtpy doctype value
         }

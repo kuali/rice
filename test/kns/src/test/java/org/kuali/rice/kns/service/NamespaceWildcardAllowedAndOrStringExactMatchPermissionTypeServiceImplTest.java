@@ -15,22 +15,21 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.TestCase;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kns.service.impl.NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImplTest extends TestCase {
+public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImplTest {
 
     NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl permissionService;
     

@@ -29,6 +29,9 @@ import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * Verify services in a cluster are being both being called

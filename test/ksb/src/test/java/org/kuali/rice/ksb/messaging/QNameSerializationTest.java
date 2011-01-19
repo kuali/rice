@@ -15,25 +15,18 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
-
-import javax.xml.namespace.QName;
-
-import junit.framework.TestCase;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 
+import javax.xml.namespace.QName;
+import java.io.*;
 
-public class QNameSerializationTest extends TestCase {
+import static org.junit.Assert.assertTrue;
+
+
+public class QNameSerializationTest {
 	
 	private static final Logger LOG = Logger.getLogger(QNameSerializationTest.class);
 	

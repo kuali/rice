@@ -12,6 +12,8 @@
  */
 package org.kuali.rice.ksb.messaging;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.remotedservices.TestHarnessSharedTopic;
@@ -23,6 +25,8 @@ import org.kuali.rice.ksb.util.KSBConstants;
 import javax.xml.namespace.QName;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 /**
  * Tests {@link MessageFetcher}. Turn messaging off but leave persistence on.
  * this will result in messages being persisted to db but not delivered. from
@@ -33,6 +37,7 @@ import java.util.List;
  */
 public class MessageFetcherTest extends KSBTestCase {
 
+    @Before
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
@@ -41,6 +46,7 @@ public class MessageFetcherTest extends KSBTestCase {
 		TestHarnessSharedTopic.CALL_COUNT = 0;
 	}
 
+    @After
 	@Override
 	public void tearDown() throws Exception {
 		TestHarnessSharedTopic.CALL_COUNT = 0;

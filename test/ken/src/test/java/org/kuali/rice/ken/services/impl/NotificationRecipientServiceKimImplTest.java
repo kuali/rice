@@ -25,6 +25,8 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
+import static org.junit.Assert.*;
+
 /**
  * This is a description of what this class does - chb don't forget to fill this in.
  *

@@ -30,6 +30,9 @@ import java.io.StringReader;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * Tests exporting Styles

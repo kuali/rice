@@ -15,12 +15,8 @@
  */
 package org.kuali.rice.ksb.security.credentials;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Map;
-
-import junit.framework.TestCase;
-
+import edu.yale.its.tp.cas.proxy.ExtendedProxyGrantingTicket;
+import edu.yale.its.tp.cas.proxy.ProxyTicketReceptor;
 import org.acegisecurity.GrantedAuthority;
 import org.acegisecurity.GrantedAuthorityImpl;
 import org.acegisecurity.context.SecurityContextHolder;
@@ -28,15 +24,18 @@ import org.acegisecurity.context.SecurityContextImpl;
 import org.acegisecurity.providers.cas.CasAuthenticationToken;
 import org.acegisecurity.ui.cas.CasProcessingFilter;
 import org.acegisecurity.userdetails.User;
+import org.junit.Before;
+import org.junit.Test;
 import org.kuali.rice.core.security.credentials.Credentials;
 import org.kuali.rice.core.security.credentials.CredentialsSource.CredentialsType;
-import org.kuali.rice.ksb.security.credentials.CasProxyTicketCredentialsSource;
-import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockServletConfig;
 
-import edu.yale.its.tp.cas.proxy.ExtendedProxyGrantingTicket;
-import edu.yale.its.tp.cas.proxy.ProxyTicketReceptor;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * 
@@ -44,7 +43,7 @@ import edu.yale.its.tp.cas.proxy.ProxyTicketReceptor;
  * @since 0.9
  *
  */
-public class CasProxyTicketCredentialsSourceTest extends TestCase {
+public class CasProxyTicketCredentialsSourceTest {
 
 	private CasProxyTicketCredentialsSource credentialsSource;
 	
@@ -52,6 +51,7 @@ public class CasProxyTicketCredentialsSourceTest extends TestCase {
 	
 	private final String proxyUrl = "https://localhost:8080/cas/proxy";
 
+    @Before
 	protected void setUp() throws Exception {
 		this.credentialsSource = new CasProxyTicketCredentialsSource();
 		final CasAuthenticationToken token = new CasAuthenticationToken("test", "cas_user", "ticketId", new GrantedAuthority[] {new GrantedAuthorityImpl("ROLE_USER")}, new User("cas_user", "password", true, true, true, true, new GrantedAuthority[] {new GrantedAuthorityImpl("ROLE_USER")}), new ArrayList<String>(), "PGT-IOU");
@@ -77,11 +77,13 @@ public class CasProxyTicketCredentialsSourceTest extends TestCase {
 		
 		map.put("PGT-IOU", ticket);
 	}
-	
+
+    @Test
 	public void testCredentialsType() {
 		assertEquals(CredentialsType.CAS, this.credentialsSource.getSupportedCredentialsType());		
 	}
-	
+
+    @Test
 	public void testGetterWithCasServerInstance() {
 		final Credentials c = this.credentialsSource.getCredentials("http://www.cnn.com");
 		assertNotNull(c);

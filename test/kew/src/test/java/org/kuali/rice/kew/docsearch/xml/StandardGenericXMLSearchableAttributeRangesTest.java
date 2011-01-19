@@ -16,29 +16,9 @@
  */
 package org.kuali.rice.kew.docsearch.xml;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Ignore;
 import org.junit.Test;
-import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.DocumentSearchContext;
-import org.kuali.rice.kew.docsearch.DocumentSearchResult;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
-import org.kuali.rice.kew.docsearch.DocumentSearchTestBase;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
-import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
+import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -54,6 +34,13 @@ import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the StandardGenericXMLSearchableAttribute.

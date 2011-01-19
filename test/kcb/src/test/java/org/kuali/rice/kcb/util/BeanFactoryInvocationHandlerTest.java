@@ -15,14 +15,12 @@
  */
 package org.kuali.rice.kcb.util;
 
-import java.lang.reflect.Proxy;
-
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Test;
-import org.kuali.rice.kcb.util.BeanFactoryInvocationHandler;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
 import org.springframework.test.AssertThrows;
+
+import java.lang.reflect.Proxy;
 
 
 /**

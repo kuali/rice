@@ -25,6 +25,7 @@ import org.kuali.rice.kew.dto.WorkflowIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import static org.junit.Assert.*;
 
 /**
  * Place to test WorkflowDocument.

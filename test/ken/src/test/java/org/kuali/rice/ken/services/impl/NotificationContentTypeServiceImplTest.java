@@ -24,6 +24,9 @@ import org.kuali.rice.ken.test.TestConstants;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * Tests NotificationContentTypeService implementation 

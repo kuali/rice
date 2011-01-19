@@ -23,6 +23,8 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class RouteLogAuthenticationTest extends KEWTestCase {
 

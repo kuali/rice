@@ -16,13 +16,16 @@
  */
 package org.kuali.rice.kew.plugin;
 
-import java.io.File;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.BaseResourceLoader;
 import org.kuali.rice.kew.test.KEWTestCase;
+
+import java.io.File;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 /**

@@ -18,8 +18,9 @@ package org.kuali.rice.kns.util.properties;
 
 import org.junit.Test;
 import org.kuali.rice.kns.exception.PropertiesException;
-import org.kuali.rice.kns.util.properties.FilePropertySource;
 import org.kuali.test.KNSTestCase;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the FilePropertySource methods.

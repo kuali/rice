@@ -15,15 +15,17 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.test.KIMTestCase;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Test the RoleService

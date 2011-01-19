@@ -16,17 +16,14 @@
 
 package org.kuali.rice.kns.util.properties;
 
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
 import org.junit.Test;
-import org.kuali.rice.kns.util.properties.PropertyTree;
 import org.kuali.test.KNSTestCase;
 import org.springframework.beans.BeanUtils;
+
+import java.lang.reflect.Method;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests the PropertyTreeTest methods.

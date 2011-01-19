@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.kew.preferences;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -30,6 +26,13 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.*;
+
 
 
 public class PreferencesServiceTest extends KEWTestCase {

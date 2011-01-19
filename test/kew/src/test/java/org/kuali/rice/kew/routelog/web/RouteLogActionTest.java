@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kew.routelog.web;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actions.AcknowledgeAction;
@@ -29,6 +26,10 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Unit tests for RouteLogAction -- very incomplete, only tests populateRouteLogFutureRequests

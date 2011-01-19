@@ -16,8 +16,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpConnectionManager;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
@@ -30,13 +28,15 @@ import org.kuali.rice.core.config.JAXBConfigImpl;
 import org.kuali.rice.core.config.SimpleConfig;
 import org.kuali.rice.ksb.messaging.serviceconnectors.HttpInvokerConnector;
 
+import static org.junit.Assert.*;
+
 
 /**
  * A test which tests the RemoteResourceServiceLocatorImpl class.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class HttpInvokerConnectorConfigurationTest extends TestCase {
+public class HttpInvokerConnectorConfigurationTest {
 
 	private static String simpleConfig = "SIMPLE_CONFIG";
 	private static String jaxbConfig = "JAXB_CONFIG";

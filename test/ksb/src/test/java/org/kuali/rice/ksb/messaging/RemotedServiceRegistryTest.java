@@ -15,35 +15,26 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServiceDefinition;
-import org.kuali.rice.ksb.messaging.ServiceHolder;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.remotedservices.TestRepeatMessageQueue;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
+
+import javax.xml.namespace.QName;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 
 public class RemotedServiceRegistryTest extends KSBTestCase {
 	
 	private QName mockServiceName = new QName("KEW", "mockService");
 	private QName testTopicName = new QName("testAppsSharedTopic", "sharedTopic");
-
-	@Override
-	public void setUp() throws Exception {
-	    super.setUp();
-	    
-	}
 
 	@SuppressWarnings("unchecked")
 	private ServiceDefinition addServiceToConfig() throws Exception {

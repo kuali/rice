@@ -21,6 +21,8 @@ import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ApproveActionTest extends KEWTestCase {
 

@@ -17,7 +17,6 @@
 package org.kuali.rice.kew.notification;
 
 import mocks.MockEmailNotificationService;
-
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -27,6 +26,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 
 public class NotificationServiceTest extends KEWTestCase {

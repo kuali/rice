@@ -15,7 +15,6 @@ package org.kuali.rice.test;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.kuali.rice.test.lifecycles.PerTestDataLoaderLifecycle;
@@ -38,7 +37,7 @@ import java.util.Map;
  * @since 0.9
  */
 @RunWith(RiceUnitTestClassRunner.class)
-public abstract class BaseRiceTestCase extends Assert implements MethodAware {
+public abstract class BaseRiceTestCase implements MethodAware {
 
 	protected final Logger log = Logger.getLogger(getClass());
 

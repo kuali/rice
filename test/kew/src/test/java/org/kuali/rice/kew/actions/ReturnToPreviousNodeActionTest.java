@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 public class ReturnToPreviousNodeActionTest extends KEWTestCase {
     
 	@Test public void testReturnToPreviousSequential() throws Exception {

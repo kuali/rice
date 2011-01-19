@@ -17,25 +17,25 @@
 
 package org.kuali.rice.kew.plugin;
 
+import org.junit.Test;
+import org.kuali.rice.core.util.ContextClassLoaderBinder;
+
 import java.net.URL;
 import java.net.URLClassLoader;
 
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
-
-import org.junit.Test;
-import org.kuali.rice.core.util.ContextClassLoaderBinder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Tests the ContextClassLoaderBinder
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ContextClassLoaderBinderTest extends TestCase {
+public class ContextClassLoaderBinderTest {
     
 	@Test public void testBinding() {
         try {
             ContextClassLoaderBinder.unbind();
-            throw new AssertionFailedError("unbind succeeded without any prior bind");
+            fail("unbind succeeded without any prior bind");
         } catch (IllegalStateException ise) {
             // expect illegal state
         }

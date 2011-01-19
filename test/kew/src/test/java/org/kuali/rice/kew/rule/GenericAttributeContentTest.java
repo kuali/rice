@@ -17,18 +17,16 @@
 
 package org.kuali.rice.kew.rule;
 
-import java.util.List;
-import java.util.Map;
-
-import junit.framework.TestCase;
-
 import org.junit.Test;
 import org.kuali.rice.kew.routeheader.DocumentContent;
 import org.kuali.rice.kew.routeheader.StandardDocumentContent;
-import org.kuali.rice.kew.rule.GenericAttributeContent;
 
+import java.util.List;
+import java.util.Map;
 
-public class GenericAttributeContentTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class GenericAttributeContentTest {
     private static final String ATTRIB1_CONTENT = "    <boringAttribute>" +
                                                   "      <field>" +
                                                   "        <name>color</name>" +

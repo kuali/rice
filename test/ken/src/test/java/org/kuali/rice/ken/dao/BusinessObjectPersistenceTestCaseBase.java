@@ -17,6 +17,8 @@ package org.kuali.rice.ken.dao;
 
 import org.junit.Test;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * This abstract class puts forward a simple framework for testing the basic 
  * persistence of business objects in the system.

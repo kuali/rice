@@ -16,16 +16,10 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -38,6 +32,12 @@ import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class DocumentSearchTest extends KEWTestCase {
     private static final String KREW_DOC_HDR_T = "KREW_DOC_HDR_T";

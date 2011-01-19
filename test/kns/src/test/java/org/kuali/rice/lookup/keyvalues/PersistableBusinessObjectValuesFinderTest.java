@@ -15,16 +15,18 @@
  */
 package org.kuali.rice.lookup.keyvalues;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
-import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
+import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.kns.test.document.bo.AccountType;
 import org.kuali.test.KNSTestCase;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This class tests the PersistableBusinessObjectValuesFinder.

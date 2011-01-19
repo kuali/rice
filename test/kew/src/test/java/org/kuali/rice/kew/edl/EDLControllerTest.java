@@ -16,19 +16,18 @@
  */
 package org.kuali.rice.kew.edl;
 
-import java.util.Map;
-
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.edl.EDLContext;
-import org.kuali.rice.kew.edl.EDLController;
-import org.kuali.rice.kew.edl.RequestParser;
 import org.kuali.rice.kew.edl.service.EDocLiteService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.w3c.dom.Element;
+
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 
 public class EDLControllerTest extends KEWTestCase {

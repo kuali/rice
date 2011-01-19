@@ -33,6 +33,8 @@ import javax.persistence.PersistenceException;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 
 public class RuleServiceTest extends KEWTestCase {
 

@@ -17,22 +17,18 @@
 package org.kuali.rice.kew.engine;
 
 
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.engine.RouteContext;
-import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.engine.node.DynamicNode;
-import org.kuali.rice.kew.engine.node.DynamicResult;
-import org.kuali.rice.kew.engine.node.NodeState;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
+import org.kuali.rice.kew.engine.node.*;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
+
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 
 public class DynamicRoutingTest extends KEWTestCase {

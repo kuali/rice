@@ -19,6 +19,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 /**
  * Tests {@link RiceService} annotation and the {@link GRLServiceInjectionPostProcessor}.
  * For now this is a KEW-based test case living in the KEW unit tests because the

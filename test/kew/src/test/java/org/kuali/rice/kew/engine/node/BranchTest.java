@@ -19,12 +19,12 @@
  */
 package org.kuali.rice.kew.engine.node;
 
+import org.junit.Test;
+import org.kuali.rice.kew.test.KEWTestCase;
+
 import java.util.List;
 
-import org.junit.Test;
-import org.kuali.rice.kew.engine.node.Branch;
-import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.test.KEWTestCase;
+import static org.junit.Assert.*;
 
 /**
  * 

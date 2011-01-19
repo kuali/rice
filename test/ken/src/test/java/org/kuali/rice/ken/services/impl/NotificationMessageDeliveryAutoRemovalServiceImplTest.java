@@ -15,18 +15,20 @@
  */
 package org.kuali.rice.ken.services.impl;
 
-import java.util.Collection;
-import java.util.HashMap;
-
-import org.apache.ojb.broker.query.Criteria;
-//import org.kuali.rice.core.jpa.criteria.Criteria;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryAutoRemovalService;
 import org.kuali.rice.ken.service.ProcessingResult;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.NotificationConstants;
+
+import java.util.Collection;
+import java.util.HashMap;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+//import org.kuali.rice.core.jpa.criteria.Criteria;
 
 /**
  * Tests NotificationMessageDeliveryAutoRemovalServiceImpl

@@ -23,6 +23,8 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
+import static org.junit.Assert.assertTrue;
+
 public class RoutingWithEmptyWorkGroupTest extends KEWTestCase {
 
 	protected void loadTestData() throws Exception {

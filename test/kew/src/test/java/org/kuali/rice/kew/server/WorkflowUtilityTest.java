@@ -17,40 +17,14 @@
 package org.kuali.rice.kew.server;
 
 
-import java.rmi.RemoteException;
-import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
-import org.kuali.rice.kew.docsearch.DocSearchUtils;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeDateTime;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeFloat;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeLong;
-import org.kuali.rice.kew.docsearch.TestXMLSearchableAttributeString;
-import org.kuali.rice.kew.dto.ActionItemDTO;
-import org.kuali.rice.kew.dto.ActionRequestDTO;
-import org.kuali.rice.kew.dto.DocumentDetailDTO;
-import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
-import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
-import org.kuali.rice.kew.dto.DocumentSearchResultRowDTO;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
-import org.kuali.rice.kew.dto.ReportActionToTakeDTO;
-import org.kuali.rice.kew.dto.ReportCriteriaDTO;
-import org.kuali.rice.kew.dto.RuleDTO;
-import org.kuali.rice.kew.dto.RuleExtensionDTO;
-import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
-import org.kuali.rice.kew.dto.RuleResponsibilityDTO;
+import org.kuali.rice.kew.docsearch.*;
+import org.kuali.rice.kew.dto.*;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -66,6 +40,12 @@ import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import java.rmi.RemoteException;
+import java.sql.Timestamp;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 
 public class WorkflowUtilityTest extends KEWTestCase {

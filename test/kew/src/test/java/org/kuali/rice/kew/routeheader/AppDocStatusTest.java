@@ -28,6 +28,8 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import static org.junit.Assert.*;
+
 
 public class AppDocStatusTest extends KEWTestCase {
     

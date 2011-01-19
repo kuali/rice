@@ -16,28 +16,21 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.export.ExportDataSet;
-import org.kuali.rice.kew.rule.RuleBaseValues;
-import org.kuali.rice.kew.rule.RuleDelegation;
-import org.kuali.rice.kew.rule.RuleExtension;
-import org.kuali.rice.kew.rule.RuleExtensionValue;
-import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.*;
 import org.kuali.rice.kew.rule.web.WebRuleUtils;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 
 /**

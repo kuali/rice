@@ -23,6 +23,8 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springmodules.orm.ojb.PersistenceBrokerTemplate;
 
+import static org.junit.Assert.fail;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

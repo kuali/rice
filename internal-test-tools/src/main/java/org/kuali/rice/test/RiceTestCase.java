@@ -33,6 +33,10 @@ import javax.xml.namespace.QName;
 import java.io.IOException;
 import java.util.*;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
+
 /**
  * Useful superclass for all Rice test cases. Handles setup of test utilities and a test environment. Configures the
  * Spring test environment providing a template method for custom context files in test mode. Also provides a template method

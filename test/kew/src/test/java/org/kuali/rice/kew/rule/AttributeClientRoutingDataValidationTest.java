@@ -19,11 +19,11 @@ package org.kuali.rice.kew.rule;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
-import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import static org.junit.Assert.*;
 
 /**
  * Tests that an attribute implementing WorkflowAttributeXmlValidator interface can be validated from the 

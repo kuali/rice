@@ -15,14 +15,16 @@
  */
 package org.kuali.rice.ksb.security.admin;
 
-import java.security.GeneralSecurityException;
-import java.security.KeyStore;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.test.KSBTestCase;
+
+import javax.xml.namespace.QName;
+import java.security.GeneralSecurityException;
+import java.security.KeyStore;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a test class used to test the KSB java security operation using certificates and keystores 

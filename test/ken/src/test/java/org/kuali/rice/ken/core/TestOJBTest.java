@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.ken.core;
 
-import java.sql.Timestamp;
-
-//import org.apache.ojb.broker.query.Criteria;
-//import org.kuali.rice.core.jpa.criteria.Criteria;
-//import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
-
 import org.apache.ojb.broker.query.Criteria;
 import org.apache.ojb.broker.query.Query;
 import org.apache.ojb.broker.query.QueryFactory;
@@ -33,6 +27,14 @@ import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+
+import java.sql.Timestamp;
+
+import static org.junit.Assert.assertEquals;
+
+//import org.apache.ojb.broker.query.Criteria;
+//import org.kuali.rice.core.jpa.criteria.Criteria;
+//import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
 
 /**
  * Scratch test case for testing aspects of OJB under test harness

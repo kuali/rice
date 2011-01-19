@@ -12,13 +12,15 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.ksb.messaging.callbacks.SimpleCallback;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
+
+import javax.xml.namespace.QName;
+
+import static org.junit.Assert.assertEquals;
 
 
 /**

@@ -17,10 +17,6 @@
 package org.kuali.rice.kew.actionrequest;
 
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.service.DocumentRequeuerService;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -31,6 +27,10 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the DocumentRequeuer route queue processor.

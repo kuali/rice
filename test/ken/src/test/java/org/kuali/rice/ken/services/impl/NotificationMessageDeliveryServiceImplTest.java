@@ -15,14 +15,16 @@
  */
 package org.kuali.rice.ken.services.impl;
 
-import java.util.Collection;
-
 import org.junit.Test;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
 import org.kuali.rice.ken.service.NotificationMessageDeliveryService;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.test.TestConstants;
+
+import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests the message delivery service implementation

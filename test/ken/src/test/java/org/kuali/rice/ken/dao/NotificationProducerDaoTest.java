@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.ken.dao;
 
-import java.util.HashMap;
-
 import org.kuali.rice.ken.bo.NotificationChannel;
 import org.kuali.rice.ken.bo.NotificationProducer;
 import org.kuali.rice.ken.test.util.MockObjectsUtil;
 import org.kuali.rice.ken.util.NotificationConstants;
+
+import java.util.HashMap;
+
+import static org.junit.Assert.assertEquals;
 
 
 /**

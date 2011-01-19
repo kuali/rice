@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.web.document;
 
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.web.test.WebTestBase;
 
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 /**
  * This class tests various ValuesFinders classes.

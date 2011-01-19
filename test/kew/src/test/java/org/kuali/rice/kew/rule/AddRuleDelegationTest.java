@@ -16,10 +16,7 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.List;
-
 import mocks.MockDocumentRequeuerImpl;
-
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -29,6 +26,9 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests adding a delegation rule

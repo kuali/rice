@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.kew.docmentlink;
 
-import java.util.List;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.DocumentLinkDTO;
-import org.kuali.rice.kew.service.WorkflowDocument;
-import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.test.KEWTestCase;
+import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
+import org.kuali.rice.kew.service.WorkflowDocument;
+import org.kuali.rice.kew.test.KEWTestCase;
 
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - g1zhang don't forget to fill this in. 

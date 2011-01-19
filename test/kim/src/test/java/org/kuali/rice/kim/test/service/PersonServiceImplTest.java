@@ -15,14 +15,6 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.apache.ojb.broker.metadata.DescriptorRepository;
 import org.apache.ojb.broker.metadata.MetadataManager;
 import org.junit.Test;
@@ -43,6 +35,15 @@ import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.xml.namespace.QName;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.

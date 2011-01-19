@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.workgroup;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.bo.Group;
@@ -24,6 +22,11 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.util.List;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.

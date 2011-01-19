@@ -22,6 +22,8 @@ import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * Test to ensure that data dictionary lazy loading works as expected.
  * 

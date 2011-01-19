@@ -20,6 +20,9 @@ import org.junit.Test;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.test.BaseRiceTestCase;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 public class FixedPointValidationPatternTest extends BaseRiceTestCase {
     // Unlike its superclass, FixedPointValidationPattern does not use Spring.
     FixedPointValidationPattern pattern;

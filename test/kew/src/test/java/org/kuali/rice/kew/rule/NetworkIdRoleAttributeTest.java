@@ -15,11 +15,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.io.StringReader;
-
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
@@ -28,6 +23,12 @@ import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.xml.sax.InputSource;
+
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import java.io.StringReader;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill

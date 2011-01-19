@@ -35,6 +35,8 @@ import javax.xml.xpath.XPathFactory;
 import java.io.IOException;
 import java.io.StringReader;
 
+import static org.junit.Assert.*;
+
 
 public class DocumentTypeXmlValidationTest extends BaseRiceTestCase {
     private final XPath xpath = XPathFactory.newInstance().newXPath();

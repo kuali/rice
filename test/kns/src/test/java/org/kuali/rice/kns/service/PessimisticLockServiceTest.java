@@ -15,20 +15,11 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.junit.Test;
 import org.apache.commons.lang.StringUtils;
+import org.junit.Test;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants.PermissionNames;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
@@ -46,6 +37,11 @@ import org.kuali.rice.maintainable.AccountType2MaintainableImpl;
 import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.test.KNSTestCase;
+
+import java.io.Serializable;
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 
 /**

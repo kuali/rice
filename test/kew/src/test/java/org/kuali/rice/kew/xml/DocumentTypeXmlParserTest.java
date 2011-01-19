@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 public class DocumentTypeXmlParserTest extends KEWTestCase {
     private List testDoc(String docName, Class expectedException) throws Exception {
         DocumentTypeXmlParser parser = new DocumentTypeXmlParser();

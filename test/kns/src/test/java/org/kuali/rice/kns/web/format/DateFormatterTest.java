@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.kns.web.format;
 
+import org.junit.Test;
+import org.kuali.test.KNSTestCase;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.junit.Test;
-import org.kuali.test.KNSTestCase;
+import static org.junit.Assert.assertEquals;
 
 public class DateFormatterTest extends KNSTestCase {
 

@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.kew.engine;
 
-import java.io.Serializable;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.engine.node.Branch;
@@ -40,6 +36,10 @@ import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
 import org.kuali.rice.ksb.messaging.service.KSBJavaService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
+import javax.xml.namespace.QName;
+import java.io.Serializable;
+
+import static org.junit.Assert.*;
 
 public class StandardWorkflowEngineTest extends KEWTestCase {
 

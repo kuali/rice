@@ -15,22 +15,13 @@
  */
 package org.kuali.rice.ken.services.impl;
 
-import java.util.Collection;
-import java.util.HashMap;
-
-import org.apache.ojb.broker.query.Criteria;
-//import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.junit.Test;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
 import org.kuali.rice.kcb.service.MessageService;
 import org.kuali.rice.ken.bo.Notification;
 import org.kuali.rice.ken.bo.NotificationMessageDelivery;
-import org.kuali.rice.ken.service.NotificationMessageDeliveryResolverService;
-import org.kuali.rice.ken.service.NotificationRecipientService;
-import org.kuali.rice.ken.service.NotificationService;
-import org.kuali.rice.ken.service.ProcessingResult;
-import org.kuali.rice.ken.service.UserPreferenceService;
+import org.kuali.rice.ken.service.*;
 import org.kuali.rice.ken.service.impl.NotificationMessageDeliveryResolverServiceImpl;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.ken.util.NotificationConstants;
@@ -39,8 +30,14 @@ import org.kuali.rice.test.data.UnitTestData;
 import org.kuali.rice.test.data.UnitTestSql;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static org.junit.Assert.*;
+
+//import org.kuali.rice.core.jpa.criteria.Criteria;
 
 /**
  * Tests NotificationMessageDeliveryResolverServiceImpl

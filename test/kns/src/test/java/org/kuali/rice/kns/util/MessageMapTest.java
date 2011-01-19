@@ -15,16 +15,14 @@
  */
 package org.kuali.rice.kns.util;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
 import org.junit.Test;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.test.KNSTestCase;
 import org.springframework.util.AutoPopulatingList;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests the ErrorMap methods.

@@ -16,30 +16,10 @@
  */
 package org.kuali.rice.kew.test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-
-import javax.sql.DataSource;
-
-import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
+import org.junit.Assert;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
@@ -59,6 +39,19 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.sql.DataSource;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
+
+import static org.junit.Assert.fail;
 
 
 /**
@@ -215,7 +208,7 @@ public final class TestUtilities {
 				return;
 			}
 		}
-		throw new AssertionFailedError((org.apache.commons.lang.StringUtils.isEmpty(message) ? "" : message + ": ") + "Was [" + StringUtils.join(nodeNames, ", ") + "], Expected " + nodeName);
+		fail((org.apache.commons.lang.StringUtils.isEmpty(message) ? "" : message + ": ") + "Was [" + StringUtils.join(nodeNames, ", ") + "], Expected " + nodeName);
 	}
 
     public static void assertAtNode(WorkflowDocument document, String nodeName) throws WorkflowException {

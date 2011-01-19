@@ -23,6 +23,8 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
+import static org.junit.Assert.*;
+
 /**
  * This class is used to test the {@link NoteService} implementation 
  * 

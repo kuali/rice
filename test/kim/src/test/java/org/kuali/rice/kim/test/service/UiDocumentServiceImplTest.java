@@ -15,37 +15,17 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityAddressImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityAffiliationImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEmailImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityEntityTypeImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityNameImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityPhoneImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimEntityPrivacyPreferencesImpl;
-import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
+import org.kuali.rice.kim.bo.entity.impl.*;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
-import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
-import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
-import org.kuali.rice.kim.bo.ui.PersonDocumentEmail;
-import org.kuali.rice.kim.bo.ui.PersonDocumentEmploymentInfo;
-import org.kuali.rice.kim.bo.ui.PersonDocumentName;
-import org.kuali.rice.kim.bo.ui.PersonDocumentPhone;
-import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
-import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
+import org.kuali.rice.kim.bo.ui.*;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
@@ -56,6 +36,13 @@ import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in.

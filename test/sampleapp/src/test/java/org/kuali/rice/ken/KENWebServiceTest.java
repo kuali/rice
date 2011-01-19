@@ -41,6 +41,9 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * This is a description of what this class does - arh14 don't forget to fill this in.

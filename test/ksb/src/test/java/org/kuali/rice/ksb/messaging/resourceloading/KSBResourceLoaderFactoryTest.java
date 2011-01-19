@@ -15,23 +15,17 @@
  */
 package org.kuali.rice.ksb.messaging.resourceloading;
 
-import java.util.ArrayList;
-import java.util.Properties;
-
-import junit.framework.TestCase;
-
 import org.junit.Test;
-import org.kuali.rice.core.config.Config;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.config.JAXBConfigImpl;
-import org.kuali.rice.core.config.SimpleConfig;
+import org.kuali.rice.core.config.*;
 import org.kuali.rice.core.resourceloader.ResourceLoader;
-import org.kuali.rice.ksb.messaging.config.ServiceHolder;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 
+import java.util.Properties;
 
-public class KSBResourceLoaderFactoryTest extends TestCase {
+import static org.junit.Assert.*;
+
+
+public class KSBResourceLoaderFactoryTest {
 
 	private static String simpleConfig = "SIMPLE_CONFIG";
 	private static String jaxbConfig = "JAXB_CONFIG";

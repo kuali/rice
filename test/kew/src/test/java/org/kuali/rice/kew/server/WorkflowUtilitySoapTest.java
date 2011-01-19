@@ -25,6 +25,8 @@ import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JInInterceptor;
 import org.kuali.rice.ksb.security.soap.CXFWSS4JOutInterceptor;
 
+import static org.junit.Assert.assertNull;
+
 public class WorkflowUtilitySoapTest extends WorkflowUtilityTest {
 
     @Override

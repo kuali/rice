@@ -26,10 +26,10 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - ewestfal don't forget to fill this in.

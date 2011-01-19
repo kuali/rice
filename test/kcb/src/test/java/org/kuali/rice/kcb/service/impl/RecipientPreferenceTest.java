@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kcb.service.impl;
 
-import java.util.Map;
-
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.RecipientPreference;
 import org.kuali.rice.kcb.service.GlobalKCBServiceLocator;
@@ -26,6 +24,10 @@ import org.kuali.rice.kcb.test.KCBTestData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.AssertThrows;
+
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests recipient preferences 

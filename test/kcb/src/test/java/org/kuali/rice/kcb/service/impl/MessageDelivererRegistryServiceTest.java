@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kcb.service.impl;
 
-import java.util.Collection;
-
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
@@ -24,6 +22,10 @@ import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.kcb.test.TestConstants;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+
+import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests the registry service.

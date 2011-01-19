@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.ken;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ken.test.KENTestCase;
@@ -25,6 +23,10 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+
+import javax.xml.namespace.QName;
+
+import static org.junit.Assert.assertNotNull;
 
 
 /**

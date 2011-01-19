@@ -16,8 +16,9 @@
 package org.kuali.rice.kns.util;
 
 import org.junit.Test;
-import org.kuali.rice.kns.util.OjbKualiIntegerPercentageFieldConversion;
 import org.kuali.test.KNSTestCase;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This class tests the OjbKualiIntegerPercentageFieldConversionTest methods.

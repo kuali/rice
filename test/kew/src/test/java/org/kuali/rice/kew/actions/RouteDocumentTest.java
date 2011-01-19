@@ -16,8 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.Collection;
-
 import org.junit.Test;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -26,6 +24,9 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 public class RouteDocumentTest extends KEWTestCase {
 

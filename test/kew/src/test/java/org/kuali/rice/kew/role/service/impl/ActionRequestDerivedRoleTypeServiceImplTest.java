@@ -24,6 +24,9 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 
 /**
  * Tests the ActionRequestDerivedRoleTypeServiceImpl class. 

@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.util.RiceUtilities;
@@ -28,6 +24,11 @@ import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
 import org.kuali.rice.test.TransactionalTest;
+
+import javax.xml.namespace.QName;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This test ensures that ServiceInfo and ServiceDefinition instances are being modified and removed correctly. 

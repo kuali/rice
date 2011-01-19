@@ -15,16 +15,17 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.ksb.messaging.RemoteResourceServiceLocator;
 import org.kuali.rice.ksb.messaging.RemotedServiceHolder;
 import org.kuali.rice.ksb.messaging.ServiceInfo;
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.messaging.serviceconnectors.SOAPConnector;
+
+import javax.xml.namespace.QName;
+import java.util.List;
+
+import static org.junit.Assert.fail;
 
 /**
  * Test the RoleService via remote calls

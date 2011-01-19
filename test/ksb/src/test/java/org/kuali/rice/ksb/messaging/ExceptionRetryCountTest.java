@@ -24,6 +24,9 @@ import org.kuali.rice.test.TestUtilities;
 import javax.xml.namespace.QName;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+
 
 /**
  * This is a description of what this class does - rkirkend don't forget to fill this in.

@@ -20,6 +20,8 @@ import org.junit.Test;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * This is a very simple unit test to make the code coverage tool happy :)
  *

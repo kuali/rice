@@ -27,6 +27,8 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import java.util.Collection;
 import java.util.List;
 
+import static org.junit.Assert.*;
+
 
 public class CancelActionTest extends KEWTestCase {
 

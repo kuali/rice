@@ -17,13 +17,6 @@
 package org.kuali.rice.kew.actionitem;
 
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
@@ -42,6 +35,10 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+
+import java.util.*;
+
+import static org.junit.Assert.*;
 
 public class ActionItemServiceTest extends KEWTestCase {
 

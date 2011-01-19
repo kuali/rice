@@ -19,6 +19,9 @@ import org.junit.Test;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 
 @KNSWithTestSpringContext
 public class JavaClassValidationPatternTest extends KNSTestCase {

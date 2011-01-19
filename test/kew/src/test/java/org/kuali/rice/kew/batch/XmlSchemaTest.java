@@ -44,6 +44,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import static org.junit.Assert.fail;
+
 
 /**
  * Test schema validation

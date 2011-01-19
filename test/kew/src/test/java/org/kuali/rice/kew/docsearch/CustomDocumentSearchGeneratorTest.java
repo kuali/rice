@@ -33,6 +33,7 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 
+import static org.junit.Assert.assertEquals;
 
 /**
  *

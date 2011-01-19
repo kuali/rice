@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kew.xml;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
@@ -36,6 +34,10 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Row;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This test case just ensures that deprecated document type XML elements can still be parsed properly. When the deprecated elements are eventually

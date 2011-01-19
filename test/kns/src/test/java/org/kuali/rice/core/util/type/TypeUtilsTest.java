@@ -15,14 +15,15 @@
  */
 package org.kuali.rice.core.util.type;
 
+import org.junit.Test;
+import org.kuali.test.KNSTestCase;
+
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import org.junit.Test;
-import org.kuali.rice.core.util.type.KualiDecimal;
-import org.kuali.rice.core.util.type.TypeUtils;
-import org.kuali.test.KNSTestCase;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This class tests the TypeUtils methods.

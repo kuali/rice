@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.ksb.security.credentials;
 
-import junit.framework.TestCase;
-
+import org.junit.Before;
+import org.junit.Test;
 import org.kuali.rice.core.security.credentials.Credentials;
 import org.kuali.rice.core.security.credentials.CredentialsSource.CredentialsType;
-import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentials;
-import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentialsSource;
+
+import static org.junit.Assert.*;
 
 /**
  * 
@@ -28,7 +28,7 @@ import org.kuali.rice.ksb.security.credentials.UsernamePasswordCredentialsSource
  * @since 0.9
  * 
  */
-public class UsernamePasswordCredentialsSourceTest extends TestCase {
+public class UsernamePasswordCredentialsSourceTest {
 
 	private static final String USERNAME = "username";
 
@@ -36,12 +36,13 @@ public class UsernamePasswordCredentialsSourceTest extends TestCase {
 
 	private UsernamePasswordCredentialsSource credentialsSource;
 
+    @Before
 	protected void setUp() throws Exception {
 		this.credentialsSource = new UsernamePasswordCredentialsSource(
 				USERNAME, PASSWORD);
-		super.setUp();
 	}
 
+    @Test
 	public void testGetter() {
 		final Credentials c = this.credentialsSource
 				.getCredentials("http://www.cnn.com");

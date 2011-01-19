@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ksb.messaging.remotedservices.EchoService;
 import org.kuali.rice.ksb.test.KSBTestCase;
+
+import javax.xml.namespace.QName;
+
+import static org.junit.Assert.*;
 
 
 public class RemoteFailureTest extends KSBTestCase {

@@ -17,12 +17,7 @@
 package org.kuali.rice.kew.actions;
 
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import mocks.MockEmailNotificationService;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
@@ -36,6 +31,11 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class BlanketApproveTest extends KEWTestCase {
 

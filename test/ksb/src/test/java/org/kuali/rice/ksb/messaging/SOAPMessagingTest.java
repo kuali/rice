@@ -13,10 +13,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.ksb.messaging.bam.BAMTargetEntry;
 import org.kuali.rice.ksb.messaging.bam.service.BAMService;
@@ -26,6 +22,12 @@ import org.kuali.rice.ksb.messaging.remotedservices.ServiceCallInformationHolder
 import org.kuali.rice.ksb.messaging.resourceloader.KSBResourceLoaderFactory;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
+
+import javax.xml.namespace.QName;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 /**

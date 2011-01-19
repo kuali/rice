@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.test;
 
-import junit.framework.Assert;
 import org.eclipse.jetty.webapp.WebAppClassLoader;
+import org.junit.Assert;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;

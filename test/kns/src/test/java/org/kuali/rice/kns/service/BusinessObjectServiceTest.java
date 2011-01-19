@@ -15,14 +15,16 @@
  */
 package org.kuali.rice.kns.service;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * This class tests KULRICE-1666: missing Spring mapping for ojbCollectionHelper

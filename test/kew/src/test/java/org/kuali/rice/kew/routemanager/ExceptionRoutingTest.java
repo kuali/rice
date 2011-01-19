@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.kew.routemanager;
 
-import java.util.Collection;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
@@ -37,6 +33,10 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 
+import javax.xml.namespace.QName;
+import java.util.Collection;
+
+import static org.junit.Assert.*;
 
 public class ExceptionRoutingTest extends KEWTestCase {
 

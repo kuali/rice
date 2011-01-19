@@ -15,12 +15,6 @@
  */
 package org.kuali.rice.kim.test.service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
@@ -32,6 +26,11 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.IdentityArchiveServiceImpl;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+
+import java.util.*;
+
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit test for the IdentityArchiveService

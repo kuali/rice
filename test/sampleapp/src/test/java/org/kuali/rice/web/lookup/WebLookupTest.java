@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.web.lookup;
 
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.test.data.PerTestUnitTestData;
@@ -23,7 +24,8 @@ import org.kuali.rice.test.data.UnitTestFile;
 import org.kuali.rice.test.data.UnitTestSql;
 import org.kuali.rice.web.test.WebTestBase;
 
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @PerTestUnitTestData(
         @UnitTestData(

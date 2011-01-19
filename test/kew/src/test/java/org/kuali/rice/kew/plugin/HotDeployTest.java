@@ -16,22 +16,16 @@
  */
 package org.kuali.rice.kew.plugin;
 
-import java.io.File;
-
-import javax.xml.namespace.QName;
-
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kew.plugin.HotDeployer;
-import org.kuali.rice.kew.plugin.Plugin;
-import org.kuali.rice.kew.plugin.PluginEnvironment;
-import org.kuali.rice.kew.plugin.PluginRegistry;
-import org.kuali.rice.kew.plugin.PluginUtils;
-import org.kuali.rice.kew.plugin.Reloader;
-import org.kuali.rice.kew.plugin.ServerPluginRegistry;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
+
+import javax.xml.namespace.QName;
+import java.io.File;
+
+import static org.junit.Assert.*;
 
 
 /**

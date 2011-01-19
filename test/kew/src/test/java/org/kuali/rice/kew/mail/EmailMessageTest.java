@@ -31,6 +31,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 
 import java.util.Collection;
 
+import static org.junit.Assert.*;
 
 /**
  * Tests email content generation

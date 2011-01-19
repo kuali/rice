@@ -22,6 +22,8 @@ import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * This class tests the KualiInquirable methods.
  * 

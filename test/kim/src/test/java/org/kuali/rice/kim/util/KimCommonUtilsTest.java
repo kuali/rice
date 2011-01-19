@@ -15,10 +15,13 @@
  */
 package org.kuali.rice.kim.util;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.kim.test.KIMTestCase;
+
+import javax.xml.namespace.QName;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Tests the {@link KimCommonUtilsInternal} class.

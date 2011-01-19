@@ -24,6 +24,8 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class RoutingToInactiveWorkgroupTest extends KEWTestCase {
 

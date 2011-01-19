@@ -16,13 +16,6 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.kew.doctype.DocumentTypePolicy;
@@ -33,6 +26,15 @@ import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.Group;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 
 public class DocumentTypeXmlExporterTest extends XmlExporterTestCase {

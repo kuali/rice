@@ -15,13 +15,8 @@
  */
 package org.kuali.rice.kcb.service.impl;
 
-import java.util.Collection;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import junit.framework.Assert;
-
 import org.apache.commons.lang.RandomStringUtils;
+import org.junit.Assert;
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.bo.MessageDeliveryStatus;
@@ -36,6 +31,12 @@ import org.quartz.JobExecutionException;
 import org.quartz.SchedulerException;
 import org.quartz.listeners.JobListenerSupport;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import java.util.Collection;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests MessagingService 

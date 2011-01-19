@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kew.helpentry;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.StringTokenizer;
-
 import org.junit.Ignore;
 import org.junit.Test;
 import org.kuali.rice.kew.help.HelpEntry;
@@ -26,6 +22,11 @@ import org.kuali.rice.kew.help.dao.HelpDAO;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.test.KEWTestCase;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.StringTokenizer;
+
+import static org.junit.Assert.*;
 
 
 /**

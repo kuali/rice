@@ -15,9 +15,6 @@
  */
 package org.kuali.rice.kcb.service.impl;
 
-import java.util.Collection;
-import java.util.HashMap;
-
 import org.junit.Test;
 import org.kuali.rice.kcb.bo.RecipientPreference;
 import org.kuali.rice.kcb.deliverer.MessageDeliverer;
@@ -29,6 +26,11 @@ import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.kcb.test.TestConstants;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
+
+import java.util.Collection;
+import java.util.HashMap;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests {@link RecipientPreferenceService}

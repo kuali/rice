@@ -20,6 +20,8 @@ import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.util.NoteType;
 import org.kuali.test.KNSTestCase;
 
+import static org.junit.Assert.fail;
+
 /**
  * This class is used to test the {@link NoteService} implementation 
  * 

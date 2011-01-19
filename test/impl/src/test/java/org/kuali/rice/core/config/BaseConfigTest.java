@@ -16,17 +16,16 @@
 
 package org.kuali.rice.core.config;
 
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
 
-import org.junit.Test;
-import org.kuali.rice.core.config.SimpleConfig;
-
-public class BaseConfigTest extends TestCase {
+public class BaseConfigTest {
     /**
      * Tests the hierarchical override capabilities.
      */

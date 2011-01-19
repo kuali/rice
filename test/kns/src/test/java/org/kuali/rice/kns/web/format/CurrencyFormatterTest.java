@@ -15,12 +15,14 @@
  */
 package org.kuali.rice.kns.web.format;
 
-import java.text.NumberFormat;
-
 import org.junit.Test;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.test.KNSTestCase;
+
+import java.text.NumberFormat;
+
+import static org.junit.Assert.*;
 
 public class CurrencyFormatterTest extends KNSTestCase {
 

@@ -16,8 +16,6 @@
 package org.kuali.rice.kim.test.util;
 
 
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
@@ -28,6 +26,10 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
+
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Unit Tests for KimCommonUtils.java

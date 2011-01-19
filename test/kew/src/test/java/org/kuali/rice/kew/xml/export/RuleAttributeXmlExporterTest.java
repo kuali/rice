@@ -16,17 +16,19 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 
 public class RuleAttributeXmlExporterTest extends XmlExporterTestCase {

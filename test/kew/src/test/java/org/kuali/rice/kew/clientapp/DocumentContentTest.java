@@ -16,8 +16,6 @@
  */
 package org.kuali.rice.kew.clientapp;
 
-import java.lang.reflect.Field;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.rice.kew.dto.DocumentContentDTO;
@@ -31,6 +29,9 @@ import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 
+import java.lang.reflect.Field;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests that client interaction with document content behaves approriately.

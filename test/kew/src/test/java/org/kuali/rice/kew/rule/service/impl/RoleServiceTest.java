@@ -17,20 +17,12 @@
 package org.kuali.rice.kew.rule.service.impl;
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.role.service.RoleService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
-import org.kuali.rice.kew.routemodule.TestDocContent;
-import org.kuali.rice.kew.routemodule.TestRecipient;
-import org.kuali.rice.kew.routemodule.TestResponsibility;
-import org.kuali.rice.kew.routemodule.TestRouteLevel;
-import org.kuali.rice.kew.routemodule.TestRouteModuleXMLHelper;
+import org.kuali.rice.kew.routemodule.*;
 import org.kuali.rice.kew.rule.TestRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
@@ -38,6 +30,11 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the role re-resolving.  This test depends on the route queue being synchronous.

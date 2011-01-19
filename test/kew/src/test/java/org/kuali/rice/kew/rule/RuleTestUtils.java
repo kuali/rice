@@ -15,18 +15,17 @@
  */
 package org.kuali.rice.kew.rule;
 
-import static junit.framework.Assert.assertTrue;
-
-import java.util.List;
-
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.rule.bo.RuleTemplate;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.workgroup.GroupId;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - gilesp don't forget to fill this in. 

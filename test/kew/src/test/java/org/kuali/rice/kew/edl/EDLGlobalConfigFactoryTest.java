@@ -16,19 +16,18 @@
  */
 package org.kuali.rice.kew.edl;
 
-import java.io.InputStream;
-import java.util.Map;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-
 import org.junit.Test;
-import org.kuali.rice.kew.edl.EDLGlobalConfig;
-import org.kuali.rice.kew.edl.EDLGlobalConfigFactory;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.InputStream;
+import java.util.Map;
+
+import static org.junit.Assert.assertTrue;
 
 
 public class EDLGlobalConfigFactoryTest extends KEWTestCase {

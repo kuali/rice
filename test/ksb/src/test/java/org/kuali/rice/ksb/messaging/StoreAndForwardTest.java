@@ -16,10 +16,6 @@
  */
 package org.kuali.rice.ksb.messaging;
 
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.core.config.Config;
 import org.kuali.rice.core.config.ConfigContext;
@@ -28,6 +24,11 @@ import org.kuali.rice.ksb.messaging.bam.service.BAMService;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
+
+import javax.xml.namespace.QName;
+import java.util.List;
+
+import static org.junit.Assert.assertTrue;
 
 
 /**

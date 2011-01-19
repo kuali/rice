@@ -12,16 +12,14 @@
  */
 package org.kuali.rice.ksb.quartz;
 
-import java.util.Date;
-
 import org.junit.Test;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 import org.kuali.rice.ksb.test.KSBTestCase;
-import org.quartz.JobDataMap;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.Trigger;
-import org.quartz.TriggerUtils;
+import org.quartz.*;
+
+import java.util.Date;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test basic sanity check of quartz implementation

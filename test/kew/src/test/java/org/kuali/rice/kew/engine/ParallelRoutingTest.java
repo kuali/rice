@@ -28,6 +28,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 
 import java.util.*;
 
+import static org.junit.Assert.*;
 
 public class ParallelRoutingTest extends KEWTestCase {
     

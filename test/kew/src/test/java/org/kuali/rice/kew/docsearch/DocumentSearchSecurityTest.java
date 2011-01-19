@@ -17,7 +17,6 @@ package org.kuali.rice.kew.docsearch;
 
 import org.junit.Test;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
-import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -27,6 +26,8 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+
+import static org.junit.Assert.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in. 

@@ -16,9 +16,6 @@
  */
 package org.kuali.rice.kew.actions;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.dto.ActionRequestDTO;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
@@ -32,6 +29,10 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.util.KimConstants;
 
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 public class RevokeAdHocActionTest extends KEWTestCase {
 

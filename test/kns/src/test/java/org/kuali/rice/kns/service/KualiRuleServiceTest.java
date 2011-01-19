@@ -19,6 +19,8 @@ import org.junit.Test;
 import org.kuali.rice.kns.rule.event.ApproveDocumentEvent;
 import org.kuali.test.KNSTestCase;
 
+import static org.junit.Assert.assertTrue;
+
 /**
  * This class tests the KualiRuleService.
  * <p>

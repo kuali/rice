@@ -15,17 +15,14 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.List;
-
 import org.junit.Test;
-import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
-import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 
+import static org.junit.Assert.assertTrue;
 
 /**
  * Test hierarchical routing coupled with KRA meta-rule

@@ -16,8 +16,6 @@
  */
 package org.kuali.rice.kew.edl.service.impl;
 
-
-import junit.framework.AssertionFailedError;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -35,6 +33,8 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -162,14 +162,14 @@ public class StyleServiceImplTest extends KEWTestCase {
         String styleXml = "<style></style>";
         try {
             styleService.saveStyle(new ByteArrayInputStream(styleXml.getBytes()));
-            throw new AssertionFailedError("Storing style with no name succeeded");
+            fail("Storing style with no name succeeded");
         } catch (WorkflowServiceErrorException wsee) {
             // expected due to lack of name
         }
         styleXml = "<style name=\"test\"></style>";
         try {
             styleService.saveStyle(new ByteArrayInputStream(styleXml.getBytes()));
-            throw new AssertionFailedError("Storing style with no xsl:stylesheet element succeeded");
+            fail("Storing style with no xsl:stylesheet element succeeded");
         } catch (WorkflowServiceErrorException wsee) {
             // expected due to lack of stylesheet content
         }

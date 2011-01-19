@@ -18,13 +18,11 @@ package org.kuali.rice.ksb.messaging.exceptionhandling;
 
 import org.junit.Test;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.ksb.messaging.AsynchronousCall;
-import org.kuali.rice.ksb.messaging.JavaServiceDefinition;
-import org.kuali.rice.ksb.messaging.PersistedMessageBO;
-import org.kuali.rice.ksb.messaging.PersistedMessagePayload;
-import org.kuali.rice.ksb.messaging.ServiceInfo;
+import org.kuali.rice.ksb.messaging.*;
 import org.kuali.rice.ksb.test.KSBTestCase;
 import org.kuali.rice.ksb.util.KSBConstants;
+
+import static org.junit.Assert.*;
 
 
 public class DefaultMessageExceptionHandlerTest extends KSBTestCase {

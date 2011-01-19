@@ -19,6 +19,8 @@ import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
 
+import static org.junit.Assert.*;
+
 /**
  * Unit tests for the KNS WebUtils
  * 

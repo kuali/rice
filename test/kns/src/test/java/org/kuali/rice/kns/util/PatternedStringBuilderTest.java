@@ -18,6 +18,8 @@ package org.kuali.rice.kns.util;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

@@ -16,16 +16,17 @@
  */
 package org.kuali.rice.kew.xml.export;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.util.Iterator;
-import java.util.List;
-
 import org.junit.Test;
 import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.help.HelpEntry;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 
 public class HelpEntryXmlExporterTest extends XmlExporterTestCase {

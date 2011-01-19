@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.service;
 
-import javax.xml.namespace.QName;
-
 import org.junit.Test;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
@@ -24,6 +22,10 @@ import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KimConstants;
+
+import javax.xml.namespace.QName;
+
+import static org.junit.Assert.*;
 
 /**
  * Tests the {@link KIMServiceLocatorInternal} class.

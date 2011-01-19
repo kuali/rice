@@ -15,12 +15,13 @@
  */
 package org.kuali.rice.test;
 
+import org.junit.Test;
+import org.kuali.rice.core.config.ConfigContext;
+
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Test;
-import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.test.RiceTestCase;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Verifies that the RiceTestCase starts up cleanly.

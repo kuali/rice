@@ -15,45 +15,35 @@
  */
 package org.kuali.rice.ksb.security.credentials;
 
+import org.junit.Before;
+import org.junit.Test;
+
 import java.math.BigInteger;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.Principal;
-import java.security.PublicKey;
-import java.security.SignatureException;
-import java.security.cert.CertificateEncodingException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
-import java.security.cert.X509Certificate;
+import java.security.*;
+import java.security.cert.*;
 import java.util.Date;
 import java.util.Set;
 
-import org.kuali.rice.ksb.security.credentials.X509Credentials;
-import org.kuali.rice.ksb.security.credentials.X509CredentialsSource;
-
-import junit.framework.TestCase;
-
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 /**
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  *
  */
-public class X509CredentialsSourceTest extends TestCase {
+public class X509CredentialsSourceTest {
 
 	private X509CredentialsSource credentialsSource;
 	
 	private X509Certificate cert = new KualiX509Certificate();
 
-	@Override
+    @Before
 	protected void setUp() throws Exception {
-		super.setUp();
-		
 		this.credentialsSource = new X509CredentialsSource(cert);
 	}
-	
+
+    @Test
 	public void testX509Certificate() {
 		final X509Credentials context = (X509Credentials) this.credentialsSource.getCredentials("test");
 		assertNotNull(context);

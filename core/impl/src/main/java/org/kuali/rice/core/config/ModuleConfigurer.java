@@ -47,11 +47,7 @@ import org.springframework.web.context.ServletContextAware;
 public class ModuleConfigurer extends BaseCompositeLifecycle implements Configurer, InitializingBean, DisposableBean, ApplicationListener<ApplicationEvent>, ServletContextAware {
     protected final Logger LOG = Logger.getLogger(getClass());
 
-    public enum RunMode {
-    	LOCAL, EMBEDDED, REMOTE, THIN
-    }
-    
-	private List<RunMode> validRunModes = new ArrayList<RunMode>();
+    private List<RunMode> validRunModes = new ArrayList<RunMode>();
 	private boolean hasWebInterface;
 	
 	private Properties properties = new Properties();
@@ -108,7 +104,7 @@ public class ModuleConfigurer extends BaseCompositeLifecycle implements Configur
 	 * of the web UI for the module.
 	 */
 	public boolean shouldRenderWebInterface() {
-		return hasWebInterface() &&	getRunMode().equals( ModuleConfigurer.RunMode.LOCAL );
+		return hasWebInterface() &&	getRunMode().equals( RunMode.LOCAL );
 	}
 	
 	public boolean isSetSOAPServicesAsDefault() {

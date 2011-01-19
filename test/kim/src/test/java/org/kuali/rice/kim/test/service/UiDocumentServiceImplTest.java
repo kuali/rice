@@ -22,7 +22,6 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.entity.impl.*;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.*;
@@ -34,8 +33,9 @@ import org.kuali.rice.kim.service.impl.IdentityServiceImpl;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.service.support.impl.KimTypeServiceBase;
 import org.kuali.rice.kim.test.KIMTestCase;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +65,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 		IdentityManagementPersonDocument personDoc = initPersonDoc();
 
 		try {
-            personDoc.getDocumentHeader().setWorkflowDocument(KNSServiceLocatorInternal.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
+            personDoc.getDocumentHeader().setWorkflowDocument(KNSServiceLocatorWeb.getWorkflowDocumentService().createWorkflowDocument("TestDocumentType", adminPerson));
         } catch (WorkflowException e) {
             e.printStackTrace();
         }
@@ -137,7 +137,7 @@ public class UiDocumentServiceImplTest extends KIMTestCase {
 
 		personDocRole.setAttributeEntry( uiDocumentService.getAttributeEntries( personDocRole.getDefinitions() ) );
 		for (Object key : personDocRole.getAttributeEntry().keySet()) {
-			if (key.equals(KimAttributes.NAMESPACE_CODE)) {
+			if (key.equals(KimConstants.AttributeConstants.NAMESPACE_CODE)) {
 				Map value = (Map)personDocRole.getAttributeEntry().get(key);
 				assertEquals("Parameter Namespace Code", value.get("label"));
 				assertEquals("Nmspc Cd", value.get("shortLabel"));

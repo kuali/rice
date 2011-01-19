@@ -73,7 +73,7 @@ import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -205,9 +205,9 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 
 	protected Collection lookupEntityImpls(Map<String,String> searchCriteria, boolean unbounded) {
 		if ( unbounded ) {
-			return KNSServiceLocatorInternal.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria );
+			return KNSServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria );
 		} else {
-			return KNSServiceLocatorInternal.getLookupService().findCollectionBySearch( KimEntityImpl.class, searchCriteria );
+			return KNSServiceLocatorWeb.getLookupService().findCollectionBySearch( KimEntityImpl.class, searchCriteria );
 		}
 	}
 
@@ -308,7 +308,7 @@ public class IdentityServiceImpl implements IdentityService, IdentityUpdateServi
 	 */
 	@SuppressWarnings("unchecked")
 	protected List<KimEntityImpl> lookupEntitys(Map<String, String> searchCriteria) {
-		return new ArrayList(KNSServiceLocatorInternal.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria ));
+		return new ArrayList(KNSServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded( KimEntityImpl.class, searchCriteria ));
 	}
 
 	/**

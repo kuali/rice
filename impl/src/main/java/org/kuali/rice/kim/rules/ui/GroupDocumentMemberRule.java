@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
@@ -77,8 +76,8 @@ public class GroupDocumentMemberRule extends DocumentRuleBase implements AddGrou
         boolean rulePassed = true;
 		if(StringUtils.isNotEmpty(document.getGroupNamespace())){
 			Map<String,String> roleDetails = new HashMap<String,String>();
-			roleDetails.put(KimAttributes.NAMESPACE_CODE, document.getGroupNamespace());
-			roleDetails.put(KimAttributes.GROUP_NAME, document.getGroupName());
+			roleDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, document.getGroupNamespace());
+			roleDetails.put(KimConstants.AttributeConstants.GROUP_NAME, document.getGroupName());
 			if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document, 
 					KimConstants.NAMESPACE_CODE, 

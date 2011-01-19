@@ -18,7 +18,7 @@ package org.kuali.rice.kim.web.struts.action;
 import javax.servlet.http.HttpServletRequest;
 
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
@@ -42,7 +42,7 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
     	roleDocumentForm.setRoleId(roleId);
-        KimRoleInfo role = KIMServiceLocatorInternal.getRoleService().getRole(roleId);
+        KimRoleInfo role = KIMServiceLocator.getRoleService().getRole(roleId);
         getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
 	}
 	

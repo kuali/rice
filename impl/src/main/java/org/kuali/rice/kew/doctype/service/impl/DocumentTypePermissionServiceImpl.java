@@ -27,18 +27,19 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
@@ -337,19 +338,19 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 	
 	protected AttributeSet buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(DocumentType documentType, String documentStatus, String routeHeaderId) {
 		AttributeSet qualifiers = new AttributeSet();
-		qualifiers.put(KimAttributes.DOCUMENT_NUMBER, routeHeaderId);
+		qualifiers.put(KimConstants.AttributeConstants.DOCUMENT_NUMBER, routeHeaderId);
 		if (!StringUtils.isBlank(documentStatus)) {
 			qualifiers.put(KEWConstants.DOCUMENT_STATUS_DETAIL, documentStatus);
 			if (KEWConstants.ROUTE_HEADER_INITIATED_CD.equals(documentStatus) || KEWConstants.ROUTE_HEADER_SAVED_CD.equals(documentStatus)) {
-				qualifiers.put(KimAttributes.ROUTE_NODE_NAME, DocumentAuthorizerBase.PRE_ROUTING_ROUTE_NAME);
+				qualifiers.put(KimConstants.AttributeConstants.ROUTE_NODE_NAME, DocumentAuthorizerBase.PRE_ROUTING_ROUTE_NAME);
 			}
 			else {
-				qualifiers.put(KimAttributes.ROUTE_NODE_NAME, CodeTranslator.getRouteStatusLabel(documentStatus));
+				qualifiers.put(KimConstants.AttributeConstants.ROUTE_NODE_NAME, CodeTranslator.getRouteStatusLabel(documentStatus));
 			}
 		}
 		qualifiers.put(KEWConstants.DOCUMENT_TYPE_NAME_DETAIL, documentType.getName());
 		
-		DocumentEntry documentEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentType.getName());
+		DocumentEntry documentEntry = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentType.getName());
 		if (documentEntry != null) {
 			Class<? extends Document> documentClass = documentEntry.getDocumentClass();
 			String namespaceCode;
@@ -360,7 +361,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			else {
 				namespaceCode = KNSUtils.getNamespaceCode(documentClass);
 			}
-			qualifiers.put(KimAttributes.NAMESPACE_CODE, namespaceCode);
+			qualifiers.put(KimConstants.AttributeConstants.NAMESPACE_CODE, namespaceCode);
 		}
 		
 		return qualifiers;
@@ -402,7 +403,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 
 	
 	protected boolean useKimPermission(String namespace, String permissionTemplateName, AttributeSet permissionDetails) {
-		Parameter kimPriorityParam = KNSServiceLocatorInternal.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
+		Parameter kimPriorityParam = KNSServiceLocator.getParameterService().retrieveParameter(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ALL_DETAIL_TYPE, KEWConstants.KIM_PRIORITY_ON_DOC_TYP_PERMS_IND);
 		if (kimPriorityParam == null || "Y".equals(kimPriorityParam.getParameterValue())) {
 			return getIdentityManagementService().isPermissionDefinedForTemplateName(namespace, permissionTemplateName, permissionDetails);
 		}

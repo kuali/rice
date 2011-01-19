@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.ui.PersonDocumentGroup;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupEvent;
@@ -74,8 +73,8 @@ public class PersonDocumentGroupRule extends DocumentRuleBase implements AddGrou
 	protected boolean validAssignGroup(IdentityManagementPersonDocument document, PersonDocumentGroup newGroup){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
-        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, newGroup.getNamespaceCode());
-        additionalPermissionDetails.put(KimAttributes.GROUP_NAME, newGroup.getGroupName());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, newGroup.getNamespaceCode());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.GROUP_NAME, newGroup.getGroupName());
 		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
 				GlobalVariables.getUserSession().getPrincipalId(), additionalPermissionDetails, null)){

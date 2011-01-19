@@ -167,7 +167,7 @@ public class KualiModuleServiceImpl implements KualiModuleService, InitializingB
 				installedModuleServices.addAll(
 						GlobalResourceLoader.<KualiModuleService>getService(KualiModuleService.class.getSimpleName().substring(0, 1).toLowerCase() + KualiModuleService.class.getSimpleName().substring(1)).getInstalledModuleServices());
 			} catch ( NoSuchBeanDefinitionException ex ) {
-				installedModuleServices.addAll( ((KualiModuleService)applicationContext.getBean( KNSServiceLocatorInternal.KUALI_MODULE_SERVICE )).getInstalledModuleServices() );
+				installedModuleServices.addAll( ((KualiModuleService)applicationContext.getBean( KNSServiceLocatorWeb.KUALI_MODULE_SERVICE )).getInstalledModuleServices() );
 			}
 		}
 	}

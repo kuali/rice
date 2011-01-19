@@ -29,6 +29,7 @@ import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.lookup.RoleLookupableHelperServiceImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.service.RoleService;
@@ -105,7 +106,7 @@ public class ResponsibilityInquirableImpl extends RoleMemberInquirableImpl {
     	List<AnchorHtmlData> htmlData = new ArrayList<AnchorHtmlData>();
 		if(assignedToRoles!=null && !assignedToRoles.isEmpty()){
 			List<String> primaryKeys = Collections.singletonList(ROLE_ID);
-			RoleService roleService = KIMServiceLocatorInternal.getRoleService();
+			RoleService roleService = KIMServiceLocator.getRoleService();
 			for(RoleImpl roleImpl: assignedToRoles){
 				KimRoleInfo roleInfo = roleService.getRole(roleImpl.getRoleId());
 				AnchorHtmlData inquiryHtmlData = getInquiryUrlForPrimaryKeys(RoleImpl.class, roleInfo, primaryKeys, 

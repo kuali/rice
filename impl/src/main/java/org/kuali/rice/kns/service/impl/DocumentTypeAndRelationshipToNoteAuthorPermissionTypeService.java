@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -41,15 +41,15 @@ public class DocumentTypeAndRelationshipToNoteAuthorPermissionTypeService
 		// loop over the permissions, checking the non-document-related ones
 		for (KimPermissionInfo kimPermissionInfo : permissionsList) {
 			if (Boolean.parseBoolean(requestedDetails
-					.get(KimAttributes.CREATED_BY_SELF))) {
+					.get(KimConstants.AttributeConstants.CREATED_BY_SELF))) {
 				if(Boolean.parseBoolean(kimPermissionInfo.getDetails().get(
-						KimAttributes.CREATED_BY_SELF_ONLY))){
+						KimConstants.AttributeConstants.CREATED_BY_SELF_ONLY))){
 					matchingPermissions.add(kimPermissionInfo);
 				}
 				
 			}else{
 				if (!Boolean.parseBoolean(kimPermissionInfo.getDetails().get(
-						KimAttributes.CREATED_BY_SELF_ONLY))) {
+						KimConstants.AttributeConstants.CREATED_BY_SELF_ONLY))) {
 					matchingPermissions.add(kimPermissionInfo);
 				}
 			}

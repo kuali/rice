@@ -23,11 +23,11 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * 
@@ -64,7 +64,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 		validateRequiredAttributesAgainstReceived(qualification);
 		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();		
 		if(qualification!=null && !qualification.isEmpty()){
-			String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
+			String documentNumber = qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER);
 			if (StringUtils.isNotBlank(documentNumber)) {
 				Long documentNumberLong = Long.parseLong(documentNumber);
 				try{
@@ -100,7 +100,7 @@ public class RouteLogDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServic
 		validateRequiredAttributesAgainstReceived(qualification);
         boolean isUserInRouteLog = false;
 		if(qualification!=null && !qualification.isEmpty()){
-			String documentNumber = qualification.get(KimAttributes.DOCUMENT_NUMBER);
+			String documentNumber = qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER);
 			try {
 				Long documentNumberLong = Long.parseLong(documentNumber);
 				if (INITIATOR_ROLE_NAME.equals(roleName)){

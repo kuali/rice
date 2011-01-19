@@ -152,7 +152,7 @@ abstract public class IdentityManagementDocumentActionBase extends KualiTransact
         	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_INVALID_ROLE, roleId );
     		return false;
     	}
-    	KimTypeInfo typeInfo = KIMServiceLocatorInternal.getTypeInfoService().getKimType(role.getKimTypeId());
+    	KimTypeInfo typeInfo = KIMServiceLocatorWeb.getTypeInfoService().getKimType(role.getKimTypeId());
     	
     	if(KimTypeLookupableHelperServiceImpl.hasDerivedRoleTypeService(typeInfo)){
         	GlobalVariables.getMessageMap().putError(propertyName, RiceKeyConstants.ERROR_CANT_ADD_DERIVED_ROLE, message);

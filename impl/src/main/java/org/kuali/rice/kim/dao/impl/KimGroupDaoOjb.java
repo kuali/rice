@@ -36,7 +36,7 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 
 /**
  * This is a description of the KimGroupDaoOjb class.
@@ -50,7 +50,7 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
 
     public List<GroupImpl> getGroups(Map<String,String> fieldValues) {
         Criteria crit = new Criteria();
-        BusinessObjectEntry boEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.impl.GroupImpl");
+        BusinessObjectEntry boEntry = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.impl.GroupImpl");
         List lookupNames = boEntry.getLookupDefinition().getLookupFieldNames();
         String kimTypeId = null;
         for (Map.Entry<String,String> entry : fieldValues.entrySet()) {

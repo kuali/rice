@@ -170,7 +170,7 @@ public class KimModuleService extends ModuleServiceBase {
 
 	protected KimTypeInfoService getTypeInfoService() {
 		if(kimTypeInfoService == null){
-			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

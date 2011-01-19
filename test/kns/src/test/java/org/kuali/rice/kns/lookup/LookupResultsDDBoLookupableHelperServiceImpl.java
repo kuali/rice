@@ -24,7 +24,7 @@ import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
@@ -115,7 +115,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#getBusinessObjectDictionaryService()
 	 */
 	public BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
-		return KNSServiceLocatorInternal.getBusinessObjectDictionaryService();
+		return KNSServiceLocatorWeb.getBusinessObjectDictionaryService();
 	}
 
 	/**
@@ -142,7 +142,7 @@ public class LookupResultsDDBoLookupableHelperServiceImpl implements LookupableH
 	 * @see org.kuali.rice.kns.lookup.LookupableHelperService#getDataDictionaryService()
 	 */
 	public DataDictionaryService getDataDictionaryService() {
-		return KNSServiceLocatorInternal.getDataDictionaryService();
+		return KNSServiceLocatorWeb.getDataDictionaryService();
 	}
 
 	/**

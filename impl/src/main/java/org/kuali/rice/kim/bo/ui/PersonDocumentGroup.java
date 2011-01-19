@@ -19,7 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 
 import javax.persistence.*;
 
@@ -76,7 +76,7 @@ public class PersonDocumentGroup extends KimDocumentBoActivatableToFromEditableB
 
 	public KimTypeInfo getKimGroupType() {
 		if ( kimGroupType == null || !StringUtils.equals( kimGroupType.getKimTypeId(), kimTypeId ) ) {
-			kimGroupType = KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId);
+			kimGroupType = KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId);
 		}
 		return kimGroupType;
 	}

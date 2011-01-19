@@ -16,7 +16,7 @@
 package org.kuali.rice.kew.ria.valuefinder;
 
 import org.kuali.rice.kns.lookup.valuefinder.ValueFinder;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * A value finder which returns the next id from a database sequence
@@ -42,7 +42,7 @@ public class SequenceNextIdFinder implements ValueFinder {
      * @return The next sequence number.
      */
     public Long getLongValue() {
-        return KNSServiceLocatorInternal.getSequenceAccessorService().getNextAvailableSequenceNumber(this.sequenceName);
+        return KNSServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(this.sequenceName);
     }
 
     /**

@@ -23,6 +23,7 @@ import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.RiceConstants;
@@ -42,7 +43,6 @@ import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.GlobalVariables;
 
@@ -379,7 +379,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 		// Validates the date format via the dictionary validation service. If validation fails, the validation service adds an error to the message map.
 		int oldErrorCount = GlobalVariables.getMessageMap().getErrorCount();
 		getDictionaryValidationService().validateAttributeFormat(DOC_SEARCH_CRITERIA_DTO_CLASS, dateFieldName, dateFieldValue,
-				SearchableAttribute.DATA_TYPE_DATE, dateFieldErrorKey);
+				KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE, dateFieldErrorKey);
 		return (GlobalVariables.getMessageMap().getErrorCount() <= oldErrorCount);
 		//return Utilities.validateDate(date, true);
 	}
@@ -808,21 +808,21 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 
 	public static DictionaryValidationService getDictionaryValidationService() {
 		if (dictionaryValidationService == null) {
-			dictionaryValidationService = KNSServiceLocatorInternal.getDictionaryValidationService();
+			dictionaryValidationService = KNSServiceLocatorWeb.getDictionaryValidationService();
 		}
 		return dictionaryValidationService;
 	}
 
 	public static DataDictionaryService getDataDictionaryService() {
 		if (dataDictionaryService == null) {
-			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}
 
 	public static KualiConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
-			kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
+			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 		}
 		return kualiConfigurationService;
 	}

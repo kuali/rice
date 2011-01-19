@@ -20,9 +20,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -49,11 +49,11 @@ public class NamespacePermissionTypeServiceImpl extends
 	protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList) {
 		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
 		
-		String requestedNamespaceCode = requestedDetails.get(KimAttributes.NAMESPACE_CODE);
+		String requestedNamespaceCode = requestedDetails.get(KimConstants.AttributeConstants.NAMESPACE_CODE);
 		
 		// Add all exact matches to the list 
 		for ( KimPermissionInfo kpi : permissionsList ) {
-			String permissionNamespaceCode = kpi.getDetails().get(KimAttributes.NAMESPACE_CODE);
+			String permissionNamespaceCode = kpi.getDetails().get(KimConstants.AttributeConstants.NAMESPACE_CODE);
 			if ( StringUtils.equals(requestedNamespaceCode, permissionNamespaceCode ) ) {
 				matchingPermissions.add(kpi);
 			} 
@@ -62,7 +62,7 @@ public class NamespacePermissionTypeServiceImpl extends
 		// Add partial matches to the list if there are no exact matches or if exactMatchPriority is false
 		if ((exactMatchPriority && matchingPermissions.isEmpty()) || (!(exactMatchPriority))) {
 			for ( KimPermissionInfo kpi : permissionsList ) {
-				String permissionNamespaceCode = kpi.getDetails().get(KimAttributes.NAMESPACE_CODE);
+				String permissionNamespaceCode = kpi.getDetails().get(KimConstants.AttributeConstants.NAMESPACE_CODE);
 				if ( requestedNamespaceCode != null
 					 && permissionNamespaceCode != null
 					 && (!( StringUtils.equals(requestedNamespaceCode, permissionNamespaceCode ))) 

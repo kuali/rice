@@ -22,10 +22,11 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.util.KimConstants;
+
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -38,7 +39,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 	private IdentityManagementService identityManagementService;
 	
 	{
-		requiredAttributes.add( KimAttributes.PRINCIPAL_ID );
+		requiredAttributes.add( KimConstants.AttributeConstants.PRINCIPAL_ID );
 		checkRequiredAttributes = false;
 	}
 	
@@ -63,7 +64,7 @@ public class PrincipalDerivedRoleTypeServiceImpl extends KimDerivedRoleTypeServi
 		}
 		qualification = translateInputAttributeSet(qualification);
 		// check that the principal ID is not null
-		String principalId = qualification.get( KimAttributes.PRINCIPAL_ID );
+		String principalId = qualification.get( KimConstants.AttributeConstants.PRINCIPAL_ID );
 		if ( hasApplicationRole(principalId, null, namespaceCode, roleName, qualification)) {
 	        tempIdList.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
 		}

@@ -51,8 +51,6 @@ import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kns.datadictionary.DocumentEntry;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.FormatException;
 
@@ -69,12 +67,12 @@ import java.util.*;
  */
 @Entity
 //@Sequence(name="KREW_DOC_HDR_S", property="documentTypeId")
-@Table(name="KREW_DOC_TYP_T")
+@Table(name = "KREW_DOC_TYP_T")
 @NamedQueries({
-    @NamedQuery(name="DocumentType.QuickLinks.FindLabelByTypeName", query="SELECT label FROM DocumentType WHERE name = :docTypeName AND currentInd = 1"),
-    @NamedQuery(name="DocumentType.QuickLinks.FindInitiatedDocumentTypesListByInitiatorWorkflowId", query="SELECT DISTINCT dt.name, dt.label FROM DocumentType dt, DocumentRouteHeaderValue drhv "+
-            "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
-            "ORDER BY UPPER(dt.label)")
+        @NamedQuery(name = "DocumentType.QuickLinks.FindLabelByTypeName", query = "SELECT label FROM DocumentType WHERE name = :docTypeName AND currentInd = 1"),
+        @NamedQuery(name = "DocumentType.QuickLinks.FindInitiatedDocumentTypesListByInitiatorWorkflowId", query = "SELECT DISTINCT dt.name, dt.label FROM DocumentType dt, DocumentRouteHeaderValue drhv " +
+                "WHERE drhv.initiatorWorkflowId = :initiatorWorkflowId AND drhv.documentTypeId = dt.documentTypeId AND dt.active = 1 AND dt.currentInd = 1 " +
+                "ORDER BY UPPER(dt.label)")
 })
 public class DocumentType extends PersistableBusinessObjectBase implements Inactivateable, DocumentTypeEBO {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(DocumentType.class);
@@ -82,53 +80,53 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     private static final long serialVersionUID = 1312830153583125069L;
 
     @Id
-    @GeneratedValue(generator="KREW_DOC_HDR_S")
-	@GenericGenerator(name="KREW_DOC_HDR_S",strategy="org.hibernate.id.enhanced.SequenceStyleGenerator",parameters={
-			@Parameter(name="sequence_name",value="KREW_DOC_HDR_S"),
-			@Parameter(name="value_column",value="id")
-	})
-	@Column(name="DOC_TYP_ID")
-	private Long documentTypeId;
-    @Column(name="PARNT_ID")
-	private Long docTypeParentId;
-    @Column(name="DOC_TYP_NM")
-	private String name;
-    @Column(name="DOC_TYP_VER_NBR")
+    @GeneratedValue(generator = "KREW_DOC_HDR_S")
+    @GenericGenerator(name = "KREW_DOC_HDR_S", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+            @Parameter(name = "sequence_name", value = "KREW_DOC_HDR_S"),
+            @Parameter(name = "value_column", value = "id")
+    })
+    @Column(name = "DOC_TYP_ID")
+    private Long documentTypeId;
+    @Column(name = "PARNT_ID")
+    private Long docTypeParentId;
+    @Column(name = "DOC_TYP_NM")
+    private String name;
+    @Column(name = "DOC_TYP_VER_NBR")
     private Integer version = new Integer(0);
-    @Column(name="ACTV_IND")
-	private Boolean active;
-    @Column(name="CUR_IND")
-	private Boolean currentInd;
-    @Column(name="DOC_TYP_DESC")
-	private String description;
-    @Column(name="LBL")
-	private String label;
-    @Column(name="PREV_DOC_TYP_VER_NBR")
-	private Long previousVersionId;
-    @Column(name="DOC_HDR_ID")
-	private Long routeHeaderId;
+    @Column(name = "ACTV_IND")
+    private Boolean active;
+    @Column(name = "CUR_IND")
+    private Boolean currentInd;
+    @Column(name = "DOC_TYP_DESC")
+    private String description;
+    @Column(name = "LBL")
+    private String label;
+    @Column(name = "PREV_DOC_TYP_VER_NBR")
+    private Long previousVersionId;
+    @Column(name = "DOC_HDR_ID")
+    private Long routeHeaderId;
 
-    @Column(name="HELP_DEF_URL")
+    @Column(name = "HELP_DEF_URL")
     private String unresolvedHelpDefinitionUrl;
 
-    @Column(name="DOC_SEARCH_HELP_URL")
+    @Column(name = "DOC_SEARCH_HELP_URL")
     private String unresolvedDocSearchHelpUrl;
-    
-    @Column(name="DOC_HDLR_URL")
+
+    @Column(name = "DOC_HDLR_URL")
     private String unresolvedDocHandlerUrl;
-    @Column(name="POST_PRCSR")
-	private String postProcessorName;
-    @Column(name="GRP_ID")
-	//private Long superUserWorkgroupId;
-	private String workgroupId;
-    @Column(name="BLNKT_APPR_GRP_ID")
-	private String blanketApproveWorkgroupId;
-    @Column(name="BLNKT_APPR_PLCY")
-	private String blanketApprovePolicy;
-	@Column(name="RPT_GRP_ID")
-	private String reportingWorkgroupId;
-    @Column(name="SVC_NMSPC")
-	private String actualServiceNamespace;
+    @Column(name = "POST_PRCSR")
+    private String postProcessorName;
+    @Column(name = "GRP_ID")
+    //private Long superUserWorkgroupId;
+    private String workgroupId;
+    @Column(name = "BLNKT_APPR_GRP_ID")
+    private String blanketApproveWorkgroupId;
+    @Column(name = "BLNKT_APPR_PLCY")
+    private String blanketApprovePolicy;
+    @Column(name = "RPT_GRP_ID")
+    private String reportingWorkgroupId;
+    @Column(name = "SVC_NMSPC")
+    private String actualServiceNamespace;
 
 
     /* these two fields are for the web tier lookupable
@@ -147,48 +145,48 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     @Transient
     private Group defaultExceptionWorkgroup;
 
-    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
-    @Fetch(value=FetchMode.SELECT)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
+    @Fetch(value = FetchMode.SELECT)
     private Collection<DocumentTypePolicy> policies;
-    
+
     /* This property contains the list of valid ApplicationDocumentStatus values, 
-     * if defined, for the document type.  If these status values are defined, only these
-     * values may be assigned as the status.  If not valid values are defined, the status may
-     * be set to any value by the client.
-     */
-    @OneToMany(fetch=FetchType.EAGER, cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
-    @Fetch(value=FetchMode.SELECT)
+    * if defined, for the document type.  If these status values are defined, only these
+    * values may be assigned as the status.  If not valid values are defined, the status may
+    * be set to any value by the client.
+    */
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
+    @Fetch(value = FetchMode.SELECT)
     private List<ApplicationDocumentStatus> validApplicationStatuses;
-    
-	@Transient
+
+    @Transient
     private List routeLevels;
     @Transient
     private Collection childrenDocTypes;
-    @Fetch(value=FetchMode.SELECT)
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
+    @Fetch(value = FetchMode.SELECT)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
     @OrderBy("orderIndex ASC")
-	private List<DocumentTypeAttribute> documentTypeAttributes;
+    private List<DocumentTypeAttribute> documentTypeAttributes;
 
     /* New Workflow 2.1 Field */
-    @Fetch(value=FetchMode.SELECT)
-    @OneToMany(fetch=FetchType.EAGER,cascade={CascadeType.MERGE, CascadeType.PERSIST}, mappedBy="documentType")
+    @Fetch(value = FetchMode.SELECT)
+    @OneToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST}, mappedBy = "documentType")
     private List<Process> processes = new ArrayList();
-    @Column(name="RTE_VER_NBR")
+    @Column(name = "RTE_VER_NBR")
     private String routingVersion = KEWConstants.CURRENT_ROUTING_VERSION;
 
     /* Workflow 2.2 Fields */
-    @Column(name="NOTIFY_ADDR")
+    @Column(name = "NOTIFY_ADDR")
     private String actualNotificationFromAddress;
     @Lob
-	@Basic(fetch=FetchType.LAZY)
-	@Column(name="SEC_XML")
-	private String documentTypeSecurityXml;
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "SEC_XML")
+    private String documentTypeSecurityXml;
     @Transient
     private DocumentTypeSecurity documentTypeSecurity;
 
     /* Workflow 2.4 XSLT-based email message customization */
-    @Column(name="EMAIL_XSL")
-	private String customEmailStylesheet;
+    @Column(name = "EMAIL_XSL")
+    private String customEmailStylesheet;
 
     public DocumentType() {
         routeLevels = new ArrayList();
@@ -266,84 +264,81 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public DocumentTypePolicy getSuperUserApproveNotificationPolicy() {
-    	return getPolicyByName(DocumentTypePolicyEnum.SEND_NOTIFICATION_ON_SU_APPROVE.getName(), Boolean.FALSE);
+        return getPolicyByName(DocumentTypePolicyEnum.SEND_NOTIFICATION_ON_SU_APPROVE.getName(), Boolean.FALSE);
     }
 
     public DocumentTypePolicy getSupportsQuickInitiatePolicy() {
-    	return getPolicyByName(DocumentTypePolicyEnum.SUPPORTS_QUICK_INITIATE.getName(), Boolean.TRUE);
+        return getPolicyByName(DocumentTypePolicyEnum.SUPPORTS_QUICK_INITIATE.getName(), Boolean.TRUE);
     }
 
     public DocumentTypePolicy getNotifyOnSavePolicy() {
-    	return getPolicyByName(DocumentTypePolicyEnum.NOTIFY_ON_SAVE.getName(), Boolean.FALSE);
+        return getPolicyByName(DocumentTypePolicyEnum.NOTIFY_ON_SAVE.getName(), Boolean.FALSE);
     }
 
     /**
-     * This method returns a DocumentTypePolicy object related to the DocumentStatusPolicy defined for this document type. 
+     * This method returns a DocumentTypePolicy object related to the DocumentStatusPolicy defined for this document type.
      */
     public DocumentTypePolicy getDocumentStatusPolicy() {
-    	return getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS);
+        return getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS);
     }
-    
+
     /**
-     * This method returns a DocumentTypePolicy object related to the DocumentStatusPolicy defined for this document type. 
+     * This method returns a DocumentTypePolicy object related to the DocumentStatusPolicy defined for this document type.
      */
     public DocumentTypePolicy getSuPostprocessorOverridePolicy() {
-    	return getPolicyByName(DocumentTypePolicyEnum.ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY.getName(), Boolean.TRUE);
+        return getPolicyByName(DocumentTypePolicyEnum.ALLOW_SU_POSTPROCESSOR_OVERRIDE_POLICY.getName(), Boolean.TRUE);
     }
-    
+
     /**
-     * 
      * This method returns a boolean denoting whether the KEW Route Status is to be displayed.
      * The KEW Route Status is updated by the workflow engine regardless of whether it is to be displayed or not.
-     * 
-     * @return  true  - if the status is to be displayed  (Policy is set to either use KEW (default) or both)
-     *          false - if the KEW Route Status is not to be displayed 
+     *
+     * @return true  - if the status is to be displayed  (Policy is set to either use KEW (default) or both)
+     *         false - if the KEW Route Status is not to be displayed
      */
     public Boolean isKEWStatusInUse() {
-    	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
-    		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
-    		return (policyValue == null || "".equals(policyValue) 
-    				|| KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS.equalsIgnoreCase(policyValue) 
-    				|| KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
-    	} else {
-    		return Boolean.TRUE;
-    	}
+        if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)) {
+            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+            return (policyValue == null || "".equals(policyValue)
+                    || KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS.equalsIgnoreCase(policyValue)
+                    || KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+        } else {
+            return Boolean.TRUE;
+        }
     }
-    
+
     /**
-     * 
      * This method returns a boolean denoting whether the Application Document Status is to be used for this document type.
-     * 
+     *
      * @return true  - if the status is to be displayed  (Policy is set to either use the application document status or both)
      *         false - if only the KEW Route Status is to be displayed (default)
      */
     public Boolean isAppDocStatusInUse() {
-    	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
-    		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
-    		return (KEWConstants.DOCUMENT_STATUS_POLICY_APP_DOC_STATUS.equalsIgnoreCase(policyValue) 
-    				|| KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
-    	} else {
-    		return Boolean.FALSE;
-    	}
+        if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)) {
+            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+            return (KEWConstants.DOCUMENT_STATUS_POLICY_APP_DOC_STATUS.equalsIgnoreCase(policyValue)
+                    || KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+        } else {
+            return Boolean.FALSE;
+        }
     }
 
     /**
-     * 
      * This method returns a boolean denoting if both the KEW Route Status and the Application Document Status
      * are to be used in displays.
-     * 
-     * @return  true  - if both the KEW Route Status and Application Document Status are to be displayed.
-     *          false - if only one status is to be displayed. 
+     *
+     * @return true  - if both the KEW Route Status and Application Document Status are to be displayed.
+     *         false - if only one status is to be displayed.
      */
     public Boolean areBothStatusesInUse() {
-    	if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)){
-    		String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
-    		return (KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
-    	} else {
-    		return Boolean.FALSE;
-    	}
+        if (isPolicyDefined(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY)) {
+            String policyValue = getPolicyByName(DocumentTypePolicyEnum.DOCUMENT_STATUS_POLICY.getName(), KEWConstants.DOCUMENT_STATUS_POLICY_KEW_STATUS).getPolicyStringValue();
+            return (KEWConstants.DOCUMENT_STATUS_POLICY_BOTH.equalsIgnoreCase(policyValue)) ? Boolean.TRUE : Boolean.FALSE;
+        } else {
+            return Boolean.FALSE;
+        }
     }
-    
+
     public String getUseWorkflowSuperUserDocHandlerUrlValue() {
         if (getUseWorkflowSuperUserDocHandlerUrl() != null) {
             return getUseWorkflowSuperUserDocHandlerUrl().getPolicyDisplayValue();
@@ -380,64 +375,64 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public boolean isPolicyDefined(DocumentTypePolicyEnum policyToCheck) {
-    	Iterator<DocumentTypePolicy> policyIter = getPolicies().iterator();
+        Iterator<DocumentTypePolicy> policyIter = getPolicies().iterator();
         while (policyIter.hasNext()) {
             DocumentTypePolicy policy = policyIter.next();
             if (policyToCheck.getName().equals(policy.getPolicyName())) {
-            	return true;
+                return true;
             }
         }
         return getParentDocType() != null && getParentDocType().isPolicyDefined(policyToCheck);
     }
 
     public void addSearchableAttribute(DocumentTypeAttribute searchableAttribute) {
-    	documentTypeAttributes.add(searchableAttribute);
+        documentTypeAttributes.add(searchableAttribute);
     }
 
     public boolean hasSearchableAttributes() {
-    	return ! getSearchableAttributes().isEmpty();
+        return !getSearchableAttributes().isEmpty();
     }
 
     public List<SearchableAttribute> getSearchableAttributes() {
-    	List<SearchableAttribute> searchAtts = new ArrayList<SearchableAttribute>();
-    	if ((documentTypeAttributes == null || documentTypeAttributes.isEmpty())) {
-    		if (getParentDocType() != null) {
-    			return getParentDocType().getSearchableAttributes();
-    		} else {
-    			return searchAtts;
-    		}
-    	}
+        List<SearchableAttribute> searchAtts = new ArrayList<SearchableAttribute>();
+        if ((documentTypeAttributes == null || documentTypeAttributes.isEmpty())) {
+            if (getParentDocType() != null) {
+                return getParentDocType().getSearchableAttributes();
+            } else {
+                return searchAtts;
+            }
+        }
 
-    	for (Iterator iterator = documentTypeAttributes.iterator(); iterator.hasNext();) {
-			DocumentTypeAttribute attribute = (DocumentTypeAttribute) iterator.next();
+        for (Iterator iterator = documentTypeAttributes.iterator(); iterator.hasNext();) {
+            DocumentTypeAttribute attribute = (DocumentTypeAttribute) iterator.next();
 //			String attributeType = attribute.getRuleAttribute().getType();
-			RuleAttribute ruleAttribute = attribute.getRuleAttribute();
-			SearchableAttribute searchableAttribute = null;
-			if (KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
-				try {
-				    searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
-				} catch (RiceRemoteServiceConnectionException e) {
-				    LOG.warn("Unable to connect to load searchable attributes for " + this.getName());
-				    LOG.warn(e.getMessage());
-				    searchableAttribute = null;
-				}
-			} else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
-				searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
-				//required to make it work because ruleAttribute XML is required to construct fields
-				((GenericXMLSearchableAttribute) searchableAttribute).setRuleAttribute(ruleAttribute);
-			}
-			if (searchableAttribute != null) {
-				searchAtts.add(searchableAttribute);
-			}
-		}
-    	return searchAtts;
+            RuleAttribute ruleAttribute = attribute.getRuleAttribute();
+            SearchableAttribute searchableAttribute = null;
+            if (KEWConstants.SEARCHABLE_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
+                try {
+                    searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
+                } catch (RiceRemoteServiceConnectionException e) {
+                    LOG.warn("Unable to connect to load searchable attributes for " + this.getName());
+                    LOG.warn(e.getMessage());
+                    searchableAttribute = null;
+                }
+            } else if (KEWConstants.SEARCHABLE_XML_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
+                searchableAttribute = (SearchableAttribute) GlobalResourceLoader.getObject(objDef);
+                //required to make it work because ruleAttribute XML is required to construct fields
+                ((GenericXMLSearchableAttribute) searchableAttribute).setRuleAttribute(ruleAttribute);
+            }
+            if (searchableAttribute != null) {
+                searchAtts.add(searchableAttribute);
+            }
+        }
+        return searchAtts;
     }
 
     public DocumentTypeAttribute getDocumentTypeAttribute(int index) {
         while (getDocumentTypeAttributes().size() <= index) {
-        	DocumentTypeAttribute attribute = new DocumentTypeAttribute();
+            DocumentTypeAttribute attribute = new DocumentTypeAttribute();
             //attribute.setDocumentTypeId(this.documentTypeId);
             getDocumentTypeAttributes().add(attribute);
         }
@@ -445,7 +440,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public void setDocumentTypeAttribute(int index, DocumentTypeAttribute documentTypeAttribute) {
-    	documentTypeAttributes.set(index, documentTypeAttribute);
+        documentTypeAttributes.set(index, documentTypeAttribute);
     }
 
     public String getDocTypeActiveIndicatorDisplayValue() {
@@ -456,9 +451,9 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public Collection getChildrenDocTypes() {
-    	if (this.childrenDocTypes == null) {
-    		this.childrenDocTypes = KEWServiceLocator.getDocumentTypeService().getChildDocumentTypes(getDocumentTypeId());
-    	}
+        if (this.childrenDocTypes == null) {
+            this.childrenDocTypes = KEWServiceLocator.getDocumentTypeService().getChildDocumentTypes(getDocumentTypeId());
+        }
         return childrenDocTypes;
     }
 
@@ -483,39 +478,37 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public List<ApplicationDocumentStatus> getValidApplicationStatuses() {
-		return this.validApplicationStatuses;
-	}
+        return this.validApplicationStatuses;
+    }
 
-	public void setValidApplicationStatuses(
-			List<ApplicationDocumentStatus> validApplicationStatuses) {
-		this.validApplicationStatuses = validApplicationStatuses;
-	}
+    public void setValidApplicationStatuses(
+            List<ApplicationDocumentStatus> validApplicationStatuses) {
+        this.validApplicationStatuses = validApplicationStatuses;
+    }
 
     public String getDocumentTypeSecurityXml() {
-      return documentTypeSecurityXml;
+        return documentTypeSecurityXml;
     }
 
     public void setDocumentTypeSecurityXml(String documentTypeSecurityXml) {
-      this.documentTypeSecurityXml = documentTypeSecurityXml;
-      if (!org.apache.commons.lang.StringUtils.isEmpty(documentTypeSecurityXml.trim())) {
-        this.documentTypeSecurity = new DocumentTypeSecurity(this.getServiceNamespace(), documentTypeSecurityXml);
-      }
-      else {
-        this.documentTypeSecurity = null;
-      }
+        this.documentTypeSecurityXml = documentTypeSecurityXml;
+        if (!org.apache.commons.lang.StringUtils.isEmpty(documentTypeSecurityXml.trim())) {
+            this.documentTypeSecurity = new DocumentTypeSecurity(this.getServiceNamespace(), documentTypeSecurityXml);
+        } else {
+            this.documentTypeSecurity = null;
+        }
     }
 
-    public DocumentTypeSecurity getDocumentTypeSecurity()  {
-      if (this.documentTypeSecurity == null &&
-          this.documentTypeSecurityXml != null &&
-          !org.apache.commons.lang.StringUtils.isEmpty(documentTypeSecurityXml.trim()))
-      {
-           this.documentTypeSecurity = new DocumentTypeSecurity(this.getServiceNamespace(), documentTypeSecurityXml);
-      }
-      if ( (this.documentTypeSecurity == null) && (getParentDocType() != null) ) {
-    	  return getParentDocType().getDocumentTypeSecurity();
-      }
-      return this.documentTypeSecurity;
+    public DocumentTypeSecurity getDocumentTypeSecurity() {
+        if (this.documentTypeSecurity == null &&
+                this.documentTypeSecurityXml != null &&
+                !org.apache.commons.lang.StringUtils.isEmpty(documentTypeSecurityXml.trim())) {
+            this.documentTypeSecurity = new DocumentTypeSecurity(this.getServiceNamespace(), documentTypeSecurityXml);
+        }
+        if ((this.documentTypeSecurity == null) && (getParentDocType() != null)) {
+            return getParentDocType().getDocumentTypeSecurity();
+        }
+        return this.documentTypeSecurity;
     }
 
 
@@ -581,7 +574,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     /**
      * This method retrieves the unresolved document handler URL either from this object or from a parent document type
      * object. If the forDisplayPurposes value is true the value returned will be invalid for system use.
-     *
+     * <p/>
      * This method will first call the {@link #getUnresolvedDocHandlerUrl()} method to check for a value on this object.
      * If none is found a parent document type must exist because the document handler URL is required and is used. The
      * system will use inheritance to find the document handler url from a document type somewhere in the hierarchy.
@@ -621,6 +614,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
     /**
      * EMPTY METHOD. Use {@link #setUnresolvedDocHandlerUrl(String)} instead.
+     *
      * @deprecated
      */
     public void setDisplayableUnresolvedDocHandlerUrl(String displayableUnresolvedDocHandlerUrl) {
@@ -646,14 +640,15 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
      * for those variables and replace them in the doc handler URL.
      */
     protected String resolveDocHandlerUrl(String docHandlerUrl) {
-    	if (StringUtils.isBlank(docHandlerUrl)) {
-    		return "";
-    	}
-    	return Utilities.substituteConfigParameters(getServiceNamespace(), docHandlerUrl);
+        if (StringUtils.isBlank(docHandlerUrl)) {
+            return "";
+        }
+        return Utilities.substituteConfigParameters(getServiceNamespace(), docHandlerUrl);
     }
 
     /**
      * Use {@link #setDocHandlerUrl(String)} to add a document handler url to this object.
+     *
      * @deprecated
      */
     public void setDocHandlerUrl(java.lang.String docHandlerUrl) {
@@ -675,7 +670,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     /**
-     * This method gets the help definition url from this object and resolves any 
+     * This method gets the help definition url from this object and resolves any
      * potential variables that may be in use
      */
     public String getHelpDefinitionUrl() {
@@ -692,23 +687,23 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         }
         return Utilities.substituteConfigParameters(helpDefinitionUrl);
     }
-    
+
     /**
      * @return the unresolvedDocSearchHelpUrl
      */
     public String getUnresolvedDocSearchHelpUrl() {
         return this.unresolvedDocSearchHelpUrl;
     }
-    
+
     /**
      * @param unresolvedDocSearchHelpUrl the unresolvedDocSearchHelpUrl to set
      */
     public void setUnresolvedDocSearchHelpUrl(String unresolvedDocSearchHelpUrl) {
         this.unresolvedDocSearchHelpUrl = unresolvedDocSearchHelpUrl;
     }
-    
+
     /**
-     * This method gets the doc search help url from this object and resolves any 
+     * This method gets the doc search help url from this object and resolves any
      * potential variables that may be in use
      */
     public String getDocSearchHelpUrl() {
@@ -734,8 +729,8 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     public PostProcessor getPostProcessor() {
         String pname = getPostProcessorName();
 
-        if (StringUtils.equals(pname, KEWConstants.POST_PROCESSOR_NON_DEFINED_VALUE)) { 
-            return new DefaultPostProcessor();    
+        if (StringUtils.equals(pname, KEWConstants.POST_PROCESSOR_NON_DEFINED_VALUE)) {
+            return new DefaultPostProcessor();
         }
         if (StringUtils.isBlank(pname)) {
             if (getParentDocType() != null) {
@@ -747,21 +742,21 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
         ObjectDefinition objDef = getObjectDefinition(pname);
         Object postProcessor = GlobalResourceLoader.getObject(objDef);
-        
+
         if (postProcessor == null) {
             throw new WorkflowRuntimeException("Could not locate PostProcessor in this JVM or at service namespace " + getServiceNamespace() + ": " + pname);
         }
         if (postProcessor instanceof PostProcessorRemote) {
-            postProcessor = new PostProcessorRemoteAdapter((PostProcessorRemote)postProcessor);
+            postProcessor = new PostProcessorRemoteAdapter((PostProcessorRemote) postProcessor);
         }
 
-        return (PostProcessor)postProcessor;
+        return (PostProcessor) postProcessor;
     }
 
     /**
      * This method gets the post processor class value. If the forDisplayPurposes value is true
      * the value will be invalid for system use.
-     *
+     * <p/>
      * This method will first call the {@link #getPostProcessorName()} method to check the value on this object.
      * If none is found the system checks for a parent document type.  If a valid parent type exists for this document type
      * then the system will use inheritance from that parent document type as long as at least one document type in the
@@ -806,6 +801,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
     /**
      * EMPTY METHOD. Use {@link #setPostProcessorName(String)} instead.
+     *
      * @deprecated
      */
     public void setDisplayablePostProcessorName(String displayablePostProcessorName) {
@@ -908,7 +904,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         policy.setPolicyStringValue(defaultValue);
         return policy;
     }
-    
+
     private DocumentTypeService getDocumentTypeService() {
         return (DocumentTypeService) KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE);
     }
@@ -939,10 +935,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
      * Returns true if this DocumentType has a super user group defined.
      */
     public boolean isSuperUserGroupDefined() {
-    	if (this.workgroupId == null) {
-    		return getParentDocType() != null && getParentDocType().isSuperUserGroupDefined();
-    	}
-    	return true;
+        if (this.workgroupId == null) {
+            return getParentDocType() != null && getParentDocType().isSuperUserGroupDefined();
+        }
+        return true;
     }
 
     public DocumentType getPreviousVersion() {
@@ -960,38 +956,38 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         }
     }
 
-	public String getBlanketApprovePolicy() {
-		return this.blanketApprovePolicy;
-	}
+    public String getBlanketApprovePolicy() {
+        return this.blanketApprovePolicy;
+    }
 
-	public void setBlanketApprovePolicy(String blanketApprovePolicy) {
-		this.blanketApprovePolicy = blanketApprovePolicy;
-	}
+    public void setBlanketApprovePolicy(String blanketApprovePolicy) {
+        this.blanketApprovePolicy = blanketApprovePolicy;
+    }
 
     public Group getBlanketApproveWorkgroupWithInheritance() {
-    	if (getParentDocType() != null && this.blanketApproveWorkgroupId == null) {
-    		return getParentDocType().getBlanketApproveWorkgroupWithInheritance();
-    	}
+        if (getParentDocType() != null && this.blanketApproveWorkgroupId == null) {
+            return getParentDocType().getBlanketApproveWorkgroupWithInheritance();
+        }
         return getIdentityManagementService().getGroup(blanketApproveWorkgroupId);
     }
 
     public boolean isBlanketApprover(String principalId) {
-    	if (KEWConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE.equalsIgnoreCase(getBlanketApprovePolicy())) {
-    		// no one can blanket approve this doc type
-    		return false;
-    	} else if (KEWConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY.equalsIgnoreCase(getBlanketApprovePolicy())) {
-    		// anyone can blanket approve this doc type
-    		return true;
-    	}
-    	if (blanketApproveWorkgroupId != null) {
-    		return getIdentityManagementService().isMemberOfGroup(principalId, blanketApproveWorkgroupId);
-    	}
-    	DocumentType parentDoc = getParentDocType();
-    	if (parentDoc != null) {
-    		// found parent doc so try to get blanket approver info from it
-    		return parentDoc.isBlanketApprover(principalId);
-    	}
-    	return false;
+        if (KEWConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_NONE.equalsIgnoreCase(getBlanketApprovePolicy())) {
+            // no one can blanket approve this doc type
+            return false;
+        } else if (KEWConstants.DOCUMENT_TYPE_BLANKET_APPROVE_POLICY_ANY.equalsIgnoreCase(getBlanketApprovePolicy())) {
+            // anyone can blanket approve this doc type
+            return true;
+        }
+        if (blanketApproveWorkgroupId != null) {
+            return getIdentityManagementService().isMemberOfGroup(principalId, blanketApproveWorkgroupId);
+        }
+        DocumentType parentDoc = getParentDocType();
+        if (parentDoc != null) {
+            // found parent doc so try to get blanket approver info from it
+            return parentDoc.isBlanketApprover(principalId);
+        }
+        return false;
     }
 
     /**
@@ -999,10 +995,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
      * on this Document Type.
      */
     public boolean isBlanketApproveGroupDefined() {
-    	if (StringUtils.isBlank(getBlanketApprovePolicy()) && this.blanketApproveWorkgroupId == null) {
-    		return getParentDocType() != null && getParentDocType().isBlanketApproveGroupDefined();
-    	}
-    	return true;
+        if (StringUtils.isBlank(getBlanketApprovePolicy()) && this.blanketApproveWorkgroupId == null) {
+            return getParentDocType() != null && getParentDocType().isBlanketApproveGroupDefined();
+        }
+        return true;
     }
 
     /**
@@ -1038,62 +1034,42 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         this.defaultExceptionWorkgroup = defaultExceptionWorkgroup;
     }
 
-    
-    public DocumentSearchGenerator getDocumentSearchGenerator() {
-        DocumentEntry documentEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(this.getName());
-        Class<? extends DocumentSearchGenerator> docSearchGeneratorClass = null;
-        if (documentEntry != null) {
-            docSearchGeneratorClass = documentEntry.getDocumentSearchGeneratorClass();
-        }
-        
-        if (docSearchGeneratorClass == null) {
-            ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE);
-        	if (objDef == null) {
-        		if (getParentDocType() != null) {
-        			return getParentDocType().getDocumentSearchGenerator();
-        		} else {
-                    DocumentSearchGenerator generator = KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
-        	    	return generator;
-        		}
-        	}
-        	Object searchGenerator = null;
-        	try {
-        	    searchGenerator = GlobalResourceLoader.getObject(objDef);
-        	} catch (RiceRemoteServiceConnectionException e) {
-        	    LOG.warn("Unable to connect to load searchGenerator for " + this.getName()+ ".  Using StandardDocumentSearchGenerator as default.");
-        	    LOG.warn(e.getMessage());
-        	    return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
-        	}
 
-            if (searchGenerator == null) {
-                throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
-            }
-            DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)searchGenerator;
-            return docSearchGenerator;
-        } else {
-            try {
-                DocumentSearchGenerator docSearchGenerator = (DocumentSearchGenerator)docSearchGeneratorClass.newInstance();
-                return docSearchGenerator;
-            } catch (InstantiationException e) {
-                throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator defined in data dictionary " );
-            } catch (IllegalAccessException e) {
-                throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator defined in data dictionary " );
+    public DocumentSearchGenerator getDocumentSearchGenerator() {
+        ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_GENERATOR_ATTRIBUTE_TYPE);
+        if (objDef == null) {
+            if (getParentDocType() != null) {
+                return getParentDocType().getDocumentSearchGenerator();
+            } else {
+                return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
             }
         }
-        
-        
-        
+
+        Object searchGenerator;
+        try {
+            searchGenerator = GlobalResourceLoader.getObject(objDef);
+        } catch (RiceRemoteServiceConnectionException e) {
+            LOG.warn("Unable to connect to load searchGenerator for " + this.getName() + ".  Using StandardDocumentSearchGenerator as default.");
+            LOG.warn(e.getMessage());
+            return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchGenerator();
+        }
+
+        if (searchGenerator == null) {
+            throw new WorkflowRuntimeException("Could not locate DocumentSearchGenerator in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
+        }
+
+        return (DocumentSearchGenerator) searchGenerator;
     }
 
     public DocumentSearchCriteriaProcessor getDocumentSearchCriteriaProcessor() {
-    	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE);
-    	if (objDef == null) {
-    		if (getParentDocType() != null) {
-    			return getParentDocType().getDocumentSearchCriteriaProcessor();
-    		} else {
+        ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.SEARCH_CRITERIA_PROCESSOR_ATTRIBUTE_TYPE);
+        if (objDef == null) {
+            if (getParentDocType() != null) {
+                return getParentDocType().getDocumentSearchCriteriaProcessor();
+            } else {
                 return new StandardDocumentSearchCriteriaProcessor();
-    		}
-    	}
+            }
+        }
         Object criteriaProcessor = GlobalResourceLoader.getObject(objDef);
         if (criteriaProcessor == null) {
             throw new WorkflowRuntimeException("Could not locate DocumentSearchCriteriaProcessor in this JVM or at service namespace " + getServiceNamespace() + ": " + objDef.getClassName());
@@ -1102,40 +1078,40 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public DocumentSearchResultProcessor getDocumentSearchResultProcessor() {
-    	if ((documentTypeAttributes == null || documentTypeAttributes.isEmpty())) {
-    		if (getParentDocType() != null) {
-    			return getParentDocType().getDocumentSearchResultProcessor();
-    		} else {
-    		    return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchResultProcessor();
+        if ((documentTypeAttributes == null || documentTypeAttributes.isEmpty())) {
+            if (getParentDocType() != null) {
+                return getParentDocType().getDocumentSearchResultProcessor();
+            } else {
+                return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchResultProcessor();
 // 		    return new StandardDocumentSearchResultProcessor();
-    		}
-    	}
-    	for (Iterator iterator = documentTypeAttributes.iterator(); iterator.hasNext();) {
-			DocumentTypeAttribute attribute = (DocumentTypeAttribute) iterator.next();
-			RuleAttribute ruleAttribute = attribute.getRuleAttribute();
-			if (KEWConstants.SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
-				return (DocumentSearchResultProcessor) GlobalResourceLoader.getObject(objDef);
-			} else if (KEWConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
-				ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
-				DocumentSearchResultProcessor resultProcessor = (DocumentSearchResultProcessor) GlobalResourceLoader.getObject(objDef);
-				//required to make it work because ruleAttribute XML is required to construct custom columns
-				((DocumentSearchXMLResultProcessor) resultProcessor).setRuleAttribute(ruleAttribute);
-				return resultProcessor;
-			}
-		}
-	    return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchResultProcessor();
+            }
+        }
+        for (Iterator iterator = documentTypeAttributes.iterator(); iterator.hasNext();) {
+            DocumentTypeAttribute attribute = (DocumentTypeAttribute) iterator.next();
+            RuleAttribute ruleAttribute = attribute.getRuleAttribute();
+            if (KEWConstants.SEARCH_RESULT_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
+                return (DocumentSearchResultProcessor) GlobalResourceLoader.getObject(objDef);
+            } else if (KEWConstants.SEARCH_RESULT_XML_PROCESSOR_ATTRIBUTE_TYPE.equals(ruleAttribute.getType())) {
+                ObjectDefinition objDef = getAttributeObjectDefinition(ruleAttribute);
+                DocumentSearchResultProcessor resultProcessor = (DocumentSearchResultProcessor) GlobalResourceLoader.getObject(objDef);
+                //required to make it work because ruleAttribute XML is required to construct custom columns
+                ((DocumentSearchXMLResultProcessor) resultProcessor).setRuleAttribute(ruleAttribute);
+                return resultProcessor;
+            }
+        }
+        return KEWServiceLocator.getDocumentSearchService().getStandardDocumentSearchResultProcessor();
 //    	return new StandardDocumentSearchResultProcessor();
     }
 
     public CustomActionListAttribute getCustomActionListAttribute() throws ResourceUnavailableException {
 
-    	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.ACTION_LIST_ATTRIBUTE_TYPE);
-    	if (objDef == null) {
-    		return null;
-    	}
+        ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.ACTION_LIST_ATTRIBUTE_TYPE);
+        if (objDef == null) {
+            return null;
+        }
         try {
-            return (CustomActionListAttribute)GlobalResourceLoader.getObject(objDef);
+            return (CustomActionListAttribute) GlobalResourceLoader.getObject(objDef);
         } catch (RuntimeException e) {
             LOG.error("Error obtaining custom action list attribute: " + objDef, e);
             throw e;
@@ -1144,52 +1120,52 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public CustomEmailAttribute getCustomEmailAttribute() throws ResourceUnavailableException {
-    	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.EMAIL_ATTRIBUTE_TYPE);
-    	if (objDef == null) {
-    		return null;
-    	}
-    	return (CustomEmailAttribute)GlobalResourceLoader.getObject(objDef);
+        ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.EMAIL_ATTRIBUTE_TYPE);
+        if (objDef == null) {
+            return null;
+        }
+        return (CustomEmailAttribute) GlobalResourceLoader.getObject(objDef);
     }
 
     public ObjectDefinition getAttributeObjectDefinition(String typeCode) {
-    	for (Iterator iter = getDocumentTypeAttributes().iterator(); iter.hasNext();) {
-    		RuleAttribute attribute = ((DocumentTypeAttribute)iter.next()).getRuleAttribute();
-    		if (attribute.getType().equals(typeCode)) {
-    			return getAttributeObjectDefinition(attribute);
-    		}
-		}
-    	if (getParentDocType() != null) {
-    		return getParentDocType().getAttributeObjectDefinition(typeCode);
-    	}
+        for (Iterator iter = getDocumentTypeAttributes().iterator(); iter.hasNext();) {
+            RuleAttribute attribute = ((DocumentTypeAttribute) iter.next()).getRuleAttribute();
+            if (attribute.getType().equals(typeCode)) {
+                return getAttributeObjectDefinition(attribute);
+            }
+        }
+        if (getParentDocType() != null) {
+            return getParentDocType().getAttributeObjectDefinition(typeCode);
+        }
         return null;
     }
 
     public ObjectDefinition getAttributeObjectDefinition(RuleAttribute ruleAttribute) {
-    	if (ruleAttribute.getServiceNamespace() == null) {
-    		return new ObjectDefinition(ruleAttribute.getClassName(), this.getServiceNamespace());
-    	} else {
-    		return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getServiceNamespace());
-    	}
+        if (ruleAttribute.getServiceNamespace() == null) {
+            return new ObjectDefinition(ruleAttribute.getClassName(), this.getServiceNamespace());
+        } else {
+            return new ObjectDefinition(ruleAttribute.getClassName(), ruleAttribute.getServiceNamespace());
+        }
     }
 
     public CustomNoteAttribute getCustomNoteAttribute() throws ResourceUnavailableException {
-    	ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.NOTE_ATTRIBUTE_TYPE);
-    	if (objDef == null) {
-    		String defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultKewNoteClass();
-    		if (defaultNoteClass == null) {
-    		    // attempt to use deprecated parameter
-    		    defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultNoteClass();
-    		    if (ObjectUtils.isNull(defaultNoteClass)) {
-    		        return null;
-    		    }
-    		}
-    		objDef = new ObjectDefinition(defaultNoteClass);
-    	}
-    	return (CustomNoteAttribute)GlobalResourceLoader.getObject(objDef);
+        ObjectDefinition objDef = getAttributeObjectDefinition(KEWConstants.NOTE_ATTRIBUTE_TYPE);
+        if (objDef == null) {
+            String defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultKewNoteClass();
+            if (defaultNoteClass == null) {
+                // attempt to use deprecated parameter
+                defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultNoteClass();
+                if (ObjectUtils.isNull(defaultNoteClass)) {
+                    return null;
+                }
+            }
+            objDef = new ObjectDefinition(defaultNoteClass);
+        }
+        return (CustomNoteAttribute) GlobalResourceLoader.getObject(objDef);
     }
 
     public ObjectDefinition getObjectDefinition(String objectName) {
-    	return new ObjectDefinition(objectName, getServiceNamespace());
+        return new ObjectDefinition(objectName, getServiceNamespace());
     }
 
     /**
@@ -1211,7 +1187,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         return this;
     }
 
-	public boolean isDocTypeActive() {
+    public boolean isDocTypeActive() {
         if (!getActive().booleanValue()) {
             return false;
         }
@@ -1234,19 +1210,19 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
         }
     }
 
-	/**
-	 * @param documentTypeAttributes The documentTypeAttributes to set.
-	 */
-	public void setDocumentTypeAttributes(List<DocumentTypeAttribute> documentTypeAttributes) {
-		this.documentTypeAttributes = documentTypeAttributes;
-	}
+    /**
+     * @param documentTypeAttributes The documentTypeAttributes to set.
+     */
+    public void setDocumentTypeAttributes(List<DocumentTypeAttribute> documentTypeAttributes) {
+        this.documentTypeAttributes = documentTypeAttributes;
+    }
 
-	/**
-	 * @return Returns the documentTypeAttributes.
-	 */
-	public List<DocumentTypeAttribute> getDocumentTypeAttributes() {
-		return documentTypeAttributes;
-	}
+    /**
+     * @return Returns the documentTypeAttributes.
+     */
+    public List<DocumentTypeAttribute> getDocumentTypeAttributes() {
+        return documentTypeAttributes;
+    }
 
 //	public List<DocumentTypeAttribute> getDocumentTypeAttributesWithPotentialInheritance() {
 //    	if ((documentTypeAttributes == null || documentTypeAttributes.isEmpty())) {
@@ -1267,9 +1243,10 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
      * Gets the processes of this document by checking locally for processes, and if none are
      * present, retrieves them from it's parent document type.  The list returned is an immutable
      * list.  To add processes to a document type, use the addProcess method.
-     *
+     * <p/>
      * NOTE: Since OJB uses direct field access, this will not interfere with the proper
      * mapping of the processes field.
+     *
      * @return
      */
     public List getProcesses() {
@@ -1292,23 +1269,23 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     public Process getPrimaryProcess() {
-    	for (Iterator iterator = getProcesses().iterator(); iterator.hasNext(); ) {
-			Process process = (Process) iterator.next();
-			if (process.isInitial()) {
-				return process;
-			}
-		}
-    	return null;
+        for (Iterator iterator = getProcesses().iterator(); iterator.hasNext();) {
+            Process process = (Process) iterator.next();
+            if (process.isInitial()) {
+                return process;
+            }
+        }
+        return null;
     }
 
     public Process getNamedProcess(String name) {
-    	for (Iterator iterator = getProcesses().iterator(); iterator.hasNext(); ) {
-			Process process = (Process) iterator.next();
-			if (org.apache.commons.lang.ObjectUtils.equals(name, process.getName())) {
-				return process;
-			}
-		}
-    	return null;
+        for (Iterator iterator = getProcesses().iterator(); iterator.hasNext();) {
+            Process process = (Process) iterator.next();
+            if (org.apache.commons.lang.ObjectUtils.equals(name, process.getName())) {
+                return process;
+            }
+        }
+        return null;
     }
 
     public String getRoutingVersion() {
@@ -1343,6 +1320,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
     /**
      * EMPTY METHOD. Use {@link #setActualNotificationFromAddress(String)} instead.
+     *
      * @deprecated
      */
     public void setDisplayableNotificationFromAddress(String displayableNotificationFromAddress) {
@@ -1356,7 +1334,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     /**
      * This method gets the notification from address value. If the forDisplayPurposes value is true
      * the notification from address value will be invalid for system use
-     *
+     * <p/>
      * This method will first call the {@link #getActualNotificationFromAddress()} method to check the value on this object.
      * If none is found the system checks for a parent document type.  If a valid parent type exists for this document type
      * then the system will use inheritance from that parent document type as long as at least one document type in the
@@ -1385,17 +1363,18 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
             return getParentDocType().getNotificationFromAddress(forDisplayPurposes);
         }
         return null;
-	}
+    }
 
     /**
-	 * Use {@link #setActualNotificationFromAddress(String)} instead
-	 * @deprecated
-	 */
-	public void setNotificationFromAddress(String notificationFromAddress) {
-	    setActualNotificationFromAddress(notificationFromAddress);
-	}
+     * Use {@link #setActualNotificationFromAddress(String)} instead
+     *
+     * @deprecated
+     */
+    public void setNotificationFromAddress(String notificationFromAddress) {
+        setActualNotificationFromAddress(notificationFromAddress);
+    }
 
-	public boolean isParentOf(DocumentType documentType) {
+    public boolean isParentOf(DocumentType documentType) {
         // this is a depth-first search which works for our needs
         for (Iterator iterator = getChildrenDocTypes().iterator(); iterator.hasNext();) {
             DocumentType child = (DocumentType) iterator.next();
@@ -1413,26 +1392,26 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
      * @return
      */
     public String getLookupParentName() {
-    	DocumentType parent = getParentDocType();
-    	if (parent == null) {
-    		return "Root";
-    	}
-    	return parent.getName();
+        DocumentType parent = getParentDocType();
+        if (parent == null) {
+            return "Root";
+        }
+        return parent.getName();
     }
 
     public boolean isSuperUser(String principalId) {
-    	Group workgroup = getSuperUserWorkgroup();
-		if (workgroup == null) {
-			return false;
-		}
-    	return getIdentityManagementService().isMemberOfGroup(principalId, workgroup.getGroupId());
+        Group workgroup = getSuperUserWorkgroup();
+        if (workgroup == null) {
+            return false;
+        }
+        return getIdentityManagementService().isMemberOfGroup(principalId, workgroup.getGroupId());
     }
 
     public boolean hasPreviousVersion() {
-    	if (this.documentTypeId == null) {
-    		return false;
-    	}
-    	return ! this.documentTypeId.equals(this.previousVersionId);
+        if (this.documentTypeId == null) {
+            return false;
+        }
+        return !this.documentTypeId.equals(this.previousVersionId);
     }
 
     /**
@@ -1453,14 +1432,14 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
      * Returns the service namespace for this DocumentType which can be specified on the document type itself,
      * inherited from the parent, or defaulted to the configured service namespace of the application.
      */
-	public String getServiceNamespace() {
-	    return getServiceNamespace(false);
-	}
+    public String getServiceNamespace() {
+        return getServiceNamespace(false);
+    }
 
-	/**
+    /**
      * This method gets the string for the service namespace value. If the forDisplayPurposes value is true
      * the service namespace value will be invalid for system use.
-     *
+     * <p/>
      * This method will first call the {@link #getActualServiceNamespace()} method to check for a value on this object. If
      * none is found a parent document type is used.  If a valid parent type exists for this document type then the system
      * will use inheritance from that parent document type as long as at least one document type in the hierarchy has a
@@ -1490,7 +1469,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
             return getParentDocType().getServiceNamespace(forDisplayPurposes);
         }
         String defaultValue = ConfigContext.getCurrentContextConfig().getServiceNamespace();
-        if ( forDisplayPurposes && StringUtils.isNotBlank(defaultValue)) {
+        if (forDisplayPurposes && StringUtils.isNotBlank(defaultValue)) {
             defaultValue += " " + KEWConstants.DOCUMENT_TYPE_SYSTEM_DEFAULT_INDICATOR;
         }
         return defaultValue;
@@ -1498,6 +1477,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
     /**
      * Use {@link #setActualServiceNamespace(String)} instead.
+     *
      * @deprecated
      */
     public void setServiceNamespace(String serviceNamespace) {
@@ -1514,6 +1494,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
     /**
      * EMPTY METHOD. Use {@link #setServiceNamespace(String)} to set a namespace on this object
+     *
      * @deprecated
      */
     public void setDisplayableServiceNamespace(String displayableServiceNamespace) {
@@ -1522,6 +1503,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
     /**
      * Gets the name of the custom email stylesheet to use to render email (if any has been set, null otherwise)
+     *
      * @return name of the custom email stylesheet to use to render email (if any has been set, null otherwise)
      */
     public String getCustomEmailStylesheet() {
@@ -1530,26 +1512,27 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
 
     /**
      * Sets the name of the custom email stylesheet to use to render email
+     *
      * @return name of the custom email stylesheet to use to render email
      */
     public void setCustomEmailStylesheet(String customEmailStylesheet) {
         this.customEmailStylesheet = customEmailStylesheet;
     }
 
-	/**
-	 * @return the blanketApproveWorkgroupId
-	 */
-	public String getBlanketApproveWorkgroupId() {
-		return this.blanketApproveWorkgroupId;
-	}
+    /**
+     * @return the blanketApproveWorkgroupId
+     */
+    public String getBlanketApproveWorkgroupId() {
+        return this.blanketApproveWorkgroupId;
+    }
 
 
-	/**
-	 * @param blanketApproveWorkgroupId the blanketApproveWorkgroupId to set
-	 */
-	public void setBlanketApproveWorkgroupId(String blanketApproveWorkgroupId) {
-		this.blanketApproveWorkgroupId = blanketApproveWorkgroupId;
-	}
+    /**
+     * @param blanketApproveWorkgroupId the blanketApproveWorkgroupId to set
+     */
+    public void setBlanketApproveWorkgroupId(String blanketApproveWorkgroupId) {
+        this.blanketApproveWorkgroupId = blanketApproveWorkgroupId;
+    }
 
     /**
      * @return the applyRetroactively
@@ -1566,26 +1549,26 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
     }
 
     private IdentityManagementService getIdentityManagementService() {
-    	return KIMServiceLocator.getIdentityManagementService();
+        return KIMServiceLocator.getIdentityManagementService();
     }
 
-	/**
-	 * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
-	 */
-	public boolean isActive() {
-		boolean bRet = false;
+    /**
+     * @see org.kuali.rice.kns.bo.Inactivateable#isActive()
+     */
+    public boolean isActive() {
+        boolean bRet = false;
 
-		if(active != null){
-			bRet = active.booleanValue();
-		}
+        if (active != null) {
+            bRet = active.booleanValue();
+        }
 
-		return bRet;
-	}
+        return bRet;
+    }
 
-	/**
-	 * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
-	 */
-	public void setActive(boolean active) {
-		this.active = Boolean.valueOf(active);
-	}
+    /**
+     * @see org.kuali.rice.kns.bo.Inactivateable#setActive(boolean)
+     */
+    public void setActive(boolean active) {
+        this.active = Boolean.valueOf(active);
+    }
 }

@@ -20,7 +20,6 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberAttributeDataImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.ksb.cache.RiceCacheAdministrator;
 
@@ -66,7 +65,7 @@ public class ResponsibilityServiceBase {
 	
 	protected SequenceAccessorService getSequenceAccessorService() {
 		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KNSServiceLocatorInternal.getSequenceAccessorService();
+			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
 		}
 		return sequenceAccessorService;
 	}

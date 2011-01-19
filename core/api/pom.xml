@@ -24,7 +24,12 @@
     </parent>
     <artifactId>rice-core-api</artifactId>
 	<dependencies>
-		<dependency>
+        <dependency>
+            <groupId>ojb</groupId>
+            <artifactId>db-ojb</artifactId>
+            <version>1.0.4-patch4</version>
+        </dependency>
+        <dependency>
 			<groupId>commons-lang</groupId>
 			<artifactId>commons-lang</artifactId>
 		</dependency>

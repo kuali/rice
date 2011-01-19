@@ -32,12 +32,12 @@ import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.HtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.UrlFactory;
@@ -207,7 +207,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 					responsibilities.add(responsibility);
 				}
 				//need to find roles that current role is a member of and build search string
-				List<String> parentRoleIds = KIMServiceLocatorInternal.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
+				List<String> parentRoleIds = KIMServiceLocator.getRoleService().getMemberParentRoleIds(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE, roleImpl.getRoleId());
 				for (String parentRoleId : parentRoleIds) {
 					Map<String, String> roleSearchCriteria = new HashMap<String, String>();
 					roleSearchCriteria.put("roleId", parentRoleId);
@@ -286,7 +286,7 @@ public class ResponsibilityLookupableHelperServiceImpl extends RoleMemberLookupa
 	 */
 	public LookupService getLookupService() {
 		if ( lookupService == null ) {
-			lookupService = KNSServiceLocatorInternal.getLookupService();
+			lookupService = KNSServiceLocatorWeb.getLookupService();
 		}
 		return lookupService;
 	}

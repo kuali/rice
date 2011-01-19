@@ -24,6 +24,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.springframework.util.AutoPopulatingList;
@@ -130,7 +131,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 
 	public KimTypeInfo getKimRoleType() {
 		if ( kimRoleType == null ) {
-			kimRoleType = KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId);
+			kimRoleType = KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId);
 		}
 		return kimRoleType;
 	}
@@ -153,7 +154,7 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 
 	public AttributeDefinitionMap getDefinitions() {
 		if (definitions == null || definitions.isEmpty()) {
-	        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService( this.getKimRoleType() );
+	        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(this.getKimRoleType());
 	        //it is possible that the the roleTypeService is coming from a remote application 
 	        // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
 	        try {

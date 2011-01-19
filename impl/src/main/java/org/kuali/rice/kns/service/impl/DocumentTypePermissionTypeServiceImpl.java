@@ -25,9 +25,9 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - mpham don't forget to fill
@@ -40,7 +40,7 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 	protected transient DocumentTypeService documentTypeService;
 	
 	{
-		requiredAttributes.add( KimAttributes.DOCUMENT_TYPE_NAME );
+		requiredAttributes.add( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME );
 		checkRequiredAttributes = true;
 	}
 	/**
@@ -57,19 +57,19 @@ public class DocumentTypePermissionTypeServiceImpl extends KimPermissionTypeServ
 		// pull all the potential parent doc type names from the permission list
 		Set<String> permissionDocTypeNames = new HashSet<String>( permissionsList.size() );
 		for ( KimPermissionInfo kpi : permissionsList ) {
-			String docTypeName = kpi.getDetails().get( KimAttributes.DOCUMENT_TYPE_NAME );
+			String docTypeName = kpi.getDetails().get( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME );
 			if ( StringUtils.isNotBlank( docTypeName ) ) {
 				permissionDocTypeNames.add( docTypeName );
 			}
 		}
 		// find the parent documents which match
-		DocumentType docType = getDocumentTypeService().findByName(requestedDetails.get(KimAttributes.DOCUMENT_TYPE_NAME));
+		DocumentType docType = getDocumentTypeService().findByName(requestedDetails.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME));
 		String matchingDocTypeName = getClosestParentDocumentTypeName(docType, permissionDocTypeNames);
 		// re-loop over the permissions and build a new list of the ones which have the
 		// matching document type names in their details
 		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
 		for ( KimPermissionInfo kpi : permissionsList ) {
-			String docTypeName = kpi.getDetails().get( KimAttributes.DOCUMENT_TYPE_NAME );
+			String docTypeName = kpi.getDetails().get( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME );
 			// only allow a match on the "*" type if no matching document types were found
 			if((StringUtils.isEmpty(matchingDocTypeName) && StringUtils.equals(docTypeName,"*")) 
 				|| (StringUtils.isNotEmpty(matchingDocTypeName) && matchingDocTypeName.equals(docTypeName))) {

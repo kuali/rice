@@ -23,6 +23,7 @@ import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.SQLUtils;
 
@@ -57,7 +58,7 @@ public class SearchableAttributeFloatValue implements WorkflowPersistable, Searc
     private static final boolean ALLOWS_RANGE_SEARCH = true;
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = false;
     private static final String DEFAULT_VALIDATION_REGEX_EXPRESSION = "[-+]?[0-9]*\\.?[0-9]+";
-    private static final String ATTRIBUTE_XML_REPRESENTATION = SearchableAttribute.DATA_TYPE_FLOAT;
+    private static final String ATTRIBUTE_XML_REPRESENTATION = KEWConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT;
     private static final String DEFAULT_FORMAT_PATTERN = "";
 
     @Id

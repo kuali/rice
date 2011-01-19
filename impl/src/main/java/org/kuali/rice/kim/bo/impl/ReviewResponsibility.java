@@ -19,6 +19,7 @@ import org.hibernate.annotations.Type;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -82,11 +83,11 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
     	setDescription( resp.getDescription() );
     	setActive( resp.isActive() );
     	AttributeSet respDetails = resp.getDetails();
-    	setDocumentTypeName( respDetails.get( KimAttributes.DOCUMENT_TYPE_NAME ) );
-    	setRouteNodeName( respDetails.get( KimAttributes.ROUTE_NODE_NAME ) );
-    	setActionDetailsAtRoleMemberLevel( Boolean.valueOf( respDetails.get( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL ) ) );
-    	setRequired( Boolean.valueOf( respDetails.get( KimAttributes.REQUIRED ) ) );
-    	setQualifierResolverProvidedIdentifier( respDetails.get( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) );
+    	setDocumentTypeName( respDetails.get( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME ) );
+    	setRouteNodeName( respDetails.get( KimConstants.AttributeConstants.ROUTE_NODE_NAME ) );
+    	setActionDetailsAtRoleMemberLevel( Boolean.valueOf( respDetails.get( KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL ) ) );
+    	setRequired( Boolean.valueOf( respDetails.get( KimConstants.AttributeConstants.REQUIRED ) ) );
+    	setQualifierResolverProvidedIdentifier( respDetails.get( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) );
 	}
 	
 	/**

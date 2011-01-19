@@ -19,7 +19,7 @@ package org.kuali.rice.kew.util;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrLookup;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -48,7 +48,7 @@ public class ConfigStringLookup extends StrLookup {
 		
 		// TODO temporarily disabling configuration parameter resolution against the racms because it's been causing some issues
 		if ( namespace != null ) {
-			paramValue = KNSServiceLocatorInternal.getRiceApplicationConfigurationMediationService().getConfigurationParameter(namespace, propertyName);
+			paramValue = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getConfigurationParameter(namespace, propertyName);
 		}
 		
 		// check system parameters first

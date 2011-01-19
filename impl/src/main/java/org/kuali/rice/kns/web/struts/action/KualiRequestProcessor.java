@@ -26,7 +26,9 @@ import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.FileUploadLimitExceededException;
 import org.kuali.rice.kns.exception.ValidationException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.SessionDocumentService;
 import org.kuali.rice.kns.util.*;
 import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
@@ -661,7 +663,7 @@ public class KualiRequestProcessor extends RequestProcessor {
 	 */
 	public SessionDocumentService getSessionDocumentService() {
 		if ( sessionDocumentService == null ) {
-			sessionDocumentService = KNSServiceLocatorInternal.getSessionDocumentService();
+			sessionDocumentService = KNSServiceLocatorWeb.getSessionDocumentService();
 		}
 		return this.sessionDocumentService;
 	}

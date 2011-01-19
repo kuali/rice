@@ -38,7 +38,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
 
@@ -145,7 +145,7 @@ public class IdentityManagementKimDocument extends TransactionalDocumentBase {
 	
 	protected SequenceAccessorService getSequenceAccessorService(){
 		if(this.sequenceAccessorService==null){
-	    	this.sequenceAccessorService = KNSServiceLocatorInternal.getSequenceAccessorService();
+	    	this.sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
 		}
 		return this.sequenceAccessorService;
 	}

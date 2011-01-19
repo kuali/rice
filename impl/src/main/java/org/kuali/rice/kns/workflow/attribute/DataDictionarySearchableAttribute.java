@@ -29,6 +29,7 @@ import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.DocumentHeader;
 import org.kuali.rice.kns.bo.GlobalBusinessObject;
@@ -44,10 +45,7 @@ import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.maintenance.KualiGlobalMaintainableImpl;
 import org.kuali.rice.kns.maintenance.Maintainable;
-import org.kuali.rice.kns.service.DictionaryValidationService;
-import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.FieldUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -82,7 +80,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
 
         String docId = documentSearchContext.getDocumentId();
 
-        DocumentService docService = KNSServiceLocatorInternal.getDocumentService();
+        DocumentService docService = KNSServiceLocatorWeb.getDocumentService();
         Document doc = null;
         try  {
             doc = docService.getByDocumentHeaderIdSessionless(docId);
@@ -133,7 +131,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             }
         }
         if ( doc != null ) {
-            DocumentEntry docEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentSearchContext.getDocumentTypeName());
+            DocumentEntry docEntry = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentSearchContext.getDocumentTypeName());
             if ( docEntry != null ) {
 		        WorkflowAttributes workflowAttributes = docEntry.getWorkflowAttributes();
 		        WorkflowAttributePropertyResolutionService waprs = KNSServiceLocatorInternal.getWorkflowAttributePropertyResolutionService();
@@ -155,10 +153,10 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         Class boClass = DocumentHeader.class;
 
         Field descriptionField = FieldUtils.getPropertyField(boClass, "documentDescription", true);
-        descriptionField.setFieldDataType(SearchableAttribute.DATA_TYPE_STRING);
+        descriptionField.setFieldDataType(KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING);
 
         Field orgDocNumberField = FieldUtils.getPropertyField(boClass, "organizationDocumentNumber", true);
-        orgDocNumberField.setFieldDataType(SearchableAttribute.DATA_TYPE_STRING);
+        orgDocNumberField.setFieldDataType(KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING);
 
         List<Field> fieldList = new ArrayList<Field>();
         fieldList.add(descriptionField);
@@ -169,7 +167,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
         docSearchRows.add(new Row(fieldList));
 
 
-        DocumentEntry entry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentSearchContext.getDocumentTypeName());
+        DocumentEntry entry = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentSearchContext.getDocumentTypeName());
         if (entry  == null)
             return docSearchRows;
         if (entry instanceof MaintenanceDocumentEntry) {
@@ -197,7 +195,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
 
     public List<WorkflowAttributeValidationError> validateUserSearchInputs(Map<Object, Object> paramMap, DocumentSearchContext searchContext) {
         List<WorkflowAttributeValidationError> validationErrors = null;
-        DictionaryValidationService validationService = KNSServiceLocatorInternal.getDictionaryValidationService();
+        DictionaryValidationService validationService = KNSServiceLocatorWeb.getDictionaryValidationService();
         
         for (Object key : paramMap.keySet()) {
             Object value = paramMap.get(key);
@@ -263,13 +261,13 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             }
             String fieldDataType = propertyResolutionService.determineFieldDataType(boClass, attributeName);
             if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN)) {
-                fieldDataType = SearchableAttribute.DATA_TYPE_STRING;
+                fieldDataType = KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING;
             }
 
             // Allow inline range searching on dates and numbers
-            if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_FLOAT) ||
-                fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_LONG) ||
-                fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_DATE)) {
+            if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT) ||
+                fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_LONG) ||
+                fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE)) {
 
                 searchField.setAllowInlineRange(true);
             }
@@ -301,7 +299,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     protected List<SearchableAttributeValue> parsePrimaryKeyValuesFromDocument(Class<? extends BusinessObject> businessObjectClass, MaintenanceDocument document) {
         List<SearchableAttributeValue> values = new ArrayList<SearchableAttributeValue>();
 
-        final List primaryKeyNames = KNSServiceLocatorInternal.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+        final List primaryKeyNames = KNSServiceLocatorWeb.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
 
         for (Object primaryKeyNameAsObj : primaryKeyNames) {
             final String primaryKeyName = (String)primaryKeyNameAsObj;
@@ -360,7 +358,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
      * @return the corresponding data dictionary entry for a maintenance document
      */
     protected MaintenanceDocumentEntry retrieveMaintenanceDocumentEntry(String documentTypeName) {
-        return (MaintenanceDocumentEntry) KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentTypeName);
+        return (MaintenanceDocumentEntry) KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(documentTypeName);
     }
 
     /**
@@ -408,7 +406,7 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
      * @return
      */
     protected SearchableAttributeValue generateSearchableAttributeFromChange(PersistableBusinessObject changeToPersist) {
-        List primaryKeyNames = KNSServiceLocatorInternal.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(changeToPersist.getClass());
+        List primaryKeyNames = KNSServiceLocatorWeb.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(changeToPersist.getClass());
 
         for (Object primaryKeyNameAsObject : primaryKeyNames) {
             String primaryKeyName = (String)primaryKeyNameAsObject;
@@ -433,8 +431,8 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
     protected List<Row> createFieldRowsForBusinessObject(Class<? extends BusinessObject> businessObjectClass) {
         List<Row> searchFields = new ArrayList<Row>();
 
-        final List primaryKeyNamesAsObjects = KNSServiceLocatorInternal.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
-        final BusinessObjectEntry boEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
+        final List primaryKeyNamesAsObjects = KNSServiceLocatorWeb.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+        final BusinessObjectEntry boEntry = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(businessObjectClass.getName());
         final WorkflowAttributePropertyResolutionService propertyResolutionService = KNSServiceLocatorInternal.getWorkflowAttributePropertyResolutionService();
         for (Object primaryKeyNameAsObject : primaryKeyNamesAsObjects) {
 

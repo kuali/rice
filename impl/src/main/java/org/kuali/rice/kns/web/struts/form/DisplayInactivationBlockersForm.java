@@ -28,7 +28,7 @@ import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 
 /**
  * This is a description of what this class does - wliang don't forget to fill this in. 
@@ -66,9 +66,9 @@ public class DisplayInactivationBlockersForm extends KualiForm {
 		}
 		
 		EncryptionService encryptionService = KNSServiceLocator.getEncryptionService();
-		BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService();
+		BusinessObjectAuthorizationService businessObjectAuthorizationService = KNSServiceLocatorWeb.getBusinessObjectAuthorizationService();
 		
-		List primaryKeyFieldNames = KNSServiceLocatorInternal.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
+		List primaryKeyFieldNames = KNSServiceLocatorWeb.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(businessObjectClass);
 		for (Iterator i = primaryKeyFieldNames.iterator(); i.hasNext();) {
 			String primaryKeyFieldName = (String) i.next();
 			

@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRolePermission;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
@@ -78,8 +77,8 @@ public class KimDocumentPermissionRule extends DocumentRuleBase implements AddPe
 
 	public boolean hasPermissionToGrantPermission(KimPermissionInfo kimPermissionInfo , IdentityManagementRoleDocument document){
 		Map<String,String> permissionDetails = new HashMap<String,String>();
-		permissionDetails.put(KimAttributes.NAMESPACE_CODE, kimPermissionInfo.getNamespaceCode());
-		permissionDetails.put(KimAttributes.PERMISSION_NAME, kimPermissionInfo.getTemplate().getName());
+		permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, kimPermissionInfo.getNamespaceCode());
+		permissionDetails.put(KimConstants.AttributeConstants.PERMISSION_NAME, kimPermissionInfo.getTemplate().getName());
 		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, 
 				KimConstants.NAMESPACE_CODE, 

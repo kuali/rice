@@ -24,7 +24,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
@@ -55,10 +54,7 @@ import org.kuali.rice.kim.rules.ui.KimDocumentPermissionRule;
 import org.kuali.rice.kim.rules.ui.KimDocumentResponsibilityRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.RoleDocumentDelegationRule;
-import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.ResponsibilityService;
-import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.impl.RoleServiceBase;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
@@ -146,8 +142,8 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 	protected boolean validAssignRole(IdentityManagementRoleDocument document){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
-        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getRoleNamespace());
-        additionalPermissionDetails.put(KimAttributes.ROLE_NAME, document.getRoleName());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, document.getRoleNamespace());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.ROLE_NAME, document.getRoleName());
 		if((document.getMembers()!=null && document.getMembers().size()>0) ||
 				(document.getDelegationMembers()!=null && document.getDelegationMembers().size()>0)){
 			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
@@ -294,7 +290,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		int roleMemberCount = 0;
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
-        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
+        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         final AttributeDefinitionMap attributeDefinitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
         final Set<String> uniqueAttributeNames = figureOutUniqueQualificationSet(roleMembers, attributeDefinitions);
@@ -439,7 +435,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		int memberCounter = 0;
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
-        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
+        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         KimDocumentRoleMember roleMember;
         String errorPath;
@@ -614,7 +610,7 @@ public class IdentityManagementRoleDocumentRule extends TransactionalDocumentRul
 		// Verify that the new role is not already related to the role either directly or indirectly
 		if (newMember.isRole()){
 			// get all nested role member ids that are of type role
-			RoleService roleService = KIMServiceLocatorInternal.getRoleService();
+			RoleService roleService = KIMServiceLocator.getRoleService();
 			roleMemberIds = ((RoleServiceBase) roleService).getRoleTypeRoleMemberIds(newMember.getMemberId());
 
 			// check to see if the document role is not a member of the new member role

@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.KualiException;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * This class contains the exception incident information, exception, form and
@@ -202,7 +202,7 @@ public class ExceptionIncident implements KualiExceptionIncident {
             LOG.trace(lm);
         }
         
-        String env= KNSServiceLocatorInternal.getKualiConfigurationService().
+        String env= KNSServiceLocator.getKualiConfigurationService().
                         getPropertyString("environment");
         String format="%s:%s:%s";
         String componentName=properties.get(COMPONENT_NAME);

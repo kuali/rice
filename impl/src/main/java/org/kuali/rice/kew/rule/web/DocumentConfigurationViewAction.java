@@ -48,10 +48,8 @@ import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.service.*;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -142,7 +140,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		while ( docType != null) {
 			String documentTypeName = docType.getName();
 			searchCriteria.put("detailCriteria",
-					KimAttributes.DOCUMENT_TYPE_NAME+"="+docType.getName()
+					KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+docType.getName()
 					);
 			List<KimPermissionInfo> perms = getPermissionService().lookupPermissions( searchCriteria, true );
 			for ( KimPermissionInfo perm : perms ) {
@@ -188,7 +186,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		while ( docType != null) {
 			// pull the responsibilities for this node
 			searchCriteria.put("detailCriteria",
-					KimAttributes.DOCUMENT_TYPE_NAME+"="+docType.getName()
+					KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+docType.getName()
 					);		
 			List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, true );
 			
@@ -290,12 +288,12 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 		while ( docType != null) {
 			// pull the responsibilities for this node
 			searchCriteria.put("detailCriteria",
-					KimAttributes.DOCUMENT_TYPE_NAME+"="+docType.getName()
+					KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+docType.getName()
 					);		
 			List<? extends KimResponsibilityInfo> resps = getResponsibilityService().lookupResponsibilityInfo( searchCriteria, true );
 			
 			for ( KimResponsibilityInfo r : resps ) {
-				String routeNodeName = r.getDetails().get(KimAttributes.ROUTE_NODE_NAME); 
+				String routeNodeName = r.getDetails().get(KimConstants.AttributeConstants.ROUTE_NODE_NAME);
 				if ( StringUtils.isNotBlank(routeNodeName) ) {
 					if ( !nodeToRespMap.containsKey( routeNodeName ) ) {
 						nodeToRespMap.put(routeNodeName, new ArrayList<ResponsibilityForDisplay>() );
@@ -304,7 +302,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 						// check if the responsibility in the existing list is for the current document
 						// if so, OK to add.  Otherwise, a lower level document has overridden this
 						// responsibility (since we are walking up the hierarchy
-						if ( nodeToRespMap.get(routeNodeName).get(0).getDetails().get( KimAttributes.DOCUMENT_TYPE_NAME ).equals(docType.getName() ) ) {
+						if ( nodeToRespMap.get(routeNodeName).get(0).getDetails().get( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME ).equals(docType.getName() ) ) {
 							nodeToRespMap.get(routeNodeName).add( new ResponsibilityForDisplay( r, false ) );
 						} else { // doc type name did not match, mark as overridden
 							nodeToRespMap.get(routeNodeName).add( new ResponsibilityForDisplay( r, true ) );
@@ -456,7 +454,7 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 
 	public DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
-			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}
@@ -470,14 +468,14 @@ public class DocumentConfigurationViewAction extends KewKualiAction {
 
 	public DocumentHelperService getDocumentHelperService() {
 		if(documentHelperService == null){
-			documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
+			documentHelperService = KNSServiceLocatorWeb.getDocumentHelperService();
 		}
 		return documentHelperService;
 	}
 
 	public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if(maintenanceDocumentDictionaryService == null){
-			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}

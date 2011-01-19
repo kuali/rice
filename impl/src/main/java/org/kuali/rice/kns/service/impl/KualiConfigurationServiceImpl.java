@@ -18,10 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KualiConfigurationService;
 
 //@Transactional
 public class KualiConfigurationServiceImpl extends AbstractStaticConfigurationServiceImpl implements KualiConfigurationService {

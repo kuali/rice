@@ -18,9 +18,7 @@ package org.kuali.rice.kew.preferences.web;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.kuali.rice.kew.exception.WorkflowServiceErrorImpl;
 import org.kuali.rice.kew.preferences.Preferences;
-import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;

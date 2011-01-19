@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
@@ -32,6 +31,7 @@ import org.kuali.rice.kim.rule.ui.AddGroupMemberRule;
 import org.kuali.rice.kim.rules.ui.GroupDocumentMemberRule;
 import org.kuali.rice.kim.service.IdentityService;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
@@ -85,8 +85,8 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 	protected boolean validAssignGroup(IdentityManagementGroupDocument document){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
-        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getGroupNamespace());
-        additionalPermissionDetails.put(KimAttributes.GROUP_NAME, document.getGroupName());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, document.getGroupNamespace());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.GROUP_NAME, document.getGroupName());
 		if(document.getMembers()!=null && document.getMembers().size()>0){
 			if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.POPULATE_GROUP, 
@@ -134,7 +134,7 @@ public class IdentityManagementGroupDocumentRule extends TransactionalDocumentRu
 
 		AttributeSet errorsTemp;
 		AttributeSet attributeSetToValidate;
-        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
+        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 		attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(groupQualifiers);
 		errorsTemp = kimTypeService.validateAttributes(kimType.getKimTypeId(), attributeSetToValidate);

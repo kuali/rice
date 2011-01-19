@@ -49,6 +49,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
@@ -631,7 +632,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     		KimDelegationImpl delegation = getKimDelegationImpl(delegationId);
     		KimTypeInfo delegationType = delegation.getKimType();
     		if ( delegationType != null ) {
-    			KimTypeService tempService = KIMServiceLocatorInternal.getKimTypeService(delegationType);
+    			KimTypeService tempService = KIMServiceLocatorWeb.getKimTypeService(delegationType);
     			if ( tempService != null && tempService instanceof KimDelegationTypeService ) {
     				service = (KimDelegationTypeService)tempService;
     			} else {
@@ -1170,7 +1171,7 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     @SuppressWarnings("unchecked")
 	protected void inactivateApplicationRoleMemberships( String principalId, Timestamp yesterday){
     	// get all role type services
-    	Collection<KimTypeInfo> types = KIMServiceLocatorInternal.getTypeInfoService().getAllTypes();
+    	Collection<KimTypeInfo> types = KIMServiceLocatorWeb.getTypeInfoService().getAllTypes();
     	// create sub list of only application role types
     	ArrayList<KimTypeInfo> applicationRoleTypes = new ArrayList<KimTypeInfo>( types.size() );
     	for ( KimTypeInfo typeInfo : types ) {

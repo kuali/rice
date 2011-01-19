@@ -17,7 +17,7 @@ package org.kuali.rice.kns.document;
 
 import org.junit.Test;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -41,7 +41,7 @@ public class MaintenanceDocumentTest extends KNSTestCase {
     public void setUp() throws Exception {
         super.setUp();
         GlobalVariables.setUserSession(new UserSession("quickstart"));
-        document = (MaintenanceDocument) KNSServiceLocatorInternal.getDocumentService().getNewDocument("AccountManagerMaintenanceDocument");
+        document = (MaintenanceDocument) KNSServiceLocatorWeb.getDocumentService().getNewDocument("AccountManagerMaintenanceDocument");
     }
 
     private void setupNewAccountMaintDoc(MaintenanceDocument document) {

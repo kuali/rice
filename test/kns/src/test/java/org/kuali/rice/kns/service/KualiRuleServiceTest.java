@@ -38,7 +38,7 @@ public class KualiRuleServiceTest extends KNSTestCase {
 
         if (!entriesAdded) {
             entriesAdded = true;
-            kualiRuleService = KNSServiceLocatorInternal.getKualiRuleService();
+            kualiRuleService = KNSServiceLocatorWeb.getKualiRuleService();
         }
     }
 

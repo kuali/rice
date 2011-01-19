@@ -90,7 +90,7 @@ public class MetadataManagerTest extends KNSTestCase {
 		assertEquals("Single pkValue should be of class String", String.class, pkValue.getClass());
 		assertEquals("Single pkValue should be \"CONFG\"", "CONFG", pkValue);
 		
-		Parameter parameter = KNSServiceLocatorInternal.getParameterService().retrieveParameter("KR-NS", "Lookup", "MULTIPLE_VALUE_RESULTS_PER_PAGE");
+		Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter("KR-NS", "Lookup", "MULTIPLE_VALUE_RESULTS_PER_PAGE");
 		assertNotNull("State should not be null", parameter);
 		
 		pkValue = MetadataManager.getPersistableBusinessObjectPrimaryKeyObject(parameter);

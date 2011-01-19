@@ -60,10 +60,7 @@ import org.kuali.rice.kns.exception.DocumentTypeAuthorizationException;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.event.KualiAddLineEvent;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.LookupService;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -89,7 +86,7 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
 	public KualiMaintenanceDocumentAction() {
 		super();
-		maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
+		maintenanceDocumentDictionaryService = KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
 		encryptionService = KNSServiceLocator.getEncryptionService();
 	}
 
@@ -1006,14 +1003,14 @@ public class KualiMaintenanceDocumentAction extends KualiDocumentActionBase {
 
 	public LookupService getLookupService() {
 		if ( lookupService == null ) {
-			lookupService = KNSServiceLocatorInternal.getLookupService();
+			lookupService = KNSServiceLocatorWeb.getLookupService();
 		}
 		return this.lookupService;
 	}
 
 	public LookupResultsService getLookupResultsService() {
 		if ( lookupResultsService == null ) {
-			lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
+			lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
 		}
 		return this.lookupResultsService;
 	}

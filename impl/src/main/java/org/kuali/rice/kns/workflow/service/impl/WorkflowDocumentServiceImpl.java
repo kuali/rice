@@ -35,7 +35,7 @@ import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.Timer;
@@ -350,7 +350,7 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 	String newAnnotation = annotation;
                 	if ( StringUtils.isBlank( annotation ) ) {
                 		try {
-                			String message = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(RiceKeyConstants.MESSAGE_ADHOC_ANNOTATION);
+                			String message = KNSServiceLocator.getKualiConfigurationService().getPropertyString(RiceKeyConstants.MESSAGE_ADHOC_ANNOTATION);
                 			newAnnotation = MessageFormat.format(message, GlobalVariables.getUserSession().getPrincipalName() );
                 		} catch ( Exception ex ) {
                 			LOG.warn("Unable to set annotation", ex );

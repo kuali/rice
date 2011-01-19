@@ -20,10 +20,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
-import org.kuali.rice.kim.util.KimCommonUtilsInternal;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -49,11 +48,11 @@ public class ComponentFieldPermissionTypeServiceImpl extends KimPermissionTypeSe
 		List<KimPermissionInfo> propertyMatches = new ArrayList<KimPermissionInfo>();
 		List<KimPermissionInfo> prefixPropertyMatches = new ArrayList<KimPermissionInfo>();
 		List<KimPermissionInfo> blankPropertyMatches = new ArrayList<KimPermissionInfo>();
-		String propertyName = requestedDetails.get(KimAttributes.PROPERTY_NAME);
-		String componentName = requestedDetails.get(KimAttributes.COMPONENT_NAME);
+		String propertyName = requestedDetails.get(KimConstants.AttributeConstants.PROPERTY_NAME);
+		String componentName = requestedDetails.get(KimConstants.AttributeConstants.COMPONENT_NAME);
 		for ( KimPermissionInfo kpi : permissionsList ) {
-			if ( StringUtils.equals( componentName, kpi.getDetails().get( KimAttributes.COMPONENT_NAME ) ) ) {
-				String permPropertyName = kpi.getDetails().get(KimAttributes.PROPERTY_NAME);
+			if ( StringUtils.equals( componentName, kpi.getDetails().get( KimConstants.AttributeConstants.COMPONENT_NAME ) ) ) {
+				String permPropertyName = kpi.getDetails().get(KimConstants.AttributeConstants.PROPERTY_NAME);
 				if ( StringUtils.isBlank( permPropertyName ) ) {
 					blankPropertyMatches.add( kpi );
 				} else if ( StringUtils.equals( propertyName, permPropertyName ) ) {

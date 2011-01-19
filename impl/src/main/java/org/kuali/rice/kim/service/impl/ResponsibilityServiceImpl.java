@@ -27,7 +27,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.RiceDebugUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
@@ -45,7 +44,7 @@ import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
@@ -368,7 +367,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     	if ( details == null ) {
     		return false;
     	}
-    	String actionDetailsAtRoleMemberLevel = details.get( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL );
+    	String actionDetailsAtRoleMemberLevel = details.get( KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL );
     	return Boolean.valueOf(actionDetailsAtRoleMemberLevel);
     }
 
@@ -380,7 +379,7 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     	if ( details == null ) {
     		return false;
     	}
-    	String actionDetailsAtRoleMemberLevel = details.get( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL );
+    	String actionDetailsAtRoleMemberLevel = details.get( KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL );
     	return Boolean.valueOf(actionDetailsAtRoleMemberLevel);
     }
 
@@ -398,8 +397,8 @@ public class ResponsibilityServiceImpl extends ResponsibilityServiceBase impleme
     @SuppressWarnings("unchecked")
 	public List<? extends KimResponsibilityInfo> lookupResponsibilityInfo( Map<String,String> searchCriteria, boolean unbounded ) {
 		Collection baseResults = null; 
-		Lookupable responsibilityLookupable = KNSServiceLocatorInternal.getLookupable(
-                KNSServiceLocatorInternal.getBusinessObjectDictionaryService().getLookupableID(ResponsibilityImpl.class)
+		Lookupable responsibilityLookupable = KNSServiceLocatorWeb.getLookupable(
+                KNSServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupableID(ResponsibilityImpl.class)
         );
 		responsibilityLookupable.setBusinessObjectClass(ResponsibilityImpl.class);
 		if ( unbounded ) {

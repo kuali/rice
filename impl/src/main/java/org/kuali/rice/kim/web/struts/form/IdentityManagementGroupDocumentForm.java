@@ -25,7 +25,7 @@ import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.web.format.DateDisplayTimestampObjectFormatter;
 
@@ -102,7 +102,7 @@ public class IdentityManagementGroupDocumentForm extends IdentityManagementDocum
 	 */
 	public KimTypeInfo getKimType() {
 		if(StringUtils.isNotBlank(getGroupDocument().getGroupTypeId()))
-			return KIMServiceLocatorInternal.getTypeInfoService().getKimType(getGroupDocument().getGroupTypeId());
+			return KIMServiceLocatorWeb.getTypeInfoService().getKimType(getGroupDocument().getGroupTypeId());
 		else return kimType;
 	}
 

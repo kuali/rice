@@ -24,6 +24,7 @@ import org.kuali.rice.kim.bo.impl.GenericPermission;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionTemplateInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
 import org.kuali.rice.kns.document.MaintenanceDocument;
 import org.kuali.rice.kns.maintenance.rules.MaintenanceDocumentRuleBase;
@@ -59,7 +60,7 @@ public class GenericPermissionMaintenanceDocumentRule extends
 				GlobalVariables.getMessageMap().removeFromErrorPath( MAINTAINABLE_ERROR_PATH );
 				rulesPassed = false;
 			} else {
-				KimTypeInfo kimType = KIMServiceLocatorInternal.getTypeInfoService().getKimType( template.getKimTypeId() );
+				KimTypeInfo kimType = KIMServiceLocatorWeb.getTypeInfoService().getKimType( template.getKimTypeId() );
 				AttributeSet details = perm.getDetails();
 				// check that add passed attributes are defined
 				for ( String attributeName : details.keySet() ) {

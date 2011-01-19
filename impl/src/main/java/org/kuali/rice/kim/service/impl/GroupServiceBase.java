@@ -22,10 +22,7 @@ import org.kuali.rice.kim.service.IdentityManagementNotificationService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.LookupService;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 import javax.xml.namespace.QName;
@@ -334,7 +331,7 @@ public abstract class GroupServiceBase {
 	 */
     protected LookupService getLookupService() {
 		if(lookupService == null) {
-			lookupService = KNSServiceLocatorInternal.getLookupService();
+			lookupService = KNSServiceLocatorWeb.getLookupService();
 		}
 		return lookupService;
     }

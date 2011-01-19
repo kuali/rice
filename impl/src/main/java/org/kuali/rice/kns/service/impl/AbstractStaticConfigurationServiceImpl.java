@@ -53,7 +53,7 @@ public abstract class AbstractStaticConfigurationServiceImpl {
     }
 
     /**
-     * @see org.kuali.rice.kns.service.KualiConfigurationService#getPropertyString(java.lang.String)
+     * @see org.kuali.rice.core.service.KualiConfigurationService#getPropertyString(java.lang.String)
      */
     public String getPropertyString(String key) {
         LOG.debug("getPropertyString() started");
@@ -66,7 +66,7 @@ public abstract class AbstractStaticConfigurationServiceImpl {
     }
 
     /**
-     * @see org.kuali.rice.kns.service.KualiConfigurationService#getPropertyAsBoolean(java.lang.String)
+     * @see org.kuali.rice.core.service.KualiConfigurationService#getPropertyAsBoolean(java.lang.String)
      */
     public boolean getPropertyAsBoolean(String key) {
         LOG.debug("getPropertyAsBoolean() started");
@@ -88,7 +88,7 @@ public abstract class AbstractStaticConfigurationServiceImpl {
     }
     
     /**
-     * @see org.kuali.rice.kns.service.KualiConfigurationService#getAllProperties()
+     * @see org.kuali.rice.core.service.KualiConfigurationService#getAllProperties()
      */
     public Properties getAllProperties() {
         LOG.debug("getAllProperties() started");

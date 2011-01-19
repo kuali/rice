@@ -23,10 +23,10 @@ import java.util.Map;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
 import org.kuali.rice.kim.service.support.impl.KimResponsibilityTypeServiceBase;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -37,7 +37,7 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 	protected String exactMatchStringAttributeName;
 
 	{
-		requiredAttributes.add( KimAttributes.DOCUMENT_TYPE_NAME );
+		requiredAttributes.add( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME );
 		checkRequiredAttributes = true;
 	}
 	
@@ -55,29 +55,29 @@ public class DocumentTypeResponsibilityTypeServiceImpl extends
 									requestedDetails
 											.get(exactMatchStringAttributeName))) {
 				if (!potentialDocumentTypeMatches.containsKey(responsibility
-						.getDetails().get(KimAttributes.DOCUMENT_TYPE_NAME))) {
+						.getDetails().get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME))) {
 					potentialDocumentTypeMatches.put(
 							responsibility.getDetails().get(
-									KimAttributes.DOCUMENT_TYPE_NAME),
+									KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME),
 							new ArrayList<KimResponsibilityInfo>());
 				}
 				potentialDocumentTypeMatches.get(
 						responsibility.getDetails().get(
-								KimAttributes.DOCUMENT_TYPE_NAME)).add(
+								KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME)).add(
 						responsibility);
 			}
 		}
 		List<KimResponsibilityInfo> matchingResponsibilities = new ArrayList<KimResponsibilityInfo>();
 		if (potentialDocumentTypeMatches.containsKey(requestedDetails
-				.get(KimAttributes.DOCUMENT_TYPE_NAME))) {
+				.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME))) {
 			matchingResponsibilities
 					.addAll(potentialDocumentTypeMatches.get(requestedDetails
-							.get(KimAttributes.DOCUMENT_TYPE_NAME)));
+							.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME)));
 		} else {
 			String closestParentDocumentTypeName = getClosestParentDocumentTypeName(
 					getDocumentTypeService().findByName(
 							requestedDetails
-									.get(KimAttributes.DOCUMENT_TYPE_NAME)),
+									.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME)),
 					potentialDocumentTypeMatches.keySet());
 			if (closestParentDocumentTypeName != null) {
 				matchingResponsibilities.addAll(potentialDocumentTypeMatches

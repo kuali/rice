@@ -33,7 +33,7 @@ public class MaintenanceDocumentDictionaryServiceTest extends KNSTestCase {
         // test the boClass null argument
         exceptionThrown = false;
         try {
-            KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((Class) null, "accountNumber");
+            KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((Class) null, "accountNumber");
         }
         catch (IllegalArgumentException e) {
             exceptionThrown = true;
@@ -46,7 +46,7 @@ public class MaintenanceDocumentDictionaryServiceTest extends KNSTestCase {
         // test the docTypeName null argument
         exceptionThrown = false;
         try {
-            KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((String) null, "accountNumber");
+            KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService().getFieldDefaultValue((String) null, "accountNumber");
         }
         catch (IllegalArgumentException e) {
             exceptionThrown = true;
@@ -59,7 +59,7 @@ public class MaintenanceDocumentDictionaryServiceTest extends KNSTestCase {
         // test the fieldName null argument
         exceptionThrown = false;
         try {
-            KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getFieldDefaultValue("docTypeName", null);
+            KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService().getFieldDefaultValue("docTypeName", null);
         }
         catch (IllegalArgumentException e) {
             exceptionThrown = true;

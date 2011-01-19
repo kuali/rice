@@ -37,7 +37,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -67,7 +67,7 @@ public class AttachmentServlet extends HttpServlet {
 		boolean secureChecks = true;
 		String secureAttachmentsParam = null;
 		try {
-			secureAttachmentsParam = KNSServiceLocatorInternal.getParameterService().getParameterValue(KEWConstants.KEW_NAMESPACE, "All", KEWConstants.SECURE_ATTACHMENTS_PARAM);
+			secureAttachmentsParam = KNSServiceLocator.getParameterService().getParameterValue(KEWConstants.KEW_NAMESPACE, "All", KEWConstants.SECURE_ATTACHMENTS_PARAM);
 		} catch (Exception e) {
 			LOG.info("Attempted to retrieve parameter value, but could not. Defaulting to unsecured attachment retrieval. " + e.getMessage());
 		}

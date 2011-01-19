@@ -19,10 +19,9 @@ package org.kuali.rice.ksb.messaging;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.ConfigurationException;
-import org.kuali.rice.core.config.ModuleConfigurer.RunMode;
+import org.kuali.rice.core.config.RunMode;
 
 /**
  * A KSBExporter which will exports the service in the case where the specified

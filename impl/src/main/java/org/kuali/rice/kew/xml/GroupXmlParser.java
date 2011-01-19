@@ -56,7 +56,7 @@ import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 import org.xml.sax.SAXException;
 
@@ -184,7 +184,7 @@ public class GroupXmlParser {
             Element typeElement = element.getChild(TYPE, GROUP_NAMESPACE);
             String typeNamespace = typeElement.getChildText(NAMESPACE, GROUP_NAMESPACE);
             String typeName = typeElement.getChildText(NAME, GROUP_NAMESPACE);
-            KimTypeInfo kimTypeInfo = KIMServiceLocatorInternal.getTypeInfoService().getKimTypeByName(typeNamespace, typeName);
+            KimTypeInfo kimTypeInfo = KIMServiceLocatorWeb.getTypeInfoService().getKimTypeByName(typeNamespace, typeName);
             if (kimTypeInfo != null) {
             	typeId = kimTypeInfo.getKimTypeId();
                 kimTypeAttributes = kimTypeInfo.getAttributeDefinitions();
@@ -192,7 +192,7 @@ public class GroupXmlParser {
                 throw new XmlException("Invalid type name and namespace specified.");
             }
         } else { //set to default type
-            KimTypeInfo kimTypeDefault = KIMServiceLocatorInternal.getTypeInfoService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
+            KimTypeInfo kimTypeDefault = KIMServiceLocatorWeb.getTypeInfoService().getKimTypeByName(KimConstants.KIM_TYPE_DEFAULT_NAMESPACE, KimConstants.KIM_TYPE_DEFAULT_NAME);
             if (kimTypeDefault != null) {
             	typeId = kimTypeDefault.getKimTypeId();
                 kimTypeAttributes = kimTypeDefault.getAttributeDefinitions();

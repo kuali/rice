@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kns.service.impl;
 
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.support.impl.KimGroupTypeServiceBase;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -27,6 +27,6 @@ import org.kuali.rice.kim.service.support.impl.KimGroupTypeServiceBase;
 public class CampusGroupTypeServiceImpl extends KimGroupTypeServiceBase {
 
 	{
-		workflowRoutingAttributes.add( KimAttributes.CAMPUS_CODE );
+		workflowRoutingAttributes.add( KimConstants.AttributeConstants.CAMPUS_CODE );
 	}
 }

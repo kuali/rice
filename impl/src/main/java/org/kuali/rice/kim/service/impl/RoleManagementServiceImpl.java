@@ -775,14 +775,14 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 	
 	public RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocatorInternal.getRoleService();
+			roleService = KIMServiceLocator.getRoleService();
 		}
 		return roleService;
 	}
 	
 	public KimTypeInfoService getTypeInfoService() {
 		if (typeInfoService == null) {
-			typeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
+			typeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
 		}
 		return typeInfoService;
 	}

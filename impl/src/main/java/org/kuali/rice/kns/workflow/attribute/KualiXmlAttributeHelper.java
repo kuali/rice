@@ -23,7 +23,7 @@ import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 
 
 public class KualiXmlAttributeHelper {
-    private static Log LOG = LogFactory.getLog(KualiXmlRuleAttributeImpl.class);
+    private static Log LOG = LogFactory.getLog(KualiXmlAttributeHelper.class);
     private static XPath xpath = XPathHelper.newXPath();
     private static final String testVal = "\'/[^\']*\'";// get the individual xpath tests.
     private static final String testVal2 = "/[^/]+/" + "*";// have to do this or the compiler gets confused by end comment.
@@ -73,7 +73,7 @@ public class KualiXmlAttributeHelper {
     /**
      * This method overrides the super class and modifies the XML that it operates on to put the name and the title in the place
      * where the super class expects to see them, even though they may no longer exist in the original XML.
-     * 
+     *
      * @see org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
      */
 
@@ -84,7 +84,7 @@ public class KualiXmlAttributeHelper {
     /**
      * This method overrides the super class and modifies the XML that it operates on to put the name and the title in the place
      * where the super class expects to see them, overwriting the original title in the XML.
-     * 
+     *
      * @see org.kuali.rice.kew.rule.xmlrouting.StandardGenericXMLRuleAttribute#getConfigXML()
      */
 
@@ -103,7 +103,7 @@ public class KualiXmlAttributeHelper {
          * </org.kuali.rice.kns.bo.SourceAccountingLine> </xmlDocumentContent> This class generates this on the fly, by creating an XML
          * element for each term in the XPath expression. When this doesn't apply XML can be coded in the configXML for the
          * ruleAttribute.
-         * 
+         *
          * @see org.kuali.rice.kew.plugin.attributes.WorkflowAttribute#getDocContent()
          */
 
@@ -179,24 +179,20 @@ public class KualiXmlAttributeHelper {
                                         }
                                         valuesElementsToAdd.add(newValuesElement);
                                     }
-                                }
-                                catch (ClassNotFoundException cnfe) {
+                                } catch (ClassNotFoundException cnfe) {
                                     String errorMessage = "Caught an exception trying to find class '" + potentialClassName + "'";
                                     LOG.error(errorMessage, cnfe);
                                     throw new RuntimeException(errorMessage, cnfe);
-                                }
-                                catch (InstantiationException ie) {
+                                } catch (InstantiationException ie) {
                                     String errorMessage = "Caught an exception trying to instantiate class '" + potentialClassName + "'";
                                     LOG.error(errorMessage, ie);
                                     throw new RuntimeException(errorMessage, ie);
-                                }
-                                catch (IllegalAccessException iae) {
+                                } catch (IllegalAccessException iae) {
                                     String errorMessage = "Caught an access exception trying to instantiate class '" + potentialClassName + "'";
                                     LOG.error(errorMessage, iae);
                                     throw new RuntimeException(errorMessage, iae);
                                 }
-                            }
-                            else {
+                            } else {
                                 valuesElementsToAdd.add(displayTagChildNode.cloneNode(true));
                             }
                             displayTag.removeChild(displayTagChildNode);
@@ -241,8 +237,7 @@ public class KualiXmlAttributeHelper {
                 Source source = new DOMSource(root);
                 Result result = new StreamResult(xmlBuffer);
                 TransformerFactory.newInstance().newTransformer().transform(source, result);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 LOG.debug(" Exception when printing debug XML output " + e);
             }
             LOG.debug(xmlBuffer.getBuffer());
@@ -271,7 +266,7 @@ public class KualiXmlAttributeHelper {
 
     /**
      * This method gets all of the text from the xpathexpression element.
-     * 
+     *
      * @param root
      * @return
      */
@@ -283,8 +278,7 @@ public class KualiXmlAttributeHelper {
                 textContent = node.getTextContent();
             }
             return textContent;
-        }
-        catch (XPathExpressionException e) {
+        } catch (XPathExpressionException e) {
             LOG.error("No XPath expression text found in element xpathexpression of configXML for document. " + e);
             return null;
             // throw e; Just writing labels or doing routing report.
@@ -293,7 +287,7 @@ public class KualiXmlAttributeHelper {
 
     /**
      * This method uses an XPath expression to determine if the content of the xmlDocumentContent is empty
-     * 
+     *
      * @param root
      * @return
      */
@@ -302,8 +296,7 @@ public class KualiXmlAttributeHelper {
             if (((NodeList) xpath.evaluate("//xmlDocumentContent", root, XPathConstants.NODESET)).getLength() == 0) {
                 return false;
             }
-        }
-        catch (XPathExpressionException e) {
+        } catch (XPathExpressionException e) {
             LOG.error("Error parsing xmlDocumentConfig.  " + e);
             return false;
         }
@@ -334,7 +327,7 @@ public class KualiXmlAttributeHelper {
      * wf:ruledata() section. Use that attribute name to get the label out of the KFS stand in business object for attributes (see
      * {@link KFSConstants#STAND_IN_BUSINESS_OBJECT_FOR_ATTRIBUTES}
      * </ol>
-     * 
+     *
      * @param root - the element of the fieldDef tag
      */
     private String getBusinessObjectTitle(Element root) {
@@ -347,13 +340,12 @@ public class KualiXmlAttributeHelper {
 
         if (StringUtils.isNotBlank(potentialClassNameLongLabel)) {
             businessObjectName = potentialClassNameLongLabel;
-        }
-        else if (StringUtils.isNotBlank(potentialClassNameShortLabel)) {
+        } else if (StringUtils.isNotBlank(potentialClassNameShortLabel)) {
             businessObjectName = potentialClassNameShortLabel;
             requestedShortLabel = true;
         }
         if (StringUtils.isNotBlank(businessObjectName)) {
-            DataDictionaryService DDService = KNSServiceLocatorInternal.getDataDictionaryService();
+            DataDictionaryService DDService = KNSServiceLocatorWeb.getDataDictionaryService();
 
             String title = null;
             String targetVal = lastXPath; // Assume the attribute is the last term in the XPath expression
@@ -366,8 +358,7 @@ public class KualiXmlAttributeHelper {
                 // try to get the label based on the bo name and xpath attribute
                 if (requestedShortLabel) {
                     title = DDService.getAttributeShortLabel(businessObjectName, targetVal);
-                }
-                else {
+                } else {
                     title = DDService.getAttributeLabel(businessObjectName, targetVal);
                 }
                 if (StringUtils.isNotBlank(title)) {
@@ -398,8 +389,8 @@ public class KualiXmlAttributeHelper {
             }
         }
         // return any potentially hard coded title info
-        else if ( (StringUtils.isNotBlank(businessObjectText)) && (StringUtils.isBlank(businessObjectName)) ) {
-        	return businessObjectText;
+        else if ((StringUtils.isNotBlank(businessObjectText)) && (StringUtils.isBlank(businessObjectName))) {
+            return businessObjectText;
         }
         return notFound;
 
@@ -407,7 +398,7 @@ public class KualiXmlAttributeHelper {
 
     /**
      * This method gets the contents of the ruledata function in the xpath statement in the XML
-     * 
+     *
      * @param root
      * @return
      */

@@ -23,10 +23,12 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.test.document.SearchAttributeIndexTestDocument;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Field;
@@ -73,9 +75,9 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 	 */
 	@Test
 	public void regularApproveTest() throws Exception {
-		LOG.warn("message.delivery state: "+ KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString("message.delivery"));
+		LOG.warn("message.delivery state: "+ KNSServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
 		
-		final DocumentService documentService = KNSServiceLocatorInternal.getDocumentService();
+		final DocumentService documentService = KNSServiceLocatorWeb.getDocumentService();
 		final String principalName = "quickstart";
         final String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
         GlobalVariables.setUserSession(new UserSession(principalName));
@@ -183,9 +185,9 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 	 */
 	@Test
 	public void blanketApproveTest() throws Exception {
-		LOG.warn("message.delivery state: "+ KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString("message.delivery"));
+		LOG.warn("message.delivery state: "+ KNSServiceLocator.getKualiConfigurationService().getPropertyString("message.delivery"));
 		
-		final DocumentService documentService = KNSServiceLocatorInternal.getDocumentService();
+		final DocumentService documentService = KNSServiceLocatorWeb.getDocumentService();
 		final String principalName = "admin";
         final String principalId = KIMServiceLocator.getPersonService().getPersonByPrincipalName(principalName).getPrincipalId();
         GlobalVariables.setUserSession(new UserSession(principalName));
@@ -265,7 +267,7 @@ public class SearchAttributeIndexRequestTest extends KNSTestCase {
 	 * A method similar to the one from DocumentSearchTestBase. The "value" parameter has to be either a String or a String[].
 	 */
 	private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,Object value,Boolean isLowerBoundValue,DocumentType docType) {
-		String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
+		String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
 		String savedKey = key;
 		SearchAttributeCriteriaComponent sacc = null;
 		if (value instanceof String) {

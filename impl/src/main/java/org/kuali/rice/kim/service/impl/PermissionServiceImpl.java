@@ -40,6 +40,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimPermissionDao;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
@@ -49,7 +50,7 @@ import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 
 /**
@@ -119,7 +120,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
     	if ( permissionTemplate == null ) {
     		throw new IllegalArgumentException( "permissionTemplate may not be null" );
     	}
-    	KimTypeInfo kimType = KIMServiceLocatorInternal.getTypeInfoService().getKimType( permissionTemplate.getKimTypeId() );
+    	KimTypeInfo kimType = KIMServiceLocatorWeb.getTypeInfoService().getKimType( permissionTemplate.getKimTypeId() );
     	String serviceName = kimType.getKimTypeServiceName();
     	// if no service specified, return a default implementation
     	if ( StringUtils.isBlank( serviceName ) ) {
@@ -484,8 +485,8 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	@SuppressWarnings("unchecked")
 	public List<KimPermissionInfo> lookupPermissions(Map<String, String> searchCriteria, boolean unbounded ){
 		Collection baseResults = null;
-		Lookupable permissionLookupable = KNSServiceLocatorInternal.getLookupable(
-                KNSServiceLocatorInternal.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
+		Lookupable permissionLookupable = KNSServiceLocatorWeb.getLookupable(
+                KNSServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupableID(PermissionImpl.class)
         );
 		permissionLookupable.setBusinessObjectClass(PermissionImpl.class);
 		if ( unbounded ) {
@@ -586,7 +587,7 @@ public class PermissionServiceImpl extends PermissionServiceBase implements Perm
 	private DataDictionaryService dataDictionaryService;
 	protected DataDictionaryService getDataDictionaryService() {
 		if(dataDictionaryService == null){
-			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}

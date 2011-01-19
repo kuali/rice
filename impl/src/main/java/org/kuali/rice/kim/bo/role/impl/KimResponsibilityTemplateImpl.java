@@ -19,7 +19,7 @@ import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.KimResponsibilityTemplate;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
@@ -70,7 +70,7 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 	}
 
 	public KimTypeInfo getKimType() {
-		return KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId);
+		return KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId);
 	}
 
 	/**

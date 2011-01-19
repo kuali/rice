@@ -20,6 +20,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.BusinessObjectBase;
 import org.kuali.rice.kns.web.ui.Field;
@@ -516,8 +517,8 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
                     if (!alreadyAddedRangeAttributes.contains(searchableAttribute.getSavedKey()))
                     {
                         // the key has not been processed yet
-                        String lowerSearchAttributeRangeValue = (searchableAttribute.getFormKey().startsWith(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute.getValue() : null;
-                        String upperSearchAttributeRangeValue = (searchableAttribute.getFormKey().startsWith(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute.getValue() : null;
+                        String lowerSearchAttributeRangeValue = (searchableAttribute.getFormKey().startsWith(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute.getValue() : null;
+                        String upperSearchAttributeRangeValue = (searchableAttribute.getFormKey().startsWith(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute.getValue() : null;
                         // loop through the attributes to find this search attribute criteria components potential match
                         for (SearchAttributeCriteriaComponent searchableAttribute1 : searchableAttributes)
                         {
@@ -526,11 +527,11 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
                                 // we found the other side of the range
                                 if (lowerSearchAttributeRangeValue == null)
                                 {
-                                    lowerSearchAttributeRangeValue = (searchableAttribute1.getFormKey().startsWith(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute1.getValue() : null;
+                                    lowerSearchAttributeRangeValue = (searchableAttribute1.getFormKey().startsWith(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute1.getValue() : null;
                                 }
                                 if (upperSearchAttributeRangeValue == null)
                                 {
-                                    upperSearchAttributeRangeValue = (searchableAttribute1.getFormKey().startsWith(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute1.getValue() : null;
+                                    upperSearchAttributeRangeValue = (searchableAttribute1.getFormKey().startsWith(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX)) ? searchableAttribute1.getValue() : null;
                                 }
                                 break;
                             }

@@ -30,10 +30,10 @@ import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 
 import org.kuali.rice.core.jpa.criteria.Criteria;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -48,7 +48,7 @@ public class KimGroupDaoJpa implements KimGroupDao {
     
     public List<GroupImpl> getGroups(Map<String,String> fieldValues) {
         Criteria crit = new Criteria(GroupImpl.class.getName());
-        BusinessObjectEntry boEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.impl.GroupImpl");
+        BusinessObjectEntry boEntry = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.impl.GroupImpl");
         List lookupNames = boEntry.getLookupDefinition().getLookupFieldNames();
         String kimTypeId = null;
         for (Map.Entry<String,String> entry : fieldValues.entrySet()) {

@@ -25,7 +25,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
@@ -49,22 +48,12 @@ import org.kuali.rice.kns.datadictionary.MaintainableSectionDefinition;
 import org.kuali.rice.kns.datadictionary.MaintenanceDocumentEntry;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
-import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizer;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentPresentationController;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictions;
-import org.kuali.rice.kns.document.authorization.MaintenanceDocumentRestrictionsBase;
+import org.kuali.rice.kns.document.authorization.*;
 import org.kuali.rice.kns.inquiry.InquiryAuthorizer;
 import org.kuali.rice.kns.inquiry.InquiryPresentationController;
 import org.kuali.rice.kns.inquiry.InquiryRestrictions;
-import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.KualiConfigurationService;
-import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
+import org.kuali.rice.kns.service.*;
+import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -377,7 +366,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 				.getSecurePotentiallyHiddenSectionIds()) {
 			Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
 			additionalPermissionDetails
-					.put(KimAttributes.SECTION_ID, sectionId);
+					.put(KimConstants.AttributeConstants.SECTION_ID, sectionId);
 			if (!authorizer.isAuthorizedByTemplate(businessObject,
 					KNSConstants.KNS_NAMESPACE,
 					KimConstants.PermissionTemplateNames.VIEW_SECTION, user
@@ -410,7 +399,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 				.getSecurePotentiallyReadOnlySectionIds()) {
 			Map<String, String> additionalPermissionDetails = new HashMap<String, String>();
 			additionalPermissionDetails
-					.put(KimAttributes.SECTION_ID, sectionId);
+					.put(KimConstants.AttributeConstants.SECTION_ID, sectionId);
 			if (!authorizer.isAuthorizedByTemplate(document,
 					KNSConstants.KNS_NAMESPACE,
 					KimConstants.PermissionTemplateNames.MODIFY_SECTION, user
@@ -641,7 +630,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 			permissionDetails = KNSUtils
 					.getNamespaceAndComponentSimpleName(businessObject
 							.getClass());
-			permissionDetails.put(KimAttributes.PROPERTY_NAME, attributeName);
+			permissionDetails.put(KimConstants.AttributeConstants.PROPERTY_NAME, attributeName);
 //		}
 		return permissionDetails;
 	}
@@ -650,16 +639,16 @@ public class BusinessObjectAuthorizationServiceImpl implements
 			BusinessObject businessObject, String attributeName) {
 		Map<String, String> permissionDetails = new AttributeSet();
 		if (attributeName.contains(".")) {
-			permissionDetails.put(KimAttributes.BUTTON_NAME, attributeName);
+			permissionDetails.put(KimConstants.AttributeConstants.BUTTON_NAME, attributeName);
 		} else {
-			permissionDetails.put(KimAttributes.BUTTON_NAME, attributeName);
+			permissionDetails.put(KimConstants.AttributeConstants.BUTTON_NAME, attributeName);
 		}
 		return permissionDetails;
 	}
 
 	private DataDictionaryService getDataDictionaryService() {
 		if (dataDictionaryService == null) {
-			dataDictionaryService = KNSServiceLocatorInternal
+			dataDictionaryService = KNSServiceLocatorWeb
 					.getDataDictionaryService();
 		}
 		return dataDictionaryService;
@@ -675,7 +664,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 
 	private BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
 		if (businessObjectDictionaryService == null) {
-			businessObjectDictionaryService = KNSServiceLocatorInternal
+			businessObjectDictionaryService = KNSServiceLocatorWeb
 					.getBusinessObjectDictionaryService();
 		}
 		return businessObjectDictionaryService;
@@ -683,14 +672,14 @@ public class BusinessObjectAuthorizationServiceImpl implements
 
 	private DocumentHelperService getDocumentHelperService() {
 		if (documentHelperService == null) {
-			documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
+			documentHelperService = KNSServiceLocatorWeb.getDocumentHelperService();
 		}
 		return documentHelperService;
 	}
 
 	private MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if (maintenanceDocumentDictionaryService == null) {
-			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal
+			maintenanceDocumentDictionaryService = KNSServiceLocatorWeb
 					.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
@@ -698,7 +687,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 
 	private KualiConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
-			kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
+			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 		}
 		return kualiConfigurationService;
 	}

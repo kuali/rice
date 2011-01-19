@@ -40,10 +40,7 @@ import org.kuali.rice.kns.bo.Note;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.inquiry.Inquirable;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.ModuleService;
-import org.kuali.rice.kns.service.NoteService;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
@@ -118,7 +115,7 @@ public class KualiInquiryAction extends KualiAction {
         }
         
         Class boClass = Class.forName(inquiryForm.getBusinessObjectClassName());
-        ModuleService responsibleModuleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(boClass);
+        ModuleService responsibleModuleService = KNSServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(boClass);
 		if(responsibleModuleService!=null && responsibleModuleService.isExternalizable(boClass)){
 			String redirectUrl = responsibleModuleService.getExternalizableBusinessObjectInquiryUrl(boClass, (Map<String, String[]>) request.getParameterMap());
 			ActionForward redirectingActionForward = new RedirectingActionForward(redirectUrl);
@@ -351,7 +348,7 @@ public class KualiInquiryAction extends KualiAction {
     		BusinessObject bo = retrieveBOFromInquirable(inquiryForm);
     		checkBO(bo);
     		if (bo != null) {
-	    		BusinessObjectEntry businessObjectEntry = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName());
+	    		BusinessObjectEntry businessObjectEntry = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(inquiryForm.getBusinessObjectClassName());
 	    		Class<? extends Exporter> exporterClass = businessObjectEntry.getExporterClass();
 	    		if (exporterClass != null) {
 	    			Exporter exporter = exporterClass.newInstance();

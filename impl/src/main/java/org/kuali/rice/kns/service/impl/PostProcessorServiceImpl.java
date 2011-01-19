@@ -16,11 +16,8 @@
 package org.kuali.rice.kns.service.impl;
 
 import java.rmi.RemoteException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.collections.ListUtils;
 import org.apache.log4j.Logger;
 import org.apache.ojb.broker.OptimisticLockException;
 import org.kuali.rice.core.api.DateTimeService;

@@ -19,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleResponsibility;
@@ -80,8 +79,8 @@ public class KimDocumentResponsibilityRule extends DocumentRuleBase implements A
 
 	public boolean hasPermissionToGrantResponsibility(KimResponsibilityInfo kimResponsibilityInfo, IdentityManagementRoleDocument document){
 		Map<String,String> responsibilityDetails = new HashMap<String,String>();
-		responsibilityDetails.put(KimAttributes.NAMESPACE_CODE, kimResponsibilityInfo.getNamespaceCode());
-		responsibilityDetails.put(KimAttributes.RESPONSIBILITY_NAME, kimResponsibilityInfo.getName());
+		responsibilityDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, kimResponsibilityInfo.getNamespaceCode());
+		responsibilityDetails.put(KimConstants.AttributeConstants.RESPONSIBILITY_NAME, kimResponsibilityInfo.getName());
 		if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, 
 				KimConstants.NAMESPACE_CODE, 

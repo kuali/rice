@@ -16,7 +16,6 @@
 
 package org.kuali.rice.kns.web.struts.action;
 
-import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;

@@ -20,9 +20,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.support.KimPermissionTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl;
 
 /**
@@ -35,7 +35,7 @@ import org.kuali.rice.kns.service.impl.DocumentTypePermissionTypeServiceImpl;
 public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl implements KimPermissionTypeService{
 	
 	{
-		requiredAttributes.add( KimAttributes.ACTION_REQUEST_CD );
+		requiredAttributes.add( KimConstants.AttributeConstants.ACTION_REQUEST_CD );
 	}
 	
 	/**
@@ -52,10 +52,10 @@ public class AdhocReviewPermissionTypeServiceImpl extends DocumentTypePermission
 		}
 		// loop over the permissions, checking the non-document-related ones
 		for (KimPermissionInfo kpi : permissionsList) {
-			if (!kpi.getDetails().containsKey(KimAttributes.ACTION_REQUEST_CD)
+			if (!kpi.getDetails().containsKey(KimConstants.AttributeConstants.ACTION_REQUEST_CD)
 			  || StringUtils.equals(kpi.getDetails().
-				 get(KimAttributes.ACTION_REQUEST_CD), requestedDetails
-					.get(KimAttributes.ACTION_REQUEST_CD))) {
+				 get(KimConstants.AttributeConstants.ACTION_REQUEST_CD), requestedDetails
+					.get(KimConstants.AttributeConstants.ACTION_REQUEST_CD))) {
 				matchingPermissions.add(kpi);
 			}
 		}

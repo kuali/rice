@@ -65,7 +65,6 @@ import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
@@ -102,17 +101,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.IdentityManagementNotificationService;
-import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.KimTypeInfoService;
-import org.kuali.rice.kim.service.ResponsibilityService;
-import org.kuali.rice.kim.service.RoleManagementService;
-import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.UiDocumentService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
@@ -126,10 +115,7 @@ import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.control.TextControlDefinition;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
@@ -573,7 +559,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	}
 
 	protected AttributeDefinitionMap getAttributeDefinitionsForRole(PersonDocumentRole role) {
-    	KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService( role.getKimRoleType() );
+    	KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(role.getKimRoleType());
     	//it is possible that the the kimTypeService is coming from a remote application
         // and therefore it can't be guarenteed that it is up and working, so using a try/catch to catch this possibility.
         try {
@@ -799,7 +785,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						KimConstants.NAMESPACE_CODE,
 						KimConstants.PermissionNames.MODIFY_ENTITY,
 						null,
-						new AttributeSet(KimAttributes.PRINCIPAL_ID, currentUserPrincipalId));
+						new AttributeSet(KimConstants.AttributeConstants.PRINCIPAL_ID, currentUserPrincipalId));
 	}
 
 	public boolean canOverrideEntityPrivacyPreferences( String currentUserPrincipalId, String toModifyPrincipalId ){
@@ -810,14 +796,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 						KimConstants.NAMESPACE_CODE,
 						KimConstants.PermissionNames.OVERRIDE_ENTITY_PRIVACY_PREFERENCES,
 						null,
-						new AttributeSet(KimAttributes.PRINCIPAL_ID, currentUserPrincipalId) );
+						new AttributeSet(KimConstants.AttributeConstants.PRINCIPAL_ID, currentUserPrincipalId) );
 	}
 
 	protected boolean canAssignToRole(IdentityManagementRoleDocument document, String initiatorPrincipalId){
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
-        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getRoleNamespace());
-        additionalPermissionDetails.put(KimAttributes.ROLE_NAME, document.getRoleName());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, document.getRoleNamespace());
+        additionalPermissionDetails.put(KimConstants.AttributeConstants.ROLE_NAME, document.getRoleName());
 		if(!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 				document, KimConstants.NAMESPACE_CODE, KimConstants.PermissionTemplateNames.ASSIGN_ROLE,
 				initiatorPrincipalId, additionalPermissionDetails, null)){
@@ -1467,14 +1453,14 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
-	        documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
+	        documentHelperService = KNSServiceLocatorWeb.getDocumentHelperService();
 		}
 	    return this.documentHelperService;
 	}
 
 	protected RoleService getRoleService() {
 	   	if(roleService == null){
-	   		roleService = KIMServiceLocatorInternal.getRoleService();
+	   		roleService = KIMServiceLocator.getRoleService();
     	}
 		return roleService;
 	}
@@ -2141,8 +2127,8 @@ public class UiDocumentServiceImpl implements UiDocumentService {
         boolean activatingInactive = false;
         String newRoleMemberIdAssigned = "";
 
-        identityManagementRoleDocument.setKimType(KIMServiceLocatorInternal.getTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()));
-        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService( identityManagementRoleDocument.getKimType() );
+        identityManagementRoleDocument.setKimType(KIMServiceLocatorWeb.getTypeInfoService().getKimType(identityManagementRoleDocument.getRoleTypeId()));
+        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(identityManagementRoleDocument.getKimType());
 
         if(CollectionUtils.isNotEmpty(identityManagementRoleDocument.getMembers())){
             for(KimDocumentRoleMember documentRoleMember: identityManagementRoleDocument.getMembers()){
@@ -2577,7 +2563,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		if(!kimGroup.isActive()){
 			// when a group is inactivated, inactivate the memberships of principals in that group
 			// and the memberships of that group in roles
-			KIMServiceLocatorInternal.getRoleService().groupInactivated(identityManagementGroupDocument.getGroupId());
+			KIMServiceLocator.getRoleService().groupInactivated(identityManagementGroupDocument.getGroupId());
 		}
 
 	}
@@ -2711,7 +2697,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	public KimTypeInfoService getKimTypeInfoService() {
 		if ( kimTypeInfoService == null ) {
-			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

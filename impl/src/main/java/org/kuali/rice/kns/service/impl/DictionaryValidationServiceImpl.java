@@ -34,7 +34,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.LogicalOperator;
 import org.kuali.rice.core.util.type.TypeUtils;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
@@ -255,7 +255,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
 	 */
 	@Override
 	public void validateBusinessObjectOnMaintenanceDocument(BusinessObject businessObject, String docTypeName) {
-		MaintenanceDocumentEntry entry = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
+		MaintenanceDocumentEntry entry = KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService().getMaintenanceDocumentEntry(docTypeName);
 		for (MaintainableSectionDefinition sectionDefinition : entry.getMaintainableSections()) {
 			validateBusinessObjectOnMaintenanceDocumentHelper(businessObject, sectionDefinition.getMaintainableItems(), "");
 		}
@@ -349,9 +349,9 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         	attributeDataType = getWorkflowAttributePropertyResolutionService().determineFieldDataType((Class<? extends BusinessObject>)Class.forName(
         			getDataDictionaryService().getDataDictionary().getDictionaryObjectEntry(objectClassName).getFullClassName()), attributeName);
         } catch(ClassNotFoundException e) {
-        	attributeDataType = SearchableAttribute.DATA_TYPE_STRING;
+        	attributeDataType = KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING;
         } catch (NullPointerException e) {
-        	attributeDataType = SearchableAttribute.DATA_TYPE_STRING;
+        	attributeDataType = KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING;
         }
         
         validateAttributeFormat(objectClassName, attributeName, attributeInValue, attributeDataType, errorKey);
@@ -1038,7 +1038,7 @@ public class DictionaryValidationServiceImpl implements DictionaryValidationServ
         }
 
         String attrValueStr = attrValue.toString();
-        if (!KNSServiceLocatorInternal.getParameterService().getParameterEvaluator(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName(), attrValueStr).evaluationSucceeds()) {
+        if (!KNSServiceLocator.getParameterService().getParameterEvaluator(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName(), attrValueStr).evaluationSucceeds()) {
         //if (!configService.evaluateConstrainedValue(apcRule.getParameterNamespace(), apcRule.getParameterDetailType(), apcRule.getParameterName(),attrValueStr)) {
             success &= false;
             GlobalVariables.getMessageMap().putError(apcRule.getAttributeName(), apcRule.getErrorMessage());

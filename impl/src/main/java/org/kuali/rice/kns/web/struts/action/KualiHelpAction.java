@@ -23,6 +23,7 @@ import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
@@ -36,7 +37,6 @@ import org.kuali.rice.kns.datadictionary.HelpDefinition;
 import org.kuali.rice.kns.datadictionary.LookupDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.form.KualiHelpForm;
@@ -61,26 +61,26 @@ public class KualiHelpAction extends KualiAction {
 
     private DataDictionaryService getDataDictionaryService() {
         if ( dataDictionaryService == null ) {
-            dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
+            dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
         }
         return dataDictionaryService;
     }
     private KualiConfigurationService getConfigurationService() {
         if ( kualiConfigurationService == null ) {
-            kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
+            kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
         }
         return kualiConfigurationService;
     }
     private ParameterService getParameterService() {
         if ( parameterService == null ) {
-            parameterService = KNSServiceLocatorInternal.getParameterService();
+            parameterService = KNSServiceLocator.getParameterService();
         }
         return parameterService;
     }
 
     private MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
         if ( maintenanceDocumentDictionaryService == null ) {
-            maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
+            maintenanceDocumentDictionaryService = KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
         }
         return maintenanceDocumentDictionaryService;
     }
@@ -226,7 +226,7 @@ public class KualiHelpAction extends KualiAction {
         HelpDefinition helpDefinition = null;
         String apcHelpUrl = null;
         if (entry != null) {
-            DocumentTypeDTO docType = KNSServiceLocatorInternal.getWorkflowInfoService().getDocType(entry.getDocumentTypeName());
+            DocumentTypeDTO docType = KNSServiceLocatorWeb.getWorkflowInfoService().getDocType(entry.getDocumentTypeName());
             label = docType.getDocTypeLabel();
             description = docType.getDocTypeDescription();
             if (StringUtils.isNotBlank(docType.getHelpDefinitionUrl())) {
@@ -420,7 +420,7 @@ public class KualiHelpAction extends KualiAction {
     	}
     	// handle doc search custom help urls
     	if (!StringUtils.isEmpty(helpForm.getSearchDocumentTypeName())) {
-    	    DocumentTypeDTO docType = KNSServiceLocatorInternal.getWorkflowInfoService().getDocType(helpForm.getSearchDocumentTypeName());
+    	    DocumentTypeDTO docType = KNSServiceLocatorWeb.getWorkflowInfoService().getDocType(helpForm.getSearchDocumentTypeName());
     	    if (!StringUtils.isEmpty(docType.getDocSearchHelpUrl())) {
     	        String docSearchHelpUrl = ConfigContext.getCurrentContextConfig().getProperty("externalizable.help.url") + docType.getDocSearchHelpUrl();
 

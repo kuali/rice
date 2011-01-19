@@ -308,7 +308,7 @@ public class SessionDocumentServiceImpl implements SessionDocumentService, Initi
 
 	protected DataDictionaryService getDataDictionaryService() {
 		if ( dataDictionaryService == null ) {
-			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
 		}
 		return dataDictionaryService;
 	}

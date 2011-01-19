@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Namespace;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -100,7 +100,7 @@ public class NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceI
 		// Check if "namespaceCode" is one of the permission detail values.
 		if (attributes.containsKey(NAMESPACE_CODE)) {
 			nonNamespaceCodeAttributes.remove(NAMESPACE_CODE);
-			Collection<Namespace> namespaces = KNSServiceLocatorInternal.getLookupService().findCollectionBySearchUnbounded(
+			Collection<Namespace> namespaces = KNSServiceLocatorWeb.getLookupService().findCollectionBySearchUnbounded(
 					Namespace.class, Collections.singletonMap("code", attributes.get(NAMESPACE_CODE)));
 			// If the lookup service found at least one namespace, perform exists-and-active checks on each one.
 			if (namespaces != null && !namespaces.isEmpty()) {

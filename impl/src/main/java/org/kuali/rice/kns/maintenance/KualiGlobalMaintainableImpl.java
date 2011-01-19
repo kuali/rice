@@ -25,7 +25,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.MaintenanceLock;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 
@@ -78,7 +78,7 @@ public abstract class KualiGlobalMaintainableImpl extends KualiMaintainableImpl 
         boolean assumptionIsWrong = false;
         //TODO: Revisit this. Changing since getPrimaryKeys and listPrimaryKeyFieldNames are apparently same.
         //May be we might want to replace listPrimaryKeyFieldNames with getPrimaryKeys... Not sure.
-        List primaryKeys = KNSServiceLocatorInternal.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(gboClass);
+        List primaryKeys = KNSServiceLocatorWeb.getBusinessObjectMetaDataService().listPrimaryKeyFieldNames(gboClass);
         if (primaryKeys == null) {
             assumptionIsWrong = true;
         }

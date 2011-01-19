@@ -25,7 +25,7 @@ import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.document.rule.AttributeValidationHelper;
 import org.kuali.rice.kim.rule.event.ui.AddDelegationMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddDelegationMemberRule;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -58,7 +58,7 @@ public class RoleDocumentDelegationMemberRule extends DocumentRuleBase implement
 		List<AttributeSet> attributeSetListToValidate = new ArrayList<AttributeSet>();
 		AttributeSet attributeSetToValidate;
 		AttributeSet validationErrors = new AttributeSet();
-        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService( document.getKimType() );
+        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(document.getKimType());
 
 		for(RoleDocumentDelegationMember roleMember: document.getDelegationMembers()) {
 			attributeSetToValidate = attributeValidationHelper.convertQualifiersToMap(roleMember.getQualifiers());

@@ -25,7 +25,6 @@ import org.kuali.rice.core.xml.XmlException;
 import org.kuali.rice.kim.bo.entity.KimEntityEmail;
 import org.kuali.rice.kim.bo.entity.impl.*;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.xml.sax.SAXException;
 
@@ -89,7 +88,7 @@ public class UserXmlParser {
     }
     
     protected KimEntityImpl constructEntity(Element userElement) {
-        SequenceAccessorService sas = KNSServiceLocatorInternal.getSequenceAccessorService();
+        SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
     	
     	String firstName = userElement.getChildTextTrim(GIVEN_NAME_ELEMENT, NAMESPACE);
         String lastName = userElement.getChildTextTrim(LAST_NAME_ELEMENT, NAMESPACE);

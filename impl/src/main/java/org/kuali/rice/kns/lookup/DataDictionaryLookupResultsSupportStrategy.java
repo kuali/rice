@@ -29,7 +29,7 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.web.format.Formatter;
 
 /**
@@ -98,7 +98,7 @@ public class DataDictionaryLookupResultsSupportStrategy implements
 		}
 		
 		final String lookupableId = boEntry.getLookupDefinition().getLookupableID();
-		return KNSServiceLocatorInternal.getLookupable(lookupableId);
+		return KNSServiceLocatorWeb.getLookupable(lookupableId);
 	}
 	
 	/**

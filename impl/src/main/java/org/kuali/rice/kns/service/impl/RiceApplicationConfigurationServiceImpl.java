@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.ParameterDetailType;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -27,7 +28,6 @@ import org.kuali.rice.kns.datadictionary.TransactionalDocumentEntry;
 import org.kuali.rice.kns.document.TransactionalDocument;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.service.ParameterConstants.COMPONENT;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
@@ -56,7 +56,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
         if (components.isEmpty()) {
             Map<String, ParameterDetailType> uniqueParameterDetailTypeMap = new HashMap<String, ParameterDetailType>();
                         
-            DataDictionaryService dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
+            DataDictionaryService dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
             
             //dataDictionaryService.getDataDictionary().forceCompleteDataDictionaryLoad();
             for (BusinessObjectEntry businessObjectEntry : dataDictionaryService.getDataDictionary().getBusinessObjectEntries().values()) {
@@ -145,21 +145,21 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
     
     protected KualiConfigurationService getKualiConfigurationService() {
 		if (kualiConfigurationService == null) {
-			kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
+			kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
 		}
 		return kualiConfigurationService;
 	}
     
     protected ParameterService getParameterService() {
     	if (parameterService == null) {
-    		parameterService = KNSServiceLocatorInternal.getParameterService();
+    		parameterService = KNSServiceLocator.getParameterService();
     	}
     	return parameterService;
     }
 
     protected DataDictionaryService getDataDictionaryService() {
     	if (dataDictionaryService == null) {
-    		dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
+    		dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
     	}
     	return dataDictionaryService;
     }
@@ -180,7 +180,7 @@ public class RiceApplicationConfigurationServiceImpl implements RiceApplicationC
 	}
 	
 	public String getBaseHelpUrl(String businessObjectClassName) {
-		return KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/kr/help.do";
+		return KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_URL_KEY) + "/kr/help.do";
 	}
 
 	/**

@@ -37,7 +37,7 @@ import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.CollectionIncomplete;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -81,13 +81,13 @@ public class KualiLookupAction extends KualiAction {
     private static DocumentHelperService documentHelperService;
     private static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
     	if (maintenanceDocumentDictionaryService == null) {
-    		maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
+    		maintenanceDocumentDictionaryService = KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
     	}
     	return maintenanceDocumentDictionaryService;
     }
     private static DocumentHelperService getDocumentHelperService() {
     	if (documentHelperService == null) {
-    	    documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
+    	    documentHelperService = KNSServiceLocatorWeb.getDocumentHelperService();
     	}
     	return documentHelperService;
     }
@@ -147,7 +147,7 @@ public class KualiLookupAction extends KualiAction {
 
 		hideHeaderBarIfNeeded(form, request);
 
-		int numCols = KNSServiceLocatorInternal.getBusinessObjectDictionaryService().getLookupNumberOfColumns(
+		int numCols = KNSServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupNumberOfColumns(
 				Class.forName(lookupForm.getBusinessObjectClassName()));
 		lookupForm.setNumColumns(numCols);
 

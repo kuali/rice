@@ -38,6 +38,7 @@ import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
@@ -59,7 +60,7 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
     private static final boolean DEFAULT_WILDCARD_ALLOWANCE_POLICY = true;
     private static final boolean ALLOWS_RANGE_SEARCH = true;
     private static final boolean ALLOWS_CASE_INSENSITIVE_SEARCH = true;
-    private static final String ATTRIBUTE_XML_REPRESENTATION = SearchableAttribute.DATA_TYPE_STRING;
+    private static final String ATTRIBUTE_XML_REPRESENTATION = KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING;
     private static final int STRING_MAX_LENGTH = 2000; // should match table creation
 
     @Id

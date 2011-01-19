@@ -21,12 +21,12 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.ResponsibilityImpl;
 import org.kuali.rice.kim.bo.impl.ReviewResponsibility;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
@@ -83,12 +83,12 @@ public class ReviewResponsibilityMaintainable extends KualiMaintainableImpl {
 			ReviewResponsibility resp = (ReviewResponsibility)getBusinessObject();
 			// build the AttributeSet with the details
 			AttributeSet details = new AttributeSet();
-			details.put( KimAttributes.DOCUMENT_TYPE_NAME, resp.getDocumentTypeName() );
-			details.put( KimAttributes.ROUTE_NODE_NAME, resp.getRouteNodeName() );
-			details.put( KimAttributes.REQUIRED, resp.isRequired()?"true":"false" );
-			details.put( KimAttributes.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL, resp.isActionDetailsAtRoleMemberLevel()?"true":"false" );
+			details.put( KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME, resp.getDocumentTypeName() );
+			details.put( KimConstants.AttributeConstants.ROUTE_NODE_NAME, resp.getRouteNodeName() );
+			details.put( KimConstants.AttributeConstants.REQUIRED, resp.isRequired()?"true":"false" );
+			details.put( KimConstants.AttributeConstants.ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL, resp.isActionDetailsAtRoleMemberLevel()?"true":"false" );
 			if ( StringUtils.isNotBlank(resp.getQualifierResolverProvidedIdentifier()) ) {
-				details.put( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
+				details.put( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, resp.getQualifierResolverProvidedIdentifier() );
 			}
 			
 			KIMServiceLocatorInternal.getResponsibilityUpdateService().saveResponsibility( resp.getResponsibilityId(),

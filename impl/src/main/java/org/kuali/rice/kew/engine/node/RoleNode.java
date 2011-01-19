@@ -39,9 +39,9 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.ClassDumper;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.PerformanceLogger;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 /**
@@ -130,7 +130,7 @@ public class RoleNode extends RequestsNode {
 				if ( !responsibilities.isEmpty() ) {
 					// if any has required=true - return true
 					for ( KimResponsibilityInfo resp : responsibilities ) {
-						if ( Boolean.parseBoolean( resp.getDetails().get( KimAttributes.REQUIRED ) ) ) {
+						if ( Boolean.parseBoolean( resp.getDetails().get( KimConstants.AttributeConstants.REQUIRED ) ) ) {
 							return resp;
 						}
 					}
@@ -147,9 +147,9 @@ public class RoleNode extends RequestsNode {
 	}
 
 	protected String getDetailCriteriaString( String documentTypeName, String routeNodeName ) {
-		return KimAttributes.DOCUMENT_TYPE_NAME+"="+documentTypeName
+		return KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+documentTypeName
 				+ ","
-				+ KimAttributes.ROUTE_NODE_NAME+"="+routeNodeName
+				+ KimConstants.AttributeConstants.ROUTE_NODE_NAME+"="+routeNodeName
 //				+ ","
 //				+ KimAttributes.REQUIRED+"=true"
 				;

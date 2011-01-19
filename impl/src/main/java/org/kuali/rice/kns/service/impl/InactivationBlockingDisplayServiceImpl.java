@@ -28,13 +28,7 @@ import org.kuali.rice.kns.authorization.FieldRestriction;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.datadictionary.mask.MaskFormatter;
-import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.InactivationBlockingDetectionService;
-import org.kuali.rice.kns.service.InactivationBlockingDisplayService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.PersistenceService;
-import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.Formatter;
@@ -61,9 +55,9 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 	public List<String> listAllBlockerRecords(BusinessObject blockedBo, InactivationBlockingMetadata inactivationBlockingMetadata) {
         String inactivationBlockingDetectionServiceBeanName = inactivationBlockingMetadata.getInactivationBlockingDetectionServiceBeanName();
         if (StringUtils.isBlank(inactivationBlockingDetectionServiceBeanName)) {
-            inactivationBlockingDetectionServiceBeanName = KNSServiceLocatorInternal.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
+            inactivationBlockingDetectionServiceBeanName = KNSServiceLocatorWeb.DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE;
         }
-        InactivationBlockingDetectionService inactivationBlockingDetectionService = KNSServiceLocatorInternal.getInactivationBlockingDetectionService(inactivationBlockingDetectionServiceBeanName);
+        InactivationBlockingDetectionService inactivationBlockingDetectionService = KNSServiceLocatorWeb.getInactivationBlockingDetectionService(inactivationBlockingDetectionServiceBeanName);
 
         Collection<BusinessObject> collection = inactivationBlockingDetectionService.listAllBlockerRecords(blockedBo, inactivationBlockingMetadata);
 
@@ -149,7 +143,7 @@ public class InactivationBlockingDisplayServiceImpl implements InactivationBlock
 	
 	protected BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
 		if (businessObjectAuthorizationService == null) {
-			businessObjectAuthorizationService = KNSServiceLocatorInternal.getBusinessObjectAuthorizationService();
+			businessObjectAuthorizationService = KNSServiceLocatorWeb.getBusinessObjectAuthorizationService();
 		}
 		return businessObjectAuthorizationService;
 	}

@@ -17,6 +17,7 @@ package org.kuali.rice.kns.lookup;
 
 import org.junit.Test;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.test.KNSTestCase;
@@ -54,7 +55,7 @@ public class KualiLookupableTest extends KNSTestCase {
     	lookupProps.put("number", "a1");
     	lookupProps.put("name", "a1");
     	
-    	Account account = (Account) KNSServiceLocatorInternal.getLookupService().findObjectBySearch(Account.class, lookupProps);
+    	Account account = (Account) KNSServiceLocatorWeb.getLookupService().findObjectBySearch(Account.class, lookupProps);
 //        ObjectCode objCode = getObjectCodeService().getByPrimaryId(TestConstants.Data1.UNIVERSITY_FISCAL_YEAR, TestConstants.Data1.CHART_OF_ACCOUNTS_CODE, TestConstants.Data1.OBJECT_CODE);
 
         Map fieldConversions = new HashMap();

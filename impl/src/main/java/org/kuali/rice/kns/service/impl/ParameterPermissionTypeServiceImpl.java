@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -30,19 +30,19 @@ public class ParameterPermissionTypeServiceImpl extends
 		NamespaceWildcardAllowedAndOrStringExactMatchPermissionTypeServiceImpl {
     
     {
-        requiredAttributes.add(KimAttributes.PARAMETER_NAME);
-        requiredAttributes.add(KimAttributes.COMPONENT_NAME);
+        requiredAttributes.add(KimConstants.AttributeConstants.PARAMETER_NAME);
+        requiredAttributes.add(KimConstants.AttributeConstants.COMPONENT_NAME);
         checkRequiredAttributes = true;
     }
     
     @Override
     protected List<KimPermissionInfo> performPermissionMatches(AttributeSet requestedDetails, List<KimPermissionInfo> permissionsList) {
-        String requestedParameterName = requestedDetails.get(KimAttributes.PARAMETER_NAME);
-        String requestedComponentName = requestedDetails.get(KimAttributes.COMPONENT_NAME);
+        String requestedParameterName = requestedDetails.get(KimConstants.AttributeConstants.PARAMETER_NAME);
+        String requestedComponentName = requestedDetails.get(KimConstants.AttributeConstants.COMPONENT_NAME);
         List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
         for ( KimPermissionInfo kpi : permissionsList ) {
-            String parameterName = kpi.getDetails().get(KimAttributes.PARAMETER_NAME);
-            String componentName = kpi.getDetails().get(KimAttributes.COMPONENT_NAME);
+            String parameterName = kpi.getDetails().get(KimConstants.AttributeConstants.PARAMETER_NAME);
+            String componentName = kpi.getDetails().get(KimConstants.AttributeConstants.COMPONENT_NAME);
             if ( (StringUtils.isBlank(parameterName)
                     || StringUtils.equals(requestedParameterName, parameterName)) 
                 &&(StringUtils.isBlank(componentName)

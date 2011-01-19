@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.document;
 
 import org.kuali.rice.kns.maintenance.KualiMaintainableImpl;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -27,6 +27,6 @@ public class ParameterMaintainable extends KualiMaintainableImpl {
     @Override
     public void saveBusinessObject() {
         super.saveBusinessObject();
-        KNSServiceLocatorInternal.getParameterService().clearCache();
+        KNSServiceLocator.getParameterService().clearCache();
     }
 }

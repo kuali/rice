@@ -20,17 +20,17 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.service.support.KimResponsibilityTypeService;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibilityTypeServiceImpl implements KimResponsibilityTypeService{
 	{
-		exactMatchStringAttributeName = KimAttributes.ROUTE_NODE_NAME;
-		requiredAttributes.add( KimAttributes.ROUTE_NODE_NAME );
+		exactMatchStringAttributeName = KimConstants.AttributeConstants.ROUTE_NODE_NAME;
+		requiredAttributes.add( KimConstants.AttributeConstants.ROUTE_NODE_NAME );
 	}
 	
 	/**
@@ -52,10 +52,10 @@ public class ReviewResponsibilityTypeServiceImpl extends DocumentTypeResponsibil
 		Iterator<KimResponsibilityInfo> respIter = baseMatches.iterator();
 		while ( respIter.hasNext() ) {
 			AttributeSet respDetails = respIter.next().getDetails();
-			if ( respDetails.containsKey( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) && StringUtils.isNotBlank( respDetails.get(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER) ) ) {
-				if ( !requestedDetails.containsKey( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) 
-						|| !StringUtils.equals( respDetails.get(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER)
-								, requestedDetails.get(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER))) {
+			if ( respDetails.containsKey( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) && StringUtils.isNotBlank( respDetails.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER) ) ) {
+				if ( !requestedDetails.containsKey( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER )
+						|| !StringUtils.equals( respDetails.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER)
+								, requestedDetails.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER))) {
 					respIter.remove();
 				}
 			}

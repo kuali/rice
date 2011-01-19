@@ -33,7 +33,6 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupMembershipInfo;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
@@ -550,7 +549,7 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
         			permFieldMap.put(entry.getKey(), nameValue);
         		} else if (respFieldName.contains(entry.getKey())) {
         			respFieldMap.put(entry.getKey(), nameValue);
-        		} else if (entry.getKey().startsWith(KimAttributes.GROUP_NAME)) {
+        		} else if (entry.getKey().startsWith(KimConstants.AttributeConstants.GROUP_NAME)) {
         			groupFieldMap.put(entry.getKey(), nameValue);
         		} else if (entry.getKey().contains(".")) {
         			attrFieldMap.put(entry.getKey(), nameValue);
@@ -675,10 +674,10 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
 
     	Map<String,String> searchCrit = new HashMap<String, String>();
         for (Entry<String, String> entry : groupCrit.entrySet()) {
-        		if (entry.getKey().equals(KimAttributes.GROUP_NAME)) {
+        		if (entry.getKey().equals(KimConstants.AttributeConstants.GROUP_NAME)) {
         			searchCrit.put(entry.getKey(), entry.getValue());
         		} else { // the namespace code for the group field is named something besides the default. Set it to the default.
-        			searchCrit.put(KimAttributes.NAMESPACE_CODE, entry.getValue());
+        			searchCrit.put(KimConstants.AttributeConstants.NAMESPACE_CODE, entry.getValue());
         		}
         }
 
@@ -812,8 +811,8 @@ public class KimRoleDaoOjb extends PlatformAwareDaoBaseOjb implements KimRoleDao
     private List<String> getRoleMembersGroupIds(String memberNamespaceCode, String memberName){
 
     	Map<String,String> searchCrit = new HashMap<String, String>();
-    	searchCrit.put(KimAttributes.GROUP_NAME, memberName);
-    	searchCrit.put(KimAttributes.NAMESPACE_CODE, memberNamespaceCode);
+    	searchCrit.put(KimConstants.AttributeConstants.GROUP_NAME, memberName);
+    	searchCrit.put(KimConstants.AttributeConstants.NAMESPACE_CODE, memberNamespaceCode);
 
     	return KIMServiceLocatorInternal.getGroupService().lookupGroupIds(searchCrit);
     }

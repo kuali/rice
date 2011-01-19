@@ -44,7 +44,6 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -61,11 +60,13 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentPrivacy;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.UiDocumentService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.GlobalVariables;
 
@@ -501,8 +502,8 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
     }
 
     public KimTypeAttributesHelper getKimTypeAttributesHelper(String roleId) {
-        KimRoleInfo roleInfo = KIMServiceLocatorInternal.getRoleService().getRole(roleId);
-        KimTypeInfo kimTypeInfo = KIMServiceLocatorInternal.getTypeInfoService().getKimType(roleInfo.getKimTypeId());
+        KimRoleInfo roleInfo = KIMServiceLocator.getRoleService().getRole(roleId);
+        KimTypeInfo kimTypeInfo = KIMServiceLocatorWeb.getTypeInfoService().getKimType(roleInfo.getKimTypeId());
         return new KimTypeAttributesHelper(kimTypeInfo);
         //addDelegationRoleKimTypeAttributeHelper(roleId, helper);
     }
@@ -519,8 +520,8 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
         boolean rulePassed = true;
         if(StringUtils.isNotEmpty(role.getNamespaceCode())){
 	        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
-	        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, role.getNamespaceCode());
-	        additionalPermissionDetails.put(KimAttributes.ROLE_NAME, role.getRoleName());
+	        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, role.getNamespaceCode());
+	        additionalPermissionDetails.put(KimConstants.AttributeConstants.ROLE_NAME, role.getRoleName());
 			if (!getDocumentHelperService().getDocumentAuthorizer(this).isAuthorizedByTemplate(
 					this,
 					KimConstants.NAMESPACE_CODE,
@@ -540,7 +541,7 @@ public class IdentityManagementPersonDocument extends IdentityManagementKimDocum
 
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
-	        documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
+	        documentHelperService = KNSServiceLocatorWeb.getDocumentHelperService();
 		}
 	    return this.documentHelperService;
 	}

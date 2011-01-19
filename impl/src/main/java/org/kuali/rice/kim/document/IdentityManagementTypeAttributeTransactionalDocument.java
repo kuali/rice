@@ -25,6 +25,7 @@ import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -123,7 +124,7 @@ public class IdentityManagementTypeAttributeTransactionalDocument extends Identi
 
 	protected KimTypeService getKimTypeService(KimTypeInfo kimType){
 		if( kimTypeService==null){
-	    	kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
+	    	kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
 		}
 		return kimTypeService;
 	}

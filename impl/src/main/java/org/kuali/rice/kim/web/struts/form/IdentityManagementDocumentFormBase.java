@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.PagingBannerUtils;
 import org.kuali.rice.kns.web.struts.form.KualiTableRenderFormMetadata;
@@ -77,7 +77,7 @@ public abstract class IdentityManagementDocumentFormBase extends KualiTransactio
 
 	public int getRecordsPerPage() {
 		if ( recordsPerPage == -1 ) {
-			Parameter param = KNSServiceLocatorInternal.getParameterService().retrieveParameter(KimConstants.NAMESPACE_CODE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, MAX_MEMBERS_PER_PAGE_PARM);
+			Parameter param = KNSServiceLocator.getParameterService().retrieveParameter(KimConstants.NAMESPACE_CODE, KNSConstants.DetailTypes.DOCUMENT_DETAIL_TYPE, MAX_MEMBERS_PER_PAGE_PARM);
 			if ( param != null ) {
 				try {
 					recordsPerPage = Integer.parseInt( param.getParameterValue() );

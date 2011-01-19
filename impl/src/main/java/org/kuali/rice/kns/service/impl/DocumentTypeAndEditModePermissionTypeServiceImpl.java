@@ -19,8 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 public class DocumentTypeAndEditModePermissionTypeServiceImpl extends DocumentTypePermissionTypeServiceImpl {
 	
 	{
-		requiredAttributes.add(KimAttributes.EDIT_MODE);
+		requiredAttributes.add(KimConstants.AttributeConstants.EDIT_MODE);
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class DocumentTypeAndEditModePermissionTypeServiceImpl extends DocumentTy
 			List<KimPermissionInfo> permissionsList) {
 		List<KimPermissionInfo> matchingPermissions = new ArrayList<KimPermissionInfo>();
 		for (KimPermissionInfo kimPermissionInfo : permissionsList) {
-			if (requestedDetails.get(KimAttributes.EDIT_MODE).equals(kimPermissionInfo.getDetails().get(KimAttributes.EDIT_MODE))) {
+			if (requestedDetails.get(KimConstants.AttributeConstants.EDIT_MODE).equals(kimPermissionInfo.getDetails().get(KimConstants.AttributeConstants.EDIT_MODE))) {
 				matchingPermissions.add(kimPermissionInfo);
 			}
 		}

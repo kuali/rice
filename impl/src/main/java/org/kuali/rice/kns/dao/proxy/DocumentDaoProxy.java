@@ -24,10 +24,7 @@ import org.kuali.rice.kns.dao.DocumentDao;
 import org.kuali.rice.kns.dao.impl.DocumentDaoJpa;
 import org.kuali.rice.kns.dao.impl.DocumentDaoOjb;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.service.DocumentAdHocService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.service.ModuleService;
+import org.kuali.rice.kns.service.*;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -146,7 +143,7 @@ public class DocumentDaoProxy implements DocumentDao {
 
     private synchronized static KualiModuleService getKualiModuleService() {
         if (kualiModuleService == null) {
-            kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
+            kualiModuleService = KNSServiceLocatorWeb.getKualiModuleService();
         }
         return kualiModuleService;
     }

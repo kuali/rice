@@ -25,6 +25,7 @@ import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.RoleService;
 import org.springframework.util.AutoPopulatingList;
@@ -131,7 +132,7 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	private transient static KimTypeInfoService kimTypeInfoService;
 	protected KimTypeInfoService getTypeInfoService() {
 		if(kimTypeInfoService == null){
-			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

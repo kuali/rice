@@ -24,6 +24,7 @@ import org.kuali.rice.kim.bo.role.impl.KimPermissionImpl;
 import org.kuali.rice.kim.bo.role.impl.KimPermissionTemplateImpl;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.role.impl.RolePermissionImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PermissionService;
 import org.kuali.rice.kim.service.RoleService;
@@ -82,7 +83,7 @@ public class AuthorizationServiceImplTest extends KIMTestCase {
 		super.setUp();
 		
 		permissionService = KIMServiceLocatorInternal.getPermissionService();
-		roleService = KIMServiceLocatorInternal.getRoleService();
+		roleService = KIMServiceLocator.getRoleService();
 		
 		if (true) return;
 		

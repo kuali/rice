@@ -29,10 +29,7 @@ import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.test.bo.BOContainingPerson;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.Lookupable;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.SequenceAccessorService;
+import org.kuali.rice.kns.service.*;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.util.AutoPopulatingList;
 
@@ -69,7 +66,7 @@ public class PersonServiceImplTest extends KIMTestCase {
 		//insert external identifier
 		KimPrincipal principal = KIMServiceLocatorInternal.getIdentityService().getPrincipal("p1");
 		
-		SequenceAccessorService sas = KNSServiceLocatorInternal.getSequenceAccessorService();
+		SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
 		Long externalIdentifierId = sas.getNextAvailableSequenceNumber("KRIM_ENTITY_EXT_ID_ID_S", KimEntityExternalIdentifierImpl.class);
 		KimEntityExternalIdentifierImpl externalIdentifier = new KimEntityExternalIdentifierImpl();
 		externalIdentifier.setEntityExternalIdentifierId(externalIdentifierId.toString());
@@ -171,8 +168,8 @@ public class PersonServiceImplTest extends KIMTestCase {
 	@Test
 	public void testResolvePrincipalNamesToPrincipalIds() throws Exception {
 		
-		KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/SampleBO.xml" );
-		KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
+		KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/SampleBO.xml" );
+		KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
 
 		Map<String,String> criteria = new HashMap<String,String>();
 		criteria.put( "anAttribute", "aValue" );
@@ -228,8 +225,8 @@ public class PersonServiceImplTest extends KIMTestCase {
         DescriptorRepository dr = mm.readDescriptorRepository(is);
         mm.mergeDescriptorRepository(dr);
 		
-		KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" );
-		KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
+		KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().addConfigFileLocation( "classpath:org/kuali/rice/kim/bo/datadictionary/test/BOContainingPerson.xml" );
+		KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().parseDataDictionaryConfigurationFiles( false );
 		BusinessObjectService bos = KNSServiceLocator.getBusinessObjectService();
 		bos.delete( new ArrayList(bos.findAll( BOContainingPerson.class )) );
 		BOContainingPerson bo = new BOContainingPerson();

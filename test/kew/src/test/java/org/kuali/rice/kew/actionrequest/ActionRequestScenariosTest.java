@@ -23,7 +23,6 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 import java.util.Iterator;
 import java.util.List;
@@ -351,6 +350,6 @@ public class ActionRequestScenariosTest extends KEWTestCase {
     }
 
     private String getRoleIdFromRoleName(String namespaceCode, String roleName) {
-        return KIMServiceLocatorInternal.getRoleService().getRoleIdByName(namespaceCode, roleName);
+        return KIMServiceLocator.getRoleService().getRoleIdByName(namespaceCode, roleName);
     }
 }

@@ -70,7 +70,7 @@ public class LookupServiceTest extends KNSTestCase {
      */
     @Test
     public void testLookupReturnLimits() throws Exception {
-        LookupService lookupService = KNSServiceLocatorInternal.getLookupService();
+        LookupService lookupService = KNSServiceLocatorWeb.getLookupService();
         Map formProps = new HashMap();
         Collection accountManagers = lookupService.findCollectionBySearchHelper(AccountManager.class, formProps, false);
         assertEquals(90, accountManagers.size());
@@ -87,7 +87,7 @@ public class LookupServiceTest extends KNSTestCase {
      */
     @Test
     public void testLookupReturnDefaultLimit() throws Exception {
-        LookupService lookupService = KNSServiceLocatorInternal.getLookupService();
+        LookupService lookupService = KNSServiceLocatorWeb.getLookupService();
         Map formProps = new HashMap();
         Collection travelAccounts = lookupService.findCollectionBySearchHelper(Account.class, formProps, false);
         assertEquals(200, travelAccounts.size());
@@ -104,7 +104,7 @@ public class LookupServiceTest extends KNSTestCase {
      */
     @Test
     public void testLookupReturnDefaultUnbounded() throws Exception {
-        LookupService lookupService = KNSServiceLocatorInternal.getLookupService();
+        LookupService lookupService = KNSServiceLocatorWeb.getLookupService();
         Map formProps = new HashMap();
         Collection accountManagers = lookupService.findCollectionBySearchHelper(AccountManager.class, formProps, true);
         int size = accountManagers.size();
@@ -123,7 +123,7 @@ public class LookupServiceTest extends KNSTestCase {
      */
     @Test
     public void testLookupReturnDefaultUnbounded2() throws Exception {
-        LookupService lookupService = KNSServiceLocatorInternal.getLookupService();
+        LookupService lookupService = KNSServiceLocatorWeb.getLookupService();
         Map formProps = new HashMap();
         Collection travelAccounts = lookupService.findCollectionBySearchHelper(Account.class, formProps, true);
         int size = travelAccounts.size();

@@ -27,37 +27,7 @@ public class KimAttributes extends TransientBusinessObjectBase {
 
 	private static final long serialVersionUID = 8976113842166331719L;
 
-	public static final String PRINCIPAL_ID = KIMPropertyConstants.Person.PRINCIPAL_ID;
-	
-	public static final String BUTTON_NAME = "buttonName";
-	public static final String BEAN_NAME = "beanName";
-	public static final String ACTION_CLASS = "actionClass";
-	public static final String NAMESPACE_CODE = "namespaceCode";
-	public static final String COMPONENT_NAME = "componentName";
-	public static final String PROPERTY_NAME = "propertyName";
-	public static final String EXISTING_RECORDS_ONLY = "existingRecordsOnly";
-	public static final String CREATED_BY_SELF = "createdBySelf";
-	public static final String CREATED_BY_SELF_ONLY = "createdBySelfOnly";
-	public static final String ATTACHMENT_TYPE_CODE = "attachmentTypeCode";
-	public static final String EDIT_MODE = "editMode";
-	public static final String PARAMETER_NAME = "parameterName";
-	public static final String CAMPUS_CODE = "campusCode";
-	public static final String ACTION_REQUEST_CD = "actionRequestCd";
-	public static final String ROUTE_STATUS_CODE = "routeStatusCode";
-	public static final String ROUTE_NODE_NAME = "routeNodeName";
-	public static final String ROLE_NAME = "roleName";
-	public static final String PERMISSION_NAME = "permissionName";
-	public static final String RESPONSIBILITY_NAME = "responsibilityName";
-	public static final String GROUP_NAME = "groupName";
-	public static final String REQUIRED = "required";
-	public static final String ACTION_DETAILS_AT_ROLE_MEMBER_LEVEL = "actionDetailsAtRoleMemberLevel";
-	public static final String DOCUMENT_NUMBER = "documentNumber";	
-	public static final String DOCUMENT_TYPE_NAME = "documentTypeName";
-	public static final String SECTION_ID = "sectionId";
-	public static final String KIM_TYPE_ID = KimConstants.PrimaryKeyConstants.KIM_TYPE_ID;
-	public static final String QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER = "qualifierResolverProvidedIdentifier";
-	
-	protected String methodToCall;
+    protected String methodToCall;
 	protected String beanName;
 	protected String actionClass;
 	protected String namespaceCode;

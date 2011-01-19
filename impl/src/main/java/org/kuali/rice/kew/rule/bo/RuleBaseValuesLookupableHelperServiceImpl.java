@@ -45,7 +45,7 @@ import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.lookup.LookupableHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -628,8 +628,8 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         			BusinessObject ruleDelegation = (BusinessObject) delegationList.get(0);
     				// Retrieve the rule delegation lookupable helper service and the primary key names, if they have not been obtained yet.
         	        if (ruleDelegationLookupableHelperService == null) {
-        				ruleDelegationLookupableHelperService = KNSServiceLocatorInternal.getLookupable(
-                                KNSServiceLocatorInternal.getBusinessObjectDictionaryService().getLookupableID(
+        				ruleDelegationLookupableHelperService = KNSServiceLocatorWeb.getLookupable(
+                                KNSServiceLocatorWeb.getBusinessObjectDictionaryService().getLookupableID(
                                         ruleDelegation.getClass())).getLookupableHelperService();
         				if (ruleDelegationLookupableHelperService.getBusinessObjectClass() == null) {
         					ruleDelegationLookupableHelperService.setBusinessObjectClass(ruleDelegation.getClass());

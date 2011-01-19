@@ -28,7 +28,6 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimConstants.PermissionNames;
 import org.kuali.rice.kns.authorization.AuthorizationConstants;
@@ -36,10 +35,7 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.exception.PessimisticLockingException;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.PessimisticLockService;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -480,7 +476,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
 
 	public DataDictionaryService getDataDictionaryService() {
         if ( dataDictionaryService == null ) {
-        	dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
+        	dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
         }
 		return dataDictionaryService;
 	}

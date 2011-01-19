@@ -26,7 +26,6 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -35,10 +34,7 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kim.service.GroupService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.KimTypeInfoService;
-import org.kuali.rice.kim.service.RoleService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
@@ -91,7 +87,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	if ( typeService == null ) {       		
         	KimTypeInfo typeInfo = getKimTypeInfoService().getKimType(typeId);
         	if ( typeInfo != null ) {
-        		typeService = KIMServiceLocatorInternal.getKimTypeService(typeInfo);
+        		typeService = KIMServiceLocatorWeb.getKimTypeService(typeInfo);
         		typeServices.put(typeId, typeService);
         	} else {
         		LOG.warn( "Unable to retrieve KIM Type Info object for id: " + typeId );
@@ -127,7 +123,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
     	if ( typeService != null ) {
     		// QUESTION: can roles be modified in a way which requires routing?
     		// get the existing role members
-    		List<RoleMembershipInfo> currentRoleMembers = KIMServiceLocatorInternal.getRoleService().getRoleMembers( Collections.singletonList( roleDoc.getRoleId() ), null );
+    		List<RoleMembershipInfo> currentRoleMembers = KIMServiceLocator.getRoleService().getRoleMembers( Collections.singletonList( roleDoc.getRoleId() ), null );
     		// loop over the role members on the document, check  if added or removed
     		for ( KimDocumentRoleMember rm : roleDoc.getMembers() ) {
     			boolean foundMember = false;
@@ -214,7 +210,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 		AttributeSet qualifier = new AttributeSet();        			
 		// pull the group to get its attributes for adding to the qualifier 
         qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
-        qualifier.put(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, kimTypeId);
+        qualifier.put(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, kimTypeId);
         qualifier.put(KimConstants.PrimaryKeyConstants.GROUP_ID, groupId);
     	KimTypeService typeService = getTypeService(kimTypeId);
     	if ( typeService != null ) {
@@ -232,7 +228,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 		AttributeSet qualifier = new AttributeSet();        			
 		// pull the group to get its attributes for adding to the qualifier 
         qualifier.put(KimConstants.PrimaryKeyConstants.KIM_TYPE_ID, kimTypeId);
-        qualifier.put(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, kimTypeId);
+        qualifier.put(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, kimTypeId);
         qualifier.put(KimConstants.PrimaryKeyConstants.ROLE_ID, roleId);
 		// check for the custom document type for the group
 		String customDocTypeName = typeService.getWorkflowDocumentTypeName();
@@ -245,7 +241,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 	
 	public KimTypeInfoService getKimTypeInfoService() {
 		if ( kimTypeInfoService == null ) {
-			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}
@@ -259,7 +255,7 @@ public class KimTypeQualifierResolver extends QualifierResolverBase {
 
 	public static RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocatorInternal.getRoleService();
+			roleService = KIMServiceLocator.getRoleService();
 		}
 		return roleService;
 	}

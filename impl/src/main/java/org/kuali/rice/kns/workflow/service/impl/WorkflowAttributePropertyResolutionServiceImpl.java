@@ -30,12 +30,12 @@ import java.util.Stack;
 
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
 import org.kuali.rice.kew.docsearch.SearchableAttributeDateTimeValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeFloatValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeLongValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeStringValue;
 import org.kuali.rice.kew.docsearch.SearchableAttributeValue;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.datadictionary.DocumentCollectionPath;
@@ -46,7 +46,7 @@ import org.kuali.rice.kns.datadictionary.SearchingTypeDefinition;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.workflow.attribute.DataDictionarySearchableAttribute;
@@ -261,12 +261,12 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
      */
     public String determineFieldDataType(Class<? extends BusinessObject> businessObjectClass, String attributeName) {
         final Class attributeClass = thieveAttributeClassFromBusinessObjectClass(businessObjectClass, attributeName);
-        if (isStringy(attributeClass)) return SearchableAttribute.DATA_TYPE_STRING; // our most common case should go first
-        if (isDecimaltastic(attributeClass)) return SearchableAttribute.DATA_TYPE_FLOAT;
-        if (isDateLike(attributeClass)) return SearchableAttribute.DATA_TYPE_DATE;
-        if (isIntsy(attributeClass)) return SearchableAttribute.DATA_TYPE_LONG;
+        if (isStringy(attributeClass)) return KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING; // our most common case should go first
+        if (isDecimaltastic(attributeClass)) return KEWConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT;
+        if (isDateLike(attributeClass)) return KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE;
+        if (isIntsy(attributeClass)) return KEWConstants.SearchableAttributeConstants.DATA_TYPE_LONG;
         if (isBooleanable(attributeClass)) return DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN;
-        return SearchableAttribute.DATA_TYPE_STRING; // default to String
+        return KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING; // default to String
     }
 
     /**
@@ -278,10 +278,10 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
     public SearchableAttributeValue buildSearchableAttribute(Class<? extends BusinessObject> businessObjectClass, String attributeKey, Object value) {
         if (value == null) return null;
         final String fieldDataType = determineFieldDataType(businessObjectClass, attributeKey);
-        if (fieldDataType.equals(SearchableAttribute.DATA_TYPE_STRING)) return buildSearchableStringAttribute(attributeKey, value); // our most common case should go first
-        if (fieldDataType.equals(SearchableAttribute.DATA_TYPE_FLOAT) && isDecimaltastic(value.getClass())) return buildSearchableRealAttribute(attributeKey, value);
-        if (fieldDataType.equals(SearchableAttribute.DATA_TYPE_DATE) && isDateLike(value.getClass())) return buildSearchableDateTimeAttribute(attributeKey, value);
-        if (fieldDataType.equals(SearchableAttribute.DATA_TYPE_LONG) && isIntsy(value.getClass())) return buildSearchableFixnumAttribute(attributeKey, value);
+        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_STRING)) return buildSearchableStringAttribute(attributeKey, value); // our most common case should go first
+        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_FLOAT) && isDecimaltastic(value.getClass())) return buildSearchableRealAttribute(attributeKey, value);
+        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE) && isDateLike(value.getClass())) return buildSearchableDateTimeAttribute(attributeKey, value);
+        if (fieldDataType.equals(KEWConstants.SearchableAttributeConstants.DATA_TYPE_LONG) && isIntsy(value.getClass())) return buildSearchableFixnumAttribute(attributeKey, value);
         if (fieldDataType.equals(DataDictionarySearchableAttribute.DATA_TYPE_BOOLEAN) && isBooleanable(value.getClass())) return buildSearchableYesNoAttribute(attributeKey, value);
         return buildSearchableStringAttribute(attributeKey, value);
     }
@@ -612,7 +612,7 @@ public class WorkflowAttributePropertyResolutionServiceImpl implements WorkflowA
 
     protected BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
         if ( businessObjectMetaDataService == null ) {
-            businessObjectMetaDataService = KNSServiceLocatorInternal.getBusinessObjectMetaDataService();
+            businessObjectMetaDataService = KNSServiceLocatorWeb.getBusinessObjectMetaDataService();
         }
         return businessObjectMetaDataService;
     }

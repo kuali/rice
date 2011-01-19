@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 
 /**
  * This class returns list of business objects defined in the data dictionary.
@@ -32,7 +32,7 @@ public class BusinessObjectDictionaryEntriesFinder extends KeyValuesBase {
      */
     @Override
 	public List<KeyValue> getKeyValues() {
-        List<String> businessObjects = KNSServiceLocatorInternal.getBusinessObjectDictionaryService().getBusinessObjectClassnames();
+        List<String> businessObjects = KNSServiceLocatorWeb.getBusinessObjectDictionaryService().getBusinessObjectClassnames();
         List<KeyValue> boKeyLabels = new ArrayList<KeyValue>();
 
         for (String string : businessObjects) {

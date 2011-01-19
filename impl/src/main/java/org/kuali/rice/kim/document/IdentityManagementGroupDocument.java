@@ -41,6 +41,7 @@ import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.bo.ui.GroupDocumentQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.springframework.util.AutoPopulatingList;
@@ -126,7 +127,7 @@ public class IdentityManagementGroupDocument extends IdentityManagementTypeAttri
 	 * @return the kimType
 	 */
 	public KimTypeInfo getKimType() {
-		return KIMServiceLocatorInternal.getTypeInfoService().getKimType(getGroupTypeId());
+		return KIMServiceLocatorWeb.getTypeInfoService().getKimType(getGroupTypeId());
 	}
 	
 	/**

@@ -36,7 +36,6 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
@@ -53,12 +52,13 @@ import org.kuali.rice.kim.rule.event.ui.AddPermissionEvent;
 import org.kuali.rice.kim.rule.event.ui.AddResponsibilityEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.question.ConfirmationQuestion;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
@@ -164,7 +164,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     		roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
     		roleDocumentForm.getRoleDocument().initializeDocumentForNewRole();
     		roleDocumentForm.setRoleId( roleDocumentForm.getRoleDocument().getRoleId() );
-            roleDocumentForm.setKimType(KIMServiceLocatorInternal.getTypeInfoService().getKimType(roleDocumentForm.getRoleDocument().getRoleTypeId()));
+            roleDocumentForm.setKimType(KIMServiceLocatorWeb.getTypeInfoService().getKimType(roleDocumentForm.getRoleDocument().getRoleTypeId()));
     	} else {
     		loadRoleIntoDocument( roleDocumentForm.getRoleId(), roleDocumentForm );
     	}
@@ -180,19 +180,19 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
 
     protected void setKimType(String kimTypeId, IdentityManagementRoleDocumentForm roleDocumentForm){
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
-            roleDocumentForm.setKimType(KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId));
+            roleDocumentForm.setKimType(KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId));
             if (roleDocumentForm.getRoleDocument() != null) {
             	roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
             }
 		} else if ( roleDocumentForm.getRoleDocument() != null && StringUtils.isNotBlank( roleDocumentForm.getRoleDocument().getRoleTypeId() ) ) {
-            roleDocumentForm.setKimType(KIMServiceLocatorInternal.getTypeInfoService().getKimType(
+            roleDocumentForm.setKimType(KIMServiceLocatorWeb.getTypeInfoService().getKimType(
             		roleDocumentForm.getRoleDocument().getRoleTypeId()));
         	roleDocumentForm.getRoleDocument().setKimType(roleDocumentForm.getKimType());
 		}
     }
 
     protected void loadRoleIntoDocument( String roleId, IdentityManagementRoleDocumentForm roleDocumentForm){
-        KimRoleInfo role = KIMServiceLocatorInternal.getRoleService().getRole(roleId);
+        KimRoleInfo role = KIMServiceLocator.getRoleService().getRole(roleId);
         getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
     }
 
@@ -207,8 +207,8 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         boolean rulePassed = true;
         if(StringUtils.isNotEmpty(document.getRoleNamespace())){
 	        Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
-	        additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getRoleNamespace());
-	        additionalPermissionDetails.put(KimAttributes.ROLE_NAME, document.getRoleName());
+	        additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, document.getRoleNamespace());
+	        additionalPermissionDetails.put(KimConstants.AttributeConstants.ROLE_NAME, document.getRoleName());
 			if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document,
 					KimConstants.NAMESPACE_CODE,
@@ -250,7 +250,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         	newResponsibility.setKimResponsibility(responsibilityImpl);
         }
 
-        if (KNSServiceLocatorInternal.getKualiRuleService().applyRules(new AddResponsibilityEvent("",roleDocumentForm.getRoleDocument(), newResponsibility))) {
+        if (KNSServiceLocatorWeb.getKualiRuleService().applyRules(new AddResponsibilityEvent("",roleDocumentForm.getRoleDocument(), newResponsibility))) {
         	newResponsibility.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
 	        roleDocumentForm.getRoleDocument().addResponsibility(newResponsibility);
 	        roleDocumentForm.setResponsibility(new KimDocumentRoleResponsibility());
@@ -269,7 +269,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
     public ActionForward addPermission(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
         IdentityManagementRoleDocumentForm roleDocumentForm = (IdentityManagementRoleDocumentForm) form;
         KimDocumentRolePermission newPermission = roleDocumentForm.getPermission();
-        if (KNSServiceLocatorInternal.getKualiRuleService().applyRules(new AddPermissionEvent("", roleDocumentForm.getRoleDocument(), newPermission))) {
+        if (KNSServiceLocatorWeb.getKualiRuleService().applyRules(new AddPermissionEvent("", roleDocumentForm.getRoleDocument(), newPermission))) {
         	newPermission.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
         	newPermission.setRoleId(roleDocumentForm.getRoleDocument().getRoleId());
 	        roleDocumentForm.getRoleDocument().getPermissions().add(newPermission);
@@ -303,7 +303,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         	}
         }
         if(checkKimDocumentRoleMember(newMember) &&
-        		KNSServiceLocatorInternal.getKualiRuleService().applyRules(new AddMemberEvent("", roleDocumentForm.getRoleDocument(), newMember))){
+        		KNSServiceLocatorWeb.getKualiRuleService().applyRules(new AddMemberEvent("", roleDocumentForm.getRoleDocument(), newMember))){
         	newMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
         	roleDocumentForm.getRoleDocument().addMember(newMember);
 	        roleDocumentForm.setMember(roleDocumentForm.getRoleDocument().getBlankMember());
@@ -338,7 +338,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         		memberNamespace = gi.getNamespaceCode();
         	}
         } else if(KimConstants.KimUIConstants.MEMBER_TYPE_ROLE_CODE.equals(newMember.getMemberTypeCode())){
-        	Role ri = KIMServiceLocatorInternal.getRoleService().getRole(newMember.getMemberId());
+        	Role ri = KIMServiceLocator.getRoleService().getRole(newMember.getMemberId());
         	if(!validateRole(newMember.getMemberId(), ri, "document.member.memberId", "Role")){
         	return false;
     		}else{
@@ -423,7 +423,7 @@ public class IdentityManagementRoleDocumentAction extends IdentityManagementDocu
         	}
         }
 
-        if (checkDelegationMember(newDelegationMember) && KNSServiceLocatorInternal.getKualiRuleService().applyRules(
+        if (checkDelegationMember(newDelegationMember) && KNSServiceLocatorWeb.getKualiRuleService().applyRules(
         		new AddDelegationMemberEvent("", roleDocumentForm.getRoleDocument(), newDelegationMember))) {
         	newDelegationMember.setDocumentNumber(roleDocumentForm.getDocument().getDocumentNumber());
         	roleDocumentForm.getRoleDocument().addDelegationMember(newDelegationMember);

@@ -20,13 +20,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.document.rule.AttributeValidationHelper;
 import org.kuali.rice.kim.rule.event.ui.AddMemberEvent;
 import org.kuali.rice.kim.rule.ui.AddMemberRule;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.rules.DocumentRuleBase;
@@ -57,7 +56,7 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
     	if(!validAssignRole(newMember, document))
     		return false;
 		AttributeSet validationErrors = new AttributeSet();
-        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService( document.getKimType() );
+        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(document.getKimType());
         
         Long newMemberFromTime = newMember.getActiveFromDate() == null ? 0L : newMember.getActiveFromDate().getTime();
         Long newMemberToTime = newMember.getActiveToDate() == null ? Long.MAX_VALUE : newMember.getActiveToDate().getTime();
@@ -113,8 +112,8 @@ public class KimDocumentMemberRule extends DocumentRuleBase implements AddMember
         boolean rulePassed = true;
 		if(StringUtils.isNotEmpty(document.getRoleNamespace())){
 			Map<String,String> roleDetails = new HashMap<String,String>();
-			roleDetails.put(KimAttributes.NAMESPACE_CODE, document.getRoleNamespace());
-			roleDetails.put(KimAttributes.ROLE_NAME, document.getRoleName());
+			roleDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, document.getRoleNamespace());
+			roleDetails.put(KimConstants.AttributeConstants.ROLE_NAME, document.getRoleName());
 			if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
 					document, 
 					KimConstants.NAMESPACE_CODE, 

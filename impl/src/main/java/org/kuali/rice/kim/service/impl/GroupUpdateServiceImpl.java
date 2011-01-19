@@ -38,7 +38,7 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 
 /**
@@ -315,7 +315,7 @@ public class GroupUpdateServiceImpl extends GroupServiceBase implements GroupUpd
 
 	protected SequenceAccessorService getSequenceAccessorService() {
 		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KNSServiceLocatorInternal.getSequenceAccessorService();
+			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
 		}
 		return sequenceAccessorService;
 	}

@@ -56,7 +56,7 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
      * @throws Exception
      */
     @Test public void testRecursiveValidation() throws Exception {
-        AccountRequestDocument travelDocument = (AccountRequestDocument) KNSServiceLocatorInternal.getDocumentService().getNewDocument("AccountRequest");
+        AccountRequestDocument travelDocument = (AccountRequestDocument) KNSServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest");
         // set all required fields except 1
         travelDocument.getDocumentHeader().setDocumentDescription("test document");
         travelDocument.setReason1("reason1");
@@ -64,7 +64,7 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
         travelDocument.setRequester("requester");
 
         GlobalVariables.setMessageMap(new MessageMap());
-        KNSServiceLocatorInternal.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
+        KNSServiceLocatorWeb.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
         MessageMap errorMap = GlobalVariables.getMessageMap();
         int recursiveZeroMessageMapSize = errorMap.size();
 
@@ -78,7 +78,7 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
      * @throws Exception
      */
     @Test public void testRecursiveValidationMultiple() throws Exception {
-        AccountRequestDocument travelDocument = (AccountRequestDocument) KNSServiceLocatorInternal.getDocumentService().getNewDocument("AccountRequest");
+        AccountRequestDocument travelDocument = (AccountRequestDocument) KNSServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest");
         // set all required fields except 1
         travelDocument.getDocumentHeader().setDocumentDescription("test document");
         travelDocument.setReason1("reason1");
@@ -86,12 +86,12 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
         travelDocument.setRequester("requester");
 
         GlobalVariables.setMessageMap(new MessageMap());
-        KNSServiceLocatorInternal.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
+        KNSServiceLocatorWeb.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
         MessageMap errorMap = GlobalVariables.getMessageMap();
         int recursiveZeroMessageMapSize = errorMap.size();
 
         GlobalVariables.setMessageMap(new MessageMap());
-        KNSServiceLocatorInternal.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 5, true);
+        KNSServiceLocatorWeb.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 5, true);
         MessageMap errorMap2 = GlobalVariables.getMessageMap();
         int recursiveFiveMessageMapSize = errorMap2.size();
 
@@ -99,14 +99,14 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
     }
 
     @Test public void testRecursiveValidationParentChildLoop() throws Exception {
-        AccountRequestDocumentWithCyclicalReference doc1 = (AccountRequestDocumentWithCyclicalReference) KNSServiceLocatorInternal.getDocumentService().getNewDocument("AccountRequest3");
+        AccountRequestDocumentWithCyclicalReference doc1 = (AccountRequestDocumentWithCyclicalReference) KNSServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest3");
         // set all required fields except 1
         doc1.getDocumentHeader().setDocumentDescription("test document 1");
         doc1.setReason1("reason1");
         doc1.setReason2("reason2");
         doc1.setRequester("requester");
 
-        AccountRequestDocumentWithCyclicalReference doc2 = (AccountRequestDocumentWithCyclicalReference) KNSServiceLocatorInternal.getDocumentService().getNewDocument("AccountRequest3");
+        AccountRequestDocumentWithCyclicalReference doc2 = (AccountRequestDocumentWithCyclicalReference) KNSServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest3");
         doc2.getDocumentHeader().setDocumentDescription("test document 2");
         doc2.setReason1("reason1a");
         doc2.setReason2("reason2a");
@@ -115,12 +115,12 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
         doc1.setChild(doc2);
 
         GlobalVariables.setMessageMap(new MessageMap());
-        KNSServiceLocatorInternal.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(doc1, 5, true);
+        KNSServiceLocatorWeb.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(doc1, 5, true);
         MessageMap errorMap = GlobalVariables.getMessageMap();
         int recursiveFiveMessageMapSize = errorMap.size();
 
         GlobalVariables.setMessageMap(new MessageMap());
-        KNSServiceLocatorInternal.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(doc1, 10, true);
+        KNSServiceLocatorWeb.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(doc1, 10, true);
         MessageMap errorMap2 = GlobalVariables.getMessageMap();
         int recursiveTenMessageMapSize = errorMap2.size();
 

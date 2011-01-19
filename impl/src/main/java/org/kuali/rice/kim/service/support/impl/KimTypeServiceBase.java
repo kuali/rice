@@ -37,7 +37,7 @@ import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -85,7 +85,7 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	protected KimTypeInfoService getTypeInfoService() {
 		if ( typeInfoService == null ) {
-			typeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
+			typeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
 		}
 		return typeInfoService;
 	}
@@ -99,14 +99,14 @@ public class KimTypeServiceBase implements KimTypeService {
 
 	protected DictionaryValidationService getDictionaryValidationService() {
 		if ( dictionaryValidationService == null ) {
-			dictionaryValidationService = KNSServiceLocatorInternal.getDictionaryValidationService();
+			dictionaryValidationService = KNSServiceLocatorWeb.getDictionaryValidationService();
 		}
 		return dictionaryValidationService;
 	}
 
 	protected DataDictionaryService getDataDictionaryService() {
 		if ( dataDictionaryService == null ) {
-			dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
+			dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
 		}
 		return this.dataDictionaryService;
 	}
@@ -580,7 +580,7 @@ public class KimTypeServiceBase implements KimTypeService {
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "getAttributeValidValues(" + kimTypeId + "," + attributeName + ")");			
 		}
-		KimTypeAttributeInfo attrib = KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(attributeName);
+		KimTypeAttributeInfo attrib = KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitionByName(attributeName);
 		if ( LOG.isDebugEnabled() ) {
 			LOG.debug( "Found Attribute definition: " + attrib );
 		}
@@ -630,7 +630,7 @@ public class KimTypeServiceBase implements KimTypeService {
 			if ( LOG.isDebugEnabled() ) {
 				LOG.debug( "Unable to find class " + componentClassName + " in available classloaders. Deferring to the service bus." );
 			}
-			baseDefinition = KNSServiceLocatorInternal.getRiceApplicationConfigurationMediationService().getBusinessObjectAttributeDefinition(componentClassName, attributeName);
+			baseDefinition = KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getBusinessObjectAttributeDefinition(componentClassName, attributeName);
 		}
 		
 		if (baseDefinition != null) {

@@ -42,7 +42,7 @@ import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -98,7 +98,7 @@ public class GroupXmlExporter implements XmlExporter {
 
         if (group.getKimTypeId() != null) {
             Element typeElement = renderer.renderElement(groupElement, TYPE);
-            KimTypeInfo kimType = KIMServiceLocatorInternal.getTypeInfoService().getKimType(group.getKimTypeId());
+            KimTypeInfo kimType = KIMServiceLocatorWeb.getTypeInfoService().getKimType(group.getKimTypeId());
             renderer.renderTextElement(typeElement, NAMESPACE, kimType.getNamespaceCode());
             renderer.renderTextElement(typeElement, NAME, kimType.getName());
         }

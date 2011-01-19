@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kns.document;
 
-import java.util.Map;
-
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.document.authorization.PessimisticLock;
 import org.kuali.rice.kns.util.GlobalVariables;

@@ -36,10 +36,10 @@ import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.ResponsibleParty;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.ResponsibilityActionInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.ResponsibilityService;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * The RoleRouteModule is responsible for interfacing with the KIM
@@ -78,10 +78,10 @@ public class RoleRouteModule implements RouteModule {
 		}
 		if ( qualifiers != null ) {
 			for (AttributeSet qualifier : qualifiers) {
-				if ( qualifier.containsKey( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) ) {
-					responsibilityDetails.put(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, qualifier.get(KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER));
+				if ( qualifier.containsKey( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER ) ) {
+					responsibilityDetails.put(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER, qualifier.get(KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER));
 				} else {
-					responsibilityDetails.remove( KimAttributes.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER );
+					responsibilityDetails.remove( KimConstants.AttributeConstants.QUALIFIER_RESOLVER_PROVIDED_IDENTIFIER );
 				}
 				List<ResponsibilityActionInfo> responsibilities = getResponsibilityService().getResponsibilityActionsByTemplateName(namespaceCode, responsibilityTemplateName, qualifier, responsibilityDetails);
 				if (LOG.isDebugEnabled()) {

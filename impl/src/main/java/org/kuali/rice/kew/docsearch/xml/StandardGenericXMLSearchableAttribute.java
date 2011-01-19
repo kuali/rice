@@ -44,6 +44,7 @@ import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.xmlrouting.XPathHelper;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -177,7 +178,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
     				try {
                         fieldDataType = (String) xpath.evaluate(findDataTypeXpathExpression, getConfigXML(), XPathConstants.STRING);
     					if (org.apache.commons.lang.StringUtils.isEmpty(fieldDataType)) {
-    						fieldDataType = DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
+    						fieldDataType = KEWConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
     					}
     				    xpathExpression = (String) xpath.evaluate(findXpathExpression, getConfigXML(), XPathConstants.STRING);
     					if (!org.apache.commons.lang.StringUtils.isEmpty(xpathExpression)) {
@@ -287,7 +288,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 								myField.setFieldType(convertTypeToFieldType(typeValue));
 								if ("date".equals(typeValue)) {
 									myField.setDatePicker(Boolean.TRUE);
-									myField.setFieldDataType(DATA_TYPE_DATE);
+									myField.setFieldDataType(KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE);
 								}
 							} else if ("meta".equals(displayChildNode.getNodeName())) {
 
@@ -331,9 +332,9 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 							myField.setFieldDataType(dataType);
 						} else {
 							// no data type means we default to String which disallows range search
-							myField.setFieldDataType(DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME);
+							myField.setFieldDataType(KEWConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME);
 						}
-						if (DATA_TYPE_DATE.equalsIgnoreCase(myField.getFieldDataType())) {
+						if (KEWConstants.SearchableAttributeConstants.DATA_TYPE_DATE.equalsIgnoreCase(myField.getFieldDataType())) {
 							myField.setDatePicker(Boolean.TRUE);
 						}
 						//if () {
@@ -351,9 +352,9 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 						} else {
     						// by now we know we have a range that uses the default values at least
     						// these will be
-    						rangeLowerBoundField = new Field("",DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
+    						rangeLowerBoundField = new Field("", KEWConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL);
     						rangeLowerBoundField.setMemberOfRange(true);
-    						rangeUpperBoundField = new Field("",DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL);
+    						rangeUpperBoundField = new Field("", KEWConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL);
     						rangeUpperBoundField.setMemberOfRange(true);
     						setupBoundFields(childNode, rangeLowerBoundField, rangeUpperBoundField);
                         }
@@ -398,8 +399,8 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 
 				if (myField.isMemberOfRange()) {
 					// we have a ranged search... we need to add the bound fields and NOT the myField object
-					addRangeFields(RANGE_LOWER_BOUND_PROPERTY_PREFIX, rangeLowerBoundField, myField, rows, quickfinderService);
-					addRangeFields(RANGE_UPPER_BOUND_PROPERTY_PREFIX, rangeUpperBoundField, myField, rows, quickfinderService);
+					addRangeFields(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX, rangeLowerBoundField, myField, rows, quickfinderService);
+					addRangeFields(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX, rangeUpperBoundField, myField, rows, quickfinderService);
 				} else {
 					fields.add(myField);
 					if (!myField.getFieldType().equals(Field.HIDDEN)) {
@@ -669,11 +670,11 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
                     // check for range search members in the parameter map
                     boolean rangeMemberInSearchParams = false;
                     if (getParamMap() != null) {
-                        Object lowerObj = getParamMap().get(RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldDefName);
+                        Object lowerObj = getParamMap().get(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldDefName);
                         if ( (lowerObj != null) && (lowerObj instanceof String) ) {
                             rangeMemberInSearchParams |= StringUtils.isNotBlank((String) lowerObj);
                         }
-                        Object upperObj = getParamMap().get(RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldDefName);
+                        Object upperObj = getParamMap().get(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldDefName);
                         if ( (upperObj != null) && (upperObj instanceof String) ) {
                             rangeMemberInSearchParams |= StringUtils.isNotBlank((String) upperObj);
                         }
@@ -720,7 +721,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 
         					}
         					if (org.apache.commons.lang.StringUtils.isEmpty(fieldDataType)) {
-        						fieldDataType = DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
+        						fieldDataType = KEWConstants.SearchableAttributeConstants.DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME;
         					}
         					// get the searchable attribute value by using the data type
         					SearchableAttributeValue attributeValue = DocSearchUtils.getSearchableAttributeValueByDataTypeString(fieldDataType);
@@ -731,8 +732,8 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
         					}
 
         					if (rangeMemberInSearchParams) {
-                                String lowerBoundFieldDefName = RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldDefName;
-                                String upperBoundFieldDefName = RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldDefName;
+                                String lowerBoundFieldDefName = KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + fieldDefName;
+                                String upperBoundFieldDefName = KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + fieldDefName;
                                 String lowerBoundEnteredValue = null;
                                 String upperBoundEnteredValue = null;
                                 NamedNodeMap lowerBoundRangeAttributes = null;
@@ -756,7 +757,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
                                     if ( (rangeValid != null) && (!rangeValid) ) {
                                         String lowerLabel = getPotentialRangeBoundLabelFromAttributes(lowerBoundRangeAttributes);
                                         String upperLabel = getPotentialRangeBoundLabelFromAttributes(upperBoundRangeAttributes);
-                                        String errorMsg = "The " + fieldDefTitle + " range is incorrect.  The " + (StringUtils.isNotBlank(lowerLabel) ? lowerLabel : DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL) + " value entered must come before the " + (StringUtils.isNotBlank(upperLabel) ? upperLabel : DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL) + " value";
+                                        String errorMsg = "The " + fieldDefTitle + " range is incorrect.  The " + (StringUtils.isNotBlank(lowerLabel) ? lowerLabel : KEWConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL) + " value entered must come before the " + (StringUtils.isNotBlank(upperLabel) ? upperLabel : KEWConstants.SearchableAttributeConstants.DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL) + " value";
                                         LOG.debug("validateUserSearchInputs() " + errorMsg + " :: field type '" + attributeValue.getAttributeDataType() + "'");
                                         errors.add(new WorkflowAttributeValidationError(fieldDefName, errorMsg));
                                     }
@@ -817,7 +818,7 @@ public class StandardGenericXMLSearchableAttribute implements GenericXMLSearchab
 		List<WorkflowAttributeValidationError> errors = new ArrayList<WorkflowAttributeValidationError>();
 		XPath xpath = XPathHelper.newXPath();
 		if ( attributeValue.allowsWildcards()) {
-			enteredValue = enteredValue.replaceAll(SEARCH_WILDCARD_CHARACTER_REGEX_ESCAPED, "");
+			enteredValue = enteredValue.replaceAll(KEWConstants.SearchableAttributeConstants.SEARCH_WILDCARD_CHARACTER_REGEX_ESCAPED, "");
 		}
 		if (!attributeValue.isPassesDefaultValidation(enteredValue)) {
             errorMessagePrefix = (StringUtils.isNotBlank(errorMessagePrefix)) ? errorMessagePrefix : "Field";

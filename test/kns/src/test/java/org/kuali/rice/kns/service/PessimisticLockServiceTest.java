@@ -111,7 +111,7 @@ public class PessimisticLockServiceTest extends KNSTestCase {
         GlobalVariables.setUserSession(new UserSession(userId));
         for (String lockId : lockIds) {
             try {
-                KNSServiceLocatorInternal.getPessimisticLockService().delete(lockId);
+                KNSServiceLocatorWeb.getPessimisticLockService().delete(lockId);
                 if (expectException) {
                     fail("Expected exception when deleting lock with id '" + lockId + "' for user '" + userId + "'");
                 }
@@ -136,7 +136,7 @@ public class PessimisticLockServiceTest extends KNSTestCase {
      */
     @Test
     public void testGenerateNewLocks() throws Exception {
-        PessimisticLockService lockService = KNSServiceLocatorInternal.getPessimisticLockService();
+        PessimisticLockService lockService = KNSServiceLocatorWeb.getPessimisticLockService();
 
         // test generating lock with no given lock descriptor
         String documentNumber = "1243";
@@ -195,7 +195,7 @@ public class PessimisticLockServiceTest extends KNSTestCase {
             )
     @Test
     public void testGetPessimisticLocksForDocument() throws Exception {
-        PessimisticLockService lockService = KNSServiceLocatorInternal.getPessimisticLockService();
+        PessimisticLockService lockService = KNSServiceLocatorWeb.getPessimisticLockService();
         String docId = "1234";
         assertEquals("Document " + docId + " expected lock count incorrect", 1, lockService.getPessimisticLocksForDocument(docId).size());
         docId = "1237";
@@ -230,27 +230,27 @@ public class PessimisticLockServiceTest extends KNSTestCase {
         List<PessimisticLock> locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 8 manually inserted locks", 8, locks.size());
 
-        KNSServiceLocatorInternal.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fran"), lockDescriptor);
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fran"), lockDescriptor);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 7 locks left after releasing locks for fran using lock descriptor " + lockDescriptor, 7, locks.size());
 
-        KNSServiceLocatorInternal.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("frank"), lockDescriptor);
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("frank"), lockDescriptor);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 5 locks left after releasing locks for fran and frank using lock descriptor " + lockDescriptor, 5, locks.size());
 
-        KNSServiceLocatorInternal.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fred"), lockDescriptor);
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fred"), lockDescriptor);
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 4 locks left after releasing locks for fran, frank, and fred using lock descriptor " + lockDescriptor, 4, locks.size());
 
-        KNSServiceLocatorInternal.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fran"));
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fran"));
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 3 locks left after releasing locks for fran with no lock descriptor", 3, locks.size());
 
-        KNSServiceLocatorInternal.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("frank"));
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("frank"));
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be 1 lock left after releasing locks for fran and frank with no lock descriptor", 1, locks.size());
 
-        KNSServiceLocatorInternal.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fred"));
+        KNSServiceLocatorWeb.getPessimisticLockService().releaseAllLocksForUser(locks, KIMServiceLocator.getPersonService().getPerson("fred"));
         locks = (List<PessimisticLock>) KNSServiceLocator.getBusinessObjectService().findAll(PessimisticLock.class);
         assertEquals("Should be no locks left after releasing locks for fran, frank, and fred with no lock descriptor", 0, locks.size());
     }
@@ -274,7 +274,7 @@ public class PessimisticLockServiceTest extends KNSTestCase {
         primaryKeys.put(KNSPropertyConstants.ID, Long.valueOf("1111"));
         PessimisticLock lock = (PessimisticLock) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
         lock.setLockDescriptor(lockDescriptor);
-        KNSServiceLocatorInternal.getPessimisticLockService().save(lock);
+        KNSServiceLocatorWeb.getPessimisticLockService().save(lock);
 
         // verify retrieved lock has lock descriptor set previously
         PessimisticLock savedLock = (PessimisticLock) KNSServiceLocator.getBusinessObjectService().findByPrimaryKey(PessimisticLock.class, primaryKeys);
@@ -288,11 +288,11 @@ public class PessimisticLockServiceTest extends KNSTestCase {
      */
     @Test
     public void testEstablishLocks() throws Exception {
-    	PessimisticLockService lockService = KNSServiceLocatorInternal.getPessimisticLockService();
-    	AccountRequestDocument accountDoc = (AccountRequestDocument) KNSServiceLocatorInternal.getDocumentService().getNewDocument("AccountRequest");
+    	PessimisticLockService lockService = KNSServiceLocatorWeb.getPessimisticLockService();
+    	AccountRequestDocument accountDoc = (AccountRequestDocument) KNSServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest");
     	
     	assertTrue("The AccountRequestDocument should be using pessimistic locking",
-    			KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(accountDoc.getClass().getName()).getUsePessimisticLocking());
+    			KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(accountDoc.getClass().getName()).getUsePessimisticLocking());
     	
     	// Have "quickstart" establish a pessimistic lock on the account request document.
     	UserSession quickstartSession = new UserSession("quickstart");
@@ -342,10 +342,10 @@ public class PessimisticLockServiceTest extends KNSTestCase {
      */
     @Test
     public void testWorkflowPessimisticLocking() throws Exception {
-    	PessimisticLockService lockService = KNSServiceLocatorInternal.getPessimisticLockService();
-    	AccountRequestDocument accountDoc = (AccountRequestDocument) KNSServiceLocatorInternal.getDocumentService().getNewDocument("AccountRequest");
+    	PessimisticLockService lockService = KNSServiceLocatorWeb.getPessimisticLockService();
+    	AccountRequestDocument accountDoc = (AccountRequestDocument) KNSServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest");
     	assertTrue("The AccountRequestDocument should be using pessimistic locking",
-    			KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry(accountDoc.getClass().getName()).getUsePessimisticLocking());
+    			KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry(accountDoc.getClass().getName()).getUsePessimisticLocking());
     	
     	// Have the system user create a workflow pessimistic lock.
     	UserSession systemSession = new UserSession(KNSConstants.SYSTEM_USER);
@@ -372,8 +372,8 @@ public class PessimisticLockServiceTest extends KNSTestCase {
      */
     @Test
     public void testPessimisticLockingWithCustomDocumentLockDescriptors() throws Exception {
-       	AccountRequestDocument2 accountDoc2 = (AccountRequestDocument2) KNSServiceLocatorInternal.getDocumentService().getNewDocument("AccountRequest2");
-       	assertTrue("The AccountRequestDocument2 should be using pessimistic locking", KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary(
+       	AccountRequestDocument2 accountDoc2 = (AccountRequestDocument2) KNSServiceLocatorWeb.getDocumentService().getNewDocument("AccountRequest2");
+       	assertTrue("The AccountRequestDocument2 should be using pessimistic locking", KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary(
        			).getDocumentEntry(accountDoc2.getClass().getName()).getUsePessimisticLocking());
        	assertTrue("The AccountRequestDocument2 should be using custom lock descriptors", accountDoc2.useCustomLockDescriptors());
        	
@@ -390,8 +390,8 @@ public class PessimisticLockServiceTest extends KNSTestCase {
      */
     @Test
     public void testPessimisticLockingWithCustomMaintainableLockDescriptors() throws Exception {
-    	MaintenanceDocument maintDoc = (MaintenanceDocument) KNSServiceLocatorInternal.getDocumentService().getNewDocument("AccountType2MaintenanceDocument");
-    	assertTrue("The AccountType2MaintenanceDocument should be using pessimistic locking", KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary(
+    	MaintenanceDocument maintDoc = (MaintenanceDocument) KNSServiceLocatorWeb.getDocumentService().getNewDocument("AccountType2MaintenanceDocument");
+    	assertTrue("The AccountType2MaintenanceDocument should be using pessimistic locking", KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary(
 			).getDocumentEntry(maintDoc.getNewMaintainableObject().getBoClass().getSimpleName() + "MaintenanceDocument").getUsePessimisticLocking());
     	assertTrue("The AccountType2MaintenanceDocument should be using custom lock descriptors", maintDoc.useCustomLockDescriptors());
     	assertTrue("The AccountType2MaintenanceDocument's new maintainable uses the wrong class",
@@ -416,7 +416,7 @@ public class PessimisticLockServiceTest extends KNSTestCase {
      */
     private void assertCustomLockDescriptorsAreWorking(Document testDoc, final String LOCK_KEY, final Serializable LOCK_VALUE1,
     		final Serializable LOCK_VALUE2) throws Exception {
-    	PessimisticLockService lockService = KNSServiceLocatorInternal.getPessimisticLockService();
+    	PessimisticLockService lockService = KNSServiceLocatorWeb.getPessimisticLockService();
     	
     	// Have "quickstart" establish a pessimistic lock on the document by using a custom lock descriptor that only locks part of the document.
        	UserSession quickstartSession = new UserSession("quickstart");

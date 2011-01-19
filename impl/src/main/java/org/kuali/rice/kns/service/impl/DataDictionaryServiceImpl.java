@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.ClassLoaderUtils;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
@@ -46,13 +47,12 @@ import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exporter.DataDictionaryMap;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
 import org.kuali.rice.kns.document.Document;
-import org.kuali.rice.kns.exception.UnknownBusinessClassAttributeException;
-import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
+import org.kuali.rice.kns.datadictionary.exception.UnknownBusinessClassAttributeException;
+import org.kuali.rice.kns.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.service.DataDictionaryService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
@@ -891,7 +891,7 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
 
 	public KualiWorkflowInfo getWorkflowInfoService() {
 		if ( workflowInfoService == null ) {
-			workflowInfoService = KNSServiceLocatorInternal.getWorkflowInfoService();
+			workflowInfoService = KNSServiceLocatorWeb.getWorkflowInfoService();
 		}
 		return workflowInfoService;
 	}

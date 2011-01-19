@@ -24,13 +24,12 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.displaytag.model.Row;
 import org.displaytag.model.TableModel;
-import org.kuali.rice.core.KualiException;
 import org.kuali.rice.core.util.WriterOutputStream;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Exporter;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.exception.ExportNotSupportedException;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.kuali.rice.kns.web.struts.form.LookupForm;
@@ -60,7 +59,7 @@ public class ExportViewHelper {
 		if (kualiForm instanceof LookupForm) {
 			LookupForm lookupForm = (LookupForm) kualiForm;
 			if (!StringUtils.isBlank(lookupForm.getBusinessObjectClassName())) {
-				return KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(lookupForm.getBusinessObjectClassName());
+				return KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(lookupForm.getBusinessObjectClassName());
 			}
 		}
 		return null;

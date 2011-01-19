@@ -32,7 +32,7 @@ import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimRoleDao;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
@@ -43,7 +43,7 @@ import org.kuali.rice.kns.datadictionary.KimDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.datadictionary.KimNonDataDictionaryAttributeDefinition;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.BeanPropertyComparator;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -127,7 +127,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
 		List<KeyValue> options = new ArrayList<KeyValue>();
 		options.add(new ConcreteKeyValue("", ""));
 
-		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocatorInternal.getTypeInfoService().getAllTypes();
+		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocatorWeb.getTypeInfoService().getAllTypes();
 		// get the distinct list of type IDs from all roles in the system
         for (KimTypeInfo kimType : kimGroupTypes) {
             if (KimTypeLookupableHelperServiceImpl.hasRoleTypeService(kimType)) {
@@ -248,7 +248,7 @@ public class RoleLookupableHelperServiceImpl extends KimLookupableHelperServiceI
     	}
 
     	if (includeAttr) {
-        	ModuleService eboModuleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
+        	ModuleService eboModuleService = KNSServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService( getBusinessObjectClass() );
         	BusinessObjectEntry ddEntry = eboModuleService.getExternalizableBusinessObjectDictionaryEntry(getBusinessObjectClass());
         	Map<String,String> filteredFieldValues = new HashMap<String, String>();
         	for (String fieldName : nonBlankFieldValues.keySet()) {

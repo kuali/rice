@@ -1313,7 +1313,7 @@ public class RoleServiceBase {
 	 */
     protected LookupService getLookupService() {
 		if(lookupService == null) {
-			lookupService = KNSServiceLocatorInternal.getLookupService();
+			lookupService = KNSServiceLocatorWeb.getLookupService();
 		}
 		return lookupService;
 	}
@@ -1335,7 +1335,7 @@ public class RoleServiceBase {
 
 	protected SequenceAccessorService getSequenceAccessorService() {
 		if ( sequenceAccessorService == null ) {
-			sequenceAccessorService = KNSServiceLocatorInternal.getSequenceAccessorService();
+			sequenceAccessorService = KNSServiceLocator.getSequenceAccessorService();
 		}
 		return sequenceAccessorService;
 	}

@@ -33,7 +33,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.exception.AuthorizationException;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -151,7 +151,7 @@ public abstract class KSBAction extends DispatchAction {
 	}
 	
 	protected static KualiModuleService getKualiModuleService() {
-        return KNSServiceLocatorInternal.getKualiModuleService();
+        return KNSServiceLocatorWeb.getKualiModuleService();
     }
 
 }

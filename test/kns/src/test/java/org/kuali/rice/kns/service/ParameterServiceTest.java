@@ -46,7 +46,7 @@ public class ParameterServiceTest extends KNSTestCase {
     	String parameterName = "RESULTS_LIMIT";
     	String parameterValue = "200";
     	
-    	Parameter resultsLimitParam = KNSServiceLocatorInternal.getParameterService().retrieveParameter(namespaceCode, parameterDetailTypeCode, parameterName);
+    	Parameter resultsLimitParam = KNSServiceLocator.getParameterService().retrieveParameter(namespaceCode, parameterDetailTypeCode, parameterName);
     	assertNotNull("RESULTS_LIMIT should be non-null", resultsLimitParam);
     	assertEquals(parameterValue, resultsLimitParam.getParameterValue());
     	
@@ -69,7 +69,7 @@ public class ParameterServiceTest extends KNSTestCase {
     	String parameterName = "PREFIXES";
     	String parameterValue = "Ms;Mrs;Mr;Dr";
     	
-    	Parameter parameter = KNSServiceLocatorInternal.getParameterService().retrieveParameter(namespaceCode, parameterDetailTypeCode, parameterName);
+    	Parameter parameter = KNSServiceLocator.getParameterService().retrieveParameter(namespaceCode, parameterDetailTypeCode, parameterName);
     	assertNotNull("Parameter should be non-null", parameter);
     	assertEquals(parameterValue, parameter.getParameterValue());
     	

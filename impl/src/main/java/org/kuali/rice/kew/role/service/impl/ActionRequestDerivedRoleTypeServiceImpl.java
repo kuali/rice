@@ -25,11 +25,11 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.WorkflowInfo;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Role;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.RoleMembershipInfo;
 import org.kuali.rice.kim.service.support.KimDelegationTypeService;
 import org.kuali.rice.kim.service.support.KimRoleTypeService;
 import org.kuali.rice.kim.service.support.impl.KimDerivedRoleTypeServiceBase;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * 
@@ -45,7 +45,7 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 	protected WorkflowInfo workflowInfo = new WorkflowInfo();
 
 	{
-		requiredAttributes.add( KimAttributes.DOCUMENT_NUMBER );
+		requiredAttributes.add( KimConstants.AttributeConstants.DOCUMENT_NUMBER );
 		checkRequiredAttributes = true;
 	}
 	
@@ -56,8 +56,8 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
     public List<RoleMembershipInfo> getRoleMembersFromApplicationRole(String namespaceCode, String roleName, AttributeSet qualification) {
 		List<RoleMembershipInfo> members = new ArrayList<RoleMembershipInfo>();
 		if ( qualification != null && !qualification.isEmpty() ) {
-		    String principalId = qualification.get(KimAttributes.PRINCIPAL_ID);
-			if (qualification.containsKey(KimAttributes.PRINCIPAL_ID)
+		    String principalId = qualification.get(KimConstants.AttributeConstants.PRINCIPAL_ID);
+			if (qualification.containsKey(KimConstants.AttributeConstants.PRINCIPAL_ID)
 					&& hasApplicationRole(principalId, null, namespaceCode,
 							roleName, qualification)) {
                 members.add( new RoleMembershipInfo(null/*roleId*/, null, principalId, Role.PRINCIPAL_MEMBER_TYPE, null) );
@@ -75,10 +75,10 @@ public class ActionRequestDerivedRoleTypeServiceImpl extends
 			AttributeSet qualification) {
 		validateRequiredAttributesAgainstReceived(qualification);
 		try {
-			if ( (qualification != null && !qualification.isEmpty()) && StringUtils.isNumeric( qualification.get(KimAttributes.DOCUMENT_NUMBER) ) ) {
+			if ( (qualification != null && !qualification.isEmpty()) && StringUtils.isNumeric( qualification.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER) ) ) {
 				ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(Long
 									.parseLong(qualification
-											.get(KimAttributes.DOCUMENT_NUMBER)), null, principalId);
+											.get(KimConstants.AttributeConstants.DOCUMENT_NUMBER)), null, principalId);
 				if (APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName) || NON_AD_HOC_APPROVE_REQUEST_RECIPIENT_ROLE_NAME.equals(roleName)) {
 					for ( ActionRequestDTO ar : actionRequests ) {
 						if ( ar.getActionRequested().equals( KEWConstants.ACTION_REQUEST_APPROVE_REQ )

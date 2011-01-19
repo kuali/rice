@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.namespace.QName;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
@@ -29,13 +27,12 @@ import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kns.UserSession;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
@@ -54,18 +51,7 @@ public final class KimCommonUtilsInternal {
 		throw new UnsupportedOperationException("do not call");
 	}
 
-	/**
-	 * Resolves the given kim type service name represented as a String to the appropriate QName.
-	 * If the value given is empty or null, then it will resolve to the default KimTypeService name.
-	 */
-	public static QName resolveKimTypeServiceName(String kimTypeServiceName) {
-		if (StringUtils.isBlank(kimTypeServiceName)) {
-			return resolveKimTypeServiceName(KimConstants.DEFAULT_KIM_TYPE_SERVICE);
-		}
-		return QName.valueOf(kimTypeServiceName);
-	}
-
-	public static void copyProperties(Object targetToCopyTo, Object sourceToCopyFrom){
+    public static void copyProperties(Object targetToCopyTo, Object sourceToCopyFrom){
 		if(targetToCopyTo!=null && sourceToCopyFrom!=null)
 		try{
 			PropertyUtils.copyProperties(targetToCopyTo, sourceToCopyFrom);
@@ -75,7 +61,7 @@ public final class KimCommonUtilsInternal {
 	}
 
 	public static String getKimBasePath(){
-		String kimBaseUrl = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KimConstants.KimUIConstants.KIM_URL_KEY);
+		String kimBaseUrl = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KimConstants.KimUIConstants.KIM_URL_KEY);
 		if (!kimBaseUrl.endsWith(KimConstants.KimUIConstants.URL_SEPARATOR)) {
 			kimBaseUrl = kimBaseUrl + KimConstants.KimUIConstants.URL_SEPARATOR;
 		}
@@ -110,7 +96,7 @@ public final class KimCommonUtilsInternal {
 				KimConstants.NAMESPACE_CODE,
 				KimConstants.PermissionNames.OVERRIDE_ENTITY_PRIVACY_PREFERENCES,
 				null,
-				new AttributeSet(KimAttributes.PRINCIPAL_ID, principalId) );
+				new AttributeSet(KimConstants.AttributeConstants.PRINCIPAL_ID, principalId) );
 	}
 
 	public static boolean isSuppressName(String entityId) {
@@ -243,7 +229,7 @@ public final class KimCommonUtilsInternal {
 
     public static List<GroupAttributeDataImpl> copyInfoAttributesToGroupAttributes(Map<String, String> infoMap, String groupId, String kimTypeId) {
         List<GroupAttributeDataImpl> attrList = new ArrayList<GroupAttributeDataImpl>(infoMap.size());
-        List<KimTypeAttributeInfo> attributeInfoList = KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitions();
+        List<KimTypeAttributeInfo> attributeInfoList = KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId).getAttributeDefinitions();
 
         for (String key : infoMap.keySet()) {
             KimTypeAttributeInfo typeAttributeInfo = getAttributeInfo(attributeInfoList, key);

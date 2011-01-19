@@ -37,8 +37,7 @@ import org.kuali.rice.kew.service.WorkflowDocumentActions;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
@@ -270,7 +269,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         KualiWorkflowInfo workflowInfo = null;
         try {
             routeHeaderId = getRouteHeaderId();
-            workflowInfo = KNSServiceLocatorInternal.getWorkflowInfoService();
+            workflowInfo = KNSServiceLocatorWeb.getWorkflowInfoService();
             String principalId = workflowDocument.getPrincipalId();
             ActionRequestDTO[] actionRequests = workflowInfo.getActionRequests(routeHeaderId);
             for (int actionRequestIndex = 0; actionRequestIndex < actionRequests.length; actionRequestIndex++) {

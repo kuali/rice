@@ -30,6 +30,7 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegation;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.ResponsibilityService;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
@@ -157,7 +158,7 @@ public class IdentityManagementRoleDocument extends IdentityManagementTypeAttrib
 			if ( kimType != null ) {
 				roleTypeName = kimType.getName();
 			} else if ( roleTypeId != null ) {
-				setKimType( KIMServiceLocatorInternal.getTypeInfoService().getKimType(roleTypeId) );
+				setKimType( KIMServiceLocatorWeb.getTypeInfoService().getKimType(roleTypeId) );
 		        if ( kimType != null ) {
 		        	roleTypeName = kimType.getName();
 		        }

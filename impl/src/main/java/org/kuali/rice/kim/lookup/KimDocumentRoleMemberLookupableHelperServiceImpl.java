@@ -108,14 +108,14 @@ public class KimDocumentRoleMemberLookupableHelperServiceImpl extends KualiLooku
 
 	public RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocatorInternal.getRoleService();
+			roleService = KIMServiceLocator.getRoleService();
 		}
 		return roleService;
 	}
 
 	public KimTypeInfoService getKimTypeInfoService() {
 		if ( kimTypeInfoService == null ) {
-			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

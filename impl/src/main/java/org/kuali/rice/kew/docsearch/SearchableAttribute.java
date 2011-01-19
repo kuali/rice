@@ -30,22 +30,6 @@ import java.util.Map;
  */
 public interface SearchableAttribute extends Serializable {
 
-    public static final String SEARCH_WILDCARD_CHARACTER = "*";
-    public static final String SEARCH_WILDCARD_CHARACTER_REGEX_ESCAPED = "\\" + SEARCH_WILDCARD_CHARACTER;
-
-    public static final String DATA_TYPE_STRING = KNSConstants.DATA_TYPE_STRING;
-    public static final String DATA_TYPE_DATE = KNSConstants.DATA_TYPE_DATE;
-    public static final String DATA_TYPE_LONG = KNSConstants.DATA_TYPE_LONG;
-    public static final String DATA_TYPE_FLOAT = KNSConstants.DATA_TYPE_FLOAT;
-
-    public static final String DEFAULT_SEARCHABLE_ATTRIBUTE_TYPE_NAME = DATA_TYPE_STRING;
-
-    public static final String DEFAULT_RANGE_SEARCH_LOWER_BOUND_LABEL = "From";
-    public static final String DEFAULT_RANGE_SEARCH_UPPER_BOUND_LABEL = "To";
-
-    public static final String RANGE_LOWER_BOUND_PROPERTY_PREFIX = "rangeLowerBoundKeyPrefix_";
-    public static final String RANGE_UPPER_BOUND_PROPERTY_PREFIX = "rangeUpperBoundKeyPrefix_";
-
     public static final List SEARCHABLE_ATTRIBUTE_BASE_CLASS_LIST = Arrays.asList(SearchableAttributeStringValue.class, SearchableAttributeFloatValue.class, SearchableAttributeLongValue.class,
             SearchableAttributeDateTimeValue.class);
 

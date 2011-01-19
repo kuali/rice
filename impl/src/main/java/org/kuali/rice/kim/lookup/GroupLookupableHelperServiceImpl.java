@@ -40,6 +40,7 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
@@ -375,7 +376,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 		List<KeyValue> options = new ArrayList<KeyValue>();
 		options.add(new ConcreteKeyValue("", ""));
 
-		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocatorInternal.getTypeInfoService().getAllTypes();
+		Collection<KimTypeInfo> kimGroupTypes = KIMServiceLocatorWeb.getTypeInfoService().getAllTypes();
 		// get the distinct list of type IDs from all groups in the system
         for (KimTypeInfo kimType : kimGroupTypes) {
             if (KimTypeLookupableHelperServiceImpl.hasGroupTypeService(kimType) && groupTypeValuesCache.get(kimType.getKimTypeId()) == null) {
@@ -401,7 +402,7 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 					setTypeId(field.getPropertyValue());
 					setAttrRows(new ArrayList<Row>());
 					KimTypeInfo kimType = getTypeInfoService().getKimType( field.getPropertyValue() );
-					KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
+					KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
 			        AttributeDefinitionMap definitions = kimTypeService.getAttributeDefinitions(kimType.getKimTypeId());
 			        setAttrDefinitions(definitions);
 		            for (AttributeDefinition definition  : definitions.values()) {

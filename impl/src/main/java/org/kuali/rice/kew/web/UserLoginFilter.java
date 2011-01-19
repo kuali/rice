@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
+import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
@@ -39,8 +40,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.exception.AuthenticationException;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ParameterService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.WebUtils;
@@ -198,7 +198,7 @@ public class UserLoginFilter implements Filter {
     
     private KualiConfigurationService getKualiConfigurationService() {
     	if (this.kualiConfigurationService == null) {
-    		this.kualiConfigurationService = KNSServiceLocatorInternal.getKualiConfigurationService();
+    		this.kualiConfigurationService = KNSServiceLocator.getKualiConfigurationService();
     	}
     	
     	return this.kualiConfigurationService;
@@ -206,7 +206,7 @@ public class UserLoginFilter implements Filter {
     
     private ParameterService getParameterService() {
     	if (this.parameterService == null) {
-    		this.parameterService = KNSServiceLocatorInternal.getParameterService();
+    		this.parameterService = KNSServiceLocator.getParameterService();
     	}
     	
     	return this.parameterService;

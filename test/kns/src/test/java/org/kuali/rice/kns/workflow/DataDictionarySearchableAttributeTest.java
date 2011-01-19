@@ -23,10 +23,11 @@ import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.web.ui.Field;
@@ -107,7 +108,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 	 */
     @Test
 	public void testWildcardsAndMultiSelectsOnDDSearchableAttributes() throws Exception {
-		DocumentService docService = KNSServiceLocatorInternal.getDocumentService();
+		DocumentService docService = KNSServiceLocatorWeb.getDocumentService();
 		//docSearchService = KEWServiceLocator.getDocumentSearchService();
 		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("AccountWithDDAttributes");
         String principalName = "quickstart";
@@ -231,7 +232,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
 	 * A method similar to the one from DocumentSearchTestBase. The "value" parameter has to be either a String or a String[].
 	 */
 	private SearchAttributeCriteriaComponent createSearchAttributeCriteriaComponent(String key,Object value,Boolean isLowerBoundValue,DocumentType docType) {
-		String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
+		String formKey = (isLowerBoundValue == null) ? key : ((isLowerBoundValue != null && isLowerBoundValue.booleanValue()) ? KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX + key : KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX + key);
 		String savedKey = key;
 		SearchAttributeCriteriaComponent sacc = null;
 		if (value instanceof String) {
@@ -322,7 +323,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
     @Test
     public void testValidateUserSearchInputsNoCast() throws Exception {
     	DataDictionarySearchableAttribute searchableAttribute = new DataDictionarySearchableAttribute();
-    	final DocumentService documentService = KNSServiceLocatorInternal.getDocumentService();
+    	final DocumentService documentService = KNSServiceLocatorWeb.getDocumentService();
     	
     	AccountWithDDAttributesDocument document = DOCUMENT_FIXTURE.NORMAL_DOCUMENT.getDocument(documentService);
     	documentService.saveDocument(document);
@@ -368,7 +369,7 @@ public class DataDictionarySearchableAttributeTest extends KNSTestCase {
      */
     @Test
     public void testMultiSelectIntegration() throws Exception {
-    	final DocumentService docService = KNSServiceLocatorInternal.getDocumentService();
+    	final DocumentService docService = KNSServiceLocatorWeb.getDocumentService();
 		//docSearchService = KEWServiceLocator.getDocumentSearchService();
 		DocumentType docType = KEWServiceLocator.getDocumentTypeService().findByName("AccountWithDDAttributes");
         String principalName = "quickstart";

@@ -20,7 +20,7 @@ import java.util.List;
 
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 
@@ -35,7 +35,7 @@ public class InstalledModulesValuesFinder extends KeyValuesBase {
     @Override
 	public List<KeyValue> getKeyValues() {
     	List<KeyValue> keyValues = new ArrayList<KeyValue>();
-        KualiModuleService kms = KNSServiceLocatorInternal.getKualiModuleService();
+        KualiModuleService kms = KNSServiceLocatorWeb.getKualiModuleService();
         for ( ModuleService moduleService : kms.getInstalledModuleServices() ) {
             keyValues.add(new ConcreteKeyValue(moduleService.getModuleConfiguration().getNamespaceCode(), 
             		moduleService.getModuleConfiguration().getNamespaceCode() + " - " + 

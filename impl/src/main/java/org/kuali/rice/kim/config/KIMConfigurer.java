@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kuali.rice.core.config.ModuleConfigurer;
+import org.kuali.rice.core.config.RunMode;
 
 /**
  * This class handles the Spring based KIM configuration that is part of the Rice Configurer that must 

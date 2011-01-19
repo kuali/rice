@@ -31,7 +31,6 @@ import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
@@ -39,10 +38,11 @@ import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
 import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.form.KualiDocumentFormBase;
@@ -90,13 +90,13 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
     
     protected void setKimType(String kimTypeId, IdentityManagementGroupDocumentForm groupDocumentForm){
 		if ( StringUtils.isNotBlank(kimTypeId) ) {
-			KimTypeInfo kType = KIMServiceLocatorInternal.getTypeInfoService().getKimType(kimTypeId);
+			KimTypeInfo kType = KIMServiceLocatorWeb.getTypeInfoService().getKimType(kimTypeId);
 			groupDocumentForm.setKimType(kType);
 			if (groupDocumentForm.getGroupDocument() != null) {
 				groupDocumentForm.getGroupDocument().setKimType(kType);
 			}
 		} else if ( groupDocumentForm.getGroupDocument() != null && StringUtils.isNotBlank(groupDocumentForm.getGroupDocument().getGroupTypeId() ) ) {
-			groupDocumentForm.setKimType(KIMServiceLocatorInternal.getTypeInfoService().getKimType(
+			groupDocumentForm.setKimType(KIMServiceLocatorWeb.getTypeInfoService().getKimType(
 					groupDocumentForm.getGroupDocument().getGroupTypeId()));
 			groupDocumentForm.getGroupDocument().setKimType(groupDocumentForm.getKimType());
 		}
@@ -163,8 +163,8 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         boolean rulePassed = true;
         Map<String,String> additionalPermissionDetails = new HashMap<String,String>();
         if (!StringUtils.isEmpty(document.getGroupNamespace())) {
-        	additionalPermissionDetails.put(KimAttributes.NAMESPACE_CODE, document.getGroupNamespace());
-        	additionalPermissionDetails.put(KimAttributes.GROUP_NAME, document.getGroupName());
+        	additionalPermissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, document.getGroupNamespace());
+        	additionalPermissionDetails.put(KimConstants.AttributeConstants.GROUP_NAME, document.getGroupName());
         	if (!getDocumentHelperService().getDocumentAuthorizer(document).isAuthorizedByTemplate(
         			document, 
         			KimConstants.NAMESPACE_CODE, 
@@ -208,7 +208,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         	}
         }
         if(checkKimDocumentGroupMember(newMember) && 
-        		KNSServiceLocatorInternal.getKualiRuleService().applyRules(new AddGroupMemberEvent("", groupDocumentForm.getGroupDocument(), newMember))){
+        		KNSServiceLocatorWeb.getKualiRuleService().applyRules(new AddGroupMemberEvent("", groupDocumentForm.getGroupDocument(), newMember))){
         	newMember.setDocumentNumber(groupDocumentForm.getDocument().getDocumentNumber());
         	groupDocumentForm.getGroupDocument().addMember(newMember);
 	        groupDocumentForm.setMember(groupDocumentForm.getGroupDocument().getBlankMember());

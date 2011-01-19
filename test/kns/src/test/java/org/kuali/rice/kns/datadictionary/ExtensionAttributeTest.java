@@ -29,7 +29,7 @@ import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder;
 import org.kuali.rice.kns.rule.event.RouteDocumentEvent;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountExtension;
 import org.kuali.rice.kns.test.document.bo.AccountType;
@@ -103,14 +103,14 @@ public class ExtensionAttributeTest extends KNSTestCase {
 	@Test
 	public void testBOMetaDataService() throws Exception {
 		Account ta = new Account();
-	BusinessObjectRelationship br = KNSServiceLocatorInternal.getBusinessObjectMetaDataService().getBusinessObjectRelationship(
+	BusinessObjectRelationship br = KNSServiceLocatorWeb.getBusinessObjectMetaDataService().getBusinessObjectRelationship(
 		ta, "extension.accountType");
 		assertEquals( "mismatch on parent class", Account.class, br.getParentClass() );
 		assertEquals( "mismatch on related class", AccountType.class, br.getRelatedClass() );
 		System.out.println( br.getParentToChildReferences() );
 	assertEquals("parent/child key not correct - should be extension.accountTypeCode/accountTypeCode",
 		"accountTypeCode", br.getParentToChildReferences().get("extension.accountTypeCode"));
-		br = KNSServiceLocatorInternal.getBusinessObjectMetaDataService().getBusinessObjectRelationship( ta, "extension" );
+		br = KNSServiceLocatorWeb.getBusinessObjectMetaDataService().getBusinessObjectRelationship( ta, "extension" );
 		assertNull( "extension is not lookupable, should have returned null", br );
 	}
 
@@ -139,7 +139,7 @@ public class ExtensionAttributeTest extends KNSTestCase {
 		ta.setName( "Test Name" );
 		ta.setNumber( "1234567" );
         GlobalVariables.setUserSession(new UserSession("quickstart"));
-	MaintenanceDocument document = (MaintenanceDocument) KNSServiceLocatorInternal.getDocumentService().getNewDocument(
+	MaintenanceDocument document = (MaintenanceDocument) KNSServiceLocatorWeb.getDocumentService().getNewDocument(
 		"AccountMaintenanceDocument");
         assertNotNull( "new document must not be null", document );
         document.getDocumentHeader().setDocumentDescription( getClass().getSimpleName() + "test" );

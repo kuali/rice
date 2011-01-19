@@ -22,7 +22,8 @@ import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.test.document.AccountWithDDAttributesDocument;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.test.document.bo.AccountManager;
@@ -177,7 +178,7 @@ public class JpaCriteriaTest extends KNSTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		GlobalVariables.setUserSession(new UserSession("quickstart"));
-		em = KNSServiceLocatorInternal.getApplicationEntityManagerFactory().createEntityManager();
+		em = KNSServiceLocator.getApplicationEntityManagerFactory().createEntityManager();
 	}
 	
 	@Override
@@ -190,14 +191,14 @@ public class JpaCriteriaTest extends KNSTestCase {
     
 	private void makeNewEntityManager() {
 		try { em.close(); } catch (Exception e) {}
-		em = KNSServiceLocatorInternal.getApplicationEntityManagerFactory().createEntityManager();
+		em = KNSServiceLocator.getApplicationEntityManagerFactory().createEntityManager();
 	}
 	
 	/*
 	 * Construct some AccountWithDDAttributes documents to test with.
 	 */
 	private void constructAccountWithDDAttributesDocs() throws Exception {
-		DocumentService docService = KNSServiceLocatorInternal.getDocumentService();
+		DocumentService docService = KNSServiceLocatorWeb.getDocumentService();
 		for (DOCUMENT_FIXTURE docFixture : DOCUMENT_FIXTURE.values()) {
 			em.persist(docFixture.getDocument(docService));
 		}

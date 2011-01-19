@@ -28,8 +28,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Parameter;
@@ -58,9 +58,9 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         Parameter parm = (Parameter)businessObject;
         
         AttributeSet permissionDetails = new AttributeSet();
-        permissionDetails.put(KimAttributes.NAMESPACE_CODE, parm.getParameterNamespaceCode());
-        permissionDetails.put(KimAttributes.COMPONENT_NAME, parm.getParameterDetailTypeCode());
-        permissionDetails.put(KimAttributes.PARAMETER_NAME, parm.getParameterName());
+        permissionDetails.put(KimConstants.AttributeConstants.NAMESPACE_CODE, parm.getParameterNamespaceCode());
+        permissionDetails.put(KimConstants.AttributeConstants.COMPONENT_NAME, parm.getParameterDetailTypeCode());
+        permissionDetails.put(KimConstants.AttributeConstants.PARAMETER_NAME, parm.getParameterName());
         allowsEdit = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
         		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 				KNSConstants.KNS_NAMESPACE,

@@ -33,6 +33,7 @@ import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.InactivationBlockingDisplayService;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.struts.form.DisplayInactivationBlockersForm;
 
@@ -46,7 +47,7 @@ public class DisplayInactivationBlockersAction extends KualiAction {
 	
 	public ActionForward displayAllInactivationBlockers(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		DisplayInactivationBlockersForm displayInactivationBlockersForm = (DisplayInactivationBlockersForm) form;
-		DataDictionaryService dataDictionaryService = KNSServiceLocatorInternal.getDataDictionaryService();
+		DataDictionaryService dataDictionaryService = KNSServiceLocatorWeb.getDataDictionaryService();
 		InactivationBlockingDisplayService inactivationBlockingDisplayService = KNSServiceLocatorInternal.getInactivationBlockingDisplayService();
 		
 		Class blockedBoClass = Class.forName(displayInactivationBlockersForm.getBusinessObjectClassName());

@@ -22,10 +22,10 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.engine.RouteContext;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.role.QualifierResolver;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.service.DocumentService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -36,9 +36,9 @@ import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 public abstract class QualifierResolverBase implements QualifierResolver {
     private static org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(QualifierResolverBase.class);
 
-    protected static final String KIM_ATTRIBUTE_DOCUMENT_TYPE_NAME = KimAttributes.DOCUMENT_TYPE_NAME;
-    protected static final String KIM_ATTRIBUTE_DOCUMENT_NUMBER = KimAttributes.DOCUMENT_NUMBER;
-    protected static final String KIM_ATTRIBUTE_ROUTE_LEVEL_NAME = KimAttributes.ROUTE_NODE_NAME;
+    protected static final String KIM_ATTRIBUTE_DOCUMENT_TYPE_NAME = KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME;
+    protected static final String KIM_ATTRIBUTE_DOCUMENT_NUMBER = KimConstants.AttributeConstants.DOCUMENT_NUMBER;
+    protected static final String KIM_ATTRIBUTE_ROUTE_LEVEL_NAME = KimConstants.AttributeConstants.ROUTE_NODE_NAME;
 
     private static DocumentService documentService;
     
@@ -76,7 +76,7 @@ public abstract class QualifierResolverBase implements QualifierResolver {
 
 	public DocumentService getDocumentService() {
 		if ( documentService == null ) {
-			documentService = KNSServiceLocatorInternal.getDocumentService();
+			documentService = KNSServiceLocatorWeb.getDocumentService();
 		}
 		return documentService;
 	}

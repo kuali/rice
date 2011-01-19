@@ -116,7 +116,7 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 	 */
 	@Test
 	public void testFindMatchingActive_inactive() throws Exception {
-		LookupService lookupService = KNSServiceLocatorInternal.getLookupService();
+		LookupService lookupService = KNSServiceLocatorWeb.getLookupService();
 
 		Map fieldValues = new HashMap();
 		fieldValues.put(KNSPropertyConstants.ACTIVE, "N");
@@ -163,7 +163,7 @@ public class InactivateableFromToServiceTest extends KNSTestCase {
 		TravelAccountUseRate useRate = (TravelAccountUseRate) results.get(0);
 		assertTrue("Incorrect inactive record returned, does not match expected id", "6".equals(useRate.getId()));
 		
-		LookupService lookupService = KNSServiceLocatorInternal.getLookupService();
+		LookupService lookupService = KNSServiceLocatorWeb.getLookupService();
 
 		fieldValues = new HashMap();
 		fieldValues.put(KNSPropertyConstants.ACTIVE, "N");

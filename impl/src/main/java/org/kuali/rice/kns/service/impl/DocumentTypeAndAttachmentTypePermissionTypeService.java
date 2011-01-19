@@ -18,11 +18,9 @@ package org.kuali.rice.kns.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
-import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -42,9 +40,9 @@ public class DocumentTypeAndAttachmentTypePermissionTypeService extends
 		// loop over the permissions, checking the non-document-related ones
 		for (KimPermissionInfo kimPermissionInfo : permissionsList) {
 			if (!kimPermissionInfo.getDetails().containsKey(
-						KimAttributes.ATTACHMENT_TYPE_CODE)
-			  || kimPermissionInfo.getDetails().get(KimAttributes.ATTACHMENT_TYPE_CODE)
-				 .equals(requestedDetails.get(KimAttributes.ATTACHMENT_TYPE_CODE))) 		
+						KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE)
+			  || kimPermissionInfo.getDetails().get(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE)
+				 .equals(requestedDetails.get(KimConstants.AttributeConstants.ATTACHMENT_TYPE_CODE)))
 			{
 				matchingPermissions.add(kimPermissionInfo);
 			}

@@ -53,10 +53,7 @@ import org.kuali.rice.kim.rule.ui.AddRoleRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentDelegationMemberRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentGroupRule;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
-import org.kuali.rice.kim.service.IdentityService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kim.service.RoleService;
-import org.kuali.rice.kim.service.UiDocumentService;
+import org.kuali.rice.kim.service.*;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -64,7 +61,7 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.rules.TransactionalDocumentRuleBase;
 import org.kuali.rice.kns.service.BusinessObjectService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -394,9 +391,9 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
         int i = 0;
     	for(PersonDocumentRole role : roles ) {
-    		KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService( role.getKimRoleType() );
+    		KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(role.getKimRoleType());
         	if(CollectionUtils.isEmpty(role.getRolePrncpls()) && !role.getDefinitions().isEmpty()){
-        		KimTypeInfo kimTypeInfo = KIMServiceLocatorInternal.getTypeInfoService().getKimType(role.getKimRoleType().getKimTypeId());
+        		KimTypeInfo kimTypeInfo = KIMServiceLocatorWeb.getTypeInfoService().getKimType(role.getKimRoleType().getKimTypeId());
         		AttributeSet blankQualifiers = attributeValidationHelper.getBlankValueQualifiersMap(kimTypeInfo.getAttributeDefinitions());
         		AttributeSet localErrors = kimTypeService.validateAttributes(
         			role.getKimRoleType().getKimTypeId(), blankQualifiers);
@@ -579,7 +576,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	public RoleService getRoleService() {
 		if ( roleService == null ) {
-			roleService = KIMServiceLocatorInternal.getRoleService();
+			roleService = KIMServiceLocator.getRoleService();
 		}
 		return roleService;
 	}
@@ -593,7 +590,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 
 	public IdentityManagementKimDocumentAuthorizer getAuthorizer(IdentityManagementPersonDocument document) {
 		if ( authorizer == null ) {
-			authorizer = (IdentityManagementKimDocumentAuthorizer) KNSServiceLocatorInternal.getDocumentHelperService().getDocumentAuthorizer(document);
+			authorizer = (IdentityManagementKimDocumentAuthorizer) KNSServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(document);
 		}
 		return authorizer;
 	}
@@ -699,7 +696,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
 		String errorPath = "roles[" + selectedRoleIdx + "].newRolePrncpl";
 		AttributeSet validationErrors = new AttributeSet();
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
-        KimTypeService kimTypeService = KIMServiceLocatorInternal.getKimTypeService( role.getKimRoleType() );
+        KimTypeService kimTypeService = KIMServiceLocatorWeb.getKimTypeService(role.getKimRoleType());
 
         boolean attributesUnique;
 		AttributeSet errorsAttributesAgainstExisting;
@@ -758,7 +755,7 @@ public class IdentityManagementPersonDocumentRule extends TransactionalDocumentR
         KimTypeInfo kimType;
 		for(RoleDocumentDelegationMember delegationMember: delegationMembers) {
 			kimType = delegationMember.getRoleImpl().getKimRoleType();
-			kimTypeService = KIMServiceLocatorInternal.getKimTypeService(kimType);
+			kimTypeService = KIMServiceLocatorWeb.getKimTypeService(kimType);
 			roleIds = new ArrayList<String>();
 			roleIds.add(delegationMember.getRoleImpl().getRoleId());
 			errorPath = "delegationMembers["+memberCounter+"]";

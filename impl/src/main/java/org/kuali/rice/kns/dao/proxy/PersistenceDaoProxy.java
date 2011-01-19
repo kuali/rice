@@ -26,7 +26,7 @@ import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.ModuleConfiguration;
 import org.kuali.rice.kns.dao.PersistenceDao;
 import org.kuali.rice.kns.dao.impl.PersistenceDaoOjb;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.KualiModuleService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -130,7 +130,7 @@ public class PersistenceDaoProxy implements PersistenceDao {
 
 	private static KualiModuleService getKualiModuleService() {
         if (kualiModuleService == null) {
-            kualiModuleService = KNSServiceLocatorInternal.getKualiModuleService();
+            kualiModuleService = KNSServiceLocatorWeb.getKualiModuleService();
         }
         return kualiModuleService;
     }

@@ -18,6 +18,7 @@ package org.kuali.rice.kew.docsearch;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import java.io.Serializable;
 import java.util.List;
@@ -90,11 +91,11 @@ public class SearchAttributeCriteriaComponent implements Serializable {
 	}
 	
 	public boolean isComponentLowerBoundValue() {
-		return isComponentGivenBoundValue(SearchableAttribute.RANGE_LOWER_BOUND_PROPERTY_PREFIX);
+		return isComponentGivenBoundValue(KEWConstants.SearchableAttributeConstants.RANGE_LOWER_BOUND_PROPERTY_PREFIX);
 	}
 	
 	public boolean isComponentUpperBoundValue() {
-		return isComponentGivenBoundValue(SearchableAttribute.RANGE_UPPER_BOUND_PROPERTY_PREFIX);
+		return isComponentGivenBoundValue(KEWConstants.SearchableAttributeConstants.RANGE_UPPER_BOUND_PROPERTY_PREFIX);
 	}
 	
 	private boolean isComponentGivenBoundValue(String boundKeyPrefix) {

@@ -46,7 +46,7 @@ public class ParameterServiceImpl extends ParameterServiceBase implements Parame
 	protected LookupService lookupService;
 	
 	public Parameter retrieveParameter(String namespaceCode, String detailTypeCode, String parameterName) {
-	    String applicationNamespace = KNSServiceLocatorInternal.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_CODE);
+	    String applicationNamespace = KNSServiceLocator.getKualiConfigurationService().getPropertyString(KNSConstants.APPLICATION_CODE);
 	    if (StringUtils.isEmpty(applicationNamespace)) {
 	        applicationNamespace = KNSConstants.DEFAULT_APPLICATION_CODE;
 	    }
@@ -100,7 +100,7 @@ public class ParameterServiceImpl extends ParameterServiceBase implements Parame
     }    
 	
 	public List<ParameterDetailType> getNonDatabaseComponents() {
-		return KNSServiceLocatorInternal.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
+		return KNSServiceLocatorWeb.getRiceApplicationConfigurationMediationService().getNonDatabaseComponents();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -116,7 +116,7 @@ public class ParameterServiceImpl extends ParameterServiceBase implements Parame
 
 	protected LookupService getLookupService() {
 		if ( lookupService == null ) {
-			lookupService = KNSServiceLocatorInternal.getLookupService();
+			lookupService = KNSServiceLocatorWeb.getLookupService();
 		}
 		return lookupService;
 	}

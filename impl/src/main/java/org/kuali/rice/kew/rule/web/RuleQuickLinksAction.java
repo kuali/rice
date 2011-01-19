@@ -43,12 +43,12 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -209,7 +209,7 @@ public class RuleQuickLinksAction extends KewKualiAction {
 				searchCriteria.put("attributeName", "documentTypeName" );
 				searchCriteria.put("active", "Y");
 				searchCriteria.put("detailCriteria",
-						KimAttributes.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
+						KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
 						);
 				permissions = KIMServiceLocatorInternal.getPermissionService().lookupPermissions( searchCriteria, false );
 //				sqlLogger.setLevel( Level.INFO );
@@ -328,9 +328,9 @@ public class RuleQuickLinksAction extends KewKualiAction {
 				searchCriteria.put("template.name", KEWConstants.DEFAULT_RESPONSIBILITY_TEMPLATE_NAME);
 				searchCriteria.put("active", "Y");
 				searchCriteria.put("detailCriteria",
-						KimAttributes.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
+						KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME+"="+getDocumentType().getName()
 						+ ","
-						+ KimAttributes.ROUTE_NODE_NAME+"="+getRouteNodeName() );
+						+ KimConstants.AttributeConstants.ROUTE_NODE_NAME+"="+getRouteNodeName() );
 				responsibilities = KIMServiceLocatorInternal.getResponsibilityService().lookupResponsibilityInfo(searchCriteria, true);
 			}
 			return responsibilities;
@@ -364,14 +364,14 @@ public class RuleQuickLinksAction extends KewKualiAction {
     
 	public DocumentHelperService getDocumentHelperService() {
 		if(documentHelperService == null){
-			documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
+			documentHelperService = KNSServiceLocatorWeb.getDocumentHelperService();
 		}
 		return documentHelperService;
 	}
 
 	public MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if(maintenanceDocumentDictionaryService == null){
-			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal.getMaintenanceDocumentDictionaryService();
+			maintenanceDocumentDictionaryService = KNSServiceLocatorWeb.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;
 	}

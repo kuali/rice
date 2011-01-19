@@ -18,7 +18,7 @@ package org.kuali.rice.kns.datadictionary;
 
 import org.junit.Test;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.test.KNSTestCase;
 import org.kuali.test.KNSWithTestSpringContext;
 
@@ -34,9 +34,9 @@ public class DataDictionaryLazyLoadingTest extends KNSTestCase {
 
 	@Test
 	public void testBusinessObjectDataDictionaryEntriesAreSame() {
-		BusinessObjectEntry entry1 = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(AdHocRoutePerson.class.getName());
-		BusinessObjectEntry entry2 = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(AdHocRoutePerson.class.getName());
-		BusinessObjectEntry entry3 = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(AdHocRoutePerson.class.getName());
+		BusinessObjectEntry entry1 = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(AdHocRoutePerson.class.getName());
+		BusinessObjectEntry entry2 = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(AdHocRoutePerson.class.getName());
+		BusinessObjectEntry entry3 = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry(AdHocRoutePerson.class.getName());
 		
 		assertEquals(entry1, entry2);
 		assertEquals(entry1, entry3);
@@ -45,9 +45,9 @@ public class DataDictionaryLazyLoadingTest extends KNSTestCase {
 
 	@Test
 	public void testDocumentDataDictionaryEntriesAreSame() {
-		DocumentEntry entry1 = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry("CampusMaintenanceDocument");
-		DocumentEntry entry2 = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry("CampusMaintenanceDocument");
-		DocumentEntry entry3 = KNSServiceLocatorInternal.getDataDictionaryService().getDataDictionary().getDocumentEntry("CampusMaintenanceDocument");
+		DocumentEntry entry1 = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry("CampusMaintenanceDocument");
+		DocumentEntry entry2 = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry("CampusMaintenanceDocument");
+		DocumentEntry entry3 = KNSServiceLocatorWeb.getDataDictionaryService().getDataDictionary().getDocumentEntry("CampusMaintenanceDocument");
 		
 		assertEquals(entry1, entry2);
 		assertEquals(entry1, entry3);

@@ -20,8 +20,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
+import org.kuali.rice.kim.util.KimConstants;
 
 /**
  * 
@@ -63,17 +63,17 @@ public class DocumentTypeAndNodeOrStatePermissionTypeServiceImpl extends Documen
     }
 	
 	protected boolean routeNodeMatches(AttributeSet requestedDetails, AttributeSet permissionDetails) {
-		if ( StringUtils.isBlank( permissionDetails.get(KimAttributes.ROUTE_NODE_NAME) ) ) {
+		if ( StringUtils.isBlank( permissionDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME) ) ) {
 			return true;
 		}
-		return StringUtils.equals( requestedDetails.get(KimAttributes.ROUTE_NODE_NAME), permissionDetails.get(KimAttributes.ROUTE_NODE_NAME));
+		return StringUtils.equals( requestedDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME), permissionDetails.get(KimConstants.AttributeConstants.ROUTE_NODE_NAME));
 	}
 	
 	protected boolean routeStatusMatches(AttributeSet requestedDetails, AttributeSet permissionDetails) {
-		if ( StringUtils.isBlank( permissionDetails.get(KimAttributes.ROUTE_STATUS_CODE) ) ) {
+		if ( StringUtils.isBlank( permissionDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE) ) ) {
 			return true;
 		}
-		return StringUtils.equals( requestedDetails.get(KimAttributes.ROUTE_STATUS_CODE), permissionDetails.get(KimAttributes.ROUTE_STATUS_CODE));
+		return StringUtils.equals( requestedDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE), permissionDetails.get(KimConstants.AttributeConstants.ROUTE_STATUS_CODE));
 	}
 
 }

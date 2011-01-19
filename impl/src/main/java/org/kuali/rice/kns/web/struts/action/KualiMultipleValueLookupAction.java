@@ -40,7 +40,8 @@ import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.lookup.HtmlData.InputHtmlData;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.SequenceAccessorService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -343,12 +344,12 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         // we just performed the lookup, so we're on the first page (indexed from 0)
         multipleValueLookupForm.jumpToFirstPage(resultTable.size(), maxRowsPerPage);
         
-        SequenceAccessorService sas = KNSServiceLocatorInternal.getSequenceAccessorService();
+        SequenceAccessorService sas = KNSServiceLocator.getSequenceAccessorService();
         Long nextSeq = sas.getNextAvailableSequenceNumber(KNSConstants.LOOKUP_RESULTS_SEQUENCE); 
         String lookupResultsSequenceNumber = nextSeq.toString();
         multipleValueLookupForm.setLookupResultsSequenceNumber(lookupResultsSequenceNumber);
         try {
-            LookupResultsService lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
+            LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
             lookupResultsService.persistResultsTable(lookupResultsSequenceNumber, resultTable,
                     GlobalVariables.getUserSession().getPerson().getPrincipalId());
         }
@@ -374,7 +375,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         
         List<ResultRow> resultTable = null;
         try {
-            resultTable = KNSServiceLocatorInternal.getLookupResultsService().retrieveResultsTable(lookupResultsSequenceNumber, GlobalVariables.getUserSession().getPerson().getPrincipalId());
+            resultTable = KNSServiceLocatorWeb.getLookupResultsService().retrieveResultsTable(lookupResultsSequenceNumber, GlobalVariables.getUserSession().getPerson().getPrincipalId());
         }
         catch (Exception e) {
             LOG.error("error occured trying to retrieve multiple lookup results", e);
@@ -399,7 +400,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
     protected List<ResultRow> sort(MultipleValueLookupForm multipleValueLookupForm, int maxRowsPerPage) {
         String lookupResultsSequenceNumber = multipleValueLookupForm.getLookupResultsSequenceNumber();
         
-        LookupResultsService lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
+        LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
         
         List<ResultRow> resultTable = null;
         try {
@@ -462,7 +463,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
                 multipleValueLookupForm.getDisplayedObjectIdSet(), multipleValueLookupForm.getSelectedObjectIdSet());
         Set<String> compositeObjectIds = compositeObjectIdMap.keySet();
         try {
-            LookupResultsService lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
+            LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
             lookupResultsService.persistSelectedObjectIds(lookupResultsSequenceNumber, compositeObjectIds,
                     GlobalVariables.getUserSession().getPerson().getPrincipalId());
         }
@@ -482,7 +483,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         try {
             if (StringUtils.isNotBlank(lookupResultsSequenceNumber)) {
                 // we're returning nothing, so we try to get rid of stuff
-                LookupResultsService lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
+                LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
                 lookupResultsService.clearPersistedLookupResults(lookupResultsSequenceNumber);
                 multipleValueLookupForm.setLookupResultsSequenceNumber(null);
             }
@@ -507,7 +508,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         
         List<ResultRow> resultTable = null;
         try {
-            LookupResultsService lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
+            LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
             resultTable = lookupResultsService.retrieveResultsTable(lookupResultsSequenceNumber, GlobalVariables.getUserSession().getPerson().getPrincipalId());
         }
         catch (Exception e) {
@@ -529,7 +530,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         
         List<ResultRow> resultTable = null;
         try {
-            LookupResultsService lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
+            LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
             resultTable = lookupResultsService.retrieveResultsTable(lookupResultsSequenceNumber, GlobalVariables.getUserSession().getPerson().getPrincipalId());
         }
         catch (Exception e) {
@@ -576,7 +577,7 @@ public class KualiMultipleValueLookupAction extends KualiLookupAction implements
         
         List<ResultRow> resultTable = null;
         try {
-            LookupResultsService lookupResultsService = KNSServiceLocatorInternal.getLookupResultsService();
+            LookupResultsService lookupResultsService = KNSServiceLocatorWeb.getLookupResultsService();
             resultTable = lookupResultsService.retrieveResultsTable(lookupResultsSequenceNumber, GlobalVariables.getUserSession().getPerson().getPrincipalId());
         }
         catch (Exception e) {

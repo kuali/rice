@@ -28,7 +28,7 @@ import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.springframework.util.AutoPopulatingList;
@@ -318,7 +318,7 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	}
 
     public KimTypeInfo getKimTypeInfo() {
-        return KIMServiceLocatorInternal.getTypeInfoService().getKimType(this.kimTypeId);
+        return KIMServiceLocatorWeb.getTypeInfoService().getKimType(this.kimTypeId);
     }
 
 }

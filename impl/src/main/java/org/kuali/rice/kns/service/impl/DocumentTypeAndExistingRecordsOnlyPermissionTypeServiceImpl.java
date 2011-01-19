@@ -17,8 +17,8 @@ package org.kuali.rice.kns.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.support.impl.KimPermissionTypeServiceBase;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.KNSConstants;
 
 public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends
@@ -29,8 +29,8 @@ public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends
 		if ( inputAttributeSet == null || storedAttributeSet == null ) {
 			return false;
 		}
-		String requestedDocumentType = inputAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME);
-		String permissionDocumentType = storedAttributeSet.get(KimAttributes.DOCUMENT_TYPE_NAME);
+		String requestedDocumentType = inputAttributeSet.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);
+		String permissionDocumentType = storedAttributeSet.get(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME);
 		if ( requestedDocumentType == null || permissionDocumentType == null ) {
 			return false; // again, don't match if missing document types
 		}
@@ -39,7 +39,7 @@ public class DocumentTypeAndExistingRecordsOnlyPermissionTypeServiceImpl extends
 			return false;
 		}
 		// check the existing attributes only flag
-		if ( !Boolean.parseBoolean(storedAttributeSet.get(KimAttributes.EXISTING_RECORDS_ONLY)) ) {
+		if ( !Boolean.parseBoolean(storedAttributeSet.get(KimConstants.AttributeConstants.EXISTING_RECORDS_ONLY)) ) {
 			// if not set, then any document action allowed
 			return true;
 		}

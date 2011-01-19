@@ -22,7 +22,7 @@ import java.util.List;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kns.bo.ParameterType;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KeyValuesService;
 
 /**
@@ -38,7 +38,7 @@ public class ParameterTypeValuesFinder extends KeyValuesBase {
 	public List<KeyValue> getKeyValues() {
 
         // get a list of all CampusTypes
-        KeyValuesService boService = KNSServiceLocatorInternal.getKeyValuesService();
+        KeyValuesService boService = KNSServiceLocator.getKeyValuesService();
         List<ParameterType> bos = (List) boService.findAll(ParameterType.class);
         // copy the list of codes before sorting, since we can't modify the results from this method
         if ( bos == null ) {

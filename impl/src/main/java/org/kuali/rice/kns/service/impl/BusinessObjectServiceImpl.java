@@ -39,12 +39,7 @@ import org.kuali.rice.kns.bo.PersistableBusinessObject;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.exception.ObjectNotABusinessObjectRuntimeException;
 import org.kuali.rice.kns.exception.ReferenceAttributeDoesntExistException;
-import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
-import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.service.ModuleService;
-import org.kuali.rice.kns.service.PersistenceService;
-import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.transaction.annotation.Transactional;
@@ -360,7 +355,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService {
         // only do the retrieval if all Foreign Keys have values
         if (allFkeysHaveValues) {
         	if (ExternalizableBusinessObject.class.isAssignableFrom(referenceClass)) {
-        		ModuleService responsibleModuleService = KNSServiceLocatorInternal.getKualiModuleService().getResponsibleModuleService(referenceClass);
+        		ModuleService responsibleModuleService = KNSServiceLocatorWeb.getKualiModuleService().getResponsibleModuleService(referenceClass);
 				if(responsibleModuleService!=null) {
 					return (BusinessObject)responsibleModuleService.getExternalizableBusinessObject(referenceClass, pkMap);
 				}

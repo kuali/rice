@@ -29,8 +29,9 @@ import org.kuali.rice.kns.document.SessionDocument;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.exception.InactiveDocumentTypeAuthorizationException;
-import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.datadictionary.exception.UnknownDocumentTypeException;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
@@ -83,7 +84,7 @@ public class RIADocument extends TransactionalDocumentBase implements SessionDoc
         }
 
         // get the class for RIA document
-        Class documentClass = KNSServiceLocatorInternal.getDataDictionaryService().getDocumentClassByTypeName(documentTypeName);
+        Class documentClass = KNSServiceLocatorWeb.getDataDictionaryService().getDocumentClassByTypeName(documentTypeName);
         
         if (documentClass == null) {
             throw new UnknownDocumentTypeException("unknown document type '" + documentTypeName + "'");
@@ -98,7 +99,7 @@ public class RIADocument extends TransactionalDocumentBase implements SessionDoc
         }
 
         // get the authorization
-        DocumentAuthorizer documentAuthorizer = KNSServiceLocatorInternal.getDocumentHelperService().getDocumentAuthorizer(documentTypeName);
+        DocumentAuthorizer documentAuthorizer = KNSServiceLocatorWeb.getDocumentHelperService().getDocumentAuthorizer(documentTypeName);
 
         // make sure this person is authorized to initiate
         log.debug("calling canInitiate from getNewDocument()");
@@ -106,9 +107,9 @@ public class RIADocument extends TransactionalDocumentBase implements SessionDoc
 
         // create workflow document for riaDocumentTypeName
         KualiWorkflowDocument workflowDocument = 
-        	KNSServiceLocatorInternal.getWorkflowDocumentService().createWorkflowDocument(riaDocumentTypeName, GlobalVariables.getUserSession().getPerson());
+        	KNSServiceLocatorWeb.getWorkflowDocumentService().createWorkflowDocument(riaDocumentTypeName, GlobalVariables.getUserSession().getPerson());
         
-        KNSServiceLocatorInternal.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
+        KNSServiceLocatorWeb.getSessionDocumentService().addDocumentToUserSession(GlobalVariables.getUserSession(), workflowDocument);
         
         // create a new document header object
         DocumentHeader documentHeader = new DocumentHeader();

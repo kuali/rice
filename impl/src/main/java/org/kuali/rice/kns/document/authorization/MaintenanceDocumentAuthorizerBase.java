@@ -22,11 +22,10 @@ import java.util.Set;
 
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.MaintenanceDocument;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.MaintenanceDocumentDictionaryService;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
@@ -41,7 +40,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 	@SuppressWarnings("unchecked")
 	public final boolean canCreate(Class boClass, Person user) {
 		AttributeSet permissionDetails = new AttributeSet();
-		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
+		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
 				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
 						boClass));
 		permissionDetails.put(KNSConstants.MAINTENANCE_ACTN,
@@ -60,7 +59,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 	@SuppressWarnings("unchecked")
 	public final boolean canMaintain(BusinessObject businessObject, Person user) {
 		Map<String, String> permissionDetails = new HashMap<String, String>(2);
-		permissionDetails.put(KimAttributes.DOCUMENT_TYPE_NAME,
+		permissionDetails.put(KimConstants.AttributeConstants.DOCUMENT_TYPE_NAME,
 				getMaintenanceDocumentDictionaryService().getDocumentTypeName(
 						businessObject.getClass()));
 		permissionDetails.put(KNSConstants.MAINTENANCE_ACTN,
@@ -122,7 +121,7 @@ public class MaintenanceDocumentAuthorizerBase extends DocumentAuthorizerBase
 
 	protected final MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
 		if (maintenanceDocumentDictionaryService == null) {
-			maintenanceDocumentDictionaryService = KNSServiceLocatorInternal
+			maintenanceDocumentDictionaryService = KNSServiceLocatorWeb
 					.getMaintenanceDocumentDictionaryService();
 		}
 		return maintenanceDocumentDictionaryService;

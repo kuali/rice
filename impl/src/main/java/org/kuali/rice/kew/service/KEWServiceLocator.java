@@ -17,7 +17,7 @@ package org.kuali.rice.kew.service;
 
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
-import org.kuali.rice.core.config.ModuleConfigurer.RunMode;
+import org.kuali.rice.core.config.RunMode;
 import org.kuali.rice.core.config.NodeSettings;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;

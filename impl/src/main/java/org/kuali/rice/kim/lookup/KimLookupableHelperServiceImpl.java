@@ -16,13 +16,13 @@
 package org.kuali.rice.kim.lookup;
 
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizer;
 import org.kuali.rice.kns.document.authorization.DocumentPresentationController;
 import org.kuali.rice.kns.lookup.KualiLookupableHelperServiceImpl;
 import org.kuali.rice.kns.service.DocumentHelperService;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.util.GlobalVariables;
 
 /**
@@ -51,14 +51,14 @@ public class KimLookupableHelperServiceImpl extends KualiLookupableHelperService
 
 	protected DocumentHelperService getDocumentHelperService() {
 	    if ( documentHelperService == null ) {
-	        documentHelperService = KNSServiceLocatorInternal.getDocumentHelperService();
+	        documentHelperService = KNSServiceLocatorWeb.getDocumentHelperService();
 		}
 	    return documentHelperService;
 	}
 
 	protected KimTypeInfoService getTypeInfoService() {
 	    if ( typeInfoService == null ) {
-	    	typeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
+	    	typeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
 		}
 	    return typeInfoService;
 	}

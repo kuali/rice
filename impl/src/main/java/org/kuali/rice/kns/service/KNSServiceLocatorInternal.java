@@ -16,10 +16,8 @@ package org.kuali.rice.kns.service;
 import com.opensymphony.oscache.general.GeneralCacheAdministrator;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kns.dao.BusinessObjectDao;
 import org.kuali.rice.kns.dao.DocumentDao;
-import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.lookup.LookupResultsService;
 import org.kuali.rice.kns.lookup.Lookupable;
 import org.kuali.rice.kns.question.Question;
@@ -27,7 +25,6 @@ import org.kuali.rice.kns.util.OjbCollectionHelper;
 import org.kuali.rice.kns.util.cache.MethodCacheInterceptor;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
-import org.kuali.rice.kns.workflow.service.WorkflowDocumentService;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -39,11 +36,6 @@ public class KNSServiceLocatorInternal {
 
     public static <T extends Object> T getService(String serviceName) {
     	return GlobalResourceLoader.<T>getService(serviceName);
-    }
-
-    public static final String EXCEPTION_INCIDENT_REPORT_SERVICE = "knsExceptionIncidentService";
-    public static final KualiExceptionIncidentService getKualiExceptionIncidentService() {
-    	return (KualiExceptionIncidentService) getService(EXCEPTION_INCIDENT_REPORT_SERVICE);
     }
 
 
@@ -59,124 +51,16 @@ public class KNSServiceLocatorInternal {
 	return (MethodCacheInterceptor) getService(METHOD_CACHE_INTERCEPTOR);
     }
 
-    public static final String BUSINESS_OBJECT_AUTHORIZATION_SERVICE = "businessObjectAuthorizationService";
-
-    public static BusinessObjectAuthorizationService getBusinessObjectAuthorizationService() {
-	return (BusinessObjectAuthorizationService) getService(BUSINESS_OBJECT_AUTHORIZATION_SERVICE);
-    }
-
-    public static final String XML_OBJECT_SERIALIZER_SERVICE = "xmlObjectSerializerService";
-
-    public static XmlObjectSerializerService getXmlObjectSerializerService() {
-	return (XmlObjectSerializerService) getService(XML_OBJECT_SERIALIZER_SERVICE);
-    }
-
-    public static final String DOCUMENT_SERVICE = "documentService";
-
-    public static DocumentService getDocumentService() {
-	return (DocumentService) getService(DOCUMENT_SERVICE);
-    }
-
-    public static final String DOCUMENT_HEADER_SERVICE = "documentHeaderService";
-
-    public static DocumentHeaderService getDocumentHeaderService() {
-    return (DocumentHeaderService) getService(DOCUMENT_HEADER_SERVICE);
-    }
-
     public static final String POST_PROCESSOR_SERVICE = "postProcessorService";
 
     public static PostProcessorService getPostProcessorService() {
 	return (PostProcessorService) getService(POST_PROCESSOR_SERVICE);
     }
 
-    public static final String LOOKUP_SERVICE = "lookupService";
-
-    public static LookupService getLookupService() {
-	return (LookupService) getService(LOOKUP_SERVICE);
-    }
-
-    public static final String LOOKUP_RESULTS_SERVICE = "lookupResultsService";
-
-    public static LookupResultsService getLookupResultsService() {
-	return (LookupResultsService) getService(LOOKUP_RESULTS_SERVICE);
-    }
-
-    public static final String KUALI_MODULE_SERVICE = "kualiModuleService";
-
-    public static KualiModuleService getKualiModuleService() {
-	return (KualiModuleService) getService(KUALI_MODULE_SERVICE);
-    }
-
-    public static final String WORKFLOW_DOCUMENT_SERVICE = "workflowDocumentService";
-
-    public static WorkflowDocumentService getWorkflowDocumentService() {
-	return (WorkflowDocumentService) getService(WORKFLOW_DOCUMENT_SERVICE);
-    }
-
-    public static final String WORKFLOW_INFO_SERVICE = "workflowInfoService";
-
-    public static KualiWorkflowInfo getWorkflowInfoService() {
-	return (KualiWorkflowInfo) getService(WORKFLOW_INFO_SERVICE);
-    }
-
-    public static final String KUALI_CONFIGURATION_SERVICE = "kualiConfigurationService";
-
-    public static KualiConfigurationService getKualiConfigurationService() {
-	return (KualiConfigurationService) getService(KUALI_CONFIGURATION_SERVICE);
-    }
-    
-    public static final String PARAMETER_SERVICE = "parameterService";
-    
-    public static ParameterService getParameterService() {
-    	return (ParameterService) getService(PARAMETER_SERVICE);
-    }
-    
     public static final String PARAMETER_SERVER_SERVICE = "parameterServerService";
     
     public static ParameterServerService getParameterServerService() {
     	return (ParameterServerService) getService(PARAMETER_SERVER_SERVICE);
-    }
-
-    public static final String BUSINESS_OBJECT_DICTIONARY_SERVICE = "businessObjectDictionaryService";
-
-    public static BusinessObjectDictionaryService getBusinessObjectDictionaryService() {
-	return (BusinessObjectDictionaryService) getService(BUSINESS_OBJECT_DICTIONARY_SERVICE);
-    }
-
-    public static final String BUSINESS_OBJECT_METADATA_SERVICE = "businessObjectMetaDataService";
-
-    public static BusinessObjectMetaDataService getBusinessObjectMetaDataService() {
-	return (BusinessObjectMetaDataService) getService(BUSINESS_OBJECT_METADATA_SERVICE);
-    }
-
-    public static final String TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE = "transactionalDocumentDictionaryService";
-
-    public static TransactionalDocumentDictionaryService getTransactionalDocumentDictionaryService() {
-	return (TransactionalDocumentDictionaryService) getService(TRANSACTIONAL_DOCUMENT_DICTIONARY_SERVICE);
-    }
-
-    public static final String MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE = "maintenanceDocumentDictionaryService";
-
-    public static MaintenanceDocumentDictionaryService getMaintenanceDocumentDictionaryService() {
-	return (MaintenanceDocumentDictionaryService) getService(MAINTENANCE_DOCUMENT_DICTIONARY_SERVICE);
-    }
-
-    public static final String DATA_DICTIONARY_SERVICE = "dataDictionaryService";
-
-    public static DataDictionaryService getDataDictionaryService() {
-	return (DataDictionaryService) getService(DATA_DICTIONARY_SERVICE);
-    }
-
-    public static final String MAINTENANCE_DOCUMENT_SERVICE = "maintenanceDocumentService";
-
-    public static MaintenanceDocumentService getMaintenanceDocumentService() {
-	return (MaintenanceDocumentService) getService(MAINTENANCE_DOCUMENT_SERVICE);
-    }
-
-    public static final String KUALI_RULE_SERVICE = "kualiRuleService";
-
-    public static KualiRuleService getKualiRuleService() {
-	return (KualiRuleService) getService(KUALI_RULE_SERVICE);
     }
 
     public static final String NAMESPACE_SERVICE = "namespaceService";
@@ -184,48 +68,9 @@ public class KNSServiceLocatorInternal {
     public static NamespaceService getNamespaceService() {
 	return (NamespaceService) getService(NAMESPACE_SERVICE);
     }
-    
-    // special ones for Inquirable and Lookupable
-    public static final String KUALI_INQUIRABLE = "kualiInquirable";
-
-    public static Inquirable getKualiInquirable() {
-	return (Inquirable) getService(KUALI_INQUIRABLE);
-    }
-
-    public static final String KUALI_LOOKUPABLE = "kualiLookupable";
 
     public static Lookupable getKualiLookupable() {
-	return (Lookupable) getService(KUALI_LOOKUPABLE);
-    }
-
-    public static Lookupable getLookupable(String lookupableName) {
-	return (Lookupable) getService(lookupableName);
-    }
-
-    // special one for QuestionPrompt
-    public static Question getQuestion(String questionName) {
-	return (Question) getService(questionName);
-    }
-
-    // DictionaryValidationService
-    public static final String DICTIONARY_VALIDATION_SERVICE = "dictionaryValidationService";
-
-    public static DictionaryValidationService getDictionaryValidationService() {
-	return (DictionaryValidationService) getService(DICTIONARY_VALIDATION_SERVICE);
-    }
-
-    // SequenceAccessorService
-    public static final String SEQUENCE_ACCESSOR_SERVICE = "sequenceAccessorService";
-
-    public static SequenceAccessorService getSequenceAccessorService() {
-	return (SequenceAccessorService) getService(SEQUENCE_ACCESSOR_SERVICE);
-    }
-
-    // KeyValuesService
-    public static final String KEY_VALUES_SERVICE = "keyValuesService";
-
-    public static KeyValuesService getKeyValuesService() {
-	return (KeyValuesService) getService(KEY_VALUES_SERVICE);
+	return (Lookupable) getService(KNSServiceLocatorWeb.KUALI_LOOKUPABLE);
     }
 
     public static final String OJB_COLLECTION_HELPER = "ojbCollectionHelper";
@@ -251,61 +96,13 @@ public class KNSServiceLocatorInternal {
     public static TransactionTemplate getTransactionTemplate() {
 	return (TransactionTemplate) getService(TRANSACTION_TEMPLATE);
     }
-        
-    public static final String PESSIMISTIC_LOCK_SERVICE = "pessimisticLockService";
-    
-    public static PessimisticLockService getPessimisticLockService() {
-        return (PessimisticLockService) getService(PESSIMISTIC_LOCK_SERVICE);
-    }
-    
-    public static final String DOCUMENT_SERIALIZER_SERVICE = "documentSerializerService";
-    
-    public static DocumentSerializerService getDocumentSerializerService() {
-        return (DocumentSerializerService) getService(DOCUMENT_SERIALIZER_SERVICE);
-    }
-    
-    public static final String ENTITY_MANAGER_FACTORY = "entityManagerFactory";
 
-    public static EntityManagerFactory getEntityManagerFactory() {
-    	return (EntityManagerFactory) getService(ENTITY_MANAGER_FACTORY);
-    }
-    
-    public static final String APPLICATION_ENTITY_MANAGER_FACTORY = "knsApplicationEntityManagerFactory";
-    
-    public static EntityManagerFactory getApplicationEntityManagerFactory() {
-    	return (EntityManagerFactory) getService(APPLICATION_ENTITY_MANAGER_FACTORY);
-    }
-
-    public static final String PERSISTENCE_SERVICE_OJB = "persistenceServiceOjb";
-    
-    public static PersistenceService getPersistenceServiceOjb() {
-        return (PersistenceService) getService(PERSISTENCE_SERVICE_OJB);
-    }
-    
-    public static final String SESSION_DOCUMENT_SERVICE = "sessionDocumentService";
-
-    public static SessionDocumentService getSessionDocumentService() {
-	return (SessionDocumentService) getService(SESSION_DOCUMENT_SERVICE);
-    }
-
-    public static final String DEFAULT_INACTIVATION_BLOCKING_DETECTION_SERVICE = "inactivationBlockingDetectionService";
-    
-    public static InactivationBlockingDetectionService getInactivationBlockingDetectionService(String serviceName) {
-        return (InactivationBlockingDetectionService) getService(serviceName);
-    }
-    
     public static final String INACTIVATION_BLOCKING_DISPLAY_SERVICE = "inactivationBlockingDisplayService";
     
     public static InactivationBlockingDisplayService getInactivationBlockingDisplayService() {
     	return (InactivationBlockingDisplayService) getService(INACTIVATION_BLOCKING_DISPLAY_SERVICE);
     }
-    
-    public static final String SERIALIZER_SERVICE = "businessObjectSerializerService";
-    
-    public static BusinessObjectSerializerService getBusinessObjectSerializerService() {
-        return (BusinessObjectSerializerService) getService(SERIALIZER_SERVICE);
-    }
-    
+
     public static final String COUNTRY_SERVICE = "countryService";
 
     public static CountryService getCountryService() {
@@ -342,25 +139,13 @@ public class KNSServiceLocatorInternal {
     public static BusinessObjectAuthorizationService getMaintenanceDocumentAuthorizationService() {
     	return (BusinessObjectAuthorizationService) getService(MAINTENANCE_DOCUMENT_AUTHORIZATION_SERVICE);
     }
-    
-    public static final String DOCUMENT_HELPER_SERVICE = "documentHelperService";
-    
-    public static DocumentHelperService getDocumentHelperService() {
-        return (DocumentHelperService) getService(DOCUMENT_HELPER_SERVICE);
-    }
-    
+
     public static final String RICE_APPLICATION_CONFIGURATION_SERVICE = "riceApplicationConfigurationService";
     
     public static RiceApplicationConfigurationService getRiceApplicationConfigurationService() {
     	return (RiceApplicationConfigurationService) getService(RICE_APPLICATION_CONFIGURATION_SERVICE);
     }
 
-    public static final String RICE_APPLICATION_CONFIGURATION_MEDIATION_SERVICE = "riceApplicationConfigurationMediationService";
-    
-    public static RiceApplicationConfigurationMediationService getRiceApplicationConfigurationMediationService() {
-    	return (RiceApplicationConfigurationMediationService) getService(RICE_APPLICATION_CONFIGURATION_MEDIATION_SERVICE);
-    }
-    
     public static final String WORKFLOW_ATTRIBUTE_PROPERTY_RESOLUTION_SERVICE = "workflowAttributesPropertyResolutionService";
     
     public static WorkflowAttributePropertyResolutionService getWorkflowAttributePropertyResolutionService() {

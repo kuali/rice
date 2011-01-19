@@ -24,7 +24,7 @@ import org.kuali.rice.kim.bo.Role;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocatorWeb;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.springframework.util.AutoPopulatingList;
@@ -259,7 +259,7 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	private transient static KimTypeInfoService kimTypeInfoService;
 	protected KimTypeInfoService getTypeInfoService() {
 		if(kimTypeInfoService == null){
-			kimTypeInfoService = KIMServiceLocatorInternal.getTypeInfoService();
+			kimTypeInfoService = KIMServiceLocatorWeb.getTypeInfoService();
 		}
 		return kimTypeInfoService;
 	}

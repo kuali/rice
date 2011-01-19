@@ -13,9 +13,10 @@
 package org.kuali.rice.test.runners;
 
 import org.apache.commons.beanutils.MethodUtils;
-import org.junit.internal.runners.InitializationError;
-import org.junit.internal.runners.JUnit4ClassRunner;
 import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.InitializationError;
 import org.kuali.rice.test.MethodAware;
 
 import java.lang.reflect.Method;
@@ -27,21 +28,18 @@ import java.lang.reflect.Method;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  * @since 0.9
  */
-public class RiceUnitTestClassRunner extends JUnit4ClassRunner {
-    //private PerTestDataLoaderLifecycle perTestDataLoaderLifecycle;
+public class RiceUnitTestClassRunner extends BlockJUnit4ClassRunner {
     private Method currentMethod;
     
     public RiceUnitTestClassRunner(final Class<?> testClass) throws InitializationError {
         super(testClass);
-        
     }
 
     @Override
-    protected void invokeTestMethod(Method method, RunNotifier runNotifier) {
-        this.currentMethod = method;
+    protected void runChild(FrameworkMethod method, RunNotifier notifier) {
+        this.currentMethod = method.getMethod();
         try {
-            //perTestDataLoaderLifecycle = new PerTestDataLoaderLifecycle(method);
-            super.invokeTestMethod(method, runNotifier);
+            super.runChild(method, notifier);
         } finally {
             this.currentMethod = null;
         }
@@ -52,45 +50,25 @@ public class RiceUnitTestClassRunner extends JUnit4ClassRunner {
         Object test = super.createTest();
         setTestName(test, currentMethod);
         setTestMethod(test, currentMethod);
-        //setTestPerTestDataLoaderLifecycle(test);
         return test;
     }
 
     /**
      * Sets the {@link java.lang.reflect.Method} on the test case if it is {@link MethodAware}
+     * @param test the test instance
      * @param method the current method to be run
      */
     protected void setTestMethod(Object test, Method method) {
-        try {
-            if (test instanceof MethodAware) {
-                ((MethodAware) test).setTestMethod(method);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            // something went horribly wrong?
+        if (test instanceof MethodAware) {
+            ((MethodAware) test).setTestMethod(method);
         }
     }
 
-    /*
-    protected void setTestPerTestDataLoaderLifecycle(final Object test) {
-        try {
-            final Method setPerTestDataLoaderLifecycle = MethodUtils.getAccessibleMethod(test.getClass(), "setPerTestDataLoaderLifecycle", new Class[]{PerTestDataLoaderLifecycle.class});
-            setPerTestDataLoaderLifecycle.invoke(test, new Object[]{perTestDataLoaderLifecycle});
-        } catch (final Exception e) {
-            // no setPerTestDataLoaderLifecycle method or we failed to invoke it so we can't set the lifecycle
-        }
-    }*/
-
-    protected void setTestName(final Object test, final Method testMethod) {
-        try {
-            String name = testMethod == null ? "" : testMethod.getName();
-            final Method setNameMethod = MethodUtils.getAccessibleMethod(test.getClass(), "setName", new Class[]{String.class});
-            if (setNameMethod != null) {
-                setNameMethod.invoke(test, new Object[]{name});
-            }
-        } catch (final Exception e) {
-            // no setName method or we failed to invoke it so we can't set the name
+    protected void setTestName(final Object test, final Method testMethod) throws Exception {
+        String name = testMethod == null ? "" : testMethod.getName();
+        final Method setNameMethod = MethodUtils.getAccessibleMethod(test.getClass(), "setName", new Class[]{String.class});
+        if (setNameMethod != null) {
+            setNameMethod.invoke(test, name);
         }
     }
-
 }

@@ -41,7 +41,8 @@ public class KradConfigurableWebBindingInitializer extends ConfigurableWebBindin
         binder.registerCustomEditor(KualiDecimal.class, new KualiFormatterPropertyEditor(CurrencyFormatter.class)); 
         binder.registerCustomEditor(KualiInteger.class, new KualiFormatterPropertyEditor(KualiIntegerCurrencyFormatter.class));
         binder.registerCustomEditor(KualiPercent.class, new KualiFormatterPropertyEditor(PercentageFormatter.class));
-
+        binder.registerCustomEditor(boolean.class, new KradBooleanBinder());
+        
 	    super.initBinder(binder, request);
     }
 

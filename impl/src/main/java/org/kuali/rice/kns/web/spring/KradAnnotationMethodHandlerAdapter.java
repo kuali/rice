@@ -17,6 +17,7 @@ package org.kuali.rice.kns.web.spring;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.kuali.rice.kns.web.spring.form.UifFormBase;
 import org.kuali.rice.kns.web.spring.form.KualiSpringInterceptorForm;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
@@ -29,17 +30,15 @@ import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAda
  */
 public class KradAnnotationMethodHandlerAdapter extends AnnotationMethodHandlerAdapter {
 
-	@Override
+    @Override
     protected ServletRequestDataBinder createBinder(HttpServletRequest request, Object target, String objectName) throws Exception {
-		if (target != null) {
-			if (target instanceof KualiSpringInterceptorForm) {
-				KualiSpringInterceptorForm kualiForm = (KualiSpringInterceptorForm) target;
-//				if (kualiForm.isUsingSpring()) {
-					return new KradServletRequestDataBinder(target, objectName);
-//				}
-			}
-		}
-	    return super.createBinder(request, target, objectName);
+        if (target != null) {
+            if (target instanceof KualiSpringInterceptorForm || target instanceof UifFormBase) {
+
+                return new KradServletRequestDataBinder(target, objectName);
+            }
+        }
+        return super.createBinder(request, target, objectName);
     }
 
 }

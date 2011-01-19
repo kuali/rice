@@ -15,60 +15,39 @@
  */
 package org.kuali.rice.kns.web.spring.controller;
 
-import java.util.Collections;
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.uif.UIFConstants;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.RiceKeyConstants;
-import org.kuali.rice.kns.web.spring.KradBooleanBinder;
-import org.kuali.rice.kns.web.struts.form.InquiryForm;
-import org.kuali.rice.kns.web.ui.Field;
-import org.kuali.rice.kns.web.ui.Row;
-import org.kuali.rice.kns.web.ui.Section;
+import org.kuali.rice.kns.web.spring.form.InquiryForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import org.apache.commons.lang.StringUtils;
-
 /**
- * This is a description of what this class does - swgibson don't forget to fill this in. 
+ * This class is the handler for inquiries of business objects. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
 @Controller
 @RequestMapping(value="/inquiry")
-public class InquiryController {
+public class InquiryController extends UifControllerBase {
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(InquiryController.class);
 	
 	protected ViewService viewService;
 	
-//	@ModelAttribute("KualiForm")
-//	public InquiryForm prepareForm() {
-//		InquiryForm form = new InquiryForm();
-//		form.setUsingSpring(true);
-//		
-//		return form;
-//	}
-	
-	@InitBinder
-    public void initBinder(WebDataBinder binder) {
-        binder.registerCustomEditor(boolean.class, new KradBooleanBinder());
-    }
 
 	@RequestMapping(params="methodToCall=start")
 	public ModelAndView start(@ModelAttribute("KualiForm") InquiryForm inquiryForm,
@@ -76,6 +55,10 @@ public class InquiryController {
 		return continueWithInquiry(inquiryForm, result, request, response);
 	}
 	
+	/**
+     * @param result  
+	 * @param response 
+     */
 	@RequestMapping(params="methodToCall=continueWithInquiry")
 	public ModelAndView continueWithInquiry(@ModelAttribute("KualiForm") InquiryForm inquiryForm,
 			BindingResult result, HttpServletRequest request, HttpServletResponse response) {
@@ -86,10 +69,6 @@ public class InquiryController {
         checkBO(bo);
         
         inquiryForm.setBo(bo);
-        
-        populateSections(request, inquiryForm, bo);
-        
-        //return new ModelAndView("test/KualiDirectInquiry", "KualiForm", inquiryForm);
         
         // temporary create default view
         String viewId = StringUtils.substringAfterLast(inquiryForm.getBusinessObjectClassName(), ".");
@@ -110,37 +89,6 @@ public class InquiryController {
         }
     }
     
-    /**
-     * Returns a section list with one empty section and one row.
-     * 
-     * @return list of sections
-     */
-    private List<Section> getEmptySections(String title) {
-    	final Row row = new Row(Collections.<Field>emptyList());
-    	
-    	final Section section = new Section(Collections.singletonList(row));
-		section.setErrorKey("*");
-		section.setSectionTitle(title != null ? title : "");
-		section.setNumberOfColumns(0);
-		
-		return Collections.singletonList(section);
-    }
-    
-    protected void populateSections(HttpServletRequest request, InquiryForm inquiryForm, BusinessObject bo) {
-    	Inquirable kualiInquirable = inquiryForm.getInquirable();
-    	
-    	if (bo != null) {
-    		// get list of populated sections for display
-    		List sections = kualiInquirable.getSections(bo);
-        	inquiryForm.setSections(sections);
-        	kualiInquirable.addAdditionalSections(sections, bo);
-    	} else {
-    		inquiryForm.setSections(getEmptySections(kualiInquirable.getTitle()));
-    	}
-
-        request.setAttribute(KNSConstants.INQUIRABLE_ATTRIBUTE_NAME, kualiInquirable);
-    }
-    
 	protected BusinessObject retrieveBOFromInquirable(InquiryForm inquiryForm) {
     	Inquirable kualiInquirable = inquiryForm.getInquirable();
         // retrieve the business object
@@ -157,14 +105,14 @@ public class InquiryController {
 		view.setCurrentPageId(pageId);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("KualiForm", form);
+		modelAndView.addObject(UIFConstants.DEFAULT_MODEL_NAME, form);
 		modelAndView.addObject("View", view);
 
 		modelAndView.setViewName("View");
 
 		return modelAndView;
 	}
-
+	
 	protected ViewService getViewService() {
 		if (viewService == null) {
 			viewService = KNSServiceLocator.getViewService();

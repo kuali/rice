@@ -19,11 +19,11 @@
   
   <bean id="handlerMapping" class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
     <property name="interceptors">
-      <ref bean="kradControllerHandlerInterceptor"/>
+      <ref bean="uifControllerHandlerInterceptor"/>
     </property>
   </bean>
 
-  <bean id="kradControllerHandlerInterceptor" class="org.kuali.rice.kns.web.spring.KradControllerHandlerInterceptor" />
+  <bean id="uifControllerHandlerInterceptor" class="org.kuali.rice.kns.web.spring.UifControllerHandlerInterceptor" />
   
   <bean class="org.kuali.rice.kns.web.spring.KradAnnotationMethodHandlerAdapter">
     <property name="webBindingInitializer">

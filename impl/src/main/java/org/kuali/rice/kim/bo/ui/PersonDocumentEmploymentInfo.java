@@ -15,29 +15,17 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.*;
 import org.hibernate.annotations.Parameter;
-import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.bo.reference.EmploymentStatus;
 import org.kuali.rice.kim.bo.reference.EmploymentType;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
+
+import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -172,21 +160,6 @@ public class PersonDocumentEmploymentInfo extends KimDocumentBoActivatableEditab
 	 */
 	public void setPrimary(boolean primary) {
 		this.primary = primary;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = super.toStringMapper();
-		m.put( "entityEmploymentId", entityEmploymentId );
-		m.put( "entityAffiliationId", entityAffiliationId );
-		m.put( "employeeStatusCode", employmentStatusCode );
-		m.put( "employmentTypeCode", employmentTypeCode );
-		m.put( "baseSalaryAmount", baseSalaryAmount );
-		m.put( "primary", primary );
-		return m;
 	}
 
 	public void setEntityEmploymentId(String entityEmploymentId) {

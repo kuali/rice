@@ -16,12 +16,12 @@
 package org.kuali.rice.kns.bo;
 
 
-import java.util.LinkedHashMap;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This is a description of what this class does - chang don't forget to fill this in. 
@@ -60,12 +60,4 @@ public class AttributeReferenceElementsTest extends KNSTestCase {
 		dummyAttributeReferenceElement.setExtendedTextArea("dummyAttributeReferenceElement");
 		assertEquals("Testing ExtendedTextArea in AttributeReferenceElements","dummyAttributeReferenceElement",dummyAttributeReferenceElement.getExtendedTextArea());
 	}
-	
-
-	@Test
-	public void testToStringMapper(){
-		LinkedHashMap dummyMap = dummyAttributeReferenceElement.toStringMapper();
-		assertNotNull("Testing toStringMapper of Attachment in AttachmentTest", dummyMap.get("hashCode"));
-	}
-	
 }

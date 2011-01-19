@@ -15,20 +15,6 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -45,6 +31,10 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -128,19 +118,6 @@ public class KimPermissionImpl extends PersistableBusinessObjectBase implements 
 
 	public void setName(String permissionName) {
 		this.name = permissionName;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "permissionId", permissionId );
-		m.put( "name", name );
-		m.put( "details", getDetails() );
-		return m;
 	}
 
 	public KimPermissionInfo toSimpleInfo() {

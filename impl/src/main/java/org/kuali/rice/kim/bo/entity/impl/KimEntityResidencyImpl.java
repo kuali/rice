@@ -15,17 +15,11 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.entity.KimEntityResidency;
+
+import javax.persistence.*;
 
 /**
  * This class is used to store residency information about an entity. 
@@ -111,18 +105,5 @@ public class KimEntityResidencyImpl extends KimEntityDataBase implements KimEnti
 	 */
 	public String getInState() {
 		return inStateFlag;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap<String, String> m = new LinkedHashMap<String, String>();
-		m.put("id", id);
-		m.put("entityId", entityId);
-		m.put("determinationMethod", determinationMethod);
-		m.put("inStateFlag", inStateFlag);
-		return m;
 	}
 }

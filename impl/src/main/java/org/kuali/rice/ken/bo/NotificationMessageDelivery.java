@@ -15,22 +15,12 @@
  */
 package org.kuali.rice.ken.bo;
 
-import java.sql.Timestamp;
-import java.util.LinkedHashMap;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * This class represents and instance of a NotificationMessageDelivery.  A Notification gets delivered to 
@@ -189,22 +179,4 @@ public class NotificationMessageDelivery extends PersistableBusinessObjectBase i
     public void setDeliverySystemId(String deliverySystemId) {
         this.deliverySystemId = deliverySystemId;
     }
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("id", getId());
-        m.put("messageDeliveryStatus", messageDeliveryStatus);
-        m.put("userRecipientId", userRecipientId);
-        m.put("deliverySystemId", deliverySystemId);
-        m.put("lockedDate", lockedDate);
-        m.put("notification", notification);
-
-        return m;
-	}
 }

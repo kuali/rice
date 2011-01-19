@@ -16,19 +16,12 @@
  */
 package org.kuali.rice.kew.edl.bo;
 
-import java.io.Serializable;
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Association between WorkflowDocument type -&gt; EDocLite definition, EDocLite style
@@ -112,22 +105,5 @@ public class EDocLiteAssociation  extends PersistableBusinessObjectBase implemen
 	}
 	public void setActionsUrl(String actionsUrl) {
 		this.actionsUrl = actionsUrl;
-	}
-	/**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap<String, Object> toStringMapper() {
-		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-	    propMap.put("edocLiteAssocId", getEdocLiteAssocId());
-	    propMap.put("edlName", getEdlName());
-	    propMap.put("definition", getDefinition());
-	    propMap.put("style", getStyle());
-	    propMap.put("activeInd", getActiveInd());
-	    propMap.put("versionNumber", getVersionNumber());
-	    return propMap;
-
 	}
 }

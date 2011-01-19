@@ -15,11 +15,11 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
 import org.junit.Test;
-import org.kuali.rice.kns.bo.StateImpl;
 import org.kuali.test.KNSTestCase;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -80,12 +80,4 @@ public class StateImplTest extends KNSTestCase{
 		dummyState.setCountry(dummyCountry);
 		assertEquals("Testing Country in StateImpl",dummyCountry,dummyState.getCountry());
 	}
-
-	@Test
-	public void testToStringMapper(){
-		dummyState.setPostalStateCode("C111");
-		LinkedHashMap dummyMap =  dummyState.toStringMapper();
-		assertEquals("Testing toStringMapper of NoteType",dummyState.getPostalStateCode() , dummyMap.get("postalStateCode"));
-	}
-	
 }

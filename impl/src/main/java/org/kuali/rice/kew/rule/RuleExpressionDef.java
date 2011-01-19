@@ -15,18 +15,12 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 /**
  * BO for rule expressions 
@@ -108,18 +102,4 @@ public class RuleExpressionDef extends PersistableBusinessObjectBase {
         RuleExpressionDef arg = (RuleExpressionDef) obj;
         return ObjectUtils.equals(type, arg.getType()) && ObjectUtils.equals(expression, arg.getExpression());
     }
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap map = new LinkedHashMap();
-		map.put("type", type);
-		map.put("expression", expression);
-		return map;
-	}
-    
-    
 }

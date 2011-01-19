@@ -15,17 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
@@ -33,6 +22,8 @@ import org.kuali.rice.kim.bo.reference.PhoneType;
 import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
+
+import javax.persistence.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -159,20 +150,6 @@ public class KimEntityPhoneImpl extends KimDefaultableEntityDataBase implements 
 	 */
 	public void setEntityTypeCode(String entityTypeCode) {
 		this.entityTypeCode = entityTypeCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "entityPhoneId", entityPhoneId );
-		m.put( "phoneNumber", getPhoneNumber() );
-		m.put( "extensionNumber", getExtensionNumber() );
-		m.put( "countryCode", getCountryCode() );
-		return m;
 	}
 
 	public String getEntityId() {

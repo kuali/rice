@@ -16,15 +16,17 @@
 package org.kuali.rice.kns.bo;
 
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.LinkedHashMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.test.KNSTestCase;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This is a description of what this class does - chang don't forget to fill this in. 
@@ -155,12 +157,5 @@ public class AttributeReferenceDummyTest  extends KNSTestCase{
 		String workflowDocumentStatus = "WorkflowDocumentStatus";
 		dummyARD.setWorkflowDocumentStatus(workflowDocumentStatus);
 		assertEquals("Testing WorkflowDocumentStatus in AttributeReferenceDummy",workflowDocumentStatus,dummyARD.getWorkflowDocumentStatus());
-	}
-	
-
-	@Test
-	public void testToStringMapper(){
-		LinkedHashMap dummyMap =  dummyARD.toStringMapper();
-		assertNotNull("Testing toStringMapper of AttributeReferenceDummy",dummyMap.get("hashCode"));
 	}
 }

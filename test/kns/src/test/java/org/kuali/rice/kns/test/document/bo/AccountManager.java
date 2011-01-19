@@ -15,25 +15,14 @@
  */
 package org.kuali.rice.kns.test.document.bo;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -108,13 +97,4 @@ public class AccountManager extends PersistableBusinessObjectBase {
     public void setAccounts(List<Account> accounts) {
         this.accounts = accounts;
     }
-    
-    @Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap propMap = new LinkedHashMap();
-        propMap.put("id", getAmId());
-        propMap.put("userName", getUserName());
-        return propMap;
-    }
-    
 }

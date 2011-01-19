@@ -15,19 +15,11 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityActionInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -86,21 +78,7 @@ public class RoleResponsibilityActionImpl extends PersistableBusinessObjectBase 
 	public void setPriorityNumber(Integer priorityNumber) {
 		this.priorityNumber = priorityNumber;
 	}
-	
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap lhm = new LinkedHashMap();
-		lhm.put( "roleResponsibilityActionId", roleResponsibilityActionId );
-		lhm.put( "versionNumber", versionNumber);
-		lhm.put( "roleResponsibilityId", roleResponsibilityId );
-		lhm.put( "roleMemberId", roleMemberId );
-		lhm.put( "actionTypeCode", actionTypeCode );
-		return lhm;
-	}
+
 	public String getActionPolicyCode() {
 		return this.actionPolicyCode;
 	}

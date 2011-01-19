@@ -15,16 +15,15 @@
  */
 package org.kuali.rice.kns.test.document;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.document.SessionDocument;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
 import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.kuali.rice.kns.util.GlobalVariables;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a test copy of AccountRequestDocument that has been modified to allow for custom lock descriptors.
@@ -61,15 +60,6 @@ public class AccountRequestDocument2 extends TransactionalDocumentBase implement
 
     public AccountRequestDocument2() {
         accounts = new ArrayList<Account>();
-    }
-
-    @Override
-    protected LinkedHashMap<String,Object> toStringMapper() {
-        LinkedHashMap<String, Object> meMap = new LinkedHashMap<String, Object>();
-        meMap.put("requester", getRequester());
-        meMap.put("reason1", getReason1());
-        meMap.put("reason2", getReason2());
-        return meMap;
     }
 
     public String getReason2() {

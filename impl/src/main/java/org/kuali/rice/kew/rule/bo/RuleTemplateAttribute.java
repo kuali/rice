@@ -16,24 +16,10 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
 import org.kuali.rice.kew.rule.RuleExtension;
 import org.kuali.rice.kew.rule.RuleValidationAttribute;
@@ -42,6 +28,10 @@ import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.bo.Inactivateable;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -282,18 +272,4 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
 	}
 	return ruleTemplateAttributeClone;
     }
-    
-    @Override
-	protected LinkedHashMap<String, Object> toStringMapper() {
-		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-	    propMap.put("ruleTemplateAttributeId", getRuleTemplateAttributeId());
-	    propMap.put("ruleTemplateId", getRuleTemplateId());
-	    propMap.put("ruleAttributeId", getRuleAttributeId());
-	    propMap.put("required", getRequired());
-	    propMap.put("active", getActive());
-	    propMap.put("displayOrder", getDisplayOrder());
-	    propMap.put("defaultValue", getDefaultValue());
-	    return propMap;
-	}
-    
 }

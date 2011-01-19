@@ -15,21 +15,15 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.Date;
-import java.util.Calendar;
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.kuali.rice.kim.bo.entity.KimEntityBioDemographics;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.util.KualiDateMask;
+
+import javax.persistence.*;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -333,26 +327,6 @@ public class KimEntityBioDemographicsImpl extends KimEntityDataBase implements K
 	 */
 	public void setSuppressPersonal(Boolean suppressPersonal) {
 		this.suppressPersonal = suppressPersonal;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put("entityId", entityId);
-		m.put("birthDate", getBirthDate());
-		m.put("genderCode", getGenderCode());
-		m.put("deceasedDate", getDeceasedDate());
-		m.put("maritalStatusCode", getMaritalStatusCode());
-		m.put("primaryLanguageCode", getPrimaryLanguageCode());
-		m.put("secondaryLanguageCode", getSecondaryLanguageCode());
-		m.put("countryOfBirthCode", getCountryOfBirthCode());
-		m.put("stateOfBirth", getBirthStateCode());
-		m.put("cityOfBirth", getCityOfBirth());
-		m.put("geographicOrigin", getGeographicOrigin());
-		return m;
 	}
 
     public boolean isSuppressPersonal() {

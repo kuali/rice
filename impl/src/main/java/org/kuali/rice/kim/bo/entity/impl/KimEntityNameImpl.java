@@ -15,23 +15,14 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.kuali.rice.kim.bo.entity.KimEntityName;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.bo.reference.EntityNameType;
 import org.kuali.rice.kim.bo.reference.impl.EntityNameTypeImpl;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
+
+import javax.persistence.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -173,19 +164,6 @@ public class KimEntityNameImpl extends KimDefaultableEntityDataBase implements K
             return KimConstants.RESTRICTED_DATA_MASK;
         }
 		return getLastName() + ", " + getFirstName() + (getMiddleName()==null?"":" " + getMiddleName());
-	}
-	
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "entityNameId", entityNameId );
-		m.put( "firstName", getFirstName() );
-		m.put( "lastName", getLastName() );
-		return m;
 	}
 
 	public String getEntityId() {

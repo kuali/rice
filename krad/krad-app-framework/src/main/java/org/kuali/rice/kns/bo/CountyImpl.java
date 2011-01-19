@@ -15,19 +15,9 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 
 @IdClass(org.kuali.rice.kns.bo.CountyImplId.class)
 @Entity
@@ -92,13 +82,6 @@ public class CountyImpl extends PersistableBusinessObjectBase implements Inactiv
 
     public void setStateCode(String stateCode) {
         this.stateCode = stateCode;
-    }
-
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("countyCode", this.countyCode);
-        m.put("stateCode", this.stateCode);
-        return m;
     }
 
     /**

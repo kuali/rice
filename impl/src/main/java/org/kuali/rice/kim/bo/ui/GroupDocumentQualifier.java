@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.LinkedHashMap;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.IdClass;
@@ -43,17 +41,5 @@ public class GroupDocumentQualifier extends KimDocumentAttributeDataBusinessObje
 
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap hashMap = new LinkedHashMap();
-		hashMap.put("attrDataId", getAttrDataId());
-		hashMap.put("groupId", getGroupId());
-		hashMap.put("kimTypId", getKimTypId());
-		hashMap.put("kimAttrDefnId", getKimAttrDefnId());
-		hashMap.put("attrVal", getAttrVal());
-		return hashMap;
 	}
 }

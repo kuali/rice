@@ -16,8 +16,6 @@
 
 package org.kuali.rice.kns.test.document.bo;
 
-import java.util.LinkedHashMap;
-
 /**
  * This is a copy of AccountType for usage in the BaseBOClassAndBaseDocumentClassTest unit test.
  * 
@@ -52,14 +50,4 @@ public class AccountType2 extends AccountType2Parent {
 	public String getCodeAndDescription() {
 		return accountTypeCode + " - " + name;
 	}
-
-	@Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap propMap = new LinkedHashMap();
-        propMap.put("accountType", accountTypeCode);
-        propMap.put("name", name);
-        return propMap;
-    }
-
- 
 }

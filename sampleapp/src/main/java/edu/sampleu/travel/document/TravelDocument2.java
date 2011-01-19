@@ -15,23 +15,13 @@
  */
 package edu.sampleu.travel.document;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
+import edu.sampleu.travel.bo.TravelAccount;
 import org.kuali.rice.kns.document.SessionDocument;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
 
-import edu.sampleu.travel.bo.TravelAccount;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -58,15 +48,6 @@ public class TravelDocument2 extends TransactionalDocumentBase implements Sessio
 
     public TravelDocument2() {
         travelAccounts = new ArrayList<TravelAccount>();
-    }
-
-    @Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap<String, String> meMap = new LinkedHashMap<String, String>();
-        meMap.put("traveler", getTraveler());
-        meMap.put("origin", getOrigin());
-        meMap.put("destination", getDestination());
-        return meMap;
     }
 
     public String getDestination() {

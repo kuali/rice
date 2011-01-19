@@ -15,26 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
-
 import org.apache.log4j.Logger;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -45,9 +25,14 @@ import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
-import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -117,17 +102,6 @@ public class PersonDocumentRole extends KimDocumentBoActivatableEditableBase {
 
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap<String, Object> toStringMapper() {
-		LinkedHashMap<String, Object> m = new LinkedHashMap<String, Object>();
-		m.put( "roleId", roleId );
-		return m;
 	}
 
 	public String getKimTypeId() {

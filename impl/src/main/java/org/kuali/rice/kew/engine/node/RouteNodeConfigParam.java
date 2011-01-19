@@ -15,23 +15,12 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.KeyValue;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 /**
  * A route node definition configuration parameter.  RouteNodeConfigParameters are
@@ -118,14 +107,4 @@ public class RouteNodeConfigParam extends PersistableBusinessObjectBase implemen
 	public void setValue(String value) {
 		this.value = value;
 	}
-
-    @Override
-    protected LinkedHashMap<String, Object> toStringMapper() {
-    	final LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-    	map.put("id", id);
-    	map.put("key", key);
-    	map.put("value", value);
-    	map.put("routeNode", routeNode == null ? null : routeNode.getRouteNodeId());
-    	return map;
-    }
 }

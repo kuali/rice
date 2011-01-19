@@ -15,20 +15,12 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+
+import javax.persistence.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -215,14 +207,6 @@ public class Attachment extends PersistableBusinessObjectBase {
      */
     public InputStream getAttachmentContents() throws IOException {
         return KNSServiceLocator.getAttachmentService().retrieveAttachmentContents(this);
-    }
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("noteIdentifier", this.noteIdentifier);
-        return m;
     }
 }
 

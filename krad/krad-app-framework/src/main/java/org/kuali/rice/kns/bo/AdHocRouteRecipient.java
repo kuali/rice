@@ -15,17 +15,15 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kew.util.CodeTranslator;
+import org.kuali.rice.kew.util.KEWConstants;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kew.util.CodeTranslator;
-import org.kuali.rice.kew.util.KEWConstants;
+import java.util.Map;
 
 
 /**
@@ -104,18 +102,5 @@ public abstract class AdHocRouteRecipient extends PersistableBusinessObjectBase 
             actionRequestedValue = (String) actionRequestCds.get(getActionRequested());
         }
         return actionRequestedValue;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-
-        m.put("type", getType());
-        m.put("actionRequested", getActionRequested());
-        m.put("id", getId());
-
-        return m;
     }
 }

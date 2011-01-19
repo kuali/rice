@@ -15,13 +15,11 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.LinkedHashMap;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -122,19 +120,4 @@ public class PersonDocumentPrivacy extends KimDocumentBoEditableBase {
 	public void setSuppressPhone(boolean suppressPhone) {
 		this.suppressPhone = suppressPhone;
 	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "suppressName", suppressName );
-		m.put( "suppressEmail", suppressEmail );
-		m.put( "suppressAddress", suppressAddress );
-		m.put( "suppressPhone", suppressPhone );
-		m.put( "suppressPersonal", suppressPersonal );
-		return m;
-	}
-
 }

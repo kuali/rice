@@ -15,20 +15,6 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.Type;
@@ -39,6 +25,10 @@ import org.kuali.rice.kim.bo.role.dto.DelegateTypeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -75,22 +65,7 @@ public class KimDelegationImpl extends PersistableBusinessObjectBase implements 
 	protected List<KimDelegationMemberImpl> members = new AutoPopulatingList(KimDelegationMemberImpl.class);
 
 	@Transient
-	protected KimTypeInfo kimType; 
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "delegationId", delegationId );
-		m.put( "roleId", roleId );
-		m.put( "delegationTypeCode", delegationTypeCode );
-		return m;
-	}
+	protected KimTypeInfo kimType;
 
 	public String getRoleId() {
 		return this.roleId;

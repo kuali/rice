@@ -15,20 +15,6 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Fetch;
@@ -40,9 +26,12 @@ import org.kuali.rice.kim.bo.role.impl.RoleMemberImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KimTypeInfoService;
-import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -98,21 +87,6 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	protected String respTmplNamespaceCode;
 	@Transient
 	protected String respTmplName;
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "roleId", roleId );
-		m.put( "namespaceCode", namespaceCode );
-		m.put( "roleName", roleName );
-		return m;
-	}
 
 	public String getRoleId() {
 		return this.roleId;
@@ -310,22 +284,6 @@ public class RoleImpl extends PersistableBusinessObjectBase implements Role {
 	public void setMembers(List<RoleMemberImpl> members) {
 		this.members = members;
 	}
-	
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringBuilder(java.util.LinkedHashMap)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-    public String toStringBuilder(LinkedHashMap mapper) {
-        if(getKimRoleType() != null){
-        	return getKimRoleType().getName()+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
-        				getNamespaceCode()+KimConstants.KimUIConstants.NAME_VALUE_SEPARATOR+
-        				getRoleName()+KimConstants.KimUIConstants.COMMA_SEPARATOR;
-        }
-        else {
-            return super.toStringBuilder(mapper);
-        }
-    }
 
 	/**
 	 * @return the active

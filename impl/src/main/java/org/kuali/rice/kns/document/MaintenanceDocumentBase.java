@@ -15,38 +15,12 @@
  */
 package org.kuali.rice.kns.document;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.core.proxy.ProxyHelper;
 import org.apache.struts.upload.FormFile;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.kuali.rice.kns.bo.DocumentAttachment;
-import org.kuali.rice.kns.bo.DocumentHeader;
-import org.kuali.rice.kns.bo.GlobalBusinessObject;
-import org.kuali.rice.kns.bo.Note;
-import org.kuali.rice.kns.bo.PersistableAttachment;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
+import org.kuali.rice.kns.bo.*;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.datadictionary.WorkflowProperties;
@@ -56,13 +30,8 @@ import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 import org.kuali.rice.kns.rule.event.SaveDocumentEvent;
 import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.MaintenanceUtils;
+import org.kuali.rice.kns.util.*;
 import org.kuali.rice.kns.util.NoteType;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.documentserializer.PropertySerializabilityEvaluator;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowDocument;
 import org.w3c.dom.Document;
@@ -70,6 +39,17 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
+import javax.persistence.*;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 /**
@@ -572,23 +552,6 @@ public class MaintenanceDocumentBase extends DocumentBase implements Maintenance
      */
     public final void setFieldsClearedOnCopy(boolean fieldsClearedOnCopy) {
         this.fieldsClearedOnCopy = fieldsClearedOnCopy;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    @SuppressWarnings("unchecked")
-	@Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-
-        m.put("versionNumber", getVersionNumber());
-        m.put("comp", Boolean.valueOf(getDocumentHeader().getWorkflowDocument().isCompletionRequested()));
-        m.put("app", Boolean.valueOf(getDocumentHeader().getWorkflowDocument().isApprovalRequested()));
-        m.put("ack", Boolean.valueOf(getDocumentHeader().getWorkflowDocument().isAcknowledgeRequested()));
-        m.put("fyi", Boolean.valueOf(getDocumentHeader().getWorkflowDocument().isFYIRequested()));
-
-        return m;
     }
 
     /**

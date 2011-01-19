@@ -16,12 +16,12 @@
 package org.kuali.rice.kns.bo;
 
 
-import java.util.HashMap;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This is a description of what this class does - chang don't forget to fill this in. 
@@ -54,17 +54,5 @@ public class DocumentAttachmentTest extends KNSTestCase{
 	public void testDocumentNumber(){
 		dummyDocumentAttachment.setDocumentNumber("c122");
 		assertEquals("Testing DocumentNumber in DocumnetAttchment", "c122", dummyDocumentAttachment.getDocumentNumber());
-	}
-	@Test
-	public void testToStringMapper(){
-		PersistableAttachmentBase dummy = new DocumentAttachment();
-		dummy.setFileName("cs101");
-		dummy.setContentType("txt");
-		((DocumentAttachment)dummy).setDocumentNumber("001");
-		
-		HashMap resultHashMap = dummy.toStringMapper();
-		assertEquals("Testing toStringMapper in DocumentAttachment","cs101",resultHashMap.get("fileName") );
-		assertEquals("Testing toStringMapper in DocumentAttachment","001",resultHashMap.get("documentNumber") );
-		assertEquals("Testing toStringMapper in DocumentAttachment","txt",resultHashMap.get("contentType") );
 	}
 }

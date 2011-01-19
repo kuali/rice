@@ -15,20 +15,12 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.RoleResponsibility;
 import org.kuali.rice.kim.bo.role.dto.RoleResponsibilityInfo;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -80,19 +72,6 @@ public class RoleResponsibilityImpl extends PersistableBusinessObjectBase implem
 
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "roleResponsibilityId", roleResponsibilityId );
-		m.put( "roleId", roleId );
-		m.put( "responsibilityId", responsibilityId );
-		return m;
 	}
 
 	public boolean isActive() {

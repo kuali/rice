@@ -16,14 +16,12 @@
 
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
 
 
 /**
@@ -111,15 +109,5 @@ public class NoteType extends PersistableBusinessObjectBase {
 	public void setNoteTypeActiveIndicator(boolean noteTypeActiveIndicator) {
 		this.noteTypeActiveIndicator = noteTypeActiveIndicator;
 	}
-
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	protected LinkedHashMap toStringMapper() {
-	    LinkedHashMap m = new LinkedHashMap();	    
-        m.put("noteTypeCode", this.noteTypeCode);
-	    return m;
-    }
 }
 

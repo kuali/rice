@@ -15,20 +15,6 @@
  */ 
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
@@ -37,6 +23,10 @@ import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 import org.kuali.rice.kim.bo.reference.impl.ExternalIdentifierTypeImpl;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+
+import javax.persistence.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -114,19 +104,6 @@ public class KimEntityExternalIdentifierImpl extends KimEntityDataBase implement
 	public void setExternalIdentifierTypeCode(String externalIdentifierTypeCode) {
 		this.externalIdentifierTypeCode = externalIdentifierTypeCode;
 		cachedExtIdType = null;		
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "entityExternalIdentifierId", entityExternalIdentifierId );
-		m.put( "externalIdentifierTypeCode", externalIdentifierTypeCode );
-		m.put( "externalId", externalId );		
-		return m;
 	}
 
 	public void setEntityExternalIdentifierId(String entityExternalIdentifierId) {

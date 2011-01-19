@@ -16,18 +16,6 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -42,6 +30,9 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -306,21 +297,4 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 		.append(this.priority)
 		.append(this.ruleResponsibilityName).toHashCode();
 	}
-    
-    
-
-    @Override
-	protected LinkedHashMap toStringMapper() {
-    	LinkedHashMap map = new LinkedHashMap();
-    	map.put("responsibilityId", responsibilityId);
-    	map.put("ruleResponsibilityKey", ruleResponsibilityKey);
-    	map.put("ruleResponsibilityName", ruleResponsibilityName);
-    	map.put("ruleResponsibilityType", ruleResponsibilityType);
-    	map.put("ruleBaseValuesId", ruleBaseValuesId);
-    	map.put("actionRequestedCd", actionRequestedCd);
-    	map.put("priority", priority);
-    	return map;
-	}
-    
-    
 }

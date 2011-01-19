@@ -15,18 +15,11 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Date;
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
+
+import javax.persistence.*;
+import java.sql.Date;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -132,16 +125,4 @@ public class PersonDocumentCitizenship extends KimDocumentBoActivatableEditableB
 	public void setEntityCitizenshipId(String entityCitizenshipId) {
 		this.entityCitizenshipId = entityCitizenshipId;
 	}
-	
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = super.toStringMapper();
-		m.put( "entityCitizenshipId", entityCitizenshipId );
-		m.put( "countryCode", countryCode );
-		m.put( "citizenshipStatusCode", citizenshipStatusCode );
-		m.put( "startDate", startDate );
-		m.put( "endDate", endDate );
-		return m;
-	}
-
 }

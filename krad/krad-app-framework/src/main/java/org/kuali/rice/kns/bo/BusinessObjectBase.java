@@ -15,18 +15,14 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.core.util.type.TypeUtils;
+import java.util.LinkedHashMap;
 
 /**
  * Transient Business Object Base Business Object
  */
 public abstract class BusinessObjectBase implements BusinessObject {
-    //private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(BusinessObjectBase.class);
 
     /**
      * Default constructor. Required to do some of the voodoo involved in letting the DataDictionary validate attributeNames for a
@@ -35,78 +31,21 @@ public abstract class BusinessObjectBase implements BusinessObject {
     public BusinessObjectBase() {
     }
 
-    /**
-     * @param fieldValues
-     * @return consistently-formatted String containing the given fieldnames and their values
-     */
-    protected String toStringBuilder(LinkedHashMap<String, Object> fieldValues) {
-        String built = null;
-        String className = StringUtils.uncapitalize(StringUtils.substringAfterLast(this.getClass().getName(), "."));
-
-        if ((fieldValues == null) || fieldValues.isEmpty()) {
-            built = super.toString();
-        }
-        else {
-
-            StringBuffer prefix = new StringBuffer(className);
-            StringBuffer suffix = new StringBuffer("=");
-
-            prefix.append("(");
-            suffix.append("(");
-            for (Iterator i = fieldValues.entrySet().iterator(); i.hasNext();) {
-                Map.Entry e = (Map.Entry) i.next();
-
-                String fieldName = e.getKey().toString();
-                Object fieldValue = e.getValue();
-
-                String fieldValueString = String.valueOf(e.getValue()); // prevent NullPointerException;
-
-
-                if ((fieldValue == null) || TypeUtils.isSimpleType(fieldValue.getClass())) {
-                    prefix.append(fieldName);
-                    suffix.append(fieldValueString);
-                }
-                else {
-                    prefix.append("{");
-                    prefix.append(fieldName);
-                    prefix.append("}");
-
-                    suffix.append("{");
-                    suffix.append(fieldValueString);
-                    suffix.append("}");
-                }
-
-                if (i.hasNext()) {
-                    prefix.append(",");
-                    suffix.append(",");
-                }
-            }
-            prefix.append(")");
-            suffix.append(")");
-
-            built = prefix.toString() + suffix.toString();
-        }
-
-        return built;
+    /** @deprecated will be removed in rice 1.1 */
+    @Deprecated
+    protected final String toStringBuilder(LinkedHashMap<String, Object> fieldValues) {
+        throw new UnsupportedOperationException("do not call. this method will be removed from rice 1.1");
     }
 
-    /**
-     * @return Map containing the fieldValues of the key fields for this class, indexed by fieldName
-     */
-    abstract protected LinkedHashMap<String, Object> toStringMapper();
+    /** @deprecated will be removed in rice 1.1 */
+    @Deprecated
+     protected final LinkedHashMap<String, Object> toStringMapper() {
+         throw new UnsupportedOperationException("do not call.  this method will be removed from rice 1.1");
+     }
 
-
-    /**
-     * @see java.lang.Object#toString()
-     */
     @Override
-	public final String toString() {
-        if (!StringUtils.contains(this.getClass().getName(), "$$")) {
-            return toStringBuilder(toStringMapper());
-        }
-        else {
-            return "Proxy: " + this.getClass().getName();
-        }
+	public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
     
     @Override

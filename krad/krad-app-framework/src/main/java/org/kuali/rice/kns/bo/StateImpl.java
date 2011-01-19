@@ -16,18 +16,9 @@
 
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 
 /**
  * 
@@ -101,15 +92,6 @@ public class StateImpl extends PersistableBusinessObjectBase implements Inactiva
     public String getCodeAndDescription() {
         String theString = getPostalStateCode() + " - " + getPostalStateName();
         return theString;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("postalStateCode", this.postalStateCode);
-        return m;
     }
 
     /**

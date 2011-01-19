@@ -15,23 +15,15 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -65,19 +57,6 @@ public class KimDocumentRoleResponsibility extends KimDocumentBoActivatableBase 
 
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "roleResponsibilityId", roleResponsibilityId );
-		m.put( "roleId", roleId );
-		m.put( "responsibilityId", responsibilityId );
-		return m;
 	}
 
 	public void setRoleResponsibilityId(String roleResponsibilityId) {

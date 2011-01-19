@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
 /**
  * Business Object Attribute Entry Business Object
  * 
@@ -175,17 +173,5 @@ public class BusinessObjectAttributeEntry extends PersistableBusinessObjectBase 
      */
     public void setDictionaryBusinessObjectName(String businessObjectClass) {
         this.dictionaryBusinessObjectName = businessObjectClass;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-
-        m.put("dictionaryBusinessObjectName", getDictionaryBusinessObjectName());
-        m.put("attributeName", getAttributeName());
-
-        return m;
     }
 }

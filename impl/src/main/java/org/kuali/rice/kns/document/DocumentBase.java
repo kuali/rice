@@ -15,25 +15,8 @@
  */
 package org.kuali.rice.kns.document;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kew.dto.ActionTakenEventDTO;
 import org.kuali.rice.kew.dto.DocumentRouteLevelChangeDTO;
 import org.kuali.rice.kew.dto.DocumentRouteStatusChangeDTO;
@@ -41,12 +24,7 @@ import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.bo.AdHocRoutePerson;
-import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
-import org.kuali.rice.kns.bo.DocumentHeader;
-import org.kuali.rice.kns.bo.Note;
-import org.kuali.rice.kns.bo.PersistableBusinessObject;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import org.kuali.rice.kns.bo.*;
 import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.datadictionary.WorkflowAttributes;
 import org.kuali.rice.kns.datadictionary.WorkflowProperties;
@@ -55,12 +33,8 @@ import org.kuali.rice.kns.exception.PessimisticLockingException;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.rule.event.KualiDocumentEvent;
 import org.kuali.rice.kns.service.*;
-import org.kuali.rice.kns.util.ErrorMessage;
-import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
+import org.kuali.rice.kns.util.*;
 import org.kuali.rice.kns.util.NoteType;
-import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.documentserializer.AlwaysFalsePropertySerializabilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.AlwaysTruePropertySerializibilityEvaluator;
 import org.kuali.rice.kns.util.documentserializer.BusinessObjectPropertySerializibilityEvaluator;
@@ -69,6 +43,12 @@ import org.kuali.rice.kns.workflow.DocumentInitiator;
 import org.kuali.rice.kns.workflow.KualiDocumentXmlMaterializer;
 import org.kuali.rice.kns.workflow.KualiTransactionalDocumentInformation;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -186,78 +166,6 @@ public abstract class DocumentBase extends PersistableBusinessObjectBase impleme
     @Override
     public void refreshReferenceObject(String referenceObjectName) {
         KNSServiceLocator.getPersistenceService().retrieveReferenceObject(this, referenceObjectName);
-    }
-
-    /**
-     * @param fieldValues
-     * @return consistently-formatted String containing the given fieldnames and their values
-     */
-    @Override
-    protected String toStringBuilder(LinkedHashMap<String, Object> fieldValues) {
-        String built = null;
-        String className = StringUtils.uncapitalize(StringUtils.substringAfterLast(this.getClass().getName(), "."));
-
-        if ((fieldValues == null) || fieldValues.isEmpty()) {
-            built = super.toString();
-        }
-        else {
-
-            StringBuffer prefix = new StringBuffer(className);
-            StringBuffer suffix = new StringBuffer("=");
-
-            prefix.append("documentHeaderId");
-            suffix.append(this.getDocumentNumber());
-
-            prefix.append("(");
-            suffix.append("(");
-            for (Iterator<Map.Entry<String, Object>> i = fieldValues.entrySet().iterator(); i.hasNext();) {
-                Map.Entry<String, Object> e = i.next();
-
-                String fieldName = e.getKey();
-                Object fieldValue = e.getValue();
-
-                String fieldValueString = String.valueOf(e.getValue()); // prevent NullPointerException;
-
-
-                if ((fieldValue == null) || TypeUtils.isSimpleType(fieldValue.getClass())) {
-                    prefix.append(fieldName);
-                    suffix.append(fieldValueString);
-                }
-                else {
-                    prefix.append("{");
-                    prefix.append(fieldName);
-                    prefix.append("}");
-
-                    suffix.append("{");
-                    suffix.append(fieldValueString);
-                    suffix.append("}");
-                }
-
-                if (i.hasNext()) {
-                    prefix.append(",");
-                    suffix.append(",");
-                }
-            }
-            prefix.append(")");
-            suffix.append(")");
-
-            built = prefix.toString() + suffix.toString();
-        }
-
-        return built;
-    }
-
-    /**
-     * @return Map containing the fieldValues of the key fields for this class, indexed by fieldName
-     */
-    @Override
-    protected LinkedHashMap<String,Object> toStringMapper(){
-        LinkedHashMap<String, Object> m = new LinkedHashMap<String, Object>();
-
-        m.put("documentNumber", getDocumentNumber());
-        m.put("versionNumber", getVersionNumber());
-
-        return m;
     }
 
     /**

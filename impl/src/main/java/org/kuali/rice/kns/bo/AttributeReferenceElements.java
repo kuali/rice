@@ -16,10 +16,6 @@
 package org.kuali.rice.kns.bo;
 
 
-import java.util.LinkedHashMap;
-
-
-
 /**
  * Attribute Reference Dummy Business Object
  */
@@ -34,18 +30,6 @@ public class AttributeReferenceElements extends PersistableBusinessObjectExtensi
      * 
      */
     public AttributeReferenceElements() {
-    }
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    @SuppressWarnings("unchecked")
-    protected LinkedHashMap<String, Object> toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-
-        m.put("hashCode", Integer.toHexString(hashCode()));
-
-        return m;
     }
 
     /**

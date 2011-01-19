@@ -15,22 +15,11 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
 
 @IdClass(org.kuali.rice.kns.bo.ParameterDetailTypeId.class)
 @Entity
@@ -104,19 +93,6 @@ public class ParameterDetailType extends PersistableBusinessObjectBase implement
 	public void setParameterNamespace(Namespace parameterNamespace) {
 		this.parameterNamespace = parameterNamespace;
 	}
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    final protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-
-        m.put("parameterNamespaceCode", getParameterNamespaceCode());
-        m.put("parameterDetailTypeCode", getParameterDetailTypeCode());
-        m.put("parameterDetailTypeName", getParameterDetailTypeName());
-        
-        return m;
-    }
 
 	public boolean isVirtualDetailType() {
 		return this.virtualDetailType;

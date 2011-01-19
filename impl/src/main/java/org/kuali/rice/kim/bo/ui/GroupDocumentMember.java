@@ -15,19 +15,11 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.util.KimConstants;
+
+import javax.persistence.*;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -79,20 +71,6 @@ public class GroupDocumentMember extends KimDocumentBoActiveToFromBase {
 
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap<String,Object> m = new LinkedHashMap<String,Object>();
-		m.put( "groupMemberId", groupMemberId );
-		m.put( "groupId", groupId );
-		m.put( "memberId", getMemberId() );
-		m.put( "memberTypeCode", getMemberTypeCode() );
-		return m;
 	}
 
 	/**

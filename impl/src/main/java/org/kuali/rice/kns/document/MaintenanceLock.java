@@ -15,20 +15,12 @@
  */
 package org.kuali.rice.kns.document;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
-
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
+
+import javax.persistence.*;
 
 /**
  * List of business objects that this maintenance document is locking (prevents two documents from being routed trying to update the same object)
@@ -69,17 +61,6 @@ public class MaintenanceLock extends PersistableBusinessObjectBase {
 
     public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    @SuppressWarnings("unchecked")
-	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("lockingRepresentation", this.lockingRepresentation);
-        m.put(KNSPropertyConstants.DOCUMENT_NUMBER, getDocumentNumber());
-        return m;
     }
 
 	/**

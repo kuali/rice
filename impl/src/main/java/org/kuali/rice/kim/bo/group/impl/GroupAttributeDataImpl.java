@@ -15,13 +15,11 @@
  */
 package org.kuali.rice.kim.bo.group.impl;
 
-import java.util.LinkedHashMap;
+import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -47,20 +45,5 @@ public class GroupAttributeDataImpl extends KimAttributeDataImpl {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put( "attrDataId", getAttributeDataId() );
-        m.put( "groupId", getGroupId() );
-        m.put( "kimTypeId", getKimTypeId() );
-        m.put( "kimAttrDefnId", getKimAttributeId() );
-        m.put( "attrValue", getAttributeValue() );
-        return m;
     }
 }

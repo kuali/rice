@@ -15,20 +15,9 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.kuali.rice.kns.util.KNSConstants;
+
+import javax.persistence.*;
 
 /**
  * 
@@ -143,21 +132,6 @@ public class Parameter extends PersistableBusinessObjectBase {
 
 	public void setParameterConstraintCode(String parameterConstraintCode) {
 		this.parameterConstraintCode = parameterConstraintCode;
-	}
-
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "parameterNamespaceCode", this.parameterNamespaceCode );
-		m.put( "parameterDetailTypeCode", this.parameterDetailTypeCode );
-		m.put( "parameterApplicationNamespaceCode", this.parameterApplicationNamespaceCode );
-		m.put( "parameterName", this.parameterName );
-		m.put( "parameterValue", this.parameterValue );
-		m.put( "parameterConstraintCode", this.getParameterConstraintCode() );
-		return m;
 	}
 
 	public ParameterType getParameterType() {

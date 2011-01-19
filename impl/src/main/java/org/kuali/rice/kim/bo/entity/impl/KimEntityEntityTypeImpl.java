@@ -15,21 +15,6 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.bo.entity.KimEntityAddress;
@@ -38,6 +23,9 @@ import org.kuali.rice.kim.bo.entity.KimEntityEntityType;
 import org.kuali.rice.kim.bo.entity.KimEntityPhone;
 import org.kuali.rice.kim.bo.reference.EntityType;
 import org.kuali.rice.kim.bo.reference.impl.EntityTypeImpl;
+
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -119,19 +107,6 @@ public class KimEntityEntityTypeImpl extends KimInactivatableEntityDataBase impl
 	 */
 	public String getEntityTypeCode() {
 		return entityTypeCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "entityId", entityId );
-		m.put( "entityTypeCode", entityTypeCode );
-		m.put( "active", active );
-		return m;
 	}
 
 	public String getEntityId() {

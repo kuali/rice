@@ -25,7 +25,10 @@ import org.kuali.rice.kns.bo.BusinessObjectBase;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -791,17 +794,6 @@ public class DocSearchCriteriaDTO extends BusinessObjectBase implements Business
     public void setWorkgroupViewerNamespace(String workgroupViewerNamespace) {
         this.workgroupViewerNamespace = workgroupViewerNamespace;
     }
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		// TODO chris - THIS METHOD NEEDS JAVADOCS
-		return null;
-	}
 
 	/**
 	 * This overridden method ...

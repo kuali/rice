@@ -15,21 +15,14 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.entity.KimEntityEthnicity;
 import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
+
+import javax.persistence.*;
 
 /**
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
@@ -105,18 +98,6 @@ public class KimEntityEthnicityImpl extends KimEntityDataBase implements KimEnti
 	@Override
 	public String getId() {
 		return entityId;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap<String, Object> toStringMapper() {
-		LinkedHashMap<String, Object> m = new LinkedHashMap<String, Object>();
-		m.put("entityId", entityId);
-		m.put("ethnicityCode", ethnicityCode);
-		m.put("subEthnicityCode", subEthnicityCode);
-		return m;
 	}
 
 	@Override

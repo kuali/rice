@@ -15,16 +15,10 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import java.util.LinkedHashMap;
-
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.Campus;
-import org.kuali.rice.kns.bo.Parameter;
-import org.kuali.rice.kns.bo.ParameterDetailType;
-import org.kuali.rice.kns.bo.Namespace;
-import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
+import org.kuali.rice.kns.bo.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -96,16 +90,6 @@ public class KimAttributes extends TransientBusinessObjectBase {
 	protected ParameterDetailType parameterDetailType;
 	protected Parameter parameter;
 	protected DocumentType documentType;
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		return m;
-	}
 
 	/**
 	 * @return the methodToCall

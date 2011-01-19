@@ -15,21 +15,13 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.role.dto.KimPermissionInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+
+import javax.persistence.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -73,19 +65,6 @@ public class KimDocumentRolePermission extends KimDocumentBoActivatableBase {
 
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "rolePermissionId", rolePermissionId );
-		m.put( "roleId", roleId );
-		m.put( "permissionId", permissionId );
-		return m;
 	}
 
 	public void setRolePermissionId(String rolePermissionId) {

@@ -15,21 +15,11 @@
  */
 package org.kuali.rice.ken.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 /**
  * This class represents an instance of a user's subscription to a specific 
@@ -107,18 +97,5 @@ public class UserChannelSubscription extends PersistableBusinessObjectBase{
     public void setUserId(String userId) {
 	this.userId = userId;
     }
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("id", getId());
-
-        return m;
-	}
 }
 

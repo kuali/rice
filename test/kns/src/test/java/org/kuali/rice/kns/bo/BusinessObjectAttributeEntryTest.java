@@ -15,12 +15,12 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
+
+import static org.junit.Assert.assertEquals;
 
 
 /**
@@ -110,14 +110,4 @@ public class BusinessObjectAttributeEntryTest extends KNSTestCase {
 		dummyBOAE.setDictionaryBusinessObjectName("DictionaryBusinessObjectName");
 		assertEquals("Testing DictionaryBusinessObjectName in BusiessObjectAtributeEntry","DictionaryBusinessObjectName",dummyBOAE.getDictionaryBusinessObjectName());
 	}
-	
-	@Test
-	public void testToStringMapper(){
-		dummyBOAE.setDictionaryBusinessObjectName("DictionaryBusinessObjectName");
-		dummyBOAE.setAttributeName("AttributeName");
-		LinkedHashMap dummyHashMap = dummyBOAE.toStringMapper();
-		assertEquals("Testing toStringMapper in BusiessObjectAtributeEntry","DictionaryBusinessObjectName",dummyHashMap.get("dictionaryBusinessObjectName"));
-		assertEquals("Testing toStringMapper in BusiessObjectAtributeEntry","AttributeName",dummyHashMap.get("attributeName"));
-	}
-	
 }

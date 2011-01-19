@@ -16,10 +16,11 @@
 package org.kuali.rice.kns.bo;
 
 
-import java.util.LinkedHashMap;
 import org.junit.Test;
-import org.kuali.rice.kns.bo.CampusTypeImpl;
 import org.kuali.test.KNSTestCase;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 /**
@@ -55,7 +56,7 @@ public class CampusTypeImplTest extends KNSTestCase{
 	@Test
 	public void testCampusTypeName(){
 		dummyCampusType.setCampusTypeName("Main");
-		assertEquals("Testing CampusTypeName in CampusTypeImplTest","Main",dummyCampusType.getCampusTypeName());
+		assertEquals("Testing CampusTypeName in CampusTypeImplTest", "Main", dummyCampusType.getCampusTypeName());
 	}
 	
 	@Test
@@ -67,13 +68,6 @@ public class CampusTypeImplTest extends KNSTestCase{
 	@Test
 	public void testDataObjectMaintenanceCodeActiveIndicator(){
 		dummyCampusType.setDataObjectMaintenanceCodeActiveIndicator(true);
-		assertTrue("Testing DataObjectMaintenanceCodeActiveIndicator in CampusTypeImplTest",dummyCampusType.getDataObjectMaintenanceCodeActiveIndicator());
-	}
-	
-	@Test
-	public void testToStringMapper(){
-		dummyCampusType.setCampusTypeCode("campusTypeCode");
-		LinkedHashMap dummyMap =  dummyCampusType.toStringMapper();
-		assertEquals("Testing toStringMapper of CampusImpl",dummyCampusType.getCampusTypeCode() , dummyMap.get("campusTypeCode"));
+		assertTrue("Testing DataObjectMaintenanceCodeActiveIndicator in CampusTypeImplTest", dummyCampusType.getDataObjectMaintenanceCodeActiveIndicator());
 	}
 }

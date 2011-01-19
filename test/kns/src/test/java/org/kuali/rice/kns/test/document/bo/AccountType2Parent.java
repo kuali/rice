@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.test.document.bo;
 
-import java.util.LinkedHashMap;
-
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
@@ -27,13 +25,4 @@ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 public class AccountType2Parent extends PersistableBusinessObjectBase {
 
 	private static final long serialVersionUID = 6330290535633802745L;
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		return null;
-	}
-
 }

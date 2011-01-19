@@ -15,14 +15,12 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
+import org.apache.commons.lang.StringUtils;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-
-import org.apache.commons.lang.StringUtils;
-import org.hibernate.annotations.Type;
 
 @MappedSuperclass
 public class KualiCodeBase extends PersistableBusinessObjectBase implements KualiCode {
@@ -114,19 +112,6 @@ public class KualiCodeBase extends PersistableBusinessObjectBase implements Kual
 		}
 		return "";
 	}
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    @SuppressWarnings("unchecked")
-	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-
-        m.put("code", getCode());
-        m.put("name", getName());
-
-        return m;
-    }
 
     /**
      * Implements equals comparing code to code.

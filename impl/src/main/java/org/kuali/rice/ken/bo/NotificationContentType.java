@@ -15,18 +15,12 @@
  */
 package org.kuali.rice.ken.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 /**
  * This class represents the different types of Notification content that the system can handle.  
@@ -188,21 +182,4 @@ public class NotificationContentType extends PersistableBusinessObjectBase{
     public void setXsl(String xsl) {
         this.xsl = xsl;
     }
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("id", getId());
-        m.put("name", name);
-        m.put("namespace", namespace);
-        m.put("version", version);
-        m.put("current", current);
-
-        return m;
-	}
 }

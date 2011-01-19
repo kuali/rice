@@ -15,26 +15,15 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.sql.Timestamp;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.KimAbstractMemberImpl;
 import org.kuali.rice.kim.bo.role.KimDelegationMember;
 import org.kuali.rice.kim.bo.role.dto.DelegateMemberCompleteInfo;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -59,22 +48,6 @@ public class KimDelegationMemberImpl extends KimAbstractMemberImpl implements Ki
 	@OneToMany(targetEntity=KimDelegationMemberAttributeDataImpl.class,cascade={CascadeType.ALL},fetch=FetchType.EAGER)
 	@JoinColumn(name="DLGN_MBR_ID", referencedColumnName="DLGN_MBR_ID", insertable=false, updatable=false )
 	protected List<KimDelegationMemberAttributeDataImpl> attributes = new AutoPopulatingList(KimDelegationMemberAttributeDataImpl.class);
-
-
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap lhm = new LinkedHashMap();
-		lhm.put( "delegationMemberId", delegationMemberId );
-		lhm.put( "delegationId", delegationId );
-		lhm.put( "memberId", getMemberId() );
-		lhm.put( "memberTypeCode", getMemberTypeCode() );
-		return lhm;
-	}
 
 	public boolean isActive() {
 		long now = System.currentTimeMillis();

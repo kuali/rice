@@ -15,10 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.IdClass;
-
 import org.kuali.rice.kim.bo.reference.ExternalIdentifierType;
 
 /**
@@ -80,19 +76,6 @@ public class PersonDocumentExternalId extends KimDocumentBoBase{
 	 */
 	public void setExternalIdentifierTypeCode(String externalIdentifierTypeCode) {
 		this.externalIdentifierTypeCode = externalIdentifierTypeCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "entityExternalIdentifierId", entityExternalIdentifierId );
-		m.put( "externalIdentifierTypeCode", externalIdentifierTypeCode );
-		m.put( "externalId", externalId );		
-		return m;
 	}
 
 	public void setEntityExternalIdentifierId(String entityExternalIdentifierId) {

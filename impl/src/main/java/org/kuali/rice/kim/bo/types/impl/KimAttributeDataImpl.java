@@ -15,21 +15,13 @@
  */
 package org.kuali.rice.kim.bo.types.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
-
 import org.kuali.rice.kim.bo.types.KimAttributeData;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import javax.persistence.*;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in.
@@ -102,33 +94,4 @@ public class KimAttributeDataImpl extends PersistableBusinessObjectBase implemen
 		}
 		return kimType;
 	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "attributeDataId", attributeDataId );
-		m.put( "kimTypeId", kimTypeId );
-		m.put( "kimAttributeId", kimAttributeId );
-		m.put( "attributeValue", attributeValue );
-		return m;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringBuilder(java.util.LinkedHashMap)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-    public String toStringBuilder(LinkedHashMap mapper) {
-        if(getKimAttribute() != null){
-        	return getAttributeValue();
-        }
-        else {
-            return super.toStringBuilder(mapper);
-        }
-    }
-
 }

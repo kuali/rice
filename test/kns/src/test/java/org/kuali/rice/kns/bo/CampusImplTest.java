@@ -15,14 +15,11 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
 import org.junit.Test;
-import org.kuali.rice.kns.bo.CampusImpl;
-import org.kuali.rice.kns.bo.CampusType;
-import org.kuali.rice.kns.bo.CampusTypeImpl;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.test.KNSTestCase;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * This is a description of what this class does - chang don't forget to fill this in. 
@@ -72,12 +69,5 @@ public class CampusImplTest extends KNSTestCase{
 	public void testActive(){
 		dummyCampus.setActive(true);
 		assertTrue("Testing Active in CampusImplTest",dummyCampus.isActive());	
-	}
-	
-	@Test
-	public void testToStringMapper(){
-		dummyCampus.setCampusCode("campusCode");
-		LinkedHashMap dummyMap =  dummyCampus.toStringMapper();
-		assertEquals("Testing toStringMapper of CampusImpl",dummyCampus.getCampusCode() , dummyMap.get(KNSPropertyConstants.CAMPUS_CODE));
 	}
 }

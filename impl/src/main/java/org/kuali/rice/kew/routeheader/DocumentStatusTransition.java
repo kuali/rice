@@ -15,18 +15,12 @@
  */
 package org.kuali.rice.kew.routeheader;
 
-import java.sql.Timestamp;
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 
 /**
@@ -70,18 +64,6 @@ public class DocumentStatusTransition extends PersistableBusinessObjectBase {
     	this.newAppDocStatus = newStatus;
     	this.statusTransitionDate = new Timestamp(System.currentTimeMillis());
     }
-    /**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("routeHeaderId", this.routeHeaderId);
-        m.put("oldAppDocStatus", this.oldAppDocStatus);
-        m.put("newAppDocStatus", this.newAppDocStatus);
-        m.put("statusTransitionDate", this.statusTransitionDate);
-		return m;
-	}
 
 	public Long getStatusTransitionId() {
 		return this.statusTransitionId;

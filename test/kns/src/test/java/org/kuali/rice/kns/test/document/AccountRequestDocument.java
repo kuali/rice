@@ -15,23 +15,13 @@
  */
 package org.kuali.rice.kns.test.document;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.kuali.rice.kns.document.SessionDocument;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
 import org.kuali.rice.kns.test.document.bo.Account;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -59,15 +49,6 @@ public class AccountRequestDocument extends TransactionalDocumentBase implements
 
     public AccountRequestDocument() {
         accounts = new ArrayList<Account>();
-    }
-
-    @Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap<String, String> meMap = new LinkedHashMap<String, String>();
-        meMap.put("requester", getRequester());
-        meMap.put("reason1", getReason1());
-        meMap.put("reason2", getReason2());
-        return meMap;
     }
 
     public String getReason2() {

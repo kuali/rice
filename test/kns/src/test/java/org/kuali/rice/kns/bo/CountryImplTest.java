@@ -16,12 +16,10 @@
 package org.kuali.rice.kns.bo;
 
 
-
-import java.util.LinkedHashMap;
-
 import org.junit.Test;
-import org.kuali.rice.kns.bo.CountryImpl;
 import org.kuali.test.KNSTestCase;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -93,14 +91,6 @@ public class CountryImplTest extends KNSTestCase{
 		dummyCountryOne.setActive(true);
 			
 		assertTrue("Testing set and check Active ",dummyCountryOne.isActive());
-		assertFalse("Testing get should get default Active",dummyCountrytwo.isActive());
+		assertFalse("Testing get should get default Active", dummyCountrytwo.isActive());
 	}
-	
-	@Test
-	public void testToStringMapper(){
-		dummyCountryOne.setPostalCountryCode("US1101");
-		LinkedHashMap dummyMap =  dummyCountryOne.toStringMapper();
-		assertEquals("Testing toStringMapper of CountryImpl",dummyCountryOne.getPostalCountryCode() , dummyMap.get("postalCountryCode"));
-	}
-
 }

@@ -16,17 +16,9 @@
 
 package edu.sampleu.travel.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtensionBase;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name="TRV_ACCT_EXT")
@@ -49,14 +41,6 @@ public class TravelAccountExtension extends PersistableBusinessObjectExtensionBa
 
     public void setNumber(String number) {
         this.number = number;
-    }
-
-    @Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap propMap = new LinkedHashMap();
-        propMap.put("number", getNumber());
-        propMap.put("accountTypeCode", getAccountTypeCode());
-        return propMap;
     }
 
     public String getAccountTypeCode() {

@@ -15,27 +15,12 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
+import org.kuali.rice.kim.bo.entity.dto.*;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.kuali.rice.kim.bo.entity.dto.KimEntityAddressInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityAffiliationInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmailInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEmploymentInformationInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityExternalIdentifierInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityNameInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimEntityPhoneInfo;
-import org.kuali.rice.kim.bo.entity.dto.KimPrincipalInfo;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * Used to store a cache of person information to be used if the user's information disappears from KIM. 
@@ -174,20 +159,6 @@ public class KimEntityDefaultInfoCacheImpl extends PersistableBusinessObjectBase
 		return info;
     	
     }
-	
-	
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap<String,Object> m = new LinkedHashMap<String,Object>( 2 );
-		m.put( "principalId", principalId );
-		m.put( "principalName", principalName );
-		return m;
-	}
-
 
 	public String getPrincipalId() {
 		return this.principalId;

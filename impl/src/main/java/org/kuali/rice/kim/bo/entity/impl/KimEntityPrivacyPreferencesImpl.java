@@ -15,15 +15,13 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.LinkedHashMap;
+import org.hibernate.annotations.Type;
+import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-import org.kuali.rice.kim.bo.entity.KimEntityPrivacyPreferences;
 
 /**
  * This is a description of what this class does - nathanieljohnson don't forget to fill this in. 
@@ -129,21 +127,6 @@ public class KimEntityPrivacyPreferencesImpl extends KimEntityDataBase implement
 	 */
 	public void setSuppressPhone(boolean suppressPhone) {
 		this.suppressPhone = suppressPhone;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "entityId", entityId );
-		m.put( "suppressName", suppressName );
-		m.put( "suppressEmail", suppressEmail );
-		m.put( "suppressAddress", suppressAddress );
-		m.put( "suppressPhone", suppressPhone );
-		m.put( "suppressPersonal", suppressPersonal );
-		return m;
 	}
 
 	public String getEntityId() {

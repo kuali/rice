@@ -15,16 +15,6 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kew.util.CodeTranslator;
@@ -33,6 +23,8 @@ import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.impl.ResponsibilityServiceImpl;
 import org.kuali.rice.kns.util.ObjectUtils;
+
+import javax.persistence.*;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -123,20 +115,7 @@ public class KimDocumentRoleResponsibilityAction extends KimDocumentBoEditableBa
 	public void setPriorityNumber(Integer priorityNumber) {
 		this.priorityNumber = priorityNumber;
 	}
-	
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap lhm = new LinkedHashMap();
-		lhm.put( "roleResponsibilityActionId", roleResponsibilityActionId );
-		lhm.put( "roleResponsibilityId", roleResponsibilityId );
-		lhm.put( "roleMemberId", roleMemberId );
-		lhm.put( "actionTypeCode", actionTypeCode );
-		return lhm;
-	}
+
 	public String getActionPolicyCode() {
 		return this.actionPolicyCode;
 	}

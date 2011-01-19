@@ -15,19 +15,17 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Type;
 import org.kuali.rice.kim.bo.role.KimResponsibilityTemplate;
 import org.kuali.rice.kim.bo.role.dto.KimResponsibilityTemplateInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -106,19 +104,6 @@ public class KimResponsibilityTemplateImpl extends PersistableBusinessObjectBase
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "responsibilityTemplateId", responsibilityTemplateId );
-		m.put( "name", name );
-		m.put( "kimTypeId", kimTypeId );
-		return m;
 	}
 
 	public String getNamespaceCode() {

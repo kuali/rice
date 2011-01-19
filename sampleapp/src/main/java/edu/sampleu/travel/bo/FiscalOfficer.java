@@ -15,22 +15,14 @@
  */
 package edu.sampleu.travel.bo;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.kuali.rice.core.jpa.annotations.Sequence;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.util.List;
 
 
 /**
@@ -105,13 +97,4 @@ public class FiscalOfficer extends PersistableBusinessObjectBase {
     public void setAccounts(List<TravelAccount> accounts) {
         this.accounts = accounts;
     }
-    
-    @Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap propMap = new LinkedHashMap();
-        propMap.put("id", getId());
-        propMap.put("userName", getUserName());
-        return propMap;
-    }
-    
 }

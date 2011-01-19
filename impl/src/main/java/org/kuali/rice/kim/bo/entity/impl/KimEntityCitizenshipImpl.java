@@ -15,23 +15,12 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.Date;
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.entity.KimEntityCitizenship;
 import org.kuali.rice.kim.bo.reference.CitizenshipStatus;
 import org.kuali.rice.kim.bo.reference.impl.CitizenshipStatusImpl;
+
+import javax.persistence.*;
+import java.util.Date;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -115,20 +104,6 @@ public class KimEntityCitizenshipImpl extends KimInactivatableEntityDataBase imp
 	 */
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "entityCitizenshipId", entityCitizenshipId );
-		m.put( "countryCode", countryCode );
-		m.put( "citizenshipStatusCode", citizenshipStatusCode );
-		m.put( "startDate", startDate );
-		m.put( "endDate", endDate );
-		return m;
 	}
 
 	public String getEntityId() {

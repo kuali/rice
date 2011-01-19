@@ -1031,27 +1031,4 @@ public class DocumentRouteHeaderValue extends PersistableBusinessObjectBase {
 			List<DocumentStatusTransition> appDocStatusHistory) {
 		this.appDocStatusHistory = appDocStatusHistory;
 	}
-
-	@Override
-	protected LinkedHashMap<String, Object> toStringMapper() {
-        LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
-        
-        map.put("routeHeaderId", routeHeaderId);
-        map.put("documentTypeId", documentTypeId);
-        map.put("docVersion", docVersion);
-        map.put("docTitle", docTitle);
-        map.put("createDate", createDate);
-        map.put("initiatorWorkflowId", initiatorWorkflowId);
-        map.put("routedByUserWorkflowId", routedByUserWorkflowId);
-        map.put("docRouteStatus", docRouteStatus);
-        map.put("routeStatusDate", routeStatusDate);
-        map.put("statusModDate", statusModDate);
-        map.put("docRouteLevel", docRouteLevel);
-        map.put("routeLevelDate", routeLevelDate);
-        map.put("approvedDate", approvedDate);
-        map.put("finalizedDate", finalizedDate);
-        map.put("appDocId", appDocId);
-		return map;
-	}
-
 }

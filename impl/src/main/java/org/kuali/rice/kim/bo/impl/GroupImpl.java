@@ -15,19 +15,6 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.Fetch;
@@ -45,6 +32,10 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is the implementation of a Kim Group 
@@ -96,19 +87,6 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
 	private List<GroupInfo> memberGroups;
 	@Transient
 	protected AttributeSet attributes;
-	
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "groupId", groupId );
-		m.put( "namespaceCode", namespaceCode );
-		m.put( "groupName", groupName );
-		return m;
-	}
 
 	public String getKimTypeId() {
 		return this.kimTypeId;

@@ -15,22 +15,11 @@
  */
 package org.kuali.rice.ken.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 /**
  * This class houses information pertaining to each recipient for a Notification message.  This 
@@ -129,18 +118,5 @@ public class NotificationRecipient extends PersistableBusinessObjectBase{
     public void setRecipientType(String recipientType) {
 	this.recipientType = recipientType;
     }
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("id", getId());
-
-        return m;
-	}
 }
 

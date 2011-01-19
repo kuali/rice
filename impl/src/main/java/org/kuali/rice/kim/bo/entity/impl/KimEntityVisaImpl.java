@@ -15,17 +15,11 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.entity.KimEntityVisa;
+
+import javax.persistence.*;
 
 /**
  * This is a description of what this class does - jimt don't forget to fill this in. 
@@ -128,19 +122,5 @@ public class KimEntityVisaImpl extends KimEntityDataBase implements KimEntityVis
 	 */
 	public void setVisaId(String visaId) {
 		this.visaId = visaId;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap<String, String> m = new LinkedHashMap<String, String>();
-		m.put("id", id);
-		m.put("entityId", entityId);
-		m.put("visaTypeKey", visaTypeKey);
-		m.put("visaEntry", visaEntry);
-		m.put("visaId", visaId);
-		return m;
 	}
 }

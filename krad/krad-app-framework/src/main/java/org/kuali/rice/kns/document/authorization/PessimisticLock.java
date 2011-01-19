@@ -15,22 +15,15 @@
  */
 package org.kuali.rice.kns.document.authorization;
 
-import java.sql.Timestamp;
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * This is a business object used to lock a document pessimistically.
@@ -181,23 +174,6 @@ public class PessimisticLock extends PersistableBusinessObjectBase {
      */
     public void setOwnedByUser(Person ownedByUser) {
         this.ownedByUser = ownedByUser;
-    }
-
-    /**
-     * This helper method used to define fields and field values to use
-     * in toString() method
-     * 
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    @Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("id", this.id);
-        m.put("ownedByPrincipalIdentifier", this.ownedByPrincipalIdentifier);
-        m.put("lockDescriptor", this.lockDescriptor);
-        m.put("generatedTimestamp", this.generatedTimestamp);
-        m.put("documentNumber", this.documentNumber);
-        return m;
     }
 }
 

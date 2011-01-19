@@ -15,32 +15,16 @@
  */
 package org.kuali.rice.ken.bo;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Version;
-import javax.persistence.OrderBy;
-
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class represents an instace of a notification message that is received by the overall 
@@ -416,32 +400,4 @@ public class Notification extends PersistableBusinessObjectBase implements Locka
     public String getContentMessage() {
 	return StringUtils.substringBetween(content, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_OPEN, NotificationConstants.XML_MESSAGE_CONSTANTS.MESSAGE_CLOSE);	
     }
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("id", getId());
-        m.put("id", id);
-        m.put("deliveryType", deliveryType);
-        m.put("sendDateTime", sendDateTime);
-        m.put("autoRemoveDateTime", autoRemoveDateTime);
-        m.put("content", StringUtils.abbreviate(content, 100));
-        m.put("processingFlag", processingFlag);
-        m.put("lockedDate", lockedDate);
-        m.put("lockVerNbr", super.getVersionNumber());
-        //.append("obj_id", super.getObjectId())
-        m.put("priority", priority);
-        m.put("contentType", contentType);
-        m.put("channel", channel);
-        m.put("producer", producer);
-        m.put("recipients", recipients == null ? null : "" + recipients.size());
-        m.put("senders", senders == null ? null : "" + senders.size());
-
-        return m;
-	}
 }

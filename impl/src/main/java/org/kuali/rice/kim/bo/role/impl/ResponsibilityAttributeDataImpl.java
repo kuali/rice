@@ -15,13 +15,11 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.LinkedHashMap;
+import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import org.kuali.rice.kim.bo.types.impl.KimAttributeDataImpl;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -38,20 +36,5 @@ public class ResponsibilityAttributeDataImpl extends KimAttributeDataImpl {
 
     public void setResponsibilityId(String responsibilityId) {
         this.responsibilityId = responsibilityId;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put( "attrDataId", getAttributeDataId() );
-        m.put( "responsibilityId", responsibilityId );
-        m.put( "kimTypeId", getKimTypeId() );
-        m.put( "kimAttributeId", getKimAttributeId() );
-        m.put( "attributeValue", getAttributeValue() );
-        return m;
     }
 }

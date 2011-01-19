@@ -15,14 +15,13 @@
  */
 package org.kuali.rice.kim.bo.types.dto;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kim.bo.KimType;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -105,15 +104,4 @@ public class KimTypeInfo extends TransientBusinessObjectBase implements KimType,
 	public void setKimTypeId(String kimTypeId) {
 		this.kimTypeId = kimTypeId;
 	}
-
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap<String,Object> m = new LinkedHashMap<String,Object>();
-		m.put( "kimTypeId", kimTypeId );
-		m.put( "name", name );
-		m.put( "kimTypeServiceName", kimTypeServiceName );
-		m.put( "attributeDefinitions",  attributeDefinitions );
-		return m;
-	}
-
 }

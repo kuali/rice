@@ -15,18 +15,11 @@
  */
 package org.kuali.rice.ken.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 /**
  * This class represents a priority for a notification - i.e. "High", "Medium", "Low", "Emergency", etc.
@@ -122,18 +115,5 @@ public class NotificationPriority extends PersistableBusinessObjectBase{
     public void setOrder(Integer order) {
 	this.order = order;
     }
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("id", getId());
-
-        return m;
-	}
 }
 

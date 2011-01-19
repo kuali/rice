@@ -16,15 +16,12 @@
 
 package edu.sampleu.travel.bo;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.CascadeType;
-import javax.persistence.Table;
-import javax.persistence.Entity;
-
-import java.util.LinkedHashMap;
-
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 
@@ -61,14 +58,4 @@ public class TravelAccountType extends PersistableBusinessObjectBase {
 	public String getCodeAndDescription() {
 		return accountTypeCode + " - " + name;
 	}
-
-	@Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap propMap = new LinkedHashMap();
-        propMap.put("accountTypeCode", accountTypeCode);
-        propMap.put("name", name);
-        return propMap;
-    }
-
- 
 }

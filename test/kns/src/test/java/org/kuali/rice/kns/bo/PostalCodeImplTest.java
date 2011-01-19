@@ -16,12 +16,12 @@
 package org.kuali.rice.kns.bo;
 
 
-import java.util.LinkedHashMap;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This is a description of what this class does - chang don't forget to fill this in. 
@@ -109,12 +109,5 @@ public class PostalCodeImplTest extends KNSTestCase {
 	public void testActive(){
 		dummyPCI.setActive(true);
 		assertEquals("Testing Active in PostalCodeImpl", true, dummyPCI.isActive());
-	}
-	
-	@Test
-	public void testToStringMapper(){
-		dummyPCI.setPostalCode("USA");
-		LinkedHashMap dummyHashMap = dummyPCI.toStringMapper();
-		assertEquals("Testing toStringMapper in PostalCodeImpl", "USA", dummyHashMap.get("postalCode"));
 	}
 }

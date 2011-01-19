@@ -15,19 +15,10 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapsId;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 
 /**
@@ -100,16 +91,5 @@ public class ApplicationDocumentStatus extends PersistableBusinessObjectBase {
 
 	public void setDocumentType(DocumentType documentType) {
 		this.documentType = documentType;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("documentTypeId", this.getDocumentTypeId());
-        m.put("statusName", this.getStatusName());
-		return m;
 	}
 }

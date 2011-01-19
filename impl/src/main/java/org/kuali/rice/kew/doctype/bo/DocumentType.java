@@ -16,30 +16,6 @@
  */
 package org.kuali.rice.kew.doctype.bo;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Set;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -50,18 +26,10 @@ import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
-import org.kuali.rice.kew.docsearch.DocumentSearchCriteriaProcessor;
-import org.kuali.rice.kew.docsearch.DocumentSearchGenerator;
-import org.kuali.rice.kew.docsearch.DocumentSearchResultProcessor;
-import org.kuali.rice.kew.docsearch.SearchableAttribute;
-import org.kuali.rice.kew.docsearch.StandardDocumentSearchCriteriaProcessor;
+import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
 import org.kuali.rice.kew.docsearch.xml.GenericXMLSearchableAttribute;
-import org.kuali.rice.kew.doctype.ApplicationDocumentStatus;
-import org.kuali.rice.kew.doctype.DocumentTypeAttribute;
-import org.kuali.rice.kew.doctype.DocumentTypePolicy;
-import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
-import org.kuali.rice.kew.doctype.DocumentTypeSecurity;
+import org.kuali.rice.kew.doctype.*;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
 import org.kuali.rice.kew.engine.node.Process;
 import org.kuali.rice.kew.exception.ResourceUnavailableException;
@@ -87,6 +55,10 @@ import org.kuali.rice.kns.datadictionary.DocumentEntry;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.web.format.FormatException;
+
+import javax.persistence.*;
+import java.lang.reflect.InvocationTargetException;
+import java.util.*;
 
 /**
  * Model bean mapped to ojb representing a document type.  Provides component lookup behavior that
@@ -1591,41 +1563,6 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
      */
     public void setApplyRetroactively(Boolean applyRetroactively) {
         this.applyRetroactively = applyRetroactively;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    @Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("documentTypeId", this.documentTypeId);
-        m.put("docTypeParentId=", docTypeParentId);
-		m.put("name", name);
-		m.put("version", version);
-		m.put("activeInd", active);
-		m.put("currentInd", currentInd);
-		m.put("description", description);
-		m.put("routeHeaderId", routeHeaderId);
-		m.put("unresolvedDocHandlerUrl", unresolvedDocHandlerUrl);
-		m.put("unresolvedHelpDefinitionUrl", unresolvedHelpDefinitionUrl);
-		m.put("unresolvedDocSearchHelpUrl", unresolvedDocSearchHelpUrl);
-		m.put("postProcessorName", postProcessorName);
-		m.put("workgroupId", workgroupId);
-		m.put("blanketApproveWorkgroupId", blanketApproveWorkgroupId);
-		m.put("blanketApprovePolicy", blanketApprovePolicy);
-		m.put("versionNumber", versionNumber);
-		m.put("defaultExceptionWorkgroup", defaultExceptionWorkgroup);
-		m.put("policies", policies);
-		m.put("security", documentTypeSecurityXml);
-		m.put("routeLevels", routeLevels);
-		m.put("childrenDocTypes", childrenDocTypes);
-		m.put("documentTypeAttributes", documentTypeAttributes);
-		m.put("processes", processes);
-		m.put("routingVersion", routingVersion);
-		m.put("actualNotificationFromAddress", actualNotificationFromAddress);
-		m.put("actualServiceNamespace", actualServiceNamespace);
-        return m;
     }
 
     private IdentityManagementService getIdentityManagementService() {

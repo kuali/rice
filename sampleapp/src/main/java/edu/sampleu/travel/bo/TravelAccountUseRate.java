@@ -15,15 +15,13 @@
  */
 package edu.sampleu.travel.bo;
 
-import java.util.LinkedHashMap;
+import org.kuali.rice.core.util.type.KualiPercent;
+import org.kuali.rice.kns.bo.InactivatableFromToImpl;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.kuali.rice.core.util.type.KualiPercent;
-import org.kuali.rice.kns.bo.InactivatableFromToImpl;
 
 @Entity
 @Table(name = "TRV_ACCT_USE_RT")
@@ -66,12 +64,4 @@ public class TravelAccountUseRate extends InactivatableFromToImpl {
 	public void setRate(KualiPercent rate) {
 		this.rate = rate;
 	}
-
-	@Override
-	protected LinkedHashMap toStringMapper() {
-        LinkedHashMap propMap = new LinkedHashMap();
-        propMap.put("id", getId());
-        return propMap;
-	}
-
 }

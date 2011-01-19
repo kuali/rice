@@ -16,40 +16,25 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
+ import org.apache.commons.lang.ArrayUtils;
+ import org.hibernate.annotations.Fetch;
+ import org.hibernate.annotations.FetchMode;
+ import org.hibernate.annotations.GenericGenerator;
+ import org.hibernate.annotations.Parameter;
+ import org.kuali.rice.kew.bo.WorkflowPersistable;
+ import org.kuali.rice.kew.rule.Role;
+ import org.kuali.rice.kew.rule.RoleAttribute;
+ import org.kuali.rice.kew.rule.RuleTemplateOption;
+ import org.kuali.rice.kew.rule.WorkflowAttribute;
+ import org.kuali.rice.kew.util.KEWConstants;
+ import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+ import javax.persistence.*;
  import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
-import org.kuali.rice.kew.rule.Role;
-import org.kuali.rice.kew.rule.RoleAttribute;
-import org.kuali.rice.kew.rule.RuleTemplateOption;
-import org.kuali.rice.kew.rule.WorkflowAttribute;
-import org.kuali.rice.kew.util.KEWConstants;
+ import java.util.ArrayList;
+ import java.util.Collections;
+ import java.util.Iterator;
+ import java.util.List;
 
 
 /**
@@ -440,26 +425,4 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
         }
 		return roles;
     }
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap<String, Object> toStringMapper() {
-		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-	    propMap.put("ruleTemplateId", getRuleTemplateId());
-	    propMap.put("name", getName());
-	    propMap.put("description", getDescription());
-	    propMap.put("delegationTemplateId", getDelegationTemplateId());
-	    propMap.put("totalRuleTemplateAttributes", getRuleTemplateAttributes() == null ? "null" : "size: " + getRuleTemplateAttributes().size());
-	    propMap.put("activeRuleTemplateAttributes", getActiveRuleTemplateAttributes() == null ? "null" : "size: " + getActiveRuleTemplateAttributes().size());
-	    propMap.put("returnUrl", getReturnUrl());
-	    propMap.put("versionNumber", getVersionNumber());
-	    propMap.put("ruleTemplateOptions", getRuleTemplateOptions());
-	    	    
-	    return propMap;
-		
-	}
 }

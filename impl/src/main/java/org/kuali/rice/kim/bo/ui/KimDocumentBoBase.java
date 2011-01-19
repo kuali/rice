@@ -15,15 +15,11 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.LinkedHashMap;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -49,17 +45,6 @@ public class KimDocumentBoBase  extends PersistableBusinessObjectBase {
 	//protected Timestamp activeFromDate;
 	//@Column(name="ACTV_TO_DT")
 	//protected Timestamp activeToDate;
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "documentNumber", documentNumber );
-		return m;
-	}
 
 	public String getDocumentNumber() {
 		return this.documentNumber;

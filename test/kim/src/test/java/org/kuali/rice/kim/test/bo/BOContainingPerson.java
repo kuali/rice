@@ -16,15 +16,13 @@
 package org.kuali.rice.kim.test.bo;
 
 
-import java.util.LinkedHashMap;
+import org.kuali.rice.kim.bo.Person;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-
-import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -68,17 +66,4 @@ public class BOContainingPerson extends PersistableBusinessObjectBase {
 	public void setPerson(Person person) {
 		this.person = person;
 	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "boPrimaryKey", boPrimaryKey );
-		m.put( "principalId", principalId );
-		return m;
-	}
-
 }

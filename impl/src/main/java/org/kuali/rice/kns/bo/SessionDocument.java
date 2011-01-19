@@ -15,17 +15,10 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.sql.Timestamp;
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 
 /*
@@ -143,16 +136,6 @@ public class SessionDocument extends PersistableBusinessObjectBase{
 	 */
 	public void setIpAddress(String ipAddress) {
 		this.ipAddress = ipAddress;
-	}
-
-	@SuppressWarnings("unchecked")
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put("documentNumber", this.documentNumber);
-		m.put("sessionId", this.sessionId);
-		m.put("principalId", this.principalId);
-		m.put("ipAddress", this.ipAddress);
-		return m;
 	}
 
 	public boolean isEncrypted() {

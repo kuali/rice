@@ -15,15 +15,13 @@
  */
 package org.kuali.rice.kew.ria.bo;
 
-import java.sql.Date;
-import java.util.LinkedHashMap;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+import java.sql.Date;
 
 /**
  * Class which represents bo for mapping between ria name and ria url.
@@ -66,16 +64,7 @@ public class RIADocTypeMap extends PersistableBusinessObjectBase {
 		super();
 		this.setUpdatedAt(new Date(new java.util.Date().getTime()));
 	}
-	
-	@Override
-	protected LinkedHashMap<String, Object> toStringMapper() {
-		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-		propMap.put("ID", getID());
-		propMap.put("riaDocTypeName", getRiaDocTypeName());
-		propMap.put("helpUrl", getHelpUrl());
-		propMap.put("updateAt", getUpdatedAt());
-		return propMap;
-	}
+
 	public Long getID() {
 		return ID;
 	}

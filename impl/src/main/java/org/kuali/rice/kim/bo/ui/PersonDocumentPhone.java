@@ -15,23 +15,13 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.reference.PhoneType;
 import org.kuali.rice.kim.bo.reference.impl.PhoneTypeImpl;
+
+import javax.persistence.*;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -152,20 +142,6 @@ public class PersonDocumentPhone extends PersonDocumentBoDefaultBase {
 	 */
 	public void setEntityTypeCode(String entityTypeCode) {
 		this.entityTypeCode = entityTypeCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = super.toStringMapper();
-		m.put( "entityPhoneId", entityPhoneId );
-		m.put( "phoneNumber", phoneNumber );
-		m.put( "extensionNumber", extensionNumber );
-		m.put( "countryCode", countryCode );
-		return m;
 	}
 
 	public PhoneType getPhoneType() {

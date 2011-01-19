@@ -670,25 +670,6 @@ public class RuleBaseValues extends PersistableBusinessObjectBase {
 		this.fieldValues = fieldValues;
 	}
 
-	@Override
-	protected LinkedHashMap<String, Object> toStringMapper() {
-		LinkedHashMap<String, Object> mapper = new LinkedHashMap<String, Object>();
-        mapper.put("ruleBaseValuesId", ruleBaseValuesId);
-        mapper.put("description", description);
-        mapper.put("docTypeName", docTypeName);
-        mapper.put("routeHeaderId", routeHeaderId);
-        mapper.put("delegateRule", delegateRule);
-        mapper.put("forceAction", forceAction);
-        mapper.put("activeInd", activeInd);
-        mapper.put("currentInd", currentInd);
-        mapper.put("versionNbr", versionNbr);
-        mapper.put("previousVersionId", previousVersionId);
-        mapper.put("ruleTemplateId", ruleTemplateId);
-        mapper.put("returnUrl", returnUrl);
-        mapper.put("responsibilities", responsibilities == null ? responsibilities : "size: " + responsibilities.size());
-		return mapper;
-	}
-
     public String getGroupReviewerName() {
         return this.groupReviewerName;
     }

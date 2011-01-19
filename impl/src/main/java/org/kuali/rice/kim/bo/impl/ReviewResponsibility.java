@@ -15,19 +15,13 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.Type;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.doctype.bo.DocumentTypeEBO;
 import org.kuali.rice.kim.bo.role.KimResponsibility;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -235,22 +229,6 @@ public class ReviewResponsibility extends PersistableBusinessObjectBase {
 	public void setQualifierResolverProvidedIdentifier(
 			String qualifierResolverProvidedIdentifier) {
 		this.qualifierResolverProvidedIdentifier = qualifierResolverProvidedIdentifier;
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap<String,Object> m = new LinkedHashMap<String, Object>();
-		m.put("responsibilityId", responsibilityId);
-		m.put("namespaceCode", namespaceCode);
-		m.put("name", name);
-		m.put("active", active);
-		m.put("documentTypeName", documentTypeName);
-		m.put("routeNodeName", routeNodeName);
-		m.put("required", required);
-		m.put("actionDetailsAtRoleMemberLevel", actionDetailsAtRoleMemberLevel);
-		m.put("qualifierResolverProvidedIdentifier", qualifierResolverProvidedIdentifier);
-		return m;
 	}
 
 	public void refresh() {

@@ -15,22 +15,11 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
 import org.kuali.rice.kim.bo.reference.AffiliationType;
 import org.kuali.rice.kim.bo.reference.impl.AffiliationTypeImpl;
+
+import javax.persistence.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -99,17 +88,6 @@ public class KimEntityAffiliationImpl extends KimDefaultableEntityDataBase imple
 	 */
 	public void setCampusCode(String campusCode) {
 		this.campusCode = campusCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put("entityAffiliationId", entityAffiliationId);
-		m.put("affiliationTypeCode", affiliationTypeCode);
-		return m;
 	}
 
 	public String getEntityId() {

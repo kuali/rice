@@ -15,19 +15,9 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Type;
-import org.kuali.rice.kns.util.KNSPropertyConstants;
+
+import javax.persistence.*;
 
 /**
  * 
@@ -161,15 +151,5 @@ public class CampusImpl extends PersistableBusinessObjectBase implements Campus,
 	public void setActive(boolean active) {
 		this.active = active;
 	}
-	
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put(KNSPropertyConstants.CAMPUS_CODE, this.campusCode);
-        return m;
-    }
-
 }
 

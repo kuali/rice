@@ -16,30 +16,16 @@
  */
 package org.kuali.rice.kew.rule.bo;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.Basic;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.bo.WorkflowPersistable;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -208,18 +194,4 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Work
 	public void setServiceNamespace(String ServiceNamespace) {
 		this.serviceNamespace = ServiceNamespace;
 	}
-		
-	@Override
-	protected LinkedHashMap<String, Object> toStringMapper() {
-		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-	    propMap.put("ruleAttributeId", getRuleAttributeId());
-	    propMap.put("name", getName());
-	    propMap.put("label", getLabel());
-	    propMap.put("description", getDescription());
-	    propMap.put("type", getType());
-	    propMap.put("className", getClassName());
-	    propMap.put("serviceNamespace", getServiceNamespace());
-	    return propMap;
-	}
-
 }

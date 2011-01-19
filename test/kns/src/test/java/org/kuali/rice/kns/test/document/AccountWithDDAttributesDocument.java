@@ -15,18 +15,16 @@
  */
 package org.kuali.rice.kns.test.document;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Type;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kns.document.SessionDocument;
 import org.kuali.rice.kns.document.TransactionalDocumentBase;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * This is a test transactional document for use with testing data dictionary searchable attributes on the doc search. 
@@ -58,15 +56,6 @@ public class AccountWithDDAttributesDocument extends TransactionalDocumentBase i
 	@Type(type="yes_no")
 	@Column(name="ACCT_AWAKE")
 	private boolean accountAwake;
-
-    @Override
-    protected LinkedHashMap<String,Object> toStringMapper() {
-        LinkedHashMap<String, Object> meMap = new LinkedHashMap<String, Object>();
-        meMap.put("accountOwner", getAccountOwner());
-        meMap.put("accountOpenDate", getAccountOpenDate().toString());
-        meMap.put("accountState", getAccountState());
-        return meMap;
-    }
 	
 	public Integer getAccountNumber() {
 		return this.accountNumber;

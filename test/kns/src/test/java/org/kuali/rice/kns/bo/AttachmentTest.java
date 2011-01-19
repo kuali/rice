@@ -16,20 +16,16 @@
 package org.kuali.rice.kns.bo;
 
 
-
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.InputStream;
-import java.util.LinkedHashMap;
-
 import org.junit.Test;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.test.KNSTestCase;
+
+import java.io.*;
+
+import static org.junit.Assert.*;
 
 
 /**
@@ -169,12 +165,5 @@ public class AttachmentTest extends KNSTestCase{
 		finally{
 			new File("dummy.txt").delete();
 		}
-	}
-	
-	@Test
-	public void testToStringMapper(){
-		dummyAttachment.setNoteIdentifier((long)12345);
-		LinkedHashMap dummyMap = dummyAttachment.toStringMapper();
-		assertEquals("Testing toStringMapper of Attachment in AttachmentTest",(long)12345, dummyMap.get("noteIdentifier"));
 	}
 }

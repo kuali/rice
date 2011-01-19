@@ -15,22 +15,14 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
+
+import javax.persistence.*;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -153,23 +145,6 @@ public class KimEntityEmploymentInformationImpl extends KimInactivatableEntityDa
 
 	public void setPrimary(boolean primary) {
 		this.primary = primary;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "entityEmploymentId", entityEmploymentId );
-		m.put( "entityAffiliationId", entityAffiliationId );
-		m.put( "employeeStatusCode", employeeStatusCode );
-		m.put( "employeeTypeCode", employeeTypeCode );
-		m.put( "employeeId", employeeId );
-		m.put( "baseSalaryAmount", baseSalaryAmount );
-		m.put( "primary", primary );
-		return m;
 	}
 
 	public void setEntityEmploymentId(String entityEmploymentId) {

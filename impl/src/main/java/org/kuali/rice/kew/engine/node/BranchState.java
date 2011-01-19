@@ -16,16 +16,7 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 /**
  * A piece of state on a {@link Branch} stored as a key-value pair of Strings.
@@ -79,18 +70,6 @@ public class BranchState extends State {
 
     public void setLockVerNbr(Integer lockVerNbr) {
         this.lockVerNbr = lockVerNbr;
-    }
-
-    /**
-     * This overridden method ...
-     * 
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    @Override
-    protected LinkedHashMap<String, Object> toStringMapper() {
-    	LinkedHashMap<String, Object> map = toStringMapperFields();
-    	map.put("branch", getBranch());
-    	return map;
     }
 }
 

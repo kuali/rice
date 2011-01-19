@@ -15,14 +15,10 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.sql.Timestamp;
-import java.util.LinkedHashMap;
-
-import org.kuali.rice.kns.util.KNSConstants;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
+import java.sql.Timestamp;
 
 @MappedSuperclass
 public abstract class MultipleValueLookupMetadata extends PersistableBusinessObjectBase {
@@ -52,13 +48,6 @@ public abstract class MultipleValueLookupMetadata extends PersistableBusinessObj
 
     public void setLookupPersonId(String lookupPersonId) {
         this.lookupPersonId = lookupPersonId;
-    }
-
-    @Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap map = new LinkedHashMap();
-        map.put(KNSConstants.LOOKUP_RESULTS_SEQUENCE_NUMBER, getLookupResultsSequenceNumber());
-        return map;
     }
 
     /**

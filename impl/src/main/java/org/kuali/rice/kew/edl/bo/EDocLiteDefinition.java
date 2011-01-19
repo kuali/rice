@@ -16,20 +16,11 @@
  */
 package org.kuali.rice.kew.edl.bo;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 /**
  * EDocLite document definition
@@ -94,20 +85,4 @@ public class EDocLiteDefinition  extends PersistableBusinessObjectBase {
     public void setActiveInd(Boolean activeInd) {
         this.activeInd = activeInd;
     }
-
-    /**
-	 * This overridden method ...
-	 *
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap<String, Object> toStringMapper() {
-		LinkedHashMap<String, Object> propMap = new LinkedHashMap<String, Object>();
-		propMap.put("eDocLiteDefId",getEDocLiteDefId());
-		propMap.put("name",getName());
-		propMap.put("xml",(xmlContent == null ? xmlContent : xmlContent.length() + "chars"));
-		propMap.put("activeInd",getActiveInd());
-		propMap.put("versionNumber",getVersionNumber());
-	    return propMap;
-	}
 }

@@ -15,16 +15,14 @@
  */
 package org.kuali.rice.kim.bo.reference.impl;
 
-import java.util.LinkedHashMap;
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kim.bo.reference.KimCode;
+import org.kuali.rice.kns.bo.KualiCodeBase;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-
-import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kim.bo.reference.KimCode;
-import org.kuali.rice.kns.bo.KualiCodeBase;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -40,20 +38,6 @@ public abstract class KimCodeBase extends KualiCodeBase implements KimCode {
     private static final long serialVersionUID = 1660166679188995697L;
 	@Column(name="DISPLAY_SORT_CD")
     protected String displaySortCode = "";
-	
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap<String, Object> lhm = new LinkedHashMap<String, Object>();
-		lhm.put("code", getCode());
-		lhm.put("name", getName());
-		return lhm;
-	}
 
 	/**
 	 * @see org.kuali.core.bo.KualiCode#isActive()

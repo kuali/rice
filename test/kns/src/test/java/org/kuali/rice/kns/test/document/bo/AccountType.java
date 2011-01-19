@@ -16,14 +16,12 @@
 
 package org.kuali.rice.kns.test.document.bo;
 
-import java.util.LinkedHashMap;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 
 @Entity
@@ -59,14 +57,4 @@ public class AccountType extends PersistableBusinessObjectBase {
 	public String getCodeAndDescription() {
 		return accountTypeCode + " - " + name;
 	}
-
-	@Override
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap propMap = new LinkedHashMap();
-        propMap.put("accountType", accountTypeCode);
-        propMap.put("name", name);
-        return propMap;
-    }
-
- 
 }

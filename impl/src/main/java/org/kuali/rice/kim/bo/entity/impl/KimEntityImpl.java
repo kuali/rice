@@ -15,25 +15,15 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.kuali.rice.kim.bo.entity.KimEntity;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill
@@ -139,15 +129,6 @@ public class KimEntityImpl extends KimInactivatableEntityDataBase implements Kim
 	 */
 	public void setEntityTypes(List<KimEntityEntityTypeImpl> entityTypes) {
 		this.entityTypes = entityTypes;
-	}
-
-	/**
-	 * @see org.kuali.core.bo.BusinessObjectBase#toStringMapper()
-	 */
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap lhm = new LinkedHashMap();
-		lhm.put("entityId", entityId);
-		return lhm;
 	}
 
 	/**

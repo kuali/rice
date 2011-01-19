@@ -15,15 +15,13 @@
  */
 package org.kuali.rice.kim.bo.types.impl;
 
-import java.util.LinkedHashMap;
+import org.hibernate.annotations.Type;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -96,18 +94,4 @@ public class KimAttributeImpl extends PersistableBusinessObjectBase {
 	public void setComponentName(String componentName) {
 		this.componentName = componentName;
 	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "attributeId", kimAttributeId );
-		m.put( "attributeName", attributeName );
-		m.put( "componentName", componentName );
-		return m;
-	}
-	
 }

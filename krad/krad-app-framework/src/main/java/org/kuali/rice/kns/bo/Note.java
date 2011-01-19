@@ -16,26 +16,15 @@
 
 package org.kuali.rice.kns.bo;
 
-import java.sql.Timestamp;
-import java.util.LinkedHashMap;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
+
+import javax.persistence.*;
+import java.sql.Timestamp;
 
 /**
  * Represents a user note in the system.
@@ -269,17 +258,6 @@ public class Note extends PersistableBusinessObjectBase {
      */
     public void setNoteType(NoteType noteType) {
         this.noteType = noteType;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        if (this.noteIdentifier != null) {
-            m.put("noteIdentifier", this.noteIdentifier.toString());
-        }
-        return m;
     }
 
     /**

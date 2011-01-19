@@ -15,19 +15,11 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
 import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
 public class PersistableBusinessObjectExtensionBase extends
 		PersistableBusinessObjectBase implements
 		PersistableBusinessObjectExtension {
-
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

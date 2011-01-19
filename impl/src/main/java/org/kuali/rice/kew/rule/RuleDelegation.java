@@ -16,24 +16,14 @@
  */
 package org.kuali.rice.kew.rule;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
 
 
 /**
@@ -133,16 +123,6 @@ public class RuleDelegation extends PersistableBusinessObjectBase {
     public void setResponsibilityId(Long ruleResponsibilityId) {
         this.responsibilityId = ruleResponsibilityId;
     }
-
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap map = new LinkedHashMap();
-		map.put("ruleDelegationId", ruleDelegationId);
-		map.put("responsibilityId", responsibilityId);
-		map.put("delegateRuleId", delegateRuleId);
-		map.put("delegationType", delegationType);
-		return map;
-	}
 
 	/**
 	 * An override of the refresh() method that properly preserves the RuleBaseValues instance. If the delegationRuleBaseValues property

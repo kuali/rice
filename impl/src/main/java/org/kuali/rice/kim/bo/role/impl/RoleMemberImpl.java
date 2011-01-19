@@ -15,21 +15,6 @@
  */
 package org.kuali.rice.kim.bo.role.impl;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.xml.dto.AttributeSet;
@@ -43,6 +28,10 @@ import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.KimTypeInfoService;
 import org.kuali.rice.kim.service.RoleService;
 import org.springframework.util.AutoPopulatingList;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This is a description of what this class does - kellerj don't forget to fill this in. 
@@ -86,20 +75,6 @@ public class RoleMemberImpl extends KimAbstractMemberImpl {
 	}
 	public void setRoleId(String roleId) {
 		this.roleId = roleId;
-	}
-	
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "roleMemberId", roleMemberId );
-		m.put( "roleId", roleId );
-		m.put( "memberId", getMemberId() );
-		m.put( "memberTypeCode", getMemberTypeCode() );
-		return m;
 	}
 
 	public List<RoleMemberAttributeDataImpl> getAttributes() {

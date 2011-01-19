@@ -16,18 +16,7 @@
  */
 package org.kuali.rice.kew.engine.node;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 /**
  * The state of a {@link RouteNodeInstance} represented as a key-value pair of Strings.
@@ -81,10 +70,4 @@ public class NodeState extends State {
     public void setLockVerNbr(Integer lockVerNbr) {
         this.lockVerNbr = lockVerNbr;
     }
-
-	@Override
-	protected LinkedHashMap<String, Object> toStringMapper() {
-        final LinkedHashMap<String, Object> propMap = toStringMapperFields();
-        return propMap;
-	}
 }

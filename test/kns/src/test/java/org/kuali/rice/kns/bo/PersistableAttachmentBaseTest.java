@@ -16,12 +16,12 @@
 package org.kuali.rice.kns.bo;
 
 
-import java.util.LinkedHashMap;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This is a description of what this class does - chang don't forget to fill this in. 
@@ -68,16 +68,4 @@ public class PersistableAttachmentBaseTest extends KNSTestCase {
 		persistableAttachmentBase.setContentType("contentType");
 		assertEquals("Testing FileName in PersistableAttachmentBase.","contentType",persistableAttachmentBase.getContentType());
 	}
-	
-	@Test
-	public void testToStringMapper(){
-		persistableAttachmentBase.setFileName("FileName");
-		persistableAttachmentBase.setContentType("ContentType");
-		LinkedHashMap dummyHashmap = persistableAttachmentBase.toStringMapper();
-		assertEquals("Testing ToStringMapper in PersistableAttachmentBase.","FileName",dummyHashmap.get("fileName"));
-		assertEquals("Testing ToStringMapper in PersistableAttachmentBase.","ContentType",dummyHashmap.get("contentType"));
-	}
-	
-	
-	
 }

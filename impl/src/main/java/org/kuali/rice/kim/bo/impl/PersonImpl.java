@@ -15,22 +15,9 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.bo.entity.KimEntityAddress;
-import org.kuali.rice.kim.bo.entity.KimEntityAffiliation;
-import org.kuali.rice.kim.bo.entity.KimEntityEmail;
-import org.kuali.rice.kim.bo.entity.KimEntityEmploymentInformation;
-import org.kuali.rice.kim.bo.entity.KimEntityExternalIdentifier;
-import org.kuali.rice.kim.bo.entity.KimEntityName;
-import org.kuali.rice.kim.bo.entity.KimEntityPhone;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.bo.entity.*;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityDefaultInfo;
 import org.kuali.rice.kim.bo.entity.dto.KimEntityEntityTypeDefaultInfo;
 import org.kuali.rice.kim.bo.entity.impl.KimEntityDefaultInfoCacheImpl;
@@ -38,12 +25,16 @@ import org.kuali.rice.kim.bo.reference.impl.EmploymentStatusImpl;
 import org.kuali.rice.kim.bo.reference.impl.EmploymentTypeImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.PersonService;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Campus;
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -471,22 +462,6 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 */
 	public String getCampusCode() {
 		return campusCode;
-	}
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put("principalId", getPrincipalId());
-		m.put("principalName", getPrincipalName());
-		m.put("name", getName());
-		m.put("emailAddress", getEmailAddress());
-		m.put("campusCode", getCampusCode());
-		return m;
 	}
 
 	/**

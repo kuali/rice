@@ -15,22 +15,12 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.kim.bo.reference.EmailType;
 import org.kuali.rice.kim.bo.reference.impl.EmailTypeImpl;
+
+import javax.persistence.*;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 
@@ -115,18 +105,6 @@ public class PersonDocumentEmail extends PersonDocumentBoDefaultBase{
 	 */
 	public void setEntityTypeCode(String entityTypeCode) {
 		this.entityTypeCode = entityTypeCode;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = super.toStringMapper();
-		m.put("entityEmailId", entityEmailId);
-		m.put("entityTypeCode", entityTypeCode);
-		m.put("emailTypeCode", emailTypeCode);
-		return m;
 	}
 
 	public void setEntityEmailId(String entityEmailId) {

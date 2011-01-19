@@ -16,12 +16,11 @@
 package org.kuali.rice.kns.bo;
 
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.LinkedHashMap;
-
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.util.type.KualiPercent;
+
+import java.sql.Date;
+import java.sql.Timestamp;
 
 
 /**
@@ -335,15 +334,4 @@ public class AttributeReferenceDummy extends PersistableBusinessObjectBase {
 	public void setCurrent(boolean current) {
 		this.current = current;
 	}
-
-	/**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-
-        m.put("hashCode", Integer.toHexString(hashCode()));
-
-        return m;
-    }
 }

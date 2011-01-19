@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
 import javax.persistence.Column;
 import javax.persistence.Lob;
 import javax.persistence.MappedSuperclass;
@@ -90,16 +88,4 @@ public class PersistableAttachmentBase extends PersistableBusinessObjectBase imp
     public void setContentType(String contentType) {
         this.contentType = contentType;
     }
-
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("fileName", this.fileName);
-        m.put("contentType", this.contentType);
-        
-        return m;
-    }
-
 }

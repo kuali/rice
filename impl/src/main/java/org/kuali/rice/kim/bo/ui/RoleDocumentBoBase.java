@@ -15,15 +15,13 @@
  */
 package org.kuali.rice.kim.bo.ui;
 
-import java.util.LinkedHashMap;
+import org.hibernate.annotations.Type;
+import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.Type;
-import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * 
@@ -42,18 +40,6 @@ public class RoleDocumentBoBase  extends PersistableBusinessObjectBase {
     protected boolean edit;
 	@Transient
 	protected IdentityManagementRoleDocument roleDocument;
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "documentNumber", documentNumber );
-		return m;
-	}
 
 	public String getDocumentNumber() {
 		return this.documentNumber;

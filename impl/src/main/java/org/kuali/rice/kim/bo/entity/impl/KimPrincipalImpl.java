@@ -15,16 +15,14 @@
  */
 package org.kuali.rice.kim.bo.entity.impl;
 
-import java.util.LinkedHashMap;
+import org.hibernate.annotations.Type;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -51,15 +49,6 @@ public class KimPrincipalImpl extends PersistableBusinessObjectBase implements K
 	@Column(name="ACTV_IND")
 	@Type(type="yes_no")
 	private boolean active;
-
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "principalId", this.principalId );
-		m.put( "principalName", this.principalName );
-		m.put( "entityId", this.entityId );
-		return m;
-	}
 
 	public String getPrincipalId() {
 		return this.principalId;

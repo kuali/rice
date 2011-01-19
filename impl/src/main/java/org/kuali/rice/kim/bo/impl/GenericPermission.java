@@ -15,20 +15,14 @@
  */
 package org.kuali.rice.kim.bo.impl;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Type;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.role.KimPermission;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
+
+import javax.persistence.*;
+import java.util.Iterator;
 
 /**
  * @author Kuali Rice Team (rice.collab@kuali.org)
@@ -174,19 +168,6 @@ public class GenericPermission extends PersistableBusinessObjectBase {
 
 	public void setName(String permissionName) {
 		this.name = permissionName;
-	}
-
-	/**
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		LinkedHashMap m = new LinkedHashMap();
-		m.put( "permissionId", permissionId );
-		m.put( "name", name );
-		m.put( "details", getDetails() );
-		return m;
 	}
 
 	public void setDetails( AttributeSet details ) {

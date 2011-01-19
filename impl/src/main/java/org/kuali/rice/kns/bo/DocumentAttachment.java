@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.bo;
 
-import java.util.LinkedHashMap;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -41,17 +39,5 @@ public class DocumentAttachment extends PersistableAttachmentBase {
 
     public void setDocumentNumber(String documentNumber) {
         this.documentNumber = documentNumber;
-    }
-    
-    /**
-     * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-     */
-    protected LinkedHashMap toStringMapper() {
-        LinkedHashMap m = new LinkedHashMap();
-        m.put("documentNumber", this.documentNumber);
-        m.put("fileName", getFileName());
-        m.put("contentType", getContentType());
-        
-        return m;
     }
 }

@@ -16,14 +16,16 @@
 package org.kuali.rice.kns.bo;
 
 
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedHashMap;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kuali.test.KNSTestCase;
+
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * This is a description of what this class does - chang don't forget to fill this in. 
@@ -100,20 +102,4 @@ public class SessionDocumentTest extends KNSTestCase{
 		dummySessionDocument.setEncrypted(true);
 		assertEquals("Testing Encrypted in SessionDocument",true,dummySessionDocument.isEncrypted());
 	}
-	
-	@Test
-	public void testToStringMapper(){
-		dummySessionDocument.setDocumentNumber("dummyDocumentNumber");
-		dummySessionDocument.setSessionId("dummySeesionID");
-		dummySessionDocument.setPrincipalId("dummyPrincipalId");
-		dummySessionDocument.setIpAddress("dummyIpAddress");
-		LinkedHashMap dummyMap = dummySessionDocument.toStringMapper();
-		assertEquals("Testing toStringMapper in SessionDocument","dummyDocumentNumber", dummyMap.get("documentNumber"));
-		assertEquals("Testing toStringMapper in SessionDocument","dummySeesionID", dummyMap.get("sessionId"));
-		assertEquals("Testing toStringMapper in SessionDocument","dummyPrincipalId", dummyMap.get("principalId"));
-		assertEquals("Testing toStringMapper in SessionDocument","dummyIpAddress", dummyMap.get("ipAddress"));
-	}
-
-	
-
 }

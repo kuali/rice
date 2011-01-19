@@ -15,8 +15,6 @@
  */
 package org.kuali.rice.kns.lookup;
 
-import java.util.LinkedHashMap;
-
 import org.kuali.rice.kns.bo.TransientBusinessObjectBase;
 
 /**
@@ -45,14 +43,4 @@ public class LookupResultsDDBo extends TransientBusinessObjectBase {
 	public void setSomeValue(String someValue) {
 		this.someValue = someValue;
 	}
-
-	/**
-	 * 
-	 * @see org.kuali.rice.kns.bo.BusinessObjectBase#toStringMapper()
-	 */
-	@Override
-	protected LinkedHashMap toStringMapper() {
-		return null;
-	}
-
 }

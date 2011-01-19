@@ -21,7 +21,7 @@ import java.util.Map;
 
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.bo.ParameterDetailType;
@@ -68,7 +68,7 @@ public class ParameterRule extends MaintenanceDocumentRuleBase {
 	        permissionDetails.put(KimAttributes.NAMESPACE_CODE, parm.getParameterNamespaceCode());
 	        permissionDetails.put(KimAttributes.COMPONENT_NAME, parm.getParameterDetailTypeCode());
 	        permissionDetails.put(KimAttributes.PARAMETER_NAME, parm.getParameterName());
-	        allowsEdit = KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(
+	        allowsEdit = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
 	        				GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 	        				KNSConstants.KNS_NAMESPACE,
 	        				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,

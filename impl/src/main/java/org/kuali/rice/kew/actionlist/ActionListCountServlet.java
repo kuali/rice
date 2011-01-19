@@ -64,7 +64,7 @@ public class ActionListCountServlet extends HttpServlet {
 			} else if ("workflowId".equalsIgnoreCase(idType) || "w".equalsIgnoreCase(idType)) {
 				principalId = id;
 		    } else if ("authenticationId".equalsIgnoreCase(idType) || "a".equalsIgnoreCase(idType)) {
-		    	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(id);
+		    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(id);
 		    	if (principal != null) {
 		    		principalId = principal.getPrincipalId();
 		    	}

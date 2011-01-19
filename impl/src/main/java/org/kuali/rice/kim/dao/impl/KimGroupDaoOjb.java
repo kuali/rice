@@ -31,7 +31,7 @@ import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.dao.KimGroupDao;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
@@ -89,7 +89,7 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         					String principalName = entry.getValue();
         					// Search for the Principal using the Identity Management service
         					LOG.debug("Searching on Principal Name: " + entry.getValue());
-        					KimPrincipalInfo principalInfo = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        					KimPrincipalInfo principalInfo = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
         					// If a Principal is returned, plug in the Principal ID as the Member ID
         					if (principalInfo != null)
         					{

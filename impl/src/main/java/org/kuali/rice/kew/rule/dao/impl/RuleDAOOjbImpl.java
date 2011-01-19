@@ -16,6 +16,18 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.ojb.broker.PersistenceBroker;
 import org.apache.ojb.broker.query.Criteria;
@@ -30,14 +42,9 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.springmodules.orm.ojb.PersistenceBrokerCallback;
 import org.springmodules.orm.ojb.support.PersistenceBrokerDaoSupport;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.*;
 
 
 public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleDAO {
@@ -246,13 +253,13 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
         
         if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) && searchUserInWorkgroups)
         {
-            KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
+            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
 
             if (principal == null)
             {
             	throw new RiceRuntimeException("Failed to locate user for the given workflow id: " + principalId);
             }
-            workgroupIds = KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+            workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
         ReportQueryByCriteria query = getResponsibilitySubQuery(workgroupIds, principalId, searchUser, searchUserInWorkgroups);
         if (query != null) {

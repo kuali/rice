@@ -41,7 +41,7 @@ import org.kuali.rice.kew.xml.RuleXmlParser;
 import org.kuali.rice.kew.xml.export.RuleDelegationXmlExporter;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
 
 
@@ -161,7 +161,7 @@ public class RuleDelegationServiceImpl implements RuleDelegationService {
 	}
 
 	private IdentityManagementService getIdentityManagementService() {
-        return (IdentityManagementService) KIMServiceLocatorInternal.getIdentityManagementService();
+        return (IdentityManagementService) KIMServiceLocator.getIdentityManagementService();
     }
 
     private RuleTemplateService getRuleTemplateService() {

@@ -1327,7 +1327,7 @@ public class RoleServiceBase {
     
     protected IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
 		}
 
 		return identityManagementService;

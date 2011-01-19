@@ -74,7 +74,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
 
     public static IdentityManagementService getIdentityManagementService() {
         if ( identityManagementService == null ) {
-            identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+            identityManagementService = KIMServiceLocator.getIdentityManagementService();
         }
         return identityManagementService;
     }

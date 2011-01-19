@@ -995,7 +995,10 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         UserSession userSession = GlobalVariables.getUserSession();
         if ( (userSession == null) && (principalId != null && !"".equals(principalId)) ) {
             LOG.info("Authenticated User Session is null... using parameter user: " + principalId);
-            userSession = new UserSession(principalId);
+            Person user = KIMServiceLocator.getPersonService().getPerson(principalId);
+            if (user != null) {
+            	userSession = new UserSession(user.getPrincipalName());
+            }
         } else if (searchCriteria.isOverridingUserSession()) {
             if (principalId == null) {
                 LOG.error("Search Criteria specified UserSession override but given user paramter is null");
@@ -1103,7 +1106,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
         Person user = KIMServiceLocatorInternal.getPersonService().getPerson(docCriteriaDTO.getInitiatorWorkflowId());
 
         if (user != null) {
-            KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
+            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(docCriteriaDTO.getInitiatorWorkflowId());
 
             docCriteriaDTO.setInitiatorNetworkId(user.getPrincipalName());
             docCriteriaDTO.setInitiatorName(user.getName());
@@ -1497,7 +1500,7 @@ public class StandardDocumentSearchGenerator implements DocumentSearchGenerator 
     public String getWorkgroupViewerSql(String id, String workgroupName, String whereClausePredicatePrefix) {
         String sql = "";
         if (!org.apache.commons.lang.StringUtils.isEmpty(workgroupName)) {
-            Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(id);
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(id);
             sql = whereClausePredicatePrefix + " DOC_HDR.DOC_HDR_ID = KREW_ACTN_RQST_T.DOC_HDR_ID and KREW_ACTN_RQST_T.GRP_ID = " + group.getGroupId();
         }
         return sql;

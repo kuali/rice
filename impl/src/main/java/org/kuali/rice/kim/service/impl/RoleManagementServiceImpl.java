@@ -640,7 +640,7 @@ public class RoleManagementServiceImpl implements RoleManagementService, Initial
 		}
 		sb.append( "   Principal : " ).append( principalId );
 		if ( principalId != null ) {
-			KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal( principalId );
+			KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal( principalId );
 			if ( principal != null ) {
 				sb.append( " (" ).append( principal.getPrincipalName() ).append( ')' );
 			}

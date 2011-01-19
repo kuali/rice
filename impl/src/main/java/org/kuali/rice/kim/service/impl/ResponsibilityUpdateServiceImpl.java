@@ -25,7 +25,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.role.impl.KimResponsibilityImpl;
 import org.kuali.rice.kim.bo.role.impl.ResponsibilityAttributeDataImpl;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.ResponsibilityUpdateService;
 
 /**
@@ -86,7 +86,7 @@ public class ResponsibilityUpdateServiceImpl extends ResponsibilityServiceBase i
 	    	}
 	    	getBusinessObjectService().save(resp);
 	    	// flush the IdM service caches
-	    	KIMServiceLocatorInternal.getIdentityManagementService().flushResponsibilityCaches();
+	    	KIMServiceLocator.getIdentityManagementService().flushResponsibilityCaches();
 	    	// flush the local implementation class cache
 	    	flushResponsibilityImplCache();
     	} catch ( RuntimeException ex ) {

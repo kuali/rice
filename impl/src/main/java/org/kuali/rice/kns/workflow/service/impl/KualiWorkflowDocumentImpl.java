@@ -162,7 +162,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
     }
     
     public String getInitiatorNetworkId() {
-    	return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(getInitiatorPrincipalId()).getPrincipalName();
+    	return KIMServiceLocator.getIdentityManagementService().getPrincipal(getInitiatorPrincipalId()).getPrincipalName();
     }
     
     public String getInitiatorPrincipalId() {
@@ -170,7 +170,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
     }
     
     public String getRoutedByUserNetworkId() {
-    	return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(getRoutedByPrincipalId()).getPrincipalName();
+    	return KIMServiceLocator.getIdentityManagementService().getPrincipal(getRoutedByPrincipalId()).getPrincipalName();
     }
     
     public String getRoutedByPrincipalId() {
@@ -279,7 +279,7 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
                         isAdHocRequested = true;
                     }
                     else if (actionRequests[actionRequestIndex].isGroupRequest()) {
-                    	if (KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(principalId, actionRequests[actionRequestIndex].getGroupId())) {
+                    	if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, actionRequests[actionRequestIndex].getGroupId())) {
                     		isAdHocRequested = true;
                     	}
                     }

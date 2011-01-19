@@ -16,25 +16,29 @@
  */
 package org.kuali.rice.kew.rule.web;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ClassUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
-import org.kuali.rice.kew.rule.*;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleExtension;
+import org.kuali.rice.kew.rule.RuleExtensionValue;
+import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.service.RuleService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.util.KNSConstants;
-
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Iterator;
-import java.util.List;
 
 
 /**
@@ -120,7 +124,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 				// setReviewer(getWorkgroupService().getWorkgroup(new
 				// WorkflowGroupId(new
 				// Long(getRuleResponsibilityName()))).getGroupNameId().getNameId());
-				Group group = KIMServiceLocatorInternal.getIdentityManagementService().
+				Group group = KIMServiceLocator.getIdentityManagementService().
 	                  getGroup(getRuleResponsibilityName());
 				setReviewer(group.getGroupName());
 				setReviewerId(group.getGroupId());
@@ -173,7 +177,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 	}
 
 	public void setWorkgroupId(String workgroupId) {
-	    Group workgroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(workgroupId);
+	    Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(workgroupId);
 		//Workgroup workgroup = getWorkgroupService().getWorkgroup(new WorkflowGroupId(workgroupId));
 		if (workgroup != null) {
 			setReviewer(workgroup.getGroupName());
@@ -295,7 +299,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			if (!invalidUser)
 			{
 				//chb: 10Jan2009: not using KEW IdentityHelperService b/c we want to deal w/ exception here
-				KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(getReviewer());
+				KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(getReviewer());
 				if( principal != null)
 				{
 					setRuleResponsibilityName(principal.getPrincipalId());
@@ -312,7 +316,7 @@ public class WebRuleResponsibility extends RuleResponsibility {
 			boolean invalidWorkgroup = org.apache.commons.lang.StringUtils.isEmpty(getReviewer());
 			;
 			if (!invalidWorkgroup) {
-			    Group workgroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(getReviewerId());
+			    Group workgroup = KIMServiceLocator.getIdentityManagementService().getGroup(getReviewerId());
 				if (workgroup == null) {
 					invalidWorkgroup = true;
 				} else {

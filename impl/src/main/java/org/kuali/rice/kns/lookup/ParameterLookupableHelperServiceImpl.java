@@ -29,7 +29,7 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.Parameter;
@@ -61,7 +61,7 @@ public class ParameterLookupableHelperServiceImpl extends KualiLookupableHelperS
         permissionDetails.put(KimAttributes.NAMESPACE_CODE, parm.getParameterNamespaceCode());
         permissionDetails.put(KimAttributes.COMPONENT_NAME, parm.getParameterDetailTypeCode());
         permissionDetails.put(KimAttributes.PARAMETER_NAME, parm.getParameterName());
-        allowsEdit = KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(
+        allowsEdit = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(
         		GlobalVariables.getUserSession().getPerson().getPrincipalId(),
 				KNSConstants.KNS_NAMESPACE,
 				KimConstants.PermissionTemplateNames.MAINTAIN_SYSTEM_PARAMETER,

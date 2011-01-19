@@ -15,12 +15,18 @@
  */
 package org.kuali.rice.ken.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.kuali.rice.core.lifecycle.BaseLifecycle;
 import org.kuali.rice.core.lifecycle.Lifecycle;
 import org.kuali.rice.core.resourceloader.RiceResourceLoaderFactory;
 import org.kuali.rice.core.resourceloader.SpringResourceLoader;
 import org.kuali.rice.ken.core.SpringNotificationServiceLocator;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.test.BaselineTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
@@ -32,10 +38,6 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import javax.xml.namespace.QName;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -143,7 +145,7 @@ public abstract class KENTestCase extends BaselineTestCase {
         @Override
         public void stop() throws Exception {
             KEWServiceLocator.getCacheAdministrator().flushAll();
-            KIMServiceLocatorInternal.getIdentityManagementService().flushAllCaches();
+            KIMServiceLocator.getIdentityManagementService().flushAllCaches();
             KIMServiceLocatorInternal.getRoleManagementService().flushRoleCaches();
             super.stop();
         }

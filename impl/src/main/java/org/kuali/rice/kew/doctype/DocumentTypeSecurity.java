@@ -15,6 +15,18 @@
  */
 package org.kuali.rice.kew.doctype;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.core.util.KeyValue;
@@ -26,6 +38,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kew.xml.XmlConstants;
 import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -33,17 +46,6 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class DocumentTypeSecurity implements Serializable {
@@ -58,6 +60,7 @@ public class DocumentTypeSecurity implements Serializable {
   private Boolean routeLogAuthenticatedOk;
   private List<KeyValue> searchableAttributes = new ArrayList<KeyValue>();
   private List<Group> workgroups = new ArrayList<Group>();
+  private List<SecurityPermissionInfo> permissions = new ArrayList<SecurityPermissionInfo>();
   private List<String> allowedRoles = new ArrayList<String>();
   private List<String> disallowedRoles = new ArrayList<String>();
   private List<SecurityAttribute> securityAttributes = new ArrayList<SecurityAttribute>();
@@ -138,7 +141,7 @@ public class DocumentTypeSecurity implements Serializable {
         	value = Utilities.substituteConfigParameters(value);
             String namespaceCode = Utilities.parseGroupNamespaceCode(value);
             String groupName = Utilities.parseGroupName(value);
-        	Group groupObject = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+        	Group groupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
         	if (groupObject == null) {
         		throw new WorkflowException("Could not find group: " + value);
         	}
@@ -156,7 +159,7 @@ public class DocumentTypeSecurity implements Serializable {
             if (!org.apache.commons.lang.StringUtils.isEmpty(groupName)) {
               groupName = Utilities.substituteConfigParameters(groupName).trim();
               String namespaceCode = Utilities.substituteConfigParameters(((Element) groupNode).getAttribute(XmlConstants.NAMESPACE)).trim();
-              Group groupObject = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
+              Group groupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(namespaceCode, groupName);
               
               
               if (groupObject != null) {
@@ -174,6 +177,52 @@ public class DocumentTypeSecurity implements Serializable {
         }
       }
 
+      NodeList permissionNodes = (NodeList) xpath.evaluate("./permission", securityElement, XPathConstants.NODESET);
+      if (permissionNodes != null && permissionNodes.getLength()>0) {
+        for (int i = 0; i < permissionNodes.getLength(); i++) {
+          Node permissionNode = permissionNodes.item(i);
+          if (permissionNode.getNodeType() == Node.ELEMENT_NODE) {
+        	  SecurityPermissionInfo securityPermission = new SecurityPermissionInfo();
+        	securityPermission.setPermissionName(Utilities.substituteConfigParameters(((Element) permissionNode).getAttribute(XmlConstants.NAME)).trim());
+        	securityPermission.setPermissionNamespaceCode(Utilities.substituteConfigParameters(((Element) permissionNode).getAttribute(XmlConstants.NAMESPACE)).trim());
+        	if (!StringUtils.isEmpty(securityPermission.getPermissionName()) && !StringUtils.isEmpty(securityPermission.getPermissionNamespaceCode())) {
+        		//get details and qualifications
+        		if (permissionNode.hasChildNodes()) {
+        			NodeList permissionChildNodes = permissionNode.getChildNodes();
+        			for (int j = 0; j <permissionChildNodes.getLength(); j++) {
+        				Node permissionChildNode = permissionChildNodes.item(j);
+        				if (permissionChildNode.getNodeType() == Node.ELEMENT_NODE) {
+	        				String childAttributeName = Utilities.substituteConfigParameters(((Element) permissionChildNode).getAttribute(XmlConstants.NAME)).trim();
+	        				String childAttributeValue = permissionChildNode.getTextContent().trim();
+	        				if (!StringUtils.isEmpty(childAttributeValue)) {
+	        					childAttributeValue = Utilities.substituteConfigParameters(childAttributeValue).trim();
+	        				}
+	        				if (!StringUtils.isEmpty(childAttributeValue)) {
+	        					childAttributeValue = Utilities.substituteConfigParameters(childAttributeValue).trim();
+	        				}
+	        				if (permissionChildNode.getNodeName().trim().equals("permissionDetail")) {
+	        					securityPermission.getPermissionDetails().put(childAttributeName, childAttributeValue);
+	        				}
+	        				if (permissionChildNode.getNodeName().trim().equals("qualification")) {
+	        					securityPermission.getQualifications().put(childAttributeName, childAttributeValue);
+	        				}
+        				}
+        			}
+        		}
+        		
+        		 KIMServiceLocatorInternal.getPermissionService().isPermissionDefined(securityPermission.getPermissionNamespaceCode(), securityPermission.getPermissionName(), securityPermission.getPermissionDetails());
+                
+              
+              if ( KIMServiceLocatorInternal.getPermissionService().isPermissionDefined(securityPermission.getPermissionNamespaceCode(), securityPermission.getPermissionName(), securityPermission.getPermissionDetails())) {
+            	  permissions.add(securityPermission); 
+              } else {
+            	  LOG.warn("Could not find permission with name '" + securityPermission.getPermissionName() + "' and namespace '" + securityPermission.getPermissionNamespaceCode() + "' which was defined on Document Type security");
+              }
+            }
+          }
+        }
+      }
+      
       NodeList roleNodes = (NodeList) xpath.evaluate("./role", securityElement, XPathConstants.NODESET);
       if (roleNodes != null && roleNodes.getLength()>0) {
         for (int i = 0; i < roleNodes.getLength(); i++) {
@@ -277,6 +326,14 @@ public class DocumentTypeSecurity implements Serializable {
 
   public void setWorkgroups(List<Group> workgroups) {
 	this.workgroups = workgroups;
+  }
+  
+  public List<SecurityPermissionInfo> getPermissions() {
+    return this.permissions;
+  }
+
+  public void setPermissions(List<SecurityPermissionInfo> permissions) {
+	this.permissions = permissions;
   }
 
   public Boolean getActive() {

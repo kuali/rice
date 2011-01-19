@@ -21,6 +21,7 @@ import org.junit.Test;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 
@@ -41,7 +42,7 @@ public class GroupXmlImportTest extends KEWTestCase {
     @Test public void testGroupImportXml() throws Exception {
     	loadXmlFile("GroupXmlImportTest.xml");
 
-        IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         //verify that the group was ingested
         Group group = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "TestUserGroup");
 

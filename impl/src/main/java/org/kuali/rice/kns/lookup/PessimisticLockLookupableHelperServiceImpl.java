@@ -126,7 +126,7 @@ public class PessimisticLockLookupableHelperServiceImpl extends AbstractLookupab
         //set owner's principal id and remove owner principal name field 
         String principalName = fieldValues.get(OWNER_PRINCIPAL_NAME_PROPERTY_NAME);
         if (!StringUtils.isEmpty(principalName)) {
-            KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+            KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
             if (principal != null) { 
                 fieldValues.put(OWNER_PRINCIPAL_ID_PROPERTY_NAME, principal.getPrincipalId());
             }

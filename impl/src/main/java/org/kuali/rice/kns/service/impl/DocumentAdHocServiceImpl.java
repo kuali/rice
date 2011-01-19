@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
 import org.kuali.rice.kns.bo.AdHocRouteWorkgroup;
 import org.kuali.rice.kns.document.Document;
@@ -57,7 +57,7 @@ public class DocumentAdHocServiceImpl implements DocumentAdHocService {
 
         //populate group namespace and names on adHocRoutWorkgroups
         for (AdHocRouteWorkgroup adHocRouteWorkgroup : adHocRouteWorkgroups) {
-            Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(adHocRouteWorkgroup.getId());
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(adHocRouteWorkgroup.getId());
             adHocRouteWorkgroup.setRecipientName(group.getGroupName());
             adHocRouteWorkgroup.setRecipientNamespaceCode(group.getNamespaceCode());
         }

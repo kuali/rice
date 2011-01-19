@@ -597,7 +597,7 @@ public class DTOConverter {
         }
         String groupId = responsiblePartyVO.getGroupId();
         if (groupId != null) {
-        	Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(groupId);
+        	Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
         	if (group == null) {
         		throw new RiceRuntimeException("Failed to locate group with ID: " + groupId);
         	}

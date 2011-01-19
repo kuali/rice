@@ -22,7 +22,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.ken.service.NotificationRecipientService;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 
 /**
@@ -37,7 +37,7 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
 
     protected IdentityManagementService getIdentityManagementService()
     {
-        return KIMServiceLocatorInternal.getIdentityManagementService();
+        return KIMServiceLocator.getIdentityManagementService();
     }
 
     /**
@@ -101,7 +101,7 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      */
     public boolean isGroupRecipientValid(String groupRecipientId)
     {
-        return (KIMServiceLocatorInternal.getIdentityManagementService().getGroup( groupRecipientId ) != null);
+        return (KIMServiceLocator.getIdentityManagementService().getGroup( groupRecipientId ) != null);
     }
 
     /**
@@ -111,7 +111,7 @@ public class NotificationRecipientServiceKimImpl implements NotificationRecipien
      */
     public boolean isUserRecipientValid(String principalName)
     {
-        return (KIMServiceLocatorInternal.getIdentityManagementService()
+        return (KIMServiceLocator.getIdentityManagementService()
                 .getPrincipalByPrincipalName(principalName) != null);
     }
 

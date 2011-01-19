@@ -505,7 +505,7 @@ public class PersonImpl extends TransientBusinessObjectBase implements Person {
 	 */
 	public static IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}

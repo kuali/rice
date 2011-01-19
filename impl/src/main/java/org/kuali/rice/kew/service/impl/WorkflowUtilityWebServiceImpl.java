@@ -16,6 +16,22 @@
  */
 package org.kuali.rice.kew.service.impl;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.jws.WebService;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.exception.RiceRuntimeException;
@@ -32,7 +48,26 @@ import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocumentSearchResultComponents;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.documentlink.DocumentLink;
-import org.kuali.rice.kew.dto.*;
+import org.kuali.rice.kew.dto.ActionItemDTO;
+import org.kuali.rice.kew.dto.ActionRequestDTO;
+import org.kuali.rice.kew.dto.ActionTakenDTO;
+import org.kuali.rice.kew.dto.DTOConverter;
+import org.kuali.rice.kew.dto.DocumentContentDTO;
+import org.kuali.rice.kew.dto.DocumentDetailDTO;
+import org.kuali.rice.kew.dto.DocumentLinkDTO;
+import org.kuali.rice.kew.dto.DocumentSearchCriteriaDTO;
+import org.kuali.rice.kew.dto.DocumentSearchResultDTO;
+import org.kuali.rice.kew.dto.DocumentStatusTransitionDTO;
+import org.kuali.rice.kew.dto.DocumentTypeDTO;
+import org.kuali.rice.kew.dto.PropertyDefinitionDTO;
+import org.kuali.rice.kew.dto.ReportCriteriaDTO;
+import org.kuali.rice.kew.dto.RouteHeaderDTO;
+import org.kuali.rice.kew.dto.RouteNodeInstanceDTO;
+import org.kuali.rice.kew.dto.RuleDTO;
+import org.kuali.rice.kew.dto.RuleExtensionDTO;
+import org.kuali.rice.kew.dto.RuleReportCriteriaDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeDefinitionDTO;
+import org.kuali.rice.kew.dto.WorkflowAttributeValidationErrorDTO;
 import org.kuali.rice.kew.engine.ActivationContext;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -44,7 +79,11 @@ import org.kuali.rice.kew.engine.simulation.SimulationResults;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.routeheader.DocumentStatusTransition;
-import org.kuali.rice.kew.rule.*;
+import org.kuali.rice.kew.rule.FlexRM;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.WorkflowAttribute;
+import org.kuali.rice.kew.rule.WorkflowAttributeValidationError;
+import org.kuali.rice.kew.rule.WorkflowAttributeXmlValidator;
 import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowUtility;
@@ -52,16 +91,12 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.KEWWebServiceConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-
-import javax.jws.WebService;
-import java.math.BigDecimal;
-import java.sql.Timestamp;
-import java.util.*;
 
 @SuppressWarnings({"unchecked"})
 @WebService(endpointInterface = KEWWebServiceConstants.WorkflowUtility.INTERFACE_CLASS,
@@ -664,7 +699,7 @@ public class WorkflowUtilityWebServiceImpl implements WorkflowUtility {
             }
             if (request.isUserRequest() && request.getPrincipalId().equals(principalId)) {
                 KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
-            } else if (request.isGroupRequest() && KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(principalId, request.getGroup().getGroupId())) {
+            } else if (request.isGroupRequest() && KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(principalId, request.getGroup().getGroupId())) {
                 KEWServiceLocator.getActionRequestService().deactivateRequest(null, request, activationContext);
             }
         }

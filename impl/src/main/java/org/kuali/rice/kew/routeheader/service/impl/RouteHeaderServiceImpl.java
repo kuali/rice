@@ -38,7 +38,7 @@ import org.kuali.rice.kew.routeheader.service.RouteHeaderService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class RouteHeaderServiceImpl implements RouteHeaderService {
@@ -141,7 +141,7 @@ public class RouteHeaderServiceImpl implements RouteHeaderService {
         }
         else
         {
-           	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(routeHeader.getInitiatorWorkflowId());
+           	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(routeHeader.getInitiatorWorkflowId());
             if(principal == null)
             {
                	errors.add(new WorkflowServiceErrorImpl("RouteHeader initiator id invalid.", "routeheader.initiator.invalid"));

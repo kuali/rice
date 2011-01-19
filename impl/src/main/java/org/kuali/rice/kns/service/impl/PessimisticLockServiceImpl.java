@@ -487,7 +487,7 @@ public class PessimisticLockServiceImpl implements PessimisticLockService {
 
 	public IdentityManagementService getIdentityManagementService() {
         if ( identityManagementService == null ) {
-        	identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+        	identityManagementService = KIMServiceLocator.getIdentityManagementService();
         }
 		return identityManagementService;
 	}

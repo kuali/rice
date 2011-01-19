@@ -16,18 +16,18 @@
 package org.kuali.rice.kim.test.util;
 
 
+import java.util.List;
+
 import org.junit.Test;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.test.KIMTestCase;
 import org.kuali.rice.kim.util.KimCommonUtilsInternal;
 import org.kuali.rice.kim.util.KimConstants;
-
-import java.util.List;
 
 /**
  * Unit Tests for KimCommonUtils.java
@@ -44,7 +44,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
 
     @Test
     public void testCopyInfoAttributesToGroupAttributes() {
-        IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
 
         GroupInfo groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 
@@ -76,7 +76,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
 
     @Test
     public void testCopyInfoToGroup() {
-        IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
 
         GroupInfo groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 
@@ -88,7 +88,7 @@ public class KimCommonUtilsTest extends KIMTestCase {
 
     @Test
     public void testFailedCopyInfoAttributesToGroupAttributes() {
-    	IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+    	IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
 
 		GroupInfo groupInfo = identityManagementService.getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "GroupNine");
 		AttributeSet testAttributeSet = groupInfo.getAttributes();

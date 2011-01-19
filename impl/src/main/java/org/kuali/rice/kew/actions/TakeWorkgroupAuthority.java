@@ -16,6 +16,10 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -25,11 +29,7 @@ import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -67,7 +67,7 @@ public class TakeWorkgroupAuthority extends ActionTakenEvent {
      */
     @Override
     public String validateActionRules() {
-        if  ( (groupId != null) && (!KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId))) {
+        if  ( (groupId != null) && (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId))) {
             return (getPrincipal().getPrincipalName() + " not a member of workgroup " + groupId);
         }
         return "";

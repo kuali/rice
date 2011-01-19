@@ -16,6 +16,19 @@
  */
 package org.kuali.rice.kew.rule.dao.impl;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jpa.criteria.Criteria;
@@ -27,13 +40,7 @@ import org.kuali.rice.kew.rule.RuleResponsibility;
 import org.kuali.rice.kew.rule.dao.RuleDAO;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import java.sql.Timestamp;
-import java.util.*;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 public class RuleDAOJpaImpl implements RuleDAO {
@@ -243,13 +250,13 @@ public class RuleDAOJpaImpl implements RuleDAO {
         if (!org.apache.commons.lang.StringUtils.isEmpty(principalId) && searchUserInWorkgroups) {
             KimPrincipal principal = null;
 
-            principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
+            principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
 
             if (principal == null)
             {
             	throw new RiceRuntimeException("Failed to locate user for the given principal id: " + principalId);
             }
-            kimGroupIds = KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+            kimGroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         }
         addResponsibilityCriteria(crit, kimGroupIds, principalId, searchUser, searchUserInWorkgroups);
         //if (responsibilityCrit != null) {

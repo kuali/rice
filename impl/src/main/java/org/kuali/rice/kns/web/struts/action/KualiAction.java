@@ -37,13 +37,17 @@ import org.kuali.rice.core.service.Demonstration;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.xml.dto.AttributeSet;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.document.authorization.DocumentAuthorizerBase;
 import org.kuali.rice.kns.exception.AuthorizationException;
 import org.kuali.rice.kns.lookup.LookupUtils;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KualiModuleService;
+import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSUtils;
@@ -888,7 +892,7 @@ public abstract class KualiAction extends DispatchAction {
     	AttributeSet roleQualifier = new AttributeSet(getRoleQualification(form, methodToCall));
     	AttributeSet permissionDetails = KNSUtils.getNamespaceAndActionClass(this.getClass());
     	
-        if (!KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
+        if (!KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KNS_NAMESPACE,
         		KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, roleQualifier )) 
         {
             throw new AuthorizationException(GlobalVariables.getUserSession().getPerson().getPrincipalName(), 

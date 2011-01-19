@@ -977,10 +977,11 @@ Definitions are applied to the names in the routeNodes section.
       <element name="routeLogAuthenticated" type="boolean" default="true"  />
       <element name="searchableAttribute" type="dt:SecuritySearchableAttributeType"/>
       <element name="groupName" type="c:GroupNameType"/>
+      <element name="permission" type="dt:PermissionType"/>
       <element name="workgroup" type="c:ShortStringType">
           <annotation><documentation>DEPRECATED: use groupName instead.</documentation></annotation>
       </element>
-      <element name="role" type="dt:SecurityRoleType"/>
+      <!-- <element name="role" type="dt:SecurityRoleType"/>-->
       <element name="securityAttribute" type="dt:SecurityAttribute"/>
     </choice>
     <attribute name="active" type="boolean" default="true" />
@@ -1009,7 +1010,42 @@ Definitions are applied to the names in the routeNodes section.
       <enumeration value="UUID"/>
     </restriction>
   </simpleType>
+  
+  <complexType name="PermissionType">
+      <choice minOccurs="0" maxOccurs="unbounded">
+        <element name="permissionDetail" type="dt:PermissionAttributeType" />
+        <element name="qualification" type="dt:PermissionAttributeType" />
+      </choice>
+	  <attribute name="namespace" type="c:ShortStringType" use="required">
+	    <annotation>
+	      <documentation>
+	        Permission Namespace
+	      </documentation>
+	    </annotation>
+	  </attribute>
+	  <attribute name="name" type="c:ShortStringType" use="required">
+	    <annotation>
+	      <documentation>
+	        Permission Name
+	      </documentation>
+	    </annotation>
+	  </attribute>
+  </complexType>
 
+  <complexType name="PermissionAttributeType">
+    <simpleContent>
+      <extension base="c:ShortStringType">
+	      <attribute name="name" type="c:ShortStringType" use="required">
+		    <annotation>
+		      <documentation>
+		        attribute name
+		      </documentation>
+		    </annotation>
+		  </attribute>
+	 </extension>
+	</simpleContent>	 
+  </complexType>
+ <!--
   <complexType name="SecurityRoleType">
     <simpleContent>
       <extension base="string">
@@ -1017,6 +1053,6 @@ Definitions are applied to the names in the routeNodes section.
       </extension>
     </simpleContent>
   </complexType>
-
+-->
 
 </schema>

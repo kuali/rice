@@ -61,6 +61,7 @@ import org.kuali.rice.kim.rule.event.ui.AddPersonDelegationMemberEvent;
 import org.kuali.rice.kim.rule.event.ui.AddPersonDocumentRoleQualifierEvent;
 import org.kuali.rice.kim.rule.event.ui.AddRoleEvent;
 import org.kuali.rice.kim.rules.ui.PersonDocumentRoleRule;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -94,7 +95,7 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         String principalId = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID);
         String principalName = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_NAME);
         if ( StringUtils.isBlank(principalId) && StringUtils.isNotBlank(principalName) ) {
-        	KimPrincipalInfo principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
         	if ( principal != null ) {
         		principalId = principal.getPrincipalId();
         	}
@@ -304,14 +305,14 @@ public class IdentityManagementPersonDocumentAction extends IdentityManagementDo
         if (newGroup.getGroupName() == null 
         		&& newGroup.getNamespaceCode() == null 
         		&& newGroup.getGroupId() != null) {
-        	GroupInfo tempGroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(newGroup.getGroupId());
+        	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroup(newGroup.getGroupId());
         	newGroup.setGroupName(tempGroup.getGroupName());
 	        newGroup.setNamespaceCode(tempGroup.getNamespaceCode());
 	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
         } else if (newGroup.getGroupName() != null 
         		&& newGroup.getNamespaceCode() != null 
         		&& newGroup.getGroupId() == null) {
-        	GroupInfo tempGroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(newGroup.getNamespaceCode(), newGroup.getGroupName());
+        	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newGroup.getNamespaceCode(), newGroup.getGroupName());
         	newGroup.setGroupId(tempGroup.getGroupId());
 	        newGroup.setKimTypeId(tempGroup.getKimTypeId());
         }

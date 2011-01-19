@@ -24,7 +24,7 @@ import org.kuali.rice.kew.ria.RIAConstants;
 import org.kuali.rice.kew.ria.bo.RIADocTypeMap;
 import org.kuali.rice.kew.ria.service.RIAServiceLocator;
 import org.kuali.rice.kim.bo.Person;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.document.authorization.TransactionalDocumentAuthorizerBase;
@@ -93,7 +93,7 @@ public class RIADocumentAuthorizer extends TransactionalDocumentAuthorizerBase {
 	private boolean isAuthorized(Person person, String[] authorizedGroups) {
 		if ((authorizedGroups != null) && !ArrayUtils.isEmpty(authorizedGroups)) {
 			for (String groupName : authorizedGroups) {
-				if (KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(person.getPrincipalId(), RIAConstants.DEFAULT_GROUP_NAMESPACE, groupName)) {
+				if (KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(person.getPrincipalId(), RIAConstants.DEFAULT_GROUP_NAMESPACE, groupName)) {
 					return true;
 				}
 	    	}

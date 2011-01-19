@@ -16,6 +16,12 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.MDC;
 import org.kuali.rice.kew.actionrequest.ActionRequestFactory;
@@ -31,10 +37,9 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.util.KNSConstants;
-
-import java.util.*;
 
 
 /**
@@ -171,10 +176,10 @@ public class DisapproveAction extends ActionTakenEvent {
 
         if( !StringUtils.isBlank(groupName))
         {
-            Group systemUserWorkgroup = KIMServiceLocatorInternal.getIdentityManagementService().
+            Group systemUserWorkgroup = KIMServiceLocator.getIdentityManagementService().
                 getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
 
-            List<String> principalIds = KIMServiceLocatorInternal.
+            List<String> principalIds = KIMServiceLocator.
             getIdentityManagementService().getGroupMemberPrincipalIds( systemUserWorkgroup.getGroupId());
 
             if (systemUserWorkgroup != null)

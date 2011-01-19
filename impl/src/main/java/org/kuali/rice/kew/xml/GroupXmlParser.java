@@ -15,6 +15,32 @@
  */
 package org.kuali.rice.kew.xml;
 
+import static org.kuali.rice.kew.xml.XmlConstants.ACTIVE;
+import static org.kuali.rice.kew.xml.XmlConstants.ATTRIBUTES;
+import static org.kuali.rice.kew.xml.XmlConstants.DESCRIPTION;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUP;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUPS;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUP_ID;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUP_NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.ID;
+import static org.kuali.rice.kew.xml.XmlConstants.KEY;
+import static org.kuali.rice.kew.xml.XmlConstants.MEMBERS;
+import static org.kuali.rice.kew.xml.XmlConstants.NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.PRINCIPAL_ID;
+import static org.kuali.rice.kew.xml.XmlConstants.PRINCIPAL_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.TYPE;
+import static org.kuali.rice.kew.xml.XmlConstants.VALUE;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -29,18 +55,10 @@ import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static org.kuali.rice.kew.xml.XmlConstants.*;
 
 
 /**
@@ -91,7 +109,7 @@ public class GroupXmlParser {
             }
         }
         for (GroupInfo groupInfo : groupInfos) {
-            IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+            IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
 
             // check if group already exists
             GroupInfo foundGroup = identityManagementService.getGroupByName(groupInfo.getNamespaceCode(), groupInfo.getGroupName());
@@ -133,7 +151,7 @@ public class GroupXmlParser {
     @SuppressWarnings("unchecked")
 	private GroupInfo parseGroup(Element element) throws XmlException {
         GroupInfo groupInfo = new GroupInfo();
-        IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         groupInfo.setGroupName(element.getChildText(NAME, GROUP_NAMESPACE));
 
         if (groupInfo.getGroupName() == null) {
@@ -286,7 +304,7 @@ public class GroupXmlParser {
     }
 
     private void addGroupMembers(GroupInfo groupInfo, String key) throws XmlException {
-        IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         List<String> groupIds = memberGroupIds.get(key);
         if (groupIds != null) {
             for (String groupId : groupIds) {

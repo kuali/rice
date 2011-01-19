@@ -243,7 +243,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
 
     private Group getGroup(String groupId) {
     	if( groupId ==null )	return null;
-    	return KIMServiceLocatorInternal.getIdentityManagementService().getGroup(groupId);
+    	return KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
     }
 
     public Group getGroup(){
@@ -288,7 +288,7 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     }
     
     public KimPrincipal getPrincipal(){
-        return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
+        return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
     }
 
     public Object copy(boolean preserveKeys) {

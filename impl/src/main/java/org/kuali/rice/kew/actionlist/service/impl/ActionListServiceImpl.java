@@ -42,6 +42,7 @@ import org.kuali.rice.kew.useroptions.UserOptionsService;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.GroupService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 
 /**
@@ -201,7 +202,7 @@ public class ActionListServiceImpl implements ActionListService {
             errors.add(new WorkflowServiceErrorImpl("ActionItem person null.", "actionitem.personid.empty", actionItem
                     .getActionItemId().toString()));
         } else {
-        	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
+        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
         	if (principal == null) {
                 errors.add(new WorkflowServiceErrorImpl("ActionItem person invalid.", "actionitem.personid.invalid",
                         actionItem.getActionItemId().toString()));

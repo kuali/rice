@@ -16,6 +16,18 @@
  */
 package org.kuali.rice.kew.rule;
 
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.hibernate.annotations.GenericGenerator;
@@ -28,12 +40,8 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
-
-import javax.persistence.*;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 
 /**
@@ -90,7 +98,7 @@ public class RuleResponsibility extends PersistableBusinessObjectBase {
 
     public Group getGroup() {
         if (isUsingGroup()) {
-        	return KIMServiceLocatorInternal.getIdentityManagementService().getGroup(ruleResponsibilityName);
+        	return KIMServiceLocator.getIdentityManagementService().getGroup(ruleResponsibilityName);
         }
         return null;
     }

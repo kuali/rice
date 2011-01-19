@@ -26,10 +26,10 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
+import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
@@ -121,8 +121,6 @@ public class BackdoorAction extends KualiAction {
             return mapping.findForward("portal");
         }
 
-        uSession.removeObject(KEWConstants.AUTHENTICATIONS);
-
         setFormGroupPermission(backdoorForm, request);
         
         return mapping.findForward("portal");
@@ -134,7 +132,7 @@ public class BackdoorAction extends KualiAction {
     	AttributeSet permissionDetails = new AttributeSet();
     	permissionDetails.put(KimAttributes.NAMESPACE_CODE, KEWConstants.KEW_NAMESPACE);
     	permissionDetails.put(KimAttributes.ACTION_CLASS, "org.kuali.rice.kew.web.backdoor.AdministrationAction");
-    	boolean isAdmin = KIMServiceLocatorInternal.getIdentityManagementService().isAuthorizedByTemplateName(getUserSession(request).getPrincipalId(), KNSConstants.KNS_NAMESPACE,	KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, new AttributeSet());
+    	boolean isAdmin = KIMServiceLocator.getIdentityManagementService().isAuthorizedByTemplateName(getUserSession(request).getPrincipalId(), KNSConstants.KNS_NAMESPACE,	KimConstants.PermissionTemplateNames.USE_SCREEN, permissionDetails, new AttributeSet());
         backdoorForm.setIsAdmin(isAdmin);
     }
 

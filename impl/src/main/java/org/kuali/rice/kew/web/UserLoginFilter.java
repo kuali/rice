@@ -35,7 +35,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.exception.AuthenticationException;
@@ -190,7 +190,7 @@ public class UserLoginFilter implements Filter {
 	
     private IdentityManagementService getIdentityManagementService() {
     	if (this.identityManagementService == null) {
-    		this.identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+    		this.identityManagementService = KIMServiceLocator.getIdentityManagementService();
     	}
     	
     	return this.identityManagementService;

@@ -53,6 +53,7 @@ import org.kuali.rice.kew.xml.export.RuleXmlExporter;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -1173,7 +1174,7 @@ public class RuleServiceImpl implements RuleService {
     }
 
     public IdentityManagementService getIdentityManagementService() {
-        return (IdentityManagementService) KIMServiceLocatorInternal.getService(KIMServiceLocatorInternal.KIM_IDENTITY_MANAGEMENT_SERVICE);
+        return KIMServiceLocator.getIdentityManagementService();
     }
 
     public ActionRequestService getActionRequestService() {

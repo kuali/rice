@@ -15,6 +15,25 @@
  */
 package org.kuali.rice.kew.xml.export;
 
+import static org.kuali.rice.kew.xml.XmlConstants.ACTIVE;
+import static org.kuali.rice.kew.xml.XmlConstants.ATTRIBUTE;
+import static org.kuali.rice.kew.xml.XmlConstants.ATTRIBUTES;
+import static org.kuali.rice.kew.xml.XmlConstants.DESCRIPTION;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUP;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUPS;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUP_NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUP_SCHEMA_LOCATION;
+import static org.kuali.rice.kew.xml.XmlConstants.KEY;
+import static org.kuali.rice.kew.xml.XmlConstants.MEMBERS;
+import static org.kuali.rice.kew.xml.XmlConstants.NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.PRINCIPAL_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_LOCATION_ATTR;
+import static org.kuali.rice.kew.xml.XmlConstants.SCHEMA_NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.TYPE;
+import static org.kuali.rice.kew.xml.XmlConstants.VALUE;
+
 import java.util.Iterator;
 
 import org.jdom.Element;
@@ -22,9 +41,8 @@ import org.kuali.rice.kew.export.ExportDataSet;
 import org.kuali.rice.kew.xml.XmlRenderer;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-
-import static org.kuali.rice.kew.xml.XmlConstants.*;
 
 /**
  * This is a description of what this class does - jjhanso don't forget to fill this in.
@@ -94,20 +112,20 @@ public class GroupXmlExporter implements XmlExporter {
             }
         }
 
-        java.util.List<String> memberGroupIds = KIMServiceLocatorInternal.getIdentityManagementService().getDirectMemberGroupIds(group.getGroupId());
+        java.util.List<String> memberGroupIds = KIMServiceLocator.getIdentityManagementService().getDirectMemberGroupIds(group.getGroupId());
 
-        java.util.List<String> memberPrincipalIds = KIMServiceLocatorInternal.getIdentityManagementService().getDirectGroupMemberPrincipalIds(group.getGroupId());
+        java.util.List<String> memberPrincipalIds = KIMServiceLocator.getIdentityManagementService().getDirectGroupMemberPrincipalIds(group.getGroupId());
 
         if (memberGroupIds.size() > 0 || memberPrincipalIds.size() > 0) {
             Element membersElement = renderer.renderElement(groupElement, MEMBERS);
             for (String memberGroupId : memberGroupIds) {
-                Group memberGroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(memberGroupId);
+                Group memberGroup = KIMServiceLocator.getIdentityManagementService().getGroup(memberGroupId);
                 Element groupNameElement = renderer.renderElement(membersElement, GROUP_NAME);
                 renderer.renderTextElement(groupNameElement, NAME, memberGroup.getGroupName());
                 renderer.renderTextElement(groupNameElement, NAMESPACE, memberGroup.getNamespaceCode());
             }
             for (String memberPrincipalId : memberPrincipalIds) {
-                renderer.renderTextElement(membersElement, PRINCIPAL_NAME, KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(memberPrincipalId).getPrincipalName());
+                renderer.renderTextElement(membersElement, PRINCIPAL_NAME, KIMServiceLocator.getIdentityManagementService().getPrincipal(memberPrincipalId).getPrincipalName());
             }
         }
     }

@@ -16,6 +16,64 @@
  */
 package org.kuali.rice.kew.xml;
 
+import static org.kuali.rice.kew.xml.XmlConstants.ACTIVE;
+import static org.kuali.rice.kew.xml.XmlConstants.APP_DOC_STATUSES;
+import static org.kuali.rice.kew.xml.XmlConstants.BLANKET_APPROVE_GROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.BLANKET_APPROVE_POLICY;
+import static org.kuali.rice.kew.xml.XmlConstants.BLANKET_APPROVE_WORKGROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.CUSTOM_EMAIL_STYLESHEET;
+import static org.kuali.rice.kew.xml.XmlConstants.DATA_ELEMENT;
+import static org.kuali.rice.kew.xml.XmlConstants.DEFAULT_EXCEPTION_GROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.DEFAULT_EXCEPTION_WORKGROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.DESCRIPTION;
+import static org.kuali.rice.kew.xml.XmlConstants.DOCUMENT_TYPE;
+import static org.kuali.rice.kew.xml.XmlConstants.DOCUMENT_TYPES;
+import static org.kuali.rice.kew.xml.XmlConstants.DOCUMENT_TYPE_OVERWRITE_MODE;
+import static org.kuali.rice.kew.xml.XmlConstants.DOC_HANDLER;
+import static org.kuali.rice.kew.xml.XmlConstants.DOC_SEARCH_HELP_URL;
+import static org.kuali.rice.kew.xml.XmlConstants.EXCEPTION_GROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.EXCEPTION_WORKGROUP;
+import static org.kuali.rice.kew.xml.XmlConstants.EXCEPTION_WORKGROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.HELP_DEFINITION_URL;
+import static org.kuali.rice.kew.xml.XmlConstants.INITIAL_NODE;
+import static org.kuali.rice.kew.xml.XmlConstants.LABEL;
+import static org.kuali.rice.kew.xml.XmlConstants.NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.NOTIFICATION_FROM_ADDRESS;
+import static org.kuali.rice.kew.xml.XmlConstants.PARENT;
+import static org.kuali.rice.kew.xml.XmlConstants.POLICIES;
+import static org.kuali.rice.kew.xml.XmlConstants.POLICY;
+import static org.kuali.rice.kew.xml.XmlConstants.POST_PROCESSOR_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.PROCESS_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.REPORTING_GROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.REPORTING_WORKGROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.ROUTE_NODES;
+import static org.kuali.rice.kew.xml.XmlConstants.ROUTE_PATH;
+import static org.kuali.rice.kew.xml.XmlConstants.ROUTE_PATHS;
+import static org.kuali.rice.kew.xml.XmlConstants.ROUTING_VERSION;
+import static org.kuali.rice.kew.xml.XmlConstants.SECURITY;
+import static org.kuali.rice.kew.xml.XmlConstants.SERVICE_NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.STATUS;
+import static org.kuali.rice.kew.xml.XmlConstants.SUPER_USER_GROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.SUPER_USER_WORKGROUP_NAME;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.util.XmlJotter;
@@ -26,8 +84,13 @@ import org.kuali.rice.kew.doctype.DocumentTypePolicy;
 import org.kuali.rice.kew.doctype.DocumentTypePolicyEnum;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.document.DocumentTypeMaintainable;
-import org.kuali.rice.kew.engine.node.*;
+import org.kuali.rice.kew.engine.node.ActivationTypeEnum;
+import org.kuali.rice.kew.engine.node.BranchPrototype;
+import org.kuali.rice.kew.engine.node.NodeType;
 import org.kuali.rice.kew.engine.node.Process;
+import org.kuali.rice.kew.engine.node.RoleNode;
+import org.kuali.rice.kew.engine.node.RouteNode;
+import org.kuali.rice.kew.engine.node.RouteNodeConfigParam;
 import org.kuali.rice.kew.exception.InvalidParentDocTypeException;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kew.exception.WorkflowRuntimeException;
@@ -42,26 +105,17 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.util.Utilities;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.exception.GroupNotFoundException;
 import org.kuali.rice.kns.maintenance.Maintainable;
 import org.kuali.rice.kns.util.MaintenanceUtils;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.w3c.dom.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.*;
-
-import static org.kuali.rice.kew.xml.XmlConstants.*;
 
 
 /**
@@ -1412,7 +1466,7 @@ public class DocumentTypeXmlParser {
     }
 
     protected IdentityManagementService getIdentityManagementService() {
-        return KIMServiceLocatorInternal.getIdentityManagementService();
+        return KIMServiceLocator.getIdentityManagementService();
     }
 
     /**

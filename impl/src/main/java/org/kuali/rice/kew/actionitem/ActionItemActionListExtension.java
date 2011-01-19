@@ -80,7 +80,7 @@ public class ActionItemActionListExtension extends ActionItem {
         }
 
         if (getDelegatorGroupId() != null) {
-        	delegatorGroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(getDelegatorGroupId());
+        	delegatorGroup = KIMServiceLocator.getIdentityManagementService().getGroup(getDelegatorGroupId());
         	if (delegatorGroup !=null)
         		delegatorName = delegatorGroup.getGroupName();
         }

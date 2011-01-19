@@ -152,7 +152,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
-    	List<String> workgroupIds = KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+    	List<String> workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria();
         Criteria delegatorWorkflowIdCriteria = new Criteria();
         delegatorWorkflowIdCriteria.addEqualTo("delegatorWorkflowId", principalId);
@@ -190,7 +190,7 @@ public class ActionItemDAOOjbImpl extends PersistenceBrokerDaoSupport implements
     }
 
     private IdentityManagementService getIdentityManagementService() {
-        return (IdentityManagementService) KIMServiceLocatorInternal.getService(KIMServiceLocatorInternal.KIM_IDENTITY_MANAGEMENT_SERVICE);
+        return KIMServiceLocator.getIdentityManagementService();
     }
 
 	/**

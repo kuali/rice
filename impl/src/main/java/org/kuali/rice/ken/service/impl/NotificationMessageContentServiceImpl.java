@@ -15,15 +15,39 @@
  */
 package org.kuali.rice.ken.service.impl;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.DomDriver;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.core.xml.XmlException;
-import org.kuali.rice.ken.bo.*;
+import org.kuali.rice.ken.bo.Notification;
+import org.kuali.rice.ken.bo.NotificationChannel;
+import org.kuali.rice.ken.bo.NotificationContentType;
+import org.kuali.rice.ken.bo.NotificationPriority;
+import org.kuali.rice.ken.bo.NotificationProducer;
+import org.kuali.rice.ken.bo.NotificationRecipient;
+import org.kuali.rice.ken.bo.NotificationResponse;
+import org.kuali.rice.ken.bo.NotificationSender;
 import org.kuali.rice.ken.service.NotificationContentTypeService;
 import org.kuali.rice.ken.service.NotificationMessageContentService;
 import org.kuali.rice.ken.util.CompoundNamespaceContext;
@@ -31,7 +55,7 @@ import org.kuali.rice.ken.util.ConfiguredNamespaceContext;
 import org.kuali.rice.ken.util.NotificationConstants;
 import org.kuali.rice.ken.util.Util;
 import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants.KimGroupMemberTypes;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -40,19 +64,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.DomDriver;
 
 /**
  * NotificationMessageContentService implementation - uses both Xalan and XStream in various places to manage the marshalling/unmarshalling of
@@ -183,7 +196,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
                 if (NotificationConstants.RECIPIENT_TYPES.GROUP.equalsIgnoreCase(node.getLocalName())) {
                     //recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.GROUP);
                     recipient.setRecipientType(KimGroupMemberTypes.GROUP_MEMBER_TYPE);
-                    recipient.setRecipientId(KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(node.getTextContent()), Utilities.parseGroupName(node.getTextContent())).getGroupId());
+                    recipient.setRecipientId(KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(node.getTextContent()), Utilities.parseGroupName(node.getTextContent())).getGroupId());
                 } else if (NotificationConstants.RECIPIENT_TYPES.USER.equalsIgnoreCase(node.getLocalName())){
                     //recipient.setRecipientType(NotificationConstants.RECIPIENT_TYPES.USER);
                     recipient.setRecipientType(KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE);
@@ -491,7 +504,7 @@ public class NotificationMessageContentServiceImpl implements NotificationMessag
             	    userRecipients.add(recipientIds.item(i).getTextContent().trim());
             	} else {
             	    //String groupName = recipientIds.item(i).getTextContent().trim();
-            	    //KimGroup recipGroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
+            	    //KimGroup recipGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(Utilities.parseGroupNamespaceCode(groupName), Utilities.parseGroupName(groupName));
             	    //workgroupRecipients.add(recipGroup.getGroupId());
             	    workgroupRecipients.add(recipientIds.item(i).getTextContent().trim());
             	}

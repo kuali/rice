@@ -27,7 +27,7 @@ import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.authorization.BusinessObjectAuthorizer;
 import org.kuali.rice.kns.authorization.BusinessObjectRestrictions;
@@ -667,7 +667,7 @@ public class BusinessObjectAuthorizationServiceImpl implements
 
 	private IdentityManagementService getIdentityManagementService() {
 		if (identityManagementService == null) {
-			identityManagementService = KIMServiceLocatorInternal
+			identityManagementService = KIMServiceLocator
 					.getIdentityManagementService();
 		}
 		return identityManagementService;

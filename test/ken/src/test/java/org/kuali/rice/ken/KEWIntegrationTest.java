@@ -21,7 +21,7 @@ import org.junit.Test;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.ken.test.KENTestCase;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -37,7 +37,7 @@ public class KEWIntegrationTest extends KENTestCase {
 	@Test
     public void testKEWServicesAreAccessible() throws Exception {
         
-        IdentityManagementService identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+        IdentityManagementService identityManagementService = KIMServiceLocator.getIdentityManagementService();
         assertNotNull(identityManagementService);
         LOG.info("Default KIM IdentityManagementService: " + identityManagementService);
 

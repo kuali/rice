@@ -162,44 +162,37 @@
 			</security>
 		</documentType>
 		<documentType>
-			<name>SecurityDoc_RoleOnly</name>
+			<name>SecurityDoc_PermissionOnly</name>
 			<parent>SecurityDocument</parent>
-			<label>SecurityDoc_RoleOnly</label>
+			<label>SecurityDoc_PermissionOnly</label>
 			<docHandler>_blank</docHandler>
 			<security>
-			    <role allowed="true">STAFF</role>
-			    <role allowed="false">STUDENT</role>
+			   <permission name="Log In" namespace="KUALI">
+			     <qualification name="principalId">${document.initiatorPrincipalId}</qualification>
+			     <qualification name="documentTypeName">${document.docTypeName}</qualification>
+			     <qualification name="documentId">${document.routeHeaderId}</qualification>
+			     <qualification name="dateCreated">${document.dateCreated}</qualification>
+			     <qualification name="fyiRequested">${document.fyiRequested}</qualification>
+			   </permission>
+			</security>
+		</documentType>
+		
+		<documentType>
+			<name>SecurityDoc_InvalidPermissionOnly</name>
+			<parent>SecurityDocument</parent>
+			<label>SecurityDoc_PermissionOnly</label>
+			<docHandler>_blank</docHandler>
+			<security>
+			   <permission name="Log In Badly" namespace="KUALI" />
 			</security>
 		</documentType>
 		<documentType>
-			<name>SecurityDoc_RoleOnly_DisallowOnly</name>
-			<parent>SecurityDocument</parent>
-			<label>SecurityDoc_RoleOnly</label>
-			<docHandler>_blank</docHandler>
-			<security>
-			    <role allowed="false">ALUMNI</role>
-			</security>
-		</documentType>
-		<documentType>
-			<name>SecurityDoc_RoleOnly_Overlaps</name>
-			<parent>SecurityDocument</parent>
-			<label>SecurityDoc_RoleOnly_Overlaps</label>
-			<docHandler>_blank</docHandler>
-			<security>
-			    <role allowed="true">ALUMNI</role>
-			    <role allowed="false">STAFF</role>
-			    <role allowed="true">STUDENT</role>
-			    <role allowed="false">STUDENT</role>
-			</security>
-		</documentType>
-		<documentType>
-			<name>SecurityDoc_RoleAndInitiator</name>
+			<name>SecurityDoc_Initiator</name>
 			<parent>SecurityDocument</parent>
 			<label>SecurityDoc_RoleOnly</label>
 			<docHandler>_blank</docHandler>
 			<security>
 			    <initiator>true</initiator>
-			    <role allowed="false">ALUMNI</role>
 			</security>
 		</documentType>
 	</documentTypes>

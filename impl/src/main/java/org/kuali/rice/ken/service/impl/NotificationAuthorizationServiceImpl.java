@@ -69,6 +69,6 @@ public class NotificationAuthorizationServiceImpl implements NotificationAuthori
 	    if (user == null) {
 	        return false;
 	    }
-	    return KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, groupNameId);
+	    return KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(user.getPrincipalId(), KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, groupNameId);
     }
 }

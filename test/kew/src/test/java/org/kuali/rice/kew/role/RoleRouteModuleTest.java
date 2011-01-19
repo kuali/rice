@@ -48,6 +48,7 @@ import org.kuali.rice.kim.bo.role.impl.RoleResponsibilityImpl;
 import org.kuali.rice.kim.bo.types.impl.KimAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeAttributeImpl;
 import org.kuali.rice.kim.bo.types.impl.KimTypeImpl;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
@@ -151,7 +152,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleMemberImpl adminRolePrincipal = new RoleMemberImpl();
         adminRolePrincipal.setRoleMemberId(roleMemberId1);
         adminRolePrincipal.setRoleId(roleId);
-        KimPrincipal adminPrincipal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName("admin");
+        KimPrincipal adminPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("admin");
         assertNotNull(adminPrincipal);
         adminRolePrincipal.setMemberId(adminPrincipal.getPrincipalId());
         adminRolePrincipal.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
@@ -160,7 +161,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleMemberImpl user2RolePrincipal = new RoleMemberImpl();
         user2RolePrincipal.setRoleMemberId(roleMemberId2);
         user2RolePrincipal.setRoleId(roleId);
-        KimPrincipal user2Principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName("user2");
+        KimPrincipal user2Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user2");
         assertNotNull(user2Principal);
         user2RolePrincipal.setMemberId(user2Principal.getPrincipalId());
         user2RolePrincipal.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
@@ -169,7 +170,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
         RoleMemberImpl user1RolePrincipal = new RoleMemberImpl();
         user1RolePrincipal.setRoleMemberId(roleMemberId3);
         user1RolePrincipal.setRoleId(roleId);
-        KimPrincipal user1Principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName("user1");
+        KimPrincipal user1Principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("user1");
         assertNotNull(user1Principal);
         user1RolePrincipal.setMemberId(user1Principal.getPrincipalId());
         user1RolePrincipal.setMemberTypeCode( Role.PRINCIPAL_MEMBER_TYPE );
@@ -583,7 +584,7 @@ public class RoleRouteModuleTest extends KEWTestCase {
 	    KimDelegationMemberImpl user1RoleDelegate = new KimDelegationMemberImpl();
 	    user1RoleDelegate.setDelegationMemberId(delgMemberId);
 	    // This is the user the delegation requests should be sent to.
-	    KimPrincipal kPrincipal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
+	    KimPrincipal kPrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName("ewestfal");
 	    assertNotNull(kPrincipal);
 	    user1RoleDelegate.setMemberId(kPrincipal.getPrincipalId());
 	    /*

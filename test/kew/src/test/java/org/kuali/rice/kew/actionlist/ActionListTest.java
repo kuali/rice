@@ -174,7 +174,7 @@ public class ActionListTest extends KEWTestCase {
     	String jitruePrincipalId = getPrincipalIdForName("jitrue");
     	String user1PrincipalId = getPrincipalIdForName("user1");
 
-    	Group NonSIT = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT");
+    	Group NonSIT = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "NonSIT");
 
     	ActionListFilter noFilter = new ActionListFilter();
     	ActionListFilter excludeSecondaryFilter = new ActionListFilter();
@@ -223,7 +223,7 @@ public class ActionListTest extends KEWTestCase {
     	assertNull("Should not be to a workgroup.", actionItem.getGroupId());
 
     	// all members of NonSIT should have a single primary Approve Request
-        List<String> memberPrincipalIds = KIMServiceLocatorInternal.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getGroupId());
+        List<String> memberPrincipalIds = KIMServiceLocator.getIdentityManagementService().getGroupMemberPrincipalIds(NonSIT.getGroupId());
         for (String memberPrincipalId : memberPrincipalIds)
         {
             //will want to convert to Kim Principal

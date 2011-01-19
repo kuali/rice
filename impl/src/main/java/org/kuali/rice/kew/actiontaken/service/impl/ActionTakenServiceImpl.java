@@ -16,6 +16,11 @@
  */
 package org.kuali.rice.kew.actiontaken.service.impl;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
@@ -28,12 +33,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -59,7 +59,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
 
     public ActionTakenValue getPreviousAction(ActionRequestValue actionRequest, List<ActionTakenValue> simulatedActionsTaken)
     {
-        IdentityManagementService ims = KIMServiceLocatorInternal.getIdentityManagementService();
+        IdentityManagementService ims = KIMServiceLocator.getIdentityManagementService();
         ActionTakenValue foundActionTaken = null;
         List<String> principalIds = new ArrayList<String>();
         if (actionRequest.isGroupRequest()) {
@@ -150,7 +150,7 @@ public class ActionTakenServiceImpl implements ActionTakenService {
         if(StringUtils.isBlank(principalId)){
             errors.add(new WorkflowServiceErrorImpl("ActionTaken personid null.", "actiontaken.personid.empty", actionTaken.getActionTakenId().toString()));
         } else {
-        	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
+        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
         	if (principal == null) {
                 errors.add(new WorkflowServiceErrorImpl("ActionTaken personid invalid.", "actiontaken.personid.invalid", actionTaken.getActionTakenId().toString()));
             }

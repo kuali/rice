@@ -15,6 +15,12 @@
  */
 package edu.sampleu.travel.workflow;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.util.ConcreteKeyValue;
 import org.kuali.rice.kew.engine.RouteContext;
@@ -30,11 +36,9 @@ import org.kuali.rice.kew.rule.Role;
 import org.kuali.rice.kew.user.UserId;
 import org.kuali.rice.kew.user.WorkflowUserId;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
-
-import java.util.*;
 
 
 /**
@@ -198,7 +202,7 @@ public class EmployeeAttribute extends GenericRoleAttribute {
 
 		KimPrincipal principal = null;
 		if (!StringUtils.isBlank(userid)) {
-			principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(userid);
+			principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(userid);
 		}
 		if (principal == null) {
 			errors.add(new WorkflowServiceErrorImpl("unable to retrieve user for userid '" + userid + "'", "uh.accountattribute.userid.invalid"));

@@ -192,7 +192,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     public Collection<Recipient> findPrimaryDelegationRecipients(String principalId) {
-    	List<String> workgroupIds = KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
+    	List<String> workgroupIds = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(principalId);
         Criteria orCriteria = new Criteria(ActionItem.class.getName());
         Criteria delegatorWorkflowIdCriteria = new Criteria(ActionItem.class.getName());
         delegatorWorkflowIdCriteria.eq("delegatorWorkflowId", principalId);
@@ -232,7 +232,7 @@ public class ActionItemDAOJpaImpl implements ActionItemDAO {
     }
 
     private IdentityManagementService getIdentityManagementService() {
-        return (IdentityManagementService) KIMServiceLocatorInternal.getService(KIMServiceLocatorInternal.KIM_IDENTITY_MANAGEMENT_SERVICE);
+        return (IdentityManagementService) KIMServiceLocatorInternal.getService(KIMServiceLocator.KIM_IDENTITY_MANAGEMENT_SERVICE);
     }
 
     public EntityManager getEntityManager() {

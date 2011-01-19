@@ -34,21 +34,21 @@ public class IdentityManagementNotificationServiceImpl implements
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#groupUpdated()
      */
     public void groupUpdated() {
-        KIMServiceLocatorInternal.getIdentityManagementService().flushGroupCaches();
+        KIMServiceLocator.getIdentityManagementService().flushGroupCaches();
     }
 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#permissionUpdated()
      */
     public void permissionUpdated() {
-        KIMServiceLocatorInternal.getIdentityManagementService().flushPermissionCaches();
+        KIMServiceLocator.getIdentityManagementService().flushPermissionCaches();
     }
 
     /**
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#principalUpdated()
      */
     public void principalUpdated() {
-        KIMServiceLocatorInternal.getIdentityManagementService().flushEntityPrincipalCaches();
+        KIMServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
         KIMServiceLocator.getPersonService().flushPersonCaches();
     }
 
@@ -56,7 +56,7 @@ public class IdentityManagementNotificationServiceImpl implements
      * @see org.kuali.rice.kim.service.IdentityManagementNotificationService#responsibilityUpdated()
      */
     public void responsibilityUpdated() {
-        KIMServiceLocatorInternal.getIdentityManagementService().flushResponsibilityCaches();
+        KIMServiceLocator.getIdentityManagementService().flushResponsibilityCaches();
     }
 
     /**

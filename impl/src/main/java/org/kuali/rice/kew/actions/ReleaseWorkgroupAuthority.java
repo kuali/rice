@@ -16,15 +16,15 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.List;
+
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.exception.InvalidActionTakenException;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-
-import java.util.List;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -87,7 +87,7 @@ public class ReleaseWorkgroupAuthority extends ActionTakenEvent {
     }
 
     private String performReleaseWorkgroupAuthority(boolean forValidationOnly) {
-        if (!KIMServiceLocatorInternal.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId)){
+        if (!KIMServiceLocator.getIdentityManagementService().isMemberOfGroup(getPrincipal().getPrincipalId(), groupId)){
             return (getPrincipal().getPrincipalName() + " not a member of workgroup " + groupId);
         }
 

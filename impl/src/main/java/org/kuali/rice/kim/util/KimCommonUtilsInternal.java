@@ -32,6 +32,7 @@ import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.KimAttributes;
 import org.kuali.rice.kim.bo.types.dto.KimTypeAttributeInfo;
 import org.kuali.rice.kim.service.IdentityManagementService;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
@@ -215,7 +216,7 @@ public final class KimCommonUtilsInternal {
 
 	private static IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}

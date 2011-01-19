@@ -235,7 +235,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		// boservice.save(bos) does not handle deleteawarelist
 		getBusinessObjectService().save(bos);
 
-		//KIMServiceLocatorInternal.getIdentityManagementService().flushEntityPrincipalCaches();
+		//KIMServiceLocator.getIdentityManagementService().flushEntityPrincipalCaches();
 		IdentityManagementNotificationService service = (IdentityManagementNotificationService)KSBServiceLocator.getMessageHelper().getServiceAsynchronously(new QName("KIM", "kimIdentityManagementNotificationService"));
 		service.principalUpdated();
 
@@ -1446,7 +1446,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 
 	protected IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
 		}
 		return identityManagementService;
 	}
@@ -1692,7 +1692,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
 			String fakeName = "";
-			KimPrincipal kp = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(memberId);
+			KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
 			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
 				fakeName = kp.getPrincipalName();
 			}
@@ -1707,7 +1707,7 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 		BusinessObject member = getMember(memberTypeCode, memberId);
 		if (member == null) { //not a REAL principal, try to fake the name
 			String fakeName = "";
-			KimPrincipal kp = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(memberId);
+			KimPrincipal kp = KIMServiceLocator.getIdentityManagementService().getPrincipal(memberId);
 			if(kp != null && kp.getPrincipalName() != null && !"".equals(kp.getPrincipalName())){
 				fakeName = kp.getPrincipalName();
 			}			

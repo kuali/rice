@@ -25,6 +25,7 @@ import org.kuali.rice.kim.bo.ui.KimDocumentRoleMember;
 import org.kuali.rice.kim.bo.ui.KimDocumentRoleQualifier;
 import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
@@ -55,7 +56,7 @@ public class IdentityManagementPersonInquiry extends IdentityManagementBaseInqui
         String principalId = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_ID);
         String principalName = request.getParameter(KIMPropertyConstants.Person.PRINCIPAL_NAME);
         if ( StringUtils.isBlank(principalId) && StringUtils.isNotBlank(principalName) ) {
-        	KimPrincipalInfo principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
         	if ( principal != null ) {
         		principalId = principal.getPrincipalId();
         	}

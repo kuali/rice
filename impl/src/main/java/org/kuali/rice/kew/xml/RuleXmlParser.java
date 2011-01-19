@@ -16,25 +16,41 @@
  */
 package org.kuali.rice.kew.xml;
 
-import org.apache.commons.lang.StringUtils;
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.JDOMException;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.core.util.XmlHelper;
-import org.kuali.rice.core.xml.XmlException;
-import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.rule.*;
-import org.kuali.rice.kew.rule.bo.RuleTemplate;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kew.util.Utilities;
-import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
-import org.xml.sax.SAXException;
+import static org.kuali.rice.kew.xml.XmlConstants.ACTION_REQUESTED;
+import static org.kuali.rice.kew.xml.XmlConstants.APPROVE_POLICY;
+import static org.kuali.rice.kew.xml.XmlConstants.ATTRIBUTE_CLASS_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.DELEGATIONS;
+import static org.kuali.rice.kew.xml.XmlConstants.DELEGATION_TYPE;
+import static org.kuali.rice.kew.xml.XmlConstants.DESCRIPTION;
+import static org.kuali.rice.kew.xml.XmlConstants.DOCUMENT_TYPE;
+import static org.kuali.rice.kew.xml.XmlConstants.FORCE_ACTION;
+import static org.kuali.rice.kew.xml.XmlConstants.FROM_DATE;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUP_ID;
+import static org.kuali.rice.kew.xml.XmlConstants.GROUP_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.PARENT_RESPONSIBILITY;
+import static org.kuali.rice.kew.xml.XmlConstants.PARENT_RULE_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.PRINCIPAL_ID;
+import static org.kuali.rice.kew.xml.XmlConstants.PRINCIPAL_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.PRIORITY;
+import static org.kuali.rice.kew.xml.XmlConstants.RESPONSIBILITIES;
+import static org.kuali.rice.kew.xml.XmlConstants.RESPONSIBILITY;
+import static org.kuali.rice.kew.xml.XmlConstants.RESPONSIBILITY_ID;
+import static org.kuali.rice.kew.xml.XmlConstants.ROLE;
+import static org.kuali.rice.kew.xml.XmlConstants.ROLE_NAME;
+import static org.kuali.rice.kew.xml.XmlConstants.RULE;
+import static org.kuali.rice.kew.xml.XmlConstants.RULES;
+import static org.kuali.rice.kew.xml.XmlConstants.RULE_DELEGATION;
+import static org.kuali.rice.kew.xml.XmlConstants.RULE_DELEGATIONS;
+import static org.kuali.rice.kew.xml.XmlConstants.RULE_EXPRESSION;
+import static org.kuali.rice.kew.xml.XmlConstants.RULE_EXTENSIONS;
+import static org.kuali.rice.kew.xml.XmlConstants.RULE_NAMESPACE;
+import static org.kuali.rice.kew.xml.XmlConstants.RULE_TEMPLATE;
+import static org.kuali.rice.kew.xml.XmlConstants.TO_DATE;
+import static org.kuali.rice.kew.xml.XmlConstants.USER;
+import static org.kuali.rice.kew.xml.XmlConstants.WORKGROUP;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -43,7 +59,29 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static org.kuali.rice.kew.xml.XmlConstants.*;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.apache.commons.lang.StringUtils;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.util.XmlHelper;
+import org.kuali.rice.core.xml.XmlException;
+import org.kuali.rice.kew.doctype.bo.DocumentType;
+import org.kuali.rice.kew.rule.Role;
+import org.kuali.rice.kew.rule.RuleBaseValues;
+import org.kuali.rice.kew.rule.RuleDelegation;
+import org.kuali.rice.kew.rule.RuleExpressionDef;
+import org.kuali.rice.kew.rule.RuleResponsibility;
+import org.kuali.rice.kew.rule.bo.RuleTemplate;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
+import org.kuali.rice.kew.util.Utilities;
+import org.kuali.rice.kim.bo.Group;
+import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.xml.sax.SAXException;
 
 /**
  * Parses rules from XML.
@@ -425,7 +463,7 @@ public class RuleXmlParser {
         // in code below, we allow core config parameter replacement in responsibilities
         if (!StringUtils.isBlank(principalId)) {
         	principalId = Utilities.substituteConfigParameters(principalId);
-        	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipal(principalId);
+        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
             if (principal == null) {
             	throw new XmlException("Could not locate principal with the given id: " + principalId);
             }
@@ -433,7 +471,7 @@ public class RuleXmlParser {
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (!StringUtils.isBlank(principalName)) {
         	principalName = Utilities.substituteConfigParameters(principalName);
-        	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
+        	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName);
             if (principal == null) {
             	throw new XmlException("Could not locate principal with the given name: " + principalName);
             }
@@ -441,7 +479,7 @@ public class RuleXmlParser {
             responsibility.setRuleResponsibilityType(KEWConstants.RULE_RESPONSIBILITY_WORKFLOW_ID);
         } else if (!StringUtils.isBlank(groupId)) {
             groupId = Utilities.substituteConfigParameters(groupId);
-            Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(groupId);
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroup(groupId);
             if (group == null) {
                 throw new XmlException("Could not locate group with the given id: " + groupId);
             }
@@ -458,7 +496,7 @@ public class RuleXmlParser {
         	}
             groupName = Utilities.substituteConfigParameters(groupName);
             groupNamespace = Utilities.substituteConfigParameters(groupNamespace);
-            Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 throw new XmlException("Could not locate group with the given namespace: " + groupNamespace + " and name: " + groupName);
             }
@@ -487,7 +525,7 @@ public class RuleXmlParser {
             String workgroupNamespace = Utilities.parseGroupNamespaceCode(workgroup);
             String workgroupName = Utilities.parseGroupName(workgroup);
 
-            Group workgroupObject = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(workgroupNamespace, workgroupName);
+            Group workgroupObject = KIMServiceLocator.getIdentityManagementService().getGroupByName(workgroupNamespace, workgroupName);
             if (workgroupObject == null) {
                 throw new XmlException("Could not locate workgroup: " + workgroup);
             }

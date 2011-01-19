@@ -360,7 +360,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
 			return true;
 		}
 		try {
-			return KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(networkId.trim()) != null;
+			return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(networkId.trim()) != null;
 		} catch (Exception ex) {
 			LOG.debug(ex, ex);
 			return false;
@@ -409,7 +409,7 @@ public class DocumentSearchServiceImpl implements DocumentSearchService {
         if (org.apache.commons.lang.StringUtils.isEmpty(workgroupName)) {
             return true;
         }
-        Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(id);
+        Group group = KIMServiceLocator.getIdentityManagementService().getGroup(id);
         return group != null;
     }
 

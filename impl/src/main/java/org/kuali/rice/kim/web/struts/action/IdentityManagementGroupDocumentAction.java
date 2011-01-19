@@ -37,6 +37,7 @@ import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.bo.ui.GroupDocumentMember;
 import org.kuali.rice.kim.document.IdentityManagementGroupDocument;
 import org.kuali.rice.kim.rule.event.ui.AddGroupMemberEvent;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
@@ -191,7 +192,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.isNotEmpty(newMember.getMemberNamespaceCode())
         		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.GROUP_MEMBER_TYPE)) {
-        	GroupInfo tempGroup = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
+        	GroupInfo tempGroup = KIMServiceLocator.getIdentityManagementService().getGroupByName(newMember.getMemberNamespaceCode(), newMember.getMemberName());
         	if (tempGroup != null) {
         		newMember.setMemberId(tempGroup.getGroupId());
         	}
@@ -201,7 +202,7 @@ public class IdentityManagementGroupDocumentAction extends IdentityManagementDoc
         if (StringUtils.isEmpty(newMember.getMemberId()) 
         		&& StringUtils.isNotEmpty(newMember.getMemberName())
         		&& StringUtils.equals(newMember.getMemberTypeCode(), KimConstants.KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-        	KimPrincipalInfo principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
+        	KimPrincipalInfo principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(newMember.getMemberName());
         	if (principal != null) {
         		newMember.setMemberId(principal.getPrincipalId());
         	}

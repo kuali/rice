@@ -16,7 +16,14 @@
  */
 package org.kuali.rice.kew.doctype;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
 import mocks.MockPostProcessor;
+
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -39,11 +46,9 @@ import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.export.DocumentTypeXmlExporter;
 import org.kuali.rice.kim.bo.Group;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
-
-import java.util.*;
 
 public class DocumentTypeTest extends KEWTestCase {
     private static final Logger LOG = Logger.getLogger(DocumentTypeTest.class);
@@ -276,7 +281,7 @@ public class DocumentTypeTest extends KEWTestCase {
     	DocumentType childEdit = new DocumentType();
     	childEdit.setName(child.getName());
     	childEdit.setActive(Boolean.TRUE);
-    	Group workflowAdmin = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "WorkflowAdmin");
+    	Group workflowAdmin = KIMServiceLocator.getIdentityManagementService().getGroupByName(KimConstants.KIM_GROUP_WORKFLOW_NAMESPACE_CODE, "WorkflowAdmin");
     	childEdit.setBlanketApproveWorkgroup(workflowAdmin);
     	childEdit.setDefaultExceptionWorkgroup(workflowAdmin);
     	childEdit.setDescription("desc");

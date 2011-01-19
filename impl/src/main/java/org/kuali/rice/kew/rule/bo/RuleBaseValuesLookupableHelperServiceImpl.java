@@ -401,7 +401,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
 
 
     private IdentityManagementService getIdentityManagementService() {
-       return (IdentityManagementService) KIMServiceLocatorInternal.getService(KIMServiceLocatorInternal.KIM_IDENTITY_MANAGEMENT_SERVICE);
+       return KIMServiceLocator.getIdentityManagementService();
     }
 
     private RuleTemplateService getRuleTemplateService() {
@@ -431,7 +431,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
         }
 
         if  (!org.apache.commons.lang.StringUtils.isEmpty(groupName) && !org.apache.commons.lang.StringUtils.isEmpty(groupNamespace)) {
-            Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
+            Group group = KIMServiceLocator.getIdentityManagementService().getGroupByName(groupNamespace, groupName);
             if (group == null) {
                 GlobalVariables.getMessageMap().putError(GROUP_REVIEWER_NAME_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_WORKGROUP_ERROR);
             }

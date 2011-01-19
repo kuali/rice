@@ -45,7 +45,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.bo.AdHocRoutePerson;
@@ -73,8 +73,21 @@ import org.kuali.rice.kns.rule.event.AddAdHocRouteWorkgroupEvent;
 import org.kuali.rice.kns.rule.event.AddNoteEvent;
 import org.kuali.rice.kns.rule.event.PromptBeforeValidationEvent;
 import org.kuali.rice.kns.rule.event.SendAdHocRequestsEvent;
-import org.kuali.rice.kns.service.*;
+import org.kuali.rice.kns.service.AttachmentService;
+import org.kuali.rice.kns.service.BusinessObjectAuthorizationService;
+import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
+import org.kuali.rice.kns.service.BusinessObjectService;
+import org.kuali.rice.kns.service.DataDictionaryService;
+import org.kuali.rice.kns.service.DocumentHelperService;
+import org.kuali.rice.kns.service.DocumentService;
+import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
+import org.kuali.rice.kns.service.KualiConfigurationService;
+import org.kuali.rice.kns.service.KualiRuleService;
+import org.kuali.rice.kns.service.NoteService;
+import org.kuali.rice.kns.service.ParameterConstants;
+import org.kuali.rice.kns.service.ParameterService;
+import org.kuali.rice.kns.service.PessimisticLockService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
@@ -472,7 +485,7 @@ public class KualiDocumentActionBase extends KualiAction {
             //fill id if not already filled
             AdHocRouteWorkgroup newWorkgroup = kualiDocumentFormBase.getNewAdHocRouteWorkgroup();
             if (newWorkgroup.getId() == null) {
-                newWorkgroup.setId(KIMServiceLocatorInternal.getIdentityManagementService().getGroupByName(newWorkgroup.getRecipientNamespaceCode(), newWorkgroup.getRecipientName()).getGroupId());
+                newWorkgroup.setId(KIMServiceLocator.getIdentityManagementService().getGroupByName(newWorkgroup.getRecipientNamespaceCode(), newWorkgroup.getRecipientName()).getGroupId());
             }
             kualiDocumentFormBase.getAdHocRouteWorkgroups().add(newWorkgroup);
             AdHocRouteWorkgroup workgroup = new AdHocRouteWorkgroup();
@@ -1777,7 +1790,7 @@ public class KualiDocumentActionBase extends KualiAction {
 
 	protected IdentityManagementService getIdentityManagementService() {
 		if ( identityManagementService == null ) {
-			identityManagementService = KIMServiceLocatorInternal.getIdentityManagementService();
+			identityManagementService = KIMServiceLocator.getIdentityManagementService();
 		}
 		return this.identityManagementService;
 	}

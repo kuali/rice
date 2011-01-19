@@ -295,7 +295,7 @@ public class GroupImpl extends PersistableBusinessObjectBase implements Group {
                 } else if (groupMemberImpl.getMemberTypeCode().equals ( KimGroupMemberTypes.GROUP_MEMBER_TYPE )
                         && groupMemberImpl.isActive() ) {
                     groupMembers.add( 
-                    		KIMServiceLocatorInternal.getIdentityManagementService().getGroup(groupMemberImpl.getMemberId()) );
+                    		KIMServiceLocator.getIdentityManagementService().getGroup(groupMemberImpl.getMemberId()) );
                 }
             }
         }

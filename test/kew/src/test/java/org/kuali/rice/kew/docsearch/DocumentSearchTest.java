@@ -45,10 +45,13 @@ public class DocumentSearchTest extends KEWTestCase {
 
     DocumentSearchService docSearchService;
 
+    @Override
     protected void loadTestData() throws Exception {
         loadXmlFile("SearchAttributeConfig.xml");
+        
     }
 
+    @Override
     protected void setUpAfterDataLoad() throws Exception {
         docSearchService = (DocumentSearchService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_SEARCH_SERVICE);
     }
@@ -92,12 +95,12 @@ public class DocumentSearchTest extends KEWTestCase {
         DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "arh14";
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("testDocSearch_MissingInitiator");
         workflowDocument.routeDocument("routing this document.");
 
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
@@ -123,12 +126,12 @@ public class DocumentSearchTest extends KEWTestCase {
         DocumentType docType = ((DocumentTypeService)KEWServiceLocator.getService(KEWServiceLocator.DOCUMENT_TYPE_SERVICE)).findByName(documentTypeName);
         String userNetworkId = "arh14";
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("testDocSearch_MissingInitiator");
         workflowDocument.routeDocument("routing this document.");
 
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
@@ -153,21 +156,21 @@ public class DocumentSearchTest extends KEWTestCase {
         String userNetworkId = "rkirkend";
 
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
+        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
         workflowDocument.approve("");
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsFinal());
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), documentTypeName);
+        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), documentTypeName);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
@@ -190,7 +193,7 @@ public class DocumentSearchTest extends KEWTestCase {
         // load the document type again to change the route node ids
         loadXmlFile("DocSearchTest_RouteNode.xml");
 
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
         criteria.setDocRouteNodeId(getRouteNodeForSearch(documentTypeName,workflowDocument.getNodeNames()));
@@ -261,30 +264,30 @@ public class DocumentSearchTest extends KEWTestCase {
         String userNetworkId = "rkirkend";
 
         // route a document to enroute and route one to final
-        WorkflowDocument workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), standardDocHandlerDocumentType);
+        WorkflowDocument workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), standardDocHandlerDocumentType);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
 
         // route a document to enroute and route one to final
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), customDocHandlerDocumentType);
+        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), customDocHandlerDocumentType);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
         workflowDocument.approve("");
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsFinal());
 
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO(userNetworkId), customDocHandlerDocumentType);
+        workflowDocument = new WorkflowDocument(getPrincipalId(userNetworkId), customDocHandlerDocumentType);
         workflowDocument.setTitle("Routing style");
         workflowDocument.routeDocument("routing this document.");
         // verify the document is enroute for jhopf
-        workflowDocument = new WorkflowDocument(new NetworkIdDTO("jhopf"),workflowDocument.getRouteHeaderId());
+        workflowDocument = new WorkflowDocument(getPrincipalId("jhopf"),workflowDocument.getRouteHeaderId());
         assertTrue(workflowDocument.stateIsEnroute());
         assertTrue(workflowDocument.isApprovalRequested());
 
@@ -437,5 +440,9 @@ public class DocumentSearchTest extends KEWTestCase {
         }
 
 
+    }
+    
+    private String getPrincipalId(String principalName) {
+    	return KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(principalName).getPrincipalId();
     }
 }

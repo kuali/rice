@@ -32,7 +32,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.AdHocRouteRecipient;
 import org.kuali.rice.kns.exception.UnknownDocumentIdException;
 import org.kuali.rice.kns.service.KNSServiceLocatorInternal;
@@ -358,14 +358,14 @@ public class WorkflowDocumentServiceImpl implements WorkflowDocumentService {
                 	}
                     if (AdHocRouteRecipient.PERSON_TYPE.equals(recipient.getType())) {
                         // TODO make the 1 a constant
-                    	KimPrincipal principal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());
+                    	KimPrincipal principal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(recipient.getId());
                 		if (principal == null) {
                 			throw new RiceRuntimeException("Could not locate principal with name '" + recipient.getId() + "'");
                 		}
                         workflowDocument.adHocRouteDocumentToPrincipal(recipient.getActionRequested(), currentNode, newAnnotation, principal.getPrincipalId(), "", true, notificationLabel);
                     }
                     else {
-                    	Group group = KIMServiceLocatorInternal.getIdentityManagementService().getGroup(recipient.getId());
+                    	Group group = KIMServiceLocator.getIdentityManagementService().getGroup(recipient.getId());
                 		if (group == null) {
                 			throw new RiceRuntimeException("Could not locate group with id '" + recipient.getId() + "'");
                 		}

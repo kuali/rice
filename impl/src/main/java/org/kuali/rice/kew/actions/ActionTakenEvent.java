@@ -16,6 +16,10 @@
  */
 package org.kuali.rice.kew.actions;
 
+import java.util.List;
+
+import javax.xml.namespace.QName;
+
 import org.apache.log4j.Logger;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
 import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
@@ -35,11 +39,8 @@ import org.kuali.rice.kew.postprocessor.ProcessDocReport;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.ksb.messaging.service.KSBXMLService;
-
-import javax.xml.namespace.QName;
-import java.util.List;
 
 
 /**
@@ -290,7 +291,7 @@ public abstract class ActionTakenEvent {
 	
 	protected List<String> getGroupIdsForPrincipal() {
 		if (groupIdsForPrincipal == null) {
-			groupIdsForPrincipal = KIMServiceLocatorInternal.getIdentityManagementService().getGroupIdsForPrincipal(getPrincipal().getPrincipalId());
+			groupIdsForPrincipal = KIMServiceLocator.getIdentityManagementService().getGroupIdsForPrincipal(getPrincipal().getPrincipalId());
 		}
 		return groupIdsForPrincipal;
 	}

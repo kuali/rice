@@ -27,7 +27,7 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
-import org.kuali.rice.kim.service.KIMServiceLocatorInternal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 
 /**
@@ -114,7 +114,7 @@ public class AddRuleDelegationTest extends KEWTestCase {
 		 * Let's add another delegate rule.
 		 */
 
-		KimPrincipal delegatePrincipal = KIMServiceLocatorInternal.getIdentityManagementService().getPrincipalByPrincipalName(DELEGATE_USER2);
+		KimPrincipal delegatePrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(DELEGATE_USER2);
 
 		// let's save the new rule delegation
 		RuleTestUtils.createRuleDelegationToUser(originalRule, originalResp, delegatePrincipal);

@@ -22,7 +22,7 @@ import junit.framework.AssertionFailedError;
 public class UTF8ValidationTestUtils {
 	static final String[] TEST_INPUTS = { "", "!!!", "[a-9]", "^A-Z", "abc", "a bc", "a_bc", "123", "12 3", "12_3", 
 		"a1b2c3", "a1b2_c3", "a 1b2c3", "a 1b2_c3", "foo.bar", "foo.bar_baz", ".bar_foo baz", 
-		"!\"#abs$%&'()*+,./:;<=abs>?@\\^_abs`{|}~-", "ææ", "\t", "æ æ"};
+		"!\"#abs$%&'()*+,./:;<=abs>?@\\^_abs`{|}~-", "\u00E6\u00E6", "\t", "\u00E6 \u00E6"};
 
 	public static final void assertPatternMatches(ValidationPattern pattern, boolean[] expectedValues) {
 	

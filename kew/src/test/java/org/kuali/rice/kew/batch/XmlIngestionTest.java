@@ -186,7 +186,7 @@ public class XmlIngestionTest extends KEWTestCase {
             filePath = filePath.replace("${" + TestUtils.BASEDIR_PROP + "}", TestUtils.getBaseDir());
             File testFile = new File(filePath);
             File pendingDir = new File(PENDING_DIR + "/TestDoc-" + i);
-            Assert.assertTrue(pendingDir.mkdirs());
+            Assert.assertTrue("Creating directory and all parents: '" + pendingDir.getCanonicalPath() + "'", pendingDir.mkdirs());
             assertTrue(pendingDir.isDirectory());
             File pending = new File(pendingDir, testFile.getName());
             pendingFiles.add(pending);

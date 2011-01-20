@@ -146,11 +146,6 @@ public class JAXBConfigImpl extends AbstractBaseConfig {
 	public String getProperty(String key) {
         return resolvedProperties.getProperty(key);
     }
-
-    @Override
-	public void overrideProperty(String name, String value) {
-    	this.putProperty(name, value);
-    }
    
     /**
      * 

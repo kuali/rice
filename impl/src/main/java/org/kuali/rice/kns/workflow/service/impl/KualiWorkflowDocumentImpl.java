@@ -160,16 +160,8 @@ public class KualiWorkflowDocumentImpl implements KualiWorkflowDocument, Seriali
         return workflowDocument.getTitle();
     }
     
-    public String getInitiatorNetworkId() {
-    	return KIMServiceLocator.getIdentityManagementService().getPrincipal(getInitiatorPrincipalId()).getPrincipalName();
-    }
-    
     public String getInitiatorPrincipalId() {
     	return workflowDocument.getRouteHeader().getInitiatorPrincipalId();
-    }
-    
-    public String getRoutedByUserNetworkId() {
-    	return KIMServiceLocator.getIdentityManagementService().getPrincipal(getRoutedByPrincipalId()).getPrincipalName();
     }
     
     public String getRoutedByPrincipalId() {

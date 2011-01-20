@@ -124,11 +124,6 @@ public interface Config {
 	 */
 	public static final String KEN_URL = "ken.url";
 
-	/**
-	 * Use DEFAULT_KEW_NOTE_CLASS
-	 */
-	@Deprecated
-	public static final String DEFAULT_NOTE_CLASS = "default.note.class";
     public static final String DEFAULT_KEW_NOTE_CLASS = "default.kew.note.class";
 	public static final String M_BEANS = "mBeans";
 	public static final String ALT_SPRING_FILE = "config.spring.file";
@@ -161,15 +156,6 @@ public interface Config {
 	public static final String PORTAL_SHOW_SAMPLE_APP = "portal.show.sample.app";
 	
 	public void parseConfig() throws IOException;
-	
-
-	/**
-	 * Programmatically override or place a setting in the config properties
-	 * @param name
-	 * @param value
-	 * @deprecated use the putProperty method instead
-	 */
-	public void overrideProperty(String name, String value);
 
 	public String getDailyEmailFirstDeliveryDate();
 
@@ -233,12 +219,6 @@ public interface Config {
 	public String getEDLConfigLocation();
 
 	public String getServiceNamespace();
-
-    /**
-     * This method has been deprecated.  Use {@link #getDefaultKewNoteClass()} instead.
-     * @deprecated
-     */
-	public String getDefaultNoteClass();
 
     public String getDefaultKewNoteClass();
 

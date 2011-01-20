@@ -157,10 +157,6 @@ public abstract class BaseConfig implements Config {
         }
     }
 
-    public void overrideProperty(String name, String value) {
-    	this.putProperty(name,value);     
-    }
-
     /**
      * Configures built-in properties.
      */
@@ -246,11 +242,6 @@ public abstract class BaseConfig implements Config {
 
     public String getServiceNamespace() {
         return getProperty(SERVICE_NAMESPACE);
-    }
-
-    @Deprecated
-    public String getDefaultNoteClass() {
-        return getProperty(DEFAULT_NOTE_CLASS);
     }
 
     public String getDefaultKewNoteClass() {

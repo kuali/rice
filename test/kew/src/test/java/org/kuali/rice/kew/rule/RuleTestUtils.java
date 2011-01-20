@@ -22,6 +22,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.workgroup.GroupNameId;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
+import org.kuali.rice.kim.service.KIMServiceLocator;
 
 import java.util.List;
 
@@ -54,7 +55,8 @@ public final class RuleTestUtils {
     	assertTrue("assuming there is 1 responsibility", responsibilities != null && responsibilities.size() == 1);
     	
     	RuleResponsibility originalResp = responsibilities.get(0);
-    	KimPrincipal delegatePrincipal = KEWServiceLocator.getIdentityHelperService().getPrincipal(new NetworkIdDTO(delegateUser));
+
+    	KimPrincipal delegatePrincipal = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(delegateUser);
 
 		// save the new rule delegation
 		// this *SHOULD* requeue

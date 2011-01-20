@@ -87,7 +87,8 @@ public class AddRuleDelegationTest extends KEWTestCase {
     	RuleResponsibility originalResp = originalResps.get(0);
     	
 		RuleTestUtils.createDelegationToUser(DOCTYPE, RULE_TEMPLATE, DELEGATE_USER);
-		KimPrincipal principal2 = KEWServiceLocator.getIdentityHelperService().getPrincipal(new NetworkIdDTO(DELEGATE_USER));
+
+		KimPrincipal principal2 = KIMServiceLocator.getIdentityManagementService().getPrincipalByPrincipalName(DELEGATE_USER);
 
 		// check the original rule, it should be the same (i.e. not be re-versioned as KEW used to do pre 1.0 when a delegate was added)
 		originalRule = KEWServiceLocator.getRuleService().findRuleBaseValuesById(originalRule.getRuleBaseValuesId());

@@ -43,8 +43,6 @@ public abstract class AbstractBaseConfig implements Config {
 
     public abstract String getProperty(String key);
 
-    public abstract void overrideProperty(String name, String value);
-
     public abstract void parseConfig() throws IOException;
 
     public Map<String, String> getPropertiesWithPrefix(String prefix, boolean stripPrefix) {
@@ -92,10 +90,6 @@ public abstract class AbstractBaseConfig implements Config {
 
     public String getDefaultKewNoteClass() {
         return getProperty(Config.DEFAULT_KEW_NOTE_CLASS);
-    }
-
-    public String getDefaultNoteClass() {
-        return getProperty(Config.DEFAULT_NOTE_CLASS);
     }
 
     public Boolean getDevMode() {

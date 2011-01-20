@@ -92,20 +92,4 @@ public interface IdentityHelperService {
 	 * determined.
 	 */
 	public KimPrincipal getSystemPrincipal();
-	
-	/**
-	 * @deprecated
-	 */
-	public String getGroupId(GroupId groupId);
-
-	/**
-	 * @deprecated
-	 */
-	public KimPrincipal getPrincipal(UserIdDTO userId);
-
-	/**
-	 * @deprecated
-	 */
-	public Recipient getGroupRecipient(String groupId);
-
 }

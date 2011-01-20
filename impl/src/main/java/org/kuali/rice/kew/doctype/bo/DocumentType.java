@@ -1154,7 +1154,7 @@ public class DocumentType extends PersistableBusinessObjectBase implements Inact
             String defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultKewNoteClass();
             if (defaultNoteClass == null) {
                 // attempt to use deprecated parameter
-                defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultNoteClass();
+                defaultNoteClass = ConfigContext.getCurrentContextConfig().getDefaultKewNoteClass();
                 if (ObjectUtils.isNull(defaultNoteClass)) {
                     return null;
                 }

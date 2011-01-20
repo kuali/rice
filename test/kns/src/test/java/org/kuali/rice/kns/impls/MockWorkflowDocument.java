@@ -179,22 +179,6 @@ public abstract class MockWorkflowDocument implements KualiWorkflowDocument {
     }
 
     /**
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getInitiatorPrincipalId()
-     */
-    public String getInitiatorNetworkId() {
-        LOG.debug("Using MockWorkflowDocument");
-        return null;
-    }
-
-    /**
-     * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getRoutedByUserNetworkId()
-     */
-    public String getRoutedByUserNetworkId() {
-        LOG.debug("Using MockWorkflowDocument");
-        return null;
-    }
-
-    /**
      * @see org.kuali.rice.kns.workflow.service.KualiWorkflowDocument#getTitle()
      */
     public String getTitle() {

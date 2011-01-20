@@ -15,11 +15,10 @@
  */
 package org.kuali.rice.kns.web.spring;
 
-import javax.servlet.ServletRequest;
 import org.kuali.rice.kns.web.struts.form.KualiForm;
-import org.springframework.beans.MutablePropertyValues;
-import org.springframework.beans.TypeMismatchException;
-import org.springframework.core.MethodParameter;
+import org.springframework.core.convert.ConversionService;
+import org.springframework.util.Assert;
+import org.springframework.validation.AbstractPropertyBindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 
 /**
@@ -29,6 +28,10 @@ import org.springframework.web.bind.ServletRequestDataBinder;
  *
  */
 public class KradServletRequestDataBinder extends ServletRequestDataBinder {
+    protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KradServletRequestDataBinder.class);
+
+	private KualiBeanPropertyBindingResult bindingResult;
+	private ConversionService conversionService;
 
 	/**
      * This constructs a ...
@@ -57,62 +60,45 @@ public class KradServletRequestDataBinder extends ServletRequestDataBinder {
 	    }
     }
 
-	@Override
-    public void bind(ServletRequest request) {
-	    super.bind(request);
-    }
-
     /**
-     *  OVERRIDEN FROM DataBinder CLASS
+     * This overridden method allows for a custom binding result class.
+     * 
+     * @see org.springframework.validation.DataBinder#initBeanPropertyAccess()
      */
-
-    /**
-     *  FROM DataBinder CLASS
-     */
-
     @Override
-    protected void applyPropertyValues(MutablePropertyValues mpvs) {
-	    super.applyPropertyValues(mpvs);
-    }
+	public void initBeanPropertyAccess() {
+		Assert.state(this.bindingResult == null,
+				"DataBinder is already initialized - call initBeanPropertyAccess before other configuration methods");
+		this.bindingResult = new KualiBeanPropertyBindingResult(getTarget(), getObjectName(), isAutoGrowNestedPaths());
+		if (this.conversionService != null) {
+			this.bindingResult.initConversion(this.conversionService);
+		}
+	}
 
-	@Override
-    protected void checkAllowedFields(MutablePropertyValues mpvs) {
-	    super.checkAllowedFields(mpvs);
-    }
+    /**
+     * This overridden method allows for the setting attributes to use to find the data dictionary data from Kuali
+     * 
+     * @see org.springframework.validation.DataBinder#getInternalBindingResult()
+     */
+    @Override
+	protected AbstractPropertyBindingResult getInternalBindingResult() {
+		if (this.bindingResult == null) {
+			initBeanPropertyAccess();
+//			this.bindingResult.setDocumentEntry(documentEntry);
+//			this.bindingResult.setBusinessObjectEntry(businessObjectEntry);
+		}
+		return this.bindingResult;
+	}
 
-	@Override
-    protected void checkRequiredFields(MutablePropertyValues mpvs) {
-	    super.checkRequiredFields(mpvs);
-    }
-
-	@Override
-    public <T> T convertIfNecessary(Object value, Class<T> requiredType, MethodParameter methodParam) throws TypeMismatchException {
-	    return super.convertIfNecessary(value, requiredType, methodParam);
-    }
-
-	@Override
-    public <T> T convertIfNecessary(Object value, Class<T> requiredType) throws TypeMismatchException {
-	    return super.convertIfNecessary(value, requiredType);
-    }
-
-	@Override
-    public String[] getDisallowedFields() {
-	    return super.getDisallowedFields();
-    }
-
-	@Override
-    public String[] getRequiredFields() {
-	    return super.getRequiredFields();
-    }
-
-	@Override
-    protected boolean isAllowed(String field) {
-	    return super.isAllowed(field);
-    }
-
-	@Override
-    public void validate() {
-	    super.validate();
-    }
+	/**
+     * This overridden method disallows direct field access for Kuali.
+     * 
+     * @see org.springframework.validation.DataBinder#initDirectFieldAccess()
+     */
+    @Override
+	public void initDirectFieldAccess() {
+    	LOG.error("Direct Field access is not allowed in Kuali");
+		throw new RuntimeException("Direct Field access is not allowed in Kuali");
+	}
 
 }

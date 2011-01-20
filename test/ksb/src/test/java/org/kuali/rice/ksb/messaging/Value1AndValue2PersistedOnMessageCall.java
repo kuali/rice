@@ -36,7 +36,7 @@ public class Value1AndValue2PersistedOnMessageCall extends KSBTestCase {
     
     @Test public void testCallingQueueAsnyc() throws Exception {
 	KSBTestUtils.setMessagingToAsync();
-	ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.MESSAGING_OFF, "true");
+	ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.MESSAGING_OFF, "true");
 	
 	QName serviceName = QName.valueOf("{testAppsSharedTopic}sharedTopic");
 	String value1 = "value1";

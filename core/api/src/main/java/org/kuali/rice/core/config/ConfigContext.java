@@ -77,16 +77,6 @@ public class ConfigContext {
     }
 
     /**
-     * Returns the "root" Config object
-     * @return the "root" Config object
-     * @deprecated this really isn't working as intended at the moment but it still needs to work the concept of a root config
-     * 	may need to go away
-     */
-    public static Config getRootConfig() {
-    	return getCurrentContextConfig();
-    }
-
-    /**
      * Returns the Condition that allows waiting on configuration to complete
      * @return the Condition that allows waiting on configuration to complete
      */
@@ -99,7 +89,7 @@ public class ConfigContext {
      * are present.  For now, this just validates the service namespace.
      */
     public static void validateCoreConfiguration() {
-    	Config config = getRootConfig();
+    	Config config = getCurrentContextConfig();
     	if (StringUtils.isEmpty(config.getServiceNamespace())) {
     		throw new ConfigurationException("The " + Config.SERVICE_NAMESPACE + " configuration parameter is required.");
     	}
@@ -136,7 +126,7 @@ public class ConfigContext {
     			return object;
     		}
     	} else {
-    		Object object = getRootConfig().getObject(name);
+    		Object object = getCurrentContextConfig().getObject(name);
     		if (object != null) {
     			return object;
     		}
@@ -158,7 +148,7 @@ public class ConfigContext {
     			objects.add(object);
     		}
     	} else {
-    		Object object = getRootConfig().getObject(name);
+    		Object object = getCurrentContextConfig().getObject(name);
     		if (object != null) {
     			objects.add(object);
     		}

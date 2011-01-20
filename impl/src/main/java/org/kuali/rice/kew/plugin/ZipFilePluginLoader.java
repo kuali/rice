@@ -185,6 +185,6 @@ public class ZipFilePluginLoader extends BasePluginLoader {
         if (!pluginConfigFile.exists() || !pluginConfigFile.isFile()) {
             throw new PluginException(getLogPrefix() + " Could not locate the plugin config file at path " + pluginConfigFile.getAbsolutePath());
         }
-        return pluginConfigFile.toURL();
+        return pluginConfigFile.toURI().toURL();
     }
 }

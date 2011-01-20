@@ -17,6 +17,7 @@
 package org.kuali.rice.ksb.messaging;
 
 import org.kuali.rice.ksb.service.KSBServiceLocator;
+import org.kuali.rice.ksb.util.KSBConstants;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -45,7 +46,7 @@ public class KSBExporter implements InitializingBean, ApplicationContextAware {
 		} else if ( KSBServiceLocator.getServiceDeployer() != null ) {
 			KSBServiceLocator.getServiceDeployer().registerService(this.getServiceDefinition(), this.isForceRefresh());
 		} else {
-			((RemotedServiceRegistry)applicationContext.getBean( KSBServiceLocator.REMOTED_SERVICE_REGISTRY )).registerService(this.getServiceDefinition(), this.isForceRefresh());
+			((RemotedServiceRegistry)applicationContext.getBean( KSBConstants.ServiceNames.REMOTED_SERVICE_REGISTRY )).registerService(this.getServiceDefinition(), this.isForceRefresh());
 		}
 	}
 

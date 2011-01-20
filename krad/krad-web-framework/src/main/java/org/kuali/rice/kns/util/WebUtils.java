@@ -632,7 +632,7 @@ public final class WebUtils {
             // if we've switched them already, then return early and do nothing
             return;
         }
-        if (!errorMapFromGlobalVariables.isEmpty()) {
+        if (!errorMapFromGlobalVariables.hasNoErrors()) {
             throw new RuntimeException("Cannot replace error map because it is not empty");
         }
         GlobalVariables.setMessageMap(kualiDocumentFormBase.getMessageMapFromPreviousRequest());

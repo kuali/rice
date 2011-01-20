@@ -55,8 +55,8 @@ public class ExceptionMessagingTest extends KSBTestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		System.setProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "500");
-		System.setProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, "5");
+		System.setProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY, "500");
+		System.setProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, "5");
 		super.setUp();
 		GlobalCallbackRegistry.getCallbacks().clear();
 		GlobalCallbackRegistry.getCallbacks().add(this.callback);

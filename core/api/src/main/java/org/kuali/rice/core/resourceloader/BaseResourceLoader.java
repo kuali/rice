@@ -139,13 +139,6 @@ public class BaseResourceLoader extends ResourceLoaderContainer implements Resou
 		this.postProcessContainer = postProcessContainer;
 	}
 
-	/**
-	 * @deprecated use {@link #postProcessService(QName, Object)} instead
-	 */
-	protected Object wrap(QName serviceName, Object service) {
-		return postProcessService(serviceName, service);
-	}
-
 	public String getContents(String indent, boolean servicePerLine) {
 		String contents = indent + this + "\n";
 

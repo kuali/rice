@@ -62,14 +62,14 @@ public class PluginClassLoader extends URLClassLoader implements Lifecycle {//im
 
     public void addClassesDirectory(File classesDir) throws MalformedURLException {
         if (classesDir != null && classesDir.isDirectory()) {
-            addURL(classesDir.toURL());
+            addURL(classesDir.toURI().toURL());
         }
     }
 
     public void addLibDirectory(File libDir) throws MalformedURLException {
         File[] jars = PluginUtils.findJars(libDir);
         for (int index = 0; index < jars.length; index++) {
-            addURL(jars[index].toURL());
+            addURL(jars[index].toURI().toURL());
         }
     }
 

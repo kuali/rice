@@ -43,7 +43,7 @@ public class BeanFactoryResourceLoader extends BaseResourceLoader {
 	public Object getService(QName serviceName) {
 		if (this.beanFactory.containsBean(serviceName.toString())) {
 			Object service = this.beanFactory.getBean(serviceName.toString());
-			return wrap(serviceName, service);
+			return postProcessService(serviceName, service);
 		}
 		return super.getService(serviceName);
 	}

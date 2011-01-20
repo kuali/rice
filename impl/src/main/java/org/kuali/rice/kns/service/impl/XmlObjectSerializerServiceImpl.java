@@ -113,7 +113,7 @@ public class XmlObjectSerializerServiceImpl implements XmlObjectSerializerServic
          */
         @Override
         public void visitSerializableFields(Object object, Visitor visitor) {
-            for (Iterator iterator = fieldDictionary.serializableFieldsFor(object.getClass()); iterator.hasNext();) {
+            for (Iterator iterator = fieldDictionary.fieldsFor(object.getClass()); iterator.hasNext();) {
                 Field field = (Field) iterator.next();
                 if (!fieldModifiersSupported(field)) {
                     continue;

@@ -68,8 +68,8 @@ public class ThreadPoolAction extends KSBAction {
 		    BusAdminService adminService = (BusAdminService)adminServiceHolder.getService();
 		    adminService.setCorePoolSize(form.getCorePoolSize());
 		    adminService.setMaximumPoolSize(form.getMaximumPoolSize());
-		    adminService.setConfigProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, (form.getTimeIncrement() == null ? null : form.getTimeIncrement().toString()));
-		    adminService.setConfigProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, (form.getMaxRetryAttempts() == null ? null : form.getMaxRetryAttempts().toString()));
+		    adminService.setConfigProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY, (form.getTimeIncrement() == null ? null : form.getTimeIncrement().toString()));
+		    adminService.setConfigProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, (form.getMaxRetryAttempts() == null ? null : form.getMaxRetryAttempts().toString()));
 		} catch (Exception e) {
 		    LOG.error("Failed to set thread pool sizes for busAdminService at " + adminServiceHolder.getServiceInfo().getEndpointUrl());
 		}
@@ -82,15 +82,15 @@ public class ThreadPoolAction extends KSBAction {
 	    form.getThreadPool().setMaximumPoolSize(form.getMaximumPoolSize());
 
 	    if (form.getTimeIncrement() == null) {
-		ConfigContext.getCurrentContextConfig().removeProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY);
+		ConfigContext.getCurrentContextConfig().removeProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY);
 	    } else {
-		ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, form.getTimeIncrement().toString());
+		ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY, form.getTimeIncrement().toString());
 	    }
 
 	    if (form.getMaxRetryAttempts() == null) {
-		ConfigContext.getCurrentContextConfig().removeProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY);
+		ConfigContext.getCurrentContextConfig().removeProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY);
 	    } else {
-		ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, form.getMaxRetryAttempts().toString());
+		ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, form.getMaxRetryAttempts().toString());
 	    }
 	}
 	return mapping.findForward("basic");
@@ -106,13 +106,13 @@ public class ThreadPoolAction extends KSBAction {
 	    form.setMaximumPoolSize(form.getThreadPool().getMaximumPoolSize());
 	}
 	if (form.getTimeIncrement() == null) {
-	    String timeIncrementValue = ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY);
+	    String timeIncrementValue = ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY);
 	    if (!StringUtils.isEmpty(timeIncrementValue)) {
 		form.setTimeIncrement(Long.parseLong(timeIncrementValue));
 	    }
 	}
 	if (form.getMaxRetryAttempts() == null) {
-	    String maxRetryAttemptsValue = ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY);
+	    String maxRetryAttemptsValue = ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY);
 	    if (!StringUtils.isEmpty(maxRetryAttemptsValue)) {
 		form.setMaxRetryAttempts(Long.parseLong(maxRetryAttemptsValue));
 	    }

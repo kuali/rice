@@ -23,6 +23,7 @@ import java.sql.Types;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Hibernate;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.usertype.UserType;
 import org.kuali.rice.core.util.type.KualiPercent;
 
@@ -45,7 +46,7 @@ public class HibernateKualiDecimalPercentFieldType extends HibernateKualiDecimal
 	public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
 	throws HibernateException, SQLException {
 
-		BigDecimal source = (BigDecimal)Hibernate.BIG_DECIMAL.nullSafeGet(rs, names[0]);
+		BigDecimal source = (BigDecimal) StandardBasicTypes.BIG_DECIMAL.nullSafeGet(rs, names[0]);
 
 		// Check for null, and verify object type.
 		// Do conversion if our type is correct (BigDecimal).

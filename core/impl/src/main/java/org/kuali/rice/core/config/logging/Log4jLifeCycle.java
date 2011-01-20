@@ -69,7 +69,7 @@ public class Log4jLifeCycle extends BaseLifecycle {
 
 	public void start() throws Exception {
         // obtain the root workflow config
-		Config config = ConfigContext.getRootConfig();
+		Config config = ConfigContext.getCurrentContextConfig();
 
         boolean log4jFileExists = checkPropertiesFileExists(config.getProperty(Config.LOG4J_SETTINGS_PATH));
 

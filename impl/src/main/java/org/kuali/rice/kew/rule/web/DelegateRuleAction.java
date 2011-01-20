@@ -65,7 +65,7 @@ public class DelegateRuleAction extends KewKualiAction {
 			GlobalVariables.getMessageMap().putError(PARENT_RESPONSIBILITY_PROPERTY, PARENT_RESPONSIBILITY_ERROR);
 		}
 		
-		return GlobalVariables.getMessageMap().isEmpty();
+		return GlobalVariables.getMessageMap().hasNoErrors();
 	}
 	
 	protected String generateMaintenanceUrl(HttpServletRequest request, DelegateRuleForm form) {

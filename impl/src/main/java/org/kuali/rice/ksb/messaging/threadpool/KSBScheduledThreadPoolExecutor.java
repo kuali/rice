@@ -41,7 +41,7 @@ public class KSBScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor 
 	public void start() throws Exception {
 		LOG.info("Starting the KSB scheduled thread pool...");
 		try {
-			Integer size = new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.FIXED_POOL_SIZE));
+			Integer size = new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.FIXED_POOL_SIZE));
 			this.setCorePoolSize(size);
 		} catch (NumberFormatException nfe) {
 			// ignore this, instead the pool will be set to DEFAULT_SIZE

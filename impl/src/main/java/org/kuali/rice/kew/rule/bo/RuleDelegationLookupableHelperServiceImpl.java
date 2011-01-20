@@ -408,7 +408,7 @@ public class RuleDelegationLookupableHelperServiceImpl extends KualiLookupableHe
                 GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
             }
         }
-        if (!GlobalVariables.getMessageMap().isEmpty()) {
+        if (!GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new ValidationException("errors in search criteria");
         }
     }

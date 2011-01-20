@@ -157,7 +157,7 @@ public class ExtensionAttributeTest extends KNSTestCase {
         assertTrue( "validation should have failed", failedAsExpected );
         System.out.println( "document errors: " + GlobalVariables.getMessageMap() );
         assertTrue( "there should be errors", GlobalVariables.getMessageMap().getErrorCount() > 0 );
-	assertTrue("should be an error on the account type code", GlobalVariables.getMessageMap().containsKey(
+	assertTrue("should be an error on the account type code", GlobalVariables.getMessageMap().doesPropertyHaveError(
 		"document.newMaintainableObject.extension.accountTypeCode"));
 	assertTrue("account type code should have an existence error", GlobalVariables.getMessageMap().fieldHasMessage(
 		"document.newMaintainableObject.extension.accountTypeCode", "error.existence"));

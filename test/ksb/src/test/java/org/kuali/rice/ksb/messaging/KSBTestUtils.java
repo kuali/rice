@@ -41,7 +41,7 @@ public final class KSBTestUtils {
     }
 
     private static void setupMessaging(String value) {
-        ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.MESSAGE_DELIVERY, value);
+        ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.MESSAGE_DELIVERY, value);
         ((Runnable) KSBResourceLoaderFactory.getRemoteResourceLocator()).run();
     }
 

@@ -60,7 +60,7 @@ public class SynchronousServiceCallProxy extends AsynchronousServiceCallProxy {
 
     @Override
     protected void executeMessage(PersistedMessageBO message) {
-	if (!new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF))) {
+	if (!Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGING_OFF))) {
 	    new MessageServiceInvoker(message).run();
 	}
     }

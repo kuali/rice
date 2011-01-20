@@ -31,7 +31,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 public class MessageSender {
 
     public static void sendMessage(PersistedMessageBO message) throws Exception {
-        if (!new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF))) {
+        if (!Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGING_OFF))) {
 
             if (ConfigContext.getCurrentContextConfig().getObject(RiceConstants.SPRING_TRANSACTION_MANAGER) != null
                     || ConfigContext.getCurrentContextConfig().getObject(RiceConstants.TRANSACTION_MANAGER_OBJ) != null) {

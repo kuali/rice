@@ -24,6 +24,7 @@ import java.sql.Types;
 
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.type.StandardBasicTypes;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.util.type.KualiInteger;
 
@@ -44,7 +45,7 @@ public class HibernateKualiIntegerPercentageFieldType extends HibernateKualiDeci
 	public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
 	throws HibernateException, SQLException {
 		
-		Object source = Hibernate.BIG_DECIMAL.nullSafeGet(rs, names[0]);
+		Object source = StandardBasicTypes.BIG_DECIMAL.nullSafeGet(rs, names[0]);
 		
 		if (source != null && source instanceof BigDecimal) {
 			return new KualiInteger(((KualiDecimal) (super.getConvertedToKualiDecimal(source))).bigDecimalValue());

@@ -22,14 +22,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.spi.PersistenceProvider;
 
 import org.hibernate.cfg.Environment;
-import org.hibernate.dialect.DB2Dialect;
-import org.hibernate.dialect.HSQLDialect;
-import org.hibernate.dialect.InformixDialect;
-import org.hibernate.dialect.MySQLDialect;
-import org.hibernate.dialect.Oracle9Dialect;
-import org.hibernate.dialect.PostgreSQLDialect;
-import org.hibernate.dialect.SQLServerDialect;
-import org.hibernate.dialect.SybaseDialect;
+import org.hibernate.dialect.*;
 import org.hibernate.ejb.HibernateEntityManager;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.orm.jpa.JpaDialect;
@@ -100,10 +93,10 @@ public class DevHibernateJpaVendorAdapter extends AbstractJpaVendorAdapter imple
 			case HSQL: return HSQLDialect.class;
 			case INFORMIX: return InformixDialect.class;
 			case MYSQL: return MySQLDialect.class;
-			case ORACLE: return Oracle9Dialect.class;
+			case ORACLE: return Oracle9iDialect.class;
 			case POSTGRESQL: return PostgreSQLDialect.class;
 			case SQL_SERVER: return SQLServerDialect.class;
-			case SYBASE: return SybaseDialect.class;
+			case SYBASE: return SybaseASE15Dialect.class;
 			default: return null;
 		}
 	}

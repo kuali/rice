@@ -122,7 +122,7 @@ public class RoutingReportAction extends KewKualiAction {
 			}
 		}
 
-		if (!GlobalVariables.getMessageMap().isEmpty()) {
+		if (!GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new ValidationException("Errors populating rule attributes.");
         }
 
@@ -186,7 +186,7 @@ public class RoutingReportAction extends KewKualiAction {
                 }
             }
 
-            if (!GlobalVariables.getMessageMap().isEmpty()) {
+            if (!GlobalVariables.getMessageMap().hasNoErrors()) {
                 throw new ValidationException("errors in search criteria");
             }
 

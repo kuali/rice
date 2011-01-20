@@ -12,6 +12,7 @@
  */
 package org.kuali.rice.kcb.test;
 
+import org.junit.Before;
 import org.kuali.rice.core.dao.GenericDao;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
@@ -25,6 +26,7 @@ import org.kuali.rice.test.BaselineTestCase.Mode;
 public abstract class BusinessObjectTestCase extends KCBTestCase {
     protected GenericDao businessObjectDao;
 
+    @Before
     @Override
     public void setUp() throws Exception {
         super.setUp();

@@ -249,7 +249,7 @@ KualiLookupableHelperServiceImpl {
                     //TODO: change to grab URL from config variable
                     if (StringUtils.isNotEmpty(keyValue.getValue()) && StringUtils.equals("routeHeaderId", keyValue.getKey()))
                     {
-                        anchor.setHref(StringUtils.getNestedString(keyValue.getValue(), "<a href=\"", "docId=") + "docId=" + keyValue.getUserDisplayValue());
+                        anchor.setHref(StringUtils.substringBetween(keyValue.getValue(), "<a href=\"", "docId=") + "docId=" + keyValue.getUserDisplayValue());
                         col.setMaxLength(100); //for now force this
                     }
 

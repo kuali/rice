@@ -23,7 +23,6 @@ import org.kuali.rice.kcb.test.BusinessObjectTestCase;
 import org.kuali.rice.kcb.test.KCBTestData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.AssertThrows;
 
 import java.util.Map;
 
@@ -81,7 +80,7 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
         assertEquals(0, prefsvc.getRecipientPreferences(PREF.getRecipientId()).size());
     }
 
-    @Test
+    @Test(expected=DataIntegrityViolationException.class)
     @Override
     public void testDuplicateCreate() {
         final RecipientPreference p = new RecipientPreference();
@@ -90,36 +89,24 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
         p.setProperty(PREF.getProperty());
         p.setValue(PREF.getValue());
 
-        new AssertThrows(DataIntegrityViolationException.class) {
-            public void test() throws Exception {
-                prefsvc.saveRecipientPreference(p);
-            }
-        }.runTest();
+        prefsvc.saveRecipientPreference(p);
     }
 
-    @Test
+    @Test(expected=DataIntegrityViolationException.class)
     @Override
     public void testInvalidCreate() {
         final RecipientPreference p = new RecipientPreference();
-        new AssertThrows(DataIntegrityViolationException.class) {
-            public void test() throws Exception {
-                prefsvc.saveRecipientPreference(p);
-            }
-        }.runTest();
+        prefsvc.saveRecipientPreference(p);
     }
 
-    @Test
+    @Test(expected = DataAccessException.class)
     @Override
     public void testInvalidDelete() {
         final RecipientPreference p = new RecipientPreference();
         p.setId(KCBTestData.INVALID_ID);
         // OJB yields an org.springmodules.orm.ojb.OjbOperationException/OptimisticLockException and claims the object
         // may have been deleted by somebody else
-        new AssertThrows(DataAccessException.class) {
-            public void test() {
-                prefsvc.deleteRecipientPreference(p);
-            }
-        }.runTest();
+        prefsvc.deleteRecipientPreference(p);
     }
 
     @Test
@@ -129,6 +116,7 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
         assertNull(p);
     }
 
+    @Test
     @Override
     public void testInvalidUpdate() {
         RecipientPreference sample = new RecipientPreference();
@@ -140,24 +128,26 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
         // violates not null property constraint
         final RecipientPreference p1 = prefsvc.getRecipientPreference(PREF.getRecipientId(), PREF.getProperty());
         p1.setProperty(null);
-        new AssertThrows(DataAccessException.class) {
-            @Override
-            public void test() throws Exception {
-                prefsvc.saveRecipientPreference(p1);
-            }
-        }.runTest();
+        try {
+            prefsvc.saveRecipientPreference(p1);
+            fail("DataAccessException did not happen");
+        } catch (DataAccessException e) {
+            //expected
+        }
+
         
         // change the property to an existing property name to violate property uniqueness constraint
         final RecipientPreference p2 = prefsvc.getRecipientPreference(PREF.getRecipientId(), PREF.getProperty());
         p2.setProperty("uniqueproperty");
-        new AssertThrows(DataAccessException.class) {
-            @Override
-            public void test() throws Exception {
-                prefsvc.saveRecipientPreference(p2);
-            }
-        }.runTest();
+        try {
+            prefsvc.saveRecipientPreference(p2);
+            fail("DataAccessException did not happen");
+        } catch (DataAccessException e) {
+            //expected
+        }
     }
 
+    @Test
     @Override
     public void testReadByQuery() {
         RecipientPreference p = prefsvc.getRecipientPreference(PREF.getRecipientId(), PREF.getProperty());
@@ -165,6 +155,7 @@ public class RecipientPreferenceTest extends BusinessObjectTestCase {
         assertEquals(PREF, p);
     }
 
+    @Test
     @Override
     public void testUpdate() {
         RecipientPreference p = prefsvc.getRecipientPreference(PREF.getRecipientId(), PREF.getProperty());

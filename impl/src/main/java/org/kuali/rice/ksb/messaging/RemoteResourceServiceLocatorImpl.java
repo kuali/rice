@@ -96,7 +96,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	 * equals wasn't implemented on the RemotedServiceHolder and IPTable, which
 	 * is a member of the RemotedServiceHolder.
 	 *
-	 * @param service
+	 * @param serviceInfo
 	 * @param serviceList
 	 * @return boolean indicating if the entry was removed from the list
 	 */
@@ -277,7 +277,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	
 	protected void installAlternateEndpoint(ServiceInfo serviceInfo) {
 	List<AlternateEndpointLocation> alternateEndpointLocations = (List<AlternateEndpointLocation>) ConfigContext
-		.getCurrentContextConfig().getObject(KSBConstants.KSB_ALTERNATE_ENDPOINT_LOCATIONS);
+		.getCurrentContextConfig().getObject(KSBConstants.Config.KSB_ALTERNATE_ENDPOINT_LOCATIONS);
 	if (alternateEndpointLocations != null) {
 	    for (AlternateEndpointLocation alternateEndpointLocation : alternateEndpointLocations) {
 		if (Pattern.matches(".*" + alternateEndpointLocation.getEndpointHostReplacementPattern() + ".*", serviceInfo
@@ -297,7 +297,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 	    }
 	}
 	List<AlternateEndpoint> alternateEndpoints = (List<AlternateEndpoint>) ConfigContext.getCurrentContextConfig().getObject(
-		KSBConstants.KSB_ALTERNATE_ENDPOINTS);
+		KSBConstants.Config.KSB_ALTERNATE_ENDPOINTS);
 	if (alternateEndpoints != null) {
 	    for (AlternateEndpoint alternateEndpoint : alternateEndpoints) {
 		if (Pattern.matches(alternateEndpoint.getEndpointUrlPattern(), serviceInfo.getEndpointUrl())) {
@@ -346,7 +346,7 @@ public class RemoteResourceServiceLocatorImpl extends ResourceLoaderContainer im
 		if (StringUtils.isEmpty(definition.getServiceNamespace())) {
 			return null;
 		}
-		QName objectRemoterName = new QName(definition.getServiceNamespace(), KSBServiceLocator.OBJECT_REMOTER);
+		QName objectRemoterName = new QName(definition.getServiceNamespace(), KSBConstants.ServiceNames.OBJECT_REMOTER);
 		ObjectRemoterService classRemoter = (ObjectRemoterService)GlobalResourceLoader.getService(objectRemoterName);
 		ServiceInfo serviceInfo = classRemoter.getRemotedClassURL(definition);
 

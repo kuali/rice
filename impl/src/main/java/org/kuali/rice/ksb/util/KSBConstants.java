@@ -112,54 +112,6 @@ public final class KSBConstants {
     	}
     }
     
-    // Deprecated configuration Parameters, please use the Config inner class when referencing these.
-    
-    @Deprecated
-    public static final String SERVICE_NAMESPACE = KSBConstants.Config.SERVICE_NAMESPACE;
-    @Deprecated
-    public static final String MESSAGE_PERSISTENCE = KSBConstants.Config.MESSAGE_PERSISTENCE;
-    @Deprecated
-    public static final String MESSAGING_OFF = KSBConstants.Config.MESSAGING_OFF;
-    @Deprecated
-    public static final String MESSAGE_DELIVERY = KSBConstants.Config.MESSAGE_DELIVERY;
-    @Deprecated
-    public static final String INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY = KSBConstants.Config.INJECTED_EXCEPTION_MESSAGE_SCHEDULER_KEY;
-    @Deprecated
-    public static final String FIXED_POOL_SIZE = KSBConstants.Config.FIXED_POOL_SIZE;
-    @Deprecated
-    public static final String ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY = KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY;
-    @Deprecated
-    public static final String ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY = KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY;
-    @Deprecated
-    public static final String ROUTE_QUEUE_TIME_INCREMENT_KEY = KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY;
-    @Deprecated
-    public static final String IMMEDIATE_EXCEPTION_ROUTING = KSBConstants.Config.IMMEDIATE_EXCEPTION_ROUTING;
-    @Deprecated
-    public static final String ALLOW_SYNC_EXCEPTION_ROUTING = KSBConstants.Config.ALLOW_SYNC_EXCEPTION_ROUTING;
-    
-    @Deprecated
-    public static final String KSB_ALLOW_SELF_SIGNED_SSL = KSBConstants.Config.KSB_ALLOW_SELF_SIGNED_SSL;
-    @Deprecated
-    public static final String KSB_MESSAGE_DATASOURCE = KSBConstants.Config.KSB_MESSAGE_DATASOURCE;
-    @Deprecated
-    public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE = KSBConstants.Config.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE;
-    @Deprecated
-    public static final String KSB_REGISTRY_DATASOURCE = KSBConstants.Config.KSB_REGISTRY_DATASOURCE;
-    @Deprecated
-    public static final String KSB_MESSAGE_DATASOURCE_JNDI = KSBConstants.Config.KSB_MESSAGE_DATASOURCE_JNDI;
-    @Deprecated
-    public static final String KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI = KSBConstants.Config.KSB_MESSAGE_NON_TRANSACTIONAL_DATASOURCE_JNDI;
-    @Deprecated
-    public static final String KSB_REGISTRY_DATASOURCE_JNDI = KSBConstants.Config.KSB_REGISTRY_DATASOURCE_JNDI;
-    @Deprecated
-    public static final String USE_QUARTZ_DATABASE = KSBConstants.Config.USE_QUARTZ_DATABASE;
-    @Deprecated
-    public static final String KSB_ALTERNATE_ENDPOINTS = KSBConstants.Config.KSB_ALTERNATE_ENDPOINTS;
-    @Deprecated
-    public static final String KSB_ALTERNATE_ENDPOINT_LOCATIONS = KSBConstants.Config.KSB_ALTERNATE_ENDPOINT_LOCATIONS;
-    @Deprecated
-    public static final String LOAD_KNS_MODULE_CONFIGURATION = KSBConstants.Config.LOAD_KNS_MODULE_CONFIGURATION;
-    
 	private KSBConstants() {
 		throw new UnsupportedOperationException("do not call");
 	}

@@ -43,7 +43,7 @@ public class ImmutableProperties extends Properties {
 		 throw new UnsupportedOperationException("This class is immutable");
 	}
 
-	//@Override
+	@Override
 	public synchronized void load(Reader reader) throws IOException {
 		throw new UnsupportedOperationException("This class is immutable");
 	}
@@ -54,6 +54,7 @@ public class ImmutableProperties extends Properties {
 		throw new UnsupportedOperationException("This class is immutable");
 	}
 
+    @Deprecated
 	@Override
 	public synchronized void save(OutputStream out, String comments) {
 		throw new UnsupportedOperationException("This class is immutable");

@@ -42,8 +42,8 @@ public class ExceptionRetryCountTest extends KSBTestCase {
 
 	@Override
 	public void setUp() throws Exception {
-		System.setProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "500");
-	System.setProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, "2");
+		System.setProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY, "500");
+	System.setProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY, "2");
 		super.setUp();
 		GlobalCallbackRegistry.getCallbacks().clear();
 		GlobalCallbackRegistry.getCallbacks().add(this.callback);
@@ -69,7 +69,7 @@ public class ExceptionRetryCountTest extends KSBTestCase {
     public void testRetryCount() throws Exception {
 		//Turn the requeue up very high so the message will go through all it's requeues immediately
 
-		ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY, "100");
+		ConfigContext.getCurrentContextConfig().putProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY, "100");
 
 	KSBJavaService explodingQueue = (KSBJavaService) KSBServiceLocator.getMessageHelper().getServiceAsynchronously(
 		this.retryCountServiceName);

@@ -24,7 +24,6 @@ import org.kuali.rice.kcb.test.KCBTestCase;
 import org.kuali.rice.test.BaselineTestCase.BaselineMode;
 import org.kuali.rice.test.BaselineTestCase.Mode;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.AssertThrows;
 
 import java.util.Collection;
 
@@ -70,24 +69,16 @@ public class RecipientDelivererConfigTest extends KCBTestCase {
         assertEquals(0, prefsvc.getDeliverersForRecipient("user1").size());
     }
 
-    @Test
+    @Test(expected = RiceRuntimeException.class)
     public void testDuplicateCreate() throws Exception {
         // duplicate channel/deliverer entry
-        new AssertThrows(RiceRuntimeException.class) {
-            public void test() throws Exception {
-                prefsvc.saveRecipientDelivererConfig("user1", "mock", new String[] { "channel1" });
-            }
-        }.runTest();
+        prefsvc.saveRecipientDelivererConfig("user1", "mock", new String[] { "channel1" });
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     public void testInvalidUpdate() throws Exception {
         // null channel
-        new AssertThrows(DataIntegrityViolationException.class) {
-            public void test() throws Exception {
-                prefsvc.saveRecipientDelivererConfig("user1", null, new String[] { "channel2" });
-            }
-        }.runTest();
+        prefsvc.saveRecipientDelivererConfig("user1", null, new String[] { "channel2" });
     }
     
     @Test

@@ -38,7 +38,7 @@ public class QuartzConfigPropertiesFactoryBean extends AbstractFactoryBean {
     protected Object createInstance() throws Exception {
 	Properties properties = new Properties();
 	Properties configProps = ConfigContext.getCurrentContextConfig().getProperties();
-	boolean useQuartzDatabase = new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.USE_QUARTZ_DATABASE));
+	boolean useQuartzDatabase = Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.USE_QUARTZ_DATABASE));
 	for (Object keyObj : configProps.keySet()) {
 	    if (keyObj instanceof String) {
 	    	String key = (String)keyObj;

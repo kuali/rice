@@ -350,7 +350,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
             ruleDescription = "%" + ruleDescription.trim() + "%";
         }
        
-        if (!GlobalVariables.getMessageMap().isEmpty()) {
+        if (!GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new ValidationException("errors in search criteria");
         }
        
@@ -443,7 +443,7 @@ public class RuleBaseValuesLookupableHelperServiceImpl extends KualiLookupableHe
                 GlobalVariables.getMessageMap().putError(PERSON_REVIEWER_PROPERTY_NAME, RiceKeyConstants.ERROR_CUSTOM, INVALID_PERSON_ERROR);
             }
         }
-        if (!GlobalVariables.getMessageMap().isEmpty()) {
+        if (!GlobalVariables.getMessageMap().hasNoErrors()) {
             throw new ValidationException("errors in search criteria");
         }
     }

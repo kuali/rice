@@ -71,7 +71,7 @@ public class ErrorContainer implements Serializable {
     public List getErrorPropertyList() {
         List properties = new ArrayList();
 
-        for (Iterator iter = errorMap.keySet().iterator(); iter.hasNext();) {
+        for (Iterator iter = errorMap.getAllPropertiesWithErrors().iterator(); iter.hasNext();) {
             properties.add(iter.next());
         }
 
@@ -84,7 +84,7 @@ public class ErrorContainer implements Serializable {
      */
     private boolean hasFormatterError() {
     	if (errorMap.getErrorCount()>0) {
-            for (String errorKey : (Set<String>)errorMap.keySet()) {
+            for (String errorKey : errorMap.getAllPropertiesWithErrors()) {
             	AutoPopulatingList errorValues = errorMap.getMessages(errorKey);
             	for (ErrorMessage errorMessage : (List<ErrorMessage>)errorValues) {
                     if (errorMessage.getErrorKey().equals(RiceKeyConstants.ERROR_DOCUMENT_MAINTENANCE_FORMATTING_ERROR)) {
@@ -102,9 +102,9 @@ public class ErrorContainer implements Serializable {
      */
     public ActionMessages getRequestErrors() {
         ActionMessages requestErrors = new ActionMessages();
-        for (Iterator iter = errorMap.keySet().iterator(); iter.hasNext();) {
+        for (Iterator iter = errorMap.getAllPropertiesWithErrors().iterator(); iter.hasNext();) {
             String property = (String) iter.next();
-            List errorList = (List) errorMap.get(property);
+            List errorList = (List) errorMap.getErrorMessagesForProperty(property);
 
             for (Iterator iterator = errorList.iterator(); iterator.hasNext();) {
                 ErrorMessage errorMessage = (ErrorMessage) iterator.next();

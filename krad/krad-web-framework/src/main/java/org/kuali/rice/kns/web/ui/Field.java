@@ -103,10 +103,6 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
     private boolean memberOfRange = false;
     private boolean allowInlineRange = false;
 
-    //FIXME: these next two are iffy, need to reevaluate whether really used by doc search
-    // below boolean used by criteria processor to hide field without removing classic 'field type' variable
-    private boolean hidden = false;
-
     // this field is currently a hack to allow us to indicate whether or not the column of data associated
     // with a particular field will be visible in the result set of a search or not
     private boolean isColumnVisible = true;
@@ -1611,30 +1607,8 @@ public class Field implements java.io.Serializable, PropertyRenderingConfigEleme
         this.fieldDataType = fieldDataType;
     }
 
-    /**
-     * Use fieldType=Field.HIDDEN instead
-     *
-     * @return
-     * @deprecated
-     */
-    @Deprecated
-    public boolean isHidden() {
-        return this.hidden;
-    }
-
     public boolean isColumnVisible() {
         return this.isColumnVisible;
-    }
-
-    /**
-     * Use fieldType=Field.HIDDEN instead
-     *
-     * @param hidden
-     * @deprecated
-     */
-    @Deprecated
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
     }
 
     public void setColumnVisible(boolean isColumnVisible) {

@@ -50,7 +50,7 @@ public class PluginConfigParser {
     private static final String CLASS_ATTRIBUTE = "class";
 
     public PluginConfig parse(File configFile, Config parentConfig) throws IOException, XmlException {
-    	return parse(configFile.toURL(), parentConfig);
+    	return parse(configFile.toURI().toURL(), parentConfig);
     }
 
 	public PluginConfig parse(URL url, Config parentConfig) throws IOException, XmlException {

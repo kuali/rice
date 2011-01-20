@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 
 import org.hibernate.HibernateException;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.usertype.UserType;
 import org.hibernate.Hibernate;
 
@@ -40,7 +41,7 @@ public class HibernateKualiCharBooleanAIType extends HibernateImmutableValueUser
 	 */
 	public Object nullSafeGet(ResultSet rs, String[] names, Object owner) throws HibernateException, SQLException {
 		
-		String value = (String)Hibernate.STRING.nullSafeGet(rs, names[0]);
+		String value = (String) StandardBasicTypes.STRING.nullSafeGet(rs, names[0]);
 		Boolean converted = null;
 		if (value != null) {
 			try {

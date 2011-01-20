@@ -126,7 +126,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_HEADER_PROPERTY_NAME);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
-        return GlobalVariables.getMessageMap().isEmpty();
+        return GlobalVariables.getMessageMap().hasNoErrors();
     }
 
     /**
@@ -147,7 +147,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         // drop the error path keys off now
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
 
-        return GlobalVariables.getMessageMap().isEmpty();
+        return GlobalVariables.getMessageMap().hasNoErrors();
     }
 
     /**
@@ -165,7 +165,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(document, getMaxDictionaryValidationDepth(), false);
         getDictionaryValidationService().validateDefaultExistenceChecksForTransDoc((TransactionalDocument) document);
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.DOCUMENT_PROPERTY_NAME);
-        isValid &= GlobalVariables.getMessageMap().isEmpty();
+        isValid &= GlobalVariables.getMessageMap().hasNoErrors();
         isValid &= processCustomSaveDocumentBusinessRules(document);
 
         return isValid;
@@ -231,7 +231,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
      * This method should be overridden by children rule classes as a hook to implement document specific business rule checks for
      * the "approve document" event.
      * 
-     * @param document
+     * @param approveEvent
      * @return boolean True if the rules checks passed, false otherwise.
      */
     protected boolean processCustomApproveDocumentBusinessRules(ApproveDocumentEvent approveEvent) {
@@ -272,7 +272,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         // drop the error path keys off now
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.NEW_DOCUMENT_NOTE_PROPERTY_NAME);
 
-        return GlobalVariables.getMessageMap().isEmpty();
+        return GlobalVariables.getMessageMap().hasNoErrors();
     }
 
     /**
@@ -392,7 +392,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         // drop the error path keys off now
         errorMap.removeFromErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_PERSON_PROPERTY_NAME);
 
-        return GlobalVariables.getMessageMap().isEmpty();
+        return GlobalVariables.getMessageMap().hasNoErrors();
     }
 
     /**
@@ -456,7 +456,7 @@ public abstract class DocumentRuleBase implements SaveDocumentRule, RouteDocumen
         // drop the error path keys off now
         GlobalVariables.getMessageMap().removeFromErrorPath(KNSConstants.NEW_AD_HOC_ROUTE_WORKGROUP_PROPERTY_NAME);
 
-        return GlobalVariables.getMessageMap().isEmpty();
+        return GlobalVariables.getMessageMap().hasNoErrors();
     }
 
     /**

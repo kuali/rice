@@ -38,7 +38,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
     private MessageQueueDAO messageQueueDAO;
 
     public void delete(PersistedMessageBO routeQueue) {
-        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
+        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_PERSISTENCE))) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Message Persistence is on.  Deleting stored message" + routeQueue);
             }
@@ -47,7 +47,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
     }
 
     public void save(PersistedMessageBO routeQueue) {
-        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE))) {
+        if (Boolean.valueOf(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_PERSISTENCE))) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Persisting Message " + routeQueue);
             }
@@ -92,7 +92,7 @@ public class MessageQueueServiceImpl implements MessageQueueService {
     }
 
     public Integer getMaxRetryAttempts() {
-        return new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
+        return new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
     }
 
     public PersistedMessageBO getMessage(ServiceInfo serviceInfo, AsynchronousCall methodCall) {

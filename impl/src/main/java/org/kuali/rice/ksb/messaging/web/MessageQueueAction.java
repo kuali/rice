@@ -305,10 +305,10 @@ public class MessageQueueAction extends KSBAction {
 	request.setAttribute("ksb_constant", getServlet().getServletContext().getAttribute("KSBConstants"));
 	MessageQueueForm routeQueueForm = (MessageQueueForm) form;
 	routeQueueForm.setMyIpAddress(RiceUtilities.getIpNumber());
-	routeQueueForm.setMyServiceNamespace(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.SERVICE_NAMESPACE));
-	routeQueueForm.setMessagePersistence(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_PERSISTENCE));
-	routeQueueForm.setMessageDelivery(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY));
-	routeQueueForm.setMessageOff(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGING_OFF));
+	routeQueueForm.setMyServiceNamespace(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.SERVICE_NAMESPACE));
+	routeQueueForm.setMessagePersistence(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_PERSISTENCE));
+	routeQueueForm.setMessageDelivery(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_DELIVERY));
+	routeQueueForm.setMessageOff(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGING_OFF));
 	List<ServiceInfo> services = KSBServiceLocator.getServiceRegistry().fetchAll();
 	if (routeQueueForm.getMessageId() != null) {
 	    PersistedMessageBO rq = getRouteQueueService().findByRouteQueueId(routeQueueForm.getMessageId());

@@ -42,7 +42,7 @@ public class MessageFetcherTest extends KSBTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 		ConfigContext.getCurrentContextConfig().putProperty(
-				KSBConstants.MESSAGING_OFF, "true");
+				KSBConstants.Config.MESSAGING_OFF, "true");
 		TestHarnessSharedTopic.CALL_COUNT = 0;
 	}
 
@@ -96,7 +96,7 @@ public class MessageFetcherTest extends KSBTestCase {
 
 	private void turnOnMessaging() {
 		ConfigContext.getCurrentContextConfig().putProperty(
-				KSBConstants.MESSAGING_OFF, "false");
+				KSBConstants.Config.MESSAGING_OFF, "false");
 	}
 
 	@Test

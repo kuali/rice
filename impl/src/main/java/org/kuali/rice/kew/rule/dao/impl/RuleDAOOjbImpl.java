@@ -211,7 +211,7 @@ public class RuleDAOOjbImpl extends PersistenceBrokerDaoSupport implements RuleD
 		Criteria crit2 = new Criteria();
 		subCrit.addLike("responsibilityId", responsibilityId);
 		subQuery = QueryFactory.newReportQuery(RuleResponsibility.class, subCrit);
-		subQuery.setColumns(new String[] {"RULE_ID"});
+		subQuery.setAttributes(new String[] {"RULE_ID"});
 		crit2.addIn("ruleBaseValuesId", subQuery);
 		crit2.addEqualTo("currentInd", 1);
 		QueryByCriteria outerQuery = QueryFactory.newQuery(RuleBaseValues.class, crit2);

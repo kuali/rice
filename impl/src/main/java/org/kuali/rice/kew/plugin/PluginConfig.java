@@ -52,7 +52,7 @@ public class PluginConfig extends BaseConfig {
 	}
 
 	public PluginConfig(File configFile, Config parentConfig) throws MalformedURLException {
-		this(configFile.toURL(), parentConfig);
+		this(configFile.toURI().toURL(), parentConfig);
 	}
 	
 

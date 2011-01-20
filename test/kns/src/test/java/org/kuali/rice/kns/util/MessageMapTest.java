@@ -17,7 +17,6 @@ package org.kuali.rice.kns.util;
 
 import org.junit.Test;
 import org.kuali.rice.kns.test.document.bo.Account;
-import org.kuali.test.KNSTestCase;
 import org.springframework.util.AutoPopulatingList;
 
 import java.util.*;
@@ -27,7 +26,7 @@ import static org.junit.Assert.*;
 /**
  * This class tests the ErrorMap methods.
  */
-public class MessageMapTest extends KNSTestCase {
+public class MessageMapTest {
 
     /**
      * ErrorMap should only allow String keys and values.
@@ -41,15 +40,6 @@ public class MessageMapTest extends KNSTestCase {
         }
         catch (RuntimeException e) {
             fail("ErrorMap threw exception adding string pair");
-        }
-
-        // should fail putting other objects
-        try {
-            testMap.put(new Account(), RiceKeyConstants.ERROR_INACTIVE);
-            testMap.put("accountNbr", new Account());
-            fail("ErrorMap allowed put of non Strin type");
-        }
-        catch (RuntimeException e) {
         }
     }
 
@@ -70,7 +60,7 @@ public class MessageMapTest extends KNSTestCase {
         testMap.putError("objectCode", RiceKeyConstants.ERROR_INVALID_FORMAT);
         assertTrue(testMap.getErrorCount() == 5);
 
-        testMap.remove("accountNbr");
+        testMap.removeAllErrorMessagesForProperty("accountNbr");
         assertTrue(testMap.getErrorCount() == 3);
     }
 
@@ -187,10 +177,10 @@ public class MessageMapTest extends KNSTestCase {
         assertEquals(5, testMap.getErrorCount());
 
         // retrieve error messages for the one known key
-        Object thing = testMap.get(PROPERTY_NAME);
+        Object thing = testMap.getErrorMessagesForProperty(PROPERTY_NAME);
 
         Set usedParams = new HashSet();
-        for (Iterator i = testMap.entrySet().iterator(); i.hasNext();) {
+        for (Iterator i = testMap.getAllPropertiesAndErrors().iterator(); i.hasNext();) {
             Map.Entry entry = (Map.Entry) i.next();
 
             String propertyKey = (String) entry.getKey();

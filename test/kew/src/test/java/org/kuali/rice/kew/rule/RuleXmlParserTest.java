@@ -28,7 +28,6 @@ import org.kuali.rice.kew.test.KEWTestCase;
 import org.kuali.rice.kew.test.TestUtilities;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.xml.RuleXmlParser;
-import org.springframework.test.AssertThrows;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -268,20 +267,19 @@ public class RuleXmlParserTest extends KEWTestCase {
     /**
      * This test tests that an anonymous rule will still be checked against named rules for duplication.
      */
-    @Test public void testAnonymousDuplicatesNamed() {
+    @Test
+    public void testAnonymousDuplicatesNamed() {
         testNamedRule();
 
         final InputStream stream = getClass().getResourceAsStream("DuplicateAnonymousRule.xml");
         assertNotNull(stream);
         log.info("Importing anonymous duplicate rule");
-        AssertThrows at = new AssertThrows(WorkflowServiceErrorException.class, "Expected exception was not thrown") {
-            @Override
-            public void test() {
-                KEWServiceLocator.getRuleService().loadXml(stream, null);
-            }
-        };
-        at.runTest();
-        assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(at.getActualException(), XmlException.class));
+        try {
+            KEWServiceLocator.getRuleService().loadXml(stream, null);
+            fail("Expected exception was not thrown");
+        } catch (WorkflowServiceErrorException e) {
+            assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(e.getCause(), XmlException.class));
+        }
     }
 
     /**
@@ -293,14 +291,12 @@ public class RuleXmlParserTest extends KEWTestCase {
         final InputStream stream = getClass().getResourceAsStream("DuplicateAnonymousRuleWithExpression.xml");
         assertNotNull(stream);
         log.info("Importing anonymous duplicate rule");
-        AssertThrows at = new AssertThrows(WorkflowServiceErrorException.class, "Expected exception was not thrown") {
-            @Override
-            public void test() {
-                KEWServiceLocator.getRuleService().loadXml(stream, null);
-            }
-        };
-        at.runTest();
-        assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(at.getActualException(), XmlException.class));
+        try {
+            KEWServiceLocator.getRuleService().loadXml(stream, null);
+            fail("Expected exception was not thrown");
+        } catch (WorkflowServiceErrorException e) {
+            assertNotNull("Expected exception was not thrown", TestUtilities.findExceptionInStack(e.getCause(), XmlException.class));
+        }
     }
 
     @Test public void testParameterReplacement() throws IOException, XmlException {

@@ -26,7 +26,6 @@ import org.kuali.rice.kcb.test.BusinessObjectTestCase;
 import org.kuali.rice.kcb.test.KCBTestData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.AssertThrows;
 
 import java.util.Collection;
 
@@ -93,7 +92,7 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         assertNull(messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId()));
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     @Override
     public void testDuplicateCreate() {
         // violates messageid-deliverer constraint
@@ -104,38 +103,24 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         md.setDeliveryStatus(MESSAGE_DELIV.getDeliveryStatus());
         md.setLockVerNbr(MESSAGE_DELIV.getLockVerNbr());
         md.setMessage(MESSAGE);
-
-        new AssertThrows(DataIntegrityViolationException.class) {
-            public void test() throws Exception {
-                messageDeliveryService.saveMessageDelivery(md);                
-            }
-        }.runTest();
+        messageDeliveryService.saveMessageDelivery(md);
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     @Override
     public void testInvalidCreate() {
         final MessageDelivery m = new MessageDelivery();
-        new AssertThrows(DataIntegrityViolationException.class) {
-            public void test() throws Exception {
-                messageDeliveryService.saveMessageDelivery(m);
-            }
-            
-        }.runTest();
+        messageDeliveryService.saveMessageDelivery(m);
     }
 
-    @Test
+    @Test(expected = DataAccessException.class)
     @Override
     public void testInvalidDelete() {
         final MessageDelivery m = new MessageDelivery();
         m.setId(new Long(-1));
         // OJB yields an org.springmodules.orm.ojb.OjbOperationException/OptimisticLockException and claims the object
         // may have been deleted by somebody else
-        new AssertThrows(DataAccessException.class) {
-            public void test() {
-                messageDeliveryService.deleteMessageDelivery(m);        
-            }
-        }.runTest();
+        messageDeliveryService.deleteMessageDelivery(m);
     }
 
     @Test
@@ -145,18 +130,12 @@ public class MessageDeliveryServiceTest extends BusinessObjectTestCase {
         assertNull(m);
     }
 
-    @Test
+    @Test(expected = DataAccessException.class)
     @Override
     public void testInvalidUpdate() {
         final MessageDelivery m = messageDeliveryService.getMessageDelivery(MESSAGE_DELIV.getId());
         m.setDelivererTypeName(null);
-        new AssertThrows(DataAccessException.class) {
-            @Override
-            public void test() throws Exception {
-                messageDeliveryService.saveMessageDelivery(m);
-            }
-            
-        }.runTest();
+        messageDeliveryService.saveMessageDelivery(m);
     }
 
     @Test

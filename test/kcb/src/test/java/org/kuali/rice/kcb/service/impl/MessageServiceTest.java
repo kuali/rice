@@ -23,7 +23,6 @@ import org.kuali.rice.kcb.test.BusinessObjectTestCase;
 import org.kuali.rice.kcb.test.KCBTestData;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.AssertThrows;
 
 import java.util.Collection;
 
@@ -105,30 +104,21 @@ public class MessageServiceTest extends BusinessObjectTestCase {
         messageService.saveMessage(m);
     }
 
-    @Test
+    @Test(expected = DataIntegrityViolationException.class)
     @Override
     public void testInvalidCreate() {
         final Message m = new Message();
-        new AssertThrows(DataIntegrityViolationException.class) {
-            public void test() throws Exception {
-                messageService.saveMessage(m);
-            }
-            
-        }.runTest();
+        messageService.saveMessage(m);
     }
 
-    @Test
+    @Test(expected = DataAccessException.class)
     @Override
     public void testInvalidDelete() {
         final Message m = new Message();
         m.setId(new Long(-1));
         // OJB yields an org.springmodules.orm.ojb.OjbOperationException/OptimisticLockException and claims the object
         // may have been deleted by somebody else
-        new AssertThrows(DataAccessException.class) {
-            public void test() {
-                messageService.deleteMessage(m);        
-            }
-        }.runTest();
+        messageService.deleteMessage(m);
     }
 
     @Test
@@ -138,18 +128,12 @@ public class MessageServiceTest extends BusinessObjectTestCase {
         assertNull(m);
     }
 
-    @Test
+    @Test(expected = DataAccessException.class)
     @Override
     public void testInvalidUpdate() {
         final Message m = messageService.getMessage(MESSAGE.getId());
         m.setChannel(null);
-        new AssertThrows(DataAccessException.class) {
-            public void test() throws Exception {
-                messageService.saveMessage(m);
-            }
-            
-        }.runTest();
-        
+        messageService.saveMessage(m);
     }
 
     @Test

@@ -22,6 +22,7 @@ import java.sql.Types;
 
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
+import org.hibernate.type.StandardBasicTypes;
 import org.kuali.rice.core.util.type.KualiInteger;
 
 /**
@@ -41,7 +42,7 @@ public class HibernateKualiIntegerFieldType extends	HibernateImmutableValueUserT
 	public Object nullSafeGet(ResultSet rs, String[] names, Object owner)
 			throws HibernateException, SQLException {
 		
-        Object source = Hibernate.LONG.nullSafeGet(rs, names[0]);
+        Object source = StandardBasicTypes.LONG.nullSafeGet(rs, names[0]);
 		Object converted = null;
         
         if ((Long)source instanceof Long) {

@@ -84,6 +84,6 @@ public class RuleAction extends KewKualiAction {
             }
         }
 
-        return GlobalVariables.getMessageMap().isEmpty();
+        return GlobalVariables.getMessageMap().hasNoErrors();
     }
 }

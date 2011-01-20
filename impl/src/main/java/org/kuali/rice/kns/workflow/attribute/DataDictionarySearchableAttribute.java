@@ -256,7 +256,6 @@ public class DataDictionarySearchableAttribute implements SearchableAttribute {
             //TODO this is a workaround to hide the Field from the search criteria.
             //This should be removed once hiding the entire Row is working
             if (!attr.isShowAttributeInSearchCriteria()){
-                searchField.setHidden(true);
                 searchField.setFieldType(Field.HIDDEN);
             }
             String fieldDataType = propertyResolutionService.determineFieldDataType(boClass, attributeName);

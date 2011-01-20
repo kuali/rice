@@ -16,48 +16,58 @@
 package org.kuali.rice.kcb.util;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.support.StaticListableBeanFactory;
-import org.springframework.test.AssertThrows;
 
 import java.lang.reflect.Proxy;
 
 
 /**
- * Tests BeanFactoryIinvocationHandler class 
+ * Tests BeanFactoryIinvocationHandler class
+ *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BeanFactoryInvocationHandlerTest {
-     private static interface BadInterface {
-         public int add(int a, int b);
-         public void notAGetter();
-         public void get();
-         public Object getBean();
-     }
+    private static interface BadInterface {
+        public int add(int a, int b);
 
-     @Test
-     public void test() {
-         StaticListableBeanFactory bf = new StaticListableBeanFactory();
-         bf.addBean("bean", "This is a bean");
-         final BadInterface bad = (BadInterface)
-             Proxy.newProxyInstance(this.getClass().getClassLoader(),
-                                    new Class[] { BadInterface.class },
-                                    new BeanFactoryInvocationHandler(bf));
-         new AssertThrows(RuntimeException.class) {
-             public void test() {
-                 int result = bad.add(2, 2);
-             }
-         }.runTest();
-         new AssertThrows(RuntimeException.class) {
-             public void test() {
-                 bad.notAGetter();
-             }
-         }.runTest();
-         new AssertThrows(RuntimeException.class) {
-             public void test() {
-                 bad.get();
-             }
-         }.runTest();
-         Assert.assertEquals("This is a bean", bad.getBean());
-     }
+        public void notAGetter();
+
+        public void get();
+
+        public Object getBean();
+    }
+
+    private BadInterface bad;
+
+    @Before
+    public void createBadInstance() {
+        StaticListableBeanFactory bf = new StaticListableBeanFactory();
+        bf.addBean("bean", "This is a bean");
+        bad = (BadInterface)
+                Proxy.newProxyInstance(this.getClass().getClassLoader(),
+                        new Class[]{BadInterface.class},
+                        new BeanFactoryInvocationHandler(bf));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testRandomMethod() {
+        int result = bad.add(2, 2);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testNotAGetter() {
+        bad.notAGetter();
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testAnotherBadGetter() {
+        bad.get();
+    }
+
+    @Test
+    public void testGoodGetter() {
+        Assert.assertEquals("This is a bean", bad.getBean());
+    }
 }

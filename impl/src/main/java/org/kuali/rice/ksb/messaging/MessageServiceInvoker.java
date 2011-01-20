@@ -68,8 +68,8 @@ public class MessageServiceInvoker implements Runnable {
         } catch (Throwable t) {
         	// if we are in synchronous mode, we can't put the message into exception routing, let's instead throw the error up to the calling code
         	// however, for the purposes of the unit tests, even when in synchronous mode, we want to call the exception routing service, so check a parameter for that as well
-        	boolean allowSyncExceptionRouting = new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ALLOW_SYNC_EXCEPTION_ROUTING));
-     	 	if (!allowSyncExceptionRouting && KSBConstants.MESSAGING_SYNCHRONOUS.equals(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.MESSAGE_DELIVERY))) {
+        	boolean allowSyncExceptionRouting = new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.ALLOW_SYNC_EXCEPTION_ROUTING));
+     	 	if (!allowSyncExceptionRouting && KSBConstants.MESSAGING_SYNCHRONOUS.equals(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.MESSAGE_DELIVERY))) {
      	 		if (t instanceof RuntimeException) {
      	 			throw (RuntimeException)t;
      	 		}

@@ -40,7 +40,7 @@ public class PluginConfigParserTest extends KEWTestCase {
     
     @Test public void testParse() throws Exception {
     	
-        PluginConfig plugin = parser.parse(new File(getBaseDir() + CONFIG_PATH_SUFFIX), ConfigContext.getRootConfig());
+        PluginConfig plugin = parser.parse(new File(getBaseDir() + CONFIG_PATH_SUFFIX), ConfigContext.getCurrentContextConfig());
         assertNotNull(plugin);
 
         List listeners = plugin.getListeners();

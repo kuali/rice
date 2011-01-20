@@ -104,15 +104,15 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
 
     public Integer getMaxRetryAttempts() {
         try {
-            return new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
+            return new Integer(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY));
         } catch (NumberFormatException e) {
-            LOG.error("Constant '" + KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY + "' is not a number and is being " + "used as a default for exception messages.  " + DEFAULT_MAX_RETRIES + " will be used as a retry limit until this number is fixed");
+            LOG.error("Constant '" + KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_KEY + "' is not a number and is being " + "used as a default for exception messages.  " + DEFAULT_MAX_RETRIES + " will be used as a retry limit until this number is fixed");
             return DEFAULT_MAX_RETRIES;
         }
     }
 
     public Integer getGlobalMaxRetryAttempts() {
-        String globalMax = ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY);
+        String globalMax = ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY);
         if (StringUtils.isBlank(globalMax)) {
             return null;
         }
@@ -122,21 +122,21 @@ public class DefaultMessageExceptionHandler implements MessageExceptionHandler {
                 return globalMaxRetries;
             }
         } catch (NumberFormatException e) {
-            LOG.error("Constant '" + KSBConstants.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY + "' is not a number and is being " + "used as a default for exception messages.  " + DEFAULT_MAX_RETRIES + " will be used as a retry limit until this number is fixed");
+            LOG.error("Constant '" + KSBConstants.Config.ROUTE_QUEUE_MAX_RETRY_ATTEMPTS_OVERRIDE_KEY + "' is not a number and is being " + "used as a default for exception messages.  " + DEFAULT_MAX_RETRIES + " will be used as a retry limit until this number is fixed");
         }
         return null;
     }
 
     public Long getTimeIncrement() {
         try {
-            return new Long(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY));
+            return new Long(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY));
         } catch (NumberFormatException e) {
-            LOG.error("Constant '" + KSBConstants.ROUTE_QUEUE_TIME_INCREMENT_KEY + "' is not a number and will not be used " + "as the default time increment for exception routing.  Default of " + DEFAULT_TIME_INCREMENT + " will be used.");
+            LOG.error("Constant '" + KSBConstants.Config.ROUTE_QUEUE_TIME_INCREMENT_KEY + "' is not a number and will not be used " + "as the default time increment for exception routing.  Default of " + DEFAULT_TIME_INCREMENT + " will be used.");
             return DEFAULT_TIME_INCREMENT;
         }
     }
 
     public Boolean getImmediateExceptionRouting() {
-        return new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.IMMEDIATE_EXCEPTION_ROUTING));
+        return new Boolean(ConfigContext.getCurrentContextConfig().getProperty(KSBConstants.Config.IMMEDIATE_EXCEPTION_ROUTING));
     }
 }

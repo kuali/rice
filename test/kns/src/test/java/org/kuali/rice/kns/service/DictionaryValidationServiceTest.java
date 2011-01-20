@@ -66,7 +66,7 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
         GlobalVariables.setMessageMap(new MessageMap());
         KNSServiceLocatorWeb.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
         MessageMap errorMap = GlobalVariables.getMessageMap();
-        int recursiveZeroMessageMapSize = errorMap.size();
+        int recursiveZeroMessageMapSize = errorMap.getNumberOfPropertiesWithErrors();
 
         // errors should be 'account type code' and 'request type' both being required
         assertEquals("Number of errors found is incorrect", 2, recursiveZeroMessageMapSize);
@@ -88,12 +88,12 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
         GlobalVariables.setMessageMap(new MessageMap());
         KNSServiceLocatorWeb.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 0, true);
         MessageMap errorMap = GlobalVariables.getMessageMap();
-        int recursiveZeroMessageMapSize = errorMap.size();
+        int recursiveZeroMessageMapSize = errorMap.getNumberOfPropertiesWithErrors();
 
         GlobalVariables.setMessageMap(new MessageMap());
         KNSServiceLocatorWeb.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(travelDocument, 5, true);
         MessageMap errorMap2 = GlobalVariables.getMessageMap();
-        int recursiveFiveMessageMapSize = errorMap2.size();
+        int recursiveFiveMessageMapSize = errorMap2.getNumberOfPropertiesWithErrors();
 
         assertEquals("We should get the same number of errors no matter how deeply we recursively validate for this document", recursiveZeroMessageMapSize, recursiveFiveMessageMapSize);
     }
@@ -117,12 +117,12 @@ public class DictionaryValidationServiceTest extends KNSTestCase {
         GlobalVariables.setMessageMap(new MessageMap());
         KNSServiceLocatorWeb.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(doc1, 5, true);
         MessageMap errorMap = GlobalVariables.getMessageMap();
-        int recursiveFiveMessageMapSize = errorMap.size();
+        int recursiveFiveMessageMapSize = errorMap.getNumberOfPropertiesWithErrors();
 
         GlobalVariables.setMessageMap(new MessageMap());
         KNSServiceLocatorWeb.getDictionaryValidationService().validateDocumentAndUpdatableReferencesRecursively(doc1, 10, true);
         MessageMap errorMap2 = GlobalVariables.getMessageMap();
-        int recursiveTenMessageMapSize = errorMap2.size();
+        int recursiveTenMessageMapSize = errorMap2.getNumberOfPropertiesWithErrors();
 
         assertEquals("We should get the same number of errors no matter how deeply we recursively validate for this document", recursiveFiveMessageMapSize, recursiveTenMessageMapSize);
     }

@@ -16,18 +16,15 @@
 package org.kuali.rice.kns.util;
 
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.springframework.util.AutoPopulatingList;
+
+import java.io.Serializable;
+import java.util.*;
 
 
 /**
@@ -246,9 +243,9 @@ public class MessageMap implements Serializable {
      * replaced with a new ErrorMessage with the given replaceKey and replaceParameters.
      *
      * @param propertyName name of the property to add error under
-     * @param errorKey resource key used to retrieve the error text
+     * @param targetKey resource key used to retrieve the error text
      * @param withFullErrorPath true if you want the whole parent error path appended, false otherwise
-     * @param errorParameters zero or more string parameters for the displayed error message
+     * @param replaceParameters zero or more string parameters for the displayed error message
      * @return true if the replacement occurred
      */
     private boolean replaceError(String propertyName, String targetKey, boolean withFullErrorPath, String replaceKey, String... replaceParameters) {
@@ -485,27 +482,8 @@ public class MessageMap implements Serializable {
         return properties;
     }
 
-    // methods added to complete the Map interface
-    /**
-     * Clears the messages list.
-     *
-     * @deprecated As of rice 0.9.4, use {@link #clearErrorMessages()} instead
-     */
-    @Deprecated
-    public void clear() {
-        clearErrorMessages();
-    }
-
     public void clearErrorMessages() {
     	errorMessages.clear();
-    }
-
-    /**
-     * @deprecated As of rice 0.9.4, use {@link #doesPropertyHaveError(String)} instead
-     */
-    @Deprecated
-    public boolean containsKey(Object key) {
-        return doesPropertyHaveError((String) key);
     }
 
     public boolean doesPropertyHaveError(String key) {
@@ -543,24 +521,8 @@ public class MessageMap implements Serializable {
         return false;
     }
 
-    /**
-     * @deprecated As of rice 0.9.4, use {@link #getAllPropertiesAndErrors()} instead
-     */
-    @Deprecated
-    public Set entrySet() {
-        return getAllPropertiesAndErrors();
-    }
-
     public Set<Map.Entry<String, AutoPopulatingList<ErrorMessage>>> getAllPropertiesAndErrors() {
     	return errorMessages.entrySet();
-    }
-
-    /**
-     * @deprecated As of rice 0.9.4, use {@link #getErrorMessagesForProperty(String)} instead
-     */
-    @Deprecated
-    public Object get(Object key) {
-        return getErrorMessagesForProperty((String) key);
     }
 
     public AutoPopulatingList<ErrorMessage> getErrorMessagesForProperty(String propertyName) {
@@ -573,14 +535,6 @@ public class MessageMap implements Serializable {
 
     public AutoPopulatingList<ErrorMessage> getInfoMessagesForProperty(String propertyName) {
     	return infoMessages.get(propertyName);
-    }
-
-    /**
-     * @deprecated As of rice 0.9.4, use {@link #hasNoErrors()} instead
-     */
-    @Deprecated
-    public boolean isEmpty() {
-        return hasNoErrors();
     }
 
     public boolean hasErrors() {
@@ -625,14 +579,6 @@ public class MessageMap implements Serializable {
         return false;
     }
 
-    /**
-     * @deprecated As of rice 0.9.4, use {@link #getAllPropertiesWithErrors()} instead
-     */
-    @Deprecated
-    public Set keySet() {
-        return getAllPropertiesWithErrors();
-    }
-
     public Set<String> getAllPropertiesWithErrors() {
     	return errorMessages.keySet();
     }
@@ -643,14 +589,6 @@ public class MessageMap implements Serializable {
 
     public Set<String> getAllPropertiesWithInfo() {
     	return infoMessages.keySet();
-    }
-
-    /**
-     * @deprecated as of rice 0.9.4, use {@link #removeAllErrorMessagesForProperty(String)} instead
-     */
-    @Deprecated
-    public Object remove(Object key) {
-        return removeAllErrorMessagesForProperty((String) key);
     }
 
     public AutoPopulatingList<ErrorMessage> removeAllErrorMessagesForProperty(String property) {
@@ -665,96 +603,8 @@ public class MessageMap implements Serializable {
     	return infoMessages.remove(property);
     }
 
-    /**
-     * @deprecated As of rice 0.9.4, use {@link #getNumberOfPropertiesWithErrors()} instead
-     */
-    @Deprecated
-    public int size() {
-        return getNumberOfPropertiesWithErrors();
-    }
-
     public int getNumberOfPropertiesWithErrors() {
     	return errorMessages.size();
-    }
-
-    // forbidden-but-required operations
-    /**
-     * @deprecated As of rice 0.9.4, deprecated because this method always throws an {@link UnsupportedOperationException}
-     */
-    @Deprecated
-    public Object put(Object key, Object value) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * @deprecated As of rice 0.9.4, deprecated because this method always throws an {@link UnsupportedOperationException}
-     */
-    @Deprecated
-    public void putAll(Map arg0) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * @deprecated As of rice 0.9.4, this method has been deprecated since it always throws a {@link UnsupportedOperationException}
-     */
-    @Deprecated
-    public boolean containsValue(Object value) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * @deprecated As of rice 0.9.4, deprecated because this method always throws an {@link UnsupportedOperationException}
-     */
-    @Deprecated
-    public Collection values() {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Renders as a String, to help debug tests.
-     *
-     * @return a String, to help debug tests.
-     */
-    @Override
-    public String toString() {
-        return "ErrorMap (errorPath = " + errorPath + ", messages = " + errorMessages + ")";
-    }
-
-
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj) {
-        boolean equals = false;
-
-        if (this == obj) {
-            equals = true;
-        }
-        else if (obj instanceof MessageMap) {
-            MessageMap other = (MessageMap) obj;
-
-            if (getErrorPath().equals(other.getErrorPath())) {
-                if (getNumberOfPropertiesWithErrors() == other.getNumberOfPropertiesWithErrors()) {
-                    if (getAllPropertiesAndErrors().equals(other.getAllPropertiesAndErrors())) {
-                        equals = true;
-                    }
-                }
-            }
-        }
-
-        return equals;
-    }
-
-    /**
-     * Returns the size, since that meets with the requirements of the hashCode contract, and since I don't expect ErrorMap to be
-     * used as the key in a Map.
-     *
-     * @see java.lang.Object#hashCode()
-     */
-    @Override
-    public int hashCode() {
-        return getNumberOfPropertiesWithErrors();
     }
 
     public Map<String, AutoPopulatingList<ErrorMessage>> getErrorMessages() {
@@ -767,5 +617,20 @@ public class MessageMap implements Serializable {
 
     public Map<String, AutoPopulatingList<ErrorMessage>> getInfoMessages() {
         return this.infoMessages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return EqualsBuilder.reflectionEquals(this, o);
+    }
+
+    @Override
+    public int hashCode() {
+        return HashCodeBuilder.reflectionHashCode(this);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

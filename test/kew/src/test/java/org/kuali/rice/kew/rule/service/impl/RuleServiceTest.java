@@ -27,7 +27,6 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.test.KEWTestCase;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.test.AssertThrows;
 
 import javax.persistence.PersistenceException;
 import java.util.Iterator;
@@ -355,14 +354,16 @@ public class RuleServiceTest extends KEWTestCase {
          * 
          * However, a longer-term solution will be needed in case there are similar areas in the system with these kinds of problems.
          */
-        boolean isKewJpaEnabled = OrmUtils.isJpaEnabled("rice.kew");
-        new AssertThrows(isKewJpaEnabled ? PersistenceException.class : DataIntegrityViolationException.class, isKewJpaEnabled ?
-        		"Did not throw persistence exception as expected.  If rule service behavior has changed, update this test." :
-        				"Did not throw constraint violation as expected.  If rule service behavior has changed, update this test.") {
-            public void test() throws Exception {
-                KEWServiceLocator.getRuleService().save2(rbv);
+        final boolean isKewJpaEnabled = OrmUtils.isJpaEnabled("rice.kew");
+        try {
+            KEWServiceLocator.getRuleService().save2(rbv);
+            fail("exception did not happen");
+        } catch (RuntimeException e) {
+            boolean fail = !isKewJpaEnabled ? e instanceof PersistenceException : e instanceof DataIntegrityViolationException;
+            if (fail) {
+                fail("Did not throw exception as expected.  If rule service behavior has changed, update this test.");
             }
-        }.runTest();
+        }
 
         //fail("Saving a rule extension value with an empty string as the value yields a constraint violation");
     }

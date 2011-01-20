@@ -85,12 +85,6 @@ KRAD introduces a concept of a "View" and a hierarchy of pieces which can be add
 
 We'll examine each piece of this visual hierarchy in turn.
 
-h3. Introduction to Components
-
-All Components share three parts: a bean definition (referred to as the Component name); a type - the Java object which backs all of that type of Component (referred to, not surprisingly, as the Component type), and template, a JSP Tile which is ultimately responsible for rendering the HTML for a given Component.
-
-[HERE JAMES!]
-
 h3. Containers
 
 A container is simply a Component with a main job of containing other components to render.  Containers may even contain other Containers to render.  Naturally, the task of Containers is fundamental to how to render pages in the application.
@@ -105,15 +99,22 @@ The View also manages data processing for the data that is bound to its componen
 
 Common pieces of functionality will have rendering encapsulated into a common view.  Developers of KNS applications will understand immediately that there will be an InquiryView, a LookupView, as well as MaintenanceDocumentView and TransactionalDocumentView.  Applications can also extend views for common views of their own: for example, Kuali Financial Systems will likely extend TransactionalView to create the AccountingDocumentView.
 
+[JAMES: PROPERTIES FOR VIEW?  CONFIGURATION OF A VIEW?]
+
 h4. Groups
 
-The Group is the workhorse of Containers.  It basically acts as the branches of the Component hierarchy tree: it can hold any other kind of Component, including other Groups.  As such, a KRAD page will have at least one and probably quite a few Groups set up.
+The Group is the workhorse of Containers.  It basically acts as the branches of the Component hierarchy tree: it can hold any other kind of Component, including other Groups.  Groups are highly flexible: they can represent an entire page of components, a single tab within that page, or even a set of components within the tab.  Every visual element that KRAD renders is going to be a nesting of groups within groups within groups.
 
-A Group could represent a tab, just like in the KNS.  [JAMES!  CODE FOR A GROUP TAB!]
+Because they're so common, a number of bean definitions for very common Group types have been set up: Page, Panel, and MenuNavigation to name just a few. [JERRY: SHOULD I NAME ALL OF THESE?]  When designing a page, any set of components that share a layout likely belong in a single Group together.
 
-A Group doesn't have to represent anything so visually literal, however.  A Group could also be set up to represent two sets of Controls right next to each other.  [JAMES!  CODE FOR THIS TOO!]
+Despite their ubiquity, there isn't any significant configuration beyond what ContainerBase provides, making the configuration of multiple groups very straightforward.
 
 h5. Collection Groups
+
+A very common practice among rendering frameworks is that all members of a java.util.Collection are rendered using the same set of Components, often within a table.  KRAD naturally associates each member row of the table with a Group - but to accomplish this, a special kind of Group - org.kuali.rice.kns.uif.container.CollectionGroup - was created.  It has a number of extra properties to bind a Collection to the group, most importantly a modelName - the name of the model for each row of the group [JERRY: TRUE THAT?] and a binding path, which is the path to the java.util.Collection from the form [JERRY: TRUE THAT?]
+
+CollectionGroups can also show a set of actions on each row.  An example would be the edit and copy tags that show up in each row of a Lookup.  The CollectionGroup can also render a sequence associated with the Collection, so that each row is numbered "1", "2", etc. which makes it easier for users to differentiate among many rows.  There's also an option to turn header labels on and off for each row.  Finally, a CollectionGroup can have a number of sub-CollectionGroups associated with it, making rendering very flexible indeed.
+
 h5. Navigation Groups
 
 A NavigationGroup is, like a CollectionGroup, a special kind of Group which renders elements used in navigation.  [JAMES!  CONTINUE AS CODE FILLS OUT!]
@@ -214,4 +215,11 @@ Now that we've explored each component type in detail, let's see what they share
 |decorators|java.util.Map<java.lang.String,org.kuali.rice.kns.uif.decorator.ComponentDecorator>||
 
 h4. Tiles as Templates
+
+In the Spring configuration for every Component, a template is injected.  This is a path to a JSP page which is actually responsible for rendering the Component.  Each KRAD JSP page utilizes Apache Tiles to do the rendering.  This means that variables are passed around from tile to tile in a standard fashion, using the tiles:putAttribute tag for writing and the tiles:useAttribute tag for reading.  Because variable passing is standardized, Tiles can nest JSP pages within each other in a much more flexible manner than standard JSP tags.
+
+This is incredibly important because the injection of a Tile template path into the Spring configuration for a Component means that rendering of all Components is entirely customizable.  If, for instance, an application developer wanted to make a change to every single text field rendered through the application - a change which could not be achieved through the already incredible flexibility of CSS stylesheets - then the developer would simply override the TextControl bean and set the template property to point to a different JSP template.  KRAD would still pass all the variables it normally would to the new Tile.  Of course, a the switching out of a major Control likely won't happen.  But adding a new Component - a Widget that makes some innovative use of the jQuery UI library, say - is incredibly easy in this scheme.  Simply create a Java bean which extends the WidgetBean base class and then create a Tile that renders the new Component and the new Component is available for use in the application.
+
+Furthermore, since each Component bean handles its own rendering Tile template, gone will be the generic KNS tags - like kul:rowDisplay and kul:htmlControlAttribute - which depended on complex logic within the tag itself to decide rendering and which were nearly impossible to customize.  It's a huge step forward for application developers to be able to customize the user interface of their application.
+
 h4. Component Decorators

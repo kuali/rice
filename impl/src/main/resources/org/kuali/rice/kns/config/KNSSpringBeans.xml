@@ -820,7 +820,6 @@
 		<property name="businessObjectMetaDataService">
 			<ref bean="businessObjectMetaDataService" />
 		</property>
-        <property name="kualiConfigurationService" ref="kualiConfigurationService" />
         <property name="dateTimeService">
             <ref bean="dateTimeService" />
         </property>

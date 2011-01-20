@@ -30,6 +30,7 @@ import java.util.Set;
 import javax.jws.WebParam;
 import javax.jws.WebService;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.Role;
@@ -57,8 +58,6 @@ import org.kuali.rice.kim.util.KIMPropertyConstants;
 import org.kuali.rice.kim.util.KIMWebServiceConstants;
 import org.kuali.rice.kim.util.KimCommonUtils;
 import org.kuali.rice.kim.util.KimConstants;
-import org.kuali.rice.kns.bo.BusinessObject;
-import org.apache.commons.collections.CollectionUtils;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in.
@@ -670,35 +669,39 @@ public class RoleServiceImpl extends RoleServiceBase implements RoleService {
     			if ( StringUtils.equals( delegation.getRoleId(), mi.getRoleId() ) ) {
     	    		KimRoleTypeService roleTypeService = getRoleTypeService( delegation.getRoleId() );
     	    		for ( KimDelegationMemberImpl delegationMember : delegation.getMembers() ) {
-    	    			// first, check the delegation to see if it has a role member ID set
-    	    			// if so, then this is a personal delegation rather than a qualifier delegation
-    	    			// in this case, the qualifiers must also match, allowing a person to
-    	    			// delegate only part of their authority.
-    	    			if ( StringUtils.isBlank( delegationMember.getRoleMemberId() )
-    	    					|| StringUtils.equals( delegationMember.getRoleMemberId(), mi.getRoleMemberId() ) ) {
-    	    	    		// this check is against the qualifier from the role relationship
-    	    	    		// that resulted in this record
-    	    	    		// This is to determine that the delegation
-    	    				// but - don't need to check the role qualifiers against delegation qualifiers
-    	    				// if the delegation is linked directly to the role member
-		    	    		if ( (StringUtils.isNotBlank( delegationMember.getRoleMemberId() ) 
-		    	    					&& StringUtils.equals( delegationMember.getRoleMemberId(), mi.getRoleMemberId() )
-		    	    					)
-		    	    				|| roleTypeService == null
-		    	    				|| roleTypeService.doesRoleQualifierMatchQualification( mi.getQualifier(), delegationMember.getQualifier() ) ) {
-		    	    			// add the delegate member to the role member information list
-		    	    			// these will be checked by a later method against the request
-		    	    			// qualifications
-		    	    			mi.getDelegates().add(
-		    	    					new DelegateInfo(
-		    	    							delegation.getDelegationId(),
-		    	    							delegation.getDelegationTypeCode(),
-		    	    							delegationMember.getMemberId(),
-		    	    							delegationMember.getMemberTypeCode(),
-		    	    							delegationMember.getRoleMemberId(),
-		    	    							delegationMember.getQualifier() ) );
-		    				}
-    	    			}
+    	    			// Make sure that the delgation member is active.  
+    	    			// we don't want to add the member to the list if not.
+    	    			if (delegationMember.isActive()) {
+	    	    			// first, check the delegation to see if it has a role member ID set
+	    	    			// if so, then this is a personal delegation rather than a qualifier delegation
+	    	    			// in this case, the qualifiers must also match, allowing a person to
+	    	    			// delegate only part of their authority.
+	    	    			if ( StringUtils.isBlank( delegationMember.getRoleMemberId() )
+	    	    					|| StringUtils.equals( delegationMember.getRoleMemberId(), mi.getRoleMemberId() ) ) {
+	    	    	    		// this check is against the qualifier from the role relationship
+	    	    	    		// that resulted in this record
+	    	    	    		// This is to determine that the delegation
+	    	    				// but - don't need to check the role qualifiers against delegation qualifiers
+	    	    				// if the delegation is linked directly to the role member
+			    	    		if ( (StringUtils.isNotBlank( delegationMember.getRoleMemberId() ) 
+			    	    					&& StringUtils.equals( delegationMember.getRoleMemberId(), mi.getRoleMemberId() )
+			    	    					)
+			    	    				|| roleTypeService == null
+			    	    				|| roleTypeService.doesRoleQualifierMatchQualification( mi.getQualifier(), delegationMember.getQualifier() ) ) {
+			    	    			// add the delegate member to the role member information list
+			    	    			// these will be checked by a later method against the request
+			    	    			// qualifications
+			    	    			mi.getDelegates().add(
+			    	    					new DelegateInfo(
+			    	    							delegation.getDelegationId(),
+			    	    							delegation.getDelegationTypeCode(),
+			    	    							delegationMember.getMemberId(),
+			    	    							delegationMember.getMemberTypeCode(),
+			    	    							delegationMember.getRoleMemberId(),
+			    	    							delegationMember.getQualifier() ) );
+			    				}
+	    	    			}
+	    	    		}
     	    		}
     			}
     		}

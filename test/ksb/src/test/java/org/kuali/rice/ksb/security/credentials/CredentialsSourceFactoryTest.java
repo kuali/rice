@@ -37,7 +37,7 @@ public class CredentialsSourceFactoryTest {
 	private CredentialsSourceFactory credentialsSourceFactory;
 
 	@Before
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		final CredentialsSourceFactory credentialsSourceFactory = new CredentialsSourceFactory();
 		final List<CredentialsSource> credentialsSources = Arrays.asList(new CredentialsSource[] {new UsernamePasswordCredentialsSource("test", "Test"), new CasProxyTicketCredentialsSource()}); 
 

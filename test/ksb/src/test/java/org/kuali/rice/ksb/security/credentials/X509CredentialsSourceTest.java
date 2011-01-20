@@ -39,7 +39,7 @@ public class X509CredentialsSourceTest {
 	private X509Certificate cert = new KualiX509Certificate();
 
     @Before
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		this.credentialsSource = new X509CredentialsSource(cert);
 	}
 

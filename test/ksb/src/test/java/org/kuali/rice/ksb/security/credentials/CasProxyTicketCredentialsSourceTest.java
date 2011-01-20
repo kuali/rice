@@ -52,7 +52,7 @@ public class CasProxyTicketCredentialsSourceTest {
 	private final String proxyUrl = "https://localhost:8080/cas/proxy";
 
     @Before
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		this.credentialsSource = new CasProxyTicketCredentialsSource();
 		final CasAuthenticationToken token = new CasAuthenticationToken("test", "cas_user", "ticketId", new GrantedAuthority[] {new GrantedAuthorityImpl("ROLE_USER")}, new User("cas_user", "password", true, true, true, true, new GrantedAuthority[] {new GrantedAuthorityImpl("ROLE_USER")}), new ArrayList<String>(), "PGT-IOU");
 		final SecurityContextImpl impl = new SecurityContextImpl();

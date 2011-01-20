@@ -37,7 +37,7 @@ public class UsernamePasswordCredentialsSourceTest {
 	private UsernamePasswordCredentialsSource credentialsSource;
 
     @Before
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		this.credentialsSource = new UsernamePasswordCredentialsSource(
 				USERNAME, PASSWORD);
 	}

@@ -18,11 +18,15 @@ package org.kuali.rice.kim.web.struts.action;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.group.dto.GroupInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -31,7 +35,8 @@ import org.kuali.rice.kim.web.struts.form.IdentityManagementGroupDocumentForm;
  *
  */
 public class IdentityManagementGroupInquiry extends IdentityManagementBaseInquiryAction {
-
+	private static final Logger LOG = Logger.getLogger(IdentityManagementGroupInquiry.class);	
+	
 	/**
 	 * This overridden method ...
 	 * 
@@ -53,9 +58,12 @@ public class IdentityManagementGroupInquiry extends IdentityManagementBaseInquir
         		group = KIMServiceLocator.getGroupService().getGroupInfoByName(namespaceCode, groupName);
             }
         }
-        getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
-//    	groupDocumentForm.setGroupId(groupId);
-        
+        if (group != null) {
+        	getUiDocumentService().loadGroupDoc(groupDocumentForm.getGroupDocument(), group);
+        } else {
+        	LOG.error("No records found for Group Inquiry.");
+            GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+        }
 	}
 	
 }

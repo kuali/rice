@@ -17,11 +17,15 @@ package org.kuali.rice.kim.web.struts.action;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.kuali.rice.kim.bo.role.dto.KimRoleInfo;
 import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementDocumentFormBase;
 import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
+import org.kuali.rice.kns.util.GlobalVariables;
+import org.kuali.rice.kns.util.KNSConstants;
+import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * This is a description of what this class does - jonathan don't forget to fill this in. 
@@ -30,7 +34,8 @@ import org.kuali.rice.kim.web.struts.form.IdentityManagementRoleDocumentForm;
  *
  */
 public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiryAction {
-		
+	private static final Logger LOG = Logger.getLogger(IdentityManagementRoleInquiry.class);	
+	
 	/**
 	 * This overridden method ...
 	 * 
@@ -43,7 +48,12 @@ public class IdentityManagementRoleInquiry extends IdentityManagementBaseInquiry
         String roleId = request.getParameter(KimConstants.PrimaryKeyConstants.ROLE_ID);
     	roleDocumentForm.setRoleId(roleId);
         KimRoleInfo role = KIMServiceLocator.getRoleService().getRole(roleId);
-        getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
+        if (role != null) {
+        	getUiDocumentService().loadRoleDoc(roleDocumentForm.getRoleDocument(), role);
+        } else {
+        	LOG.error("No records found for Role Inquiry.");
+            GlobalVariables.getMessageMap().putError(KNSConstants.GLOBAL_ERRORS, RiceKeyConstants.ERROR_INQUIRY);
+        }
 	}
 	
 }

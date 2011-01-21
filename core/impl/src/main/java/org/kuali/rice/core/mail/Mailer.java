@@ -24,7 +24,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import org.kuali.rice.kew.util.ByteArrayDataSource;
+//import org.kuali.rice.kew.util.ByteArrayDataSource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -132,6 +132,6 @@ public class Mailer {
 	    }
 
 	    private void prepareHtmlMessage(String messageText, Message message) throws MessagingException {
-	        message.setDataHandler(new DataHandler(new ByteArrayDataSource(messageText, "text/html")));
+	       // message.setDataHandler(new DataHandler(new ByteArrayDataSource(messageText, "text/html")));
 	    }
 }

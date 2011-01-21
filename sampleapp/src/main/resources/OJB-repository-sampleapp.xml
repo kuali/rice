@@ -55,6 +55,11 @@
 		<field-descriptor name="number" column="acct_num" jdbc-type="VARCHAR" primarykey="true" />
 		<field-descriptor name="name" column="acct_name" jdbc-type="VARCHAR" />
 		<field-descriptor name="foId" column="acct_fo_id" jdbc-type="BIGINT" nillable="false" />
+    
+        <field-descriptor name="subAccount" column="sub_acct" jdbc-type="VARCHAR" />
+        <field-descriptor name="subAccountName" column="sub_acct_name" jdbc-type="VARCHAR" />
+        <field-descriptor name="createDate" column="create_dt" jbdc-type="TIMESTAMP" />
+        <field-descriptor name="subsidizedPercent" column="subsidized_pct" jdbc-type="DECIMAL" conversion="org.kuali.rice.kns.util.OjbKualiPercentFieldConversion"/>
 
 		<reference-descriptor name="fiscalOfficer" class-ref="edu.sampleu.travel.bo.FiscalOfficer">
 			<foreignkey field-ref="foId" />

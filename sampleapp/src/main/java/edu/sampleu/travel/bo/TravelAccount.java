@@ -16,6 +16,7 @@
 
 package edu.sampleu.travel.bo;
 
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 import javax.persistence.CascadeType;
@@ -27,6 +28,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 @Entity
@@ -38,11 +40,23 @@ public class TravelAccount extends PersistableBusinessObjectBase {
 	@Id
 	@Column(name="acct_num")
 	private String number;
+	
+	private String subAccount;
     
 	@Column(name="acct_name")
 	private String name;
+	
+	private String subAccountName;
+	
+	private KualiPercent subsidizedPercent;
+	
+	private Date createDate;
     
-	@Column(name="acct_fo_id")
+	public Date getCreateDate() {
+        return this.createDate;
+    }
+
+    @Column(name="acct_fo_id")
 	private Long foId;
     
     @ManyToOne(fetch=FetchType.EAGER, cascade={CascadeType.PERSIST, CascadeType.MERGE})
@@ -87,6 +101,34 @@ public class TravelAccount extends PersistableBusinessObjectBase {
 
     public void setFoId(Long foId) {
         this.foId = foId;
+    }
+
+    public String getSubAccount() {
+        return this.subAccount;
+    }
+
+    public void setSubAccount(String subAccount) {
+        this.subAccount = subAccount;
+    }
+
+    public String getSubAccountName() {
+        return this.subAccountName;
+    }
+
+    public void setSubAccountName(String subAccountName) {
+        this.subAccountName = subAccountName;
+    }
+
+    public KualiPercent getSubsidizedPercent() {
+        return this.subsidizedPercent;
+    }
+
+    public void setSubsidizedPercent(KualiPercent subsidizedPercent) {
+        this.subsidizedPercent = subsidizedPercent;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
     
 }

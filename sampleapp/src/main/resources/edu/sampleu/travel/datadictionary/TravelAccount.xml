@@ -43,6 +43,10 @@
       <list>
         <ref bean="TravelAccount-number"/>
         <ref bean="TravelAccount-name"/>
+        <ref bean="TravelAccount-subAccount"/>
+        <ref bean="TravelAccount-subAccountName"/>
+        <ref bean="TravelAccount-subsidizedPercent"/>
+        <ref bean="TravelAccount-createDate"/>
         <ref bean="TravelAccount-extension.accountTypeCode"/>
         <ref bean="TravelAccount-extension.accountType.codeAndDescription"/>
         <ref bean="TravelAccount-foId"/>
@@ -73,8 +77,17 @@
     <property name="label" value="Travel Account Number"/>
     <property name="description" value="Travel Account Number"/>
   </bean>
-  <bean id="TravelAccount-name" parent="TravelAccount-name-parentBean"/>
+  
+  <bean id="TravelAccount-subAccount" parent="TravelAccount-number-parentBean">
+    <property name="name" value="subAccount"/>
+    <property name="shortLabel" value="Travel Sub Account Number"/>
+    <property name="summary" value="Travel Sub Account Number"/>
+    <property name="label" value="Travel Sub Account Number"/>
+    <property name="description" value="Travel Sub Account Number"/>
+  </bean>
 
+  <bean id="TravelAccount-name" parent="TravelAccount-name-parentBean"/>
+  
   <bean id="TravelAccount-name-parentBean" abstract="true" parent="AttributeDefinition">
     <property name="forceUppercase" value="false"/>
     <property name="shortLabel" value="Account Name"/>
@@ -93,6 +106,31 @@
     <property name="label" value="Account Name"/>
     <property name="description" value="Account Name"/>
   </bean>
+  
+  <bean id="TravelAccount-subAccountName" parent="TravelAccount-name-parentBean">
+    <property name="name" value="subAccountName"/>
+    <property name="shortLabel" value="Sub Account Name"/>
+    <property name="summary" value="Sub Account Name"/>
+    <property name="label" value="Sub Account Name"/>
+    <property name="description" value="Sub Account Name"/>
+  </bean>
+  
+  <bean id="TravelAccount-subsidizedPercent" parent="AttributeReferenceDummy-percent">
+    <property name="name" value="subsidizedPercent"/>
+    <property name="shortLabel" value="Subsidized Percent"/>
+    <property name="summary" value="Subsidized Percent"/>
+    <property name="label" value="Subsidized Percent"/>
+    <property name="description" value="Subsidized Percent"/>
+  </bean>
+  
+  <bean id="TravelAccount-createDate" parent="AttributeReferenceDummy-genericDate">
+    <property name="name" value="createDate"/>
+    <property name="shortLabel" value="Date Created"/>
+    <property name="summary" value="Date Created"/>
+    <property name="label" value="Date Created"/>
+    <property name="description" value="Date Created"/>
+  </bean>
+  
   <bean id="TravelAccount-extension.accountTypeCode" parent="TravelAccount-extension.accountTypeCode-parentBean"/>
 
   <bean id="TravelAccount-extension.accountTypeCode-parentBean" abstract="true" parent="TravelAccountType-accountTypeCode">
@@ -127,6 +165,10 @@
               <bean parent="FieldDefinition" p:attributeName="number" p:forceInquiry="true"/>
               <bean parent="FieldDefinition" p:attributeName="name"/>
               <bean parent="FieldDefinition" p:attributeName="extension.accountType.codeAndDescription"/>
+              <bean parent="FieldDefinition" p:attributeName="subAccount"/>
+              <bean parent="FieldDefinition" p:attributeName="subAccountName"/>
+              <bean parent="FieldDefinition" p:attributeName="createDate"/>
+              <bean parent="FieldDefinition" p:attributeName="subsidizedPercent"/>
               <bean parent="FieldDefinition" p:attributeName="foId" p:forceInquiry="true"/>
             </list>
           </property>
@@ -162,6 +204,10 @@
         <bean parent="FieldDefinition" p:attributeName="name" p:forceInquiry="true"/>
         <bean parent="FieldDefinition" p:attributeName="extension.accountType.codeAndDescription" p:forceInquiry="true"/>
         <bean parent="FieldDefinition" p:attributeName="foId" p:forceInquiry="true"/>
+        <bean parent="FieldDefinition" p:attributeName="subAccount"/>
+        <bean parent="FieldDefinition" p:attributeName="subAccountName"/>
+        <bean parent="FieldDefinition" p:attributeName="createDate"/>
+        <bean parent="FieldDefinition" p:attributeName="subsidizedPercent"/>
       </list>
     </property>
     <property name="title" value="Travel Account Lookup"/>

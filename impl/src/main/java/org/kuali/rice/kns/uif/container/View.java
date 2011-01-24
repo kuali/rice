@@ -118,8 +118,8 @@ public class View extends ContainerBase {
 	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
 	 */
 	@Override
-	public Set<Class> getSupportedComponents() {
-		Set<Class> supportedComponents = new HashSet<Class>();
+	public Set<Class<? extends Component>> getSupportedComponents() {
+		Set<Class<? extends Component>> supportedComponents = new HashSet<Class<? extends Component>>();
 		supportedComponents.add(Group.class);
 
 		return supportedComponents;
@@ -350,7 +350,7 @@ public class View extends ContainerBase {
 	 * rendered and how the view is restored on post back
 	 * 
 	 * @return String persistence mode
-	 * @see org.kuali.rice.kns.uif.UIFConstants.PersistenceMode
+	 * @see org.kuali.rice.kns.uif.UifConstants.PersistenceMode
 	 */
 	public String getPersistenceMode() {
 		return this.persistenceMode;

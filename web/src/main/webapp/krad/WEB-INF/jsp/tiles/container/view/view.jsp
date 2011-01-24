@@ -36,10 +36,12 @@
    <tr>   
      <td width="30px">
        <!----------------------------------- #VIEW NAVIGATION --------------------------------------->
-       <tiles:insertTemplate template="${view.navigation.template}">
-            <tiles:putAttribute name="${view.navigation.componentTypeName}" value="${view.navigation}" />
-            <tiles:putAttribute name="currentPageId" value="${view.currentPageId}" />
-       </tiles:insertTemplate>    
+       <c:if test="${!empty view.navigation}">
+         <tiles:insertTemplate template="${view.navigation.template}">
+              <tiles:putAttribute name="${view.navigation.componentTypeName}" value="${view.navigation}" />
+              <tiles:putAttribute name="currentPageId" value="${view.currentPageId}" />
+         </tiles:insertTemplate>    
+       </c:if>
      </td>
      
      <td width="1%">

@@ -129,7 +129,7 @@ public interface Component extends Serializable {
 	public void performConditionalLogic(View view, Map<String, Object> models);
 
 	/**
-	 * List of components that are contained with the component
+	 * List of components that are contained within the component
 	 * <p>
 	 * Used by <code>ViewHelperService</code> for the various lifecycle
 	 * callbacks

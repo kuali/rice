@@ -36,7 +36,7 @@ import org.kuali.rice.kns.web.format.Formatter;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class AttributeField extends FieldLabelBase implements DataBinding {
+public class AttributeField extends FieldBase implements DataBinding {
 	// value props
 	private Object value;
 	private String formattedValue;
@@ -87,15 +87,6 @@ public class AttributeField extends FieldLabelBase implements DataBinding {
 	public void performInitialization(View view) {
 		super.performInitialization(view);
 
-		if (StringUtils.isBlank(bindingPath)) {
-			if (StringUtils.isNotBlank(bindByNamePrefix)) {
-				bindingPath = bindByNamePrefix + "." + getName();
-			}
-			else {
-				bindingPath = getName();
-			}
-		}
-
 		if (control != null && StringUtils.isBlank(control.getId())) {
 			control.setId(this.getId());
 		}
@@ -116,12 +107,12 @@ public class AttributeField extends FieldLabelBase implements DataBinding {
 	 */
 	public void copyFromAttributeDefinition(AttributeDefinition attributeDefinition) {
 		// label
-		if (StringUtils.isBlank(getLabel())) {
+		if (StringUtils.isEmpty(getLabel())) {
 			setLabel(attributeDefinition.getLabel());
 		}
 
 		// short label
-		if (StringUtils.isBlank(getShortLabel())) {
+		if (StringUtils.isEmpty(getShortLabel())) {
 			setShortLabel(attributeDefinition.getShortLabel());
 		}
 
@@ -141,12 +132,12 @@ public class AttributeField extends FieldLabelBase implements DataBinding {
 		}
 
 		// summary
-		if (StringUtils.isBlank(getSummary())) {
+		if (StringUtils.isEmpty(getSummary())) {
 			setSummary(attributeDefinition.getSummary());
 		}
 
 		// description
-		if (StringUtils.isBlank(getDescription())) {
+		if (StringUtils.isEmpty(getDescription())) {
 			setDescription(attributeDefinition.getDescription());
 		}
 	}
@@ -213,6 +204,15 @@ public class AttributeField extends FieldLabelBase implements DataBinding {
 	}
 
 	public String getBindingPath() {
+		if (StringUtils.isBlank(bindingPath)) {
+			if (StringUtils.isNotBlank(bindByNamePrefix)) {
+				bindingPath = bindByNamePrefix + "." + getName();
+			}
+			else {
+				bindingPath = getName();
+			}
+		}
+		
 		return this.bindingPath;
 	}
 

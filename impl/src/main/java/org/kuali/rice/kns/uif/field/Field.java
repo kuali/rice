@@ -30,5 +30,17 @@ import org.kuali.rice.kns.uif.Component;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface Field extends Component {
+	
+	public String getLabel();
+	
+	public String getShortLabel();
+	
+	public boolean isShowLabel();
+	
+	public LabelField getLabelField();
+	
+	public boolean isLabelFieldRendered();
+	
+	public void setLabelFieldRendered(boolean labelFieldRendered);
 
 }

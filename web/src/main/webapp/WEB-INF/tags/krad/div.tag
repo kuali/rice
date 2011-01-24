@@ -23,6 +23,7 @@
   <c:set var="style" value="style=\"${component.style}\""/>
 </c:if>              
 
-<div id="${component.id}_div" class="${component.styleClass}" ${style}>
+<div id="${component.id}_div" align="${component.align}" valign="${component.valign}" 
+     class="${component.styleClass}" ${style}>
    <jsp:doBody/>
 </div>

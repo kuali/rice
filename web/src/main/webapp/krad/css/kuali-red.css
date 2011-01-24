@@ -205,7 +205,6 @@ td.grid
 	border-bottom-color: #999999;
 	border-left-color: #999999;
 	padding: 2px;
-	text-align: left;
 	background-color: #FFFFFF;
 }
 
@@ -290,7 +289,6 @@ table.grid
 
 .workarea td
 {
-	text-align: left;
 	background-color: #FFFFFF;
 	 padding:4px
 	
@@ -301,7 +299,6 @@ table.grid
 
 .workarea td.even
 {
-	text-align: left;
 	background-color:#F7F7F7;
 	border-bottom-width: 1px;
 	border-bottom-style: solid;
@@ -315,7 +312,6 @@ table.grid
 
 .workarea td.odd
 {
-	text-align: left;
 	background-color:#EFEFEF;
 	border-bottom-width: 1px;
 	border-bottom-style: solid;

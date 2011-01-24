@@ -22,9 +22,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    <bean id="testView1" parent="View">
       <property name="id" value="testView1"/>
       <property name="title" value="Test View 1"/>
-      <property name="navigation">
-         <ref bean="testViewMenu"/>
-      </property>
       <property name="entryPageId" value="page1"/>   
       <property name="items">
         <list>
@@ -35,6 +32,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
              <property name="items">
                <list>
                  <ref bean="testSection1"/>
+                 <ref bean="testSection6"/>
                  <ref bean="testSection5"/>
                  <ref bean="testSection2"/>
                  <ref bean="testSection4"/>
@@ -149,6 +147,56 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="summary" value="Group with grid layout, 4 columns, 50% centered"/>       
    </bean>  
    
+   <bean id="testSection6" parent="PanelSection">
+      <property name="id" value="testSection6"/>
+      <property name="title" value="Test Collections"/> 
+      <property name="items">
+        <list>
+          <ref bean="testGroup4"/>
+          <ref bean="testGroup5"/>
+        </list>
+      </property> 
+   </bean>   
+   
+   <bean id="testGroup4" parent="CollectionTableGroup" p:layoutManager.numberOfColumns="3">
+      <property name="id" value="testGroup4"/>
+      <property name="title" value="Collection Group 1"/>  
+      <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+      <property name="name" value="fiscalOfficer.accounts"/>
+      <property name="bindingPath" value="travelAccount1.fiscalOfficer.accounts"/>
+      <property name="layoutManager.sequenceAttributeName" value="number"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:name="number"/>
+          <bean parent="AttributeField" p:name="name"/>
+          <bean parent="AttributeField" p:name="foId"/>
+        </list>
+      </property>      
+      <property name="summary" value="Group with collection and table layout"/>  
+   </bean>
+   
+   <bean id="testGroup5" parent="CollectionGroup">
+      <property name="id" value="testGroup5"/>
+      <property name="title" value="Collection Group 2"/>  
+      <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
+      <property name="name" value="fiscalOfficer.accounts"/>
+      <property name="bindingPath" value="travelAccount1.fiscalOfficer.accounts"/>
+      <property name="items">
+        <list>
+          <bean parent="AttributeField" p:name="number"/>
+          <bean parent="AttributeField" p:name="name"/>
+          <bean parent="AttributeField" p:name="foId"/>
+        </list>
+      </property>      
+      <property name="layoutManager.summaryTitle" value="Account"/> 
+      <property name="layoutManager.summaryFields">
+        <list>
+          <value>number</value>
+          <value>name</value>
+        </list>
+      </property>
+      <property name="summary" value="Group with collection and stacked layout"/>  
+   </bean> 
    
    <bean id="testGroup3" parent="GroupGridLayout" p:layoutManager.numberOfColumns="4">   
       <property name="id" value="testGroup3"/>

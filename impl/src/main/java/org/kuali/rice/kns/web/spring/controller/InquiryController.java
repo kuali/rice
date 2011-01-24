@@ -22,7 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.inquiry.Inquirable;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.uif.UIFConstants;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -105,7 +105,7 @@ public class InquiryController extends UifControllerBase {
 		view.setCurrentPageId(pageId);
 
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject(UIFConstants.DEFAULT_MODEL_NAME, form);
+		modelAndView.addObject(UifConstants.DEFAULT_MODEL_NAME, form);
 		modelAndView.addObject("View", view);
 
 		modelAndView.setViewName("View");

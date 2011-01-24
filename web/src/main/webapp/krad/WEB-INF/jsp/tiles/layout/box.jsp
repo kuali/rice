@@ -29,7 +29,7 @@
  --%>
 
 <%-- render items --%> 
-<div id="${manager.id}_layout" style="${manager.style}" class="${manager.styleClass}">
+<div id="${manager.id}" style="${manager.style}" class="${manager.styleClass}">
 
    <c:forEach items="${items}" var="item" varStatus="itemVarStatus">
      <%-- wrapping span gives a way to pad items and line break for vertical orientation --%>

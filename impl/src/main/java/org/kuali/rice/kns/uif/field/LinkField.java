@@ -24,7 +24,7 @@ import org.kuali.rice.kns.uif.container.View;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class LinkField extends FieldLabelBase {
+public class LinkField extends FieldBase {
 	private String linkLabel;
 	private String target;
 	private String hrefText;

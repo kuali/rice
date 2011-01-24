@@ -47,13 +47,21 @@ $(document).ready(function() {
 	// $('a[href*=inquiry.do]').attr('target', '_self');
 	// }
 	
-	// butons
+	// buttons
 	$( "input:submit" ).button();
+	
+	// hide loading indicator
+	//doLoading(false);
 	
 	// validate form
 	// $("form").validate();
 
 })
+
+$(document).unload(function() {
+	
+})
+
 
 function resizeDialog() {
 	var width = $(document).width();
@@ -238,6 +246,8 @@ function doVerticalMenu(listId) {
  * 
  * @param controlId -
  *          id for the control that the date picker should populate
+ * @param options -
+ *          map of option settings (option name/value pairs) for the plugin
  */
 function doDatePicker(controlId, options) {
   $(function() {
@@ -282,5 +292,51 @@ function doPanel(panelToggleLink, openPanelHeaderContents, closedPanelHeaderCont
        }
     );
   });
+}
+
+/**
+ * Uses jQuery plug-in to show a loading notification for a page request. See
+ * <link>http://plugins.jquery.com/project/showLoading</link> for documentation
+ * on options.
+ * 
+ * @param showLoading -
+ *          boolean that indicates whether the loading indicator should be shown
+ *          (true) or hidden (false)
+ */
+function doLoading(showLoading) {
+	if (showLoading) {
+	  $("#page_div").showLoading();
+	}
+	else {
+		$("#page_div").hideLoading();
+	}
+}
+
+/**
+ * Uses jQuery DataTable plug-in to decorate a table with functionality like
+ * sorting and page. The second argument is a Map of options that are available
+ * for the plug-in. See <link>http://www.datatables.net/usage/</link> for
+ * documentation on these options
+ * 
+ * @param controlId -
+ *          id for the table that should be decorated
+ * @param options -
+ *          map of option settings (option name/value pairs) for the plugin
+ */
+function doTable(controlId, options) {
+	$(document).ready(function() {
+		var oTable = $("#" + controlId).dataTable({"sDom": 'T<"clear">lfrtip',
+		                              "oTableTools": {
+		                                         	"sSwfPath": "/kr-dev/krad/scripts/jquery/copy_cvs_xls_pdf.swf"
+	                                            	}	});
+		
+		$('td', oTable.fnGetNodes()).hover( function() {
+			var iCol = $('td').index(this) % 5;
+			var nTrs = oTable.fnGetNodes();
+			$('td:nth-child('+(iCol+1)+')', nTrs).addClass( 'highlighted' );
+		}, function() {
+			$('td.highlighted', oTable.fnGetNodes()).removeClass('highlighted');
+		} );
+	})
 }
 

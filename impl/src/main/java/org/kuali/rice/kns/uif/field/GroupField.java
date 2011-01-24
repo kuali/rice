@@ -15,9 +15,9 @@
  */
 package org.kuali.rice.kns.uif.field;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
@@ -25,26 +25,23 @@ import org.kuali.rice.kns.uif.container.View;
 /**
  * Field that contains a nested <code>Group</code>. Can be used to group
  * together fields by providing a group without header and footer, or simply to
- * nest full groups. The items <code>List</code> provided is for convenience and
+ * nest full groups. The items getter/setter provided is for convenience and
  * will set the items <code>List</code> in the nested <code>Group</code>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class GroupField extends FieldLabelBase {
+public class GroupField extends FieldBase {
 	private Group group;
 
-	private List<Component> items;
-
 	public GroupField() {
-		items = new ArrayList<Component>();
 	}
 
 	/**
 	 * <p>
 	 * The following initialization is performed:
 	 * <ul>
-	 * <li>Sets the items on the group (if empty) from the field's items list
-	 * (if not empty)</li>
+	 * <li>Set the align on group if empty and the align has been set on the
+	 * field</li>
 	 * </ul>
 	 * </p>
 	 * 
@@ -54,13 +51,11 @@ public class GroupField extends FieldLabelBase {
 	public void performInitialization(View view) {
 		super.performInitialization(view);
 
-		if (group != null) {
-			if (!items.isEmpty() && group.getItems().isEmpty()) {
-				group.setItems(items);
-			}
+		if (StringUtils.isNotBlank(getAlign()) && group != null) {
+			group.setAlign(getAlign());
 		}
 	}
-	
+
 	/**
 	 * @see org.kuali.rice.kns.uif.ComponentBase#getNestedComponents()
 	 */
@@ -81,12 +76,18 @@ public class GroupField extends FieldLabelBase {
 		this.group = group;
 	}
 
-	public List<Component> getItems() {
-		return this.items;
+	public List<? extends Component> getItems() {
+		if (group != null) {
+			return group.getItems();
+		}
+
+		return null;
 	}
 
-	public void setItems(List<Component> items) {
-		this.items = items;
+	public void setItems(List<? extends Component> items) {
+		if (group != null) {
+			group.setItems(items);
+		}
 	}
 
 }

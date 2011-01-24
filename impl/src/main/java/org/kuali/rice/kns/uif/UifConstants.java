@@ -22,9 +22,9 @@ import org.kuali.rice.core.util.JSTLConstants;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UIFConstants extends JSTLConstants {
+public class UifConstants extends JSTLConstants {
 	public static final String CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME = "methodToCall";
-	
+
 	public static final String DEFAULT_MODEL_NAME = "KualiForm";
 
 	public static class PersistenceMode {
@@ -61,5 +61,11 @@ public class UIFConstants extends JSTLConstants {
 		public static final String LOOKUP = "LOOKUP";
 		public static final String MAINTENANCE = "MAINTENANCE";
 		public static final String TRANSACTIONAL = "TRANSACTIONAL";
+	}
+
+	public static class ActionParameterNames {
+		public static final String methodToCall = "methodToCall";
+		public static final String selectedCollectionName = "selectedCollectionName";
+		public static final String selectedLineIndex = "selectedLineIndex";
 	}
 }

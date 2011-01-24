@@ -13,7 +13,15 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 --%>
-<%@ include file="/kr/WEB-INF/jsp/tldHeader.jsp"%>
+<%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<%@ attribute name="section" required="true" description="The section to be rendered" %>
+<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.TableDecorator"/>
+<tiles:useAttribute name="componentId"/>
 
+<%--
+    Invokes JS method to implement a table plug-in
+ --%>
+ 
+<script type="text/javascript">
+  doTable('${componentId}', ${widget.widgetOptionsJSString});
+</script>

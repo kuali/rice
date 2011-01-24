@@ -45,6 +45,7 @@ public class UITestForm extends KualiForm {
 
 	public UITestForm() {
 		travelAccount1 = new TravelAccount();
+		setUsingSpring(true);
 	}
 
 	public String getField1() {

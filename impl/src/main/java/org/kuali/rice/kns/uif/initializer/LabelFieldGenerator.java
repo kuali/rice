@@ -23,7 +23,7 @@ import java.util.Set;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.uif.field.FieldLabelBase;
+import org.kuali.rice.kns.uif.field.Field;
 
 /**
  * <code>ComponentInitializer</code> that will pull a contained
@@ -56,9 +56,9 @@ public class LabelFieldGenerator implements ComponentInitializer {
 		}
 
 		List<Component> allItems = new ArrayList<Component>();
-		for (Component field : group.getItems()) {
-			if (field instanceof FieldLabelBase) {
-				FieldLabelBase fieldLabel = (FieldLabelBase) field;
+		for (Component item : group.getItems()) {
+			if (item instanceof Field) {
+				Field fieldLabel = (Field) item;
 				if (fieldLabel.getLabelField() != null && fieldLabel.isShowLabel()) {
 					allItems.add(fieldLabel.getLabelField());
 
@@ -68,7 +68,7 @@ public class LabelFieldGenerator implements ComponentInitializer {
 				}
 			}
 
-			allItems.add(field);
+			allItems.add(item);
 		}
 
 		// update Group

@@ -68,11 +68,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
       </property> 
-      <property name="componentInitializers">
-        <list>
-          <ref bean="LabelFieldGenerator"/>
-        </list>
-      </property>      
   </bean>     
   
   <!-- Groups -->
@@ -94,11 +89,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="GridLayoutManager"/>
       </property>
-      <property name="componentInitializers">
-        <list>
-          <ref bean="LabelFieldGenerator"/>
-        </list>
-      </property>
   </bean>
   
   <bean id="NavigationGroup" abstract="true" class="org.kuali.rice.kns.uif.container.NavigationGroup" scope="prototype">
@@ -114,11 +104,28 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="renderFooter" value="false"/>
   </bean>  
   
+  <bean id="CollectionGroup" abstract="true" class="org.kuali.rice.kns.uif.container.CollectionGroup" parent="Group">
+      <property name="actionFields">
+        <list>
+          <bean parent="ActionField" p:methodToCall="deleteLine" p:actionLabel="delete"/>
+        </list>
+      </property>
+      <property name="layoutManager">
+        <bean parent="StackedLayoutManager"/>
+      </property> 
+  </bean> 
+  
+  <bean id="CollectionTableGroup" abstract="true" parent="CollectionGroup">
+      <property name="layoutManager">
+        <bean parent="TableLayoutManager"/>
+      </property> 
+  </bean>     
+  
   <!-- Decorators -->
   
   <bean id="PanelGroupDecorator" class="org.kuali.rice.kns.uif.decorator.PanelGroupDecorator" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/panelGroup.jsp"/>
-      <property name="panelHeader">
+      <property name="header">
         <bean parent="PanelHeader"/>
       </property>
       <property name="styleClass" value="tab-container"/>
@@ -129,7 +136,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="AttributeField" abstract="true" class="org.kuali.rice.kns.uif.field.AttributeField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/attributeField.jsp"/>
       <property name="labelField">
-        <bean parent="LabelField" p:align="right"/>
+        <bean parent="LabelField"/>
       </property>      
   </bean>  
   
@@ -140,7 +147,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="LabelField" abstract="true" class="org.kuali.rice.kns.uif.field.LabelField" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/field/labelField.jsp"/>
-      <property name="style" value="text-align: right;font-size: .8em;font-weight: bold;"/>
+      <property name="align" value="right"/>
+      <property name="style" value="font-size: .8em;font-weight: bold;"/>
       <property name="requiredMessageField">
         <bean parent="MessageField" p:messageText="*" p:messageType="REQUIRED" p:styleClass="required"/>
       </property>   
@@ -168,7 +176,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
          <bean parent="Group"/>
       </property>
       <property name="labelField">
-        <bean parent="LabelField" p:align="right"/>
+        <bean parent="LabelField"/>
       </property>        
   </bean>    
   
@@ -217,39 +225,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="styleClass" value="tab-new"/>
   </bean>
   
-  <bean id="PagePanelHeader" parent="PageHeader">
-      <property name="group">
-       <bean parent="GroupBodyOnly">
-        <property name="items">
-          <list>
-            <bean parent="GroupBodyOnly">
-              <property name="styleClass" value="left"/>
-              <property name="items">
-                <list> 
-                  <bean parent="MessageField" p:messageText="* indicates required field" 
-                        p:messageType="REQUIRED"/>
-                </list>
-              </property>
-            </bean>   
-                           
-            <bean parent="GroupBodyOnly">
-              <property name="styleClass" value="right"/>
-              <property name="items">
-                <list> 
-                 <bean parent="ActionField" p:methodToCall="expandAll" p:actionLabel="expand all"/>
-                 <bean parent="ActionField" p:methodToCall="closeAll" p:actionLabel="collapse all"/>
-                </list>
-              </property>
-              <property name="layoutManager.orientation" value="HORIZONTAL"/> 
-            </bean>
-          </list>  
-        </property>
-        <property name="layoutManager.orientation" value="HORIZONTAL"/> 
-        <property name="style" value="padding-bottom: 50px;"/>
-       </bean> 
-      </property>
-  </bean>
-  
   <!-- Footers -->
   <bean id="Footer" abstract="true" class="org.kuali.rice.kns.uif.container.Group" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/container/group/group.jsp"/>
@@ -272,14 +247,37 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="GridLayoutManager" abstract="true" class="org.kuali.rice.kns.uif.layout.GridLayoutManager" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/grid.jsp"/>
       <property name="numberOfColumns" value="2"/>
-      <property name="labelPlacement" value="LEFT"/>
       <property name="styleClass" value="datatable"/>
   </bean>  
   
   <bean id="TableLayoutManager" abstract="true" class="org.kuali.rice.kns.uif.layout.TableLayoutManager" scope="prototype">
       <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/table.jsp"/>
-      <property name="labelPlacement" value="TOP"/>
+      <property name="styleClass" value="datatable display"/>
+      <property name="applyAlternatingRowStyles" value="true"/>
+      <property name="headerFieldPrototype">
+        <bean parent="LabelField" p:renderColon="false" p:align="center" p:styleClass="infoline"/>
+      </property>      
+      <property name="sequenceFieldPrototype">
+        <bean parent="AttributeField" p:readOnly="true" p:label=" " p:shortLabel=" " p:align="right"/>
+      </property>
+      <property name="actionFieldPrototype">
+        <bean parent="FieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
+      </property>  
+      <property name="tableDecorator">
+        <ref bean="TableDecorator"/>
+      </property>   
   </bean>  
+  
+  <bean id="StackedLayoutManager" abstract="true" class="org.kuali.rice.kns.uif.layout.StackedLayoutManager" parent="BoxLayoutManager">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/layout/stacked.jsp"/>
+      <property name="lineGroupPrototype">
+        <bean parent="GroupGridLayout">
+           <property name="footer">
+             <bean parent="Footer"/>
+           </property>
+        </bean>
+      </property> 
+  </bean>    
         
   <!-- Controls -->
   
@@ -335,6 +333,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean> 
   
+  <bean id="TableDecorator" class="org.kuali.rice.kns.uif.widget.TableDecorator" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/tableDecorator.jsp"/>
+  </bean>
   
   <!-- Initializers -->
   

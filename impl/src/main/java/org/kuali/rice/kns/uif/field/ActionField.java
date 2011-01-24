@@ -15,24 +15,30 @@
  */
 package org.kuali.rice.kns.uif.field;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.container.View;
 
 /**
- * This is a description of what this class does - jkneal don't forget to fill
- * this in.
+ * Field that presents an action that can be taken on the UI such as submitting
+ * the form or invoking a script
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class ActionField extends FieldLabelBase {
+public class ActionField extends FieldBase {
 	private String methodToCall;
-	private boolean clientSideCall;
 	private String navigateToPageId;
+
+	private boolean clientSideCall;
 
 	private String actionLabel;
 
-	public ActionField() {
+	private Map<String, String> actionParameters;
 
+	public ActionField() {
+		actionParameters = new HashMap<String, String>();
 	}
 
 	/**
@@ -84,6 +90,51 @@ public class ActionField extends FieldLabelBase {
 
 	public void setNavigateToPageId(String navigateToPageId) {
 		this.navigateToPageId = navigateToPageId;
+	}
+
+	/**
+	 * Parameters that should be sent when the action is invoked
+	 * 
+	 * <p>
+	 * Action renderer will decide how the parameters are sent for the action
+	 * (via script generated hiddens, or script parameters, ...)
+	 * </p>
+	 * 
+	 * <p>
+	 * Can be set by other components such as the <code>CollectionGroup</code>
+	 * to provide the context the action is in (such as the collection name and
+	 * line the action applies to)
+	 * </p>
+	 * 
+	 * @return Map<String, String> action parameters
+	 */
+	public Map<String, String> getActionParameters() {
+		return this.actionParameters;
+	}
+
+	/**
+	 * Setter for the action parameters
+	 * 
+	 * @param actionParameters
+	 */
+	public void setActionParameters(Map<String, String> actionParameters) {
+		this.actionParameters = actionParameters;
+	}
+
+	/**
+	 * Convenience method to add a parameter to the action parameters Map
+	 * 
+	 * @param parameterName
+	 *            - name of parameter to add
+	 * @param parameterValue
+	 *            - value of parameter to add
+	 */
+	public void addActionParameter(String parameterName, String parameterValue) {
+		if (actionParameters == null) {
+			this.actionParameters = new HashMap<String, String>();
+		}
+
+		this.actionParameters.put(parameterName, parameterValue);
 	}
 
 }

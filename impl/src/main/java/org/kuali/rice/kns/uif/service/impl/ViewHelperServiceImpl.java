@@ -192,6 +192,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	}
 
 	protected void performComponentConditionalLogic(View view, Component component, Map<String, Object> models) {
+		if (component == null) {
+			return;
+		}
+		
 		// invoke component to perform its conditional logic
 		component.performConditionalLogic(view, models);
 

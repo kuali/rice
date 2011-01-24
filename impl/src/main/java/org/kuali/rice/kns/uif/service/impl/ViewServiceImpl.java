@@ -21,7 +21,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.uif.UIFConstants;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.service.ViewService;
@@ -78,7 +78,7 @@ public class ViewServiceImpl implements ViewService {
 	 */
 	public void applyModel(View view, Object model) {
 		Map<String, Object> models = new HashMap<String, Object>();
-		models.put(UIFConstants.DEFAULT_MODEL_NAME, model);
+		models.put(UifConstants.DEFAULT_MODEL_NAME, model);
 
 		applyModels(view, models);
 	}

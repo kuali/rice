@@ -63,7 +63,7 @@ public class PojoPropertyUtilsBean extends PropertyUtilsBean {
         PojoForm form = (PojoForm) bean;
         Map unconvertedValues = form.getUnconvertedValues();
 
-        if (unconvertedValues.containsKey(key))
+        if ((unconvertedValues != null) && unconvertedValues.containsKey(key))
             return unconvertedValues.get(key);
 
         Object val = getNestedProperty(bean, key);

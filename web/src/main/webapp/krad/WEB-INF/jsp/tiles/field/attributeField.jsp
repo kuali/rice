@@ -30,11 +30,16 @@
   <%-- render field summary --%>
 
   <%-- render field control --%>
-  <tiles:insertTemplate template="${field.control.template}">
-      <tiles:putAttribute name="control" value="${field.control}"/>
-      <tiles:putAttribute name="field" value="${field}"/>
-  </tiles:insertTemplate>
-
+  <c:if test="${field.readOnly}">
+    <s:eval expression="KualiForm.${field.bindingPath}"/>
+  </c:if>
+  <c:if test="${!field.readOnly}">
+    <tiles:insertTemplate template="${field.control.template}">
+        <tiles:putAttribute name="control" value="${field.control}"/>
+        <tiles:putAttribute name="field" value="${field}"/>
+    </tiles:insertTemplate>
+  </c:if>
+  
   <%-- render field label right --%>
   <c:if test="${renderLabel && (field.labelPlacement eq 'RIGHT')}">
     <krad:template component="${field.labelField}"/>

@@ -32,7 +32,7 @@
 <c:if test="${(!empty control.datePicker) && control.datePicker.render}">              
    <tiles:insertTemplate template="${control.datePicker.template}">
       <tiles:putAttribute name="${control.datePicker.componentTypeName}" value="${control.datePicker}"/>
-      <tiles:putAttribute name="control" value="${control}"/>
+      <tiles:putAttribute name="componentId" value="${control.id}"/>
    </tiles:insertTemplate>  
 </c:if> 
  

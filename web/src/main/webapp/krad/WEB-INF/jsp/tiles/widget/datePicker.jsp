@@ -16,12 +16,12 @@
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
 <tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.DatePicker"/>
-<tiles:useAttribute name="control" classname="org.kuali.rice.kns.uif.control.TextControl"/>
+<tiles:useAttribute name="componentId"/>
 
 <%--
     Invokes JS method to implement a script based calendar date picker
  --%>
  
 <script type="text/javascript">
-  doDatePicker('${control.id}', ${widget.widgetOptionsJSString});
+  doDatePicker('${componentId}', ${widget.widgetOptionsJSString});
 </script>

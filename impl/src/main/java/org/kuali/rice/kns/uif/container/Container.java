@@ -55,7 +55,7 @@ public interface Container extends Component {
 	 * 
 	 * @return List component instances
 	 */
-	public List<Component> getItems();
+	public List<? extends Component> getItems();
 
 	/**
 	 * <code>Set</code> of <code>Component</code> classes that may be placed
@@ -69,7 +69,7 @@ public interface Container extends Component {
 	 * 
 	 * @return Set component classes
 	 */
-	public Set<Class> getSupportedComponents();
+	public Set<Class<? extends Component>> getSupportedComponents();
 
 	/**
 	 * <code>LayoutManager</code> that should be used to layout the components

@@ -21,15 +21,17 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.field.AttributeField;
+import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.GroupField;
-import org.kuali.rice.kns.web.ui.Field;
 
 /**
  * Container that holds a list of <code>Field</code> instances
+ * 
  * <p>
  * Supports instances of <code>Field</code> in the items List. With the use of
  * <code>GroupField</code>, group containers can be nested.
  * </p>
+ * 
  * <p>
  * Groups can exist at different levels of the <code>View</code>, providing
  * conceptual groupings such as the page, section, group, and field group.
@@ -41,7 +43,20 @@ public class Group extends ContainerBase {
 
 	private String fieldBindByNamePrefix;
 
+	/**
+	 * Default Constructor
+	 */
 	public Group() {
+
+	}
+
+	/**
+	 * Copy Constructor
+	 * 
+	 * @param group
+	 *            - group instance to copy
+	 */
+	public Group(Group group) {
 
 	}
 
@@ -83,8 +98,8 @@ public class Group extends ContainerBase {
 	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
 	 */
 	@Override
-	public Set<Class> getSupportedComponents() {
-		Set<Class> supportedComponents = new HashSet<Class>();
+	public Set<Class<? extends Component>> getSupportedComponents() {
+		Set<Class<? extends Component>> supportedComponents = new HashSet<Class<? extends Component>>();
 		supportedComponents.add(Field.class);
 
 		return supportedComponents;

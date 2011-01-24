@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.uif.initializer;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import org.kuali.rice.kns.uif.Component;
@@ -31,7 +32,7 @@ import org.kuali.rice.kns.uif.container.View;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public interface ComponentInitializer {
+public interface ComponentInitializer extends Serializable {
 
 	/**
 	 * Invoked within the initialization phase of the component lifecycle. This

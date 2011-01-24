@@ -19,10 +19,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
-import org.kuali.rice.kns.uif.ComponentBase;
 import org.kuali.rice.kns.uif.container.Group;
 import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.uif.field.HeaderField;
 
 /**
  * Decorator that wraps a <code>Group</code> with a collapsible panel. To use
@@ -32,11 +30,10 @@ import org.kuali.rice.kns.uif.field.HeaderField;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class PanelGroupDecorator extends ComponentBase implements ComponentDecorator {
+public class PanelGroupDecorator extends Group implements ComponentDecorator {
 	private String panelText;
 	private boolean defaultOpen;
 
-	private HeaderField panelHeader;
 	private Group decoratedGroup;
 
 	public PanelGroupDecorator() {
@@ -48,16 +45,14 @@ public class PanelGroupDecorator extends ComponentBase implements ComponentDecor
 	 */
 	@Override
 	public void performInitialization(View view) {
-		super.performInitialization(view);
-
 		// if header text on panel not given, use the panel text
-		if (StringUtils.isBlank(panelHeader.getHeaderText())) {
-			panelHeader.setHeaderText(this.getPanelText());
+		if (StringUtils.isBlank(getHeader().getHeaderText())) {
+			getHeader().setHeaderText(this.getPanelText());
 		}
-		
+
 		// if header text still blank, use title on decorated group
-		if (StringUtils.isBlank(panelHeader.getHeaderText()) && decoratedGroup != null) {
-			panelHeader.setHeaderText(getDecoratedGroup().getTitle());
+		if (StringUtils.isBlank(getHeader().getHeaderText()) && decoratedGroup != null) {
+			getHeader().setHeaderText(getDecoratedGroup().getTitle());
 		}
 	}
 
@@ -68,7 +63,6 @@ public class PanelGroupDecorator extends ComponentBase implements ComponentDecor
 	public List<Component> getNestedComponents() {
 		List<Component> components = super.getNestedComponents();
 
-		components.add(panelHeader);
 		components.add(decoratedGroup);
 
 		return components;
@@ -101,14 +95,6 @@ public class PanelGroupDecorator extends ComponentBase implements ComponentDecor
 
 	public void setDefaultOpen(boolean defaultOpen) {
 		this.defaultOpen = defaultOpen;
-	}
-
-	public HeaderField getPanelHeader() {
-		return this.panelHeader;
-	}
-
-	public void setPanelHeader(HeaderField panelHeader) {
-		this.panelHeader = panelHeader;
 	}
 
 	public String getPanelText() {

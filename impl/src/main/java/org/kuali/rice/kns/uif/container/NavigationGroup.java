@@ -18,6 +18,7 @@ package org.kuali.rice.kns.uif.container;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.field.ActionField;
 
 /**
@@ -42,8 +43,8 @@ public class NavigationGroup extends Group {
 	 * @see org.kuali.rice.krad.web.view.container.ContainerBase#getSupportedComponents()
 	 */
 	@Override
-	public Set<Class> getSupportedComponents() {
-		Set<Class> supportedComponents = new HashSet<Class>();
+	public Set<Class<? extends Component>> getSupportedComponents() {
+		Set<Class<? extends Component>> supportedComponents = new HashSet<Class<? extends Component>>();
 		supportedComponents.add(ActionField.class);
 
 		return supportedComponents;
@@ -54,7 +55,7 @@ public class NavigationGroup extends Group {
 	 * navigation. Used by the rendering script to choose an appropriate plug-in
 	 * 
 	 * @return String navigation type
-	 * @see org.kuali.rice.kns.uif.UIFConstants.NavigationType
+	 * @see org.kuali.rice.kns.uif.UifConstants.NavigationType
 	 */
 	public String getNavigationType() {
 		return this.navigationType;

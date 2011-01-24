@@ -15,6 +15,13 @@
  */
 package org.kuali.rice.kns.uif.layout;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
 
 /**
@@ -40,13 +47,57 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	}
 
 	/**
-	 * Default initialize implementation
+	 * Default Impl
 	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performInitialization(org.kuali.rice.kns.uif.container.View,
+	 *      org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performInitialization(View view) {
+	public void performInitialization(View view, Container container) {
+		// set id of layout manager from container
+		if (StringUtils.isBlank(id)) {
+			id = container.getId() + "_layout";
+		}
+	}
 
+	/**
+	 * Default Impl
+	 * 
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
+	 *      java.util.Map, org.kuali.rice.kns.uif.container.Container)
+	 */
+	@Override
+	public void performConditionalLogic(View view, Map<String, Object> models, Container container) {
+
+	}
+
+	/**
+	 * Default Impl
+	 * 
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#refresh(org.kuali.rice.kns.uif.container.View,
+	 *      org.kuali.rice.kns.uif.container.Container)
+	 */
+	@Override
+	public void refresh(View view, Container container) {
+
+	}
+
+	/**
+	 * Default Impl
+	 * 
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#getSupportedContainer()
+	 */
+	@Override
+	public Class<? extends Container> getSupportedContainer() {
+		return Container.class;
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#getNestedComponents()
+	 */
+	@Override
+	public List<Component> getNestedComponents() {
+		return new ArrayList<Component>();
 	}
 
 	public String getId() {

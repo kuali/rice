@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.service.Demonstration;
 import org.kuali.rice.kns.UserSession;
 import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.uif.UIFConstants;
+import org.kuali.rice.kns.uif.UifConstants;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.WebUtils;
@@ -57,7 +57,7 @@ public class UifControllerHandlerInterceptor implements HandlerInterceptor {
             UifControllerBase controller = (UifControllerBase)handler;
             UifFormBase form = null;
             
-            Object model = modelAndView.getModelMap().get(UIFConstants.DEFAULT_MODEL_NAME);
+            Object model = modelAndView.getModelMap().get(UifConstants.DEFAULT_MODEL_NAME);
             if(model instanceof UifFormBase) {
                 form = (UifFormBase)model;
             }

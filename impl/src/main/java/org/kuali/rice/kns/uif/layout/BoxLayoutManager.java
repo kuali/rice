@@ -16,7 +16,8 @@
 package org.kuali.rice.kns.uif.layout;
 
 import org.apache.commons.lang.StringUtils;
-import org.kuali.rice.kns.uif.UIFConstants.Orientation;
+import org.kuali.rice.kns.uif.UifConstants.Orientation;
+import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
 
 /**
@@ -44,11 +45,11 @@ public class BoxLayoutManager extends LayoutManagerBase {
 	 * </ul>
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View,org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performInitialization(View view) {
-		super.performInitialization(view);
+	public void performInitialization(View view, Container container) {
+		super.performInitialization(view, container);
 
 		if (StringUtils.isBlank(itemSpanStyle)) {
 			if (StringUtils.equals(orientation, Orientation.VERTICAL)) {

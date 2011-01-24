@@ -37,7 +37,7 @@
       // -->
       </script>
     </c:if>
-
+    
     <krad:scriptingVariables/>
 
     <title>
@@ -65,36 +65,38 @@
   <!----------------------------------- #BEGIN BODY --------------------------------------->
 
   <body>
+  <div id="page_div">
 
-  <krad:backdoor/>
+    <krad:backdoor/>
 
-  <c:set var="encoding" value=""/>
-  <c:if test="${not empty renderMultipart and renderMultipart eq true}">
-     <c:set var="encoding" value="multipart/form-data"/>
-  </c:if>
+    <c:set var="encoding" value=""/>
+    <c:if test="${not empty renderMultipart and renderMultipart eq true}">
+       <c:set var="encoding" value="multipart/form-data"/>
+    </c:if>
 
-  <!----------------------------------- #BEGIN FORM --------------------------------------->
-  <c:if test="${renderForm}">
-    <form:form 
-       id="kualiForm"
-       action="${htmlFormAction}"
-       method="post"
-       enctype="${encoding}"
-       modelAttribute="KualiForm"
-       onsubmit="return hasFormAlreadyBeenSubmitted();">
+    <!----------------------------------- #BEGIN FORM --------------------------------------->
+    <c:if test="${renderForm}">
+      <form:form 
+         id="kualiForm"
+         action="${htmlFormAction}"
+         method="post"
+         enctype="${encoding}"
+         modelAttribute="KualiForm"
+         onsubmit="doLoading(true);return hasFormAlreadyBeenSubmitted();">
 
-       <a name="topOfForm"></a>
+         <a name="topOfForm"></a>
       
-       <jsp:doBody/>
+         <jsp:doBody/>
 
-        <div id="formComplete"></div>
-      </form:form>
-      <!----------------------------------- End Form --------------------------------------->
-   </c:if>  
+          <div id="formComplete"></div>
+        </form:form>
+        <!----------------------------------- End Form --------------------------------------->
+     </c:if>  
    
-   <c:if test="${!renderForm}"> 
-     <jsp:doBody/>
-   </c:if>  
+     <c:if test="${!renderForm}"> 
+       <jsp:doBody/>
+     </c:if>  
     
+   </div> 
    </body>
 </html>

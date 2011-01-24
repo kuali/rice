@@ -16,28 +16,23 @@
 package org.kuali.rice.kns.uif.container;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
+import org.kuali.rice.kns.uif.UifConstants.ActionParameterNames;
 import org.kuali.rice.kns.uif.field.ActionField;
-import org.kuali.rice.kns.uif.field.AttributeField;
-import org.kuali.rice.kns.uif.field.LabelField;
-import org.kuali.rice.kns.uif.util.ViewModelUtils;
+import org.kuali.rice.kns.uif.util.ComponentUtils;
 
 /**
- * Group that holds a collection of objects each containing a group of
- * <code>Field</code> instances
+ * Group that holds a collection of objects and configuration for presenting the
+ * collection in the UI. Supports functionality such as add line, line actions,
+ * and nested collections.
  * 
  * <p>
- * Based on the fields defined, the <code>CollectionGroup</code> will
- * dynamically create instances of the fields for each collection row. In
- * addition, the group can create standard fields like the action and sequencer
- * fields for each row. The footer <code>Group</code> inherited from the base is
- * used to presented for the the entire collection (possibly for actions that
- * apply to the collection as a whole).
+ * Note the standard header/footer can be used to give a header to the
+ * collection as a whole, or to provide actions that apply to the entire
+ * collection
  * </p>
  * 
  * <p>
@@ -53,65 +48,42 @@ public class CollectionGroup extends Group implements DataBinding {
 	private Class<?> collectionObjectClass;
 
 	private String bindingPath;
+	private String bindByNamePrefix;
 	private String modelName;
 
-	private boolean includeAddLine;
+	private boolean renderAddLine;
+	private boolean renderLineActions;
 
-	private boolean renderActionFields;
 	private List<ActionField> actionFields;
-
-	private boolean renderSequenceField;
-	private AttributeField sequenceField;
-
-	private boolean repeatHeader;
-	private List<LabelField> headerFields;
-
-	private Group rowGroupTemplate;
-	private List<Group> tableGroups;
-
 	private List<CollectionGroup> subCollections;
 
 	public CollectionGroup() {
-		includeAddLine = true;
-		renderActionFields = true;
-		renderSequenceField = false;
-		repeatHeader = false;
+		renderAddLine = true;
+		renderLineActions = true;
 
-		headerFields = new ArrayList<LabelField>();
-		tableGroups = new ArrayList<Group>();
+		actionFields = new ArrayList<ActionField>();
 		subCollections = new ArrayList<CollectionGroup>();
 	}
 
 	/**
+	 * Creates new <code>ActionField</code> instances for the line
+	 * 
 	 * <p>
-	 * The following initialization is performed:
-	 * <ul>
-	 * </ul>
+	 * Adds context to the action fields for the given line so that the line the
+	 * action was performed on can be determined when that action is selected
 	 * </p>
 	 * 
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 * @param lineIndex
+	 *            - index of the line the actions should apply to
 	 */
-	@Override
-	public void performInitialization(View view) {
-		super.performInitialization(view);
-	}
+	public List<ActionField> getLineActions(int lineIndex) {
+		List<ActionField> lineActions = ComponentUtils.copyFieldList(actionFields);
+		for (ActionField actionField : lineActions) {
+			actionField.addActionParameter(ActionParameterNames.selectedCollectionName, getName());
+			actionField.addActionParameter(ActionParameterNames.selectedLineIndex, Integer.toString(lineIndex));
+		}
 
-	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
-	 *      java.util.Map)
-	 */
-	@Override
-	public void performConditionalLogic(View view, Map<String, Object> models) {
-		super.performConditionalLogic(view, models);
-
-		// the list that hold the generated items and become the final list of
-		// items for the group
-		List<Component> collectionItems = new ArrayList<Component>();
-
-		// get the collection for this group from the model
-		Collection<Object> modelCollection = ViewModelUtils.getCollectionFromModels(models, this);
-
-		// for each collection row create a new group from the template
+		return lineActions;
 	}
 
 	/**
@@ -122,6 +94,7 @@ public class CollectionGroup extends Group implements DataBinding {
 		List<Component> components = super.getNestedComponents();
 
 		components.addAll(subCollections);
+		components.addAll(actionFields);
 
 		return components;
 	}
@@ -142,6 +115,14 @@ public class CollectionGroup extends Group implements DataBinding {
 		this.bindingPath = bindingPath;
 	}
 
+	public String getBindByNamePrefix() {
+		return this.bindByNamePrefix;
+	}
+
+	public void setBindByNamePrefix(String bindByNamePrefix) {
+		this.bindByNamePrefix = bindByNamePrefix;
+	}
+
 	public String getModelName() {
 		return this.modelName;
 	}
@@ -150,20 +131,12 @@ public class CollectionGroup extends Group implements DataBinding {
 		this.modelName = modelName;
 	}
 
-	public boolean isIncludeAddLine() {
-		return this.includeAddLine;
+	public boolean isRenderAddLine() {
+		return this.renderAddLine;
 	}
 
-	public void setIncludeAddLine(boolean includeAddLine) {
-		this.includeAddLine = includeAddLine;
-	}
-
-	public boolean isRenderActionFields() {
-		return this.renderActionFields;
-	}
-
-	public void setRenderActionFields(boolean renderActionFields) {
-		this.renderActionFields = renderActionFields;
+	public void setRenderAddLine(boolean renderAddLine) {
+		this.renderAddLine = renderAddLine;
 	}
 
 	public List<ActionField> getActionFields() {
@@ -174,52 +147,12 @@ public class CollectionGroup extends Group implements DataBinding {
 		this.actionFields = actionFields;
 	}
 
-	public boolean isRenderSequenceField() {
-		return this.renderSequenceField;
+	public boolean isRenderLineActions() {
+		return this.renderLineActions;
 	}
 
-	public void setRenderSequenceField(boolean renderSequenceField) {
-		this.renderSequenceField = renderSequenceField;
-	}
-
-	public AttributeField getSequenceField() {
-		return this.sequenceField;
-	}
-
-	public void setSequenceField(AttributeField sequenceField) {
-		this.sequenceField = sequenceField;
-	}
-
-	public boolean isRepeatHeader() {
-		return this.repeatHeader;
-	}
-
-	public void setRepeatHeader(boolean repeatHeader) {
-		this.repeatHeader = repeatHeader;
-	}
-
-	public List<LabelField> getHeaderFields() {
-		return this.headerFields;
-	}
-
-	public void setHeaderFields(List<LabelField> headerFields) {
-		this.headerFields = headerFields;
-	}
-
-	public Group getRowGroupTemplate() {
-		return this.rowGroupTemplate;
-	}
-
-	public void setRowGroupTemplate(Group rowGroupTemplate) {
-		this.rowGroupTemplate = rowGroupTemplate;
-	}
-
-	public List<Group> getTableGroups() {
-		return this.tableGroups;
-	}
-
-	public void setTableGroups(List<Group> tableGroups) {
-		this.tableGroups = tableGroups;
+	public void setRenderLineActions(boolean renderLineActions) {
+		this.renderLineActions = renderLineActions;
 	}
 
 	public List<CollectionGroup> getSubCollections() {

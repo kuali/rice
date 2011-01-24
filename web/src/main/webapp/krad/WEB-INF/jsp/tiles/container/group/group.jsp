@@ -31,6 +31,7 @@
   <tiles:insertTemplate template="${group.layoutManager.template}">
         <tiles:putAttribute name="items" value="${group.items}"/>
         <tiles:putAttribute name="manager" value="${group.layoutManager}"/>
+        <tiles:putAttribute name="container" value="${group}"/>
   </tiles:insertTemplate>
 
   <c:if test="${group.renderFooter}">

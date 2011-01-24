@@ -51,4 +51,19 @@ public interface DataBinding {
 	 */
 	public String getModelName();
 
+	/**
+	 * Prefix that will be used to form the binding path from the component
+	 * name. Typically used for nested collection properties
+	 * 
+	 * @return String binding prefix
+	 */
+	public String getBindByNamePrefix();
+
+	/**
+	 * Setter for the prefix to use for forming the binding path by name
+	 * 
+	 * @param bindByNamePrefix
+	 */
+	public void setBindByNamePrefix(String bindByNamePrefix);
+
 }

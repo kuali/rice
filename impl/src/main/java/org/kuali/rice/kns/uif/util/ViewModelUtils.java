@@ -16,11 +16,13 @@
 package org.kuali.rice.kns.uif.util;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.util.ObjectUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
 /**
  * Utility class provides methods for working with a <code>View</code> instance
@@ -99,15 +101,16 @@ public class ViewModelUtils {
 	 *            - Map of model entries to search and retrieve value from
 	 * @param component
 	 *            - component instance which binds to the collection property
-	 * @return Collection<Object> from the model or Null if the model property
-	 *         was not found
+	 * @return List<Object> from the model or Null if the model property was not
+	 *         found
 	 */
-	public static final Collection<Object> getCollectionFromModels(Map<String, Object> models, DataBinding component) {
-		Collection<Object> modelCollection = null;
+	public static final List<Object> getCollectionFromModels(Map<String, Object> models, DataBinding component) {
+		List<Object> modelCollection = null;
 
 		Object model = getModelForComponent(models, component);
 		if (model != null) {
-			modelCollection = (Collection<Object>) ObjectUtils.getPropertyValue(model, component.getBindingPath());
+			BeanWrapper beanWrapper = new BeanWrapperImpl(model);
+			modelCollection = (List<Object>) beanWrapper.getPropertyValue(component.getBindingPath());
 		}
 
 		return modelCollection;

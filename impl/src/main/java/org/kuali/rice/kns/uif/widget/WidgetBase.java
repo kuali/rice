@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.kns.uif.widget;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.kuali.rice.kns.uif.ComponentBase;
@@ -28,7 +29,7 @@ public abstract class WidgetBase extends ComponentBase implements Widget {
 	private Map<String, String> widgetOptions;
 
 	public WidgetBase() {
-
+		widgetOptions = new HashMap<String, String>();
 	}
 
 	/**

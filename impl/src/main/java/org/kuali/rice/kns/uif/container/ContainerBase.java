@@ -17,6 +17,7 @@ package org.kuali.rice.kns.uif.container;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
@@ -45,14 +46,17 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	private boolean renderFooter;
 
 	private HeaderField header;
-	
+
 	private Group footer;
 
 	private String summary;
 	private MessageField summaryMessageField;
 
-	private List<Component> items;
+	private List<? extends Component> items;
 
+	/**
+	 * Default Constructor
+	 */
 	public ContainerBase() {
 		renderHeader = true;
 		renderFooter = true;
@@ -87,7 +91,20 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		}
 
 		if (layoutManager != null) {
-			layoutManager.performInitialization(view);
+			layoutManager.performInitialization(view, this);
+		}
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
+	 *      java.util.Map)
+	 */
+	@Override
+	public void performConditionalLogic(View view, Map<String, Object> models) {
+		super.performConditionalLogic(view, models);
+
+		if (layoutManager != null) {
+			layoutManager.performConditionalLogic(view, models, this);
 		}
 	}
 
@@ -106,6 +123,10 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 		for (Component component : items) {
 			components.add(component);
+		}
+		
+		if (layoutManager != null) {
+			components.addAll(layoutManager.getNestedComponents());
 		}
 
 		return components;
@@ -143,11 +164,11 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 		this.help = help;
 	}
 
-	public List<Component> getItems() {
+	public List<? extends Component> getItems() {
 		return this.items;
 	}
 
-	public void setItems(List<Component> items) {
+	public void setItems(List<? extends Component> items) {
 		this.items = items;
 	}
 

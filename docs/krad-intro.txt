@@ -197,7 +197,13 @@ The traditional Kuali magnifying glass icon has been around since the first vers
 
 h3. Fields
 
-Not every HTML element represents user input or functionality on a page: not everything is a Control or a Widget.  However, all elements represented within a View must have a Component parent.  Fields represent HTML that doesn't fit so easily into functionality categories but which still represent an important part of the application. For instance, a grouping of error messages and warnings need to display on a page in a certain area--typically the top of the tab where the Control which caused the error is rendered.  Error messages may not be "functionality" but the user certainly needs them to know what's error has occurred.  These more inert but still highly important Components are all implementations of the org.kuali.rice.kns.uif.field.Field interface.  Let's take a tour of what Fields are offered.
+Controls are simple because, for the most part, they map directly to HTML input types.  Widgets make a lot of sense as well, since each Widget represents a single set of functionality.  Fields, though, are not at all as simple to classify.  Some--such as BlankField--are as simple and inert as elements on an HTML page get.  Some, such as AttributeField or GroupField are wildly complex, rendering a combination of Containers, Controls, and other Components.  Fields are basically the grab bag of other visual elements in KRAD.
+
+What all Fields have in common is that they implement the org.kuali.rice.kns.uif.field.Field interface, an interface that allows pretty much any child to have an associated label.  (Of course, there's a LabelField which itself represents a Label).
+
+[HERE JAMES]
+
+Let's take a tour of what Fields KRAD offers.
 
 h4. ActionField
 [JAMES]
@@ -238,7 +244,19 @@ h4. MessageField
 A messageField displays text on the rendered page within a span.  Its messageText property holds the text which it will display.  It also has a messageType property which helps uniquely identify all messages of this type on the screen.
 
 h3. Data Bindings
-[JAMES]
+
+One of the major changes that KRAD will bring will be a move away from Apache Struts 1.2+ to Spring 3.0's Web MVC.  This means many things: changes to Controllers, some updates to Forms - though the KRAD team is working on scripts to make these changes as painless as possible.
+
+A major concept invoked by WebMVC is that of data binding.  Data binding simply means that parameter names from a request will be mapped into the form.  Spring handles much of this automatically, by simply using the Form as the root of a property tree and then mapping nested, indexed, or even indexed and nested properties into the form.
+
+Spring does need help on mapping parameters into classes it doesn't handle automatically - KualiDecimal, for instance.  In these cases, Java provides PropertyEditors which can convert Strings into complex objects.  There are a number of mechanisms that help Spring associate a PropertyEditor implementation with a complex object like KualiDecimal. [JERRY: WHAT IS THE RECOMMENDED PROPERTY EDITOR REGISTRATION MECHANISM?]
+
+Creating a PropertyEditor is a straightforward process.  Java provides the java.beans.PropertyEditorSupport object which can be extended.  That class has two crucial methods to override: String getAsText(), which converts the contents of the object into text; and void setAsText(String text) which takes a String and converts it into the complex object.
+
+The Spring documentation covers how it uses data bindings in much more detail [on the SpringSource website#http://static.springsource.org/spring/docs/2.0.x/reference/validation.html]  Spring has a heavy reliance on this mechanism throughout its source code beyond populating form data.  But it does give Spring a very standard way to populate the form from the request.
+
+As KRAD renders a page with form data, it will properly generate the data binding path that will properly populate the form when the page is submitted.  It will create indexed property names for values within collections and it will create nested names for all the attributes on a page...meaning that for the most part, developers will never concern themselves with data binding--KRAD will just make it happen in the background.
+
 h3. Component Architecture
 
 Now that we've explored each component type in detail, let's see what they share and what all KRAD visual elements have in common.

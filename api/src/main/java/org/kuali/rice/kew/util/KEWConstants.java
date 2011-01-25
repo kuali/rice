@@ -1017,6 +1017,8 @@ public final class KEWConstants {
 	public static final String PREFERENCES = "Preferences";
 	public static final String WORKFLOW_DOCUMENT_MAP_ATTR_NAME = "workflowDocumentMap";
 
+    public static final String USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM = "userOptions.default.useOutBox";
+
 
     public static final class SearchableAttributeConstants {
         public static final String SEARCH_WILDCARD_CHARACTER = "*";

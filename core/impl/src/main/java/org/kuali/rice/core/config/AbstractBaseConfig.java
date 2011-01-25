@@ -161,10 +161,6 @@ public abstract class AbstractBaseConfig implements Config {
         return getProperty(Config.LOG4J_SETTINGS_RELOADINTERVAL_MINS);
     }
 
-    public Boolean getOutBoxDefaultPreferenceOn() {
-        return Boolean.valueOf(getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON));
-    }
-
     public Boolean getOutBoxOn() {
         return Boolean.valueOf(getProperty(Config.OUT_BOX_MODE));
     }

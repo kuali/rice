@@ -149,9 +149,6 @@ public interface Config {
 	public static final String ENABLE_XML_PIPELINE_LIFECYCLE = "xml.pipeline.lifecycle.enabled";
 	
 	public static final String OUT_BOX_MODE = "actionlist.outbox";
-	
-	@Deprecated
-	public static final String OUT_BOX_DEFAULT_PREFERENCE_ON = "actionlist.outbox.default.preference.on";
 
 	public static final String PORTAL_SHOW_SAMPLE_APP = "portal.show.sample.app";
 	
@@ -256,9 +253,6 @@ public interface Config {
 	
 	public Boolean getStoreAndForward();
 	public Boolean getOutBoxOn();
-	
-	@Deprecated
-	public Boolean getOutBoxDefaultPreferenceOn();
 	
 	/**
 	 * 

@@ -117,20 +117,8 @@ public class PreferencesServiceImpl implements PreferencesService {
         String defaultShowCurrentNode = kcs.getPropertyString("userOptions.default.showCurrentNode");                                                                               
         String defaultDelegatorFilterOnActionList = kcs.getPropertyString("userOptions.default.delegatorFilterOnActionList");                                                       
         String defaultPrimaryDelegatorFilterOnActionList = kcs.getPropertyString("userOptions.default.primaryDelegatorFilterOnActionList");                                         
-        
-        // TODO: remove the old deprecated OUT_BOX_DEFAULT_PREFERENCE_ON usage in a future version
-        // see KULRICE-4582
-        
-        String defaultUseOutBox = ConfigContext.getCurrentContextConfig().getProperty(Config.OUT_BOX_DEFAULT_PREFERENCE_ON);
-        if (!StringUtils.isBlank(defaultUseOutBox)) {
-        	if (Boolean.valueOf(defaultUseOutBox)) {
-        		defaultUseOutBox = "yes";
-        	} else {
-        		defaultUseOutBox = "no";
-        	}
-        } else {
-        	defaultUseOutBox = kcs.getPropertyString("userOptions.default.useOutBox");
-        }
+
+        final String defaultUseOutBox = kcs.getPropertyString(KEWConstants.USER_OPTIONS_DEFAULT_USE_OUTBOX_PARAM);
                                                                                                                                                                                     
         Preferences preferences = new Preferences();                                                                                                                                
         preferences.setColorApproved(getOption(optionMap,APPROVED_DOC_COLOR, defaultColor, principalId, preferences).getOptionVal());                                               

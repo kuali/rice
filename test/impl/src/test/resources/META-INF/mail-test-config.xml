@@ -1,0 +1,4 @@
+<config>
+	<param name="mail.smtp.host">localhost</param>
+	<param name="mail.smtp.port">55000</param>
+</config>

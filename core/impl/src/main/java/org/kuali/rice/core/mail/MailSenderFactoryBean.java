@@ -41,11 +41,12 @@ public class MailSenderFactoryBean extends AbstractFactoryBean {
     private static final String USERNAME_PROPERTY = "mail.smtp.username";
     private static final String PASSWORD_PROPERTY = "mail.smtp.password";
     private static final String HOST_PROPERTY = "mail.smtp.host";
+    private static final String PORT_PROPERTY = "mail.smtp.port";
     
     private Session mailSession;
     
     @Override
-    protected Object createInstance() throws Exception {
+	protected  Object createInstance() throws Exception {
 	    // Retrieve "mail.*" properties from the configuration system and construct a Properties object
 		Properties properties = new Properties();
 		Properties configProps = ConfigContext.getCurrentContextConfig().getProperties();
@@ -73,6 +74,10 @@ public class MailSenderFactoryBean extends AbstractFactoryBean {
 		// Construct and return a Spring Java Mail Sender
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost(properties.getProperty(HOST_PROPERTY));
+		if (properties.getProperty(PORT_PROPERTY) != null) {
+			int smtpPort = Integer.parseInt(properties.getProperty(PORT_PROPERTY).trim());
+			mailSender.setPort(smtpPort);
+		}
 		mailSender.setSession(mailSession);
 		
 		return mailSender;

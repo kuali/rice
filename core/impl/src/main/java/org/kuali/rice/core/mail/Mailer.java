@@ -16,6 +16,8 @@
  */
 package org.kuali.rice.core.mail;
 
+import java.io.IOException;
+
 import javax.activation.DataHandler;
 import javax.mail.Address;
 import javax.mail.Message;
@@ -23,8 +25,8 @@ import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.util.ByteArrayDataSource;
 
-//import org.kuali.rice.kew.util.ByteArrayDataSource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
@@ -64,7 +66,7 @@ public class Mailer {
 	     * @throws AddressException
 	     * @throws MessagingException
 	     */
-	    public void sendMessage(String sender, Address[] recipients, String subject, String messageBody, Address[] ccRecipients, Address[] bccRecipients, boolean htmlMessage) throws AddressException, MessagingException {
+	    public void sendMessage(String sender, Address[] recipients, String subject, String messageBody, Address[] ccRecipients, Address[] bccRecipients, boolean htmlMessage) throws AddressException, MessagingException, MailException {
 		    MimeMessage message = mailSender.createMimeMessage();
 
 	        // From Address
@@ -108,7 +110,8 @@ public class Mailer {
 	        	mailSender.send(message);
 	        }
 	        catch (MailException me) {
-	        	LOG.warn(me.getMessage());
+	        	LOG.warn("sendMessage(): " + me.getMessage());
+	        	throw new MessagingException(me.getMessage(), me);
 	        }
 	    }
 
@@ -132,6 +135,11 @@ public class Mailer {
 	    }
 
 	    private void prepareHtmlMessage(String messageText, Message message) throws MessagingException {
-	       // message.setDataHandler(new DataHandler(new ByteArrayDataSource(messageText, "text/html")));
+	        try {
+				message.setDataHandler(new DataHandler(new ByteArrayDataSource(messageText, "text/html")));
+			} catch (IOException e) {
+				LOG.warn(e.getMessage());
+				throw new RuntimeException(e);
+			}
 	    }
 }

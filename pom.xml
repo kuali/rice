@@ -1497,6 +1497,16 @@ limitations under the License.
 			    <groupId>org.subethamail</groupId>
 			    <artifactId>subethasmtp</artifactId>
 			    <version>${subethasmtp.version}</version>
+			    <exclusions>
+			    	<exclusion>
+			    		<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-api</artifactId>
+			    	</exclusion>
+			    	<exclusion>
+			    		<groupId>javax.activation</groupId>
+						<artifactId>activation</artifactId>
+			    	</exclusion>
+			    </exclusions>
 			    <scope>test</scope>
 		    </dependency>
 		    

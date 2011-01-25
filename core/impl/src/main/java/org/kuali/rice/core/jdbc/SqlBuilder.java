@@ -30,10 +30,9 @@ import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.jdbc.criteria.Criteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.util.SQLUtils;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.BooleanFormatter;
-import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.SQLUtils;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.
@@ -130,7 +129,7 @@ public class SqlBuilder {
 	public void addCriteria(String propertyName, String propertyValue, Class propertyType, boolean caseInsensitive, boolean allowWildcards, Criteria criteria) {
 
 		if(TypeUtils.isJoinClass(propertyType)){ // treat this as a join table.
-			String temp = ObjectUtils.clean(propertyValue);
+			String temp = SQLUtils.cleanString(propertyValue);
 			criteria.eq(propertyName, temp, propertyType);
 			return;
 		}
@@ -174,7 +173,7 @@ public class SqlBuilder {
 		} else if (TypeUtils.isTemporalClass(propertyType)) {
 			addDateRangeCriteria(propertyName, propertyValue, criteria, propertyType);
 		} else if (TypeUtils.isBooleanClass(propertyType)) {
-			String temp = ObjectUtils.clean(propertyValue);
+			String temp = SQLUtils.cleanString(propertyValue);
 			criteria.eq(propertyName, new BooleanFormatter().convertFromPresentationFormat(temp), propertyType);
 		} else {
 			LOG.error("not adding criterion for: " + propertyName + "," + propertyType + "," + propertyValue);
@@ -343,7 +342,7 @@ public class SqlBuilder {
 			criteria.between(propertyName, val1, val2, propertyType);
 		} else{
 			propertyName = this.getCaseAndLiteralPropertyName(propertyName, caseInsensitive);
-			String value = this.getCaseAndLiteralPropertyValue(ObjectUtils.clean(propertyValue), caseInsensitive, allowWildcards);
+			String value = this.getCaseAndLiteralPropertyValue(SQLUtils.cleanString(propertyValue), caseInsensitive, allowWildcards);
 
 			if (propertyValue.startsWith(">=")) {
 				criteria.gte(propertyName, value, propertyType);

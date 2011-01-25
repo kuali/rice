@@ -20,11 +20,11 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.util.SQLUtils;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.SQLUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;

@@ -17,6 +17,7 @@
 package org.kuali.rice.kew.docsearch;
 
 import org.junit.Test;
+import org.kuali.rice.core.util.SQLUtils;
 import org.kuali.rice.kew.docsearch.service.DocumentSearchService;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.doctype.service.DocumentTypeService;
@@ -28,7 +29,6 @@ import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kew.web.KeyValueSort;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.test.TestHarnessServiceLocator;
 import org.springframework.jdbc.core.JdbcTemplate;
 

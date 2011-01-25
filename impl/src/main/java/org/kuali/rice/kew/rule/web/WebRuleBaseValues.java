@@ -20,6 +20,7 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.struts.action.ActionErrors;
 import org.apache.struts.action.ActionMessage;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.util.SQLUtils;
 import org.kuali.rice.kew.exception.WorkflowServiceError;
 import org.kuali.rice.kew.rule.*;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
@@ -31,7 +32,6 @@ import org.kuali.rice.kew.rule.xmlrouting.GenericXMLRuleAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 

@@ -34,6 +34,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.api.LogicalOperator;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.util.SQLUtils;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.DateFormatter;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -56,7 +57,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.kns.workflow.service.WorkflowAttributePropertyResolutionService;
 
 /**

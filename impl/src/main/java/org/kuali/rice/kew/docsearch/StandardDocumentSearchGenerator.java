@@ -26,6 +26,7 @@ import org.kuali.rice.core.jdbc.criteria.Criteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.util.SQLUtils;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.kew.doctype.SecuritySession;
 import org.kuali.rice.kew.doctype.bo.DocumentType;

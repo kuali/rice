@@ -18,6 +18,7 @@ package org.kuali.rice.kew.docsearch.xml;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.core.util.SQLUtils;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.docsearch.DocSearchUtils;
 import org.kuali.rice.kew.docsearch.DocumentSearchContext;
@@ -44,7 +45,6 @@ import org.kuali.rice.kew.service.WorkflowDocument;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.util.SQLUtils;
 import org.kuali.rice.kns.web.ui.Field;
 import org.kuali.rice.kns.web.ui.Row;
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kns.util;
+package org.kuali.rice.core.util;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -26,6 +26,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.LogicalOperator;
 
 
@@ -305,4 +306,17 @@ public final class SQLUtils {
 
 		return string;
 	}
+	
+    /**
+     * Removes all query characters from a string.
+     *
+     * @param string
+     * @return Cleaned string
+     */
+    public static String cleanString(String string) {
+        for (LogicalOperator op : LogicalOperator.QUERY_CHARACTERS) {
+            string = StringUtils.replace(string, op.op(), "");
+        }
+        return string;
+    }
 }

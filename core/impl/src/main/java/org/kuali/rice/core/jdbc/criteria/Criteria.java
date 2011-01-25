@@ -28,15 +28,15 @@ import java.util.Map;
 
 import javax.persistence.Query;
 
+import org.kuali.rice.core.api.CoreConstants;
 import org.kuali.rice.core.api.DateTimeService;
 import org.kuali.rice.core.database.platform.DatabasePlatform;
 import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.util.SQLUtils;
 import org.kuali.rice.core.util.type.TypeUtils;
 import org.kuali.rice.core.web.format.BooleanFormatter;
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.util.SQLUtils;
 
 
 
@@ -58,6 +58,8 @@ public class Criteria {
 	private String alias;
 
 	private boolean distinct = false;
+	
+	private transient DateTimeService dateTimeService;
 
 	protected List tokens = new ArrayList();
 
@@ -116,8 +118,7 @@ public class Criteria {
 		if(TypeUtils.isTemporalClass(propertyType)){
 			try {
 				if (value instanceof String) {
-					final DateTimeService dateTimeService = KNSServiceLocator.getDateTimeService();
-					value = dateTimeService.convertToSqlTimestamp(value.toString());
+					value = getDateTimeService().convertToSqlTimestamp(value.toString());
 				}
 				return getFixedTemporalValue(value);
 			} catch (ParseException pe) {
@@ -532,5 +533,12 @@ public class Criteria {
                 return "";
             }
         }
+    }
+	
+	private DateTimeService getDateTimeService() {
+    	if (this.dateTimeService == null) {
+    		this.dateTimeService = GlobalResourceLoader.getService(CoreConstants.Services.DATETIME_SERVICE);
+    	}
+    	return this.dateTimeService;
     }
 }

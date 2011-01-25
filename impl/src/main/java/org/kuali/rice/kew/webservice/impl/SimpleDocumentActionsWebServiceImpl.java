@@ -27,6 +27,7 @@ import java.util.List;
 import javax.jws.WebService;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.util.SQLUtils;
 import org.kuali.rice.kew.dto.AdHocRevokeDTO;
 import org.kuali.rice.kew.dto.NoteDTO;
 import org.kuali.rice.kew.dto.RouteHeaderDTO;
@@ -46,7 +47,6 @@ import org.kuali.rice.kew.webservice.StandardResponse;
 import org.kuali.rice.kew.webservice.UserInRouteLogResponse;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.KIMServiceLocator;
-import org.kuali.rice.kns.util.SQLUtils;
 
 
 /**

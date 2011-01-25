@@ -33,6 +33,8 @@ import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionForm;
+import org.kuali.rice.core.web.format.FormatException;
+import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.exception.ValidationException;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.GlobalVariables;
@@ -41,8 +43,6 @@ import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.Timer;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.web.EditablePropertiesHistoryHolder;
-import org.kuali.rice.kns.web.format.FormatException;
-import org.kuali.rice.kns.web.format.Formatter;
 
 /**
  * This class is the base form which implements the PojoForm interface.

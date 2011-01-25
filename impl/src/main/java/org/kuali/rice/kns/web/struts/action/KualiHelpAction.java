@@ -25,6 +25,7 @@ import org.apache.struts.action.ActionMapping;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kew.docsearch.DocSearchCriteriaDTO;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
@@ -38,7 +39,6 @@ import org.kuali.rice.kns.datadictionary.LookupDefinition;
 import org.kuali.rice.kns.datadictionary.MaintainableFieldDefinition;
 import org.kuali.rice.kns.service.*;
 import org.kuali.rice.kns.util.KNSConstants;
-import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.web.struts.form.KualiHelpForm;
 
 /**

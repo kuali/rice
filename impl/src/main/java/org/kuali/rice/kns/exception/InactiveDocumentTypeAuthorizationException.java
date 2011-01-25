@@ -17,7 +17,7 @@ package org.kuali.rice.kns.exception;
 
 import java.util.Collections;
 
-import org.kuali.rice.kns.util.RiceKeyConstants;
+import org.kuali.rice.core.util.RiceKeyConstants;
 
 /**
  * This class represents an exception that is thrown when a given user is not authorized to take a given action on the given

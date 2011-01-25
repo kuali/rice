@@ -25,6 +25,7 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRemoteServiceConnectionException;
 import org.kuali.rice.core.reflect.ObjectDefinition;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.web.format.FormatException;
 import org.kuali.rice.kew.actionlist.CustomActionListAttribute;
 import org.kuali.rice.kew.docsearch.*;
 import org.kuali.rice.kew.docsearch.xml.DocumentSearchXMLResultProcessor;
@@ -52,7 +53,6 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 import org.kuali.rice.kns.bo.Inactivateable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 import org.kuali.rice.kns.util.ObjectUtils;
-import org.kuali.rice.kns.web.format.FormatException;
 
 import javax.persistence.*;
 import java.lang.reflect.InvocationTargetException;

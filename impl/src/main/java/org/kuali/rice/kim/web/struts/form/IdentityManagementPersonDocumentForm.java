@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.web.struts.form;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAddress;
 import org.kuali.rice.kim.bo.ui.PersonDocumentAffiliation;
 import org.kuali.rice.kim.bo.ui.PersonDocumentCitizenship;
@@ -28,7 +29,6 @@ import org.kuali.rice.kim.bo.ui.PersonDocumentRole;
 import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMember;
 import org.kuali.rice.kim.document.IdentityManagementPersonDocument;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.web.format.DateDisplayTimestampObjectFormatter;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

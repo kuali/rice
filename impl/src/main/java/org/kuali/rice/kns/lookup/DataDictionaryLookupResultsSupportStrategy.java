@@ -25,12 +25,12 @@ import java.util.Set;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.web.format.Formatter;
 
 /**
  * LookupResults support strategy which uses the primary keys and lookupable defined in a business object's data dictionary file to support the multivalue lookup 

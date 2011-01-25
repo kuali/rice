@@ -17,11 +17,11 @@ package org.kuali.rice.kns.util;
 
 import edu.sampleu.travel.bo.TravelAccountUseRate;
 import org.junit.Test;
+import org.kuali.rice.core.web.format.*;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.DataDictionaryEntryBase;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
-import org.kuali.rice.kns.web.format.*;
 import org.kuali.test.KNSTestCase;
 
 import static org.junit.Assert.assertFalse;

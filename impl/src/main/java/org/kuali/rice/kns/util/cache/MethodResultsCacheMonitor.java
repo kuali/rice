@@ -17,6 +17,7 @@ package org.kuali.rice.kns.util.cache;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.kuali.rice.core.util.cache.CopiedObject;
 
 import com.opensymphony.oscache.base.CacheEntry;
 import com.opensymphony.oscache.base.events.CacheEntryEvent;

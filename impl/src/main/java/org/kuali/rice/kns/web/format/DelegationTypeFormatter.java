@@ -21,8 +21,9 @@ package org.kuali.rice.kns.web.format;
 import java.util.Arrays;
 import java.util.List;
 
+import org.kuali.rice.core.util.RiceKeyConstants;
+import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.util.KEWConstants;
-import org.kuali.rice.kns.util.RiceKeyConstants;
 
 /**
  * begin Kuali Foundation modification

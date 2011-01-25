@@ -24,9 +24,9 @@ import java.util.Set;
 
 import org.apache.struts.action.ActionMessage;
 import org.apache.struts.action.ActionMessages;
+import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.ErrorMessage;
 import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.springframework.util.AutoPopulatingList;
 
 

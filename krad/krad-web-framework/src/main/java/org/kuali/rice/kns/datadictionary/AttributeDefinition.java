@@ -22,11 +22,11 @@ import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.ClassValidationException;
 import org.kuali.rice.kns.datadictionary.validation.ValidationPattern;
-import org.kuali.rice.kns.web.format.Formatter;
 import org.springframework.beans.factory.InitializingBean;
 
 

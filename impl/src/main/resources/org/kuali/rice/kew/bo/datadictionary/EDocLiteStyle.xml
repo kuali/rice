@@ -97,7 +97,7 @@
     <property name="control">
       <bean parent="CheckboxControlDefinition"/>
     </property>
-    <property name="formatterClass" value="org.kuali.rice.kns.web.format.BooleanFormatter"/> 
+    <property name="formatterClass" value="org.kuali.rice.core.web.format.BooleanFormatter"/> 
     <property name="summary" value="activeInd"/>
     <property name="name" value="activeInd"/>
     <property name="label" value="Active Indicator"/>

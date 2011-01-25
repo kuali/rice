@@ -14,6 +14,7 @@ package org.kuali.rice.kns.rules;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.service.KualiConfigurationService;
+import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.service.IdentityManagementService;
@@ -40,7 +41,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.KNSPropertyConstants;
 import org.kuali.rice.kns.util.MessageMap;
-import org.kuali.rice.kns.util.RiceKeyConstants;
 import org.kuali.rice.kns.util.WebUtils;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 

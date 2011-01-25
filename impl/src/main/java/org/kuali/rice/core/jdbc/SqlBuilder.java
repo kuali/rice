@@ -31,9 +31,9 @@ import org.kuali.rice.core.jdbc.criteria.Criteria;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
+import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.kuali.rice.kns.util.SQLUtils;
-import org.kuali.rice.kns.web.format.BooleanFormatter;
 
 /**
  * This is a description of what this class does - Garey don't forget to fill this in.

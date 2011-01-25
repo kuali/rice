@@ -30,6 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.core.service.KualiConfigurationService;
 import org.kuali.rice.core.util.ClassLoaderUtils;
+import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kew.dto.DocumentTypeDTO;
 import org.kuali.rice.kew.exception.WorkflowException;
 import org.kuali.rice.kns.bo.BusinessObject;
@@ -54,7 +55,6 @@ import org.kuali.rice.kns.rule.PromptBeforeValidation;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.KualiModuleService;
-import org.kuali.rice.kns.web.format.Formatter;
 import org.kuali.rice.kns.workflow.service.KualiWorkflowInfo;
 
 /**

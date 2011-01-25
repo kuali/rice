@@ -18,6 +18,7 @@ package org.kuali.rice.kim.web.struts.form;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.core.web.format.DateDisplayTimestampObjectFormatter;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
 import org.kuali.rice.kim.bo.impl.PersonImpl;
 import org.kuali.rice.kim.bo.impl.RoleImpl;
@@ -31,7 +32,6 @@ import org.kuali.rice.kim.bo.ui.RoleDocumentDelegationMemberQualifier;
 import org.kuali.rice.kim.document.IdentityManagementRoleDocument;
 import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.util.TableRenderUtil;
-import org.kuali.rice.kns.web.format.DateDisplayTimestampObjectFormatter;
 
 /**
  * This is a description of what this class does - shyu don't forget to fill this in. 

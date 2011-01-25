@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
@@ -32,7 +33,6 @@ import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.datadictionary.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.rule.PromptBeforeValidation;
-import org.kuali.rice.kns.web.format.Formatter;
 
 
 /**

@@ -15,7 +15,7 @@
  */
 package org.kuali.rice.kns.web.ui;
 
-import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.core.web.format.Formatter;
 
 /**
  * Interface to be implemented by user interface elements that hold configuration about rendering a

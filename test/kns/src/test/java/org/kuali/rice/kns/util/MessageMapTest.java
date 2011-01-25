@@ -16,6 +16,7 @@
 package org.kuali.rice.kns.util;
 
 import org.junit.Test;
+import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kns.test.document.bo.Account;
 import org.springframework.util.AutoPopulatingList;
 

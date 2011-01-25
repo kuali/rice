@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.MultipleAnchorHtmlData;
-import org.kuali.rice.kns.web.format.Formatter;
 
 /**
  * Represents a Column in a result table

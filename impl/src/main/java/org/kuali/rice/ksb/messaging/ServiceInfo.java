@@ -44,7 +44,7 @@ import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.exception.RiceRuntimeException;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceUtilities;
-import org.kuali.rice.kns.util.cache.FastByteArrayOutputStream;
+import org.kuali.rice.core.util.cache.FastByteArrayOutputStream;
 import org.kuali.rice.ksb.service.KSBServiceLocator;
 
 /**

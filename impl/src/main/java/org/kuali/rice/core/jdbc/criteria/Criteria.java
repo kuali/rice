@@ -34,9 +34,9 @@ import org.kuali.rice.core.jpa.criteria.QueryByCriteria.QueryByCriteriaType;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.type.TypeUtils;
+import org.kuali.rice.core.web.format.BooleanFormatter;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.util.SQLUtils;
-import org.kuali.rice.kns.web.format.BooleanFormatter;
 
 
 

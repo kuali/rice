@@ -18,7 +18,7 @@ package org.kuali.rice.kns.util;
 import org.junit.Test;
 import org.kuali.rice.core.util.type.KualiDecimal;
 import org.kuali.rice.core.util.type.KualiPercent;
-import org.kuali.rice.kns.web.format.Formatter;
+import org.kuali.rice.core.web.format.Formatter;
 import org.kuali.rice.test.BaseRiceTestCase;
 
 import java.math.BigDecimal;

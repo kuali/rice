@@ -17,12 +17,12 @@ package org.kuali.rice.kns.service.impl;
 
 import java.util.List;
 
+import org.kuali.rice.core.util.RiceKeyConstants;
 import org.kuali.rice.kns.bo.Parameter;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocatorWeb;
 import org.kuali.rice.kns.service.ParameterEvaluator;
 import org.kuali.rice.kns.util.GlobalVariables;
-import org.kuali.rice.kns.util.RiceKeyConstants;
 
 public class ParameterEvaluatorImpl implements ParameterEvaluator {
 	private static final long serialVersionUID = -758645169354452022L;

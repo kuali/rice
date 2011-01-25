@@ -19,7 +19,7 @@ import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Date;
 
-import org.kuali.rice.kns.web.format.DateFormatter;
+import org.kuali.rice.core.web.format.DateFormatter;
 
 public class TemporalValueComparator implements Comparator, Serializable {
     private static final TemporalValueComparator theInstance = new TemporalValueComparator();

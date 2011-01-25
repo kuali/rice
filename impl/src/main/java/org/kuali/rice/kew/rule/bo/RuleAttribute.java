@@ -20,7 +20,6 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectBase;
 
 import javax.persistence.*;
@@ -43,7 +42,7 @@ import java.util.List;
   @NamedQuery(name="RuleAttribute.FindByClassName",  query="select ra from RuleAttribute ra where ra.className = :className"),
   @NamedQuery(name="RuleAttribute.GetAllRuleAttributes",  query="select ra from RuleAttribute ra")
 })
-public class RuleAttribute extends PersistableBusinessObjectBase implements WorkflowPersistable  {
+public class RuleAttribute extends PersistableBusinessObjectBase  {
 
 	private static final long serialVersionUID = 1027673603158346349L;
 	@Id
@@ -130,29 +129,6 @@ public class RuleAttribute extends PersistableBusinessObjectBase implements Work
     }
     public void setType(String type) {
         this.type = type;
-    }
-    
-    public Object copy(boolean preserveKeys) {
-        RuleAttribute ruleAttributeClone = new RuleAttribute();
-        if(className != null){
-          ruleAttributeClone.setClassName(new String (className));
-        }
-        if(description != null){
-          ruleAttributeClone.setDescription(new String (description));
-        }
-        if(label != null){
-          ruleAttributeClone.setLabel(new String(label));
-        }
-        if(name != null){
-          ruleAttributeClone.setName(new String (name));
-        }
-        if(preserveKeys && ruleAttributeId != null){
-          ruleAttributeClone.setRuleAttributeId(new Long(ruleAttributeId.longValue()));
-        }
-        if(type != null){
-          ruleAttributeClone.setType(new String(type));
-        }
-        return ruleAttributeClone;
     }
 
     /**

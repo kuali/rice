@@ -249,27 +249,4 @@ public class RuleTemplateAttribute extends PersistableBusinessObjectBase impleme
     public void setRuleTemplateId(Long ruleTemplateId) {
 	this.ruleTemplateId = ruleTemplateId;
     }
-
-    public Object copy(boolean preserveKeys) {
-	RuleTemplateAttribute ruleTemplateAttributeClone = new RuleTemplateAttribute();
-	if (defaultValue != null) {
-	    ruleTemplateAttributeClone.setDefaultValue(new String(defaultValue));
-	}
-	if (displayOrder != null) {
-	    ruleTemplateAttributeClone.setDisplayOrder(new Integer(displayOrder.intValue()));
-	}
-	if (required != null) {
-	    ruleTemplateAttributeClone.setRequired(new Boolean(required.booleanValue()));
-	}
-        if (active != null) {
-            ruleTemplateAttributeClone.setActive(Boolean.valueOf(active.booleanValue()));
-        }
-	if (ruleAttribute != null) {
-	    ruleTemplateAttributeClone.setRuleAttribute((RuleAttribute) ruleAttribute.copy(preserveKeys));
-	}
-	if (preserveKeys && ruleTemplateAttributeId != null) {
-	    ruleTemplateAttributeClone.setRuleTemplateAttributeId(new Long(ruleTemplateAttributeId.longValue()));
-	}
-	return ruleTemplateAttributeClone;
-    }
 }

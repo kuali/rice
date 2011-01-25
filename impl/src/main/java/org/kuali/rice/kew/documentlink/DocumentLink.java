@@ -15,17 +15,13 @@
  */
 package org.kuali.rice.kew.documentlink;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Server side bean for DocumentLinkDAO 
@@ -37,7 +33,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 @Entity
 @Table(name="KREW_DOC_LNK_T")
 //@Sequence(name="KREW_DOC_LNK_S",property="docLinkId")
-public class DocumentLink implements WorkflowPersistable {
+public class DocumentLink implements Serializable {
 
 	private static final long serialVersionUID = 551926904795633010L;
 	
@@ -94,15 +90,6 @@ public class DocumentLink implements WorkflowPersistable {
 	 */
 	public void setDestDocId(Long destDocId) {
 		this.destDocId = destDocId;
-	}
-
-	/**
-	 * This overridden method ...
-	 * 
-	 * @see org.kuali.rice.kew.bo.WorkflowPersistable#copy(boolean)
-	 */
-	public Object copy(boolean preserveKeys) {
-		return null;
 	}
 	
 	//@PrePersist

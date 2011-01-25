@@ -16,30 +16,12 @@
  */
 package org.kuali.rice.kew.actionitem;
 
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -48,6 +30,12 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -69,7 +57,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
     @NamedQuery(name="ActionItem.QuickLinks.FindActionListStatsByPrincipalId", query="SELECT docName, COUNT(*) FROM ActionItem WHERE principalId = :principalId " +
         "AND (delegationType IS null OR delegationType != '" + KEWConstants.DELEGATION_SECONDARY + "') GROUP BY docName")
 })
-public class ActionItem implements WorkflowPersistable, RowStyleable {
+public class ActionItem implements RowStyleable, Serializable {
 
     private static final long serialVersionUID = -1079562205125660151L;
 
@@ -288,17 +276,6 @@ public class ActionItem implements WorkflowPersistable, RowStyleable {
     
     public KimPrincipal getPrincipal(){
         return KIMServiceLocator.getIdentityManagementService().getPrincipal(principalId);
-    }
-
-    public Object copy(boolean preserveKeys) {
-        ActionItem clone = new ActionItem();
-        try {
-            BeanUtils.copyProperties(clone, this);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        return clone;
     }
 
     public void setRowStyleClass(String rowStyleClass) {

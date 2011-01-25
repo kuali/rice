@@ -21,7 +21,6 @@ package org.kuali.rice.kew.rule.bo;
  import org.hibernate.annotations.FetchMode;
  import org.hibernate.annotations.GenericGenerator;
  import org.hibernate.annotations.Parameter;
- import org.kuali.rice.kew.bo.WorkflowPersistable;
  import org.kuali.rice.kew.rule.Role;
  import org.kuali.rice.kew.rule.RoleAttribute;
  import org.kuali.rice.kew.rule.RuleTemplateOption;
@@ -48,7 +47,7 @@ package org.kuali.rice.kew.rule.bo;
 @Table(name="KREW_RULE_TMPL_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleTemplateId")
 @NamedQueries({@NamedQuery(name="findAllOrderedByName", query="SELECT rt FROM RuleTemplate rt ORDER BY rt.name ASC")})
-public class RuleTemplate  extends PersistableBusinessObjectBase implements WorkflowPersistable  {
+public class RuleTemplate  extends PersistableBusinessObjectBase {
 
     private static final long serialVersionUID = -3387940485523951302L;
 
@@ -262,46 +261,6 @@ public class RuleTemplate  extends PersistableBusinessObjectBase implements Work
 
     public void setDelegationTemplate(RuleTemplate delegationTemplate) {
         this.delegationTemplate = delegationTemplate;
-    }
-
-    /**
-     * Returns a copy of this object and its dependents
-     * @see org.kuali.rice.kew.bo.WorkflowPersistable#copy(boolean)
-     */
-    public Object copy(boolean preserveKeys) {
-        RuleTemplate ruleTemplateClone = new RuleTemplate();
-
-        if (description != null) {
-            ruleTemplateClone.setDescription(new String(description));
-        }
-        if (name != null) {
-            ruleTemplateClone.setName(new String(name));
-        }
-        if (preserveKeys && ruleTemplateId != null) {
-            ruleTemplateClone.setRuleTemplateId(new Long(ruleTemplateId.longValue()));
-        }
-        if ((getRuleTemplateAttributes() != null) && !getRuleTemplateAttributes().isEmpty()) {
-            List<RuleTemplateAttribute> ruleTemplateAttributeList = new ArrayList<RuleTemplateAttribute>();
-
-            for (RuleTemplateAttribute ruleTemplateAttribute: getRuleTemplateAttributes()) {
-                RuleTemplateAttribute ruleTemplateAttributeCopy = (RuleTemplateAttribute) ruleTemplateAttribute.copy(preserveKeys);
-                ruleTemplateAttributeCopy.setRuleTemplate(ruleTemplateClone);
-                ruleTemplateAttributeList.add(ruleTemplateAttributeCopy);
-            }
-            ruleTemplateClone.setRuleTemplateAttributes(ruleTemplateAttributeList);
-        }
-        if ((ruleTemplateOptions != null) && !ruleTemplateOptions.isEmpty()) {
-            List<RuleTemplateOption> ruleTemplateOptionList = new ArrayList<RuleTemplateOption>();
-
-            for (RuleTemplateOption ruleTemplateOption: ruleTemplateOptions) {
-                RuleTemplateOption ruleTemplateOptionCopy = (RuleTemplateOption) ruleTemplateOption.copy(preserveKeys);
-                ruleTemplateOptionCopy.setRuleTemplate(ruleTemplateClone);
-                ruleTemplateOptionList.add(ruleTemplateOptionCopy);
-            }
-            ruleTemplateClone.setRuleTemplateOptions(ruleTemplateOptionList);
-        }
-
-        return ruleTemplateClone;
     }
 
     public String getReturnUrl() {

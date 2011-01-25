@@ -22,13 +22,13 @@ import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.jdbc.SqlBuilder;
 import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -50,7 +50,7 @@ import java.util.Calendar;
 	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByRouteHeaderId", query="select s from SearchableAttributeDateTimeValue as s where s.routeHeaderId = :routeHeaderId"),
 	@NamedQuery(name="SearchableAttributeDateTimeValue.FindByKey", query="select s from SearchableAttributeDateTimeValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
 })
-public class SearchableAttributeDateTimeValue implements WorkflowPersistable, SearchableAttributeValue {
+public class SearchableAttributeDateTimeValue implements SearchableAttributeValue, Serializable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(SearchableAttributeDateTimeValue.class);
 
     private static final long serialVersionUID = 3045621112943214772L;
@@ -251,13 +251,6 @@ public class SearchableAttributeDateTimeValue implements WorkflowPersistable, Se
 
     public void setSearchableAttributeValueId(Long searchableAttributeValueId) {
         this.searchableAttributeValueId = searchableAttributeValueId;
-    }
-
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.WorkflowPersistable#copy(boolean)
-     */
-    public Object copy(boolean preserveKeys) {
-        return null;
     }
 
 	//@PrePersist

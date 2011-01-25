@@ -16,6 +16,17 @@
  */
 package org.kuali.rice.kew.notes;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.kuali.rice.core.util.OrmUtils;
+import org.kuali.rice.core.util.RiceConstants;
+import org.kuali.rice.kew.service.KEWServiceLocator;
+import org.kuali.rice.kew.util.KEWConstants;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -23,29 +34,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Parameter;
-import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.core.util.RiceConstants;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
-import org.kuali.rice.kew.service.KEWServiceLocator;
-import org.kuali.rice.kew.util.KEWConstants;
 
 
 /**
@@ -62,7 +50,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 	@NamedQuery(name="KewNote.FindNoteByNoteId",query="select n from org.kuali.rice.kew.notes.Note as n where n.noteId = :noteId"),
 	@NamedQuery(name="KewNote.FindNoteByRouteHeaderId", query="select n from org.kuali.rice.kew.notes.Note as n where n.routeHeaderId = :routeHeaderId order by n.noteId")
 })
-public class Note implements WorkflowPersistable {
+public class Note implements Serializable {
 
 	private static final long serialVersionUID = -6136544551121011531L;
 	@Id
@@ -225,10 +213,6 @@ public class Note implements WorkflowPersistable {
         Date date = calendar.getTime();
         DateFormat dateFormat = RiceConstants.getDefaultTimeFormat();
         return dateFormat.format(date);
-    }
-    
-    public Object copy(boolean preserveKeys) {
-        return null;
     }
 
 	public List<Attachment> getAttachments() {

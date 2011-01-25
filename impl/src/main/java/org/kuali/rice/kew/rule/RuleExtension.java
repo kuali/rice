@@ -23,14 +23,13 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.CollectionUtils;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.bo.RuleTemplateAttribute;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -48,7 +47,7 @@ import java.util.List;
 @Entity
 @Table(name="KREW_RULE_EXT_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleExtensionId")
-public class RuleExtension implements WorkflowPersistable {
+public class RuleExtension implements Serializable {
 
 	private static final long serialVersionUID = 8178135296413950516L;
 
@@ -153,31 +152,6 @@ public class RuleExtension implements WorkflowPersistable {
 
 	public void setRuleTemplateAttributeId(Long ruleTemplateAttributeId) {
 		this.ruleTemplateAttributeId = ruleTemplateAttributeId;
-	}
-
-	public Object copy(boolean preserveKeys) {
-		RuleExtension ruleExtensionClone = new RuleExtension();
-		if (preserveKeys && (ruleExtensionId != null)) {
-			ruleExtensionClone.setRuleExtensionId(new Long(ruleExtensionId.longValue()));
-		}
-		if ((extensionValues != null) && !extensionValues.isEmpty()) {
-			List extensionValueList = new ArrayList();
-
-			for (Iterator i = extensionValues.iterator(); i.hasNext();) {
-				RuleExtensionValue ruleExtensionValue = (RuleExtensionValue) i.next();
-				RuleExtensionValue ruleExtensionValueCopy = (RuleExtensionValue) ruleExtensionValue.copy(preserveKeys);
-				ruleExtensionValueCopy.setExtension(ruleExtensionClone);
-				extensionValueList.add(ruleExtensionValueCopy);
-			}
-			ruleExtensionClone.setExtensionValues(extensionValueList);
-		}
-
-		// if(ruleTemplateAttribute != null){
-		// ruleExtensionClone.setRuleTemplateAttribute((RuleTemplateAttribute)ruleTemplateAttribute.copy(preserveKeys));
-		// }
-		ruleExtensionClone.setRuleTemplateAttribute(getRuleTemplateAttribute());
-		ruleExtensionClone.setRuleTemplateAttributeId(getRuleTemplateAttributeId());
-		return ruleExtensionClone;
 	}
 
     public boolean equals(Object o) {

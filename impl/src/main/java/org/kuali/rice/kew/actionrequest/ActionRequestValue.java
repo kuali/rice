@@ -16,26 +16,6 @@
  */
 package org.kuali.rice.kew.actionrequest;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -47,7 +27,6 @@ import org.kuali.rice.core.util.OrmUtils;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actiontaken.ActionTakenValue;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.engine.CompatUtils;
 import org.kuali.rice.kew.engine.node.RouteNode;
 import org.kuali.rice.kew.engine.node.RouteNodeInstance;
@@ -62,6 +41,13 @@ import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -92,7 +78,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
   @NamedQuery(name="ActionRequestValue.GetRequestGroupIds", query="select arv.groupId from ActionRequestValue arv where arv.routeHeaderId = :routeHeaderId and arv.currentIndicator = :currentIndicator and arv.recipientTypeCd = :recipientTypeCd"),
   @NamedQuery(name="ActionRequestValue.FindByStatusAndGroupId", query="select arv from ActionRequestValue arv where arv.groupId = :groupId and arv.currentIndicator = :currentIndicator and arv.status = :status")
 })
-public class ActionRequestValue implements WorkflowPersistable {
+public class ActionRequestValue implements Serializable {
 
 	private static final long serialVersionUID = 8781414791855848385L;
 
@@ -519,21 +505,6 @@ public class ActionRequestValue implements WorkflowPersistable {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
-    }
-
-    public Object copy(boolean preserveKeys) {
-        ActionRequestValue clone = new ActionRequestValue();
-        try {
-            BeanUtils.copyProperties(clone, this);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        if (!preserveKeys) {
-            clone.setActionRequestId(null);
-        }
-        ActionTakenValue actionTakenClone = (ActionTakenValue) getActionTaken().copy(preserveKeys);
-        clone.setActionTaken(actionTakenClone);
-        return clone;
     }
 
     public boolean isInitialized() {

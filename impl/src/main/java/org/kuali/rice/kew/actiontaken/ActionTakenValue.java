@@ -16,21 +16,6 @@
  */
 package org.kuali.rice.kew.actiontaken;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collection;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.persistence.Version;
-
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -43,13 +28,18 @@ import org.kuali.rice.kew.actionrequest.KimGroupRecipient;
 import org.kuali.rice.kew.actionrequest.KimPrincipalRecipient;
 import org.kuali.rice.kew.actionrequest.Recipient;
 import org.kuali.rice.kew.actionrequest.service.ActionRequestService;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.CodeTranslator;
 import org.kuali.rice.kew.util.KEWConstants;
 import org.kuali.rice.kim.bo.Group;
 import org.kuali.rice.kim.bo.entity.KimPrincipal;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collection;
 
 
 /**
@@ -61,7 +51,7 @@ import org.kuali.rice.kim.service.KIMServiceLocator;
 @Entity
 //@Sequence(name="KREW_ACTN_TKN_S", property="actionTakenId")
 @Table(name="KREW_ACTN_TKN_T")
-public class ActionTakenValue implements WorkflowPersistable {
+public class ActionTakenValue implements Serializable {
 
     /**
 	 *
@@ -282,20 +272,6 @@ public class ActionTakenValue implements WorkflowPersistable {
 
     public Collection getRootActionRequests() {
         return getActionRequestService().getRootRequests(getActionRequests());
-    }
-
-    public Object copy(boolean preserveKeys) {
-        ActionTakenValue clone = new ActionTakenValue();
-        try {
-            BeanUtils.copyProperties(clone, this);
-        } catch(Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        if (!preserveKeys) {
-            clone.setActionTakenId(null);
-        }
-        return clone;
     }
 
     private ActionRequestService getActionRequestService() {

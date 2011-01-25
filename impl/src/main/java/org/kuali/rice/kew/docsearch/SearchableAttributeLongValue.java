@@ -20,7 +20,6 @@ import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
@@ -28,6 +27,7 @@ import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.SQLUtils;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
@@ -48,7 +48,7 @@ import java.util.regex.Pattern;
 	@NamedQuery(name="SearchableAttributeLongValue.FindByRouteHeaderId", query="select s from SearchableAttributeLongValue as s where s.routeHeaderId = :routeHeaderId"),
 	@NamedQuery(name="SearchableAttributeLongValue.FindByKey", query="select s from SearchableAttributeLongValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
 })
-public class SearchableAttributeLongValue implements WorkflowPersistable, SearchableAttributeValue {
+public class SearchableAttributeLongValue implements SearchableAttributeValue, Serializable {
 
     private static final long serialVersionUID = 5786144436732198346L;
 
@@ -269,13 +269,6 @@ public class SearchableAttributeLongValue implements WorkflowPersistable, Search
 
     public void setSearchableAttributeValueId(Long searchableAttributeValueId) {
         this.searchableAttributeValueId = searchableAttributeValueId;
-    }
-
-    /* (non-Javadoc)
-     * @see org.kuali.rice.kew.WorkflowPersistable#copy(boolean)
-     */
-    public Object copy(boolean preserveKeys) {
-        return null;
     }
 
 	//@PrePersist

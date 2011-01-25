@@ -20,10 +20,10 @@ import org.apache.commons.lang.ObjectUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 
 /**
@@ -39,7 +39,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="KREW_RULE_EXT_VAL_T")
 //@Sequence(name="KREW_RTE_TMPL_S", property="ruleExtensionValueId")
-public class RuleExtensionValue implements WorkflowPersistable {
+public class RuleExtensionValue implements Serializable {
 
 	private static final long serialVersionUID = 8909789087052290261L;
 	@Id
@@ -112,21 +112,6 @@ public class RuleExtensionValue implements WorkflowPersistable {
     }
     public void setValue(String value) {
         this.value = value;
-    }
-    public Object copy(boolean preserveKeys) {
-        RuleExtensionValue ruleExtensionValueClone = new RuleExtensionValue();
-        
-        if(key != null){
-          ruleExtensionValueClone.setKey(new String(key));
-        }
-        if(preserveKeys && ruleExtensionValueId != null){
-          ruleExtensionValueClone.setRuleExtensionValueId(new Long(ruleExtensionValueId.longValue()));
-        }
-        if(value != null){
-          ruleExtensionValueClone.setValue(new String(value));
-        }
-                
-        return ruleExtensionValueClone;
     }
 
     public boolean equals(Object o) {

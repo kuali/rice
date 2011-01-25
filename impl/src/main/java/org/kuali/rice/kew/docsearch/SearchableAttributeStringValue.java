@@ -16,29 +16,17 @@
  */
 package org.kuali.rice.kew.docsearch;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.KEWConstants;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 
 /**
@@ -52,7 +40,7 @@ import org.kuali.rice.kew.util.KEWConstants;
 	@NamedQuery(name="SearchableAttributeStringValue.FindByRouteHeaderId", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routeHeaderId"),
 	@NamedQuery(name="SearchableAttributeStringValue.FindByKey", query="select s from SearchableAttributeStringValue as s where s.routeHeaderId = :routeHeaderId and s.searchableAttributeKey = :searchableAttributeKey")
 })
-public class SearchableAttributeStringValue implements WorkflowPersistable, SearchableAttributeValue {
+public class SearchableAttributeStringValue implements SearchableAttributeValue, Serializable {
 
     private static final long serialVersionUID = 8696089933682052078L;
 
@@ -218,13 +206,6 @@ public class SearchableAttributeStringValue implements WorkflowPersistable, Sear
 	public void setSearchableAttributeValueId(Long searchableAttributeValueId) {
 		this.searchableAttributeValueId = searchableAttributeValueId;
 	}
-
-	/* (non-Javadoc)
-     * @see org.kuali.rice.kew.WorkflowPersistable#copy(boolean)
-     */
-    public Object copy(boolean preserveKeys) {
-        return null;
-    }
 
 	//@PrePersist
 	public void beforeInsert(){

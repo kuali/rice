@@ -16,24 +16,16 @@
  */
 package org.kuali.rice.kew.doctype;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 import org.kuali.rice.core.util.OrmUtils;
-import org.kuali.rice.kew.bo.WorkflowPersistable;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.rule.bo.RuleAttribute;
 import org.kuali.rice.kew.rule.service.RuleAttributeService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 
 /**
@@ -46,7 +38,7 @@ import org.kuali.rice.kew.service.KEWServiceLocator;
 @Entity
 //@Sequence(name="KREW_DOC_TYP_ATTR_S", property="documentTypeAttributeId")
 @Table(name="KREW_DOC_TYP_ATTR_T")
-public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
+public class DocumentTypeAttribute implements Comparable, Serializable {
 
 	private static final long serialVersionUID = -4429421648373903566L;
 
@@ -137,13 +129,6 @@ public class DocumentTypeAttribute implements WorkflowPersistable, Comparable {
 	 */
 	public RuleAttribute getRuleAttribute() {
 		return ruleAttribute;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.kuali.rice.kew.WorkflowPersistable#copy(boolean)
-	 */
-	public Object copy(boolean preserveKeys) {
-		return null;
 	}
 
     private RuleAttributeService getRuleAttributeService() {

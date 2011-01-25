@@ -16,36 +16,18 @@
  */
 package org.kuali.rice.kew.engine.node.service.impl;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.apache.commons.collections.ComparatorUtils;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.engine.RouteHelper;
-import org.kuali.rice.kew.engine.node.Branch;
-import org.kuali.rice.kew.engine.node.BranchState;
-import org.kuali.rice.kew.engine.node.NodeGraphContext;
-import org.kuali.rice.kew.engine.node.NodeGraphSearchCriteria;
-import org.kuali.rice.kew.engine.node.NodeGraphSearchResult;
-import org.kuali.rice.kew.engine.node.NodeMatcher;
-import org.kuali.rice.kew.engine.node.NodeState;
+import org.kuali.rice.kew.engine.node.*;
 import org.kuali.rice.kew.engine.node.Process;
-import org.kuali.rice.kew.engine.node.RouteNode;
-import org.kuali.rice.kew.engine.node.RouteNodeInstance;
-import org.kuali.rice.kew.engine.node.RouteNodeUtils;
 import org.kuali.rice.kew.engine.node.dao.RouteNodeDAO;
 import org.kuali.rice.kew.engine.node.service.RouteNodeService;
 import org.kuali.rice.kew.routeheader.DocumentRouteHeaderValue;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.util.Utilities;
+
+import java.util.*;
 
 
 
@@ -90,7 +72,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     }
     
     public List getCurrentNodeInstances(Long documentId) {
-        List currentNodeInstances = getActiveNodeInstances(documentId);
+        List<RouteNodeInstance> currentNodeInstances = getActiveNodeInstances(documentId);
         if (currentNodeInstances.isEmpty()) {
             currentNodeInstances = getTerminalNodeInstances(documentId);
         }
@@ -102,10 +84,9 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     }
     
     public List<RouteNodeInstance> getActiveNodeInstances(DocumentRouteHeaderValue document) {
-       List flattenedNodeInstances = getFlattenedNodeInstances(document, true);
-        List<RouteNodeInstance> activeNodeInstances = new ArrayList();
-        for (Iterator iterator = flattenedNodeInstances.iterator(); iterator.hasNext();) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
+       List<RouteNodeInstance> flattenedNodeInstances = getFlattenedNodeInstances(document, true);
+        List<RouteNodeInstance> activeNodeInstances = new ArrayList<RouteNodeInstance>();
+        for (RouteNodeInstance nodeInstance : flattenedNodeInstances) {
             if (nodeInstance.isActive()) {
                 activeNodeInstances.add(nodeInstance);
             }
@@ -113,7 +94,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
         return activeNodeInstances;
     }
     
-    public List getTerminalNodeInstances(Long documentId) {
+    public List<RouteNodeInstance> getTerminalNodeInstances(Long documentId) {
         return routeNodeDAO.getTerminalNodeInstances(documentId);
     }
     
@@ -136,16 +117,16 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     }
     
     public List findNextRouteNodesInPath(RouteNodeInstance nodeInstance, String nodeName) {
-        List nodesInPath = new ArrayList();
-        for (Iterator iterator = nodeInstance.getRouteNode().getNextNodes().iterator(); iterator.hasNext();) {
-            RouteNode nextNode = (RouteNode) iterator.next();
-            nodesInPath.addAll(findNextRouteNodesInPath(nodeName, nextNode, new HashSet()));
+        List<RouteNode> nodesInPath = new ArrayList<RouteNode>();
+        for (Iterator<RouteNode> iterator = nodeInstance.getRouteNode().getNextNodes().iterator(); iterator.hasNext();) {
+            RouteNode nextNode = iterator.next();
+            nodesInPath.addAll(findNextRouteNodesInPath(nodeName, nextNode, new HashSet<Long>()));
         }
         return nodesInPath;
     }
     
-    private List findNextRouteNodesInPath(String nodeName, RouteNode node, Set inspected) {
-        List nextNodesInPath = new ArrayList();
+    private List<RouteNode> findNextRouteNodesInPath(String nodeName, RouteNode node, Set<Long> inspected) {
+        List<RouteNode> nextNodesInPath = new ArrayList<RouteNode>();
         if (inspected.contains(node.getRouteNodeId())) {
             return nextNodesInPath;
         }
@@ -158,8 +139,8 @@ public class RouteNodeServiceImpl implements RouteNodeService {
                 RouteNode subNode = subProcess.getInitialRouteNode();
                 nextNodesInPath.addAll(findNextRouteNodesInPath(nodeName, subNode, inspected));
             }
-            for (Iterator iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
-                RouteNode nextNode = (RouteNode) iterator.next();
+            for (Iterator<RouteNode> iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
+                RouteNode nextNode = iterator.next();
                 nextNodesInPath.addAll(findNextRouteNodesInPath(nodeName, nextNode, inspected));
             }
         }
@@ -168,9 +149,9 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     
     public boolean isNodeInPath(DocumentRouteHeaderValue document, String nodeName) {
         boolean isInPath = false;
-        Collection activeNodes = getActiveNodeInstances(document.getRouteHeaderId());
-        for (Iterator iterator = activeNodes.iterator(); iterator.hasNext();) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
+        Collection<RouteNodeInstance> activeNodes = getActiveNodeInstances(document.getRouteHeaderId());
+        for (Iterator<RouteNodeInstance> iterator = activeNodes.iterator(); iterator.hasNext();) {
+            RouteNodeInstance nodeInstance = iterator.next();
             List nextNodesInPath = findNextRouteNodesInPath(nodeInstance, nodeName);
             isInPath = isInPath || !nextNodesInPath.isEmpty();
         }
@@ -191,14 +172,14 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     
     public Set findPreviousNodeNames(Long documentId) {
         List currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId);
-        List nodeInstances = new ArrayList();
+        List<RouteNodeInstance> nodeInstances = new ArrayList<RouteNodeInstance>();
         for (Iterator iterator = currentNodeInstances.iterator(); iterator.hasNext();) {
             RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
             nodeInstances.addAll(nodeInstance.getPreviousNodeInstances());
         }
-        Set nodeNames = new HashSet();
+        Set<String> nodeNames = new HashSet<String>();
         while (!nodeInstances.isEmpty()) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance)nodeInstances.remove(0);
+            RouteNodeInstance nodeInstance = nodeInstances.remove(0);
             nodeNames.add(nodeInstance.getName());
             nodeInstances.addAll(nodeInstance.getPreviousNodeInstances());
         }
@@ -207,14 +188,14 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     
     public List<String> findFutureNodeNames(Long documentId) {
         List currentNodeInstances = KEWServiceLocator.getRouteNodeService().getCurrentNodeInstances(documentId);
-        List nodes = new ArrayList();
+        List<RouteNode> nodes = new ArrayList<RouteNode>();
         for (Iterator iterator = currentNodeInstances.iterator(); iterator.hasNext();) {
             RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
             nodes.addAll(nodeInstance.getRouteNode().getNextNodes());
         }
         List<String> nodeNames = new ArrayList<String>();
         while (!nodes.isEmpty()) {
-            RouteNode node = (RouteNode)nodes.remove(0);
+            RouteNode node = nodes.remove(0);
             if (!nodeNames.contains(node.getRouteNodeName())) {
         	nodeNames.add(node.getRouteNodeName());
             }
@@ -236,14 +217,14 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     }
     
     public List<RouteNode> getFlattenedNodes(Process process) {
-        Map nodesMap = new HashMap();
+        Map<String, RouteNode> nodesMap = new HashMap<String, RouteNode>();
         if (process.getInitialRouteNode() != null) {
             flattenNodeGraph(nodesMap, process.getInitialRouteNode());
             List<RouteNode> nodes = new ArrayList<RouteNode>(nodesMap.values());
             Collections.sort(nodes, new RouteNodeSorter());
             return nodes;
         } else {
-            List nodes = new ArrayList();
+            List<RouteNode> nodes = new ArrayList<RouteNode>();
             nodes.add(new RouteNode());
             return nodes;
         }
@@ -254,14 +235,14 @@ public class RouteNodeServiceImpl implements RouteNodeService {
      * Recursively walks the node graph and builds up the map.  Uses a map because we will
      * end up walking through duplicates, as is the case with Join nodes.
      */
-    private void flattenNodeGraph(Map nodes, RouteNode node) {
+    private void flattenNodeGraph(Map<String, RouteNode> nodes, RouteNode node) {
         if (node != null) {
             if (nodes.containsKey(node.getRouteNodeName())) {
                 return;
             }
             nodes.put(node.getRouteNodeName(), node);
-            for (Iterator iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
-                RouteNode nextNode = (RouteNode) iterator.next();
+            for (Iterator<RouteNode> iterator = node.getNextNodes().iterator(); iterator.hasNext();) {
+                RouteNode nextNode = iterator.next();
                 flattenNodeGraph(nodes, nextNode);
             }
         } else {
@@ -271,15 +252,15 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     
     public List<RouteNodeInstance> getFlattenedNodeInstances(DocumentRouteHeaderValue document, boolean includeProcesses) {
         List<RouteNodeInstance> nodeInstances = new ArrayList<RouteNodeInstance>();
-        Set visitedNodeInstanceIds = new HashSet();
-        for (Iterator iterator = document.getInitialRouteNodeInstances().iterator(); iterator.hasNext();) {
-            RouteNodeInstance initialNodeInstance = (RouteNodeInstance) iterator.next();
+        Set<Long> visitedNodeInstanceIds = new HashSet<Long>();
+        for (Iterator<RouteNodeInstance> iterator = document.getInitialRouteNodeInstances().iterator(); iterator.hasNext();) {
+            RouteNodeInstance initialNodeInstance = iterator.next();
             flattenNodeInstanceGraph(nodeInstances, visitedNodeInstanceIds, initialNodeInstance, includeProcesses);    
         }
         return nodeInstances;
     }
     
-	private void flattenNodeInstanceGraph(List nodeInstances, Set visitedNodeInstanceIds, RouteNodeInstance nodeInstance, boolean includeProcesses) {
+	private void flattenNodeInstanceGraph(List<RouteNodeInstance> nodeInstances, Set<Long> visitedNodeInstanceIds, RouteNodeInstance nodeInstance, boolean includeProcesses) {
 
 		if (nodeInstance != null) {
 			if (visitedNodeInstanceIds.contains(nodeInstance.getRouteNodeInstanceId())) {
@@ -290,8 +271,8 @@ public class RouteNodeServiceImpl implements RouteNodeService {
 			}
 			visitedNodeInstanceIds.add(nodeInstance.getRouteNodeInstanceId());
 			nodeInstances.add(nodeInstance);
-			for (Iterator iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
-				RouteNodeInstance nextNodeInstance = (RouteNodeInstance) iterator.next();
+			for (Iterator<RouteNodeInstance> iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext();) {
+				RouteNodeInstance nextNodeInstance = iterator.next();
 				flattenNodeInstanceGraph(nodeInstances, visitedNodeInstanceIds, nextNodeInstance, includeProcesses);
 			}
 
@@ -355,10 +336,10 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     }
     
     public List<RouteNodeInstance> getActiveNodeInstances(DocumentRouteHeaderValue document, String nodeName) {
-		Collection activeNodes = getActiveNodeInstances(document.getRouteHeaderId());
-		List foundNodes = new ArrayList();
-        for (Iterator iterator = activeNodes.iterator(); iterator.hasNext();) {
-            RouteNodeInstance nodeInstance = (RouteNodeInstance) iterator.next();
+		Collection<RouteNodeInstance> activeNodes = getActiveNodeInstances(document.getRouteHeaderId());
+		List<RouteNodeInstance> foundNodes = new ArrayList<RouteNodeInstance>();
+        for (Iterator<RouteNodeInstance> iterator = activeNodes.iterator(); iterator.hasNext();) {
+            RouteNodeInstance nodeInstance = iterator.next();
             if (nodeInstance.getName().equals(nodeName)) {
             	foundNodes.add(nodeInstance);
             }
@@ -371,7 +352,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     	if (context.getResultNodeInstance() == null) {
     		exactPath.addAll(context.getVisited().values());
     	} else {
-    		determineExactPath(exactPath, new HashMap(), startingNodeInstances, context.getResultNodeInstance());
+    		determineExactPath(exactPath, new HashMap<Long, RouteNodeInstance>(), startingNodeInstances, context.getResultNodeInstance());
     	}
     	if (NodeGraphSearchCriteria.SEARCH_DIRECTION_FORWARD == searchDirection) {
     		Collections.sort(exactPath, NODE_INSTANCE_BACKWARD_SORT);
@@ -381,7 +362,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
     	return exactPath;
     }
     
-    private void determineExactPath(List exactPath, Map visited, Collection startingNodeInstances, RouteNodeInstance nodeInstance) {
+    private void determineExactPath(List exactPath, Map<Long, RouteNodeInstance> visited, Collection startingNodeInstances, RouteNodeInstance nodeInstance) {
     	if (nodeInstance == null) {
     		return;
     	}
@@ -396,8 +377,8 @@ public class RouteNodeServiceImpl implements RouteNodeService {
 				return;
 			}
 		}
-    	for (Iterator iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext(); ) {
-			RouteNodeInstance nextNodeInstance = (RouteNodeInstance) iterator.next();
+    	for (Iterator<RouteNodeInstance> iterator = nodeInstance.getNextNodeInstances().iterator(); iterator.hasNext(); ) {
+			RouteNodeInstance nextNodeInstance = iterator.next();
 			determineExactPath(exactPath, visited, startingNodeInstances, nextNodeInstance);
 		}
     }
@@ -476,7 +457,7 @@ public class RouteNodeServiceImpl implements RouteNodeService {
 		if (document == null) {
     		throw new IllegalArgumentException("Document must not be null.");
     	}
-		List revokedNodeInstances = new ArrayList();
+		List<RouteNodeInstance> revokedNodeInstances = new ArrayList<RouteNodeInstance>();
     	
     	Branch rootBranch = document.getRootBranch();
     	BranchState state = null;

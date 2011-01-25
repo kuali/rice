@@ -34,7 +34,7 @@ public interface RouteNodeDAO {
     public RouteNode findRouteNodeById(Long nodeId);
     public RouteNodeInstance findRouteNodeInstanceById(Long nodeInstanceId);
     public List<RouteNodeInstance> getActiveNodeInstances(Long documentId);
-    public List getTerminalNodeInstances(Long documentId);
+    public List<RouteNodeInstance> getTerminalNodeInstances(Long documentId);
     public List getInitialNodeInstances(Long documentId);
     public NodeState findNodeState(Long nodeInstanceId, String key);
     public RouteNode findRouteNodeByName(Long documentTypeId, String name);

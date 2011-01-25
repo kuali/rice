@@ -109,7 +109,7 @@ public class RouteNodeDAOJpaImpl implements RouteNodeDAO {
     }
 
     @SuppressWarnings("unchecked")
-    public List getTerminalNodeInstances(Long documentId) {
+    public List<RouteNodeInstance> getTerminalNodeInstances(Long documentId) {
     	Query query = entityManager.createNamedQuery("RouteNodeInstance.FindTerminalNodeInstances");
     	query.setParameter(KEWPropertyConstants.DOCUMENT_ID, documentId);
 		

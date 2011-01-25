@@ -68,6 +68,8 @@ public class DocumentTypePermissionServiceTest extends KEWTestCase {
 			//kimPriorityParam.set
 			// TODO
 		}
+
+
 		
 	}
 	

@@ -76,7 +76,7 @@ public interface RouteNodeService {
      * @param documentId for the given Document
      * @return list of terminal node instances
      */
-    public List getTerminalNodeInstances(Long documentId);
+    public List<RouteNodeInstance> getTerminalNodeInstances(Long documentId);
     
     /**
      * Returns the node instances representing the most recent node instances in the document.

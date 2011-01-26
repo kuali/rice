@@ -107,6 +107,9 @@ public class KimTypeLookupableHelperServiceImpl extends KualiLookupableHelperSer
     			parameters.put(KNSConstants.DISPATCH_REQUEST_PARAMETER, KNSConstants.DOC_HANDLER_METHOD);
     			parameters.put(KNSConstants.PARAMETER_COMMAND, KEWConstants.INITIATE_COMMAND);
     			parameters.put(KNSConstants.DOCUMENT_TYPE_NAME, docTypeName);
+    	        if (StringUtils.isNotBlank(getReturnLocation())) {
+    	        	parameters.put(KNSConstants.RETURN_LOCATION_PARAMETER, getReturnLocation());	 
+    			}
     		}
 	    	href = UrlFactory.parameterizeUrl(KimCommonUtils.getKimBasePath()+docTypeAction, parameters);
     	}

@@ -28,6 +28,7 @@ import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.core.mail.EmailFrom;
 import org.kuali.rice.core.mail.EmailSubject;
 import org.kuali.rice.core.mail.EmailToList;
+import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.core.util.RiceConstants;
 import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.util.XmlJotter;
@@ -85,7 +86,11 @@ public class NoteConfigComponent implements EDLModelComponent {
 	private List<String> cc = new ArrayList<String>();
 	private List<String> bc = new ArrayList<String>();
 	private static final String DEFAULT_EMAIL_FROM_ADDRESS = KNSServiceLocator.getParameterService().getParameterValue(KEWConstants.KEW_NAMESPACE, "Mailer", "FROM_ADDRESS");//"workflow@indiana.edu";
-	
+	protected Mailer getMailer() {
+    	// TODO User the global resource loader to find the Mailer.
+    	Mailer mailer = new Mailer();
+    	return mailer;
+    }
 
 
 	public void updateDOM(Document dom, Element configElement, EDLContext edlContext) {
@@ -369,7 +374,7 @@ public class NoteConfigComponent implements EDLModelComponent {
 				EmailContent emailContent = emailStyleHelper
 						.generateEmailContent(style, document);
 				if (!this.to.isEmpty()) {
-					KEWServiceLocator.getEmailService().sendEmail(
+					getMailer().sendEmail(
 							new EmailFrom(from), new EmailToList(this.to),
 							new EmailSubject(emailContent.getSubject()),
 							new EmailBody(emailContent.getBody()),

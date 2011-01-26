@@ -134,8 +134,7 @@ public class EmailServiceImpl implements EmailService {
         LOG.debug("content: "+content);
 
         // actually do the send
-//        sendEmail(content, subject, sender, recipientEmailAddress, format);
-        mailer.sendMessage(sender, recipientEmailAddress, subject, content, !FORMAT_TEXT_PLAIN.equals(format));
+        mailer.sendEmail(new EmailFrom(sender), new EmailTo(recipientEmailAddress), new EmailSubject(subject), new EmailBody(content), !FORMAT_TEXT_PLAIN.equals(format));
 
         return null;
     }

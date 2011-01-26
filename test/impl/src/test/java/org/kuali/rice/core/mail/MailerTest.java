@@ -54,14 +54,8 @@ public class MailerTest {
 		smtpServer.start();
 		 
 		// Test that an e-mail message gets sent to the SMTP server
-		try {
-	        mailer.sendMessage(sender, recipient, subject, messageBody, false);
-		} catch (AddressException e) {
-			// Not expecting an AddressException
-		} catch (MessagingException e) {
-			// Not expecting a MessagingException
-		}
-        Assert.assertEquals(1, smtpServer.getMessages().size());
+		mailer.sendEmail(new EmailFrom(sender), new EmailTo(recipient), new EmailSubject(subject), new EmailBody(messageBody), false);
+		Assert.assertEquals(1, smtpServer.getMessages().size());
 
         // Shutdown the SMTP server
         smtpServer.stop();        
@@ -82,15 +76,14 @@ public class MailerTest {
 		Assert.assertTrue(smtpServer.getServer().getPort() != mailSender.getPort());
 
 		// Test that sending to the wrong port causes a MessagingException.
-		MessagingException me = null;
+		Exception e = null;
 		try {
-			mailer.sendMessage(sender, recipient, subject, messageBody, false);
-		} catch (AddressException e) {
-			// Not expecting an AddressException
-		} catch (MessagingException e) {
-			me = e;
+			mailer.sendEmail(new EmailFrom(sender), new EmailTo(recipient), new EmailSubject(subject), new EmailBody(messageBody), false);
 		}
-		Assert.assertNotNull(me);
+		catch (Exception me){
+			e = me;
+		}
+		Assert.assertNotNull(e);
 		
 		// Shutdown the SMTP server
         smtpServer.stop();        
@@ -107,15 +100,14 @@ public class MailerTest {
 		smtpServer.start();
 				
 		// Test that sending to an incorrectly formatted e-mail address throws an AddressException.
-		AddressException ae = null;
+		Exception e = null;
 		try {
-			mailer.sendMessage(sender, "recipient@@test.kuali.org", subject, messageBody, false);
-		} catch (AddressException e) {
-			ae = e;
-		} catch (MessagingException e) {
-			// Not expecting a MessagingException
+			mailer.sendEmail(new EmailFrom(sender), new EmailTo("recipient@@test.kuali.org"), new EmailSubject(subject), new EmailBody(messageBody), false);
 		}
-		Assert.assertNotNull(ae);
+		catch (Exception me){
+			e = me;
+		}
+		Assert.assertNotNull(e);
 		
 		// Shutdown the SMTP server
         smtpServer.stop();   

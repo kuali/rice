@@ -44,7 +44,6 @@ import org.kuali.rice.kew.help.service.HelpService;
 import org.kuali.rice.kew.identity.service.IdentityHelperService;
 import org.kuali.rice.kew.mail.service.ActionListEmailService;
 import org.kuali.rice.kew.mail.service.EmailContentService;
-import org.kuali.rice.kew.mail.service.EmailService;
 import org.kuali.rice.kew.notes.service.NoteService;
 import org.kuali.rice.kew.notification.service.NotificationService;
 import org.kuali.rice.kew.preferences.service.PreferencesService;
@@ -207,8 +206,6 @@ public final class KEWServiceLocator {
 	public static final String ACTION_LIST_EMAIL_SERVICE = "enActionListEmailService";
 
 	public static final String IMMEDIATE_EMAIL_REMINDER_SERVICE = "enImmediateEmailReminderService";
-	
-	public static final String EMAIL_SERVICE = "enEmailService";
 
     public static final String EMAIL_CONTENT_SERVICE = "enEmailContentService";
 
@@ -389,10 +386,6 @@ public final class KEWServiceLocator {
 
 	public static ActionListEmailService getActionListEmailService() {
 		return (ActionListEmailService) getBean(KEWServiceLocator.ACTION_LIST_EMAIL_SERVICE);
-	}
-
-	public static EmailService getEmailService() {
-		return (EmailService) getBean(KEWServiceLocator.EMAIL_SERVICE);
 	}
 
     public static EmailContentService getEmailContentService() {

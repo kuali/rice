@@ -41,7 +41,6 @@
       enActionRequestService,
       enResponsibilityIdService,
       enRuleDelegationService,
-      enEmailService,
       enNotificationService,
       enRouteModuleService,
       enWorkflowDocumentService,

@@ -105,7 +105,6 @@
 				<idref local="enActionRequestService" />
 				<idref local="enResponsibilityIdService" />
 				<idref local="enRuleDelegationService" />
-				<idref local="enEmailService" />
 				<idref local="enNotificationService" />
 				<idref local="enRouteModuleService" />
 				<idref local="enWorkflowDocumentService" />

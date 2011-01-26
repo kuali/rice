@@ -409,6 +409,7 @@
 		<module>kim</module>
 		<module>kew</module>
 		<module>ken</module>
+		<module>doc</module>
 	</modules>
 
 	<repositories>

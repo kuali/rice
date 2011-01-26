@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+    <info>
+        <title>Kuali Rice ${pom.version} Release Notes</title>
+        <edition>${pom.version}</edition>
+        <author>
+            <personname>Kuali Rice Team</personname>
+            <email>rice.collab@kuali.org</email>
+        </author>
+        <pubdate>${reldate}</pubdate>
+        <releaseinfo>This document contains a cumulative list of work accomplished between versions ${previous.version} and ${pom.version}. 
+            It also contains the steps necessary in upgrading from release ${previous.version} to ${pom.version}
+        </releaseinfo>
+    </info>
+    <sect1 xml:id="overview" xreflabel="Overview">
+        <title>Overview</title>
+        <para>This Release Notes documentation includes information on the list of changes between 
+            Rice ${previous.version} (released ${previous.reldate}) and Rice ${pom.version}. Additionally, it includes instructions
+            on how to upgrade from Rice ${previous.version} to Rice ${pom.version}.
+        </para>  
+        <note>       
+            <para>The instructions here are valid if upgrading from Rice ${previous.version} as well.</para>
+        </note> 
+        <para>If you encounter any difficulty, please don’t hesitate to contact the Rice team on our public collaboration mailing list at <email>rice.collab@kuali.org</email></para>
+        <itemizedlist>
+            <title>Highlights of this release include:</title>
+            <listitem><simpara>Logout button to clear backdoor user and log out of application</simpara></listitem>
+            <listitem><simpara>Improvements to allow KIM to function better with external identity implementations</simpara></listitem>
+            <listitem><simpara>Over 140 bug fixes</simpara></listitem>
+            <listitem><simpara>RESTful service enhancements from University of Washington</simpara></listitem>
+            <listitem><simpara>IdentityManagementService now exposed as a web and java service on the service bus</simpara></listitem>
+            <listitem><simpara>Field level help can now be turned on for individual maintenance document fields</simpara></listitem>
+        </itemizedlist>
+        <para>Kuali Rice ${pom.version} can be downloaded from the Rice website at <link xlink:href="http://kuali.org/rice/download">http://kuali.org/rice/download</link>.</para>  
+        <para>There are three different distributions of Rice available: source, binary and server.  Please read the Installation Guide for more details on each of these distributions.</para>
+        <para>Documentation for this release can be found at at <link xlink:href="http://kuali.org/rice/docs/1.0.3">http://kuali.org/rice/docs/1.0.3</link>.</para>
+        <sect2 xml:id="big-fix" xreflabel="Bug Fix">
+            <title>Bug Fix</title>
+            <para></para>
+        </sect2>
+        <sect2 xml:id="new-feature" xreflabel="New Feature">
+            <title>New Feature</title>
+            <para></para>
+        </sect2>
+        <sect2 xml:id="task" xreflabel="Task">
+            <title>Task</title>
+            <para></para>
+        </sect2>
+        <sect2 xml:id="subtask" xreflabel="Subtask">
+            <title>Subtask</title>
+            <para></para>
+        </sect2>
+    </sect1>
+    <sect1 xml:id="ugrade-guide" xreflabel="Upgrade Guide">
+        <title>Upgrade Guide: Rice ${previous.version} to Rice ${pom.version}</title>
+        <sect2 xml:id="upgrade-server-db" xreflabel="Upgrading the Server Database">
+            <title>Upgrading the Server Database</title>
+            <warning><para>Be Careful: We recommend backing up any data in your database prior to performing an upgrade!</para></warning>
+            <sect3 xml:id="oracle-server" xreflabel="Oracle Rice Database">
+                <title>Oracle Rice Database</title>
+                <para>Please execute the upgrades scripts from the scripts/upgrades/${previous.version} to ${pom.version}/final directory:</para>
+                <orderedlist>
+                    <listitem><para>update_final_oracle.sql</para></listitem>
+                </orderedlist>
+            </sect3>
+            <sect3 xml:id="mysql-server" xreflabel="MySQL Rice Database">
+                <title>MySQL Rice Database</title>
+                <para>Please execute the upgrades scripts from the scripts/upgrades/${previous.version} to ${pom.version}/final directory:</para>
+                <orderedlist>
+                    <listitem><para>update_final_mysql.sql</para></listitem>
+                </orderedlist>
+            </sect3>
+        </sect2>
+        <sect2 xml:id="upgrade-client-db" xreflabel="Upgrading the Client Database">
+            <title>Upgrading the Client Database</title>
+            <warning><para>Be Careful: We recommend backing up any data in your database prior to performing an upgrade!</para></warning>
+            <sect3 xml:id="oracle-client" xreflabel="Oracle Rice Database">
+                <title>Oracle Rice Database</title>
+                <para>Please execute the upgrades scripts from the scripts/upgrades/${previous.version} to ${pom.version}/final directory:</para>
+                <orderedlist>
+                    <listitem><para>update_client_final_oracle.sql</para></listitem>
+                </orderedlist>
+            </sect3>
+            <sect3 xml:id="mysql-client" xreflabel="MySQL Rice Database">
+                <title>MySQL Rice Database</title>
+                <para>Please execute the upgrades scripts from the scripts/upgrades/${previous.version} to ${pom.version}/final directory:</para>
+                <orderedlist>
+                    <listitem><para>update_client_final_mysql.sql</para></listitem>
+                </orderedlist>
+            </sect3>
+        </sect2>
+        <sect2 xml:id="dependencies" xreflabel="Dependencies">
+            <title>Dependencies</title>
+            <para>There have been significant changes in the libraries and versions used for Rice ${pom.version}.  If you are manually upgrading the Rice jars in your project, you will also need to manually make the other changes listed in the <xref linkend="library-changes"></xref> section of this document.</para>
+        </sect2>
+    </sect1>
+    <sect1 xml:id="impacting-changes" xreflabel="Impacting Changes">
+        <title>Impacting Changes</title>
+        <para></para>
+        <sect2 xml:id="KULRICE-4530" xreflabel="KULRICE-4530">
+            <title>KULRICE-4530 - If KIM fails to retrieve a KimTypeService from the KSB, it
+                incorrectly caches a reference to the "null" service</title>
+            <para>For this issue, a bug was fixed causing KIM to cache an invalid reference to a
+                KimTypeService whenever it failed to be located the first time it was looked up.
+                This kind of thing can happen if the application hosting the service is down or not
+                responding correctly. In these cases the system should recover when the application
+                hosting the service comes back online or is fixed. However, the bad service
+                reference caching was not allowing this to happen.</para>
+            <para>The specific impacting changes here relate to the KimCommonUtils API that some
+                applications may be using:<itemizedlist spacing="compact">
+                    <listitem>
+                        <para>Removed KimCommonUtils.getKimTypeServiceName(…), replaced with
+                            resolveKimTypeServiceName </para>
+                    </listitem>
+                    <listitem>
+                        <para>deprecated both getKimTypeService methods on KimCommonUtils</para>
+                    </listitem>
+                </itemizedlist></para>
+        </sect2>
+        <sect2 xml:id="KULRICE-4506" xreflabel="KULRICE-4506">
+            <title>KULRICE-4306 – User.tag no longer supports the renderOtherFields
+                attribute</title>
+            <para>In order to fix a bug where an optional user field wasn’t able to be cleared on
+                maintenance documents, the renderOtherFields attribute was removed from User.tag.
+                Any projects that are using this tag library, will have to be changed to remove this
+                attribute.</para>
+        </sect2>
+        <sect2 xml:id="KULRICE-4051" xreflabel="KULRICE-4051">
+            <title>KULRICE-4051 – RoleUpdateService.saveRoleMemberForRole() method had an incorrect
+                @WebParam value for parameter</title>
+            <para>The parameter ‘memberId’ in the RoleUpdateService.saveRoleMemberForRole() method
+                had an @WebParam annotation value of ‘roleId’ when it should have been ‘memberId’.
+                Another parameter was already named ‘roleId’, so this was causing issues. This may
+                be an impacting change, because the service wsdl is changed, but it should be minor,
+                because this is just fixing a bug that prevented the service from working
+                correctly.</para>
+        </sect2>
+        <sect2 xml:id="KULRICE-4608" xreflabel="KULRICE-4608">
+            <title>KULRICE-4608 - InactivateableFromTo queries not working correctly when time
+                component set on record</title>
+            <para>The active from and to date fields on InactivateableFromTo instances were not
+                getting the time part persisted to the database. In order to fix this the JDBC type
+                was changed to Timestamp in the OJB repository files. This then caused the need to
+                change the corresponding property types to java.util.Date (as opposed to
+                java.sql.Date). This property type change then propagated to KIM DTOs. The impacted
+                DTOs are DelegateInfo, DelegateMemberCompleteInfo, GroupMembershipInfo, and
+                RoleMemberCompleteInfo.</para>
+        </sect2>
+        <sect2 xml:id="library-changes" xreflabel="Library Changes">
+            <title>Library Changes between ${previous.version} and ${pom.version}</title>
+            <para>Key</para>
+            <informaltable frame="all">
+                <tgroup cols="2">
+                    <tbody>                         
+                        <row>
+                            <entry>+</entry>
+                            <entry>added</entry>
+                        </row>                        
+                        <row>
+                            <entry>-</entry>
+                            <entry>removed</entry>
+                        </row>
+                        
+                        <row>
+                            <entry>~</entry>
+                            <entry>changed</entry>
+                        </row>                       
+                    </tbody>
+                </tgroup>
+            </informaltable>           
+            <sect3>
+                <title>Removed dependencies on backport-util-concurrent:</title>
+                <itemizedlist mark="none" spacing="compact">
+                    <listitem><simpara>- backport-util-concurrent-2.1.jar </simpara></listitem>
+                </itemizedlist> 
+            </sect3>
+            <sect3>
+                <title>Upgraded jaxb version:</title>
+                <itemizedlist mark="none" spacing="compact">
+                    <listitem><simpara>~ jaxb-impl-2.1.9.jar → jaxb-impl-2.1.13.jar</simpara></listitem>
+                    <listitem><simpara>~ jaxb-xjc-2.1.9.jar → jaxb-xjc-2.1.13.jar</simpara></listitem>
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>Upgraded to a new Kuali patch of OJB:</title>
+                <itemizedlist mark="none" spacing="compact">
+                    <listitem><simpara>~ db-ojb-1.0.4-patch3.jar → db-ojb-1.0.4-patch4.jar</simpara></listitem>
+                </itemizedlist> 
+            </sect3>
+            <sect3>
+                <title>Upgraded CXF version: </title>
+                <itemizedlist mark="none" spacing="compact">
+                    <listitem><simpara>~ cxf-api-2.1.5.jar → cxf-api-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-common-schemas-2.1.5.jar → cxf-common-schemas-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-common-utilities-2.1.5.jar → cxf-common-utilities-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-rt-bindings-soap-2.1.5.jar → cxf-rt-bindings-soap-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-rt-bindings-xml-2.1.5.jar → cxf-rt-bindings-xml-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-rt-core-2.1.5.jar → cxf-rt-core-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-rt-databinding-aegis-2.1.5.jar → cxf-rt-databinding-aegis-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-rt-databinding-jaxb-2.1.5.jar → cxf-rt-databinding-jaxb-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>+ cxf-rt-frontend-jaxrs-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-rt-frontend-jaxws-2.1.5.jar → cxf-rt-frontend-jaxws-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-rt-frontend-simple-2.1.5.jar → cxf-rt-frontend-simple-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-rt-transports-http-2.1.5.jar → cxf-rt-transports-http-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-rt-ws-addr-2.1.5.jar → cxf-rt-ws-addr-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-rt-ws-security-2.1.5.jar → cxf-rt-ws-security-2.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ cxf-tools-common-2.1.5.jar → cxf-tools-common-2.2.9.jar</simpara></listitem>                     
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>Abdera came in as a result of the CXF upgrade:</title>
+                <itemizedlist mark="none" spacing="compact">
+                    <listitem><simpara>+ abdera-core-1.0.jar</simpara></listitem> 
+                    <listitem><simpara>+ abdera-extensions-json-1.0.jar</simpara></listitem> 
+                    <listitem><simpara>+ abdera-extensions-main-1.0.jar</simpara></listitem> 
+                    <listitem><simpara>+ abdera-i18n-1.0.jar</simpara></listitem> 
+                    <listitem><simpara>+ abdera-parser-1.0.jar</simpara></listitem> 
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>upgraded Spring to 2.5.6: </title>
+                <itemizedlist mark="none" spacing="compact">
+                    <listitem><simpara>~ spring-aop-2.0.4.jar → spring-aop-2.5.6.jar</simpara></listitem> 
+                    <listitem><simpara>~ spring-beans-2.0.4.jar → spring-beans-2.5.6.jar</simpara></listitem> 
+                    <listitem><simpara>~ spring-context-2.0.4.jar → spring-context-2.5.6.jar</simpara></listitem> 
+                    <listitem><simpara>(jmx and remoting were moved into context and web)</simpara></listitem>
+                    <listitem><simpara>- spring-jmx-2.0.4.jar</simpara></listitem>  
+                    <listitem><simpara>- spring-remoting-2.0.4.jar</simpara></listitem>  
+                    <listitem><simpara>~ spring-support-2.0.4.jar → spring-context-support-2.5.6.jar</simpara></listitem>  
+                    <listitem><simpara>~ spring-core-2.0.4.jar → spring-core-2.5.6.jar</simpara></listitem>  
+                    <listitem><simpara>~ spring-jdbc-2.0.4.jar → spring-jdbc-2.5.6.jar</simpara></listitem>  
+                    <listitem><simpara>~ spring-jpa-2.0.4.jar → spring-orm-2.5.6.jar</simpara></listitem>  
+                    <listitem><simpara>~ spring-mock-2.0.4.jar → spring-test-2.5.6.jar</simpara></listitem>  
+                    <listitem><simpara>~ spring-dao-2.0.4.jar → spring-tx-2.5.6.jar</simpara></listitem>  
+                    <listitem><simpara>+ spring-web-2.5.6.jar</simpara></listitem>  
+                    <listitem><simpara>~ spring-webmvc-2.0.4.jar → spring-webmvc-2.5.6.jar</simpara></listitem>                    
+                </itemizedlist>
+            </sect3>
+            <sect3>
+                <title>Other changes &amp; knock-ons from the above:</title>
+                <itemizedlist mark="none" spacing="compact">
+                    <listitem><simpara>+ jsr311-api-1.0.jar</simpara></listitem> 
+                    <listitem><simpara>+ xmlunit-1.3.jar</simpara></listitem> 
+                    <listitem><simpara>+ axiom-api-1.2.5.jar</simpara></listitem> 
+                    <listitem><simpara>+ axiom-impl-1.2.5.jar</simpara></listitem> 
+                    <listitem><simpara>+ xmlbeans-2.4.0.jar</simpara></listitem>
+                    <listitem><simpara>+ jettison-1.2.jar</simpara></listitem>
+                    <listitem><simpara>~ xmlsec-1.4.2.jar → xmlsec-1.4.3.jar</simpara></listitem> 
+                    <listitem><simpara>~ wss4j-1.5.7.jar → wss4j-1.5.8.jar</simpara></listitem> 
+                    <listitem><simpara>~ wstx-asl-3.2.6.jar → wstx-asl-3.2.9.jar</simpara></listitem> 
+                    <listitem><simpara>~ bcprov-jdk15-133.jar → bcprov-jdk15-1.45</simpara></listitem>
+                    <listitem><simpara>- connector-1.0.jar</simpara></listitem> 
+                    <listitem><simpara>- FastInfoSet-1.2.2.jar</simpara></listitem>
+                    <listitem><simpara>- xmlParserAPIs-2.6.2.jar</simpara></listitem>
+                </itemizedlist>
+            </sect3>
+        </sect2>      
+    </sect1>
+        
+</article>

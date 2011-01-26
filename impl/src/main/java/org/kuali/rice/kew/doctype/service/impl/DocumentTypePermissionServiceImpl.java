@@ -212,8 +212,11 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 		validateDocumentType(documentType);
 		
 		AttributeSet permissionDetails = buildDocumentTypePermissionDetails(documentType);
-        return !useKimPermission(KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails) || getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails, EMPTY_ROLE_QUALIFIERS);
+		if (useKimPermission(KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails)) {
+			return getIdentityManagementService().isAuthorizedByTemplateName(principalId, KNSConstants.KUALI_RICE_SYSTEM_NAMESPACE, KEWConstants.INITIATE_PERMISSION, permissionDetails, EMPTY_ROLE_QUALIFIERS);
     }
+		return true;
+	}
 
 	public boolean canRoute(String principalId, DocumentRouteHeaderValue documentRouteHeaderValue) {
 		return canRoute(principalId, documentRouteHeaderValue.getRouteHeaderId().toString(), documentRouteHeaderValue.getDocumentType(),
@@ -239,8 +242,11 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			}
 		}
 
-        return !documentType.getInitiatorMustRoutePolicy().getPolicyValue() || executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
+		if (documentType.getInitiatorMustRoutePolicy().getPolicyValue()) {
+			return executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
     }
+		return true;
+	}
 
 	public boolean canAddRouteLogMessage(String principalId, DocumentRouteHeaderValue documentRouteHeaderValue) {
 		return canAddRouteLogMessage(principalId, documentRouteHeaderValue.getRouteHeaderId().toString(),
@@ -299,8 +305,11 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
 			}
 		}
 
-        return !documentType.getInitiatorMustSavePolicy().getPolicyValue() || executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
+		if (documentType.getInitiatorMustSavePolicy().getPolicyValue()) {
+			return executeInitiatorPolicyCheck(principalId, initiatorPrincipalId, documentStatus);
     }
+		return true;
+	}
 
 	protected AttributeSet buildDocumentTypePermissionDetails(DocumentType documentType) {
 		AttributeSet details = new AttributeSet();

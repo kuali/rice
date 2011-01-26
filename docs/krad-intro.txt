@@ -201,17 +201,39 @@ Controls are simple because, for the most part, they map directly to HTML input 
 
 What all Fields have in common is that they implement the org.kuali.rice.kns.uif.field.Field interface, an interface that allows pretty much any child to have an associated label.  (Of course, there's a LabelField which itself represents a Label).
 
-[HERE JAMES]
-
-Let's take a tour of what Fields KRAD offers.
+Let's take a tour of the Fields that KRAD offers.
 
 h4. ActionField
-[JAMES]
+
+An ActionField represents an element that gives the user the ability to kick off a web request/response cycle.  For instance, the submit button of a Form would be represented as an ActionField.  A link in a menu would be represented as an ActionField.  Even rich scripts, which may do background trips to the server to populate the current page with data could be represented as an ActionField as well.  [JAMES: BETTER WAY TO DESCRIBE THIS]
+
+An ActionField must have either a methodToCall or navigateToPageId set.  Setting the methodToCall will end up calling a method on a controller, and the great majority of ActionFields will populate this property.  navigateToPageId would be used for ActionFields which move the user around in a multi-page document, like the Kuali Coeus Proposal.
+
+The actionParameters property is a map of parameters which will be passed along as part of the HTTP request.  The actionLabel property represents the text which will be displayed on the button or link.  Finally, ActionField has a boolean property, clientSideCall, which will be set to true if the ActionField represents an action which is handled by Javascript.
+
 h4. AttributeField
 
-An AttributeField represents an Attribute on a page.  This means that the Field will display a Control--for user input into the Attribute--as well as error messages associated with the Field, instructions, watermarks: basically everything the Attribute needs to display correctly on the page. This is easily the most functional of all Fields, so let's look at what all it does in detail. 
+An AttributeField represents an Attribute on a page.  This means that the Field will display a Control--for user input into the Attribute--as well as error messages associated with the Field, instructions, watermarks: basically everything the Attribute needs to display correctly on the page. This is easily the most functional of all Fields, so let's look at what all it does in detail.
 
 [JAMES: MOST IMPORTANT FIELD.  DESCRIBE MORE]
+- tie to data dictionary
+
+An AttributeField correlates directly to an AttributeDefinition set on either a BusinessObject or a Document.  Every AttributeDefinition represents a single property on its related object.  The AttributeDefinition then defines a great deal of information about that property: what kind of Control it should be associated with, the maximum length of the input, labels, validation patterns, and how to format the property--so that if the property represents non-String data, it can be converted into the data type of the property.  [HERE JAMES]
+- What are the main encapsulated properties "at the heart of the attribute"?
+
+There are several encapsulated properties at the heart of the AttributeField.  Let's start with the two basic: formattedValue and control.  The formattedValue is the data held by the attribute--either to be rendered to the screen or to be populated by the control.  The control, of course, is the associated Control Component, which will allow the user to input data into the formattedValue.
+** errors
+** formatter and options finder
+** data dictionary ties
+** data binding
+
+- What does this render?
+** label
+** summary
+** control
+** constraint
+** quickfinder
+** help
 
 h4. BlankField
 
@@ -221,10 +243,10 @@ h4. ErrorsField
 
 This Field represents error messages, warning messages, and info messages which should be rendered in a Container.  Each set of messages--error, warning, and info--can have a unique title set as well as a unique CSS class (such that errors can show up bolded, say, and warnings can be displayed in italics).  A keyMatch String can also be passed in to the definition, which will be matched against the properties of Controls displayed within the parent Container.  That way, only messages relevant to children fields will be rendered in the ErrorsField.
 
-h4. FieldLabelBase
-[JAMES]
 h4. GroupField
-[JAMES]
+
+A GroupField encapsulates a Group for display without headers and footers.  [JERRY: USE CASE?]  It has one property, group, which should be injected with the Group to display.
+
 h4. HeaderField
 
 A HeaderField will display Header text on a page.  Headers often create a sense of visual hierarchy to a page and therefore are very important structural markers.  HeaderFields have passed in a headerLevel: a number between 1 and 6 representing the importance of the Header on the page (1 being the most important, 6 being the least) and headerText, which is the text the header will display.  [JERRY: IT WOULD BE EVER SO NICE IF YOU COULD PASS IN A MESSAGE KEY INSTEAD OF JUST TEXT.  THIS IS TRUE OF ANYTHING WHICH TAKES IN TEXT]
@@ -234,7 +256,13 @@ h4. ImageField
 The ImageField renders an image.
 
 h4. LabelField
-[JAMES]
+
+A LabelField represents a Label.  Labels are most often associated with controls.  A text control with no explanatory text to say what kind of data is expected to be filled in isn't very useful; LabelFields give users the general gist of the Control.
+
+In a great majority of cases, AttributeField will create a LabelField when it displays.  There are rare times when Controls are created outside of attribute definitions, however, and in those cases, a LabelField will have be configured manually.
+
+A LabelField has a property for labelText.  There's also a property for labelForComponentId - the id of the Component which the Label relates to; setting this helps with accessibility issues for sight-disabled users.  There is a boolean property on whether to render a colon or not, renderColon, and finally an encapsulated MessageField, requiredMessageField, which should be populated if the Label represents a required Control.
+
 h4. LinkField
 
 A LinkField represents a Link on a page and is rendered with an HTML <a> tag.  It needs to have its hrefText set to the target of the link and linkLabel set to the text which will be rendered as the link.  There is also an optional target attribute which can be used to set where the linked content should open up; for instance, setting target to "_blank" will open the link into a new browser tab or window.
@@ -256,6 +284,14 @@ Creating a PropertyEditor is a straightforward process.  Java provides the java.
 The Spring documentation covers how it uses data bindings in much more detail [on the SpringSource website#http://static.springsource.org/spring/docs/2.0.x/reference/validation.html]  Spring has a heavy reliance on this mechanism throughout its source code beyond populating form data.  But it does give Spring a very standard way to populate the form from the request.
 
 As KRAD renders a page with form data, it will properly generate the data binding path that will properly populate the form when the page is submitted.  It will create indexed property names for values within collections and it will create nested names for all the attributes on a page...meaning that for the most part, developers will never concern themselves with data binding--KRAD will just make it happen in the background.
+
+New Components which want to participate in the DataBinding process should implement the org.kuali.rice.kns.uif.DataBinding interface.  This interface has four methods:
+* String getBindingPath() - the path on the model which represents the property that should be read or populated during DataBinding actions
+* String getModelName() - the name of the model within the View that the binding path should populate
+* String getBindByNamePrefix() and void setBindByNamePrefix(String prefix) - If the model is part of a collection, then these methods are used to track which index in the collection the currently rendered element belongs to.
+
+The most important Component to implement this interface is the AttributeField.  AttributeFields display and read data on business objects and documents, so naturally they participate in the data binding process.
+[JERRY, WHY DON'T THE CONTROLS IMPLEMENT THIS?]
 
 h3. Component Architecture
 

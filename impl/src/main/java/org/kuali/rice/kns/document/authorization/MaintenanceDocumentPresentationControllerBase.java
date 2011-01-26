@@ -75,21 +75,4 @@ public class MaintenanceDocumentPresentationControllerBase extends
 		return maintenanceDocumentDictionaryService;
 	}
 	
-	/**
-	 * @see org.kuali.rice.kns.document.authorization.DocumentPresentationControllerBase#canSave(org.kuali.rice.kns.document.Document)
-	 */
-	@Override
-    protected boolean canSave(Document document){
-    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-    	return (!workflowDocument.stateIsEnroute() && super.canSave(document));
-    } 
-	
-	/**
-	 * @see org.kuali.rice.kns.document.authorization.DocumentPresentationControllerBase#canBlanketApprove(org.kuali.rice.kns.document.Document)
-	 */
-	@Override
-	protected boolean canBlanketApprove(Document document) {
-    	KualiWorkflowDocument workflowDocument = document.getDocumentHeader().getWorkflowDocument();
-    	return (!workflowDocument.stateIsEnroute() && super.canBlanketApprove(document));
-	}
 }

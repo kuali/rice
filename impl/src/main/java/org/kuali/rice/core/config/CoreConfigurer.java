@@ -15,6 +15,7 @@
  */
 package org.kuali.rice.core.config;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -85,7 +86,10 @@ public class CoreConfigurer extends ModuleConfigurer {
 
 	@Override
 	public List<String> getPrimarySpringFiles() {
-		return Collections.emptyList();
+		final List<String> springFileLocations = new ArrayList<String>();
+		
+		springFileLocations.add("classpath:org/kuali/rice/core/config/CORESpringBeans.xml");
+		return springFileLocations;
 	}
 	
 	/**

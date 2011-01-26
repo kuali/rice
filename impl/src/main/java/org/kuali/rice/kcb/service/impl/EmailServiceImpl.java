@@ -20,14 +20,15 @@ import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.core.mail.EmailBody;
+import org.kuali.rice.core.mail.EmailFrom;
+import org.kuali.rice.core.mail.EmailSubject;
+import org.kuali.rice.core.mail.EmailTo;
+import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kcb.bo.Message;
 import org.kuali.rice.kcb.bo.MessageDelivery;
 import org.kuali.rice.kcb.service.EmailService;
 import org.kuali.rice.ken.util.NotificationConstants;
-import org.kuali.rice.kew.mail.EmailBody;
-import org.kuali.rice.kew.mail.EmailFrom;
-import org.kuali.rice.kew.mail.EmailSubject;
-import org.kuali.rice.kew.mail.EmailTo;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -48,6 +49,12 @@ public class EmailServiceImpl implements EmailService {
     private String defaultSender = "kcb@localhost";
 
     private final String DETAILACTION = "DetailView.form";
+    
+    private Mailer mailer;
+    
+    public void setMailer(Mailer mailer){
+    	this.mailer = mailer;
+    }
 
     /**
      * Sets the weburl attribute value (injected from Spring).
@@ -127,27 +134,28 @@ public class EmailServiceImpl implements EmailService {
         LOG.debug("content: "+content);
 
         // actually do the send
-        sendEmail(content, subject, sender, recipientEmailAddress, format);
+//        sendEmail(content, subject, sender, recipientEmailAddress, format);
+        mailer.sendMessage(sender, recipientEmailAddress, subject, content, !FORMAT_TEXT_PLAIN.equals(format));
 
         return null;
     }
 
-    /**
-     * do the actual sending.  Uses the KEW's configured EmailService by default. 
-     * @param message message content
-     * @param subject subject of message
-     * @param from sender of message
-     * @param sendTo recipient of message
-     * @param format text or html 
-     */
-    protected void sendEmail(String message, String subject, String from, String sendTo, String format) {
-    	
-    	KEWServiceLocator.getEmailService().sendEmail(
-    			new EmailFrom(from), 
-    			new EmailTo(sendTo), 
-    			new EmailSubject(subject), 
-    			new EmailBody(message), 
-    			!FORMAT_TEXT_PLAIN.equals(format));
-
-    }
+//    /**
+//     * do the actual sending.  Uses the KEW's configured EmailService by default. 
+//     * @param message message content
+//     * @param subject subject of message
+//     * @param from sender of message
+//     * @param sendTo recipient of message
+//     * @param format text or html 
+//     */
+//    protected void sendEmail(String message, String subject, String from, String sendTo, String format) {
+//    	
+//    	KEWServiceLocator.getEmailService().sendEmail(
+//    			new EmailFrom(from), 
+//    			new EmailTo(sendTo), 
+//    			new EmailSubject(subject), 
+//    			new EmailBody(message), 
+//    			!FORMAT_TEXT_PLAIN.equals(format));
+//
+//    }
 }

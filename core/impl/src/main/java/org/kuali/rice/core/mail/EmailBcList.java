@@ -14,39 +14,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.mail.service.impl;
+package org.kuali.rice.core.mail;
 import java.util.List;
 import javax.mail.Address;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 /**
- * The to addresses of an email message.
+ * The bc addresses of an email message.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EmailToList {
+public class EmailBcList {
 
-    private List<String> toAddresses;
+    private List<String> bcAddresses;
     
-    public EmailToList(List<String> toAddresses) {
-        this.toAddresses = toAddresses;
+    public EmailBcList(List<String> bcAddresses) {
+        this.bcAddresses = bcAddresses;
     }
 
-    public List<String> getToAddresses() {
-        return toAddresses;
+    public List<String> getBcAddresses() {
+        return bcAddresses;
     }
-    
+
     public Address[] getToAddressesAsAddressArray() throws AddressException {
-	Address[] recipientAddresses = new Address[this.toAddresses.size()];
+	Address[] recipientAddresses = new Address[this.bcAddresses.size()];
 	for (int i = 0; i < recipientAddresses.length; i++) {
-	    recipientAddresses[i] = new InternetAddress((String) this.toAddresses.get(i));
+	    recipientAddresses[i] = new InternetAddress((String) this.bcAddresses.get(i));
 	 }
         return recipientAddresses;
     }
 
-    public void setToAddress(List<String> toAddresses) {
-        this.toAddresses = toAddresses;
+    
+    public void setBcAddress(List<String> bcAddresses) {
+        this.bcAddresses = bcAddresses;
     }
 
 }

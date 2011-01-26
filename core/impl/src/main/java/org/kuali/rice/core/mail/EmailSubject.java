@@ -14,27 +14,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.mail;
+package org.kuali.rice.core.mail;
 
 /**
- * The body of an email message.
+ * The subject of an email message.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EmailBody {
+public class EmailSubject {
 
-    private String body;
-    
-    public EmailBody(String body) {
-        this.body = body;
+    private String subject;
+
+    public EmailSubject(String subject) {
+        this.subject = subject;
     }
 
-    public String getBody() {
-        return body;
+    public String getSubject() {
+        return subject;
     }
-
-    public void setBody(String body) {
-        this.body = body;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
 }

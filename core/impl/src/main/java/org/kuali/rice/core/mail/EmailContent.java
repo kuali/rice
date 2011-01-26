@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.kuali.rice.kew.mail;
+package org.kuali.rice.core.mail;
 
 /**
  * Class representing customizable content of an email message

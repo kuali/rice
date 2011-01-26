@@ -14,26 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.mail;
+package org.kuali.rice.core.mail;
 
 /**
- * The subject of an email message.
+ * The from address of an email message.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EmailSubject {
+public class EmailFrom {
 
-    private String subject;
+    private String fromAddress;
 
-    public EmailSubject(String subject) {
-        this.subject = subject;
+    public EmailFrom(String fromAddress) {
+        this.fromAddress = fromAddress;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getFromAddress() {
+        return fromAddress;
     }
-    public void setSubject(String subject) {
-        this.subject = subject;
+
+    public void setFromAddress(String fromAddress) {
+        this.fromAddress = fromAddress;
     }
 
 }

@@ -18,6 +18,11 @@ package org.kuali.rice.kew.mail.service.impl;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.mail.EmailBody;
+import org.kuali.rice.core.mail.EmailFrom;
+import org.kuali.rice.core.mail.EmailSubject;
+import org.kuali.rice.core.mail.EmailTo;
+import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
 import org.kuali.rice.kew.actionrequest.ActionRequestValue;
@@ -70,6 +75,12 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
     private static final String WEEKLY_JOB_NAME = "Weekly Email";
 
 	private String deploymentEnvironment;
+	
+	private Mailer mailer;
+	
+	public void setMailer(Mailer mailer){
+		this.mailer = mailer;
+	}
 
 	public String getDocumentTypeEmailAddress(DocumentType documentType) {
 		String fromAddress = (documentType == null ? null : documentType
@@ -128,17 +139,17 @@ public class ActionListEmailServiceImpl implements ActionListEmailService {
 			EmailBody body, DocumentType documentType) {
 		try {
 			if (isProduction()) {
-				KEWServiceLocator.getEmailService().sendEmail(
-						getEmailFrom(documentType),
-						new EmailTo(user.getEmailAddressUnmasked()), subject, body,
-						false);
+				mailer.sendEmail(getEmailFrom(documentType),
+						         new EmailTo(user.getEmailAddressUnmasked()), 
+						         subject,
+						         body,
+						         false);
 			} else {
-				KEWServiceLocator
-						.getEmailService()
-						.sendEmail(
-								getEmailFrom(documentType),
-								new EmailTo(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
-								subject, body, false);
+				mailer.sendEmail(getEmailFrom(documentType),
+						         new EmailTo(Utilities.getKNSParameterValue(KEWConstants.KEW_NAMESPACE, KNSConstants.DetailTypes.ACTION_LIST_DETAIL_TYPE, KEWConstants.ACTIONLIST_EMAIL_TEST_ADDRESS)),
+								 subject,
+								 body,
+								 false);
 			}
 		} catch (Exception e) {
 			LOG.error("Error sending Action List email.", e);

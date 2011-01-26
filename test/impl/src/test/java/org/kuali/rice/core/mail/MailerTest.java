@@ -27,7 +27,7 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.subethamail.wiser.Wiser;
 
 /**
- * This is a description of what this class does - eldavid don't forget to fill this in. 
+ * This class tests the Mailer against a mock SMTP server.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
@@ -44,7 +44,7 @@ public class MailerTest {
     private String messageBody = "Test Message Body";
 
 	/**
-	 * // Test that an e-mail message gets sent to the SMTP server
+	 * Test that an e-mail message gets sent to the SMTP server
 	 */
 	@Test
 	public void testSendMessage() {

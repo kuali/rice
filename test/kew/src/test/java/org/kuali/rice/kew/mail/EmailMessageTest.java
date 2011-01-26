@@ -19,6 +19,7 @@ package org.kuali.rice.kew.mail;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.kew.actionitem.ActionItem;
 import org.kuali.rice.kew.dto.NetworkIdDTO;
 import org.kuali.rice.kew.mail.service.impl.ActionListEmailServiceImpl;

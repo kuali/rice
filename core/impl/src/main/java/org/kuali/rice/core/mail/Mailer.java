@@ -49,53 +49,120 @@ public class Mailer {
 			this.mailSender = mailSender;
 		}
 	    
-	    /**
-	     * Sends an email to the given recipients.
+		/**
+	     * Send an email to a single recipient with the specified subject and message. This is a convenience 
+	     * method for simple message addressing.
 	     * 
-	     * @param recipients
+	     * @param from
+	     *            sender of the message            
+	     * @param to
 	     *            list of addresses to which the message is sent
 	     * @param subject
 	     *            subject of the message
 	     * @param messageBody
 	     *            body of the message
-	     * @param ccRecipients
-	     *            list of addresses which are to be cc'd on the message
-	     * @param bccRecipients
-	     *            list of addresses which are to be bcc'd on the message
-	     *
-	     * @throws AddressException
-	     * @throws MessagingException
 	     */
-	    public void sendMessage(String sender, Address[] recipients, String subject, String messageBody, Address[] ccRecipients, Address[] bccRecipients, boolean htmlMessage) throws AddressException, MessagingException, MailException {
+		public void sendEmail(EmailFrom from, EmailTo to, EmailSubject subject, EmailBody body, boolean htmlMessage) {
+	        if (to.getToAddress() == null) {
+	            LOG.warn("No To address specified. Refraining from sending mail.");
+	            return;
+	        }
+			try {
+		        Address[] singleRecipient = {new InternetAddress(to.getToAddress())};
+				sendMessage(from.getFromAddress(),
+						    singleRecipient,
+						    subject.getSubject(),
+						    body.getBody(), 
+						    null,
+						    null,
+						    htmlMessage);
+			} catch (Exception e) {
+				LOG.error("Error sending email.", e);
+				throw new RuntimeException(e);
+			}
+		}
+
+		/**
+	     * Send an email to the given "to", "cc", and "bcc" recipients with the specified subject and message.
+	     * 
+	     * @param from
+	     *            sender of the message            
+	     * @param to
+	     *            list of addresses to which the message is sent
+	     * @param subject
+	     *            subject of the message
+	     * @param messageBody
+	     *            body of the message
+	     * @param cc
+	     *            list of addresses which are to be cc'd on the message
+	     * @param bcc
+	     *            list of addresses which are to be bcc'd on the message
+	     */
+		public void sendEmail(EmailFrom from, EmailToList to, EmailSubject subject, EmailBody body, EmailCcList cc, EmailBcList bc, boolean htmlMessage) {
+		    if (to.getToAddresses().isEmpty()) {
+				LOG.error("List of To addresses must contain at least one entry. Refraining from sending mail.");
+				return;
+		    }
+			try {
+			    sendMessage(from.getFromAddress(), 
+				            to.getToAddressesAsAddressArray(), 
+				            subject.getSubject(), 
+				            body.getBody(), 
+							(cc == null ? null : cc.getToAddressesAsAddressArray()), 
+							(bc == null ? null : bc.getToAddressesAsAddressArray()), 
+							htmlMessage);
+			} catch (Exception e) {
+				LOG.error("Error sending email.", e);
+				throw new RuntimeException(e);
+            }
+		}
+		
+		/**
+	     * Send an email to the given recipients with the specified subject and message.
+	     * 
+	     * @param from
+	     *            sender of the message            
+	     * @param to
+	     *            list of addresses to which the message is sent
+	     * @param subject
+	     *            subject of the message
+	     * @param messageBody
+	     *            body of the message
+	     * @param cc
+	     *            list of addresses which are to be cc'd on the message
+	     * @param bcc
+	     *            list of addresses which are to be bcc'd on the message
+	     */
+	    protected void sendMessage(String from, Address[] to, String subject, String messageBody, Address[] cc, Address[] bcc, boolean htmlMessage) throws AddressException, MessagingException, MailException {
 		    MimeMessage message = mailSender.createMimeMessage();
 
 	        // From Address
-	        message.setFrom(new InternetAddress(sender));
+	        message.setFrom(new InternetAddress(from));
 
-	        // To Address
-	        if (recipients != null && recipients.length > 0) {
-	            message.addRecipients(Message.RecipientType.TO, recipients);
+	        // To Address(es)
+	        if (to != null && to.length > 0) {
+	            message.addRecipients(Message.RecipientType.TO, to);
 	        } else {
-	            LOG.warn("No recipients indicated");
+	            LOG.error("No recipients indicated.");
 	        }
 
-	        // CC Address
-	        if (ccRecipients != null && ccRecipients.length > 0) {
-	            message.addRecipients(Message.RecipientType.CC, ccRecipients);
+	        // CC Address(es)
+	        if (cc != null && cc.length > 0) {
+	            message.addRecipients(Message.RecipientType.CC, cc);
 	        }
 
-	        // BCC Address
-	        if (bccRecipients != null && bccRecipients.length > 0) {
-	            message.addRecipients(Message.RecipientType.BCC, bccRecipients);
+	        // BCC Address(es)
+	        if (bcc != null && bcc.length > 0) {
+	            message.addRecipients(Message.RecipientType.BCC, bcc);
 	        }
 
-	        // The Subject
+	        // Subject
 	        message.setSubject(subject);
 	        if (subject == null || "".equals(subject)) {
-	            LOG.warn("Empty subject being sent");
+	            LOG.warn("Empty subject being sent.");
 	        }
 
-	        // Now the message body.
+	        // Message body.
 	        if (htmlMessage) {
 	            prepareHtmlMessage(messageBody, message);
 	        } else {
@@ -105,36 +172,17 @@ public class Mailer {
 	            }
 	        }
 
-	        // Finally, send the message!
+	        // Send the message
 	        try {
 	        	mailSender.send(message);
 	        }
 	        catch (MailException me) {
-	        	LOG.warn("sendMessage(): " + me.getMessage());
+	        	LOG.error("sendMessage(): " + me.getMessage());
 	        	throw new MessagingException(me.getMessage(), me);
 	        }
 	    }
 
-	    /**
-	     * Send a message to the designated recipient with the specified subject and
-	     * message. This is a convenience class for simple message addressing
-	     * 
-	     * @param recipient
-	     *            the email address to which the message is sent
-	     * @param subject
-	     *            subject for the message
-	     * @param messageBody
-	     *            body of the message to to be sent
-	     * @param ccRecipient
-	     *            email address of a cc recipient
-	     */
-	    public void sendMessage(String sender, String recipient, String subject, String messageBody, boolean htmlMessage) throws AddressException, MessagingException {
-	        final Address[] NO_RECIPIENTS = null;
-	        Address[] recipients = { new InternetAddress(recipient) };
-	        sendMessage(sender, recipients, subject, messageBody, NO_RECIPIENTS, NO_RECIPIENTS, htmlMessage);
-	    }
-
-	    private void prepareHtmlMessage(String messageText, Message message) throws MessagingException {
+	    protected void prepareHtmlMessage(String messageText, Message message) throws MessagingException {
 	        try {
 				message.setDataHandler(new DataHandler(new ByteArrayDataSource(messageText, "text/html")));
 			} catch (IOException e) {

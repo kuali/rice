@@ -14,27 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.mail;
+package org.kuali.rice.core.mail;
 
 /**
- * The from address of an email message.
+ * The body of an email message.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class EmailFrom {
+public class EmailBody {
 
-    private String fromAddress;
-
-    public EmailFrom(String fromAddress) {
-        this.fromAddress = fromAddress;
+    private String body;
+    
+    public EmailBody(String body) {
+        this.body = body;
     }
 
-    public String getFromAddress() {
-        return fromAddress;
+    public String getBody() {
+        return body;
     }
 
-    public void setFromAddress(String fromAddress) {
-        this.fromAddress = fromAddress;
+    public void setBody(String body) {
+        this.body = body;
     }
 
 }

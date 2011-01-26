@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.mail;
+package org.kuali.rice.core.mail;
 
 /**
  * The to address of an email message.

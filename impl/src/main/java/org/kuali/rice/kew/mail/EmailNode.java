@@ -18,6 +18,12 @@ package org.kuali.rice.kew.mail;
 import com.thoughtworks.xstream.XStream;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.config.ConfigContext;
+import org.kuali.rice.core.mail.EmailBody;
+import org.kuali.rice.core.mail.EmailContent;
+import org.kuali.rice.core.mail.EmailFrom;
+import org.kuali.rice.core.mail.EmailSubject;
+import org.kuali.rice.core.mail.EmailTo;
+import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.dto.DTOConverter;
@@ -57,6 +63,12 @@ public class EmailNode implements SimpleNode {
     private String styleName;
     private String from;
     private String to;
+    
+    protected Mailer getMailer() {
+    	// TODO User the global resource loader to find the Mailer.
+    	Mailer mailer = new Mailer();
+    	return mailer;
+    }
 
     public SimpleResult process(RouteContext context, RouteHelper helper) throws Exception {
     	if (context.isSimulation()) {
@@ -72,7 +84,7 @@ public class EmailNode implements SimpleNode {
 	Templates style = loadStyleSheet(styleName);
 	EmailContent emailContent = emailStyleHelper.generateEmailContent(style, document);
 	if (!StringUtils.isBlank(to)) {
-	    KEWServiceLocator.getEmailService().sendEmail(new EmailFrom(from), new EmailTo(to), new EmailSubject(emailContent.getSubject()), new EmailBody(emailContent.getBody()), emailContent.isHtml());
+		getMailer().sendEmail(new EmailFrom(from), new EmailTo(to), new EmailSubject(emailContent.getSubject()), new EmailBody(emailContent.getBody()), emailContent.isHtml());
 	}
 	return new SimpleResult(true);
     }

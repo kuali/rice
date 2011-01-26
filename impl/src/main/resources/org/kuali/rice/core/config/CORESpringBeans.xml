@@ -54,7 +54,7 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-    <!-- Are these needed?
+    <!-- Are these (or CORE equivalents of) needed?
     <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
      
 

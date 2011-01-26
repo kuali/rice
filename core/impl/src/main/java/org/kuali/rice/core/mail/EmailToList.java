@@ -14,39 +14,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.kuali.rice.kew.mail.service.impl;
+package org.kuali.rice.core.mail;
 import java.util.List;
 import javax.mail.Address;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 /**
- * The cc addresses of an email message.
+ * The to addresses of an email message.
  *
  * @author Kuali Rice Team (kuali-rice@googlegroups.com)
  */
-public class EmailCcList {
+public class EmailToList {
 
-    private List<String> ccAddresses;
+    private List<String> toAddresses;
     
-    public EmailCcList(List<String> ccAddresses) {
-        this.ccAddresses = ccAddresses;
+    public EmailToList(List<String> toAddresses) {
+        this.toAddresses = toAddresses;
     }
 
-    public List<String> getCcAddresses() {
-        return ccAddresses;
+    public List<String> getToAddresses() {
+        return toAddresses;
     }
-
+    
     public Address[] getToAddressesAsAddressArray() throws AddressException {
-	Address[] recipientAddresses = new Address[this.ccAddresses.size()];
+	Address[] recipientAddresses = new Address[this.toAddresses.size()];
 	for (int i = 0; i < recipientAddresses.length; i++) {
-	    recipientAddresses[i] = new InternetAddress((String) this.ccAddresses.get(i));
+	    recipientAddresses[i] = new InternetAddress((String) this.toAddresses.get(i));
 	 }
         return recipientAddresses;
     }
-    
-    public void setCcAddress(List<String> ccAddresses) {
-        this.ccAddresses = ccAddresses;
+
+    public void setToAddress(List<String> toAddresses) {
+        this.toAddresses = toAddresses;
     }
 
 }

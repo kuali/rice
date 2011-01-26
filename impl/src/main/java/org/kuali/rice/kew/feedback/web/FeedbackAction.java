@@ -25,14 +25,14 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.kuali.rice.core.mail.EmailBody;
+import org.kuali.rice.core.mail.EmailContent;
+import org.kuali.rice.core.mail.EmailFrom;
+import org.kuali.rice.core.mail.EmailSubject;
+import org.kuali.rice.core.mail.EmailTo;
+import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
-import org.kuali.rice.kew.mail.EmailBody;
-import org.kuali.rice.kew.mail.EmailContent;
-import org.kuali.rice.kew.mail.EmailFrom;
-import org.kuali.rice.kew.mail.EmailSubject;
-import org.kuali.rice.kew.mail.EmailTo;
 import org.kuali.rice.kew.mail.service.EmailContentService;
-import org.kuali.rice.kew.mail.service.EmailService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
 import org.kuali.rice.kew.web.KewKualiAction;
 import org.kuali.rice.kim.bo.Person;
@@ -48,6 +48,11 @@ import org.kuali.rice.kns.util.GlobalVariables;
 public class FeedbackAction extends KewKualiAction {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FeedbackAction.class);
+	private Mailer mailer;
+	
+	public void setMailer(Mailer mailer){
+		this.mailer = mailer;
+	}
 
     @Override
 	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -111,13 +116,12 @@ public class FeedbackAction extends KewKualiAction {
     }
 
     public ActionForward sendFeedback(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
-    	FeedbackForm feedbackForm = (FeedbackForm)form;
-    	EmailService emailService = KEWServiceLocator.getEmailService();
+    	FeedbackForm feedbackForm = (FeedbackForm)form;    	
         EmailContentService emailContentService = KEWServiceLocator.getEmailContentService();
         String fromAddress = determineFromAddress(emailContentService, feedbackForm);
     	String toAddress = emailContentService.getApplicationEmailAddress();
         EmailContent content = emailContentService.generateFeedback(feedbackForm);
-    	emailService.sendEmail(new EmailFrom(fromAddress), new EmailTo(toAddress), new EmailSubject(content.getSubject()), new EmailBody(content.getBody()), content.isHtml());
+        mailer.sendEmail(new EmailFrom(fromAddress), new EmailTo(toAddress), new EmailSubject(content.getSubject()), new EmailBody(content.getBody()), content.isHtml());
     	return mapping.findForward("sent");
     }
 

@@ -32,6 +32,7 @@ import org.kuali.rice.kns.util.MessageMap;
 import org.kuali.rice.test.ClearDatabaseLifecycle;
 import org.kuali.rice.test.RiceInternalSuiteDataTestCase;
 import org.kuali.rice.test.SQLDataLoader;
+import org.kuali.rice.test.lifecycles.JettyServerLifecycle;
 import org.springframework.transaction.support.TransactionTemplate;
 
 /**
@@ -147,8 +148,8 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 	protected List<Lifecycle> getSuiteLifecycles() {
 		
 		List<Lifecycle> lifeCycles = super.getSuiteLifecycles();
-		lifeCycles.add( buildJettyServer(getJettyServerPort(), getJettyServerContextName(), getJettyServerRelativeWebappRoot()));
-		lifeCycles.add(new InitializeGRL());
+		//lifeCycles.add( buildJettyServer(getJettyServerPort(), getJettyServerContextName(), getJettyServerRelativeWebappRoot()));
+		//lifeCycles.add(new InitializeGRL());
 		lifeCycles.add(new BaseLifecycle() {
 			public void start() throws Exception {
 				KEWXmlDataLoader.loadXmlClassLoaderResource(getClass(), "DefaultSuiteTestData.xml");
@@ -156,6 +157,17 @@ public abstract class KEWTestCase extends RiceInternalSuiteDataTestCase {
 			}
 		});
 		return lifeCycles;
+	}
+	
+	@Override
+	protected Lifecycle getLoadApplicationLifecycle() {
+		return new BaseLifecycle() {
+			public void start() throws Exception {
+				new JettyServerLifecycle(getJettyServerPort(), getJettyServerContextName(), getJettyServerRelativeWebappRoot()).start();
+				new InitializeGRL().start();
+				super.start();
+			}
+		};	
 	}
 
 	@Override

@@ -15,8 +15,8 @@
  */
 package org.kuali.rice.kns.service;
 
+import org.kuali.rice.core.mail.MailMessage;
 import org.kuali.rice.kns.mail.InvalidAddressException;
-import org.kuali.rice.kns.mail.MailMessage;
 
 public interface MailService {
     public void sendMessage(MailMessage message) throws InvalidAddressException;

@@ -353,14 +353,14 @@
 		<property name="incidentMailingList" value="${kr.incident.mailing.list}" />
 	</bean>
 
-	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="${mail.relay.server}" />
-	</bean>
+	<bean id="mailSender" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="mailSender" />
+    </bean>		
 
 	<bean id="knsExceptionIncidentService" class="org.kuali.rice.kns.service.impl.KualiExceptionIncidentServiceImpl">
 	  <property name="mailService"><ref bean="mailService"/></property>
 	  <property name="messageTemplate">
-        <bean class="org.kuali.rice.kns.mail.MailMessage">
+        <bean class="org.kuali.rice.core.mail.MailMessage">
           <!-- The property place holder below must be specified in          -->
           <!-- common-config-default.xml or any other KNS configuration file -->
           <property name="fromAddress"><value>${kr.incident.mailing.list}</value></property>

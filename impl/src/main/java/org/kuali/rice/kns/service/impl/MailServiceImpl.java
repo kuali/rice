@@ -20,8 +20,8 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.kuali.rice.core.mail.MailMessage;
 import org.kuali.rice.kns.mail.InvalidAddressException;
-import org.kuali.rice.kns.mail.MailMessage;
 import org.kuali.rice.kns.service.MailService;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;

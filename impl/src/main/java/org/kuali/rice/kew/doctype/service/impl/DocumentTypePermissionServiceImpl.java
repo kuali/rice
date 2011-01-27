@@ -186,7 +186,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
                 boolean foundAtLeastOnePermission = false;
                 // loop over permission details, only one of them needs to be authorized
                 for (AttributeSet permissionDetails : permissionDetailList) {
-                    AttributeSet roleQualifiers = buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(documentType, KEWConstants.ROUTE_NODE_NAME_DETAIL, documentStatus, routeHeaderId);
+                    AttributeSet roleQualifiers = buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, routeHeaderId, permissionDetails.get(KEWConstants.ROUTE_NODE_NAME_DETAIL));
                     if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails)) {
 						foundAtLeastOnePermission = true;
 					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.CANCEL_PERMISSION, permissionDetails, roleQualifiers)) {
@@ -291,7 +291,7 @@ public class DocumentTypePermissionServiceImpl implements DocumentTypePermission
             boolean foundAtLeastOnePermission = false;
             // loop over permission details, only one of them needs to be authorized
             for (AttributeSet permissionDetails : permissionDetailList) {
-                AttributeSet roleQualifiers = buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, routeHeaderId, KEWConstants.ROUTE_NODE_NAME_DETAIL);
+                AttributeSet roleQualifiers = buildRouteHeaderIdRoleDocumentTypeDocumentStatusQualifiers(documentType, documentStatus, routeHeaderId, permissionDetails.get(KEWConstants.ROUTE_NODE_NAME_DETAIL));
                 if (useKimPermission(KEWConstants.KEW_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails)) {
 					foundAtLeastOnePermission = true;
 					if (getIdentityManagementService().isAuthorizedByTemplateName(principalId, KEWConstants.KEW_NAMESPACE, KEWConstants.SAVE_PERMISSION, permissionDetails, roleQualifiers)) {

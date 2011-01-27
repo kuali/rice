@@ -49,6 +49,7 @@ public class DocumentAuthorizerBase extends BusinessObjectAuthorizerBase
 	public static final String EDIT_MODE_DEFAULT_TRUE_VALUE = "TRUE";
 	public static final String USER_SESSION_METHOD_TO_CALL_OBJECT_KEY = "METHOD_TO_CALL_KEYS_METHOD_OBJECT_KEY";
 	public static final String USER_SESSION_METHOD_TO_CALL_COMPLETE_OBJECT_KEY = "METHOD_TO_CALL_KEYS_COMPLETE_OBJECT_KEY";
+	public static final String USER_SESSION_METHOD_TO_CALL_COMPLETE_MARKER = "_EXITING";
 
 	/**
 	 * Individual document families will need to reimplement this according to

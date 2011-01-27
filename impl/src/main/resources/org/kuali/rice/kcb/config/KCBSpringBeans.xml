@@ -147,8 +147,13 @@
         <property name="genericDao"><ref local="kcbGenericDao"/></property>
     </bean>
 
+    <bean id="mailer" class="org.kuali.rice.kns.config.GlobalResourceLoaderServiceFactoryBean">
+		<property name="serviceName" value="mailer" />
+    </bean>
+    
     <bean id="emailService" class="org.kuali.rice.kcb.service.impl.EmailServiceImpl">
         <property name="weburl" value="${ken.url}"/>
+        <property name="mailer" ref="mailer" />
     </bean>
 
     <bean id="kenIntegrationService" class="org.kuali.rice.kcb.service.impl.KENIntegrationServiceDirectImpl">

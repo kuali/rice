@@ -54,23 +54,6 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-    <!-- Are these (or CORE equivalents of) needed?
-    <import resource="classpath:org/kuali/rice/core/CommonSpringBeans.xml"/>
-     
-
-	<bean id="KEWConstants" class="org.kuali.rice.core.util.ConstantsMap">
-		<property name="constantClass" value="org.kuali.rice.kew.util.KEWConstants"/>
-	</bean>
-	
-	<bean class="org.springframework.web.context.support.ServletContextAttributeExporter">
-		<property name="attributes">
-			<map>
-				<entry key="KEWConstants" value-ref="KEWConstants"/>
-			</map>
-		</property>
-	</bean>
-    -->
-
 	<!-- Mail Sender Factory -->
 	<bean id="mailSender" class="org.kuali.rice.core.mail.MailSenderFactoryBean" />
 

@@ -28,12 +28,12 @@ import org.springframework.web.bind.support.ConfigurableWebBindingInitializer;
 import org.springframework.web.context.request.WebRequest;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This bean registers standard PropertyEditors used in binding for all http requests. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KradConfigurableWebBindingInitializer extends ConfigurableWebBindingInitializer {
+public class UifConfigurableWebBindingInitializer extends ConfigurableWebBindingInitializer {
 
 	@Override
     public void initBinder(WebDataBinder binder, WebRequest request) {
@@ -41,7 +41,9 @@ public class KradConfigurableWebBindingInitializer extends ConfigurableWebBindin
         binder.registerCustomEditor(KualiDecimal.class, new KualiFormatterPropertyEditor(CurrencyFormatter.class)); 
         binder.registerCustomEditor(KualiInteger.class, new KualiFormatterPropertyEditor(KualiIntegerCurrencyFormatter.class));
         binder.registerCustomEditor(KualiPercent.class, new KualiFormatterPropertyEditor(PercentageFormatter.class));
-        binder.registerCustomEditor(boolean.class, new KradBooleanBinder());
+        
+        // TODO do we need this since we are switching to spring tags
+        binder.registerCustomEditor(boolean.class, new UifBooleanEditor());
         
 	    super.initBinder(binder, request);
     }

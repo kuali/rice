@@ -27,6 +27,12 @@ public class UifConstants extends JSTLConstants {
 
 	public static final String DEFAULT_MODEL_NAME = "KualiForm";
 	public static final String DEFAULT_VIEW_NAME = "default";
+	
+	public static class RequestParameterName {
+    	public static final String VIEW_ID = "viewId";
+    	public static final String VIEW_NAME = "viewName";
+    	public static final String BUSINESS_OBJECT_CLASS = "businessObjectClassName";
+	}
 
 	public static class PersistenceMode {
 		public static final String REQUEST = "REQUEST";

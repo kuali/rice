@@ -17,8 +17,6 @@ package org.kuali.rice.kns.web.spring.form;
 
 import java.util.Date;
 
-import org.kuali.rice.kns.web.struts.form.KualiForm;
-
 import edu.sampleu.travel.bo.TravelAccount;
 
 /**
@@ -26,7 +24,7 @@ import edu.sampleu.travel.bo.TravelAccount;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class UITestForm extends KualiForm {
+public class UITestForm extends UifFormBase {
 	private String field1;
 	private String field2;
 	private String field3;
@@ -45,7 +43,6 @@ public class UITestForm extends KualiForm {
 
 	public UITestForm() {
 		travelAccount1 = new TravelAccount();
-		setUsingSpring(true);
 	}
 
 	public String getField1() {

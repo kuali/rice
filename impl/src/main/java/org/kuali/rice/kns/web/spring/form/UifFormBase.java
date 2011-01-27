@@ -33,9 +33,6 @@ public class UifFormBase {
 	protected String viewName;
 	protected String methodToCall;
 
-	public UifFormBase() {
-
-	}
 
 	/**
 	 * Unique Id for the <code>View</code> instance. This is specified for a

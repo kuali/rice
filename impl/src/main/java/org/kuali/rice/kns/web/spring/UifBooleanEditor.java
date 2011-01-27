@@ -18,12 +18,12 @@ package org.kuali.rice.kns.web.spring;
 import java.beans.PropertyEditorSupport;
 
 /**
- * This is a description of what this class does - swgibson don't forget to fill this in. 
+ * This PropertyEditor for booleans supports y/n which the spring version does not. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KradBooleanBinder extends PropertyEditorSupport {
+public class UifBooleanEditor extends PropertyEditorSupport {
 	
 	private static final String TRUE_VALUES = "/true/yes/y/on/1/";
 	private static final String FALSE_VALUES = "/false/no/n/off/0/";
@@ -36,7 +36,7 @@ public class KradBooleanBinder extends PropertyEditorSupport {
 		if(this.getValue() == null) {
 			return "";
 		}
-		else if((Boolean)this.getValue()) {
+		else if(((Boolean)this.getValue()).booleanValue()) {
 			return TRUE_VALUE;
 		}
 		else {

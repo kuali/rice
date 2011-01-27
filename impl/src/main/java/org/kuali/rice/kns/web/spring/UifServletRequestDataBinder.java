@@ -15,49 +15,29 @@
  */
 package org.kuali.rice.kns.web.spring;
 
-import org.kuali.rice.kns.web.struts.form.KualiForm;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.util.Assert;
 import org.springframework.validation.AbstractPropertyBindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 
 /**
- * This is a description of what this class does - delyea don't forget to fill this in. 
+ * This is class is overridden in order to hook in the UifBeanPropertyBindingResult
+ * which instantiates a custom BeanWrapperImpl. 
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  *
  */
-public class KradServletRequestDataBinder extends ServletRequestDataBinder {
-    protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KradServletRequestDataBinder.class);
+public class UifServletRequestDataBinder extends ServletRequestDataBinder {
+    protected static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(UifServletRequestDataBinder.class);
 
-	private KualiBeanPropertyBindingResult bindingResult;
+	private UifBeanPropertyBindingResult bindingResult;
 	private ConversionService conversionService;
 
-	/**
-     * This constructs a ...
-     * 
-     * @param target
-     * @param objectName
-     */
-    public KradServletRequestDataBinder(Object target, String objectName) {
-	    super(target, objectName);
-	    
-	    if(target instanceof KualiForm) {
-	    	((KualiForm) target).setUsingSpring(true);
-	    }
-    }
-
-	/**
-     * This constructs a ...
-     * 
-     * @param target
-     */
-    public KradServletRequestDataBinder(Object target) {
-	    super(target);
-	    
-	    if(target instanceof KualiForm) {
-	    	((KualiForm) target).setUsingSpring(true);
-	    }
+	private String viewId;
+    
+    public UifServletRequestDataBinder(Object target, String objectName, String viewId) {
+        super(target, objectName);
+        this.viewId = viewId;
     }
 
     /**
@@ -69,7 +49,7 @@ public class KradServletRequestDataBinder extends ServletRequestDataBinder {
 	public void initBeanPropertyAccess() {
 		Assert.state(this.bindingResult == null,
 				"DataBinder is already initialized - call initBeanPropertyAccess before other configuration methods");
-		this.bindingResult = new KualiBeanPropertyBindingResult(getTarget(), getObjectName(), isAutoGrowNestedPaths());
+		this.bindingResult = new UifBeanPropertyBindingResult(getTarget(), getObjectName(), isAutoGrowNestedPaths(), viewId);
 		if (this.conversionService != null) {
 			this.bindingResult.initConversion(this.conversionService);
 		}
@@ -84,8 +64,6 @@ public class KradServletRequestDataBinder extends ServletRequestDataBinder {
 	protected AbstractPropertyBindingResult getInternalBindingResult() {
 		if (this.bindingResult == null) {
 			initBeanPropertyAccess();
-//			this.bindingResult.setDocumentEntry(documentEntry);
-//			this.bindingResult.setBusinessObjectEntry(businessObjectEntry);
 		}
 		return this.bindingResult;
 	}
@@ -97,7 +75,7 @@ public class KradServletRequestDataBinder extends ServletRequestDataBinder {
      */
     @Override
 	public void initDirectFieldAccess() {
-    	LOG.error("Direct Field access is not allowed in Kuali");
+    	LOG.error("Direct Field access is not allowed in UifServletRequestDataBinder.");
 		throw new RuntimeException("Direct Field access is not allowed in Kuali");
 	}
 

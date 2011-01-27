@@ -19,6 +19,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
+import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
 import org.kuali.rice.kns.uif.BindingInfo;
 import org.kuali.rice.kns.uif.Component;
@@ -62,6 +63,8 @@ public class AttributeField extends FieldBase implements DataBinding {
 	private String summary;
 	private String description;
 
+	private AttributeSecurity attributeSecurity;
+
 	public AttributeField() {
 	}
 
@@ -80,7 +83,7 @@ public class AttributeField extends FieldBase implements DataBinding {
 	@Override
 	public void performInitialization(View view) {
 		super.performInitialization(view);
-		
+
 		if (bindingInfo != null) {
 			bindingInfo.setDefaults(view, this);
 		}
@@ -137,6 +140,11 @@ public class AttributeField extends FieldBase implements DataBinding {
 		// description
 		if (StringUtils.isEmpty(getDescription())) {
 			setDescription(attributeDefinition.getDescription());
+		}
+
+		// security
+		if (getAttributeSecurity() == null) {
+			setAttributeSecurity(attributeDefinition.getAttributeSecurity());
 		}
 	}
 
@@ -296,6 +304,28 @@ public class AttributeField extends FieldBase implements DataBinding {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	/**
+	 * Holds security configuration for the attribute field. This triggers
+	 * corresponding permission checks in KIM and can result in an update to the
+	 * field state (such as read-only or hidden) and masking of the value
+	 * 
+	 * @return AttributeSecurity instance configured for field or Null if no
+	 *         restrictions are defined
+	 */
+	public AttributeSecurity getAttributeSecurity() {
+		return this.attributeSecurity;
+	}
+
+	/**
+	 * Setter for the AttributeSecurity instance that defines restrictions for
+	 * the field
+	 * 
+	 * @param attributeSecurity
+	 */
+	public void setAttributeSecurity(AttributeSecurity attributeSecurity) {
+		this.attributeSecurity = attributeSecurity;
 	}
 
 }

@@ -32,11 +32,29 @@ import org.kuali.rice.kns.util.ObjectUtils;
  */
 public class ComponentUtils {
 
+	public static <T extends Component> T copy(T component, String idSuffix) {
+		T copy = (T) ObjectUtils.deepCopy(component);
+		updateIds(copy, idSuffix);
+
+		return copy;
+	}
+
 	public static <T extends Component> T copy(T component) {
 		return (T) ObjectUtils.deepCopy(component);
 	}
 
-	public static <T extends Field> List<T> copyFieldListAndPrefix(List<T> fields, String addBindingPrefix) {
+	public static <T extends Component> T copyField(T component, String addBindingPrefix, String idSuffix) {
+		T copy = (T) ObjectUtils.deepCopy(component);
+		updateIds(copy, idSuffix);
+
+		if (copy instanceof DataBinding) {
+			prefixBindingPath((DataBinding) copy, addBindingPrefix);
+		}
+
+		return copy;
+	}
+
+	public static <T extends Field> List<T> copyFieldList(List<T> fields, String addBindingPrefix) {
 		List<T> copiedFieldList = copyFieldList(fields);
 
 		for (Field field : copiedFieldList) {
@@ -65,6 +83,22 @@ public class ComponentUtils {
 			bindingPrefix += "." + field.getBindingInfo().getBindByNamePrefix();
 		}
 		field.getBindingInfo().setBindByNamePrefix(bindingPrefix);
+	}
+
+	public static void updateIds(List<? extends Component> components, String idSuffix) {
+		for (Component component : components) {
+			updateIds(component, idSuffix);
+		}
+	}
+
+	public static void updateIds(Component component, String idSuffix) {
+		component.setId(component.getId() + idSuffix);
+
+		for (Component nested : component.getNestedComponents()) {
+			if (nested != null) {
+				updateIds(nested, idSuffix);
+			}
+		}
 	}
 
 }

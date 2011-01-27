@@ -112,13 +112,11 @@ public abstract class UifControllerBase {
 	}
 
 	protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {
-		View view = getViewService().getViewById(viewId);
+		View view = getViewService().getViewById(viewId, form);
 
 		if (StringUtils.isNotBlank(pageId)) {
 			view.setCurrentPageId(pageId);
 		}
-		
-		getViewService().applyModel(view, form);
 
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.addObject("KualiForm", form);

@@ -108,7 +108,25 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="TableLayoutManager"/>
       </property> 
-  </bean>     
+  </bean>   
+  
+  <bean id="PanelCollectionGroup" abstract="true" parent="CollectionGroup">
+      <property name="decorators">
+        <map>
+          <entry key="panel"><ref bean="PanelGroupDecorator"/></entry>
+        </map>  
+      </property>  
+      <property name="renderHeader" value="false"/>
+  </bean>
+  
+  <bean id="PanelCollectionTableGroup" abstract="true" parent="CollectionTableGroup">
+      <property name="decorators">
+        <map>
+          <entry key="panel"><ref bean="PanelGroupDecorator"/></entry>
+        </map>  
+      </property>  
+      <property name="renderHeader" value="false"/>
+  </bean>  
   
   <!-- Decorators -->
   

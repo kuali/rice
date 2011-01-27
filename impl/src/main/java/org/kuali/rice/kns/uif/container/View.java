@@ -67,12 +67,16 @@ public class View extends ContainerBase {
 	private Set<String> allowedParameters;
 	private Map<String, String> context;
 
+	private ViewIndex viewIndex;
+
 	// TODO: scripting variables, should be in context
 	private boolean dialogMode;
 
 	public View() {
 		dialogMode = false;
 		viewTypeName = ViewType.DEFAULT;
+
+		viewIndex = new ViewIndex();
 
 		modelClasses = new HashMap<String, Class<?>>();
 		allowedParameters = new HashSet<String>();
@@ -379,6 +383,24 @@ public class View extends ContainerBase {
 	 */
 	public void setContext(Map<String, String> context) {
 		this.context = context;
+	}
+
+	/**
+	 * Holds field indexes of the <code>View</code> instance for retrieval
+	 * 
+	 * @return ViewIndex instance
+	 */
+	public ViewIndex getViewIndex() {
+		return this.viewIndex;
+	}
+
+	/**
+	 * Setter for the <code>ViewIndex</code> instance
+	 * 
+	 * @param viewIndex
+	 */
+	public void setViewIndex(ViewIndex viewIndex) {
+		this.viewIndex = viewIndex;
 	}
 
 }

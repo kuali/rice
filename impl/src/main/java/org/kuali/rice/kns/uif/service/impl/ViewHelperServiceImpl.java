@@ -103,13 +103,16 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		if (component == null) {
 			return;
 		}
-		
+
 		// invoke component to initialize itself after properties have been set
 		component.performInitialization(view);
 
 		// for attribute fields, set defaults from dictionary entry
 		if (component instanceof AttributeField) {
 			initializeAttributeFieldFromDataDictionary(view, (AttributeField) component);
+
+			// add attribute field to the view's index
+			view.getViewIndex().addAttributeField((AttributeField) component);
 		}
 
 		// invoke component initializers
@@ -152,8 +155,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		if (StringUtils.isBlank(dictionaryAttributeName) && StringUtils.isBlank(dictionaryObjectEntry)
 				&& field.getBindingInfo().isBindToModel()) {
 			dictionaryAttributeName = field.getName();
-			Class<?> dictionaryModelClass = ViewModelUtils.getPropertyType(view, field.getBindingInfo()
-					.getModelPath());
+			Class<?> dictionaryModelClass = ViewModelUtils.getPropertyType(view, field.getBindingInfo().getModelPath());
 			if (dictionaryModelClass != null) {
 				dictionaryObjectEntry = dictionaryModelClass.getName();
 			}
@@ -171,11 +173,11 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void performConditionalLogic(View view, Object model) {
+	public void performApplyModel(View view, Object model) {
 		performComponentConditionalLogic(view, view, model);
 	}
 
@@ -185,16 +187,24 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		}
 
 		// invoke component to perform its conditional logic
-		component.performConditionalLogic(view, model);
+		component.performApplyModel(view, model);
 
 		// invoke service override hook
-		performCustomComponentConditionalLogic(view, component, model);
+		performCustomApplyModel(view, component, model);
 
 		// get components children and recursively call perform conditional
 		// logic
 		for (Component nestedComponent : component.getNestedComponents()) {
 			performComponentConditionalLogic(view, nestedComponent, model);
 		}
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performUpdateState(org.kuali.rice.kns.uif.container.View)
+	 */
+	@Override
+	public void performUpdateState(View view) {
+
 	}
 
 	/**
@@ -211,18 +221,18 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	}
 
 	/**
-	 * Hook for service overrides to perform custom conditional logic on the
+	 * Hook for service overrides to perform custom apply model logic on the
 	 * component
 	 * 
 	 * @param view
 	 *            - view instance containing the component
 	 * @param component
-	 *            - component instance to perform logic on
+	 *            - component instance to apply model to
 	 * @param model
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 */
-	protected void performCustomComponentConditionalLogic(View view, Component component, Object model) {
+	protected void performCustomApplyModel(View view, Component component, Object model) {
 
 	}
 

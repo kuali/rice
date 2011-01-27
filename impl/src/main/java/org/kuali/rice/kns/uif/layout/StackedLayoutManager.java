@@ -57,12 +57,12 @@ public class StackedLayoutManager extends BoxLayoutManager {
 	/**
 	 * Builds up the table by creating a row for each collection line
 	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performConditionalLogic(View view, Object model, Container container) {
-		super.performConditionalLogic(view, model, container);
+	public void performApplyModel(View view, Object model, Container container) {
+		super.performApplyModel(view, model, container);
 
 		if (!(container instanceof CollectionGroup)) {
 			throw new IllegalArgumentException(
@@ -89,8 +89,9 @@ public class StackedLayoutManager extends BoxLayoutManager {
 				// copy fields adding the collection line to their binding
 				// prefix
 				String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
-				List<Field> lineFields = ComponentUtils.copyFieldListAndPrefix(
+				List<Field> lineFields = ComponentUtils.copyFieldList(
 						(List<Field>) collectionGroup.getItems(), bindingPathPrefix);
+				view.getViewIndex().addFields(lineFields);
 
 				lineGroup.setItems(lineFields);
 
@@ -101,6 +102,9 @@ public class StackedLayoutManager extends BoxLayoutManager {
 				// refresh the group's layout manager
 				lineGroup.getLayoutManager().refresh(view, lineGroup);
 
+				// suffix all the groups ids so they will be unique
+				ComponentUtils.updateIds(lineGroup, "_" + index);
+				
 				collectionGroups.add(lineGroup);
 			}
 		}

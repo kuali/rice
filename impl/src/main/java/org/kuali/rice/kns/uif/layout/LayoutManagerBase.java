@@ -62,11 +62,11 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	/**
 	 * Default Impl
 	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performConditionalLogic(View view, Object model, Container container) {
+	public void performApplyModel(View view, Object model, Container container) {
 
 	}
 

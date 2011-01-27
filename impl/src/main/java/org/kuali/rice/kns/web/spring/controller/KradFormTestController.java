@@ -63,7 +63,7 @@ public class KradFormTestController {
 //	}
 
 	protected ModelAndView getUIFModelAndView(Object form, String viewId, String pageId) {
-		View view = getViewService().getViewById(viewId);
+		View view = getViewService().getViewById(viewId, form);
 		view.setCurrentPageId(pageId);
 
 		ModelAndView modelAndView = new ModelAndView();

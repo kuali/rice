@@ -43,7 +43,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
                </property>
                <property name="title" value="Account Information"/>
              </bean>
-             <bean parent="CollectionGroup">
+             <bean parent="PanelCollectionGroup">
                <property name="title" value="Fiscal Officer Accounts"/>  
                <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
                <property name="name" value="fiscalOfficer.accounts"/>

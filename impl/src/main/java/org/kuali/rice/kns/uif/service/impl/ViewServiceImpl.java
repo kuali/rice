@@ -40,10 +40,11 @@ public class ViewServiceImpl implements ViewService {
 	protected DataDictionaryService dataDictionaryService;
 
 	/**
-	 * @see org.kuali.rice.kns.uif.service.ViewService#getViewById(java.lang.String)
+	 * @see org.kuali.rice.kns.uif.service.ViewService#getViewById(java.lang.String,
+	 *      java.lang.Object)
 	 */
-	public View getViewById(String viewId) {
-		return getView(viewId, new HashMap<String, String>());
+	public View getViewById(String viewId, Object model) {
+		return getView(viewId, new HashMap<String, String>(), model);
 	}
 
 	/**
@@ -52,17 +53,27 @@ public class ViewServiceImpl implements ViewService {
 	 * Initialize is then performed
 	 * 
 	 * @see org.kuali.rice.kns.uif.service.ViewService#getView(java.lang.String,
-	 *      java.util.Map)
+	 *      java.util.Map, java.lang.Object)
 	 */
-	public View getView(String viewId, Map<String, String> parameters) {
+	public View getView(String viewId, Map<String, String> parameters, Object model) {
 		View view = dataDictionaryService.getViewById(viewId);
 
-		initializeView(view, parameters);
+		// Initialize Phase
+		performInitialization(view, parameters);
+		
+		// Apply Model Phase
+		performApplyModel(view, model);
+		
+		// Update State Phase
+		performUpdateState(view);
+		
+		// do indexing
+		view.getViewIndex().index();
 
 		return view;
 	}
 
-	protected void initializeView(View view, Map<String, String> parameters) {
+	protected void performInitialization(View view, Map<String, String> parameters) {
 		// get the configured helper service for the view
 		ViewHelperService helperService = getHelperService(view);
 
@@ -77,18 +88,40 @@ public class ViewServiceImpl implements ViewService {
 	}
 
 	/**
-	 * Calls the <code>ViewHelperService</code> configured for the view to carry
-	 * out the various methods of the ApplyModel phase
+	 * Performs initialization or updating of the <code>View</code> instance
+	 * based on the form (containing models) instance
 	 * 
-	 * @see org.kuali.rice.kns.uif.service.ViewService#applyModel(org.kuali.rice.kns.uif.container.View,
-	 *      java.lang.Object)
+	 * <p>
+	 * Part of the view lifecycle that applies the model data to the view.
+	 * Should be called after the model has been populated before the view is
+	 * rendered. The main things that occur during this phase are:
+	 * <ul>
+	 * <li>Generation of dynamic fields (such as collection rows)</li>
+	 * <li>Execution of conditional logic (hidden, read-only, required settings
+	 * based on model values)</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @param view
+	 *            - view instance the model should be applied to
+	 * @param model
+	 *            - Top level object containing the data (could be the form or a
+	 *            top level business object, dto)
 	 */
-	public void applyModel(View view, Object model) {
+	protected void performApplyModel(View view, Object model) {
 		// get the configured helper service for the view
 		ViewHelperService helperService = getHelperService(view);
 
 		// invoke helper service to perform conditional logic
-		helperService.performConditionalLogic(view, model);
+		helperService.performApplyModel(view, model);
+	}
+
+	/**
+	 * 
+	 * @param view
+	 */
+	protected void performUpdateState(View view) {
+
 	}
 
 	/**

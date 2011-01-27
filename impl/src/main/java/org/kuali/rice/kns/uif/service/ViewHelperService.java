@@ -67,16 +67,21 @@ public interface ViewHelperService {
 	public void performInitialization(View view);
 
 	/**
-	 * Executes conditional logic as part of the ApplyModel phase. During this
-	 * phase each component of the tree if invoked to setup any state based on
-	 * the given model data.
+	 * Executes the ApplyModel phase. During this phase each component of the
+	 * tree if invoked to setup any state based on the given model data.
 	 * 
 	 * @param view
-	 *            - View instance that the logic should be applied to
+	 *            - View instance that the model should be applied to
 	 * @param model
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 */
-	public void performConditionalLogic(View view, Object model);
+	public void performApplyModel(View view, Object model);
+
+	/**
+	 * 
+	 * @param view
+	 */
+	public void performUpdateState(View view);
 
 }

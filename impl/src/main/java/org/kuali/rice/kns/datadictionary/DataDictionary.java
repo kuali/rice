@@ -154,11 +154,11 @@ public class DataDictionary  {
 		// configure the bean factory, setup component decorator post processor
 		// and allow Spring EL
 		try {
-			BeanPostProcessor postProcessor = ComponentDecoratorBeanPostProcessor.class.newInstance();
-			ddBeans.addBeanPostProcessor(postProcessor);
-			
 			BeanPostProcessor idPostProcessor = ComponentIdBeanPostProcessor.class.newInstance();
 			ddBeans.addBeanPostProcessor(idPostProcessor);
+			
+			BeanPostProcessor postProcessor = ComponentDecoratorBeanPostProcessor.class.newInstance();
+			ddBeans.addBeanPostProcessor(postProcessor);
 			
 			ddBeans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
 		}

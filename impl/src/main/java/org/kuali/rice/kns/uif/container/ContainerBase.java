@@ -95,15 +95,15 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 	}
 
 	/**
-	 * @see org.kuali.rice.kns.uif.ComponentBase#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
 	@Override
-	public void performConditionalLogic(View view, Object model) {
-		super.performConditionalLogic(view, model);
+	public void performApplyModel(View view, Object model) {
+		super.performApplyModel(view, model);
 
 		if (layoutManager != null) {
-			layoutManager.performConditionalLogic(view, model, this);
+			layoutManager.performApplyModel(view, model, this);
 		}
 	}
 

@@ -33,20 +33,23 @@ public interface ViewService {
 	 * Returns the <code>View</code> entry identified by the given id
 	 * <p>
 	 * The id matches the id configured for the View through the dictionary.
-	 * Before the View is returned the initialize phase is performed
+	 * Before the View is returned it is initialized with the model data
 	 * </p>
 	 * 
 	 * @param viewId
 	 *            - unique id for view configured on its definition
+	 * @param model
+	 *            - Top level object containing the data (could be the form or a
+	 *            top level business object, dto)
 	 * @return View instance associated with the id or Null if id is not found
 	 */
-	public View getViewById(String viewId);
+	public View getViewById(String viewId, Object model);
 
 	/**
 	 * Returns the <code>View</code> entry identified by the given id
 	 * <p>
 	 * The id matches the id configured for the View through the dictionary.
-	 * Before the View is returned the initialize phase is performed
+	 * Before the View is returned it is initialized with the model data
 	 * </p>
 	 * <p>
 	 * Any configuration sent through the options Map is used to initialize the
@@ -62,36 +65,42 @@ public interface ViewService {
 	 *            <code>View</code>, this is generally comes from the request
 	 *            and can be the request parameter Map itself. Any parameters
 	 *            not valid for the View wil be filtered out
-	 * @return View instance associated with the id or Null if id is not found
-	 */
-	public View getView(String viewId, Map<String, String> parameters);
-
-	/**
-	 * Performs initialization or updating of the <code>View</code> instance
-	 * based on the form (containing models) instance
-	 * <p>
-	 * Part of the view lifecycle that applies the model data to the view.
-	 * Should be called after the model has been populated before the view is
-	 * rendered. The main things that occur during this phase are:
-	 * <ul>
-	 * <li>Generation of dynamic fields (such as collection rows)</li>
-	 * <li>Population of <code>AttributeField</code> instances from the model
-	 * values</li>
-	 * <li>Execution of conditional logic (hidden, read-only, required settings
-	 * based on model values)</li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @param view
-	 *            - view instance the model should be applied to
 	 * @param model
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
+	 * @return View instance associated with the id or Null if id is not found
 	 */
-	public void applyModel(View view, Object model);
-	
+	public View getView(String viewId, Map<String, String> parameters, Object model);
+
+	/**
+	 * Returns the <code>ViewHelperService</code> that is configured for
+	 * <code>View</code> instance with id equal to the given id
+	 * 
+	 * <p>
+	 * Views can have custom <code>ViewHelperService</code> that provide
+	 * additional behavior that might need to be invoked outside of the view
+	 * service. This allows retrieval of the service for those purposes
+	 * </p>
+	 * 
+	 * @param viewId
+	 *            - unique id for view configured on its definition
+	 * @return ViewHelperService instance or Null if the view was not found
+	 */
 	public ViewHelperService getViewHelperService(String viewId);
-	
+
+	/**
+	 * Retrieves the unique id for the <code>View</code> instance that is of
+	 * Inquiry view type and is configured for the given model class. If more
+	 * than one views exists, the name can be given to pick which one should be
+	 * returned or if empty the view with name 'default' is returned.
+	 * 
+	 * @param name
+	 *            - name given for the view in its definition that should be
+	 *            returned, can be blank or null
+	 * @param modelClassName
+	 *            - model class the view works with
+	 * @return String view id or Null if a view was not found
+	 */
 	public String getInquiryViewId(String name, String modelClassName);
 
 }

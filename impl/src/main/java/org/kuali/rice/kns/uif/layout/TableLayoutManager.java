@@ -83,12 +83,12 @@ public class TableLayoutManager extends GridLayoutManager {
 	/**
 	 * Builds up the table by creating a row for each collection line
 	 * 
-	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
+	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performConditionalLogic(View view, Object model, Container container) {
-		super.performConditionalLogic(view, model, container);
+	public void performApplyModel(View view, Object model, Container container) {
+		super.performApplyModel(view, model, container);
 
 		if (!(container instanceof CollectionGroup)) {
 			throw new IllegalArgumentException(
@@ -99,7 +99,7 @@ public class TableLayoutManager extends GridLayoutManager {
 		CollectionGroup collectionGroup = (CollectionGroup) container;
 
 		buildTableHeaderRows(collectionGroup);
-		buildTableDataRows(collectionGroup, model);
+		buildTableDataRows(view, collectionGroup, model);
 	}
 
 	/**
@@ -126,28 +126,31 @@ public class TableLayoutManager extends GridLayoutManager {
 		// action fields, since they should span all rows for the line
 		int rowCount = calculateNumberOfRows((List<Field>) collectionGroup.getItems());
 
+		int cellPosition = 0;
+
 		// first column is sequence label
 		if (renderSequenceField) {
 			sequenceFieldPrototype.setLabelFieldRendered(true);
 			sequenceFieldPrototype.setRowSpan(rowCount);
-			addHeaderField(sequenceFieldPrototype);
+			addHeaderField(sequenceFieldPrototype, 1);
+
+			cellPosition = 1;
 		}
 
 		// pull out label fields from the container's items
-		int cellPosition = 0;
 		for (Component component : collectionGroup.getItems()) {
 			Field field = (Field) component;
 
 			cellPosition += field.getColSpan();
 
 			field.setLabelFieldRendered(true);
-			addHeaderField(field);
+			addHeaderField(field, cellPosition);
 
 			// add action header as last column in row
 			if ((cellPosition == getNumberOfColumns()) && collectionGroup.isRenderLineActions()) {
 				actionFieldPrototype.setLabelFieldRendered(true);
 				actionFieldPrototype.setRowSpan(rowCount);
-				addHeaderField(actionFieldPrototype);
+				addHeaderField(actionFieldPrototype, cellPosition);
 			}
 		}
 	}
@@ -160,9 +163,11 @@ public class TableLayoutManager extends GridLayoutManager {
 	 * 
 	 * @param field
 	 *            - field instance the header field is being created for
+	 * @param column
+	 *            - column number for the header, used for setting the id
 	 */
-	protected void addHeaderField(Field field) {
-		LabelField headerField = ComponentUtils.copy(headerFieldPrototype);
+	protected void addHeaderField(Field field, int column) {
+		LabelField headerField = ComponentUtils.copy(headerFieldPrototype, "_" + column);
 		if (useShortLabels) {
 			headerField.setLabelText(field.getLabel());
 		}
@@ -197,13 +202,15 @@ public class TableLayoutManager extends GridLayoutManager {
 	 * fields to indicate what collection and line they apply to.
 	 * </p>
 	 * 
+	 * @param view
+	 *            - View instance the collection belongs to
 	 * @param collectionGroup
 	 *            - CollectionGroup container the table applies to
 	 * @param model
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 */
-	protected void buildTableDataRows(CollectionGroup collectionGroup, Object model) {
+	protected void buildTableDataRows(View view, CollectionGroup collectionGroup, Object model) {
 		// get the collection for this group from the model
 		List<Object> modelCollection = (List<Object>) ModelUtils.getPropertyValue(model,
 				((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
@@ -211,17 +218,21 @@ public class TableLayoutManager extends GridLayoutManager {
 		// for each collection row create a set of fields
 		for (int index = 0; index < modelCollection.size(); index++) {
 			String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
+			String idSuffix = "_" + index;
 
 			// copy fields adding the collection line to their binding prefix
-			List<Field> lineFields = ComponentUtils.copyFieldListAndPrefix((List<Field>) collectionGroup.getItems(),
+			List<Field> lineFields = ComponentUtils.copyFieldList((List<Field>) collectionGroup.getItems(),
 					bindingPathPrefix);
+			ComponentUtils.updateIds(lineFields, idSuffix);
+			view.getViewIndex().addFields(lineFields);
 
 			// add line fields to the dataFields List, creating the sequence and
 			// action fields in the appropriate place if needed
 			// sequence field should be first column
 			if (renderSequenceField) {
-				AttributeField lineSequenceField = ComponentUtils.copy(sequenceFieldPrototype);
-				ComponentUtils.prefixBindingPath(lineSequenceField, bindingPathPrefix);
+				AttributeField lineSequenceField = ComponentUtils.copyField(sequenceFieldPrototype, bindingPathPrefix,
+						idSuffix);
+				view.getViewIndex().addAttributeField(lineSequenceField);
 				dataFields.add(lineSequenceField);
 			}
 
@@ -234,7 +245,7 @@ public class TableLayoutManager extends GridLayoutManager {
 
 				// action field should be in last column
 				if ((cellPosition == getNumberOfColumns()) && collectionGroup.isRenderLineActions()) {
-					GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype);
+					GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype, idSuffix);
 
 					List<ActionField> lineActions = collectionGroup.getLineActions(index);
 					lineActionsField.setItems(lineActions);

@@ -60,7 +60,7 @@ public interface LayoutManager extends Serializable {
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 */
-	public void performConditionalLogic(View view, Object model, Container container);
+	public void performApplyModel(View view, Object model, Container container);
 
 	/**
 	 * Called to refresh any manager state when state has changed in the

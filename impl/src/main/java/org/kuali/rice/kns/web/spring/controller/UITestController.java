@@ -16,16 +16,11 @@
 package org.kuali.rice.kns.web.spring.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.kuali.rice.kns.service.KNSServiceLocator;
-import org.kuali.rice.kns.uif.container.View;
-import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.web.spring.form.UITestForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -43,9 +38,7 @@ import edu.sampleu.travel.bo.TravelAccount;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
-public class UITestController {
-	private ViewService viewService;
-
+public class UITestController extends UifControllerBase {
 	private static final String testViewId = "testView1";
 
 	@RequestMapping(value = "/uitest", params = "methodToCall=start")
@@ -97,32 +90,6 @@ public class UITestController {
 			HttpServletRequest request, HttpServletResponse response) {
 
 		return getUIFModelAndView(uiTestForm, testViewId, "page2");
-	}
-
-	protected ModelAndView getUIFModelAndView(Object form, String viewId, String pageId) {
-		View view = getViewService().getViewById(viewId);
-		view.setCurrentPageId(pageId);
-
-		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.addObject("KualiForm", form);
-		modelAndView.addObject("View", view);
-		modelAndView.setViewName("View");
-
-		getViewService().applyModel(view, form);
-
-		return modelAndView;
-	}
-
-	protected ViewService getViewService() {
-		if (viewService == null) {
-			viewService = KNSServiceLocator.getViewService();
-		}
-
-		return this.viewService;
-	}
-
-	public void setViewService(ViewService viewService) {
-		this.viewService = viewService;
 	}
 
 }

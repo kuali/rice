@@ -125,7 +125,7 @@ public interface Component extends Serializable {
 	 *            - Top level object containing the data (could be the form or a
 	 *            top level business object, dto)
 	 */
-	public void performConditionalLogic(View view, Object model);
+	public void performApplyModel(View view, Object model);
 
 	/**
 	 * List of components that are contained within the component

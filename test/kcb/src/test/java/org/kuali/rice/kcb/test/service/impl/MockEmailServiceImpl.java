@@ -43,7 +43,7 @@ public class MockEmailServiceImpl extends EmailServiceImpl implements MockEmailS
     /**
      * @see org.kuali.rice.kcb.service.impl.EmailServiceImpl#sendEmail(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String)
      */
-    //@Override
+    @Override
     protected void sendEmail(String message, String subject, String from, String sendTo, String format) {
         LOG.info("Storing mail for user: " + sendTo + ": " + subject);
         Map<String, String> mail = new HashMap<String, String>();

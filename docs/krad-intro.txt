@@ -205,7 +205,7 @@ Let's take a tour of the Fields that KRAD offers.
 
 h4. ActionField
 
-An ActionField represents an element that gives the user the ability to kick off a web request/response cycle.  For instance, the submit button of a Form would be represented as an ActionField.  A link in a menu would be represented as an ActionField.  Even rich scripts, which may do background trips to the server to populate the current page with data could be represented as an ActionField as well.  [JAMES: BETTER WAY TO DESCRIBE THIS]
+An ActionField represents an element that gives the user the ability to perform an action.  Many actions kick off a web request/response cycle.  For instance, the submit button of a Form would be represented as an ActionField.  A link in a menu would be represented as an ActionField.  Even rich scripts could be represented as an ActionField as well--some of which do Ajax calls to the server to pull more data into a page, and some of which just perform some client side JavaScript call.  No matter what, an ActionField represents the user telling the application to get something done.
 
 An ActionField must have either a methodToCall or navigateToPageId set.  Setting the methodToCall will end up calling a method on a controller, and the great majority of ActionFields will populate this property.  navigateToPageId would be used for ActionFields which move the user around in a multi-page document, like the Kuali Coeus Proposal.
 
@@ -218,22 +218,25 @@ An AttributeField represents an Attribute on a page.  This means that the Field 
 [JAMES: MOST IMPORTANT FIELD.  DESCRIBE MORE]
 - tie to data dictionary
 
-An AttributeField correlates directly to an AttributeDefinition set on either a BusinessObject or a Document.  Every AttributeDefinition represents a single property on its related object.  The AttributeDefinition then defines a great deal of information about that property: what kind of Control it should be associated with, the maximum length of the input, labels, validation patterns, and how to format the property--so that if the property represents non-String data, it can be converted into the data type of the property.  [HERE JAMES]
-- What are the main encapsulated properties "at the heart of the attribute"?
+An AttributeField correlates directly to an AttributeDefinition set on either a BusinessObject or a Document.  Every AttributeDefinition represents a single property on its related object.  The AttributeDefinition then defines a great deal of information about that property: what kind of Control it should be associated with, the maximum length of the input, labels, validation patterns, and how to format the property--so that if the property represents non-String data, it can be converted into the data type of the property.
+
+The vast majority of properties which populate the pages of a KRAD application will be represented by DataDictionary AttributeDefinitions.  KRAD's support of translating AttributeDefinitions to all of the equivalent rendered HTML on a page through the AttributeField is very powerful.
 
 There are several encapsulated properties at the heart of the AttributeField.  Let's start with the two basic: formattedValue and control.  The formattedValue is the data held by the attribute--either to be rendered to the screen or to be populated by the control.  The control, of course, is the associated Control Component, which will allow the user to input data into the formattedValue.
-** errors
-** formatter and options finder
-** data dictionary ties
-** data binding
 
-- What does this render?
-** label
-** summary
-** control
-** constraint
-** quickfinder
-** help
+Of course, the DataDictionary AttributeDefinition defines a lot of text about the attribute: the label and summary texts as well as a possible default value.  The AttributeField holds all of these as well.  The AttributeField also holds the most important validation defined in AttributeDefinition--that of maxLength.  (It's the most important because if values exceed maxLength, they will likely cause exceptions when inserted into the database--that goes for data of a number of data types.)
+
+AttributeField also holds errors associated with the attribute.  If the Control associated with this attribute put in data that failed validation, or if a special warning message needs to be associated with the attribute, AttributeField encapsulates that as well, by holding these errors in an ErrorsField.  There's also an errorPlacement property which tells KRAD what aspect of the rendered field to render errors to.  [JERRY: POSSIBLE VALUES? "LEFT", "RIGHT", "ABOVE", etc?]
+
+The AttributeField also holds the Formatter responsible for taking Strings in the HTTP request and translating them into different data types.  If the attribute's control is a MultiValueControl with an OptionsFinder, the AttributeField also holds that.
+
+Finally, the AttributeField has an org.kuali.rice.kns.uif.BindingInfo object which holds information on how the attribute should be rendered to HTTP responses and from HTTP requests.  Data bindings are discussed [below#data_bindings] but the short of it is that AttributeField remembers its path in the complex tree of the document and can use that information to get data back and forth to the page--so that developers don't need to worry about those details.
+
+That's a lot for AttributeField to hold.  What does AttributeField render?  First, it renders a Label for the attribute, often by creating a LabelField which then can be rendered beside or above the Control as the parent View demands.  It also renders summary information for the AttributeField.  Obviously, the AttributeField will render a Control for the attribute--assuming the attribute hasn't been rendered hidden or read only by some other participant in the rendering process, such as a KIM permission.  When rendering a Control, the AttributeField will render a classic Kuali quick finder magnifying glass icon for attributes which need separate lookups, and AttributeField will render any specified constraint text for attributes which demand a specific input format.  AttributeField will also render help for the attribute if applicable.
+
+Certainly, all of this makes AttributeField the most powerful of Fields, but, importantly, it has one concern: the proper rendering if an attribute to a View.  KRAD gets a lot of power by putting metadata about attributes on documents and business objects into the Data Dictionary.  AttributeField concentrates that power by offering a single point which coordinates the full rendering of the attribute.
+
+Of course, there's other fields yet to understand.  Let's continue our tour.
 
 h4. BlankField
 
@@ -271,7 +274,7 @@ h4. MessageField
 
 A messageField displays text on the rendered page within a span.  Its messageText property holds the text which it will display.  It also has a messageType property which helps uniquely identify all messages of this type on the screen.
 
-h3. Data Bindings
+h3. Data Bindings{anchor:data_bindings}
 
 One of the major changes that KRAD will bring will be a move away from Apache Struts 1.2+ to Spring 3.0's Web MVC.  This means many things: changes to Controllers, some updates to Forms - though the KRAD team is working on scripts to make these changes as painless as possible.
 
@@ -285,10 +288,14 @@ The Spring documentation covers how it uses data bindings in much more detail [o
 
 As KRAD renders a page with form data, it will properly generate the data binding path that will properly populate the form when the page is submitted.  It will create indexed property names for values within collections and it will create nested names for all the attributes on a page...meaning that for the most part, developers will never concern themselves with data binding--KRAD will just make it happen in the background.
 
-New Components which want to participate in the DataBinding process should implement the org.kuali.rice.kns.uif.DataBinding interface.  This interface has four methods:
-* String getBindingPath() - the path on the model which represents the property that should be read or populated during DataBinding actions
-* String getModelName() - the name of the model within the View that the binding path should populate
-* String getBindByNamePrefix() and void setBindByNamePrefix(String prefix) - If the model is part of a collection, then these methods are used to track which index in the collection the currently rendered element belongs to.
+New Components which want to participate in the DataBinding process should implement the org.kuali.rice.kns.uif.DataBinding interface.  This interface has one method, getBindingInfo(), which returns a populated instance of org.kuali.rice.kns.uif.BindingInfo.  BindingInfo encapsulates a number of properties:
+* bindingName - this is the name of the property to bind to, either within the form or the model.
+* modelName - if this property is supposed to bind to a model, what's the path of the model to the form?
+* bindByNamePrefix - this is a prefix generated by KRAD, typically when rendering a Collection.  Basically, it generates the proper name and index (for example, "collectionItem[0]") and holds that for the sake of the current binding.
+* bindToModel - when true, this means that the given property should be bound to some root model.  The classic root model of a KRAD application is, of course, a document - so properties related to documents should have bindToModel set to true.
+* bindToForm - when true, this makes sure that the given property is bound to the Struts MVC form itself.
+
+[JERRY: WHAT HAPPENS IF BINDTOMODEL AND BINDTOFORM ARE BOTH FALSE]
 
 The most important Component to implement this interface is the AttributeField.  AttributeFields display and read data on business objects and documents, so naturally they participate in the data binding process.
 [JERRY, WHY DON'T THE CONTROLS IMPLEMENT THIS?]

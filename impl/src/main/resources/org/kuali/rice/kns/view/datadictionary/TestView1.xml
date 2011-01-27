@@ -19,7 +19,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
  limitations under the License.
 -->
 
-   <bean id="testView1" parent="View">
+   <bean id="testView1" parent="FormView">
       <property name="id" value="testView1"/>
       <property name="title" value="Test View 1"/>
       <property name="entryPageId" value="page1"/>   
@@ -51,12 +51,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
           </bean>          
         </list>
       </property>    
-      <property name="modelClasses">
-        <map>
-           <entry key="travelAccount1" value="edu.sampleu.travel.bo.TravelAccount"/> 
-        </map>       
-      </property> 
       <property name="formClass" value="org.kuali.rice.kns.web.spring.form.UITestForm"/>
+      <property name="defaultModelPath" value="travelAccount1"/>
       <property name="controllerRequestMapping" value="uitest"/>
       <property name="footer">
         <ref bean="testViewFooter"/>
@@ -163,7 +159,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="title" value="Collection Group 1"/>  
       <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
       <property name="name" value="fiscalOfficer.accounts"/>
-      <property name="bindingPath" value="travelAccount1.fiscalOfficer.accounts"/>
       <property name="layoutManager.sequenceAttributeName" value="number"/>
       <property name="items">
         <list>
@@ -180,7 +175,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="title" value="Collection Group 2"/>  
       <property name="collectionObjectClass" value="edu.sampleu.travel.bo.TravelAccount"/>
       <property name="name" value="fiscalOfficer.accounts"/>
-      <property name="bindingPath" value="travelAccount1.fiscalOfficer.accounts"/>
       <property name="items">
         <list>
           <bean parent="AttributeField" p:name="number"/>
@@ -261,7 +255,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    <bean id="testSection2" parent="PanelGridSection">
       <property name="id" value="testSection2"/>
       <property name="title" value="Test Section 2"/> 
-      <property name="fieldBindByNamePrefix" value="travelAccount1"/> 
       <property name="items">
         <list>
           <bean parent="AttributeField" p:name="number"/>
@@ -371,7 +364,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
    <bean id="testSection3" parent="PanelGridSection">
       <property name="id" value="testSection3"/>
       <property name="title" value="Test Section 3"/> 
-      <property name="fieldBindByNamePrefix" value="travelAccount1"/> 
       <property name="items">
         <list>
           <bean parent="AttributeField" p:name="number" p:required="true">

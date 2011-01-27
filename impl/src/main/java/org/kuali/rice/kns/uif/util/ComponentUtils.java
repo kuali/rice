@@ -61,10 +61,10 @@ public class ComponentUtils {
 
 	public static void prefixBindingPath(DataBinding field, String addBindingPrefix) {
 		String bindingPrefix = addBindingPrefix;
-		if (StringUtils.isNotBlank(field.getBindByNamePrefix())) {
-			bindingPrefix += "." + field.getBindByNamePrefix();
+		if (StringUtils.isNotBlank(field.getBindingInfo().getBindByNamePrefix())) {
+			bindingPrefix += "." + field.getBindingInfo().getBindByNamePrefix();
 		}
-		field.setBindByNamePrefix(bindingPrefix);
+		field.getBindingInfo().setBindByNamePrefix(bindingPrefix);
 	}
 
 }

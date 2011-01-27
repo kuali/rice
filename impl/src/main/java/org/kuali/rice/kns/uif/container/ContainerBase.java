@@ -17,7 +17,6 @@ package org.kuali.rice.kns.uif.container;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
@@ -97,14 +96,14 @@ public abstract class ContainerBase extends ComponentBase implements Container {
 
 	/**
 	 * @see org.kuali.rice.kns.uif.ComponentBase#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
-	 *      java.util.Map)
+	 *      java.lang.Object)
 	 */
 	@Override
-	public void performConditionalLogic(View view, Map<String, Object> models) {
-		super.performConditionalLogic(view, models);
+	public void performConditionalLogic(View view, Object model) {
+		super.performConditionalLogic(view, model);
 
 		if (layoutManager != null) {
-			layoutManager.performConditionalLogic(view, models, this);
+			layoutManager.performConditionalLogic(view, model, this);
 		}
 	}
 

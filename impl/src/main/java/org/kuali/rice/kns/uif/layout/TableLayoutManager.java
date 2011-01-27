@@ -16,11 +16,10 @@
 package org.kuali.rice.kns.uif.layout;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
@@ -30,7 +29,7 @@ import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.field.GroupField;
 import org.kuali.rice.kns.uif.field.LabelField;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
-import org.kuali.rice.kns.uif.util.ViewModelUtils;
+import org.kuali.rice.kns.uif.util.ModelUtils;
 import org.kuali.rice.kns.uif.widget.TableDecorator;
 
 /**
@@ -85,11 +84,11 @@ public class TableLayoutManager extends GridLayoutManager {
 	 * Builds up the table by creating a row for each collection line
 	 * 
 	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
-	 *      java.util.Map, org.kuali.rice.kns.uif.container.Container)
+	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performConditionalLogic(View view, Map<String, Object> models, Container container) {
-		super.performConditionalLogic(view, models, container);
+	public void performConditionalLogic(View view, Object model, Container container) {
+		super.performConditionalLogic(view, model, container);
 
 		if (!(container instanceof CollectionGroup)) {
 			throw new IllegalArgumentException(
@@ -100,7 +99,7 @@ public class TableLayoutManager extends GridLayoutManager {
 		CollectionGroup collectionGroup = (CollectionGroup) container;
 
 		buildTableHeaderRows(collectionGroup);
-		buildTableDataRows(collectionGroup, models);
+		buildTableDataRows(collectionGroup, model);
 	}
 
 	/**
@@ -200,17 +199,18 @@ public class TableLayoutManager extends GridLayoutManager {
 	 * 
 	 * @param collectionGroup
 	 *            - CollectionGroup container the table applies to
-	 * @param models
-	 *            - Map of model instances from which the collection will be
-	 *            retrieved
+	 * @param model
+	 *            - Top level object containing the data (could be the form or a
+	 *            top level business object, dto)
 	 */
-	protected void buildTableDataRows(CollectionGroup collectionGroup, Map<String, Object> models) {
+	protected void buildTableDataRows(CollectionGroup collectionGroup, Object model) {
 		// get the collection for this group from the model
-		Collection<Object> modelCollection = ViewModelUtils.getCollectionFromModels(models, collectionGroup);
+		List<Object> modelCollection = (List<Object>) ModelUtils.getPropertyValue(model,
+				((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
 
 		// for each collection row create a set of fields
 		for (int index = 0; index < modelCollection.size(); index++) {
-			String bindingPathPrefix = collectionGroup.getBindingPath() + "[" + index + "]";
+			String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
 
 			// copy fields adding the collection line to their binding prefix
 			List<Field> lineFields = ComponentUtils.copyFieldListAndPrefix((List<Field>) collectionGroup.getItems(),
@@ -242,7 +242,7 @@ public class TableLayoutManager extends GridLayoutManager {
 				}
 			}
 		}
-		
+
 		// adjust the number of columns if the sequence or action fields were
 		// generated
 		if (renderSequenceField) {

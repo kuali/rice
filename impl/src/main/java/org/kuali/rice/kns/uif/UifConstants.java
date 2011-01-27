@@ -26,6 +26,7 @@ public class UifConstants extends JSTLConstants {
 	public static final String CONTROLLER_METHOD_DISPATCH_PARAMETER_NAME = "methodToCall";
 
 	public static final String DEFAULT_MODEL_NAME = "KualiForm";
+	public static final String DEFAULT_VIEW_NAME = "default";
 
 	public static class PersistenceMode {
 		public static final String REQUEST = "REQUEST";
@@ -57,10 +58,16 @@ public class UifConstants extends JSTLConstants {
 	}
 
 	public static class ViewType {
+		public static final String DEFAULT = "DEFAULT";
 		public static final String INQUIRY = "INQUIRY";
 		public static final String LOOKUP = "LOOKUP";
 		public static final String MAINTENANCE = "MAINTENANCE";
 		public static final String TRANSACTIONAL = "TRANSACTIONAL";
+	}
+	
+	public static class ViewTypeIndexParameterNames {
+		public static final String NAME = "NAME";
+		public static final String MODEL_CLASS = "MODEL_CLASS";
 	}
 
 	public static class ActionParameterNames {

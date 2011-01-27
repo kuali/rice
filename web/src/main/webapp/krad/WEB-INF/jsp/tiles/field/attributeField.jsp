@@ -31,7 +31,7 @@
 
   <%-- render field control --%>
   <c:if test="${field.readOnly}">
-    <s:eval expression="KualiForm.${field.bindingPath}"/>
+    <s:eval expression="KualiForm.${field.bindingInfo.bindingPath}"/>
   </c:if>
   <c:if test="${!field.readOnly}">
     <tiles:insertTemplate template="${field.control.template}">

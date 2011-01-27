@@ -847,9 +847,12 @@ public class DataDictionaryServiceImpl implements DataDictionaryService {
         return preRulesCheckClass;
     }
 
-    @Override
 	public View getViewById(String viewId) {
 		return dataDictionary.getViewById(viewId);
+	}
+    
+	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey) {
+		return dataDictionary.getViewByTypeIndex(viewTypeName, indexKey);
 	}
 
 	public void addDataDictionaryLocation(String location) throws IOException {

@@ -28,7 +28,6 @@ import org.kuali.rice.kns.datadictionary.AttributeSecurity;
 import org.kuali.rice.kns.datadictionary.DataDictionary;
 import org.kuali.rice.kns.datadictionary.InactivationBlockingMetadata;
 import org.kuali.rice.kns.datadictionary.control.ControlDefinition;
-import org.kuali.rice.kns.datadictionary.mask.Mask;
 import org.kuali.rice.kns.document.Document;
 import org.kuali.rice.kns.exception.UnknownDocumentTypeException;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
@@ -453,4 +452,17 @@ public interface DataDictionaryService {
 	 * @return View instance associated with the id
 	 */
 	public View getViewById(String viewId);
+	
+	/**
+	 * Returns View instance identified by the view type name and index
+	 * 
+	 * @param viewTypeName
+	 *            - type name for the view
+	 * @param indexKey
+	 *            - Map of index key parameters, these are the parameters the
+	 *            indexer used to index the view initially and needs to identify
+	 *            an unique view instance
+	 * @return View instance that matches the given index
+	 */
+	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey);
 }

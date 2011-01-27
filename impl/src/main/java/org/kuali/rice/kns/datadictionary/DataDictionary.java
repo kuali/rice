@@ -36,10 +36,12 @@ import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.bo.PersistableBusinessObjectExtension;
 import org.kuali.rice.kns.datadictionary.exception.AttributeValidationException;
 import org.kuali.rice.kns.datadictionary.exception.CompletionException;
+import org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.PersistenceStructureService;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.util.ComponentDecoratorBeanPostProcessor;
+import org.kuali.rice.kns.uif.util.ComponentIdBeanPostProcessor;
 import org.kuali.rice.kns.util.ObjectUtils;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -65,6 +67,9 @@ public class DataDictionary  {
 	 * The encapsulation of DataDictionary indices
 	 */
 	protected DataDictionaryIndex ddIndex = new DataDictionaryIndex(ddBeans);
+	
+	// View indices
+	protected ViewDictionaryIndex viewIndex = new ViewDictionaryIndex(ddBeans);
 
 	/**
 	 * The DataDictionaryMapper
@@ -151,6 +156,10 @@ public class DataDictionary  {
 		try {
 			BeanPostProcessor postProcessor = ComponentDecoratorBeanPostProcessor.class.newInstance();
 			ddBeans.addBeanPostProcessor(postProcessor);
+			
+			BeanPostProcessor idPostProcessor = ComponentIdBeanPostProcessor.class.newInstance();
+			ddBeans.addBeanPostProcessor(idPostProcessor);
+			
 			ddBeans.setBeanExpressionResolver(new StandardBeanExpressionResolver());
 		}
 		catch (Exception e1) {
@@ -174,8 +183,12 @@ public class DataDictionary  {
         if ( allowConcurrentValidation ) {
             Thread t = new Thread(ddIndex);
             t.start();
+            
+            Thread t2 = new Thread(viewIndex);
+            t2.start();   
         } else {
             ddIndex.run();
+            viewIndex.run();
         }
     }
 
@@ -290,7 +303,22 @@ public class DataDictionary  {
 	 * @return View instance associated with the id
 	 */
 	public View getViewById(String viewId) {
-		return ddMapper.getViewById(ddIndex, viewId);
+		return ddMapper.getViewById(viewIndex, viewId);
+	}
+	
+	/**
+	 * Returns View instance identified by the view type name and index
+	 * 
+	 * @param viewTypeName
+	 *            - type name for the view
+	 * @param indexKey
+	 *            - Map of index key parameters, these are the parameters the
+	 *            indexer used to index the view initially and needs to identify
+	 *            an unique view instance
+	 * @return View instance that matches the given index
+	 */
+	public View getViewByTypeIndex(String viewTypeName, Map<String, String> indexKey) {
+		return ddMapper.getViewByTypeIndex(viewIndex, viewTypeName, indexKey);
 	}
 
     /**

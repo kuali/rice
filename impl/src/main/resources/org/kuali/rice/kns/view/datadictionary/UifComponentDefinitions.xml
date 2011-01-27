@@ -18,19 +18,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-
-  <!-- Views -->
-
-  <bean id="View" abstract="true" class="org.kuali.rice.kns.uif.container.View" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/container/view/view.jsp"/>
-      <property name="viewHelperServiceBeanId" value="ViewHelperService"/>
-      <property name="header">
-        <bean parent="ViewHeader"/>
-      </property> 
-      <property name="footer">
-        <bean parent="Footer"/>
-      </property>            
-  </bean>
   
   <!-- Pages -->
    
@@ -41,7 +28,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="layoutManager">
         <bean parent="BoxLayoutManager" p:orientation="VERTICAL"/>
       </property>     
-      <property name="styleClass" value="workarea"/>   
   </bean> 
   
   <!-- Sections -->
@@ -105,6 +91,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>  
   
   <bean id="CollectionGroup" abstract="true" class="org.kuali.rice.kns.uif.container.CollectionGroup" parent="Group">
+      <property name="bindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
       <property name="actionFields">
         <list>
           <bean parent="ActionField" p:methodToCall="deleteLine" p:actionLabel="delete"/>
@@ -138,11 +127,14 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="labelField">
         <bean parent="LabelField"/>
       </property>      
+      <property name="bindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>
   </bean>  
   
   <bean id="FormField" abstract="true" parent="AttributeField">
-      <property name="bindToForm" value="true"/>
-      <property name="bindToModel" value="false"/>
+      <property name="bindingInfo.bindToForm" value="true"/>
+      <property name="bindingInfo.bindToModel" value="false"/>
   </bean>    
   
   <bean id="LabelField" abstract="true" class="org.kuali.rice.kns.uif.field.LabelField" scope="prototype">
@@ -310,6 +302,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   </bean>  
   
   <bean id="DateControl" abstract="true" parent="TextControl">
+      <property name="size" value="10"/>
       <property name="datePicker">
         <ref bean="DatePicker"/>
       </property>
@@ -337,8 +330,12 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/tableDecorator.jsp"/>
   </bean>
   
-  <!-- Initializers -->
+  <!-- Misc -->
   
   <bean id="LabelFieldGenerator" class="org.kuali.rice.kns.uif.initializer.LabelFieldGenerator"/>
+  
+  <bean id="BindingInfo" class="org.kuali.rice.kns.uif.BindingInfo" scope="prototype"/>
+  
+  <bean id="inquiryViewTypeIndexer" class="org.kuali.rice.kns.datadictionary.view.InquiryViewTypeIndexer" scope="prototype"/> 
    
 </beans>

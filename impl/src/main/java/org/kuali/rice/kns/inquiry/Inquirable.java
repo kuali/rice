@@ -20,11 +20,12 @@ import java.util.Map;
 
 import org.kuali.rice.kns.bo.BusinessObject;
 import org.kuali.rice.kns.lookup.HtmlData;
+import org.kuali.rice.kns.uif.service.ViewHelperService;
 
 /**
  * This interface defines the methods for inquirables.
  */
-public interface Inquirable {
+public interface Inquirable extends ViewHelperService {
     public String getHtmlMenuBar();
 
     public String getTitle();

@@ -17,7 +17,6 @@ package org.kuali.rice.kns.uif.layout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
@@ -64,10 +63,10 @@ public abstract class LayoutManagerBase implements LayoutManager {
 	 * Default Impl
 	 * 
 	 * @see org.kuali.rice.kns.uif.layout.LayoutManager#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
-	 *      java.util.Map, org.kuali.rice.kns.uif.container.Container)
+	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performConditionalLogic(View view, Map<String, Object> models, Container container) {
+	public void performConditionalLogic(View view, Object model, Container container) {
 
 	}
 

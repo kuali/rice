@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.uif.container.View;
@@ -184,10 +185,10 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 	}
 	
 	/**
-	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewById(org.kuali.rice.krad.datadictionary.DataDictionaryIndex,
+	 * @see org.kuali.rice.krad.datadictionary.DataDictionaryMapper#getViewById(org.kuali.rice.krad.datadictionary.view.ViewDictionaryIndex,
 	 *      java.lang.String)
 	 */
-	public View getViewById(DataDictionaryIndex index, String viewId) {
+	public View getViewById(ViewDictionaryIndex index, String viewId) {
 		if (StringUtils.isBlank(viewId)) {
 			throw new IllegalArgumentException("invalid (blank) view id");
 		}
@@ -197,4 +198,20 @@ public class DataDictionaryIndexMapper implements DataDictionaryMapper {
 
 		return index.getViewById(viewId);
 	}
+
+	/**
+	 * @see org.kuali.rice.kns.datadictionary.DataDictionaryMapper#getViewByTypeIndex(org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex,
+	 *      java.lang.String, java.util.Map)
+	 */
+	public View getViewByTypeIndex(ViewDictionaryIndex index, String viewTypeName, Map<String, String> indexKey) {
+		if (StringUtils.isBlank(viewTypeName)) {
+			throw new IllegalArgumentException("invalid (blank) view type name");
+		}
+		if ((indexKey == null) || indexKey.isEmpty()) {
+			throw new IllegalArgumentException("index key must have at least one entry");
+		}
+
+		return index.getViewByTypeIndex(viewTypeName, indexKey);
+	}
+	
 }

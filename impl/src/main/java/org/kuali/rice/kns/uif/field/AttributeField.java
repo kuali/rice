@@ -20,6 +20,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.kns.uif.BindingInfo;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.container.View;
@@ -41,18 +42,12 @@ public class AttributeField extends FieldBase implements DataBinding {
 	private Object value;
 	private String formattedValue;
 	private String defaultValue;
-	protected Integer maxLength;
+	private Integer maxLength;
+
+	private BindingInfo bindingInfo;
 
 	private Formatter formatter;
 	private KeyValuesFinder optionsFinder;
-
-	// binding props
-	private boolean bindToModel;
-	private boolean bindToForm;
-
-	private String bindingPath;
-	private String bindByNamePrefix;
-	private String modelName;
 
 	private String dictionaryAttributeName;
 	private String dictionaryObjectEntry;
@@ -65,19 +60,18 @@ public class AttributeField extends FieldBase implements DataBinding {
 
 	// messages
 	private String summary;
-	protected String description;
+	private String description;
 
 	public AttributeField() {
-		bindToModel = true;
-		bindToForm = false;
 	}
 
 	/**
 	 * <p>
 	 * The following initialization is performed:
 	 * <ul>
-	 * <li>If bindingPath not given, defaulted to the field name.</li>
+	 * <li>Set defaults for binding</li>
 	 * <li>Set the control id if blank to the field id</li>
+	 * <li>Default the model path if not set</li>
 	 * </ul>
 	 * </p>
 	 * 
@@ -86,6 +80,10 @@ public class AttributeField extends FieldBase implements DataBinding {
 	@Override
 	public void performInitialization(View view) {
 		super.performInitialization(view);
+		
+		if (bindingInfo != null) {
+			bindingInfo.setDefaults(view, this);
+		}
 
 		if (control != null && StringUtils.isBlank(control.getId())) {
 			control.setId(this.getId());
@@ -187,53 +185,12 @@ public class AttributeField extends FieldBase implements DataBinding {
 		this.formatter = formatter;
 	}
 
-	public boolean isBindToModel() {
-		return this.bindToModel;
+	public BindingInfo getBindingInfo() {
+		return this.bindingInfo;
 	}
 
-	public void setBindToModel(boolean bindToModel) {
-		this.bindToModel = bindToModel;
-	}
-
-	public boolean isBindToForm() {
-		return this.bindToForm;
-	}
-
-	public void setBindToForm(boolean bindToForm) {
-		this.bindToForm = bindToForm;
-	}
-
-	public String getBindingPath() {
-		if (StringUtils.isBlank(bindingPath)) {
-			if (StringUtils.isNotBlank(bindByNamePrefix)) {
-				bindingPath = bindByNamePrefix + "." + getName();
-			}
-			else {
-				bindingPath = getName();
-			}
-		}
-		
-		return this.bindingPath;
-	}
-
-	public void setBindingPath(String bindingPath) {
-		this.bindingPath = bindingPath;
-	}
-
-	public String getBindByNamePrefix() {
-		return this.bindByNamePrefix;
-	}
-
-	public void setBindByNamePrefix(String bindByNamePrefix) {
-		this.bindByNamePrefix = bindByNamePrefix;
-	}
-
-	public String getModelName() {
-		return this.modelName;
-	}
-
-	public void setModelName(String modelName) {
-		this.modelName = modelName;
+	public void setBindingInfo(BindingInfo bindingInfo) {
+		this.bindingInfo = bindingInfo;
 	}
 
 	public Control getControl() {

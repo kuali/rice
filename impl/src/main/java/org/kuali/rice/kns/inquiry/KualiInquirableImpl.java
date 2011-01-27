@@ -42,12 +42,15 @@ import org.kuali.rice.kns.lookup.LookupUtils;
 import org.kuali.rice.kns.service.BusinessObjectDictionaryService;
 import org.kuali.rice.kns.service.BusinessObjectMetaDataService;
 import org.kuali.rice.kns.service.BusinessObjectService;
-import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiConfigurationService;
 import org.kuali.rice.kns.service.LookupService;
 import org.kuali.rice.kns.service.ModuleService;
 import org.kuali.rice.kns.service.PersistenceStructureService;
+import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.container.View;
+import org.kuali.rice.kns.uif.field.AttributeField;
+import org.kuali.rice.kns.uif.service.impl.ViewHelperServiceImpl;
 import org.kuali.rice.kns.util.ExternalizableBusinessObjectUtils;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.InactiveRecordsHidingUtils;
@@ -64,14 +67,13 @@ import org.kuali.rice.kns.web.ui.SectionBridge;
  * NOTE: this class is not thread safe.  When using this class or any subclasses in Spring, make sure that this is not a singleton service, or
  * serious errors may occur.
  */
-public class KualiInquirableImpl implements Inquirable {
+public class KualiInquirableImpl extends ViewHelperServiceImpl implements Inquirable {
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(KualiInquirableImpl.class);
 
     protected LookupService lookupService;
     protected BusinessObjectDictionaryService businessObjectDictionaryService;
     protected BusinessObjectMetaDataService businessObjectMetaDataService;
     protected PersistenceStructureService persistenceStructureService;
-    protected DataDictionaryService dataDictionaryService;
     protected EncryptionService encryptionService;
     protected KualiConfigurationService kualiConfigurationService;
     protected static BusinessObjectService businessObjectService;
@@ -464,17 +466,6 @@ public class KualiInquirableImpl implements Inquirable {
         this.persistenceStructureService = persistenceStructureService;
     }
 
-    public DataDictionaryService getDataDictionaryService() {
-	if ( dataDictionaryService == null ) {
-	    dataDictionaryService = KNSServiceLocator.getDataDictionaryService();
-	}
-        return this.dataDictionaryService;
-    }
-
-    public void setDataDictionaryService(DataDictionaryService dataDictionaryService) {
-        this.dataDictionaryService = dataDictionaryService;
-    }
-
     public EncryptionService getEncryptionService() {
 	if ( encryptionService == null ) {
 	    encryptionService = KNSServiceLocator.getEncryptionService();
@@ -555,5 +546,11 @@ public class KualiInquirableImpl implements Inquirable {
     	return a;
     }
 
+	@Override
+	protected void performCustomInitialization(View view, Component component) {
+		if (component instanceof AttributeField) {
+			((AttributeField) component).setReadOnly(true);
+		}
+	}
 
 }

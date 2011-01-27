@@ -23,7 +23,7 @@
     
  --%>
  
-<form:select id="${field.id}" path="${field.bindingPath}" 
+<form:select id="${field.id}" path="${field.bindingInfo.bindingPath}" 
              size="${control.size}" multiple="${control.multiple}"
              cssClass="${control.styleClass}" 
              tabindex="${control.tabIndex}">

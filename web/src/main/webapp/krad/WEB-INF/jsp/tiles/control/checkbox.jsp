@@ -23,5 +23,5 @@
     
  --%>
  
-<form:checkbox id="${field.id}" path="${field.bindingPath}" 
+<form:checkbox id="${field.id}" path="${field.bindingInfo.bindingPath}" 
             cssClass="${control.styleClass}" cssStyle="${field.style}" tabindex="${control.tabIndex}"/> 

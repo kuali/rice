@@ -20,50 +20,14 @@ package org.kuali.rice.kns.uif;
  * interface
  * 
  * <p>
- * Provides the methods necessary to do binding of values between the model and
- * component
+ * Provides access to the <code>BindingInfo</code> object for the component that
+ * contains binding configuration
  * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public interface DataBinding {
 
-	/**
-	 * Path to the property on the model the component binds to. Uses standard
-	 * dot notation for nested properties
-	 * 
-	 * <p>
-	 * e.g. Property name 'foo' on a model would have binding path "foo", while
-	 * property name 'name' of the nested model property 'account' whould have
-	 * binding path "account.name"
-	 * </p>
-	 * 
-	 * @return String binding path
-	 */
-	public String getBindingPath();
-
-	/**
-	 * Name of the model as declared in the <code>View</code> modelClasses Map
-	 * the component binds to. Can be empty if the view only contains one model
-	 * 
-	 * @return String model name
-	 * @see org.kuali.rice.kns.uif.container.View#getModelClasses()
-	 */
-	public String getModelName();
-
-	/**
-	 * Prefix that will be used to form the binding path from the component
-	 * name. Typically used for nested collection properties
-	 * 
-	 * @return String binding prefix
-	 */
-	public String getBindByNamePrefix();
-
-	/**
-	 * Setter for the prefix to use for forming the binding path by name
-	 * 
-	 * @param bindByNamePrefix
-	 */
-	public void setBindByNamePrefix(String bindByNamePrefix);
+	public BindingInfo getBindingInfo();
 
 }

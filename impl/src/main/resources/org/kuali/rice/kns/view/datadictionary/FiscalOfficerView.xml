@@ -20,7 +20,7 @@
  limitations under the License.
 -->
 
-  <bean id="FiscalOfficer-InquiryView" parent="View">
+  <bean id="FiscalOfficer-InquiryView" parent="FormView">
     <property name="id" value="FiscalOfficer-InquiryView" />
     <property name="title" value="Fiscal Officer Inquiry" />
     <property name="navigation">

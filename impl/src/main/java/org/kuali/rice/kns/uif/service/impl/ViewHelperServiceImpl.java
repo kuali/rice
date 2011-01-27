@@ -71,17 +71,12 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 */
 	@Override
 	public void performInitialization(View view) {
-		// create new instance of id generator so unique ids are assigned within
-		// the view
-		IdGenerator idGenerator = new IdGenerator();
-
-		initializeComponent(view, view, idGenerator);
+		initializeComponent(view, view);
 	}
 
 	/**
 	 * Performs initialization of a component by these steps:
 	 * <ul>
-	 * <li>Set a unique id for the component if it is not already set</li>
 	 * <li>For <code>AttributeField</code> instances, set defaults from the data
 	 * dictionary.</li>
 	 * <li>Invoke the initialize method on the component. Here the component can
@@ -103,27 +98,19 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 *            - view instance the component belongs to
 	 * @param component
 	 *            - component instance to initialize
-	 * @param idGenerator
-	 *            - instance of <code>IdGenerator</code> for assigning component
-	 *            ids
 	 */
-	protected void initializeComponent(View view, Component component, IdGenerator idGenerator) {
+	protected void initializeComponent(View view, Component component) {
 		if (component == null) {
 			return;
 		}
-
-		// assign component id if not set already
-		if (StringUtils.isBlank(component.getId())) {
-			component.setId("id_" + idGenerator.getNextId());
-		}
+		
+		// invoke component to initialize itself after properties have been set
+		component.performInitialization(view);
 
 		// for attribute fields, set defaults from dictionary entry
 		if (component instanceof AttributeField) {
 			initializeAttributeFieldFromDataDictionary(view, (AttributeField) component);
 		}
-
-		// invoke component to initialize itself after properties have been set
-		component.performInitialization(view);
 
 		// invoke component initializers
 		for (ComponentInitializer initializer : component.getComponentInitializers()) {
@@ -132,7 +119,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
 		// initialize nested components
 		for (Component nestedComponent : component.getNestedComponents()) {
-			initializeComponent(view, nestedComponent, idGenerator);
+			initializeComponent(view, nestedComponent);
 		}
 
 		// invoke initialize service hook
@@ -163,9 +150,10 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		// determine class based on the View and use field name as attribute
 		// name
 		if (StringUtils.isBlank(dictionaryAttributeName) && StringUtils.isBlank(dictionaryObjectEntry)
-				&& field.isBindToModel()) {
+				&& field.getBindingInfo().isBindToModel()) {
 			dictionaryAttributeName = field.getName();
-			Class<?> dictionaryModelClass = ViewModelUtils.getModelClassForComponent(view, field);
+			Class<?> dictionaryModelClass = ViewModelUtils.getPropertyType(view, field.getBindingInfo()
+					.getModelPath());
 			if (dictionaryModelClass != null) {
 				dictionaryObjectEntry = dictionaryModelClass.getName();
 			}
@@ -184,28 +172,28 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 
 	/**
 	 * @see org.kuali.rice.kns.uif.service.ViewHelperService#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
-	 *      java.util.Map)
+	 *      java.lang.Object)
 	 */
 	@Override
-	public void performConditionalLogic(View view, Map<String, Object> models) {
-		performComponentConditionalLogic(view, view, models);
+	public void performConditionalLogic(View view, Object model) {
+		performComponentConditionalLogic(view, view, model);
 	}
 
-	protected void performComponentConditionalLogic(View view, Component component, Map<String, Object> models) {
+	protected void performComponentConditionalLogic(View view, Component component, Object model) {
 		if (component == null) {
 			return;
 		}
-		
+
 		// invoke component to perform its conditional logic
-		component.performConditionalLogic(view, models);
+		component.performConditionalLogic(view, model);
 
 		// invoke service override hook
-		performCustomComponentConditionalLogic(view, component, models);
+		performCustomComponentConditionalLogic(view, component, model);
 
 		// get components children and recursively call perform conditional
 		// logic
 		for (Component nestedComponent : component.getNestedComponents()) {
-			performComponentConditionalLogic(view, nestedComponent, models);
+			performComponentConditionalLogic(view, nestedComponent, model);
 		}
 	}
 
@@ -230,35 +218,12 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 	 *            - view instance containing the component
 	 * @param component
 	 *            - component instance to perform logic on
-	 * @param models
-	 *            - Map of model instances, where the key is the model name as
-	 *            given by the view modelClasses map, and the value is the model
-	 *            instance
+	 * @param model
+	 *            - Top level object containing the data (could be the form or a
+	 *            top level business object, dto)
 	 */
-	protected void performCustomComponentConditionalLogic(View view, Component component, Map<String, Object> models) {
+	protected void performCustomComponentConditionalLogic(View view, Component component, Object model) {
 
-	}
-
-	/**
-	 * Generates a unique identifier by incrementing a counter (starting with 1)
-	 */
-	protected class IdGenerator {
-		private int id;
-
-		public IdGenerator() {
-			id = 0;
-		}
-
-		/**
-		 * Next available id
-		 * 
-		 * @return int
-		 */
-		public int getNextId() {
-			id++;
-
-			return id;
-		}
 	}
 
 	protected DataDictionaryService getDataDictionaryService() {

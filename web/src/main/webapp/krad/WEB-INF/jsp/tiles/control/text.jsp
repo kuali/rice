@@ -23,7 +23,7 @@
     
  --%>
 
-<form:input id="${control.id}" path="${field.bindingPath}" 
+<form:input id="${control.id}" path="${field.bindingInfo.bindingPath}" 
             size="${control.size}" maxlength="${field.maxLength}" 
             cssClass="${control.styleClass}" cssStyle="${control.style}"
             tabindex="${control.tabIndex}"/>

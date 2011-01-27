@@ -53,9 +53,6 @@
        <%-- begin of page render --%>
        <krad:template component="${view.currentPage}"/>
        <%-- end of page render --%>
-    
-       <%-- write out hiddens needed to maintain state 
-       <tiles:insertTemplate template="${view.state.template}"--%>
      </td>
      
      <td width="20">

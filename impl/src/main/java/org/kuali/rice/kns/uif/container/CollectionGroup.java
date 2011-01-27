@@ -18,10 +18,13 @@ package org.kuali.rice.kns.uif.container;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.kuali.rice.kns.uif.BindingInfo;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.UifConstants.ActionParameterNames;
 import org.kuali.rice.kns.uif.field.ActionField;
+import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 
 /**
@@ -47,9 +50,7 @@ import org.kuali.rice.kns.uif.util.ComponentUtils;
 public class CollectionGroup extends Group implements DataBinding {
 	private Class<?> collectionObjectClass;
 
-	private String bindingPath;
-	private String bindByNamePrefix;
-	private String modelName;
+	private BindingInfo bindingInfo;
 
 	private boolean renderAddLine;
 	private boolean renderLineActions;
@@ -63,6 +64,37 @@ public class CollectionGroup extends Group implements DataBinding {
 
 		actionFields = new ArrayList<ActionField>();
 		subCollections = new ArrayList<CollectionGroup>();
+	}
+
+	/**
+	 * <p>
+	 * The following initialization is performed:
+	 * <ul>
+	 * <li>Set defaults for binding</li>
+	 * <li>Sets the dictionary entry (if blank) on each of the items to the
+	 * collection class</li>
+	 * </ul>
+	 * </p>
+	 * 
+	 * @see org.kuali.rice.kns.uif.ComponentBase#performInitialization(org.kuali.rice.kns.uif.container.View)
+	 */
+	@Override
+	public void performInitialization(View view) {
+		super.performInitialization(view);
+		
+		if (bindingInfo != null) {
+			bindingInfo.setDefaults(view, this);
+		}
+
+		for (Component item : getItems()) {
+			if (item instanceof AttributeField) {
+				AttributeField field = (AttributeField) item;
+				
+				if (StringUtils.isBlank(field.getDictionaryObjectEntry())) {
+					field.setDictionaryObjectEntry(collectionObjectClass.getName());
+				}
+			}
+		}
 	}
 
 	/**
@@ -107,28 +139,12 @@ public class CollectionGroup extends Group implements DataBinding {
 		this.collectionObjectClass = collectionObjectClass;
 	}
 
-	public String getBindingPath() {
-		return this.bindingPath;
+	public BindingInfo getBindingInfo() {
+		return this.bindingInfo;
 	}
 
-	public void setBindingPath(String bindingPath) {
-		this.bindingPath = bindingPath;
-	}
-
-	public String getBindByNamePrefix() {
-		return this.bindByNamePrefix;
-	}
-
-	public void setBindByNamePrefix(String bindByNamePrefix) {
-		this.bindByNamePrefix = bindByNamePrefix;
-	}
-
-	public String getModelName() {
-		return this.modelName;
-	}
-
-	public void setModelName(String modelName) {
-		this.modelName = modelName;
+	public void setBindingInfo(BindingInfo bindingInfo) {
+		this.bindingInfo = bindingInfo;
 	}
 
 	public boolean isRenderAddLine() {

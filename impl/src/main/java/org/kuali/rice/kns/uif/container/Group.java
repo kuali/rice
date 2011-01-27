@@ -75,12 +75,19 @@ public class Group extends ContainerBase {
 	public void performInitialization(View view) {
 		super.performInitialization(view);
 
-		// set bindByNamePrefix on attribute fields if needed
 		for (Component component : getItems()) {
+			// append group's field bind by name prefix (if set) to each
+			// attribute field's binding prefix
 			if (component instanceof AttributeField) {
 				AttributeField attributeField = (AttributeField) component;
-				if (StringUtils.isBlank(attributeField.getBindByNamePrefix()) && attributeField.isBindToModel()) {
-					attributeField.setBindByNamePrefix(getFieldBindByNamePrefix());
+
+				if (StringUtils.isNotBlank(getFieldBindByNamePrefix())) {
+					String bindByNamePrefixToSet = getFieldBindByNamePrefix();
+
+					if (StringUtils.isNotBlank(attributeField.getBindingInfo().getBindByNamePrefix())) {
+						bindByNamePrefixToSet += "." + attributeField.getBindingInfo().getBindByNamePrefix();
+					}
+					attributeField.getBindingInfo().setBindByNamePrefix(bindByNamePrefixToSet);
 				}
 			}
 			// set on GroupField's group to recursively set AttributeFields

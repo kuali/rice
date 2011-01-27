@@ -82,10 +82,10 @@ public abstract class ComponentBase implements Component {
 	 * Default implementation does nothing
 	 * 
 	 * @see org.kuali.rice.kns.uif.Component#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
-	 *      java.util.Map)
+	 *      java.lang.Object)
 	 */
 	@Override
-	public void performConditionalLogic(View view, Map<String, Object> models) {
+	public void performConditionalLogic(View view, Object model) {
 
 	}
 

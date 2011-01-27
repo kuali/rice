@@ -19,7 +19,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
  limitations under the License.
 -->
 
-   <bean id="KradFormView1" parent="View">
+   <bean id="KradFormView1" parent="FormView">
       <property name="id" value="KradFormView1"/>
       <property name="title" value="KRAD Form 1"/>
       <property name="navigation">

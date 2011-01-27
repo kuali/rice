@@ -15,22 +15,97 @@
  */
 package org.kuali.rice.kns.web.spring.form;
 
+import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.uif.service.ViewService;
+
 /**
- * Base model class for KRAD applications. 
+ * Base form class for views within the KRAD User Interface Framework
+ * 
+ * <p>
+ * Holds properties necessary to determine the <code>View</code> instance that
+ * will be used to render the UI
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
- *
  */
 public class UifFormBase {
+	protected String viewId;
+	protected String viewName;
+	protected String methodToCall;
 
-    private String methodToCall;
+	public UifFormBase() {
 
-    public String getMethodToCall() {
-        return this.methodToCall;
-    }
+	}
 
-    public void setMethodToCall(String methodToCall) {
-        this.methodToCall = methodToCall;
-    }
-    
+	/**
+	 * Unique Id for the <code>View</code> instance. This is specified for a
+	 * view in its definition by setting the 'id' property.
+	 * 
+	 * @return String view id
+	 */
+	public String getViewId() {
+		return this.viewId;
+	}
+
+	/**
+	 * Setter for the unique view id
+	 * 
+	 * @param viewId
+	 */
+	public void setViewId(String viewId) {
+		this.viewId = viewId;
+	}
+
+	/**
+	 * Name for the <code>View</code> instance. This is specified for a view in
+	 * its definition by setting the 'id' property. The name is not necessary
+	 * unique and cannot be used by itself to retrieve a view. Typically it is
+	 * used with other parameters to identify a view with a certain type (view
+	 * type)
+	 * 
+	 * @return String view name
+	 */
+	public String getViewName() {
+		return this.viewName;
+	}
+
+	/**
+	 * Setter for the view name
+	 * 
+	 * @param viewName
+	 */
+	public void setViewName(String viewName) {
+		this.viewName = viewName;
+	}
+
+	/**
+	 * Identifies the controller method that should be invoked to fulfill a
+	 * request. The value will be matched up against the 'params' setting on the
+	 * <code>RequestMapping</code> annotation for the controller method
+	 * 
+	 * @return String method to call
+	 */
+	public String getMethodToCall() {
+		return this.methodToCall;
+	}
+
+	/**
+	 * Setter for the method to call
+	 * 
+	 * @param methodToCall
+	 */
+	public void setMethodToCall(String methodToCall) {
+		this.methodToCall = methodToCall;
+	}
+
+	/**
+	 * Instance of the <code>ViewService</code> that can be used to retrieve
+	 * <code>View</code> instances
+	 * 
+	 * @return ViewService implementation
+	 */
+	protected ViewService getViewService() {
+		return KNSServiceLocator.getViewService();
+	}
+
 }

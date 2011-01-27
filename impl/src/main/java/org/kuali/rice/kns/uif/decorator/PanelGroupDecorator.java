@@ -26,7 +26,7 @@ import org.kuali.rice.kns.uif.container.View;
  * Decorator that wraps a <code>Group</code> with a collapsible panel. To use
  * set class in the <code>List</code> of <code>ComponentDecorator</code> classes
  * for the Group. The panel group renderer will call the groups template to
- * render withing the panel.
+ * render within the panel.
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */

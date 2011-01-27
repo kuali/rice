@@ -73,11 +73,10 @@ public interface ViewHelperService {
 	 * 
 	 * @param view
 	 *            - View instance that the logic should be applied to
-	 * @param models
-	 *            - Map of model instances, where the key is the model name as
-	 *            given by the view modelClasses map, and the value is the model
-	 *            instance
+	 * @param model
+	 *            - Top level object containing the data (could be the form or a
+	 *            top level business object, dto)
 	 */
-	public void performConditionalLogic(View view, Map<String, Object> models);
+	public void performConditionalLogic(View view, Object model);
 
 }

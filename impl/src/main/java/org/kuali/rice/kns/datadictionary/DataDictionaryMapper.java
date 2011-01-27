@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.kuali.rice.kns.datadictionary.view.ViewDictionaryIndex;
 import org.kuali.rice.kns.uif.container.View;
 
 /**
@@ -114,9 +115,24 @@ public interface DataDictionaryMapper {
 	/**
 	 * Returns the View entry identified by the given id
 	 * 
-	 * @param index - the data dictionary index
+	 * @param index - the view dictionary index
 	 * @param viewId - unique id for view
 	 * @return View instance associated with the id
 	 */
-	public View getViewById(DataDictionaryIndex index, String viewId);
+	public View getViewById(ViewDictionaryIndex index, String viewId);
+	
+	/**
+	 * Called to retrieve a <code>View</code> instance that is of the given type
+	 * based on the index key
+	 * 
+	 * @param index - the view dictionary index
+	 * @param viewTypeName
+	 *            - type name for the view
+	 * @param indexKey
+	 *            - Map of index key parameters, these are the parameters the
+	 *            indexer used to index the view initially and needs to identify
+	 *            an unique view instance
+	 * @return View instance that matches the given index
+	 */
+	public View getViewByTypeIndex(ViewDictionaryIndex index, String viewTypeName, Map<String, String> indexKey);
 }

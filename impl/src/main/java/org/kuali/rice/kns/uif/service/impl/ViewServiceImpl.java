@@ -18,10 +18,13 @@ package org.kuali.rice.kns.uif.service.impl;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.uif.UifConstants;
+import org.kuali.rice.kns.uif.UifConstants.ViewType;
+import org.kuali.rice.kns.uif.UifConstants.ViewTypeIndexParameterNames;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewHelperService;
 import org.kuali.rice.kns.uif.service.ViewService;
@@ -54,6 +57,12 @@ public class ViewServiceImpl implements ViewService {
 	public View getView(String viewId, Map<String, String> parameters) {
 		View view = dataDictionaryService.getViewById(viewId);
 
+		initializeView(view, parameters);
+
+		return view;
+	}
+
+	protected void initializeView(View view, Map<String, String> parameters) {
 		// get the configured helper service for the view
 		ViewHelperService helperService = getHelperService(view);
 
@@ -65,37 +74,53 @@ public class ViewServiceImpl implements ViewService {
 
 		// invoke initialize phase on the views helper service
 		helperService.performInitialization(view);
-
-		return view;
 	}
 
 	/**
-	 * Calls applyModels using the default model name for the given model
-	 * instance
+	 * Calls the <code>ViewHelperService</code> configured for the view to carry
+	 * out the various methods of the ApplyModel phase
 	 * 
 	 * @see org.kuali.rice.kns.uif.service.ViewService#applyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object)
 	 */
 	public void applyModel(View view, Object model) {
-		Map<String, Object> models = new HashMap<String, Object>();
-		models.put(UifConstants.DEFAULT_MODEL_NAME, model);
-
-		applyModels(view, models);
-	}
-
-	/**
-	 * Calls the <code>ViewHelperService</code> configured for the view to carry
-	 * out the ApplyModels phase
-	 * 
-	 * @see org.kuali.rice.kns.uif.service.ViewService#applyModels(org.kuali.rice.kns.uif.container.View,
-	 *      java.util.Map)
-	 */
-	public void applyModels(View view, Map<String, Object> models) {
 		// get the configured helper service for the view
 		ViewHelperService helperService = getHelperService(view);
 
 		// invoke helper service to perform conditional logic
-		helperService.performConditionalLogic(view, models);
+		helperService.performConditionalLogic(view, model);
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.service.ViewService#getViewHelperService(java.lang.String)
+	 */
+	public ViewHelperService getViewHelperService(String viewId) {
+		View view = dataDictionaryService.getViewById(viewId);
+
+		return getHelperService(view);
+	}
+
+	/**
+	 * @see org.kuali.rice.kns.uif.service.ViewService#getInquiryViewId(java.lang.String,
+	 *      java.lang.String)
+	 */
+	public String getInquiryViewId(String name, String modelClassName) {
+		String viewName = name;
+		if (StringUtils.isBlank(name)) {
+			viewName = UifConstants.DEFAULT_VIEW_NAME;
+		}
+
+		Map<String, String> indexKey = new HashMap<String, String>();
+		indexKey.put(ViewTypeIndexParameterNames.NAME, viewName);
+		indexKey.put(ViewTypeIndexParameterNames.MODEL_CLASS, modelClassName);
+
+		View view = dataDictionaryService.getViewByTypeIndex(ViewType.INQUIRY, indexKey);
+
+		if (view != null) {
+			return view.getId();
+		}
+
+		return null;
 	}
 
 	/**

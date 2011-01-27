@@ -17,10 +17,10 @@ package org.kuali.rice.kns.uif.layout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.UifConstants.Orientation;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
@@ -30,7 +30,6 @@ import org.kuali.rice.kns.uif.field.ActionField;
 import org.kuali.rice.kns.uif.field.Field;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ModelUtils;
-import org.kuali.rice.kns.uif.util.ViewModelUtils;
 
 /**
  * Layout manager that works with <code>CollectionGroup</code> containers and
@@ -59,11 +58,11 @@ public class StackedLayoutManager extends BoxLayoutManager {
 	 * Builds up the table by creating a row for each collection line
 	 * 
 	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performConditionalLogic(org.kuali.rice.kns.uif.container.View,
-	 *      java.util.Map, org.kuali.rice.kns.uif.container.Container)
+	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
 	 */
 	@Override
-	public void performConditionalLogic(View view, Map<String, Object> models, Container container) {
-		super.performConditionalLogic(view, models, container);
+	public void performConditionalLogic(View view, Object model, Container container) {
+		super.performConditionalLogic(view, model, container);
 
 		if (!(container instanceof CollectionGroup)) {
 			throw new IllegalArgumentException(
@@ -76,30 +75,34 @@ public class StackedLayoutManager extends BoxLayoutManager {
 		collectionGroups = new ArrayList<Group>();
 
 		// get the collection for this group from the model
-		List<Object> modelCollection = ViewModelUtils.getCollectionFromModels(models, collectionGroup);
+		List<Object> modelCollection = (List<Object>) ModelUtils.getPropertyValue(model,
+				((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
 
 		// for each collection row create a new Group
-		for (int index = 0; index < modelCollection.size(); index++) {
-			Group lineGroup = ComponentUtils.copy(lineGroupPrototype);
+		if (modelCollection != null) {
+			for (int index = 0; index < modelCollection.size(); index++) {
+				Group lineGroup = ComponentUtils.copy(lineGroupPrototype);
 
-			String lineHeaderText = buildLineHeaderText(modelCollection.get(index));
-			lineGroup.getHeader().setHeaderText(lineHeaderText);
+				String lineHeaderText = buildLineHeaderText(modelCollection.get(index));
+				lineGroup.getHeader().setHeaderText(lineHeaderText);
 
-			// copy fields adding the collection line to their binding prefix
-			String bindingPathPrefix = collectionGroup.getBindingPath() + "[" + index + "]";
-			List<Field> lineFields = ComponentUtils.copyFieldListAndPrefix((List<Field>) collectionGroup.getItems(),
-					bindingPathPrefix);
+				// copy fields adding the collection line to their binding
+				// prefix
+				String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
+				List<Field> lineFields = ComponentUtils.copyFieldListAndPrefix(
+						(List<Field>) collectionGroup.getItems(), bindingPathPrefix);
 
-			lineGroup.setItems(lineFields);
+				lineGroup.setItems(lineFields);
 
-			// create group footer containing the action fields
-			List<ActionField> lineActions = collectionGroup.getLineActions(index);
-			lineGroup.getFooter().setItems(lineActions);
-			
-			// refresh the group's layout manager
-			lineGroup.getLayoutManager().refresh(view, lineGroup);
+				// create group footer containing the action fields
+				List<ActionField> lineActions = collectionGroup.getLineActions(index);
+				lineGroup.getFooter().setItems(lineActions);
 
-			collectionGroups.add(lineGroup);
+				// refresh the group's layout manager
+				lineGroup.getLayoutManager().refresh(view, lineGroup);
+
+				collectionGroups.add(lineGroup);
+			}
 		}
 	}
 

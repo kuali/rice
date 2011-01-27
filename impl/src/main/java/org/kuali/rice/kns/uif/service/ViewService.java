@@ -68,7 +68,7 @@ public interface ViewService {
 
 	/**
 	 * Performs initialization or updating of the <code>View</code> instance
-	 * based on the model instance
+	 * based on the form (containing models) instance
 	 * <p>
 	 * Part of the view lifecycle that applies the model data to the view.
 	 * Should be called after the model has been populated before the view is
@@ -89,32 +89,9 @@ public interface ViewService {
 	 *            top level business object, dto)
 	 */
 	public void applyModel(View view, Object model);
-
-	/**
-	 * Performs initialization or updating of the <code>View</code> instance
-	 * based on the model instances
-	 * <p>
-	 * Part of the view lifecycle that applies the model data to the view.
-	 * Should be called after the model has been populated before the view is
-	 * rendered. The main things that occur during this phase are:
-	 * <ul>
-	 * <li>Generation of dynamic fields (such as collection rows)</li>
-	 * <li>Population of <code>AttributeField</code> instances from the model
-	 * values</li>
-	 * <li>Execution of conditional logic (hidden, read-only, required settings
-	 * based on model values)</li>
-	 * </ul>
-	 * </p>
-	 * 
-	 * @param view
-	 *            - view instance the model should be applied to
-	 * @param models
-	 *            - Map of objects containing the data, each Map entry contains
-	 *            one model that should be applied, with the Map key specifying
-	 *            the model name that matches the name within in the views
-	 *            modelClasses Map
-	 * @see org.kuali.rice.kns.uif.container.View#getModelClasses
-	 */
-	public void applyModels(View view, Map<String, Object> models);
+	
+	public ViewHelperService getViewHelperService(String viewId);
+	
+	public String getInquiryViewId(String name, String modelClassName);
 
 }

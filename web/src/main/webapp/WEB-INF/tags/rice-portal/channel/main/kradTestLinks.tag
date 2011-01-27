@@ -21,8 +21,8 @@
   <ul class="chan">
 	 <li><portal:portalLink displayTitle="true" title="Test View 1" url="${ConfigProperties.application.url}/spring/uitest?methodToCall=start" /></li>
      <li><portal:portalLink displayTitle="true" title="KRAD Form 1" url="${ConfigProperties.application.url}/spring/kradformtest?methodToCall=start" /></li>
+     <li><portal:portalLink displayTitle="true" title="Travel Account Inquiry" url="${ConfigProperties.application.url}/spring/inquiry?methodToCall=start&number=a14&businessObjectClassName=edu.sampleu.travel.bo.TravelAccount"/></li>     
   </ul>
-
   
 </div>
 <channel:portalChannelBottom />

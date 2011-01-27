@@ -26,8 +26,22 @@ import org.springframework.beans.BeanWrapperImpl;
 public class ModelUtils {
 
 	public static Object getPropertyValue(Object model, String propertyPath) {
-		BeanWrapper beanWrapper = new BeanWrapperImpl(model);
-		return beanWrapper.getPropertyValue(propertyPath);
+		return wrapModel(model).getPropertyValue(propertyPath);
+	}
+
+	public static Class<?> getPropertyType(Object model, String propertyPath) {
+		return wrapModel(model).getPropertyType(propertyPath);
+	}
+
+	public static Class<?> getPropertyType(Class<?> model, String propertyPath) {
+		return new BeanWrapperImpl(model).getPropertyType(propertyPath);
+	}
+
+	public static BeanWrapper wrapModel(Object model) {
+		BeanWrapper beanWrapper =  new BeanWrapperImpl(model);
+		beanWrapper.setAutoGrowNestedPaths(true);
+		
+		return beanWrapper;
 	}
 
 }

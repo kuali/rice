@@ -61,7 +61,7 @@
         <field-descriptor name="createDate" column="create_dt" jbdc-type="TIMESTAMP" />
         <field-descriptor name="subsidizedPercent" column="subsidized_pct" jdbc-type="DECIMAL" conversion="org.kuali.rice.kns.util.OjbKualiPercentFieldConversion"/>
 
-		<reference-descriptor name="fiscalOfficer" class-ref="edu.sampleu.travel.bo.FiscalOfficer">
+		<reference-descriptor name="fiscalOfficer" class-ref="edu.sampleu.travel.bo.FiscalOfficer" auto-delete="object" auto-retrieve="true" auto-update="object" proxy="false">
 			<foreignkey field-ref="foId" />
 		</reference-descriptor>
 

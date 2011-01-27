@@ -21,10 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.kuali.rice.kns.uif.container.View;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 
 /**
@@ -46,9 +44,6 @@ public class DataDictionaryIndex implements Runnable {
 	private Map<Class, DocumentEntry> documentEntriesByBusinessObjectClass;
 	private Map<Class, DocumentEntry> documentEntriesByMaintainableClass;
 	private Map<String, DataDictionaryEntry> entriesByJstlKey;
-	
-	// view entries keyed by view id with value the spring bean name
-	private Map<String, String> viewEntriesByBean;
 
 	// keyed by a class object, and the value is a set of classes that may block the class represented by the key from inactivation 
 	private Map<Class, Set<InactivationBlockingMetadata>> inactivationBlockersForClass;
@@ -80,30 +75,11 @@ public class DataDictionaryIndex implements Runnable {
 	public Map<Class, Set<InactivationBlockingMetadata>> getInactivationBlockersForClass() {
 		return this.inactivationBlockersForClass;
 	}
-	
-	/**
-	 * Retrieves the View instance with the given id from the bean factory.
-	 * Since View instances are stateful, we need to get a new instance from
-	 * Spring each time.
-	 * 
-	 * @param viewId
-	 *            - the unique id for the view
-	 * @return <code>View</code> instance
-	 */
-	public View getViewById(String viewId) {
-		String beanName = viewEntriesByBean.get(viewId);
-		if (StringUtils.isBlank(beanName)) {
-			throw new DataDictionaryException("Unable to find View with id: " + viewId);
-		}
-
-		return ddBeans.getBean(beanName, View.class);
-	}
 
 	private void buildDDIndicies() {
         // primary indices
         businessObjectEntries = new HashMap<String, BusinessObjectEntry>();
         documentEntries = new HashMap<String, DocumentEntry>();
-        viewEntriesByBean = new HashMap<String, String>();
 
         // alternate indices
         documentEntriesByBusinessObjectClass = new HashMap<Class, DocumentEntry>();
@@ -169,17 +145,6 @@ public class DataDictionaryIndex implements Runnable {
                 documentEntries.put(mde.getBusinessObjectClass().getSimpleName() + "MaintenanceDocument", entry);
             }
         }
-        
-		Map<String, View> viewBeans = ddBeans.getBeansOfType(View.class);
-		for (String beanName : viewBeans.keySet()) {
-			View view = viewBeans.get(beanName);
-			if (viewEntriesByBean.containsKey(view.getId())) {
-				throw new DataDictionaryException("Two views must not share the same id. Found duplicate id: "
-						+ view.getId());
-			}
-
-			viewEntriesByBean.put(view.getId(), beanName);
-		}
     }
 
     private void buildDDInactivationBlockingIndices() {

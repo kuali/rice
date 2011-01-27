@@ -22,7 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.UifConstants.ViewType;
 
 /**
  * Root of the component tree which encompasses a set of related
@@ -50,34 +52,27 @@ import org.kuali.rice.kns.uif.Component;
 public class View extends ContainerBase {
 	private String entryPageId;
 	private String currentPageId;
-	private String stateHandler;
-
-	// TODO: is this necessary or can we determine it based on request?
-	private String controllerRequestMapping;
-
-	private boolean renderForm;
-	private boolean validateModelData;
-	private String persistenceMode;
 
 	private NavigationGroup navigation;
 
 	private Class<?> formClass;
+	private String defaultModelPath;
 	private Map<String, Class<?>> modelClasses;
 
 	private List<String> additionalScriptFiles;
 
+	private String viewTypeName;
 	private String viewHelperServiceBeanId;
 
 	private Set<String> allowedParameters;
 	private Map<String, String> context;
 
-	// scripting variables
+	// TODO: scripting variables, should be in context
 	private boolean dialogMode;
 
 	public View() {
-		renderForm = true;
-		validateModelData = true;
 		dialogMode = false;
+		viewTypeName = ViewType.DEFAULT;
 
 		modelClasses = new HashMap<String, Class<?>>();
 		allowedParameters = new HashSet<String>();
@@ -89,7 +84,7 @@ public class View extends ContainerBase {
 	 * The following initialization is performed:
 	 * <ul>
 	 * <li>If current page id is not set, it is set to the configured entry page
-	 * id</li>
+	 * or first item in list id</li>
 	 * </ul>
 	 * </p>
 	 * 
@@ -99,7 +94,13 @@ public class View extends ContainerBase {
 	public void performInitialization(View view) {
 		super.performInitialization(view);
 
-		this.currentPageId = this.entryPageId;
+		if (StringUtils.isNotBlank(entryPageId)) {
+			this.currentPageId = this.entryPageId;
+		}
+		else {
+			Group firstPageGroup = (Group) getItems().get(0);
+			this.currentPageId = firstPageGroup.getId();
+		}
 	}
 
 	/**
@@ -189,58 +190,6 @@ public class View extends ContainerBase {
 		this.currentPageId = currentPageId;
 	}
 
-	public String getStateHandler() {
-		return this.stateHandler;
-	}
-
-	public void setStateHandler(String stateHandler) {
-		this.stateHandler = stateHandler;
-	}
-
-	/**
-	 * Indicates whether a Form element should be rendered for the View. This is
-	 * necessary for pages that need to submit data back to the server. Note
-	 * that even if a page is read-only, a form element is generally needed for
-	 * the navigation. Defaults to true
-	 * 
-	 * @return true if the form element should be rendered, false if it should
-	 *         not be
-	 */
-	public boolean isRenderForm() {
-		return this.renderForm;
-	}
-
-	/**
-	 * Setter for the render form indicator
-	 * 
-	 * @param renderForm
-	 */
-	public void setRenderForm(boolean renderForm) {
-		this.renderForm = renderForm;
-	}
-
-	/**
-	 * Indicates whether to perform the validate model phase of the view
-	 * lifecycle. This phase will validate the model against configured
-	 * dictionary validations and report errors. Defaults to true
-	 * 
-	 * @return boolean true if model data should be validated, false if it
-	 *         should not be
-	 * @see
-	 */
-	public boolean isValidateModelData() {
-		return this.validateModelData;
-	}
-
-	/**
-	 * Setter for the validate model data indicator
-	 * 
-	 * @param validateModelData
-	 */
-	public void setValidateModelData(boolean validateModelData) {
-		this.validateModelData = validateModelData;
-	}
-
 	/**
 	 * <code>NavigationGroup</code> instance for the <code>View</code>
 	 * <p>
@@ -270,6 +219,14 @@ public class View extends ContainerBase {
 
 	public void setFormClass(Class<?> formClass) {
 		this.formClass = formClass;
+	}
+
+	public String getDefaultModelPath() {
+		return this.defaultModelPath;
+	}
+
+	public void setDefaultModelPath(String defaultModelPath) {
+		this.defaultModelPath = defaultModelPath;
 	}
 
 	/**
@@ -328,14 +285,6 @@ public class View extends ContainerBase {
 		this.additionalScriptFiles = additionalScriptFiles;
 	}
 
-	public String getControllerRequestMapping() {
-		return this.controllerRequestMapping;
-	}
-
-	public void setControllerRequestMapping(String controllerRequestMapping) {
-		this.controllerRequestMapping = controllerRequestMapping;
-	}
-
 	public boolean isDialogMode() {
 		return this.dialogMode;
 	}
@@ -344,25 +293,12 @@ public class View extends ContainerBase {
 		this.dialogMode = dialogMode;
 	}
 
-	/**
-	 * Mode for storing the views state. By default the REQUEST and SESSION
-	 * modes are supported. This affects how hidden data and containers are
-	 * rendered and how the view is restored on post back
-	 * 
-	 * @return String persistence mode
-	 * @see org.kuali.rice.kns.uif.UifConstants.PersistenceMode
-	 */
-	public String getPersistenceMode() {
-		return this.persistenceMode;
+	public String getViewTypeName() {
+		return this.viewTypeName;
 	}
 
-	/**
-	 * Setter for the views persistence mode
-	 * 
-	 * @param persistenceMode
-	 */
-	public void setPersistenceMode(String persistenceMode) {
-		this.persistenceMode = persistenceMode;
+	public void setViewTypeName(String viewTypeName) {
+		this.viewTypeName = viewTypeName;
 	}
 
 	/**

@@ -65,7 +65,7 @@
   <!----------------------------------- #BEGIN BODY --------------------------------------->
 
   <body>
-  <div id="page_div">
+  <div id="page_div" class="workarea">
 
     <krad:backdoor/>
 

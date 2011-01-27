@@ -121,6 +121,9 @@
     <property name="summary" value="Subsidized Percent"/>
     <property name="label" value="Subsidized Percent"/>
     <property name="description" value="Subsidized Percent"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="6"/>
+    </property>    
   </bean>
   
   <bean id="TravelAccount-createDate" parent="AttributeReferenceDummy-genericDate">
@@ -129,6 +132,9 @@
     <property name="summary" value="Date Created"/>
     <property name="label" value="Date Created"/>
     <property name="description" value="Date Created"/>
+    <property name="controlField">
+      <bean parent="DateControl"/>
+    </property>     
   </bean>
   
   <bean id="TravelAccount-extension.accountTypeCode" parent="TravelAccount-extension.accountTypeCode-parentBean"/>
@@ -137,6 +143,9 @@
     <property name="control">
       <bean parent="SelectControlDefinition" p:businessObjectClass="edu.sampleu.travel.bo.TravelAccountType" p:valuesFinderClass="org.kuali.rice.kns.lookup.keyvalues.PersistableBusinessObjectValuesFinder" p:includeKeyInLabel="true" p:includeBlankRow="true" p:keyAttribute="accountTypeCode" p:labelAttribute="name"/>
     </property>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="2"/>
+    </property>      
     <property name="name" value="extension.accountTypeCode"/>
   </bean>
   <bean id="TravelAccount-extension.accountType.codeAndDescription" parent="TravelAccount-extension.accountType.codeAndDescription-parentBean"/>
@@ -148,6 +157,9 @@
 
   <bean id="TravelAccount-foId-parentBean" abstract="true" parent="FiscalOfficer-id">
     <property name="name" value="foId"/>
+    <property name="controlField">
+      <bean parent="TextControl" p:size="5"/>
+    </property>
   </bean>
 
 <!-- Business Object Inquiry Definition -->

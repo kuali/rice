@@ -23,4 +23,4 @@
     
  --%>
 
-<form:hidden id="${field.id}" path="${field.bindingPath}"/>
+<form:hidden id="${field.id}" path="${field.bindingInfo.bindingPath}"/>

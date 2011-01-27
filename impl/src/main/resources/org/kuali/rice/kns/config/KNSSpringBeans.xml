@@ -205,8 +205,10 @@
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/Note.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/NoteType.xml</value>
 				<value>classpath:org/kuali/rice/kns/bo/datadictionary/PessimisticLock.xml</value>
-                <value>classpath:org/kuali/rice/kns/view/datadictionary/UIF-BaseDefinitions.xml</value>
-                <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifComponentDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifViewDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/TestInquiries.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>                
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
             </list>
@@ -250,7 +252,9 @@
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/ParameterTypeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml</value>
                 <value>classpath:org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml</value>
-                <value>classpath:org/kuali/rice/kns/view/datadictionary/UIF-BaseDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifComponentDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifViewDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/TestInquiries.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>                       
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
@@ -285,7 +289,7 @@
 
 	<bean id="dataDictionaryService" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl">
 		<constructor-arg>
-			<bean class="org.kuali.rice.kns.datadictionary.DataDictionary">
+			<bean class="org.kuali.rice.kns.datadictionary.ReloadingDataDictionary">
 				<property name="dataDictionaryMapper">
 					<bean class="org.kuali.rice.kns.datadictionary.RIADataDictionaryMapper"/>
 				</property>
@@ -330,7 +334,9 @@
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/CountyMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/StateMaintenanceDocument.xml</value>
 				<value>classpath:org/kuali/rice/kns/document/datadictionary/PostalCodeMaintenanceDocument.xml</value>
-                <value>classpath:org/kuali/rice/kns/view/datadictionary/UIF-BaseDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifComponentDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/UifViewDefinitions.xml</value>
+                <value>classpath:org/kuali/rice/kns/view/datadictionary/TestInquiries.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/TestView1.xml</value>       
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/KradFormView1.xml</value>
                 <value>classpath:org/kuali/rice/kns/view/datadictionary/FiscalOfficerView.xml</value>
@@ -852,6 +858,9 @@
 		<property name="kualiConfigurationService">
 			<ref bean="kualiConfigurationService" />
 		</property>
+        <property name="dataDictionaryService">
+            <ref bean="dataDictionaryService" />
+        </property>        
 	</bean>
 
 	<bean id="confirmationQuestion" class="org.kuali.rice.kns.question.ConfirmationQuestion" scope="prototype"/>
@@ -1187,7 +1196,7 @@
     	<property name="entityManager" ref="knsApplicationEntityManager"/>
    	</bean>
    	
-  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+   	  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">
       <list>
         <idref bean="NoResultExceptionInterceptor" />

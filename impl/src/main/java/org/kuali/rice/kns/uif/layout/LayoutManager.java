@@ -17,7 +17,6 @@ package org.kuali.rice.kns.uif.layout;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.container.Container;
@@ -57,12 +56,11 @@ public interface LayoutManager extends Serializable {
 	 *            - view instance to which the layout manager belongs
 	 * @param container
 	 *            - Container the layout manager applies to
-	 * @param models
-	 *            - Map of model instances, where the key is the model name as
-	 *            given by the view modelClasses map, and the value is the model
-	 *            instance
+	 * @param model
+	 *            - Top level object containing the data (could be the form or a
+	 *            top level business object, dto)
 	 */
-	public void performConditionalLogic(View view, Map<String, Object> models, Container container);
+	public void performConditionalLogic(View view, Object model, Container container);
 
 	/**
 	 * Called to refresh any manager state when state has changed in the

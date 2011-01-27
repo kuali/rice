@@ -76,7 +76,7 @@
 
 	<!-- Mailer -->
 	<bean id="mailer" class="org.kuali.rice.core.mail.Mailer">
-	   <property name="mailSender" ref="MailSender" />
+	   <property name="mailSender" ref="mailSender" />
 	</bean>
 	    
 </beans>

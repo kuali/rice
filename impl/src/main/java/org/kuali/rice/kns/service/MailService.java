@@ -15,11 +15,13 @@
  */
 package org.kuali.rice.kns.service;
 
+import javax.mail.MessagingException;
+
 import org.kuali.rice.core.mail.MailMessage;
 import org.kuali.rice.kns.mail.InvalidAddressException;
 
 public interface MailService {
-    public void sendMessage(MailMessage message) throws InvalidAddressException;
+    public void sendMessage(MailMessage message) throws InvalidAddressException, MessagingException;
 
     public String getBatchMailingList();
 }

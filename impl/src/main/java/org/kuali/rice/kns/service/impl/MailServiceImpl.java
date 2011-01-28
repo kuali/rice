@@ -15,6 +15,8 @@
  */
 package org.kuali.rice.kns.service.impl;
 
+import javax.mail.MessagingException;
+
 import org.kuali.rice.core.mail.MailMessage;
 import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kns.mail.InvalidAddressException;
@@ -57,11 +59,12 @@ public class MailServiceImpl implements MailService {
 
 	/**
 	 * This overridden method ...
+	 * @throws MessagingException 
 	 * 
 	 * @see org.kuali.rice.kns.service.MailService#sendMessage(org.kuali.rice.core.mail.MailMessage)
 	 */
 	@Override
-	public void sendMessage(MailMessage message) throws InvalidAddressException {
+	public void sendMessage(MailMessage message) throws InvalidAddressException, MessagingException {
 		mailer.sendEmail(message);		
 	}
 }

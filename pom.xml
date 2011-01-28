@@ -374,6 +374,11 @@ limitations under the License.
 					</configuration>
 				</plugin>
 				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${surefire.plugin.version}</version>
+				</plugin>
+				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>buildnumber-maven-plugin</artifactId>
 					<version>1.0-beta-4</version>
@@ -1616,8 +1621,6 @@ limitations under the License.
 							</reports>
 						</reportSet>
 					</reportSets>
-					<parallel>methods</parallel>
-          			<threadCount>4</threadCount>
 				</configuration>
 				<inherited>true</inherited>
 			</plugin>

@@ -23,7 +23,6 @@ import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.core.mail.EmailFrom;
 import org.kuali.rice.core.mail.EmailSubject;
 import org.kuali.rice.core.mail.EmailTo;
-import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.core.util.XmlHelper;
 import org.kuali.rice.core.util.XmlJotter;
 import org.kuali.rice.kew.dto.DTOConverter;
@@ -64,12 +63,6 @@ public class EmailNode implements SimpleNode {
     private String from;
     private String to;
     
-    protected Mailer getMailer() {
-    	// TODO User the global resource loader to find the Mailer.
-    	Mailer mailer = new Mailer();
-    	return mailer;
-    }
-
     public SimpleResult process(RouteContext context, RouteHelper helper) throws Exception {
     	if (context.isSimulation()) {
             if (!context.getActivationContext().isActivateRequests()) {
@@ -84,7 +77,7 @@ public class EmailNode implements SimpleNode {
 	Templates style = loadStyleSheet(styleName);
 	EmailContent emailContent = emailStyleHelper.generateEmailContent(style, document);
 	if (!StringUtils.isBlank(to)) {
-		getMailer().sendEmail(new EmailFrom(from), new EmailTo(to), new EmailSubject(emailContent.getSubject()), new EmailBody(emailContent.getBody()), emailContent.isHtml());
+		KEWServiceLocator.getMailer().sendEmail(new EmailFrom(from), new EmailTo(to), new EmailSubject(emailContent.getSubject()), new EmailBody(emailContent.getBody()), emailContent.isHtml());
 	}
 	return new SimpleResult(true);
     }

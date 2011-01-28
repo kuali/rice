@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.kuali.rice.core.config.ConfigContext;
 import org.kuali.rice.core.config.RunMode;
 import org.kuali.rice.core.config.NodeSettings;
+import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.core.resourceloader.GlobalResourceLoader;
 import org.kuali.rice.core.service.EncryptionService;
 import org.kuali.rice.kew.actionlist.service.ActionListService;
@@ -232,6 +233,8 @@ public final class KEWServiceLocator {
 	public static final String IDENTITY_HELPER_SERVICE = "kewIdentityHelperService";
 
 	public static final String ENTITY_MANAGER_FACTORY = "kewEntityManagerFactory";
+	
+	public static final String MAILER = "mailer";
 
 
     public static EntityManagerFactory getEntityManagerFactory() {
@@ -442,6 +445,10 @@ public final class KEWServiceLocator {
     
     public static DocumentLinkService getDocumentLinkService(){
     	return (DocumentLinkService) getBean(DOCUMENT_LINK_SERVICE);
+    }
+    
+    public static Mailer getMailer(){
+    	return (Mailer) getBean(MAILER);
     }
     
     /**

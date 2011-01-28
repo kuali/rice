@@ -30,7 +30,6 @@ import org.kuali.rice.core.mail.EmailContent;
 import org.kuali.rice.core.mail.EmailFrom;
 import org.kuali.rice.core.mail.EmailSubject;
 import org.kuali.rice.core.mail.EmailTo;
-import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kew.doctype.bo.DocumentType;
 import org.kuali.rice.kew.mail.service.EmailContentService;
 import org.kuali.rice.kew.service.KEWServiceLocator;
@@ -48,11 +47,6 @@ import org.kuali.rice.kns.util.GlobalVariables;
 public class FeedbackAction extends KewKualiAction {
 
 	private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(FeedbackAction.class);
-	private Mailer mailer;
-	
-	public void setMailer(Mailer mailer){
-		this.mailer = mailer;
-	}
 
     @Override
 	public ActionForward start(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -121,7 +115,7 @@ public class FeedbackAction extends KewKualiAction {
         String fromAddress = determineFromAddress(emailContentService, feedbackForm);
     	String toAddress = emailContentService.getApplicationEmailAddress();
         EmailContent content = emailContentService.generateFeedback(feedbackForm);
-        mailer.sendEmail(new EmailFrom(fromAddress), new EmailTo(toAddress), new EmailSubject(content.getSubject()), new EmailBody(content.getBody()), content.isHtml());
+        KEWServiceLocator.getMailer().sendEmail(new EmailFrom(fromAddress), new EmailTo(toAddress), new EmailSubject(content.getSubject()), new EmailBody(content.getBody()), content.isHtml());
     	return mapping.findForward("sent");
     }
 

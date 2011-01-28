@@ -22,14 +22,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.kuali.rice.core.KualiException;
 import org.kuali.rice.core.mail.MailMessage;
+import org.kuali.rice.core.mail.Mailer;
 import org.kuali.rice.kim.bo.Person;
 import org.kuali.rice.kns.exception.ExceptionIncident;
 import org.kuali.rice.kns.exception.KualiExceptionIncident;
 import org.kuali.rice.kns.service.KNSServiceLocator;
 import org.kuali.rice.kns.service.KualiExceptionIncidentService;
-import org.kuali.rice.kns.service.MailService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 
@@ -42,6 +41,12 @@ import org.kuali.rice.kns.util.KNSConstants;
  */
 public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncidentService {
     private Logger LOG=Logger.getLogger(KualiExceptionIncidentServiceImpl.class);
+    
+    /**
+     * An list to send incident emails to.
+     */
+    private String incidentMailingList;
+    
     /**
      * This property must be defined in the base configuration file for specifying
      * the mailing list for the report to be sent.
@@ -53,9 +58,18 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
     public static final String REPORT_MAIL_LIST=String.format(
             "%s.REPORT_MAIL_LIST",KualiExceptionIncidentServiceImpl.class.getSimpleName());
     /**
-     * A mail service for sending report.
+     * A Mailer for sending report.
      */
-    private MailService mailService;
+    private Mailer mailer;
+    
+    /**
+     * The injected Mailer.
+     * @param mailService the mailService to set
+     */
+    public final void setMailer(Mailer mailer) {
+        this.mailer = mailer;
+    }
+    
     /**
      * An email template is used to construct an email to be sent by the mail service.
      */
@@ -75,15 +89,15 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
             LOG.trace(lm);
         }
         
-        if (mailService == null) {
-            String errorMessage = "mailService property of KualiExceptionIncidentServiceImpl is null";
+        if (mailer == null) {
+            String errorMessage = "mailer property of KualiExceptionIncidentServiceImpl is null";
             LOG.fatal(errorMessage);
             throw new IllegalStateException(errorMessage);
         }
         
         // Send mail
         MailMessage msg=createMailMessage(subject, message);
-        mailService.sendMessage(msg);
+        mailer.sendEmail(msg);
 
         if (LOG.isTraceEnabled()) {
             LOG.trace("EXIT");
@@ -215,20 +229,6 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
     }
 
     /**
-     * @return the mailService
-     */
-    public final MailService getMailService() {
-        return this.mailService;
-    }
-
-    /**
-     * @param mailService the mailService to set
-     */
-    public final void setMailService(MailService mailService) {
-        this.mailService = mailService;
-    }
-
-    /**
      * @return the messageTemplate
      */
     public final MailMessage getMessageTemplate() {
@@ -292,5 +292,19 @@ public class KualiExceptionIncidentServiceImpl implements KualiExceptionIncident
                 
         return ei;
     }
+    
+	/**
+	 * @return the incidentMailingList
+	 */
+	public String getIncidentMailingList() {
+		return this.incidentMailingList;
+	}
+
+	/**
+	 * @param incidentMailingList the incidentMailingList to set
+	 */
+	public void setIncidentMailingList(String incidentMailingList) {
+		this.incidentMailingList = incidentMailingList;
+	}
 
 }

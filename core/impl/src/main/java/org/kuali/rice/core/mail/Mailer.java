@@ -27,28 +27,59 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
 
+import org.kuali.rice.kns.mail.InvalidAddressException;
 import org.springframework.mail.MailException;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 
 /**
- * Maintains a Java Mail session and can be used for sending emails.
+ * Maintains a Java Mail session and is used for sending e-mails.
  *
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class Mailer {
 
-	    protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(getClass());
+	    protected final org.apache.log4j.Logger LOG = org.apache.log4j.Logger.getLogger(Mailer.class);
 
 	    private JavaMailSenderImpl mailSender;	  
 	    
 		/**
-		 * @param mailSender the mailSender to set
+		 * @param mailSender The injected Mail Sender.
 		 */
 		public void setMailSender(JavaMailSenderImpl mailSender) {
 			this.mailSender = mailSender;
 		}
 	    
+		/**
+	     * Construct and a send simple email message from a Mail Message.
+	     * 
+	     * @param message
+	     *            the Mail Message
+	     */
+		@SuppressWarnings("unchecked")
+		public void sendEmail(MailMessage message) throws InvalidAddressException {
+	        
+	        // Construct a simple mail message from the Mail Message
+	        SimpleMailMessage smm = new SimpleMailMessage();
+	        smm.setTo( (String[])message.getToAddresses().toArray(new String[message.getToAddresses().size()]) );
+	        smm.setBcc( (String[])message.getBccAddresses().toArray(new String[message.getBccAddresses().size()]) );
+	        smm.setCc( (String[])message.getCcAddresses().toArray(new String[message.getCcAddresses().size()]) );
+	        smm.setSubject(message.getSubject());
+	        smm.setText(message.getMessage());
+	        smm.setFrom(message.getFromAddress());
+
+	        try {
+	        	if ( LOG.isDebugEnabled() ) {
+	        		LOG.debug( "sendEmail() - Sending message: " + smm.toString() );
+	        	}
+	            mailSender.send(smm);
+	        }
+	        catch (MailException e) {
+	            throw new InvalidAddressException(e);
+	        }
+	    }
+		
 		/**
 	     * Send an email to a single recipient with the specified subject and message. This is a convenience 
 	     * method for simple message addressing.

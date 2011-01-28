@@ -126,7 +126,7 @@ limitations under the License.
 		<project.info.reports.plugin.version>2.2</project.info.reports.plugin.version>
 		<project.info.reports.plugin.dependencyLocationsEnabled>false</project.info.reports.plugin.dependencyLocationsEnabled>
 		<site.plugin.version>2.2</site.plugin.version>
-		<surefire.plugin.version>2.5</surefire.plugin.version>
+		<surefire.plugin.version>2.7.1</surefire.plugin.version>
 		<surefire.additionalClasspathElement.1>${mysql-connector-java.jar.location}</surefire.additionalClasspathElement.1>
 		<surefire.additionalClasspathElement.2>${ojdbc14.jar.location}</surefire.additionalClasspathElement.2>
 		<surefire.useSystemClassLoader>false</surefire.useSystemClassLoader>

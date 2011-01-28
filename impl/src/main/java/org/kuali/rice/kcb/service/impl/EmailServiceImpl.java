@@ -138,23 +138,4 @@ public class EmailServiceImpl implements EmailService {
 
         return null;
     }
-
-    /**
-     * do the actual sending.  Uses the KEW's configured EmailService by default. 
-     * @param message message content
-     * @param subject subject of message
-     * @param from sender of message
-     * @param sendTo recipient of message
-     * @param format text or html 
-     */
-    protected void sendEmail(String message, String subject, String from, String sendTo, String format) {
-    	
-    	mailer.sendEmail(
-    			new EmailFrom(from), 
-    			new EmailTo(sendTo), 
-    			new EmailSubject(subject), 
-    			new EmailBody(message), 
-    			!FORMAT_TEXT_PLAIN.equals(format));
-
-    }
 }

@@ -56,9 +56,10 @@ public class Mailer {
 	     * 
 	     * @param message
 	     *            the Mail Message
+		 * @throws MessagingException 
 	     */
 		@SuppressWarnings("unchecked")
-		public void sendEmail(MailMessage message) throws InvalidAddressException {
+		public void sendEmail(MailMessage message) throws MessagingException {
 	        
 	        // Construct a simple mail message from the Mail Message
 	        SimpleMailMessage smm = new SimpleMailMessage();
@@ -75,8 +76,9 @@ public class Mailer {
 	        	}
 	            mailSender.send(smm);
 	        }
-	        catch (MailException e) {
-	            throw new InvalidAddressException(e);
+	        catch (Exception e) {
+	        	LOG.error("sendEmail() - Error sending email.", e);
+				throw new RuntimeException(e);
 	        }
 	    }
 		
@@ -108,7 +110,7 @@ public class Mailer {
 						    null,
 						    htmlMessage);
 			} catch (Exception e) {
-				LOG.error("Error sending email.", e);
+				LOG.error("sendEmail(): ", e);
 				throw new RuntimeException(e);
 			}
 		}
@@ -143,7 +145,7 @@ public class Mailer {
 							(bc == null ? null : bc.getToAddressesAsAddressArray()), 
 							htmlMessage);
 			} catch (Exception e) {
-				LOG.error("Error sending email.", e);
+				LOG.error("sendEmail(): ", e);
 				throw new RuntimeException(e);
             }
 		}
@@ -207,9 +209,9 @@ public class Mailer {
 	        try {
 	        	mailSender.send(message);
 	        }
-	        catch (MailException me) {
-	        	LOG.error("sendMessage(): " + me.getMessage());
-	        	throw new MessagingException(me.getMessage(), me);
+	        catch (Exception e) {
+	        	LOG.error("sendMessage(): ", e);
+	        	throw new RuntimeException(e);
 	        }
 	    }
 

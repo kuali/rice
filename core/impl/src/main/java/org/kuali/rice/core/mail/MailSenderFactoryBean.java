@@ -50,6 +50,7 @@ public class MailSenderFactoryBean extends AbstractFactoryBean {
 	    // Retrieve "mail.*" properties from the configuration system and construct a Properties object
 		Properties properties = new Properties();
 		Properties configProps = ConfigContext.getCurrentContextConfig().getProperties();
+		LOG.debug("createInstance(): collecting mail properties.");
 		for (Object keyObj : configProps.keySet()) {
 		    if (keyObj instanceof String) {
 		    	String key = (String)keyObj;
@@ -65,21 +66,24 @@ public class MailSenderFactoryBean extends AbstractFactoryBean {
 		String password = properties.getProperty(PASSWORD_PROPERTY);
 		if (username != null && password != null) {
 			mailSession = Session.getInstance(properties, new SimpleAuthenticator(username, password));
-			LOG.info("Rice Mailer being used. Username and Pass were found");
+			LOG.info("createInstance(): Initializing mail session using SMTP authentication.");
 		} else {
 			mailSession = Session.getInstance(properties);
-			LOG.info("Rice Mailer being used. Username and Pass were not found");
+			LOG.info("createInstance(): Initializing mail session. No SMTP authentication.");
 		}
 		
 		// Construct and return a Spring Java Mail Sender
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+		LOG.debug("createInstance(): setting SMTP host.");
 		mailSender.setHost(properties.getProperty(HOST_PROPERTY));
 		if (properties.getProperty(PORT_PROPERTY) != null) {
+			LOG.debug("createInstance(): setting SMTP port.");
 			int smtpPort = Integer.parseInt(properties.getProperty(PORT_PROPERTY).trim());
 			mailSender.setPort(smtpPort);
 		}
 		mailSender.setSession(mailSession);
 		
+		LOG.info("createInstance(): Mail Sender Factory Bean initialized.");
 		return mailSender;
     }
     

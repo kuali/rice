@@ -289,7 +289,7 @@
 
 	<bean id="dataDictionaryService" class="org.kuali.rice.kns.service.impl.DataDictionaryServiceImpl">
 		<constructor-arg>
-			<bean class="org.kuali.rice.kns.datadictionary.ReloadingDataDictionary">
+			<bean class="org.kuali.rice.kns.datadictionary.DataDictionary">
 				<property name="dataDictionaryMapper">
 					<bean class="org.kuali.rice.kns.datadictionary.RIADataDictionaryMapper"/>
 				</property>
@@ -1196,7 +1196,7 @@
     	<property name="entityManager" ref="knsApplicationEntityManager"/>
    	</bean>
    	
-   	  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+  <bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
     <property name="interceptorNames">
       <list>
         <idref bean="NoResultExceptionInterceptor" />

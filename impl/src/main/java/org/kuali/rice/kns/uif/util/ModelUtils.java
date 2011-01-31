@@ -22,11 +22,27 @@ import org.springframework.beans.BeanWrapperImpl;
  * Utility methods to get/set property values and working with model objects
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
+ * @see org.springframework.beans.BeanWrapper
  */
 public class ModelUtils {
 
 	public static Object getPropertyValue(Object model, String propertyPath) {
 		return wrapModel(model).getPropertyValue(propertyPath);
+	}
+
+	public static void setPropertyValue(Object model, String propertyPath, Object propertyValue) {
+		wrapModel(model).setPropertyValue(propertyPath, propertyValue);
+	}
+
+	public static void setPropertyValue(Object model, String propertyPath, Object propertyValue, boolean ignoreUnknown) {
+		try {
+			wrapModel(model).setPropertyValue(propertyPath, propertyValue);
+		}
+		catch (Exception e) {
+			if (!ignoreUnknown) {
+				throw new RuntimeException(e);
+			}
+		}
 	}
 
 	public static Class<?> getPropertyType(Object model, String propertyPath) {
@@ -38,9 +54,9 @@ public class ModelUtils {
 	}
 
 	public static BeanWrapper wrapModel(Object model) {
-		BeanWrapper beanWrapper =  new BeanWrapperImpl(model);
+		BeanWrapper beanWrapper = new BeanWrapperImpl(model);
 		beanWrapper.setAutoGrowNestedPaths(true);
-		
+
 		return beanWrapper;
 	}
 

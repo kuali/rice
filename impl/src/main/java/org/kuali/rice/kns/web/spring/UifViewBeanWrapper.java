@@ -30,7 +30,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.PropertyValues;
 
-import edu.sampleu.travel.bo.FiscalOfficer;
 import edu.sampleu.travel.bo.TravelAccount;
 
 /**

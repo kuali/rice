@@ -24,3 +24,5 @@
  
 <input type="submit" id="${field.id}" onClick="setMethodToCall('${field.methodToCall}');"
        name="${field.name}" value="${field.actionLabel}"/>
+       
+<krad:dynoParameters componentId="${field.id}" parameters="${field.actionParameters}"/>

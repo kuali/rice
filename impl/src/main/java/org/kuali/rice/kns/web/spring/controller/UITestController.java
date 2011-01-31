@@ -21,6 +21,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.kuali.rice.core.util.type.KualiPercent;
 import org.kuali.rice.kns.web.spring.form.UITestForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -38,7 +39,7 @@ import edu.sampleu.travel.bo.TravelAccount;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 @Controller
-public class UITestController extends UifControllerBase {
+public class UITestController extends UifControllerBase<UITestForm> {
 	private static final String testViewId = "testView1";
 
 	@RequestMapping(value = "/uitest", params = "methodToCall=start")
@@ -58,6 +59,9 @@ public class UITestController extends UifControllerBase {
 		TravelAccount travelAccount2 = new TravelAccount();
 		travelAccount2.setNumber("102");
 		travelAccount2.setName("Account 102");
+		travelAccount2.setSubAccount("34");
+		travelAccount2.setSubAccountName("G34 So");
+		travelAccount2.setSubsidizedPercent(new KualiPercent(45.0));
 		officerAccounts.add(travelAccount2);
 
 		TravelAccount travelAccount3 = new TravelAccount();
@@ -68,12 +72,17 @@ public class UITestController extends UifControllerBase {
 		TravelAccount travelAccount4 = new TravelAccount();
 		travelAccount4.setNumber("104");
 		travelAccount4.setName("Account 104");
+		travelAccount4.setSubAccount("i84n");
+		travelAccount4.setSubAccountName("Supplies");
+		travelAccount4.setSubsidizedPercent(new KualiPercent(10));
 		officerAccounts.add(travelAccount4);
 
 		fiscalOfficer.setAccounts(officerAccounts);
 		travelAccount.setFiscalOfficer(fiscalOfficer);
 
 		uiTestForm.setTravelAccount1(travelAccount);
+		uiTestForm.setTravelAccount2(travelAccount);
+		uiTestForm.setTravelAccount3(travelAccount);
 
 		return getUIFModelAndView(uiTestForm, testViewId, "page1");
 	}

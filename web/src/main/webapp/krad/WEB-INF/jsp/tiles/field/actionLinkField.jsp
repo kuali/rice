@@ -24,3 +24,5 @@
  
  <a id="${field.id}" href="#" onClick="handleActionLink('${field.methodToCall}','${field.navigateToPageId}');return false;" 
      class="${field.styleClass}">${field.actionLabel}</a>
+     
+<krad:dynoParameters componentId="${field.id}" parameters="${field.actionParameters}"/>     

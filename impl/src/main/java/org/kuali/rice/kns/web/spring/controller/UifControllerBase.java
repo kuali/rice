@@ -21,6 +21,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.core.xml.dto.AttributeSet;
 import org.kuali.rice.kim.service.KIMServiceLocator;
@@ -33,15 +36,33 @@ import org.kuali.rice.kns.uif.service.ViewService;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.web.spring.form.UifFormBase;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * This is a description of what this class does - swgibson don't forget to fill
- * this in.
+ * Base controller class for views within the KRAD User Interface Framework
+ * 
+ * <p>
+ * Provides common methods such as:
+ * <ul>
+ * <li>Authorization methods such as method to call check</li>
+ * <li>Preparing the View instance and setup in the returned
+ * <code>ModelAndView</code></li.
+ * </ul>
+ * </p>
+ * 
+ * <p>
+ * All subclass controller methods after processing should call one of the
+ * #getUIFModelAndView methods to setup the <code>View</code> and return the
+ * <code>ModelAndView</code> instance.
+ * </p>
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public abstract class UifControllerBase {
+public abstract class UifControllerBase<T extends UifFormBase> {
 
 	private Set<String> methodToCallsToNotCheckAuthorization = new HashSet<String>();
 	{
@@ -103,6 +124,33 @@ public abstract class UifControllerBase {
 		return new HashMap<String, String>();
 	}
 
+	/**
+	 * Called by the add line action for a new collection line. Method
+	 * determines which collection the add action was selected for, retrieves
+	 * the new line and collection from the model, runs the line through
+	 * business rules and invokes the view service helper. If all goes well, the
+	 * line is added to the collection and a new instance created for the add
+	 * line.
+	 */
+	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=addLine")
+	public ModelAndView addLine(@ModelAttribute("KualiForm") T uifForm, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+		
+		// get handle on View instance so we can query the collection group
+		View view = uifForm.getView();
+		
+		String selectedCollectionPath = uifForm.getSelectedCollectionPath();
+
+		return getUIFModelAndView(uifForm);
+	}
+
+	@RequestMapping(method = RequestMethod.POST, params = "methodToCall=deleteLine")
+	public ModelAndView deleteLine(@ModelAttribute("KualiForm") T uifForm, BindingResult result,
+			HttpServletRequest request, HttpServletResponse response) {
+
+		return getUIFModelAndView(uifForm);
+	}
+
 	protected ModelAndView getUIFModelAndView(UifFormBase form) {
 		return getUIFModelAndView(form, form.getViewId(), "");
 	}
@@ -112,6 +160,8 @@ public abstract class UifControllerBase {
 	}
 
 	protected ModelAndView getUIFModelAndView(UifFormBase form, String viewId, String pageId) {
+		form.setViewId(viewId);
+
 		View view = getViewService().getViewById(viewId, form);
 
 		if (StringUtils.isNotBlank(pageId)) {

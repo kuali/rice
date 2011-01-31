@@ -27,11 +27,11 @@ public class UifConstants extends JSTLConstants {
 
 	public static final String DEFAULT_MODEL_NAME = "KualiForm";
 	public static final String DEFAULT_VIEW_NAME = "default";
-	
+
 	public static class RequestParameterName {
-    	public static final String VIEW_ID = "viewId";
-    	public static final String VIEW_NAME = "viewName";
-    	public static final String BUSINESS_OBJECT_CLASS = "businessObjectClassName";
+		public static final String VIEW_ID = "viewId";
+		public static final String VIEW_NAME = "viewName";
+		public static final String BUSINESS_OBJECT_CLASS = "businessObjectClassName";
 	}
 
 	public static class PersistenceMode {
@@ -70,15 +70,22 @@ public class UifConstants extends JSTLConstants {
 		public static final String MAINTENANCE = "MAINTENANCE";
 		public static final String TRANSACTIONAL = "TRANSACTIONAL";
 	}
-	
+
 	public static class ViewTypeIndexParameterNames {
 		public static final String NAME = "NAME";
 		public static final String MODEL_CLASS = "MODEL_CLASS";
 	}
 
 	public static class ActionParameterNames {
-		public static final String methodToCall = "methodToCall";
-		public static final String selectedCollectionName = "selectedCollectionName";
-		public static final String selectedLineIndex = "selectedLineIndex";
+		public static final String METHOD_TO_CALL = "methodToCall";
+		public static final String SELLECTED_COLLECTION_PATH = "selectedCollectionName";
+		public static final String SELECTED_LINE_INDEX = "selectedLineIndex";
+	}
+
+	public static class IdSuffixes {
+		public static final String ADD_LINE = "_addLine";
+		public static final String ATTRIBUTE = "_attribute";
+		public static final String DIV = "_div";
+		public static final String LABEL = "_label";
 	}
 }

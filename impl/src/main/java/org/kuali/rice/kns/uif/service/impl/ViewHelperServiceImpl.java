@@ -23,6 +23,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.service.DataDictionaryService;
 import org.kuali.rice.kns.uif.Component;
+import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.field.AttributeField;
 import org.kuali.rice.kns.uif.initializer.ComponentInitializer;
@@ -114,6 +115,14 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 			// add attribute field to the view's index
 			view.getViewIndex().addAttributeField((AttributeField) component);
 		}
+		
+		// for collection groups set defaults from dictionary entry
+		if (component instanceof CollectionGroup) {
+			// TODO: initialize from dictionary
+			
+			// add collection group to the view's index
+			view.getViewIndex().addCollection((CollectionGroup) component);
+		}
 
 		// invoke component initializers
 		for (ComponentInitializer initializer : component.getComponentInitializers()) {
@@ -153,7 +162,7 @@ public class ViewHelperServiceImpl implements ViewHelperService {
 		// determine class based on the View and use field name as attribute
 		// name
 		if (StringUtils.isBlank(dictionaryAttributeName) && StringUtils.isBlank(dictionaryObjectEntry)
-				&& field.getBindingInfo().isBindToModel()) {
+				&& !field.getBindingInfo().isBindToForm()) {
 			dictionaryAttributeName = field.getName();
 			Class<?> dictionaryModelClass = ViewModelUtils.getPropertyType(view, field.getBindingInfo().getModelPath());
 			if (dictionaryModelClass != null) {

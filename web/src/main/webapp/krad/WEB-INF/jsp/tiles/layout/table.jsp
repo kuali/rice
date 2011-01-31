@@ -35,11 +35,13 @@
                 applyAlternatingRowStyles="${manager.applyAlternatingRowStyles}"/>
   </tbody>
 </table>
+
+<br/><br/>
  
-<%-- invoke decorator --%>
-<c:if test="${(!empty manager.tableDecorator) && manager.tableDecorator.render}">              
-   <tiles:insertTemplate template="${manager.tableDecorator.template}">
-      <tiles:putAttribute name="${manager.tableDecorator.componentTypeName}" value="${manager.tableDecorator}"/>
+<%-- invoke table tools widget --%>
+<c:if test="${(!empty manager.tableTools) && manager.tableTools.render}">              
+   <tiles:insertTemplate template="${manager.tableTools.template}">
+      <tiles:putAttribute name="${manager.tableTools.componentTypeName}" value="${manager.tableTools}"/>
       <tiles:putAttribute name="componentId" value="${manager.id}"/>
    </tiles:insertTemplate>  
 </c:if> 

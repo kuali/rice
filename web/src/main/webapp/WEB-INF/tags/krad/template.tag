@@ -18,7 +18,7 @@
 <%@ attribute name="component" required="true" 
               description="The UIF component for which the template will be generated" 
               type="org.kuali.rice.kns.uif.Component"%>
-
+              
 <%-- verify the component is not null and should be rendered --%>   
 <c:if test="${(!empty component) && component.render}">              
    <tiles:insertTemplate template="${component.template}">

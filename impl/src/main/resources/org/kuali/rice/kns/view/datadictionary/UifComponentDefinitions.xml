@@ -44,7 +44,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   <bean id="PanelSection" abstract="true" parent="Section">
       <property name="decorators">
         <map>
-          <entry key="panel"><ref bean="PanelGroupDecorator"/></entry>
+          <entry key="panel"><bean parent="PanelGroupDecorator"/></entry>
         </map>  
       </property>
       <property name="renderHeader" value="false"/>
@@ -94,6 +94,18 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="bindingInfo">
         <ref bean="BindingInfo"/>
       </property>
+      <property name="addLineBindingInfo">
+        <ref bean="BindingInfo"/>
+      </property>      
+      <property name="addLineLabelField">
+        <bean parent="LabelField" p:labelText="add" 
+              p:requiredMessageField.render="false"/>
+      </property>  
+      <property name="addLineActionFields">
+        <list>
+          <bean parent="ActionField" p:methodToCall="addLine" p:actionLabel="add"/>
+        </list>
+      </property>          
       <property name="actionFields">
         <list>
           <bean parent="ActionField" p:methodToCall="deleteLine" p:actionLabel="delete"/>
@@ -152,7 +164,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
   
   <bean id="FormField" abstract="true" parent="AttributeField">
       <property name="bindingInfo.bindToForm" value="true"/>
-      <property name="bindingInfo.bindToModel" value="false"/>
   </bean>    
   
   <bean id="LabelField" abstract="true" class="org.kuali.rice.kns.uif.field.LabelField" scope="prototype">
@@ -273,8 +284,8 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       <property name="actionFieldPrototype">
         <bean parent="FieldGroup" p:align="center" p:required="false" p:label="Actions" p:shortLabel="Actions"/>
       </property>  
-      <property name="tableDecorator">
-        <ref bean="TableDecorator"/>
+      <property name="tableTools">
+        <ref bean="TableTools"/>
       </property>   
   </bean>  
   
@@ -344,13 +355,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
       </property>
   </bean> 
   
-  <bean id="TableDecorator" class="org.kuali.rice.kns.uif.widget.TableDecorator" scope="prototype">
-      <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/tableDecorator.jsp"/>
+  <bean id="TableTools" class="org.kuali.rice.kns.uif.widget.TableTools" scope="prototype">
+      <property name="template" value="/krad/WEB-INF/jsp/tiles/widget/tableTools.jsp"/>
   </bean>
   
   <!-- Misc -->
-  
-  <bean id="LabelFieldGenerator" class="org.kuali.rice.kns.uif.initializer.LabelFieldGenerator"/>
   
   <bean id="BindingInfo" class="org.kuali.rice.kns.uif.BindingInfo" scope="prototype"/>
   

@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
 import org.kuali.rice.kns.uif.field.Field;
+import org.kuali.rice.kns.uif.field.GroupField;
 import org.kuali.rice.kns.util.ObjectUtils;
 
 /**
@@ -57,11 +58,7 @@ public class ComponentUtils {
 	public static <T extends Field> List<T> copyFieldList(List<T> fields, String addBindingPrefix) {
 		List<T> copiedFieldList = copyFieldList(fields);
 
-		for (Field field : copiedFieldList) {
-			if (field instanceof DataBinding) {
-				prefixBindingPath((DataBinding) field, addBindingPrefix);
-			}
-		}
+		prefixBindingPath((List<Field>) copiedFieldList, addBindingPrefix);
 
 		return copiedFieldList;
 	}
@@ -75,6 +72,17 @@ public class ComponentUtils {
 		}
 
 		return copiedFieldList;
+	}
+
+	public static void prefixBindingPath(List<Field> fields, String addBindingPrefix) {
+		for (Field field : fields) {
+			if (field instanceof DataBinding) {
+				prefixBindingPath((DataBinding) field, addBindingPrefix);
+			}
+			else if (field instanceof GroupField) {
+				prefixBindingPath((List<Field>) ((GroupField) field).getItems(), addBindingPrefix);
+			}
+		}
 	}
 
 	public static void prefixBindingPath(DataBinding field, String addBindingPrefix) {
@@ -97,6 +105,23 @@ public class ComponentUtils {
 		for (Component nested : component.getNestedComponents()) {
 			if (nested != null) {
 				updateIds(nested, idSuffix);
+			}
+		}
+	}
+
+	public static void setComponentsPropertyDeep(List<? extends Component> components, String propertyPath,
+			Object propertyValue) {
+		for (Component component : components) {
+			setComponentPropertyDeep(component, propertyPath, propertyValue);
+		}
+	}
+
+	public static void setComponentPropertyDeep(Component component, String propertyPath, Object propertyValue) {
+		ModelUtils.setPropertyValue(component, propertyPath, propertyValue, true);
+
+		for (Component nested : component.getNestedComponents()) {
+			if (nested != null) {
+				setComponentPropertyDeep(nested, propertyPath, propertyValue);
 			}
 		}
 	}

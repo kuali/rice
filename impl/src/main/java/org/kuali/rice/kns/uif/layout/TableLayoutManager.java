@@ -18,8 +18,11 @@ package org.kuali.rice.kns.uif.layout;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.kuali.rice.kns.uif.Component;
 import org.kuali.rice.kns.uif.DataBinding;
+import org.kuali.rice.kns.uif.UifPropertyPaths;
+import org.kuali.rice.kns.uif.UifConstants.IdSuffixes;
 import org.kuali.rice.kns.uif.container.CollectionGroup;
 import org.kuali.rice.kns.uif.container.Container;
 import org.kuali.rice.kns.uif.container.View;
@@ -30,7 +33,7 @@ import org.kuali.rice.kns.uif.field.GroupField;
 import org.kuali.rice.kns.uif.field.LabelField;
 import org.kuali.rice.kns.uif.util.ComponentUtils;
 import org.kuali.rice.kns.uif.util.ModelUtils;
-import org.kuali.rice.kns.uif.widget.TableDecorator;
+import org.kuali.rice.kns.uif.widget.TableTools;
 
 /**
  * Layout manager that works with <code>CollectionGroup</code> components and
@@ -60,7 +63,7 @@ public class TableLayoutManager extends GridLayoutManager {
 	private List<LabelField> headerFields;
 	private List<Field> dataFields;
 
-	private TableDecorator tableDecorator;
+	private TableTools tableTools;
 
 	public TableLayoutManager() {
 		useShortLabels = true;
@@ -81,7 +84,10 @@ public class TableLayoutManager extends GridLayoutManager {
 	}
 
 	/**
-	 * Builds up the table by creating a row for each collection line
+	 * Builds up the table by creating a row for each collection line. The table
+	 * body follows a standard Grid layout and is configured by the number of
+	 * columns property. The sequence and action fields (if render enabled) will
+	 * be placed at each end of the line (which could span multiple rows)
 	 * 
 	 * @see org.kuali.rice.kns.uif.layout.LayoutManagerBase#performApplyModel(org.kuali.rice.kns.uif.container.View,
 	 *      java.lang.Object, org.kuali.rice.kns.uif.container.Container)
@@ -126,18 +132,15 @@ public class TableLayoutManager extends GridLayoutManager {
 		// action fields, since they should span all rows for the line
 		int rowCount = calculateNumberOfRows((List<Field>) collectionGroup.getItems());
 
-		int cellPosition = 0;
-
 		// first column is sequence label
 		if (renderSequenceField) {
 			sequenceFieldPrototype.setLabelFieldRendered(true);
 			sequenceFieldPrototype.setRowSpan(rowCount);
 			addHeaderField(sequenceFieldPrototype, 1);
-
-			cellPosition = 1;
 		}
 
 		// pull out label fields from the container's items
+		int cellPosition = 0;
 		for (Component component : collectionGroup.getItems()) {
 			Field field = (Field) component;
 
@@ -211,6 +214,11 @@ public class TableLayoutManager extends GridLayoutManager {
 	 *            top level business object, dto)
 	 */
 	protected void buildTableDataRows(View view, CollectionGroup collectionGroup, Object model) {
+		// create add line
+		if (collectionGroup.isRenderAddLine()) {
+			buildAddLine(view, collectionGroup, model);
+		}
+
 		// get the collection for this group from the model
 		List<Object> modelCollection = (List<Object>) ModelUtils.getPropertyValue(model,
 				((DataBinding) collectionGroup).getBindingInfo().getBindingPath());
@@ -220,38 +228,8 @@ public class TableLayoutManager extends GridLayoutManager {
 			String bindingPathPrefix = collectionGroup.getBindingInfo().getBindingName() + "[" + index + "]";
 			String idSuffix = "_" + index;
 
-			// copy fields adding the collection line to their binding prefix
-			List<Field> lineFields = ComponentUtils.copyFieldList((List<Field>) collectionGroup.getItems(),
-					bindingPathPrefix);
-			ComponentUtils.updateIds(lineFields, idSuffix);
-			view.getViewIndex().addFields(lineFields);
-
-			// add line fields to the dataFields List, creating the sequence and
-			// action fields in the appropriate place if needed
-			// sequence field should be first column
-			if (renderSequenceField) {
-				AttributeField lineSequenceField = ComponentUtils.copyField(sequenceFieldPrototype, bindingPathPrefix,
-						idSuffix);
-				view.getViewIndex().addAttributeField(lineSequenceField);
-				dataFields.add(lineSequenceField);
-			}
-
-			// actions field should be last column
-			int cellPosition = 0;
-			for (Field lineField : lineFields) {
-				dataFields.add(lineField);
-
-				cellPosition += lineField.getColSpan();
-
-				// action field should be in last column
-				if ((cellPosition == getNumberOfColumns()) && collectionGroup.isRenderLineActions()) {
-					GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype, idSuffix);
-
-					List<ActionField> lineActions = collectionGroup.getLineActions(index);
-					lineActionsField.setItems(lineActions);
-					dataFields.add(lineActionsField);
-				}
-			}
+			buildLine(view, collectionGroup, sequenceFieldPrototype, bindingPathPrefix, idSuffix,
+					collectionGroup.getLineActions(index), false);
 		}
 
 		// adjust the number of columns if the sequence or action fields were
@@ -262,6 +240,109 @@ public class TableLayoutManager extends GridLayoutManager {
 
 		if (collectionGroup.isRenderLineActions()) {
 			setNumberOfColumns(getNumberOfColumns() + 1);
+		}
+	}
+
+	/**
+	 * Builds the table rows for holding the collection add line. If the text
+	 * given by the collection group add line label
+	 * (org.kuali.rice.kns.uif.container.CollectionGroup.getAddLineLabelField())
+	 * is placed into the sequence field for the line. Furthermore the line
+	 * actions are set from the add line actions configured on the collection
+	 * group. Also the binding is setup for the add line and if the managed by
+	 * the framework (bound to generic form Map) then the Map entry is
+	 * initialized.
+	 * 
+	 * @param view
+	 *            - view instance the collection belongs to
+	 * @param collectionGroup
+	 *            - collection group the layout manager applies to
+	 * @param model
+	 *            - Object containing the view data, should extend UifFormBase
+	 *            if using framework managed new lines
+	 */
+	protected void buildAddLine(View view, CollectionGroup collectionGroup, Object model) {
+		String addLineBindingPath = "";
+		boolean bindAddLineToForm = false;
+		if (StringUtils.isNotBlank(collectionGroup.getAddLineName())) {
+			addLineBindingPath = collectionGroup.getAddLineBindingInfo().getBindingPath();
+		}
+		else {
+			addLineBindingPath = collectionGroup.initNewCollectionLine(model);
+			bindAddLineToForm = true;
+		}
+
+		buildLine(view, collectionGroup, collectionGroup.getAddLineLabelField(), addLineBindingPath,
+				IdSuffixes.ADD_LINE, collectionGroup.getAddLineActions(), bindAddLineToForm);
+	}
+
+	/**
+	 * Builds the field instances for the collection line. The given sequence
+	 * field is copied for the line sequence field. The original items specified
+	 * on the <code>CollectionGroup</code> are also copied and adjusted as
+	 * necessary for the line (binding path, id). Finally a copy of the
+	 * actionFieldPrototype is made and the given actions are set as the fields
+	 * items. All fields are added to the dataFields List which is picked up by
+	 * the renderer.
+	 * 
+	 * @param view
+	 *            - view instance the collection belongs to
+	 * @param collectionGroup
+	 *            - collection group the layout manager applies to
+	 * @param lineSequenceField
+	 *            - Field instance to use as a prototype for the line sequence
+	 *            field
+	 * @param lineBindingPath
+	 *            - binding path for the line fields (if DataBinding)
+	 * @param idSuffix
+	 *            - suffix to use for the field items (in order to maintain
+	 *            unique ids)
+	 * @param actions
+	 *            - List of actions to set in the lines action column
+	 * @param bindLineToForm
+	 *            - whether the bindToForm property on the items bindingInfo
+	 *            should be set to true (needed for add line)
+	 */
+	protected void buildLine(View view, CollectionGroup collectionGroup, Field lineSequenceField,
+			String lineBindingPath, String idSuffix, List<ActionField> actions, boolean bindLineToForm) {
+		// sequence field is always first and should span all rows for the line
+		if (renderSequenceField) {
+			Field sequenceField = ComponentUtils.copy(lineSequenceField);
+
+			int rowCount = calculateNumberOfRows((List<Field>) collectionGroup.getItems());
+			sequenceField.setRowSpan(rowCount);
+
+			if (sequenceField instanceof AttributeField) {
+				view.getViewIndex().addAttributeField((AttributeField) sequenceField);
+			}
+
+			dataFields.add(sequenceField);
+		}
+
+		// copy fields adding the collection line to their binding prefix
+		List<Field> lineFields = ComponentUtils
+				.copyFieldList((List<Field>) collectionGroup.getItems(), lineBindingPath);
+		ComponentUtils.updateIds(lineFields, idSuffix);
+
+		if (bindLineToForm) {
+			ComponentUtils.setComponentsPropertyDeep(lineFields, UifPropertyPaths.BIND_TO_FORM, new Boolean(true));
+		}
+		view.getViewIndex().addFields(lineFields);
+
+		// now add the fields in the correct position
+		int cellPosition = 0;
+		for (Field lineField : lineFields) {
+			dataFields.add(lineField);
+
+			cellPosition += lineField.getColSpan();
+
+			// action field should be in last column
+			if ((cellPosition == getNumberOfColumns()) && collectionGroup.isRenderLineActions()) {
+				GroupField lineActionsField = ComponentUtils.copy(actionFieldPrototype, idSuffix);
+
+				lineActionsField.setItems(actions);
+				dataFields.add(lineActionsField);
+			}
 		}
 	}
 
@@ -311,46 +392,111 @@ public class TableLayoutManager extends GridLayoutManager {
 		return components;
 	}
 
+	/**
+	 * Indicates whether the short label for the collection field should be used
+	 * as the table header or the regular label
+	 * 
+	 * @return boolean true if short label should be used, false if long label
+	 *         should be used
+	 */
 	public boolean isUseShortLabels() {
 		return this.useShortLabels;
 	}
 
+	/**
+	 * Setter for the use short label indicator
+	 * 
+	 * @param useShortLabels
+	 */
 	public void setUseShortLabels(boolean useShortLabels) {
 		this.useShortLabels = useShortLabels;
 	}
 
+	/**
+	 * Indicates whether the header should be repeated before each collection
+	 * row. If false the header is only rendered at the beginning of the table
+	 * 
+	 * @return boolean true if header should be repeated, false if it should
+	 *         only be rendered once
+	 */
 	public boolean isRepeatHeader() {
 		return this.repeatHeader;
 	}
 
+	/**
+	 * Setter for the repeat header indicator
+	 * 
+	 * @param repeatHeader
+	 */
 	public void setRepeatHeader(boolean repeatHeader) {
 		this.repeatHeader = repeatHeader;
 	}
 
+	/**
+	 * <code>LabelField</code> instance to use as a prototype for creating the
+	 * tables header fields. For each header field the prototype will be copied
+	 * and adjusted as necessary
+	 * 
+	 * @return LabelField instance to serve as prototype
+	 */
 	public LabelField getHeaderFieldPrototype() {
 		return this.headerFieldPrototype;
 	}
 
+	/**
+	 * Setter for the header field prototype
+	 * 
+	 * @param headerFieldPrototype
+	 */
 	public void setHeaderFieldPrototype(LabelField headerFieldPrototype) {
 		this.headerFieldPrototype = headerFieldPrototype;
 	}
 
+	/**
+	 * List of <code>LabelField</code> instances that should be rendered to make
+	 * up the tables header
+	 * 
+	 * @return List of label field instances
+	 */
 	public List<LabelField> getHeaderFields() {
 		return this.headerFields;
 	}
 
+	/**
+	 * Setter for the List of header fields
+	 * 
+	 * @param headerFields
+	 */
 	public void setHeaderFields(List<LabelField> headerFields) {
 		this.headerFields = headerFields;
 	}
 
+	/**
+	 * Indicates whether the sequence field should be rendered for the
+	 * collection
+	 * 
+	 * @return boolean true if sequence field should be rendered, false if not
+	 */
 	public boolean isRenderSequenceField() {
 		return this.renderSequenceField;
 	}
 
+	/**
+	 * Setter for the render sequence field indicator
+	 * 
+	 * @param renderSequenceField
+	 */
 	public void setRenderSequenceField(boolean renderSequenceField) {
 		this.renderSequenceField = renderSequenceField;
 	}
 
+	/**
+	 * Attribute name to use as sequence value. For each collection line the
+	 * value of this field on the line will be retrieved and used as the
+	 * sequence value
+	 * 
+	 * @return String sequence attribute name
+	 */
 	public String getSequenceAttributeName() {
 		if (sequenceFieldPrototype != null) {
 			return sequenceFieldPrototype.getName();
@@ -359,42 +505,98 @@ public class TableLayoutManager extends GridLayoutManager {
 		return null;
 	}
 
+	/**
+	 * Setter for the sequence attribute name
+	 * 
+	 * @param sequenceAttributeName
+	 */
 	public void setSequenceAttributeName(String sequenceAttributeName) {
 		if (sequenceFieldPrototype != null) {
 			sequenceFieldPrototype.setName(sequenceAttributeName);
 		}
 	}
 
+	/**
+	 * <code>AttributeField</code> instance to serve as a prototype for the
+	 * sequence field. For each collection line this instance is copied and
+	 * adjusted as necessary
+	 * 
+	 * @return Attribute field instance
+	 */
 	public AttributeField getSequenceFieldPrototype() {
 		return this.sequenceFieldPrototype;
 	}
 
+	/**
+	 * Setter for the sequence field prototype
+	 * 
+	 * @param sequenceFieldPrototype
+	 */
 	public void setSequenceFieldPrototype(AttributeField sequenceFieldPrototype) {
 		this.sequenceFieldPrototype = sequenceFieldPrototype;
 	}
 
+	/**
+	 * <code>GroupField</code> instance to serve as a prototype for the actions
+	 * column. For each collection line this instance is copied and adjusted as
+	 * necessary. Note the actual actions for the group come from the collection
+	 * groups actions List
+	 * (org.kuali.rice.kns.uif.container.CollectionGroup.getActionFields()). The
+	 * GroupField prototype is useful for setting styling of the actions column
+	 * and for the layout of the action fields. Note also the label associated
+	 * with the prototype is used for the action column header
+	 * 
+	 * @return GroupField instance
+	 */
 	public GroupField getActionFieldPrototype() {
 		return this.actionFieldPrototype;
 	}
 
+	/**
+	 * Setter for the action field prototype
+	 * 
+	 * @param actionFieldPrototype
+	 */
 	public void setActionFieldPrototype(GroupField actionFieldPrototype) {
 		this.actionFieldPrototype = actionFieldPrototype;
 	}
 
+	/**
+	 * List of <code>Field</code> instances that make up the tables body. Pulled
+	 * by the layout manager template to send through the Grid layout
+	 * 
+	 * @return List<Field> table body fields
+	 */
 	public List<Field> getDataFields() {
 		return this.dataFields;
 	}
 
+	/**
+	 * Setter for the tables data fields
+	 * 
+	 * @param dataFields
+	 */
 	public void setDataFields(List<Field> dataFields) {
 		this.dataFields = dataFields;
 	}
 
-	public TableDecorator getTableDecorator() {
-		return this.tableDecorator;
+	/**
+	 * Widget associated with the table to add functionality such as sorting,
+	 * paging, and export
+	 * 
+	 * @return TableTools instance
+	 */
+	public TableTools getTableTools() {
+		return this.tableTools;
 	}
 
-	public void setTableDecorator(TableDecorator tableDecorator) {
-		this.tableDecorator = tableDecorator;
+	/**
+	 * Setter for the table tools widget
+	 * 
+	 * @param tableTools
+	 */
+	public void setTableTools(TableTools tableTools) {
+		this.tableTools = tableTools;
 	}
 
 }

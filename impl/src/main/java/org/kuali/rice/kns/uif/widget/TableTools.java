@@ -16,7 +16,7 @@
 package org.kuali.rice.kns.uif.widget;
 
 /**
- * Decorates a HTML Table client side
+ * Decorates a HTML Table client side with various tools
  * 
  * <p>
  * Decorations implemented depend on widget implementation. Examples are
@@ -25,9 +25,9 @@ package org.kuali.rice.kns.uif.widget;
  * 
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
-public class TableDecorator extends WidgetBase {
+public class TableTools extends WidgetBase {
 
-	public TableDecorator() {
+	public TableTools() {
 
 	}
 

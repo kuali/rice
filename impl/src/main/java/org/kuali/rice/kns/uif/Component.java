@@ -328,6 +328,13 @@ public interface Component extends Serializable {
 	public int getRowSpan();
 
 	/**
+	 * Setter for the component row span
+	 * 
+	 * @param rowSpan
+	 */
+	public void setRowSpan(int rowSpan);
+
+	/**
 	 * Map of decorator instances for the component
 	 * <p>
 	 * Used to initialize a component with a list of decorators. Each decorator

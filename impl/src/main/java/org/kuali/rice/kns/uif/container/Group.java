@@ -42,6 +42,7 @@ import org.kuali.rice.kns.uif.field.GroupField;
 public class Group extends ContainerBase {
 
 	private String fieldBindByNamePrefix;
+	private String fieldBindModelPath;
 
 	/**
 	 * Default Constructor
@@ -89,13 +90,23 @@ public class Group extends ContainerBase {
 					}
 					attributeField.getBindingInfo().setBindByNamePrefix(bindByNamePrefixToSet);
 				}
+
+				if (StringUtils.isNotBlank(fieldBindModelPath)
+						&& StringUtils.isBlank(attributeField.getBindingInfo().getModelPath())) {
+					attributeField.getBindingInfo().setModelPath(fieldBindModelPath);
+				}
 			}
 			// set on GroupField's group to recursively set AttributeFields
 			else if (component instanceof GroupField) {
 				GroupField groupField = (GroupField) component;
-				if ((groupField.getGroup()) != null
-						&& StringUtils.isBlank(groupField.getGroup().getFieldBindByNamePrefix())) {
-					groupField.getGroup().setFieldBindByNamePrefix(fieldBindByNamePrefix);
+				
+				if (groupField.getGroup() != null) {
+					if (StringUtils.isBlank(groupField.getGroup().getFieldBindByNamePrefix())) {
+						groupField.getGroup().setFieldBindByNamePrefix(fieldBindByNamePrefix);
+					}
+					if (StringUtils.isBlank(groupField.getGroup().getFieldBindModelPath())) {
+						groupField.getGroup().setFieldBindModelPath(fieldBindModelPath);
+					}
 				}
 			}
 		}
@@ -144,6 +155,33 @@ public class Group extends ContainerBase {
 	 */
 	public void setFieldBindByNamePrefix(String fieldBindByNamePrefix) {
 		this.fieldBindByNamePrefix = fieldBindByNamePrefix;
+	}
+
+	/**
+	 * Model path to set on each of the group's <code>AttributeField</code>
+	 * instances
+	 * 
+	 * <p>
+	 * When the attributes of the group belong to a model whose path is
+	 * different from the default then this property can be given to set each of
+	 * the attributes instead of setting the model path on each one. The model
+	 * path can be overridden at the attribute level. The model path is set to
+	 * the fieldBindModelPath during the initialize phase.
+	 * </p>
+	 * 
+	 * @return String model path to set
+	 */
+	public String getFieldBindModelPath() {
+		return this.fieldBindModelPath;
+	}
+
+	/**
+	 * Setter for the field model path
+	 * 
+	 * @param fieldBindModelPath
+	 */
+	public void setFieldBindModelPath(String fieldBindModelPath) {
+		this.fieldBindModelPath = fieldBindModelPath;
 	}
 
 }

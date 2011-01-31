@@ -27,7 +27,6 @@ import org.kuali.rice.kns.uif.container.View;
  * @author Kuali Rice Team (rice.collab@kuali.org)
  */
 public class BindingInfo implements Serializable {
-	private boolean bindToModel;
 	private boolean bindToForm;
 
 	private String bindingName;
@@ -35,7 +34,6 @@ public class BindingInfo implements Serializable {
 	private String modelPath;
 
 	public BindingInfo() {
-		bindToModel = true;
 		bindToForm = false;
 	}
 
@@ -44,7 +42,7 @@ public class BindingInfo implements Serializable {
 			bindingName = component.getName();
 		}
 
-		if (bindToModel && StringUtils.isBlank(modelPath)) {
+		if (StringUtils.isBlank(modelPath)) {
 			modelPath = view.getDefaultModelPath();
 		}
 	}
@@ -64,7 +62,7 @@ public class BindingInfo implements Serializable {
 	public String getBindingPath() {
 		String bindingPath = "";
 
-		if (bindToModel && StringUtils.isNotBlank(modelPath)) {
+		if (!bindToForm && StringUtils.isNotBlank(modelPath)) {
 			bindingPath = modelPath + ".";
 		}
 
@@ -76,14 +74,6 @@ public class BindingInfo implements Serializable {
 		}
 
 		return bindingPath;
-	}
-
-	public boolean isBindToModel() {
-		return this.bindToModel;
-	}
-
-	public void setBindToModel(boolean bindToModel) {
-		this.bindToModel = bindToModel;
 	}
 
 	public boolean isBindToForm() {

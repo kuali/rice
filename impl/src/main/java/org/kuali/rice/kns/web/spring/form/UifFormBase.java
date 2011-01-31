@@ -15,7 +15,11 @@
  */
 package org.kuali.rice.kns.web.spring.form;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.uif.container.View;
 import org.kuali.rice.kns.uif.service.ViewService;
 
 /**
@@ -33,6 +37,16 @@ public class UifFormBase {
 	protected String viewName;
 	protected String methodToCall;
 
+	protected String selectedCollectionPath;
+	protected int selectedLineIndex;
+
+	protected View view;
+
+	protected Map<String, Object> newCollectionLines;
+
+	public UifFormBase() {
+		newCollectionLines = new HashMap<String, Object>();
+	}
 
 	/**
 	 * Unique Id for the <code>View</code> instance. This is specified for a
@@ -96,6 +110,64 @@ public class UifFormBase {
 	}
 
 	/**
+	 * Holds instances for collection add lines. The key of the Map gives the
+	 * collection name the line instance applies to, the Map value is an
+	 * instance of the collection object class that holds the new line data
+	 * 
+	 * @return Map<String, Object> new collection lines
+	 */
+	public Map<String, Object> getNewCollectionLines() {
+		return this.newCollectionLines;
+	}
+
+	/**
+	 * Setter for the new collection lines Map
+	 * 
+	 * @param newCollectionLines
+	 */
+	public void setNewCollectionLines(Map<String, Object> newCollectionLines) {
+		this.newCollectionLines = newCollectionLines;
+	}
+
+	/**
+	 * When an action is taken on a collection this property is set to indicate
+	 * which collection the action was taken on
+	 * 
+	 * @return String collection path
+	 */
+	public String getSelectedCollectionPath() {
+		return this.selectedCollectionPath;
+	}
+
+	/**
+	 * Setter for the selected collection path
+	 * 
+	 * @param selectedCollectionPath
+	 */
+	public void setSelectedCollectionPath(String selectedCollectionPath) {
+		this.selectedCollectionPath = selectedCollectionPath;
+	}
+
+	/**
+	 * When an action is taken on a collection line this property is set to
+	 * indicate which line (by index) the action was taken on
+	 * 
+	 * @return int selected line index
+	 */
+	public int getSelectedLineIndex() {
+		return this.selectedLineIndex;
+	}
+
+	/**
+	 * Setter for the selected line index
+	 * 
+	 * @param selectedLineIndex
+	 */
+	public void setSelectedLineIndex(int selectedLineIndex) {
+		this.selectedLineIndex = selectedLineIndex;
+	}
+
+	/**
 	 * Instance of the <code>ViewService</code> that can be used to retrieve
 	 * <code>View</code> instances
 	 * 
@@ -103,6 +175,14 @@ public class UifFormBase {
 	 */
 	protected ViewService getViewService() {
 		return KNSServiceLocator.getViewService();
+	}
+
+	public View getView() {
+		return this.view;
+	}
+
+	public void setView(View view) {
+		this.view = view;
 	}
 
 }

@@ -53,6 +53,11 @@
        <%-- begin of page render --%>
        <krad:template component="${view.currentPage}"/>
        <%-- end of page render --%>
+       
+       <%-- write out view id as hidden so the view can be reconstructed if necessary --%>
+       <c:if test="${view.renderForm}">
+         <form:hidden path="viewId"/>
+       </c:if>
      </td>
      
      <td width="20">

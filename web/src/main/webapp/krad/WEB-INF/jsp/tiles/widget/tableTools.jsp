@@ -15,7 +15,7 @@
 --%>
 <%@ include file="/krad/WEB-INF/jsp/tldHeader.jsp"%>
 
-<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.TableDecorator"/>
+<tiles:useAttribute name="widget" classname="org.kuali.rice.kns.uif.widget.TableTools"/>
 <tiles:useAttribute name="componentId"/>
 
 <%--

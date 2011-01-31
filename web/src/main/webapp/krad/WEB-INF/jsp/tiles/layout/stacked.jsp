@@ -21,11 +21,11 @@
 <%--
     Stacked Layout Manager:
     
-      Uses a box manager for rendering collection groups
+      Uses a box manager for rendering the collection groups
  --%>
  
 <%-- just pass through for now using the items built in the manager --%>
 <tiles:insertTemplate template="box.jsp">
-   <tiles:putAttribute name="items" value="${manager.collectionGroups}"/>
+   <tiles:putAttribute name="items" value="${manager.stackedGroups}"/>
    <tiles:putAttribute name="manager" value="${manager}"/>
 </tiles:insertTemplate>  

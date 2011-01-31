@@ -32,7 +32,7 @@ public class ViewModelUtils {
 		Class<?> propertyType = null;
 
 		// TODO: make this do partial matching & collection matching
-		
+
 		// check if property path matches one of the modelClass entries
 		Map<String, Class<?>> modelClasses = view.getModelClasses();
 		for (String path : modelClasses.keySet()) {
@@ -48,5 +48,7 @@ public class ViewModelUtils {
 
 		return propertyType;
 	}
+
+
 
 }

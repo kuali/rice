@@ -490,45 +490,51 @@ public class UiDocumentServiceImpl implements UiDocumentService {
 	 * @param identityManagementPersonDocument
 	 * @param groups
 	 */
-	protected void loadGroupToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, List<? extends Group> groups) {
-		List <PersonDocumentGroup> docGroups = new ArrayList <PersonDocumentGroup>();
-		if(ObjectUtils.isNotNull(groups)){
-			Collection<GroupMembershipInfo> groupMemberships;
-			for (Group group: groups) {
-				PersonDocumentGroup docGroup = new PersonDocumentGroup();
-				docGroup.setGroupId(group.getGroupId());
-				docGroup.setGroupName(group.getGroupName());
-				docGroup.setKimTypeId(group.getKimTypeId());
-				docGroup.setNamespaceCode(group.getNamespaceCode());
-				docGroup.setPrincipalId(identityManagementPersonDocument.getPrincipalId());
-				
-				List<String> groupIds = new ArrayList<String>();
-				groupIds.add(group.getGroupId());
-				groupMemberships = getGroupService().getGroupMembers(groupIds);
-				if(ObjectUtils.isNotNull(groupMemberships)){
-					for (GroupMembershipInfo groupMember: groupMemberships) {
-						if (groupMember.isActive() && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
-							StringUtils.equals(groupMember.getMemberTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
-							docGroup.setGroupMemberId(groupMember.getGroupMemberId());
-							if (groupMember.getActiveFromDate() != null) {
-								docGroup.setActiveFromDate(new Timestamp(groupMember.getActiveFromDate().getTime()));
-							}
-							if (groupMember.getActiveToDate() != null) {
-								docGroup.setActiveToDate(new Timestamp(groupMember.getActiveToDate().getTime()));
-							}
-							break;
-						}
-					}
-				}
-				docGroup.setEdit(true);
-				//docGroup.setGroupMemberId(((GroupImpl));
-				if(docGroup.isActive()) {
-					docGroups.add(docGroup);
-				}	
-			}	
-		}
-		identityManagementPersonDocument.setGroups(docGroups);
-	}
+    protected void loadGroupToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument, List<? extends Group> groups) {
+        List <PersonDocumentGroup> docGroups = new ArrayList <PersonDocumentGroup>();
+        if(ObjectUtils.isNotNull(groups)){
+            List<String> directMemberPrincipalIds;
+            Collection<GroupMembershipInfo> groupMemberships;
+            for (Group group: groups) {
+                directMemberPrincipalIds = getGroupService().getDirectMemberPrincipalIds(group.getGroupId());
+                if(ObjectUtils.isNotNull(directMemberPrincipalIds)){
+                    directMemberPrincipalIds = new ArrayList<String>(new HashSet<String>(directMemberPrincipalIds));
+                    for (String memberId: directMemberPrincipalIds) {
+                        // other more direct methods for this ?
+                        // can't cast group to 'GroupImpl' because list is GroupInfo type
+                        if (StringUtils.equals(memberId, identityManagementPersonDocument.getPrincipalId())) {
+                            List<String> groupIds = new ArrayList<String>();
+                            groupIds.add(group.getGroupId());
+                            groupMemberships = getGroupService().getGroupMembers(groupIds);
+                            if(ObjectUtils.isNotNull(groupMemberships)){
+                                for (GroupMembershipInfo groupMember: groupMemberships) {
+                                    if (groupMember.isActive() && StringUtils.equals(groupMember.getMemberId(), identityManagementPersonDocument.getPrincipalId()) &&
+                                        StringUtils.equals(groupMember.getMemberTypeCode(), KimGroupMemberTypes.PRINCIPAL_MEMBER_TYPE)) {
+                                        // create one PersonDocumentGroup per GroupMembershipInfo **
+                                        PersonDocumentGroup docGroup = new PersonDocumentGroup();
+                                        docGroup.setGroupId(group.getGroupId());
+                                        docGroup.setGroupName(group.getGroupName());
+                                        docGroup.setNamespaceCode(group.getNamespaceCode());
+                                        docGroup.setPrincipalId(memberId);
+                                        docGroup.setGroupMemberId(groupMember.getGroupMemberId());
+                                        if (groupMember.getActiveFromDate() != null) {
+                                        	docGroup.setActiveFromDate(new Timestamp(groupMember.getActiveFromDate().getTime()));
+                                        }
+                                        if (groupMember.getActiveToDate() != null) {
+                                        	docGroup.setActiveToDate(new Timestamp(groupMember.getActiveToDate().getTime()));
+                                        }
+                                        docGroup.setEdit(true);
+                                        docGroups.add(docGroup);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        identityManagementPersonDocument.setGroups(docGroups);
+    }
 
 	protected void loadRoleToPersonDoc(IdentityManagementPersonDocument identityManagementPersonDocument) {
 		List <PersonDocumentRole> docRoles = new ArrayList <PersonDocumentRole>();

@@ -366,6 +366,14 @@ function getStyleObject(objectId) {
    }
 }
 
+// used on multiple value lookup pages to support the select/deselect all on page functions
+function setAllMultipleValueLookuResults(checked) {
+	for (i = 0; i < kualiElements.length; i++) {
+		if (kualiElements[i].type == 'checkbox' && kualiElements[i].name.match('^selectedObjId-') == 'selectedObjId-') {
+			kualiElements[i].checked = checked;
+		}
+	}
+}
 function placeFocus() {
 	if (document.forms.length > 0) {
 	  var fieldNameToFocus;

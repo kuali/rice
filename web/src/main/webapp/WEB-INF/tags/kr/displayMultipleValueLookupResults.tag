@@ -38,8 +38,14 @@
 			<input type="hidden" name="${Constants.TableRenderConstants.PREVIOUSLY_SORTED_COLUMN_INDEX_PARAM}" value="${KualiForm.columnToSortIndex}"/>
 			<c:if test="${KualiForm.hasReturnableRow}" >
 				<p>
-					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_selectall.gif" alt="Select all rows" title="Select all rows" class="tinybutton" name="methodToCall.selectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}" value="Select All Rows"/>
-					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_unselall.gif" alt="Unselect all rows" title="Unselect all rows" class="tinybutton" name="methodToCall.unselectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}" value="Unselect All Rows"/>
+					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_selectallfromallpages.png" alt="Select all rows from all pages" title="Select all rows from all pages" class="tinybutton" name="methodToCall.selectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Select All Rows"/>
+					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_deselectallfromallpages.png" alt="Deselect all rows from all pages" title="Unselect all rows from all pages" class="tinybutton" name="methodToCall.unselectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Unselect All Rows"/>					
+					<script>
+						document.write('\n');
+						document.write('<a href="javascript:void(0)" onclick="setAllMultipleValueLookuResults(true);"><img src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_selectallfromthispage.png" alt="Select all rows from this page" title="Select all rows from this page" class="tinybutton"/></a>');
+						document.write('\n');
+						document.write('<a href="javascript:void(0)" onclick="setAllMultipleValueLookuResults(false);"><img src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_deselectallfromthispage.png" alt="Deselect all rows from this page" title="Deselect all rows from this page" class="tinybutton" onclick="setAllMultipleValueLookuResults(false)"/></a>');
+					</script>
 					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_retselected.gif" alt="Return selected results" title="Return selected results" class="tinybutton" name="methodToCall.prepareToReturnSelectedResults.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}" value="Return selected results"/>						
 				</p>
 			</c:if>
@@ -94,8 +100,14 @@
 			</table>
 			<c:if test="${ KualiForm.hasReturnableRow }" >
 				<p>
-					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_selectall.gif" alt="Select all rows" title="Select all rows" class="tinybutton" name="methodToCall.selectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}" value="Select All Rows"/>
-					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_unselall.gif" alt="Unselect all rows" title="Unselect all rows" class="tinybutton" name="methodToCall.unselectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}" value="Unselect All Rows"/>
+					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_selectallfromallpages.png" alt="Select all rows from all pages" title="Select all rows from all pages" class="tinybutton" name="methodToCall.selectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Select All Rows"/>
+					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_deselectallfromallpages.png" alt="Deselect all rows from all pages" title="Unselect all rows from all pages" class="tinybutton" name="methodToCall.unselectAll.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}.x" value="Unselect All Rows"/>
+					<script>
+						document.write('\n');
+						document.write('<a href="javascript:void(0)" onclick="setAllMultipleValueLookuResults(true);"><img src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_selectallfromthispage.png" alt="Select all rows from this page" title="Select all rows from this page" class="tinybutton"/></a>');
+						document.write('\n');
+						document.write('<a href="javascript:void(0)" onclick="setAllMultipleValueLookuResults(false);"><img src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_deselectallfromthispage.png" alt="Deselect all rows from this page" title="Deselect all rows from this page" class="tinybutton" onclick="setAllMultipleValueLookuResults(false)"/></a>');
+					</script>
 					<input type="image" src="${ConfigProperties.kr.externalizable.images.url}buttonsmall_retselected.gif" alt="Return selected results" title="Return selected results" class="tinybutton" name="methodToCall.prepareToReturnSelectedResults.${Constants.METHOD_TO_CALL_PARM12_LEFT_DEL}${KualiForm.searchUsingOnlyPrimaryKeyValues}${Constants.METHOD_TO_CALL_PARM12_RIGHT_DEL}" value="Return selected results"/>						
 				</p>
 			</c:if>

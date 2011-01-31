@@ -654,6 +654,8 @@ public class KimTypeServiceBase implements KimTypeService {
 			definition.setKimAttrDefnId(typeAttribute.getKimAttributeId());
 			definition.setKimTypeId(kimTypeId);
 
+			definition.setForceUppercase(baseDefinition.getForceUppercase());
+			
 			Map<String, String> lookupInputPropertyConversionsMap = new HashMap<String, String>();
 			Map<String, String> lookupReturnPropertyConversionsMap = new HashMap<String, String>();
 

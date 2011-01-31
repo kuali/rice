@@ -16,6 +16,7 @@
 package org.kuali.rice.kim.dao.impl;
 
 import java.sql.Timestamp;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -31,12 +32,20 @@ import org.kuali.rice.kim.bo.entity.impl.KimPrincipalImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupAttributeDataImpl;
 import org.kuali.rice.kim.bo.group.impl.GroupMemberImpl;
 import org.kuali.rice.kim.bo.impl.GroupImpl;
+import org.kuali.rice.kim.bo.types.dto.AttributeDefinitionMap;
+import org.kuali.rice.kim.bo.types.dto.KimTypeInfo;
 import org.kuali.rice.kim.dao.KimGroupDao;
 import org.kuali.rice.kim.service.KIMServiceLocator;
+import org.kuali.rice.kim.service.KimTypeInfoService;
+import org.kuali.rice.kim.service.support.KimTypeService;
 import org.kuali.rice.kim.util.KIMPropertyConstants;
+import org.kuali.rice.kim.util.KimCommonUtils;
+import org.kuali.rice.kim.util.KimConstants;
 import org.kuali.rice.kns.dao.impl.PlatformAwareDaoBaseOjb;
+import org.kuali.rice.kns.datadictionary.AttributeDefinition;
 import org.kuali.rice.kns.datadictionary.BusinessObjectEntry;
 import org.kuali.rice.kns.service.KNSServiceLocator;
+import org.kuali.rice.kns.util.KNSConstants;
 
 /**
  * This is a description of the KimGroupDaoOjb class.
@@ -47,7 +56,8 @@ import org.kuali.rice.kns.service.KNSServiceLocator;
 public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupDao {
 	// KULRICE-4248 Adding logger
 	private static final Logger LOG = Logger.getLogger(KimGroupDaoOjb.class);
-
+	private KimTypeInfoService kimTypeInfoService;
+	
     public List<GroupImpl> getGroups(Map<String,String> fieldValues) {
         Criteria crit = new Criteria();
         BusinessObjectEntry boEntry = KNSServiceLocator.getDataDictionaryService().getDataDictionary().getBusinessObjectEntry("org.kuali.rice.kim.bo.impl.GroupImpl");
@@ -59,26 +69,75 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         		break;
         	}
         }
+        AttributeDefinitionMap definitions = null;
         for (Entry<String, String> entry : fieldValues.entrySet()) {
         	if (StringUtils.isNotBlank(entry.getValue())) {
         		if (entry.getKey().contains(".")) {
         	        Criteria subCrit = new Criteria();
         			String value = entry.getValue().replace('*', '%');
 
-        			subCrit.addLike("attributeValue",value);
-        			subCrit.addEqualTo("kimAttributeId",entry.getKey().substring(entry.getKey().indexOf(".")+1, entry.getKey().length()));
-        			subCrit.addEqualTo("kimTypeId", kimTypeId);
-        			ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(GroupAttributeDataImpl.class, subCrit);
-        			crit.addExists(subQuery);
+                    // obey the DD forceUppercase attribute and allow the OR operator
+                    // subCrit.addLike("attributeValue",value);
+                    String[] values = StringUtils.split(value, KNSConstants.OR_LOGICAL_OPERATOR);
+                    boolean valuesCriterionAdded = false;
+                    if (values.length > 0) {
+                        if (definitions == null) {
+                            KimTypeInfo kimTypeInfo = getKimTypeInfoService().getKimType(kimTypeId);
+                            KimTypeService kimTypeService = KimCommonUtils.getKimTypeService(kimTypeInfo);
+                            definitions = kimTypeService.getAttributeDefinitions(kimTypeId);
+                        }
+                        AttributeDefinition definition = definitions.getByAttributeName(entry.getKey().substring(0, entry.getKey().indexOf('.')));
+                        
+                        Criteria valuesCrit = new Criteria();
+                        for (int i = 0; i < values.length; i++) {
+                            String subValue = values[i];
+                            if (StringUtils.isNotBlank(subValue)) {
+                                Criteria valueCrit = new Criteria();
+                                // null means uppercase it, so do !Boolean.FALSE.equals
+                                if (!Boolean.FALSE.equals(definition.getForceUppercase())) {
+                                    valueCrit.addLike(getDbPlatform().getUpperCaseFunction() + "(attributeValue)", subValue.toUpperCase());
+                                }
+                                else {
+                                    valueCrit.addLike("attributeValue", subValue); 
+                                }
+                                valuesCriterionAdded = true;
+                                valuesCrit.addOrCriteria(valueCrit);
+                            }
+                        }
+                        subCrit.addAndCriteria(valuesCrit);
+                        
+                        subCrit.addEqualTo("kimAttributeId",entry.getKey().substring(entry.getKey().indexOf(".")+1, entry.getKey().length()));
+                        subCrit.addEqualTo("kimTypeId", kimTypeId);
+                        
+                        subCrit.addEqualToField(KIMPropertyConstants.Group.GROUP_ID, Criteria.PARENT_QUERY_PREFIX + KIMPropertyConstants.Group.GROUP_ID);
+                        
+                        ReportQueryByCriteria subQuery = QueryFactory.newReportQuery(GroupAttributeDataImpl.class, subCrit);
+                        if (valuesCriterionAdded) {
+                            crit.addExists(subQuery);
+                        }
+                    }
+
         		} else {
         			if (lookupNames.contains(entry.getKey())) {
             			String value = entry.getValue().replace('*', '%');
-        				if(entry.getKey().equalsIgnoreCase(KIMPropertyConstants.Group.GROUP_NAME)) {
-        					crit.addLike(getDbPlatform().getUpperCaseFunction() + "(" + entry.getKey() + ")", value.toUpperCase());
-        				}
-        				else {
-                            crit.addLike((entry.getKey()), value);
-        				}
+                        String[] values = StringUtils.split(value, KNSConstants.OR_LOGICAL_OPERATOR);
+                        Criteria valuesCrit = new Criteria();
+                        for (int i = 0; i < values.length; i++) {
+                            String subValue = values[i];
+                            if (StringUtils.isNotBlank(subValue)) {
+                                Criteria valueCrit = new Criteria();
+                                // null means uppercase it, so do !Boolean.FALSE.equals
+                                if (KimConstants.UniqueKeyConstants.GROUP_NAME.equals(entry.getKey())) {
+                                    valueCrit.addLike(getDbPlatform().getUpperCaseFunction() + "(groupName)", subValue.toUpperCase());
+                                }
+                                else {
+                                    valueCrit.addLike(entry.getKey(), subValue);
+                                }
+                                valuesCrit.addOrCriteria(valueCrit);
+                            }
+                        }
+                        crit.addAndCriteria(valuesCrit);
+
         			} else {
         				if (entry.getKey().equals(KIMPropertyConstants.Person.PRINCIPAL_NAME)) {
 
@@ -149,4 +208,10 @@ public class KimGroupDaoOjb extends PlatformAwareDaoBaseOjb implements KimGroupD
         return (List)getPersistenceBrokerTemplate().getCollectionByQuery(q);
     }
 
+    protected KimTypeInfoService getKimTypeInfoService() {
+    	if (kimTypeInfoService == null) {
+    		kimTypeInfoService = KIMServiceLocator.getTypeInfoService();
+    	}
+    	return kimTypeInfoService;
+    }
 }

@@ -57,6 +57,7 @@ import org.kuali.rice.kns.lookup.HtmlData;
 import org.kuali.rice.kns.lookup.HtmlData.AnchorHtmlData;
 import org.kuali.rice.kns.lookup.keyvalues.IndicatorValuesFinder;
 import org.kuali.rice.kns.lookup.keyvalues.KeyValuesFinder;
+import org.kuali.rice.kns.lookup.keyvalues.KimAttributeValuesFinder;
 import org.kuali.rice.kns.util.GlobalVariables;
 import org.kuali.rice.kns.util.KNSConstants;
 import org.kuali.rice.kns.util.ObjectUtils;
@@ -420,6 +421,11 @@ public class GroupLookupableHelperServiceImpl  extends KimLookupableHelperServic
 						if (definition.getControl().isSelect()) {
 					        try {
 					            KeyValuesFinder finder = (KeyValuesFinder) ClassLoaderUtils.getClass(definition.getControl().getValuesFinderClass()).newInstance();
+					            // need to initialize KIM Values Finder before retrieving values
+					            if (finder instanceof KimAttributeValuesFinder) {
+					            	((KimAttributeValuesFinder) finder).setKimTypeId(field.getPropertyValue());
+					            	((KimAttributeValuesFinder) finder).setKimAttributeName(definition.getName());
+					            }
 						        typeField.setFieldValidValues(finder.getKeyValues());
 						        typeField.setFieldType(Field.DROPDOWN);
 					        }
